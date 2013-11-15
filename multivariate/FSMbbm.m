@@ -26,6 +26,20 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %               required diagnostics. Note that if bsb is supplied
 %               init>=length(bsb). If init is not specified it will
 %               be set equal to floor(n*0.6).
+% plots :       scalar. If plots=1, a plot of the monitoring of minMD among
+%               the units not belonging to the subset is produced on the
+%               screen with 1% 50% and 99% confidence bands
+%               else (default) no plot is produced.
+%  msg  :       scalar which controls whether to display or not messages
+%               about great interchange on the screen
+%               If msg==1 (default) messages are displyed on the screen
+%               else no message is displayed on the screen
+%
+% Remark:       The user should only give the input arguments that have to
+%               change their default value.
+%               The name of the input arguments needs to be followed by
+%               their value. The order of the input arguments is of no
+%               importance.
 %
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
@@ -54,12 +68,12 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %   Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
 %   forward search Springer Verlag, New York.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %
 %<a href="matlab: docsearch('FSMbbm')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 
 % Examples:
@@ -86,10 +100,13 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 
 %% Input parameters checking
 [n,v]=size(Y);
+% Initialize matrix which will contain Mahalanobis distances in each step
+seq=(1:n)';
 
-ini0=v+1;
 
-options=struct('init',ini0);
+hdef=floor(n*0.6);
+
+options=struct('init',hdef,'plots',0,'msg',1);
 
 if nargin<2
     error('Initial subset is missing');
@@ -157,6 +174,8 @@ BBmsel=NaN(n,length(msel),'single');
 
 
 
+mala=[seq zeros(n,1)];
+
 if (rank(Y(bsb,:))<v)
     warning('FSMmmd:message','The supplied initial subset is not full rank matrix');
     % FS loop will not be performed
@@ -185,11 +204,11 @@ else
         
         
         % Remark: u=(Ym/R)' should be much faster than u=inv(R')*Ym';
-        u=(Ym/R);
+        u=(Ym/R)';
         % Compute square Mahalanobis distances
-        mala=((mm-1)*sum(u.^2,2));
+        mala(:,2)=((mm-1)*sum(u.^2,1))';
         
-        [~,zs]= sort(mala);
+        zs= sortrows(mala,2);
         
         if mm<n
             

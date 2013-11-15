@@ -95,13 +95,13 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %                    given here.
 %       REW.cov    : The robust covariance matrix, obtained after reweighting and
 %                    multiplying with a finite sample correction factor and an asymptotic
-%                    consistency factor, if the raw MCD is not singular.  Otherwise the
-%                    raw MCD covariance matrix is given here.
+%                    consistency factor, if the raw MVE is not singular.  Otherwise the
+%                    raw MVE covariance matrix is given here.
 %       REW.cor    : The robust correlation matrix, obtained after reweighting
 %       REW.md:      The distance of each observation to the final,
-%                    reweighted MCD center of the data, relative to the
-%                    reweighted MCD scatter of the data.  These distances allow
-%                    us to easily identify the outliers. If the reweighted MCD
+%                    reweighted MVE center of the data, relative to the
+%                    reweighted MVE scatter of the data.  These distances allow
+%                    us to easily identify the outliers. If the reweighted MVE
 %                    is singular, RAW.md is given here.
 %            REW.Y : Data matrix Y. The field is present if option
 %                    ysaveRAW is set to 1.
@@ -158,12 +158,12 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 % Note that MMY_J= (RL)^{2/v}
 %
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %
 %<a href="matlab: docsearch('mve')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 % Examples:
 
@@ -184,7 +184,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
-[n v]=size(Y);
+[n,v]=size(Y);
 seq=1:n;
 
 %% User options
@@ -563,7 +563,7 @@ function [raw_center,raw_cov,center,covar,raw_objective,raw_wt,mcd_wt,method]=di
     count,weights,n,p,center,covar,method,z,varargin)
 % exactfit = scalar which
 % exactfit=1 ==> The covariance matrix of the data is singular
-% exactfit=2 ==> The covariance matrix has become singular during the iterations of the MCD algorithm
+% exactfit=2 ==> The covariance matrix has become singular during the iterations of the MVE algorithm
 % exactfit=3 ==> The %g-th order statistic of the absolute deviation of variable %g is zero.
 
 % Determines some fields of the output argument REW for the exact fit situation.  It also

@@ -134,13 +134,13 @@ function [out]=FSM(Y,varargin)
 %       number of multivariate outliers. Journal of the Royal Statistical
 %       Society Series B, Vol. 71, pp. 201–221.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %            and Vytis Kopustinskas (2009-2010)
 %
 %
 %<a href="matlab: docsearch('fsm')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples:
 
@@ -290,7 +290,8 @@ else
     error('Error:: supplied options to initialize the search does not exist.');
 end
 
-bs=fre(1:m0,1);
+ bs=fre(1:m0,1);
+ bs=1:30;
 
 quant=[0.99;0.999;0.9999;0.99999;0.01;0.5];
 % Compute theoretical envelops for minimum Mahalanobis Distance based on all

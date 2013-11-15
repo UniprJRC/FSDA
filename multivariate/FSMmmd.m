@@ -76,7 +76,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %<a href="matlab: docsearch('FSMmmd')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 25-Mar-2013
 
 
 % Examples:

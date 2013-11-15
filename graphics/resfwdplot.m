@@ -309,12 +309,12 @@ function plotopt=resfwdplot(out,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2013. 
+% Copyright 2008-2011. 
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %            and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('resfwdplot')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples:
 
@@ -715,7 +715,7 @@ if isstruct(datatooltip)
         SubsetLinesColor=datatooltip.SubsetLinesColor;
         datatooltip=rmfield(datatooltip,'SubsetLinesColor');
         fdatatooltip=fieldnames(datatooltip);
-        [a b]=size(SubsetLinesColor);
+        [a, b]=size(SubsetLinesColor);
         if ~(a==1 && b==3 && sum(SubsetLinesColor<=1)==3)
             % if it is not a valid RGB vector, set to default (blue)
             SubsetLinesColor = [0 0 1];
@@ -727,7 +727,7 @@ if isstruct(datatooltip)
         LineColor=datatooltip.LineColor;
         datatooltip=rmfield(datatooltip,'LineColor');
         %fdatatooltip=fieldnames(datatooltip);
-        [a b]=size(LineColor);
+        [a, b]=size(LineColor);
         if ~(a==1 && b==3 && sum(LineColor<=1)==3)
             % if LineColor is not a valid RGB vector, set to default (red)
             LineColor=[1 0 0];

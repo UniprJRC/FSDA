@@ -41,12 +41,12 @@ function Bbound = FSRbonfbound(n,p,varargin)
 %   search for testing multiple outliers in regression, Advances in Data
 %   Analysis and Classification, Vol. 1, pp. 123–141.
 %
-% Copyright 2008-2013
+% Copyright 2008-2011
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti 
 %            and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('FSRbonfbound')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples:
 

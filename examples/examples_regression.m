@@ -2,7 +2,7 @@
 
 
 
-%% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis) 
+%% FD (Forbes data) -- Forward EDA (Exploratory Data Analysiswith FS) 
 % scatterplot of data: one point looks outlying 
 load('forbes.txt');
 y=forbes(:,2);
@@ -40,7 +40,6 @@ plot(X,y,'o');
 xlabel('Boiling point')
 ylabel('100 x log(pressure)')
 set(gcf,'Name', 'Plot of y versus X','NumberTitle', 'off')
-% running the search
 [out]=Sreg(y,X);
 
 %Remark: if you want to use MMestimators, simply replace 

@@ -1,5 +1,5 @@
 function y = randsampleFS(n,k,method)
-%randsampleFS generates a random sample of k elements from the integers 1 to n
+%randsampleFS generates a random sample of k elements from the integers 1 to n (k<=n)
 %
 %<a href="matlab: docsearch('randsampleFS')">Link to the help function</a>
 %
@@ -7,8 +7,7 @@ function y = randsampleFS(n,k,method)
 %
 %       n : scalar, a positive integer. 
 %           a vector of numbers will be selected from the integers 1 to n.
-%      k  : the number of elements to be selected. Of course, n is assumed
-%           to be greater than k.
+%      k  : the number of elements to be selected.
 %
 %  Optional input arguments:
 %
@@ -51,13 +50,13 @@ function y = randsampleFS(n,k,method)
 %
 %
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti 
 %            and Vytis Kopustinskas (2009-2010)
 %
 %
 %<a href="matlab: docsearch('randsampleFS')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples:
 

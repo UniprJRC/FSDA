@@ -34,8 +34,8 @@ function [out]=FSR(y,X,varargin)
 %                 computed,
 %                 elseif lms is a scalar different from 1 Least trimmed of
 %                 Squares is computed.
-%                 else if lms is a vector it contains the list of units
-%                 forming the initial subset
+%                 else if lms is a vector (with length greater than 1) it
+%                 contains the list of units forming the initial subset
 %       plots   : Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
@@ -126,8 +126,17 @@ function [out]=FSR(y,X,varargin)
 %       msg    :  scalar which controls whether to display or not messages
 %                 on the screen
 %                 If msg==1 (default) messages are displayed on the screen about
-%                   step in which signal took place and ....
+%                   step in which signal took place 
 %                 else no message is displayed on the screen
+% bsbmfullrank :  scalar which tells how to behave in case subset at step m
+%                 (say bsbm) produces a non singular X. In other words,
+%                 this options controls what to do when rank(X(bsbm,:)) is
+%                 smaller then number of explanatory variables. If
+%                 bsbmfullrank =1 (default) these units (whose number is
+%                 say mnofullrank) are constrained to enter the search in
+%                 the final n-mnofullrank steps else the search continues
+%                 using as estimate of beta at step m the estimate of beta
+%                 found in the previous step. 
 %
 %
 % Output:
@@ -167,13 +176,13 @@ function [out]=FSR(y,X,varargin)
 %       number of multivariate outliers. Journal of the Royal Statistical
 %       Society Series B, Vol. 71, pp. 201–221.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %            and Vytis Kopustinskas (2009-2010)
 %
 %
 %<a href="matlab: docsearch('fsr')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples:
 
@@ -309,7 +318,9 @@ options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',1,...
     'init',init,'exact',1,...
     'labeladd','','bivarfit','','multivarfit','',...
-    'xlim','','ylim','','nameX','','namey','','msg',1,'nocheck',0,'intercept',1,'bonflev','');
+    'xlim','','ylim','','nameX','','namey','',...
+    'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
+    'bsbmfullrank',1);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -341,7 +352,7 @@ multivarfit=options.multivarfit;
 xlimx=options.xlim;
 ylimy=options.ylim;
 msg=options.msg;
-
+bsbmfullrank=options.bsbmfullrank;
 
 bonflev=options.bonflev;
 if ~isempty(bonflev)
@@ -385,14 +396,16 @@ if length(lms)>1
     
     % Compute Minimum Deletion Residual for each step of the search
     [mdr,Un,bb] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg);
+    
     if size(mdr,2)<2
         if length(mdr)>=n/2;
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
+            disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
             out.ListOut=setdiff(seq,mdr);
             
         else
-            disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point')
+            disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point or use option bsbmfullrank=0 ')
             
         end
         
@@ -401,17 +414,15 @@ if length(lms)>1
         out.nout= NaN;
         return
     end
-else
+else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
     [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
     
-    if out.s0==0
-        disp('More than half of the observations produce a singular X matrix')
-        disp('X is badly defined; output from LXS is returned')
+    if out.s0==0 
+        disp('More than half of the observations produce a linear model with a perfect fit')
         % Just return the outliers found by LXS
-        out.ListOut=out.outliers;
-        
-        return
+        %out.ListOut=out.outliers;
+        %return
     end
     
     bs=out.bs;
@@ -422,7 +433,7 @@ else
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search 
         % The instruction below is surely executed once. 
-        [mdr,Un,bb] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr);
+        [mdr,Un,bb] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
         
         % If FSRmdr run without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -439,13 +450,14 @@ else
         if size(mdr,2)<2
             if length(mdr)>=n/2;
                 disp('More than half of the observations produce a singular X matrix')
-                disp('X is badly defined')
+            disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
+
                 out.ListOut=setdiff(seq,mdr);
                 
                 return
             elseif isnan(mdr(1,1))
                 % INITIAL SUBSET WAS NOT FULL RANK 
-                % restart LXS without the units which the units forming
+                % restart LXS without the units forming
                 % initial subset 
                 bsb=setdiff(seq,out.bs);
                 [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
@@ -589,7 +601,9 @@ for i=3:nmdr;
             % Extreme couple adjacent to an exceedance
             % Two consecutive values of mdr above the 99.99% envelope and 1 above 99%
             if ((mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99)) || (mdr(i-1,2)>gmin(i-1,c999) && mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c99)) || mdr(i,2)>gmin(end,c99) || mdr(i,2)>gmin(i,c99999));
-                'Signal in final part of the search: step '; disp(mdr(i,1)); 'because';
+                 if msg
+                    disp(['Signal in final part of the search: step ' num2str(mdr(i,1)) ' because']);
+                 end
                 if (mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99));
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99%']);

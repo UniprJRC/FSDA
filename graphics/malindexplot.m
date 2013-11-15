@@ -94,12 +94,12 @@ function malindexplot(md,v,varargin)
 %   Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection.
 %   Wiley.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %            and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('malindexplot')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples:
 

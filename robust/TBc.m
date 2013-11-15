@@ -8,7 +8,7 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 %  Required input arguments:
 %
 %    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator
-%    p :        number of response variables of the datasets (for regression p=1)
+%    p :        number of response variables of the dataset (for regression p=1)
 %
 %  Optional input arguments:
 %
@@ -17,7 +17,6 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 %
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
 %     bdp      :  scalar, breakdown point associated to the supplied
 %                 value of c
 %     eff      :  scalar, efficiency associated to the supplied
@@ -28,12 +27,19 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 %                 which comes out from R library robustbase.
 %
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
+% References:
+%
+%
+% Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),
+% The Change-of-Variance Curve and Optimal Redescending M-Estimators,
+% Journal of the American Statistical Association , Vol. 76, No. 375,
+% pp. 643-648 (HRR)
 %
 %<a href="matlab: docsearch('tbc')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 % Examples:
 

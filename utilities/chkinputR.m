@@ -26,11 +26,11 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
 %
 % See also
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti 
 %            and Vytis Kopustinskas (2009-2010)
 %
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 optargin = size(vvarargin,2);
 stdargin = nnargin - optargin;
@@ -74,7 +74,7 @@ else
     end
     
     % The second argument which is passed is X
-    if nnargin<2 || isempty(X)
+    if nnargin<2  || isempty(X)
         error('Input matrix X not specified.');
         
     % X must be a 2-dimensional array

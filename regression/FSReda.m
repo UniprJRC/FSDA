@@ -127,12 +127,12 @@ function [out] = FSReda(y,X,bsb,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti 
 %            and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('FSReda')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples:
 
@@ -629,8 +629,9 @@ else
 end   %Rank check
 
 %% Structure returned by function FSReda
+RES=RES/sqrt(S2(end,2));
 out=struct;
-out.RES=RES/sqrt(S2(end,2));
+out.RES=RES;
 out.LEV=LEV;
 out.BB=BB;
 out.mdr=mdr;

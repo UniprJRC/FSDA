@@ -31,13 +31,13 @@ function varargout = dsxy2figxy(varargin)
 % See also 
 %
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti 
 %            and Vytis Kopustinskas (2009-2010)
 %
 %
 %<a href="matlab: docsearch('dsxy2figxy')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 %% Obtain arguments (only limited argument checking is performed).
 

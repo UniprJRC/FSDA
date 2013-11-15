@@ -12,10 +12,11 @@ function rhoTB = TBrho(u,c)
 %
 % Function TBrho transforms vector u as follows 
 % TBrho(u)=
-% 1-[1-(u/c)^2]^3    if |u/c|<=1 
-% 1                  if |u/c|>1
-% See equation (2.37) p. 29 of Maronna et al. (2006)
-%
+% (c^2/6)*{ 1-[1-(u/c)^2]^3 }   if |u/c|<=1 
+% (c^2/6)                       if |u/c|>1
+% See also equation (2.37) p. 29 of Maronna et al. (2006)
+% Remark: equation (2.37) is written in standardized terms in such a way
+% that \rho(c)=1, so it is the previous expression divided by (c^2/6)
 %
 %
 % References:
@@ -24,12 +25,12 @@ function rhoTB = TBrho(u,c)
 % Wiley 2006.
 %
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %
 %<a href="matlab: docsearch('Tbrho')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 % Examples:
 

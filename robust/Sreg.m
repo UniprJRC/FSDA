@@ -1,7 +1,7 @@
 function [out , varargout] = Sreg(y,X,varargin)
 %Sreg computes S estimators in linear regression
 %
-%<a href="matlab: docsearch('Sreg')">Link to the help function</a>
+%<a href="matlab: docsearch('sreg')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -9,7 +9,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %            It can be both a row or a column vector.
 %    X :     Data matrix of explanatory variables (also called 'regressors')
 %            of dimension (n x p-1). Rows of X represent observations, and
-%            columns represent variables. 
+%            columns represent variables.
 %
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
@@ -21,7 +21,29 @@ function [out , varargout] = Sreg(y,X,varargin)
 %   intercept : If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
 %      bdp    : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%               The default value is 0.5
+%               The default value is 0.5. Note that given bdp nominal
+%               efficiency is automatically determined.
+%     rhofunc : String which specifies the rho function which must be used to
+%               weight the residuals. Possible values are
+%               'bisquare'
+%               'optimal'
+%               'hyperbolic'
+%               'hampel'
+%               'bisquare' uses Tukey's \rho and \psi functions.
+%               See TBrho and TBpsi
+%               'optimal' uses optimal \rho and \psi functions.
+%               See OPTrho and OPTpsi
+%               'hyperbolic' uses hyperbolic \rho and \psi functions.
+%               See HYPrho and HYPpsi
+%               'hampel' uses Hampel \rho and \psi functions.
+%               See HArho and HApsi
+%               The default is bisquare
+% rhofuncparam: scalar or vector which contains the additional parameters
+%               for the specified rho function.
+%               For hyperbolic rho function it is possible to set up the
+%               value of k = sup CVC (the default value of k is 4.5)
+%               For Hampel rho function it is possible to define parameters
+%               a, b and c (the default values are a=2, b=4, c=8)
 %      nsamp  : scalar defining number of subsamples of size p which have
 %               to be extracted (if not given, default = 1000)
 %    refsteps : scalar defining number of refining iterations in each
@@ -48,7 +70,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
 %        msg  : scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displyed
+%               on the screen If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
@@ -64,7 +86,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %               confidence bands for the residuals is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
-%       yxsave : scalar that is set to 1 to request that the response 
+%       yxsave : scalar that is set to 1 to request that the response
 %                vector y and data matrix X are saved into the output
 %                structure out. Default is 0, i.e. no saving is done.
 %  Output:
@@ -91,9 +113,16 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                       warning
 %         out.weights : n x 1 vector containing the estimates of the weights
 %           out.class : 'S'
-%            out.y    : response vector Y. The field is present if option 
+%         out.rhofunc : string identifying the rho function which has been
+%                       used
+%    out.rhofuncparam : vector which contains the additional parameters
+%                       for the specified rho function which have been
+%                       used. For hyperbolic rho function the value of
+%                       k =sup CVC. For Hampel rho function the parameters
+%                       a, b and c
+%            out.y    : response vector Y. The field is present if option
 %                       yxsave is set to 1.
-%            out.X    : data matrix X. The field is present if option 
+%            out.X    : data matrix X. The field is present if option
 %                       yxsave is set to 1.
 %
 %  Optional Output:
@@ -116,12 +145,12 @@ function [out , varargout] = Sreg(y,X,varargin)
 % been completely redesigned, with considerable increase of the
 % computational performance.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %
 %<a href="matlab: docsearch('sreg')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 % Examples:
 
@@ -138,6 +167,37 @@ function [out , varargout] = Sreg(y,X,varargin)
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
     [out]=Sreg(ycont,X);
+%}
+
+%{
+    % Sreg with optimal rho function
+    % Run this code to see the output shown in the help file
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    [out]=Sreg(ycont,X,'rhofunc','optimal');
+%}
+
+
+%{
+    % Sreg with hyperbolic rho function
+    % Run this code to see the output shown in the help file
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    [out]=Sreg(ycont,X,'rhofunc','hyperbolic');
 %}
 
 
@@ -168,10 +228,15 @@ reftolbestrdef=1e-8;
 % both for each extracted subset and each of the best subsets
 minsctoldef=1e-7;
 
+% rho (psi) function which has to be used to weight the residuals
+rhofuncdef='bisquare';
+%rhofuncdef='optimal';
+
+
 % store default values in the structure options
 options=struct('intercept',1,'nsamp',nsampdef,'refsteps',refstepsdef,...
     'reftol',reftoldef,'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
-    'minsctol',minsctoldef,'bestr',bestrdef,'bdp',bdpdef,...
+    'minsctol',minsctoldef,'bestr',bestrdef,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,...
     'plots',0,'conflev',0.975,'nocheck',0,'msg',1,'yxsave',0);
 
 % check user options and update structure options
@@ -213,12 +278,144 @@ minsctol = options.minsctol;    % tolerance for finding minimum value of the sca
 refstepsbestr=options.refstepsbestr;  % refining steps for the best subsets
 reftolbestr=options.reftolbestr;      % tolerance for refining steps for the best subsets
 msg=options.msg;                % Scalar which controls the messages displayed on the screen
+rhofunc=options.rhofunc;        % String which specifies the function to use to weight the residuals
 
 % Find constant c linked to Tukey's biweight
 % rho biweight is strictly increasing on [0 c] and constant on [c \infty)
 % E(\rho) = kc = (c^2/6)*bdp, being kc the K of Rousseeuw and Leroy
-c  = TBbdp(bdp,1);
-kc = bdp*(c^2/6);
+% c  = TBbdp(bdp,1);
+% kc = bdp*(c^2/6);  % kc = bdp * TBrho(c,c)
+
+
+% Find tuning constant c linked to rho function
+
+
+
+% Note that if \rho is standardized in such a way that (\rho(\infty))=1
+% E(\rho) = kc = bdp
+
+psifunc=struct;
+
+if strcmp(rhofunc,'bisquare')
+    % Tukey's biweight is strictly increasing on [0 c] and constant (equal to c^2/6) on [c \infty)
+    % E(\rho) = kc = (c^2/6)*bdp = TBrho(c,c)*bdp, being kc the K of Rousseeuw
+    % and Leroy (1987)
+    
+    % Compute tuning constant associated to the requested breakdown
+    % point
+    % For bdp =0.5 and Tukey biweight rho function c1=0.4046
+    % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
+    % it is necessary to divide the output of OPTbdp by 3
+    c=TBbdp(bdp,1);
+    % kc1 = E(rho) = sup(rho)*bdp
+    kc=TBrho(c,c)*bdp;
+    
+    
+    psifunc.c1=c;
+    psifunc.kc1=kc;
+    psifunc.class='TB';
+    
+elseif strcmp(rhofunc,'optimal')
+    % Optimal rho function is strictly increasing on [0 3c] and constant (equal to 3.25c^2) on [3c \infty)
+    % E(\rho) = kc = (3.25c^2)*bdp = TBrho(3*c,c)*bdp, being kc the K of
+    % Rousseeuw and Leroy (1987)
+    
+    % Compute tuning constant associated to the requested breakdown
+    % point
+    % For bdp =0.5 and optimal rho function c1=0.4046
+    % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
+    % it is necessary to divide the output of OPTbdp by 3
+    c=OPTbdp(bdp,1)/3;
+    % kc1 = E(rho) = sup(rho)*bdp
+    kc=OPTrho(3*c,c)*bdp;
+    
+    psifunc.c1=c;
+    psifunc.kc1=kc;
+    psifunc.class='OPT';
+    
+elseif strcmp(rhofunc,'hyperbolic')
+    
+    if isempty(options.rhofuncparam)
+        kdef=4.5;
+    else
+        kdef=options.rhofuncparam;
+    end
+    rhofuncparam=kdef;
+    
+    % Use (if possible) precalculated values of c,A,b,d and kc
+    if kdef == 4 && bdp==0.5;
+        c =2.158325031399727;
+        A =1.627074124322223e-04;
+        B =0.006991738279441;
+        d =0.016982948780061;
+        kc=0.010460153813287;
+        
+    elseif kdef == 4.5 && bdp==0.5;
+        c =2.010311082005501;
+        A =0.008931591866092;
+        B =0.051928487236632;
+        d =0.132017481327058;
+        kc=0.074478627985759;
+    elseif kdef == 5 && bdp==0.5;
+        c =1.900709968805313;
+        A =0.023186529890225;
+        B =0.083526860351552;
+        d =0.221246910095216;
+        kc=0.116380290077336;
+    elseif kdef == 4.5 && bdp==0.25;
+        c =2.679452645778656;
+        A =0.464174145115400;
+        B =0.588821276233494;
+        d =1.092639541625978;
+        kc=0.410853066399912;
+        
+    else
+        
+        % Compute tuning constant associated to the requested breakdown
+        % point
+        [c,A,B,d]=HYPbdp(bdp,1,kdef);
+        % kc1 = E(rho) = sup(rho)*bdp
+        kc=HYPrho(c,[c,kdef,A,B,d])*bdp;
+    end
+    
+    
+    psifunc.c1=[c,kdef,A,B,d];
+    psifunc.kc1=kc;
+    
+    psifunc.class='HYP';
+    
+    
+elseif strcmp(rhofunc,'hampel')
+    
+    if isempty(options.rhofuncparam)
+        abc=[2,4,8];
+    else
+        abc=options.rhofuncparam;
+    end
+    rhofuncparam=abc;
+    
+    % Compute tuning constant associated to the requested breakdown
+    % point
+    c=HAbdp(bdp,1,abc);
+    % kc = E(rho) = sup(rho)*bdp
+    kc=HArho(c*abc(3),[c, abc])*bdp;
+    
+    
+    
+    psifunc.c1=[c,abc];
+    psifunc.kc1=kc;
+    
+    psifunc.class='HA';
+    
+else
+    
+    error('Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
+    
+end
+
+XXrho=strcat(psifunc.class,'rho');
+hrho=str2func(XXrho);
+
 
 bestbetas = zeros(bestr,p);
 bestsubset = bestbetas;
@@ -264,7 +461,7 @@ for i = 1:nselected
             % do the refsteps refining steps
             % kc determines the breakdown point
             % c is linked to the biweight function
-            tmp = IRWLSreg(y,X,beta,refsteps,reftol,c,kc);
+            tmp = IRWLSregS(y,X,beta,psifunc,refsteps,reftol);
             
             betarw = tmp.betarw;
             scalerw = tmp.scalerw;
@@ -285,12 +482,30 @@ for i = 1:nselected
             % the worst estimate of the scale among the bests previously
             % stored
             % scaletest = (1/n) \sum_i=1^n (u_i/(sworst*c))
-            scaletest = mean(TBrho(resrw/sworst,c));
+            
+            % Use function handle hrho. For example if
+            % for optimal psi hrho=OPTrho
+            
+            scaletest=mean(feval(hrho,resrw/sworst,psifunc.c1));
+            
+            % OLD DELETED TO CHECK
+            % scaletest=mean(feval(hrho,resrw/sworst,c));
+            
+            
+            %scaletest = mean(TBrho(resrw/sworst,c));
+            
+            
             if scaletest < kc
                 % Find position of the maximum value of previously stored
                 % best scales
                 [~,ind] = max(bestscales);
-                sbest = minscale(resrw,c,kc,scalerw,minsctol);
+                
+                
+                sbest = Mscale(resrw,psifunc,scalerw,minsctol);
+                %sbest1 = Mscale1(resrw,psifunc,scalerw,minsctol);
+                %sbest2 = minscale(resrw,psifunc.c1,psifunc.kc1,scalerw,minsctol);
+                %[sbest sbest1 sbest2]
+                
                 % Store sbest, betarw and indexes of the units forming the
                 % best subset associated with minimum value
                 % of the scale
@@ -302,7 +517,11 @@ for i = 1:nselected
                 sworst = max(bestscales);
             end
         else
-            bestscales(ij) = minscale(resrw,c,kc,scalerw,minsctol);
+            %bestscales(ij) = minscale(resrw,psifunc,scalerw,minsctol);
+            
+            bestscales(ij) = Mscale(resrw,psifunc,scalerw,minsctol);
+            
+            
             bestbetas(ij,:) = betarw';
             bestsubset(ij,:) = index;
             ij=ij+1;
@@ -331,7 +550,7 @@ end
 superbestscale = Inf;
 
 for i=1:bestr
-    tmp = IRWLSreg(y,X,bestbetas(i,:)',refstepsbestr,reftolbestr,c,kc,bestscales(i));
+    tmp = IRWLSregS(y,X,bestbetas(i,:)',psifunc,refstepsbestr,reftolbestr,bestscales(i));
     
     if tmp.scalerw < superbestscale
         superbestscale = tmp.scalerw;
@@ -371,6 +590,15 @@ conflev = (conflev+1)/2;
 seq = 1:n;
 out.outliers = seq( abs(out.residuals)>norminv(conflev) );
 
+out.rhofunc=rhofunc;
+% In case of Hampel or hyperbolic tangent estimator store the additional
+% parameters which have been used
+% For Hampel store a vector of length 3 containing parameters a, b and c
+% For hyperbolic store the value of k= sup CVC
+if exist('rhofuncparam','var')
+    out.rhofuncparam=rhofuncparam;
+end
+
 if options.yxsave
     if options.intercept==1;
         % Store X (without the column of ones if there is an intercept)
@@ -394,8 +622,8 @@ end
 % subfunction IRWLSreg
 % -------------------------------------------------------------------
 
-function outIRWLS = IRWLSreg(y,X,initialbeta,refsteps,reftol,c,kc,initialscale)
-%IRWLSreg (iterative reweighted least squares) does refsteps refining steps from initialbeta
+function outIRWLS = IRWLSregS(y,X,initialbeta,psifunc,refsteps,reftol,initialscale)
+%IRWLSregS (iterative reweighted least squares) does refsteps refining steps from initialbeta for S estimator
 %
 %  Required input arguments:
 %
@@ -405,11 +633,24 @@ function outIRWLS = IRWLSreg(y,X,initialbeta,refsteps,reftol,c,kc,initialscale)
 %               of dimension (n x p). Rows of X represent observations, and
 %               columns represent variables.
 % initialbeta : p x 1 vector containing initial estimate of beta
+%     psifunc : a structure specifying the class of rho function to use, the
+%               consistency factor, and the value associated with the
+%               Expectation of rho in correspondence of the consistency
+%               factor
+%               psifunc must contain the following fields
+%               c1 = consistency factor associated to required
+%                    breakdown point
+%               kc1= Expectation for rho associated with c1
+%               class = string identyfing the rho (psi) function to use.
+%                    Admissible values for class are 'bisquare', 'optimal'
+%                    'hyperbolic' and 'hampel'
+%               Remark: if class is 'hyperbolic' it is also necessary to
+%                   specify parameters k (sup CVC), A, B and d
+%               Remark: if class is 'hampel' it is also necessary to
+%                   specify parameters a, b and c
 %   refsteps  : scalar, number of refining (IRLS) steps
 %   reftol    : relative convergence tolerance
 %               Default value is 1e-7
-%    c        : scalar, tuning constant of the equation for Tukey biweight
-%   kc        : scalar, tuning constant linked to Tukey's biweight
 %
 %  Optional input arguments:
 %
@@ -426,6 +667,10 @@ function outIRWLS = IRWLSreg(y,X,initialbeta,refsteps,reftol,c,kc,initialscale)
 % In the IRWLS procedure the value of beta and the value of the scale are
 % updated in each step
 
+%% Beginning of code
+c=psifunc.c1;
+kc=psifunc.kc1;
+
 % Residuals for the initialbeta
 res = y - X * initialbeta;
 
@@ -437,6 +682,14 @@ end
 beta = initialbeta;
 scale = initialscale;
 
+XXrho=strcat(psifunc.class,'rho');
+hrho=str2func(XXrho);
+
+
+XXwei=strcat(psifunc.class,'wei');
+hwei=str2func(XXwei);
+
+
 iter = 0;
 betadiff = 9999;
 
@@ -444,10 +697,15 @@ while ( (betadiff > reftol) && (iter < refsteps) )
     iter = iter + 1;
     
     % Solve for the scale
-    scale = scale * sqrt(mean( TBrho(res/scale,c) ) / kc );
+    meanrho=mean(feval(hrho,res/scale,c));
+    
+    scale = scale * sqrt(meanrho / kc );
     
     % Compute n x 1 vector of weights (using TB)
-    weights = TBwei(res/scale,c);
+    
+    weights = feval(hwei,res/scale,c);
+    % weights = TBwei(res/scale,c);
+    
     sqweights = weights.^(1/2);
     
     % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
@@ -483,3 +741,5 @@ outIRWLS.scalerw = scale;
 % store final estimate of the weights for each observation
 outIRWLS.weights=weights;
 end
+
+

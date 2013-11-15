@@ -50,6 +50,15 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %  constr :     r x 1 vector which contains the list of units which are
 %               forced to join the search in the last r steps. The default
 %               is constr=''.  No constraint is imposed
+% bsbmfullrank :scalar which tells how to behave in case subset at step m
+%               (say bsbm) produces a non singular X. In other words,
+%               this options controls what to do when rank(X(bsbm,:)) is
+%               smaller then number of explanatory variables. If
+%               bsbmfullrank =1 (default) these units (whose number is
+%               say mnofullrank) are constrained to enter the search in
+%               the final n-mnofullrank steps else the search continues
+%               using as estimate of beta at step m the estimate of beta
+%               found in the previous step.
 %
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
@@ -108,12 +117,12 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %   search for testing multiple outliers in regression, Advances in Data
 %   Analysis and Classification, Vol. 1, pp. 123–141.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %            and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('FSRmdr')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples:
 
@@ -161,7 +170,8 @@ if n<40
 else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
-options=struct('intercept',1,'init',init,'plots',0,'nocheck',0,'msg',1,'constr','');
+options=struct('intercept',1,'init',init,'plots',0,'nocheck',0,'msg',1,...
+    'constr','','bsbmfullrank',1);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -227,6 +237,7 @@ end
 
 msg=options.msg;
 constr=options.constr;
+bsbmfullrank=options.bsbmfullrank;
 
 %% Initialise key matrices
 
@@ -291,51 +302,56 @@ else
         if NoRankProblem  % rank is ok
             b=Xb\yb;
             resBSB=yb-Xb*b;
+            blast=b;   % Store correctly computed b for the case of rank problem
         else   % number of independent columns is smaller than number of parameters
-            % b=blast;
-            % disp([mm b'])
-            
-            Xbx=Xb;
-            nclx=ncl;
-            bsbx=zeros(n,1);
-            bsbx(1:mm)=bsb;
-            norank=1;
-            while norank ==1
-                
+            if bsbmfullrank
+                Xbx=Xb;
+                nclx=ncl;
+                bsbx=zeros(n,1);
+                bsbx(1:mm)=bsb;
                 norank=1;
-                % Increase the size of the subset by one unit iteratively until you
-                % obtain a full rank matrix
-                for i=1:length(nclx)
-                    Xbb=[Xbx;X(nclx(i),:)];
-                    if rank(Xbb)==p
-                        norank=0;
-                    else
-                        bsbx(1:size(Xbb,1))=[bsbx(1:size(Xbb,1)-1);nclx(i)];
-                        Xbx=X(bsbx(1:size(Xbb,1)),:);
-                        nclx=setdiff(seq,bsbx(1:size(Xbb,1)));
-                        norank=1;
-                        break
+                while norank ==1
+                    
+                    norank=1;
+                    % Increase the size of the subset by one unit iteratively until you
+                    % obtain a full rank matrix
+                    for i=1:length(nclx)
+                        Xbb=[Xbx;X(nclx(i),:)];
+                        if rank(Xbb)==p
+                            norank=0;
+                        else
+                            bsbx(1:size(Xbb,1))=[bsbx(1:size(Xbb,1)-1);nclx(i)];
+                            Xbx=X(bsbx(1:size(Xbb,1)),:);
+                            nclx=setdiff(seq,bsbx(1:size(Xbb,1)));
+                            norank=1;
+                            break
+                        end
                     end
                 end
+                % check how many observations produce a singular X matrix
+                bsbsing=bsbx(1:size(Xbb,1)-1);
+                
+                if msg==1
+                    warning('FSDA:FSRmdr','Rank problem in step %d:',mm);
+                    disp('Observations')
+                    disp(bsbsing')
+                    disp('produce a singular matrix')
+                end
+                mdr=bsbsing;
+                Un=NaN;
+                BB=NaN;
+                Bols=NaN;
+                S2=NaN;
+                return
+                
+            else
+                disp(['Matrix without full rank at step m=' num2str(mm)])
+                disp('Estimate of \beta which is used is based on previous step with full rank')
+                b=blast;
+                % disp([mm b'])
             end
-            % check how many observations produce a singular X matrix
-            bsbsing=bsbx(1:size(Xbb,1)-1);
-            
-            if msg==1
-                warning('FSDA:FSRmdr','Rank problem in step %d:',mm);
-                disp('Observations')
-                disp(bsbsing')
-                disp('produce a singular matrix')
-            end
-            mdr=bsbsing;
-            Un=NaN;
-            BB=NaN;
-            Bols=NaN;
-            S2=NaN;
-            return
         end
-        
-        e=y-X*b;                        % e = vector of residual for all units using b estimated using subset
+        e=y-X*b;  % e = vector of residual for all units using b estimated using subset
         r(:,2)=e.^2;
         
         if (mm>=init1);

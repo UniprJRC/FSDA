@@ -146,6 +146,11 @@ function [out , varargout] = LXS(y,X,varargin)
 %            out.X    : data matrix X. The field is present if option
 %                       yxsave is set to 1.
 %
+%  Optional Output:
+%
+%            C     : matrix containing the indices of the subsamples extracted for
+%                    computing the estimate
+%
 %
 % See also FSReda, Sreg, MMreg
 %
@@ -154,12 +159,12 @@ function [out , varargout] = LXS(y,X,varargin)
 %   Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection.
 %   Wiley.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %            and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('LXS')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 14-Dec-2011
 
 % Examples:
 
@@ -218,12 +223,12 @@ function [out , varargout] = LXS(y,X,varargin)
         [out]=LXS(y,X,'lms',lms,'plots',1);
 %}
 
-
 %% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 seq=(1:n)';
+
 
 
 %% User options

@@ -7,10 +7,15 @@ function w = TBwei(u,c)
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
-%               for the n units of the sample
-%    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator 
-%               (beta in regression or mu in the location case ...) 
+%    u :         n x 1 vector containing residuals or Mahalanobis distances
+%                for the n units of the sample
+%    c :         scalar greater than 0 which controls the robustness/efficiency of the estimator 
+%                (beta in regression or mu in the location case ...) 
+%
+%  Output:
+%
+%    w :         n x 1 vector contains the Tukey's biweight weights associated to the residuals or
+%                Mahalanobis distances for the n units of the sample
 %
 % Function TBwei transforms vector u as follows 
 % TBwei(u)=
@@ -30,12 +35,12 @@ function w = TBwei(u,c)
 % Wiley 2006.
 %
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %
 %<a href="matlab: docsearch('tbwei')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 % Examples:
 

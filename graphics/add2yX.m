@@ -39,11 +39,11 @@ function add2yX(varargin)
 %
 %<a href="matlab: docsearch('add2yX')">Link to the help page for this function</a>
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti 
 %            and Vytis Kopustinskas (2009-2010)
 %
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 
 %% user options

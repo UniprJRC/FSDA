@@ -39,10 +39,10 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %
 % Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
-%            and Vytis Kopustinskas (2009-2013)
+%            and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('subsets')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 % Examples:
 %

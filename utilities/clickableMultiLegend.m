@@ -16,28 +16,28 @@ function varargout = clickableMultiLegend(varargin)
 % clickableLegend by Ameya Deoras:
 % http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti 
 %            and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('clickableMultiLegend')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 
 % Examples
 
 %{
- z = peaks(100);
- plot(z(:,26:5:50))
- grid on;
- clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');
- axis manual;
- figure;
- z = peaks(100);
- plot(z(:,26:5:50))
- grid on;
- hlegend=clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');
- axis manual; 
- legend(hlegend,'off');
+     z = peaks(100);
+     plot(z(:,26:5:50))
+     grid on;
+     clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');
+     axis manual;
+     figure;
+     z = peaks(100);
+     plot(z(:,26:5:50))
+     grid on;
+     hlegend=clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');
+     axis manual; 
+     legend(hlegend,'off');
 %}
 
 

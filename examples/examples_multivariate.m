@@ -211,7 +211,7 @@ nsimul=200;
 
 mmdStore=zeros(n-init,nsimul);
 for j=1:nsimul
-    mmd = FSMmmd(Y,0,'init',init);
+    mmd = FSMmmdeasy(Y,0,'init',init);
     mmdStore(:,j)=mmd(:,2);
 end
 

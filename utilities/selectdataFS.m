@@ -223,13 +223,13 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 % This routine is extensively based on a function written by John D'Errico
 % (woodchips@rochester.rr.com), Release: 3.0,  Release date: 2/19/07.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % John D'Errico's selectdata has been adapted to this toolbox by
 %       Marco Riani, Domenico Perrotta, Francesca Torti
 %       and Vytis Kopustinskas (2009-2010)
 %
 %<a href="matlab: docsearch('selectdataFS')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 02-Aug-2012
 
 % Examples:
 

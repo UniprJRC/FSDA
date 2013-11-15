@@ -33,10 +33,10 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 % Remark: this routine is called by Sreg.m and Smult.m
 %
 % References
-% Huber and Ronchetti (2009), Robust Statistics, Wiley (equation 7.119,  p.
+% Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119,  p.
 % 176).
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 
@@ -70,4 +70,6 @@ while  (( loop < maxiter ) && (err > tol))
     % disp(sc)
     loop = loop+1;
 end
+% disp(loop)
+% sc=sc;
 end

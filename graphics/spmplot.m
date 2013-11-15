@@ -52,11 +52,11 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %   will be centered with respect to the matrix of axes.
 %
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %<a href="matlab: docsearch('spmplot')">Link to the help function</a>
-% Last modified 02-May-2013
+% Last modified 24-Sep-2012
 
 % Examples:
 
@@ -194,8 +194,8 @@ else
 end
 
 unigroup = 1:numel(unique(group,'stable'));
-clr='brcmykgbrcmykgbrcmykg';
-styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
+clr='brcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykg';
+styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
 %% The scatterplot matrix with histograms of boxplots generalised to groups
 

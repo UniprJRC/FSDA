@@ -29,7 +29,12 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               possible to specify the options given in function Sreg.
 %
 %               Soptions (if InitialEst is empty): see function Sreg.
-%
+%               Remark: it is necessary to add to the S options the letter
+%               S at the beginning. For example, if you want to use the
+%               optimal rho function the supplied option is
+%               'Srhofunc','optimal'. For example, if you want to use 3000
+%               subsets, the supplied option is 'Snsamp',3000
+%                   
 %
 %               MM options
 %
@@ -86,10 +91,17 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                           have been found
 %       out.conflev     :   Confidence level that was used to declare outliers
 %       out.class       :   'MM'
-%            out.y      : response vector Y. The field is present if option 
-%                         yxsave is set to 1.
-%            out.X      : data matrix X. The field is present if option 
-%                         yxsave is set to 1.
+%           out.rhofunc :   string identifying the rho function which has been
+%                           used
+%      out.rhofuncparam :   vector which contains the additional parameters
+%                           for the specified rho function which have been
+%                           used. For hyperbolic rho function the value of
+%                           k =sup CVC. For Hampel rho function the parameters
+%                           a, b and c
+%            out.y      :   response vector Y. The field is present if option 
+%                           yxsave is set to 1.
+%            out.X      :   data matrix X. The field is present if option 
+%                           yxsave is set to 1.
 %  Optional Output:
 %
 %            C     : matrix of the indices of the samples extracted for
@@ -110,12 +122,12 @@ function [out , varargout] = MMreg(y,X,varargin)
 % been completely redesigned, with considerable increase of the
 % computational performance.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %
 %<a href="matlab: docsearch('mmreg')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 % Examples:
 
@@ -132,6 +144,21 @@ function [out , varargout] = MMreg(y,X,varargin)
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
     [out]=MMreg(ycont,X);
+%}
+
+%{
+    % MMreg using the hyperbolic rho function 
+    % Run this code to see the output shown in the help file
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    [out]=MMreg(ycont,X,'Srhofunc','optimal');
 %}
 
 %% Input parameters checking
@@ -159,10 +186,14 @@ Sreftolbestrdef=1e-8;
 % both for each extracted subset and each of the best subsets
 Sminsctoldef=1e-7;
 
+% rho (psi) function which has to be used to weight the residuals
+Srhofuncdef='bisquare';
+
+
 options=struct('intercept',1,'InitialEst','','Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
     'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
-    'Sbdp',Sbdpdef,'nocheck',0,'eff',0.95,'effshape',0,...
+    'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam','','nocheck',0,'eff',0.95,'effshape',0,...
     'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'yxsave',0);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -209,6 +240,9 @@ if isempty(InitialEst)
     refstepsbestr=options.Srefstepsbestr;  % refining steps for the best subsets 
     reftolbestr=options.Sreftolbestr;      % tolerance for refining steps for the best subsets
     
+    rhofunc=options.Srhofunc;           % rho function which must be used
+    rhofuncparam=options.Srhofuncparam;    % eventual additional parameters associated to the rho function
+    
     
     % first compute S-estimator with a fixed breakdown point
     
@@ -217,14 +251,14 @@ if isempty(InitialEst)
     if nargout==2
         [Sresult , C] = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
-            'reftolbestr',reftolbestr,...
+            'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
             'nocheck',1);
 
         varargout = {C};
     else
         Sresult = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
-            'reftolbestr',reftolbestr,...
+            'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
             'nocheck',1);
     end
     
@@ -251,8 +285,6 @@ tol = options.tol;
 
 % MMregcore = function which does IRWLS steps from initialbeta (bs) and sigma (ss)
 % Notice that the estimate of sigma (scale) remains fixed
-%bm = MMregcore(y,X,bs,ss,eff,effshape,refsteps,tol);
-
 plots=options.plots;
 conflev=options.conflev;
 
@@ -270,6 +302,14 @@ out.weights=outIRW.weights;
 out.outliers=outIRW.outliers;
 out.conflev=conflev;
 out.class='MM';
+out.rhofunc=rhofunc;
+% In case of Hampel or hyperbolic tangent estimator store the additional
+% parameters which have been used
+% For Hampel store a vector of length 3 containing parameters a, b and c
+% For hyperbolic store the value of k= sup CVC
+if exist('rhofuncparam','var')
+    out.rhofuncparam=rhofuncparam;
+end
 
 if options.yxsave
     if options.intercept==1;

@@ -160,7 +160,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %
 %  Optional Output:
 %
-%            C     : matrix of the indices of the samples extracted for
+%            C     : matrix of the indices of the subsamples extracted for
 %                    computing the estimate
 %
 %
@@ -222,12 +222,12 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % to speed up computations for large datasets. This partitioning method is
 % applied in the R and LIBRA implementations of the mcd.
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %
 %<a href="matlab: docsearch('mcd')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 % Examples:
 
@@ -273,7 +273,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %}
 
 %% Beginning of code
-[n v]=size(Y);
+[n, v]=size(Y);
 
 % default value of break down point
 bdpdef=0.5;
@@ -479,7 +479,9 @@ if v==1 && h~=n
     [RAW.cov,RAW.loc]=trafo(RAW.cov,RAW.loc,med,mad);
     [REW.cov,REW.loc]=trafo(REW.cov,REW.loc,med,mad);
     
+    if msg
     disp(REW.method);
+    end
     
     return
 end

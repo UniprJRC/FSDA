@@ -1,5 +1,10 @@
 function ceff = TBeff(eff,p,varargin)
 %Tbeff finds the constant c which is associated to the requested efficiency
+%for Tukey biweight estimator
+%
+%
+%<a href="matlab: docsearch('tbeff')">Link to the help function</a>
+%
 %
 %  Required input arguments:
 %
@@ -22,19 +27,19 @@ function ceff = TBeff(eff,p,varargin)
 %  c = scalar of Tukey Biweight associated to the nominal (location or
 %  shape) efficiency
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %
 %
 %<a href="matlab: docsearch('tbeff')">Link to the help page for this function</a>
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 %
 %
 % Examples:
 %
 %{
-    % The constant c associated to a nominal location efficiency of 50% in regression is
+    % The constant c associated to a nominal location efficiency of 95% in regression is
     % c = 4.685064948559557
     c=TBeff(0.95,1)
     % for a fixed shape efficiency we have
@@ -91,12 +96,13 @@ if nargin<=2 || varargin{1} ~=1
     step=30;
     
     
-    % Convergence condition is E(\rho) = \rho(c) bdp
-    %  where \rho(c) for TBW is c^2/6
+    % Convergence condition is 
+    %  .......
     empeff=10;
     p4=(p+4)*(p+2);
-    p6=(p+6)*(p+4)*(p+2);
-    p8=(p+8)*(p+6)*(p+4)*(p+2);
+    p6=(p+6)*p4;
+    p8=(p+8)*p6;
+    
     
     % bet  = \int_{-c}^c  \psi'(x) d \Phi(x)
     % alph = \int_{-c}^c  \psi^2(x) d \Phi(x)
@@ -192,6 +198,8 @@ else
 end
 
 ceff=c;
+% Remark:
+% chi2cdf(x,v) = gamcdf(x,v/2,2) = gammainc(x ./ 2, v/2);
 
 end
 

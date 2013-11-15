@@ -16,11 +16,11 @@ function position(plmain)
 %
 % Reminder: the position property format is [left, bottom, width, height]
 %
-% Copyright 2008-2013.
+% Copyright 2008-2011.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti
 %            and Vytis Kopustinskas (2009-2010)
 %
-% Last modified 02-May-2013
+% Last modified 15-Nov-2011
 %
 
 
