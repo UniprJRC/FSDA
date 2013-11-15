@@ -1,0 +1,70 @@
+function c = nchoosekFS(v,k)
+%nchoosekFS produces Binomial coefficient or matrix containing all combinations.
+%
+%<a href="matlab: docsearch('nchoosekFS')">Link to the help function</a>
+%
+%   This function is similar to nchoosek of Statistics Toolbox but it is
+%   much faster and makes a more efficient use of memory.
+%
+%   Returns the scalar v!/k!(v-k)! if v and k are non-negative integers.
+%   This is the number of combinations of v things taken k at a time. In
+%   this case it makes use of function bc.
+%
+%   Produces a matrix with n!/k!(n-k)! rows and k columns if v is a vector
+%   of length n. Each row contains a combination of k elements taken
+%   without repetitions among n. In this case function combsFS is used.
+%
+% See also: bc, combsFS, nchoosek.
+%
+% Copyright 2008-2013.
+% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
+%            and Vytis Kopustinskas (2009-2010)
+%
+%<a href="matlab: docsearch('nchoosekFS')">Link to the help function</a>
+%
+%{
+% Profile generation of 2118760 combinations.
+v = 1:50; k = 4; 
+
+tic
+for i=1:10, nchoosekFS(v,k); end
+t_nchoosekFS = toc
+
+tic
+for i=1:10, nchoosek(v,k); end
+t_nchoosek = toc
+
+fprintf('nchoosekFS has been %5.2f times faster than nchoosek\n\n\n', t_nchoosek/t_nchoosekFS); 
+fprintf('Try now again using k=5: in a 32 bit computer\n');
+fprintf('nchoosekFS will require about the same time (in order of magnitude)\n');
+fprintf('while nchoosek will start swaping into virtual memory.\n'); 
+
+%}
+
+if ~isscalar(k) || k < 0 || ~isreal(k) || k ~= round(k)
+    error('FSDA:nchoosekFS:InvalidArg2',...
+        'The second input has to be a non-negative integer.');
+end
+
+[m, n] = size(v);
+
+if min(m,n) ~= 1
+    error('FSDA:nchoosekFS:InvalidArg1',...
+        'The first argument has to be a scalar or a vector.');
+end
+
+% the first argument is a scalar integer
+if isscalar(v) && v >= 0
+    if k > v
+        error('FSDA:nchoosek:KOutOfRange','K must be an integer between 0 and N.');
+    end
+    
+    % if the first argument is a scalar, then, we only return the number of
+    % combinations. Not the actual combinations.
+    c=bc(v,k);
+else
+    % the first argument is a vector, generate actual combinations.
+    c=combsFS(v,k);
+end
+
+end

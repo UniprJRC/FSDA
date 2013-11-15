@@ -1,0 +1,298 @@
+function add2spm(H,AX,BigAx,varargin)
+%add2spm adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix
+%
+%
+%<a href="matlab: docsearch('add2spm')">Link to the help function</a>
+%
+%
+% As default add2spm makes legends in the existing scatter plot matrix
+% clickable or creates a clickable multilegend if the legend does not
+% exist.
+%
+% Using varargin it is possible to 
+%
+% 1. personalize the legend of groups in the scatterplot matrix. See option 'userleg'.
+% 2. add labels of the units belonging to the last data group (or to the
+%   grouop with the largest value in the grouping variable) of each scatter
+%   (panel). See option 'labeladd'.
+%
+%  Required input arguments:
+%
+%  H, AX and BigAx : output handles of a gplotmatrix. See gplotmatrix help.
+%                   More specifically, H is an array of handles to the
+%                   lines on the graphs. The array's third dimension
+%                   corresponds to groups in the grouping variable. AX is a
+%                   matrix of handles to the axes of the individual plots.
+%                   BigAx is a handle to big (invisible) axes framing the
+%                   entire plot matrix.
+%
+%                    
+%  Optional input arguments:
+%  
+%  labeladd :   Default is '', i.e. no labels are added to the symbols
+%               inside each scatter.
+%               If set to '1', add labels to the units of the last data
+%               group (or the group with the largest value of the grouping
+%               variable) in each panel of the scatter matrix. The labels
+%               whicha are added are based on the content of the 'UserData' field of
+%               the last group. This can be achieved by means of
+%               instruction set(H(:,:,end), 'UserData' , unit_labels),
+%               where unit_labels is a column vector of numbers or strings.
+%               See last example below for a concrete case.
+%  userleg  :   Default is '', i.e. the existing legends are left as they
+%               are and are simply made clickable. However, if there is no
+%               legend, a default one is created ('Group 1', 'Group
+%               2', etc.).
+%               If it is set to '1', the legends are updated depending on
+%               the context of use and are made clickable. The context is
+%               determined by the occurence of specific words in the Tag of
+%               the current figure. The strings/contexts currently
+%               addressed are 'outlier' (for 'Outliers' and 'Normal
+%               units'), 'brush' (for 'Brushed units 1', 'Brushed units 2',
+%               etc.) and '' (for 'Group 1', 'Group 2', etc.).
+%               If it is a cell of strings, e.g. {'FIAT' ; 'BMW' ; 'VOLVO'},
+%               then such strings are used as legends. 
+%
+%
+%   add2spm is essentially used within FSDA function spmplot.m. However its
+%   logic can be also demonstrated with MATLAB function gplotmatrix, as in
+%   the following examples:
+%
+% Copyright 2008-2013.
+% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
+%            and Vytis Kopustinskas (2009-2010)
+%
+%<a href="matlab: docsearch('add2spm')">Link to the help function</a>
+% Last modified 02-May-2013
+
+% Examples:
+
+%
+%{
+    % load Fisher iris  data
+    load fisheriris;
+    % Create scatter plot matrix with specific legends
+    [H,AX,BigAx]=gplotmatrix(meas,[],species);
+    % the following are equivalent, to keep legends and make them clickable
+    add2spm(H,AX,BigAx)
+    add2spm(H,AX,BigAx,'userleg','')
+    add2spm(H,AX,BigAx,'userleg',{})
+%}
+
+%{
+    % Do not close the figure and continue with the following:
+
+    % To replace the traditional histogram with a grouped histogram you
+    % have to use spmplot instead of gplotmatrix.
+    figure;
+    load fisheriris;
+    [H,AX,BigAx] = spmplot(meas,species);
+
+    % Compare now the two scatterplots and click on the legends. Color
+    % sequence of spmplot is different from that of gplotmatrix.
+    
+%}
+
+%{
+    % set some multivariate data and some groups
+    y = randn(100,3);
+    group = ones(100,1); group(1:10,1) = 444; group(11:20,1) = 777;
+
+    % Make a scatterplot using gplotmatrix defaults. 
+    % The legends automatically created are '1','444' and '777'.
+    [H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');
+
+    % with add2spm with default options, the gplotmatrix legends
+    % will become clickable.
+    add2spm(H,AX,BigAx);
+
+    % by running add2spm with option 'userleg' set to '1', the clickable 
+    % legends will become 'group 1', 'group 2' and 'group 3'.
+    [H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');
+    add2spm(H,AX,BigAx,'userleg','1');
+
+    % by running add2spm with 'userleg', {'my group 1' ; 'my group 4' ; 'my
+    % group 7'} the legends change as desired.
+    [H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');
+    add2spm(H,AX,BigAx,'userleg',{'FIAT' ; 'BMW' ; 'VOLVO'});
+
+%}
+
+%{
+    close all;
+
+    % 'labeladd' is set to '1' to add labels found in the UserData
+    % property of the last group in each panel of the scatter matrix.
+    % It can be retrieved from H(1,end,end) (i.e. first row, last column,
+    % last group of the scatter matrix handles).
+
+    y = rand(100,3);
+    group = ones(100,1); group(1:5,1) = 5; group(10:15,1) = 10;
+    [H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');
+
+    % column vector of labels is set to the integers from 1 to size of last
+    % data group
+    labels = (1:numel(get(H(1,end,end),'YData')))';
+
+    % assign labels to the 'UserData' property of the last data group
+    set(H(:,:,end), 'UserData' , labels);
+
+    % try add2spm with 'labeladd' option set to '1'
+    add2spm(H,AX,BigAx,'labeladd','1');
+
+%}
+%
+
+
+%% Beginning of code
+
+options=struct('labeladd','','userleg','');
+UserOptions=varargin(1:2:length(varargin));
+% Write in structure 'options' the options chosen by the user
+if ~isempty(UserOptions)
+    for i=1:2:length(varargin);
+        options.(varargin{i})=varargin{i+1};
+    end
+end
+labeladd = options.labeladd;
+userleg  = options.userleg;
+
+% force to build default legends if there are no legends in the scatterplot
+if ~isappdata(AX(1,end),'LegendPeerHandle');
+    userleg = '1';
+end
+
+% if 'userleg' is empty, use the legend already in the plot.
+if isempty(userleg)
+    legnew = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
+end
+
+% if 'userleg' is a cell of string, use such strings as user-defined legends
+if ~isempty(userleg) && iscell(userleg)
+    legnew = userleg;
+end
+
+% set the 'DisplayName' property for the two cases above
+if isempty(userleg) || (~isempty(userleg) && iscell(userleg))
+    nleg = numel(legnew);
+    H(:,:,1) = ~eye(size(H,1)).*H(:,:,1);
+    newH = reshape(H,numel(H)/nleg,nleg);
+    for i = 1 : nleg
+        set(newH(newH(:,i)~=0,i),'DisplayName',legnew{i});
+    end
+    set(gcf,'Name','Scatter plot matrix with groups highlighted');
+end
+
+% if 'userleg' is '1', set context sensitive group-specific legends.
+% The context is determined by the occcurence of specific words in the Tag
+% of the current figure. The currently addressed strings/contexts are
+% 'outliers' (for outliers/normal units), 'brush' (for Brushed units 1,
+% Brushed units 2, etc.) and '' (for 'Group 1, Group 2, etc.).
+if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
+
+    % add multilegend
+    v = size(AX,2);
+    leg = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
+    nleg = numel(leg);
+
+    if ndims(H) == 3
+        % The third dimension of H is to distinguish the groups. In the next
+        % 'if' statement we use two equivalent ways to deal with H, considering
+        % that the diagonal of the scatter matrix is dedicated to the
+        % histograms.
+        if nleg == 2 && ~isempty(strfind(lower(get(gcf, 'Tag')),'outlier'))
+            set(H(H(:,:,2)~=0),'DisplayName','Normal units');
+            linind      = sub2ind([v v],1:v,1:v);
+            outofdiag   = setdiff(1:v^2,linind);
+            lin2ind     = outofdiag+v^2;
+            set(H(lin2ind),'DisplayName','Outliers');
+        else
+            % Assign to this figure a name
+            set(gcf,'Name','Scatter plot matrix with groups highlighted');
+            % Reset the handles of the main diagonal (histograms) to zero.
+            H(:,:,1) = ~eye(size(H,1)).*H(:,:,1);
+            % Now reshape the handles array to make it more managebale: while H
+            % is a 3-dimensional array with the third dimension associated to
+            % the groups, newH is 2-dimensional with columns associated to the
+            % lines of the scatterplot and lines associated to the groups.
+            newH = reshape(H,numel(H)/nleg,nleg);
+            if strcmp(get(gcf, 'Tag'),'pl_spm') || ~isempty(strfind(lower(get(gcf, 'Tag')),'brush'))
+                % set the legend of the unbrushed units
+                set(newH(newH(:,1)~=0),'DisplayName','Unbrushed units');
+                % set the legend of the brushed units
+                for i = 2 : nleg
+                    set(newH(newH(:,i)~=0,i),'DisplayName',['Brushed units ' num2str(i-1)]);
+                end
+            else
+                for i = 1 : nleg
+                    set(newH(newH(:,i)~=0,i),'DisplayName',['Group ' num2str(i)]);
+                end
+            end
+        end
+    else
+        % In this case there are no groups in the data
+        set(setdiff(H(:),diag(H)),'DisplayName','Units')
+    end
+
+    % Make the legends clickable
+    legnew = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
+end
+
+% Now update the legends and make them clickable
+hLines  = findobj(AX(1,end), 'type', 'line');
+if ~isempty(legnew)
+    clickableMultiLegend(sort(hLines), legnew{:});
+end
+
+%% histogram in the diagonal
+% tag the histogram group patches with the group labels. The tag is used in
+% clickablemultilegend to show/hide the legends.
+h = findobj(AX, 'Type','patch'); 
+for z=1:nleg
+    if length(h) == nleg*size(AX,2)
+        set(h(repmat(1:nleg,1,size(AX,2))==z),'Tag',legnew{nleg-z+1});
+    else
+        set(h,'Tag','');
+    end
+end
+
+%% boxplot in the diagonal
+% if there is no histogram, and therefore h is empty, then there is a
+% boxplot. In this case we have to set the 'DisplayName' property of the
+% boxplot groups, which is used in clickablemultilegend to show/hide the
+% legends.
+if isempty(h)
+    for z=1:nleg
+        h = findobj(gcf,'Tag',['boxplot' num2str(z)]); 
+        set(h,'DisplayName',legnew{z});
+    end
+end
+
+%% add labels to the last selected group
+
+if strcmp('1',labeladd)
+    % We need to add objects (the labels) to the scatterplots
+    fig = ancestor(BigAx,'figure');
+    set(fig,'NextPlot','add');
+    set(AX,'NextPlot','add');
+    % The UserData field of the last selected group of H(:,:,end) contains
+    % the indices of the last selected units.
+    nbrush = get(H(1,1,end), 'UserData');
+    % AX has as many columns as the variables in the scatterplot data
+    v = size(AX,2);
+    for i = 1:v
+        for j = 1:v
+            if i ~=  j;
+                % Set AX(i) the current axes
+                set(fig,'CurrentAxes',AX(i,j));
+                % Add the labels for the last selected group.
+                XDataLast = get(H(i,j,end),'XData');
+                YDataLast = get(H(i,j,end),'YData');
+                htxt=text(XDataLast,YDataLast,num2str(nbrush,'% d'),'HorizontalAlignment', 'Left');
+                set(htxt, 'DisplayName', legnew{end});
+            end
+        end
+    end
+end
+
+end

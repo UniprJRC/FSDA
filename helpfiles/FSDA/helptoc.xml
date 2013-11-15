@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<toc version="2.0">
+	<tocitem target="fsda_product_page.html" image="$toolbox/matlab/icons/book_mat.gif">
+			Forward Search Data Analysis Toolbox
+
+		<tocitem target="introrob.html" image="$toolbox/matlab/icons/book_link.gif">
+			Introduction to robust statistics
+			<tocitem target="introrob.html#present">The current state of robustness</tocitem>
+			<tocitem target="introrob.html#future">The future of robustness</tocitem>
+			<tocitem target="introrob.html#instability">On the stability of robust estimators</tocitem>
+		</tocitem>
+
+
+		<tocitem target="introrobregtech.html" image="$toolbox/matlab/icons/bookicon.gif">
+		Technical introduction to robust statistics in regression
+			<tocitem target="introrobregtech.html#notation">Notation</tocitem>
+			<tocitem target="introrobregtech.html#rho">The ρ function</tocitem>
+			<tocitem target="introrobregtech.html#psi">The ψ function</tocitem>
+			<tocitem target="introrobregtech.html#equivariance">Regression, scale and affine equivariance</tocitem>
+			<tocitem target="introrobregtech.html#Mloc">Regression M estimate of location</tocitem>
+			<tocitem target="introrobregtech.html#Msca">Regression M estimate of scale</tocitem>
+			<tocitem target="introrobregtech.html#Sest">The regression S-estimates and the LMS estimate</tocitem>
+			<tocitem target="introrobregtech.html#MMest">The regression MM-estimate of location</tocitem>
+			<tocitem target="introrobregtech.html#Lest">The regression L-estimate of scale and the LTS estimate</tocitem>
+		</tocitem>
+
+
+		<tocitem target="introrobmulttech.html" image="$toolbox/matlab/icons/bookicon.gif">
+		Technical introduction to robust statistics in multivariate analysis
+			<tocitem target="introrobmulttech.html#notation">Notation</tocitem>
+			<tocitem target="introrobmulttech.html#equivariance">Affine equivariance</tocitem>
+			<tocitem target="introrobmulttech.html#Mloc">The multivariate M-estimate</tocitem>
+			<tocitem target="introrobmulttech.html#Sest">The multivariate S-estimates and the MVE estimate</tocitem>
+			<tocitem target="introrobmulttech.html#Lest">The multivariate L-estimates of scale the MCD estimate</tocitem>
+			<tocitem target="introrobmulttech.html#MMest">The multivariate MM-estimate</tocitem>
+		</tocitem>
+
+
+		<tocitem target="introFS.html" image="$toolbox/matlab/icons/bookicon.gif">
+			Introduction to the forward search philosophy of data analysis
+			<tocitem target="introFS.html#reg">Forward search in linear regression</tocitem>
+			<tocitem target="introFS.html#mult">Forward search in multivariate data analylsis</tocitem>
+		</tocitem>
+		
+		
+		<tocitem target="product.html" image="$toolbox/matlab/icons/greencircleicon.gif">Product Overview</tocitem>
+
+		<tocitem target="users_guide.html" image="$toolbox/matlab/icons/help_ug.png">
+			User Guide
+
+			<tocitem target="statistical_visualization.html" image="$toolbox/matlab/icons/pagesicon.gif">
+			Dynamic Statistical Visualization
+			<tocitem target="statistical_visualization_intro.html">Introduction</tocitem>
+			<tocitem target="statistical_visualization_monres.html">Monitoring Residuals Plots</tocitem>
+			<tocitem target="statistical_visualization_mdr.html">Minimum Deletion Residual Plot</tocitem>
+			<tocitem target="statistical_visualization_fan.html">Fan Plot </tocitem>
+			<tocitem target="statistical_visualization_yx.html">Dynamic Scatter Plot Matrix</tocitem>
+			<tocitem target="statistical_visualization_cds.html">Dynamic Candlestick Plot</tocitem>
+		
+			</tocitem>
+
+			<tocitem target="regression_analysis.html" image="$toolbox/matlab/icons/pagesicon.gif">
+			Robust Regression Analysis
+
+			<tocitem target="regression_intro.html">
+				Linear Regression
+				<tocitem target="regression_lxs.html">Robust linear Regression using LTS and LMS</tocitem>
+				<tocitem target="regression_mms.html">Robust linear Regression using S and MM</tocitem>
+				<tocitem target="regression_fsreda.html">Robust Forward Linear Regression with exploratory purposes</tocitem>
+				<tocitem target="regression_fsr.html">Robust Forward Linear Regression with automatic outlier detection procedure</tocitem>
+			</tocitem>
+
+
+			<tocitem target="transf_intro.html">
+				Transformations
+				<tocitem target="transf_score.html">Score test</tocitem>
+				<tocitem target="transf_fsrfan.html">Forward Score test</tocitem>
+				<tocitem target="transf_both.html">Transforming both sides</tocitem>
+			</tocitem>
+
+			<tocitem target="regressionms_intro.html">Model selection
+				<tocitem target="regression_mst.html">Variable selection using added t-test</tocitem>
+				<tocitem target="regression_mscp.html">Model selection using Cp</tocitem>
+			</tocitem>
+			
+			
+			</tocitem>
+
+			<tocitem target="multivariate.html" image="$toolbox/matlab/icons/pagesicon.gif">
+				Robust multivariate analysis
+				<tocitem target="multivariate_intro.html">Multivariate methods
+					<tocitem target="mult_unibiv.html">Robust Bivariate analysis using robust contours</tocitem>
+		<tocitem target="mult_mcd.html">MCD estimator(s)</tocitem>
+						
+		<tocitem target="mult_SandMM.html">S and MM estimators in multivariate analysis</tocitem>
+					<tocitem target="mult_fsmeda.html">Robust Forward Multivariate Analysis with exploratory purposes</tocitem>
+					<tocitem target="mult_fsm.html">Robust Forward Multivariate Analysis with automatic outlier detection procedure</tocitem>
+	</tocitem>
+			
+				<tocitem target="multivariatetransf_intro.html">Multivariate transformations
+					<tocitem target="mult_FSMtra.html">MLE of transformation parameters and LRT</tocitem>
+					<tocitem target="mult_FSMfan.html">Multivariate fan plot</tocitem>
+				</tocitem>
+
+			</tocitem>
+			
+			
+			<tocitem target="datasets.html" image="$toolbox/matlab/icons/reficon.gif">Regression Data Sets</tocitem>
+			
+			<tocitem target="datasets_mv.html" image="$toolbox/matlab/icons/reficon.gif">Multivariate Data Sets</tocitem>
+
+			<tocitem target="bibliography.html" image="$toolbox/matlab/icons/reficon.gif">Bibliography</tocitem>
+
+		</tocitem>
+		
+		
+		<tocreference target="helpfuncbycat.xml"></tocreference>
+
+		<tocitem target="exampleindex.html" image="$toolbox/matlab/icons/help_ex.png">Examples</tocitem>
+
+		<tocreference target="demos.xml"></tocreference>
+
+		<tocitem target="release_notes.html" image="$toolbox/matlab/icons/help_rn.png">
+			Release Notes
+		</tocitem>
+		
+		
+	</tocitem>
+</toc>

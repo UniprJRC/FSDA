@@ -1,0 +1,268 @@
+function [Un,BB] = FSRbsb(y,X,bsb,varargin)
+%FSRbsb computes the units belonging to the subset in each step of the forward search
+%
+%<a href="matlab: docsearch('FSRbsb')">Link to the help function</a>
+%
+% Required input arguments:
+%
+%  y:          A vector with n elements that contains the response variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations. 
+%  X :         Data matrix of explanatory variables (also called
+%               'regressors') of dimension (n x p-1). Rows of X represent
+%               observations, and columns represent variables. Missing
+%               values (NaN's) and infinite values (Inf's) are allowed,
+%               since observations (rows) with missing or infinite values
+%               will automatically be excluded from the computations.
+%  bsb :        list of units forming the initial subset, is bsb=0 then the
+%               procedure starts with p units randomly chosen
+%
+% Optional input arguments: 
+%
+%       init  : scalar which specifies the initial subset size to start
+%               monitoring exceedances of minimum deletion residual, if
+%               init is not specified it will be set equal to:
+%                  p+1, if the sample size is smaller than 40;
+%                  min(3*p+1,floor(0.5*(n+p+1))) otherwise.
+%   intercept : If 1, a model with constant term will be fitted (default),
+%               if 0, no constant term will be included.
+%    nocheck  : Scalar. If nocheck is equal to 1 no check is performed on
+%               matrix y and matrix X. Notice that y and X are left
+%               unchanged. In other words the additioanl column of ones for
+%               the intercept is not added. As default nocheck=0.
+%
+% Remark:       The user should only give the input arguments that have to
+%               change their default value. The name of the input arguments
+%               needs to be followed by their value. The order of the input
+%               arguments is of no importance.
+%
+%        Missing values (NaN's) and infinite values (Inf's) are allowed,
+%        since observations (rows) with missing or infinite values will
+%        automatically be excluded from the computations. y can be both a
+%        row of column vector.
+%
+% OUTPUT 
+%
+%   Un:         (n-init) x 11 Matrix which contains the unit(s) included
+%               in the subset at each step of the fwd search REMARK: in
+%               every step the new subset is compared with the old subset.
+%               Un contains the unit(s) present in the new subset but not
+%               in the old one. Un(1,2) for example contains the unit
+%               included in step init+1. Un(end,2) contains the units
+%               included in the final step of the search. Remark: we store
+%               up to 10 units simultaneously in each step. 
+%   BB:         n x (n-init+1) matrix which the units belonging
+%               to the subset at each step of the forward search. 1st col =
+%               index forming subset in the initial step ... last column =
+%               units forming subset in the final step (all units)
+%
+% See also: FSReda 
+%
+% References:
+%
+%   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
+%   Springer Verlag, New York.
+%
+% Copyright 2008-2013.
+% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
+%            and Vytis Kopustinskas (2009-2010)
+%
+%<a href="matlab: docsearch('FSRbsb')">Link to the help function</a>
+% Last modified 02-May-2013
+
+% Examples:
+
+%{
+%Common part to all examples:
+load('fishery');
+y=fishery.data(:,1);
+X=fishery.data(:,2);
+ [out]=LXS(y,X,'nsamp',10000);
+%}
+
+%{
+% FSR with all default options.
+[Un,BB] = FSRbsb(y,X,out.bs);
+%}
+
+%{
+% FSR monitoring from step 60.
+[Un,BB] = FSRbsb(y,X,out.bs,'init',60);
+%}
+
+%{
+% FSR using a regression model without intercept.
+[Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');
+%}
+
+%{
+%FSR applied without doing any checks on y and X variables.
+[Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');
+%}
+
+
+%% Input parameters checking
+
+nnargin=nargin;
+vvarargin=varargin;
+[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+
+%% User options
+if n<40
+    init=p+1;
+else
+    init=min(3*p+1,floor(0.5*(n+p+1)));  
+end
+options=struct('intercept',1,'init',init,'nocheck',0);
+
+UserOptions=varargin(1:2:length(varargin));
+if ~isempty(UserOptions)
+    % Check if number of supplied options is valid
+    if length(varargin) ~= 2*length(UserOptions)
+        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+    end
+    % Check if user options are valid options
+    chkoptions(options,UserOptions)
+end
+
+
+if nargin<3
+    error('Initial subset is missing');
+end
+
+if nargin > 3
+    % We now overwrite inside structure options the default values with
+    % those chosen by the user
+    for i=1:2:length(varargin);
+        options.(varargin{i})=varargin{i+1};
+    end
+end
+
+if bsb==0;
+    Ra=1; nwhile=1;
+    while or(Ra,nwhile<100)
+        bsb=randsample(n,p);
+        Xb=X(bsb,:);
+        Ra=(rank(Xb)==p);
+        nwhile=nwhile+1;
+    end
+    if nwhile==100
+        warning('FSRbsb:message','Unable to randomly sample full rank matrix');
+    end    
+    yb=y(bsb);
+else
+    Xb=X(bsb,:);
+    yb=y(bsb);
+end
+
+ini0=length(bsb);
+
+% check init
+init=options.init;
+if init <p;
+   mess=sprintf(['Attention : init should be larger than p-1. \n',...
+       'It is set to p.']);
+   disp(mess);
+   init=p;
+elseif init<ini0;
+    mess=sprintf(['Attention : init should be >= length of supplied subset. \n',...
+        'It is set equal to ' num2str(length(bsb)) ]);
+    disp(mess);
+    init=ini0;
+elseif init>=n;
+    mess=sprintf(['Attention : init should be smaller than n. \n',...
+        'It is set to n-1.']);
+    disp(mess);
+    init=n-1;
+end
+
+%% Initialise key matrices
+
+% sequence from 1 to n.
+seq = (1:n)';
+
+% The second column of matrix R will contain the OLS residuals at each step
+% of the forward search
+r = [seq zeros(n,1)];
+
+% If n is very large, the step of the search is printed every 100 step
+% seq100 is linked to printing
+seq100 = 100*(1:1:ceil(n/100));
+
+% Matrix BB will contain the units forming subset in each step of the
+% forward search. The first column contains the units forming subset at
+% step init
+BB = NaN(n,n-init+1);
+
+%  UN is a Matrix whose 2nd column:11th col contains the unit(s) just
+%  included. 
+Un = cat(2 , (init+1:n)' , NaN(n-init,10));
+
+% The last correctly computed beta oefficients
+blast=NaN(p,1);
+
+
+%% Forward search loop
+if (rank(Xb)~=p) 
+    warning('FSRbsb:message','The provided initial subset does not form full rank matrix');
+     % FS loop will not be performed
+else
+for mm = ini0:n;
+    % if n>200 show every 100 steps the fwd search index
+    if n>200
+        if length(intersect(mm,seq100))==1;
+            disp(['m=' int2str(mm)]);
+        end
+    end
+
+    % Store units belonging to the subset
+    if (mm>=init);
+        BB(bsb,mm-init+1)=bsb;
+    end
+    
+    % Compute beta coefficients using subset
+    
+    if rank(Xb)==p  % full rank matrix Xb
+        b = Xb\yb;
+        blast=b;
+    else 
+        b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
+        warning('FSR:FSRbsb','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+    end
+    
+    % e= vector of residual for all units using b estimated using subset
+    e=y-X*b;
+
+    r(:,2)=e.^2;
+
+    if mm<n;
+        
+        % store units forming old subset in vector oldbsb
+        oldbsb=bsb;
+
+        % order the r_i and include the smallest among the units forming
+        % the group of potential outliers
+        ord=sortrows(r,2);
+        
+        % bsb= units forming the new subset
+        bsb=ord(1:(mm+1),1);
+
+        Xb=X(bsb,:);  % subset of X
+        yb=y(bsb);    % subset of y
+
+        if mm>=init;
+            unit=setdiff(bsb,oldbsb);
+            % If the interchange involves more than 10 units, store only the
+            % first 10.
+            if (size(unit,2)<=10)
+               Un(mm-init+1,2:(size(unit,1)+1)) = unit;
+            else
+               disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+               Un(mm-init+1,2:end) = unit(1:10)';
+            end;
+        end
+    end
+end
+end  % no rank

@@ -1,0 +1,616 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>Function Reference (FSDA toolbox&trade;)</title>
+<link href="docstyle.css" rel="stylesheet" type="text/css">
+<meta content="refpage" name="chunktype">
+
+<meta content="DocBook XSL Stylesheets V1.52.2" name="generator">
+<meta content="text/javascript" http-equiv="Content-Script-Type">
+<script  type="text/javascript" language="javaScript" src="bottom.js"></script>
+
+</head>
+
+
+<body>
+<a name="top_of_page"></a>
+<table border="0" cellpadding="0" cellspacing="0" class="nav" summary="Navigation aid" width="100%">
+	<tr>
+		<td valign="baseline"><b>FSDA Toolbox</b></td>
+		<td align="right" valign="baseline"><a href="multivariate.html">
+		<img align="bottom" alt="Capability Studies" border="0" src="images_help/b_prev.gif"></a>&nbsp;&nbsp;
+		<a href="datasets.html">
+		<img align="bottom" alt="Class Reference" border="0" src="images_help/b_next.gif"></a></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="refpartnertable" width="100%">
+	<tr>
+		<td>
+		<h1 class="refpartnerheading"><a name="bq_w_hm"></a>Function Reference</h1>
+		</td>
+		<td class="refpartnerlink"><a href="alphabetical.html">
+		<img align="bottom" alt="Click for Alphabetical List" border="0" src="images_help/more_arrows.gif"> 
+		Alphabetical List</a></td>
+	</tr>
+</table>
+<hr>
+<p style="font-size: 1px;">&nbsp;</p>
+<table border="0" cellpadding="0" cellspacing="0" class="feedbacklinktop" width="100%">
+	<tr>
+		<td>&nbsp;</td>
+		<td align="right">
+		<a href="mailto:toolboxFS@unipr.it?subject=feedback">Provide feedback on FSDA toolbox</a>
+</td>
+	</tr>
+</table>
+
+<table border="1">
+	<tr>
+		<td>
+		<table border="0" cellpadding="5" class="categorylist">
+			<tr valign="top">
+				<td width="300"><a href="#statvis">Dynamic Statistical Visualization</a></td>
+				<td>Automatic linking of forward plots</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="#robreg">Robust Regression Analysis</a></td>
+				<td>Robust linear regression and transformations</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="#robms">Model selection</a></td>
+				<td>Robust model selection in linear regression.</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="#robmult">Multivariate Methods</a></td>
+				<td>Robust multivariate methods and transformations.</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="#GUIs">GUIs</a></td>
+				<td>Interactive demo tools with GUIs</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="#utilities">Utilities</a></td>
+				<td>General purpose</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="#combinatorial">Combinatorial</a></td>
+				<td>Combinatorial functions</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<a name="bq_w_ie-6"></a>
+<p class="pagenavlink">
+
+<p></p>
+<h2 id="statvis" class="categorytitle">Dynamic Statistical Visualization</h2>
+<a class="indexterm" name="zmw57dd0e24687"></a>
+<table border="1">
+	<tr>
+		<td>
+		<table border="0" cellpadding="5" class="subcategorylist">
+		
+		<tr>
+				<td width="300"><a href="add2spm.html">add2spm</a></td>
+				<td>Adds objects to the scatterplot matrix</td>
+			</tr>
+
+		
+		
+			<tr>
+				<td width="300"><a href="cdsplot.html">cdsplot</a></td>
+				<td>Candlestick plot for robust model selection.</td>
+			</tr>
+			<tr>
+		<td valign="top"><a href="covplot.html">covplot</a></td>
+		<td>Trajectories of the covariance (correlation) matrix monitored along the search</td>
+				</tr>
+			<tr valign="top">
+				<td width="300"><a href="fanplot.html">fanplot</a></td>
+				<td>Forward plot of the monitoring of the score test statistic for 
+				transformation for different values of the Box Cox transformation 
+				parameter.</td>
+			</tr>
+			<tr>
+				<td style="height: 34px" width="300"><a href="histfs.html">histFS</a></td>
+				<td style="height: 34px">Creates a histogram with the elements in each bin grouped according to a vector of labels.</td>
+			</tr>
+			<tr valign="top">
+				<td style="height: 34px" width="300"><a href="levfwdplot.html">levfwdplot</a></td>
+				<td style="height: 34px">Plots the trajectories of leverage along 
+				the search </td>
+			</tr>
+			<tr>
+				<td width="300"><a href="malfwdplot.html">malfwdplot</a></td>
+				<td>Plots the trajectories of Mahalanobis distances 
+				along the search</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="malindexplot.html">malindexplot</a></td>
+				<td>Plots the Mahalanobis distances against index number or any other variable.</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="mdrplot.html">mdrplot</a></td>
+				<td>Plots the trajectory of minimum deletion residual (mdr) 
+				along the search</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="mmdplot.html">mmdplot</a></td>
+				<td>Plots the trajectory of minimum Mahalanobis distance (mmd) 
+				along the search</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="olsline.html">olsline</a></td>
+				<td>Add least-squares fit line(s) to scatter plot(s).</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="resfwdplot.html">resfwdplot</a></td>
+				<td>Plots the trajectories of scaled (squared) residuals along the 
+				search.</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="resindexplot.html">resindexplot</a></td>
+				<td>Plots the residuals against index number or any other variable.</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="selectdatafs.html">selectdataFS</a></td>
+				<td>Graphical selection of data points using the mouse, on scatter plot matrices or trajectories in the forward plots.</td>
+			</tr>
+			
+			<tr>
+				<td width="300"><a href="spmplot.html">spmplot</a></td>
+				<td>Scatterplot matrix with dynamic scatters and histograms</td>
+			</tr>
+
+			
+			<tr valign="top">
+				<td width="300"><a href="yxplot.html">yXplot </a></td>
+				<td>Generates the scatterplot of <em>y</em> against each variable of <em>X</em> in 
+				the input dataset.</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<p class="pagenavlink">
+<a href="#top_of_page">Back to Top</a></p>
+
+<p></p>
+<h2 id="robreg" class="categorytitle">Robust Regression Analysis and 
+transformations</h2>
+<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
+<p class="pagenavlink">
+
+<table border="1">
+	<tr>
+		<td>
+		<table border="0" cellpadding="5" class="subcategorylist">
+			<tr>
+				<td width="300"><a href="addt.html">addt</a></td>
+				<td>Added t test.</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsr.html">FSR</a></td>
+				<td>Forward search in linear regression with automatic outlier detection procedure.</td>
+			</tr>
+			<tr >
+				<td width="300"><a href="fsraddt.html">FSRaddt</a></td>
+				<td>Forward added t-tests for each explanatory variable</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsrbonfbound.html">FSRbonfbound</a></td>
+				<td>Bonferroni bounds of minimum deletion residual along the forward search</td>
+			</tr>
+
+			
+			
+			<tr >
+				<td width="300"><a href="fsrbsb.html">FSRbsb</a></td>
+				<td>Units belonging to the subset in each step of the
+               forward search.</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsreda.html">FSReda</a></td>
+				<td>Forward search in linear regression with exploratory data analysis
+				purposes.</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="fsrenvmdr.html">FSRenvmdr</a></td>
+				<td>Theoretical envelopes of Minimum Deletion Residual
+               outside subset during the search.</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsrfan.html">FSRfan</a></td>
+				<td>Score test statistic for transformation in each step of the 
+				forward search.</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="fsrmdr.html">FSRmdr</a></td>
+				<td>Stores minimum deletion residual and other basic regression quantities.
+</td>
+			</tr>
+			
+			
+			
+			<tr>
+				<td width="300"><a href="lxs.html">LXS </a></td>
+				<td>Least Median of Squares or Least trimmed squares.</td>
+			</tr>
+			
+			<tr>
+				<td width="300"><a href="minscale.html">minscale</a></td>
+				<td>S estimators of the scale </td>
+			</tr>
+
+			<tr>
+				<td width="300"><a href="mmreg.html">MMreg</a></td>
+				<td>MM estimators in linear regression (using S estimators as starting values) </td>
+			</tr>
+
+			<tr>
+				<td width="300"><a href="mmregcore.html">MMregcore</a></td>
+				<td>MM estimators in linear regression (using starting values provided by the user) </td>
+			</tr>
+
+			<tr>
+				<td width="300"><a href="sreg.html">Sreg</a></td>
+				<td>S estimators in linear regression</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="score.html">Score</a></td>
+				<td>Score test for transformation.</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<p class="pagenavlink">
+<a href="#top_of_page">Back to Top</a></p>
+
+<p></p>
+
+
+<p></p>
+<h2 id="robms" class="categorytitle">Robust Model Selection</h2>
+<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
+<p class="pagenavlink">
+
+<table border="1">
+	<tr>
+		<td>
+		<table border="0" cellpadding="5" class="subcategorylist">
+			<tr valign="top">
+				<td width="300"><a href="fsraddt.html">FSRaddt</a></td>
+				<td>Forward added t-tests for each explanatory variable</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsrcp.html">FSRcp</a></td>
+				<td>Forward Cp for models of interest</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="fsrms.html">FSRms</a></td>
+				<td>Robust model selection using Cp</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<p class="pagenavlink">
+<a href="#top_of_page">Back to Top</a></p>
+
+<p></p>
+
+
+
+
+
+<h2 id="robmult" class="categorytitle">Robust multivariate analysis and transformations</h2>
+<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
+
+<table border="1">
+	<tr>
+		<td>
+		<table border="0" cellpadding="5" class="subcategorylist">
+			<tr valign="top">
+				<td width="300"><a href="fsm.html">FSM</a></td>
+				<td>Forward search in multivariate analysis with automatic outlier detection procedure.</td>
+			</tr>
+			<tr valign="top">
+				<td width="300"><a href="fsmbonfbound.html">FSMbonfbound</a></td>
+				<td>Bonferroni bounds of minimum Mahalanobis distance 
+along the forward search.</td>
+			</tr>
+
+			<tr>
+				<td width="300"><a href="fsmeda.html">FSMeda</a></td>
+				<td>Forward search in multivariate analysis with 
+				with exploratory data analysis purposes.</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsmenvmmd.html">FSMenvmmd</a></td>
+				<td>Theoretical envelopes of minimum
+				Mahalanobis distance
+               outside subset during the search.</td>
+			</tr>
+			<tr>
+				<td width="300" style="height: 34px"><a href="fsmfan.html">FSMfan</a></td>
+				<td style="height: 34px">Fan plot in multivariate analysis.</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsmmmd.html">FSMmmd</a> (FAST)</td>
+				<td>Stores minimum Mahalanobis distance and other basic
+				quantities. Very fast routine which uses imformation in previous step</td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsmmmdeasy.html">FSMmmdeasy</a></td>
+				<td>This function has the same input/output of
+				<a href="fsmmmd.html">FSMmmd</a>, much less efficient than 
+				FSMmmd but very easy to understand. </td>
+			</tr>
+			<tr>
+				<td width="300"><a href="fsmtra.html">FSMtra</a></td>
+				<td>Maximum likelihood estimates of transformation parameters.</td>
+			</tr>
+			
+			<tr>
+				<td width="300"><a href="mcd.html">mcd</a></td>
+				<td>Minimum covariance determinant.</td>
+			</tr>
+			
+			<tr>
+				<td width="300"><a href="minscale.html">minscale</a></td>
+				<td>S estimators of the scale.</td>
+			</tr>
+
+			<tr>
+				<td width="300"><a href="mmmult.html">MMmult</a></td>
+				<td>MM estimators in multivarriate analysis (using S estimators as starting values) </td>
+			</tr>
+
+			<tr>
+				<td width="300"><a href="mmmultcore.html">MMmultcore</a></td>
+				<td>MM estimators in multivarriate analysis (using starting values provided by the user) </td>
+			</tr>
+
+
+			<tr>
+				<td width="300"><a href="mve.html">mve</a></td>
+				<td>Minimum volume ellipsoid </td>
+			</tr>
+
+			<tr>
+				<td width="300"><a href="smult.html">Smult</a></td>
+				<td>S estimators in multivariate analysis</td>
+			</tr>
+
+			
+			
+			<tr>
+				<td width="300"><a href="unibiv.html">unibiv</a></td>
+				<td>Detects univariate and bivariate outliers.</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<p class="pagenavlink">
+<a href="#top_of_page">Back to Top</a></p>
+<p></p>
+
+
+<h2 id="GUIs" class="categorytitle">GUIs</h2>
+<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
+
+<table border="1">
+	<tr>
+		<td>
+		<table border="0" cellpadding="5" class="subcategorylist">
+			<tr>
+				<td width="300"><a href="brushfan.html">BrushFAN</a></td>
+				<td>Example of interactive brushing starting from the FAN plot</td>
+			</tr>
+			
+			<tr valign="top">
+				<td width="300" style="height: 30px"><a href="brushres.html">BrushRES</a></td>
+				<td style="height: 30px">Example of interactive brushing starting from the monitoring residual plot.</td>
+			</tr>
+			
+			<tr valign="top">
+				<td width="300"><a href="brushrob.html">BrushROB</a></td>
+				<td>Example of interactive brushing starting from index plot of robust residuals</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<p class="pagenavlink">
+<a href="#top_of_page">Back to Top</a></p>
+
+<p></p>
+
+
+<h2 id="utilities" class="categorytitle">Utilities</h2>
+<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
+<table border="1">
+	<tr>
+		<td>
+		<table border="0" cellpadding="5" class="subcategorylist">
+			<tr valign="top">
+				<td style="width: 299px"><a href="clickablemultilegend.html">
+				clickableMultiLegend</a></td>
+				<td>Make legends clickable in a scatter plot matrix</td>
+			</tr>
+			
+			<tr>
+				<td style="width: 299px"><a href="dsxy2figxy.html">dsxy2figxy</a></td>
+				<td>Transform points or positions from axis coords to figure coords</td>
+			</tr>
+
+			<tr valign="top">
+				<td class="blue" style="width: 299px"><a href="ellipse.html">ellipse</a></td>
+				<td>Draw an ellipse using as inputs location and scatter matrix </td>
+			</tr>
+
+			<tr>
+				<td style="width: 299px"><a href="fscolors.html">FScolors</a></td>
+				<td>A MATLAB class encapsulating some common color definitions</td>
+			</tr>
+
+			<tr>
+				<td style="width: 299px"><a href="fsminvmmd.html">fsminvmmd</a></td>
+				<td>Converts values of minimum Mahalanobis distance into confidence levels</td>
+			</tr>
+
+			<tr>
+				<td style="width: 299px"><a href="fsrinvmdr.html">fsrinvmdr</a></td>
+				<td>Converts values of minimum deletion residual into confidence levels</td>
+			</tr>
+
+			<tr>
+				<td style="width: 299px"><a href="mahalfs.html">mahalFS</a></td>
+				<td>Compute Mahalanobis distance from a prespecified centroid and scatter matrix
+				</td>
+			</tr>
+
+				<tr>
+				<td style="width: 299px"><a href="normboxcox.html">normBoxCox</a></td>
+				<td>Normalized Box Cox transformation
+				</td>
+				</tr>
+
+			<tr>
+				<td style="width: 299px"><a href="quickselectFS.html">quickselectfs</a></td>
+				<td>Finds the k-th ordered statistic</td>
+			</tr>
+
+			<tr valign="top">
+				<td style="width: 299px"><a href="rescale.html">rescale</a></td>
+				<td>Rescale data in a given interval</td>
+			</tr>
+
+			<tr valign="top">
+				<td style="width: 299px"><a href="selectdatafs.html">selectdataFS</a></td>
+				<td>Graphical selection of data points on scatter plot matrices 
+				or trajectories in the forward plots using the mouse.</td>
+			</tr>
+
+				<tr>
+				<td style="width: 299px"><a href="tbbdp.html">TBbdp</a></td>
+				<td>Compute the value of the constant c of Tukey biweight to obtain a prefixed breakdown point			</td>
+				</tr>
+
+
+
+				<tr>
+				<td style="width: 299px"><a href="tbc.html">TBc</a></td>
+				<td>Compute breakdown point and efficiency of the constant c of Tukey biweight
+				</td>
+				</tr>
+
+				<tr>
+				<td style="width: 299px"><a href="tbeff.html">TBeff</a></td>
+				<td>Compute the value of the constant c of Tukey biweight to obtain a prefixed efficiency 		</td>
+				</tr>
+
+				<tr>
+				<td style="width: 299px"><a href="tbpsi.html">TBpsi</a></td>
+				<td>psi function of Tukey biweight 	</td>
+				</tr>
+
+<tr>
+				<td style="width: 299px"><a href="tbrho.html">TBrho</a></td>
+				<td>rho function of Tukey biweight 	</td>
+				</tr>
+
+<tr>
+				<td style="width: 299px"><a href="tbwei.html">TBwei</a></td>
+				<td>weight function of Tukey biweight 	</td>
+				</tr>
+
+
+			</table>
+		</td>
+	</tr>
+</table>
+
+<p class="pagenavlink">
+<a href="#top_of_page">Back to Top</a></p>
+
+
+<p></p>
+
+<h2 id="combinatorial" class="categorytitle">Combinatorial</h2>
+<table border="1">
+	<tr>
+		<td>
+		<table border="0" cellpadding="5" class="subcategorylist">
+			<tr valign="top">
+				<td class="blue" style="width: 299px"><a href="bc.html">bc</a></td>
+				<td>Binomial Coefficient</td>
+			</tr>
+			
+						<tr valign="top">
+				<td style="width: 299px"><a href="combsfs.html">combsFS</a></td>
+				<td>All possible combinations of n elements taken k at time</td>
+			</tr>
+
+			<tr>
+				<td style="width: 299px"><a href="nchoosekfs.html">nchoosekFS</a></td>
+				<td>Binomial coefficient or all combinations (much more efficient than MATLAB function nchoosek)
+				</td>
+				</tr>
+
+				<tr>
+				<td style="width: 299px"><a href="randsamplefs.html">randsampleFS</a></td>
+				<td>Random sample	(much more efficient than MATLAB function randsample)			</td>
+				</tr>
+
+				<tr>
+				<td style="width: 299px"><a href="shuffling.html">shuffling</a></td>
+				<td>Random permutation of the element of a vector </td>
+				</tr>
+
+				<tr>
+				<td style="width: 299px"><a href="subsets.html">subsets</a></td>
+				<td>Create a matrix which contains the indexes of requested subsets </td>
+				</tr>
+				
+				
+			</table>
+		</td>
+	</tr>
+</table>
+
+
+
+<p class="pagenavlink">
+<a href="#top_of_page">Back to Top</a></p>
+
+
+<p></p>
+<table border="0" cellpadding="0" cellspacing="0" class="nav" summary="Navigation aid" width="100%">
+	<tr valign="top">
+		<td align="left" width="20"><a href="multivariate.html">
+		<img align="bottom" alt="Robust Multivariate Methods" border="0" src="images_help/b_prev.gif"></a>
+		</td>
+		<td align="left">Robust Multivariate Methods</td>
+		<td>&nbsp;</td>
+		<td align="right">Datasets</td>
+		<td align="right" width="20"><a href="datasets.html">
+		<img align="bottom" alt="Class Reference" border="0" src="images_help/b_next.gif"></a></td>
+	</tr>
+</table>
+<script type ="text/javascript" language="javaScript">
+document.write(barra);
+</script>
+<!-- Last updated: Fri Jan 23 17:00:05 EST 2009-->
+
+</body>
+
+</html>
