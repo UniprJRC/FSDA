@@ -964,15 +964,16 @@ if ~isempty(options.fground)
     
     if ~isempty(slintyp)
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        % set(plot1(funit),{'Line'},slintyp(funit));
-        set(plot1(funit),{'LineStyle'},slintyp(funit));
-        
+        % set(plot1(funit),{'LineStyle'},slintyp(funit));
+        set(plot1(funit),{'LineStyle'},slintyp(1:length(funit)));
+    
     else
         slintyp={'-';'--';':';'-.'};
         % slintyp={'-'};
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        set(plot1(funit),{'Line'},slintyp(funit));
-    end
+        % set(plot1(funit),{'Line'},slintyp(funit));
+        set(plot1(funit),{'Line'},slintyp(1:length(funit)));
+   end
     
     if ~isempty(fground.flabstep)
         % lsteps = number of steps for which we add the labels
