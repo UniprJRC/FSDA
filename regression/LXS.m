@@ -195,7 +195,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %}
 
 %{
-        %Compute reweitghted LTS estimator and produce the plot of
+        %Compute reweighted LTS estimator and produce the plot of
         %residuals
         [out]=LXS(y,X,'rew',1,'lms',0,'plots',1);
 %}
