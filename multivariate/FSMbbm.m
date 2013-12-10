@@ -100,9 +100,6 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 
 %% Input parameters checking
 [n,v]=size(Y);
-% Initialize matrix which will contain Mahalanobis distances in each step
-seq=(1:n)';
-
 
 hdef=floor(n*0.6);
 
@@ -172,10 +169,6 @@ end
 % step of the fwd search
 BBmsel=NaN(n,length(msel),'single');
 
-
-
-mala=[seq zeros(n,1)];
-
 if (rank(Y(bsb,:))<v)
     warning('FSMmmd:message','The supplied initial subset is not full rank matrix');
     % FS loop will not be performed
@@ -204,11 +197,11 @@ else
         
         
         % Remark: u=(Ym/R)' should be much faster than u=inv(R')*Ym';
-        u=(Ym/R)';
+        u=(Ym/R);
         % Compute square Mahalanobis distances
-        mala(:,2)=((mm-1)*sum(u.^2,1))';
+        mala=((mm-1)*sum(u.^2,2));
         
-        zs= sortrows(mala,2);
+        [~,zs]= sort(mala);
         
         if mm<n
             

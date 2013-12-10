@@ -126,7 +126,7 @@ function [out]=FSR(y,X,varargin)
 %       msg    :  scalar which controls whether to display or not messages
 %                 on the screen
 %                 If msg==1 (default) messages are displayed on the screen about
-%                   step in which signal took place 
+%                   step in which signal took place
 %                 else no message is displayed on the screen
 % bsbmfullrank :  scalar which tells how to behave in case subset at step m
 %                 (say bsbm) produces a non singular X. In other words,
@@ -136,7 +136,7 @@ function [out]=FSR(y,X,varargin)
 %                 say mnofullrank) are constrained to enter the search in
 %                 the final n-mnofullrank steps else the search continues
 %                 using as estimate of beta at step m the estimate of beta
-%                 found in the previous step. 
+%                 found in the previous step.
 %
 %
 % Output:
@@ -403,12 +403,9 @@ if length(lms)>1
             disp('X is badly defined')
             disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
             out.ListOut=setdiff(seq,mdr);
-            
         else
             disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point or use option bsbmfullrank=0 ')
-            
         end
-        
         out.mdr = NaN;
         out.Un  = NaN;
         out.nout= NaN;
@@ -418,8 +415,8 @@ else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
     [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
     
-    if out.s0==0 
-        disp('More than half of the observations produce a linear model with a perfect fit')
+    if out.s0==0
+        disp('More than half of the observations produce a linear model with a perfect fit');
         % Just return the outliers found by LXS
         %out.ListOut=out.outliers;
         %return
@@ -429,10 +426,9 @@ else % initial subset is not supplied by the user
     mdr=0;
     constr='';
     
-    
     while size(mdr,2)<2 && iter <6
-        % Compute Minimum Deletion Residual for each step of the search 
-        % The instruction below is surely executed once. 
+        % Compute Minimum Deletion Residual for each step of the search
+        % The instruction below is surely executed once.
         [mdr,Un,bb] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
         
         % If FSRmdr run without problems mdr has two columns. In the second
@@ -450,24 +446,20 @@ else % initial subset is not supplied by the user
         if size(mdr,2)<2
             if length(mdr)>=n/2;
                 disp('More than half of the observations produce a singular X matrix')
-            disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
-
+                disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
                 out.ListOut=setdiff(seq,mdr);
-                
                 return
             elseif isnan(mdr(1,1))
-                % INITIAL SUBSET WAS NOT FULL RANK 
+                % INITIAL SUBSET WAS NOT FULL RANK
                 % restart LXS without the units forming
-                % initial subset 
+                % initial subset
                 bsb=setdiff(seq,out.bs);
                 [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
                 bs=bsb(out.bs);
-                
-                
             else
                 % INITIAL SUBSET WAS FULL RANK BUT THE SEARCH HAS FOUND A
                 % SET OF OBSERVATIONS CONSTR <n/2  WHICH PRODUCED A SINGULAR
-                % MATRIX. IN THIS CASE NEW LXS IS BASED ON  n-constr OBSERVATIONS 
+                % MATRIX. IN THIS CASE NEW LXS IS BASED ON  n-constr OBSERVATIONS
                 iter=iter+1;
                 bsb=setdiff(seq,mdr);
                 constr=mdr;
@@ -476,8 +468,6 @@ else % initial subset is not supplied by the user
             end
         end
     end
-    
-    
 end
 
 
@@ -601,9 +591,9 @@ for i=3:nmdr;
             % Extreme couple adjacent to an exceedance
             % Two consecutive values of mdr above the 99.99% envelope and 1 above 99%
             if ((mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99)) || (mdr(i-1,2)>gmin(i-1,c999) && mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c99)) || mdr(i,2)>gmin(end,c99) || mdr(i,2)>gmin(i,c99999));
-                 if msg
+                if msg
                     disp(['Signal in final part of the search: step ' num2str(mdr(i,1)) ' because']);
-                 end
+                end
                 if (mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99));
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99%']);

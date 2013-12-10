@@ -2,7 +2,7 @@
 
 
 
-%% FD (Forbes data) -- Forward EDA (Exploratory Data Analysiswith FS) 
+%% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
 % scatterplot of data: one point looks outlying 
 load('forbes.txt');
 y=forbes(:,2);

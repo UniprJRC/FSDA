@@ -290,8 +290,7 @@ else
     error('Error:: supplied options to initialize the search does not exist.');
 end
 
- bs=fre(1:m0,1);
- bs=1:30;
+bs=fre(1:m0,1);
 
 quant=[0.99;0.999;0.9999;0.99999;0.01;0.5];
 % Compute theoretical envelops for minimum Mahalanobis Distance based on all

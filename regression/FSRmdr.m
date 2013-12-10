@@ -54,7 +54,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               (say bsbm) produces a non singular X. In other words,
 %               this options controls what to do when rank(X(bsbm,:)) is
 %               smaller then number of explanatory variables. If
-%               bsbmfullrank =1 (default) these units (whose number is
+%               bsbmfullrank = 1 (default is 1) these units (whose number is
 %               say mnofullrank) are constrained to enter the search in
 %               the final n-mnofullrank steps else the search continues
 %               using as estimate of beta at step m the estimate of beta
