@@ -27,8 +27,8 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %       nnoise : scalar, which specifies the number of noise variables (the
 %               default value of nnoise is zero).
 %         nout : scalar, which specifies the number of outlying observations.
-%                The defaUlt value of nout is 0
-%       alpha  : level for simulating outliers. The deafult value of alpha
+%                The default value of nout is 0
+%       alpha  : level for simulating outliers. The default value of alpha
 %                is 0.001,
 %       maxout : maximum number of trials to simulate outliers. The default
 %                value of maxout is 1e+05
@@ -67,10 +67,10 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 % Examples:
 
 %{
-    out = MixSim(4,2,'BarOmega',0.01)
+    out = MixSim(4,2,'BarOmega',0.01);
     n=60;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S)
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',10)
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',10);
 
 %}
 
