@@ -29,13 +29,34 @@ function [out]=FSR(y,X,varargin)
 %                 They will be (n choose p).
 %                 Remark: if the number of all possible subset is <1000 the
 %                 default is to extract all subsets otherwise just 1000.
-%       lms     : Scalar or vector.
-%                 If lms=1 (default) Least Median of Squares is
-%                 computed,
-%                 elseif lms is a scalar different from 1 Least trimmed of
-%                 Squares is computed.
-%                 else if lms is a vector (with length greater than 1) it
-%                 contains the list of units forming the initial subset
+%       lms     : Scalar,  vector or structure.
+%                 lms specifies the criterion to use to find the initlal
+%                 subset to initialize the search (LMS, LTS with
+%                 concentration steps, LTS without concentration steps
+%                 or subset supplied directly by the user).
+%                 The default value is 1 (Least Median of Squares
+%                 is computed to initialize the search). On the other hand,
+%                 if the user wants to initialze the search with LTS with
+%                 all the default options for concentration steps then
+%                 lms=2. If the user wants to use LTS without
+%                 concentration steps, lms can be a scalar different from 1
+%                 or 2. If lms is a struct it is possible to control a
+%                 series of options for concentration steps (for more
+%                 details see option lms inside LXS.m)
+%                 LXS.m. 
+%                 If, on the other hans, the user wants to initialize the
+%                 search with a prespecified set of units there are two
+%                 possibilities
+%                 1) lms can be a vector with length greater than 1 which 
+%                 contains the list of units forming the initial subset.
+%                 For example, if the user wants to initialize the search
+%                 with units 4, 6 and 10 then lms=[4 6 10];
+%                 2) lms is a struct which contains a field named bsd which
+%                 contains the list of units to initialize the search. For
+%                 example, in the case of simple regression through the
+%                 origin with just one explanatory variable, if the user
+%                 wants to initialize the search with unit 3 than
+%                 lms=struct; lms.bsb=3;
 %       plots   : Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
@@ -388,9 +409,14 @@ iter=0;
 
 % Use as initial subset the one supplied by the user or the best according
 % to LMS or LTS
-if length(lms)>1
-    bs=lms;
-    if init<length(lms)
+
+if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
+    if length(lms)>1
+        bs=lms;
+    else
+        bs=lms.bsb;
+    end
+    if init<length(bs)
         init=length(bs);
     end
     
@@ -403,9 +429,12 @@ if length(lms)>1
             disp('X is badly defined')
             disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
             out.ListOut=setdiff(seq,mdr);
+            
         else
             disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point or use option bsbmfullrank=0 ')
+            
         end
+        
         out.mdr = NaN;
         out.Un  = NaN;
         out.nout= NaN;
@@ -416,7 +445,7 @@ else % initial subset is not supplied by the user
     [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
     
     if out.s0==0
-        disp('More than half of the observations produce a linear model with a perfect fit');
+        disp('More than half of the observations produce a linear model with a perfect fit')
         % Just return the outliers found by LXS
         %out.ListOut=out.outliers;
         %return
@@ -425,6 +454,7 @@ else % initial subset is not supplied by the user
     bs=out.bs;
     mdr=0;
     constr='';
+    
     
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
@@ -447,7 +477,9 @@ else % initial subset is not supplied by the user
             if length(mdr)>=n/2;
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
+                
                 out.ListOut=setdiff(seq,mdr);
+                
                 return
             elseif isnan(mdr(1,1))
                 % INITIAL SUBSET WAS NOT FULL RANK
@@ -456,6 +488,8 @@ else % initial subset is not supplied by the user
                 bsb=setdiff(seq,out.bs);
                 [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
                 bs=bsb(out.bs);
+                
+                
             else
                 % INITIAL SUBSET WAS FULL RANK BUT THE SEARCH HAS FOUND A
                 % SET OF OBSERVATIONS CONSTR <n/2  WHICH PRODUCED A SINGULAR
@@ -468,6 +502,8 @@ else % initial subset is not supplied by the user
             end
         end
     end
+    
+    
 end
 
 
