@@ -51,7 +51,7 @@ function [out]=FSR(y,X,varargin)
 %                 contains the list of units forming the initial subset.
 %                 For example, if the user wants to initialize the search
 %                 with units 4, 6 and 10 then lms=[4 6 10];
-%                 2) lms is a struct which contains a field named bsd which
+%                 2) lms is a struct which contains a field named bsb which
 %                 contains the list of units to initialize the search. For
 %                 example, in the case of simple regression through the
 %                 origin with just one explanatory variable, if the user
