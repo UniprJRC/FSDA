@@ -26,7 +26,9 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax] = overlap(k, p, Pi, Mu, S, tol, l
 %  - MaxOmega - maximum overlap
 %  - rcMax - contains the pair of components producing the highest overlap
 %
-% Copyright 2008-2014. FSDA toolbox
+%
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearch('overlap')">Link to the help function</a>

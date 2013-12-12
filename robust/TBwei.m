@@ -41,16 +41,16 @@ function w = TBwei(u,c)
 %
 %<a href="matlab: docsearch('tbwei')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
-%
+
 % Examples:
 
 %{
 
-x=-6:0.01:6;
-weiTB=TBwei(x,2);
-plot(x,weiTB)
-xlabel('x','Interpreter','Latex')
-ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')
+    x=-6:0.01:6;
+    weiTB=TBwei(x,2);
+    plot(x,weiTB)
+    xlabel('x','Interpreter','Latex')
+    ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')
 
 %}
 

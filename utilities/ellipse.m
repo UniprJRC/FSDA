@@ -39,6 +39,7 @@ function ellipse(mu,Sigma,conflev)
     ellipse(mu,A);
 %}
 
+%% Beginning of code
 % If the user has provided has input a column vector take the transpose
 if ~isrow(mu)
     mu=mu';

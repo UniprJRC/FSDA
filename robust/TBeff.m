@@ -34,7 +34,7 @@ function ceff = TBeff(eff,p,varargin)
 %<a href="matlab: docsearch('tbeff')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
-%
+
 %
 % Examples:
 %

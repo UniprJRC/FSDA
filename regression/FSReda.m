@@ -435,10 +435,11 @@ Un=[(init+1:n)' Un];
 %  tstat
 Tols=Bols;
 
+tol=1e-17;
 
 %% Start of the forward search
-if (rank(Xb)~=p)
-    warning('FSReda:message','The provided initial subset does not form full rank matrix');
+if (rank(Xb,tol)~=p)
+    warning('FSReda:message','Provided initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
     for mm=ini0:n;
@@ -450,7 +451,7 @@ else
             end
         end
         
-        NoRankProblem=(rank(Xb) == p);
+        NoRankProblem=(rank(Xb,tol) == p);
         if NoRankProblem  % rank is ok
             b=Xb\yb;
             resBSB=yb-Xb*b;

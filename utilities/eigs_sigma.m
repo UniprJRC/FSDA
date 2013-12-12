@@ -7,6 +7,8 @@ function sigmaest = eigs_sigma(y,varargin)
 % zero into an appropriately small positive value. Given input data y,
 % function eigs_sigma choses such a positive sigma value.
 
+
+%% Beginning of code
 if nargin<2
     msg = 0;
 else msg =1;

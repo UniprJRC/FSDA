@@ -38,14 +38,14 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 %   asig1 is the cluster assigments after first trimming ('0' means a trimmed observation...)
 %   asig2 is the (-final-) cluster assigments after second trimming ('0' means a trimmed observation...)
 %
-% Copyright 2008-2014.
-% FSDA toolbox
 %
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %<a href="matlab: docsearch('rlga')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
-%
+
 %
 % Examples:
 %
@@ -61,7 +61,6 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 %
 
 %% Beginning of code
-
 
 [n,p]=size(X);
 

@@ -303,7 +303,7 @@ function plotopt=levfwdplot(out,varargin)
 %
 %<a href="matlab: docsearch('resfwdplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
-%
+
 % Examples:
 
 %{

@@ -22,6 +22,10 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, cons
 %  * MaxOmega - maximum overlap
 %  * rcMax - contains the pair of components producing the highest overlap
 %  */
+%
+% Copyright 2008-2014. 
+% Written by FSDA team
+%
 
 %% Beginning of code
 

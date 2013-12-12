@@ -41,6 +41,8 @@ fprintf('while nchoosek will start swaping into virtual memory.\n');
 
 %}
 
+%% Beginning of code
+
 if ~isscalar(k) || k < 0 || ~isreal(k) || k ~= round(k)
     error('FSDA:nchoosekFS:InvalidArg2',...
         'The second input has to be a non-negative integer.');

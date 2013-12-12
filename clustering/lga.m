@@ -38,13 +38,13 @@ function out = lga(X,k,varargin)
 %           out.niter	  : the niter setting used.
 %
 % Copyright 2008-2014.
-% FSDA toolbox
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearch('lga')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
-%
+
 %
 % Examples:
 %

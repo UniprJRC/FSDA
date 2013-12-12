@@ -28,9 +28,6 @@ function [bdp,eff,approxsheff] = OPTc(c,p,varargin)
 %                 which comes out from R library robustbase.
 %
 %
-% Copyright 2008-2014.
-% Written by FSDA team
-%
 %    REMARK: \rho (\psi) function which is considered is standardized 
 %    using intervals 0---(2/3)c , (2/3)c---c, >c   
 %    Rho function is
@@ -45,9 +42,12 @@ function [bdp,eff,approxsheff] = OPTc(c,p,varargin)
 %   in the rho (psi) function defined in the
 %   interval 0---2c, 2c---3c, >3c 
 %
+% Copyright 2008-2014.
+% Written by FSDA team
+%
 %<a href="matlab: docsearch('OPTc')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
-%
+
 % Examples:
 
 %{
@@ -75,7 +75,7 @@ function [bdp,eff,approxsheff] = OPTc(c,p,varargin)
 
 %}
 
-%% beginning of code
+%% Beginning of code
 
 
 

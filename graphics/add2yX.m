@@ -43,6 +43,7 @@ function add2yX(varargin)
 % Written by FSDA team
 %
 %
+%<a href="matlab: docsearch('add2yX')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 

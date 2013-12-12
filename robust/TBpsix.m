@@ -35,16 +35,16 @@ function psix=TBpsix(u,c)
 %
 %<a href="matlab: docsearch('tbpsix')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
-%
+
 % Examples:
 
 %{
 
-x=-6:0.01:6;
-psixTB=TBpsix(x,2);
-plot(x,psixTB)
-xlabel('x','Interpreter','Latex')
-ylabel('$\psi (x)$','Interpreter','Latex')
+    x=-6:0.01:6;
+    psixTB=TBpsix(x,2);
+    plot(x,psixTB)
+    xlabel('x','Interpreter','Latex')
+    ylabel('$\psi (x)$','Interpreter','Latex')
 
 %}
 

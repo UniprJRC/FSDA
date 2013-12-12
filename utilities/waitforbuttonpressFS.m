@@ -4,7 +4,11 @@ function [ss]=waitforbuttonpressFS
 % Copyright 2008-2014
 % Written by FSDA team
 %
+% Last modified 08-Dec-2013
 %
+%
+
+%% Beginning of code
 try
     ss=waitforbuttonpress;
 catch ME

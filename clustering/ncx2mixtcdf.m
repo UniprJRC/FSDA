@@ -75,8 +75,9 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %   Davies (1980), The distribution of a linear combination of \Chi^2 Random variables, Applied Statistics
 %   vol. pp. 323-333
 %
+%
 % Copyright 2008-2014.
-% FSDA toolbox
+% Written by FSDA team
 %
 %<a href="matlab: docsearch('ncx2mixtcdf')">Link to the help function</a>
 % Last modified 08-Dec-2013

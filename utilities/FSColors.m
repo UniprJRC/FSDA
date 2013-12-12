@@ -13,7 +13,8 @@ classdef FSColors
 %
 % Copyright 2008-2014.
 % Written by FSDA team
-%
+% Last modified 08-Dec-2013
+
 %
 % Examples:
 %
@@ -24,6 +25,8 @@ RGB_vector = FSColors.reddish.RGB
 short_name = FSColors.reddish.ShortName
 %
 %}
+
+%% Beginning of code
    properties
       RGB = [];
       ShortName = '';

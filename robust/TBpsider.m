@@ -39,11 +39,11 @@ function psider=TBpsider(u,c)
 
 %{
 
-x=-6:0.01:6;
-psiTBder=TBpsider(x,2);
-plot(x,psiTBder)
-xlabel('x','Interpreter','Latex')
-ylabel('$\psi''(x)$','Interpreter','Latex')
+    x=-6:0.01:6;
+    psiTBder=TBpsider(x,2);
+    plot(x,psiTBder)
+    xlabel('x','Interpreter','Latex')
+    ylabel('$\psi''(x)$','Interpreter','Latex')
 
 %}
 

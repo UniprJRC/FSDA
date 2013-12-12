@@ -75,6 +75,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %
 % Last modified 08-Dec-2013
 
+%% Beginning of code
 if nargin < 6
     barcolors = 'brcmykgbrcmykgbrcmykg';
 end

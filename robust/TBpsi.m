@@ -35,7 +35,7 @@ function psi=TBpsi(u,c)
 %
 %<a href="matlab: docsearch('tbpsi')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
-%
+
 % Examples:
 
 %{

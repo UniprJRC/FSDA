@@ -10,6 +10,7 @@ function y = rescale(x,a,b)
 %<a href="matlab: docsearch('rescale')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
+%% Beginning of code
 if nargin<2
     a = 0;
 end

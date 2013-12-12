@@ -14,9 +14,6 @@ function c = OPTbdp(bdp,p)
 %
 %  c = scalar associated to that particular breakdown point
 %
-% Copyright 2008-2014.
-% Written by FSDA team
-%
 %    REMARK: \rho (\psi) function which is considered is standardized 
 %    using intervals 0---(2/3)c , (2/3)c---c, >c   
 %    Rho function is
@@ -31,10 +28,13 @@ function c = OPTbdp(bdp,p)
 %   interval 0---2c, 2c---3c, >3c it is necessary to divide the output of
 %   function OPTbdp by 3.
 %
+% Copyright 2008-2014.
+% Written by FSDA team
+%
 %<a href="matlab: docsearch('OPTbdp')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
-%
+
 %
 % Examples:
 %

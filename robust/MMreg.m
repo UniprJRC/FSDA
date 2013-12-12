@@ -128,7 +128,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %
 %<a href="matlab: docsearch('mmreg')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
-%
+
 % Examples:
 
 %{

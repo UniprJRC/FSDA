@@ -26,6 +26,7 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 %
 % Last modified 08-Dec-2013
 
+%% Beginning of code
 optargin = size(vvarargin,2);
 stdargin = nnargin - optargin;
 

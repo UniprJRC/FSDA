@@ -32,11 +32,15 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %                is 0.001,
 %       maxout : maximum number of trials to simulate outliers. The default
 %                value of maxout is 1e+05
-%       int    : vector of length 2 which contains min and maximum values
+%       int    : vector or string.
+%                If int is a vector of length 2 it contains min and maximum values
 %                of the interval in which noise has to be simulated
-%                It int is empty (default) noise is simulated uniformly
+%                It int is empty (default) noise and outliers are simulated uniformly
 %                between the smallest and largest coordinates of mean
-%                vectors
+%                vectors.
+%                If int='minmax' noise and outliers are simulated uniformly
+%                between the smallest and largest coordinates of simulated
+%                data matrix X
 %       lambda : vector of length p containing inverse Box-Cox
 %                transformation coefficients. The value false (default) implies that
 %                no transformation is applied to any variable.
@@ -71,6 +75,7 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
     n=60;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',10);
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',10,'int','minmax');
 
 %}
 
@@ -231,7 +236,9 @@ if nnoise ~= 0
     if isempty(int)
         L = min(min(Mu));
         U = max(max(Mu));
-        
+    elseif strcmp('minmax',int)
+        L = min(X);
+        U = max(X);
     else
         L = int(1);
         U = int(2);
@@ -243,10 +250,17 @@ if nnoise ~= 0
         rn1s = ['matrix(runif(' num2str((n + nout)*nnoise) '),' num2str(n + nout) ',' num2str(nnoise) ')'];
         rrr = evalR(rn1s);
     else
-        rrr = rand(n + nout,  nnoise);  % DOME   ERROR: nout WAS n.out
+        rrr = rand(n + nout,  nnoise);  
     end
         
-    Xnoise = (U-L)*rrr+L; 
+    % Xnoise = (U-L)*rrr+L; 
+    if nnoise>length(U);
+        U=repmat(U,10);
+        L=repmat(L,10);
+    end
+    
+    Xnoise=bsxfun(@times,rrr,(U(1:nnoise)-L(1:nnoise)));
+    Xnoise=bsxfun(@plus,Xnoise,L(1:nnoise));
     X = [X, Xnoise];
     
 end
@@ -275,7 +289,10 @@ end
         if isempty(int)
             L = min(min(Mu));
             U = max(max(Mu));
-            
+        elseif strcmp(int,'minmax')
+             L = min(X);
+            U = max(X);
+
         else
             L = int(1);
             U = int(2);
@@ -293,7 +310,7 @@ end
                 rr = rand(1,p);  
             end
 
-            Xout(i,:) = (U-L)*rr+L;
+            Xout(i,:) = (U-L).*rr+L;
             
             ij=0;
             for jj=1:k

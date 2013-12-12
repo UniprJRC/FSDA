@@ -24,7 +24,7 @@ function position(plmain)
 %
 
 
-%% initialize
+%% Beginning of code
 
 % find all open figures and if there are no figures do nothing. This check
 % is necessary because the figure with handle plmain could have been closed

@@ -3,7 +3,7 @@ function chkoptions(options,UserOptions)
 %
 % Required input arguments:
 %
-% options           : a structure 
+% options           : a structure
 % UserOptions       : cell array of strings
 %
 % Output:
@@ -13,19 +13,20 @@ function chkoptions(options,UserOptions)
 %  terminates and an error message is produced
 %
 % See also  chkinputR.m
-% 
+%
 % Copyright 2008-2014.
 % Written by FSDA team
 %
 %
 % Last modified 08-Dec-2013
 
-    inpchk=isfield(options,UserOptions);
-    WrongOptions=UserOptions(inpchk==0);
-    if ~isempty(WrongOptions)
-        disp('-------------------------');
-        disp(['Non existent user option found-> ' cellstr(WrongOptions)])
-        error('Error: in total %d non-existent user options found.', length(WrongOptions));
-    end
+%% Beginning of code
+inpchk=isfield(options,UserOptions);
+WrongOptions=UserOptions(inpchk==0);
+if ~isempty(WrongOptions)
+    disp('-------------------------');
+    disp(['Non existent user option found-> ' cellstr(WrongOptions)])
+    error('Error: in total %d non-existent user options found.', length(WrongOptions));
+end
 
 end
