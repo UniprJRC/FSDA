@@ -127,12 +127,12 @@ function mmdplot(out,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
-%            and Vytis Kopustinskas (2009-2010)
+% Copyright 2008-2014.
+% Written by FSDA team
+%
 %
 %<a href="matlab: docsearch('mmdplot')">Link to the help function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 
 % Examples:
 
@@ -782,7 +782,7 @@ end % close options.databrush
         %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
         %   Springer Verlag, New York.
         %
-        % Written by Marco Riani, Domenico Perrotta and Francesca Torti
+        % Written by FSDA team
         
         %%
         pos = get(event_obj,'Position');

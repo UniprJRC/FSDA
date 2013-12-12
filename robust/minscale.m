@@ -36,8 +36,8 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 % Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119,  p.
 % 176).
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 
 

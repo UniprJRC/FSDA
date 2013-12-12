@@ -2,9 +2,9 @@ function cabc
 %cabc closes all open figures except the one in foreground (the current)
 %
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
-%            and Vytis Kopustinskas (2009-2010)
+% Copyright 2008-2014.
+% Written by FSDA team
+%
 %
 
 % Given a vector containing the open figure handles, all_openfigs, the

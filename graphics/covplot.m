@@ -133,12 +133,12 @@ function covplot(out,varargin)
 %   the Forward Search,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
-%            and Vytis Kopustinskas (2009-2010)
+% Copyright 2008-2014.
+% Written by FSDA team
+%
 %
 %<a href="matlab: docsearch('covplot')">Link to the help function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 
 % Examples:
 
@@ -515,7 +515,7 @@ end
         %   Atkinson and Riani (2000), Robust Diagnostic Regression
         %   Analysis, Springer Verlag, New York.
         %
-        % Written by Marco Riani, Domenico Perrotta and Francesca Torti
+        % Written by FSDA team
         
         if ~isempty(hTarget)
             % set old line width and old color for old selection

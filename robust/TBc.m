@@ -27,8 +27,8 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 %                 which comes out from R library robustbase.
 %
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 % References:
 %
@@ -39,7 +39,7 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 % pp. 643-648 (HRR)
 %
 %<a href="matlab: docsearch('tbc')">Link to the help page for this function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 %
 % Examples:
 

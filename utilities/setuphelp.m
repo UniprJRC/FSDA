@@ -6,10 +6,10 @@ function setuphelp(FSDApath)
 %    FSDA:      A string containing the path which contains the root folder of FSDA toolbox
 %
 %
-% Copyright 2008-2013.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
-% Last modified 02-May-2013
+% Last modified 08-Dec-2013
 
 % Examples:
 

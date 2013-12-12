@@ -18,7 +18,7 @@ function [out1,out2,out3] = ginputFS(arg1,varargin)
 %
 % See also: ginput
 %
-% ginput was modified into ginputFS by Marco Riani, Domenico Perrotta, Francesca Torti
+% ginput was modified into ginputFS by FSDA team
 % The modified code segments have been marked with string FSDAmodif ... FSDAmodifEnd.
 
 %% Beginning of code

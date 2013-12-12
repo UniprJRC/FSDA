@@ -48,12 +48,12 @@ function w = HYPwei(u, cktuning)
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearch('hyppsi')">Link to the help page for this function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 %
 % Examples:
 %
@@ -73,12 +73,12 @@ function w = HYPwei(u, cktuning)
 % Wiley 2006.
 %
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearch('tbwei')">Link to the help page for this function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 %
 % Examples:
 

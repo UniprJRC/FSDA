@@ -106,12 +106,12 @@ function [out]  = MixSim(k,p,varargin)
 % and Eigenvectors,” Handbook for Auto. Comp., Vol. II, Linear Algebra,
 % 1971,pp. 315-326.
 %
-% Copyright 2008-2013. FSDA toolbox
+% Copyright 2008-2014. FSDA toolbox
 %
 %
 %
 %<a href="matlab: docsearch('MixSim')">Link to the help function</a>
-% Last modified 19-May-2013
+% Last modified 08-Dec-2013
 %
 % Examples:
 %

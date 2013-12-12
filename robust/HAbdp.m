@@ -22,7 +22,7 @@ function ctun = HAbdp(bdp,p,abc)
 %
 %
 %<a href="matlab: docsearch('habdp')">Link to the help page for this function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 %
 %
 %

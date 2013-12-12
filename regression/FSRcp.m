@@ -202,12 +202,12 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %   criterion for selecting regression models. JOURNAL OF THE JAPAN
 %   STATISTICAL SOCIETY. ISSN: 1882-2754. Vol. 38, No. 1, pp. 3-14
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
-%            and Vytis Kopustinskas (2009-2010)
+% Copyright 2008-2014.
+% Written by FSDA team
+%
 %
 %<a href="matlab: docsearch('FSRcp')">Link to the help function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 
 % Examples:
 

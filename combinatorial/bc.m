@@ -25,12 +25,12 @@ function c = bc(n,k)
 %
 %<a href="matlab: docsearch('bc')">Link to the help page for this function</a>
 %
-% Copyright 2008-2011.
+% Copyright 2008-2014.
 % Matlab function bc has been adapted to this toolbox by: 
-%           Marco Riani, Domenico Perrotta, Francesca Torti 
-%           and Vytis Kopustinskas (2009-2010)
+% FSDA team 
 %
-% Last modified 15-Nov-2011
+%
+% Last modified 08-Dec-2013
 %
 % Examples:
 %

@@ -37,12 +37,12 @@ function out = lga(X,k,varargin)
 %           out.biter     : the biter setting used.
 %           out.niter	  : the niter setting used.
 %
-% Copyright 2008-2011.
+% Copyright 2008-2014.
 % FSDA toolbox
 %
 %
 %<a href="matlab: docsearch('lga')">Link to the help page for this function</a>
-% Last modified 22-Sep-2012
+% Last modified 08-Dec-2013
 %
 %
 %

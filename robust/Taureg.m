@@ -149,12 +149,12 @@ function [out , varargout] = Taureg(y, X, varargin)
 % of the computational performance. Moreover in this function there is the
 % possibility of choosing the rho (psi) function.
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearch('taureg')">Link to the help page for this function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 %
 % Examples:
 

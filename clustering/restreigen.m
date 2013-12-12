@@ -41,8 +41,8 @@ function [out]  = restreigen(eigenvalues,niini,restr,tol)
 % clustering. Available at
 % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf%
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 % DETAILS. This algorithm solves the minimization problem with constraints
 % without resorting to the Dykstra algorithm. This implementation is based
@@ -53,7 +53,7 @@ function [out]  = restreigen(eigenvalues,niini,restr,tol)
 %
 %
 %<a href="matlab: docsearch('restreigen')">Link to the help function</a>
-% Last modified 14-Dec-2011
+% Last modified 08-Dec-2013
 
 % Examples:
 %

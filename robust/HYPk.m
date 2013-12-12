@@ -42,12 +42,12 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 %		        { 0,			                         |u| >= c.
 %
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearch('hypk')">Link to the help page for this function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 %
 % Examples:
 

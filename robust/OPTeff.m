@@ -22,9 +22,9 @@ function ceff = OPTeff(eff,p,varargin)
 %  c = scalar of Optimal rho associated to the nominal (location or
 %  shape) efficiency
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
-% Last modified 22-Sep-2012
+% Copyright 2008-2014.
+% Written by FSDA team
+% Last modified 08-Dec-2013
 %
 %
 %    REMARK: \rho (\psi) function which is considered is standardized 
@@ -42,7 +42,7 @@ function ceff = OPTeff(eff,p,varargin)
 %   function OPTeff by 3.
 %
 %<a href="matlab: docsearch('OPTeff')">Link to the help page for this function</a>
-% Last modified 15-Nov-2011
+% Last modified 08-Dec-2013
 %
 %
 %

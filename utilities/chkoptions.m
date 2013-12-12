@@ -14,11 +14,11 @@ function chkoptions(options,UserOptions)
 %
 % See also  chkinputR.m
 % 
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
-%            and Vytis Kopustinskas (2009-2010)
+% Copyright 2008-2014.
+% Written by FSDA team
 %
-% Last modified 15-Nov-2011
+%
+% Last modified 08-Dec-2013
 
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);

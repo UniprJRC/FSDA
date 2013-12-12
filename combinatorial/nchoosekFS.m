@@ -16,9 +16,9 @@ function c = nchoosekFS(v,k)
 %
 % See also: bc, combsFS, nchoosek.
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
-%            and Vytis Kopustinskas (2009-2010)
+% Copyright 2008-2014.
+% Written by FSDA team
+%
 %
 %<a href="matlab: docsearch('nchoosekFS')">Link to the help function</a>
 %

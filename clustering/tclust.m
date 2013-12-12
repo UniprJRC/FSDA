@@ -194,7 +194,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
-% Copyright 2008-2013. FSDA toolbox
+% Copyright 2008-2014. FSDA toolbox
 %
 % DETAILS. This iterative algorithm initializes k clusters randomly and
 % performs "concentration steps" in order to improve the current cluster
@@ -209,7 +209,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %
 %<a href="matlab: docsearch('tclust')">Link to the help function</a>
-% Last modified 19-May-2013
+% Last modified 08-Dec-2013
 
 % Examples:
 

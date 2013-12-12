@@ -52,11 +52,11 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %   will be centered with respect to the matrix of axes.
 %
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %<a href="matlab: docsearch('spmplot')">Link to the help function</a>
-% Last modified 24-Sep-2012
+% Last modified 08-Dec-2013
 
 % Examples:
 

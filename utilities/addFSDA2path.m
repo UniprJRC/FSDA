@@ -9,10 +9,10 @@ function addFSDA2path(FSDApath)
 %    REMARK: Remember to save the added folders to path in the MATLAB window
 %    set path, to be able to use FSDA in future sessions  
 %
-% Copyright 2008-2013.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti
+% Copyright 2008-2014.
+% Written by FSDA team
 %
-% Last modified 02-May-2013
+% Last modified 08-Dec-2013
 
 % Examples:
 

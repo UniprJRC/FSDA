@@ -11,9 +11,9 @@ classdef FSColors
 % REMARK: This represents a first test in view of making a more extensive
 % use of MATLAB classes/methods constructs in FSDA.
 %
-% Copyright 2008-2011.
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti 
-%            and Vytis Kopustinskas (2009-2010)
+% Copyright 2008-2014.
+% Written by FSDA team
+%
 %
 % Examples:
 %
