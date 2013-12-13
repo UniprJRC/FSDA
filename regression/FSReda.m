@@ -127,6 +127,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
+%
 % Copyright 2008-2014.
 % Written by FSDA team
 %
@@ -435,11 +436,10 @@ Un=[(init+1:n)' Un];
 %  tstat
 Tols=Bols;
 
-tol=1e-17;
 
 %% Start of the forward search
-if (rank(Xb,tol)~=p)
-    warning('FSReda:message','Provided initial subset does not form full rank matrix');
+if (rank(Xb)~=p)
+    warning('FSReda:message','The provided initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
     for mm=ini0:n;
@@ -451,7 +451,7 @@ else
             end
         end
         
-        NoRankProblem=(rank(Xb,tol) == p);
+        NoRankProblem=(rank(Xb) == p);
         if NoRankProblem  % rank is ok
             b=Xb\yb;
             resBSB=yb-Xb*b;
@@ -630,9 +630,8 @@ else
 end   %Rank check
 
 %% Structure returned by function FSReda
-RES=RES/sqrt(S2(end,2));
 out=struct;
-out.RES=RES;
+out.RES=RES/sqrt(S2(end,2));
 out.LEV=LEV;
 out.BB=BB;
 out.mdr=mdr;
