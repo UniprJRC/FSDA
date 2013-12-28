@@ -2,7 +2,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %   FEEDBACK GIANLUCA TODO>
 % Nel commento a riga 64, "plots : Scalar or structure" in realta' e' solo scalar.
 % nocheck non e' implementato
-% i due parametri nomes e msg non potrebbero ridursi a uno solo 
 %
 
 %tclust computes trimmed clustering
@@ -111,14 +110,11 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %        msg  : scalar which controls whether to display or not messages
 %               on the screen If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
+%               or the number of subsets in which there was no convergence
 %               else no message is displayed on the screen
 %      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y.
 %               As default nocheck=0.
-%        nomes: Scalar. If nomes is equal to 1 no message about estimated
-%               time to compute tclust is displayed, else if nomes is
-%               equal to 0 (default), a message about estimated time is
-%               displayed.
 %      startv1: scalar. If startv is 1 than initial
 %               centroids and and covariance matrices are based on (v+1)
 %               observations randomly chosen, else each centroid is
@@ -392,7 +388,7 @@ else
     h=fix(n*(1-alpha));
 end
 
-options=struct('nsamp',nsampdef,'plots',0,'nocheck',0,'nomes',0,...
+options=struct('nsamp',nsampdef,'plots',0,'nocheck',0,...
     'msg',1,'Ysave',0,'refsteps',refstepsdef,'equalweights',false,...
     'reftol',reftoldef,'mixt',0,'startv1',1);
 
@@ -458,8 +454,6 @@ reftol=options.reftol;
 vopt=-1e+30;
 
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
-
-nomes=options.nomes;        % if options.nomes==1 no message about estimated time to compute tclust is displayed
 
 mixt=options.mixt;         % if options.mixt==1 mixture model is assumed
 
@@ -535,10 +529,11 @@ fullsol=zeros(nselected,1);
 
 %% Core of tclust function
 for i=1:nselected
+    if msg==1
     if i <= tsampling
         tstart = tic;
     end
-    
+    end
     
     
     if startv1
@@ -907,23 +902,23 @@ for i=1:nselected
     end
     
     
-    if ~nomes
+    if msg==1
         if i <= tsampling
             % sampling time until step tsampling
             time(i)=toc(tstart);
         elseif i==tsampling+1
             % stop sampling and print the estimated time
-            if msg==1
                 fprintf('Total estimated time to complete tclust: %5.2f seconds \n', nselected*median(time));
-            end
         end
     end
     
 end
 notconver=noconv/nselected;
+if msg==1
 if notconver>0.1;
     disp('------------------------------')
     disp(['Warning: Number of subsets without convergence equal to ' num2str(100*notconver) '%'])
+end
 end
 
 %% Store quantities in out structure
@@ -1139,12 +1134,13 @@ AICold = 2*NlogL + 2*nParamOld;
 % Store the fraction of subsamples without convergence.
 out.notconver=notconver;
 alp=alpha>0;
+if msg==1
 if size(siz,1)<k+alp;
     warning('The total number of estimated clusters is smaller than the number supplied')
     warning(['Number of supplied clusters =' num2str(k)])
     warning(['Number of estimated clusters =' num2str(size(siz,1)-alp)])
 end
-
+end
 
 if min(out.siz((1+alp):end,2)< n*0.02)
     warning('FSDA:tclust','Clusters with size < n * 0.02 found - try reducing k')
