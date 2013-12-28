@@ -70,10 +70,11 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %
 % References:
 %
-%   Davies (1973), Numerical inversion of a characteristic function, vol. 60, Biometrika, pp. 415-417
+%   Davies (1973), Numerical inversion of a characteristic function, vol.
+%   60, Biometrika, pp. 415-417
 %
-%   Davies (1980), The distribution of a linear combination of \Chi^2 Random variables, Applied Statistics
-%   vol. pp. 323-333
+%   Davies (1980), The distribution of a linear combination of \Chi^2
+%   Random variables, Applied Statistics vol. pp. 323-333
 %
 %
 % Copyright 2008-2014.
@@ -132,7 +133,6 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 
 %% Beginning of code
 
-
 % Initialize tracert (vector which forms the additional optional output
 tracert=zeros(7,1);
 
@@ -181,6 +181,13 @@ ifault=0;
 %log28=log(2)/8;
 log28=.0866;
 
+%disp('----')
+seqa=[3.696    3.360    3.080    2.800    2.640    2.400    2.200 ...
+    2.000    1.848     1.680    1.540    1.400    1.320    1.200 1.1 1];
+
+% nrep= replicates n, u times (in the columns)
+nrep=repmat(n,1,length(seqa));
+
 % Check input parameter values
 if min(n) < 0  ||  min(nc) < 0
     return
@@ -192,6 +199,8 @@ lmin= min([0;lb]);
 if lmin == 0.0 && lmax == 0.0 && sigma == 0.0
     return
 end
+
+r=length(lb);
 
 % th = vector which contains indexes of ordered elements of lb
 [~,th]=sort(lb,'descend');
@@ -243,7 +252,8 @@ if c ~= 0.0  && (almx > 0.07 * sd)
     tausq = .25 * acc1 /cfec;
     
     if fail
-        fail = false ;
+        % fail = false ;
+        % disp('Warning: non convergence in initial routine cfe')
     elseif truncation(utx, tausq) < .2 * acc1
         
         sigsq = sigsq + tausq;
@@ -312,7 +322,7 @@ while l1
             % main integration
         end
         
-        [cfe1,fail1]=cfe(c - x);
+        [cfe1,~]=cfe(c - x);
         [cfe2,fail2]=cfe(c + x);
         
         tausq = .33 * acc1 / (1.1 * (cfe1+cfe2));
@@ -382,63 +392,86 @@ varargout{2}=ifault;
         %such that truncation(u) < accx and truncation(u / 1.2) > accx
         %findu calls subroutine truncation
         
-        divis=[2.0,1.4,1.2,1.1];
+        
         ut = utx;
         u = ut / 4.0;
         if truncation(u, 0.0) > accx
-            % if truncation(u)>accx then increase ut up to when truncation(u)
+            % if truncation(u)>accx then increase u up to when truncation(u)
             % becomes <= accx
             u=ut;
             while truncation(u, 0.0) > accx;
+                
                 ut = ut * 4.0;
                 u=ut;
             end
             
         else
-            % if truncation(u)<accx then decrease ut up to when truncation(u)
-            % still remain <accx
+            % if truncation(u)<accx then decrease u up to when truncation(u)
+            % still remains <accx
             ut=u;
             u=u/4;
             while (truncation(u,0)<=accx)
+               
                 ut=u;
                 u=u/4;
             end
             
         end
         
-        for ii=1:4
-            u = ut/divis(ii);
-            if  truncation(u, 0.0)  <=  accx
-                ut=u;
-            end
-        end
+        % The following loop has been replaced by a vectorized form of
+        % truncation
+        % divis has been replace by seqa
+        % divis=[2.0,1.4,1.2,1.1];
         
+        % This final loop is just to refine u
+        %         utini=ut;
+        %         for ii=1:4
+        %             u = ut/divis(ii);
+        %             if  truncation(u, 0.0)  <=  accx
+        %                 ut=u;
+        %                 %disp(ii)
+        %             end
+        %         end
+        
+        uchk=ut./seqa;
+        tru=truncationv(uchk, 0.0);
+        utchk=uchk(tru<accx);
+        if ~isempty(utchk)
+            ut=utchk(1);
+%         else
+%             ut=utini;
+        end
     end
 
 
     function err=truncation(u, tausq)
         %truncation finds truncation error due to truncation at u
+        % u can just be a scalar. The vectorized form of this function is
+        % called truncationv. This function is called by findu
         
-        % counter conta quante volte viene chiamata truncation TODO
-        % counter();
+        sum2 = (sigsq + tausq) * u^2;
         
-        sum1  = 0.0; prod2 = 0.0;  prod3 = 0.0;  s = 0;
-        sum2 = (sigsq + tausq) * u^2; prod1 = 2.0 * sum2;
+        prod1 = 2.0 * sum2;
         u = 2.0 * u;
-        for jj=1:length(lb)
-            
-            lj = lb(jj);  ncj = nc(jj); nj = n(jj);
-            x = (u * lj)^2;
-            sum1 = sum1 + ncj * x / (1.0 + x);
-            if (x > 1.0)
-                prod2 = prod2 + nj * log(x);
-                prod3 = prod3 + nj * log1(x, true );
-                s = s + nj;
-                
-            else
-                prod1 = prod1 + nj * log1(x, true );
-            end
-        end
+        
+        x = (u * lb).^2;
+        sum1 = nc'* (x ./ (1.0 + x));
+        xgt1=x>1;
+        xxgt1=x(xgt1);
+        nxgt1=n(xgt1);
+        
+        prod2 = sum(nxgt1.* log(xxgt1));
+        
+        log1x=log1(x, true );
+        nlog1x=n.*log1x;
+        prod3=sum(nlog1x(xgt1));
+        prod1=prod1+ sum(nlog1x)-prod3;
+        % Alternative statement to find prod1
+        % xgt1n=~xgt1;
+        % prod1=prod1+sum(nlog1x(xgt1n));
+        
+        % prod3 = nxgt1 * log1(xxgt1, true );
+        s = sum(nxgt1);
         sum1 = 0.5 * sum1;
         prod2 = prod1 + prod2;  prod3 = prod1 + prod3;
         x = exp(-sum1 - 0.25 * prod2) / pi;
@@ -472,44 +505,141 @@ varargout{2}=ifault;
         end
     end
 
+% vectorize function truncation
+    function err=truncationv(u, tausq)
+        %truncation finds truncation error due to truncation at u
+        % u can be a scalar or a row vector
+        % Accordingly err will be a scalar or a row vector
+        % This function is called by findu
+            
+        sum2 = (sigsq + tausq) * u.^2;
+        
+        prod1 = 2.0 * sum2;
+        u = 2.0 * u;
+        
+        x = (lb *u).^2;
+        % sum1 = row vector
+        sum1 = nc'* (x ./ (1.0 + x));
+        xleq1=x(:)<=1;
+        
+        nlogx=nrep.*log(x);
+        % Slower alternative
+        % nlogx=bsxfun(@times,n,log(x));
+        
+        nlogx(xleq1)=0;
+        
+        prod2 = sum(nlogx,1);
+        
+        log1x=log1(x, true );
+        
+        nlog1x=nrep.*log1x;
+        % Slower alternative
+        % nlog1x=bsxfun(@times,n,log1x);
+        
+        
+        sumall=sum(nlog1x,1);
+        nlog1x(xleq1)=0;
+        prod3=sum(nlog1x,1);
+        prod1=prod1+ sumall-prod3;
+        
+        % prod3 = nxgt1 * log1(xxgt1, true );
+        
+        nrep(xleq1)=0;
+        s = sum(nrep,1);
+
+        sum1 = 0.5 * sum1;
+        prod2 = prod1 + prod2;  prod3 = prod1 + prod3;
+        x = exp(-sum1 - 0.25 * prod2) / pi;
+        y = exp(-sum1 - 0.25 * prod3) / pi;
+        
+        err1= x*2./s;
+        err1(s==0)=1;
+        
+        err2 =2.5*y;
+        err2(prod3<=1)=1;
+        
+        err1f=err1;
+        err21=err2 < err1;
+        err1f(err21)=err2(err21);
+        
+        x = 0.5 * sum2;
+        
+        
+        err2f= y./ x;
+        err2f(x<=y)=1;
+        
+        err=err2f;
+        err12f=err1f<err2f;
+        err(err12f)=err1f(err12f);
+    end
 
     function s=log1(x,first)
-        % if (first) log(1 + x) ; else  log(1 + x) - x
-        if (abs(x) > 0.1)
-            if first
-                s=log(1.0 + x);
-            else
-                s=log(1.0 + x) - x;
-            end
-            
-        else
-            y = x / (2 + x);
-            term = 2 * y^3;
-            k = 3;
-            if first
-                s = 2*y;
-            else
-                s=- x* y;
-            end
-            
-            y = y^2;
-            
-            s1=s+term/k;
-            while s1 ~= s;
-                
-                k = k + 2.0;
-                term = term * y;
-                s = s1;
-                
-                s1=s+term/k;
-            end
+        % x can be a scalar a vector or a matrix. Output s accordingly will
+        % be a scalar a vector or a matrix 
+        % In other words log1 function operates elementwise on arrays
+        %  for the elements of x which are greater than 0.1
+        % if (first) s= log(1 + x) ; else
+        % s= log(1 + x) - x 
+        
+        [nx,cx]=size(x);
+        % If x is a row vector than x is preliminarly transformed into a
+        % column vector. Without this if the instruction below
+        % s1=sabsxn+term/k; which appear before the while loop generates an
+        % error because sabsxn is a column vector and on the other hand
+        % term is a row vector.
+        
+        if nx==1 && cx >1
+            x=x';
         end
+        
+        absx=abs(x(:))>0.1;
+        
+        xabsx=x(absx);
+        s=zeros(nx*cx,1);
+        
+        absxn=~absx;
+        xabsxn=x(absxn);
+        y = xabsxn./(2 + xabsxn);
+        
+        term=2*exp(3*log(y));
+        % Option below to compute term seems slower
+        % term = 2 * y.^3;
+        
+        if first
+            s(absx)=log(1.0 + xabsx);
+            s(absxn) = 2*y;
+        else
+            s(absx)=log(1.0 + xabsx) - xabsx;
+            s(absxn)= -xabsxn.*y;
+        end
+        
+        if ~isempty(y) % TOCHECK IF ~isempty(y) is necessary
+            k = 3;
+            y = y.^2;
+            
+            sabsxn=s(absxn);
+            s1=sabsxn+term/k;
+            
+            while   ~isequal(s1,sabsxn)  % max(abs(s1-sabsxn))~=0 %
+                k = k + 2.0;
+                term = term.* y;
+                sabsxn = s1;
+                s1=sabsxn+term/k;
+            end
+            s(absxn)=s1;
+        end
+        
+        if cx>1
+            s=reshape(s,nx,cx);
+        end
+        
     end
 
     function [coefftau,fail]=cfe(x)
         %  coef of tausq in error when convergence factor of
         %   exp1(-0.5*tausq*u^2) is used when df is evaluated at x
         % This function computes eq (10) (integration error)
+        % fail =boolean (true if integration error is greater then 100)
         
         axl = abs(x);
         
@@ -520,26 +650,25 @@ varargout{2}=ifault;
         end
         sum1 = 0.0; % row 224
         
-        r=length(th);
-        
         for  jj =r:-1:1
             t = th(jj);
-            if ( lb(t) * sxl > 0.0 )
+            if lb(t) * sxl > 0.0 
                 lj = abs(lb(t));
                 axl1 = axl - lj * (n(t) + nc(t));
                 axl2 = lj / log28;
                 
-                if ( axl1 > axl2 )
-                    axl = axl1  ;
+                if axl1 > axl2 
+                    axl = axl1;
                 else
-                    if ( axl > axl2 )
+                    if axl > axl2
                         axl = axl2;
                     end
                     
                     sum1 = (axl - axl1) / lj;
-                    for k = jj-1:-1:1
-                        sum1 = sum1 + (n(th(k)) + nc(th(k)));
-                    end
+                    
+                    thj1=th(1:jj-1);
+                    sum1=sum1+sum(n(thj1)+nc(thj1));
+                    
                     break
                 end
             end
@@ -601,14 +730,24 @@ varargout{2}=ifault;
         xconst = u * sigsq;
         sum1 = u * xconst;
         u = 2.0 * u;
-        r=length(lb);
-        for jj=r:-1:1
-            nj = n(jj); lj = lb(jj); ncj = nc(jj);
-            x = u * lj; y = 1.0 - x;
-            xconst = xconst + lj * (ncj / y + nj) / y;
-            sum1 = sum1 + ncj * (x / y).^2 + nj * (x^2 / y + log1(-x, false));
-        end
-        cx = xconst;
+        
+        %         for jj=r:-1:1
+        %             nj = n(jj); lj = lb(jj); ncj = nc(jj);
+        %             x = u * lj; y = 1.0 - x;
+        %             xconst = xconst + lj * (ncj / y + nj) / y;
+        %             sum1 = sum1 + ncj * (x / y).^2 + nj * (x^2 / y + log1(-x, false));
+        %         end
+        
+        
+        x = u * lb; y = 1.0 - x;
+        cx = xconst+lb' * ((nc./y + n) ./ y);
+        x2=x.^2;
+        sum1 =  sum1+nc'* (x2./(y.^2)) + n' * (x2./ y + log1(-x, false));
+        
+        % Alternative way to find sum1 (seems slower)
+        % sum1 =  u * xconst+ sum(nc.* (x2./(y.^2)) + n.* (x2./ y + log1(-x, false)));
+        % sum1 =  sum1+nc'* ((x./y).^2) + n' * (x.^2./ y + log1(-x, false));
+        
         out=exp(-0.5 * sum1);
     end
 
@@ -638,30 +777,35 @@ varargout{2}=ifault;
         %  Espression \sum_1^K Im[ \phi \{ u e^-i u*c \}] is equal to the
         %  exp { } expression in curly brackets
         
-        r=length(lb);
+        
         inpi = interv / pi;
-        for  k = nterm:-1:0
-            u = (k + 0.5) * interv;
-            sum1 = - 2.0 * u * c;
-            sum2 = abs(sum1);
-            sum3 = - 0.5 * sigsq * u^2;
-            for  jj = r:-1:1
-                
-                nj = n(jj);  x = 2.0 * lb(jj) * u;  y = x^2;
-                sum3 = sum3 - 0.25 * nj * log1(y, true);
-                y = nc(jj) * x / (1.0 + y);
-                z = nj * atan(x) + y;
-                sum1 = sum1 + z;   sum2 = sum2 + abs(z);
-                sum3 = sum3 - 0.5 * x * y;
-            end
-            x = inpi * exp(sum3) / u;
-            if ~mainx
-                x = x * (1.0 - exp(-0.5 * tausq * u^2 ));
-            end
-            sum1 = sin(0.5 * sum1) * x;
-            sum2 = 0.5 * sum2 * x;
-            intl = intl + sum1;
-            ersm = ersm + sum2;
+        k = nterm:-1:0;
+        u = (k + 0.5) * interv;
+        sum1 = - 2.0 * u * c;
+        sum2 = abs(sum1);
+        sum3 = - 0.5 * sigsq * u.^2;
+        
+        x = 2.0 * lb * u;  y = x.^2;
+        sum3 = sum3 - 0.25 * n'* log1(y, true);
+        
+        
+        y= bsxfun(@times,nc,x)./ (1.0 + y);
+        z =  bsxfun(@times,n,atan(x))+y;
+        
+        %             y = nc.* x ./ (1.0 + y);
+        %             z = n.* atan(x) + y;
+        sum1 = sum1 + sum(z,1);   sum2 = sum2 + sum(abs(z),1);
+        sum3 = sum3 - 0.5 *sum(x.*y,1);
+        
+        
+        x = inpi * exp(sum3) ./ u;
+        if ~mainx
+            x = x.* (1.0 - exp(-0.5 * tausq * u.^2 ));
         end
+        sum1 = sin(0.5 * sum1) .* x;
+        sum2 = 0.5 * sum2 .* x;
+        intl = intl + sum(sum1);
+        ersm = ersm + sum(sum2);
+        
     end
 end
