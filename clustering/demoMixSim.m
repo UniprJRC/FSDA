@@ -172,11 +172,9 @@ if R_seed
 end
 
 Q7 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
-%[A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'R_seed', R_seed);
-
+% [A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'R_seed', R_seed);
 % [A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'nout',20,'alpha',0.1,'int',[10 50],'lambda',[0.5 0.8],'R_seed', R_seed,'maxout',100);
-
-gscatter(A7(:,1), A7(:,2), id7);
+% gscatter(A7(:,1), A7(:,2), id7);
 
 %% Example 4 of Section 3.3 plot (c) bis
 % Same as cell above but with all options for simdataset
