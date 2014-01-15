@@ -1,4 +1,4 @@
-function [out]  = restreigen(eigenvalues,niini,restr,tol)
+function [out]  = restreigen(eigenvalues,niini,restr,tol,userepmat)
 %restreigen computes eigenvalues restriction (without Dykstra algorithm)
 %
 %<a href="matlab: docsearch('restreigen')">Link to the help function</a>
@@ -21,8 +21,12 @@ function [out]  = restreigen(eigenvalues,niini,restr,tol)
 %            method looks for similarly scattered (respectively spherical)
 %            clusters.
 %      tol : scalar defining the tolerance of the procedure.
-%            The default value is 1e-15
-%
+%            The default value is 1e-8
+%    
+% userepmat : scalar. If userepmat is true function repmat is used instead
+%             of bsxfun inside the procedure. Remark: repmat is builkt in
+%             from MATLAB 2013b so it is faster to use repmat if the
+%             current version of MATLAB is >2013a
 %
 %  Output:
 %
@@ -94,6 +98,14 @@ if nargin<4
     tol =1e-8;
 end
 
+% userepmat specifies if it is necessary to use function repmat or bsxfun
+% Remark: repmat has become biult in from Release 2013b so it is faster to
+% use it
+if nargin<5
+    userepmat=0;
+end
+
+
 % Initializations
 c=restr;
 d=eigenvalues';
@@ -143,7 +155,9 @@ dimsor=dimsor+1;
 % elements has no influence in the objective function
 dnis=d(nis>0);
 
-if ((max(dnis) <= tol))
+maxdnis=max(dnis);
+
+if maxdnis <= tol
     % if all the eigenvalues are 0 this means all points are concentrated
     % in k groups and there is a perfect fit
     % no further changes on the eigenvalues required, so return them
@@ -152,7 +166,7 @@ if ((max(dnis) <= tol))
 else
     % we check if the  eigenvalues verify the restrictions
     
-    if max(dnis)/min(dnis)<=c
+    if maxdnis/min(dnis)<=c
         % If all eigenvalues satisy the constraint
         % no further changes on the eigenvalues required, so return them immediately!
         % Simply replace the 0 eigenvalues with the mean of the eigenvalues
@@ -250,6 +264,8 @@ else
         dgtcm=bsxfun(@gt,dvec,ed*c);
         rr=sum(permute(reshape(dltm+dgtcm,k,v,dimsor),[1 3 2]),3);
         
+        
+        
         % Matrix version of s(:,mp)=sum(d.*(d<edmp),2) for mp=1, ..., dimsor
         ddltm=bsxfun(@times,dltm,dvec);
         ss=sum(permute(reshape(ddltm,k,v,dimsor),[1 3 2]),3);
@@ -265,7 +281,14 @@ else
         % There are dimsor values of m*. We must choose the one which is
         % associated to the smallest value of the objective function
         % implemented in vector obj
-        solmp=sum(bsxfun(@times,ss+tt/c,ninin),1)./sum(bsxfun(@times,rr,ninin),1);
+        
+        if userepmat
+            nininmat=repmat(ninin,1,dimsor);
+            solmp=sum((ss+tt/c).*nininmat,1)./sum(rr.*nininmat,1);
+        else
+            solmp=sum(bsxfun(@times,ss+tt/c,ninin),1)./sum(bsxfun(@times,rr,ninin),1);
+        end
+        
         
         % Now find vector version of
         % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
@@ -301,11 +324,19 @@ else
         % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
         ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
         
-        % Now find vector version of o
-        % logede=log(ee)+bsxfun(@rdivide,d,ee);
-        logede=log(ee)+bsxfun(@times,d,1./ee);
-        % oo=nis/n.*(log(e)+d./e);
-        oo=bsxfun(@times,nis/n,logede);
+        
+        if userepmat
+            dmat=repmat(d,1,1,dimsor);
+            logede=log(ee)+dmat./ee;
+            nismat=repmat(nis/n,1,1,dimsor);
+            oo=nismat.*logede;
+        else
+            % Now find vector version of o
+            % logede=log(ee)+bsxfun(@rdivide,d,ee);
+            logede=log(ee)+bsxfun(@times,d,1./ee);
+            % oo=nis/n.*(log(e)+d./e);
+            oo=bsxfun(@times,nis/n,logede);
+        end
         
         % obj is a vector of size dimsor
         obj=sum(sum(oo,1));
