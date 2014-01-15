@@ -327,8 +327,8 @@ else
     persist='';
     ColorOrd=[1 0 0];
     clr='brcmykgbrcmykgbrcmykg';
+    flagcol='r';
 end
-
 
 % Symbol types for spm plot (in case of brushing)
 styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
