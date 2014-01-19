@@ -326,16 +326,19 @@ out = Q;
 %  INPUT parameters
 %
 % Omega     : overlap value
-% method    : average or maximum overlap
-% p         : dimensionality
-% k         : number of components
+% method    : average or maximum overlap 
+% p         : dimensionality (number of variables)
+% k         : number of components (groups)
 % PiLow     : smallest mixing proportion allowed
-% Lbound    : lower bound for uniform hypercube at which mean vectors are simulated
-% Ubound    : upper bound for uniform hypercube at which mean vectors are simulated
+% Lbound    : lower bound for uniform hypercube at which mean vectors are
+%             simulated
+% Ubound    : upper bound for uniform hypercube at which mean vectors are
+%             simulated
 % emax      : maximum eccentricity
-% pars, lim : parameters for qfc function
+% pars, lim : parameters for ncx2mixtcdf.m which computes the probability
+%             of overlapping 
 % resN      : number of resamplings allowed
-% sph       : sperical covariance matrices
+% sph       : spherical covariance matrices
 % hom       : homogeneous covariance matrices
 %
 %  OUTPUT parameters

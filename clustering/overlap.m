@@ -1,30 +1,40 @@
 function [OmegaMap, BarOmega, MaxOmega, rcMax] = overlap(k, p, Pi, Mu, S, tol, lim)
 %overlap computes the exact overlap given the parameters of the mixture
 %
+%<a href="matlab: docsearch('overlap')">Link to the help function</a>
+%
 %  Required input arguments:
 %  
-%  k  : number of components (not present in R implementation, as it can be
-%       derived from the size of Mu)
-%  p  : dimensionality (not present in R implementation, as it can be
-%       derived from the size of Mu)
-%  Pi : mixing proportions
-%  Mu : mean vectors (matrix of size k-by-p
-%  S  : covariance matrices 3D array of size p-by-p-by-k 
-%
-%  
+%  k  : number of components (groups)
+%  p  : dimensionality (number of variables) 
+%  Pi : vector of size k containing mixing proportions
+%  Mu : matrix of size k-by-p containing (in the rows) the centroids of the
+%       k groups
+%  S  : 3D array of size p-by-p-by-k containing covariance matrices of the
+%       k groups.
 %
 %  Optional input arguments:
 %  
-%  tol, lim - parameters for qfc function
 %  tol : tolerance (default is 1e-06)
 %  lim : scalar = maximum number of integration terms (default is 100000)
-
+%        REMARK: these two optional parameters (tol, lim) will be used by
+%        function ncx2mixtcdf.m which computes the probability of overlapping
+%
 % OUTPUT
 %
-%  - OmegaMap - map of misclassification probabilities
-%  - BarOmega - average overlap
-%  - MaxOmega - maximum overlap
-%  - rcMax - contains the pair of components producing the highest overlap
+%    OmegaMap : k-by-k matrix containing map of misclassification
+%               probabilities. More precisely, OmegaMap(i,j) is the
+%               probability that group i overlaps with group j 
+%               (i ~= j)=1, 2, ..., k
+%    BarOmega : scalar associated with average overlap.
+%               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
+%    MaxOmega : scalar associated with maximum overlap. MaxOmega is the
+%               maximum of OmegaMap(i,j)+OmegaMap(j,i)
+%               (i ~= j)=1, 2, ..., k
+%       rcMax : column vector of length equal to 2 containing the indexes
+%               associated with the pair of components producing the
+%               highest overlap (largest off diagonal element of matrix
+%               OmegaMap)
 %
 %
 % Copyright 2008-2014.
@@ -33,10 +43,9 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax] = overlap(k, p, Pi, Mu, S, tol, l
 %
 %<a href="matlab: docsearch('overlap')">Link to the help function</a>
 % Last modified 08-Dec-2013
-%
+
 % Examples:
-%
-%
+
 %{
 %    Finding exact overlap for the Iris data
 
@@ -54,9 +63,6 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax] = overlap(k, p, Pi, Mu, S, tol, l
     p=4;
     [OmegaMap, BarOmega, MaxOmega, rcMax]=overlap(k,p,pigen,Mu,S)
 %}
-
-% Tra paraentisi non capisco come mai l'istruzione che segue non funziona
-% grpstats(meas,species,{'cov'})%}
 
 %% Beginning of code
 

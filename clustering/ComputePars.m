@@ -21,11 +21,11 @@ const1=zeros(k,k);
 for kk=1:k
     
     Ga=S(:,:,kk);
-            % the line below is added to ensure numerical stability in
-        % computing the eigenvalues and eigenvectors, in the case Si has
-        % entries very close to 0.
-        Ga(abs(Ga)<1e-10)=0;
-
+    % The line below is added to ensure numerical stability in
+    % computing the eigenvalues and eigenvectors, in the case Si has
+    % entries very close to 0.
+    Ga(abs(Ga)<1e-10)=0;
+    
     [VGa,eigGa]=eig(Ga);
     
     detS(kk) = prod(diag(eigGa));
@@ -105,7 +105,7 @@ for ii=1:k-1
         % cpy1(Sh, j, p, p, Ga2);
         % XAXt(Ga2, p, L2, Si);
         
-                % the line below is added to ensure numerical stability in
+        % The line below is added to ensure numerical stability in
         % computing the eigenvalues and eigenvectors, in the case Si has
         % entries very close to 0.
         Si(abs(Si)<1e-10)=0;

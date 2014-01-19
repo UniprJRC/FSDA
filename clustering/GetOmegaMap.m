@@ -1,27 +1,39 @@
 function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fix, pars, lim, asympt)
 %GetOmegaMap calculates the map of misclassificaton betweeb groups
 %
-% /* GetOmegaMap calculates the map of misclassificatons
-%  INPUT parameters
-%  * c  - inflation parameter for covariance matrices
-%  * p  - dimensionality
-%  * k  - number of components
-%  * li, di, const1 - parameters needed for computing overlap (see theory of method)
-%    li = 3D array of size k-by-k-by-p
-%    di = 3D array of size k-by-k-by-p
+%  Required input arguments:
 %
-%    fix - fixed clusters that do not participate in inflation/deflation
-%    fix = vector of length k containing zeros or ones
-%    if fix(j) =1 cluster j does not participate to inflation or deflation.
-%    This parameter is used just if heterogeneous clusters are used
+%    c  : scalar, inflation parameter for covariance matrices
+%    k  : number of components (groups)
+%    p  : dimensionality (number of variables) 
+%    li : 3D array of size k-by-k-by-p
+%    di : 3D array of size k-by-k-by-p
+% const1: k x k matrix 
+%   REMARK: li, di and const1 are the parameters needed for computing
+%           overlap (see theory of method)
+%    fix : vector of length k containing zeros or ones
+%          if fix(j) =1 cluster j does not participate to inflation or
+%          deflation. If fix=zeros(k,1) all clusters participate in inflation/deflation
+%          This parameter is used just if heterogeneous clusters are used
 %    pars, lim - parameters for qfc function
-%   asympt - flag for regular or asymptotic overlap
-%  Output values
-%  * OmegaMap - k-by-k matrix contaoining misclassification probabilities
-%  * BarOmega - average overlap
-%  * MaxOmega - maximum overlap
-%  * rcMax - contains the pair of components producing the highest overlap
-%  */
+%   asympt : flag for regular or asymptotic overlap. If asypmt ==1 formula
+%          of asymptotic overlap is used
+%   
+%  Output:
+%
+%    OmegaMap : k-by-k matrix containing map of misclassification
+%               probabilities. More precisely, OmegaMap(i,j) is the
+%               probability that group i overlaps with group j 
+%               (i ~= j)=1, 2, ..., k
+%    BarOmega : scalar associated with average overlap.
+%               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
+%    MaxOmega : scalar associated with maximum overlap. MaxOmega is the
+%               maximum of OmegaMap(i,j)+OmegaMap(j,i)
+%               (i ~= j)=1, 2, ..., k
+%       rcMax : column vector of length equal to 2 containing the indexes
+%               associated with the pair of components producing the
+%               highest overlap (largest off diagonal element of matrix
+%               OmegaMap)
 %
 % Copyright 2008-2014. 
 % Written by FSDA team
