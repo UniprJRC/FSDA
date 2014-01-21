@@ -17,8 +17,10 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax] = overlap(k, p, Pi, Mu, S, tol, l
 %  
 %  tol : tolerance (default is 1e-06)
 %  lim : scalar = maximum number of integration terms (default is 100000)
-%        REMARK: these two optional parameters (tol, lim) will be used by
-%        function ncx2mixtcdf.m which computes the probability of overlapping
+%               REMARK: Optional parameters tol and lim will be used by
+%               function ncx2mixtcdf.m which computes the cdf of a linear
+%               combination of non central chi2 r.v.. This is the
+%               probability of overlapping.
 %
 % OUTPUT
 %

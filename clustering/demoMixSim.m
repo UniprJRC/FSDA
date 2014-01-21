@@ -59,7 +59,7 @@ if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
 end
 
-ex3 = MixSim(2, 4, 'BarOmega' , 0.05, 'sph' , true, 'hom' , true,  'eps', 1e-10, 'int', [0 10], 'R_seed', R_seed);
+ex3 = MixSim(2, 4, 'BarOmega' , 0.05, 'sph' , true, 'hom' , true,  'tol', 1e-10, 'int', [0 10], 'R_seed', R_seed);
 
 %% Example for Section 3.2
 

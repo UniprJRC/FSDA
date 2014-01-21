@@ -1,29 +1,34 @@
-function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fix, pars, lim, asympt)
+function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fix, tol, lim, asympt)
 %GetOmegaMap calculates the map of misclassificaton betweeb groups
 %
 %  Required input arguments:
 %
-%    c  : scalar, inflation parameter for covariance matrices
-%    k  : number of components (groups)
-%    p  : dimensionality (number of variables) 
-%    li : 3D array of size k-by-k-by-p
-%    di : 3D array of size k-by-k-by-p
-% const1: k x k matrix 
-%   REMARK: li, di and const1 are the parameters needed for computing
+%       c  : scalar, inflation parameter for covariance matrices
+%       p  : dimensionality (number of variables)
+%       k  : number of components (groups)
+%       li : 3D array of size k-by-k-by-p
+%       di : 3D array of size k-by-k-by-p
+%    const1: k x k matrix
+%           REMARK: li, di and const1 are the parameters needed for computing
 %           overlap (see theory of method)
-%    fix : vector of length k containing zeros or ones
+%      fix : vector of length k containing zeros or ones
 %          if fix(j) =1 cluster j does not participate to inflation or
 %          deflation. If fix=zeros(k,1) all clusters participate in inflation/deflation
 %          This parameter is used just if heterogeneous clusters are used
-%    pars, lim - parameters for qfc function
+%      tol : scalar. Error bound for overlap computation default is 1e-06
+%      lim : maximum number of integration terms default is 1e06.
+%               REMARK: Optional parameters tol and lim will be used by
+%               function ncx2mixtcdf.m which computes the cdf of a linear
+%               combination of non central chi2 r.v.. This is the
+%               probability of overlapping
 %   asympt : flag for regular or asymptotic overlap. If asypmt ==1 formula
 %          of asymptotic overlap is used
-%   
+%
 %  Output:
 %
 %    OmegaMap : k-by-k matrix containing map of misclassification
 %               probabilities. More precisely, OmegaMap(i,j) is the
-%               probability that group i overlaps with group j 
+%               probability that group i overlaps with group j
 %               (i ~= j)=1, 2, ..., k
 %    BarOmega : scalar associated with average overlap.
 %               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
@@ -35,13 +40,11 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, cons
 %               highest overlap (largest off diagonal element of matrix
 %               OmegaMap)
 %
-% Copyright 2008-2014. 
+% Copyright 2008-2014.
 % Written by FSDA team
 %
 
 %% Beginning of code
-
-acc = pars(1);
 
 % Omegamap= k-by-k matrix which will contain misclassification probabilities
 OmegaMap=eye(k);
@@ -90,8 +93,8 @@ if hom == 1
             % df = degrees of freedom of mixture of non central chi2
             %
             
-       
-            OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',acc);
+            
+            OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
             % c   :         scalar, value at which the cdf must be evaluated
             % n  :         vector of length k containing the degrees of freedom of the
             %               k non central chi2 distributions
@@ -116,8 +119,8 @@ if hom == 1
             t = const1(jj,ii) - Cnst1;
             sigma = 2 * sqrt(Cnst1);
             
-                      
-            OmegaMap(jj,ii) = ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',acc);
+            
+            OmegaMap(jj,ii) = ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
             % OmegaMap[j][i] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
             
             OmegaOverlap = OmegaMap(ii,jj) + OmegaMap(jj,ii);
@@ -194,7 +197,7 @@ if hom == 0
         
         
         while ii < k
-                        
+            
             if fix(ii) == 1
                 Di = squeeze(di(ii,jj,:));
                 
@@ -232,10 +235,8 @@ if hom == 0
             ncp = (ldprod./coef).^2;
             t = sum(const2)+ Cnst1;
             
-            % OmegaMap[i][j] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
-                    
-            OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',acc);
-            
+            OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
+
             if fix(jj) == 1
                 
                 
@@ -265,17 +266,13 @@ if hom == 0
                 
             end
             
-            
             coef = Li - 1.0;
             ldprod = Li.*Di;
             const2 = (ldprod.*Di)./ coef;
             ncp = (ldprod./coef).^2;
             t = sum(const2)+ Cnst1;
             
-            %	OmegaMap[j][i] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
-            
-                     
-            OmegaMap(jj,ii)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',acc);
+            OmegaMap(jj,ii)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
             
             OmegaOverlap = OmegaMap(ii,jj) + OmegaMap(jj,ii);
             TotalOmega = TotalOmega + OmegaOverlap;
@@ -312,8 +309,8 @@ if hom == 0
                     ncp = (ldprod./coef).^2;
                     
                     t = sum(const2) + const1(ii,jj);
-                              
-                    OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',acc);
+                    
+                    OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
                     
                     % OmegaMap[i][j] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
                     
@@ -334,7 +331,7 @@ if hom == 0
                     
                     t = const1(ii,jj);
                     
-                    OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',acc);
+                    OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
                     
                     % OmegaMap[i][j] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
                     
@@ -356,8 +353,8 @@ if hom == 0
                     
                     
                     % 	OmegaMap[j][i] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
-                               
-                    OmegaMap(jj,ii)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',acc);
+                    
+                    OmegaMap(jj,ii)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
                     
                 else
                     
@@ -375,9 +372,9 @@ if hom == 0
                     ncp = zeros(p,1);
                     
                     t = const1(jj,ii);
-                              
-                     % OmegaMap[j][i] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
-                    OmegaMap(jj,ii)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',acc);
+                    
+                    % OmegaMap[j][i] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
+                    OmegaMap(jj,ii)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
                     
                 end
             end
