@@ -1,5 +1,5 @@
 function [bdp,eff] = HAc(ctun,p,varargin)
-%HYPc computes breakdown point and efficiency associated with constant c for
+%HAc computes breakdown point and efficiency associated with constant c for
 %hyperbolic tangent estimator (for a given value of k=sup CVC)
 %
 %<a href="matlab: docsearch('hypc')">Link to the help function</a>

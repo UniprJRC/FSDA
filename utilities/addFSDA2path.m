@@ -1,5 +1,5 @@
 function addFSDA2path(FSDApath)
-%% Add FSDA toolbox to path
+%Add FSDA toolbox to path
 %
 %  Required input arguments:
 %

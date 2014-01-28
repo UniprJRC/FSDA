@@ -1,4 +1,4 @@
-% /* computes parameters needed for computing overlap
+%computes parameters needed for computing overlap
 %  INPUT PARAMETERS
 %  * p  - dimensionality
 %  * k  - number of components

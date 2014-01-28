@@ -1,4 +1,4 @@
-%%examples_regression shows a series of analysis of regression datasets 
+%examples_regression shows a series of analysis of regression datasets 
 
 
 

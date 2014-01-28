@@ -1,5 +1,5 @@
 function x = shuffling(x)
-% shuffling does a random permutation of the elements of input vector  
+%shuffling does a random permutation of the elements of input vector  
 %
 %<a href="matlab: docsearch('shuffling')">Link to the help function</a>
 %

@@ -1,5 +1,5 @@
 function y = rescale(x,a,b)
-% rescale data in [a,b]
+%rescale data in [a,b]
 %
 %   y = rescale(x,a,b);
 %

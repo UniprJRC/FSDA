@@ -1,5 +1,5 @@
 function brushRES
-%%brushRES displays a GUI where it is possible to brush steps from the monitoring residuals plot 
+%brushRES displays a GUI where it is possible to brush steps from the monitoring residuals plot 
 %and to see the corresponding units highlighted in other plots
 %
 %<a href="matlab: docsearch('brushRES')">Link to the help page for this function</a>

@@ -1,5 +1,5 @@
 function brushFAN
-%%brushFAN displays a GUI where it is possible to brush steps from the fan plot
+%brushFAN displays a GUI where it is possible to brush steps from the fan plot
 % and to see the corresponding units highlighted in other plots
 %
 %<a href="matlab: docsearch('brushFAN')">Link to the help page for this function</a>

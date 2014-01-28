@@ -1,5 +1,5 @@
 function c = OPTbdp(bdp,p)
-%TBbdp finds the constant c associated to the supplied breakdown point
+%OPTbdp finds the constant c associated to the supplied breakdown point
 % The constant is found through a dichotomic search
 %
 %

@@ -1,5 +1,5 @@
 function psi=OPTpsi(x,c)
-%OPTpsix computes psi function (derivative of rho function) for optimal weight function
+%OPTpsi computes psi function (derivative of rho function) for optimal weight function
 %
 %<a href="matlab: docsearch('optpsi')">Link to the help function</a>
 %

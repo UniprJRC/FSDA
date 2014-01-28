@@ -1,5 +1,5 @@
 function playbackdemoFS(demo_name)
-%% playbackdemoFS opens FSDA web site and launches playback device
+%playbackdemoFS opens FSDA web site and launches playback device
 %
 %  PLAYBACKDEMOFS(DEMO_NAME) launches a playback demo in "www.riani.it/MATLAB/".
 %

@@ -1,5 +1,5 @@
 function ceff = OPTeff(eff,p,varargin)
-%Tbeff finds the constant c which is associated to the requested efficiency
+%OPTeff finds the constant c which is associated to the requested efficiency
 %
 %  Required input arguments:
 %

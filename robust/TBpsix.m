@@ -1,5 +1,5 @@
 function psix=TBpsix(u,c)
-%TBpsi computes psi function (derivative of rho function) times x for Tukey's biweight  
+%TBpsix computes psi function (derivative of rho function) times x for Tukey's biweight  
 %
 %<a href="matlab: docsearch('tbpsix')">Link to the help function</a>
 %

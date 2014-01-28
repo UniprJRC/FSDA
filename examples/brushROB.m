@@ -1,5 +1,5 @@
 function brushROB
-%%brushROB displays a GUI to brush units from the index plot of residuals
+%brushROB displays a GUI to brush units from the index plot of residuals
 %and see the corresponding units highlighted in the yXplot
 %
 %<a href="matlab: docsearch('brushROB')">Link to the help page for this function</a>

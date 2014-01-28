@@ -1,5 +1,5 @@
 function [RAW,REW,varargout] = mve(Y,varargin)
-%mcd computes Minimum volume ellipsoid
+%mve computes Minimum volume ellipsoid
 %
 %<a href="matlab: docsearch('mve')">Link to the help function</a>
 %

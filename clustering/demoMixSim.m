@@ -1,4 +1,4 @@
-%% PREPARE CONNECTION WITH R
+%dempMixSim prepare connection with R
 
 % Description: MixSim allows simulating mixtures of Gaussian
 % distributions with different levels of overlap between mixture

@@ -1,4 +1,4 @@
-%% examples_multivariate shows a series of analysis of multivariate datasets
+%examples_multivariate shows a series of analysis of multivariate datasets
 
 
 %% HD (Heads data) analysis using univariate boxplots

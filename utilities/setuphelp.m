@@ -1,5 +1,5 @@
 function setuphelp(FSDApath)
-%% Load appropriate HTML help documentation files depending on the installed version of MATLAB
+%Load appropriate HTML help documentation files depending on the installed version of MATLAB
 %
 %  Required input arguments:
 %
