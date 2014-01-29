@@ -37,11 +37,33 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %  Optional input arguments:
 %
-%       nsamp : Number of subsamples which will be extracted to find the
-%               partition. If nsamp=0 all subsets will be extracted.
-%               They will be (n choose k).
+%       nsamp : scalar of matrix.
+%               If nsamp is a scalar it contains the number of subsamples
+%               which will be extracted. If nsamp=0
+%               all subsets will be extracted.
 %               Remark: if the number of all possible subset is <300 the
 %               default is to extract all subsets, otherwise just 300
+%               If nsamp is a matrix it contains in the rows the indexes of
+%               the subsets which have to be extracted. nsamp in this case
+%               can be conviently generated  by function subsets. nsamp can
+%               have k columns of k*(v+1) columns. If nsamp has k columns
+%               the k initial centroids each iteration i are given by
+%               X(nsamp(i,:),:) and the covariance matrices are equal to the
+%               identity.
+%               If nsamp has k*(v+1) columns the initial centroids and covariance
+%               matrices in iteration i are computed as follows
+%               X1=X(nsamp(i,:),:)
+%               mean(X1(1:v+1,:)) contains the initial centroid for group 1
+%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
+%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
+%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
+%               ...
+%               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
+%               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
+%               REMARK: if nsamp is not a scalar option option below
+%               startv1 is ignored. More precisely if nsamp has k columns
+%               startv1=0 elseif nsamp has k*(v+1) columns option startv1
+%               =1.
 %    refsteps : scalar defining number of refining iterations in each
 %               subsample (default = 15).
 %     reftol  : scalar. Default value of tolerance for the refining steps
@@ -117,7 +139,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               covariance matrices are initialized with identity matrices.
 %               Remark: in order to start with a routine which is in the
 %               required parameter space, eigenvalue restrictions are
-%               immediately applied. The defualt value of startv1 is 0.
+%               immediately applied. The default value of startv1 is 1.
+%               REMARK: option startv1 is used just if nsamp is a scalar
+%               (see for more details the help associated with nsamp)
 %       Ysave : Scalar that is set to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 0, i.e.
 %               no saving is done.
@@ -176,7 +200,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %            out.BIC  : BIC
 %          out.fullsol: column vector of size nsamp which contains the
 %                       value of the objective function for each
-%                       suabsample. 
+%                       suabsample.
 %
 % See also tkmeans, estepFS.m
 %
@@ -324,32 +348,96 @@ Y = chkinputM(Y,nnargin,vvarargin);
 
 
 %% User options
-% Remark: startv1 must be immediately checked because the calculation of
-% ncomb is immediately affected.
+% startv1def = default value of startv1 =1, initialization using covariance
+% matrices based on v+1 units
+startv1def=1;
+
 if nargin>4
-    chkstartv1 = strcmp(varargin,'startv1');
-    if sum(chkstartv1)>0
-        startv1= cell2mat(varargin(find(chkstartv1)+1));
-        % varargin(find(chkstartv1)+1);
-        %     else
-        %         startv1=1;
+    % Check whether option nsamp exists
+    chknsamp = strcmp(varargin,'nsamp');
+    
+    % if the sum below is greater than 0 option nsamp exists
+    if sum(chknsamp)>0
+        nsamp=cell2mat(varargin(find(chknsamp)+1));
+        
+        % Check if options nsamp is a scalar
+        if ~isscalar(nsamp)
+            % if nsamp is not a scalar, it is a matrix which contains in
+            % the rows the indexes of the subsets which have to be
+            % extracted
+            C=nsamp;
+            [nsampdef,ncolC]=size(C);
+            % The number of rows of nsamp (matrix C) is the number of
+            % subsets which have to be extracted
+            nselected=nsampdef;
+            % If the number of columns of nsamp (matrix C) is equal to v
+            % then the procedure is initialized using identity matrices
+            % else using covariance matrices based on the (v+1)*k units
+            if ncolC==v
+                startv1=0;
+            elseif ncolC==k*(v+1)
+                startv1=1;
+            else
+                disp('If nsamp is not a scalar it must have v or k*(v+2) columns')
+                disp('Please generate nsamp using')
+                disp('nsamp=subsets(number_desired_subsets,n,k) or')
+                disp('nsamp=subsets(number_desired_subsets,n,(v+1)*k)')
+                error('Wrong number of columns in matrix nsamp')
+            end
+            NoPriorSubsets=0;
+        else
+            % If nsamp is a scalar it simply contains the number of subsets
+            % wihch have to be extracted. In this case NoPriorSubsets=1
+            NoPriorSubsets=1;
+            
+            % In this case (nsamp is a scalar) we check whether the user has supplied option
+            % startv1
+            chkstartv1 = strcmp(varargin,'startv1');
+            if sum(chkstartv1)>0
+                startv1= cell2mat(varargin(find(chkstartv1)+1));
+            else
+                startv1=startv1def;
+            end
+        end
     else
-        startv1=0;
+        % If option nsamp is no supplied then for sure there are no prior
+        % subsets
+        NoPriorSubsets=1;
+        
+        % In this case (options nsamp does not exist) we check whether the
+        % user has supplied option startv1
+        chkstartv1 = strcmp(varargin,'startv1');
+        if sum(chkstartv1)>0
+            startv1= cell2mat(varargin(find(chkstartv1)+1));
+        else
+            startv1=startv1def;
+        end
     end
 else
-    startv1=0;
+    % if nargin ==4 for use the user has not supplied prior subsets.
+    % Default value of startv1 is used
+    NoPriorSubsets=1;
+    startv1=startv1def;
 end
 
-if startv1
-    ncomb=bc(n,k*(v+1));
-else
-    % If the number of all possible subsets is <300 the default is to extract
-    % all subsets otherwise just 300.
-    % Notice that we use bc, a fast version of nchoosek. One may also use the
-    % approximation floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5)
-    ncomb=bc(n,k);
+% If the user has not specified prior subsets (nsamp is not a scalar) than
+% according the value of startv1 we have a different value of ncomb
+if NoPriorSubsets ==1
+    % Remark: startv1 must be immediately checked because the calculation of
+    % ncomb is immediately affected.
+    
+    if startv1
+        ncomb=bc(n,k*(v+1));
+    else
+        % If the number of all possible subsets is <300 the default is to extract
+        % all subsets otherwise just 300.
+        % Notice that we use bc, a fast version of nchoosek. One may also use the
+        % approximation floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5)
+        ncomb=bc(n,k);
+    end
+    nsampdef=min(300,ncomb);
 end
-nsampdef=min(300,ncomb);
+
 refstepsdef=15;
 reftoldef=1e-5;
 
@@ -391,7 +479,7 @@ end
 
 options=struct('nsamp',nsampdef,'plots',0,'nocheck',0,...
     'msg',1,'Ysave',0,'refsteps',refstepsdef,'equalweights',false,...
-    'reftol',reftoldef,'mixt',0,'startv1',1);
+    'reftol',reftoldef,'mixt',0,'startv1',startv1def);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -424,7 +512,7 @@ if nargin > 4
     % And check if the optional user parameters are reasonable.
     
     % Check number of subsamples to extract
-    if options.nsamp>ncomb;
+    if isscalar(options.nsamp) && options.nsamp>ncomb;
         disp('Number of subsets to extract greater than (n k). It is set to (n k)');
         options.nsamp=0;
     elseif  options.nsamp<0;
@@ -468,14 +556,14 @@ if mixt>=1 && equalweights == 1
     warning('options equalweights is reset to 0')
 end
 
-%% Combinatorial part to extract the subsamples
-
-
-if startv1
-    [C,nselected] = subsets(nsamp,n,k*(v+1),ncomb,msg);
-else
-    [C,nselected] = subsets(nsamp,n,k,ncomb,msg);
-    niinistart=repmat(floor(h/k),k,1);
+%% Combinatorial part to extract the subsamples (if not already supplied by the user)
+if NoPriorSubsets
+    if startv1
+        [C,nselected] = subsets(nsamp,n,k*(v+1),ncomb,msg);
+    else
+        [C,nselected] = subsets(nsamp,n,k,ncomb,msg);
+        niinistart=repmat(floor(h/k),k,1);
+    end
 end
 
 % Store the indices in varargout
@@ -552,7 +640,6 @@ for i=1:nselected
             tstart = tic;
         end
     end
-    
     
     if startv1
         
@@ -999,7 +1086,6 @@ out.bs=bs;
 % else if  equalweights is true
 % ll(i,j) is log( f(x_i|\theta_j))
 % f(x_i|\theta_j) is multivariate normal with theta_j =(mu_j, \Sigma_j)
-
 if equalweights
     for j=1:k
         ll(:,j)= logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v);
@@ -1010,51 +1096,54 @@ else
     end
 end
 
+% matrix ll forms the input to compute both the MIXTURE and the CLASSIFICATION LIKELIHOOD
 
 % postprob n x k containing posterior probabilities
 % logpdf n x 1 vector containg the n contributions to the log
 % likelihood of mixture models
 [~,postprob,logpdf]=estepFS(ll);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% In this part we select the untrimmed units
+% They are those which have the n(1-alpha) largest values among the
+% maxima of each row of matrix ll
+% vector disc of length(n) contains the (weighted) contribution of
+% each unit to the log likelihood
+% idx = n x 1 vector containing the final assignments
+% disc = n x 1 vector which contains the likelihood of each unit to
+% the closest cluster
+
+[disc,idx]= max(ll,[],2);
+
+% Sort the n likelihood contributions
+% qq contains the orderd (weighted) likelihood contributions
+[~,qq]=sort(disc,'descend');
+% assigned=qq(1:h);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Find final trimmed and untrimmed units for final classification
 if mixt==2
     
-    
-    
     % Sort the n likelihood contributions
     % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
-    [~,qq]=sort(logpdf,'descend');
+    [~,qqmixt]=sort(logpdf,'descend');
     
-    unassigned=qq(h+1:n);
-    assigned=qq(1:h);
+    unassignedmixt=qqmixt(h+1:n);
+    assignedmixt=qqmixt(1:h);
     
     % Store in vector idx the cluster associated to the highest posterior
     % probability
-    [~,idx]=max(postprob,[],2);
-    idx(unassigned)=0;
+    [~,idxmixt]=max(postprob,[],2);
+    idxmixt(unassignedmixt)=0;
     
-    postprob(unassigned,:)=0;
+    postprob(unassignedmixt,:)=0;
     % Remark:
     % If there was full convergence sum(logpdf(assigned)) = vopt
 else
     
-    % In this part we select the untrimmed units
-    % They are those which have the n(1-alpha) largest values among the
-    % maxima of each row of matrix ll
-    % vector disc of length(n) contains the (weighted) contribution of
-    % each unit to the log likelihood
-    % idx = n x 1 vector containing the final assignments
-    % disc = n x 1 vector which contains the likelihood of each unit to
-    % the closest cluster
-    
-    [disc,idx]= max(ll,[],2);
-    
-    % Sort the n likelihood contributions
-    % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
-    [~,qq]=sort(disc,'descend');
-    
     unassigned=qq(h+1:n);
-    assigned=qq(1:h);
     % Assign observations to clusters and assign a 0 value to trimmed ones
     idx(unassigned)=0;
     postprob(unassigned,:)=0;
@@ -1064,33 +1153,34 @@ end
 % Compute AIC and BIC
 
 if mixt>=1
-    % Compute value of the maximized log likelihood
-    [NlogLmixt]=estepFS(ll(assigned,:));
+    % Compute value of the maximized MiXTURE log likelihood
+    [NlogLmixt]=estepFS(ll(assignedmixt,:));
     
     
-    % Note that is there was convergence NlogL should be exactly equal to
-    % -vopt
-    NlogL = -NlogLmixt;
-else
-    
-    % Note that disc(qq(1:h)) is the contribution to the loglikelihood
-    % of the untrimmed units
-    loglik=disc(qq(1:h));
-    
-    % NlogL is the negative of the log-likelihood of the mixture of the
-    % untrimmed units
-    % NlogL=-sum(max(ll,[],2));
+    % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
     % Note that if there was convergence NlogL should be exactly equal to
     % -vopt
-    NlogL =-sum(loglik);
+    NlogLmixt = -NlogLmixt;
 end
 
+% Note that disc(qq(1:h)) is the contribution to the CLASSIFICATION
+% loglikelihood of the untrimmed units
+loglik=disc(qq(1:h));
+
+% NlogL is the negative of the CLASSIFICATION LOG-LIKELIHOOD  of the
+% untrimmed units
+% NlogL=-sum(max(ll(untrimmed units,[],2));
+% Note that if there was convergence NlogL should be exactly equal to
+% -vopt
+NlogL =-sum(loglik);
 
 % Store the assignments in matrix out
 % Unassigned units have an assignment equal to 0
-
-out.idx=idx;
-
+if mixt>=1
+    out.idx=idxmixt;
+else
+    out.idx=idx;
+end
 
 % siz = matrix of size k x 3,
 % 1st col = sequence from 0 to k
@@ -1105,7 +1195,7 @@ out.siz=siz;
 % Number of estimated parameters
 % k centroids of size v
 % 0.5*v*(v+1) estimates for each of the k covariance matrices
-npar=v*k; % +0.5*v*(v+1)*k;
+npar=v*k; 
 
 % if equalweights = 0 the k-1 mixture proportions parameters must be added
 if equalweights==0
@@ -1156,30 +1246,51 @@ end
 
 
 
-%% Compute AIC and BIC
-
-% disp(nconstr)
+%% Compute INFORMATION CRITERIA 
 
 nParam=npar+(0.5*v*(v+1)*k-1)*( (1-1/restrfactor)^(k*v-1) )+1;
-% nParam=npar+0.5*v*(v+1)*k;
-
-% NlogL = - maximized log likelihood (for untrimmed observations)
-BIC = 2*NlogL + nParam*log(h); % Note log(h) instead of log(n)  h=untrimmed units
-AIC = 2*NlogL + 2*nParam;
-
-
 nParamOld=npar+0.5*v*(v+1)*k;
-BICold = 2*NlogL + nParamOld*log(h); % Note log(h) instead of log(n)  h=untrimmed units
-AICold = 2*NlogL + 2*nParamOld;
 
+logh=log(h);
 
-%
-%
-% if equalweights == 1
-%     siz=tabulate(Ytri(:,end));
-%
-%     D=bsxfun(@minus,D,log(siz(:,1)'));
-% end
+if mixt>0
+    % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
+    % and the maximized mixture likelihood as goodness of fit measure (New BIC)
+    MIXMIX      = 2*NlogLmixt +nParam*logh;
+    MIXMIXold   = 2*NlogLmixt +nParamOld*logh;
+    
+    % MIXCLA = BIC which uses the classification likelihood based on
+    % parameters estimated using the mixture likelihood (New ICL)
+    MIXCLA      = 2*NlogL +nParam*logh;
+    MIXCLAold   = 2*NlogL +nParamOld*logh;
+    
+    out.MIXMIX=MIXMIX;
+    out.MIXMIXold=MIXMIXold;
+    out.MIXCLA=MIXCLA;
+    out.MIXCLAold=MIXCLAold;
+end
+
+% CLACLA = BIC which uses parameters estimated using the classification
+% likelihood and the maximized classification likelihood as goodness of fit
+% measure (New New)
+CLACLA      = 2*NlogL +nParam*logh;
+CLACLAold   = 2*NlogL +nParamOld*logh;
+
+out.CLACLA=CLACLA;
+out.CLACLAold=CLACLAold;
+
+% OLD PART TO DELETE
+% % NlogL = - maximized log likelihood (for untrimmed observations)
+% BIC = 2*NlogL + nParam*log(h); % Note log(h) instead of log(n)  h=untrimmed units
+% AIC = 2*NlogL + 2*nParam;
+% 
+% 
+% BICold = 2*NlogL + nParamOld*log(h); % Note log(h) instead of log(n)  h=untrimmed units
+% AICold = 2*NlogL + 2*nParamOld;
+% out.BIC=BIC;
+% out.AIC=AIC;
+% out.BICold=BICold;
+% out.AICold=AICold;
 
 
 % Store the fraction of subsamples without convergence.
@@ -1216,10 +1327,6 @@ out.h=h;
 % of each row from each component (cluster)
 out.post=postprob;
 
-out.BIC=BIC;
-out.AIC=AIC;
-out.BICold=BICold;
-out.AICold=AICold;
 
 out.fullsol=fullsol;
 
