@@ -44,7 +44,7 @@ function [out]=FSR(y,X,varargin)
 %                 series of options for concentration steps (for more
 %                 details see option lms inside LXS.m)
 %                 LXS.m. 
-%                 If, on the other hans, the user wants to initialize the
+%                 If, on the other hand, the user wants to initialize the
 %                 search with a prespecified set of units there are two
 %                 possibilities
 %                 1) lms can be a vector with length greater than 1 which 
