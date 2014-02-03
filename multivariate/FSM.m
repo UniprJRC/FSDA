@@ -14,8 +14,16 @@ function [out]=FSM(Y,varargin)
 %
 % Optional input arguments:
 %
-%          m0   : scalar which specifies the initial subset size
-%                 The default is to start the search with v+1 units
+%          m0   : scalar which specifies the initial subset size or the
+%                 or vector which contains the list of the units forming
+%                 initial subset.
+%                 The default is to start the search with v+1 units which
+%                 consisting of those observations which are not outlying
+%                 on any scatterplot, found as the intersection of all
+%                 points lying within a robust contour containing a
+%                 specified portion of the data (Riani and Zani 1997) and
+%                 inside the univariate boxplot. Remark: if m0 is a vector
+%                 option below crit is ignored
 %       crit    : String which specified the criterion to be used to
 %                 initialize the search
 %                 if crit='md' the units which form initial subset are
@@ -272,25 +280,30 @@ crit=options.crit;
 m0=options.m0;
 
 %% Start of the forward search
-% Confidence level for robust bivariate ellipses
-rf=options.rf;
 
-% Find initial subset to initialize the search
-[fre]=unibiv(Y,'rf',rf);
-
-if strcmp(crit,'md')==1
-    % The user has chosen to select the intial subset according to the
-    % smallest m0 pseudo MD Select only the potential bivariate outliers
-    fre=sortrows(fre,4);
-elseif strcmp(crit,'biv')==1
-    fre=sortrows(fre,[3 4]);
-elseif strcmp(crit,'uni')==1
-    fre=sortrows(fre,[2 4]);
+if length(m0)>1
+    bs=m0;
 else
-    error('Error:: supplied options to initialize the search does not exist.');
+    % Confidence level for robust bivariate ellipses
+    rf=options.rf;
+    
+    % Find initial subset to initialize the search
+    [fre]=unibiv(Y,'rf',rf);
+    
+    if strcmp(crit,'md')==1
+        % The user has chosen to select the intial subset according to the
+        % smallest m0 pseudo MD Select only the potential bivariate outliers
+        fre=sortrows(fre,4);
+    elseif strcmp(crit,'biv')==1
+        fre=sortrows(fre,[3 4]);
+    elseif strcmp(crit,'uni')==1
+        fre=sortrows(fre,[2 4]);
+    else
+        error('Error:: supplied options to initialize the search does not exist.');
+    end
+    
+    bs=fre(1:m0,1);
 end
-
-bs=fre(1:m0,1);
 
 quant=[0.99;0.999;0.9999;0.99999;0.01;0.5];
 % Compute theoretical envelops for minimum Mahalanobis Distance based on all
@@ -669,7 +682,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             PrVaCell{1,3} = 'BackgroundColor'; PrVaCell{2,3} = 'none';
             PrVaCell{1,4} = 'FitBoxToText'; PrVaCell{2,4} = 'off';
             PrVaCell{1,5} = 'Tag'; PrVaCell{2,5} = 'quantile_label';
-
+            
             % Create textbox with 1% label
             [figx, figy] = dsxy2figxy(gca, init, gmin(1,c001));
             if figy>=0 && figy<=1 && figx>=0 && figx<=1
@@ -826,7 +839,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             PrVaCell{1,3} = 'FitBoxToText'; PrVaCell{2,3} = 'on';
             PrVaCell{1,4} = 'EdgeColor'; PrVaCell{2,4} = 'none';
             PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
-
+            
             
             
             
@@ -875,13 +888,13 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
         % Superimpose Bonferroni line to the plot
         line(gmin(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
         % Property-value pairs which are common to the next latex annotations
-
-                    PrVaCell{1,1} = 'Interpreter'; PrVaCell{2,1} = 'latex';
-            PrVaCell{1,2} = 'HorizontalAlignment'; PrVaCell{2,2} = 'center';
-            PrVaCell{1,3} = 'FitBoxToText'; PrVaCell{2,3} = 'on';
-            PrVaCell{1,4} = 'EdgeColor'; PrVaCell{2,4} = 'none';
-            PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
-
+        
+        PrVaCell{1,1} = 'Interpreter'; PrVaCell{2,1} = 'latex';
+        PrVaCell{1,2} = 'HorizontalAlignment'; PrVaCell{2,2} = 'center';
+        PrVaCell{1,3} = 'FitBoxToText'; PrVaCell{2,3} = 'on';
+        PrVaCell{1,4} = 'EdgeColor'; PrVaCell{2,4} = 'none';
+        PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
+        
         
         if size(bonfthresh,2)>1
             % latex annotations informing that the envelopes are based on
@@ -1193,7 +1206,7 @@ if ndecl>0;
         bb = FSMbbm(Y,bs,n-ndecl,'init',init);
         outliers=seq(isnan(bb));
     end
-        group(outliers)=2;
+    group(outliers)=2;
     
 else
     outliers=NaN;
