@@ -1145,7 +1145,7 @@ if (signal==1);
                 tr=tr(end,1);
                 if msg
                     disp('Probably there are two overlapping groups');
-                    disp(['Using the criterium of the maximum, the group of homogenous obs. is=' int2str(tr)]);
+                    disp(['Using the criterion of the maximum, the group of homogenous obs. is=' int2str(tr)]);
                 end
                 % tr is redefined and is associated with the step associated to
                 % the maximum value of d_min
