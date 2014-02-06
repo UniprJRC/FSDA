@@ -1,5 +1,5 @@
 function out = rlga(X,k,alpha,varargin)
-%rlga performa robust linear grouping analysis
+%rlga performs robust linear grouping analysis
 %
 %
 %<a href="matlab: docsearch('rlga')">Link to the help function</a>

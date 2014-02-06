@@ -12,7 +12,7 @@
 % ncx2mixtcdf                  - ncx2mixtcdf cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ \sigma ComputePars.m Connect_Matlab_with_R_HELP.m Contents.m demoMixSim.m demoMixSim.R DfM.C DfM.mexw32 DfM.mexw64 estepFS.m GetOmegaMap.m lga.m logmvnpdfFS.m MixSim.m ncx2mixtcdf.m overlap.m restreigen.m rlga.m simdataset.m tclust.m tclustreg.m tkmeans.m N(0,1))
 % overlap                      - overlap computes the exact overlap given the parameters of the mixture
 % restreigen                   - restreigen computes eigenvalues restriction (without Dykstra algorithm)
-% rlga                         - rlga performa robust linear grouping analysis
+% rlga                         - rlga performs robust linear grouping analysis
 % simdataset                   - simdataset simulates a datasets from a given mixture model
 % tclust                       - tclust computes trimmed clustering
 % tclustreg                    - rlga performa robust linear grouping analysis
