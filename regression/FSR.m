@@ -55,7 +55,7 @@ function [out]=FSR(y,X,varargin)
 %                 contains the list of units to initialize the search. For
 %                 example, in the case of simple regression through the
 %                 origin with just one explanatory variable, if the user
-%                 wants to initialize the search with unit 3 than
+%                 wants to initialize the search with unit 3 then
 %                 lms=struct; lms.bsb=3;
 %       plots   : Scalar.
 %                 If plots=1 (default) the plot of minimum deletion

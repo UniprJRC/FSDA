@@ -85,7 +85,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               1st col = fwd search index (from init to n)
 %               2nd col = maximum studentized residual
 %               3rd col = (m)-ordered studentized residual
-%   nor:        (n-init+1) x 3 matrix containing the monitoring of
+%   nor:        (n-init+1) x 4 matrix containing the monitoring of
 %               normality test in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = Asymmetry test
