@@ -14,7 +14,7 @@ function w = OPTwei(x,c)
 %
 % Function OPTwei transforms vector u as follows
 %
-%               |  (1/3.25*c^2)                                                          |x|<=2
+%               |  1/(3.25*c^2)                                                          |x|<=2
 %               |   
 %  \psix(x,c) = |  (1/3.25) * (-1.944 * 1 / c^2 + 1.728 * x.^2 / c^4 - 0.312 * x.^2 / c^6 + 0.016 * x.^6 / c^8)     2c<=|x|<=3c
 %               |
