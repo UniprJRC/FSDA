@@ -52,7 +52,7 @@ function w = HYPwei(u, cktuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hyppsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearch('hypwei')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:
