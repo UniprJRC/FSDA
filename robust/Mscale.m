@@ -30,7 +30,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %
 %    initialsc: scalar. The initial estimate of the scale.
 %               If not defined, scaled MAD of vector |u| is used.
-%     maxiter : scalar. The maximum number of iterations to find the scale.
+%     maxiter : scalar. Maximum number of iterations to find the scale.
 %               If not defined, maxiter is fixed to 200.
 %     tol     : scalar. The tolerance for controlling convergence.
 %               If not defined, tol is fixed to 1e-7.
