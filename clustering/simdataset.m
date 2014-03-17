@@ -4,13 +4,13 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %
 %<a href="matlab: docsearch('simdataset')">Link to the help function</a>
 %
-%   simdataset(n, Pi, Mu, S) a dataset of size n-by-size(Mu,2) generates k
-%   groups in p dimensions. In other words, this function produces a
-%   dataset of n observations from a mixture model with parameters 'Pi'
-%   (mixing proportions), 'Mu' (mean vectors), and 'S' (covariance
-%   matrices). Mixture component sample sizes are produced as a realization
-%   from a multinomial distribution with probabilities given by mixing
-%   proportions.
+%   simdataset(n, Pi, Mu, S) generates a matrix of size (n+nout)-by-size(Mu,2)
+%   containing k groups in p dimensions. In other words, this function
+%   produces a dataset of (n+nout) observations from a mixture model with
+%   parameters 'Pi' (mixing proportions), 'Mu' (mean vectors), and 'S'
+%   (covariance matrices). Mixture component sample sizes are produced as a
+%   realization from a multinomial distribution with probabilities given by
+%   mixing proportions.
 %
 %  Required input arguments:
 %
@@ -30,7 +30,7 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %                The default value of nout is 0
 %       alpha  : level for simulating outliers. The default value of alpha
 %                is 0.001,
-%       maxout : maximum number of trials to simulate outliers. The default
+%       maxiter: maximum number of trials to simulate outliers. The default
 %                value of maxout is 1e+05
 %       int    : vector or string.
 %                If int is a vector of length 2 it contains min and maximum values
@@ -53,6 +53,9 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %           id : classification vector of length n + nout; 0 represents an
 %                outlier.
 %
+%            REMARK: If nout outliers could not be generated a warning is
+%                produced. In this case matrix X and vector id will have
+%                just n rows.
 %
 %   DETAILS
 % To make a dataset more challenging for clustering, a user might want to
@@ -67,6 +70,13 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 % transformation providing a vector of coefficients 'lambda'. The value 1
 % implies that no transformation is needed for the corresponding
 % coordinate
+%
+% Copyright 2008-2014.
+% Written by FSDA team
+%
+%
+%<a href="matlab: docsearch('simdataset')">Link to the help function</a>
+% Last modified 08-Dec-2013
 
 % Examples:
 
@@ -77,9 +87,31 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',10);
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',10,'int','minmax');
 
+
+    out = MixSim(4,3,'BarOmega',0.1);
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',100);
+
 %}
 
 
+%{
+    % Check if it is possible to generate the outliers given alpha  
+    % in the interval specified by input option int and if it not possible
+    % modify int by adding 0.1 until the outliers can be found
+    out = MixSim(4,3,'BarOmega',0.1);
+    % Point mass contamination of 30 observations in interval [0.4 0.4]
+    nout=30;
+    outint=[0.4 0.4];
+    for j=1:10
+        [X,id]=simdataset(n, out.Pi, out.Mu, out.S, 'nout', nout, 'alpha', 0.01, 'int', outint);
+        if size(X,1)== n+nout
+            break
+        else
+            outint=outint+0.1;
+        end
+    end
+    spmplot(X,id)
+%}
 %% Beginning of code
 
 if (n < 1)
@@ -94,12 +126,12 @@ nnoisedef=0;
 noutdef=0;
 alphadef=0.001;
 intdef='';
-maxoutdef=1e+05;
+maxiterdef=1e+05;
 lambdadef='';
 Rseeddef = 0;
 
 options=struct('nnoise',nnoisedef,'nout',noutdef,'alpha',alphadef,'int',intdef,...
-    'maxout',maxoutdef,'lambda',lambdadef,'R_seed', Rseeddef);
+    'maxiter',maxiterdef,'lambda',lambdadef,'R_seed', Rseeddef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -132,7 +164,7 @@ nnoise=options.nnoise;
 nout=options.nout;
 alpha=options.alpha;
 int=options.int;
-maxout=options.maxout;
+maxiter=options.maxiter;
 lambda=options.lambda;
 
 
@@ -148,8 +180,8 @@ if ((alpha >= 1) || (alpha <= 0))
     error('wrong value of alpha')
 end
 
-if (maxout < 1)
-    error('Wrong value of maxout')
+if (maxiter < 1)
+    error('Wrong value for maximum number of iterations')
 end
 
 [k,p]=size(Mu);
@@ -174,7 +206,7 @@ if (n >= k)
         mrr = mnrnd( n-k, Pi);
     end
     % Nk contains the sizes of the clusters
-    Nk = ones(1,k)+(mrr); 
+    Nk = ones(1,k)+(mrr);
 else
     error('Sample size (n) cannot be less than the number of clusters')
 end
@@ -216,19 +248,14 @@ for j=1:k
     end
 end
 
-% DOME    THERE WAS A BUG: VERIFY THE FIX
 if nout ~= 0
-    O = getOutliers(nout, Mu, S, alpha, maxout,int);
-    if isstruct(O) 
-        if (O.fail == 1)
-            error(['Cannot generate outliers in ' num2str(maxout) ' trials'])
-        else
-            X =[X;O.Xout];
-            id =[id;zeros(nout,1)];
-        end
+    [Xout, fail] = getOutliers(nout, Mu, S, alpha, maxiter,int);
+    if fail == 1
+        warning(['Output matrix X will have just ' num2str(n) ...
+            ' rows and not ' num2str(n+nout)])
     else
-            X =[X;O];
-            id =[id;zeros(nout,1)];
+        X =[X;Xout];
+        id =[id;zeros(nout,1)];
     end
 end
 
@@ -250,10 +277,10 @@ if nnoise ~= 0
         rn1s = ['matrix(runif(' num2str((n + nout)*nnoise) '),' num2str(n + nout) ',' num2str(nnoise) ')'];
         rrr = evalR(rn1s);
     else
-        rrr = rand(n + nout,  nnoise);  
+        rrr = rand(n + nout,  nnoise);
     end
-        
-    % Xnoise = (U-L)*rrr+L; 
+    
+    % Xnoise = (U-L)*rrr+L;
     if nnoise>length(U);
         U=repmat(U,10);
         L=repmat(L,10);
@@ -278,38 +305,43 @@ if ~isempty(lambda)
     end
 end
 %% Inner functions
-    function [Xout,fail] = getOutliers(nout, Mu, S, alpha, maxout,int)
+% Xout with nout rows which contains the outliers
+% fail = scalar. If fail =1 than it was not possible to generate the
+% outliers in the interval specified by input option int in maxiter trials
+% else fail =0
+    function [Xout,fail] = getOutliers(nout, Mu, S, alpha, maxiter,int)
         fail = 0;
-        
+        % maxiter = maximum number of iterations to generate outliers
         
         critval =chi2inv(1-alpha,p);
-       
+        
         Xout = zeros(nout,p);
         
         if isempty(int)
             L = min(min(Mu));
             U = max(max(Mu));
         elseif strcmp(int,'minmax')
-             L = min(X);
+            L = min(X);
             U = max(X);
-
+            
         else
             L = int(1);
             U = int(2);
         end
         
         i = 1;
-        s=0;
-        while (i <= nout)
-            
+        
+        iter=0;
+        while (i <= nout  &&  iter<maxiter)
+            iter=iter+1;
             if R_seed
                 % equivalent of 'rand(k,p)' in R is 'matrix(runif(k*p),k,p)'
                 rn1 = ['matrix(runif(' num2str(p) '),' num2str(1) ',' num2str(p) ')'];
                 rr = evalR(rn1);
             else
-                rr = rand(1,p);  
+                rr = rand(1,p);
             end
-
+            
             Xout(i,:) = (U-L).*rr+L;
             
             ij=0;
@@ -319,15 +351,24 @@ end
                     break
                 end
             end
-            s=s+1;
+            
             if ij==0
                 i = i + 1;
-                
-                if (s == maxout)
-                    fail = 1;
-                    break
-                end
             end
+        end
+        % If iter = maxiter than it was not possible  to generate nout
+        % outliers in maxiter simulations.
+        if iter== maxiter
+            disp(['Warning: it was not possible to generate ' num2str(nout) ' outliers'])
+            disp(['in ' num2str(maxiter) ' replicates in the interval [' num2str(L(1)) ...
+                '--' num2str(U(1)) ']'])
+            disp('Please modify the interval inside input option ''int'' ')
+            disp('or increase input option ''alpha''')
+            disp(['The values of int and alpha now are ' num2str(int) ' and ' num2str(alpha)]); 
+            
+            % If max number of iteration has been reached fail is 1
+            fail=1;
+            Xout=Xout(1:i,:);
         end
     end
 end
