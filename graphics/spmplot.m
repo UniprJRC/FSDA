@@ -4,25 +4,40 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %<a href="matlab: docsearch('spmplot')">Link to the help function</a>
 %
 %  Required input arguments:
-%     Y : Data matrix containining n observations on v variables.
+%     Y : Data matrix containing n observations on v variables.
 %         Rows of Y represent observations, and columns represent variables.
 %  group: vector with n elements, grouping variable that determines the
 %         marker and color assigned to each point. It can be a categorical
 %         variable, vector, string matrix, or cell array of strings.
-%  
+%
 %   spmplot(Y,group,plo) enables to specify the names which are displayed
 %          in the margins of the scatter-plot matrix and the labels of the
 %          legend. plo can be a scalar, a structure or an empty value []
-%  
+%
 %        If plo 1 the names Y1,..., Yv are added to the margins of the
 %         the scatter plot matrix else nothing is added.
 %         If plo is a structure it may contain the following fields:
-%         - labeladd : if this option is '1', the elements belonging to the
-%           max(group) in the spm are labelled with their unit row index.
-%           The default value is labeladd='', i.e. no label is added.
-%         - nameY : cell array of strings containing the labels of the
-%           variables. As default value, the labels which are added are
-%           Y1, ..., Yv.
+%    - labeladd: if this option is '1', the elements belonging to the
+%                max(group) in the spm are labelled with their unit row index.
+%                The default value is labeladd='', i.e. no label is added.
+%       - nameY: cell array of strings containing the labels of the
+%                variables. As default value, the labels which are added
+%                are Y1, ..., Yv.
+%         - clr: a string of color specifications. By default, the colors
+%                are 'brkmgcy'
+%         - sym: a string or a cell of marker specifications.  For example, 
+%                if sym='o+x', the first group will be plotted with a
+%                circle, the second with plus, and the third with x.
+%                In summary for example in presence of three groups you can
+%                use either plo.sym={'+' '+' 'v'}; or plo.sym='++v' 
+%                By default the sequence of marker types is
+%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'
+%         - siz: scalar, a marker size to use for all plots. By default the
+%                marker size depends on the number of plots and the size of
+%                the figure window. Default value of siz is '' (empty
+%                value)
+%       - doleg: a string which lets you control whether legends
+%                are created.  Set doleg to 'on' (default) or 'off'.
 %         If plo is set to the empty vector [], then nameY and labeladd are
 %         both set to the empty string '' (default), and no labels nor
 %         names are added to the plot.
@@ -38,7 +53,6 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %          spmplot(Y,group,[],'box');
 %          REMARK: The style which is used for univariate boxplots is
 %          'traditional', if the number of groups is <=5 else it is compact
-%
 %
 %  Output:
 %
@@ -118,6 +132,23 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 
 %}
 
+
+%{
+    % Iris data: scatter plot matrix with univariate boxplots on the main
+    % diagonal and personalized options for symbols, colors and symbol
+    % size and no legend
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'}; % Name of the variables
+    plo.clr='krb'; % Colors of the groups
+    plo.sym={'+' '+' 'v'}; % Symbols of the groups (inside a cell)
+    % Symbols can also be specified as characters  
+    % plo.sym='++v'; % Symbols of the groups
+    plo.siz=3.4; % Symbol size
+    plo.doleg='off'; % Remove the legend
+    spmplot(meas,species,plo,'box')
+%}
+
 %{
 % An example with 5 groups
     n1=100;
@@ -144,6 +175,7 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %}
 
 
+
 %% Beginning of code
 
 [n,v]=size(Y);
@@ -154,6 +186,13 @@ end
 if nargin<4;
     dispopt='hist';
 end
+
+% Specify default values for colors, symbols, size of symbols and precence
+% of legend
+clrdef='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
+symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
+sizdef='';
+dolegdef='on';
 
 if isstruct(plo)
     fplo=fieldnames(plo);
@@ -170,6 +209,32 @@ if isstruct(plo)
     else
         labeladd='';
     end
+    d=find(strcmp('clr',fplo));
+    if d>0
+        clr=plo.clr;
+    else
+        clr=clrdef;
+    end
+    d=find(strcmp('sym',fplo));
+    if d>0
+        sym=plo.sym;
+    else
+        sym=symdef;
+    end
+    d=find(strcmp('siz',fplo));
+    if d>0
+        siz=plo.siz;
+    else
+        siz=sizdef;
+    end
+    d=find(strcmp('doleg',fplo));
+    if d>0
+        doleg=plo.doleg;
+    else
+        doleg='on';
+    end
+    
+    
 else
     if ischar(plo)
         error('FSDA: Third argument must be a structure, or a scalar or an empty value []')
@@ -181,6 +246,11 @@ else
         nameY = '';
     end
     labeladd='';
+    
+    clr=clrdef;
+    sym=symdef;
+    siz=sizdef;
+    doleg=dolegdef;
 end
 
 if iscell(group)
@@ -194,12 +264,19 @@ else
 end
 
 unigroup = 1:numel(unique(group,'stable'));
-clr='brcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykg';
-styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
-%% The scatterplot matrix with histograms of boxplots generalised to groups
 
-[H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),char(styp{unigroup}),[],'on','hist',nameY,nameY);
+
+
+%% The scatterplot matrix with histograms or boxplots (on the main diagonal) generalised to groups
+
+% sym can be either a cell array or a character
+if iscell(sym)
+    charsym=char(sym{unigroup});
+else
+    charsym=sym(unigroup);
+end
+[H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
 % The third dimension of H distinguishes the groups. If there are no groups
 % then ndims(H) = 2.
@@ -209,7 +286,7 @@ if ndims(H) == 3
         
         if strcmp(dispopt,'hist')==1
             % Add the histograms generalised to groups
-
+            
             ax = AX(i,i);
             Xlim=get(ax,'Xlim');
             
@@ -239,7 +316,7 @@ if ndims(H) == 3
             
         else
             % Add the boxplots generalised to groups
-
+            
             ax = AX(end,i);
             axPosition = get(ax,'position');
             
@@ -250,7 +327,7 @@ if ndims(H) == 3
             end
             
             hbp = boxplot(ax,Y(:,i),groupv,'plotstyle',plotstyle,'colors',clr(unigroup),'labelverbosity','minor','symbol','+');
-
+            
             % Use boxplot without grouping variable (less efficient):
             % Y_n=[];
             % for groups  = 1:length(unigroup)
@@ -259,7 +336,7 @@ if ndims(H) == 3
             %     Y_n     = [Y_n Y_tmp];
             % end
             % boxplot(ax, Y_n, ...);
-
+            
             % Remove the x tick labels from the graph containing boxplots
             set(ax,'XTickLabel',{' '});
             
@@ -299,14 +376,16 @@ if ndims(H) == 3
     end
 end
 
-% Add to the spm the clickable multilegend and eventually the text labels
-% of the selections
-if isnumeric(group)
-    % use context sensitive legends
-    add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
-else
-    % use legends in guni
-    add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg',guni);
+if strcmp(doleg,'on')
+    % Add to the spm the clickable multilegend and eventually the text labels
+    % of the selections
+    if isnumeric(group)
+        % use context sensitive legends
+        add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
+    else
+        % use legends in guni
+        add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg',guni);
+    end
 end
 
 end
