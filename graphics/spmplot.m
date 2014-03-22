@@ -10,49 +10,49 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %         marker and color assigned to each point. It can be a categorical
 %         variable, vector, string matrix, or cell array of strings.
 %
-%   spmplot(Y,group,plo) enables to specify the names which are displayed
-%          in the margins of the scatter-plot matrix and the labels of the
-%          legend. plo can be a scalar, a structure or an empty value []
+%  Optional input arguments:
 %
-%        If plo 1 the names Y1,..., Yv are added to the margins of the
-%         the scatter plot matrix else nothing is added.
-%         If plo is a structure it may contain the following fields:
-%    - labeladd: if this option is '1', the elements belonging to the
-%                max(group) in the spm are labelled with their unit row index.
-%                The default value is labeladd='', i.e. no label is added.
-%       - nameY: cell array of strings containing the labels of the
-%                variables. As default value, the labels which are added
-%                are Y1, ..., Yv.
-%         - clr: a string of color specifications. By default, the colors
-%                are 'brkmgcy'
-%         - sym: a string or a cell of marker specifications.  For example, 
-%                if sym='o+x', the first group will be plotted with a
-%                circle, the second with plus, and the third with x.
-%                In summary for example in presence of three groups you can
-%                use either plo.sym={'+' '+' 'v'}; or plo.sym='++v' 
-%                By default the sequence of marker types is
-%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'
-%         - siz: scalar, a marker size to use for all plots. By default the
-%                marker size depends on the number of plots and the size of
-%                the figure window. Default value of siz is '' (empty
-%                value)
-%       - doleg: a string which lets you control whether legends
-%                are created.  Set doleg to 'on' (default) or 'off'.
+%    plo: spmplot(Y,group,plo) enables to specify the names which are 
+%         displayed in the margins of the scatter-plot matrix and the 
+%         labels of the legend. plo can be an empty value [], a scalar, 
+%         or a structure.
 %         If plo is set to the empty vector [], then nameY and labeladd are
 %         both set to the empty string '' (default), and no labels nor
 %         names are added to the plot.
+%         If plo = 1 the names Y1,..., Yv are added to the margins of the
+%         the scatter plot matrix else nothing is added.
+%         If plo is a structure it may contain the following fields:
+%         - labeladd: if this option is '1', the elements belonging to the
+%                max(group) in the spm are labelled with their unit row index.
+%                The default value is labeladd = '', i.e. no label is added.
+%         - nameY: cell array of strings containing the labels of the
+%                variables. As default value, the labels which are added
+%                are Y1, ..., Yv.
+%         - clr: a string of color specifications. By default, the colors
+%                are 'brkmgcy'.
+%         - sym: a string or a cell of marker specifications. For example, 
+%                if sym = 'o+x', the first group will be plotted with a
+%                circle, the second with a plus, and the third with a 'x'.
+%                This is obtained with the assignment plo.sym = 'o+x'
+%                or equivalently with plo.sym = {'o' '+' 'x'}.   
+%                By default the sequence of marker types is:
+%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'
+%         - siz: scalar, a marker size to use for all plots. By default the
+%                marker size depends on the number of plots and the size of
+%                the figure window. Default is siz = '' (empty value).
+%       - doleg: a string to control whether legends are created or not.  
+%                Set doleg to 'on' (default) or 'off'.
 %
-%   spmplot(Y,group,[],dispopt) enables to add on the main diagonal of the
-%       scatter plot matrix stacked histograms, or univariate boxplots for
-%       each of the groups.
-%
-%      dispopt is a string which lets you control how to fill the diagonals in a
-%          plot of Y vs Y. Set DISPOPT to 'hist' (default) to plot
-%          histograms, or 'box' to plot boxplots. Remark: to set dispopt
-%          without changing the defaults for plo use, e.g.,
+%   dispopt: spmplot(Y,group,[],dispopt) enables to add on the main diagonal 
+%       of the scatter plot matrix stacked histograms, or univariate boxplots 
+%       for each of the groups.
+%       dispopt is a string which lets you control how to fill the diagonals 
+%       in a plot of Y vs Y. Set dispopt to 'hist' (default) to plot histograms, 
+%       or 'box' to plot boxplots. 
+%       Remark: to set dispopt without changing the defaults for plo use, e.g.,
 %          spmplot(Y,group,[],'box');
 %          REMARK: The style which is used for univariate boxplots is
-%          'traditional', if the number of groups is <=5 else it is compact
+%          'traditional' if the number of groups is <=5, else it is compact
 %
 %  Output:
 %
@@ -128,7 +128,7 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'}
-    spmplot(meas,species,plo,'box')
+    spmplot(meas,species,plo,'box');
 
 %}
 
@@ -146,7 +146,7 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
     % plo.sym='++v'; % Symbols of the groups
     plo.siz=3.4; % Symbol size
     plo.doleg='off'; % Remove the legend
-    spmplot(meas,species,plo,'box')
+    spmplot(meas,species,plo,'box');
 %}
 
 %{
@@ -177,6 +177,7 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 
 
 %% Beginning of code
+ngroups = numel(unique(group,'stable'));
 
 [n,v]=size(Y);
 if nargin<3;
@@ -216,9 +217,12 @@ if isstruct(plo)
         clr=clrdef;
     end
     d=find(strcmp('sym',fplo));
-    if d>0
+    if isempty(d)
+        d=0;
+    end
+    if d>0 && (ngroups == numel(plo.sym))
         sym=plo.sym;
-    else
+     else
         sym=symdef;
     end
     d=find(strcmp('siz',fplo));
@@ -263,7 +267,7 @@ else
     groupv = group;
 end
 
-unigroup = 1:numel(unique(group,'stable'));
+unigroup = 1:ngroups;
 
 
 
