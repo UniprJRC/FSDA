@@ -12,9 +12,9 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %
 %  Optional input arguments:
 %
-%    plo: spmplot(Y,group,plo) enables to specify the names which are 
-%         displayed in the margins of the scatter-plot matrix and the 
-%         labels of the legend. plo can be an empty value [], a scalar, 
+%    plo: spmplot(Y,group,plo) enables to specify the names which are
+%         displayed in the margins of the scatter-plot matrix and the
+%         labels of the legend. plo can be an empty value [], a scalar,
 %         or a structure.
 %         If plo is set to the empty vector [], then nameY and labeladd are
 %         both set to the empty string '' (default), and no labels nor
@@ -30,25 +30,25 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %                are Y1, ..., Yv.
 %         - clr: a string of color specifications. By default, the colors
 %                are 'brkmgcy'.
-%         - sym: a string or a cell of marker specifications. For example, 
+%         - sym: a string or a cell of marker specifications. For example,
 %                if sym = 'o+x', the first group will be plotted with a
 %                circle, the second with a plus, and the third with a 'x'.
 %                This is obtained with the assignment plo.sym = 'o+x'
-%                or equivalently with plo.sym = {'o' '+' 'x'}.   
+%                or equivalently with plo.sym = {'o' '+' 'x'}.
 %                By default the sequence of marker types is:
 %                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'
 %         - siz: scalar, a marker size to use for all plots. By default the
 %                marker size depends on the number of plots and the size of
 %                the figure window. Default is siz = '' (empty value).
-%       - doleg: a string to control whether legends are created or not.  
+%       - doleg: a string to control whether legends are created or not.
 %                Set doleg to 'on' (default) or 'off'.
 %
-%   dispopt: spmplot(Y,group,[],dispopt) enables to add on the main diagonal 
-%       of the scatter plot matrix stacked histograms, or univariate boxplots 
+%   dispopt: spmplot(Y,group,[],dispopt) enables to add on the main diagonal
+%       of the scatter plot matrix stacked histograms, or univariate boxplots
 %       for each of the groups.
-%       dispopt is a string which lets you control how to fill the diagonals 
-%       in a plot of Y vs Y. Set dispopt to 'hist' (default) to plot histograms, 
-%       or 'box' to plot boxplots. 
+%       dispopt is a string which lets you control how to fill the diagonals
+%       in a plot of Y vs Y. Set dispopt to 'hist' (default) to plot histograms,
+%       or 'box' to plot boxplots.
 %       Remark: to set dispopt without changing the defaults for plo use, e.g.,
 %          spmplot(Y,group,[],'box');
 %          REMARK: The style which is used for univariate boxplots is
@@ -140,9 +140,9 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'}; % Name of the variables
-    plo.clr='krb'; % Colors of the groups
+    plo.clr='kbr'; % Colors of the groups
     plo.sym={'+' '+' 'v'}; % Symbols of the groups (inside a cell)
-    % Symbols can also be specified as characters  
+    % Symbols can also be specified as characters
     % plo.sym='++v'; % Symbols of the groups
     plo.siz=3.4; % Symbol size
     plo.doleg='off'; % Remove the legend
@@ -213,6 +213,23 @@ if isstruct(plo)
     d=find(strcmp('clr',fplo));
     if d>0
         clr=plo.clr;
+        
+        if length(clr) ~= ngroups
+            warning('Number of colors which have been supplied is not equal to the number of groups')
+            disp(['Number of groups =' num2str(ngroups)])
+            disp(['Number of colors =' num2str(length(clr))])
+            if length(clr)< ngroups
+                disp('Supplied colors will be duplicated')
+                if isrow(clr)
+                    clr=repmat(clr,1,ngroups);
+                else
+                    clr=repmat(clr,ngroups,1);
+                end
+            else
+                disp(['Just the first ' num2str(ngroups) ' colors will be used'])
+            end
+        end
+        
     else
         clr=clrdef;
     end
@@ -220,9 +237,24 @@ if isstruct(plo)
     if isempty(d)
         d=0;
     end
-    if d>0 && (ngroups == numel(plo.sym))
+    if d>0 % && (ngroups == numel(plo.sym))
         sym=plo.sym;
-     else
+        if length(sym) ~= ngroups
+            warning('Number of symbols which have been supplied is not equal to the number of groups')
+            disp(['Number of groups =' num2str(ngroups)])
+            disp(['Number of symbols =' num2str(length(sym))])
+            if length(sym)< ngroups
+                disp('Supplied symbols will be duplicated')
+                if isrow(sym)
+                    sym=repmat(sym,1,ngroups);
+                else
+                    sym=repmat(sym,ngroups,1);
+                end
+            else
+                disp(['Just the first ' num2str(ngroups) ' symbols will be used'])
+            end
+        end
+    else
         sym=symdef;
     end
     d=find(strcmp('siz',fplo));
