@@ -266,15 +266,14 @@ mmd=[(init1:n-1)' zeros(n-init1,1)];
 unit=zeros(ini0,1,'int16');
 lunit=length(unit);
 
-
-
-if (rank(Y(bsb,:))<v)
+% If the subset Y(bsb,:) is not full rank or a column is constant, then we
+% return as output an empty structure.
+if (rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0
     warning('FSMmmd:message','The supplied initial subset is not full rank matrix');
     warning('FS loop will not be performed')
     mmd=NaN;
     Un=NaN;
     varargout={NaN};
-
 else
     
     for mm = ini0:n

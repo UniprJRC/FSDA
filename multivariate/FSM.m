@@ -302,7 +302,17 @@ else
         error('Error:: supplied options to initialize the search does not exist.');
     end
     
+    % initial subset
     bs=fre(1:m0,1);
+    
+    % the subset need to be incremented if it is not full rank. We also
+    % treat the unfortunate case when the rank of the matrix is v but a
+    % column is constant. 
+    incre = 1;
+    while (rank(Y(bs,:))<v) || min(max(Y(bs,:)) - min(Y(bs,:))) == 0
+        bs=fre(1:m0+incre,1);
+        incre = incre+1;
+    end
 end
 
 quant=[0.99;0.999;0.9999;0.99999;0.01;0.5];
@@ -325,6 +335,11 @@ if n<5000
     [mmd,Un,bb] = FSMmmd(Y,bs,'init',init);
 else
     [mmd,Un] = FSMmmd(Y,bs,'init',init);
+end
+
+if isnan(mmd)
+    out = nan;
+    return
 end
 
 % Store in nout the number of times the observed mmd (d_min) lies above:
