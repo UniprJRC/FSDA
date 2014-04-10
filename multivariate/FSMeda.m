@@ -76,7 +76,7 @@ function out = FSMeda(Y,bsb,varargin)
 %               1st col = fwd search index (from init to n)
 %               2nd col = min MD - max MD
 %               3rd col = (m+1)th ordered MD - mth ordered distance
-%   Mea:        (n-init+1) x (v+1) matrix containing the monitoring of
+%   loc:        (n-init+1) x (v+1) matrix containing the monitoring of
 %               estimated of the means for each variable in each step of the forward search
 %  S2cov:       (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
 %               of the elements of the covariance matrix in each step
@@ -286,7 +286,7 @@ MAL=NaN(n,n-init1+1);
 
 % Initialize matrix which will contain the means of the variables monitored in
 % each step
-Mea=cat(2,(init1:n)',NaN(n-init1+1,v));
+loc=cat(2,(init1:n)',NaN(n-init1+1,v));
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just
 %  included.
@@ -360,7 +360,7 @@ else
             BB(bsb,mm-init1+1)=bsb;
             
             % Store the means
-            Mea(mm-init1+1,2:end)=ym;
+            loc(mm-init1+1,2:end)=ym;
             
             % Store the trace and the determinant
             if scaled==1
@@ -477,6 +477,7 @@ else
     out.detS=detS;
     out.Un=Un;
     out.Y=Y;
+    out.loc=loc;
 end
 
 end

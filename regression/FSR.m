@@ -165,6 +165,7 @@ function [out]=FSR(y,X,varargin)
 %  The output consists of a structure 'out' containing the following fields:
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
+% out.beta   =  p-by-1 vector containing the estimated regression parameter.
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
@@ -1425,6 +1426,8 @@ else
     ListOut=NaN;
 end
 
+%compute beta
+beta = regress(y,X);
 %% Scatter plot matrix with the outliers shown with a different symbol
 
 if plo==1 || plo==2
@@ -1473,6 +1476,7 @@ end
 %% Structure returned by function FSR
 out=struct;
 out.ListOut=ListOut;
+out.beta=beta;
 
 % If you wish that the output also contains the list of units not declared
 % as outliers, please uncomment the two following lines.

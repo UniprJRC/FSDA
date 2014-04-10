@@ -133,6 +133,13 @@ function [out]=FSM(Y,varargin)
 %               of particular quantiles.
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
+% out.loc     = 1 x v  vector containing location of the data.
+% out.cov     = v x v robust estimate of covariance matrix.
+% out.md      = n x 1 vector containing the estimates of the robust
+%                    Mahalanobis distances (in squared units). This vector
+%                    contains the distances of each observation from the
+%                    location of the data, relative to the scatter 
+%                    matrix cov.
 %
 % See also: FSMeda, unibiv.m, FSMmmd.m
 %
@@ -309,6 +316,9 @@ else
     % treat the unfortunate case when the rank of the matrix is v but a
     % column is constant. 
     incre = 1;
+    %the second condition is added to treat subset with a constant
+    %variable. This situation does not decrease the rank of Y, but it 
+    %decreases the rank of ym (i.e. Y-mean(Y)) inside FSMmmd.
     while (rank(Y(bs,:))<v) || min(max(Y(bs,:)) - min(Y(bs,:))) == 0
         bs=fre(1:m0+incre,1);
         incre = incre+1;
@@ -1227,6 +1237,11 @@ else
     outliers=NaN;
 end
 
+%compute locatione and covariance matrix
+goodobs=setdiff(1:n,outliers);
+loc=mean(Y(goodobs,:));
+cova=cov(Y(goodobs,:));
+md=mahalFS(Y,loc,cova);
 %% Scatter plot matrix with the outliers shown with a different symbol
 
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
@@ -1236,14 +1251,16 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
 end
 
 %% Structure returned by function FSM
-out=struct;
-out.outliers=outliers;
-
 % If you wish that the output also contains the list of units not declared
 % as outliers, please uncomment the two following lines.
 %ListIn=seq(~isnan(bb(:,end-ndecl)));
 %out.ListIn=ListIn;
 
+out=struct;
+out.outliers=outliers;
+out.loc=loc;
+out.cov=cova;
+out.md=md;
 out.mmd=mmd;
 out.Un=Un;
 out.nout=nout;
