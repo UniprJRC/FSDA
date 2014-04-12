@@ -1,4 +1,4 @@
-function y=Sn(X)
+function y=Sn(X,dim)
 %Sn robust estimator of scale (robust version of Gini's average difference)
 %
 %<a href="matlab: docsearch('sn')">Link to the help function</a>
@@ -9,7 +9,7 @@ function y=Sn(X)
 %   each column.  For 3D arrays, Sn(X) is the robust scale estimator of the
 %   elements along the first non-singleton dimension of X.
 %
-%   Sn(X,dim) takes the median along the dimension dim of X.
+%   Sn(X,dim) takes the robust estimator along the dimension dim of X.
 %
 %   Sn= cn c med_i { med_j |x_i-x_j|} i=1,2, ...n, j=1, 2, ..., n
 %   For each i we compute the median of |x_i-x_j| j=1, 2, ..., n
