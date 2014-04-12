@@ -1,6 +1,6 @@
 function [out, varargout] = SDest(Y,varargin)
 %SDest computes Stahel-Donoho robust estimator of dispersion/location
-% LAST UPDATE: 11-04-2014.
+%
 %<a href="matlab: docsearch('SDest')">Link to the help function</a>
 %
 % Required input arguments:
@@ -75,17 +75,17 @@ function [out, varargout] = SDest(Y,varargin)
 %               MEANS OF MULTIVARIATE DATA", Annals of Statistics (2004)):
 %               W(PD) = {exp[-K*(1-PD/C)^2] - exp(-K)}/(1-exp(-K)) if PD <
 %               C; W(PD) = 1 otherwise,
-%               where: 
+%               where:
 %               - PD is the Projection Depth: PD = 1/(1+r)
 %               (r=outlyingness measure);
 %               - C=Median(PD);
-%               - K is a positive tuning parameter.           
+%               - K is a positive tuning parameter.
 %            q: Scalar. Constant to be used in the Huber weight function.
 %               The default value of q is 2 (see Maronna and Yohai, 1995).
 %            c: String. If c='hdim' (high dimensions) the scale parameter c in the
-%               Huber weight function is given by:  
+%               Huber weight function is given by:
 %               c= min(sqrt\chi^2_{v,0.5},4). If c='sdim' (small
-%               dimensions), parameter c is given by: 
+%               dimensions), parameter c is given by:
 %               c= sqrt\chi^2_{v,0.95}. The default is 'hdim'.
 %          nbp: Scalar (0<nbp<1). Nominal breakdown point to be fixed in the Tukey
 %               biweight function to obtain the thresold value c. The default
@@ -104,7 +104,7 @@ function [out, varargout] = SDest(Y,varargin)
 %               (2) a scatter plot matrix with the outliers highlighted
 %               (3) a scatter plot of robust Mahalanobis distances against observation weights (i.e. the
 %               outlyingness measure transformed according to the weight
-%               function).           
+%               function).
 %               If plots is a structure it may contain the following fields
 %                   labeladd : if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
@@ -130,7 +130,7 @@ function [out, varargout] = SDest(Y,varargin)
 %               contain a field named RstProj
 %         stnd: option controlling for the type of standardization of deviations
 %               from the median. Default is 'mad'. The other two methods are 'sn' and
-%               'qn' introduced by Rousseuw and Croux as alternatives to the MAD.
+%               'qn' introduced by Rousseeuw and Croux as alternatives to the MAD.
 %
 % Output:
 %
@@ -220,6 +220,8 @@ function [out, varargout] = SDest(Y,varargin)
 % years by many authors.
 %
 %
+% See also MCD, Smult, MMmult, FSM
+%
 % Copyright 2008-2014.
 % Written by FSDA team
 %
@@ -285,7 +287,7 @@ function [out, varargout] = SDest(Y,varargin)
     Ycont(2:20,3)=5;
     [out]=SDest(Ycont,'jpcorr',5,'plots',1,'nsamp',100000);
 
-    %  SDest with directions and robust standardized projection scores saved   
+    %  SDest with directions and robust standardized projection scores saved
     [out]=SDest(Ycont,'jpcorr',0,'plots',1,'nsamp',1000,'dirsave',1,'rstprojsave',1);
 
     % Compare the output of SD with the one produced by the fwd search
@@ -389,10 +391,10 @@ end
 dirsave=options.dirsave;
 if dirsave==1
     if jpcorr==0
-        % Dir=matrix(#subsamples-by-#vars) - only one direction         
+        % Dir=matrix(#subsamples-by-#vars) - only one direction
         Dir=zeros(nsamp,v);
     else
-        % Dir=3D-array(#subsamples-by-#vars)-by-#directions 
+        % Dir=3D-array(#subsamples-by-#vars)-by-#directions
         Dir=zeros(nsamp,v,v+1);
     end
 end
@@ -423,13 +425,13 @@ time=zeros(tsampling,1);
 
 stnd=options.stnd;
 if strcmp(stnd,'mad')
-% n1 and n2 ordered positions which will be necessary to compute modified
-% MAD
-n1 = ceil((n+v-1)/2);
-n2 = floor((n+v-1)/2)+1;
-nb = (n+v-1)/2;
-% beta = constant necessary to rescale the modified MAD
-beta = norminv(0.5*(nb/n+1),0,1);
+    % n1 and n2 ordered positions which will be necessary to compute modified
+    % MAD
+    n1 = ceil((n+v-1)/2);
+    n2 = floor((n+v-1)/2)+1;
+    nb = (n+v-1)/2;
+    % beta = constant necessary to rescale the modified MAD
+    beta = norminv(0.5*(nb/n+1),0,1);
 end
 % outlvec = vector which will contain the maximum of the robust standardized
 % projection score for each observation, that is the outlying measure for
@@ -565,15 +567,15 @@ for i = 1:nselected
         ordprojs = sort(cenprojs);
         
         if strcmp(stnd,'mad')
-        % Modified MAD
-        MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
-        newoutlvec = cenprojs/MADmod;
+            % Modified MAD
+            MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
+            newoutlvec = cenprojs/MADmod;
         elseif strcmp(stnd,'sn')
-            Sn = sn(projs);
-            newoutlvec = cenprojs/Sn;
-            elseif strcmp(stnd,'qn')
-            Qn = qn(projs);
-            newoutlvec = cenprojs/Qn;
+            SnEst = Sn(projs);
+            newoutlvec = cenprojs/SnEst;
+        elseif strcmp(stnd,'qn')
+            QnEst = Qn(projs);
+            newoutlvec = cenprojs/QnEst;
         end
         
         if rstprojsave==1
@@ -581,11 +583,11 @@ for i = 1:nselected
             % scores with the sign
             % RstProj(:,i)=newoutlvec;
             if strcmp(stnd,'mad')
-            RstProj(:,i)=diffprojs/MADmod;
+                RstProj(:,i)=diffprojs/MADmod;
             elseif strcmp(stnd,'sn')
-                RstProj(:,i)=diffprojs/Sn;
+                RstProj(:,i)=diffprojs/SnEst;
             elseif strcmp(stnd,'qn')
-                RstProj(:,i)=diffprojs/Qn;
+                RstProj(:,i)=diffprojs/QnEst;
             end
         end
         
@@ -721,39 +723,39 @@ for i = 1:nselected
         %mad=median(res);
         
         if strcmp(stnd,'mad')
-        ress = sort(res);
-        % half = floor(n/2);
-        mad = ress(half+1,:);
-        if 2*half == n       % Average if even number of elements
-            mad =(ress(half,:)+mad)/2;
-        end
-        % Divide by beta (asymptotic consistency factor for MAD)
-        mad=mad/beta;
-        % Standardize with MADs
-        % newoutlmat(:,j)=|(Q(:,j)-median(Q(:,j)))/MAD(Q(:,j))|
-        newoutlmat = bsxfun(@rdivide, res, mad);
-        % bsxfun instruction is the efficient way of doing
-        %    newoutlmat=diag(1../mad)*res';
-        %    newoutlmat=newoutlmat';
+            ress = sort(res);
+            % half = floor(n/2);
+            mad = ress(half+1,:);
+            if 2*half == n       % Average if even number of elements
+                mad =(ress(half,:)+mad)/2;
+            end
+            % Divide by beta (asymptotic consistency factor for MAD)
+            mad=mad/beta;
+            % Standardize with MADs
+            % newoutlmat(:,j)=|(Q(:,j)-median(Q(:,j)))/MAD(Q(:,j))|
+            newoutlmat = bsxfun(@rdivide, res, mad);
+            % bsxfun instruction is the efficient way of doing
+            %    newoutlmat=diag(1../mad)*res';
+            %    newoutlmat=newoutlmat';
         elseif strcmp(stnd,'sn')
-               Sn = sn(Q);
-               newoutlmat = bsxfun(@rdivide, res, Sn);
+            SnEst = Sn(Q);
+            newoutlmat = bsxfun(@rdivide, res, SnEst);
         elseif strcmp(stnd,'qn')
-               Qn = qn(Q);
-               newoutlmat = bsxfun(@rdivide, res, Qn);
+            QnEst = Qn(Q);
+            newoutlmat = bsxfun(@rdivide, res, QnEst);
         end
         
         
         if rstprojsave==1
             if strcmp(stnd,'mad')
-            %RstProj(:,i,:)=newoutlmat;
-            RstProj(:,i,:)=bsxfun(@rdivide, signres, mad);
+                %RstProj(:,i,:)=newoutlmat;
+                RstProj(:,i,:)=bsxfun(@rdivide, signres, mad);
             elseif strcmp(stnd,'sn')
-            %RstProj(:,i,:)=newoutlmat;
-            RstProj(:,i,:)=bsxfun(@rdivide, signres, Sn);
+                %RstProj(:,i,:)=newoutlmat;
+                RstProj(:,i,:)=bsxfun(@rdivide, signres, SnEst);
             elseif strcmp(stnd,'qn')
-            %RstProj(:,i,:)=newoutlmat;
-            RstProj(:,i,:)=bsxfun(@rdivide, signres, Qn);
+                %RstProj(:,i,:)=newoutlmat;
+                RstProj(:,i,:)=bsxfun(@rdivide, signres, QnEst);
             end
         end
         
@@ -937,22 +939,22 @@ weight=options.weight;
 % Huber weight function
 if strcmp(weight,'huber')
     if strcmp(c, 'hdim')
-    c1 = min(sqrt(chi2inv(0.50,v)),4);
+        c1 = min(sqrt(chi2inv(0.50,v)),4);
     elseif strcmp(c, 'sdim')
-    c1 = sqrt(chi2inv(0.95,v));
+        c1 = sqrt(chi2inv(0.95,v));
     end
     weights = huber(outlvec, c1, q);
-    factor=1;   
-%  Tukey biweight function
+    factor=1;
+    %  Tukey biweight function
 elseif strcmp(weight, 'tukey')
     c2 = TBbdp(nbp,v);
     weights = TBwei(outlvec, c2);
     factor=1;
-% Zuo, Cui and He's family of weights
+    % Zuo, Cui and He's family of weights
 elseif strcmp(weight, 'zch')
     weights = zch(outlvec, K);
     factor=1;
-% mcd weights 
+    % mcd weights
 else
     [~,iwei]=sort(outlvec);
     weights=zeros(n,1);
@@ -1028,7 +1030,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
         col = ['b', 'r'];
         symb = ['x', 'o'];
     end
-%     gscatter(weights, out.md, group,'br','xo');  
+    %     gscatter(weights, out.md, group,'br','xo');
     gscatter(weights, out.md, group, col, symb);
     legend('Normal units');
     if ~isempty(out.outliers)
