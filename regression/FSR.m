@@ -1,7 +1,7 @@
 function [out]=FSR(y,X,varargin)
 %FSR gives an automatic outlier detection procedure in linear regression
 %
-%<a href="matlab: docsearch('FSR')">Link to the help function</a>
+%<a href="matlab: docsearch('fsr')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -43,11 +43,11 @@ function [out]=FSR(y,X,varargin)
 %                 or 2. If lms is a struct it is possible to control a
 %                 series of options for concentration steps (for more
 %                 details see option lms inside LXS.m)
-%                 LXS.m. 
+%                 LXS.m.
 %                 If, on the other hand, the user wants to initialize the
 %                 search with a prespecified set of units there are two
 %                 possibilities
-%                 1) lms can be a vector with length greater than 1 which 
+%                 1) lms can be a vector with length greater than 1 which
 %                 contains the list of units forming the initial subset.
 %                 For example, if the user wants to initialize the search
 %                 with units 4, 6 and 10 then lms=[4 6 10];
@@ -1419,15 +1419,20 @@ if ndecl>0;
         add=add(1:ij);
         add=unique(add);
         ListOut=[ListOut,add'];
+        good=setdiff(seq,ListOut);
     end
+    % Compute beta just using the units not declared as outliers
+    beta = X(good,:)\y(good);
     ndecl=length(ListOut);
     group(ListOut)=2;
 else
+    % No outlier is found.
+    % Compute beta using all the units
+    beta = X\y;
     ListOut=NaN;
 end
 
-%compute beta
-beta = regress(y,X);
+
 %% Scatter plot matrix with the outliers shown with a different symbol
 
 if plo==1 || plo==2
