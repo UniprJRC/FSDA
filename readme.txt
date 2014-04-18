@@ -7,4 +7,4 @@ C. Type SHIFT+F1 and enter FSDA in the popup menu
 D. Watch the demos or videos in the demo section of the HTML help
 E. Read section "Introduction to robust statistics" or 
 	"Technical introduction to Robust Statistics" from the HTML help menu
-F. Read "Function reference page" from the HTML help  
+F. Read "Function reference page" from the HTML help.  
