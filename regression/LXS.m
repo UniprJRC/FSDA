@@ -32,7 +32,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               the algorithm should
 %               resist. In this case any value greater than 0 but smaller
 %               or equal than 0.5 will do fine. If on the other hand the
-%               purpose is subgroups detection than bdp can be greater than
+%               purpose is subgroups detection then bdp can be greater than
 %               0.5. In any case however n*(1-bdp) must be greater than
 %               p. If this condition is not fulfilled an error will be
 %               given. Please specify h or bdp not both.
