@@ -7,7 +7,8 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 %
 %  Required input arguments:
 %
-%    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator
+%    c :        scalar (or vector with elements) greater than 0 which
+%               controls the robustness/efficiency of the estimator
 %    p :        number of response variables of the dataset (for regression p=1)
 %
 %  Optional input arguments:
@@ -21,6 +22,9 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 %                 value of c
 %     eff      :  scalar, efficiency associated to the supplied
 %                 value of c
+%                 Remark: if c is a vector bdp and eff will also be vectors
+%                 with the same size of c. For example bdp(3) and eff(3)
+%                 are associated to c(3) ....
 %  approxsheff :  scalar, approximate value of efficiency in case input
 %                 option shapeeff=1.
 %                 This output is left for comparability with the value
@@ -60,7 +64,7 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 
 %}
 
-%% beginning of code
+%% Beginning of code
 
 c2=c.^2/2;
 
@@ -85,7 +89,7 @@ if nargin<=2 || varargin{1} ~=1
     alph= p8*gammainc(c2,(p+10)/2)./(c.^8)-4*p6*gammainc(c2,(p+8)/2)./(c.^6)+...
         6*p4*gammainc(c2,(p+6)/2)./(c.^4)-2*(p+2)*gammainc(c2,(p+4)/2)./c2+...
         gammainc(c2,(p+2)/2);
-    eff=(bet^2)/alph;
+    eff=(bet.^2)./alph;
     
     
 else
@@ -108,7 +112,7 @@ else
         +p10*gammainc(c2,(p+12)/2)./(c.^8);
     
     
-    eff=(betsc.^2)/alphsc;
+    eff=(betsc.^2)./alphsc;
     
     if p>1
         % approxsheff is the approximate value of efficieny using Tyler

@@ -37,10 +37,10 @@ function h = olsline(varargin)
 % Examples:
 
 %{   
-    % a bivariate dataset with two groups of units
+    % A bivariate dataset with two groups of units
     load('fishery.txt','fishery.txt');
-    y=lobyx(:,2);
-    X=lobyx(:,1);
+    y=fishery(:,2);
+    X=fishery(:,1);
     group=ones(677,1); group(181:216)=2;
 
     % plot the data
@@ -64,7 +64,9 @@ function h = olsline(varargin)
     hLines = findobj(gca, 'type', 'line');
     legend(hLines);
 %}    
-    
+
+
+%% Beginning of code
 
 defaultColor = [.3 .3 .3] ; %Grey  [.75 .75 .75] == Light Gray
                             %      [.85 .64 .85] == Violet

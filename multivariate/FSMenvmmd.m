@@ -73,54 +73,54 @@ MMDenv1=FSMenvmmd(10000,5,'exact',0);
 %}
 
 %{
-%In this example we compare the accuracy of the envelopes computed with 
-%order statistics with those which come from simulations. 
+    %In this example we compare the accuracy of the envelopes computed with 
+    %order statistics with those which come from simulations. 
 
-% Fix a seed 
-state=1000;
+    % Fix a seed 
+    state=1000;
 
-mtstream = RandStream('shr3cong','Seed',state);
-RandStream.setDefaultStream(mtstream);
-defaultStream = RandStream.getDefaultStream();
-reset(defaultStream)
+    mtstream = RandStream('shr3cong','Seed',state);
+    RandStream.setGlobalStream(mtstream);
+    defaultStream = RandStream.getGlobalStream();
+    reset(defaultStream)
 
-% If you run this example in a version older than 7.9 replace the previous
-% four lines with 
-% randn('state', 1000);
-n=200;
-p=3;
+    % If you run this example in a version older than 7.9 replace the previous
+    % four lines with 
+    % randn('state', 1000);
+    n=200;
+    p=3;
 
 
-init=25;
-nsimul=1000;
-mmdStore=zeros(n-init,nsimul);
+    init=25;
+    nsimul=1000;
+    mmdStore=zeros(n-init,nsimul);
 
-for j=1:nsimul
-    Y=randn(n,p);
-    [fre]=unibiv(Y);
-    %create an initial subset with the 20 observations with the lowest
-    %Mahalanobis Distance
-    fre=sortrows(fre,4);
-    bs=fre(1:25,1);
-    mmd = FSMmmd(Y,bs,'init',init);
-    mmdStore(:,j)=mmd(:,2);
-end
+    for j=1:nsimul
+        Y=randn(n,p);
+        [fre]=unibiv(Y);
+        %create an initial subset with the 20 observations with the lowest
+        %Mahalanobis Distance
+        fre=sortrows(fre,4);
+        bs=fre(1:25,1);
+        mmd = FSMmmd(Y,bs,'init',init);
+        mmdStore(:,j)=mmd(:,2);
+    end
 
-% Sort rows of matrix mmdStore
-mmdStore=sort(mmdStore,2);
+    % Sort rows of matrix mmdStore
+    mmdStore=sort(mmdStore,2);
 
-% Create figure which compares empirical and theoretical forward envelopes
-% for minimum deletion residual
-figure;
-hold('on');
-quant=[0.01 0.5 0.99];
-sel=round(nsimul*quant);
-% Plot lines of empirical quantiles
-line(mmd(:,1),mmdStore(:,sel),'LineStyle','--','Color','g');
-% Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,p,'exact',1,'init',init);
-line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
-xlabel('Subset size m');
+    % Create figure which compares empirical and theoretical forward envelopes
+    % for minimum deletion residual
+    figure;
+    hold('on');
+    quant=[0.01 0.5 0.99];
+    sel=round(nsimul*quant);
+    % Plot lines of empirical quantiles
+    line(mmd(:,1),mmdStore(:,sel),'LineStyle','--','Color','g');
+    % Plots lines of theoretical quantiles using order statistics
+    mmdT=FSMenvmmd(n,p,'exact',1,'init',init);
+    line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
+    xlabel('Subset size m');
 %}
 
 %% Input parameters checks

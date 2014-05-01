@@ -157,9 +157,9 @@ function out = FSMtra(Y,varargin)
 % Examples:
 
 %{
-    % Baby food data.
+    % Baby food data ignoring the regression structure.
     load('baby.mat');
-    Y=baby.data
+    Y=baby.data(:,6:end);
     % FS based on untrasnformed data H_0:\lambda=1 for all variables
     % Plot of mle of transformation parameters with all default options
     % Compare the output with Figure 4.7 p. 167 of ARC (2004)
@@ -168,6 +168,9 @@ function out = FSMtra(Y,varargin)
 
 
 %{
+    % Baby food data ignoring the regression structure.
+    load('baby.mat');
+    Y=baby.data(:,6:end);
     % Personalized options for plotsmle
     plotsmle=struct;
     plotsmle.LineWidth=3;
@@ -180,7 +183,7 @@ function out = FSMtra(Y,varargin)
 %{
     % Baby food data ignoring the regression structure.
     load('baby.mat');
-    Y=baby.data
+    Y=baby.data(:,6:end);
     % FS based on log trasnformed data H_0:\lambda=0 for all variables
     % Plot of mle of transformation parameters with all default options
     v=size(Y,2);

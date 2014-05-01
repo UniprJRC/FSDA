@@ -190,6 +190,9 @@ function fanplot(out,varargin)
 
 %{
     %FSRfan and fanplot with specified lambda
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
     % la = vector contanining the most common values of the transformation
     % parameter
     la=[-1 -0.5 0 0.5 1];
@@ -199,6 +202,11 @@ function fanplot(out,varargin)
 %
 %{
     %FSRfan and fanplot with databrush option
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[-1 -0.5 0 0.5 1];
+    [out]=FSRfan(y,X,'la',la);
     fanplot(out,'databrush','1');
 %}
 %
@@ -206,11 +214,21 @@ function fanplot(out,varargin)
     %FSRfan and fanplot with databrush, persist, label and  RemoveLabels
     %option options.
     %Removelabels is a parameter of SelectdataFS function
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[-1 -0.5 0 0.5 1];
+    [out]=FSRfan(y,X,'la',la);
     fanplot(out,'databrush',{ 'persist' 'on' 'Label' 'on' 'RemoveLabels' 'off'});
 %}
 %
 %{
     %FSRfan and fanplot with databrush, bivarfit, label and  RemoveLabels option
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[-1 -0.5 0 0.5 1];
+    [out]=FSRfan(y,X,'la',la);
     fanplot(out,'databrush',{ 'bivarfit' '2' 'Label' 'on' 'RemoveLabels' 'off'});
 %}
 %
@@ -220,6 +238,11 @@ function fanplot(out,varargin)
     %Every time a brushing action is performed
     %current highlightments are added to previous highlightments
 
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[-1 -0.5 0 0.5 1];
+    [out]=FSRfan(y,X,'la',la);
     fanplot(out,'databrush',{'selectionmode','Brush'});
     fanplot(out,'databrush',{'selectionmode' 'Lasso' 'persist' 'off'})
     fanplot(out,'databrush',{'selectionmode' 'Rect' 'persist' 'on'})
@@ -228,36 +251,61 @@ function fanplot(out,varargin)
 %{
     %Example of the use of function fanplot with datatooltip passed as
     %scalar (that is using default options for datacursor (i.e. DisplayStyle =window)
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[-1 -0.5 0 0.5 1];
+    [out]=FSRfan(y,X,'la',la);
     fanplot(out,'datatooltip',1);
 %}
 %
 %{
-   %construct fan plot specifying the confidence level and the xlimits
-    fanplot(out,'xlimx',[100 300],'nsamp',0,'conflev',0.95);
+   % Construct fan plot specifying the confidence level and the xlimits
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[0 1/3 0.4 0.5];
+    [out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'nsamp',20000);
+    fanplot(out,'xlimx',[100 300],'conflev',0.95);
 %}
 %
 %{
     %Example of the use of multivarfit and xlimx
-     
-     la=[0 1/3 0.4 0.5];
-     [outs]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'nsamp',20000);
-     fanplot(outs,'xlimx',[10 520],'databrush',{'selectionmode' 'Brush' 'multivarfit' '2'})
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[0 1/3 0.4 0.5];
+    [outs]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'nsamp',20000);
+    fanplot(outs,'xlimx',[10 520],'databrush',{'selectionmode' 'Brush' 'multivarfit' '2'})
 %}
 %
 %{
     %Example of the use of FlagSize, namey, namex, lwd,FontSize, SizeAxesNum.
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[-1 -0.5 0 0.5 1];
+    [out]=FSRfan(y,X,'la',la);
      namey='Sales'
      nameX={'Number of visits', 'Age', 'Number of persons in the family'};
     %FlagSize controls how large must be the highlighted points. It is a
     %parametr of selectdataFS.
-     fanplot(outs,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
+     fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
      'multivarfit' '2' 'FlagSize' '5'})
 %}
 %
 %{
     % Only one brush specifying labels for y and X
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    la=[-1 -0.5 0 0.5 1];
+    [out]=FSRfan(y,X,'la',la);
     fanplot(out,'databrush',{'selectionmode' 'Brush' 'FlagSize' '5'},'nameX',nameX,'namey',namey)
 %}
+
+
+%% Beginning of code
 
 close(findobj('type','figure','Tag','pl_yX'));
 close(findobj('type','figure','Tag','pl_resfwd'));

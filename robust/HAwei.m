@@ -61,10 +61,10 @@ function w = HAwei(u, ctuning,varargin)
 
 %{
 
-    % Obtain Figure 11.15 p. 382 of
+    % Obtain Figure 11.15 (panel b) p. 382 of
     % Hoaglin et al. (1987)
     x=-8:0.01:8;
-    weiHA=HAwei(x,[2 4 8]);
+    weiHA=HAwei(x,[1 2 4 8]);
     plot(x,weiHA)
     xlabel('x','Interpreter','Latex')
     ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')

@@ -102,6 +102,7 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
     % Point mass contamination of 30 observations in interval [0.4 0.4]
     nout=30;
     outint=[0.4 0.4];
+    n=200;
     for j=1:10
         [X,id]=simdataset(n, out.Pi, out.Mu, out.S, 'nout', nout, 'alpha', 0.01, 'int', outint);
         if size(X,1)== n+nout
@@ -112,6 +113,7 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
     end
     spmplot(X,id)
 %}
+
 %% Beginning of code
 
 if (n < 1)

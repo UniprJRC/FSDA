@@ -231,8 +231,8 @@ function mdrplot(out,varargin)
 %}
 
 %{
-   Example of the use of option envm
-   In this case the resuperimposed envelope is based on n-2 observations
+   %Example of the use of option envm
+   %In this case the resuperimposed envelope is based on n-2 observations
    mdrplot(out,'envm',length(out.y)-2);
 
 %}

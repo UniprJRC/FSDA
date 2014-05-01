@@ -94,8 +94,16 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 
     % Now test the direct use of FSM. Set two groups, e.g. those obtained
     % from FSM
-    
+    % Generate contaminated data
+    state=100;
+    randn('state', state);
+    n=200;
+    Y=randn(n,3);
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+   
     close all;
+    [out]=FSM(Ycont,'plots',1);
 
     group = zeros(n,1);
     group(out.outliers)=1;

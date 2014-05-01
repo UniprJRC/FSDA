@@ -131,11 +131,17 @@ function [out]=FSRaddt(y,X,varargin)
     [out]=FSRaddt(y,X,'plots',1);
 %}
 
-% Example of use of FSRaddt with plot of deletion t with labels for the
-% columns of matrix X.
-% line width equal to 3 for the curves representing envelopes.
-% line width equal to 4 for the curves associated with deletion t stat.
 %{
+    % Example of use of FSRaddt with plot of deletion t with labels for the
+    % columns of matrix X.
+    % line width equal to 3 for the curves representing envelopes.
+    % line width equal to 4 for the curves associated with deletion t stat.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
     [out]=FSRaddt(y,X,'plots',1,'nameX',{'F1','F2','F3'},'lwdenv',3,'lwdt',4);
 %}
 

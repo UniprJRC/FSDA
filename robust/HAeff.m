@@ -6,7 +6,7 @@ function ceff = HAeff(eff,v,abc)
 %    eff:       scalar which contains the required efficiency (of location
 %               of scale estimator)
 %               Generally eff=0.85, 0.9 or 0.95
-%    p :        scalar, number of response variables
+%    v :        scalar, number of response variables
 %
 %
 %  Optional input arguments:
@@ -18,8 +18,8 @@ function ceff = HAeff(eff,v,abc)
 %
 % Output:
 %
-%  c = scalar of Hampel estimattor associated to the nominal (location or
-%  shape) efficiency
+%  c = scalar of Hampel estimator associated to the nominal location
+%  efficiency
 %
 % Copyright 2008-2014.
 % Written by FSDA team
@@ -28,7 +28,7 @@ function ceff = HAeff(eff,v,abc)
 %<a href="matlab: docsearch('haeff')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
-% Paramter ceff multiplies parameters (a,b,c) of Hampel estiamtor
+% Paramter ceff multiplies parameters (a,b,c) of Hampel estimator
 %
 %
 % Examples:
@@ -37,46 +37,13 @@ function ceff = HAeff(eff,v,abc)
     % The constant c associated to a nominal location efficiency of 95% in regression is
     % c = 0.690998716841394
     c=HAeff(0.95,1)
-    % for a fixed shape efficiency we have
-    % c= 5.490249208447494
-    c=HAeff(0.95,1,1)
 %}
 %
 %
 %
-%{
-    % Compare constant c for the range of values of p from 1 to 200 using
-    % approximate and exact formula for fixed shape efficiemcy
-    % Number of variables
-    p=200;
-    pp=1:1:p;
-    % Initialize the matrix which stores the values of c for the two
-    % methods
-    cc=[pp' zeros(p,2)];
 
-    eff=0.75;
-    % eff=0.99;
-    for i=pp
-        % Use exact formula for finding the value of c associated to a fixed
-        % level of shape efficiency
-        cc(i,2)=HAeff(eff,i,1);
-        % Use approximate formula for finding the value of c associated to a fixed
-        % level of shape efficiency
-        cc(i,3)=TBeff(eff,i,1,1);
-    end
-    figure
-    plot(cc(:,1),cc(:,2),'LineStyle','-','LineWidth',2)
-    hold('on')
-    plot(cc(:,1),cc(:,3),'LineStyle','-.','LineWidth',2)
-    legend('True value of c', 'Approximate value of c','Location','best')
-    xlabel('Number of variables')
-    ylabel('Value of c')
-%}
-
-%
 
 %% Beginning of code
-
 
 if (nargin >2),
     if ((abc(1) < 0) || (abc(2) < abc(1)) || (abc(3) < abc(2))),
