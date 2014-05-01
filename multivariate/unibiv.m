@@ -289,6 +289,9 @@ for il=1:v;      % il is linked to the rows
                 mus=(median(us))^2;
                 mvs=(median(vs))^2;
                 r=(mus-mvs)/(mus+mvs);
+                if isnan(r)
+                    r=0;
+                end
                 
             elseif robscale==2;
                 % r is computed using ranks
