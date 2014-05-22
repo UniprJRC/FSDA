@@ -1,7 +1,5 @@
 %examples_regression shows a series of analysis of regression datasets 
 
-
-
 %% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
 % scatterplot of data: one point looks outlying 
 load('forbes.txt');
@@ -115,7 +113,6 @@ cascade;
 
 %% MR: (Multiple regression data): MM estimators with 2 values of efficiency 
 close all;
-
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -130,11 +127,15 @@ conflev=[0.95 0.99];
 % eff=0.95 the masking effect is clear
 figure;
 h1=subplot(2,1,1);
-[out]=MMreg(y,X,'Snsamp',3000,'eff',0.90);
+eff=0.90;
+[out]=MMreg(y,X,'Snsamp',3000,'eff',eff);
 resindexplot(out,'h',h1,'conflev',conflev);
+ylabel(['Eff.=' num2str(eff)])
 h2=subplot(2,1,2);
-[out]=MMreg(y,X,'Snsamp',3000,'eff',0.95);
+eff=0.95;
+[out]=MMreg(y,X,'Snsamp',3000,'eff',eff);
 resindexplot(out,'h',h2,'conflev',conflev);
+ylabel(['Eff.=' num2str(eff)])
 cascade;
 
 %% MR: Forward EDA with personalized options for resfwdplot 
