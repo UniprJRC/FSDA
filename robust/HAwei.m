@@ -21,6 +21,12 @@ function w = HAwei(u, ctuning,varargin)
 %                With these choices, if ctuning=1  the
 %                resulting influence function is nearly identical to the
 %                biweight with parameter 8.%
+%
+%  Output:
+%
+%    w :         n x 1 vector contains the Hampel weights associated to the residuals or
+%                Mahalanobis distances for the n units of the sample
+%
 % Function HAwei transforms vector u as follows
 %
 % HAwei(u) = 	{ 1,			              |u| <= a,
@@ -38,10 +44,6 @@ function w = HAwei(u, ctuning,varargin)
 %                   c= 8*ctuning
 %
 %	It is necessary to have 0 <= a <= b <= c%
-%  Output:
-%
-%    w :         n x 1 vector contains Hampel weights associated to the residuals or
-%                Mahalanobis distances for the n units of the sample
 %
 %
 % References:

@@ -21,6 +21,15 @@ function rhoHYP = HYPrho(u, cktuning)
 %                Remark: if length(cktuning)==2 values of A, B and d will be
 %                computed automatically
 %
+%  Output:
+%
+%
+%   rhoHYP :     n x 1 vector which contains the hyperbolic rho
+%                associated to the residuals or Mahalanobis distances for
+%                the n units of the sample
+%
+%
+% Remark: 
 %
 % Function HYPrho transforms vector u as follows
 %

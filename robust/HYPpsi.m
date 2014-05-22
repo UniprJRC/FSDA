@@ -22,7 +22,14 @@ function psiHYP = HYPpsi(u, cktuning)
 %                computed automatically
 %
 %
-% Function HYPpsi transforms vector u as follows
+%  Output:
+%
+%
+%   psiHYP :     n x 1 vector which contains the values of hyperbolic psi
+%                function associated to the residuals or Mahalanobis
+%                distances for the n units of the sample
+%
+% Remark: function HYPpsi transforms vector u as follows
 %
 % HYPpsi(u) = 	{ u,			                               |u| <= d,
 %               {

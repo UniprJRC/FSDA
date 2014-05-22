@@ -22,7 +22,15 @@ function psiHA = HApsi(u, ctuning,varargin)
 %                resulting influence function is nearly identical to the
 %                biweight with parameter 8.
 %
-% Function HApsi transforms vector u as follows
+%
+%  Output:
+%
+%
+%   psiHA :     n x 1 vector which contains the values of Hampel psi
+%                function associated to the residuals or Mahalanobis
+%                distances for the n units of the sample
+%
+% Remark: function HApsi transforms vector u as follows
 %
 % HApsi(u) = 	{ u,			                               |u| <= a,
 %		        { a*sign(u),		                      a <= |u| < b,

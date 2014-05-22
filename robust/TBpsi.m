@@ -11,6 +11,13 @@ function psi=TBpsi(u,c)
 %    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator 
 %               (beta in regression or mu in the location case ...) 
 %
+%  Output:
+%
+%
+%   tbpsi :      n x 1 vector which contains the Tukey's psi
+%                associated to the residuals or Mahalanobis distances for
+%                the n units of the sample
+%
 % Function psibi transforms vector x as follows 
 % TBpsi(x)=
 % x[1-(x/c)^2]^2    if |x/c|<=1 

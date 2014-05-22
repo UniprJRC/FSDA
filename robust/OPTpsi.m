@@ -1,4 +1,4 @@
-function psi=OPTpsi(x,c)
+function psiOPT=OPTpsi(x,c)
 %OPTpsi computes psi function (derivative of rho function) for optimal weight function
 %
 %<a href="matlab: docsearch('optpsi')">Link to the help function</a>
@@ -11,7 +11,14 @@ function psi=OPTpsi(x,c)
 %    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator
 %               (beta in regression or mu in the location case ...)
 %
-% Function OPTpsi transforms vector x as follows
+%  Output:
+%
+%
+%   psiOPT :     n x 1 vector which contains the values of optimal psi
+%                function associated to the residuals or Mahalanobis
+%                distances for the n units of the sample
+%
+% Remark: function OPTpsi transforms vector x as follows
 %
 %               |  (1/3.25*c^2) x                                                        |x|<=2c
 %               |   
@@ -56,17 +63,17 @@ ylabel('$\psi (x)$','Interpreter','Latex')
 % Computes Standardized optimal psi function (first derivative of rho function)
 % \rho'(x)
 
-psi = zeros(length(x),1);
+psiOPT = zeros(length(x),1);
 absx=abs(x);
 
 % r /(3.25c^2) if r <=2*c
 inds1 = absx <= 2*c;
-psi(inds1) = x(inds1) / (3.25*c^2);
+psiOPT(inds1) = x(inds1) / (3.25*c^2);
 
 % 1/(3.25) * ( -1.944* (r/c)^2 .... +8*0.002 (r/c)^8 )    if    2c< r <3c
 inds1=(absx > 2*c)&(absx <= 3*c);
 x1 = x(inds1);
-psi(inds1) = (-1.944 * x1 / c^2 + 1.728 * x1.^3 / c^4 - 0.312 * x1.^5 / c^6 + 0.016 * x1.^7 / c^8) / 3.25;
+psiOPT(inds1) = (-1.944 * x1 / c^2 + 1.728 * x1.^3 / c^4 - 0.312 * x1.^5 / c^6 + 0.016 * x1.^7 / c^8) / 3.25;
 
 % 0 if r >3*c
 

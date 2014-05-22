@@ -12,6 +12,12 @@ function w = OPTwei(x,c)
 %    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator
 %               (beta in regression or mu in the location case ...)
 %
+%  Output:
+%
+%    w :         n x 1 vector contains the optimal weights associated to the residuals or
+%                Mahalanobis distances for the n units of the sample
+%
+%
 % Function OPTwei transforms vector u as follows
 %
 %               |  1/(3.25*c^2)                                                          |x|<=2

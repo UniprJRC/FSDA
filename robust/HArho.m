@@ -1,5 +1,5 @@
 function rhoHA = HArho(u, ctuning,varargin)
-%HAwei computes rho function  using Hampel proposal
+%HArho computes rho function  using Hampel proposal
 %
 %<a href="matlab: docsearch('HArho')">Link to the help function</a>
 %
@@ -21,6 +21,14 @@ function rhoHA = HArho(u, ctuning,varargin)
 %                With these choices, if ctuning=1  the
 %                resulting influence function is nearly identical to the
 %                biweight with parameter 8.
+%
+%
+%  Output:
+%
+%
+%   rhoHA :     n x 1 vector which contains the Hampel rho
+%                associated to the residuals or Mahalanobis distances for
+%                the n units of the sample
 %
 % Function HArho transforms vector u as follows
 %
