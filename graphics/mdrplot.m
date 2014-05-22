@@ -756,7 +756,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             % - the list of selected observations in the current iteration
             %   if persist=off
             if strcmp(persist,'on')
-                brushcum=unique([brushcum; nbrush]);
+                brushcum=unique([brushcum; nbrush(:)]);
             else
                 brushcum=nbrush;
                 group=ones(n,1);
