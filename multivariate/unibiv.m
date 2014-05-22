@@ -309,7 +309,7 @@ for il=1:v;      % il is linked to the rows
                 
                 Xs=(x-Tx)/Sx;   % standardization of x
                 Ys=(y-Ty)/Sy;   % standardization of y
-                r=Xs'*Ys/(n-1); % r= unrobust correlation @
+                r=Xs'*Ys/(n-1); % r= unrobust correlation 
             end
             
             % Spearman's rho and Kendall's tau and tetracoric correlation
