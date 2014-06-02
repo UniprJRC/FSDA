@@ -16,25 +16,28 @@ function [ax,h]=suplabel(text,whichLabel,supAxes)
 %  supAxes defaults to [.08 .08 .84 .84]
 %  specify supAxes if labels get chopped or overlay subplots
 %
-% EXAMPLE:
-%  subplot(2,2,1);ylabel('ylabel1');title('title1')
-%  subplot(2,2,2);ylabel('ylabel2');title('title2')
-%  subplot(2,2,3);ylabel('ylabel3');xlabel('xlabel3')
-%  subplot(2,2,4);ylabel('ylabel4');xlabel('xlabel4')
-%  [ax1,h1]=suplabel('super X label');
-%  [ax2,h2]=suplabel('super Y label','y');
-%  [ax3,h2]=suplabel('super Y label (right)','yy');
-%  [ax4,h3]=suplabel('super Title'  ,'t');
-%  set(h3,'FontSize',30)
-%
-% SEE ALSO: text, title, xlabel, ylabel, zlabel, subplot,
-%           suptitle (Matlab Central)
-
 % Author: Ben Barrowes <barrowes@alum.mit.edu>
 
 %modified 3/16/2010 by IJW to make axis behavior re "zoom" on exit same as
 %at beginning. Requires adding tag to the invisible axes
-
+%
+% SEE ALSO: text, title, xlabel, ylabel, zlabel, subplot,
+%           suptitle (Matlab Central)
+%
+% Example:
+%{
+  n=200;
+  p=3;
+  state1=123498;
+  randn('state', state1);
+  X=randn(n,p);
+  gplotmatrix(X);
+  [ax1,h1]=suplabel('super X label');
+  [ax2,h2]=suplabel('super Y label','y');
+  [ax3,h2]=suplabel('super Y label (right)','yy');
+  [ax4,h3]=suplabel('super Title'  ,'t');
+  set(h3,'FontSize',30);
+%}
 
 currax=findobj(gcf,'type','axes','-not','tag','suplabel');
 

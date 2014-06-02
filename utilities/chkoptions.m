@@ -19,6 +19,24 @@ function chkoptions(options,UserOptions)
 %
 %
 % Last modified 08-Dec-2013
+%
+% Examples:
+%
+%{
+    %To examplify the behaviour of chkoptions, we call function FSR with a
+    %non existing optional parameter ('namez').
+    n=200;
+    p=3;
+    state1=123498;
+    randn('state', state1);
+    X=randn(n,p);
+    y=randn(n,1);
+    kk=33;
+    nameX={'age', 'salary', 'position'};
+    namey='salary';
+    namez='error';
+    [out]=FSR(y,X,'nameX',nameX,'namey',namey,'namez',namez);
+%}
 
 %% Beginning of code
 inpchk=isfield(options,UserOptions);

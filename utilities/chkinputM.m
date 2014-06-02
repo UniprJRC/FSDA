@@ -25,7 +25,18 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 %
 %
 % Last modified 08-Dec-2013
-
+%
+% Example:
+%{
+    %To examplify the behaviour of chkinputM, we call function FSM with a
+    %X with more columns then rows.
+    n=3;
+    p=200;
+    state1=123498;
+    randn('state', state1);
+    X=randn(n,p);
+    [out]=FSM(X);
+%}
 %% Beginning of code
 optargin = size(vvarargin,2);
 stdargin = nnargin - optargin;

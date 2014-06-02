@@ -31,7 +31,18 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
 %
 %
 % Last modified 08-Dec-2013
-
+%
+% Example:
+%{
+    %To examplify the behaviour of chkinputR, we call function FSR without a
+    %compulsory parameter ('y').
+    n=200;
+    p=3;
+    state1=123498;
+    randn('state', state1);
+    X=randn(n,p);
+    [out]=FSR(X);
+%}
 optargin = size(vvarargin,2);
 stdargin = nnargin - optargin;
 
