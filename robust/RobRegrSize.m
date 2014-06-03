@@ -159,7 +159,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %}
 
 %{
-    % Example 3
+    % Example 4
     % Find the threshold for S estimator and hyperbolic rho function, 
     % use Tallis correction to infer
     % a threshold for bdp equal to 0.3 (simultaneous size)
