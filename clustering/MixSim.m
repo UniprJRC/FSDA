@@ -368,7 +368,7 @@ out = Q;
             
             fail=0;
             
-            % /* generate parameters */
+            % Generate parameters
             % procedure genPi generates (mixture proportions) k numbers
             % whose sum is equal to 1 and the smallest value is not smaller
             % than PiLow
@@ -390,7 +390,8 @@ out = Q;
                 Sgen=genSphSigma(p, k, hom);
             end
             
-            % /* prepare parameters */ row 774 of file libOverlap.c
+            % prepare parameters (this line corresponds to row 774 of file
+            % libOverlap.c)
             [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
             
             % check if desired overlap is reachable
@@ -407,7 +408,7 @@ out = Q;
                 diff = Malpha - Omega;
             end
             
-            if (diff < -tol) % /* Prefixed overlapping is not reachable */
+            if (diff < -tol) % Prefixed overlapping is not reachable
                 disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
                 fail = 1;
             else
@@ -598,8 +599,8 @@ out = Q;
                 end
                 
                 if fail == 0
-                    %  OmegaMax is reached and OmegaBar is reachable */
-                    % /* correct covariances by multiplier C */
+                    %  OmegaMax is reached and OmegaBar is reachable
+                    % correct covariances by multiplier C
                     
                     
                     % cxS(p, K, S, c);
@@ -619,8 +620,7 @@ out = Q;
                     [c,OmegaMap, Balpha, Malpha,rcMax]=FindC(lower, upper, Balpha, method, p, k, li, di, const1, fixcl, tol, lim);
                     
                     
-                    % /* correct covariances by multiplier c */
-                    
+                    % correct covariances by multiplier c
                     for jj=1:k
                         if fixcl(jj) == 0
                             Sgen(:,:,jj) = c * Sgen(:,:,jj);
@@ -662,18 +662,23 @@ out = Q;
 
 
     function Pigen=genPi(k,PiLow)
-        % /* genPi : generates mixing proportions
-        % Parameters:
-        % 		k - number of components
-        % 		PiLow - smallest possible mixing proportion
-        % 		Pigen - vector of mixing proportions
-        %  for example Pigen=genPi(4,0.24)
+        % genPi generates mixing proportions
+        %
+        %  Required input arguments:
+        % 		k       : scalar, number of components
+        % 		PiLow   : scalar, smallest possible mixing proportion
+        %
+        %  Output:
+        %
+        % 		Pigen : vector of length k containing mixing proportions
+        %
+        %  For example Pigen=genPi(4,0.24)
         %  produces Pigen=
         %    0.2440
         %    0.2517
         %    0.2565
         %    0.2478
-        %  */
+        %
         flag = 0;
         
         if PiLow >= 1 || PiLow <= 0
@@ -709,15 +714,17 @@ out = Q;
     end
 
 
-% /* genMu : generates matrix of means of size k-by-p
-% Parameters:
-% 		p - number of dimensions
-% 		k - number of components
-% 		Mu - set of mean vectors
-% 		Lbound - lower bound for the hypercube
-% 		Ubound - upper bound for the hypercube
-%  */
+
     function Mugen=genMu(p,k,Lbound, Ubound)
+        % genMu generates matrix of means of size k-by-p
+        % Parameters:
+        % 		p - number of dimensions
+        % 		k - number of components
+        % 		Lbound - lower bound for the hypercube
+        % 		Ubound - upper bound for the hypercube
+        %   Output:
+        % 		Mu - matrix of means of size k-by-p
+        
         if R_seed
             % equivalent of 'rand(k,p)' in R is 'matrix(runif(k*p),k,p)'
             rn1s = ['matrix(runif(' num2str(k*p) '),' num2str(p) ',' num2str(k) ')'];
@@ -766,16 +773,17 @@ out = Q;
     end
 
 
-% /* genSigmaEcc : generates covariance matrix with prespecified eccentricity
-% Parameters:
-% 		p - number of dimensions
-% 		K - number of components
-% 		emax - maximum eccentricity
-% 		S - set of variance-covariance matrices
-%         hom = homegeneous (1) or heterogeneous cluster (0)
-%  */
+
 
     function S=genSigmaEcc(p,k,emax, hom)
+        % genSigmaEcc generates covariance matrix with prespecified eccentricity
+        % Parameters:
+        % 		p - number of dimensions
+        % 		K - number of components
+        % 		emax - maximum eccentricity
+        % 		S - set of variance-covariance matrices
+        %         hom = homegeneous (1) or heterogeneous cluster (0)
+        %
         
         % S = 3d array which contains the covariance matriced of the groups
         S=zeros(p,p,k);
@@ -807,7 +815,7 @@ out = Q;
                     S(:,:,kk)=R;
                 end
             end
-        else % { /* homogeneous clusters */
+        else % homogeneous clusters 
             
             VC=genSigma(p);
             for kk=1:k;

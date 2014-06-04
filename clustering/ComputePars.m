@@ -1,16 +1,67 @@
-%computes parameters needed for computing overlap
-%  INPUT PARAMETERS
-%  * p  - dimensionality
-%  * k  - number of components
-%  * Pi - mixing proportions
-%  * Mu - mean vectors
-%  * S  - covariance matrices
-%  OUTPUT PARAMETERS
-%  * li, di, const1 - parameters needed for computing overlap (see theory of method)
-%  */
-
 function [li,di,const1]=ComputePars(p,k,Pi,Mu,S)
+%ComputePars computes parameters needed for computing overlap
+%
+%  Required input arguments:
+%
+%       p  : dimensionality (number of variables)
+%       k  : number of components (groups)
+%       Pi :  mixing proportions
+%       Mu : mean vectors (matrix of size k-by-p)
+%       S  : 3D array of size p-by-p-by-k containing covariance matrices
+%
+%
+%  Output:
+%
+%       li : 3D array of size k-by-k-by-p
+%       di : 3D array of size k-by-k-by-p
+%    const1: k x k matrix
+%
+%  li, di, const1 - parameters needed for computing overlap (see theory of method)
+%
+%
+%<a href="matlab: docsearch('rescale')">Link to the help function</a>
+% Last modified 08-Dec-2013
 
+% Examples:
+
+%{
+    k=4; % Number of groups
+    p=5;    % Number of dimensions
+    Pi=[0.1 0.2 0.4 0.3]; % mixing proportions
+    % Mu matrix of means of size k-by-p; (each row is a distinct centroid)
+    Mu=randn(k,p);
+    % Groups 2 and 3  is far from the other groups
+    Mu(2:3,:)=Mu(2:3,:)+10;
+    %Mu(3,:)=Mu(3,:)+2;
+    %Mu(4,:)=Mu(4,:)+3;
+    % S= 3D array of dimension p-by-p-by-k containing covariance matrices of
+    % the groups
+    S=zeros(p,p,k);
+    for j=1:k
+        S(:,:,j)=eye(p);
+    end
+
+    [li, di, const1]=ComputePars(p, k, Pi, Mu, S);
+
+    asympt = 0;
+    c = 1;
+    fixcl=zeros(k,1);
+    tol=1e-8;
+    lim=1e+07;
+    [OmegaMap,  BarOmega, MaxOmega, rcMax] = ...
+        GetOmegaMap(c, p, k, li, di, const1, fixcl, tol, lim, asympt);
+    disp('Omegamap= k-by-k matrix which will contain misclassification probabilities')
+    disp(OmegaMap);
+    disp('Average overlap')
+    disp(BarOmega)
+    disp('Maximum overlap')
+    disp(MaxOmega)
+    disp('Groups with maximum overlap')
+    disp(rcMax)
+
+%}
+
+%% Beginning of code
 Sh=zeros(p,p,k);
 detS=zeros(k,1);
 Sinv=Sh;

@@ -43,6 +43,41 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, cons
 % Copyright 2008-2014.
 % Written by FSDA team
 %
+%{
+    k=4; % Number of groups
+    p=5;    % Number of dimensions
+    Pi=[0.1 0.2 0.4 0.3]; % mixing proportions
+    % Mu matrix of means of size k-by-p; (each row is a distinct centroid)
+    Mu=randn(k,p);
+    % Groups 2 and 3  is far from the other groups
+    Mu(2:3,:)=Mu(2:3,:)+10;
+    %Mu(3,:)=Mu(3,:)+2;
+    %Mu(4,:)=Mu(4,:)+3;
+    % S= 3D array of dimension p-by-p-by-k containing covariance matrices of
+    % the groups
+    S=zeros(p,p,k);
+    for j=1:k
+        S(:,:,j)=eye(p);
+    end
+
+    [li, di, const1]=ComputePars(p, k, Pi, Mu, S);
+
+    asympt = 0;
+    c = 1;
+    fixcl=zeros(k,1);
+    tol=1e-8;
+    lim=1e+07;
+    [OmegaMap,  BarOmega, MaxOmega, rcMax] = ...
+        GetOmegaMap(c, p, k, li, di, const1, fixcl, tol, lim, asympt);
+    disp('Omegamap= k-by-k matrix which will contain misclassification probabilities')
+    disp(OmegaMap);
+    disp('Average overlap')
+    disp(BarOmega)
+    disp('Maximum overlap')
+    disp(MaxOmega)
+    disp('Groups with maximum overlap')
+    disp(rcMax)
+%}
 
 %% Beginning of code
 
@@ -60,7 +95,7 @@ ii = 1;
 jj = 2;
 
 
-%/* check if clusters are homogeneous */
+% check if clusters are homogeneous 
 hom = 1;
 for kk=1:p
     
