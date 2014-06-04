@@ -1,5 +1,5 @@
 function varargout = dsxy2figxy(varargin)
-%dsxy2figxy transforms points or positions from axis to figure coords.
+%dsxy2figxy transforms points or positions from 'axes data units' to 'normalized figure units'
 %
 %<a href="matlab: docsearch('dsxy2figxy')">Link to the help page for this function</a>
 %
@@ -15,29 +15,48 @@ function varargout = dsxy2figxy(varargin)
 %
 % dsxy2figxy transforms [axx axy] or [xypos] from axes hAx (data) coords
 % into coords wrt GCF for placing annotation objects that use figure coords
-% into data space. The annotation objects this can be used for are:
+% into data space. The annotation objects that use just normalized coordinates are:
 %    arrow, doublearrow, textarrow
-%    ellipses (coordinates must be transformed to [x, y, width, height])
+%    ellipses (in this case coordinates must be transformed to [x, y,
+%    width, height] where x and y, width and height are numbers between 0
+%    and 1)
 %
 % Consider that line, text, and rectangle anno objects already are placed
 % on a plot using axes coordinates and must be located within an axes.
 %
-% Usage: Compute a position and apply to an annotation, e.g.,
-%   [axx axy] = ginput(2);
-%   [figx figy] = dsxy2figxy(gca, axx, axy);
-%   har = annotation('textarrow',figx,figy);
-%   set(har,'String',['(' num2str(axx(2)) ',' num2str(axy(2)) ')'])
+%In other words, for example
+%    rectangle('Position',[x,y,w,h]) 
+%   draws a rectangle from the
+% point x,y  having a width of w and a height of h.
+% Note that in this case the coordinates are specified in in axes data units.
+% On the other hand
+%   annotation('line',x,y) 
+% creates a line annotation object that
+% extends from the point defined by x(1),y(1) to the point
+% defined by x(2),y(2), specified in normalized figure units
 %
 % See also 
 %
 %
 % Copyright 2008-2014.
-% Written by FSDA team
+% REMARK: function  dsxy2figxy has been written by MATLAB programmers but for some
+% strange reason has not included yet into the standard documentation
 %
 %
 %
 %<a href="matlab: docsearch('dsxy2figxy')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
+
+%{
+    % Plot of sin between -pi and pi 
+    % Add an arrow from (0,0) to say (pi,1):
+    x = -pi:pi/10:pi;
+    plot(x,sin(x));
+    % set(gcf,'Units','normalized');
+    % set(gcf,'Units','points');
+    [figx figy] = dsxy2figxy([0 pi],[0 2]);
+    annotation('textarrow',figx,figy)
+%}
 
 %% Obtain arguments (only limited argument checking is performed).
 

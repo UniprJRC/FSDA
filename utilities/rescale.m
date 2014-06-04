@@ -1,7 +1,17 @@
 function y = rescale(x,a,b)
-%rescale data in [a,b]
+%Rescale numeric array to have specified minimum (a)  and maximum (b)
 %
-%   y = rescale(x,a,b);
+%<a href="matlab: docsearch('rescale')">Link to the help function</a>
+%
+%  Required input arguments:
+%     x : vector or matrix or 3D array of elements which must be rescaled
+%
+%  Optional input arguments:
+%     a : scalar, minimum of the required interval 
+%     (default value of a is 0)
+%     b : scalar, maximum of the required interval
+%     (default value of b is 1)
+%
 %
 % Copyright 2008-2014.
 % Written by FSDA team
@@ -9,6 +19,19 @@ function y = rescale(x,a,b)
 %
 %<a href="matlab: docsearch('rescale')">Link to the help function</a>
 % Last modified 08-Dec-2013
+
+% Examples:
+
+%{
+    % Rescale random numbers in the interval [3 4]
+    x = abs(randn(100,1));
+    % Rescale the elements of vector x  in such a way their minimum is 3
+    % and their maximum is 4
+    x=rescale(x,3,4);
+    disp(['min(x)=' num2str(min(x))])
+    disp(['max(x)=' num2str(max(x))])
+ 
+%}
 
 %% Beginning of code
 if nargin<2
