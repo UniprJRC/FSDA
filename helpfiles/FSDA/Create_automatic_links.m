@@ -1,9 +1,48 @@
+function Create_automatic_links()
+%Create_automatic_links puts links in html documentation files 
+%
+% The purpose of this file is to automatically create the links to
+% automatically navigate in alfabethical order among the html pages that
+% are create. 
+% REMARK: this routine scans current directory to find HTML files and put
+% all alphabetical links in all the pages except for the files named
+% users_guide.html
+% function_reference.html
+% alphabetical.html
+% acknowledgments.html
+% bibliography.html
+% fsda_product_page.html
+% fsda_toolbox_product_page.html
+% datasets.html
+% exampleindex.html
+% developers.html
+% release_notes.html
+%
+% Similarly all .html files which start with the following words
+% mult
+% transf
+% regression
+% statistical
+% group
+% automatic_outl_detect_fsm
+%
+% are ignored
 
-%% The purpose of this file is to automatically create the links to
-% automatically navigate in alfabethical order among  the html pages that
-% we create
+% Copyright 2008-2014.
+% Written by FSDA team
+%
+% Last modified 08-Dec-2013
 
-% list all file with .html extension in current directory
+% Examples:
+
+%
+%{
+    % Navigate in a folder which contains the html files and then digit
+    Create_automatic_links()
+%}
+
+%% Beginning of code
+% List all file with .html extension in current directory
 namefiles=dir('*.html');
 
 
@@ -49,10 +88,10 @@ filenames(ij-1)
 % sort them (from A to z)
 filenames=sort(filenames(1:ij-1));
 filenamesno=filenamesno(1:ino-1);
+disp(filenamesno)
 
-
-%% LOOP through all filnames (excluding filenamesno) to create all the 
-% automatic links 
+%% LOOP through all filenames (excluding filenamesno) to create all the
+% automatic links
 
 % ii=7;
 
@@ -185,7 +224,8 @@ for ii= 2:(size(filenames,1)-1)
     % file1ID=fopen('newfile.html','w');
     % Reopen the file for writing
     file1ID=fopen(char(filen),'w');
-    count1=fprintf(file1ID,'%s',fstring);
+    fprintf(file1ID,'%s',fstring);
     fclose('all');
     
+end
 end
