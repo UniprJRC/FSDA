@@ -3,7 +3,7 @@ function [out , varargout] = Smult(Y,varargin)
 % Fast S algorithm for multivariate location estimation is based on Tukey's
 % biweight function
 %
-%<a href="matlab: docsearch('Smult')">Link to the help function</a>
+%<a href="matlab: docsearch('smult')">Link to the help function</a>
 %
 %  Required input arguments:
 %

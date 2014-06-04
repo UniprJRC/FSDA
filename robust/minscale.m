@@ -1,5 +1,9 @@
+%  THIS FUNCTION HAS BEEN REPLACED BY mscale because 
+%  minscale just refers to Tukey's biweight
+%  At present this routine is just called by Smult
+
 function sc = minscale(u, c, kc, initialsc, tol, maxiter)
-%minscale finds the (local) minimum value of the scale
+%minscale finds the M estimator of the scale for TB
 %
 % u = residuals or Mahalanobis distances 
 % (note that u is kept fixed in each iteration)
@@ -30,12 +34,14 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 %
 %  sc : scalar, minimum value of the scale
 %
-% Remark: this routine is called by Sreg.m and Smult.m
+% Remark: this routine is called by Smult.m
 %
 % References
 % Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119,  p.
 % 176).
 %
+% See also Mscale1, minscale
+
 % Copyright 2008-2014.
 % Written by FSDA team
 %

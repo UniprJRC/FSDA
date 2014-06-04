@@ -21,23 +21,24 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %                     function. For example if psifunc.class='hampel'
 %                     c1(2:4) must contain parameters (a, b and c) of
 %                     Hampel rho function
-%               kc1= Expectation for rho associated with c1
+%               kc1= Expectation of rho associated with c1 to get a consistent
+%                    estimator at the model distribution kc1=E(rho)
 %               class = string identyfing the rho (psi) function to use.
-%                    Admissible values for class are 'bisquare', 'optimal',
-%                    'hyperboloc' and 'hampel
+%                    Admissible values for class are 'bisquare' (TB),
+%                    'optimal', (OPT) 'hyperbolic' (HYP) and 'hampel' (HA)
 %
 %  Optional input arguments:
 %
 %    initialsc: scalar. The initial estimate of the scale.
 %               If not defined, scaled MAD of vector |u| is used.
-%     maxiter : scalar. Maximum number of iterations to find the scale.
-%               If not defined, maxiter is fixed to 200.
 %     tol     : scalar. The tolerance for controlling convergence.
 %               If not defined, tol is fixed to 1e-7.
+%     maxiter : scalar. Maximum number of iterations to find the scale.
+%               If not defined, maxiter is fixed to 200.
 %
 %  Output:
 %
-%  sc : scalar, minimum value of the scale
+%  sc : scalar, M-estimate of the scale
 %
 % Remark: this routine is called by Taureg, Sreg.m and Smult.m
 %
@@ -45,10 +46,50 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 % Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119,  p.
 % 176).
 %
+% See also Mscale1, minscale
+%
 % Copyright 2008-2014.
 % Written by FSDA team
 %
 
+% Examples
+
+%{
+    % M estimate of the scale using Tukey biweight rho function with a
+    % value of c associated to a breakdown point of 0.5
+    psifunc=struct;
+    psifunc.class='TB';
+    bdp=0.5;
+    c=TBbdp(bdp,1);
+    % kc = E(rho) = sup(rho)*bdp
+    kc=c^2/6*bdp;
+    psifunc.c1=c;
+    psifunc.kc1=kc;
+    n=10000;
+    shift=5;
+    u=2*randn(n,1);
+    u(1:10)=u(1:10)+shift;
+    s=Mscale(u,psifunc)
+%}
+
+%{
+    % M estimate of the scale using Hampel biweight rho function with a
+    % value of c associated to a breakdown point of 0.5
+    psifunc=struct;
+    psifunc.class='HA'
+    abc=[1.5 3.5 8];
+    bdp=0.5;
+    c=HAbdp(bdp,1,abc);
+    % kc = E(rho) = sup(rho)*bdp
+    kc=HArho(c*abc(3),[c, abc])*bdp;
+    psifunc.c1=[c abc];
+    psifunc.kc1=kc;
+    n=10000;
+    shift=5;
+    u=3*randn(n,1);
+    u(1:10)=u(1:10)+shift;
+    s=Mscale(u,psifunc)
+%}
 
 %% Beginning of code
 c=psifunc.c1;
