@@ -25,6 +25,28 @@ function [out1,out2,out3] = ginputFS(arg1,varargin)
 % Written by FSDA team
 %
 % Last modified 08-Dec-2013
+%
+%Examples
+%
+%{
+%example_requiring_interaction
+
+disp('ginputFS is called inside resfwdplot function')
+disp('to get the FS step selected by the user in the interactive session')
+
+load('multiple_regression.txt');
+y=multiple_regression(:,4);
+X=multiple_regression(:,1:3);
+yXplot(y,X);
+[out]=LXS(y,X,'nsamp',10000);
+[out]=FSReda(y,X,out.bs);
+out1=out;
+out1.RES=out.RES.^2;
+datatooltip = struct;
+datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
+resfwdplot(out,'datatooltip',datatooltip);
+
+%}
 
 %% Beginning of code
 
