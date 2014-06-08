@@ -126,6 +126,8 @@ function [out , varargout] = MMmult(Y,varargin)
 
 %% Beginning of code
 
+%% Input parameters checking
+%chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
@@ -230,7 +232,7 @@ conflev=options.conflev;
 % MMmultIRW = function which does IRWLS steps from initial loc (loc0) and
 % initial shape matrix (Shape0). The estimate of sigma (auxscale) remains
 % fixed inside this routine
-outIRW = MMmultcore(Y,loc0,shape0,auxscale,'eff',eff,'effshape',effshape,'refsteps',refsteps,'reftol',tol,'conflev',conflev);
+outIRW = MMmultcore(Y,loc0,shape0,auxscale,'eff',eff,'effshape',effshape,'refsteps',refsteps,'reftol',tol,'conflev',conflev,'nocheck',1);
 
 % --------------------------------------------------------------------
 out.Sloc     = loc0;

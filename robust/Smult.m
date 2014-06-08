@@ -138,6 +138,12 @@ function [out , varargout] = Smult(Y,varargin)
 %}
 
 %% Beginning of code
+%% Input parameters checking
+%chkinputM does not do any check if option nocheck=1
+nnargin=nargin;
+vvarargin=varargin;
+Y = chkinputM(Y,nnargin,vvarargin);
+
 [n,v]=size(Y);
 
 % default value of break down point

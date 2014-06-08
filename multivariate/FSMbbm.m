@@ -34,6 +34,8 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %               about great interchange on the screen
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
+% nocheck :     Scalar. If nocheck is equal to 1 no check is performed on
+%               matrix Y. As default nocheck=0.
 %
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
@@ -98,12 +100,19 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
     disp(setdiff(seq,mmsel))
 %}
 
+%% Beginning of code
+%% Input parameters checking
+%chkinputM does not do any check if option nocheck=1
+nnargin=nargin;
+vvarargin=varargin;
+Y = chkinputM(Y,nnargin,vvarargin);
+
 %% Input parameters checking
 [n,v]=size(Y);
 
 hdef=floor(n*0.6);
 
-options=struct('init',hdef,'plots',0,'msg',1);
+options=struct('init',hdef,'plots',0,'msg',1,'nocheck',0);
 
 if nargin<2
     error('Initial subset is missing');

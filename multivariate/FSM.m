@@ -109,6 +109,8 @@ function [out]=FSM(Y,varargin)
 %                 If msg==1 (default) messages about the progression of the
 %                 search are displayed on the screen otherwise only error
 %                 messages will be displayed.
+%   nocheck     : Scalar. If nocheck is equal to 1 no check is performed on
+%                 matrix Y. As default nocheck=0.
 %
 %
 % Output:
@@ -246,6 +248,10 @@ function [out]=FSM(Y,varargin)
 %}
 
 %% Input parameters checking
+%chkinputM does not do any check if option nocheck=1
+nnargin=nargin;
+vvarargin=varargin;
+Y = chkinputM(Y,nnargin,vvarargin);
 
 [n,v]=size(Y);
 seq=(1:n)';
@@ -259,7 +265,7 @@ else
 end
 
 options=struct('m0',v+1,'init',hdef,'exact',0,'crit',critdef,'rf',0.95,...
-    'plots',1,'msg',1,'labeladd','','bonflev','');
+    'plots',1,'msg',1,'labeladd','','bonflev','','nocheck',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -342,9 +348,9 @@ quant=[0.99;0.999;0.9999;0.99999;0.01;0.5];
 
 % Compute Minimum Mahalanobis Distance for each step of the search
 if n<5000
-    [mmd,Un,bb] = FSMmmd(Y,bs,'init',init);
+    [mmd,Un,bb] = FSMmmd(Y,bs,'init',init,'nocheck',1);
 else
-    [mmd,Un] = FSMmmd(Y,bs,'init',init);
+    [mmd,Un] = FSMmmd(Y,bs,'init',init,'nocheck',1);
 end
 
 if isnan(mmd)
@@ -1228,7 +1234,7 @@ if ndecl>0;
     if n<5000
         outliers=seq(isnan(bb(:,end-ndecl)));
     else
-        bb = FSMbbm(Y,bs,n-ndecl,'init',init);
+        bb = FSMbbm(Y,bs,n-ndecl,'init',init,'nocheck',1);
         outliers=seq(isnan(bb));
     end
     group(outliers)=2;
