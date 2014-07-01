@@ -1,11 +1,13 @@
 function [out, varargout] = SDest(Y,varargin)
 %SDest computes Stahel-Donoho robust estimator of dispersion/location
 %
-%<a href="matlab: docsearch('SDest')">Link to the help function</a>
+%<a href="matlab: docsearch('sdest')">Link to the help function</a>
 %
 % Required input arguments:
 %
 %    Y: Data matrix containing n observations on v variables
+%       Y=(y_1^T, ..., y_i^T, ..., y_n^T)^T
+%       y_i^T of size 1-by-v is the ith row of matrix Y
 %       Rows of Y represent observations, and columns
 %       represent variables.
 %       Missing values (NaN's) and infinite values (Inf's) are allowed,
@@ -128,9 +130,27 @@ function [out, varargout] = SDest(Y,varargin)
 %               standardized projection scores associated to each direction
 %               are saved for each subset. If projsave=1 out structure will
 %               contain a field named RstProj
-%         stnd: option controlling for the type of standardization of deviations
-%               from the median. Default is 'mad'. The other two methods are 'sn' and
-%               'qn' introduced by Rousseeuw and Croux as alternatives to the MAD.
+%      projloc: string with possible values 'median' (default) and 'mean'
+%               This option controls the type of location  (robust
+%               estimator of scale) to use for the projections for
+%               each subset. The projections are defined as d^T *y_i
+%               where d is a v-by-1 vector containing a particular direction
+%              (d^T is its transpose) (to make estimator location invariant).
+%    projscale: string with possible values
+%               'mad' (default), 'sn', 'qn' and 'std'.
+%               This option controls the type of standardization  (robust
+%               estimator of scale) to use for the centered projections for
+%               each subset (to make estimator scale invariant).
+%               'mad' uses median absolute deviations from the medians (see
+%               file mad.m of statistics toolbox for further details)
+%               'sn' uses a robust version of Gini's average difference
+%               (see file Sn.m of FSDA toolbox for further details)
+%               'qn' uses first quartile of interpoint distances |x_i-x_j|
+%               (see file Qn.m of FSDA toolbox for further details)
+%               'std' uses non robust standard deviations
+%               (see file std.m of statistics toolbox for further details)
+%               The two estimators 'sn' and 'qn' have been introduced by
+%               Rousseeuw and Croux (1993), JASA, as alternatives to MAD.
 %
 % Output:
 %
@@ -179,7 +199,7 @@ function [out, varargout] = SDest(Y,varargin)
 %             jpcorr=0,2, 3, ... (see input option jpcorr)
 %
 %               BACKGROUND
-%               A robust standardized projection
+%               A "robust standardized" projection
 %               score along direction vector d is defined as follows
 %
 %                                 d^T *y_i -med_j(d^T *y_j)
@@ -187,8 +207,16 @@ function [out, varargout] = SDest(Y,varargin)
 %                                       MAD_j(d^T *y_j)
 %
 %              where med_j(d^T *y_j) and MAD_j(d^T *y_j) are respectively
-%              the median and the modified MAD
-%              The outlying measure  for unit i (outl_i) is defined as
+%              the median and the modified MAD  j=1, 2, ..., n.
+%              With our two input options  projloc and projscale it is
+%              possible to use alternative estimators of location and scale
+%              to standardize d^T *y_i
+%
+%                                 d^T *y_i -projloc(d^T *y_j)
+%                   Rstproj_i =   -------------------------   i=1, ..., n
+%                                       projscale(d^T *y_j)
+%
+%              The outlying measure for unit i (outl_i) is defined as
 %
 %              outl_i = sup_{d \in R^v} Rstproj_i       i=1, ..., n
 %
@@ -314,8 +342,8 @@ function [out, varargout] = SDest(Y,varargin)
     randn('state', 1256);
     Y=randn(n,v);
     [outMAD]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000);
-    [outSN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'stnd', 'sn');
-    [outQN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'stnd', 'qn');
+    [outSN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'sn');
+    [outQN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'qn');
 %}
 
 
@@ -330,7 +358,7 @@ nsampdef=min(10000,ncomb);
 options=struct('nsamp',nsampdef,'weight','mcd',...
     'jpcorr',0,'q',2,'c','hdim','nbp',0.5,'K',3,'margin',0,'plots',0,...
     'conflev',0.975,'nocheck',0,'msg',1,'ysave',0,'dirsave',0,'rstprojsave',0,...
-    'stnd','mad');
+    'projloc','median','projscale','mad');
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -358,9 +386,9 @@ margin=options.margin;
 
 if margin>0
     med=median(Y);
-    res = bsxfun(@minus,Y, med);
-    mad=median(abs(res));
-    Y = bsxfun(@rdivide, res, mad);
+    Ytilde = bsxfun(@minus,Y, med);
+    mads=median(abs(Ytilde));
+    Y = bsxfun(@rdivide, Ytilde, mads);
 end
 
 % normdir = options which controls if it is necessary to normalize the
@@ -377,10 +405,11 @@ end
 
 if jpcorr==0
     [C,nselected] = subsets(nsamp,n,v,ncomb,msg);
-elseif jpcorr==1
-    [C,nselected] = subsets(nsamp,n,v+1,ncomb,msg);
-    eyev=eye(v);
-else % jpcorr =2 or jpcorr =3 or jpcorr =4 or jpcorr =5 ...
+    % elseif jpcorr==1
+    %     ncomb=bc(n,v+jpcorr);
+    %     [C,nselected] = subsets(nsamp,n,v+1,ncomb,msg);
+    %     eyev=eye(v);
+else % jpcorr==1 jpcorr =2 or jpcorr =3 or jpcorr =4 or jpcorr =5 ...
     ncomb=bc(n,v+jpcorr);
     [C,nselected] = subsets(nsamp,n,v+jpcorr,ncomb,msg);
     eyev=eye(v);
@@ -423,8 +452,9 @@ time=zeros(tsampling,1);
 % Initialize the matrices which contain estimates of
 % location, index of subsets, shape matrices and scales
 
-stnd=options.stnd;
-if strcmp(stnd,'mad')
+projloc=options.projloc;
+projscale=options.projscale;
+if strcmp(projscale,'mad')
     % n1 and n2 ordered positions which will be necessary to compute modified
     % MAD
     n1 = ceil((n+v-1)/2);
@@ -457,9 +487,7 @@ for i = 1:nselected
     index = C(i,:);
     Yj = Y(index,:);
     
-    if jpcorr==0; %
-        
-        
+    if jpcorr==0;
         % The most efficient way to find the vector associated to the direction
         % which is orthogonal to the vectors which form matrix subs
         % where subs is
@@ -542,52 +570,77 @@ for i = 1:nselected
         % and Yj*dir = ones(v,1)
         
         % vector containing the scores (using dir projection)
-        projs = Y*dir;
+        Q = Y*dir;
         
         % Every observation gets a measure of outlyingness r
         % r = sup_a |Y*dir -\mu(Y*dir)|/\sigma(Y*dir)
-        % \mu(Y*dir) = median of projected points along direction dir
+        % r = sup_a |Q -\mu(Q) |/ \sigma(Q)
+        % The default for \mu ans \sigma are median and modified mad respectively
+        % \mu(Y*dir) = \mu(Q) = median of projected points along direction dir
         % \sigma(Y*dir) = modified MAD of projected points along direction
         % dir
         
-        % Find the median of projs (it is much better to compute the median
-        % directly rather than computing function median of stat toolbox)
-        projss = sort(projs);
-        % half = floor(n/2);
         
-        medprojs = projss(half+1);
-        if 2*half == n       % Average if even number of elements
-            medprojs =(projss(half)+medprojs)/2;
+        if strcmp(projloc,'median') % Center with median
+            
+            % Find the median of Q=Y*dir (it is much better to compute the median
+            % directly rather than computing function median of stat toolbox)
+            Qsor = sort(Q);
+            % half = floor(n/2);
+            
+            me = Qsor(half+1);
+            if 2*half == n       % Average if even number of elements
+                me =(Qsor(half)+me)/2;
+            end
+        else % Center with mean
+            me=sum(Q)/n;
         end
         
+        % Qtilde = centered projected points
+        % Qtilde = projected points - estimate of location of projected points
+        Qtilde = Q-me;
         
-        diffprojs = projs-medprojs;
-        %cenprojs = abs(projs-medprojs);
-        cenprojs = abs(diffprojs);
-        ordprojs = sort(cenprojs);
+        % Qtildeabs = absolute values of centered projected points
+        Qtildeabs = abs(Qtilde);
         
-        if strcmp(stnd,'mad')
+        if strcmp(projscale,'mad')
             % Modified MAD
+            ordprojs = sort(Qtildeabs);
             MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
-            newoutlvec = cenprojs/MADmod;
-        elseif strcmp(stnd,'sn')
-            SnEst = Sn(projs);
-            newoutlvec = cenprojs/SnEst;
-        elseif strcmp(stnd,'qn')
-            QnEst = Qn(projs);
-            newoutlvec = cenprojs/QnEst;
+            newoutlvec = Qtildeabs/MADmod;
+        elseif strcmp(projscale,'sn')
+            SnEst = Sn(Q);
+            newoutlvec = Qtildeabs/SnEst;
+        elseif strcmp(projscale,'qn')
+            QnEst = Qn(Q);
+            newoutlvec = Qtildeabs/QnEst;
+        elseif strcmp(projscale,'std')
+            if strcmp(projloc,'median')
+                stdEst = std(Q);
+            else
+                % if measure of location was the mean then instead of
+                % using inefficient function std compute standard
+                % deviations using signres (deviations from the mean)
+                stdEst = sqrt(sum(Qtilde.^2, 1)/(n-1));
+            end
+            newoutlvec = Qtildeabs/stdEst;
+        else
+            warning('Supplied scale measure to standardize scaled projections is not in the list')
+            error('You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
         end
         
         if rstprojsave==1
             % Store in matrix RstProj the n robust standardized projection
             % scores with the sign
             % RstProj(:,i)=newoutlvec;
-            if strcmp(stnd,'mad')
-                RstProj(:,i)=diffprojs/MADmod;
-            elseif strcmp(stnd,'sn')
-                RstProj(:,i)=diffprojs/SnEst;
-            elseif strcmp(stnd,'qn')
-                RstProj(:,i)=diffprojs/QnEst;
+            if strcmp(projscale,'mad')
+                RstProj(:,i)=Qtilde/MADmod;
+            elseif strcmp(projscale,'sn')
+                RstProj(:,i)=Qtilde/SnEst;
+            elseif strcmp(projscale,'qn')
+                RstProj(:,i)=Qtilde/QnEst;
+            elseif strcmp(projscale,'std')
+                RstProj(:,i)=Qtilde/stdEst;
             end
         end
         
@@ -705,25 +758,27 @@ for i = 1:nselected
             Dir(i,:,:)=Dk;
         end
         
-        % Center matrix Q with the medians
-        % me=median(Q);
-        Qsor = sort(Q,1);
-        % Use vectorized method with column indexing.
-        me = Qsor(half+1,:);
-        if 2*half == n
-            me = 0.5*(Qsor(half,:)+me);
+        % Center matrix Q with the medians (default) or with means
+        if strcmp(projloc,'median') % Center with medians
+            % me=median(Q);
+            Qsor = sort(Q,1);
+            % Use vectorized method with column indexing.
+            me = Qsor(half+1,:);
+            if 2*half == n
+                me = 0.5*(Qsor(half,:)+me);
+            end
+        else % Center with means
+            me=sum(Q,1)/n;
         end
         
+        % Qtilde = centered projected points
+        % Qtilde = projected points - estimate of location of projected points
+        Qtilde = bsxfun(@minus,Q, me);
+        % Qtildeabs = absolute values of centered projected points
+        Qtildeabs = abs(Qtilde);
         
-        % Deviations from each median in absolute value
-        % res = abs(bsxfun(@minus,Q, me));
-        signres = bsxfun(@minus,Q, me);
-        res = abs(signres);
-        % MADs
-        %mad=median(res);
-        
-        if strcmp(stnd,'mad')
-            ress = sort(res);
+        if strcmp(projscale,'mad')
+            ress = sort(Qtildeabs);
             % half = floor(n/2);
             mad = ress(half+1,:);
             if 2*half == n       % Average if even number of elements
@@ -733,29 +788,42 @@ for i = 1:nselected
             mad=mad/beta;
             % Standardize with MADs
             % newoutlmat(:,j)=|(Q(:,j)-median(Q(:,j)))/MAD(Q(:,j))|
-            newoutlmat = bsxfun(@rdivide, res, mad);
+            newoutlmat = bsxfun(@rdivide, Qtildeabs, mad);
             % bsxfun instruction is the efficient way of doing
             %    newoutlmat=diag(1../mad)*res';
             %    newoutlmat=newoutlmat';
-        elseif strcmp(stnd,'sn')
+        elseif strcmp(projscale,'sn')
             SnEst = Sn(Q);
-            newoutlmat = bsxfun(@rdivide, res, SnEst);
-        elseif strcmp(stnd,'qn')
+            newoutlmat = bsxfun(@rdivide, Qtildeabs, SnEst);
+        elseif strcmp(projscale,'qn')
             QnEst = Qn(Q);
-            newoutlmat = bsxfun(@rdivide, res, QnEst);
+            newoutlmat = bsxfun(@rdivide, Qtildeabs, QnEst);
+        elseif strcmp(projscale,'std')
+            if strcmp(projloc,'median')
+                stdEst = std(Q);
+            else
+                % if measure of location was the mean then instead of
+                % using inefficient function std compute standard
+                % deviations using signres (deviations from the mean)
+                stdEst = sqrt(sum(Qtilde.^2, 1)/(n-1));
+            end
+            newoutlmat = bsxfun(@rdivide, Qtildeabs, stdEst);
+        else
+            warning('Supplied scale measure to standardize scaled projections is not in the list')
+            error('You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
         end
         
         
         if rstprojsave==1
-            if strcmp(stnd,'mad')
+            if strcmp(projscale,'mad')
                 %RstProj(:,i,:)=newoutlmat;
-                RstProj(:,i,:)=bsxfun(@rdivide, signres, mad);
-            elseif strcmp(stnd,'sn')
-                %RstProj(:,i,:)=newoutlmat;
-                RstProj(:,i,:)=bsxfun(@rdivide, signres, SnEst);
-            elseif strcmp(stnd,'qn')
-                %RstProj(:,i,:)=newoutlmat;
-                RstProj(:,i,:)=bsxfun(@rdivide, signres, QnEst);
+                RstProj(:,i,:)=bsxfun(@rdivide, Qtilde, mad);
+            elseif strcmp(projscale,'sn')
+                RstProj(:,i,:)=bsxfun(@rdivide, Qtilde, SnEst);
+            elseif strcmp(projscale,'qn')
+                RstProj(:,i,:)=bsxfun(@rdivide, Qtilde, QnEst);
+            elseif strcmp(projscale,'std')
+                RstProj(:,i,:)=bsxfun(@rdivide, Qtilde, stdEst);
             end
         end
         
@@ -766,7 +834,6 @@ for i = 1:nselected
         repl=newoutlvec>=outlvec;
         if any(repl)>0
             % Store direction of maximum outlyingness
-            
             maxdir(repl,:)=Dk(:,maxinds(repl))';
             
             % Store outlyingness measure
@@ -818,8 +885,6 @@ end
 % ......
 % 0 0 0 .....1 1 1
 
-% TO DO: IMPLEMENTATION OF SN AND QN AT DENOMINATOR OF CENTRED SCORES
-
 if margin >0
     
     seqv=1:v;
@@ -833,15 +898,64 @@ if margin >0
             Yselori=Y(:,marg(im,:));
             
             % Project using original sign for all the columns of Yselori
-            projs=sum(Yselori,2)/normj;
+            Q=sum(Yselori,2)/normj;
             
+            % OLD VERSION TO DELETE
+            %             Qtildeabs = abs(Q-median(Q));
+            %             ordprojs = sort(Qtildeabs);
+            %             % Modified MAD
+            %             MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
+            %             newoutlvec = Qtildeabs/MADmod;
             
-            cenprojs = abs(projs-median(projs));
-            ordprojs = sort(cenprojs);
-            % Modified MAD
-            MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
-            newoutlvec = cenprojs/MADmod;
+            if strcmp(projloc,'median') % Center with median
+                
+                % Find the median of Q=Y*dir (it is much better to compute the median
+                % directly rather than computing function median of stat toolbox)
+                Qsor = sort(Q);
+                % half = floor(n/2);
+                
+                me = Qsor(half+1);
+                if 2*half == n       % Average if even number of elements
+                    me =(Qsor(half)+me)/2;
+                end
+            else % Center with mean
+                me=sum(Q)/n;
+            end
             
+            % Qtilde = centered projected points
+            % Qtilde = projected points - estimate of location of projected points
+            Qtilde = Q-me;
+            
+            % Qtildeabs = absolute values of centered projected points
+            Qtildeabs = abs(Qtilde);
+            
+            if strcmp(projscale,'mad')
+                % Modified MAD
+                ordprojs = sort(Qtildeabs);
+                MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
+                newoutlvec = Qtildeabs/MADmod;
+            elseif strcmp(projscale,'sn')
+                SnEst = Sn(Q);
+                newoutlvec = Qtildeabs/SnEst;
+            elseif strcmp(projscale,'qn')
+                QnEst = Qn(Q);
+                newoutlvec = Qtildeabs/QnEst;
+            elseif strcmp(projscale,'std')
+                if strcmp(projloc,'median')
+                    stdEst = std(Q);
+                else
+                    % if measure of location was the mean then instead of
+                    % using inefficient function std compute standard
+                    % deviations using signres (deviations from the mean)
+                    stdEst = sqrt(sum(Qtilde.^2, 1)/(n-1));
+                end
+                newoutlvec = Qtildeabs/stdEst;
+            else
+                warning('Supplied scale measure to standardize scaled projections is not in the list')
+                error('You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
+            end
+            
+            %%%%%%%%%%%%%%%%%%%%%%%%%
             
             for ii = 1:n
                 if newoutlvec(ii)>=outlvec(ii)
@@ -901,15 +1015,65 @@ if margin >0
                         
                         % Project the selected column(s) taking care of the sign
                         Ysel=Yselori*onesignc;
+                        Q=Ysel/normj;
                         
-                        projs=Ysel/normj;
+% OLD CODE TO DELETE                        
+%                         Qtildeabs = abs(Q-median(Q));
+%                         ordprojs = sort(Qtildeabs);
+%                         % Modified MAD
+%                         MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
+%                         newoutlvec = Qtildeabs/MADmod;
+ %%%%%%                       
                         
-                        
-                        cenprojs = abs(projs-median(projs));
-                        ordprojs = sort(cenprojs);
-                        % Modified MAD
-                        MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
-                        newoutlvec = cenprojs/MADmod;
+             if strcmp(projloc,'median') % Center with median
+                
+                % Find the median of Q=Y*dir (it is much better to compute the median
+                % directly rather than computing function median of stat toolbox)
+                Qsor = sort(Q);
+                % half = floor(n/2);
+                
+                me = Qsor(half+1);
+                if 2*half == n       % Average if even number of elements
+                    me =(Qsor(half)+me)/2;
+                end
+            else % Center with mean
+                me=sum(Q)/n;
+            end
+            
+            % Qtilde = centered projected points
+            % Qtilde = projected points - estimate of location of projected points
+            Qtilde = Q-me;
+            
+            % Qtildeabs = absolute values of centered projected points
+            Qtildeabs = abs(Qtilde);
+            
+            if strcmp(projscale,'mad')
+                % Modified MAD
+                ordprojs = sort(Qtildeabs);
+                MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
+                newoutlvec = Qtildeabs/MADmod;
+            elseif strcmp(projscale,'sn')
+                SnEst = Sn(Q);
+                newoutlvec = Qtildeabs/SnEst;
+            elseif strcmp(projscale,'qn')
+                QnEst = Qn(Q);
+                newoutlvec = Qtildeabs/QnEst;
+            elseif strcmp(projscale,'std')
+                if strcmp(projloc,'median')
+                    stdEst = std(Q);
+                else
+                    % if measure of location was the mean then instead of
+                    % using inefficient function std compute standard
+                    % deviations using signres (deviations from the mean)
+                    stdEst = sqrt(sum(Qtilde.^2, 1)/(n-1));
+                end
+                newoutlvec = Qtildeabs/stdEst;
+            else
+                warning('Supplied scale measure to standardize scaled projections is not in the list')
+                error('You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
+            end
+
+ %%%%%%%%%%%
                         for ii = 1:n
                             if newoutlvec(ii)>=outlvec(ii)
                                 maxdir(ii,:) = zeros(1,v);
