@@ -652,8 +652,9 @@ if abs(s0) > 1e-7;
     
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
+    [~,indsorres2]=sort(residuals.^2);
     weights=zeros(n,1);
-    weights(residuals.^2<=sh0^2)=1;
+    weights(indsorres2(1:h))=1;
     
     % Initialize structure out
     out=struct;
