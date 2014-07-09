@@ -573,11 +573,11 @@ for i = 1:nselected
         Q = Y*dir;
         
         % Every observation gets a measure of outlyingness r
-        % r = sup_a |Y*dir -\mu(Y*dir)|/\sigma(Y*dir)
-        % r = sup_a |Q -\mu(Q) |/ \sigma(Q)
-        % The default for \mu ans \sigma are median and modified mad respectively
-        % \mu(Y*dir) = \mu(Q) = median of projected points along direction dir
-        % \sigma(Y*dir) = modified MAD of projected points along direction
+        % r = sup_a |Y*dir -loc(Y*dir)|/scale(Y*dir)
+        % r = sup_a |Q -loc(Q) |/ scale(Q)
+        % The default for "loc" and "scale" are median and modified mad respectively
+        % loc(Y*dir) = loc(Q) = median of projected points along direction dir
+        % scale(Y*dir) = modified MAD of projected points along direction
         % dir
         
         
@@ -604,7 +604,7 @@ for i = 1:nselected
         Qtildeabs = abs(Qtilde);
         
         if strcmp(projscale,'mad')
-            % Modified MAD
+         % Modified MAD
             ordprojs = sort(Qtildeabs);
             MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
             newoutlvec = Qtildeabs/MADmod;
