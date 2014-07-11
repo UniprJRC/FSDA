@@ -1,10 +1,10 @@
 function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fix, tol, lim, asympt)
-%GetOmegaMap calculates the map of misclassificaton betweeb groups
+%GetOmegaMap calculates the map of misclassificaton between groups
 %
 %  Required input arguments:
 %
 %       c  : scalar, inflation parameter for covariance matrices
-%       p  : dimensionality (number of variables)
+%       v  : dimensionality (number of variables)
 %       k  : number of components (groups)
 %       li : 3D array of size k-by-k-by-p
 %       di : 3D array of size k-by-k-by-p
@@ -22,7 +22,16 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, cons
 %               combination of non central chi2 r.v.. This is the
 %               probability of overlapping
 %   asympt : flag for regular or asymptotic overlap. If asypmt ==1 formula
-%          of asymptotic overlap is used
+%            of asymptotic overlap is used (see p. 359, paragraph starting
+%            with step 3 of Maitra and Melnikov, 2010, JCGS). In this case
+%            the misclassification probability \omega_j|i (that is with
+%            respect to the centroid and covariance matrix of group i) is
+%            given by 
+%            \sum_{l=1}^p (\lambda_l-1) U_l \leq log \pi_j^2 |\Sigma_j| / \pi_i^2 |\Sigma_i| 
+%            where U_l are central chi2 with one degree of freedom.
+%            Note that parameter asympt is set to 1 in the preliminary
+%            phase just to check whether the average or the maximum overlap
+%            can be reached.
 %
 %  Output:
 %
@@ -106,57 +115,60 @@ for kk=1:p
 end
 
 
-if hom == 1
-    % /* homogeneous clusters */
-    
+if hom == 1   % homogeneous clusters 
+
     if asympt == 0
         
         while ii < k
             
             Di =  squeeze(di(ii,jj,:)) / sqrt(c);
             Cnst1 = sum(Di.^2);
-            coef = zeros(p,1);
-            ncp = zeros(p,1);
             
             % t is the value in which the cdf of the mixture of
-            % non central chi2 must be evaluated
+            % non central chi2 must be evaluated. 
             t = const1(ii,jj) - Cnst1;
             sigma = 2 * sqrt(Cnst1);
             
-            % coef = coefficients of the linear combination of non
-            % central chi2 distributions
-            % df = degrees of freedom of mixture of non central chi2
-            %
+            OmegaMap(ii,jj)=normcdf(t,0,sigma);
+            % This is equivalent to 
+            %{
+                % coef = coefficients of the linear combination of non
+                % central chi2 distributions (in the case of homogeneous
+                % clusters coef is a vector of 0s)
+                % df = degrees of freedom of mixture of non central chi2
+                coef = zeros(p,1);
+                ncp = zeros(p,1);
+                OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
+            %}
+            % see beginning of section 2.1 
             
-            
-            OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
-            % c   :         scalar, value at which the cdf must be evaluated
-            % n  :         vector of length k containing the degrees of freedom of the
+            % t   :         scalar, value at which the cdf must be evaluated
+            % df  :         vector of length k containing the degrees of freedom of the
             %               k non central chi2 distributions
-            % lb  :         vector of length k containing the coefficients of the linear combinations
+            % coef  :         vector of length k containing the coefficients of the linear combinations
             %               of the k non central chi2 distributions
-            %  nc :       vector of length k containing the k non centrality parameters
+            %  ncp :       vector of length k containing the k non centrality parameters
             %               of the k non central chi2 distributions
-            
-            
-            
-            % OmegaMap(i,j) = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
-            
-            
             
             Di =  squeeze(di(jj,ii,:)) / sqrt(c);
             Cnst1 = sum(Di.^2);
-            coef = zeros(p,1);
-            ncp = zeros(p,1);
             
             
             
             t = const1(jj,ii) - Cnst1;
             sigma = 2 * sqrt(Cnst1);
             
-            
-            OmegaMap(jj,ii) = ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
-            % OmegaMap[j][i] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
+             OmegaMap(jj,ii)=normcdf(t,0,sigma);
+            % This is equivalent to 
+            %{
+                % coef = coefficients of the linear combination of non
+                % central chi2 distributions (in the case of homogeneous
+                % clusters coef is a vector of 0s)
+                % df = degrees of freedom of mixture of non central chi2
+                coef = zeros(p,1);
+                ncp = zeros(p,1);
+                OmegaMap(jj,ii) = ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
+            %}
             
             OmegaOverlap = OmegaMap(ii,jj) + OmegaMap(jj,ii);
             TotalOmega = TotalOmega + OmegaOverlap;
@@ -168,7 +180,7 @@ if hom == 1
             end
             
             
-            if (jj < k) %(k - 1)
+            if (jj < k) 
                 jj = jj + 1;
             else
                 ii = ii + 1;
@@ -183,7 +195,7 @@ if hom == 1
     
     if asympt == 1
         
-        while ii < k%(k - 1)
+        while ii < k
             
             if const1(ii,jj) > 0
                 OmegaMap(ii,jj) = 1;
@@ -222,14 +234,13 @@ if hom == 1
 end
 
 
-% Non homogeneous (equal) covariance matrices
-% /* heterogeneous clusters */
+% hom =0 ==> non homogeneous (non equal) covariance matrices
+% that is heterogeneous clusters 
 if hom == 0
     
     sigma = 0.0;
     
     if (asympt == 0)
-        
         
         while ii < k
             
@@ -264,10 +275,14 @@ if hom == 0
             
             
             
-            coef = Li - 1.0;
+            coef = Li - 1;
             ldprod = Li.*Di;
             const2 = (ldprod.*Di)./ coef;
+            % ncp = non centrality parameters
+            % The l-th element of ncl i=1, 2, ..., p is equal to
+            % \lambda_l^2 \delta_l^2 /(\lambda_l-1)^2 
             ncp = (ldprod./coef).^2;
+            % sum(const2)= \sum_{l=1}^p \lambda_l \delta_l^2 /(\lambda_l-1) 
             t = sum(const2)+ Cnst1;
             
             OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
@@ -373,7 +388,7 @@ if hom == 0
                     
                 end
             end
-            % siamo alla linea 508 e 509 di libOverlap.c
+            % rows 508 and 509 of libOverlap.c
             if fix(jj) == 1
                 
                 if fix(ii) == 1

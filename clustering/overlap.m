@@ -28,6 +28,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax] = overlap(k, p, Pi, Mu, S, tol, l
 %               probabilities. More precisely, OmegaMap(i,j) is the
 %               probability that group i overlaps with group j 
 %               (i ~= j)=1, 2, ..., k
+%               More precisely, OmegaMap(i,j)=
 %    BarOmega : scalar associated with average overlap.
 %               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
 %    MaxOmega : scalar associated with maximum overlap. MaxOmega is the

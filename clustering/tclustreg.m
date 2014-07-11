@@ -1,5 +1,5 @@
 function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
-%rlga performa robust linear grouping analysis
+%tclustreg performs robust linear grouping analysis
 %
 %
 %<a href="matlab: docsearch('tclustreg')">Link to the help function</a>
@@ -277,7 +277,8 @@ for iter=1:niter
             % New xmod
             xmod = xmodtemp(1:indxmodtemp,:);
             
-            % If the scatters do not satisfy the restriction then a quadratic programming problem is solved
+            % If the scatters do not satisfy the restriction then a
+            % quadratic programming problem is solved
             sigmaini = (quadi(sigmaini.^(-1), factor)).^(-1);
         end
         

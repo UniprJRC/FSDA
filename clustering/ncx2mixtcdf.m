@@ -731,23 +731,20 @@ varargout{2}=ifault;
         sum1 = u * xconst;
         u = 2.0 * u;
         
-        %         for jj=r:-1:1
-        %             nj = n(jj); lj = lb(jj); ncj = nc(jj);
-        %             x = u * lj; y = 1.0 - x;
-        %             xconst = xconst + lj * (ncj / y + nj) / y;
-        %             sum1 = sum1 + ncj * (x / y).^2 + nj * (x^2 / y + log1(-x, false));
-        %         end
-        
-        
         x = u * lb; y = 1.0 - x;
         cx = xconst+lb' * ((nc./y + n) ./ y);
         x2=x.^2;
         sum1 =  sum1+nc'* (x2./(y.^2)) + n' * (x2./ y + log1(-x, false));
         
+        
         % Alternative way to find sum1 (seems slower)
         % sum1 =  u * xconst+ sum(nc.* (x2./(y.^2)) + n.* (x2./ y + log1(-x, false)));
         % sum1 =  sum1+nc'* ((x./y).^2) + n' * (x.^2./ y + log1(-x, false));
-        
+
+        % Also this alternative to find sum1 seems slower
+        % x2y=x2./y.^2;
+        % sum1chk =  sum1chk+nc'* (x2y) + n' * (x2y.*y + log1(-x, false));
+
         out=exp(-0.5 * sum1);
     end
 
