@@ -1,16 +1,28 @@
-function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fix, tol, lim, asympt)
+function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, const1, fix, tol, lim, asympt)
 %GetOmegaMap calculates the map of misclassificaton between groups
 %
 %  Required input arguments:
 %
-%       c  : scalar, inflation parameter for covariance matrices
+%       c  : scalar, inflation parameter for covariance matrices. In the
+%            case of heterogeneous clusters scalar c is used to correct
+%            li(i,j) and const1(i,j). More precisely when hom=0 and 
+%            fix(i)=0 di(i,j,:)=di(i,j,:)/c^0.5  
+%                   (because di(i,j,:)=\Gamma *(c*\Sigma_i)^{-0.5}(\mu_i-\mu_j)
+%                    where Gamma is the matrix of eigenvectors of
+%                    \Sigma_j|i)
+%                   if fix(j)=1  li(i,j,:)=c li(i,j,:), const1(i,j)=const1(i,j)+v log(c) 
+%                   (because the eigenvalues of matrix 
+%                   \Sigma_j|i = (c^0.5 \Sigma_i) \Sigma_j^-1 (c^0.5 \Sigma_i) are multiplied by c
+%                   Similarly log |c\Sigma_i|= c*log(v) + log |\Sigma_i|
+%                   if fix(j)=0  li and const1 are not changed because
+%                   \Sigma_j|i remains unaltered
 %       v  : dimensionality (number of variables)
 %       k  : number of components (groups)
 %       li : 3D array of size k-by-k-by-p
 %       di : 3D array of size k-by-k-by-p
 %    const1: k x k matrix
 %           REMARK: li, di and const1 are the parameters needed for computing
-%           overlap (see theory of method)
+%           overlap 
 %      fix : vector of length k containing zeros or ones
 %          if fix(j) =1 cluster j does not participate to inflation or
 %          deflation. If fix=zeros(k,1) all clusters participate in inflation/deflation
@@ -97,7 +109,7 @@ rcMax=zeros(2,1);
 TotalOmega = 0.0;
 MaxOmega = 0.0;
 
-df=ones(p,1);
+df=ones(v,1);
 
 
 ii = 1;
@@ -106,7 +118,7 @@ jj = 2;
 
 % check if clusters are homogeneous 
 hom = 1;
-for kk=1:p
+for kk=1:v
     
     if li(1,2,kk) ~= li(2,1,kk)
         hom = 0;
@@ -252,7 +264,7 @@ if hom == 0
                     Cnst1 = const1(ii,jj);
                 else
                     Li = squeeze(li(ii,jj,:))/ c;
-                    Cnst1 = const1(ii,jj) - p * log(c);
+                    Cnst1 = const1(ii,jj) - v * log(c);
                 end
                 
             else
@@ -264,7 +276,7 @@ if hom == 0
                     
                     Li = c * squeeze(li(ii,jj,:));
                     
-                    Cnst1 = const1(ii,jj) + p * log(c);
+                    Cnst1 = const1(ii,jj) + v * log(c);
                 else
                     Li = squeeze(li(ii,jj,:));
                     
@@ -285,7 +297,7 @@ if hom == 0
             % sum(const2)= \sum_{l=1}^p \lambda_l \delta_l^2 /(\lambda_l-1) 
             t = sum(const2)+ Cnst1;
             
-            OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef,ncp,'sigma',sigma,'lim',lim,'tol',tol);
+            OmegaMap(ii,jj)=ncx2mixtcdf(t, df, coef, ncp,'sigma',sigma,'lim',lim,'tol',tol);
 
             if fix(jj) == 1
                 
@@ -297,7 +309,7 @@ if hom == 0
                     Cnst1 = const1(jj,ii);
                 else
                     Li = squeeze(li(jj,ii,:)) / c;
-                    Cnst1 = const1(jj,ii) - p * log(c);
+                    Cnst1 = const1(jj,ii) - v * log(c);
                 end
                 
             else
@@ -308,7 +320,7 @@ if hom == 0
                 if fix(ii) == 1
                     Li = c * squeeze(li(jj,ii,:));
                     
-                    Cnst1 = const1(jj,ii) + p * log(c);
+                    Cnst1 = const1(jj,ii) + v * log(c);
                 else
                     Li = squeeze(li(jj,ii,:));
                     Cnst1 = const1(jj,ii);
@@ -377,7 +389,7 @@ if hom == 0
                     
                 else
                     coef = squeeze(li(ii,jj,:)) - 1.0;
-                    ncp = zeros(p,1);
+                    ncp = zeros(v,1);
                     
                     t = const1(ii,jj);
                     
@@ -419,7 +431,7 @@ if hom == 0
                     
                 else
                     coef =  squeeze(li(jj,ii,:))- 1.0;
-                    ncp = zeros(p,1);
+                    ncp = zeros(v,1);
                     
                     t = const1(jj,ii);
                     

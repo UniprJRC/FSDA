@@ -13,22 +13,22 @@ function [out]  = MixSim(k,v,varargin)
 %  Pr[ \pi_i \phi(x,\mu_i,\Sigma_i) < \pi_j \phi(x,\mu_j,\Sigma_j)].
 %  The matrix containing the misclassification probabilities w_j|i is
 %  called OmegaMap
-%  The probability of overlapping between groups i and j is given by 
+%  The probability of overlapping between groups i and j is given by
 %            w_j|i + w_i|j          i,j=1,2, ..., k
 %  The diagonal elements of OmegaMap are equal to 1.
 %  The average overlap (which in the code is called below BarOmega) is
 %  defined as the sum of the off diagonal elements of OmegaMap (matrix of
 %  misclassification probabilities) divided by 0.5*k*(k-1)
 %  The maximum overlap (which in the code is called MaxOmega) is defined as
-%  max( w_j|i + w_i|j)  i \ne j=1,2, ..., k
+%  max(w_j|i + w_i|j)  i \ne j=1,2, ..., k
 %  The probability of overlapping w_j|i is nothing but the cdf of a linear
 %  combination of non central chi^2 distributions with 1 degree of freedom
 %  + a linear combination of N(0,1) evaluated in a
 %  point c.  The coefficients of the linear combinations of non central
 %  chi^2 and N(0,1) depend on the eigenvalues and eigenvectors of matrix
-%  \Sigma_j|i = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i. 
+%  \Sigma_j|i = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i.
 %  Point c depends on the same eigenvalues and eigenvectors
-%  of matrix \Sigma_j|i the mixing proportions \pi_i and \pi_j and the
+%  of matrix \Sigma_j|i, the mixing proportions \pi_i and \pi_j and the
 %  determinants |\Sigma_i| and |\Sigma_j|
 %  This probability is computed using routine ncx2mixtcdf
 %
@@ -43,15 +43,15 @@ function [out]  = MixSim(k,v,varargin)
 %    MaxOmega : scalar, value of desired maximum overlap. If BarOmega is empty
 %               the default value of MaxOmega is 0.15
 %               Remark: The overlap between two clusters i and j is defined
-%               as the sum of the two misclassification probability w_{j|i}
+%               as the sum of the two misclassification probabilities w_{j|i}
 %               and w_{i|j}
 %         sph : scalar boolean which specifies covariance matrix structure
 %               sph=false (default) ==> non-spherical,
-%               sph=true            ==> spherical
+%               sph=true            ==> spherical = const*I
 %         hom : scalar boolean which specifies heterogeneous or homogeneous
 %               clusters
 %               hom=false (default) ==> heterogeneous,
-%               hom=true            ==> homogeneous
+%               hom=true            ==> homogeneous \Sigma_1 = ... = \Sigma_k
 %         ecc : scalar in the interval (0, 1] which defines maximum eccentricity.
 %               For example, if ecc=0.9 (default value), we require for
 %               each group that sqrt(1 - minL / maxL) <= 0.9 where minL and
@@ -63,7 +63,7 @@ function [out]  = MixSim(k,v,varargin)
 %               PiLow = 1.0 implies equal proportions by default). PiLow
 %               must be a number in the interval (0 1]
 %         int : mean vectors are simulated uniformly on a hypercube with
-%               sides specified by int = (lower.bound, upper.bound).
+%               sides specified by int = [lower.bound, upper.bound].
 %               The default value of int is [0 1]
 %        resN : maximum number of mixture resimulations to find a
 %               similation setting with prespecified level of overlapping.
@@ -98,7 +98,8 @@ function [out]  = MixSim(k,v,varargin)
 %
 %  The output consists of a structure 'out' containing the following fields:
 %
-%            out.Pi  : vector of length k containing mixing proportions
+%            out.Pi  : vector of length k containing mixing proportions.
+%                       sum(out.Pi)=1
 %            out.Mu  : k-by-v matrix consisting of components' mean vectors
 %                      Each row of this matrix is a centroid of a group
 %             out.S  : v-by-v-by-k array containing covariances for the k
@@ -110,8 +111,8 @@ function [out]  = MixSim(k,v,varargin)
 %       out.BarOmega : scalar. Value of average overlap.
 %       out.MaxOmega : scalar. Value of maximum overlap.
 %         out.rcMax  : vector of length 2. It containes the row and column
-%                      numbers for the pair of components producing maximum
-%                      overlap 'MaxOmega'
+%                      numbers aossiciated with  the pair of components
+%                      producing maximum overlap 'MaxOmega'
 %              fail  : scalar, flag value. 0 represents successful mixture
 %                      generation, 1 represents failure.
 %
@@ -138,13 +139,13 @@ function [out]  = MixSim(k,v,varargin)
 %   Reference below documents the problem of the ill-conditioning of the
 %   eigenvalue-eigenvector computation.
 %
-%  Numerische Mathematik, 19. August 1969, Volume 13, Issue 4, pp 293-304
-%  Balancing a matrix for calculation of eigenvalues and eigenvectors
-%  Dr. B. N. Parlett, Dr. C. Reinsch
+%   Numerische Mathematik, 19. August 1969, Volume 13, Issue 4, pp 293-304
+%   Balancing a matrix for calculation of eigenvalues and eigenvectors
+%   Dr. B. N. Parlett, Dr. C. Reinsch
 %
-% Parlett, B. N. and C. Reinsch, “Balancing a Matrix for Calculation of
-% Eigenvalues and Eigenvectors,” Handbook for Auto. Comp., Vol. II, Linear
-% Algebra, 1971,pp. 315-326.
+%  Parlett, B. N. and C. Reinsch, “Balancing a Matrix for Calculation of
+%  Eigenvalues and Eigenvectors,” Handbook for Auto. Comp., Vol. II, Linear
+%  Algebra, 1971,pp. 315-326.
 %
 % Copyright 2008-2014.
 % Written by FSDA team
@@ -363,8 +364,8 @@ out = Q;
 %% Beginning of inner functions
 
     function  Q = OmegaClust(Omega, method, v, k, PiLow, Lbound, Ubound, emax, tol, lim, resN, sph, hom)
-        % OmegaClust = procedure when average or maximum overlap is specified (not
-        % both)
+        % OmegaClust = procedure when average or maximum overlap is
+        % specified (not both)
         %
         %  INPUT parameters
         %
@@ -397,9 +398,9 @@ out = Q;
         %                  the k groups
         %           S    - array of size v-by-v-by-k containing covariance matrices
         %       OmegaMap - k-by-k matrix containing misclassification probabilities
-        %       BarOmega - scalar, average overlap of the data which have been
+        %       BarOmega - scalar, average overlap of the groups which have been
         %                  generated
-        %       MaxOmega - scalar, maximum overlap of the data which have been
+        %       MaxOmega - scalar, maximum overlap of the groups which have been
         %                  generated
         %        rcMax   - vector of length 2 containing the pair of
         %                  components producing the highest overlap
@@ -505,29 +506,41 @@ out = Q;
     function Q=OmegaBarOmegaMax(p, k, PiLow, Lbound, Ubound, ...
             emax, tol, lim, resN, sph, BarOmega,MaxOmega)
         % OmegaBarOmegaMax = procedure when average and maximum overlaps are both specified
-        % INPUT
-        % p  - dimensionality
-        % k  - number of components
-        % PiLow - smallest mixing proportion allowed
-        % Lbound - lower bound for uniform hypercube at which mean vectors at simulated
-        % Ubound - upper bound for uniform hypercube at which mean vectors at simulated
-        % emax - maximum eccentricity
-        % tol, lim - parameters for qfc function
-        % resN - number of resamplings allowed
-        % sph - sperical covariance matrices
-        % BarOmega - average overlap
-        % MaxOmega - maximum overlap
-        %  OUTPUT
-        %   a structure Q containing the following fields
-        % Pi - mixing proportions
-        % Mu - mean vectors
-        % S  - covariance matrices
-        % OmegaMap - map of misclassification probabilities
-        % BarOmega - average overlap
-        % MaxOmega - maximum overlap
-        % rcMax - contains the pair of components producing the highest overlap
-        % fail - flag indicating if the process failed
-        %  */
+        %
+        %
+        %  INPUT parameters
+        %
+        %       p  - scalar, dimensionality
+        %       k  - scalar, number of components
+        %    PiLow - scalar, smallest mixing proportion allowed
+        %   Lbound - scalar, lower bound for uniform hypercube at which mean vectors at simulated
+        %   Ubound - scalar, upper bound for uniform hypercube at which mean vectors at simulated
+        %     emax - scalar, maximum eccentricity
+        % tol, lim - parameters for ncx2mixtcdf function
+        %     resN - scalar, number of resamplings allowed
+        %      sph - scalar, if sph =1 spherical covariance matrices are
+        %            generated
+        % BarOmega - scalar, required average overlap
+        % MaxOmega - scalar, required maximum overlap
+        %
+        %
+        %  OUTPUT parameters
+        %
+        %   A structure Q containing the following fields
+        %
+        %             Pi - mixing proportions
+        %           Mu   - matrix of size k-by-v containing mean vectors of
+        %                  the k groups
+        %           S    - array of size v-by-v-by-k containing covariance matrices
+        %       OmegaMap - k-by-k matrix containing misclassification probabilities
+        %       BarOmega - scalar, average overlap of the groups which have been
+        %                  generated
+        %       MaxOmega - scalar, maximum overlap of the groups which have been
+        %                  generated
+        %        rcMax   - vector of length 2 containing the pair of
+        %                  components producing the highest overlap
+        %           fail - flag indicating if the process failed (1). If
+        %                  everything went well fail=0
         Balpha=BarOmega;
         Malpha=MaxOmega;
         if Malpha<Balpha || Malpha>Balpha*k*(k-1)/2
@@ -547,10 +560,12 @@ out = Q;
             
             for isamp=1:resN
                 
-                % /* generate parameters */
-                % procedure genPi generates (mixture proportions) k numbers whose sum
-                % is equal to 1 and the smallest value is not smaller than PiLow
+                % generate parameters
+                % procedure genPi generates (mixture proportions) k numbers
+                % whose sum is equal to 1 and the smallest value is not
+                % smaller than PiLow
                 Pigen=genPi(k,PiLow);
+                
                 % procedure genMu generates random centroids
                 Mugen=genMu(p, k, Lbound, Ubound);
                 
@@ -562,79 +577,113 @@ out = Q;
                 if sph == 0
                     % genSigmaEcc generates the covariance matrices with a
                     % prespecified level of eccentricity
-                    Sgen=genSigmaEcc(p, k, emax,0);
+                    Sgen=genSigmaEcc(p, k, emax, 0);
                 else
                     % genSphSigma generates spherical covariance matrices
                     Sgen=genSphSigma(p, k, 0);
                 end
                 
-                % /* prepare parameters */ row 953 of file libOverlap.c
+                % prepare parameters:  row 953 of file libOverlap.c
                 [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
                 
-                % /* check if maximum overlap is reachable */
-                
+                % Check if maximum overlap is reachable.  Maximum
+                % overlapping takes place when c \rightarrow \infty that is
+                % when asympt =1 
                 asympt = 1;
-                c = 0.0;
+                % If asympt=1 c does not matter so any value of c will do
+                c = 0;
                 
                 % fixcl = vector which specifies what are the clusters which
-                % participate to the process of inflation
+                % participate to the process of inflation. In this stage
+                % all clusters partecipate to the process of inflation, so
+                % fixcl is a vector of zeroes
                 fixcl=zeros(k,1);
                 
                 [OmegaMap, Balpha, Malpha, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fixcl, tol, lim, asympt);
                 
-                
+                % Malpha is the maximum level of overlapping which can be
+                % reached with asympt=1
                 diff = Malpha - MaxOmega;
                 
                 % Initialize fail
                 fail=1;
                 
-                if diff >= -tol %  /* reachable */
+                if diff >= -tol %  maximum level of overlapping is reachable
                     
                     lower = 0.0;
                     upper = 2^10;
                     
                     while fail ~=0
                         
-                        % /* find C for two currently largest clusters */
+                        % find constant c for two clusters which show the
+                        % highest ovelapping
                         
-                        for ii=1:2;
-                            for jj=1:2
-                                for l=1:p
-                                    li2(ii,jj,l) = li(rcMax(ii),rcMax(jj),l);
-                                    di2(ii,jj,l) = di(rcMax(ii),rcMax(jj),l);
-                                end
-                                const12(ii,jj) = const1(rcMax(ii),rcMax(jj));
-                            end
-                        end
+                        %                         for ii=1:2;
+                        %                             for jj=1:2
+                        %                                 for l=1:p
+                        %                                     li2(ii,jj,l) = li(rcMax(ii),rcMax(jj),l);
+                        %                                     di2(ii,jj,l) = di(rcMax(ii),rcMax(jj),l);
+                        %                                 end
+                        %                                 const12(ii,jj) = const1(rcMax(ii),rcMax(jj));
+                        %                             end
+                        %                         end
+                        
+                        % Estract pars for the two clusters with the
+                        % highest overlapping
+                        li2(1,2,:) = li(rcMax(1),rcMax(2),:);
+                        di2(1,2,:) = di(rcMax(1),rcMax(2),:);
+                        const12(1,2)=const1(rcMax(1),rcMax(2));
+                        li2(2,1,:) = li(rcMax(2),rcMax(1),:);
+                        di2(2,1,:) = di(rcMax(2),rcMax(1),:);
+                        const12(2,1)=const1(rcMax(2),rcMax(1));
                         
                         Malpha = MaxOmega;
                         
+                        % the fourth input element of FindC is method (in
+                        % this case 1 is supplied because maximum overlap
+                        % is requested)
+                        % The sixth input element of findC is k. In this
+                        % case k=2 (the two groups which show the highest
+                        % overlap)
                         c=FindC(lower, upper, Malpha, 1, p, 2, li2, di2, const12, fix2, tol, lim);
                         
-                        if c == 0 % /* abnormal termination */
+                        if c == 0 % abnormal termination
                             disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
                             fail = 1;
-                            break;
+                            break
                         end
                         
                         asympt = 0;
-                        % Map of misclassification probabilities
+                        % Compute map of misclassification probabilities
+                        % (OmegaMap)
+                        % using the value of c which has been previously
+                        % found
                         % Average overlap
                         % Maximum overlap
                         [OmegaMap, Balpha, Malpha, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fixcl, tol, lim, asympt);
                         upper = c;
                         
-                        diff = Balpha - (BarOmega);
-                        if (diff < -tol) % /* BarOmega is not reachable */
+                        % We hope that Balpha (overall average overlapping)
+                        % obtained using c associated with the two cluster
+                        % which showed the highest overlapping is greater
+                        % than BarOmega (average requested overlapping).
+                        diff = Balpha - BarOmega;
+                        % If diff<tol the desired average overlap characteristic is
+                        % possibly unattainable using the candidate \mu
+                        % \Sigma and \pi and a new candidate is needed
+                        if (diff < -tol) % BarOmega is not reachable
                             disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
                             fail = 1;
-                            break;
+                            break
                         end
                         
+                        % If diff<tol the desired maximum overlap characteristic is
+                        % possibly unattainable using the candidate \mu
+                        % \Sigma and \pi and a new candidate is needed
                         diff = Malpha - MaxOmega;
-                        if (diff < tol) %  /* MaxOmega has been reached */
+                        if (diff < tol) %  MaxOmega has been reached
                             fail = 0;
-                            break;
+                            break
                         end
                         
                     end
@@ -643,24 +692,26 @@ out = Q;
                 
                 if fail == 0
                     %  OmegaMax is reached and OmegaBar is reachable
-                    % correct covariances by multiplier C
+                    %  correct covariances by multiplier C
+                          Sgen=c*Sgen;
                     
+                    [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
                     
-                    % cxS(p, K, S, c);
-                    Sgen=c*Sgen;
-                    
-                    
-                    [li,di,const1]=ComputePars(p,k,Pigen,Mugen,Sgen);
-                    
+                    % The two clusters which enabled to obtain the highest
+                    % overlap are kept unchanged all the way through the
+                    % terminatio of the algorithm
                     fixcl(rcMax(1)) = 1;
                     fixcl(rcMax(2)) = 1;
                     upper = 1;
                     
+                    % Now find the c which guarrantees the average
+                    % requested ovelapping BarOmega
                     Balpha = BarOmega;
+                    % method =0 because average overlapping is requested
                     method = 0;
                     % FindC(lower, upper, Balpha, method, p, K, li, di, const1, fix, pars, lim, &c, OmegaMap, &Balpha, &Malpha, rcMax);
                     
-                    [c,OmegaMap, Balpha, Malpha,rcMax]=FindC(lower, upper, Balpha, method, p, k, li, di, const1, fixcl, tol, lim);
+                    [c, OmegaMap, Balpha, Malpha, rcMax]=FindC(lower, upper, Balpha, method, p, k, li, di, const1, fixcl, tol, lim);
                     
                     
                     % correct covariances by multiplier c
@@ -671,11 +722,9 @@ out = Q;
                     end
                     
                     
-                    % Inside if  fail==0 OmegaMax is reached and OmegaBar is reachable */
+                    % Inside if  fail==0 OmegaMax is reached and OmegaBar is reachable
                     break
                 end
-                
-                
                 
             end
             if isamp == resN
@@ -705,15 +754,18 @@ out = Q;
 
 
     function Pigen=genPi(k,PiLow)
-        % genPi generates mixing proportions
+        % genPi generates vector of mixing proportions
         %
         %  Required input arguments:
         % 		k       : scalar, number of components
         % 		PiLow   : scalar, smallest possible mixing proportion
         %
-        %  Output:
+        %  OUTPUT parameters
         %
         % 		Pigen : vector of length k containing mixing proportions
+        %               Vector Pigen satisfies the following constraints:
+        %               sum(Pigen)=1
+        %               min(Pigen)>=PiLow
         %
         %  For example Pigen=genPi(4,0.24)
         %  produces Pigen=
@@ -758,14 +810,16 @@ out = Q;
 
 
 
-    function Mugen=genMu(p,k,Lbound, Ubound)
+    function Mugen=genMu(p, k, Lbound, Ubound)
         % genMu generates matrix of means of size k-by-p
-        % Parameters:
-        % 		p - number of dimensions
-        % 		k - number of components
-        % 		Lbound - lower bound for the hypercube
-        % 		Ubound - upper bound for the hypercube
-        %   Output:
+        %
+        %  Required input arguments:
+        %               p - number of dimensions
+        %               k - number of components
+        %          Lbound - lower bound for the hypercube
+        %          Ubound - upper bound for the hypercube
+        %
+        %  OUTPUT parameters
         % 		Mu - matrix of means of size k-by-p
         
         if R_seed
@@ -781,6 +835,13 @@ out = Q;
 
 
     function VC=genSigma(p)
+        % genSigma generates covariance matrix based on (p + 1) observations
+        %  Required input arguments:
+        % 		p - number of dimensions
+        %
+        %  OUTPUT parameters
+        % 		VC - p-by-p covariance matrix based on p+1 observations
+        % 		extracted from normal distribution
         n = p + 1;
         
         mu=zeros(p,1);
@@ -813,6 +874,7 @@ out = Q;
         end
         
         VC=VC/(n-1);
+        % Note that VC is simply cov(X)
     end
 
 
@@ -822,7 +884,7 @@ out = Q;
         % genSigmaEcc generates covariance matrix with prespecified eccentricity
         %
         %  Required input arguments:
-        % 
+        %
         % 		p    - scalar, number of dimensions
         % 		k    - scalar, number of components
         % 		emax - scalar which defines maximum eccentricity
@@ -830,10 +892,13 @@ out = Q;
         %              heterogeneous (different) covariance matrices must
         %              be generated. hom=1 implies homogeneous clusters
         %
-        %  Output parameters
+        %  OUTPUT parameters
         %          S - array of size v-by-v-by-k containing the k
         %          variance-covariance matrices of the k groups
         %
+        %    Remark: this procedure calls VC=genSigma and then checks
+        %    whether the eigenvalues of VC satisfy a predetermined level of
+        %    eccentricity
         
         % S = 3d array which contains the covariance matriced of the groups
         S=zeros(p,p,k);
@@ -860,8 +925,12 @@ out = Q;
                         Eig(ii) = maxL * (1 - emax * emax * (maxL - Eig(ii)) / (maxL - minL));
                         L(ii,ii)=Eig(ii);
                     end
-                    
                     R=V*L*V';
+                    
+                    % The two former instructions could be vectrorised as
+                    % follows (but it does not seem necessary)
+                    % Eig=maxL * (1 - emax^2* (maxL - Eig) / (maxL - minL));
+                    % R=V*diag(Eig)*V';
                     S(:,:,kk)=R;
                 end
             end
@@ -881,8 +950,8 @@ out = Q;
             % e = eccentricity
             e = sqrt(1 - minL / maxL);
             
-            % If some simulated dispersion matrics have e>emax specified by
-            % ecc all eigenvalues will be scaled in order to have
+            % If some simulated dispersion matrices have e>emax specified
+            % by ecc all eigenvalues will be scaled in order to have
             % enew=emax;
             if (e > emax)
                 L=zeros(p);
@@ -913,18 +982,16 @@ out = Q;
         %              heterogeneous (different) covariance matrices must
         %              be generated. hom=1 implies homogeneous clusters
         %
-        %  Output:
+        %  OUTPUT parameters
         %
         % 		S :  3D array of size p-by-p-by-k containing the k
         % 		variance-covariance matrices
+        %       if hom ==1
+        %       S(:,:,j) = \sigma^2 I_p
+        %       else
+        %       S(:,:,j) = \sigma^2_j I_p
         %
         S=zeros(p,p,k);
-        
-        % if hom ==1
-        % S(:,:,j) = \sigma^2 I_p
-        % else if hom =1
-        % S(:,:,j) = \sigma^2_j I_p
-        
         
         eyep=eye(p);
         if R_seed
@@ -952,33 +1019,35 @@ out = Q;
 
 
 
-    function  [c,OmegaMap2, BarOmega2, MaxOmega2,rcMax]=FindC(lower, upper, Omega, method, p, k, li, di, const1, fix, tol, lim)
-        %find multiplier c on the interval [lower upper]
+    function  [c, OmegaMap2, BarOmega2, MaxOmega2, rcMax]=FindC(lower, upper, Omega, method, p, k, li, di, const1, fix, tol, lim)
+        %find multiplier c to be applied to the cov matrices in the
+        %interval [lower upper] in order to reach the required average or
+        %maximum overlap
         %
         %  Required input arguments:
         %
         % lower : scalar - lower bound of the interval
         % upper : scalar - upper bound of the interval
-        % Omega : k-by-k matrix containing input map of misclassification
-        %         probabilities
+        % Omega : scalar, associated with maximum or average overlapping requested
         % method : scalar which specifies whether average (method=0) or maximum
-        %          overlap is requested 
+        %          overlap is requested
         %     p  : dimensionality
         %     k  : number of components
         % li, di, const1 : parameters needed for computing overlap,
-        %          precalculated using routine ComputePars 
+        %          precalculated using routine ComputePars
         %    fix : vector of length k containing zeros or ones
-        %          if fix(j) =1 cluster j does not participate to inflation or
-        %          deflation. If fix=zeros(k,1) all clusters participate in inflation/deflation
-        %          This parameter is used just if heterogeneous clusters are used
-        %         tol : scalar. Error bound for overlap computation default is 1e-06
-        %         lim : maximum number of integration terms default is 1e06.
-        %               REMARK: Optional parameters tol and lim will be used by
-        %               function ncx2mixtcdf.m which computes the cdf of a linear
-        %               combination of non central chi2 r.v.. This is the
-        %               probability of overlapping
+        %          if fix(j) =1 cluster j does not participate to inflation
+        %          or deflation. If fix=zeros(k,1) all clusters participate
+        %          in inflation/deflation This parameter is used just if
+        %          heterogeneous clusters are used
+        %    tol : scalar. Error bound for overlap computation default is 1e-06
+        %    lim : maximum number of integration terms default is 1e06.
+        %          REMARK: Optional parameters tol and lim will be used by
+        %          function ncx2mixtcdf.m which computes the cdf of a linear
+        %          combination of non central chi2 r.v.. This is the
+        %          probability of overlapping
         %
-        %  Output:
+        %  OUTPUT parameters
         %
         %        c    : scalar inflation parameter
         %               c is a constant which is used to scale the covariance
@@ -986,9 +1055,9 @@ out = Q;
         %               prespecified level of average or maximum overlap
         %   OmegaMap2 : k-by-k matrix containing map of misclassification
         %               probabilities
-        %   BarOmega2 : scalar. Average overlap 
+        %   BarOmega2 : scalar. Average overlap
         %   MaxOmega2 : scalar. Maximum overlap
-        %      rcMax  : vector of length 2 containing the indexes assocaited
+        %      rcMax  : vector of length 2 containing the indexes associated
         %              to the pair of components producing the highest overlap
         %
         
@@ -996,20 +1065,20 @@ out = Q;
         stopIter = 1000;
         
         sch = 0;
-        
+               asympt = 0;
+     
         while abs(diff) > tol
             
             c = (lower + upper) / 2.0;
             
-            asympt = 0;
-            [OmegaMap2, BarOmega2, MaxOmega2,rcMax]=GetOmegaMap(c, p, k, li, di, const1, fix, tol, lim, asympt);
+            [OmegaMap2, BarOmega2, MaxOmega2, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fix, tol, lim, asympt);
             
             % disp(OmegaMap2)
             
-            if method == 0
+            if method == 0 % in this case average overlap is requested
                 
                 if BarOmega2 < Omega
-                    % clusters are too far 
+                    % clusters are too far
                     lower = c;
                 else
                     upper = c;
@@ -1017,10 +1086,10 @@ out = Q;
                 
                 diff = BarOmega2 - Omega;
                 
-            else
+            else % in this case maximum overlap is requested
                 
                 if MaxOmega2 < Omega
-                    % clusters are too far 
+                    % clusters are too far
                     lower = c;
                 else
                     upper = c;
@@ -1035,7 +1104,7 @@ out = Q;
             if sch == stopIter
                 c = 0.0;
                 disp(['Warning: required overlap was not reached in routine findC after ' num2str(stopIter) ' iterations...'])
-                break;
+                break
             end
             
         end
