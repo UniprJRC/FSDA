@@ -421,8 +421,7 @@ if ~isempty(ii)
         REW.plane=z;
         covplane=cov(Y(plane,:));
         REW.method=sprintf('\nMinimum Covariance Determinant Estimator (fastMCD).');
-        [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,RAW.weights,REW.weights,...
-            REW.method]=displRAW(3,length(plane),weights,n,v,meanplane,covplane,REW.method,z,h,ii);
+        [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,RAW.weights,REW.weights]=displRAW(3,length(plane),weights,n,v,meanplane,covplane,REW.method,z,h,ii);
     end
     return
 end
@@ -497,9 +496,6 @@ if det(clcov) < tolMCD
     correl=clcov./(sqrt(diag(clcov))*sqrt(diag(clcov))');
     
     [clcov,clmean]=trafo(clcov,clmean,med,mad);
-%     [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,RAW.weights,...
-%         REW.weights, REW.method] = displRAW(1,n,weights,n,v,clmean,clcov,...
-%        'Minimum Covariance Determinant Estimator',z./mad');
     [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,RAW.weights,...
         REW.weights] = displRAW(1,n,weights,n,v,clmean,clcov,...
         'Minimum Covariance Determinant Estimator',z./mad');
@@ -627,7 +623,7 @@ for i = 1:nselected
             REW.plane=eigvct;
             weights(obsinplane)=1;
             [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,...
-                RAW.weights,REW.weights,REW.method]=displRAW(2,count,weights,n,v,center,covar,...
+                RAW.weights,REW.weights]=displRAW(2,count,weights,n,v,center,covar,...
                 'fastMCD',eigvct,correl);
             
             
@@ -681,7 +677,7 @@ for i = 1:nselected
         REW.plane=z;
         weights(obsinplane)=1;
         [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,...
-            RAW.weights,REW.weights,REW.method]=displRAW(2,count,weights,n,v,center,covar,...
+            RAW.weights,REW.weights]=displRAW(2,count,weights,n,v,center,covar,...
             'fastmcd',z);
         
         [REW.cor,RAW.cor]=deal(correl);
