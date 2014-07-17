@@ -148,8 +148,9 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  Optional Output:
 %
-%            C     : matrix containing the indices of the subsamples extracted for
-%                    computing the estimate
+%            C        : matrix containing the indices of the subsamples 
+%                       extracted for computing the estimate (the so called
+%                       elemental sets).
 %
 %
 % See also FSReda, Sreg, MMreg
@@ -228,8 +229,6 @@ nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 seq=(1:n)';
-
-
 
 %% User options
 
@@ -369,8 +368,7 @@ elseif isstruct(lms)
     lmsdef.bestr=5;
     lmsdef.refstepsbestr=50;
     lmsdef.reftolbestr=1e-8;
-    
-    
+
     % Control the appearance of the trajectories to be highlighted
     if ~isequal(lms,lmsdef)
         
@@ -460,8 +458,7 @@ for i=1:nselected
     % posteriori control on vector b
     % Compute the vector of coefficients using matrice Xb and yb
     b=Xb\yb;
-    
-    
+
     if ~isnan(b(1)) && ~isinf(b(1))
         
         if ~isstruct(lms)
@@ -500,8 +497,7 @@ for i=1:nselected
             
             betarw = tmp.betarw;
             numscale2rw = tmp.numscale2rw;
-            
-            
+
             if ij > bestr
                 
                 if numscale2rw < sworst
@@ -512,20 +508,20 @@ for i=1:nselected
                     
                     % Store numscale2rw, betarw and indexes of the units forming the
                     % best subset for the current iteration
-                    bestscales(ind) = numscale2rw;
-                    bestbetas(ind,:) = betarw';
-                    bestsubset(ind,:)=index;
+                    bestscales(ind)     = numscale2rw;
+                    bestbetas(ind,:)    = betarw';
+                    bestsubset(ind,:)   = index;
                     % sworst = the best scale among the bestr found up to now
-                    sworst = max(bestscales);
+                    sworst              = max(bestscales);
                 end
             else
-                bestscales(ij) = numscale2rw;
+                bestscales(ij)  = numscale2rw;
                 bestbetas(ij,:) = betarw';
-                bestsubset(ij,:) = index;
+                bestsubset(ij,:)= index;
                 % sworst = the best scale among the bestr found up to now
                 sworst = max(bestscales);
-                ij=ij+1;
-                brob=1;
+                ij = ij+1;
+                brob = 1;
             end
             
         end
@@ -552,7 +548,7 @@ for i=1:nselected
                         fprintf('Total estimated time to complete LTS: %5.2f seconds \n', nselected*median(time));
                 end
             end
-        end;
+        end
     end
 end
 
@@ -570,7 +566,7 @@ if isstruct(lms)
     
     for i=1:bestr
         tmp = IRWLSreg(y,X,bestbetas(i,:)',refstepsbestr,reftolbestr,h);
-        
+
         if tmp.numscale2rw < superbestscale
             % sh0 = superbestscale
             sh0 = tmp.numscale2rw;
@@ -652,9 +648,9 @@ if abs(s0) > 1e-7;
     
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
-    [~,indsorres2]=sort(residuals.^2);
-    weights=zeros(n,1);
-    weights(indsorres2(1:h))=1;
+    [~ , indsorres2] = sort(residuals.^2);
+    weights = zeros(n,1);
+    weights(indsorres2(1:h)) = 1;
     
     % Initialize structure out
     out=struct;
@@ -887,20 +883,21 @@ n=size(y,1);
 res = y - X * initialbeta;
 
 % Squared residuals for all the observations
-r2=res.^2;
+r2 = res.^2;
 
 % Ordering of squared residuals
 [r2s , i_r2s] = sort(r2);
-initialscale=sum(r2s(1:h));
+initialscale  = sum(r2s(1:h));
 
-iter = 0;
-betadiff = 9999;
-beta = initialbeta;
+% Initialize parameters for the refining steps loop
+iter        = 0;
+betadiff    = 9999;
+beta        = initialbeta;
+scale       = Inf;
 
-scale=Inf;
-
-weights=zeros(n,1);
-weights(i_r2s(1:h))=1;
+% update of weights moved at the end of the function
+% weights=zeros(n,1);
+% weights(i_r2s(1:h))=1;
 
 while ( (betadiff > reftol) && (iter < refsteps) )
     iter = iter + 1;
@@ -919,8 +916,7 @@ while ( (betadiff > reftol) && (iter < refsteps) )
         scale = initialscale;
         break
     end
-    
-    
+
     % betadiff is linked to the tolerance (specified in scalar reftol)
     betadiff = norm(beta - newbeta,1) / norm(beta,1);
     
@@ -932,19 +928,24 @@ while ( (betadiff > reftol) && (iter < refsteps) )
     scale = sum(r2s(1:h));
     % update beta    
     beta = newbeta;
-    
+
 end
 
 % store final estimate of beta
 outIRWLS.betarw = newbeta;
+
 % store final estimate of scale
 outIRWLS.numscale2rw = scale;
+
 % store final estimate of the weights for each observation
 % In this case weights are 0,1.
 % 1 for the units associated with the smallest h squared residuals from
 % final iteration
 % 0 for the other units.
+weights=zeros(n,1);
+weights(i_r2s(1:h))=1;
 outIRWLS.weights=weights;
+
 end
 
 
