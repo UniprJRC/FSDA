@@ -1,10 +1,10 @@
-function [out]  = restreigen(eigenvalues,niini,restr,tol,userepmat)
+function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %restreigen computes eigenvalues restriction (without Dykstra algorithm)
 %
 %<a href="matlab: docsearch('restreigen')">Link to the help function</a>
 %
 %   restreigen restricts the eigenvalues according to the constraint
-%   specified in scalar restr This function is called in every
+%   specified in scalar restr. This function is called in every
 %   concentration step of function tclust
 %
 %  Required input arguments:
@@ -13,18 +13,20 @@ function [out]  = restreigen(eigenvalues,niini,restr,tol,userepmat)
 %            v= number of variables of the dataset which has to be clustered
 %     niini: k x 1 vector containing the size of the k clusters
 %     restr: scalar containing the restr parameter in tclust program.
-%            More in detail parameter restr defines the cluster's shape
+%            More in detail, parameter restr defines the cluster's shape
 %            restrictions, which are applied on all clusters during each
 %            iteration.
 %            Setting restr to 1, yields the strongest restriction,
 %            forcing all eigenvalues/determinants to be equal and so the
 %            method looks for similarly scattered (respectively spherical)
 %            clusters.
+%
+%  Optional input arguments:
+%
 %      tol : scalar defining the tolerance of the procedure.
 %            The default value is 1e-8
-%    
 % userepmat : scalar. If userepmat is true function repmat is used instead
-%             of bsxfun inside the procedure. Remark: repmat is builkt in
+%             of bsxfun inside the procedure. Remark: repmat is built in
 %             from MATLAB 2013b so it is faster to use repmat if the
 %             current version of MATLAB is >2013a
 %
@@ -33,7 +35,7 @@ function [out]  = restreigen(eigenvalues,niini,restr,tol,userepmat)
 %
 %            out      : v-by-k matrix containing restricted eigenvalues
 %                       The ratio between two possible elements in matrix
-%                       out not greater than restr
+%                       out is not greater than restr
 %
 % See also tclust
 %

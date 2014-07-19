@@ -14,15 +14,12 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %
 %  Required input arguments:
 %
-% INPUT
-% n = scalar, sample size  of the dataset
-% Pi = vector of length(k) defining mixing proportions. \sum_{j=1}^k Pi=1
-% Mu = k-by-p matrix containing components' mean vectors
-% S  = p-by-p-by-k arrary containing components' covariance matrices
+%         n   : scalar, sample size  of the dataset
+%        Pi   : vector of length(k) defining mixing proportions. \sum_{j=1}^k Pi=1
+%        Mu   : k-by-v matrix containing components' mean vectors
+%         S   : v-by-v-by-k arrary containing components' covariance matrices
 %
 %  Optional input arguments:
-%
-%
 %
 %       nnoise : scalar, which specifies the number of noise variables (the
 %               default value of nnoise is zero).

@@ -6,11 +6,11 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 % Required input arguments:
 %
 % c   :         scalar, value at which the cdf must be evaluated
-% n  :         vector of length k containing the degrees of freedom of the
+% n   :         vector of length k containing the degrees of freedom of the
 %               k non central chi2 distributions
-% lb  :         vector of length k containing the coefficients of the linear combinations
-%               of the k non central chi2 distributions
-%  nc :       vector of length k containing the k non centrality parameters
+% lb  :         vector of length k containing the coefficients of the
+%               linear combinations of the k non central chi2 distributions
+% nc  :         vector of length k containing the k non centrality parameters
 %               of the k non central chi2 distributions
 %
 %
@@ -21,9 +21,9 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %               combination of non central chi2 distributions
 %               The default value of sigma is 0
 %   lim :       scalar which defines maximum number of integration terms.
-%               The default value of lim is 1000
-%   tol :       scalar which controls the tolerance. The deafult value of
-%               tolerance is 1e-06
+%               The default value of lim is 10000
+%   tol :       scalar which controls the tolerance. The default value of
+%               tolerance is 1e-09
 %
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
@@ -119,14 +119,32 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %}
 
 %{
-% Example in which the procedure fails
-% chi2 with non centrality parameter =9
-% and degrees of freedom =5
+    % Example which tests the results using different tolerances and
+    % a different number of integration terms
     df=[1;1];
     lb=[-0.965785811006555;-0.681122597105154];
-    nc=[0;0];
+    nc=[0.2;0.3];
     x=-2.386488889335108;
-        [out]=ncx2mixtcdf(x,df,lb,nc);
+    [out]=ncx2mixtcdf(x,df,lb,nc);
+    disp('Value of cdf using default number of integration terms and default tolerance')
+    disp(out)
+    disp('-------------------------')
+    tol=1e-06;
+    [out]=ncx2mixtcdf(x,df,lb,nc,'tol',tol);
+    disp(['Value of cdf using tol =' num2str(tol) ' and default integration terms'])
+    disp(out)
+    disp('-------------------------')
+    lim=1000000;
+    [out]=ncx2mixtcdf(x,df,lb,nc,'lim',lim);
+    disp(['Value of cdf using numb. integration terms =' num2str(lim) ' and default tolerance'])
+    disp(out)
+    disp('-------------------------')
+    lim=100000000;
+    tol=1e-13;
+    disp(['Value of cdf using numb. integration terms =' num2str(lim) ' and tolerance=' num2str(tol)])
+    disp('In this last case it takes some seconds')
+    [out]=ncx2mixtcdf(x,df,lb,nc, 'lim',lim, 'tol',tol);
+    disp(out)
 %}
 
 
@@ -140,10 +158,10 @@ tracert=zeros(7,1);
 sigmadef=0;
 
 % Initialization of maximum number of integration terms
-limdef=10000;
+limdef=1e06;
 
-% Initialization of tolercance
-toldef=1e-9;
+% Initialization of tolerance
+toldef=1e-8;
 
 % store default values in the structure options
 options=struct('sigma',sigmadef,'lim',limdef,'tol',toldef);
