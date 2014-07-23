@@ -3,7 +3,7 @@ function [out]  = MixSim(k,v,varargin)
 %
 %<a href="matlab: docsearch('mixsim')">Link to the help function</a>
 %
-%   MixSim(k,p) generates k groups in v dimensions. It is possible to
+%   MixSim(k,v) generates k groups in v dimensions. It is possible to
 %   control the maximum and average overlapping.
 %
 %  Background: Given two generic clusters i and j = i ne j =1, ..., k,
@@ -207,6 +207,33 @@ function [out]  = MixSim(k,v,varargin)
     cand=triu(out.OmegaMap,1)+(tril(out.OmegaMap,-1))'
     disp('Posterior average overlap')
     max(cand(:))
+%}
+
+%{
+    % Example of use of optional input option restrfactor. In the first case
+    % restrfactor is 1.1 and the clusters are roughly homogeneous. In the
+    % second second case no constraint is imposed on the ratio of maximum and
+    % minimum eigevalue among clusters so elliptical shape clusters are
+    % allowed. In both cases the same random seed together with the same level
+    % of average and maximum overlapping is used
+    state1=2;
+    randn('state', state1);
+    rand('state', state1);
+    out=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2, 'restrfactor',1.1);
+    state1=2;
+    randn('state', state1);
+    rand('state', state1);
+    out1=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2);
+
+    n=200;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
+    spmplot(X,id)
+    set(gcf,'Name','restrfactor=1.2: almost homogeneous groups')
+
+    [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
+    figure;
+    spmplot(X1,id1)
+    set(gcf,'Name','Heterogeneous groups')
 %}
 
 %% User options
@@ -708,7 +735,6 @@ out = Q;
                     
                 end
                 
-                
                 % Check if maximum overlap is reachable.  Maximum
                 % overlapping takes place when c \rightarrow \infty that is
                 % when asympt =1
@@ -779,10 +805,10 @@ out = Q;
                         asympt = 0;
                         % Compute map of misclassification probabilities
                         % (OmegaMap)
-                        % using the value of c which has been previously
-                        % found
-                        % Average overlap
-                        % Maximum overlap
+                        % using the value of c which comes out from procedure
+                        % findC
+                        % Balpha = Average overlap using c from findC
+                        % Malpha = Maximum overlap using c from findC
                         [OmegaMap, Balpha, Malpha, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fixcl, tolncx2, lim, asympt);
                         upper = c;
                         
@@ -819,13 +845,20 @@ out = Q;
                 if fail == 0
                     %  OmegaMax is reached and OmegaBar is reachable
                     %  correct covariances by multiplier C
-                    Sgen=c*Sgen;
                     
-                    [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
+                    if nargin>13 && ~isempty(restrfactor)
+                        S05=(c^0.5)*S05;
+                        Sinv=(1/c)*Sinv;
+                        detS=(c^v)*detS;
+                        [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen, S05, Sinv, detS);
+                    else
+                        Sgen=c*Sgen;
+                        [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
+                    end
                     
                     % The two clusters which enabled to obtain the highest
                     % overlap are kept unchanged all the way through the
-                    % terminatio of the algorithm
+                    % termination of the algorithm
                     fixcl(rcMax(1)) = 1;
                     fixcl(rcMax(2)) = 1;
                     upper = 1;
@@ -967,22 +1000,23 @@ out = Q;
     end
 
 
-    function VC=genSigma(p)
-        % genSigma generates covariance matrix based on (p + 1) observations
+    function VC=genSigma(v)
+        % genSigma generates covariance matrix based on (v + 1) observations
         %  Required input arguments:
-        % 		p - number of dimensions
+        % 		v - number of dimensions
         %
         %  OUTPUT parameters
-        % 		VC - p-by-p covariance matrix based on p+1 observations
+        %
+        % 		VC - v-by-v covariance matrix based on v+1 observations
         % 		extracted from normal distribution
-        n = p + 1;
+        n = v + 1;
         
-        mu=zeros(p,1);
-        x=zeros(n,p);
+        mu=zeros(v,1);
+        x=zeros(n,v);
         
         
         for ii=1:n
-            for jj=1:p
+            for jj=1:v
                 if R_seed
                     % randn(1) in R is rnorm(1)
                     x(ii,jj)= evalR('rnorm(1)');
@@ -996,11 +1030,11 @@ out = Q;
         
         mu=mu/n;
         
-        VC=zeros(p);
+        VC=zeros(v);
         
         for ii=1:n
-            for jj=1:p
-                for kk=1:p
+            for jj=1:v
+                for kk=1:v
                     VC(jj,kk) = VC(jj,kk) + (x(ii,jj) - mu(jj)) * (x(ii,kk) - mu(kk));
                 end
             end
@@ -1013,12 +1047,12 @@ out = Q;
 
 
 
-    function S=genSigmaEcc(p, k, emax, hom)
+    function S=genSigmaEcc(v, k, emax, hom)
         % genSigmaEcc generates covariance matrix with prespecified eccentricity
         %
         %  Required input arguments:
         %
-        % 		p    - scalar, number of dimensions
+        % 		v    - scalar, number of dimensions
         % 		k    - scalar, number of components
         % 		emax - scalar which defines maximum eccentricity
         %       hom  - scalar which specifies whether homogeneous (equal) or
@@ -1034,13 +1068,13 @@ out = Q;
         %    eccentricity
         
         % S = 3d array which contains the covariance matriced of the groups
-        S=zeros(p,p,k);
+        S=zeros(v,v,k);
         
         if hom == 0
             
             for kk=1:k
                 
-                VC=genSigma(p);
+                VC=genSigma(v);
                 S(:,:,kk)=VC;
                 
                 [V,L] = eig(VC);
@@ -1052,9 +1086,9 @@ out = Q;
                 e = sqrt(1 - minL / maxL);
                 
                 if (e > emax)
-                    L=zeros(p);
+                    L=zeros(v);
                     
-                    for ii=1:p
+                    for ii=1:v
                         Eig(ii) = maxL * (1 - emax * emax * (maxL - Eig(ii)) / (maxL - minL));
                         L(ii,ii)=Eig(ii);
                     end
@@ -1069,7 +1103,7 @@ out = Q;
             end
         else % homogeneous clusters
             
-            VC=genSigma(p);
+            VC=genSigma(v);
             for kk=1:k;
                 S(:,:,kk)=VC;
             end
@@ -1087,9 +1121,9 @@ out = Q;
             % by ecc all eigenvalues will be scaled in order to have
             % enew=emax;
             if (e > emax)
-                L=zeros(p);
+                L=zeros(v);
                 
-                for ii=1:p
+                for ii=1:v
                     Eig(ii) = maxL * (1 - (emax^2) * (maxL - Eig(ii)) / (maxL - minL));
                     L(ii,ii)=Eig(ii);
                 end
@@ -1104,12 +1138,12 @@ out = Q;
 
 
 
-    function S=genSphSigma(p,k,hom)
+    function S=genSphSigma(v,k,hom)
         %Generates spherical covariance matrices
         %
         %  Required input arguments:
         %
-        % 		p    - scalar, number of dimensions
+        % 		v    - scalar, number of dimensions
         % 		k    - scalar, number of components
         %       hom  - scalar which specifies whether homogeneous (equal) or
         %              heterogeneous (different) covariance matrices must
@@ -1117,16 +1151,16 @@ out = Q;
         %
         %  OUTPUT parameters
         %
-        % 		S :  3D array of size p-by-p-by-k containing the k
+        % 		S :  3D array of size v-by-v-by-k containing the k
         % 		variance-covariance matrices
         %       if hom ==1
-        %       S(:,:,j) = \sigma^2 I_p
+        %       S(:,:,j) = \sigma^2 I_v
         %       else
-        %       S(:,:,j) = \sigma^2_j I_p
+        %       S(:,:,j) = \sigma^2_j I_v
         %
-        S=zeros(p,p,k);
+        S=zeros(v,v,k);
         
-        eyep=eye(p);
+        eyep=eye(v);
         if R_seed
             % rand(1) in R is runif(1)
             r = evalR('runif(1)');
@@ -1152,7 +1186,7 @@ out = Q;
 
 
 
-    function  [c, OmegaMap2, BarOmega2, MaxOmega2, rcMax]=FindC(lower, upper, Omega, method, p, k, li, di, const1, fix, tol, lim)
+    function  [c, OmegaMap2, BarOmega2, MaxOmega2, rcMax]=FindC(lower, upper, Omega, method, v, k, li, di, const1, fix, tol, lim)
         %find multiplier c to be applied to the cov matrices in the
         %interval [lower upper] in order to reach the required average or
         %maximum overlap
@@ -1164,7 +1198,7 @@ out = Q;
         % Omega : scalar, associated with maximum or average overlapping requested
         % method : scalar which specifies whether average (method=0) or maximum
         %          overlap is requested
-        %     p  : dimensionality
+        %     v  : dimensionality
         %     k  : number of components
         % li, di, const1 : parameters needed for computing overlap,
         %          precalculated using routine ComputePars
@@ -1174,7 +1208,13 @@ out = Q;
         %          in inflation/deflation This parameter is used just if
         %          heterogeneous clusters are used
         %    tol : vector of length 2.
-        %    tol : scalar. Error bound for overlap computation default is 1e-06
+        %          tol(1) (which will be called tolmap) specifies
+        %          the tolerance between the requested and empirical
+        %          misclassification probabilities (default is 1e-06)
+        %          tol(2) (which will be called tolnxc2) specifies the
+        %          tolerance to use in routine ncx2mixtcdf (which computes cdf
+        %          of linear combinations of non central chi2 distributions).
+        %          The default value of tol(2) 1e-06        
         %    lim : maximum number of integration terms default is 1e06.
         %          REMARK: Optional parameters tol and lim will be used by
         %          function ncx2mixtcdf.m which computes the cdf of a linear
@@ -1189,8 +1229,8 @@ out = Q;
         %               prespecified level of average or maximum overlap
         %   OmegaMap2 : k-by-k matrix containing map of misclassification
         %               probabilities
-        %   BarOmega2 : scalar. Average overlap
-        %   MaxOmega2 : scalar. Maximum overlap
+        %   BarOmega2 : scalar. Average overlap found using c
+        %   MaxOmega2 : scalar. Maximum overlap found using c
         %      rcMax  : vector of length 2 containing the indexes associated
         %              to the pair of components producing the highest overlap
         %
@@ -1203,13 +1243,18 @@ out = Q;
         sch = 0;
         asympt = 0;
         
+        % Intervals which contain positive or negative powers of 2 are
+        % considered. For example first interval is [0 1024] then if 
+        % MaxOmega2 (maximum overlap which has been found using c=512) is <
+        % Omega (maximum required overlap), then the new interval becomes 
+        % [512 1024]  (c has to be increased and the new candidate c is
+        % 0.5*(512+1024)) else the new interval becomes [0 512] (c has to
+        % be decreased and the new candidate c is 0.5*(0+512)=256
         while abs(diff) > tolmap
             
             c = (lower + upper) / 2.0;
             
-            [OmegaMap2, BarOmega2, MaxOmega2, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fix, tolncx2, lim, asympt);
-            
-            % disp(OmegaMap2)
+            [OmegaMap2, BarOmega2, MaxOmega2, rcMax]=GetOmegaMap(c, v, k, li, di, const1, fix, tolncx2, lim, asympt);
             
             if method == 0 % in this case average overlap is requested
                 
@@ -1242,7 +1287,6 @@ out = Q;
                 disp(['Warning: required overlap was not reached in routine findC after ' num2str(stopIter) ' iterations...'])
                 break
             end
-            % disp(sch)
         end
         
         
