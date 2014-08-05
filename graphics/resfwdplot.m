@@ -6,17 +6,17 @@ function plotopt=resfwdplot(out,varargin)
 %
 %  Required input arguments:
 %  out :  structure containing the following fields
-%       RES =   matrix containing the residuals monitored in each step of
+%       RES :   matrix containing the residuals monitored in each step of
 %               the forward search. Every row is associated with a residual
 %               (unit). This matrix can be created using function FSReda.
-%       Un  =   matrix containing the order of entry in the subset of each
+%       Un  :   matrix containing the order of entry in the subset of each
 %               unit (required only when datatooltip is true or databrush
 %               is not empty).
-%       y   =   a vector containing the response (required only when option
+%       y   :   a vector containing the response (required only when option
 %               databrush is not empty).
-%       X   =   a matrix containing the explanatory variables (required only
+%       X   :   a matrix containing the explanatory variables (required only
 %               when option databrush is not empty).
-%     Bols  =   (n-init+1) x (p+1) matrix containing the estimated beta
+%     Bols  :   (n-init+1) x (p+1) matrix containing the estimated beta
 %               coefficients monitored in each step of the forward search
 %               (required only when option databrush is not empty and
 %               suboption multivarfit is not empty).
