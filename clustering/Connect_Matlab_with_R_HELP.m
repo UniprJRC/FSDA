@@ -38,7 +38,7 @@
 %         necessary to run the following line
 %         addpath('C:\matlab\MATLAB_R_LINK');
 %         To add this folder permanently to the path from Home|Set PAth and
-%         clicj on Save
+%         click on Save
 %
 %         IN ORDER TO TEST THAT EVERYTHING IS OK from
 %               Start | All programs | statconn | DCom
@@ -82,7 +82,7 @@ rn = evalR('diag(3)');
 % close the R connection
 closeR %close the connection
 
-%% EZAMPLE 2: CHECK THE GENERATION OF RANDOM NUMBERS FROM R
+%% EXAMPLE 2: CHECK THE GENERATION OF RANDOM NUMBERS FROM R
 
 openR
 

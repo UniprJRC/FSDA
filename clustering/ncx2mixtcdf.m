@@ -631,7 +631,7 @@ varargout{2}=ifault;
             s(absxn)= -xabsxn.*y;
         end
         
-        if ~isempty(y) % TOCHECK IF ~isempty(y) is necessary
+        if ~isempty(y) 
             k = 3;
             y = y.^2;
             

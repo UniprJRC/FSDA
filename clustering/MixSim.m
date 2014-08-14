@@ -4,7 +4,7 @@ function [out]  = MixSim(k,v,varargin)
 %<a href="matlab: docsearch('mixsim')">Link to the help function</a>
 %
 %   MixSim(k,v) generates k groups in v dimensions. It is possible to
-%   control the maximum and average overlapping.
+%   control the average and maximum or standard deviation of overlapping.
 %
 %  Background: Given two generic clusters i and j = i ne j =1, ..., k,
 %  indexed by \phi(x,\mu_i,\Sigma_i) and \phi(x,\mu_j,\Sigma_j) with
@@ -42,9 +42,13 @@ function [out]  = MixSim(k,v,varargin)
 %    BarOmega : scalar, value of desired average overlap. The default value is ''
 %    MaxOmega : scalar, value of desired maximum overlap. If BarOmega is empty
 %               the default value of MaxOmega is 0.15
-%               Remark: The overlap between two clusters i and j is defined
-%               as the sum of the two misclassification probabilities w_{j|i}
-%               and w_{i|j}
+%    StdOmega : scalar, value of desired standard deviation of overlap.
+%               Remark1: The probability of overlapping between two
+%               clusters i and j (i ne j =1, 2, ..., k), called pij, is defined as the
+%               sum of the two misclassification probabilities 
+%               pij=w_{j|i} + w_{i|j}
+%               Remark2: it is possible to specify up to two values among
+%               BarOmega MaxOmega and StdOmega.
 %         sph : scalar boolean which specifies covariance matrix structure
 %               sph=false (default) ==> non-spherical,
 %               sph=true            ==> spherical = const*I
@@ -94,6 +98,12 @@ function [out]  = MixSim(k,v,varargin)
 %               used by function ncx2mixtcdf.m which computes the cdf of a
 %               linear combination of non central chi2 r.v.. This is the
 %               probability of overlapping
+%     Display : Level of display.
+%               'off' displays no output;
+%               'notify' (default) displays output if requested
+%               overlap cannot be reached in a particular simulation
+%               'iter' displays output at each iteration of each
+%               simulation
 %      R_seed : scalar > 0 for the seed to be used to generate random numbers
 %               in a R instance. This is used to check consistency of the
 %               results obtained with the R package MixSim.
@@ -135,6 +145,9 @@ function [out]  = MixSim(k,v,varargin)
 %                       maximum of OmegaMap(i,j)+OmegaMap(j,i)
 %                       (i ~= j)=1, 2, ..., k. In other words MaxOmega=
 %                      OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))
+%       out.StdOmega : scalar. Value of standard deviation (std) of overlap.
+%                      StdOmega is the standard deviation of k*(k-1)/2
+%                      probabilities of overlapping
 %         out.rcMax  : vector of length 2. It containes the row and column
 %                      numbers associated with  the pair of components
 %                      producing maximum overlap 'MaxOmega'
@@ -236,6 +249,36 @@ function [out]  = MixSim(k,v,varargin)
     set(gcf,'Name','Heterogeneous groups')
 %}
 
+%{
+    clc
+    rng(10,'twister')
+    k=4;
+    v=5;
+    n=200;
+    BarOmega=0.10;
+    StdOmega=0.15;
+    out=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega,'resN',10, 'Display', 'iter');
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
+    spmplot(X,id)
+    set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
+
+    state1=1000;
+    rng(10,'twister')
+    StdOmega=0.05;
+    out1=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega,'resN',10, 'Display', 'iter');
+    [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
+    figure
+    spmplot(X1,id1)
+    set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
+    disp('When StdOmega is large in this example groups 3 are 4 do show a strong overlap')
+    disp('When StdOmega is large in this example groups 1, 2, 3 are quite separate')
+    disp('See also OmegaMap')
+    disp(out.OmegaMap)
+    disp('When StdOmega is small the probabilities of overlapping are much more similar')
+    disp('See also OmegaMap')
+    disp(out1.OmegaMap)
+%}
+
 %% User options
 
 % Default
@@ -254,6 +297,7 @@ end
 Rseeddef = 0;
 BarOmegadef = '';
 MaxOmegadef = 0.15;
+StdOmegadef = '';
 eccdef      = 0.9;
 PiLowdef    = 0;
 intdef      = [0 1];
@@ -263,6 +307,7 @@ limdef      = 1e06;
 restrfactordef='';
 
 options=struct('R_seed', Rseeddef, 'BarOmega',BarOmegadef,'MaxOmega',MaxOmegadef,...
+    'StdOmega',StdOmegadef, 'Display', 'notify', ...
     'sph',false,'hom',false,'ecc',eccdef,'PiLow',PiLowdef,...
     'int',intdef,'resN',resNdef,'tol',toldef,'lim',limdef,'restrfactor',restrfactordef);
 
@@ -312,6 +357,7 @@ Ubound = int(2);
 R_seed   = options.R_seed;
 MaxOmega = options.MaxOmega;
 BarOmega = options.BarOmega;
+StdOmega = options.StdOmega;
 tol=options.tol;
 % tolmap = tolerance between the requested and empirical misclassification
 % probabilities
@@ -326,6 +372,7 @@ PiLow    = options.PiLow;
 resN     = options.resN;
 lim      = options.lim;
 restrfactor= options.restrfactor;
+Display  = options.Display;
 
 if R_seed > 0
     
@@ -379,45 +426,58 @@ if lim < 1
     error('Wrong value of lim')
 end
 
-% method =0 ==> just BarOmega has been specified
-if isempty(MaxOmega) && ~isempty(BarOmega)
+if isempty(MaxOmega) && isempty(StdOmega)  && ~isempty(BarOmega)
+    % method =0 ==> just BarOmega has been specified
     method = 0;
     Omega = BarOmega;
-end
-
-% method =1 ==> just MaxOmega has been specified
-if isempty(BarOmega) && ~isempty(MaxOmega)
+elseif isempty(BarOmega) && ~isempty(MaxOmega)
+    % method =1 ==> just MaxOmega has been specified
     method = 1;
     Omega = MaxOmega;
-end
-
-% method =2 ==> both BarOmega and MaxOmega have been specified
-if ~isempty(BarOmega) && ~isempty(MaxOmega)
+elseif ~isempty(BarOmega) && ~isempty(MaxOmega) && isempty(StdOmega)
+    % method =2 ==> both BarOmega and MaxOmega have been specified
     method = 2;
+elseif  ~isempty(BarOmega) && ~isempty(StdOmega) && isempty(MaxOmega)
+    % method =3 ==> both BarOmega and StdOmega have been specified
+    method = 3;
+elseif isempty(BarOmega) && isempty(MaxOmega)
+    % method =-1 ==> both BarOmega and MaxOmega have not been specified
+    method = -1;
+elseif ~isempty(BarOmega) && ~isempty(StdOmega) && ~isempty(MaxOmega)
+    % method =4 ==> both BarOmega MaxOmega and StdOmega have been specified
+    method = 4;
+else
+    method= 2;
 end
 
-% method =-1 ==> both BarOmega and MaxOmega have not been specified
-if isempty(BarOmega) && isempty(MaxOmega)
-    method = -1;
-end
 
 if method == 0 || method == 1
     emax=ecc;
     Q = OmegaClust(Omega, method, v, k, PiLow, Lbound, Ubound, ...
-        emax, tol, lim, resN, sph, hom, restrfactor);
+        emax, tol, lim, resN, sph, hom, restrfactor, Display);
     
 elseif method == 2
     emax=ecc;
     
-    % In this case both OmegaBar and OmegaMax have been specified
+    % In this case both BarOmega and MaxOmega have been specified
     Q = OmegaBarOmegaMax(v, k, PiLow, Lbound, Ubound, ...
-        emax, tol, lim, resN, sph, hom, BarOmega, MaxOmega, restrfactor);
+        emax, tol, lim, resN, sph, hom, BarOmega, MaxOmega, restrfactor, Display);
+    
+elseif method ==3
+    % In this case both BarOmega and StdOmega have been specified
+    emax=ecc;
+    StdOmega=options.StdOmega;
+    Q=OmegaBarOmegaStd(v, k, PiLow, Lbound, Ubound, ...
+        emax, tol, lim, resN, sph, hom, BarOmega, StdOmega, restrfactor, Display);
+elseif method ==4
+    % In this case both MaxOmega, BarOmega and StdOmega have been specified
+    error('It is not possible to specify both MaxOmega, BarOmega and StdOmega at the same time')
     
 elseif method~=-1
     error('Should never enter here')
 else
     % isempty(BarOmega) && isempty(MaxOmega)
-    error('At least one overlap characteristic should be specified')
+    error('At least one overlap characteristic between MaxOmega and BarOmega should be specified')
 end
 
 out = Q;
@@ -425,7 +485,7 @@ out = Q;
 %% Beginning of inner functions
 
     function  Q = OmegaClust(Omega, method, v, k, PiLow, Lbound, Ubound, ...
-            emax, tol, lim, resN, sph, hom, restrfactor)
+            emax, tol, lim, resN, sph, hom, restrfactor, Display)
         % OmegaClust = procedure when average or maximum overlap is
         % specified (not both)
         %
@@ -448,7 +508,7 @@ out = Q;
         % resN      : scalar, number of resamplings allowed
         % sph       : scalar. If sph =1 spherical covariance matrices are
         %             generated, else covariance matrices with a
-        %             prespecified maximum eccentricity are geenrated
+        %             prespecified maximum eccentricity are generated
         % hom       : scalar. If hom =1 equal covariance matrices are
         %             generated
         %
@@ -458,6 +518,12 @@ out = Q;
         %             maximum ratio to allow between the largest eigenvalue and
         %             the smallest eigenvalue of the k covariance matrices which
         %             are generated.
+        %    Display: Level of display.
+        %             'off' displays no output;
+        %             'notify' (default) displays output if requested
+        %             overlap cannot be reached in a particular simulation
+        %             'iter' displays output at each iteration of each
+        %             simulation
         %
         %
         %  OUTPUT parameters
@@ -472,11 +538,30 @@ out = Q;
         %                  generated
         %       MaxOmega : scalar, maximum overlap of the groups which have been
         %                  generated
+        %       StdOmega : scalar, standard deviation of overlap of the groups which have been
+        %                  generated
         %        rcMax   : vector of length 2 containing the pair of
         %                  components producing the highest overlap
         %           fail : flag indicating if the process failed (1). If everything went
         %                  well fail=0
         %
+        
+        
+        if nargin< 15
+            prnt = 1;
+        else
+            switch Display
+                case {'none','off'}
+                    prnt = 0;
+                case {'notify','notify-detailed'}
+                    prnt = 1;
+                case {'iter','iter-detailed'}
+                    prnt=2;
+                otherwise
+                    prnt = 1;
+            end
+        end
+        
         fixcl=zeros(k,1);
         
         for isamp=1:resN
@@ -552,12 +637,22 @@ out = Q;
             
             if method == 0
                 diff = Balpha - Omega;
+                if prnt>1
+                    disp(['Average empirical overlap - Average requested overlap=' num2str(diff)])
+                end
             else
                 diff = Malpha - Omega;
+                if prnt>1
+                    disp(['Max empirical overlap - Max requested overlap=' num2str(diff)])
+                end
             end
             
+            
+            
             if (diff < -tolmap) % Prefixed overlapping is not reachable
-                disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                if prnt>=1
+                    disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                end
                 fail = 1;
             else
                 lower=0;
@@ -573,7 +668,9 @@ out = Q;
                     lower =upper;
                     upper=upper^2;
                     if upper>100000
-                        disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                        if prnt>=1
+                            disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                        end
                         fail=1;
                         break
                     end
@@ -586,16 +683,41 @@ out = Q;
             end
         end
         
+        if method == 0
+            if prnt>1
+                disp(['Average empirical overlap - Average requested overlap=' num2str(Balpha-Omega)])
+            end
+        else
+            if prnt>1
+                disp(['Max empirical overlap - Max requested overlap=' num2str(Malpha-Omega)])
+            end
+        end
+        
+        
         if isamp == resN
-            warning('off',['The desired overlap has not been reached in' num2str(resN) 'simulations']);
-            warning('off','Increase the number of simulations allowed (option resN) or change the value of overlap');
+            warning(['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+            warning('Please increase the number of simulations allowed (option resN) or change the value of overlap');
             fail = 1;
         end
+        
+        % Compute standard deviation of overlap
+        cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
+        overlapv=cand(:);
+        overlapv=overlapv(overlapv>0);
+        if length(overlapv)<0.5*k*(k-1);
+            overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
+        else
+            overlapc=overlapv;
+        end
+        % Compute standard deviation of overlap for current
+        % solution
+        stdoverlap=std(overlapc);
         
         Q = struct;
         Q.OmegaMap=OmegaMap;
         Q.BarOmega=Balpha;
         Q.MaxOmega=Malpha;
+        Q.StdOmega=stdoverlap;
         Q.fail=fail;
         Q.Pi=Pigen;
         Q.Mu=Mugen;
@@ -608,8 +730,8 @@ out = Q;
 
 
     function Q=OmegaBarOmegaMax(p, k, PiLow, Lbound, Ubound, ...
-            emax, tol, lim, resN, sph, hom, BarOmega, MaxOmega, restrfactor)
-        % OmegaBarOmegaMax = procedure when average and maximum overlaps are both specified
+            emax, tol, lim, resN, sph, hom, BarOmega, MaxOmega, restrfactor, Display)
+        % OmegaBarOmegaMax = procedure when average and maximum overlap are both specified
         %
         %
         %  INPUT parameters
@@ -637,6 +759,12 @@ out = Q;
         %             maximum ratio to allow between the largest eigenvalue and
         %             the smallest eigenvalue of the k covariance matrices which
         %             are generated
+        %    Display: Level of display.
+        %             'off' displays no output;
+        %             'notify' (default) displays output if requested
+        %             overlap cannot be reached in a particular simulation
+        %             'iter' displays output at each iteration of each
+        %             simulation
         %
         %  OUTPUT parameters
         %
@@ -651,6 +779,8 @@ out = Q;
         %                  generated
         %       MaxOmega : scalar, maximum overlap of the groups which have been
         %                  generated
+        %       StdOmega : scalar, standard deviation of overlap of the groups
+        %                  which have been generated
         %        rcMax   : vector of length 2 containing the pair of
         %                  components producing the highest overlap
         %           fail : flag indicating if the process failed (1). If
@@ -664,6 +794,21 @@ out = Q;
             error('incorrect values of average and maximum overlaps...');
             
         else
+            
+            if nargin< 15
+                prnt = 1;
+            else
+                switch Display
+                    case {'none','off'}
+                        prnt = 0;
+                    case {'notify','notify-detailed'}
+                        prnt = 1;
+                    case {'iter','iter-detailed'}
+                        prnt=2;
+                    otherwise
+                        prnt = 1;
+                end
+            end
             li2=zeros(2, 2, p);
             di2=li2;
             const12=zeros(2);
@@ -742,6 +887,12 @@ out = Q;
                 % If asympt=1 c does not matter so any value of c will do
                 c = 0;
                 
+                % Initialize fail. A flag which indicates
+                % whether the required overlapped has been
+                % reached. fail=1 means required overlap
+                % not reached
+                fail=1;
+                
                 % fixcl = vector which specifies what are the clusters which
                 % participate to the process of inflation. In this stage
                 % all clusters partecipate to the process of inflation, so
@@ -754,8 +905,6 @@ out = Q;
                 % reached with asympt=1
                 diff = Malpha - MaxOmega;
                 
-                % Initialize fail
-                fail=1;
                 
                 if diff >= -tolmap %  maximum level of overlapping is reachable
                     
@@ -767,17 +916,7 @@ out = Q;
                         % find constant c for two clusters which show the
                         % highest ovelapping
                         
-                        %                         for ii=1:2;
-                        %                             for jj=1:2
-                        %                                 for l=1:p
-                        %                                     li2(ii,jj,l) = li(rcMax(ii),rcMax(jj),l);
-                        %                                     di2(ii,jj,l) = di(rcMax(ii),rcMax(jj),l);
-                        %                                 end
-                        %                                 const12(ii,jj) = const1(rcMax(ii),rcMax(jj));
-                        %                             end
-                        %                         end
-                        
-                        % Extract parameterss for the two clusters with the
+                        % Extract parameters for the two clusters with the
                         % highest overlapping
                         li2(1,2,:) = li(rcMax(1),rcMax(2),:);
                         di2(1,2,:) = di(rcMax(1),rcMax(2),:);
@@ -797,7 +936,9 @@ out = Q;
                         c=FindC(lower, upper, Malpha, 1, p, 2, li2, di2, const12, fix2, tol, lim);
                         
                         if c == 0 % abnormal termination
-                            disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                            if prnt>=1
+                                disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                            end
                             fail = 1;
                             break
                         end
@@ -817,11 +958,14 @@ out = Q;
                         % which showed the highest overlapping is greater
                         % than BarOmega (average requested overlapping).
                         diff = Balpha - BarOmega;
+                        
                         % If diff<tolmap the desired average overlap characteristic is
                         % possibly unattainable using the candidate \mu
                         % \Sigma and \pi and a new candidate is needed
                         if (diff < -tolmap) % BarOmega is not reachable
-                            disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                            if prnt>=1
+                                disp(['Warning: the desired average overlap cannot be reached in simulation '  num2str(isamp)]);
+                            end
                             fail = 1;
                             break
                         end
@@ -832,7 +976,15 @@ out = Q;
                         % (the maximum requested overlap). If this is the
                         % case  do another iteration of the loop (while
                         % fail ~=0) using rcMax which has just been found.
+                        
+                        
+                        
                         diff = Malpha - MaxOmega;
+                        if prnt>1
+                            disp(['Average empirical overlap - Average requested overlap=' num2str(Balpha - BarOmega)])
+                            disp(['Max empirical overlap - Max requested overlap=' num2str(diff)])
+                        end
+                        
                         if (diff < tolmap) %  MaxOmega has been reached
                             fail = 0;
                             break
@@ -844,7 +996,7 @@ out = Q;
                 
                 if fail == 0
                     %  OmegaMax is reached and OmegaBar is reachable
-                    %  correct covariances by multiplier C
+                    %  correct covariances by multiplier c
                     
                     if nargin>13 && ~isempty(restrfactor)
                         S05=(c^0.5)*S05;
@@ -874,8 +1026,10 @@ out = Q;
                     % If c =0 max number of iterations has been reached
                     % inside findc therefore another simulation is
                     % requested
-                    if c==0 || abs(Malphain-Malpha)>100*tolmap
-                        disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                    if c==0 || abs(Malphain-Malpha)>tolmap
+                        if prnt>=1
+                            disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                        end
                         fail=1;
                     else
                         % correct covariances by multiplier c
@@ -893,7 +1047,13 @@ out = Q;
                 end
                 
             end
-            if isamp == resN
+            
+            if prnt>1
+                disp(['Average empirical overlap - Average requested overlap=' num2str(Balpha - BarOmega)])
+                disp(['Max empirical overlap - Max requested overlap=' num2str(Malpha - MaxOmega)])
+            end
+            
+            if isamp == resN && resN>1
                 warning(['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
                 warning('Increase the number of simulations allowed (option resN) or change the value of overlap');
                 
@@ -901,13 +1061,24 @@ out = Q;
                 
             end
             
+            % Compute standard deviation of overlap
+            cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
+            overlapv=cand(:);
+            overlapv=overlapv(overlapv>0);
+            if length(overlapv)<0.5*k*(k-1);
+                overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
+            else
+                overlapc=overlapv;
+            end
+            % Compute standard deviation of overlap for current
+            % solution
+            stdoverlap=std(overlapc);
             
-            BarOmega = Balpha;
-            MaxOmega = Malpha;
             Q=struct;
             Q.OmegaMap=OmegaMap;
-            Q.BarOmega=BarOmega;
-            Q.MaxOmega=MaxOmega;
+            Q.BarOmega=Balpha;
+            Q.MaxOmega=Malpha;
+            Q.StdOmega=stdoverlap;
             Q.fail=fail;
             Q.Pi=Pigen;
             Q.Mu=Mugen;
@@ -918,6 +1089,447 @@ out = Q;
     end
 
 
+    function Q=OmegaBarOmegaStd(p, k, PiLow, Lbound, Ubound, ...
+            emax, tol, lim, resN, sph, hom, BarOmega, StdOmega, restrfactor,Display)
+        % OmegaBarOmegaStd = procedure when average and std of overlap are both specified
+        %
+        %
+        %  INPUT parameters
+        %
+        %       p  : scalar, dimensionality
+        %       k  : scalar, number of components
+        %    PiLow : scalar, smallest mixing proportion allowed
+        %   Lbound : scalar, lower bound for uniform hypercube at which mean vectors at simulated
+        %   Ubound : scalar, upper bound for uniform hypercube at which mean vectors at simulated
+        %     emax : scalar, maximum eccentricity
+        % tol, lim : parameters for ncx2mixtcdf function which computes the
+        %            probabilities of overlapping
+        %     resN : scalar, number of resamplings allowed
+        %      sph : scalar, if sph =1 spherical covariance matrices are
+        %            generated
+        %      hom : scalar. If hom =1 equal covariance matrices are
+        %            generated. REMARK: in MM2010 JCGS this routine is
+        %            always called using hom=0
+        % BarOmega : scalar, required average overlap
+        % StdOmega : scalar, required standard deviation of overlap
+        %
+        % Optional input parameters
+        %
+        %restrfactor: scalar in the interval [1 \infty] which specifies the
+        %             maximum ratio to allow between the largest eigenvalue and
+        %             the smallest eigenvalue of the k covariance matrices which
+        %             are generated
+        %    Display: Level of display.
+        %             'off' displays no output;
+        %             'notify' (default) displays output if requested
+        %             overlap cannot be reached in a particular simulation
+        %             'iter' displays output at each iteration of each
+        %             simulation
+        %
+        %  OUTPUT parameters
+        %
+        %   A structure Q containing the following fields
+        %
+        %             Pi : mixing proportions
+        %           Mu   : matrix of size k-by-v containing mean vectors of
+        %                  the k groups
+        %           S    : array of size v-by-v-by-k containing covariance matrices
+        %       OmegaMap : k-by-k matrix containing misclassification probabilities
+        %       BarOmega : scalar, average overlap of the groups which have been
+        %                  generated
+        %       MaxOmega : scalar, maximum overlap of the groups which have been
+        %                  generated
+        %        rcMax   : vector of length 2 containing the pair of
+        %                  components producing the highest overlap
+        %           fail : flag indicating if the process failed (1). If
+        %                  everything went well fail=0
+        
+        if k<=2
+            error('Average and std can be both set when k>2');
+        end
+        
+        if nargin< 15
+            prnt = 1;
+        else
+            switch Display
+                case {'none','off'}
+                    prnt = 0;
+                case {'notify','notify-detailed'}
+                    prnt = 1;
+                case {'iter','iter-detailed'}
+                    prnt=2;
+                otherwise
+                    prnt = 1;
+            end
+        end
+        
+        li2=zeros(2, 2, p);
+        di2=li2;
+        const12=zeros(2);
+        
+        fix2=zeros(2,1);
+        
+        MaxOmegaloopini=BarOmega*1.1;
+        
+        eps=tolmap*10;
+        stdoverlap=NaN;
+        combk2=0.5*k*(k-1);
+        
+        for isamp=1:resN
+            
+            % generate parameters
+            % procedure genPi generates (mixture proportions) k numbers
+            % whose sum is equal to 1 and the smallest value is not
+            % smaller than PiLow
+            Pigen=genPi(k,PiLow);
+            
+            % procedure genMu generates random centroids
+            Mugen=genMu(p, k, Lbound, Ubound);
+            
+            % The last input parameter of genSigmaEcc and genSphSigma is a
+            % boolean which specifies whether the matrices are equal
+            % (1) or not (0)
+            
+            % Generate the covariance matrices
+            if sph == 0
+                % genSigmaEcc generates the covariance matrices with a
+                % prespecified level of eccentricity
+                % in MM2010 JCGS the procedure is always called using hom=0
+                Sgen=genSigmaEcc(p, k, emax, hom);
+            else
+                % genSphSigma generates spherical covariance matrices
+                % in MM2010 JCGS the procedure is always called using hom=0
+                Sgen=genSphSigma(p, k, hom);
+            end
+            
+            if nargin>13 && ~isempty(restrfactor)
+                U=zeros(v,v,k);
+                S05=Sgen;
+                Sinv=Sgen;
+                detS=zeros(k,1);
+                Lambda_vk=zeros(v,k);
+                for j=1:k
+                    [Uj,Lambdaj] = eig(Sgen(:,:,j));
+                    % Store eigenvectors and eigenvalues of group j
+                    U(:,:,j)=Uj;
+                    Lambda_vk(:,j)=diag(Lambdaj);
+                end
+                
+                % The line below should be unnecessary
+                Lambda_vk(Lambda_vk<0)=0;
+                
+                % Apply the restrictions to matrix Lambda_vk
+                autovalues=restreigen(Lambda_vk,Pigen,restrfactor);
+                
+                for j=1:k
+                    %disp(j)
+                    Sgen(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                    S05(:,:,j) = U(:,:,j)*diag(sqrt(autovalues(:,j)))* (U(:,:,j)');
+                    Sinv(:,:,j) = U(:,:,j)*diag(autovalues(:,j).^-1)* (U(:,:,j)');
+                    detS(j)=prod(autovalues(:,j));
+                    % Alternative code: in principle more efficient but slower
+                    % because diag is a built in function
+                    % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+                end
+                % prepare parameters:  row 953 of file libOverlap.c
+                [liini, diini, const1ini]=ComputePars(p, k, Pigen, Mugen, Sgen, S05, Sinv, detS);
+                
+            else
+                % prepare parameters:  row 953 of file libOverlap.c
+                [liini, diini, const1ini]=ComputePars(p, k, Pigen, Mugen, Sgen);
+                
+            end
+            
+            % Check if maximum overlap is reachable.  Maximum
+            % overlapping takes place when c \rightarrow \infty that is
+            % when asympt =1
+            asympt = 1;
+            % If asympt=1 c does not matter so any value of c will do
+            c = 0;
+            
+            % fixcl = vector which specifies what are the clusters which
+            % participate to the process of inflation. In this stage
+            % all clusters partecipate to the process of inflation, so
+            % fixcl is a vector of zeroes
+            fixclini=zeros(k,1);
+            
+            [OmegaMap, Balphaini, Malphaini, rcMaxini]=GetOmegaMap(c, p, k, liini, diini, const1ini, fixclini, tolncx2, lim, asympt);
+            
+            % Malpha is the maximum level of overlapping which can be
+            % reached with asympt=1
+            
+            
+            % Check if sigmamax is reachable:
+            % sigmamax= sqrt((M-xmin)*(xmax-M))
+            % Note that here xmin=0
+            sigmamax=sqrt(BarOmega*(Malphaini-BarOmega));
+            
+            
+            diff = sigmamax - StdOmega;
+            
+            % Initialize fail
+            fail=1;
+            
+            
+            if diff < -tolmap % Requested StdOmega of overlapping is reachable
+                disp('Requested sigma of ovelap must be smaller than')
+                disp('BarOmega*(MaxOmega(achievable) - BarOmega)')
+                disp(['In simulation ' num2str(isamp)])
+                disp(['MaxOmega(achievable)=' num2str(Malphaini) ' and'])
+                disp(['Maximum achievable sigma is=' num2str(sigmamax)]);
+                Balpha=Balphaini;
+                Malpha=Malphaini;
+                
+            else
+                
+                % Now we loop for different values of MaxOmega in order to
+                % find the one which guarrantees the required Std of
+                % overlap
+                if nargin>13 && ~isempty(restrfactor)
+                    S05ini=S05;
+                    Sinvini=Sinv;
+                    detSini=detS;
+                end
+                Sgenini=Sgen;
+                
+                Erho1=10;
+                step=0.03;
+                step05=0;
+                
+                MaxOmegaloop=MaxOmegaloopini;
+                iter=0;
+                while abs(Erho1-1)>eps  || step>1e-15
+                    % if the value of MaxOmegaloop is greater than than the max
+                    % overlap achivable (which is Malphaini) than requested
+                    % standard deviation is too large and it is necessary to
+                    % decrease it
+                    if MaxOmegaloop> Malphaini
+                        fail=1;
+                        if prnt>=1
+                            disp('Please decrease requested std of overlap')
+                        end
+                        break
+                    end
+                    
+                    fail=1;
+                    Sgen=Sgenini;
+                    if nargin>13 && ~isempty(restrfactor)
+                        S05=S05ini;
+                        Sinv=Sinvini;
+                        detS=detSini;
+                    end
+                    
+                    Malpha=Malphaini;
+                    Balpha=Balphaini;
+                    % rcMaxini=[1;2];
+                    rcMax=rcMaxini;
+                    li=liini;
+                    di=diini;
+                    const1=const1ini;
+                    fixcl=fixclini;
+                    
+                    lower = 0.0;
+                    upper = 2^10;
+                    
+                    while fail ~=0
+                        
+                        % Extract parameters for the two clusters with the
+                        % highest overlapping
+                        li2(1,2,:) = li(rcMax(1),rcMax(2),:);
+                        di2(1,2,:) = di(rcMax(1),rcMax(2),:);
+                        const12(1,2)=const1(rcMax(1),rcMax(2));
+                        li2(2,1,:) = li(rcMax(2),rcMax(1),:);
+                        di2(2,1,:) = di(rcMax(2),rcMax(1),:);
+                        const12(2,1)=const1(rcMax(2),rcMax(1));
+                        
+                        Malpha = MaxOmegaloop;
+                        
+                        % The fourth input element of FindC is method (in
+                        % this case 1 is supplied because maximum overlap
+                        % is requested)
+                        % The sixth input element of findC is k. In this
+                        % case k=2 (the two groups which show the highest
+                        % overlap)
+                        c=FindC(lower, upper, Malpha, 1, p, 2, li2, di2, const12, fix2, tol, lim);
+                        
+                        if c == 0 && prnt >=1 % abnormal termination
+                            disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                            fail = 1;
+                            break
+                        end
+                        
+                        asympt = 0;
+                        % Compute map of misclassification probabilities
+                        % (OmegaMap)
+                        % using the value of c which comes out from procedure
+                        % findC
+                        % Balpha = Average overlap using c from findC
+                        % Malpha = Maximum overlap using c from findC
+                        [OmegaMap, Balpha, Malpha, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fixcl, tolncx2, lim, asympt);
+                        upper = c;
+                        
+                        % We hope that Balpha (overall average overlapping)
+                        % obtained using c associated with the two clusters
+                        % which showed the highest overlapping is greater
+                        % than BarOmega (average requested overlapping).
+                        diff = Balpha - BarOmega;
+                        % If diff<tolmap the desired average overlap characteristic is
+                        % possibly unattainable using the candidate \mu
+                        % \Sigma and \pi and a new candidate is needed
+                        if (diff < -tolmap) % BarOmega is not reachable
+                            if Erho1<1 && prnt>=1
+                                disp(['Warning: sigma is too small in simulation '  num2str(isamp)]);
+                            end
+                            fail = 1;
+                            break
+                        end
+                        
+                        % Now we make sure that none of pairwise overlaps
+                        % (that is  make sure that the maximum pairwise
+                        % overlap (which is Malpha) does not exceed MaxOmega
+                        % (the maximum requested overlap). If this is the
+                        % case  do another iteration of the loop (while
+                        % fail ~=0) using rcMax which has just been found.
+                        
+                        % TO CHECK REMOVED
+                        % diff = Malpha - MaxOmegaloop;
+                        %if (diff < tolmap) %  MaxOmega has been reached
+                        fail = 0;
+                        %  break
+                        % end
+                        
+                    end
+                    
+                    
+                    
+                    if fail == 0
+                        %  OmegaMax is reached and OmegaBar is reachable
+                        %  correct covariances by multiplier C
+                        
+                        if nargin>13 && ~isempty(restrfactor)
+                            S05=(c^0.5)*S05;
+                            Sinv=(1/c)*Sinv;
+                            detS=(c^v)*detS;
+                            [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen, S05, Sinv, detS);
+                        else
+                            Sgen=c*Sgen;
+                            [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
+                        end
+                        
+                        % The two clusters which enabled to obtain the highest
+                        % overlap are kept unchanged all the way through the
+                        % termination of the algorithm
+                        fixcl(rcMax(1)) = 1;
+                        fixcl(rcMax(2)) = 1;
+                        upper = 1;
+                        
+                        % Now find the c which guarrantees the average
+                        % requested ovelapping BarOmega
+                        % method =0 because average overlapping is requested
+                        method = 0;
+                        % Malphain=Malpha;
+                        % FindC(lower, upper, Balpha, method, p, K, li, di, const1, fix, pars, lim, &c, OmegaMap, &Balpha, &Malpha, rcMax);
+                        [c, OmegaMap, Balpha, Malpha, rcMax]=FindC(lower, upper, BarOmega, method, p, k, li, di, const1, fixcl, tol, lim);
+                        
+                        % If c =0 max number of iterations has been reached
+                        % inside findc therefore another simulation is
+                        % requested
+                        if c==0 % || abs(Malphain-Malpha)>1*tolmap
+                            if Erho1<10 &&  prnt >=1
+                                disp(['Warning: sigma is too large in simulation '  num2str(isamp)]);
+                            end
+                            fail=1;
+                            break
+                        else
+                            % correct covariances by multiplier c
+                            for jj=1:k
+                                if fixcl(jj) == 0
+                                    Sgen(:,:,jj) = c * Sgen(:,:,jj);
+                                end
+                            end
+                            
+                        end
+                        
+                    end
+                    
+                    % Compute standard deviation of overlap
+                    cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
+                    overlapv=cand(:);
+                    overlapv=overlapv(overlapv>0);
+                    if length(overlapv)<combk2;
+                        overlapc=[overlapv; zeros(combk2-length(overlapv),1)];
+                    else
+                        overlapc=overlapv;
+                    end
+                    % Compute standard deviation of overlap for current
+                    % solution
+                    stdoverlap=std(overlapc);
+                    
+                    Erho1old=Erho1;
+                    Erho1=StdOmega/stdoverlap;
+                    if prnt == 2
+                        disp(['Iteration ' num2str(iter) ' in simulation ' num2str(isamp)])
+                        disp(['Average overlap =' num2str(Balpha)])
+                        disp('Ratio between std of required overlap and std of empirical overlap')
+                        disp(Erho1)
+                        % disp(step)
+                    end
+                    
+                    iter=iter+1;
+                    if step05==1 || (Erho1old>1 && Erho1<1)
+                        step=step*0.5;
+                        step05=1;
+                    else
+                        step=step*0.95;
+                    end
+                    
+                    if Erho1>1
+                        MaxOmegaloop=MaxOmegaloop+step;
+                    else
+                        
+                        if MaxOmegaloop-step<=BarOmega && iter >=5
+                            if prnt >=1
+                                disp(['Warning: sigma is too small in simulation '  num2str(isamp)]);
+                            end
+                            fail=1;
+                            break
+                        end
+                        %MaxOmegaloop=max(MaxOmegaloop-step,MaxOmegaloopini);
+                        MaxOmegaloop=max(MaxOmegaloop-step,BarOmega);
+                        
+                    end
+                end
+                if fail==0
+                    %                     if prnt>=1
+                    %                     disp(['average + sigma overlap not reached in simulation ' num2str(resN)])
+                    %                     end
+                    break
+                end
+            end
+        end
+        if isamp == resN && resN>1
+            warning(['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+            warning('Increase the number of simulations allowed (option resN) or change the value of overlap');
+            
+            fail = 1;
+            
+        end
+        
+        
+        
+        Q=struct;
+        Q.OmegaMap=OmegaMap;
+        Q.BarOmega=Balpha;
+        Q.MaxOmega=Malpha;
+        Q.StdOmega=stdoverlap;
+        Q.fail=fail;
+        Q.Pi=Pigen;
+        Q.Mu=Mugen;
+        Q.S=Sgen;
+        Q.rcMax=rcMax;
+        
+        
+    end
 
     function Pigen=genPi(k,PiLow)
         % genPi generates vector of mixing proportions
@@ -1184,8 +1796,6 @@ out = Q;
         
     end
 
-
-
     function  [c, OmegaMap2, BarOmega2, MaxOmega2, rcMax]=FindC(lower, upper, Omega, method, v, k, li, di, const1, fix, tol, lim)
         %find multiplier c to be applied to the cov matrices in the
         %interval [lower upper] in order to reach the required average or
@@ -1214,7 +1824,7 @@ out = Q;
         %          tol(2) (which will be called tolnxc2) specifies the
         %          tolerance to use in routine ncx2mixtcdf (which computes cdf
         %          of linear combinations of non central chi2 distributions).
-        %          The default value of tol(2) 1e-06        
+        %          The default value of tol(2) 1e-06
         %    lim : maximum number of integration terms default is 1e06.
         %          REMARK: Optional parameters tol and lim will be used by
         %          function ncx2mixtcdf.m which computes the cdf of a linear
@@ -1236,7 +1846,7 @@ out = Q;
         %
         
         diff = Inf;
-        stopIter = 500;
+        stopIter = 200; % 500
         tolmap=tol(1);
         tolncx2=tol(2);
         
@@ -1244,9 +1854,9 @@ out = Q;
         asympt = 0;
         
         % Intervals which contain positive or negative powers of 2 are
-        % considered. For example first interval is [0 1024] then if 
+        % considered. For example first interval is [0 1024] then if
         % MaxOmega2 (maximum overlap which has been found using c=512) is <
-        % Omega (maximum required overlap), then the new interval becomes 
+        % Omega (maximum required overlap), then the new interval becomes
         % [512 1024]  (c has to be increased and the new candidate c is
         % 0.5*(512+1024)) else the new interval becomes [0 512] (c has to
         % be decreased and the new candidate c is 0.5*(0+512)=256
@@ -1292,8 +1902,3 @@ out = Q;
         
     end
 end
-
-
-
-
-

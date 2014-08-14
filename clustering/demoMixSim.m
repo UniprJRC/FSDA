@@ -8,14 +8,18 @@
 % control the clustering complexity of datasets simulated from
 % mixtures. These datasets can then be used for systematic
 % performance investigation of clustering and finite mixture
-% modeling algorithms. Among other capabilities of MixSim, there
-% are computing the exact overlap for Gaussian mixtures,
-% simulating Gaussian and non-Gaussian data, simulating outliers
-% and noise variables, calculating various measures of agreement
-% between two partitionings, and constructing parallel
-% distribution plots for the graphical display of finite mixture
-% models.
+% modeling algorithms. 
+
 %% Test main MixSim functions
+
+chkMatlab_With_R_connection=exist('openR','file');
+if chkMatlab_With_R_connection==0
+    disp('Connection with R has not been setup yet')
+    examp=which('Connect_Matlab_with_R_HELP.m');
+    examp1=strrep(examp,'\','\\');
+    stri=['See file <a href="matlab: opentoline(' examp1 ',27)">Connect_Matlab_with_R_HELP.m</a>  for more information'];
+    disp(stri)
+end
 
 R_seed = 1234;
 if R_seed
