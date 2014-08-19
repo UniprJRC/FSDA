@@ -11,21 +11,33 @@
 %         installation program which can be downloaded
 %         from http://lib.stat.cmu.edu/R/CRAN/other-software.html (which
 %         dows not seem to work)
-%         REMARK: when you install statconnDCOM.latest.exe setup checks
+%         REMARK: when you install statconnDCOM.latest.exe setup check
 %         whether there are previous installations. If this is the case it is
-%         necessary to remove them.
+%         necessary to remove them. 
+%         REMARK: you can use all the deafult installation.
+%         REAMRK: please install R-(D)COM as administrator
 %
-% STEP 2: INSTALL R package (library) "rscproxy", required for connecting to R
+% STEP 2: INSTALL R. When you install R make sure that you also install the
+%         32 bit version. 
+%
+% STEP 3: INSTALL R package (library) "rscproxy", required for connecting to R
 %         As explained in the setup of the installation statconnDCOM.latest.exe
 %         "TAKE SPECIAL CARE to install rscproxy into the library directory
 %         in your R installation and not in some "user" library directory.
 %         This has to be taken care of especially on Windows Vista and
-%         Windows 7 or Windows 8. Run R as Administrator when installing
-%         these packages and take care to specify %R_HOME%/library as
-%         destination. Please verify correct installation afterwards (open
+%         Windows 7 or Windows 8. Run R (32 bit version, that is assuming
+%         that R3.1.1 has been installed, run link Ri386 3.1.1 or run
+%         directly file Rgui.exe inside subfolder i386) as Administrator.
+%         When installing package rscproxy and take care to specify
+%         %R_HOME%/library as destination.
+%         For example, assuming that R has been installed in 
+%         D:\packages\packages\R-3.1.1
+%         library rscproxy can be installed from R using the instruction 
+%         install.packages("rscproxy",lib="D:/packages/R-3.1.1/library")
+%         Please verify correct installation afterwards (open
 %         %R_HOME% in Windows Explorer and verify that rscproxy has been
 %         installed into %R_HOME%\library)!".
-%
+%  
 % STEP 3: Download MATLAB_RLINK, to have all the matlab connection functions
 %         The zip file contanining all these routines is called
 %         MATLAB_RLINK and can be donwloaded from the link
@@ -34,9 +46,9 @@
 %         add to the MATLAB path the folder where you extracted the .zip
 %         file.
 %         For example if the content of MATLAB_R_LINK has been extracted to
-%         C:\matlab\MATLAB_R_LINK, to add this folder to the path it is
+%         D:\matlab\MATLAB_R_LINK, to add this folder to the path it is
 %         necessary to run the following line
-%         addpath('C:\matlab\MATLAB_R_LINK');
+%         addpath('D:\matlab\MATLAB_R_LINK');
 %         To add this folder permanently to the path from Home|Set PAth and
 %         click on Save
 %
@@ -54,14 +66,22 @@
 %         Error: Object returned error code: 0x80040013
 %
 %         there can be one of the following explanations
-%         1) R_HOME is not the windows path. If this is the case it is
-%         necessary to add it to the path.
-%         2) package rscproxy has not been installed under the %R_HOME%\library
+%         1) package rscproxy has not been installed under the %R_HOME%\library
 %            folder
-%         3) R has been installed without the option
-%          Save version number in registry". In this last case it is necessary
+%         2) R has been installed without the option
+%          "Save version number in registry". In this last case it is necessary
 %          to reinstall R
 %
+%         REMARK: if just example 1 below can be executed but not example 2
+%         and the result of instruction rn1 = evalR('rnorm(1)'); is an
+%         empty value (or alternatively if evalR('rnorm(1)') produces the
+%         following error
+%
+%         Invoke Error, Dispatch Exception: Object is static; operation not allowed
+%
+%         this is probably due to the fact that R had been
+%         previously installed in folder C:\program files. In this case it
+%         is necessary to reinstall R in a different folder without spaces.
 
 %% EXAMPLE 1: create from within R an identity matrix
 
@@ -118,4 +138,13 @@ rn3 = evalR('rnorm(1)');
 %     0.2774
 closeR
 
+%% EXAMPLE 3: CHECK A R DEMO
 
+openR
+evalR('demo("persp")');
+close R
+
+% Other examples can be found in files Rdemo.m and Rdemo.html in folder MATLAB_R_LINK
+% At the prompt type
+% which('Rdemo') or which('Rdemo.html')
+% to see where these file are located
