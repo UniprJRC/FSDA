@@ -10,15 +10,16 @@
 %         Remark: statconnDCOM.latest.exe is the updated version of the
 %         installation program which can be downloaded
 %         from http://lib.stat.cmu.edu/R/CRAN/other-software.html (which
-%         dows not seem to work)
-%         REMARK: when you install statconnDCOM.latest.exe setup check
+%         does not seem to work)
+%         REMARK: when you install statconnDCOM.latest.exe setup, please check
 %         whether there are previous installations. If this is the case it is
 %         necessary to remove them. 
 %         REMARK: you can use all the deafult installation.
 %         REAMRK: please install R-(D)COM as administrator
 %
 % STEP 2: INSTALL R. When you install R make sure that you also install the
-%         32 bit version. 
+%         32 bit version and click on the option "Save version number in
+%         registry" during the installation.
 %
 % STEP 3: INSTALL R package (library) "rscproxy", required for connecting to R
 %         As explained in the setup of the installation statconnDCOM.latest.exe
@@ -38,7 +39,7 @@
 %         %R_HOME% in Windows Explorer and verify that rscproxy has been
 %         installed into %R_HOME%\library)!".
 %  
-% STEP 3: Download MATLAB_RLINK, to have all the matlab connection functions
+% STEP 4: Download MATLAB_RLINK, to have all the matlab connection functions
 %         The zip file contanining all these routines is called
 %         MATLAB_RLINK and can be donwloaded from the link
 %         http://www.mathworks.com/matlabcentral/fileexchange/5051-matlab-r-link.
@@ -49,17 +50,14 @@
 %         D:\matlab\MATLAB_R_LINK, to add this folder to the path it is
 %         necessary to run the following line
 %         addpath('D:\matlab\MATLAB_R_LINK');
-%         To add this folder permanently to the path from Home|Set PAth and
-%         click on Save
+%         To add this folder permanently to the path click Home|Set PAth and
+%         then click on Save
 %
-%         IN ORDER TO TEST THAT EVERYTHING IS OK from
-%               Start | All programs | statconn | DCom
-%         it is possible to run
-%               Server 01 - Basic Test
+%         IN ORDER TO TEST THAT EVERYTHING IS OK IT IS POSSIBLE TO USE THE
+%         THREE EXAMPLES BELOW
 %
-%         Alternatively run openR from the MATLAB command prompt
-%
-%         REMARK: if the following line appears
+%         REMARK: if when you run openR from the MATLAB command prompt the
+%         following line appears
 %         Error using openR (line 68)
 %         Cannot connect to R.
 %         Error using COM.StatConnectorSrv_StatConnector/Init
@@ -82,6 +80,11 @@
 %         this is probably due to the fact that R had been
 %         previously installed in folder C:\program files. In this case it
 %         is necessary to reinstall R in a different folder without spaces.
+%
+%         It the problem persists it is necessary 
+%         to install statconnDCOM.latest.exe using administrator
+%         privileges in a path different from program files and not to use
+%         spaces in the path.
 
 %% EXAMPLE 1: create from within R an identity matrix
 
@@ -121,7 +124,7 @@ rn1 = evalR('rnorm(1)');
 % 
 %    -1.2071
 % set  again the seed
-evalR('set.seed(1234, kind=''Mersenne-Twister'' , normal.kind = ''Inversion'')');%Super
+evalR('set.seed(1234, kind=''Mersenne-Twister'' , normal.kind = ''Inversion'')');
 % generate the same random number as before
 rn2 = evalR('rnorm(1)');
 % >>rn1
@@ -145,6 +148,6 @@ evalR('demo("persp")');
 close R
 
 % Other examples can be found in files Rdemo.m and Rdemo.html in folder MATLAB_R_LINK
-% At the prompt type
+% At the MATLAB prompt type
 % which('Rdemo') or which('Rdemo.html')
 % to see where these file are located
