@@ -82,7 +82,7 @@ defined as the sum of the off diagonal elements of OmegaMap (Σ<sub>i &gt; j=1,2
 ..., k</sub> p<sub>ij </sub>) divided by 0.5k(k-1)                    
 The maximum overlap (which in the code below is called MaxOmega) is defined as   
 max(w<sub>j|i</sub> + w<sub>i|j</sub> )  i &ne; j=1,2, ..., k. The standard 
-deviation of ovelapp (which in the code is called StdOmega) is the standard 
+deviation of ovelap (which in the code is called StdOmega) is the standard 
 deviation of the 0.5k(k-1) elements&nbsp; p<sub>ij. </sub>The probability of misclassification w<sub>j|i</sub> (w<sub>i|j</sub>) is nothing but the cdf of a linear    
 combination of non central &Chi;<sup>2</sup> distributions with 1 degree of freedom    
 + a linear combination of N(0,1) evaluated in a                            
@@ -126,7 +126,7 @@ This probability is computed using routine <a href="ncx2mixtcdf.html">ncx2mixtcd
 	  MaxOmega=<br>&nbsp;OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))</li>
 		<li><tt>StdOmega</tt>  − scalar. Value of standard deviation (std) of 
 		overlap.<br>StdOmega is the standard deviation of k*(k-1)/2&nbsp; 
-		probabilities of overlapping</li>
+		probabilities of overlapping&nbsp; p<sub>ij </sub></li>
 		<li><p><tt>rcMax</tt> − vector of length 2. It containes the row and 
 		column numbers associated with the pair of components<br>producing 
 		maximum overlap 'MaxOmega'</p>
@@ -174,9 +174,10 @@ table.</p>
       <td bgcolor="#F2F2F2"><tt>'StdOmega'</tt></td>
       <td bgcolor="#F2F2F2"><p>scalar, value of desired standard deviation of 
 	  overlap. <br>Remark1: The probability of overlapping between two clusters 
-	  i and j (i ne j =1, 2, ..., k), called pij, is defined as the <br>sum of 
+	  i and j (i ne j =1, 2, ..., k), called p<sub>ij </sub>, is defined as the <br>sum of 
 	  the two misclassification probabilities <br>p<sub>ij </sub>=p<sub>ji </sub>= w<sub>j|i</sub> + w<sub>i|j</sub> 
-	  <br>Remark2: it is possible to specify up to two values among <br>BarOmega 
+	  <br>Remark2: it is possible to specify average overlap (BarOmega) and only 
+	  one between&nbsp; 
 	  MaxOmega and StdOmega. </p>
       </td>
     </tr>
@@ -226,13 +227,6 @@ clusters
 	  number in the interval (0 1] </p>
       </td>
     </tr>
-      <tr>
-      <td bgcolor="#F2F2F2"><tt>'int'</tt></td>
-      <td bgcolor="#F2F2F2"><p>mean vectors are simulated uniformly on a 
-	  hypercube with sides specified by int = [lower.bound, upper.bound]. <br>
-	  The default value of int is [0 1] </p>
-      </td>
-      </tr>
 	  <tr>
       <td bgcolor="#F2F2F2"><tt>'int'</tt></td>
       <td bgcolor="#F2F2F2"><p>mean vectors are simulated uniformly on a 
@@ -323,8 +317,8 @@ spmplot(X,id)</pre>
 
 &nbsp;<p><img alt="" src="images_help/img3.jpg"> </p>
 
-<p>The matrix of misclassification probabilities (OmegaMap)</p>
-<p>&nbsp;1.0000&nbsp;&nbsp;&nbsp;&nbsp; 0.0173&nbsp;&nbsp;&nbsp;&nbsp; 0.0228<br>
+<p>The matrix of misclassification probabilities (out.OmegaMap)</p>
+<p>1.0000&nbsp;&nbsp;&nbsp;&nbsp; 0.0173&nbsp;&nbsp;&nbsp;&nbsp; 0.0228<br>
 0.0351&nbsp;&nbsp;&nbsp;&nbsp; 1.0000&nbsp;&nbsp;&nbsp;&nbsp; 0.0872<br>0.0377&nbsp;&nbsp;&nbsp;&nbsp; 
 0.0628&nbsp;&nbsp;&nbsp;&nbsp; 1.0000</p>
 <p>shows that the most separated groups are 1 and 2</p>
@@ -333,12 +327,69 @@ spmplot(X,id)</pre>
 3</p>
 <p><img alt="" src="images_help/img29.jpg"></p>
 <pre class="programlisting">% print
-disp('Show the two groups with the highest probability of overlapping (out.rcmax)')
-disp(out.rcMax)
+disp('Show the two groups with the highest probability of overlapping (out.rcMax)')
+disp(out.rcMax')
+</pre>
+<p>2 3 </p>
+
+
+<h3>Example 2</h3>
+In the previous example we just controlled the maximum overlap. In this example 
+we generate groups with a prespecified value of both average and standard 
+deviation of overlapping.
+<p>For example, in the example below we generate 4 groups in 5 dimensions. In 
+the first case we impose BarOmega=0.10 and StdOmega=0.15 while in the second 
+case we impose BarOmega=0.10 and StdOmega=0.05. We compare through the matrix 
+OmegaMap and visually using the scatter plot matrix, the differences coming from 
+using a low or high standard deviation of overlapping. In order to be able to 
+replicate the results we use a fixed seed.</p>
+<pre class="programlisting">
+     rng(10,'twister')
+    k=4;
+    v=5;
+    n=200;
+    BarOmega=0.10;
+    StdOmega=0.15;
+    out=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega,'resN',10, 'Display', 'iter');
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
+
+    rng(10,'twister')
+    StdOmega1=0.05;
+    out1=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega1,'resN',10, 'Display', 'iter');
+    [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
+    disp('Comparison using OmegaMap')
+    disp('When StdOmega is large in this example groups 3 are 4 do show a strong overlap')
+    disp('When StdOmega is large in this example groups 1, 2, 3 are quite separate')
+    disp(out.OmegaMap)
+    disp('When StdOmega is small the probabilities of overlapping are much more similar')
+    disp(out1.OmegaMap)</pre>
+
+
+<p>Comparison using OmegaMap<br>When StdOmega is large in this example groups 3 
+are 4 do show a strong overlap<br>When StdOmega is large in this example groups 
+1, 2, 3 are quite separate<br>1.0000 0.0107 0.0186 0.0123<br>0.0112 1.0000 
+0.0102 0.0053<br>0.0507 0.0261 1.0000 0.1476<br>0.0355 0.0156 0.2564 1.0000<br>
+<br>When StdOmega is small the probabilities of overlapping are much more 
+similar<br>1.0000 0.0391 0.0337 0.0487<br>0.0397 1.0000 0.0404 0.0343<br>0.0330 
+0.0402 1.0000 0.0781<br>0.0524 0.0393 0.1213 1.0000</p>
+<p>Comparison using interactive scatter plot matrices</p>
+<pre class="programlisting">
+     disp('Comparison using interactive scatter plot matrices')
+    spmplot(X,id)
+    set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
+    figure
+    spmplot(X1,id1)
+    set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
 </pre>
 
-<h3> </h3>
-
+<p>Groups 3 and 4 overlap much more in the left panel rather than in the right 
+panel of figure below.</p>
+<p>
+<img alt="" src="images_help/img18.jpg"></p>
+<p>The two scatter plot matrices just show the first two groups in the two 
+situations.</p>
+<p>
+<img alt="" src="images_help/img19.jpg"></p>
 <h3>See Also</h3>
 
 <p><tt><a href="simdataset.html">simdataset</a></tt> </p>
