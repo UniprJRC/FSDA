@@ -32,10 +32,11 @@ while fail
     fail = Q.fail;
 end
 
-[OmegaMap, BarOmega, MaxOmega, rcMax] = overlap(5, 7, Q.Pi, Q.Mu, Q.S);
+[OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(5, 7, Q.Pi, Q.Mu, Q.S);
 disp(OmegaMap);
 disp(BarOmega);
 disp(MaxOmega);
+disp(StdOmega);
 disp(rcMax);
 
 %% Example 1 of Section 3.1
@@ -63,7 +64,7 @@ if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
 end
 
-ex3 = MixSim(2, 4, 'BarOmega' , 0.05, 'sph' , true, 'hom' , true,  'tol', 1e-10, 'int', [0 10], 'R_seed', R_seed);
+ex3 = MixSim(2, 4, 'BarOmega' , 0.05, 'sph' , true, 'hom' , true,  'tol', [1e-10 1e-10], 'int', [0 10], 'R_seed', R_seed);
 
 %% Example for Section 3.2
 
@@ -84,7 +85,7 @@ S(:,:,2) = cov(Y(id==2,:));
 S(:,:,3) = cov(Y(id==3,:));
 
 % overlap
-[OmegaMap, BarOmega, MaxOmega, rcMax] = overlap(K, p, Pi, Mu, S);
+[OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(K, p, Pi, Mu, S);
 
 %% Example 1 of Section 3.3 plot (a)
 
