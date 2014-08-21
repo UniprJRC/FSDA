@@ -1,4 +1,5 @@
-%demoMixSim prepares connection with R
+%demoMixSim prepares connection with R and runs the examples contained in
+%the R MixSim library to check consistency of results.
 
 % Description: MixSim allows simulating mixtures of Gaussian
 % distributions with different levels of overlap between mixture
@@ -13,6 +14,7 @@
 %% Test main MixSim functions
 
 chkMatlab_With_R_connection=exist('openR','file');
+chkMatlab_With_R_connection=0
 if chkMatlab_With_R_connection==0
     disp('Connection with R has not been setup yet')
     examp=which('Connect_Matlab_with_R_HELP.m');
@@ -89,7 +91,7 @@ S(:,:,3) = cov(Y(id==3,:));
 
 %% Example 1 of Section 3.3 plot (a)
 
-R_seed = 1235;
+R_seed = 1234;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
 end
@@ -101,7 +103,7 @@ gscatter(A1a(:,1),A1a(:,2),id1a);
 
 %% Example 1 of Section 3.3 plot (b)
 
-R_seed = 1238;
+R_seed = 1235;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
 end
@@ -177,8 +179,7 @@ if R_seed
 end
 
 Q7 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
-% [A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'R_seed', R_seed);
-% [A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'nout',20,'alpha',0.1,'int',[10 50],'lambda',[0.5 0.8],'R_seed', R_seed,'maxout',100);
+[A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'R_seed', R_seed);
 % gscatter(A7(:,1), A7(:,2), id7);
 
 %% Example 4 of Section 3.3 plot (c) bis
@@ -190,8 +191,7 @@ end
 
 Q7 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
 
-[A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'nout',20,'alpha',0.1,'int',[10 50],'lambda',[0.5 0.8],'R_seed', R_seed,'maxout',100);
-
+[A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'nout',20,'alpha',0.1,'int',[10 50],'lambda',[0.5 0.8],'R_seed', R_seed,'maxiter',100);
 gscatter(A7(:,1), A7(:,2), id7);
 % To run the code above in R please use the following sintax
 % set.seed(1235, kind='Mersenne-Twister' , normal.kind = 'Inversion')
