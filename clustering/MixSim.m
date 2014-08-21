@@ -6,9 +6,9 @@ function [out]  = MixSim(k,v,varargin)
 %   MixSim(k,v) generates k groups in v dimensions. It is possible to
 %   control the average and maximum or standard deviation of overlapping.
 %
-%  Background: Given two generic clusters i and j = i ne j =1, ..., k,
+%  Background: Given two generic clusters i and j with i ne j =1, ..., k,
 %  indexed by \phi(x,\mu_i,\Sigma_i) and \phi(x,\mu_j,\Sigma_j) with
-%  probabilities of occurrence \pi_i and \pi_j the misclassification
+%  probabilities of occurrence \pi_i and \pi_j, the misclassification
 %  probability with respect to cluster i (which is called w_j|i) is defined as
 %  Pr[ \pi_i \phi(x,\mu_i,\Sigma_i) < \pi_j \phi(x,\mu_j,\Sigma_j)].
 %  The matrix containing the misclassification probabilities w_j|i is
@@ -124,7 +124,8 @@ function [out]  = MixSim(k,v,varargin)
 %               If both BarOmega and MaxOmega are empty values as follows
 %               out=MixSim(3,4,'MaxOmega','','BarOmega','')
 %               the following message appears on the screen
-%               Error: At least one overlap characteristic should be specified...
+%               Error: At least one overlap characteristic between BarOmega
+%               and MaxOmega should be specified...
 %
 %  Output:
 %

@@ -29,21 +29,21 @@
 %         Windows 7 or Windows 8. Run R (32 bit version, that is assuming
 %         that R3.1.1 has been installed, run link Ri386 3.1.1 or run
 %         directly file Rgui.exe inside subfolder i386) as Administrator.
-%         When installing package rscproxy and take care to specify
+%         When installing package rscproxy, take care to specify
 %         %R_HOME%/library as destination.
 %         For example, assuming that R has been installed in 
 %         D:\packages\packages\R-3.1.1
 %         library rscproxy can be installed from R using the instruction 
 %         install.packages("rscproxy",lib="D:/packages/R-3.1.1/library")
-%         Please verify correct installation afterwards (open
+%         Please, verify correct installation afterwards (open
 %         %R_HOME% in Windows Explorer and verify that rscproxy has been
 %         installed into %R_HOME%\library)!".
 %  
 % STEP 4: Download MATLAB_RLINK, to have all the matlab connection functions
-%         The zip file contanining all these routines is called
+%         The zip file containing all these routines is called
 %         MATLAB_RLINK and can be donwloaded from the link
 %         http://www.mathworks.com/matlabcentral/fileexchange/5051-matlab-r-link.
-%         Once the .zip file has been downloaded extract it to a folder and
+%         Once the .zip file has been downloaded, extract it to a folder and
 %         add to the MATLAB path the folder where you extracted the .zip
 %         file.
 %         For example if the content of MATLAB_R_LINK has been extracted to
