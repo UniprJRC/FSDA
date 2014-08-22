@@ -14,7 +14,6 @@
 %% Test main MixSim functions
 
 chkMatlab_With_R_connection=exist('openR','file');
-chkMatlab_With_R_connection=0
 if chkMatlab_With_R_connection==0
     disp('Connection with R has not been setup yet')
     examp=which('Connect_Matlab_with_R_HELP.m');

@@ -7,10 +7,10 @@ function [out]  = MixSim(k,v,varargin)
 %   control the average and maximum or standard deviation of overlapping.
 %
 %  Background: Given two generic clusters i and j with i ne j =1, ..., k,
-%  indexed by \phi(x,\mu_i,\Sigma_i) and \phi(x,\mu_j,\Sigma_j) with
+%  indexed by \phi(x; \mu_i,\Sigma_i) and \phi(x; \mu_j,\Sigma_j) with
 %  probabilities of occurrence \pi_i and \pi_j, the misclassification
 %  probability with respect to cluster i (which is called w_j|i) is defined as
-%  Pr[ \pi_i \phi(x,\mu_i,\Sigma_i) < \pi_j \phi(x,\mu_j,\Sigma_j)].
+%  Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) < \pi_j \phi(x;\mu_j,\Sigma_j)].
 %  The matrix containing the misclassification probabilities w_j|i is
 %  called OmegaMap
 %  The probability of overlapping between groups i and j is given by
@@ -1295,7 +1295,7 @@ out = Q;
             else
                 
                 % Now we loop for different values of MaxOmega in order to
-                % find the one which guarrantees the required Std of
+                % find the one which guarantees the required Std of
                 % overlap
                 if nargin>13 && ~isempty(restrfactor)
                     S05ini=S05;

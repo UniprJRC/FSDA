@@ -1,4 +1,5 @@
-%Connect_Matlab_with_R_HELP prepare connection with R in order to execute R commands from within MATLAB.
+%Connect_Matlab_with_R_HELP prepare connection with R in order to execute R
+%commands from within MATLAB.
 %
 %   In order to achieve the goal above it is necessary to follow the 3
 %   following steps.
@@ -14,12 +15,12 @@
 %         REMARK: when you install statconnDCOM.latest.exe setup, please check
 %         whether there are previous installations. If this is the case it is
 %         necessary to remove them. 
-%         REMARK: you can use all the deafult installation.
-%         REAMRK: please install R-(D)COM as administrator
+%         REMARK: you can use all the deafult installation options.
+%         REAMRK: please install R-(D)COM as administrator.
 %
-% STEP 2: INSTALL R. When you install R make sure that you also install the
-%         32 bit version and click on the option "Save version number in
-%         registry" during the installation.
+% STEP 2: INSTALL R. When you install R in a 64bit CPU, make sure that you
+%         also install the 32 bit version and click on the option "Save
+%         version number in registry" during the installation.
 %
 % STEP 3: INSTALL R package (library) "rscproxy", required for connecting to R
 %         As explained in the setup of the installation statconnDCOM.latest.exe
@@ -40,17 +41,16 @@
 %         installed into %R_HOME%\library)!".
 %  
 % STEP 4: Download MATLAB_RLINK, to have all the matlab connection functions
-%         The zip file containing all these routines is called
-%         MATLAB_RLINK and can be donwloaded from the link
+%         The zip file containing all these routines, MATLAB_RLINK, can be
+%         donwloaded from
 %         http://www.mathworks.com/matlabcentral/fileexchange/5051-matlab-r-link.
 %         Once the .zip file has been downloaded, extract it to a folder and
-%         add to the MATLAB path the folder where you extracted the .zip
-%         file.
+%         add such folder to the MATLAB path.
 %         For example if the content of MATLAB_R_LINK has been extracted to
 %         D:\matlab\MATLAB_R_LINK, to add this folder to the path it is
 %         necessary to run the following line
 %         addpath('D:\matlab\MATLAB_R_LINK');
-%         To add this folder permanently to the path click Home|Set PAth and
+%         To add this folder permanently to the path click Home|Set Path and
 %         then click on Save
 %
 %         IN ORDER TO TEST THAT EVERYTHING IS OK IT IS POSSIBLE TO USE THE
@@ -58,32 +58,32 @@
 %
 %         REMARK: if when you run openR from the MATLAB command prompt the
 %         following line appears
+%
 %         Error using openR (line 68)
 %         Cannot connect to R.
 %         Error using COM.StatConnectorSrv_StatConnector/Init
 %         Error: Object returned error code: 0x80040013
 %
 %         there can be one of the following explanations
-%         1) package rscproxy has not been installed under the %R_HOME%\library
-%            folder
+%         1) package rscproxy has not been installed under %R_HOME%\library
 %         2) R has been installed without the option
-%          "Save version number in registry". In this last case it is necessary
-%          to reinstall R
+%          "Save version number in registry". In this last case it is
+%          necessary to reinstall R
 %
 %         REMARK: if just example 1 below can be executed but not example 2
-%         and the result of instruction rn1 = evalR('rnorm(1)'); is an
-%         empty value (or alternatively if evalR('rnorm(1)') produces the
+%         and the result of instruction rn1 = evalR('rnorm(1)') is an
+%         empty value, or alternatively if evalR('rnorm(1)') produces the
 %         following error
 %
 %         Invoke Error, Dispatch Exception: Object is static; operation not allowed
 %
 %         this is probably due to the fact that R had been
-%         previously installed in folder C:\program files. In this case it
+%         previously installed in folder "C:\Program files". In this case it
 %         is necessary to reinstall R in a different folder without spaces.
 %
 %         It the problem persists it is necessary 
 %         to install statconnDCOM.latest.exe using administrator
-%         privileges in a path different from program files and not to use
+%         privileges in a path different from "C:\Program files" and not to use
 %         spaces in the path.
 
 %% EXAMPLE 1: create from within R an identity matrix
