@@ -333,7 +333,9 @@ if nargin > 2
     
     % Check number of subsamples to extract
     if options.nsamp>ncomb;
-        disp('Number of subsets to extract greater than (n p). It is set to (n p)');
+         if options.msg==1
+            disp('Number of subsets to extract greater than (n p). It is set to (n p)');
+         end
         options.nsamp=0;
     elseif  options.nsamp<0;
         error('Number of subsets to extract must be 0 (all) or a positive number');
@@ -733,8 +735,9 @@ if abs(s0) > 1e-7;
     end
     
 else % Perfect fit
-    disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
-    
+    if msg==1
+        disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
+    end
     % There is an approximate perfect fit for the first h observations.
     % We consider as outliers all units with residual greater than 1e-7.
     weights = abs(residuals)<=1e-7;
@@ -777,12 +780,12 @@ out.h=h;
 
 % Store number of singular subsets
 out.singsub=singsub;
-
-if singsub/nselected>0.1;
-    disp('------------------------------')
-    disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+if msg==1
+    if singsub/nselected>0.1;
+        disp('------------------------------')
+        disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+    end
 end
-
 % Store information about the class of the object
 if lmsopt==1;
     out.class='LMS';
@@ -991,10 +994,12 @@ end
 rawcorfac=1/fp_alpha_n;
 if rawcorfac <=0 || rawcorfac>50
     rawcorfac=1;
-    disp('Warning: problem in subfunction corfactorRAW')
-    disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
-    disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
-    disp('This may happen when n is very small and p is large')
+    if msg==1
+        disp('Warning: problem in subfunction corfactorRAW')
+        disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
+        disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
+        disp('This may happen when n is very small and p is large')
+    end
 end
 end
 
@@ -1039,9 +1044,11 @@ end
 rewcorfac=1/fp_alpha_n;
 if rewcorfac <=0 || rewcorfac>50
     rewcorfac=1;
-    disp('Warning: problem in subfunction corfactorREW');
-    disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
-    disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
-    disp('This may happen when n is very small and p is large');
+     if msg==1
+        disp('Warning: problem in subfunction corfactorREW');
+        disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
+        disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
+        disp('This may happen when n is very small and p is large');
+     end
 end
 end
