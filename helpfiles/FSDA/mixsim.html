@@ -62,28 +62,29 @@ average, maximum and/or standard deviation of&nbsp; overlap </p>
 <h2>Description </h2>
 
 <p>Background: Given two generic clusters i and j with&nbsp; i &ne;&nbsp; j =1, ..., k,        
-indexed by &phi;(x,&mu;<sub>i</sub>,&Sigma;<sub>i</sub>) and φ(x,&mu;<sub>j</sub>,&Sigma;<sub>j</sub>) with          
+indexed by &phi;(x; μ<sub>i</sub>,&Sigma;<sub>i</sub>) and φ(x; μ<sub>j</sub>,&Sigma;<sub>j</sub>) with          
 probabilities of occurrence &pi;<sub>i</sub> and &pi;<sub>j</sub>&nbsp;, the misclassification          
-probability with respect to cluster i (which is called w<sub>j|i</sub>) is defined as
-Pr[&pi;<sub>i</sub>&nbsp; φ(x,μ<sub>i</sub>,&Sigma;<sub>i</sub>)< &pi;<sub>i</sub>&nbsp; 
-φ(x,μ<sub>j</sub>,&Sigma;<sub>j</sub>)].          
+probability with respect to cluster i, (that is conditionally on x belonging to 
+cluster i,&nbsp; which is called w<sub>j|i</sub>) is defined as
+Pr[&pi;<sub>i</sub>&nbsp; φ(x; μ<sub>i</sub>,&Sigma;<sub>i</sub>) < &pi;<sub>j</sub>&nbsp; 
+φ(x; μ<sub>j</sub>,&Sigma;<sub>j</sub>)].          
 The matrix containing the misclassification probabilities w<sub>j|i</sub> is         
-called OmegaMap. The probability of overlapping, defined as a sum of two 
+called <a href="#OmegaMap">OmegaMap</a>. The probability of overlapping, defined as a sum of two 
 misclassification probabilities, measures the degree of interaction between 
 components and can be readily employed to control the clustering complexity of 
 datasets simulated from mixtures. These datasets can then be used for systematic 
 performance investigation of clustering and finite mixture modeling algorithms. 
 More specifically, the probability of overlapping between groups i and j (called p<sub>ij</sub>) is given by 
 p<sub>ij </sub>=p<sub>ji </sub>= w<sub>j|i</sub> + w<sub>i|j</sub> = 
-OmegaMap(i,j)+OmegaMap(j,i),&nbsp;          i,j=1,2, ..., k                           
-The diagonal elements of OmegaMap are equal to 1.                          
-The average overlap (which in the code below&nbsp; is called BarOmega) is        
+OmegaMap(i,j)+OmegaMap(j,i),&nbsp;          i,j=1,2, ..., k.                           
+The diagonal elements of OmegaMap are (by definition) set equal to 1.                          
+The average overlap (which in the code below&nbsp; is called <a href="#BarOmega">BarOmega</a>) is        
 defined as the sum of the off diagonal elements of OmegaMap (Σ<sub>i &gt; j=1,2, 
-..., k</sub> p<sub>ij </sub>) divided by 0.5k(k-1)                    
-The maximum overlap (which in the code below is called MaxOmega) is defined as   
-max(w<sub>j|i</sub> + w<sub>i|j</sub> )  i &ne; j=1,2, ..., k. The standard 
-deviation of ovelap (which in the code is called StdOmega) is the standard 
-deviation of the 0.5k(k-1) elements&nbsp; p<sub>ij. </sub>The probability of misclassification w<sub>j|i</sub> (w<sub>i|j</sub>) is nothing but the cdf of a linear    
+..., k</sub> p<sub>ij </sub>) divided by k(k-1)/2.                    
+The maximum overlap (which in the code below is called <a href="#MaxOmega">MaxOmega</a>) is defined as   
+max(w<sub>j|i</sub> + w<sub>i|j</sub> ) = max p<sub>ij </sub>&nbsp;i &ne; j=1,2, ..., k. The standard 
+deviation of overlap (which in the code is called <a href="#StdOmega">StdOmega</a>) is the standard 
+deviation of the k(k-1)/2 elements&nbsp; p<sub>ij</sub>. The probability of misclassification w<sub>j|i</sub> (w<sub>i|j</sub>) is nothing but the cdf of a linear    
 combination of non central &Chi;<sup>2</sup> distributions with 1 degree of freedom    
 + a linear combination of N(0,1) evaluated in a                            
 point c.  The coefficients of the linear combinations of non central       
@@ -116,15 +117,15 @@ This probability is computed using routine <a href="ncx2mixtcdf.html">ncx2mixtcd
       <li><p><tt>S</tt> −array&nbsp; of size v-by-v-by-k containing covariances 
 	  for the k groups</p>
       </li>
-      <li><tt>OmegaMap</tt> matrix of misclassification probabilities (k-by-k);
+      <li><tt><a name="OmegaMap">OmegaMap</a></tt> matrix of misclassification probabilities (k-by-k);
 	  <br>OmegaMap(i,j) = w<sub>j|i</sub> is the probability that X coming from the 
 	  i-th component (group) is classified to the j-th component. </li>
-      <li><tt>BarOmega</tt>  − scalar. Value of average overlap. BarOmega is computed as
+      <li><tt><a name="BarOmega">BarOmega</a></tt>  − scalar. Value of average overlap. BarOmega is computed as
 	  <br>(sum(sum(OmegaMap))-k)/(0.5*k(k-1)) </li>
-      <li><tt>MaxOmega</tt> − scalar. Value of average overlap.&nbsp; MaxOmega 
+      <li><tt><a name="MaxOmega">MaxOmega</a></tt> − scalar. Value of average overlap.&nbsp; MaxOmega 
 	  is the<br>&nbsp;maximum of OmegaMap(i,j)+OmegaMap(j,i). In other words 
 	  MaxOmega=<br>&nbsp;OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))</li>
-		<li><tt>StdOmega</tt>  − scalar. Value of standard deviation (std) of 
+		<li><tt><a name="StdOmega">StdOmega</a></tt>  − scalar. Value of standard deviation (std) of 
 		overlap.<br>StdOmega is the standard deviation of k*(k-1)/2&nbsp; 
 		probabilities of overlapping&nbsp; p<sub>ij </sub></li>
 		<li><p><tt>rcMax</tt> − vector of length 2. It containes the row and 
@@ -161,7 +162,8 @@ table.</p>
     <tr valign="top">
       <td bgcolor="#F2F2F2"><tt>'BarOmega'</tt></td>
       <td bgcolor="#F2F2F2"><p>scalar, value of desired average overlap. The 
-	  default value is ''</p>
+	  default value is '', that is just the value of maximum overlap&nbsp; 
+	  MaxOmega is used</p>
       </td>
     </tr>
     <tr>
@@ -207,16 +209,17 @@ clusters
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>'restrfactor'</tt></td>
-      <td bgcolor="#F2F2F2"><p>scalar in the interval [1 \infty] which specifies 
+      <td bgcolor="#F2F2F2"><p>scalar in the interval [1 &infin;] which specifies 
 	  the maximum ratio to allow between the largest eigenvalue and the smallest 
 	  eigenvalue of the k covariance matrices which are generated. More in 
-	  details if for example restrfactor=10 after generating the covariance 
-	  matrices we check that the ratio</p>
-	  <p><img alt="" src="images_help/img37.jpg"> </p>
+	  detail, if for example restrfactor=c, after generating the covariance 
+	  matrices, we check that the ratio</p>
+	  <p>&nbsp;<img alt="" height="95" src="images_help/img14.jpg" width="500"></p>
 	  <p>between the largest eigenvalue of the k cov matrices and the smallest 
-	  eigenvalue of the k cov matrices is not larger than restrfactor. In order 
+	  eigenvalue of the k cov matrices is not larger than c. In order 
 	  to apply this restriction (which is typical of <a href="tclust">tclust</a> 
-	  we call routine <a href="restreigen">restreigen</a>) </p>
+	  we call routine <a href="restreigen">restreigen</a>). The default value of 
+	  restrfactor is&nbsp; Inf that is no restriction is imposed. </p>
       </td>
     </tr>
     <tr>
@@ -289,9 +292,54 @@ clusters
   </tbody>
 </table>
 
-<p></p>
+<p>&nbsp;</p>
+<h2>References </h2>
+
+
 
 <h3>Examples</h3>
+
+<p>  Maitra, R. and Melnykov, V. (2010) “Simulating data to study performance
+  of finite mixture modeling and clustering algorithms”, The Journal of
+  Computational and Graphical Statistics, 2:19, 354-376. (to refer to
+  this publication we will use "MM2010 JCGS")</p>
+<p>
+  Melnykov, V., Chen, W.-C., and Maitra, R. (2012) “MixSim: An R Package
+  for Simulating Data to Study Performance of Clustering Algorithms”,
+  Journal of Statistical Software, 51:12, 1-25. </p>
+
+<p>
+  Davies, R. (1980) “The distribution of a linear combination of
+  chi-square random variables”, Applied Statistics, 29, 323-333.
+</p>
+
+<p>
+
+
+  Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
+  (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
+  of Statistics, Vol.36, 1324-1345. Technical Report available at
+  www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+</p>
+
+<p>
+
+  Reference below documents the problem of the ill-conditioning of the
+  eigenvalue-eigenvector computation.
+</p>
+
+<p>
+
+  Numerische Mathematik, 19. August 1969, Volume 13, Issue 4, pp 293-304
+  Balancing a matrix for calculation of eigenvalues and eigenvectors
+  Dr. B. N. Parlett, Dr. C. Reinsch
+</p>
+
+<p>
+
+ Parlett, B. N. and C. Reinsch, “Balancing a Matrix for Calculation of
+ Eigenvalues and Eigenvectors,” Handbook for Auto. Comp., Vol. II, Linear
+ Algebra, 1971,pp. 315-326.</p>
 
 <h3>Example 1</h3>
 Generate 3 groups in 4 dimensions using maximum overlap equal to 0.15. 
@@ -344,7 +392,7 @@ OmegaMap and visually using the scatter plot matrix, the differences coming from
 using a low or high standard deviation of overlapping. In order to be able to 
 replicate the results we use a fixed seed.</p>
 <pre class="programlisting">
-     rng(10,'twister')
+    rng(10,'twister')
     k=4;
     v=5;
     n=200;
