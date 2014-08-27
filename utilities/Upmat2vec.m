@@ -1,5 +1,5 @@
 function y=Upmat2vec(A)
-%Upmat2vec extracts linear indexes or elements above main diagonal of a square matrix
+%Upmat2vec extracts in a vector, linear indexes or elements above main diagonal of a square matrix
 %
 %
 %<a href="matlab: docsearchFS('upmat2vec')">Link to the help function</a>
@@ -28,8 +28,11 @@ function y=Upmat2vec(A)
 %
 %             If input argument A is a square matrix of order k (k>1), y
 %             is a vector of length (k*(k-1)/2) containing the elements
-%             above diagonal of matrix A
+%             above diagonal of matrix A.
 %
+%       Remark: if the elements abova diagonal must be extracted
+%           repeatedly, it is convenient to find the linear indexes of the
+%           elements above diagonal once and for all
 %
 % Copyright 2008-2014.
 % Written by FSDA team
