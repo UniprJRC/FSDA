@@ -1,7 +1,7 @@
 function add2yX(varargin)
 %add2yX adds objects to the yXplot. 
 %
-%<a href="matlab: docsearch('add2yX')">Link to the help page for this function</a>
+%<a href="matlab: docsearch('add2yx')">Link to the help page for this function</a>
 %
 % At the current stage the objects that can be added to yXplot using add2yX
 % are:
@@ -37,8 +37,6 @@ function add2yX(varargin)
 % See also olsline
 %
 %
-%<a href="matlab: docsearch('add2yX')">Link to the help page for this function</a>
-%
 % Copyright 2008-2014.
 % Written by FSDA team
 %
@@ -47,7 +45,9 @@ function add2yX(varargin)
 % Last modified 08-Dec-2013
 
 
-%% user options
+%% Beginning of code
+
+% user options
 options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','');
 
 %get optional user options
@@ -185,7 +185,7 @@ end
 
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
 
-%% add the objects
+%% Add the objects
 
 % We need to add objects to the scatterplots of y|X
 set(fig,'NextPlot','add');
@@ -281,7 +281,7 @@ for i = 1:length(AX)
     end
 end
 
-%% update the legends with the new objects and make them clickable
+%% Update the legends with the new objects and make them clickable
 hLines = findobj(AX(end), 'type', 'line');
 eLegend=get(hLines, 'DisplayName');
 % Create clickable multilegend if there is more than one group in the spm
