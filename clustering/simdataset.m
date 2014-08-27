@@ -1,16 +1,22 @@
 function [X,id]=simdataset(n, Pi, Mu, S,varargin)
-%simdataset simulates a datasets from a given mixture model
+%Simulates a dataset n given parameters of finite mixture model with Gaussian components
 %
 %
 %<a href="matlab: docsearch('simdataset')">Link to the help function</a>
 %
-%   simdataset(n, Pi, Mu, S) generates a matrix of size (n+nout)-by-size(Mu,2)
-%   containing k groups in p dimensions. In other words, this function
-%   produces a dataset of (n+nout) observations from a mixture model with
+%   simdataset(n, Pi, Mu, S) generates a matrix of size n-by-p containing n
+%   observations p dimensions from k groups. In other words, this function
+%   produces a dataset of n observations from a mixture model with
 %   parameters 'Pi' (mixing proportions), 'Mu' (mean vectors), and 'S'
 %   (covariance matrices). Mixture component sample sizes are produced as a
 %   realization from a multinomial distribution with probabilities given by
-%   mixing proportions.
+%   mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,
+%   0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integer
+%   numbers (whose sum is n-k) from the multinominal distribution with
+%   parameters n-k and Pi. The size of the groups is given by Nk1+1. The
+%   first Nk1(1)+1  observations are generated using centroid Mu(1,:) and
+%   covariance S(:,:,1), ..., the last Nk1(k)+1  observations are generated
+%   using centroid Mu(k,:) and covariance S(:,:,k)
 %
 %  Required input arguments:
 %
@@ -24,23 +30,24 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %       nnoise : scalar, which specifies the number of noise variables (the
 %               default value of nnoise is zero).
 %         nout : scalar, which specifies the number of outlying observations.
-%                The default value of nout is 0
+%                The default value of nout is 0. If nout is (for example
+%                10) than n+nout observations are generated.
 %       alpha  : level for simulating outliers. The default value of alpha
 %                is 0.001,
 %       maxiter: maximum number of trials to simulate outliers. The default
 %                value of maxout is 1e+05
 %       int    : vector or string.
-%                If int is a vector of length 2 it contains min and maximum values
-%                of the interval in which noise has to be simulated
-%                It int is empty (default) noise and outliers are simulated uniformly
-%                between the smallest and largest coordinates of mean
-%                vectors.
+%                If int is a vector of length 2 it contains min and maximum
+%                values of the interval in which noise has to be simulated
+%                It int is empty (default) noise and outliers are simulated
+%                uniformly between the smallest and largest coordinates of
+%                mean vectors.
 %                If int='minmax' noise and outliers are simulated uniformly
 %                between the smallest and largest coordinates of simulated
 %                data matrix X
 %       lambda : vector of length p containing inverse Box-Cox
-%                transformation coefficients. The value false (default) implies that
-%                no transformation is applied to any variable.
+%                transformation coefficients. The value false (default)
+%                implies that no transformation is applied to any variable.
 %
 %
 %  Output:
@@ -205,7 +212,7 @@ if (n >= k)
         mrr = mnrnd( n-k, Pi);
     end
     % Nk contains the sizes of the clusters
-    Nk = ones(1,k)+(mrr);
+    Nk = ones(1,k)+mrr;
 else
     error('Sample size (n) cannot be less than the number of clusters')
 end
@@ -239,7 +246,7 @@ for j=1:k
         evalR(mvrnorms);
         Xab = getRdata('Xab');
         if isempty(Xab)
-            error('Could not load library(MASS) in R please install it')
+            error('Could not load library(MASS) in R, please install it')
         end
         X(a:b,:) = Xab;
     else
