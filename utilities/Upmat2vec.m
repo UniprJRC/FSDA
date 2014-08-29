@@ -1,6 +1,7 @@
-function y=Upmat2vec(A)
-%Upmat2vec extracts in a vector, linear indexes or elements above main diagonal of a square matrix
-%
+function y=Upmat2vec(A,t)
+%Upmat2vec extracts in a vector, linear indexes or elements above the t-th diagonal of a square matrix 
+% If not given, parameter t is set to 0 to indicate the main diagonal.
+% t must me a non-negtive integer.
 %
 %<a href="matlab: docsearchFS('upmat2vec')">Link to the help function</a>
 %
@@ -18,6 +19,11 @@ function y=Upmat2vec(A)
 %               returns the elements above diagonal of matrix A in a vector
 %               of length (k*(k-1)/2);
 %
+%  Optional input arguments:
+%         t    : integer given to return the elements above the t-th diagonal of
+%               A, being t=0 the main diagonal.  Default is t = 0, i.e.,
+%               the main diagonal is excluded.
+%
 %  Output:
 %
 %        y  : vector containing the linear indexes or the elements above diagonal.
@@ -34,9 +40,27 @@ function y=Upmat2vec(A)
 %           repeatedly, it is convenient to find the linear indexes of the
 %           elements above diagonal once and for all
 %
+%       Remark 2: the linear indices can be also obtained with the following
+%       formulas and code:
+%{
+                ind=(1:(k*(k-1)/2))';
+
+                j = round(floor(-.5 + .5 * sqrt(1 + 8 * (ind - 1))) + 2);
+                i = round(j .* (3 - j) / 2 + ind - 1);
+                % y contains the linear indexes of the upper tringualar part of a square
+                % matrix of size k
+                y = i + (j - 1).*k;
+
+                if ~isscalar(A)
+                    % Extract the elements above diagonal of matrix A
+                    A1=A(:);
+                    y=A1(y);
+                end
+%}
+%
+%
 % Copyright 2008-2014.
 % Written by FSDA team
-%
 %
 %<a href="matlab: docsearchFS('upmat2vec')">Link to the help function</a>
 % Last modified 08-Dec-2013
@@ -76,8 +100,10 @@ function y=Upmat2vec(A)
 
 if isscalar(A)
     k=A;
+    sizeA=[k, k];
 elseif ismatrix(A)
     [k,p]=size(A);
+    sizeA=[k,p];
     if k ~= p
         error('Input matrix must be square')
     end
@@ -85,19 +111,15 @@ else
     error('Input matrix must be a scalar or a square matrix')
 end
 
-ind=(1:(k*(k-1)/2))';
+if nargin == 1 || rem(t,1) ~= 0 || t<0 || t>k-2   
+    t=0;
+end
 
-j = round(floor(-.5 + .5 * sqrt(1 + 8 * (ind - 1))) + 2);
-i = round(j .* (3 - j) / 2 + ind - 1);
-% y contains the linear indexes of the upper tringualar part of a square
-% matrix of size k
-y = i + (j - 1).*k;
-
-
-if ~isscalar(A)
-    % Extract the elements above diagonal of matrix A
-    A1=A(:);
-    y=A1(y);
+maskA	= logical(triu(ones(sizeA),t+1));
+if isscalar(A)
+    y = find(maskA);
+else
+    y	= A(maskA);
 end
 
 end
