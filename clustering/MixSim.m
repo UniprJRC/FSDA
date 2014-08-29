@@ -46,7 +46,7 @@ function [out]  = MixSim(k,v,varargin)
 %    StdOmega : scalar, value of desired standard deviation of overlap.
 %               Remark1: The probability of overlapping between two
 %               clusters i and j (i ne j =1, 2, ..., k), called pij, is defined as the
-%               sum of the two misclassification probabilities 
+%               sum of the two misclassification probabilities
 %               pij=w_{j|i} + w_{i|j}
 %               Remark2: it is possible to specify up to two values among
 %               BarOmega MaxOmega and StdOmega.
@@ -117,16 +117,14 @@ function [out]  = MixSim(k,v,varargin)
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
 %               arguments is of no importance.
-%       Remark: If 'BarOmega' is not specified, the function generates a
-%               mixture solely based on 'MaxOmega'; if 'MaxOmega' is not
-%               specified, the function generates a mixture solely based on
-%               'BarOmega'. If both BarOmega and MaxOmega are not specified
-%               the function generates a mixture using MaxOmega=0.15.
-%               If both BarOmega and MaxOmega are empty values as follows
-%               out=MixSim(3,4,'MaxOmega','','BarOmega','')
-%               the following message appears on the screen
-%               Error: At least one overlap characteristic between BarOmega
-%               and MaxOmega should be specified...
+%       Remark: If 'BarOmega', 'MaxOmega' and 'StdOmega' are not specified, 
+%               the function generates a mixture solely based on
+%               'MaxOmega'=0.15. If both BarOmega, StdOmega and MaxOmega are
+%               empty values as follows
+%               out=MixSim(3,4,'MaxOmega','','BarOmega','') the following
+%               message appears on the screen Error: At least one overlap
+%               characteristic between BarOmega, MaxOmega and StdOmega
+%               should be specified...
 %
 %  Output:
 %
@@ -304,7 +302,7 @@ end
 
 Rseeddef = 0;
 BarOmegadef = '';
-MaxOmegadef = 0.15;
+MaxOmegadef = '';
 StdOmegadef = '';
 eccdef      = 0.9;
 PiLowdef    = 0;
@@ -438,10 +436,18 @@ if isempty(MaxOmega) && isempty(StdOmega)  && ~isempty(BarOmega)
     % method =0 ==> just BarOmega has been specified
     method = 0;
     Omega = BarOmega;
-elseif isempty(BarOmega) && ~isempty(MaxOmega)
+elseif isempty(BarOmega) && isempty(StdOmega)
     % method =1 ==> just MaxOmega has been specified
     method = 1;
-    Omega = MaxOmega;
+    if isempty(MaxOmega)
+        Omega=0.15;
+    else
+        Omega = MaxOmega;
+    end
+elseif isempty(BarOmega) && isempty(MaxOmega) && ~isempty(StdOmega)
+    % method =1.5 ==> Just StdOmega has been specified
+    method = 1.5;
+    Omega=StdOmega;
 elseif ~isempty(BarOmega) && ~isempty(MaxOmega) && isempty(StdOmega)
     % method =2 ==> both BarOmega and MaxOmega have been specified
     method = 2;
@@ -454,12 +460,17 @@ elseif isempty(BarOmega) && isempty(MaxOmega)
 elseif ~isempty(BarOmega) && ~isempty(StdOmega) && ~isempty(MaxOmega)
     % method =4 ==> both BarOmega MaxOmega and StdOmega have been specified
     method = 4;
+    
 else
     method= 2;
 end
 
+% Get in vector indabovediag the linear indices of the elements above
+% diagonal in a matrix of size k-by-k. This will be necessary to compute the
+% starndard deviation of overlapping
+indabovediag=Upmat2vec(k);
 
-if method == 0 || method == 1
+if method == 0 || method == 1 || method == 1.5
     emax=ecc;
     Q = OmegaClust(Omega, method, v, k, PiLow, Lbound, Ubound, ...
         emax, tol, lim, resN, sph, hom, restrfactor, Display);
@@ -494,15 +505,17 @@ out = Q;
 
     function  Q = OmegaClust(Omega, method, v, k, PiLow, Lbound, Ubound, ...
             emax, tol, lim, resN, sph, hom, restrfactor, Display)
-        % OmegaClust = procedure when average or maximum overlap is
-        % specified (not both)
+        % OmegaClust = procedure when average or maximum overlap or Std of
+        % overlap is specified (not more than one overlapping measure)
         %
         %  INPUT parameters
         %
         % Omega     : scalar containing requested overlap value
         % method    : scalar which specifies whether average or maximum
-        %             overlap is requested. If method == 0 average overlap
-        %             is requested else, max overlap is required
+        %             overlap is requested. 
+        %             If method == 0 average overlap is requested 
+        %             If method == 1 max overlap is requested
+        %             If method == 1.5 std of overlap is requested
         % v         : scalar, dimensionality (number of variables)
         % k         : scalar, number of components (groups)
         % PiLow     : smallest mixing proportion allowed
@@ -633,10 +646,7 @@ out = Q;
                 [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen);
             end
             
-            
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            
-            % check if desired overlap is reachable
+            % check if desired overlap (maximum, average or std) is reachable
             asympt = 1;
             c = 0.0;
             
@@ -648,18 +658,39 @@ out = Q;
                 if prnt>1
                     disp(['Average empirical overlap - Average requested overlap=' num2str(diff)])
                 end
-            else
+            elseif method==1
                 diff = Malpha - Omega;
                 if prnt>1
                     disp(['Max empirical overlap - Max requested overlap=' num2str(diff)])
                 end
+            elseif method==1.5
+                % Compute StdOverlap
+                % Extract elements above diagonal and compute Stdoverlap
+                cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
+                overlapv=cand(:);
+                %                 overlapv=overlapv(overlapv>0);
+                %                 if length(overlapv)<combk2;
+                %                     overlapc=[overlapv; zeros(combk2-length(overlapv),1)];
+                %                 else
+                %                     overlapc=overlapv;
+                %                 end
+                %                 % Compute standard deviation of overlap for current
+                %                 % solution
+                %                 Stdalpha=std(overlapc);
+                
+                Stdalpha=std(overlapv(indabovediag));
+                
+                diff = Stdalpha - Omega;
+                if prnt>1
+                    disp(['Std of empirical overlap - Std requested overlap=' num2str(diff)])
+                end
+            else
+                
             end
-            
-            
             
             if (diff < -tolmap) % Prefixed overlapping is not reachable
                 if prnt>=1
-                    disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
+                    disp(['Warning: the desired overlap is too high and cannot be reached in simulation '  num2str(isamp)]);
                 end
                 fail = 1;
             else
@@ -670,9 +701,13 @@ out = Q;
                 % level of average or maximum overlap
                 c=0;
                 while c==0
-                    
-                    [c, OmegaMap, Balpha, Malpha] = FindC(lower, upper, Omega, ...
-                        method, v, k, li, di, const1, fixcl, tol, lim);
+                    if method==0 || method ==1
+                        [c, OmegaMap, Balpha, Malpha] = FindC(lower, upper, Omega, ...
+                            method, v, k, li, di, const1, fixcl, tol, lim);
+                    else
+                        [c, OmegaMap, Balpha, Malpha, Stdalpha] = FindCStd(lower, upper, Omega, ...
+                            v, k, li, di, const1, fixcl, tol, lim);
+                    end
                     lower =upper;
                     upper=upper^2;
                     if upper>100000
@@ -695,10 +730,15 @@ out = Q;
             if prnt>1
                 disp(['Average empirical overlap - Average requested overlap=' num2str(Balpha-Omega)])
             end
-        else
+        elseif method ==1
             if prnt>1
                 disp(['Max empirical overlap - Max requested overlap=' num2str(Malpha-Omega)])
             end
+        elseif method ==1.5
+            if prnt>1
+                disp(['Std empirical overlap - Std requested overlap=' num2str(Stdalpha-Omega)])
+            end
+        else
         end
         
         
@@ -711,20 +751,25 @@ out = Q;
         % Compute standard deviation of overlap
         cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
         overlapv=cand(:);
+        
+        
         % Recompute rcMax (the indices of the two groups producing the
         % highest overlap)
         [~,indmaxoverlapv]=max(overlapv);
         [rcMax(1), rcMax(2)]=ind2sub([k k],indmaxoverlapv);
         
-        overlapv=overlapv(overlapv>0);
-        if length(overlapv)<0.5*k*(k-1);
-            overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
-        else
-            overlapc=overlapv;
-        end
-        % Compute standard deviation of overlap for current
-        % solution
-        stdoverlap=std(overlapc);
+        %         overlapv=overlapv(overlapv>0);
+        %         if length(overlapv)<0.5*k*(k-1);
+        %             overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
+        %         else
+        %             overlapc=overlapv;
+        %         end
+        %         % Compute standard deviation of overlap for current
+        %         % solution
+        %         stdoverlap=std(overlapc);
+        stdoverlap=std(overlapv(indabovediag));
+        
+        
         
         Q = struct;
         Q.OmegaMap=OmegaMap;
@@ -1077,15 +1122,17 @@ out = Q;
             % Compute standard deviation of overlap
             cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
             overlapv=cand(:);
-            overlapv=overlapv(overlapv>0);
-            if length(overlapv)<0.5*k*(k-1);
-                overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
-            else
-                overlapc=overlapv;
-            end
-            % Compute standard deviation of overlap for current
-            % solution
-            stdoverlap=std(overlapc);
+            %             overlapv=overlapv(overlapv>0);
+            %             if length(overlapv)<0.5*k*(k-1);
+            %                 overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
+            %             else
+            %                 overlapc=overlapv;
+            %             end
+            %             % Compute standard deviation of overlap for current
+            %             % solution
+            %             stdoverlap=std(overlapc);
+            
+            stdoverlap=std(overlapv(indabovediag));
             
             Q=struct;
             Q.OmegaMap=OmegaMap;
@@ -1186,7 +1233,6 @@ out = Q;
         
         eps=tolmap*10;
         stdoverlap=NaN;
-        combk2=0.5*k*(k-1);
         
         for isamp=1:resN
             
@@ -1311,7 +1357,10 @@ out = Q;
                 
                 MaxOmegaloop=MaxOmegaloopini;
                 iter=0;
-                while abs(Erho1-1)>eps  || step>1e-15
+                while abs(Erho1-1)>eps  
+                    if step<1e-15
+                        break
+                    end
                     % if the value of MaxOmegaloop is greater than than the max
                     % overlap achivable (which is Malphaini) than requested
                     % standard deviation is too large and it is necessary to
@@ -1468,15 +1517,16 @@ out = Q;
                     % Compute standard deviation of overlap
                     cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
                     overlapv=cand(:);
-                    overlapv=overlapv(overlapv>0);
-                    if length(overlapv)<combk2;
-                        overlapc=[overlapv; zeros(combk2-length(overlapv),1)];
-                    else
-                        overlapc=overlapv;
-                    end
-                    % Compute standard deviation of overlap for current
-                    % solution
-                    stdoverlap=std(overlapc);
+                    %                     overlapv=overlapv(overlapv>0);
+                    %                     if length(overlapv)<combk2;
+                    %                         overlapc=[overlapv; zeros(combk2-length(overlapv),1)];
+                    %                     else
+                    %                         overlapc=overlapv;
+                    %                     end
+                    %                     % Compute standard deviation of overlap for current
+                    %                     % solution
+                    %                     stdoverlap=std(overlapc);
+                    stdoverlap=std(overlapv(indabovediag));
                     
                     Erho1old=Erho1;
                     Erho1=StdOmega/stdoverlap;
@@ -1485,7 +1535,7 @@ out = Q;
                         disp(['Average overlap =' num2str(Balpha)])
                         disp('Ratio between std of required overlap and std of empirical overlap')
                         disp(Erho1)
-                        % disp(step)
+                        disp(['Step=' num2str(step)])
                     end
                     
                     iter=iter+1;
@@ -1911,7 +1961,110 @@ out = Q;
                 break
             end
         end
-        
-        
     end
+
+
+    function  [c, OmegaMap2, BarOmega2, MaxOmega2, StdOmega2, rcMax]=FindCStd(lower, upper, Omega, v, k, li, di, const1, fix, tol, lim)
+        %find multiplier c to be applied to the cov matrices in the
+        %interval [lower upper] in order to reach the required std of
+        %
+        %  Required input arguments:
+        %
+        % lower : scalar - lower bound of the interval
+        % upper : scalar - upper bound of the interval
+        % Omega : scalar, associated with maximum or average overlapping requested
+        %     v  : dimensionality
+        %     k  : number of components
+        % li, di, const1 : parameters needed for computing overlap,
+        %          precalculated using routine ComputePars
+        %    fix : vector of length k containing zeros or ones
+        %          if fix(j) =1 cluster j does not participate to inflation
+        %          or deflation. If fix=zeros(k,1) all clusters participate
+        %          in inflation/deflation This parameter is used just if
+        %          heterogeneous clusters are used
+        %    tol : vector of length 2.
+        %          tol(1) (which will be called tolmap) specifies
+        %          the tolerance between the requested and empirical
+        %          misclassification probabilities (default is 1e-06)
+        %          tol(2) (which will be called tolnxc2) specifies the
+        %          tolerance to use in routine ncx2mixtcdf (which computes cdf
+        %          of linear combinations of non central chi2 distributions).
+        %          The default value of tol(2) 1e-06
+        %    lim : maximum number of integration terms default is 1e06.
+        %          REMARK: Optional parameters tol and lim will be used by
+        %          function ncx2mixtcdf.m which computes the cdf of a linear
+        %          combination of non central chi2 r.v.. This is the
+        %          probability of overlapping
+        %
+        %  OUTPUT parameters
+        %
+        %        c    : scalar inflation parameter
+        %               c is a constant which is used to scale the covariance
+        %               matrices of the groups in order to obtain a
+        %               prespecified level of average or maximum overlap
+        %   OmegaMap2 : k-by-k matrix containing map of misclassification
+        %               probabilities
+        %   BarOmega2 : scalar. Average overlap found using c
+        %   MaxOmega2 : scalar. Maximum overlap found using c
+        %   StdOmega2 : scalar. Std of overlap found using c
+        %      rcMax  : vector of length 2 containing the indexes associated
+        %              to the pair of components producing the highest overlap
+        %
+        
+        diff = Inf;
+        stopIter = 200; % 500
+        tolmap=tol(1);
+        tolncx2=tol(2);
+        
+        sch = 0;
+        asympt = 0;
+        
+        % Intervals which contain positive or negative powers of 2 are
+        % considered. For example first interval is [0 1024] then if
+        % MaxOmega2 (maximum overlap which has been found using c=512) is <
+        % Omega (maximum required overlap), then the new interval becomes
+        % [512 1024]  (c has to be increased and the new candidate c is
+        % 0.5*(512+1024)) else the new interval becomes [0 512] (c has to
+        % be decreased and the new candidate c is 0.5*(0+512)=256
+        while abs(diff) > tolmap
+            
+            c = (lower + upper) / 2.0;
+            
+            [OmegaMap2, BarOmega2, MaxOmega2, rcMax]=GetOmegaMap(c, v, k, li, di, const1, fix, tolncx2, lim, asympt);
+            
+            % Compute StdOverlap
+            % Extract elements above diagonal and compute Stdoverlap
+            cand=triu(OmegaMap2,1)+(tril(OmegaMap2,-1))';
+            overlapv=cand(:);
+            %             overlapv=overlapv(overlapv>0);
+            %             if length(overlapv)<combk2;
+            %                 overlapc=[overlapv; zeros(combk2-length(overlapv),1)];
+            %             else
+            %                 overlapc=overlapv;
+            %             end
+            %             % Compute standard deviation of overlap for current
+            %             % solution
+            %             StdOmega2=std(overlapc);
+            StdOmega2=std(overlapv(indabovediag));
+            
+            
+            if StdOmega2 < Omega
+                % clusters are too far
+                lower = c;
+            else
+                upper = c;
+            end
+            
+            diff = StdOmega2 - Omega;
+            
+            sch = sch + 1;
+            
+            if sch == stopIter
+                c = 0.0;
+                disp(['Warning: required overlap was not reached in routine findC after ' num2str(stopIter) ' iterations...'])
+                break
+            end
+        end
+    end
+
 end

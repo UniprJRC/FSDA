@@ -1,205 +1,235 @@
 function [out]  = MixSimReg(k,p,varargin)
-%MixSim generates k regression hyperplanes of size p dimensions with given overlap
+%MixSim generates k regression hyperplanes in p dimensions with given overlap
 %
 %<a href="matlab: docsearch('mixsimreg')">Link to the help function</a>
 %
-%   MixSimReg(k,v) generates k groups in v dimensions. It is possible to
-%   control the average and maximum or standard deviation of overlapping.
+%  MixSimReg(k,p) generates k groups in p dimensions. It is possible to
+%  control the average and maximum or standard deviation of overlapping.
 %
-%  Background: Given two generic clusters i and j with i ne j =1, ..., k,
-%  indexed by \phi(x,\mu_i,\Sigma_i) and \phi(x,\mu_j,\Sigma_j) with
-%  probabilities of occurrence \pi_i and \pi_j, the misclassification
-%  probability with respect to cluster i (which is called w_j|i) is defined as
-%  Pr[ \pi_i \phi(x,\mu_i,\Sigma_i) < \pi_j \phi(x,\mu_j,\Sigma_j)].
+%  Notation and background.
+%
+%  Given two generic clusters i and j with i \ne j=1,...,k, indexed by
+%  \phi(x,\mu_i,\sigma_i^2) and \phi(x,\mu_j, \sigma_j^2) with probabilities of
+%  occurrence \pi_i and \pi_j, the misclassification probability with
+%  respect to cluster i (denoted with w_j|i) is defined as Pr[\pi_i
+%  \phi(x,\mu_i,\sigma_i^2) < \pi_j \phi(x,\mu_j,\sigma_j^2)].
+%  where, in the regression context, \mu_i=\overline x_i' \beta_i and
+%  \mu_j= \overline x_j' \beta_j. We assume that the length of vectors x_i,
+%  x_j, \beta_i, and \beta_j is p (number of explanatory variables
+%  including or excluding intercept). In our implmentation, the
+%  distribution of the elements of vectors beta_i (beta_j) can be 'Normal'
+%  (with parameters mu and sigma), 'HalfNormal' (with parameter sigma) or
+%  uniform (with parameters a and b). Same thing for the distribution of
+%  the elements of x_i (x_j). However, while the parameters of the
+%  distributions are the same for all elements of \beta in all groups, the
+%  parameters of the ditribution of the elements of vectors x_i (x_j) can
+%  vary for each group and each explanatory variable. In other words, it is
+%  possible to specify (say) that the distribution of the second
+%  explanatory variable in the first group is U(2 3) while the distribution
+%  of the third explanatory variable in the second group is U(2 10).
+%
 %  The matrix containing the misclassification probabilities w_j|i is
-%  called OmegaMap
+%  called OmegaMap.
 %  The probability of overlapping between groups i and j is given by
 %            w_j|i + w_i|j          i,j=1,2, ..., k
 %  The diagonal elements of OmegaMap are equal to 1.
-%  The average overlap (which in the code is called below BarOmega) is
-%  defined as the sum of the off diagonal elements of OmegaMap (matrix of
-%  misclassification probabilities) divided by 0.5*k*(k-1)
-%  The maximum overlap (which in the code is called MaxOmega) is defined as
-%  max(w_j|i + w_i|j)  i \ne j=1,2, ..., k
+%  The average overlap (BarOmega, in the code) is defined as the sum of the
+%  off diagonal elements of OmegaMap (containing the misclassification
+%  probabilities) divided by k*(k-1)/2.
+%  The maximum overlap (MaxOmega, in the code) is defined as:
+%            max(w_j|i + w_i|j)  i \ne j=1,2, ..., k
 %  The probability of overlapping w_j|i is nothing but the cdf of a linear
 %  combination of non central chi^2 distributions with 1 degree of freedom
-%  + a linear combination of N(0,1) evaluated in a
-%  point c.  The coefficients of the linear combinations of non central
-%  chi^2 and N(0,1) depend on the eigenvalues and eigenvectors of matrix
+%  + a linear combination of N(0,1) evaluated in a point c.
+%  The coefficients of the linear combinations of non central chi^2 and
+%  N(0,1) depend on the eigenvalues and eigenvectors of matrix
 %  \Sigma_j|i = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i.
-%  Point c depends on the same eigenvalues and eigenvectors
-%  of matrix \Sigma_j|i, the mixing proportions \pi_i and \pi_j and the
-%  determinants |\Sigma_i| and |\Sigma_j|
-%  This probability is computed using routine ncx2mixtcdf
+%  Point c depends on the same eigenvalues and eigenvectors of matrix
+%  \Sigma_j|i, the mixing proportions \pi_i and \pi_j and the determinants
+%  |\Sigma_i| and |\Sigma_j|. This probability is computed using routine
+%  ncx2mixtcdf
 %
 %  Required input arguments:
 %
 %            k: scalar, number of groups (components)
 %            p: scalar, number of explanatory variables for each regression
-%            hyperplane (including intercept).
+%               hyperplane (including intercept).
 %
 %  Optional input arguments:
 %
-%    BarOmega : scalar, value of desired average overlap. The default value is ''
-%    MaxOmega : scalar, value of desired maximum overlap. If BarOmega is empty
-%               the default value of MaxOmega is 0.15
+%    BarOmega : scalar, value of desired average overlap. If not specified,
+%               BarOmega is empty ('').
+%    MaxOmega : scalar, value of desired maximum overlap. If BarOmega is
+%               empty, the default value of MaxOmega is 0.15.
 %    StdOmega : scalar, value of desired standard deviation of overlap.
-%               Remark1: The probability of overlapping between two
-%               clusters i and j (i ne j =1, 2, ..., k), called pij, is defined as the
-%               sum of the two misclassification probabilities
-%               pij=w_{j|i} + w_{i|j}
-%               Remark2: it is possible to specify up to two values among
+%
+%               Remark 1: The probability of overlapping between two
+%               clusters i and j (i \ne j=1, 2, ..., k), called pij, is
+%               defined as the sum of the two misclassification
+%               probabilities pij=w_{j|i} + w_{i|j}
+%
+%               Remark 2: it is possible to specify up to two values among
 %               BarOmega MaxOmega and StdOmega.
-%         hom : scalar boolean which specifies heterogeneous or homogeneous
-%               clusters
+%
+%         hom : scalar boolean which specifies if the desired clusters have
+%               to be heterogeneous or homogeneous:
 %               hom=false (default) ==> heterogeneous,
 %               hom=true            ==> homogeneous \Sigma_1 = ... = \Sigma_k
 %  restrfactor: scalar in the interval [1 \infty] which specifies the
 %               maximum ratio to allow between the largest \sigma^2 and
-%               the smallest \sigma^2 which
-%               are generated. More in details if for example
-%               restrfactor=10 after generating the covariance matrices we
+%               the smallest \sigma^2 which are generated. If, for example,
+%               restrfactor=10, after generating the covariance matrices we
 %               check that the ratio
-%                     \sigma^2_i/sigma^2_j i ne j =1, ..., k
+%                     \sigma^2_i/sigma^2_j i \ne j=1, ..., k
 %               is not larger than restrfactor. In order to apply this
-%               restriction (which is typical of tclust.m we call routine
+%               restriction (which is typical of tclust.m, we call routine
 %               restreigen.m)
 %       PiLow : scalar, value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
 %               taken; PiLow = 1.0 implies equal proportions by default).
 %               PiLow must be a number in the interval (0 1]
 %    Xdistrib : scalar or structure which specifies the distribution to use
-%               for each explanatory variable and each group. The
-%               distribution once chosen, is fixed, for each explanatory
-%               variable and each group however the parameters of the
+%               for each explanatory variable and each group. Once chosen,
+%               the distribution is fixed for each explanatory variable and
+%               each group; however, the parameters of the chosen
 %               distribution may vary across variables and groups. For
 %               example, once decided that the distibution of the X is
 %               uniform, the second variable of the first group can be
 %               defined in [a21 b21] while the third variable of the second
 %               group can be defined in [a32 b32].
-%               If Xdistrib =1 the default is to assume that the explanatory
-%               variables come from U(0, 1) and that the first explnatory
-%               variable is a constant term (intercept). 
-%               If Xdistrib is a structure it may contain information about
-%               the distribution (in the fieldname type) and the parameters
-%               of the distribution
-%               The following options are admitted for Xdistrib
-%                   Xdistrib.intercept = scalar equal to 1 if intercept is
-%                       present. The default value of Xdistrib.intercept is 1.
-%               The other fields of Xdistrib depend on the distribution
-%               which is chosen.
-%               NORMAL DISTRIBUTION N(mu, sigma)
-%                   Xdistrib.type='normal';
-%                   Xdistrib.mu = matrix of size (p-1)-by-k if                   
+%               - If Xdistrib = 1 the default is to assume that the explanatory
+%                 variables come from U(0, 1) and that the first explanatory
+%                 variable is a constant term (the intercept).
+%               - If Xdistrib is a structure, it may contain information about
+%                 the distribution (in the fieldname 'type') and the
+%                 parameters of the distribution. The following options are
+%                 admitted for Xdistrib:
+%                 > Xdistrib.intercept = scalar equal to 1 if intercept is
+%                   present. The default value of Xdistrib.intercept is 1.
+%                   The other fields of Xdistrib depend on the distribution
+%                   which is chosen.
+%                 NORMAL DISTRIBUTION N(mu, sigma)
+%                 > Xdistrib.type = 'normal';
+%                 > Xdistrib.mu   = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters mu
 %                       for each explanatory variable and each group. The
 %                       default value of Xdistrib.mu is 0.5*ones(p-1, k).
-%                   Xdistrib.sigma = matrix of size (p-1)-by-k if                
+%                 > Xdistrib.sigma = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters
 %                       sigma for each explanatory variable and each group.
-%                       The default value of Xdistrib.sigma is ones(p-1, k)
-%               UNIFORM DISTRIBUTION U(a, b)
-%                   Xdistrib.type='uniform';
-%                   Xdistrib.a = matrix of size (p-1)-by-k if
+%                       The default value of Xdistrib.sigma is ones(p-1,k).
+%                 UNIFORM DISTRIBUTION U(a, b)
+%                 > Xdistrib.type ='uniform';
+%                 > Xdistrib.a    = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
-%                       (Xdistrib.intercept=0) containing the parameters a
-%                       for each explanatory variable and each group. The
-%                       default value of Xdistrib.a is zeros(p-1, k).
-%                   Xdistrib.b = matrix of size (p-1)-by-k if
+%                       (Xdistrib.intercept=0) containing the parameters
+%                       a (the lower limits) for each explanatory variable
+%                       and each group. The default value of Xdistrib.a is
+%                       zeros(p-1, k).
+%                 > Xdistrib.b = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters b
-%                       for each explanatory variable and each group. The
-%                       default value of Xdistrib.b is ones(p-1, k).
-%               HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-%                   Xdistrib.type='halfnormal';
-%                   Xdistrib.sigma = matrix of size (p-1)-by-k if
+%                       (the upper limits) for each explanatory variable
+%                       and each group. The default value of Xdistrib.b is
+%                       ones(p-1, k).
+%                 HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
+%                 > Xdistrib.type='halfnormal';
+%                 > Xdistrib.sigma = matrix of size (p-1)-by-k if
 %                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)
 %                   containing the parameters sigma for each explanatory variable
 %                   and each group. The default value of Xdistrib.sigma is
 %                   ones(p-1, k).
-%               OTHER DISTRIBUTION  (TODO)
-%                   Xdistrib.type='user'.
-%                   If Xdistrib.type='user' the user must directly provide
-%                   a matrix of size (p-1)-by k (if intercept is present)
+%                 OTHER DISTRIBUTION
+%                 >  Xdistrib.type='User'.
+%                   If Xdistrib.type='User' the user must directly provide
+%                   means of the p explanatory variables for each group.
+%                   So, if distrib.type is 'User', we expect there is a field
+%                   called Xbar.
+%                 > Xdistrib.Xbar= (p-1)-by k (if intercept is present)
 %                   or p-by-k (if intercept is not present) containing the
-%                   means of the p explanatory variables for each group
+%                   means of the p explanatory variables for each group.
 % betadistrib : scalar or structure which specifies the distribution to use
 %               for each element of the vectors of regression coefficients.
-%               The distribution together with its parameters once chosen,
-%               is fixed, for each element of beta  across each group 
-%               If  betadistrib =1 the default is to assume that the vector
-%               of regression coefficients come from N(0, 1).
-%               If betadistrib is a structure it may contain information about
-%               the distribution (in the fieldname type) and the parameters
-%               of the distribution
-%               The following options are admitted for betadistrib
+%               Once chosen, the distribution together with its parameters
+%               is fixed for each element of beta, across each group.
+%               - If betadistrib = 1 the default is to assume that the vector
+%                 of regression coefficients come from N(0, 1).
+%               - If betadistrib is a structure it may contain information
+%                 about the distribution (in the fieldname type) and the
+%                 parameters of the distribution.
+%                 The following options are admitted for betadistrib:
 %               NORMAL DISTRIBUTION N(mu, sigma)
 %                   betadistrib.type='Normal';
-%                   betadistrib.mu = scalar, containing parameter mu for the 
+%                   betadistrib.mu = scalar, containing parameter mu for the
 %                       distribution of each element of beta across each
 %                       group. The default value of betadistrib.mu is 0
-%                   betadistrib.sigma = scalar, containing parameter sigma for 
-%                       the distribution of each element of beta across 
-%                       each group. The default value of betadistrib.mu is
-%                       0
-%               UNIFORM DISTRIBUTION U(a, b)
-%                   betadistrib.type='Uniform';
-%                   betadistrib.a = scalar, containing parameter a for the 
-%                       distribution of each element of beta across each
-%                       group. The default value of betadistrib.a is 0
-%                   betadistrib.b = scalar, containing parameter b for 
-%                       the distribution of each element of beta across 
-%                       each group. The default value of betadistrib.b is 0
-%               HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-%                   betadistrib.type='HalfNormal';
-%                   betadistrib.sigma = scalar containing parameter sigma  
+%                   betadistrib.sigma = scalar, containing parameter sigma for
+%                       the distribution of each element of beta across
+%                       each group. The default value of betadistrib.sigma
+%                       is 1
+%                   UNIFORM DISTRIBUTION U(a, b)
+%                   > betadistrib.type='Uniform';
+%                   > betadistrib.a = scalar, containing parameter a for the
+%                     distribution of each element of beta across each
+%                     group. The default value of betadistrib.a is 0
+%                   > betadistrib.b = scalar, containing parameter b for
+%                     the distribution of each element of beta across
+%                     each group. The default value of betadistrib.b is 1.
+%                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
+%                   > betadistrib.type='HalfNormal';
+%                   > betadistrib.sigma = scalar containing parameter sigma
 %                       for the distribution of each element of beta across
 %                       each group. The default value of betadistrib.sigma
 %                       is 1
-%               USER DISTRIBUTION
-%                   betadistribtion.type='User';
-%                   If betadistribtion.type='User' the user must directly
-%                   provide a matrix of size (p-1)-by k (if intercept is
-%                   present) or p-by-k (if intercept is not present)
-%                   containing the vectors of regression coefficients for
-%                   the k groups
-%        resN : maximum number of mixture resimulations to find a
-%               similation setting with prespecified level of overlapping.
-%               The default value of resN is 100
+%                   USER DISTRIBUTION
+%                   > betadistribtion.type='User';
+%                     If betadistribtion.type='User' the user must directly
+%                     provide the values of the beta coefficients.
+%                     So, if betadistribtion.type is 'User', we expect there
+%                     is a field called Beta.
+%                   > betadistribution.Beta = matrix of size (p-1)-by k
+%                     (if intercept is present) or p-by-k (if intercept is
+%                     not present) containing the vectors of regression
+%                     coefficients for the k groups.
+%        resN : maximum number of mixture re-simulations to find a
+%               simulation setting with prespecified level of overlapping.
+%               The default value of resN is 100.
 %         tol : vector of length 2.
-%               tol(1) (which will be called tolmap) specifies
-%               the tolerance between the requested and empirical
-%               misclassification probabilities (default is 1e-06)
-%               tol(2) (which will be called tolnxc2) specifies the
-%               tolerance to use in routine ncx2mixtcdf (which computes cdf
-%               of linear combinations of non central chi2 distributions).
-%               The default value of tol(2) 1e-06
+%               - tol(1) (which will be called tolmap) specifies
+%                 the tolerance between the requested and empirical
+%                 misclassification probabilities (default is 1e-06)
+%               - tol(2) (which will be called tolnxc2) specifies the
+%                 tolerance to use in routine ncx2mixtcdf (which computes
+%                 the cdf of linear combinations of non central chi2
+%                 distributions). The default value of tol(2) 1e-06.
 %         lim : maximum number of integration terms to use inside routine
 %               ncx2mixtcdf. Default is 1e06.
-%               REMARK: Optional parameters tolncx2=tol(2) and lim will be
-%               used by function ncx2mixtcdf.m which computes the cdf of a
-%               linear combination of non central chi2 r.v.. This is the
-%               probability of misclassification
+%               REMARK: Parameters tolncx2=tol(2) and lim are used by
+%               function ncx2mixtcdf.m which computes the cdf of a linear
+%               combination of non central chi2 r.v.. This is the
+%               probability of misclassification.
 %     Display : Level of display.
-%               'off' displays no output;
-%               'notify' (default) displays output if requested
-%               overlap cannot be reached in a particular simulation
-%               'iter' displays output at each iteration of each
-%               simulation
+%               - 'off' displays no output;
+%               - 'notify' (default) displays output if requested
+%                  overlap cannot be reached in a particular simulation
+%               - 'iter' displays output at each iteration of each
+%                 simulation
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
 %               arguments is of no importance.
+%
 %       Remark: If 'BarOmega' is not specified, the function generates a
-%               mixture solely based on 'MaxOmega'; if 'MaxOmega' is not
-%               specified, the function generates a mixture solely based on
-%               'BarOmega'. If both BarOmega and MaxOmega are not specified
-%               the function generates a mixture using MaxOmega=0.15.
-%               If both BarOmega and MaxOmega are empty values as follows
-%               out=MixSimReg(3,4,'MaxOmega','','BarOmega','')
+%               mixture solely based on 'MaxOmega';
+%               if 'MaxOmega' is not specified, the function generates a
+%               mixture solely based on 'BarOmega'.
+%               If both BarOmega and MaxOmega are not specified the
+%               function generates a mixture using MaxOmega=0.15.
+%               If both BarOmega and MaxOmega are empty values
+%               (e.g. out=MixSimReg(3,4,'MaxOmega','','BarOmega','')
 %               the following message appears on the screen
 %               Error: At least one overlap characteristic between BarOmega
 %               and MaxOmega should be specified...
@@ -208,50 +238,50 @@ function [out]  = MixSimReg(k,p,varargin)
 %
 %  The output consists of a structure 'out' containing the following fields:
 %
-%            out.Pi  : vector of length k containing mixing proportions.
-%                       sum(out.Pi)=1
-%          out.Beta  : p-by-k matrix containing (in each column) the
-%                      regression coefficients for each group
-%            out.Mu  : 1-by-k vector consisting of components' mean vectors
-%                      for each regression hyperplane.
-%                      Mu(1)=BarX'Beta(:,1) ... Mu(p)=BarX'Beta(:,k)
-%             out.S  : k-by-1 vector containing the variances for the k
-%                      groups
 %       out.OmegaMap : matrix of misclassification probabilities (k-by-k);
-%                      OmegaMap(i,j) = w_{j|i} is the probability that X
-%                      coming from the i-th component (group) is classified
+%                      OmegaMap(i,j) = w_{j|i} is the probability that X,
+%                      coming from the i-th component (group), is classified
 %                      to the j-th component.
-%       out.BarOmega : scalar. Value of average overlap.
-%                      BarOmega is computed as
-%                      (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
+%       out.BarOmega : scalar. Value of average overlap. BarOmega is computed
+%                      as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
 %       out.MaxOmega : scalar. Value of maximum overlap. MaxOmega is the
-%                       maximum of OmegaMap(i,j)+OmegaMap(j,i)
-%                       (i ~= j)=1, 2, ..., k. In other words MaxOmega=
+%                      maximum of OmegaMap(i,j)+OmegaMap(j,i)
+%                      (i ~= j)=1, 2, ..., k. In other words, MaxOmega=
 %                      OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))
 %       out.StdOmega : scalar. Value of standard deviation (std) of overlap.
-%                      StdOmega is the standard deviation of k*(k-1)/2
-%                      probabilities of overlapping
+%                      StdOmega is the standard deviation of the k*(k-1)/2
+%                      probabilities of overlapping%
 %         out.rcMax  : vector of length 2. It containes the row and column
-%                      numbers associated with  the pair of components
+%                      numbers associated with the pair of components
 %                      producing maximum overlap 'MaxOmega'
-%              fail  : scalar, flag value. 0 represents successful mixture
+%              fail  : scalar, flag value. 0 indicates a successful mixture
 %                      generation, 1 represents failure.
+%            out.Pi  : vector of length k containing the mixing proportions.
+%                      Clearly, sum(out.Pi)=1.
+%          out.Beta  : p-by-k matrix containing (in each column) the
+%                      regression coefficients for each group.
+%            out.Mu  : vector of length k, consisting of components' mean vectors
+%                      for each regression hyperplane.
+%                      out.Mu(1)=BarX'Beta(:,1) ... out.Mu(p)=BarX'Beta(:,k)
+%             out.S  : k-by-1 vector containing the variances for the k
+%                      groups
+
 %
 % See also tkmeans, tclust, tclustreg, lga, rlga, ncx2mixtcdf, restreigen
 %
 % References:
 %
-%   Maitra, R. and Melnykov, V. (2010) “Simulating data to study performance
-%   of finite mixture modeling and clustering algorithms”, The Journal of
+%   Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
+%   of finite mixture modeling and clustering algorithms, The Journal of
 %   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
 %   this publication we will use "MM2010 JCGS")
 %
-%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012) “MixSim: An R Package
-%   for Simulating Data to Study Performance of Clustering Algorithms”,
+%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package
+%   for Simulating Data to Study Performance of Clustering Algorithms,
 %   Journal of Statistical Software, 51:12, 1-25.
 %
-%   Davies, R. (1980) “The distribution of a linear combination of
-%   chi-square random variables”, Applied Statistics, 29, 323-333.
+%   Davies, R. (1980), The distribution of a linear combination of
+%   chi-square random variables, Applied Statistics, 29, 323-333.
 %
 %   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
 %   (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
@@ -265,8 +295,8 @@ function [out]  = MixSimReg(k,p,varargin)
 %   Balancing a matrix for calculation of eigenvalues and eigenvectors
 %   Dr. B. N. Parlett, Dr. C. Reinsch
 %
-%  Parlett, B. N. and C. Reinsch, “Balancing a Matrix for Calculation of
-%  Eigenvalues and Eigenvectors,” Handbook for Auto. Comp., Vol. II, Linear
+%  Parlett, B. N. and C. Reinsch, Balancing a Matrix for Calculation of
+%  Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear
 %  Algebra, 1971,pp. 315-326.
 %
 % Copyright 2008-2014.
@@ -280,7 +310,7 @@ function [out]  = MixSimReg(k,p,varargin)
 % Examples:
 %
 %{
-    % Example 1 
+    % Example 1
     % Generate mixture of regression using an average overlapping at
     % centroids =0.01. Use all default options
     % 1) Beta is generated according to random normal for each group with
@@ -304,14 +334,14 @@ function [out]  = MixSimReg(k,p,varargin)
 %}
 
 %{
-    % Example 2 
+    % Example 2
     % Generate mixture of regression hyperplanes using an average overlapping at
-    % centroids =0.01. 
+    % centroids =0.01.
     % 1) we use all the default options for Beta (random normal for each group with
     % mu=0.5 and sigma=1)
     % 2) X in the second dimension for the third group is generated according to U(1, 3)
     rng(10,'twister')
-    % Specify the distribution of the explanatory variables 
+    % Specify the distribution of the explanatory variables
     Xdistrib=struct;
     Xdistrib.type='Uniform';
     Xdistrib.a=zeros(p-1,k);
@@ -334,19 +364,19 @@ function [out]  = MixSimReg(k,p,varargin)
 %}
 
 %{
-    % Example 3 
+    % Example 3
     % Exactly as before but now the distribution of beta is N(0 6)
     rng(10,'twister')
     p=5;
     k=3;
-    % Specify the distribution of the explanatory variables 
+    % Specify the distribution of the explanatory variables
     Xdistrib=struct;
     Xdistrib.type='Uniform';
     Xdistrib.a=zeros(p-1,k);
     Xdistrib.a(2,3)=1;
     Xdistrib.b=ones(p-1,k);
     Xdistrib.b(2,3)=3;
-    % Specify the distribution of the beta coefficients 
+    % Specify the distribution of the beta coefficients
     betadistrib=struct;
     betadistrib.type='Normal';
     betadistrib.sigma=6;
@@ -363,7 +393,7 @@ function [out]  = MixSimReg(k,p,varargin)
 %}
 
 %{
-    % Example 4 
+    % Example 4
     % Internation trade data example
     % All slopes are positive (beta generated using half normal) p=1 and there
     % is no intercept
@@ -388,11 +418,11 @@ function [out]  = MixSimReg(k,p,varargin)
 
 
 %{
-    % Example 5 
+    % Example 5
     % Another international trade data example
     % Here the strips of certain groups are limited up to certain values
     % There is no intercept.
-    % In this example we compare high and low overlap among regression hyperplanes 
+    % In this example we compare high and low overlap among regression hyperplanes
     p=1;
     k=4;
     Xdistrib=struct;
@@ -421,8 +451,8 @@ function [out]  = MixSimReg(k,p,varargin)
     [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     spmplot([y X],id)
     set(gcf,'Name','Small overlap')
-%}    
-    
+%}
+
 %% User options
 
 % Default
@@ -535,7 +565,7 @@ if isstruct(Xdistrib)
         intercept=1;
     end
     
-    if find(strcmp('type',fld))
+    if ~isempty(find(strcmp('type',fld),1))
         if strcmp(Xdistrib.type,'Uniform')
             if intercept==1
                 Xdistribdef.a=zeros(p-1,k);
@@ -571,10 +601,29 @@ if isstruct(Xdistrib)
             Xdistribdef.type='HalfNormal';
             
         elseif strcmp(Xdistrib.type,'User')
-            error('TODO')
+            % If Xdistrib.type is User the user must directly supply matrix
+            % of the means of the p explnatory variabels for the k gruops
+            % so we check whether field BarX is present
+            
+            if ~isempty(find(strcmp('BarX',fld),1))
+                if intercept ==1
+                    BarX= [ones(1,k); Xdistrib.BarX];
+                else
+                    BarX=Xdistrib.BarX;
+                end
+            else
+                str = sprintf(['\n'...
+                    'Distribution is ''User'' but the matrix BarX containing the means\n'...
+                    'of the p explanatory has not been given']);
+                disp(str)
+                error('Please also supply inside Xdistrib field BarX')
+            end
+            Xdistribdef.type='User';
+            Xdistribdef.BarX=BarX;
+            Xdistribdef.intercept=intercept;
             
         else
-            error('TODO')
+            error('Possible values for option Xdistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
         end
     else
         Xdistribdef.type='Uniform';
@@ -599,7 +648,7 @@ else
     Xdistrib.intercept=1;
 end
 
-% Now define BarX  (the X design point in which overlap will be computed)
+% Now construct BarX  (the X design point in which overlap will be computed)
 intercept=Xdistrib.intercept;
 
 if find(strcmp('Uniform',Xdistrib.type))
@@ -627,35 +676,29 @@ elseif find(strcmp('HalfNormal',Xdistrib.type))
     end
     
 elseif find(strcmp('User',Xdistrib.type))
-    d=find(strcmp('X',Xdistrib.X));
-    if d==1;
-        BarX= mean(X)'; % TODO
-    else
-        error('If string Xdistrib = user than the user must provide input matrix X')
-    end
+    % In this case there is no additional computation to do because the user
+    % has already supplied matrix BarX
 else
     error('Possible values for option Xdistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
 end
 
 Xdistrib.BarX=BarX;
 
-
 if isstruct(betadistrib)
     fbetadistrib=fieldnames(betadistrib);
     
-    
-    if find(strcmp('Uniform',betadistrib.type))
-        a=find(strcmp('a',fbetadistrib));
-        if a ==0
+    if strcmp('Uniform',betadistrib.type)
+        a=find(strcmp('a',fbetadistrib),1);
+        if isempty(a)
             betadistrib.a=0;
         end
         
-        b=find(strcmp('b',fbetadistrib));
-        if b== 0
+        b=find(strcmp('b',fbetadistrib),1);
+        if isempty(b)
             betadistrib.b=0;
         end
         
-    elseif find(strcmp('Normal',betadistrib.type))
+    elseif strcmp('Normal',betadistrib.type)
         mu=find(strcmp('mu',fbetadistrib), 1);
         if isempty(mu)
             betadistrib.mu=0.5;
@@ -666,20 +709,19 @@ if isstruct(betadistrib)
             betadistrib.sigma=1;
         end
         
-    elseif find(strcmp('HalfNormal',betadistrib.type))
+    elseif strcmp('HalfNormal',betadistrib.type)
         sigma=find(strcmp('sigma',fbetadistrib), 1);
         if isempty(sigma)
             betadistrib.sigma=sqrt(2/pi) ;
         end
         
-    elseif find(strcmp('User',fbetadistrib))
-        error('TODO')
-        %         d=find(strcmp('Beta',fbetadistrib));
-        %         if d==1;
-        %             Beta= betadistrib.Beta;
-        %         else
-        %             error('If string betadistrib = user than the user must provide input matrix Beta')
-        %         end
+    elseif strcmp('User',betadistrib.type)
+        d=find(strcmp('Beta',fbetadistrib),1);
+        if ~isempty(d);
+            Beta= betadistrib.Beta;
+        else
+            error('If betadistrib =''User'' than the user must provide input matrix Beta')
+        end
     else
         error('Possible values for option betadistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
     end
@@ -722,10 +764,18 @@ if isempty(MaxOmega) && isempty(StdOmega)  && ~isempty(BarOmega)
     % method =0 ==> just BarOmega has been specified
     method = 0;
     Omega = BarOmega;
-elseif isempty(BarOmega) && ~isempty(MaxOmega)
+elseif isempty(BarOmega) && isempty(StdOmega)
     % method =1 ==> just MaxOmega has been specified
     method = 1;
-    Omega = MaxOmega;
+    if isempty(MaxOmega)
+        Omega=0.15;
+    else
+        Omega = MaxOmega;
+    end
+elseif isempty(BarOmega) && isempty(MaxOmega) && ~isempty(StdOmega)
+    % method =1.5 ==> Just StdOmega has been specified
+    method = 1.5;
+    Omega=StdOmega;
 elseif ~isempty(BarOmega) && ~isempty(MaxOmega) && isempty(StdOmega)
     % method =2 ==> both BarOmega and MaxOmega have been specified
     method = 2;
@@ -738,12 +788,18 @@ elseif isempty(BarOmega) && isempty(MaxOmega)
 elseif ~isempty(BarOmega) && ~isempty(StdOmega) && ~isempty(MaxOmega)
     % method =4 ==> both BarOmega MaxOmega and StdOmega have been specified
     method = 4;
+    
 else
     method= 2;
 end
 
+% Get in vector indabovediag the linear indices of the elements above
+% diagonal in a matrix of size k-by-k. This will be necessary to compute the
+% starndard deviation of overlapping
+indabovediag=Upmat2vec(k);
 
-if method == 0 || method == 1
+
+if method == 0 || method == 1 || method == 1.5
     
     Q = OmegaClustReg(Omega, method, k, PiLow, BarX, betadistrib, ...
         tol, lim, resN, hom, restrfactor, Display);
@@ -779,18 +835,19 @@ out = Q;
 
 %% Beginning of inner functions
 
-
     function  Q = OmegaClustReg(Omega, method, k, PiLow, BarX, betadistrib,  ...
             tol, lim, resN, hom, restrfactor, Display)
-        % OmegaClustReg = procedure when average or maximum overlap is
-        % specified (not both)
+        % OmegaClust = procedure when average or maximum overlap or Std of
+        % overlap is specified (not more than one overlapping measure)
         %
         %  INPUT parameters
         %
         % Omega     : scalar containing requested overlap value
         % method    : scalar which specifies whether average or maximum
         %             overlap is requested. If method == 0 average overlap
-        %             is requested else, max overlap is required
+        %             is requested elseif method == 1 max overlap is
+        %             required elseif method == 1.5 std of overlap is
+        %             requested.
         % k         : scalar, number of components (groups)
         % PiLow     : smallest mixing proportion allowed
         % Lbound    : lower bound for uniform hypercube at which mean vectors are
@@ -942,7 +999,7 @@ out = Q;
                         method, 1, k, li, di, const1, fixcl, tol, lim);
                     lower =upper;
                     upper=upper^2;
-                    if upper>100000
+                    if upper>1e+10 % TOCKECK 100000
                         if prnt>=1
                             disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
                         end
@@ -983,27 +1040,29 @@ out = Q;
         [~,indmaxoverlapv]=max(overlapv);
         [rcMax(1), rcMax(2)]=ind2sub([k k],indmaxoverlapv);
         
-        overlapv=overlapv(overlapv>0);
-        if length(overlapv)<0.5*k*(k-1);
-            overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
-        else
-            overlapc=overlapv;
-        end
-        % Compute standard deviation of overlap for current
-        % solution
-        stdoverlap=std(overlapc);
+        %         overlapv=overlapv(overlapv>0);
+        %         if length(overlapv)<0.5*k*(k-1);
+        %             overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
+        %         else
+        %             overlapc=overlapv;
+        %         end
+        %         % Compute standard deviation of overlap for current
+        %         % solution
+        %         stdoverlap=std(overlapc);
+        stdoverlap=std(overlapv(indabovediag));
+        
         
         Q = struct;
         Q.OmegaMap=OmegaMap;
         Q.BarOmega=Balpha;
         Q.MaxOmega=Malpha;
         Q.StdOmega=stdoverlap;
+        Q.rcMax=rcMax;
         Q.fail=fail;
         Q.Pi=Pigen;
         Q.Mu=Mugen;
         Q.S=Sgen;
         Q.Beta=Beta;
-        Q.rcMax=rcMax;
     end
 
 
@@ -1327,27 +1386,29 @@ out = Q;
             % Compute standard deviation of overlap
             cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
             overlapv=cand(:);
-            overlapv=overlapv(overlapv>0);
-            if length(overlapv)<0.5*k*(k-1);
-                overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
-            else
-                overlapc=overlapv;
-            end
-            % Compute standard deviation of overlap for current
-            % solution
-            stdoverlap=std(overlapc);
+            %             overlapv=overlapv(overlapv>0);
+            %             if length(overlapv)<0.5*k*(k-1);
+            %                 overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
+            %             else
+            %                 overlapc=overlapv;
+            %             end
+            %             % Compute standard deviation of overlap for current
+            %             % solution
+            %             stdoverlap=std(overlapc);
+            %
+            stdoverlap=std(overlapv(indabovediag));
             
             Q=struct;
             Q.OmegaMap=OmegaMap;
             Q.BarOmega=Balpha;
             Q.MaxOmega=Malpha;
             Q.StdOmega=stdoverlap;
+            Q.rcMax=rcMax;
             Q.fail=fail;
             Q.Pi=Pigen;
-            Q.Mu=Mugen;
             Q.Beta=Beta;
+            Q.Mu=Mugen;
             Q.S=Sgen;
-            Q.rcMax=rcMax;
             
         end
     end
@@ -1395,10 +1456,6 @@ out = Q;
         %
         %   A structure Q containing the following fields
         %
-        %             Pi : mixing proportions
-        %           Mu   : matrix of size k-by-v containing mean vectors of
-        %                  the k groups
-        %           S    : array of size v-by-v-by-k containing covariance matrices
         %       OmegaMap : k-by-k matrix containing misclassification probabilities
         %       BarOmega : scalar, average overlap of the groups which have been
         %                  generated
@@ -1408,6 +1465,10 @@ out = Q;
         %                  components producing the highest overlap
         %           fail : flag indicating if the process failed (1). If
         %                  everything went well fail=0
+        %             Pi : mixing proportions
+        %           Mu   : matrix of size k-by-v containing mean vectors of
+        %                  the k groups
+        %           S    : array of size v-by-v-by-k containing covariance matrices
         
         if k<=2
             error('Average and std can be both set when k>2');
@@ -1438,7 +1499,6 @@ out = Q;
         
         eps=tolmap*10;
         stdoverlap=NaN;
-        combk2=0.5*k*(k-1);
         
         for isamp=1:resN
             
@@ -1545,7 +1605,11 @@ out = Q;
                 
                 MaxOmegaloop=MaxOmegaloopini;
                 iter=0;
-                while abs(Erho1-1)>eps  || step>1e-15
+                while abs(Erho1-1)>eps
+                    
+                    if step<1e-15
+                        break
+                    end
                     % if the value of MaxOmegaloop is greater than than the max
                     % overlap achivable (which is Malphaini) than requested
                     % standard deviation is too large and it is necessary to
@@ -1702,15 +1766,16 @@ out = Q;
                     % Compute standard deviation of overlap
                     cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
                     overlapv=cand(:);
-                    overlapv=overlapv(overlapv>0);
-                    if length(overlapv)<combk2;
-                        overlapc=[overlapv; zeros(combk2-length(overlapv),1)];
-                    else
-                        overlapc=overlapv;
-                    end
-                    % Compute standard deviation of overlap for current
-                    % solution
-                    stdoverlap=std(overlapc);
+                    %                     overlapv=overlapv(overlapv>0);
+                    %                     if length(overlapv)<combk2;
+                    %                         overlapc=[overlapv; zeros(combk2-length(overlapv),1)];
+                    %                     else
+                    %                         overlapc=overlapv;
+                    %                     end
+                    %                     % Compute standard deviation of overlap for current
+                    %                     % solution
+                    %                     stdoverlap=std(overlapc);
+                    stdoverlap=std(overlapv(indabovediag));
                     
                     Erho1old=Erho1;
                     Erho1=StdOmega/stdoverlap;
@@ -1766,12 +1831,12 @@ out = Q;
         Q.BarOmega=Balpha;
         Q.MaxOmega=Malpha;
         Q.StdOmega=stdoverlap;
+        Q.rcMax=rcMax;
         Q.fail=fail;
         Q.Pi=Pigen;
         Q.Mu=Mugen;
         Q.Beta=Beta;
         Q.S=Sgen;
-        Q.rcMax=rcMax;
         
     end
 
@@ -1853,8 +1918,8 @@ out = Q;
         elseif find(strcmp('HalfNormal',betadistrib.type))
             Beta=abs(randn(p,k))*betadistrib.sigma;
             
-        elseif find(strcmp('User',fbetadistrib))
-            error('TODO')
+        elseif find(strcmp('User',betadistrib.type))
+            Beta=betadistrib.Beta;
         else
             error('Possible values for option betadistrib are ''Normal'' ''Uniform'' ''Halfnormal'' and ''User'' ')
         end
@@ -1982,7 +2047,5 @@ out = Q;
                 break
             end
         end
-        
-        
     end
 end

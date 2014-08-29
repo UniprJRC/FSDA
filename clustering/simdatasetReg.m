@@ -95,9 +95,8 @@ function [y,X,id]=simdatasetReg(n, Pi, Beta, S, Xdistrib, varargin)
 %                If int='minmax' noise and outliers are simulated uniformly
 %                between the smallest and largest coordinates of simulated
 %                data matrix X
-%       lambda : vector of length p containing inverse Box-Cox
-%                transformation coefficients. The value false (default) implies that
-%                no transformation is applied to any variable.
+%       lambda : scalar containing inverse Box-Cox
+%                transformation coefficient to apply to the response y
 %
 %
 %  Output:
@@ -124,9 +123,8 @@ function [y,X,id]=simdatasetReg(n, Pi, Beta, S, Xdistrib, varargin)
 % number of observations outside (1 - 'alpha') ellipsoidal contours for the
 % weighted component distributions. Outliers are simulated on a hypercube
 % specified by the interval 'int'. A user can apply an inverse Box-Cox
-% transformation providing a vector of coefficients 'lambda'. The value 1
-% implies that no transformation is needed for the corresponding
-% coordinate
+% transformation of y providing a coefficient 'lambda'. The value 1
+% implies that no transformation is needed for the response
 %
 % Copyright 2008-2014.
 % Written by FSDA team
