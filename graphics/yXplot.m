@@ -1,7 +1,7 @@
 function [plot1]=yXplot(y,X,varargin)
 %yXplot Generates the scatterplot of y against each variable of X in the input dataset.
 %
-%<a href="matlab: docsearch('yXplot')">Link to the help function</a>
+%<a href="matlab: docsearch('yxplot')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -185,7 +185,7 @@ function [plot1]=yXplot(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('yXplot')">Link to the help function</a>
+%<a href="matlab: docsearch('yxplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:
