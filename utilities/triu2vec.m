@@ -1,9 +1,9 @@
 function y=triu2vec(A,k)
 %triu2vec extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix
-% k is an optional non-negtive that, if not given, is set to 0 to indicate
-% the main diagonal. The indices are extracted following the traditional
-% "packed storage" scheme for symmetric, Hermitian or triangular matrices,
-% adopted by MATLAB for the linear indexing.
+% k is an optional non-negtive integer that, if not given, is set to 0 to
+% indicate the main diagonal. The indices are extracted following the
+% traditional "packed storage" scheme for symmetric, Hermitian or
+% triangular matrices, adopted by MATLAB for the linear indexing.
 %
 %<a href="matlab: docsearchFS('triu2vec')">Link to the help function</a>
 %
