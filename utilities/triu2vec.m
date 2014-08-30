@@ -1,7 +1,9 @@
 function y=triu2vec(A,k)
-%triu2vec extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix 
-% If not given, parameter k is set to 0 to indicate the main diagonal.
-% k must be a non-negtive integer.
+%triu2vec extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix
+% k is an optional non-negtive that, if not given, is set to 0 to indicate
+% the main diagonal. The indices are extracted following the traditional
+% "packed storage" scheme for symmetric, Hermitian or triangular matrices,
+% adopted by MATLAB for the linear indexing.
 %
 %<a href="matlab: docsearchFS('triu2vec')">Link to the help function</a>
 %
@@ -12,8 +14,8 @@ function y=triu2vec(A,k)
 %               If A is a non negative integer, it indicates the number of
 %               rows (columns) of a matrix whose linear indexes of the
 %               elements on and above diagonal have to be found. Then,
-%               triu2vec(A) returns the (A*(A-1)/2)+A linear indexes
-%               of the elements on and above diagonal.
+%               triu2vec(A) returns the (A*(A-1)/2)+A linear indexes of the
+%               elements on and above diagonal.
 %
 %               If A is a square matrix of order r (r>1), then triu2vec(A)
 %               returns the elements on and above diagonal of matrix A in a
@@ -21,16 +23,20 @@ function y=triu2vec(A,k)
 %
 %  Optional input arguments:
 %
-%         k   : integer given to return the elements on and above the k-th 
-%               diagonal of A, being k=0 the main diagonal. Default is k =
-%               0, i.e., the main diagonal is also returned.
+%         k   : non negative integer given to return the elements on and
+%               above the k-th diagonal of A, being k=0 the main diagonal.
+%               Default is k = 0, i.e., the main diagonal is also returned.
+%               Negative integers are treated as 0, i.e. elements on and
+%               above the main diagonal are returned. No linear indices or
+%               elements are returned if the user provides an integer k
+%               larger than the order of the input matrix.
 %
 %  Output:
 %
 %        y  : vector containing the linear indexes or the elements on and
 %             above the k-th diagonal.
 %
-%                     For example if k =0 or nargin ==1   
+%                     For example if k =0 or nargin ==1
 %             If input argument A is a scalar, y is a vector of length
 %             (A*(A-1)/2)+A containing the linear indexes of the
 %             elements on and above diagonal of a square matrix of order A.
@@ -39,7 +45,7 @@ function y=triu2vec(A,k)
 %             is a vector of length (r*(r-1)/2)+r containing the elements
 %             on and above diagonal of matrix A.
 %
-%                   For example if k == 2 
+%                   For example if k == 2
 %             If input argument A is a scalar, y is a vector of length
 %             (A*(A-1)/2)+A -A -(A-1) containing the linear indexes of the
 %             elements on and above the 2nd diagonal of a square matrix of
@@ -68,7 +74,6 @@ function y=triu2vec(A,k)
 
                 A1 = A(:);
                 y  = A1(y);         % the elements above diagonal of matrix A
-
 %}
 %
 %
@@ -136,7 +141,7 @@ else
     error('Input must be a non negative integer or a square matrix')
 end
 
-if nargin == 1 || rem(k,1) ~= 0 || k<0 || k>r-2 
+if nargin == 1 || rem(k,1) ~= 0 || k<0
     k=0;
 end
 
@@ -145,6 +150,10 @@ if isscalar(A)
     y = find(maskA);
 else
     y	= A(maskA);
+end
+
+if isempty(y)
+    disp(['Nothing to return on and above the ' num2str(k) 'th diagonal, for a matrix of order ' num2str(r) ' (being 0 the main diagonal)']);
 end
 
 end
