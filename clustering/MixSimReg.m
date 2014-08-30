@@ -795,8 +795,8 @@ end
 
 % Get in vector indabovediag the linear indices of the elements above
 % diagonal in a matrix of size k-by-k. This will be necessary to compute the
-% starndard deviation of overlapping
-indabovediag=Upmat2vec(k);
+% standard deviation of overlapping
+indabovediag=triu2vec(k,1);
 
 
 if method == 0 || method == 1 || method == 1.5
@@ -837,7 +837,7 @@ out = Q;
 
     function  Q = OmegaClustReg(Omega, method, k, PiLow, BarX, betadistrib,  ...
             tol, lim, resN, hom, restrfactor, Display)
-        % OmegaClust = procedure when average or maximum overlap or Std of
+        % OmegaClustReg procedure when average or maximum overlap or Std of
         % overlap is specified (not more than one overlapping measure)
         %
         %  INPUT parameters
@@ -850,10 +850,46 @@ out = Q;
         %             requested.
         % k         : scalar, number of components (groups)
         % PiLow     : smallest mixing proportion allowed
-        % Lbound    : lower bound for uniform hypercube at which mean vectors are
-        %             simulated
-        % Ubound    : upper bound for uniform hypercube at which mean vectors are
-        %             simulated
+        % BarX      : p-by-k matrix containing the p dimensional centroids
+        %             of the k groups
+        % betadistrib : structure which specifies the distribution to use
+        %               for each element of the vectors of regression coefficients.
+        %               Once chosen, the distribution together with its parameters
+        %               is fixed for each element of beta, across each group.
+        %                 The following options are admitted for betadistrib:
+        %               NORMAL DISTRIBUTION N(mu, sigma)
+        %                   betadistrib.type='Normal';
+        %                   betadistrib.mu = scalar, containing parameter mu for the
+        %                       distribution of each element of beta across each
+        %                       group. The default value of betadistrib.mu is 0
+        %                   betadistrib.sigma = scalar, containing parameter sigma for
+        %                       the distribution of each element of beta across
+        %                       each group. The default value of betadistrib.sigma
+        %                       is 1
+        %                   UNIFORM DISTRIBUTION U(a, b)
+        %                   > betadistrib.type='Uniform';
+        %                   > betadistrib.a = scalar, containing parameter a for the
+        %                     distribution of each element of beta across each
+        %                     group. The default value of betadistrib.a is 0
+        %                   > betadistrib.b = scalar, containing parameter b for
+        %                     the distribution of each element of beta across
+        %                     each group. The default value of betadistrib.b is 1.
+        %                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
+        %                   > betadistrib.type='HalfNormal';
+        %                   > betadistrib.sigma = scalar containing parameter sigma
+        %                       for the distribution of each element of beta across
+        %                       each group. The default value of betadistrib.sigma
+        %                       is 1
+        %                   USER DISTRIBUTION
+        %                   > betadistribtion.type='User';
+        %                     If betadistribtion.type='User' the user must directly
+        %                     provide the values of the beta coefficients.
+        %                     So, if betadistribtion.type is 'User', we expect there
+        %                     is a field called Beta.
+        %                   > betadistribution.Beta = matrix of size (p-1)-by k
+        %                     (if intercept is present) or p-by-k (if intercept is
+        %                     not present) containing the vectors of regression
+        %                     coefficients for the k groups.
         % tol, lim  : parameters for ncx2mixtcdf.m which computes the probability
         %             of overlapping
         % resN      : scalar, number of resamplings allowed
@@ -996,7 +1032,7 @@ out = Q;
                 while c==0
                     
                     [c, OmegaMap, Balpha, Malpha] = FindC(lower, upper, Omega, ...
-                        method, 1, k, li, di, const1, fixcl, tol, lim);
+                        method, k, li, di, const1, fixcl, tol, lim);
                     lower =upper;
                     upper=upper^2;
                     if upper>1e+10 % TOCKECK 100000
@@ -1069,25 +1105,58 @@ out = Q;
 % In this case both BarOmega and MaxOmega have been specified
     function Q = OmegaBarOmegaMaxReg(k, PiLow, BarX, betadistrib, ...
             tol, lim, resN, hom, BarOmega, MaxOmega, restrfactor, Display)
-        % OmegaBarOmegaMax = procedure when average and maximum overlap are both specified
+        % OmegaBarOmegaMaxReg procedure when average and maximum overlap are both specified
         %
         %
         %  INPUT parameters
         %
         %       p  : scalar, dimensionality
-        %       k  : scalar, number of components
         %    PiLow : scalar, smallest mixing proportion allowed
-        %   Lbound : scalar, lower bound for uniform hypercube at which mean vectors at simulated
-        %   Ubound : scalar, upper bound for uniform hypercube at which mean vectors at simulated
-        %     emax : scalar, maximum eccentricity
+        % BarX     : p-by-k matrix containing the p dimensional centroids
+        %             of the k groups
+        % betadistrib : structure which specifies the distribution to use
+        %               for each element of the vectors of regression coefficients.
+        %               Once chosen, the distribution together with its parameters
+        %               is fixed for each element of beta, across each group.
+        %                 The following options are admitted for betadistrib:
+        %               NORMAL DISTRIBUTION N(mu, sigma)
+        %                   betadistrib.type='Normal';
+        %                   betadistrib.mu = scalar, containing parameter mu for the
+        %                       distribution of each element of beta across each
+        %                       group. The default value of betadistrib.mu is 0
+        %                   betadistrib.sigma = scalar, containing parameter sigma for
+        %                       the distribution of each element of beta across
+        %                       each group. The default value of betadistrib.sigma
+        %                       is 1
+        %                   UNIFORM DISTRIBUTION U(a, b)
+        %                   > betadistrib.type='Uniform';
+        %                   > betadistrib.a = scalar, containing parameter a for the
+        %                     distribution of each element of beta across each
+        %                     group. The default value of betadistrib.a is 0
+        %                   > betadistrib.b = scalar, containing parameter b for
+        %                     the distribution of each element of beta across
+        %                     each group. The default value of betadistrib.b is 1.
+        %                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
+        %                   > betadistrib.type='HalfNormal';
+        %                   > betadistrib.sigma = scalar containing parameter sigma
+        %                       for the distribution of each element of beta across
+        %                       each group. The default value of betadistrib.sigma
+        %                       is 1
+        %                   USER DISTRIBUTION
+        %                   > betadistribtion.type='User';
+        %                     If betadistribtion.type='User' the user must directly
+        %                     provide the values of the beta coefficients.
+        %                     So, if betadistribtion.type is 'User', we expect there
+        %                     is a field called Beta.
+        %                   > betadistribution.Beta = matrix of size (p-1)-by k
+        %                     (if intercept is present) or p-by-k (if intercept is
+        %                     not present) containing the vectors of regression
+        %                     coefficients for the k groups.
         % tol, lim : parameters for ncx2mixtcdf function which computes the
         %            probabilities of overlapping
         %     resN : scalar, number of resamplings allowed
-        %      sph : scalar, if sph =1 spherical covariance matrices are
-        %            generated
-        %      hom : scalar. If hom =1 equal covariance matrices are
-        %            generated. REMARK: in MM2010 JCGS this routine is
-        %            always called using hom=0
+        %      hom : scalar. If hom =1 equal variances are
+        %            generated.
         % BarOmega : scalar, required average overlap
         % MaxOmega : scalar, required maximum overlap
         %
@@ -1252,10 +1321,10 @@ out = Q;
                         % the fourth input element of FindC is method (in
                         % this case 1 is supplied because maximum overlap
                         % is requested)
-                        % The sixth input element of findC is k. In this
+                        % The fifth input element of findC is k. In this
                         % case k=2 (the two groups which show the highest
                         % overlap)
-                        c=FindC(lower, upper, Malpha, 1, 1, 2, li2, di2, const12, fix2, tol, lim);
+                        c=FindC(lower, upper, Malpha, 1, 2, li2, di2, const12, fix2, tol, lim);
                         
                         if c == 0 % abnormal termination
                             if prnt>=1
@@ -1342,8 +1411,7 @@ out = Q;
                     % method =0 because average overlapping is requested
                     method = 0;
                     Malphain=Malpha;
-                    % FindC(lower, upper, Balpha, method, p, K, li, di, const1, fix, pars, lim, &c, OmegaMap, &Balpha, &Malpha, rcMax);
-                    [c, OmegaMap, Balpha, Malpha, rcMax]=FindC(lower, upper, BarOmega, method, 1, k, li, di, const1, fixcl, tol, lim);
+                    [c, OmegaMap, Balpha, Malpha, rcMax]=FindC(lower, upper, BarOmega, method, k, li, di, const1, fixcl, tol, lim);
                     
                     % If c =0 max number of iterations has been reached
                     % inside findc therefore another simulation is
@@ -1416,26 +1484,58 @@ out = Q;
 
     function Q = OmegaBarOmegaStdReg(k, PiLow, BarX, betadistrib, ...
             tol, lim, resN, hom, BarOmega, StdOmega, restrfactor, Display)
-        
-        % OmegaBarOmegaStd = procedure when average and std of overlap are both specified
+        % OmegaBarOmegaStdReg procedure when average and std of overlap are both specified
         %
         %
         %  INPUT parameters
         %
-        %       p  : scalar, dimensionality
         %       k  : scalar, number of components
         %    PiLow : scalar, smallest mixing proportion allowed
-        %   Lbound : scalar, lower bound for uniform hypercube at which mean vectors at simulated
-        %   Ubound : scalar, upper bound for uniform hypercube at which mean vectors at simulated
-        %     emax : scalar, maximum eccentricity
+        % BarX     : p-by-k matrix containing the p dimensional centroids
+        %             of the k groups
+        % betadistrib : structure which specifies the distribution to use
+        %               for each element of the vectors of regression coefficients.
+        %               Once chosen, the distribution together with its parameters
+        %               is fixed for each element of beta, across each group.
+        %                 The following options are admitted for betadistrib:
+        %               NORMAL DISTRIBUTION N(mu, sigma)
+        %                   betadistrib.type='Normal';
+        %                   betadistrib.mu = scalar, containing parameter mu for the
+        %                       distribution of each element of beta across each
+        %                       group. The default value of betadistrib.mu is 0
+        %                   betadistrib.sigma = scalar, containing parameter sigma for
+        %                       the distribution of each element of beta across
+        %                       each group. The default value of betadistrib.sigma
+        %                       is 1
+        %                   UNIFORM DISTRIBUTION U(a, b)
+        %                   > betadistrib.type='Uniform';
+        %                   > betadistrib.a = scalar, containing parameter a for the
+        %                     distribution of each element of beta across each
+        %                     group. The default value of betadistrib.a is 0
+        %                   > betadistrib.b = scalar, containing parameter b for
+        %                     the distribution of each element of beta across
+        %                     each group. The default value of betadistrib.b is 1.
+        %                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
+        %                   > betadistrib.type='HalfNormal';
+        %                   > betadistrib.sigma = scalar containing parameter sigma
+        %                       for the distribution of each element of beta across
+        %                       each group. The default value of betadistrib.sigma
+        %                       is 1
+        %                   USER DISTRIBUTION
+        %                   > betadistribtion.type='User';
+        %                     If betadistribtion.type='User' the user must directly
+        %                     provide the values of the beta coefficients.
+        %                     So, if betadistribtion.type is 'User', we expect there
+        %                     is a field called Beta.
+        %                   > betadistribution.Beta = matrix of size (p-1)-by k
+        %                     (if intercept is present) or p-by-k (if intercept is
+        %                     not present) containing the vectors of regression
+        %                     coefficients for the k groups.
         % tol, lim : parameters for ncx2mixtcdf function which computes the
         %            probabilities of overlapping
         %     resN : scalar, number of resamplings allowed
-        %      sph : scalar, if sph =1 spherical covariance matrices are
-        %            generated
-        %      hom : scalar. If hom =1 equal covariance matrices are
-        %            generated. REMARK: in MM2010 JCGS this routine is
-        %            always called using hom=0
+        %      hom : scalar. If hom =1 equal variances are
+        %            generated.
         % BarOmega : scalar, required average overlap
         % StdOmega : scalar, required standard deviation of overlap
         %
@@ -1658,10 +1758,10 @@ out = Q;
                         % The fourth input element of FindC is method (in
                         % this case 1 is supplied because maximum overlap
                         % is requested)
-                        % The sixth input element of findC is k. In this
+                        % The fith input element of findC is k. In this
                         % case k=2 (the two groups which show the highest
                         % overlap)
-                        c=FindC(lower, upper, Malpha, 1, 1, 2, li2, di2, const12, fix2, tol, lim);
+                        c=FindC(lower, upper, Malpha, 1, 2, li2, di2, const12, fix2, tol, lim);
                         
                         if c == 0 && prnt >=1 % abnormal termination
                             disp(['Warning: the desired overlap cannot be reached in simulation '  num2str(isamp)]);
@@ -1740,10 +1840,10 @@ out = Q;
                         method = 0;
                         % Malphain=Malpha;
                         % FindC(lower, upper, Balpha, method, p, K, li, di, const1, fix, pars, lim, &c, OmegaMap, &Balpha, &Malpha, rcMax);
-                        [c, OmegaMap, Balpha, Malpha, rcMax]=FindC(lower, upper, BarOmega, method, 1, k, li, di, const1, fixcl, tol, lim);
+                        [c, OmegaMap, Balpha, Malpha, rcMax]=FindC(lower, upper, BarOmega, method, k, li, di, const1, fixcl, tol, lim);
                         
                         % If c =0 max number of iterations has been reached
-                        % inside findc therefore another simulation is
+                        % inside Findc therefore another simulation is
                         % requested
                         if c==0 % || abs(Malphain-Malpha)>1*tolmap
                             if Erho1<10 &&  prnt >=1
@@ -1896,16 +1996,52 @@ out = Q;
         % genMu generates vector of length k containing the k centroids or matrix of means of size k-by-p
         %
         %  Required input arguments:
-        %               k - number of components
-        %          Lbound - lower bound for the hypercube
-        %          Ubound - upper bound for the hypercube
-        %            BarX - matrix of length p-by-k containing the means of the
-        %                   p explanatory variables for the k regression
-        %                   hyperplanes
-        %
+        %           k : number of components
+        %        BarX : p-by-k matrix containing the means of the
+        %               p explanatory variables for the k regression
+        %               hyperplanes
+        % betadistrib : structure which specifies the distribution to use
+        %               for each element of the vectors of regression coefficients.
+        %               Once chosen, the distribution together with its parameters
+        %               is fixed for each element of beta, across each group.
+        %                 The following options are admitted for betadistrib:
+        %               NORMAL DISTRIBUTION N(mu, sigma)
+        %                   betadistrib.type='Normal';
+        %                   betadistrib.mu = scalar, containing parameter mu for the
+        %                       distribution of each element of beta across each
+        %                       group. The default value of betadistrib.mu is 0
+        %                   betadistrib.sigma = scalar, containing parameter sigma for
+        %                       the distribution of each element of beta across
+        %                       each group. The default value of betadistrib.sigma
+        %                       is 1
+        %                   UNIFORM DISTRIBUTION U(a, b)
+        %                   > betadistrib.type='Uniform';
+        %                   > betadistrib.a = scalar, containing parameter a for the
+        %                     distribution of each element of beta across each
+        %                     group. The default value of betadistrib.a is 0
+        %                   > betadistrib.b = scalar, containing parameter b for
+        %                     the distribution of each element of beta across
+        %                     each group. The default value of betadistrib.b is 1.
+        %                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
+        %                   > betadistrib.type='HalfNormal';
+        %                   > betadistrib.sigma = scalar containing parameter sigma
+        %                       for the distribution of each element of beta across
+        %                       each group. The default value of betadistrib.sigma
+        %                       is 1
+        %                   USER DISTRIBUTION
+        %                   > betadistribtion.type='User';
+        %                     If betadistribtion.type='User' the user must directly
+        %                     provide the values of the beta coefficients.
+        %                     So, if betadistribtion.type is 'User', we expect there
+        %                     is a field called Beta.
+        %                   > betadistribution.Beta = matrix of size (p-1)-by k
+        %                     (if intercept is present) or p-by-k (if intercept is
+        %                     not present) containing the vectors of regression
+        %                     coefficients for the k groups.  %
         %  OUTPUT parameters
-        % 		Mugen - k-by-p vector of means
-        %       Beta - matrix of size p-by-k containing regression
+        % 		Mugen : vector of length k containing
+        %               \overline x_1'*\beta_1, \overline x_2'*\beta_2, ..., \overline x_k'*\beta_k
+        %       Beta  : matrix of size p-by-k containing regression
         %               coefficients associated to the k hyperplanes
         
         
@@ -1924,29 +2060,14 @@ out = Q;
             error('Possible values for option betadistrib are ''Normal'' ''Uniform'' ''Halfnormal'' and ''User'' ')
         end
         
-        % Find BarX depending on the distribution of X
-        % Please note that X range may vary from group to group
-        
-        %                     if find(strcmp('intercept',fXdistrib))
-        %                 a=find(strcmp('intercept',fXdistrib));
-        %                 if a==1
-        %                     intercept=Xdistrib.intercept;
-        %                 else
-        %                     intercept=0;
-        %                 end
-        %
-        %             else
-        %                 intercept=1;
-        %     end
-        
         Mugen=   sum(Beta.*BarX,1)';
         % Mugen is vector of length k which contains
         % Mugen = \overline x_1'*\beta_1, \overline x_2'*\beta_2, ..., \overline x_k'*\beta_k
     end
 
 
-    function  [c, OmegaMap2, BarOmega2, MaxOmega2, rcMax]=FindC(lower, upper, Omega, method, v, k, li, di, const1, fix, tol, lim)
-        %find multiplier c to be applied to the cov matrices in the
+    function  [c, OmegaMap2, BarOmega2, MaxOmega2, rcMax]=FindC(lower, upper, Omega, method, k, li, di, const1, fix, tol, lim)
+        %find multiplier c to be applied to the variances in the
         %interval [lower upper] in order to reach the required average or
         %maximum overlap
         %
@@ -1957,7 +2078,6 @@ out = Q;
         % Omega : scalar, associated with maximum or average overlapping requested
         % method : scalar which specifies whether average (method=0) or maximum
         %          overlap is requested
-        %     v  : dimensionality
         %     k  : number of components
         % li, di, const1 : parameters needed for computing overlap,
         %          precalculated using routine ComputePars
@@ -2013,7 +2133,7 @@ out = Q;
             
             c = (lower + upper) / 2.0;
             
-            [OmegaMap2, BarOmega2, MaxOmega2, rcMax]=GetOmegaMap(c, v, k, li, di, const1, fix, tolncx2, lim, asympt);
+            [OmegaMap2, BarOmega2, MaxOmega2, rcMax]=GetOmegaMap(c, 1, k, li, di, const1, fix, tolncx2, lim, asympt);
             
             if method == 0 % in this case average overlap is requested
                 

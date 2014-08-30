@@ -96,13 +96,16 @@ asympt=0;
 % Compute standard deviation of overlap
 % extract elements outside the diagonal in a vector
 cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
-overlapv=cand(:);
-overlapv=overlapv(overlapv>0);
-if length(overlapv)<0.5*k*(k-1);
-    overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
-else
-    overlapc=overlapv;
-end
-% Compute standard deviation of probabilities of overlapping
-StdOmega=std(overlapc);
+
+% overlapv=cand(:);
+% overlapv=overlapv(overlapv>0);
+% if length(overlapv)<0.5*k*(k-1);
+%     overlapc=[overlapv; zeros(0.5*k*(k-1)-length(overlapv),1)];
+% else
+%     overlapc=overlapv;
+% end
+% % Compute standard deviation of probabilities of overlapping
+% StdOmega=std(overlapc);
+
+StdOmega=std(triu2vec(cand,1));
 end

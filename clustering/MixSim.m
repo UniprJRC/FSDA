@@ -468,7 +468,7 @@ end
 % Get in vector indabovediag the linear indices of the elements above
 % diagonal in a matrix of size k-by-k. This will be necessary to compute the
 % starndard deviation of overlapping
-indabovediag=Upmat2vec(k);
+indabovediag=triu2vec(k,1);
 
 if method == 0 || method == 1 || method == 1.5
     emax=ecc;
