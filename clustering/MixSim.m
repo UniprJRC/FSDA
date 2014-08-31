@@ -65,7 +65,7 @@ function [out]  = MixSim(k,v,varargin)
 %  restrfactor: scalar in the interval [1 \infty] which specifies the
 %               maximum ratio to allow between the largest eigenvalue and
 %               the smallest eigenvalue of the k covariance matrices which
-%               are generated. More in details if for example
+%               are generated. The default value is ''. More in details if for example
 %               restrfactor=10 after generating the covariance matrices we
 %               check that the ratio
 %               \[
@@ -74,7 +74,7 @@ function [out]  = MixSim(k,v,varargin)
 %               between the largest eigenvalue of the k cov matrices
 %               and the smallest eigenvalue of the k cov matrices is not
 %               larger than restrfactor. In order to apply this restriction
-%               (which is typical of tclust.m we call routine restreigen.m)
+%               (which is typical of tclust.m) we call routine restreigen.m
 %       PiLow : scalar, value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
 %               taken; PiLow = 1.0 implies equal proportions by default).
