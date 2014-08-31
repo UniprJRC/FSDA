@@ -78,7 +78,8 @@ function [out]  = MixSim(k,v,varargin)
 %       PiLow : scalar, value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
 %               taken; PiLow = 1.0 implies equal proportions by default).
-%               PiLow must be a number in the interval (0 1]
+%               PiLow must be a number in the interval (0 1]. Default value
+%               0.
 %         int : mean vectors are simulated uniformly on a hypercube with
 %               sides specified by int = [lower.bound, upper.bound].
 %               The default value of int is [0 1]
