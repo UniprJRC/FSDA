@@ -109,7 +109,7 @@ function [out]  = MixSimReg(k,p,varargin)
 %                   The other fields of Xdistrib depend on the distribution
 %                   which is chosen.
 %                 NORMAL DISTRIBUTION N(mu, sigma)
-%                 > Xdistrib.type = 'normal';
+%                 > Xdistrib.type = 'Normal';
 %                 > Xdistrib.mu   = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters mu
@@ -121,7 +121,7 @@ function [out]  = MixSimReg(k,p,varargin)
 %                       sigma for each explanatory variable and each group.
 %                       The default value of Xdistrib.sigma is ones(p-1,k).
 %                 UNIFORM DISTRIBUTION U(a, b)
-%                 > Xdistrib.type ='uniform';
+%                 > Xdistrib.type ='Uniform';
 %                 > Xdistrib.a    = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters
@@ -135,7 +135,7 @@ function [out]  = MixSimReg(k,p,varargin)
 %                       and each group. The default value of Xdistrib.b is
 %                       ones(p-1, k).
 %                 HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-%                 > Xdistrib.type='halfnormal';
+%                 > Xdistrib.type='HalfNormal';
 %                 > Xdistrib.sigma = matrix of size (p-1)-by-k if
 %                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)
 %                   containing the parameters sigma for each explanatory variable
@@ -728,7 +728,7 @@ if isstruct(betadistrib)
 else
     betadistrib=struct;
     betadistrib.type='Normal';
-    betadistrib.mu=1;
+    betadistrib.mu=0;
     betadistrib.sigma=1;
 end
 

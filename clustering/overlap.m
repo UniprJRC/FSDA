@@ -16,7 +16,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %  Optional input arguments:
 %
 %  tol : tolerance (default is 1e-06)
-%  lim : scalar = maximum number of integration terms (default is 100000)
+%  lim : scalar = maximum number of integration terms (default is 1000000)
 %               REMARK: Optional parameters tol and lim will be used by
 %               function ncx2mixtcdf.m which computes the cdf of a linear
 %               combination of non central chi2 r.v.. This is the
@@ -80,7 +80,7 @@ if nargin<5
     error('error: not all input terms have been supplied')
 end
 if nargin==6
-    lim=100000;
+    lim=1e06;
 end
 if nargin ==5
     tol=1e-6;
