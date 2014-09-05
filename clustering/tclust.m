@@ -132,7 +132,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y.
 %               As default nocheck=0.
-%      startv1: scalar. If startv is 1 than initial
+%      startv1: scalar. If startv is 1 then initial
 %               centroids and and covariance matrices are based on (v+1)
 %               observations randomly chosen, else each centroid is
 %               initialized taking a random row of input data matrix and
@@ -200,7 +200,13 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %            out.BIC  : BIC
 %          out.fullsol: column vector of size nsamp which contains the
 %                       value of the objective function for each
-%                       suabsample.
+%                       subsample.
+%
+%  Optional Output:
+%
+%            C     : matrix of size nsamp-by-(v+1)*k containing (in the
+%                    rows) the indices of the subsamples extracted for
+%                    computing the estimate
 %
 % See also tkmeans, estepFS.m
 %

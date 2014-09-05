@@ -20,7 +20,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %               REMARK: Optional parameters tol and lim will be used by
 %               function ncx2mixtcdf.m which computes the cdf of a linear
 %               combination of non central chi2 r.v.. This is the
-%               probability of overlapping.
+%               probability of misclassification.
 %
 % OUTPUT
 %
@@ -72,6 +72,16 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
     k=3;
     p=4;
     [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax]=overlap(k,p,pigen,Mu,S)
+
+    disp('OmegaMap= k-by-k matrix which contains misclassification probabilities')
+    disp(OmegaMap);
+    disp('Average overlap')
+    disp(BarOmega)
+    disp('Maximum overlap')
+    disp(MaxOmega)
+    disp('Groups with maximum overlap')
+    disp(rcMax)
+
 %}
 
 %% Beginning of code

@@ -36,7 +36,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %            from the spectral decomposition of matrix \Sigma_j|i  . Vector
 %            di(i,j,:) contains the coefficients of N(0,1) (called W_l in
 %            equation 2.2 of Maitra and Melnikov (2010), JCGS)
-%    const1: k-by-k matrix whise element i,j with i=1,..., k and j=1, ..., k
+%    const1: k-by-k matrix whose element i,j with i=1,..., k and j=1, ..., k
 %            is equal to log((Pi(j)/Pi(i))^2 * detS(i)/detS(j))
 %            where detS(i) and detS(j) are, respectively, the
 %            determinants of the covariance matrices of groups i and j. See
@@ -58,7 +58,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %               function ncx2mixtcdf.m which computes the cdf of a linear
 %               combination of non central chi2 r.v.. This is the
 %               probability of overlapping
-%   asympt : flag for regular or asymptotic overlap. If asypmt ==1 formula
+%   asympt : flag for regular or asymptotic overlap. If asympt ==1 formula
 %            of asymptotic overlap is used (see p. 359, paragraph starting
 %            with step 3 of Maitra and Melnikov, 2010, JCGS). In this case
 %            the misclassification probability \omega_j|i (that is with
@@ -74,13 +74,14 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %     toll : scalar, tolerance use to declare the eigenvalues of matrix
 %           \Sigma_j|i equal to 1. The default value is 1e-06
-%           Background: the probability of overlapping is the output of two
+%           Background: the probability of overlapping is the result of two
 %           sums. The first is a sum in correspondence of the eigenvalues
 %           of matrix \Sigma_j|i not equal 1. The second is a sum in
 %           correspondence of the eigenvalues of matrix \Sigma_j|i equal 1.
 %           Similarly, what is on the right hand side of the probability of
-%           overlapping as two sums. toll specifies when we must consider an
-%           eigenvalue equal to 1.
+%           overlapping has two sums (for eigenvalues equal or different
+%           from 1). Toll specifies when we must consider an eigenvalue
+%           equal to 1.
 %
 %  Output:
 %
@@ -117,7 +118,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
     % the groups
     S=zeros(p,p,k);
     for j=1:k
-        S(:,:,j)=eye(p);
+        S(:,:,j)=cov(randn(p+10,p));
     end
 
     [li, di, const1]=ComputePars(p, k, Pi, Mu, S);
@@ -129,7 +130,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
     lim=1e+07;
     [OmegaMap,  BarOmega, MaxOmega, rcMax] = ...
         GetOmegaMap(c, p, k, li, di, const1, fixcl, tol, lim, asympt);
-    disp('Omegamap= k-by-k matrix which will contain misclassification probabilities')
+    disp('Omegamap= k-by-k matrix which contains misclassification probabilities')
     disp(OmegaMap);
     disp('Average overlap')
     disp(BarOmega)

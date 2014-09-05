@@ -5,7 +5,9 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %   restreigen restricts the eigenvalues according to the constraint
 %   specified in scalar restr. This function is called in every
-%   concentration step of function tclust
+%   concentration step of function tclust and can also be used inside
+%   function MixSim to generate groups with a prespecified level of
+%   overlapping
 %
 %  Required input arguments:
 %
@@ -64,16 +66,24 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 % Examples:
 %
 %{
-    % Suppose matrix eigenvalues is 3-by-4
-    % that is there are four groups and the number of variables is equal to 3
-    % First column of matrix eigenvalues contains the eigenvalues of the first group
-    % Second column of matrix eigenvalues contains the eigenvalues of the second group
-    % Thrid column of matrix eigenvalues contains the eigenvalues of the third group
-    % Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group
-    eigenvalues=abs(randn(3,4));
-    % niini is the vector containing the sizes of the 4 groups
-    niini=[30;40;20;10];
-    restreigen(eigenvalues,niini,1.1)
+   % Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
+   % First column of matrix eigenvalues contains the eigenvalues of the first group
+   % Second column of matrix eigenvalues contains the eigenvalues of the second group
+   % Thrid column of matrix eigenvalues contains the eigenvalues of the third group
+   % Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group
+   rng(10,'twister')
+   eigenvalues=abs(10*randn(3,4));
+   % niini is the vector containing the sizes of the 4 groups
+   niini=[30;40;20;10];
+   out=restreigen(eigenvalues,niini,1.1)
+   disp('Input matrix of unrestricted eigenvalues')
+   disp(eigenvalues)
+   disp('Output matrix of restricted eigenvalues')
+   disp(out)
+   disp('Ratio between largest and smallest unrestricted eigenvalues')
+   disp(max(max(eigenvalues))/min(min(eigenvalues)))
+   disp('Ratio between largest and smallest restricted eigenvalues')
+   disp(max(max(out))/min(min(out)))
 %}
 %
 %

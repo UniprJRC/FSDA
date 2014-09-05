@@ -103,7 +103,8 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %{
     % Evaluate the cdf of the sum of two chi2 r.v. with degrees of freedom
     % 5 and 4 and coefficients of the linear combination 2 and 3 and non
-    % centrality parameters 1 and 6
+    % centrality parameters 1 and 6. Evaluate the cdf in a series of values
+    % of x and plot the output
     df=[5;4];
     lb=[2;3];
     nc=[1;6];
@@ -116,6 +117,8 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
         ij=ij+1;
     end
     plot(xx',cdfnc)
+    xlabel('x')
+    ylabel('cdf of the mixture of non central X2')
 %}
 
 %{
