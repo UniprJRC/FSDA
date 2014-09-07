@@ -49,14 +49,16 @@ width="100%">
 <h1 class="reftitle">ncx2mixtcdf</h1>
 <p></p>
 
-<p class="purpose">Cumulative distribution function (cdf) of a linear combination of non-central chi-squares&nbsp; (+ \sigma * N(0,1))</p>
+<p class="purpose">Cumulative distribution function (cdf) of a linear combination of non-central chi-squares&nbsp; (+ 
+σ&nbsp; * N(0,1))</p>
 <p>More precisely, given Q =&nbsp; &lambda;<sub>1</sub> X<sup>2</sup><sub>1</sub> 
 (n<sub>1</sub>, nc<sub>1</sub>)+&lambda;<sub>2</sub> 
 X<sup>2</sup><sub>2</sub> (n<sub>2</sub>, nc<sub>2</sub>)+ ... + &lambda;<sub>k</sub> X<sup>2</sup> <sub>k</sub> 
-(n<sub>k</sub>, nc<sub>k</sub>)+&sigma; N(0,1), where λ<sub>i</sub> 
+(n<sub>k</sub>, nc<sub>k</sub>)+σ N(0,1), where 
 X<sup>2</sup><sub>i</sub> (n<sub>i</sub>, nc<sub>i</sub>) i=1, 2, ..., k are k 
 non central chi squared random variables, with non centrality parameters nc<sub>1</sub>, 
-..., nc<sub>k</sub> and degrees of freedom n<sub>1</sub>, ..., n<sub>k</sub>
+..., nc<sub>k</sub> and degrees of freedom n<sub>1</sub>, ..., n<sub>k</sub> and 
+λ<sub>i</sub>&nbsp; are real numbers
 and N(0,1) is  a standard normal random variable, the purpose of this routine is to compute 
 F<sub>Q</sub>(c | df, nc) = P(Q &lt; c) , that is the cdf of Q evaluated at c</p>
 
@@ -74,7 +76,7 @@ p=ncx2mixtcdf(c,n,lb,nc,sigma,lim,tol) <br>
 chi-square cdf at value c, </p>
 
 <p>&nbsp;</p>
-<p><tt> ncx2mixtcdf </tt> admits the following inputs</p>
+<p><tt> ncx2mixtcdf requires</tt> the following inputs</p>
 
 <p>&nbsp;</p>
 
@@ -141,7 +143,7 @@ tolrance of the requested output</p>
 			which informs about output of the procedure <br>ifault=0 everything 
 			went OK <br>ifault=1 required accuracy not achieved <br>ifault=2 
 			round-off error possibly significant <br>ifault=3 invalid parameters 
-			(df or non centr parameters <br>smaller than 0 or lmin=lmax=sigma=0)
+			(df or non centr parameters smaller than 0 or lmin=lmax=sigma=0)
 			<br>ifault=4 unable to locate integration parameters&nbsp; </p></td>
 	</tr>
 
@@ -152,7 +154,7 @@ tolrance of the requested output</p>
 
 
 <p>  &nbsp;</p>
-<p>&nbsp;Davies (1973), Numerical inversion of a characteristic function, vol. 
+<p>Davies (1973), Numerical inversion of a characteristic function, vol. 
 60, Biometrika, pp. 415-417<br><br>Davies (1980), The distribution of a linear 
 combination of&nbsp; X<sup>2</sup> Random variables, Applied Statistics vol. pp. 
 323-333</p>
