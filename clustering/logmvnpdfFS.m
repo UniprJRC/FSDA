@@ -3,12 +3,12 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
 %
 % This function is a much faster version than (log of) Matlab function mvnpdf
 %
-%   Y = logmvnpdfFS(X,Mu,Sigma) returns the log-density of the multivariate normal
-%   distribution with mean MU and covariance SIGMA, evaluated at each row
+%   y = logmvnpdfFS(X,Mu,Sigma) returns the log-density of the multivariate normal
+%   distribution with mean Mu and covariance Sigma, evaluated at each row
 %   of X. This sintax uses matlab function bsxfun to compute
 %   the deviations form the means and no mex function
 %
-%   Y = logmvnpdfFS(X,Mu,Sigma,X0,eyed,n,d) must be used if logmvnpdfFS is
+%   y = logmvnpdfFS(X,Mu,Sigma,X0,eyed,n,d) must be used if logmvnpdfFS is
 %   repeatedly called. This sintax uses to compute the deviations from the
 %   means a mex function obtained using C code DfM.c
 %   In this case X0 is another matrix of the same size
@@ -134,10 +134,12 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
         plot(nn(aa:bb)',ttFSnoMex(aa:bb,ij),'r');
 
         if ij==1
-            title(['v=' num2str(vv(ij)) 'version' a])
+            title(['v (number of variables)=' num2str(vv(ij)) ' version' a])
         else
             title(['v=' num2str(vv(ij))])
         end
+        ylabel('Seconds')
+        xlabel('Number of observations')
         if ij==4
             legend('mvnpdf','FS+mex','FS','location','NorthWest')
         end
@@ -211,10 +213,12 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
         plot(nn(aa:bb)',ttFSnoMex(aa:bb,ij),'r');
 
         if ij==1
-            title(['v=' num2str(vv(ij)) 'version' a])
+            title(['v (number of variables) =' num2str(vv(ij)) ' version' a])
         else
             title(['v=' num2str(vv(ij))])
         end
+        xlabel('Number of observations')
+        ylabel('Seconds')
 
         if ij==4
             legend('mvnpdf','FS+mex','FS','location','NorthWest')
@@ -228,12 +232,13 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
 
 
 %
-%   See mvnpdf
+% See also mvnpdf
 %
-%   Note as X/Sigma ~ X*inv(Sigma) ~ mrdivide(X,Sigma) are equivalent.
 
 
 %% Beginning  of code.
+
+%   Note that X/Sigma ~ X*inv(Sigma) ~ mrdivide(X,Sigma) are equivalent.
 
 if nargin==3
     % Deviations from Mu using Matlab function bsxfun.

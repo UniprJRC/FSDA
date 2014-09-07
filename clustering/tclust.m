@@ -45,8 +45,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               default is to extract all subsets, otherwise just 300
 %               If nsamp is a matrix it contains in the rows the indexes of
 %               the subsets which have to be extracted. nsamp in this case
-%               can be conviently generated  by function subsets. nsamp can
-%               have k columns of k*(v+1) columns. If nsamp has k columns
+%               can be conveniently generated  by function subsets. nsamp can
+%               have k columns or k*(v+1) columns. If nsamp has k columns
 %               the k initial centroids each iteration i are given by
 %               X(nsamp(i,:),:) and the covariance matrices are equal to the
 %               identity.
@@ -246,7 +246,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     Y=load('geyser2.txt');
     out=tclust(Y,3,0.1,10000,'plots',1)
     out=tclust(Y,3,0.1,10,'nsamp',100,'refsteps',10,'plots',1)
-    % k-means solution restrfactor=1
+    % trimmed k-means solution restrfactor=1
     out=tclust(Y,3,0.1,1,'nsamp',100,'refsteps',20,'plots',1)
 %}
 
