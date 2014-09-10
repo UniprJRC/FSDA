@@ -131,7 +131,7 @@ function y=triu2vec(A,k)
 if isscalar(A) && rem(A,1) == 0
     r=A;
     sizeA=[r, r];
-elseif ismatrix(A)
+elseif ismatrix(A) && ~isscalar(A) 
     [r,c]=size(A);
     sizeA=[r,c];
     if r ~= c
