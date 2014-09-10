@@ -387,6 +387,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     %   Example of the use of option databrush
     %   (brushing is done only once using a rectangular selection tool)
     levfwdplot(out,'databrush',1)
@@ -399,13 +400,15 @@ function plotopt=levfwdplot(out,varargin)
 %
 %
 %{
-    %   Example of the use of brush using selection with circular tool
+    % Interactive example
+    % Example of the use of brush using selection with circular tool
     databrush=struct;
     databrush.selectionmode='Brush';
     levfwdplot(out,'databrush',databrush)
 %}
 %
 %{
+    % Interactive example
     %   Example of the use of brush using lasso selection tool and fleur
     %   pointer
     databrush=struct;
@@ -415,6 +418,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     %   Example of the use of rectangular brush with superimposed labels
     %   for the brushed units and persistent labels in the plot which has
     %   been brushed
@@ -430,6 +434,7 @@ function plotopt=levfwdplot(out,varargin)
 %   (that is brushing can be done multiple times)
 %
 %{
+    % Interactive example
     %   Example of the use of persistent non cumulative brush. Every time a
     %   brushing action is performed previous highlightments are removed
     databrush=struct;
@@ -441,6 +446,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     %   Example of the use of persistent cumulative brush. Every time a
     %   brushing action is performed current highlightments are added to
     %   previous highlightments
@@ -453,6 +459,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     %   The same as before, but also fit one ols line to each selected group
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -464,6 +471,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     %   The same but now fit a single ols line to all data.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -475,6 +483,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     %   The same but now fit a first ols line to all data and a second line
     %   on the group of observations which remain unselected.
     databrush=struct;
@@ -487,6 +496,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     %   The same but now fit a single ols line to the group with index 4.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -498,6 +508,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     %   The same but now add the line mean(y)+Ci*Xi.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -509,6 +520,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     % Example of use of option databrush suboptions multivarfit 2, persist on
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
@@ -529,6 +541,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive example
     % Fidelity cards data
     XX=load('loyalty.txt');
     namey='Sales'

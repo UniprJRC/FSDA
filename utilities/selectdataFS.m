@@ -237,6 +237,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %  (oval) brush, return the indices of those points selected. (Remark: user
 %  interaction on the plot will be necessary.)
 %{
+   % Interactive example
    x = 0:.1:1;
    y = x.^2;
    plot(x,y,'o')
@@ -244,41 +245,47 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %}
 %
 %
-%  Select a single point with the mouse, then delete that
-%  selected point from the plot.
 %{
+    % Interactive example
+    %  Select a single point with the mouse, then delete that
+    %  selected point from the plot.
     pl = selectdataFS('selectionmode','closest','action','delete');
 %}
-%  Select some points using a rect(rbbox) tool, also return the (x,y)
-%  coordinates from multiple curves plotted. Use shortened versions of the
-%  properties and values.
 %
 %{
+    % Interactive example
+    %  Select some points using a rect(rbbox) tool, also return the (x,y)
+    %  coordinates from multiple curves plotted. Use shortened versions of the
+    %  properties and values.
     n=10;
     plot(rand(n,2),rand(n,2),'o')
     [pl,xs,ys] = selectdataFS('sel','lasso');
 %}
 %
 %{
+    % Interactive example
     n=10;
     plot(rand(n,2),rand(n,2),'o')
     [pl,xs,ys] = selectdataFS('selectionmode','brush','Brushsize',0.25);
 %}
 %
 %{
+    % Interactive example
     n=10;
     plot(rand(n,2),rand(n,2),'o')
     [pl,xs,ys] = selectdataFS('selectionmode','Closest')
 %}
 %
 %{
-    [pl,xs,ys] = selectdataFS('selectionmode','Rect')
+   % Interactive example
+   [pl,xs,ys] = selectdataFS('selectionmode','Rect')
 %}
 %
-%  Plot a curve and some data points on one plot, select some points from
-%  the data plotted, but ignore the smooth curve, even if the lasso passes
-%  over it.
 %{
+   % Interactive example
+   %  Plot a curve and some data points on one plot, select some points from
+   %  the data plotted, but ignore the smooth curve, even if the lasso passes
+   %  over it.
    x = 0:.01:1;
    y = exp(x);
    ynoisy = y + randn(size(y))/2;
