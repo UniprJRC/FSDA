@@ -44,14 +44,16 @@ function rhoHYP = HYPrho(u, cktuning)
 %
 %	It is necessary to have 0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1
 %
+% See also TBrho, HArho, OPTrho
 %
 % References:
 %
-%
-% Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),
+% Hampel F.R., Rousseeuw P.J. and Ronchetti E. (1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
+% Riani M., Cerioli A., Atkinson A.C., Perrotta D.  (2014). Monitoring
+% Robust Regression. Electronic Journal of Statistics, Vol. 8 pp.  646–677
 %
 % Copyright 2008-2014.
 % Written by FSDA team

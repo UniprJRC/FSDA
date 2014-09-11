@@ -1,7 +1,7 @@
 function rhoHA = HArho(u, ctuning,varargin)
 %HArho computes rho function  using Hampel proposal
 %
-%<a href="matlab: docsearch('HArho')">Link to the help function</a>
+%<a href="matlab: docsearch('harho')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -49,6 +49,7 @@ function rhoHA = HArho(u, ctuning,varargin)
 %	It is necessary to have 0 <= a <= b <= c
 %
 %
+% See also HYPrho, Tbrho, OPTrho
 %
 %
 % References:

@@ -322,6 +322,8 @@ else
 end
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
+% [H,AX,BigAx] = gplotmatrix(Y(:,2:end),Y(:,1),group,clr(unigroup),charsym,siz,doleg,'hist',nameY(2:end),nameY(1));
+
 % The third dimension of H distinguishes the groups. If there are no groups
 % then ndims(H) = 2.
 if ndims(H) == 3

@@ -237,7 +237,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %  (oval) brush, return the indices of those points selected. (Remark: user
 %  interaction on the plot will be necessary.)
 %{
-   % Interactive example
+   % Interactive_example
    x = 0:.1:1;
    y = x.^2;
    plot(x,y,'o')
@@ -246,14 +246,14 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %
 %
 %{
-    % Interactive example
+    % Interactive_example
     %  Select a single point with the mouse, then delete that
     %  selected point from the plot.
     pl = selectdataFS('selectionmode','closest','action','delete');
 %}
 %
 %{
-    % Interactive example
+    % Interactive_example
     %  Select some points using a rect(rbbox) tool, also return the (x,y)
     %  coordinates from multiple curves plotted. Use shortened versions of the
     %  properties and values.
@@ -263,26 +263,26 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %}
 %
 %{
-    % Interactive example
+    % Interactive_example
     n=10;
     plot(rand(n,2),rand(n,2),'o')
     [pl,xs,ys] = selectdataFS('selectionmode','brush','Brushsize',0.25);
 %}
 %
 %{
-    % Interactive example
+    % Interactive_example
     n=10;
     plot(rand(n,2),rand(n,2),'o')
     [pl,xs,ys] = selectdataFS('selectionmode','Closest')
 %}
 %
 %{
-   % Interactive example
+   % Interactive_example
    [pl,xs,ys] = selectdataFS('selectionmode','Rect')
 %}
 %
 %{
-   % Interactive example
+   % Interactive_example
    %  Plot a curve and some data points on one plot, select some points from
    %  the data plotted, but ignore the smooth curve, even if the lasso passes
    %  over it.

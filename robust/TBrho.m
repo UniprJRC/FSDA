@@ -26,12 +26,15 @@ function rhoTB = TBrho(u,c)
 % Remark: equation (2.37) is written in standardized terms in such a way
 % that \rho(c)=1, so it is the previous expression divided by (c^2/6)
 %
+% See also HYPrho, HArho, OPTrho
 %
 % References:
 %
-% ``Robust Statistics, Theory and Methods'' by Maronna, Martin and Yohai;
-% Wiley 2006.
-%
+% Maronna R., Martin D. and yohai V.J. (2006) ``Robust Statistics, Theory and
+% Methods'', Wiley, New York, 
+% Riani M., Cerioli A., Torti F. (2014). On consistency factors and
+% efficiency of robust S-estimators TEST, Volume 23, Issue 2, pp 356-387.
+% DOI: 10.1007/s11749-014-0357-7
 %
 % Copyright 2008-2014.
 % Written by FSDA team

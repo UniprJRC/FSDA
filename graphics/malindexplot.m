@@ -133,7 +133,7 @@ function malindexplot(md,v,varargin)
 
 
 %{
-    % Interactive example
+    % Interactive_example
     %   Index plot Mahalanobis distance with databrush option
     n=200;
     v=3;
@@ -148,7 +148,7 @@ function malindexplot(md,v,varargin)
 %}
 
 %{
-    % Interactive example
+    % Interactive_example
     %   Index plot Mahalanobis distance with personalized databrush option
     n=200;
     v=3;

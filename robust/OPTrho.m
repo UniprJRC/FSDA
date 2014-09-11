@@ -26,16 +26,27 @@ function rhoOPT=OPTrho(x, c)
 %               |
 %               |   1                                                                      |x|>3c                              
 %
-%
 % References:
 %
-%  Remark: Yohai and Zamar (1988)  showed that the \rho function given above
+%  Remark: Yohai and Zamar (1997)  showed that the \rho function given above
 %  is optimal in the following highly desirable sense: the final M estimate
 %  has a breakdown point of one-half and minimizes the maximum bias under
 %  contamination distributions (locally for small fraction of
 %  contamination), subject to achieving a desidered nominal asymptotic
 %  efficiency when the data are Gaussian.
 %
+% See also HYPrho, HArho, TBrho
+%
+% References:
+%
+% MARONNA R., MARTIN D. AND YOHAI V.J. (2006) ``Robust Statistics, Theory and
+% Methods'', Wiley, New York, 
+% RIANI M., CERIOLI A., TORTI F. (2014). On consistency factors and
+% efficiency of robust S-estimators TEST, Volume 23, Issue 2, pp. 356-387.
+% DOI: 10.1007/s11749-014-0357-7
+% YOHAI V.J., ZAMAR R.H. (1997) Optimal locally robust M-estimates of
+% regression. J Plan Stat Inference 64, pp. 309– 323
+
 % Copyright 2008-2014.
 % Written by FSDA team
 %
