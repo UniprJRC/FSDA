@@ -131,7 +131,7 @@ end
 % the same of the Xi extracted here. As a consequence, the observations
 % identified by "group=1" may not be equivalent to (Xigood ygood).
 
-% verMatlab=verLessThan('matlab','8.4.0');
+verMatlab=verLessThan('matlab','8.4.0');
 if verMatlab
     H = NaN(1,nAX,ngroups);
 else
