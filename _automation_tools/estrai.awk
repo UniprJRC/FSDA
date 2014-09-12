@@ -20,17 +20,24 @@ END {
 }
 
 /^%{/ {
-	trovato=1;
-	num++;
-    nomefile=sprintf ("EXAMPLES_test/%s_ex%d.m",nome[1],num) ;
-    print nomefile ;
-    print "%% Extracted from " tok[p] > nomefile ;	
 
-	/* BEGIN_TEST_CLASS */
-    print "function test_" nome[1] "_ex" num "(testCase)" >> classFileName;	
-	/* END_TEST_CLASS */
+	if ((getline tmp) > 0) {
+	    if (index(tmp, "Interactive_example") > 0) {
+		    print "Interactive example found. Skipping...";
+		} else {
+			trovato=1;
+			num++;
+			nomefile=sprintf ("EXAMPLES_test/%s_ex%d.m",nome[1],num) ;
+			print nomefile ;
+			print "%% Extracted from " tok[p] > nomefile ;	
+
+			/* BEGIN_TEST_CLASS */
+			print "function test_" nome[1] "_ex" num "(testCase)" >> classFileName;	
+			/* END_TEST_CLASS */		
+		}
+	}
 	
-	getline
+	getline 
 }
 
 /^%}/ {
