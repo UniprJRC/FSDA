@@ -23,7 +23,7 @@ fi
 
 cat list_matlab_func |while read func_file
 do
-	awk -f /cygdrive/c/Temp/estrai.awk $func_file
+	awk -f ./estrai.awk $func_file
 done
 
 rm list_matlab_func
