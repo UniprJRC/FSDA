@@ -116,10 +116,10 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
     <tr valign="top">
       <td><p class="auto-style1"><tt>c</tt></p>
       </td>
-      <td><p>scalar, inflation parameter for covariance matrices. In the case
-        of heterogeneous clusters, scalar c is used to correct li(i,j) and
+      <td>scalar, inflation parameter for covariance matrices. In the case of
+        heterogeneous clusters, scalar c is used to correct li(i,j) and
         const1(i,j). <br>
-        More precisely when hom=0 <br>
+        More precisely when hom=0: <br>
         if fix(i)=0 di(i,j,:)=di(i,j,:)/c<sup>0.5</sup> (because di(i,j,:)=Γ
         (c Σ<sub>i</sub>)<sup>-0.5</sup>(μ<sub>i</sub>-μ<sub>j</sub>) where
         Gamma is the matrix of eigenvectors of  Σ<sub>j|i</sub> =
@@ -128,15 +128,17 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
         if fix(i)=0 and fix(j)=1 li(i,j,:)=c li(i,j,:), <br>
         const1(i,j)=const1(i,j)+v log(c) (because the eigenvalues of matrix
         Σ<sub>j|i</sub> = (c<sup>0.5</sup> Σ<sub>i</sub><sup>0.5</sup>)
-        Σ_j<sup>-1</sup> (c<sup>0.5</sup> Σ<sub>i</sub><sup>0.5</sup>) are
-        multiplied by c. Similarly log |cΣ<sub>i</sub>|= c*log(v) + log
-        |Σ<sub>i</sub>| <br>
+        Σ<sub>j</sub><sup>-1</sup> (c<sup>0.5</sup>
+        Σ<sub>i</sub><sup>0.5</sup>) are multiplied by c. Similarly log
+        |cΣ<sub>i</sub>|= c*log(v) + log |Σ<sub>i</sub>| <br>
         if fix(i)=0 and fix(j)=0 li and const1 are not changed because
         Σ<sub>j|i</sub>=(c<sup>0.5</sup> Σ<sub>i</sub><sup>0.5</sup>) (c
-        Σ_j) <sup>-1</sup> (c<sup>0.5</sup> Σ<sub>i</sub><sup>0.5</sup>)
-        const1(i,j)=log((Pi(j)/Pi(i))^2 * c detS(i)/(c detS(j))) remain
-        unaltered</p>
-      </td>
+        Σ<sub>j</sub>) <sup>-1</sup> (c<sup>0.5</sup>
+        Σ<sub>i</sub><sup>0.5</sup>) const1(i,j)=log((Pi(j)/Pi(i))^2 * c
+        detS(i)/(c detS(j))) remain unaltered. Following the symbolism at the
+        beginning of Section 'description', the last term can be reformulated
+        as follows: const1(i,j)=log((π<sub>j</sub>/π<sub>i</sub>)<sup>2</sup>
+        * c |Σ<sub>i</sub>|/|(c Σ<sub>j</sub>)|).</td>
     </tr>
     <tr valign="top">
       <td><p><tt>v</tt></p>
@@ -168,7 +170,7 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
         Σ<sup>0.5</sup><sub>i</sub> Σ<sup>-1</sup><sub>j
         </sub>Σ<sup>0.5</sup><sub>i</sub> . Remark: li(i,j,:)-1 are the
         coefficients of the linear combinations of non central chi^2
-        distribution which is used to compute the probability of overlapping
+        distribution which is used to compute the probability of overlapping.
         The non centrality parameter of the non central chi^2 distribution
         associated with li(i,j,l)-1 is (li(i,j,l)
         di(i,j,l)/(li(i,j,l)-1))<sup>2</sup></p>
@@ -179,10 +181,10 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
       </td>
       <td><p>3D array of size k-by-k-by-p di(i,j,l)=γ<sub>l</sub> '
         Σ<sub>i</sub><sup>-0.5</sup>(μ<sub>i</sub>-μ<sub>j</sub>)l=1, 2,
-        ...,v, whereγ<sub>l</sub> is the l-th eigenvector coming from the
-        spectral decomposition of matrix Σ<sub>j|i</sub> . Vector di(i,j,:)
-        contains the coefficients of N(0,1) (called W_l in equation 2.2 of
-        Maitra and Melnikov (2010), JCGS)</p>
+        ...,v, where γ<sub>l</sub> is the l-th eigenvector coming from the
+        spectral decomposition of matrix Σ<sub>j|i</sub>. Vector di(i,j,:)
+        contains the coefficients of N(0,1) (called W<sub>l</sub> in equation
+        2.2 of Maitra and Melnikov (2010), JCGS)</p>
       </td>
     </tr>
     <tr valign="top">
@@ -211,12 +213,11 @@ multiplied by c.</p>
     <tr>
       <td style="width: 349px"><p><tt>fix</tt></p>
       </td>
-      <td><p>vector of length k containing zeros or ones<br>
+      <td><p>vector of length k containing zeros or ones.<br>
         if fix(j) =1 cluster j does not participate to inflation or deflation.
-        If fix=zeros(k,1) all clusters participate in<br>
-        inflation/deflation <br>
-        REMARK: this parameter is used just if heterogeneous clusters<br>
-        are used</p>
+        If fix=zeros(k,1) all clusters participate in inflation/deflation. <br>
+        REMARK: this parameter is used just if heterogeneous clusters are
+        used.</p>
       </td>
     </tr>
   </tbody>
@@ -240,17 +241,6 @@ misclassification</p>
     </tr>
     <tr>
       <td style="width: 339px"><p><tt>lim</tt></p>
-      </td>
-      <td><p>3D array of size k-by-k-by-p di(i,j,l)=γ<sub>l</sub> '
-        Σ<sub>i</sub><sup>-0.5</sup>(μ<sub>i</sub>-μ<sub>j</sub>) l=1, 2,
-        ...,v, whereγ<sub>l</sub> is the l-th eigenvector coming from the
-        spectral decomposition of matrix Σ<sub>j|i</sub> . Vector di(i,j,:)
-        contains the coefficients of N(0,1) (called W_l in equation 2.2 of
-        Maitra and Melnikov (2010), JCGS)</p>
-      </td>
-    </tr>
-    <tr valign="top">
-      <td style="width: 339px"><p><tt>const1</tt></p>
       </td>
       <td><p>maximum number of integration terms default is 1e06.</p>
       </td>
@@ -292,7 +282,7 @@ misclassification</p>
   </tbody>
 </table>
 
-<p>  Background: the probability of overlapping is the result of two sums. The
+<p>Background: the probability of overlapping is the result of two sums. The
 first is a sum in correspondence of the eigenvalues of matrix  Σ<sub>j|i
 </sub>not equal 1. The second is a sum in correspondence of the eigenvalues of
 matrix  Σ<sub>j|i </sub> equal 1. Similarly, what is on the right hand side
@@ -326,12 +316,12 @@ const1, fix, tol, lim, asympt)</tt> returns the following information </p>
     overlap. BarOmega is computed as <br>
     (sum(sum(OmegaMap))-k)/(0.5*k(k-1)) </li>
   <li><tt><a name="MaxOmega">MaxOmega</a></tt> − scalar. Value of average
-    overlap.  MaxOmega is the<br>
-     maximum of OmegaMap(i,j)+OmegaMap(j,i). In other words MaxOmega=<br>
-     OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))</li>
+    overlap.  MaxOmega is the  maximum of OmegaMap(i,j)+OmegaMap(j,i). In
+    other words
+    MaxOmega=OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1)).</li>
   <li><p><tt>rcMax</tt> − vector of length 2. It containes the row and column
-    numbers associated with the pair of components<br>
-    producing maximum overlap 'MaxOmega'</p>
+    numbers associated with the pair of components producing maximum overlap
+    'MaxOmega'.</p>
   </li>
 </ul>
 
@@ -341,52 +331,67 @@ const1, fix, tol, lim, asympt)</tt> returns the following information </p>
 
 <h3>Example 1</h3>
 
-<p>Finding exact overlap for the Iris data. Group 1 is far from groups 2 and 3.
-The overlap between groups 2 and 3 is large</p>
- 
-<pre class="programlisting">     load fisheriris;                                                        
-    Y=meas;                                                                 
-    Mu=grpstats(Y,species);                                                 
-                                                                            
-    S=zeros(4,4,3);                                                         
-    S(:,:,1)=cov(Y(1:50,:));                                                
-    S(:,:,2)=cov(Y(51:100,:));                                              
-    S(:,:,3)=cov(Y(101:150,:));                                             
-                                                                            
-    pigen=ones(3,1)/3;                                                      
-    k=3;                                                                    
-    p=4;                                                                    
-    [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax]=overlap(k,p,pigen,Mu,S)    
-    disp('Omegamap= k-by-k matrix which contains misclassification probabilities')
-    disp(OmegaMap);
-    disp('Average overlap')
-    disp(BarOmega)
-    disp('Maximum overlap')
-    disp(MaxOmega)
-    disp('Groups with maximum overlap')
-    disp(rcMax)</pre>
+<p>Example with 4 groups of which groups 2 and 3 are very well separated.</p>
 
-<p> </p>
+<p>  </p>
+<pre class="programlisting">k=4; % Number of groups
+p=5; % Number of dimensions
+Pi=[0.1 0.2 0.4 0.3]; % mixing proportions
+% Mu matrix of means of size k-by-p; (each row is a distinct centroid)
+Mu=randn(k,p);
+% Groups 2 and 3 is far from the other groups
+Mu(2:3,:)=Mu(2:3,:)+10;
+% S= 3D array of dimension p-by-p-by-k containing covariance matrices of the groups
+S=zeros(p,p,k);
+for j=1:k
+  S(:,:,j)=cov(randn(p+10,p));
+end
+[li, di, const1]=ComputePars(p, k, Pi, Mu, S);
+asympt = 0;
+c = 1;
+fixcl=zeros(k,1);
+tol=1e-8;
+lim=1e+07;
+[OmegaMap, BarOmega, MaxOmega, rcMax] = GetOmegaMap(c, p, k, li, di, const1, fixcl, tol, lim, asympt);
+disp('Omegamap= k-by-k matrix which contains misclassification probabilities')
+disp(OmegaMap);
+disp('Average overlap')
+disp(BarOmega)
+disp('Maximum overlap')
+disp(MaxOmega)
+disp('Groups with maximum overlap')
+disp(rcMax) 
 
-<p>The output of this example is as follows</p>
-<pre>OmegaMap= k-by-k matrix which contains misclassification probabilities
-    1.0000    0.0000         0
-    0.0000    1.0000    0.0230
-         0    0.0263    1.0000</pre>
-<pre>Average overlap
-    0.0164</pre>
-<pre>Maximum overlap
-    0.0493</pre>
-<pre>Groups with maximum overlap
+Output:
+&gt;&gt; disp('Omegamap= k-by-k matrix which contains misclassification probabilities')
+Omegamap= k-by-k matrix which contains misclassification probabilities
+&gt;&gt; disp(OmegaMap);
+    1.0000         0         0    0.0442
+         0    1.0000    0.2738         0
+         0    0.0889    1.0000         0
+    0.0267         0         0    1.0000
+&gt;&gt; disp('Average overlap')
+Average overlap
+&gt;&gt; disp(BarOmega)
+    0.0723
+&gt;&gt; disp('Maximum overlap')
+Maximum overlap
+&gt;&gt; disp(MaxOmega)
+    0.3627
+&gt;&gt; disp(rcMax)
      2
-     3</pre>
+     3
+</pre>
 
 <p> </p>
+
+
+
+
 
 <h3>See Also</h3>
-
-<p><tt><a href="mixsim.html">MixSim</a></tt>,<tt><a
-href="simdataset.html">simdataset</a></tt> </p>
+<tt><a href="mixsim.html">MixSim</tt></a>,
+<a href="simdataset.html">simdataset</tt></a> 
 
 <table border="0" cellpadding="0" cellspacing="0" class="feedbacklinkbot"
 width="100%">

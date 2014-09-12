@@ -79,7 +79,7 @@ the same size of X, eyed is an identity matrix of size length(Mu), n is a
 scalar associated to the number of rows of X and d is a scalar associated with
 the number of columns of X. </p>
 
-<p>The details are as follows: In order to compute the kernel of the quadratic
+<p>The details are as follows: in order to compute the kernel of the quadratic
 form at the exponent logmvnpdfFS creates an identity of size length(Mu) and
 similarly needs to compute length(Mu). These two quantites can be precalculated
 and supplied as input parameters. If logmvnpdfFS has to be called thousands of
@@ -103,8 +103,7 @@ mvnpdf</p>
      mu = [1 -1]; Sigma = [.9 .4; .4 .3];
      y = logmvnpdfFS(X, mu, Sigma);
      y1=log(mvnpdf(X,mu,Sigma));
-     max(abs(y-y1))
-     % 2.842e-14</pre>
+     max(abs(y-y1))</pre>
 
 <p></p>
 
@@ -212,8 +211,7 @@ logmvnpdfFS with mex function and logmvnpdfFS without mex function </p>
         end
     end
 
-    hold off;
-</pre>
+    hold off;</pre>
 
 <p><img alt="" src="images_help/img12.jpg"></p>
 
@@ -298,8 +296,7 @@ logmvnpdfFS with mex function and logmvnpdfFS without mex function </p>
 
     end
 
-    hold off;
-</pre>
+    hold off;</pre>
 
 <p> </p>
 

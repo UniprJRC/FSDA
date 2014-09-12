@@ -125,7 +125,7 @@ constraint: </p>
       </td>
     </tr>
     <tr valign="top">
-      <td><p><tt>nini</tt></p>
+      <td><p><tt>niini</tt></p>
       </td>
       <td><p>k x 1 vector containing the size of the k clusters</p>
       </td>
@@ -189,7 +189,7 @@ http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf</p>
 
 <p class="auto-style1">Impose the constraint that the ratio between largest and
 smallest eigenvalue is not greater than 1.1</p>
- 
+  
 <pre class="programlisting">    % Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
    % First column of matrix eigenvalues contains the eigenvalues of the first group
    % Second column of matrix eigenvalues contains the eigenvalues of the second group
@@ -207,8 +207,7 @@ smallest eigenvalue is not greater than 1.1</p>
    disp('Ratio between largest and smallest unrestricted eigenvalues')
    disp(max(max(eigenvalues))/min(min(eigenvalues)))
    disp('Ratio between largest and smallest restricted eigenvalues')
-   disp(max(max(out))/min(min(out)))
-</pre>
+   disp(max(max(out))/min(min(out)))</pre>
 <pre>Input matrix of unrestricted eigenvalues
     6.4581   11.1831   11.6942    7.3428
    14.6513    0.0504    5.8652    6.9930

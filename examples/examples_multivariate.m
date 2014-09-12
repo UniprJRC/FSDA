@@ -2,6 +2,7 @@
 
 
 %% HD (Heads data) analysis using univariate boxplots
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 cnames=head.colnames;
@@ -26,6 +27,7 @@ for j=1:v;
 end
 
 %% HD (Heads data) analysis using S and MM estimators
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 [n,v]=size(Y);
@@ -46,6 +48,7 @@ ylabel('MM estimator')
 
 
 %% HD (Heads data) -- Forward EDA (Exploratory Data Analysis):
+clearvars;close all;
 % scatterplot of data: one point looks outlying
 load('head.mat');
 Y=head.data;
@@ -57,6 +60,7 @@ set(findall(gcf,'Type','text'),'HorizontalAlignment','Right','rotation',45,'Inte
 
 %% HD qqplot based on quantiles of beta distribution
 % compare the output with Figure 1.2, p.9 or ARC(2004)
+clearvars;close all;
 figure;
 load('head.mat');
 Y=head.data;
@@ -87,6 +91,7 @@ line(xplo,Yband(:,nsimul*quant),'color','g');
 
 %% HD Preliminary analysis based on robust bivariate ellipses and minMD
 % Figure 3.2
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 [fre]=unibiv(Y,'plots',1,'textlab',1,'rf',0.999);
@@ -99,6 +104,7 @@ bs=fre(1:size(Y,2),1);
 [out]=FSMeda(Y,bs,'plots',1,'init',60); %#ok<*NASGU>
 
 %% HD Plot of max MD and gap
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 
@@ -129,6 +135,7 @@ set(h,'FontSize',14);
 
 
 %% HD persistent brushing from the malfwdplot (scaled distances)
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 [fre]=unibiv(Y,'rf',0.75);
@@ -149,6 +156,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selection
 malfwdplot(out,'databrush',databrush);
 
 %% HD: EDA monitoring of the estimated correlation matrix
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 Y1=zscore(Y);
@@ -168,6 +176,7 @@ set(plot1,{'Line'},slintyp(1:v1));
 
 %% HD: analysis of transformations
 % FS based on untransformed data H_0:\lambda=1 for all variables
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 % Monitoring of likelihood ratio test
@@ -175,6 +184,7 @@ Y=head.data;
 [out]=FSMtra(Y,'plotslrt',1);
 
 %% HD: analysis of transformations
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 % FS based on untransformed data H_0:\lambda=1 for variable 4
@@ -184,6 +194,7 @@ Y=head.data;
 
 
 %% HD: confirmation of transformation
+clearvars;close all;
 % Compare the output with Figure 4.15 p. 174 of ARC (2004)
 load('head.mat');
 Y=head.data;
@@ -195,6 +206,7 @@ plotslrt.xlim=[110 200];
 
 %% HD: confirmation of transformation
 % Compare the output with Figure 4.65 p. 222 of ARC (2004)
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 n=size(Y,1);
@@ -202,6 +214,7 @@ n=size(Y,1);
 
 
 %% HD: random starts
+clearvars;close all;
 load('head.mat');
 Y=head.data;
 [n,v]=size(Y);
@@ -234,6 +247,7 @@ xlabel('Subset size m');
 
 
 %% TR: (Track records): spm
+clearvars;close all;
 close all;
 load('recordfg');
 Y=recordfg.data;
@@ -242,6 +256,7 @@ gplotmatrix(Y);
 
 %% TR: qqplot of MD based on the beta distribution
 % compare the output with Figure 1.2, p.9 or ARC(2004)
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 [n,v]=size(Y);
@@ -272,6 +287,7 @@ line(xplo,Yband(:,nsimul*quant),'color','g');
 
 %% TR: Forward EDA
 % Preliminary analysis based on robust bivariate ellipses
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 [fre]=unibiv(Y);
@@ -284,6 +300,7 @@ bs=fre(1:size(Y,2),1);
 
 %% TR: plot of scaled Mahalanobis distances
 % compare with Figure 3.12 p. 100
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 [fre]=unibiv(Y);
@@ -298,6 +315,7 @@ standard.Color={'b';'g';'c';'m';'y';'k'};  % different colors for different stan
 malfwdplot(out,'standard',standard);
 
 %% TR: plot of max and mth distance
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 [fre]=unibiv(Y);
@@ -325,12 +343,14 @@ h=legend('gap','(m+1)th ordered MD - (m)th ordered MD','Location','NorthWest');
 set(h,'FontSize',14);
 
 %% TR: automatic outlier detection procedure on original data
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 FSM(Y)
 
 
 %% TR: analysis using S and MM estimators
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 [n,v]=size(Y);
@@ -352,6 +372,7 @@ ylabel('MM estimator')
 
 %% TR: analysis of transformations
 % Track records
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 n=size(Y,1);
@@ -372,6 +393,7 @@ end
 
 %% TR: analysis of transformations
 % Track records
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 n=size(Y,1);
@@ -407,9 +429,10 @@ end
 %% TR: confirmation of transformations
 % confirmatory search
 % Compare the plot with Figure 4.51 p. 208 of ARC (2004)
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
-n=size(Y,1);
+[n , v]=size(Y);
 Y1=repmat(max(Y),n,1);
 Y=Y./Y1;
 % FS based on with H_0:\lambda=-3 for all variables
@@ -421,6 +444,7 @@ laAround=-4:0;
 
 
 %% TR transformed: parallel coordinates plot
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
@@ -430,6 +454,7 @@ group([14 33 55 36])=2;
 parallelcoords(Y,'LineWidth',1.5,'Standardize','on','Group',group)
 
 %% TR transformed: malfwdplot
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
@@ -446,6 +471,7 @@ standard.Color={'b';'g';'c';'m';'y';'k'};  % different colors for different stan
 malfwdplot(out,'standard',standard);
 
 %% TR transformed: spm
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
@@ -454,6 +480,7 @@ cnames=recordfg.colnames;
 gplotmatrix(Y,[],[],[],[],[],[],[],cnames);
 
 %% TR transformed: plot of max inside and min outside
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
@@ -483,12 +510,14 @@ set(h,'FontSize',14);
 
 
 %% TR transformed: automatic outlier detection procedure (part I)
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
 FSM(Y,'init',40)
 
 %% TR transformed: automatic outlier detection procedure (part II)
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
@@ -496,6 +525,7 @@ FSM(Y)
 
 
 %% TR transformed: random starts
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
@@ -528,6 +558,7 @@ line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
 %% TR transformed: analysis using S and MM estimators
+clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
@@ -548,6 +579,7 @@ malindexplot(outMM,v,'h',h2,'conflev',conflev);
 ylabel('MM estimator') 
 
 %% SB: (Swiss banknotes) Forward EDA minMD
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 group=ones(200,1);
@@ -556,6 +588,7 @@ spmplot(Y,group)
 
 
 %% SB: (Swiss banknotes) Forward EDA minMD
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 [fre]=unibiv(Y);
@@ -567,6 +600,7 @@ mmdplot(out,'mplus1',1);
 
 %% SB: Forward EDA malfwdplot
 % Create figure 3.28 p.117 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 [fre]=unibiv(Y);
@@ -579,6 +613,7 @@ malfwdplot(out,'fground',fground);
 
 %% SB: Forward EDA gapplot
 % Create figure 3.29 p.117 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 [fre]=unibiv(Y);
@@ -592,6 +627,7 @@ h=legend('min outside - max inside','(m+1)th ordered MD - mth ordered MD','Locat
 set(h,'FontSize',14);
 
 %% SB:  analysis using S and MM estimators
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 [n,v]=size(Y);
@@ -613,6 +649,7 @@ ylabel('MM estimator')
 
 %% SB: Forward EDA gapplot starting with the first 20 obs (geniune notes)
 % Create figure 3.31 p.118 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 % start in the group of geniune notes
@@ -626,6 +663,7 @@ set(h,'FontSize',14);
 
 %% SB: Forward EDA gapplot starting with the obs 101:120 (forged notes)
 % Create figure 3.36 p.124 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 % start in the group of forgeries
@@ -639,6 +677,7 @@ set(h,'FontSize',14);
 
 %% SB: monitoring of MD starting in the genuine group
 % Create figure 3.30 p.118 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 % start in the group of geniune notes
@@ -648,6 +687,7 @@ malfwdplot(out);
 
 %% SB: monitoring of MD starting in the group of forged notes
 % Create figure 3.35 p.123 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 % start in the group of geniune notes
@@ -658,6 +698,7 @@ fground.flabstep='';
 malfwdplot(out,'fground',fground);
 
 %% SB: Forward EDA compare scaled and unscaled MD
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 fground=struct;
@@ -673,6 +714,7 @@ malfwdplot(outsc,'tag','scaled','fground',fground);
 malfwdplot(out,'tag','unscaled','fground',fground);
 
 %% SB: random starts
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 [n,v]=size(Y);
@@ -707,6 +749,7 @@ xlabel('Subset size m');
 
 %% SB (genuine notes): Forward EDA malfwdplot
 % Create figure 3.41 p.129 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=Y(1:100,:);
@@ -718,6 +761,7 @@ malfwdplot(out);
 
 %% SB (genuine notes): Forward EDA maxMDplot
 % Create figure 3.41 p.129 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=Y(1:100,:);
@@ -734,6 +778,7 @@ set(h,'FontSize',14);
 
 %% SB (genuine notes): elements of cov
 % Create figure 3.43 p. 130 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 % if corr=1 it is possible to monitor the elements of the correlation
@@ -771,6 +816,7 @@ text(S2cov(end,1)*ones(v1,1),S2cov(end,2:end)',lab)
 
 %% SB (genuine notes): univariate boxplots
 % Create figure 3.44 p.129 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=zscore(Y(1:100,:));
@@ -797,12 +843,14 @@ end
 
 %% SB (genuine notes): automatic outlier detection procedure
 % Create figure 3.41 p.129 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=Y(1:100,:);
 [out]=FSM(Y);
 
 %% SB:  analysis using S and MM estimators
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=Y(1:100,:);
@@ -826,6 +874,7 @@ ylabel('MM estimator')
 
 %% SB (forged notes): elements of cov
 % Create figure 3.43 p. 130 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 % if corr=1 it is possible to monitor the elements of the correlation
@@ -857,6 +906,7 @@ set(plot1,{'Line'},slintyp(1:v1));
 
 %% SB (forged notes): Forward EDA malfwdplot
 % Create figure 3.46 p.132 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=Y(101:200,:);
@@ -868,6 +918,7 @@ malfwdplot(out);
 
 %% SB (forged notes): automatic outlier detection procedure
 % Create figure 3.41 p.129 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=Y(101:200,:);
@@ -875,6 +926,7 @@ Y=Y(101:200,:);
 
 %% SB (forged notes): univariate boxplots
 % Create figure 3.50 p.135 of ARC 2004
+clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=zscore(Y(101:200,:));
@@ -903,6 +955,7 @@ end
 
 %% C2: two overlapping clusters
 % This dataset has been used in Atkinson and Riani (2007)
+clearvars;close all;
 Y=load('clus2over.txt');
 [n,v]=size(Y);
 group=ones(n,1);
@@ -911,6 +964,7 @@ spmplot(Y,group);
 % compare the output with Figure 4 of Atkinson and Riani (2007)
 
 %%  C2:  analysis using S and MM estimators
+clearvars;close all;
 Y=load('clus2over.txt');
 [n,v]=size(Y);
 
@@ -932,6 +986,7 @@ ylabel('MM estimator')
 
 
 %% C2: random starts
+clearvars;close all;
 Y=load('clus2over.txt');
 [n,v]=size(Y);
 
@@ -965,10 +1020,12 @@ xlabel('Subset size m');
 %% OF: Old Faithful data
 % Plot of the data
 % This dataset has been used in Atkinson and Riani (2007)
+clearvars;close all;
 Y = load('geyser.txt');
 plot(Y(:,1),Y(:,2),'o')
 
 %% OF: Old Faithful data
+clearvars;close all;
 Y = load('geyser.txt');
 plot(Y(:,1),Y(:,2),'o')
 
@@ -1002,6 +1059,7 @@ xlabel('Subset size m');
 % compare the output with Figure 5 of Atkinson and Riani (2007)
 
 %% OF: analysis using S and MM estimators
+clearvars;close all;
 Y = load('geyser.txt');
 plot(Y(:,1),Y(:,2),'o')
 
@@ -1022,6 +1080,7 @@ ylabel('MM estimator')
 
 
 %% 6080 data
+clearvars;close all;
 Y=load('sixty_eighty.txt');
 [fre]=unibiv(Y,'plots',1,'textlab',1,'rf',0.5);
 fre=sortrows(fre,4);
@@ -1032,6 +1091,7 @@ bs=fre(1:init,1);
 malfwdplot(out,'databrush',1);
 
 %% 6080 data (random starts)
+clearvars;close all;
 Y=load('sixty_eighty.txt');
 
 [n,v]=size(Y);
@@ -1063,6 +1123,7 @@ line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
 %% 6080 data: analysis using S and MM estimators
+clearvars;close all;
 Y=load('sixty_eighty.txt');
 plot(Y(:,1),Y(:,2),'o')
 [n,v]=size(Y);
@@ -1084,6 +1145,7 @@ ylabel('MM estimator')
 
 
 %% 3C 3 clusters 2 outliers
+clearvars;close all;
 Y=load('three_clust_2outl.txt');
 [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
 fre=sortrows(fre,4);
@@ -1098,6 +1160,7 @@ malfwdplot(out,'databrush',databrush);
 %% 3C 3 clusters 2 outliers (random starts)
 % Plot of the data
 % This dataset has been used in Atkinson and Riani (2007)
+clearvars;close all;
 Y=load('three_clust_2outl.txt');
 % plot(Y(:,1),Y(:,2),'o')
 
@@ -1130,6 +1193,7 @@ line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
 %% BD bridge data
+clearvars;close all;
 Y=load('databri.txt');
 [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
 fre=sortrows(fre,4);
@@ -1143,6 +1207,7 @@ malfwdplot(out,'databrush',databrush);
 
 %% BD bridge data (random starts)
 % Plot of the data
+clearvars;close all;
 Y=load('databri.txt');
 % plot(Y(:,1),Y(:,2),'o')
 
@@ -1176,6 +1241,7 @@ xlabel('Subset size m');
 
 
 %% FD Financial data
+clearvars;close all;
 Y=load('fondi.txt');
 [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
 fre=sortrows(fre,4);
@@ -1189,6 +1255,7 @@ malfwdplot(out,'databrush',databrush);
 
 %% FD Financial data (random starts)
 % Plot of the data
+clearvars;close all;
 Y=load('fondi.txt');
 % plot(Y(:,1),Y(:,2),'o')
 
@@ -1222,6 +1289,7 @@ xlabel('Subset size m');
 
 
 %% FD: analysis using S and MM estimators 
+clearvars;close all;
 % Plot of the data
 Y=load('fondi.txt');
 plot(Y(:,1),Y(:,2),'o')
@@ -1244,6 +1312,7 @@ ylabel('MM estimator')
 
 
 %% DD Diabetes data
+clearvars;close all;
 Y=load('diabetes.txt');
 [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
 fre=sortrows(fre,4);
@@ -1256,6 +1325,7 @@ databrush.persist='on';
 malfwdplot(out,'databrush',databrush);
 
 %% DD Diabetes data (random starts)
+clearvars;close all;
 % Plot of the data
 Y=load('diabetes.txt');
 
@@ -1288,6 +1358,7 @@ line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
 %% MU Mussels data (Untransformed) -- Forward EDA (Exploratory Data Analysis):
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 v=size(Y,2);
@@ -1300,6 +1371,7 @@ standard.ylim=[0 8];
 malfwdplot(out,'standard',standard);
 
 %% MU Mussels data (Untransformed) -- Forward EDA (Exploratory Data Analysis):
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 v=size(Y,2);
@@ -1312,11 +1384,13 @@ standard.ylim=[0 8];
 mmdplot(out);
 
 %% MU: automatic outlier detection procedure on original data
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 FSM(Y)
 
 %% MU Mussels data analysis of transformations
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 % FS based on with H_0:\lambda=[1 0.5 1 0 1/3]
@@ -1326,6 +1400,7 @@ Y=mussels.data;
 
 
 %% MU transformed: plot of MD
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 la=[0.5 0 0.5 0 0];
@@ -1339,6 +1414,7 @@ malfwdplot(out);
 
 
 %% MU transformed: plot of mmd
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 la=[0.5 0 0.5 0 0];
@@ -1353,6 +1429,7 @@ mmdplot(out);
 
 
 %% MU comparison of mmd for untransformed and transformed data
+clearvars;close all;
 close all;
 load('mussels.mat');
 Y=mussels.data;
@@ -1375,6 +1452,7 @@ mmdplot(out);
 
 
 %% MU transformed: automatic outlier detection procedure
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 la=[0.5 0 0.5 0 0];
@@ -1383,6 +1461,7 @@ Y=normBoxCox(Y,1:v,la);
 FSM(Y,'plots',2)
 
 %% MU transformed with la=[1/3 1/3 1/3 0 0] automatic outlier detection procedure
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 la=[1/3 1/3 1/3 0 0];
@@ -1391,6 +1470,7 @@ Y=normBoxCox(Y,1:v,la);
 FSM(Y,'plots',2)
 
 %% MU transformed random starts
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 la=[0.5 0 0.5 0 0];
@@ -1426,6 +1506,7 @@ xlabel('Subset size m')
 
 
 %% MU transformed: S and MM estimators
+clearvars;close all;
 load('mussels.mat');
 Y=mussels.data;
 la=[1/3 1/3 1/3 0 0];

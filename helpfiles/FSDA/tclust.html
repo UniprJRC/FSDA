@@ -123,10 +123,10 @@ class="zptmcm7m-x-x-74">j</span></sub><span
 class="zptmcm7m-">,Σ</span><sub><span
 class="zptmcm7m-x-x-74">j</span></sub><span class="zptmcm7t-">) </span>where
 <span class="zptmcm7m-">μ</span><sub><span
-class="zptmcm7m-x-x-74">j</span></sub> is the population mean and <span
-class="zptmcm7m-">Σ</span><sub><span class="zptmcm7m-x-x-74">j</span></sub> is
-the covariance matrix for component <span class="zptmcm7m-">j</span>. This
-leads to likelihoods of the form </p>
+class="zptmcm7m-x-x-74">j</span></sub> and <span
+class="zptmcm7m-">Σ</span><sub><span class="zptmcm7m-x-x-74">j</span></sub>
+are respectively the mean and covariance matrix for component <span
+class="zptmcm7m-">j</span>. This leads to likelihoods of the form </p>
 
 <table style="width: 100%;">
   <tbody>
@@ -255,9 +255,9 @@ class="zptmcm7t-">= 0 </span>and <span class="zptmcm7m-">π</span><span
 class="zptmcm7y-">′</span><sub><span class="zptmcm7m-x-x-74">j</span></sub>
 <span class="zptmcm7t-">= 1 </span>in equation (<a
 href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>) and <span
-class="zptmcm7m-">c </span><span class="zptmcm7t-">= 1 </span>in equation (<a
-href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>). The idea of trimming
-under the eigenvalue constraint ratio of equation (<a
+class="zptmcm7m-">restr </span><span class="zptmcm7t-">= 1 </span>in
+equation (<a href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>). The idea of
+trimming under the eigenvalue constraint ratio of equation (<a
 href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>) can also be applied in the
 context of the mixture likelihood (see option <tt><a href="#mixt">mixt</a></tt>
 below) given in equation (<a href="#x1-1001r1">1<!--tex4ht:ref: mixlik --></a>)
@@ -341,12 +341,11 @@ href="#nsamp">nsamp</a> has to be increased. </p>
     <tr valign="top">
       <td><p><tt>Y</tt></p>
       </td>
-      <td><p><tt>Y</tt> matrix of size <i>n</i>-by-<i>v</i> containing (in the
-        columns) the variables of the dataset. Rows of Y represent
-        observations, and columns represent variables. Missing values (NaN's)
-        and infinite values (Inf's) are allowed, since observations (rows) with
-        missing or infinite values will automatically be excluded from the
-        computations. </p>
+      <td><p><tt>Y</tt> matrix of size <i>n</i>-by-<i>v</i>. Rows of Y
+        represent observations, and columns represent variables. Missing values
+        (NaN's) and infinite values (Inf's) are allowed, since observations
+        (rows) with missing or infinite values will automatically be excluded
+        from the computations. </p>
       </td>
     </tr>
     <tr>
@@ -358,11 +357,11 @@ href="#nsamp">nsamp</a> has to be increased. </p>
     <tr valign="top">
       <td style="height: 98px"><p><tt><a name="alpha_">alpha</a> </tt></p>
       </td>
-      <td style="height: 98px"><p>Scalar (real) between 0 and 0.5 or an integer
-        specifying the number of observations which have to be trimmed. If
-        <tt>alpha</tt>=0 tclust reduces to traditional model based or mixture
-        clustering (mclust): see Matlab function gmdistribution. More in
-        detail, if 0&lt; <tt>alpha</tt> &lt;0.5 clustering is based on
+      <td style="height: 98px"><p>Scalar (real) generally between 0 and 0.5 or
+        an integer specifying the number of observations which have to be
+        trimmed. If <tt>alpha</tt>=0 tclust reduces to traditional model based
+        or mixture clustering (mclust): see Matlab function gmdistribution.
+        More in detail, if 0&lt; <tt>alpha</tt> &lt;0.5 clustering is based on
         h=fix(n*(1-alpha)) observations. Else if alpha is an integer greater
         than 1 clustering is based on h=n-floor(alpha); </p>
       </td>
@@ -393,7 +392,7 @@ the following information</p>
         integer numbers from 1 to k. 0 indicates trimmed observations. </p>
       </li>
       <li><p><tt>muopt</tt> − <tt>k</tt>-by-<tt>v</tt> matrix containing
-        cluster centroid locations. These are robust estimate of final
+        cluster centroid locations. These are robust estimates of final
         centroids of the groups. </p>
       </li>
       <li><p><tt>sigmaopt</tt> − <tt>v</tt>-by-<tt>v</tt>-by-<tt>k</tt> array
@@ -401,7 +400,7 @@ the following information</p>
         </p>
       </li>
       <li><p><tt>bs</tt> − <tt>k</tt>-by-1 vector containing the units
-        forming initial subset associated with muopt </p>
+        forming initial subset associated with <tt>muopt</tt>.
       </li>
       <li><tt>post</tt> − <tt>n</tt>-by-<tt>v</tt> matrix containing
         posterior probabilities. out.post(i,j) contains posterior probabilitiy
@@ -648,7 +647,7 @@ www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</p>
 <h3>Example 1</h3>
 
 <p class="auto-style1">tclust applied to geyser data</p>
- 
+  
 <pre class="programlisting"> % tclust using geyser data
 Y=load('geyser2.txt');
 out=tclust(Y,3,0.1,10000,'plots',1)</pre>

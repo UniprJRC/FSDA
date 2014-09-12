@@ -1,6 +1,7 @@
 %examples_regression shows a series of analysis of regression datasets 
 
 %% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
+clearvars;close all;
 % scatterplot of data: one point looks outlying 
 load('forbes.txt');
 y=forbes(:,2);
@@ -31,6 +32,7 @@ resfwdplot(out,'databrush',databrush);
 
 %% FD (Forbes data) -- EDA and Analysis using S estimators 
 % scatterplot of data: one point looks outlying 
+clearvars;close all;
 load('forbes.txt');
 y=forbes(:,2);
 X=forbes(:,1);
@@ -61,7 +63,7 @@ resindexplot(out,'databrush',databrush);
 
 
 %% MR: (Multiple regression data): Forward EDA with default options for resfwdplot 
-close all;
+clearvars;close all;
 
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -82,7 +84,7 @@ resfwdplot(out1);
 cascade;
 
 %% MR: (Multiple regression data): S estimators with 2 values of breakdown point 
-close all;
+clearvars;close all;
 
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -112,7 +114,7 @@ cascade;
 
 
 %% MR: (Multiple regression data): MM estimators with 2 values of efficiency 
-close all;
+clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -140,6 +142,7 @@ cascade;
 
 %% MR: Forward EDA with personalized options for resfwdplot 
 % Options for the "standard trajectories"
+clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -174,6 +177,7 @@ resfwdplot(out1,'standard',standard,'fground',fground,'bground',bground);
 
 
 %% MR (Multiple regression data): Forward EDA using personalized datatooltip
+clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -190,6 +194,7 @@ datatooltip.SubsetLinesColor=[1 0 0];
 resfwdplot(out,'datatooltip',datatooltip)
 
 %% MR (Multiple regression data): Forward EDA using persistent brushing
+clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -222,6 +227,7 @@ databrush.RemoveTool='on'; % Remove yellow selection after finishing brushing
 resfwdplot(out1,'fground',fground,'databrush',databrush);
 
 %% MR: Forward EDA persistent brushing with other options
+clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -248,7 +254,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selection
 resfwdplot(out1,'fground',fground,'databrush',databrush);
 
 %% MR: Forward EDA persistent brushing with labels at specific steps (e.g. 15 and 20). 
-close all;
+clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -271,6 +277,7 @@ resfwdplot(out1,'fground',fground,'databrush',databrush);
 
 
 %% MR (Multiple regression data): S estimators with persistent brushing
+clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -292,6 +299,7 @@ resindexplot(out,'databrush',databrush);
 
 
 %% MR: Added variable plot to show the importance of units 9 21 30 31 38 47 
+clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
 X=multiple_regression(:,1:3);
@@ -311,6 +319,7 @@ out43=addt(y,X(:,2:3),X(:,1),'plots',1,'units',43','textlab','y','FontSize',fsiz
 
 
 %% HD: Hawkins data: Forward EDA
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -334,6 +343,7 @@ resfwdplot(out,'fground',fground);
 %% HD: example of resfwdplot with personalized options
 % Explore different options for coloring the trajectories forming the
 % monitoring residual plot
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -358,6 +368,7 @@ bground.bstyle='greysh';
 resfwdplot(out,'standard',standard,'fground',fground,'bground',bground);
 
 %% HD: monitoring of S2 and beta coefficients
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -386,6 +397,7 @@ for j=3:size(Bols,2);
 end
 
 %%  HD: resfwdplot persistent brushing
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -402,6 +414,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selection
 resfwdplot(out,'databrush',databrush);
 
 %%  HD: resfwdplot with persistent brushing and line fit resuperimposing
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -419,6 +432,7 @@ resfwdplot(out,'databrush',databrush);
 
 %% HD: manual envelope resuperimposition in the plot of MDR
 % (minimum deletion residual)
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -434,12 +448,14 @@ mdrplot(out,'envm',87,'ylimy',[0 6],'tag','min87');
 % Use of FSR starting with 1000 subsamples
 % focusing in the output plots to the interval 1-6 on the y axis and
 % to steps 30-100.
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
 FSR(y,X,'nsamp',1000,'init',20,'ylim',[1 6],'xlim',[30 100]);
 
 %% HD: analysis with S estimators (using two values of breakdown point)
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -459,6 +475,7 @@ resindexplot(out,'h',h2,'conflev',conflev);
 ylabel(['Breakdown point =' num2str(bdp)]) 
 
 %% HD: analysis with MM estimators (using two values of efficiency)
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -482,6 +499,7 @@ ylabel(['Efficiency =' num2str(eff)])
 
 
 %% HD: plot of minimum deletion residual with datatooltip
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -492,6 +510,7 @@ mdrplot(out,'ylimy',[1 8],'datatooltip',1);
 
 %% HD: Example of dynamic brushing starting highlighting from the mdrplot 
 % (that is the plot of minimum deletion residual)
+clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -509,6 +528,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selecting
 mdrplot(out,'ylimy',[1 8],'databrush',databrush);
 
 %% WD (Wool data): forward EDA with untransformed data
+clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
@@ -525,6 +545,7 @@ resfwdplot(out,'databrush',databrush);
 
 
 %% WD (Wool data): analysis using S estimators and brushing
+clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
@@ -534,18 +555,21 @@ resindexplot(out,'databrush',1);
 
 %% WD: fan plot
 % Log transformation is strongly suggested
+clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
 [outfan]=FSRfan(y,X,'plots',1,'init',5);
 
 %% WD: automatic outlier detection procedure using logged observations
+clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
 [outFSR]=FSR(log(y),X);
 
 %% WD: analysis using LTS
+clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
@@ -556,6 +580,7 @@ resindexplot(out,'databrush',1,'conflev',conflev);
 
 
 %% WD: analysis using MM estimators and residual brushing
+clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
@@ -565,6 +590,7 @@ conflev = 1- 0.01/length(y);
 resindexplot(out,'databrush',1,'conflev',conflev);
 
 %% SD (Stack loss data): forward EDA
+clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
 X=stack_loss(:,1:3);
@@ -586,6 +612,7 @@ resfwdplot(out1,'datatooltip',1)
 
 
 %% SD: Brush starting from the monitoring residuals plot
+clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
 X=stack_loss(:,1:3);
@@ -602,6 +629,7 @@ resfwdplot(out1,'databrush',databrush);
 
 
 %% SD: analysis using LTS
+clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
 X=stack_loss(:,1:3);
@@ -612,6 +640,7 @@ resindexplot(out,'conflev',conflev);
 
 
 %% SD: analysis using MM estimators 
+clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
 X=stack_loss(:,1:3);
@@ -623,6 +652,7 @@ resindexplot(out,'conflev',conflev);
 
 
 %% SD: Fan plot
+clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
 X=stack_loss(:,1:3);
@@ -631,6 +661,7 @@ fieldnames(out)
 
 %% SD: Variable selection
 % Monitoring of deletion t stat (untransformed values)
+clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
 X=stack_loss(:,1:3);
@@ -648,6 +679,7 @@ FSRaddt(log(y),X,'plots',1,'quant',[0.025 0.975],'titl','Log scale');
 
 %% SP (Hospital data): fan plot
 % Load logged hospital data
+clearvars;close all;
 load('hospital.txt');
 y=exp(hospital(:,5));
 X=hospital(:,1:4);
@@ -655,6 +687,7 @@ X=hospital(:,1:4);
 [outs]=FSRfan(y,X,'nsamp',10000,'plots',1);
 
 %% SP: yX plot for the 2 hospitals
+clearvars;close all;
 load('hospital.txt');
 y=exp(hospital(:,5));
 X=hospital(:,1:4);
@@ -679,6 +712,7 @@ set(H(:,:,2),'DisplayName','Second hospital');
 
 
 %% SP: Fwd search with EDA purposes
+clearvars;close all;
 load('hospital.txt');
 y1=hospital(:,5);
 X=hospital(:,1:4);
@@ -689,6 +723,7 @@ X=hospital(:,1:4);
 mdrplot(out1,'quant',[0.01 0.5 0.99 0.9999 0.99999],'ylimy',[1 5],'lwdenv',2,'xlimx',[10 110]);
 
 %% SP: persistent brushing starting from the plot of minimum deletion residual
+clearvars;close all;
 load('hospital.txt');
 y1=hospital(:,5);
 X=hospital(:,1:4);
@@ -703,6 +738,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selection
 mdrplot(out1,'databrush',databrush);
 
 %% SP: automatic outlier detection procedure based on FS
+clearvars;close all;
 load('hospital.txt');
 y1=hospital(:,5);
 X=hospital(:,1:4);
@@ -713,6 +749,7 @@ fieldnames(out)
 fieldnames(outFS)
 
 %% SP: analysis using LMS and LTS
+clearvars;close all;
 load('hospital.txt');
 y1=hospital(:,5);
 X=hospital(:,1:4);
@@ -752,6 +789,7 @@ resindexplot(outLTSr.residuals,'h',h4,'title',titl,'laby',laby,'numlab','','conf
 
 
 %% SD: analysis using S estimators with 2 values of breakdown point 
+clearvars;close all;
 load('hospital.txt');
 y=hospital(:,5);
 X=hospital(:,1:4);
@@ -775,6 +813,7 @@ ylabel(['Breakdown point =' num2str(bdp)])
 
 
 %% SP: analysis using MM estimators 
+clearvars;close all;
 load('hospital.txt');
 y=hospital(:,5);
 X=hospital(:,1:4);
@@ -785,6 +824,7 @@ resindexplot(out,'conflev',conflev);
 
 
 %% SP: variable selection using added t-tests
+clearvars;close all;
 load('hospital.txt');
 y1=hospital(:,5);
 X=hospital(:,1:4);
@@ -793,6 +833,7 @@ X=hospital(:,1:4);
 fieldnames(outFS)
 
 %% LD (Loyalty cards data): fan plot
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -810,6 +851,7 @@ yXplot(y,X,'nameX',nameX,'namey',namey);
 fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11)
 
 %% LD: dynamic brushing from the fan plot with dynamic brushing
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -828,6 +870,7 @@ fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',na
 
 
 %% LD: forward EDA on transformed data
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -842,6 +885,7 @@ mdrplot(out);
 
 %% LD: Interactive monitoring of the trajectories of scaled residuals
 % using persistent brushing
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -859,6 +903,7 @@ databrush.RemoveLabels='on'; % Do not remove labels after selection
 resfwdplot(out,'databrush',databrush);
 
 %% LD: monitoring of modified Cook distance
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -874,6 +919,7 @@ xlim([20 510]);
 
 
 %% LD: monitoring of "Estimates of beta coefficients"
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -894,6 +940,7 @@ end
 % text(-13,1.5,'Monitoring of the elements of estimated beta coefficient');
 
 %% LD: Monitoring of "Normality test"
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -922,6 +969,7 @@ xlabel('Subset size m');
 
 
 %% LD: Monitoring of deletion t statistics
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -931,6 +979,7 @@ y1=y.^(0.4);
 fieldnames(out)
 
 %% LD: Automatic outlier detection procedure on transformed data
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -941,6 +990,7 @@ namey1='Sales^{0.4}';
 [outFS]=FSR(y1,X,'namey',namey1,'nameX',nameX);
 
 %% LD: analysis using S estimators and brushing
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -953,6 +1003,7 @@ namey1='Sales^{0.4}';
 resindexplot(out,'databrush',1,'nameX',nameX,'namey',namey1);
 
 %% LD: analysis using MM estimators and brushing
+clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
@@ -967,6 +1018,7 @@ resindexplot(out,'databrush',1,'nameX',nameX,'namey',namey1);
 
 
 %% SL Salinity data: fan plot  
+clearvars;close all;
 load('salinity.txt');
 y=salinity(:,4);
 X=salinity(:,1:3);
@@ -981,6 +1033,7 @@ yXplot(y,X,'nameX',nameX,'namey',namey);
 fieldnames(out)
 
 %% SL: forward EDA
+clearvars;close all;
 load('salinity.txt');
 y=salinity(:,4);
 X=salinity(:,1:3);
@@ -993,6 +1046,7 @@ resfwdplot(out,'datatooltip',1,'tag','resfwdplot')
 
 %% SL: Interactive monitoring of the trajectories of scaled residuals using
 % persistent brushing
+clearvars;close all;
 load('salinity.txt');
 y=salinity(:,4);
 X=salinity(:,1:3);
@@ -1016,6 +1070,7 @@ resfwdplot(out,'databrush',databrush,'fground',fground);
 
 
 %% SL: analysis using S and MM estimators
+clearvars;close all;
 load('salinity.txt');
 y=salinity(:,4);
 X=salinity(:,1:3);
@@ -1035,6 +1090,7 @@ resindexplot(out,'h',h2,'conflev',conflev);
 
 
 %% OD (Ozone data): fan plot
+clearvars;close all;
 load('ozone.txt','ozone');
 y=ozone(:,9);
 % Add a time trend to design matrix X
@@ -1045,6 +1101,7 @@ X=[(1:length(y))' ozone(:,1:8)];
 fieldnames(out)
 
 %% OD: forward analysis with residuals brushing
+clearvars;close all;
 load('ozone.txt','ozone');
 y=ozone(:,9);
 % Add a time trend to design matrix X
@@ -1064,6 +1121,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selection
 resfwdplot(out,'databrush',databrush);
 
 %% OD: analysis using S and MM estimators
+clearvars;close all;
 load('ozone.txt','ozone');
 y=ozone(:,9);
 % Add a time trend to design matrix X
@@ -1084,6 +1142,7 @@ ylabel('MM residuals')
 
 
 %% FP (Fishery product): preliminary analysis
+clearvars;close all;
 lobyx=load('fishery.mat');
 lobyx=lobyx.fishery.data;
 %lobyx=lobyx(lobyx(:,2)>5,:);
@@ -1095,6 +1154,7 @@ xlabel('Quantity (Tons)');
 ylabel('Values (Thousands of Euros)');
 
 %% FP: Dynamic brushing from the fan plot without persistent option
+clearvars;close all;
 % Multiple trajectories can be selected
 lobyx=load('fishery.mat');
 lobyx=lobyx.fishery.data;
@@ -1107,6 +1167,7 @@ fanplot(out,'ylimy',[-40,20],'databrush',{'selectionmode' 'Rect' 'persist' '' 's
 
 
 %% PD (Poison data): Fan plot
+clearvars;close all;
 load('poison.txt');
 y=poison(:,end);
 X=poison(:,1:6);
@@ -1119,6 +1180,7 @@ nr=size(Unsel,1)/lla;
 Un=[Unsel(1:nr,1) reshape(Unsel(:,2),nr,lla)];
 
 %% PDM1 (Singly modified poison data): Fan plot
+clearvars;close all;
 load('poison.txt');
 y=poison(:,end);
 X=poison(:,1:6);
@@ -1127,6 +1189,7 @@ y(8)=0.13;
 fieldnames(out)
 
 %% PDM2 (Doubly modified poison data): Fan plot
+clearvars;close all;
 load('poison.txt');
 y=poison(:,end);
 X=poison(:,1:6);
@@ -1136,6 +1199,7 @@ y(38)=0.14;
 fieldnames(out)
 
 %% PDM4 (Multiply modified poison data): Fan plot
+clearvars;close all;
 load('poison.txt');
 y=poison(:,end);
 X=poison(:,1:6);
@@ -1147,6 +1211,7 @@ y(11)=0.06;
 fieldnames(out);
 
 %% PDM4: Forward exploratory analysis
+clearvars;close all;
 load('poison.txt');
 y=poison(:,end);
 X=poison(:,1:6);
@@ -1165,6 +1230,7 @@ fground.fthresh=2;
 resfwdplot(out,'fground',fground);
 
 %% PDM4: Automatic outlier detection procedure
+clearvars;close all;
 load('poison.txt');
 y=poison(:,end);
 X=poison(:,1:6);
@@ -1178,6 +1244,7 @@ y1=y.^(-1);
 fieldnames(out)
 
 %% CD (Simulated contaminated data): EDA 
+clearvars;close all;
 n=100;
 p=5;
 
@@ -1235,6 +1302,7 @@ xlabel('Subset size m');
 xlim([20 100]);
 
 %% CD: Monitoring of modified Cook distance
+clearvars;close all;
 figure;
 n=100;
 p=5;
@@ -1257,6 +1325,7 @@ xlabel('Subset size m');
 xlim([20 100]);
 
 %% CD: Monitoring of "Estimates of beta coefficients"
+clearvars;close all;
 n=100;
 p=5;
 rng(1,'shr3cong');
@@ -1283,6 +1352,7 @@ end
 
 
 %% CD: Monitoring of S2 and R2
+clearvars;close all;
 n=100;
 p=5;
 rng(1,'shr3cong');
@@ -1308,6 +1378,7 @@ xlabel('Subset size m');
 ylabel('R2');
 
 %% CD: Monitoring of "Normality test"
+clearvars;close all;
 n=100;
 p=5;
 
@@ -1353,6 +1424,7 @@ xlabel('Subset size m');
 
 %% CD: Automatic outlier detection procedure
 % Forward search
+clearvars;close all;
 n=100;
 p=5;
 
@@ -1364,7 +1436,7 @@ y(1:30)=y(1:30)+5;
 [out]=FSR(y,X);
 
 %% CD: LTS and LMS
-
+clearvars;close all;
 n=100;
 p=5;
 
@@ -1407,6 +1479,7 @@ resindexplot(outLTSr.residuals,'h',h4,'title',titl,'laby',laby,'numlab','','conf
 
 
 %% CD: LTS and LMS (permuting the order of the contaminated data)
+clearvars;close all;
 n=100;
 p=5;
 
@@ -1456,6 +1529,7 @@ resindexplot(outLTSr.residuals,'h',h4,'title',titl,'laby',laby,'numlab','','conf
 
 
 %% CD: S and MM (permuting the order of the contaminated data)
+clearvars;close all;
 n=100;
 p=5;
 
@@ -1509,6 +1583,7 @@ resindexplot(outMM95,'h',h4,'title',titl,'laby',laby,'numlab','','conflev',confl
 
 
 %% ST: Stars dataset (analysis using FS)
+clearvars;close all;
 stars=load('stars.txt');
 y=stars(:,2);
 X=stars(:,1);
@@ -1517,7 +1592,7 @@ set(gca,'XDir','reverse');
 [out]=FSR(y,X,'plots',2);
 
 %% ST: Stars dataset (analysis using S and MM)
-
+clearvars;close all;
 stars=load('stars.txt');
 y=stars(:,2);
 X=stars(:,1);

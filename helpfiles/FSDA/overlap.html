@@ -146,7 +146,7 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
 
 <p>Optional parameters tol and lim will be used by function <a
 href="ncx2mixtcdf.html">ncx2mixtcdf</a> which computes the cdf of a linear
-combination of non central chi2 r.v.</p>
+combination of non central chi2 random variables (r.v.). </p>
 
 <table cellspacing="0" class="body" cellpadding="4" border="2">
   <colgroup><col width="29%">
@@ -162,12 +162,8 @@ combination of non central chi2 r.v.</p>
     <tr>
       <td style="width: 339px"><p><tt>lim</tt></p>
       </td>
-      <td><p>3D array of size k-by-k-by-p di(i,j,l)=γ<sub>l</sub> '
-        Σ<sub>i</sub><sup>-0.5</sup>(μ<sub>i</sub>-μ<sub>j</sub>) l=1, 2,
-        ...,v, whereγ<sub>l</sub> is the l-th eigenvector coming from the
-        spectral decomposition of matrix Σ<sub>j|i</sub> . Vector di(i,j,:)
-        contains the coefficients of N(0,1) (called W_l in equation 2.2 of
-        Maitra and Melnikov (2010), JCGS)</p>
+      <td><p>lim : scalar = maximum number of integration terms (default is
+        1000000).</p>
       </td>
     </tr>
   </tbody>
@@ -216,114 +212,46 @@ Statistical Software, 51:12, 1-25. </p>
 <p></p>
 
 <h3>Example 1</h3>
-Generate 3 groups in 4 dimensions using maximum overlap equal to 0.15. Function
-MixSim creates the centroids, the covariance matrices and the mixing
-proportions. 
-<pre class="programlisting">rng(10,'twister')
-out=MixSim(3,4)
-disp('Print the centroids')
-disp(out.Mu)
-disp('Print the covariance matrices') 
-disp(out.S)
-disp('Print the mixing proportions')
-disp(out.Pi)
-disp('Print matrix of misclassification probabilities')
-disp(out.OmegaMap)
-disp('For example the probability of overlapping between group 2 and 3 is')
-disp(['out.OmegaMap(2,3)+out.OmegaMap(3,2) =' num2str(out.OmegaMap(2,3)+out.OmegaMap(3,2))])
-n=200;
-[X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-spmplot(X,id)</pre>
 
-<p></p>
- 
+<p>Finding exact overlap for the Iris data. Group 1 is far from groups 2 and 3.
+The overlap between groups 2 and 3 is large</p>
 
-<p><img alt="" src="images_help/img3.jpg"> </p>
+<p>  </p>
+<pre class="programlisting">     load fisheriris;                                                        
+    Y=meas;                                                                 
+    Mu=grpstats(Y,species);                                                 
+                                                                            
+    S=zeros(4,4,3);                                                         
+    S(:,:,1)=cov(Y(1:50,:));                                                
+    S(:,:,2)=cov(Y(51:100,:));                                              
+    S(:,:,3)=cov(Y(101:150,:));                                             
+                                                                            
+    pigen=ones(3,1)/3;                                                      
+    k=3;                                                                    
+    p=4;                                                                    
+    [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax]=overlap(k,p,pigen,Mu,S)    
+    disp('Omegamap= k-by-k matrix which contains misclassification probabilities')
+    disp(OmegaMap);
+    disp('Average overlap')
+    disp(BarOmega)
+    disp('Maximum overlap')
+    disp(MaxOmega)
+    disp('Groups with maximum overlap')
+    disp(rcMax)</pre>
 
-<p>The matrix of misclassification probabilities (out.OmegaMap)</p>
+<p> </p>
 
-<p>1.0000     0.0173     0.0228<br>
-0.0351     1.0000     0.0872<br>
-0.0377     0.0628     1.0000</p>
+<p>The output of this example is as follows</p>
+<pre>OmegaMap= k-by-k matrix which contains misclassification probabilities
+    1.0000    0.0000         0
+    0.0000    1.0000    0.0230
+         0    0.0263    1.0000</pre>
+<pre>Average overlap
+    0.0164</pre>
+<pre>Maximum overlap
+    0.0493</pre>
 
-<p>shows that the most separated groups are 1 and 2</p>
-
-<p><img alt="" src="images_help/img28.jpg"></p>
-
-<p>while the two groups with the highest misclassification probability are 2
-and 3</p>
-
-<p><img alt="" src="images_help/img29.jpg"></p>
-<pre class="programlisting">% print
-disp('Show the two groups with the highest probability of overlapping (out.rcMax)')
-disp(out.rcMax')</pre>
-
-<p>2 3 </p>
-
-<h3>Example 2</h3>
-In the previous example we just controlled the maximum overlap. In this example
-we generate groups with a prespecified value of both average and standard
-deviation of overlapping. 
-
-<p>For example, in the example below we generate 4 groups in 5 dimensions. In
-the first case we impose BarOmega=0.10 and StdOmega=0.15 while in the second
-case we impose BarOmega=0.10 and StdOmega=0.05. We compare through the matrix
-OmegaMap and visually using the scatter plot matrix, the differences coming
-from using a low or high standard deviation of overlapping. In order to be able
-to replicate the results we use a fixed seed.</p>
-<pre class="programlisting">    rng(10,'twister')
-    k=4;
-    v=5;
-    n=200;
-    BarOmega=0.10;
-    StdOmega=0.15;
-    out=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega,'resN',10, 'Display', 'iter');
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-
-    rng(10,'twister')
-    StdOmega1=0.05;
-    out1=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega1,'resN',10, 'Display', 'iter');
-    [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
-    disp('Comparison using OmegaMap')
-    disp('When StdOmega is large in this example groups 3 are 4 do show a strong overlap')
-    disp('When StdOmega is large in this example groups 1, 2, 3 are quite separate')
-    disp(out.OmegaMap)
-    disp('When StdOmega is small the probabilities of overlapping are much more similar')
-    disp(out1.OmegaMap)</pre>
-
-<p>Comparison using OmegaMap<br>
-When StdOmega is large in this example groups 3 are 4 do show a strong
-overlap<br>
-When StdOmega is large in this example groups 1, 2, 3 are quite separate<br>
-1.0000 0.0107 0.0186 0.0123<br>
-0.0112 1.0000 0.0102 0.0053<br>
-0.0507 0.0261 1.0000 0.1476<br>
-0.0355 0.0156 0.2564 1.0000<br>
-<br>
-When StdOmega is small the probabilities of overlapping are much more
-similar<br>
-1.0000 0.0391 0.0337 0.0487<br>
-0.0397 1.0000 0.0404 0.0343<br>
-0.0330 0.0402 1.0000 0.0781<br>
-0.0524 0.0393 0.1213 1.0000</p>
-
-<p>Comparison using interactive scatter plot matrices</p>
-<pre class="programlisting">     disp('Comparison using interactive scatter plot matrices')
-    spmplot(X,id)
-    set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
-    figure
-    spmplot(X1,id1)
-    set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])</pre>
-
-<p>Groups 3 and 4 overlap much more in the left panel rather than in the right
-panel of figure below.</p>
-
-<p><img alt="" src="images_help/img18.jpg"></p>
-
-<p>The two scatter plot matrices just show the first two groups in the two
-situations.</p>
-
-<p><img alt="" src="images_help/img19.jpg"></p>
+<p>Groups with maximum overlap 2 3 </p>
 
 <h3>See Also</h3>
 
