@@ -1,43 +1,44 @@
-﻿<html>
+<html>
 <head>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-  <title>tclust :: Functions (Flexible Statistics Data Analysis Toolbox™)</title>
+  <title>tclust :: Functions (Flexible Statistics Data Analysis
+  Toolbox™)</title>
   <link href="docstyle.css" rel="stylesheet" type="text/css">
   <meta content="refpage" name="chunktype">
   <meta content="function:tclust" name="refentity">
   <meta content="text/javascript" http-equiv="Content-Script-Type">
   <meta content="fcn" name="toctype">
   <script type="text/javascript" language="javaScript" src="bottom.js">
-  </script>
+ </script>
   <style type="text/css">
-.auto-style1 {
-	background-color: #FFFFFF;
+ .auto-style1 {
+        background-color: #FFFFFF;
 }
-.zptmcm7m-{ font-weight: bold; font-style: italic;}
-.zptmcm7m-{ font-weight: bold; font-style: italic;}
-.zptmcm7m-{ font-weight: bold; font-style: italic;}
-.zptmcm7t-x-x-74{ font-weight: bold; font-style: italic;}
-.zptmcm7t-x-x-74{font-size:74%; font-weight: bold; font-style: italic;}
-.zptmcm7m-x-x-74{ font-weight: bold; font-style: italic;}
-.zptmcm7m-x-x-74{ font-weight: bold; font-style: italic;}
-.zptmcm7m-x-x-74{font-size:74%; font-weight: bold; font-style: italic;}
-.zptmcm7v-{ font-weight: bold; font-style: italic;}
-.zptmcm7t-{ font-weight: bold; font-style: italic;}
-.zptmcm7t-{ font-weight: bold; font-style: italic;}
-.zptmcm7y-{ font-weight: bold; font-style: italic;}
-.zptmcm7y-{ font-weight: bold; font-style: italic;}
+ .zptmcm7m-{ font-weight: bold; font-style: italic;}
+ .zptmcm7m-{ font-weight: bold; font-style: italic;}
+ .zptmcm7m-{ font-weight: bold; font-style: italic;}
+ .zptmcm7t-x-x-74{ font-weight: bold; font-style: italic;}
+ .zptmcm7t-x-x-74{font-size:74%; font-weight: bold; font-style: italic;}
+ .zptmcm7m-x-x-74{ font-weight: bold; font-style: italic;}
+ .zptmcm7m-x-x-74{ font-weight: bold; font-style: italic;}
+ .zptmcm7m-x-x-74{font-size:74%; font-weight: bold; font-style: italic;}
+ .zptmcm7v-{ font-weight: bold; font-style: italic;}
+ .zptmcm7t-{ font-weight: bold; font-style: italic;}
+ .zptmcm7t-{ font-weight: bold; font-style: italic;}
+ .zptmcm7y-{ font-weight: bold; font-style: italic;}
+ .zptmcm7y-{ font-weight: bold; font-style: italic;}
 td center { margin-top:0em; margin-bottom:0em; }
 center { margin-top:1em; margin-bottom:1em; }
-.zptmcm7y-x-x-74{ font-weight: bold; font-style: italic;}
-.zptmcm7y-x-x-74{font-size:74%; font-weight: bold; font-style: italic;}
+ .zptmcm7y-x-x-74{ font-weight: bold; font-style: italic;}
+ .zptmcm7y-x-x-74{font-size:74%; font-weight: bold; font-style: italic;}
   .auto-style2 {
-	  text-indent: 0em;
+          text-indent: 0em;
   }
   .auto-style3 {
-	  text-align: center;
+          text-align: center;
   }
   .auto-style4 {
-	  text-indent: 1.5em;
+          text-indent: 1.5em;
   }
   </style>
 </head>
@@ -48,7 +49,7 @@ center { margin-top:1em; margin-bottom:1em; }
 <!--FScategory:Clustering-->
 <a name="top_of_page"></a> 
 
-<p style="font-size: 1px;">&nbsp;</p>
+<p style="font-size: 1px;"> </p>
 
 <table border="0" cellpadding="0" cellspacing="0" class="nav"
 summary="Navigation aid" width="100%">
@@ -69,7 +70,7 @@ summary="Navigation aid" width="100%">
 width="100%">
   <tbody>
     <tr>
-      <td>&nbsp;</td>
+      <td> </td>
       <td align="right"><a
         href="mailto:toolboxFS@unipr.it?subject=feedback">Provide feedback on
         FSDA toolbox</a> </td>
@@ -79,437 +80,405 @@ width="100%">
 
 <h1 class="reftitle">tclust</h1>
 
-<p class="purpose"> tclust computes trimmed clustering                                               </p>
+<p class="purpose">tclust computes trimmed clustering </p>
 
 <h2>Syntax </h2>
 
-<p class="synopsis">
-<tt>[out]  = tclust(Y,k,alpha,restrfactor)<br>
+<p class="synopsis"><tt>[out] = tclust(Y,k,alpha,restrfactor)<br>
 [out] = tclust(Y,k,alpha,restrfactor,param1,val1,param2,val2,...) <br>
-[out , varargout]  = tclust(Y,k,alpha,restrfactor,param1,val1,param2,val2,...)
+[out , varargout] = tclust(Y,k,alpha,restrfactor,param1,val1,param2,val2,...)
 </tt></p>
 <a name="f4811966"></a> 
 
 <h2>Description </h2>
 
-<p class="auto-style2" >Several &#8220;mixture modeling&#8221; and &#8220;crisp clustering&#8221; approaches to model-based Clustering
-can be found in the literature. Mixture modeling approaches assume that data at hand
-<span 
-class="zptmcm7m-">y</span><sub><span 
-class="zptmcm7t-x-x-74">1</span></sub><span 
-class="zptmcm7m-">,...,y</span><sub><span 
-class="zptmcm7m-x-x-74">n</span></sub> in <span 
-class="zptmcm7m-">R</span><sup><span 
-class="zptmcm7m-x-x-74">v</span></sup> come from a probability distribution with density <span 
-class="zptmcm7v-">&#x2211;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span><span 
-class="zptmcm7t-x-x-74">=1</span></sub><sup><span 
-class="zptmcm7m-x-x-74">k</span></sup><span 
-class="zptmcm7m-">&#x03C0;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub><span 
-class="zptmcm7m-">&#x03D5;</span><span 
-class="zptmcm7t-">(</span><span 
-class="zptmcm7y-">&#x22C5;</span><span 
-class="zptmcm7m-">,&#x03B8;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub><span 
-class="zptmcm7t-">) </span>with
-<span 
-class="zptmcm7m-">&#x03D5;</span><span 
-class="zptmcm7t-">(</span><span 
-class="zptmcm7y-">&#x22C5;</span><span 
-class="zptmcm7m-">,&#x03B8;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub><span 
-class="zptmcm7t-">) </span>being the <span 
-class="zptmcm7m-">v</span>-variate (generally multivariate normal) densities with parameters
-<span 
-class="zptmcm7m-">&#x03B8;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub>, <span 
-class="zptmcm7m-">j </span><span 
-class="zptmcm7t-">= 1</span><span 
-class="zptmcm7m-">,&#x2026;,k</span>. Generally <span 
-class="zptmcm7m-">&#x03B8;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> <span 
-class="zptmcm7t-">= (</span><span 
-class="zptmcm7m-">&#x03BC;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub><span 
-class="zptmcm7m-">,&#x03A3;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub><span 
-class="zptmcm7t-">) </span>where <span 
-class="zptmcm7m-">&#x03BC;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> is the population mean and
-<span 
-class="zptmcm7m-">&#x03A3;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> is the covariance matrix for component <span 
-class="zptmcm7m-">j</span>. This leads to likelihoods of the
-                                                               
+<p class="auto-style2">Several “mixture modeling” and “crisp
+clustering” approaches to model-based Clustering can be found in the
+literature. Mixture modeling approaches assume that data at hand <span
+class="zptmcm7m-">y</span><sub><span
+class="zptmcm7t-x-x-74">1</span></sub><span
+class="zptmcm7m-">,...,y</span><sub><span
+class="zptmcm7m-x-x-74">n</span></sub> in <span
+class="zptmcm7m-">R</span><sup><span class="zptmcm7m-x-x-74">v</span></sup>
+come from a probability distribution with density <span
+class="zptmcm7v-">∑</span><sub><span class="zptmcm7m-x-x-74">j</span><span
+class="zptmcm7t-x-x-74">=1</span></sub><sup><span
+class="zptmcm7m-x-x-74">k</span></sup><span
+class="zptmcm7m-">π</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub><span class="zptmcm7m-">ϕ</span><span
+class="zptmcm7t-">(</span><span class="zptmcm7y-">⋅</span><span
+class="zptmcm7m-">,θ</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub><span class="zptmcm7t-">) </span>with
+<span class="zptmcm7m-">ϕ</span><span class="zptmcm7t-">(</span><span
+class="zptmcm7y-">⋅</span><span class="zptmcm7m-">,θ</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub><span class="zptmcm7t-">) </span>being
+the <span class="zptmcm7m-">v</span>-variate (generally multivariate normal)
+densities with parameters <span class="zptmcm7m-">θ</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub>, <span class="zptmcm7m-">j </span><span
+class="zptmcm7t-">= 1</span><span class="zptmcm7m-">,…,k</span>. Generally
+<span class="zptmcm7m-">θ</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub> <span class="zptmcm7t-">= (</span><span
+class="zptmcm7m-">μ</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub><span
+class="zptmcm7m-">,Σ</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub><span class="zptmcm7t-">) </span>where
+<span class="zptmcm7m-">μ</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub> is the population mean and <span
+class="zptmcm7m-">Σ</span><sub><span class="zptmcm7m-x-x-74">j</span></sub> is
+the covariance matrix for component <span class="zptmcm7m-">j</span>. This
+leads to likelihoods of the form </p>
 
-                                                               
-form
-  <table style="width: 100%;"><tr><td>
-  <center class="math-display" >
-<img 
-src="images_help/RCM0x.png" alt=" n  k
-&#x220F;  &#x2211; &#x03C0;j&#x03D5;(yi; &#x03B8;j).
-i=1j=1
-" class="math-display" ><a 
- id="x1-1001r1"></a></center></td><td class="auto-style3" style="width: 5%;">
-	  <a name="(1)">(1)</a></td></tr></table>
-<!--l. 79--><p class="auto-style2" >
-On the other hand, &#8220;crisp&#8221; (0-1) clustering approaches assume classification likelihoods of
-the following form
-  <table style="width: 100%;"><tr><td>
-  <center class="math-display" >
-<img 
-src="images_help/RCM1x.png" alt=" k
-&#x220F;j=1&#x220F;i&#x2208;R &#x03D5;(yi; &#x03B8;j),
-     j
-" class="math-display" ><a 
- id="x1-1002r2"></a></center></td><td class="auto-style3" style="width: 5%;">
-	  <a name="(2)">(2)</a></td></tr></table>
-<!--l. 83--><p class="auto-style2" >
-where <span 
-class="zptmcm7m-">R</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> contains the indexes of the observations which are assigned to group <span 
-class="zptmcm7m-">j</span>, with the
-constraint that <span 
-class="zptmcm7t-">#</span><span 
-class="zptmcm7v-">&#x22C3;</span><sub>
-<span 
-class="zptmcm7m-x-x-74">j</span><span 
-class="zptmcm7t-x-x-74">=1</span></sub><sup><span 
-class="zptmcm7m-x-x-74">k</span></sup><span 
-class="zptmcm7m-">R</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> <span 
-class="zptmcm7t-">= </span><span 
-class="zptmcm7m-">n</span>.
-<!--l. 86-->In optional parameter <tt><a href="#mixt">mixt</a></tt> the user can specify he wants to maximize 
-(1) or (2).<p class="auto-style4" >  In order to discard a fraction of most outlying observations (say equal to <span 
-class="zptmcm7m-">&#x03B1;</span>) and to take
-into account the different sizes of the groups when making the final group assignments,
-García-Escudero et al. (2008) suggested to maximize the following expression
-(tclust):
-  <table style="width: 100%;"><tr><td>
-                                                               
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td>
+        <center class="math-display">
+        <img src="images_help/RCM0x.png"
+        alt=" n  k ∏  ∑ πjϕ(yi; θj). i=1j=1 " class="math-display"><a
+        id="x1-1001r1"></a></center>
+      </td>
+      <td class="auto-style3" style="width: 5%;"><a name="(1)">(1)</a></td>
+    </tr>
+  </tbody>
+</table>
+<!--l. 79-->
 
-                                                               
-  <center class="math-display" >
-<img 
-src="images_help/RCM2x.png" alt=" k     &#x2032;
-&#x220F;  &#x220F;  &#x03C0;j&#x03D5;(yi; &#x03B8;j)
-j=1i&#x2208;Rj
-" class="math-display" ><a 
- id="x1-1003r3"></a></center></td><td class="auto-style3" style="width: 5%;">
-	  <a name="(3)">(3)</a></td></tr></table>
-<!--l. 90--><p class="auto-style2" >
-with the constraint that <span 
-class="zptmcm7t-">#</span><span 
-class="zptmcm7v-">&#x22C3;</span><sub>
-<span 
-class="zptmcm7m-x-x-74">j</span><span 
-class="zptmcm7t-x-x-74">=1</span></sub><sup><span 
-class="zptmcm7m-x-x-74">k</span></sup><span 
-class="zptmcm7m-">R</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> <span 
-class="zptmcm7t-">= [</span><span 
-class="zptmcm7m-">n</span><span 
-class="zptmcm7t-">(1</span><span 
-class="zptmcm7y-">-</span><span 
-class="zptmcm7m-">&#x03B1;</span><span 
-class="zptmcm7t-">)] </span>where symbol <span 
-class="zptmcm7t-">[</span><span 
-class="zptmcm7y-">&#x22C5;</span><span 
-class="zptmcm7t-">] </span>denotes the integer part.
-Parameter <a href="#equalweights">equalweights</a> below controls whether equation (2) or equation (3) is 
-used in the maximization. Pararmeter <span 
-class="zptmcm7m-">&#x03B1;</span> is controlled by input argument 
-<a href="#alpha_">alpha</a>. Note that in equation&#x00A0;(<a 
-href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>) we have used symbol <span 
-class="zptmcm7m-">&#x03C0;</span><span 
-class="zptmcm7y-">&#x2032;</span><sub><span 
+<p class="auto-style2">On the other hand, “crisp” (0-1) clustering
+approaches assume classification likelihoods of the following form </p>
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td>
+        <center class="math-display">
+        <img src="images_help/RCM1x.png"
+        alt=" k ∏j=1∏i∈R ϕ(yi; θj),      j " class="math-display"><a
+        id="x1-1002r2"></a></center>
+      </td>
+      <td class="auto-style3" style="width: 5%;"><a name="(2)">(2)</a></td>
+    </tr>
+  </tbody>
+</table>
+<!--l. 83-->
+
+<p class="auto-style2">where <span class="zptmcm7m-">R</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub> contains the indexes of the observations
+which are assigned to group <span class="zptmcm7m-">j</span>, with the
+constraint that <span class="zptmcm7t-">#</span><span
+class="zptmcm7v-">⋃</span><sub><span class="zptmcm7m-x-x-74">j</span><span
+class="zptmcm7t-x-x-74">=1</span></sub><sup><span
+class="zptmcm7m-x-x-74">k</span></sup><span
+class="zptmcm7m-">R</span><sub><span class="zptmcm7m-x-x-74">j</span></sub>
+<span class="zptmcm7t-">= </span><span class="zptmcm7m-">n</span>.
+<!--l. 86-->In optional parameter <tt><a href="#mixt">mixt</a></tt> the user
+can specify he wants to maximize (1) or (2).</p>
+
+<p class="auto-style4">In order to discard a fraction of most outlying
+observations (say equal to <span class="zptmcm7m-">α</span>) and to take into
+account the different sizes of the groups when making the final group
+assignments, García-Escudero et al. (2008) suggested to maximize the following
+expression (tclust): </p>
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td>
+        <center class="math-display">
+        <img src="images_help/RCM2x.png"
+        alt=" k     ′ ∏  ∏  πjϕ(yi; θj) j=1i∈Rj "
+        class="math-display"><a id="x1-1003r3"></a></center>
+      </td>
+      <td class="auto-style3" style="width: 5%;"><a name="(3)">(3)</a></td>
+    </tr>
+  </tbody>
+</table>
+<!--l. 90-->
+
+<p class="auto-style2">with the constraint that <span
+class="zptmcm7t-">#</span><span class="zptmcm7v-">⋃</span><sub><span
+class="zptmcm7m-x-x-74">j</span><span
+class="zptmcm7t-x-x-74">=1</span></sub><sup><span
+class="zptmcm7m-x-x-74">k</span></sup><span
+class="zptmcm7m-">R</span><sub><span class="zptmcm7m-x-x-74">j</span></sub>
+<span class="zptmcm7t-">= [</span><span class="zptmcm7m-">n</span><span
+class="zptmcm7t-">(1</span><span class="zptmcm7y-">-</span><span
+class="zptmcm7m-">α</span><span class="zptmcm7t-">)] </span>where symbol <span
+class="zptmcm7t-">[</span><span class="zptmcm7y-">⋅</span><span
+class="zptmcm7t-">] </span>denotes the integer part. Parameter <a
+href="#equalweights">equalweights</a> below controls whether equation (2) or
+equation (3) is used in the maximization. Pararmeter <span
+class="zptmcm7m-">α</span> is controlled by input argument <a
+href="#alpha_">alpha</a>. Note that in equation (<a
+href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>) we have used symbol <span
+class="zptmcm7m-">π</span><span class="zptmcm7y-">′</span><sub><span
 class="zptmcm7m-x-x-74">j</span></sub> to stress that these parameters have a
-completely different interpretation from the <span 
-class="zptmcm7m-">&#x03C0;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> in equation (<a 
-href="#x1-1001r1">1<!--tex4ht:ref: mixlik --></a>). They are intended to take
-into account the different sizes of the groups when making the final group assignments
-and they are not the weights of the mixture likelihood. TCLUST method also considers
-scatter constraints in terms of the group covariance matrices. More specifically, if <span 
-class="zptmcm7m-">&#x03BB;</span><sub><span 
-class="zptmcm7m-x-x-74">l</span></sub><span 
-class="zptmcm7t-">(</span><img 
-src="images_help/RCM3x.png" alt="&#x03A3;^"  class="circ" ><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub><span 
-class="zptmcm7t-">)</span>
-(<span 
-class="zptmcm7m-">l </span><span 
-class="zptmcm7t-">= 1</span><span 
-class="zptmcm7m-">,&#x2026;,v</span>; <span 
-class="zptmcm7m-">j </span><span 
-class="zptmcm7t-">= 1</span><span 
-class="zptmcm7m-">,&#x2026;,k</span>) are the estimated eigenvalues of the group covariance
-matrix <img 
-src="images_help/RCM4x.png" alt="^&#x03A3;"  class="circ" ><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub>, TCLUST in each iteration of the maximization routine 
-calls routine <a href="restreigen.html">restreigen</a> and imposes the
-constraint:<p class="auto-style2" >
-&nbsp;<table style="width: 100%;"><tr><td>
-  <center class="math-display" >
-<img 
-src="images_help/RCM5x.png" alt="max      max     &#x03BB; (&#x03A3;)
----l=1,...,v---j=1,...,k-l--j-&#x2264; restr.
-minl=1,...,vminj=1,...,k&#x03BB;l(&#x03A3;j)
-" class="math-display" ><a 
- id="x1-1004r4"></a></center></td><td class="auto-style3" style="width: 5%;">
-	<a name="(4)">(4)</a></td></tr></table>
-<!--l. 97--><p class="auto-style2" >
-Note that classic <span 
-class="zptmcm7m-">k</span>-means procedure is simply obtained putting <span 
-class="zptmcm7m-">&#x03B1; </span><span 
-class="zptmcm7t-">= 0 </span>and <span 
-class="zptmcm7m-">&#x03C0;</span><span 
-class="zptmcm7y-">&#x2032;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> <span 
-class="zptmcm7t-">= 1 </span>in
-equation&#x00A0;(<a 
-href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>) and <span 
-class="zptmcm7m-">c </span><span 
-class="zptmcm7t-">= 1 </span>in equation&#x00A0;(<a 
-href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>). The idea of trimming under the eigenvalue
-constraint ratio of equation (<a 
-href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>) can also be applied in the context of the mixture likelihood
-(see option <tt><a href="#mixt">mixt</a></tt> below) given in equation (<a 
-href="#x1-1001r1">1<!--tex4ht:ref: mixlik --></a>) with important consequences. In the crisp assignment in each
-iteration of the maximization process, the selection of the <span 
-class="zptmcm7t-">[</span><span 
-class="zptmcm7m-">n</span><span 
-class="zptmcm7t-">(1</span><span 
-class="zptmcm7y-">-</span><span 
-class="zptmcm7m-">&#x03B1;</span><span 
-class="zptmcm7t-">)] </span>units is made taking
-the <span 
-class="zptmcm7t-">[</span><span 
-class="zptmcm7m-">n</span><span 
-class="zptmcm7t-">(1</span><span 
-class="zptmcm7y-">-</span><span 
-class="zptmcm7m-">&#x03B1;</span><span 
-class="zptmcm7t-">)] </span>largest values of <span 
-class="zptmcm7m-">&#x03D5;</span><sub><span 
-class="zptmcm7m-x-x-74">i</span></sub><sup><span 
-class="zptmcm7y-x-x-74">*</span></sup>, where <span 
-class="zptmcm7m-">&#x03D5;</span><sub><span 
-class="zptmcm7m-x-x-74">i</span></sub><sup><span 
-class="zptmcm7y-x-x-74">*</span></sup> <span 
-class="zptmcm7t-">=</span> <span 
-class="zptmcm7t-">max</span><sub><span 
-class="zptmcm7m-x-x-74">j</span><span 
-class="zptmcm7t-x-x-74">=1</span><span 
-class="zptmcm7m-x-x-74">,&#x2026;,k</span></sub><img 
-src="images_help/RCM6x.png" alt="^&#x03C0;"  class="circ" ><span 
-class="zptmcm7y-">&#x2032;</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub><span 
-class="zptmcm7m-">&#x03D5;</span><span 
-class="zptmcm7t-">(</span><span 
-class="zptmcm7m-">y</span><sub><span 
-class="zptmcm7m-x-x-74">i</span></sub><span 
-class="zptmcm7t-">;</span> 
-<img 
-src="images_help/RCM7x.png" alt="^
-&#x03B8;"  class="circ" ><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub><span 
-class="zptmcm7t-">) </span>where 
-<img 
-src="images_help/RCM8x.png" alt="^&#x03C0;"  class="circ" ><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> is
-estimated using proportion of untrimmed observations which are assigned to each group.
-Estimates of centers and the covariance matrices use respectively the unweighted sample
-mean and sample covariance matrices. On the other hand, in the context of mixture
-modelling, the quantities
-                                                               
+completely different interpretation from the <span
+class="zptmcm7m-">π</span><sub><span class="zptmcm7m-x-x-74">j</span></sub> in
+equation (<a href="#x1-1001r1">1<!--tex4ht:ref: mixlik --></a>). They are
+intended to take into account the different sizes of the groups when making the
+final group assignments and they are not the weights of the mixture likelihood.
+TCLUST method also considers scatter constraints in terms of the group
+covariance matrices. More specifically, if <span
+class="zptmcm7m-">λ</span><sub><span
+class="zptmcm7m-x-x-74">l</span></sub><span class="zptmcm7t-">(</span><img
+src="images_help/RCM3x.png" alt="Σ^" class="circ"><sub><span
+class="zptmcm7m-x-x-74">j</span></sub><span class="zptmcm7t-">)</span> (<span
+class="zptmcm7m-">l </span><span class="zptmcm7t-">= 1</span><span
+class="zptmcm7m-">,…,v</span>; <span class="zptmcm7m-">j </span><span
+class="zptmcm7t-">= 1</span><span class="zptmcm7m-">,…,k</span>) are the
+estimated eigenvalues of the group covariance matrix <img
+src="images_help/RCM4x.png" alt="^Σ" class="circ"><sub><span
+class="zptmcm7m-x-x-74">j</span></sub>, TCLUST in each iteration of the
+maximization routine calls routine <a href="restreigen.html">restreigen</a> and
+imposes the constraint:</p>
 
-                                                               
-  <center class="math-display" >
-<img 
-src="images_help/RCM9x.png" alt="             ^
-&#x03D5;*ij = --^&#x03C0;j&#x03D5;-(yi;&#x03B8;j)--   i= 1,2,...,n,   j= 1,...,k
-     &#x2211;kj=1 ^&#x03C0;j&#x03D5;(yi; ^&#x03B8;j)
-" class="math-display" ></center>
-<!--l. 106--><p class="auto-style2" > are interpreted as posterior probabilities. The criterion for selecting the units to trim
-remains the same, however, centers and the covariance matrices are updated with
-the weighted sample mean and weighted sample covariance matrices with the
-weights given by the posterior probabilities. The posterior probabilities for the <span 
-class="zptmcm7m-">&#x03B1;</span>
-trimmed units are set to 0 for each group. Similarly, the 
-<img 
-src="images_help/RCM10x.png" alt="&#x03C0;^"  class="circ" ><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> are updated using
-<span 
-class="zptmcm7v-">&#x2211;</span><sub><span 
-class="zptmcm7m-x-x-74">i</span><span 
-class="zptmcm7t-x-x-74">=1</span></sub><sup><span 
-class="zptmcm7m-x-x-74">n</span></sup><span 
-class="zptmcm7m-">&#x03D5;</span><sub><span 
-class="zptmcm7m-x-x-74">ij</span></sub><sup><span 
-class="zptmcm7y-x-x-74">*</span></sup><span 
-class="zptmcm7m-">&#x2215;</span><span 
-class="zptmcm7t-">[</span><span 
-class="zptmcm7m-">n</span><span 
-class="zptmcm7t-">(1</span><span 
-class="zptmcm7y-">-</span><span 
-class="zptmcm7m-">&#x03B1;</span><span 
-class="zptmcm7t-">)]</span>.
-<!--l. 115-->
+<p class="auto-style2"> </p>
 
-<p> DETAILS. This iterative algorithm initializes k clusters randomly and
- performs "concentration steps" in order to improve the current cluster
- assignment. The number of maximum concentration steps to be performed is
- controlled by input parameter <a href="#refsteps">refsteps</a>. For approximately obtaining the global
- optimum, the system is initialized <a href="#nsamp">nsamp</a> times and concentration steps
- are performed until convergence or refsteps is reached. When processing
- more complex data sets higher values of nsamp and refsteps have to be
- specified (obviously implying extra computation time). However, if more
- then 10% of the iterations do not converge, a warning message is issued,
- indicating that <a href="#nsamp">nsamp</a> has to be increased.
-</p>
-<p> &nbsp;</p>
-<p><tt>tclust</tt> requires &nbsp;the following 
-input</p>
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td>
+        <center class="math-display">
+        <img src="images_help/RCM5x.png"
+        alt="max      max     λ (Σ) ---l=1,...,v---j=1,...,k-l--j-≤ restr. minl=1,...,vminj=1,...,kλl(Σj) "
+        class="math-display"><a id="x1-1004r4"></a></center>
+      </td>
+      <td class="auto-style3" style="width: 5%;"><a name="(4)">(4)</a></td>
+    </tr>
+  </tbody>
+</table>
+<!--l. 97-->
 
-<table cellspacing="0" class="body" cellpadding="4" border="2"><colgroup><col width="29%"><col width="71%"></colgroup><tbody><tr valign="top"><td><p>
-	<tt>Y</tt></p></td><td><p>       <tt>Y</tt> matrix of size <i>n</i>-by-<i>v</i> containing (in the
-columns) the variables of the dataset. Rows of Y represent observations, and columns                    
-represent variables.                                             
-Missing values (NaN's) and infinite values (Inf's) are allowed,  
-since observations (rows) with missing or infinite values will   
-automatically be excluded from the computations.                 </p>
-	</td></tr>
-	<tr>
-		<td><p><tt>k</tt></p></td><td>
+<p class="auto-style2">Note that classic <span class="zptmcm7m-">k</span>-means
+procedure is simply obtained putting <span class="zptmcm7m-">α </span><span
+class="zptmcm7t-">= 0 </span>and <span class="zptmcm7m-">π</span><span
+class="zptmcm7y-">′</span><sub><span class="zptmcm7m-x-x-74">j</span></sub>
+<span class="zptmcm7t-">= 1 </span>in equation (<a
+href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>) and <span
+class="zptmcm7m-">c </span><span class="zptmcm7t-">= 1 </span>in equation (<a
+href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>). The idea of trimming
+under the eigenvalue constraint ratio of equation (<a
+href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>) can also be applied in the
+context of the mixture likelihood (see option <tt><a href="#mixt">mixt</a></tt>
+below) given in equation (<a href="#x1-1001r1">1<!--tex4ht:ref: mixlik --></a>)
+with important consequences. In the crisp assignment in each iteration of the
+maximization process, the selection of the <span
+class="zptmcm7t-">[</span><span class="zptmcm7m-">n</span><span
+class="zptmcm7t-">(1</span><span class="zptmcm7y-">-</span><span
+class="zptmcm7m-">α</span><span class="zptmcm7t-">)] </span>units is made
+taking the <span class="zptmcm7t-">[</span><span
+class="zptmcm7m-">n</span><span class="zptmcm7t-">(1</span><span
+class="zptmcm7y-">-</span><span class="zptmcm7m-">α</span><span
+class="zptmcm7t-">)] </span>largest values of <span
+class="zptmcm7m-">ϕ</span><sub><span
+class="zptmcm7m-x-x-74">i</span></sub><sup><span
+class="zptmcm7y-x-x-74">*</span></sup>, where <span
+class="zptmcm7m-">ϕ</span><sub><span
+class="zptmcm7m-x-x-74">i</span></sub><sup><span
+class="zptmcm7y-x-x-74">*</span></sup> <span class="zptmcm7t-">=</span> <span
+class="zptmcm7t-">max</span><sub><span class="zptmcm7m-x-x-74">j</span><span
+class="zptmcm7t-x-x-74">=1</span><span
+class="zptmcm7m-x-x-74">,…,k</span></sub><img src="images_help/RCM6x.png"
+alt="^π" class="circ"><span class="zptmcm7y-">′</span><sub><span
+class="zptmcm7m-x-x-74">j</span></sub><span class="zptmcm7m-">ϕ</span><span
+class="zptmcm7t-">(</span><span class="zptmcm7m-">y</span><sub><span
+class="zptmcm7m-x-x-74">i</span></sub><span class="zptmcm7t-">;</span> <img
+src="images_help/RCM7x.png" alt="^ θ" class="circ"><sub><span
+class="zptmcm7m-x-x-74">j</span></sub><span class="zptmcm7t-">) </span>where
+<img src="images_help/RCM8x.png" alt="^π" class="circ"><sub><span
+class="zptmcm7m-x-x-74">j</span></sub> is estimated using proportion of
+untrimmed observations which are assigned to each group. Estimates of centers
+and the covariance matrices use respectively the unweighted sample mean and
+sample covariance matrices. On the other hand, in the context of mixture
+modelling, the quantities </p>
 
-<p>Scalar which specifies the number of groups </p>
-		</td>
-	</tr>
-<tr valign="top"><td style="height: 98px"><p><tt><a name="alpha_">alpha</a> </tt></p></td>
-	<td style="height: 98px">
+<center class="math-display">
+<img src="images_help/RCM9x.png"
+alt="             ^ ϕ*ij = --^πjϕ-(yi;θj)--   i= 1,2,...,n,   j= 1,...,k      ∑kj=1 ^πjϕ(yi; ^θj) "
+class="math-display"></center>
+<!--l. 106-->
 
-<p>Scalar (real) between 0 and 0.5 or an integer specifying the number of 
-observations which have to be trimmed. If <tt>alpha</tt>=0 tclust reduces to traditional 
-model based or mixture clustering (mclust): see Matlab function gmdistribution. 
-More in detail, if 0&lt; <tt>alpha</tt> &lt;0.5 clustering is based on h=fix(n*(1-alpha)) 
-observations Else if alpha is an integer greater than 1 clustering is based on 
-h=n-floor(alpha);
-	</td></tr>
-	<tr>
-		<td style="height: 32px"><p><tt>restr</tt></p></td>
-		<td style="height: 32px"><p>Scalar in the interval [1 ∞] which specifies 
-		the maximum ratio to allow between the largest eigenvalue and the 
-		smallest eigenvalue of the k covariance matrices which are generated 
-		(see equation <a href="#(4)">(4)</a> above).&nbsp; Setting <tt>restr</tt> to 1, yields the strongest restriction,
-		forcing all eigenvalues/determinants to be equal and so the method looks 
-		for similarly scattered (respectively spherical) clusters.</p></td>
-	</tr>
-	</tbody></table>
-	
-<p class="auto-style2" > 
-<tt>[out]  = tclust(Y,k,alpha,restrfactor)</tt> returns the following information<ul type="disc">
+<p class="auto-style2">are interpreted as posterior probabilities. The
+criterion for selecting the units to trim remains the same, however, centers
+and the covariance matrices are updated with the weighted sample mean and
+weighted sample covariance matrices with the weights given by the posterior
+probabilities. The posterior probabilities for the <span
+class="zptmcm7m-">α</span> trimmed units are set to 0 for each group.
+Similarly, the <img src="images_help/RCM10x.png" alt="π^"
+class="circ"><sub><span class="zptmcm7m-x-x-74">j</span></sub> are updated
+using <span class="zptmcm7v-">∑</span><sub><span
+class="zptmcm7m-x-x-74">i</span><span
+class="zptmcm7t-x-x-74">=1</span></sub><sup><span
+class="zptmcm7m-x-x-74">n</span></sup><span
+class="zptmcm7m-">ϕ</span><sub><span
+class="zptmcm7m-x-x-74">ij</span></sub><sup><span
+class="zptmcm7y-x-x-74">*</span></sup><span class="zptmcm7m-">∕</span><span
+class="zptmcm7t-">[</span><span class="zptmcm7m-">n</span><span
+class="zptmcm7t-">(1</span><span class="zptmcm7y-">-</span><span
+class="zptmcm7m-">α</span><span class="zptmcm7t-">)]</span>. <!--l. 115--> </p>
+
+<p>DETAILS. This iterative algorithm initializes k clusters randomly and
+performs "concentration steps" in order to improve the current cluster
+assignment. The number of maximum concentration steps to be performed is
+controlled by input parameter <a href="#refsteps">refsteps</a>. For
+approximately obtaining the global optimum, the system is initialized <a
+href="#nsamp">nsamp</a> times and concentration steps are performed until
+convergence or refsteps is reached. When processing more complex data sets
+higher values of nsamp and refsteps have to be specified (obviously implying
+extra computation time). However, if more then 10% of the iterations do not
+converge, a warning message is issued, indicating that <a
+href="#nsamp">nsamp</a> has to be increased. </p>
+
+<p> </p>
+
+<p><tt>tclust</tt> requires  the following input</p>
+
+<table cellspacing="0" class="body" cellpadding="4" border="2">
+  <colgroup><col width="29%">
+    <col width="71%">
+  </colgroup>
+  <tbody>
+    <tr valign="top">
+      <td><p><tt>Y</tt></p>
+      </td>
+      <td><p><tt>Y</tt> matrix of size <i>n</i>-by-<i>v</i> containing (in the
+        columns) the variables of the dataset. Rows of Y represent
+        observations, and columns represent variables. Missing values (NaN's)
+        and infinite values (Inf's) are allowed, since observations (rows) with
+        missing or infinite values will automatically be excluded from the
+        computations. </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><tt>k</tt></p>
+      </td>
+      <td><p>Scalar which specifies the number of groups </p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td style="height: 98px"><p><tt><a name="alpha_">alpha</a> </tt></p>
+      </td>
+      <td style="height: 98px"><p>Scalar (real) between 0 and 0.5 or an integer
+        specifying the number of observations which have to be trimmed. If
+        <tt>alpha</tt>=0 tclust reduces to traditional model based or mixture
+        clustering (mclust): see Matlab function gmdistribution. More in
+        detail, if 0&lt; <tt>alpha</tt> &lt;0.5 clustering is based on
+        h=fix(n*(1-alpha)) observations. Else if alpha is an integer greater
+        than 1 clustering is based on h=n-floor(alpha); </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="height: 32px"><p><tt>restr</tt></p>
+      </td>
+      <td style="height: 32px"><p>Scalar in the interval [1 ∞] which
+        specifies the maximum ratio to allow between the largest eigenvalue and
+        the smallest eigenvalue of the k covariance matrices which are
+        generated (see equation <a href="#(4)">(4)</a> above).  Setting
+        <tt>restr</tt> to 1, yields the strongest restriction, forcing all
+        eigenvalues/determinants to be equal and so the method looks for
+        similarly scattered (respectively spherical) clusters.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="auto-style2"><tt>[out] = tclust(Y,k,alpha,restrfactor)</tt> returns
+the following information</p>
+<ul type="disc">
   <li><tt>out</tt> − A structure of additional statistics with the following
     fields. 
     <ul type="circle">
-      <li><p><tt>idx</tt> − <tt>n</tt>-by-<tt>1</tt> vector containing assignment of each unit to
-                       each of the k groups. Cluster names are integer
-                       numbers from 1 to k. 0 indicates trimmed
-                       observations. </p>
+      <li><p><tt>idx</tt> − <tt>n</tt>-by-<tt>1</tt> vector containing
+        assignment of each unit to each of the k groups. Cluster names are
+        integer numbers from 1 to k. 0 indicates trimmed observations. </p>
       </li>
-      <li><p><tt>muopt</tt> − <tt>k</tt>-by-<tt>v</tt> matrix containing cluster centroid locations.
-                       These are robust estimate of final centroids of the groups. 
+      <li><p><tt>muopt</tt> − <tt>k</tt>-by-<tt>v</tt> matrix containing
+        cluster centroid locations. These are robust estimate of final
+        centroids of the groups. </p>
       </li>
-      <li><p><tt>sigmaopt</tt> − <tt>v</tt>-by-<tt>v</tt>-by-<tt>k</tt> array containing estimated constrained
-                       covariances for the k groups. <br>
+      <li><p><tt>sigmaopt</tt> − <tt>v</tt>-by-<tt>v</tt>-by-<tt>k</tt> array
+        containing estimated constrained covariances for the k groups. <br>
+        </p>
       </li>
-      <li><p><tt>bs</tt> − <tt>k</tt>-by-1 vector containing the units forming initial
-                       subset associated with muopt      </li>
-      <li><tt>post</tt> − <tt>n</tt>-by-<tt>v</tt> matrix containing posterior probabilities
-                       out.post(i,j) contains posterior probabilitiy of unit
-                       i from component (cluster) j. For the trimmed units
-                       posterior probabilities are 0</li>
-      <li><tt>siz</tt> − <tt>k</tt>-by-3 matrix <br>1st col = sequence from 0 to 
-	  k<br>2nd col = number of observations in each cluster<br>3rd col = 
-	  percentage of observations in each cluster<br>Remark: 0 denotes unassigned 
-	  units</li>
-      <li><tt>equalweights</tt> − logical. It is true if in the clustering 
-	  procedure we (ideally) assumed equal cluster weights (equation 2) else it is false if 
-	  we allowed for different cluster sizes (equation 3)</li>
-      <li><tt>h</tt> − scalar. Number of observations that have determined the
-                       centroids (number of untrimmed units).</li>
-      <li><tt>obj</tt> − scalar. Value of the objective function which is minimized
-                       (value of the best returned solution).
-                       If input option <tt>mixt</tt> >1 the likelihood which is
-                       maximized is a mixture likelihood as follows
-                       <center class="math-display" >
-<img 
-src="images_help/RCM0x.png" alt=" n  k
-&#x220F;  &#x2211; &#x03C0;j&#x03D5;(yi; &#x03B8;j).
-i=1j=1
-" class="math-display" ><a 
- id="x1-1001r2"></a></center>&nbsp;else the likelihood which is maximized is a classification likelihood of the the form <br>
- &nbsp;
-                        <center class="math-display" >
-	  <img 
-src="images_help/RCM2x.png" alt=" k     &#x2032;
-&#x220F;  &#x220F;  &#x03C0;j&#x03D5;(yi; &#x03B8;j)
-j=1i&#x2208;Rj
-" class="math-display" > </center><br>
-                       where <span 
-class="zptmcm7m-">R</span><sub><span 
-class="zptmcm7m-x-x-74">j </span></sub>contains the indexes of the observations which are assigned to group 
-	  j
-with the constraint that <span 
-class="zptmcm7t-">#</span><span 
-class="zptmcm7v-">&#x22C3;</span><sub> <span 
-class="zptmcm7m-x-x-74">j</span><span 
-class="zptmcm7t-x-x-74">=1</span></sub><sup><span 
-class="zptmcm7m-x-x-74">k</span></sup><span 
-class="zptmcm7m-">R</span><sub><span 
-class="zptmcm7m-x-x-74">j</span></sub> <span 
-class="zptmcm7t-">= [</span><span 
-class="zptmcm7m-">n</span><span 
-class="zptmcm7t-">(1</span><span 
-class="zptmcm7y-">-</span><span 
-class="zptmcm7m-">&#x03B1;</span><span 
-class="zptmcm7t-">)] </span>where symbol <span 
-class="zptmcm7t-">[</span><span 
-class="zptmcm7y-">&#x22C5;</span><span 
-class="zptmcm7t-">] </span>denotes the integer part. In the classification likelihood if input
-                       option <tt>equalweights</tt>=0 then &pi;<sub>j</sub>'=1 j=1, ..., k</li>
-      <li><tt>notconver</tt> − scalar. Number of subsets without convergence
+      <li><p><tt>bs</tt> − <tt>k</tt>-by-1 vector containing the units
+        forming initial subset associated with muopt </p>
+      </li>
+      <li><tt>post</tt> − <tt>n</tt>-by-<tt>v</tt> matrix containing
+        posterior probabilities. out.post(i,j) contains posterior probabilitiy
+        of unit i from component (cluster) j. For the trimmed units posterior
+        probabilities are 0.</li>
+      <li><tt>siz</tt> − <tt>k</tt>-by-3 matrix <br>
+        1st col = sequence from 0 to k<br>
+        2nd col = number of observations in each cluster<br>
+        3rd col = percentage of observations in each cluster<br>
+        Remark: 0 denotes unassigned units</li>
+      <li><tt>equalweights</tt> − logical. It is true if in the clustering
+        procedure we (ideally) assumed equal cluster weights (equation 2) else
+        it is false if we allowed for different cluster sizes (equation 3)</li>
+      <li><tt>h</tt> − scalar. Number of observations that have determined
+        the centroids (number of untrimmed units).</li>
+      <li><tt>obj</tt> − scalar. Value of the objective function which is
+        minimized (value of the best returned solution). If input option
+        <tt>mixt</tt> &gt;1 the likelihood which is maximized is a mixture
+        likelihood as follows 
+
+        <center class="math-display">
+        <img src="images_help/RCM0x.png"
+        alt=" n  k ∏  ∑ πjϕ(yi; θj). i=1j=1 " class="math-display"><a
+        id="x1-1001r2"></a></center>
+         else the likelihood which is maximized is a classification likelihood
+        of the the form <br>
+          
+
+        <center class="math-display">
+        <img src="images_help/RCM2x.png"
+        alt=" k     ′ ∏  ∏  πjϕ(yi; θj) j=1i∈Rj "
+        class="math-display"> </center>
+        <br>
+        where <span class="zptmcm7m-">R</span><sub><span
+        class="zptmcm7m-x-x-74">j </span></sub>contains the indexes of the
+        observations which are assigned to group j with the constraint that
+        <span class="zptmcm7t-">#</span><span
+        class="zptmcm7v-">⋃</span><sub><span
+        class="zptmcm7m-x-x-74">j</span><span
+        class="zptmcm7t-x-x-74">=1</span></sub><sup><span
+        class="zptmcm7m-x-x-74">k</span></sup><span
+        class="zptmcm7m-">R</span><sub><span
+        class="zptmcm7m-x-x-74">j</span></sub> <span class="zptmcm7t-">=
+        [</span><span class="zptmcm7m-">n</span><span
+        class="zptmcm7t-">(1</span><span class="zptmcm7y-">-</span><span
+        class="zptmcm7m-">α</span><span class="zptmcm7t-">)] </span>where
+        symbol <span class="zptmcm7t-">[</span><span
+        class="zptmcm7y-">⋅</span><span class="zptmcm7t-">] </span>denotes
+        the integer part. In the classification likelihood if input option
+        <tt>equalweights</tt>=0 then π<sub>j</sub>'=1, j=1, ..., k</li>
+      <li><tt>notconver</tt> − scalar. Number of subsets without convergence 
         <p></p>
       </li>
     </ul>
     <ul>
-      <li><tt>Y</tt> − scalar. original data matrix Y. The field is present if 
-	  option Ysave is set to 1.
-      </li>
-  </ul>
+      <li><tt>Y</tt> − scalar. original data matrix Y. The field is present
+        if option Ysave is set to 1. </li>
+    </ul>
+    <ul>
+      <li><tt>AIC</tt> − scalar AIC </li>
+      <li><tt>BIC</tt> − scalar BIC </li>
+      <li><tt>fullsol</tt> − column vector of size <tt>nsamp</tt> which
+        contains the value of the objective function for each subsample.</li>
+    </ul>
   </li>
-	<ul>
-		<li><tt>AIC</tt> − scalar AIC </li>
-		<li><tt>BIC</tt> − scalar BIC </li>
-		<li>
-		<tt>fullsol</tt> − column vector of size <tt>nsamp</tt> which contains the value 
-		of the objective function for each subsample.</ul>
 </ul>
 
-<p>&nbsp;</p>
+<p> </p>
 
-<p>
-<tt>[out , C] = tclust(Y,k,alpha,restrfactor)</tt> returns in matrix C (with size
-nsamp-by-(v+1)*k) the indices of the subsamples extracted for computing the 
-estimate. First row is associated to first subsample, ...., last row is 
+<p><tt>[out , C] = tclust(Y,k,alpha,restrfactor)</tt> returns in matrix C (with
+size nsamp-by-(v+1)*k) the indices of the subsamples extracted for computing
+the estimate. First row is associated to first subsample, ...., last row is
 associated with <a href="#nsamp">nsamp</a> subsample</p>
-<p>
-&nbsp;</p>
 
-<p>
-<tt>[out] = tclust(Y,k,alpha,restrfactor,param1,val1,param2,val2,...) 
+<p> </p>
+
+<p><tt>[out] = tclust(Y,k,alpha,restrfactor,param1,val1,param2,val2,...)
 </tt>specifies one or more of the name/value pairs described in the following
 table.</p>
 
@@ -526,170 +495,200 @@ table.</p>
   <tbody>
     <tr valign="top">
       <td bgcolor="#F2F2F2"><tt><a name="nsamp">'nsamp'</a></tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar of matrix.<br>If <tt>nsamp</tt> is a scalar it 
-	  contains the number of subsamples which will be extracted. If <tt>nsamp</tt>=0 all 
-	  subsets will be extracted.<br>Remark: if the number of all possible subset 
-	  is &lt;300 the default is to extract all subsets, otherwise just 300<br>
-	  If <tt>nsamp</tt> is a matrix it contains in the rows the indexes of the subsets 
-	  which have to be extracted. nsamp in this case can be conveniently generated 
-	  by function subsets. <tt>nsamp</tt> can have k columns or&nbsp; k*(v+1) columns. If <tt>nsamp</tt>
-	  has k columns the k initial centroids at each iteration i are given by 
-	  X(nsamp(i,:),:) and the covariance matrices are equal to the identity.<br>
-	  If nsamp has k*(v+1) columns the initial centroids and covariance matrices 
-	  in iteration i are computed as follows<br>X1=X(nsamp(i,:),:)<br>mean(X1(1:v+1,:)) contains the initial 
-	  centroid for group 1<br>cov(X1(1:v+1,:)) contains the initial cov matrix 
-	  for group 1 1<br>mean(X1(v+2:2*v+2,:)) contains the initial centroid for 
-	  group 2<br>cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2 
-	  1<br>...<br>mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for 
-	  group k<br>cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for 
-	  group k<br>REMARK: if <tt>nsamp</tt> is not a scalar option below <tt>startv1</tt> is 
-	  ignored. More precisely if <tt>nsamp</tt> has k columns<br>startv1=0 elseif nsamp 
-	  has k*(v+1) columns option startv1 =1.</p>
+      <td bgcolor="#F2F2F2"><p>Scalar of matrix.<br>
+        If <tt>nsamp</tt> is a scalar it contains the number of subsamples
+        which will be extracted. If <tt>nsamp</tt>=0 all subsets will be
+        extracted.<br>
+        Remark: if the number of all possible subset is &lt;300 the default is
+        to extract all subsets, otherwise just 300.<br>
+        If <tt>nsamp</tt> is a matrix it contains in the rows the indexes of
+        the subsets which have to be extracted. nsamp in this case can be
+        conveniently generated by function subsets. <tt>nsamp</tt> can have k
+        columns or  k*(v+1) columns. If <tt>nsamp</tt> has k columns the k
+        initial centroids at each iteration i are given by X(nsamp(i,:),:) and
+        the covariance matrices are equal to the identity.<br>
+        If nsamp has k*(v+1) columns the initial centroids and covariance
+        matrices in iteration i are computed as follows<br>
+        X1=X(nsamp(i,:),:)<br>
+        mean(X1(1:v+1,:)) contains the initial centroid for group 1<br>
+        cov(X1(1:v+1,:)) contains the initial cov matrix for group 1 1<br>
+        mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2<br>
+        cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2 1<br>
+        ...<br>
+        mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group
+        k<br>
+        cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group
+        k<br>
+        REMARK: if <tt>nsamp</tt> is not a scalar option below <tt>startv1</tt>
+        is ignored. More precisely if <tt>nsamp</tt> has k columns<br>
+        startv1=0 elseif nsamp has k*(v+1) columns option startv1 =1.</p>
       </td>
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt><a name="refsteps">'refsteps'</a></tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar defining number of refining iterations in 
-	  each subsample (default = 15).</p>
+      <td bgcolor="#F2F2F2"><p>Scalar defining number of refining iterations in
+        each subsample (default = 15).</p>
       </td>
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>'reftol'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar. Default value of tolerance for the 
-	  refining steps. The default value is 1e-14;</p>
+      <td bgcolor="#F2F2F2"><p>Scalar. Default value of tolerance for the
+        refining steps. The default value is 1e-14;</p>
       </td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt><a name="equalweights">'equalweights'</a></tt></td>
-      <td bgcolor="#F2F2F2"><p>A logical value specifying whether cluster 
-	  weights shall be considered in the concentration, assignment steps and 
-	  computation of the likelihood.<br>if <tt>equalweights</tt> = true we are (ideally) 
-	  assuming equally sized groups by maximizing equation <a href="#(2)">(2)</a> else if 
-	  <tt>equalweights</tt>= false we maximize equation <a href="#(3)">(3)</a>.</p>
+      <td bgcolor="#F2F2F2"><tt><a
+      name="equalweights">'equalweights'</a></tt></td>
+      <td bgcolor="#F2F2F2"><p>A logical value specifying whether cluster
+        weights shall be considered in the concentration, assignment steps and
+        computation of the likelihood.<br>
+        if <tt>equalweights</tt> = true we are (ideally) assuming equally sized
+        groups by maximizing equation <a href="#(2)">(2)</a> else if
+        <tt>equalweights</tt>= false we maximize equation <a
+        href="#(3)">(3)</a>.</p>
       </td>
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt><a name="mixt">'mixt'</a></tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar, which specifies whether mixture modelling 
-	  or crisp assignment approach to model based clustering must be used.<br>In 
-	  the case of mixture modelling parameter mixt also controls which is the 
-	  criterior to find the untrimmed units<br>in each step of the maximization</p>
-	  <p>If <tt>mixt </tt>&ge; 1 mixture modelling is assumed else crisp assignment 
-	  is used.<br>In 
-	  mixture modelling the likelihood is given by equation <a href="#(1)">(1)</a>, while in crisp 
-	  assignment the likelihood is given by equation <a href="#(2)">(2)</a> or
-	  <a href="#(3)">(3)</a>.</p>
-	  <p><em>Remark</em>:&nbsp; if <tt>mixt</tt>&gt;=1 previous parameter <a href="#equalweights">
-	  equalweights</a> is automatically set to 1<br>Parameter <tt>mixt </tt>also controls 
-	  the criterion to select the units to trim<br>if <tt>mixt</tt> = 2 the h units are 
-	  those which give the largest contribution to the likelihood that is the 
-	  h largest values of</p>
-	  <p>
-	  <img alt="" src="images_help/img5B1.gif"></p>
-	  <p><br>i=1, 2, ..., n<br>elseif <tt>mixt</tt>=1 the criterior to select the h 
-	  units is exactly the same as the one which is used in crisp assignment. 
-	  That is: the n units are allocated to a cluster according to criterior<br>
-	  <img alt="" src="images_help/img66.gif"><br>and then these n numbers are 
-	  ordered and the units associated with the largest h numbers are untrimmed.</p>
+      <td bgcolor="#F2F2F2"><p>Scalar, which specifies whether mixture
+        modelling or crisp assignment approach to model based clustering must
+        be used.<br>
+        In the case of mixture modelling parameter mixt also controls which is
+        the criterior to find the untrimmed units in each step of the
+        maximization.</p>
+
+        <p>If <tt>mixt </tt>≥ 1 mixture modelling is assumed else crisp
+        assignment is used.<br>
+        In mixture modelling the likelihood is given by equation <a
+        href="#(1)">(1)</a>, while in crisp assignment the likelihood is given
+        by equation <a href="#(2)">(2)</a> or <a href="#(3)">(3)</a>.</p>
+
+        <p><em>Remark</em>:  if <tt>mixt</tt>&gt;=1 previous parameter <a
+        href="#equalweights">equalweights</a> is automatically set to 1.<br>
+        Parameter <tt>mixt </tt>also controls the criterion to select the units
+        to trim<br>
+        if <tt>mixt</tt> = 2 the h units are those which give the largest
+        contribution to the likelihood that is the h largest values of</p>
+
+        <p><img alt="" src="images_help/img5B1.gif"></p>
+
+        <p><br>
+        i=1, 2, ..., n<br>
+        elseif <tt>mixt</tt>=1 the criterior to select the h units is exactly
+        the same as the one which is used in crisp assignment. That is: the n
+        units are allocated to a cluster according to criterior<br>
+        <img alt="" src="images_help/img66.gif"><br>
+        and then these n numbers are ordered and the units associated with the
+        largest h numbers are untrimmed.</p>
       </td>
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>'plots'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar. If <tt>plots</tt> = 1, a plot with the 
-	  classification is shown on the screen. </p>
+      <td bgcolor="#F2F2F2"><p>Scalar. If <tt>plots</tt> = 1, a plot with the
+        classification is shown on the screen. </p>
       </td>
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>'msg'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar which controls whether to display or not 
-	  messages on the screen <br>If <tt>msg=1</tt> (default) messages are displayed on 
-	  the screen about estimated time to compute the estimator or the number of 
-	  subsets in which there was no convergence<br>else no message is displayed 
-	  on the screen</p>
+      <td bgcolor="#F2F2F2"><p>Scalar which controls whether to display or not
+        messages on the screen.<br>
+        If <tt>msg=1</tt> (default) messages are displayed on the screen about
+        estimated time to compute the estimator or the number of subsets in
+        which there was no convergence.<br>
+        Else no message is displayed on the screen.</p>
       </td>
     </tr>
-      <tr>
+    <tr>
       <td bgcolor="#F2F2F2"><tt>'nocheck'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar. If <tt>nocheck</tt> is equal to 1 no check is 
-	  performed on<br>matrix Y.<br>As default  <tt>nocheck</tt> =0 </p>
+      <td bgcolor="#F2F2F2"><p>Scalar. If <tt>nocheck</tt> is equal to 1 no
+        check is performed on<br>
+        matrix Y.<br>
+        As default <tt>nocheck</tt> =0.</p>
       </td>
-      </tr>
-	  <tr>
+    </tr>
+    <tr>
       <td bgcolor="#F2F2F2"><tt>'startv1'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar. If <tt>startv1 </tt>is 1 then initial centroids and 
-	  and covariance matrices are based on (v+1) observations randomly 
-	  chosen, else each centroid is initialized taking a random row of input 
-	  data matrix and covariance matrices are initialized with identity 
-	  matrices.
-	  <br>Remark: in order to start with a potential solution which is in the 
-	  required parameter space, eigenvalue restrictions are immediately 
-	  applied. The default value of <tt>startv1</tt> is 1.
-	  <br>REMARK: option <tt>startv1</tt> is 
-	  used just if  <tt>nsamp</tt> is a scalar (see for more details the help 
-	  associated with <a href="#nsamp">nsamp</a>)</p>
+      <td bgcolor="#F2F2F2"><p>Scalar. If <tt>startv1 </tt>is 1 then initial
+        centroids and and covariance matrices are based on (v+1) observations
+        randomly chosen, else each centroid is initialized taking a random row
+        of input data matrix and covariance matrices are initialized with
+        identity matrices. <br>
+        Remark: in order to start with a potential solution which is in the
+        required parameter space, eigenvalue restrictions are immediately
+        applied. The default value of <tt>startv1</tt> is 1. <br>
+        REMARK: option <tt>startv1</tt> is used just if <tt>nsamp</tt> is a
+        scalar (see for more details the help associated with <a
+        href="#nsamp">nsamp</a>).</p>
       </td>
-      </tr>
-	  <tr>
+    </tr>
+    <tr>
       <td bgcolor="#F2F2F2"><tt>'Ysave'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar that is set to 1 to request that the input matrix Y
-               is saved into the output structure out. Default is 0, i.e.
-               no saving is done. </p>
+      <td bgcolor="#F2F2F2"><p>Scalar that is set to 1 to request that the
+        input matrix Y is saved into the output structure out. Default is 0,
+        i.e. no saving is done. </p>
       </td>
-      </tr>
+    </tr>
   </tbody>
 </table>
 
 <p></p>
-<p>&nbsp;</p>
+
+<p> </p>
 
 <h2>References </h2>
 
-<p><br>Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. 
-(2008), "A General Trimming Approach to Robust Cluster Analysis". Annals of 
-Statistics, Vol.36, 1324-1345. Technical Report available at 
+<p><br>
+Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008), "A
+General Trimming Approach to Robust Cluster Analysis". Annals of Statistics,
+Vol.36, 1324-1345. Technical Report available at
 www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</p>
 
 <h3>Examples</h3>
 
 <h3>Example 1</h3>
-<p class="auto-style1">tclust applied to geyser data</p>
-&nbsp;<pre class="programlisting">
- % tclust using geyser data
-Y=load('geyser2.txt');
-out=tclust(Y,3,0.1,10000,'plots',1)
-</pre>
 
-<p>
-<img alt="" src="images_help/img92.jpg"></p>
-<p>
-Compare the above solution with the trimmed k-means solution </p>
-<pre class="programlisting">
-% trimmed k-means solution restrfactor=1
-out=tclust(Y,3,0.1,1,'nsamp',100,'refsteps',20,'plots',1)
-</pre>
+<p class="auto-style1">tclust applied to geyser data</p>
+ 
+<pre class="programlisting"> % tclust using geyser data
+Y=load('geyser2.txt');
+out=tclust(Y,3,0.1,10000,'plots',1)</pre>
+
+<p><img alt="" src="images_help/img92.jpg"></p>
+
+<p>Compare the above solution with the trimmed k-means solution </p>
+<pre class="programlisting">% trimmed k-means solution restrfactor=1
+out=tclust(Y,3,0.1,1,'nsamp',100,'refsteps',20,'plots',1)</pre>
+
 <p><img alt="" src="images_help/img96.jpg"></p>
-<p>&nbsp;</p>
+
+<p> </p>
 
 <h3>Example 2</h3>
-<p>Analysis of the M5 data.&nbsp; This is a bivariate data set obtained from 
-three normal bivariate distributions with different scales and proportions 
-1:2:2. One of the components is very overlapped with another one. A 10% 
-background noise is added uniformly distributed in a rectangle containing the 
-three normal components and not very overlapped with the three mixture 
-components. A precise description of the M5 data set can be found in 
-García-Escudero et al. (2008).</p>
-<pre class="programlisting">
- Y=load('M5data.txt');
+
+<p>Analysis of the M5 data. This is a bivariate data set obtained from three
+normal bivariate distributions with different scales and proportions 1:2:2. One
+of the components is very overlapped with another one. A 10% background noise
+is added uniformly distributed in a rectangle containing the three normal
+components and not very overlapped with the three mixture components. A precise
+description of the M5 data set can be found in García-Escudero et al.
+(2008).</p>
+<pre class="programlisting"> Y=load('M5data.txt');
  plot(Y(:,1),Y(:,2),'o')
  spmplot(Y(:,1:2),Y(:,3),[],'box')
- out=tclust(Y(:,1:2),3,0,1000,'nsamp',100,'plots',1)
-</pre>
-<p>&nbsp;</p>
+ out=tclust(Y(:,1:2),3,0,1000,'nsamp',100,'plots',1)</pre>
+
+<p> </p>
+
 <p>Plot of the data without labels</p>
+
 <p><img alt="" src="images_help/img9F.jpg"></p>
+
 <p>Plot of the data with labels</p>
+
 <p><img alt="" src="images_help/imgA0.jpg"></p>
+
 <p>Output of tclust</p>
+
 <p><img alt="" src="images_help/img9C.jpg"></p>
 
 <h3>See Also</h3>
