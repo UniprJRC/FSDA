@@ -21,7 +21,8 @@ do
 
     #    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp('Execution of $x completed successfully'); diary('off'); exit(0); catch error; diary('execution_log.txt'); disp(['Execution of $x FAILED: ' error.message]); diary('off'); exit(0); end;" 
     # NO_EXITS    
-    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+    # clearvars 
+    y="try; run('$x'); diary('execution_log.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end; clear all;" 	
 	
     echo $y >>test_runner.m
 	echo -e "\n" >>test_runner.m
