@@ -601,7 +601,8 @@ if nargin>1
     end
 end
 
-%%%NEW
+verMatlab=verLessThan('matlab','8.4.0');
+
 % if LineColor and SubsetLinesColor are not specified, set to default.
 LineColor=[1 0 0];      %[1 0 0] is red.
 SubsetLinesColor = '';
@@ -617,7 +618,7 @@ if isstruct(datatooltip)
         SubsetLinesColor=datatooltip.SubsetLinesColor;
         datatooltip=rmfield(datatooltip,'SubsetLinesColor');
         fdatatooltip=fieldnames(datatooltip);
-        [a b]=size(SubsetLinesColor);
+        [a, b]=size(SubsetLinesColor);
         if ~(a==1 && b==3 && sum(SubsetLinesColor<=1)==3)
             % if it is not a valid RGB vector, set to default (blue)
             SubsetLinesColor = [0 0 1];
@@ -629,7 +630,7 @@ if isstruct(datatooltip)
         LineColor=datatooltip.LineColor;
         datatooltip=rmfield(datatooltip,'LineColor');
         %fdatatooltip=fieldnames(datatooltip);
-        [a b]=size(LineColor);
+        [a, b]=size(LineColor);
         if ~(a==1 && b==3 && sum(LineColor<=1)==3)
             % if LineColor is not a valid RGB vector, set to default (red)
             LineColor=[1 0 0];
@@ -637,7 +638,7 @@ if isstruct(datatooltip)
     end
 end
 
-%%%NEW
+
 
 databrush=options.databrush;
 
@@ -744,7 +745,16 @@ slintyp=standard.LineStyle;
 if ~isempty(slintyp)
     slintyp=slintyp(:);
     slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-    set(plot1,{'Line'},slintyp(1:n));
+    
+    if verMatlab
+        set(plot1,{'Line'},slintyp(1:n));
+    else
+        for i=1:n
+            plot1i=plot1(i);
+            plot1i.LineStyle=slintyp{i};
+        end
+    end
+    
 end
 
 % save the resfwdplot lines handles, for subsequent use with option persist
@@ -842,11 +852,27 @@ if ~isempty(options.fground)
     
     if ~isempty(slintyp)
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        set(plot1(funit),{'Line'},slintyp(funit));
+        
+        if verMatlab
+            set(plot1(funit),{'Line'},slintyp(funit));
+        else
+            for i=1:length(funit)
+                plot1i=plot1(i);
+                plot1i.LineStyle=slintyp{funit(i)};
+            end
+        end
     else
         slintyp={'-'};
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        set(plot1(funit),{'Line'},slintyp(funit));
+        
+        if verMatlab
+            set(plot1(funit),{'Line'},slintyp(funit));
+        else
+            for i=1:length(funit)
+                plot1i=plot1(i);
+                plot1i.LineStyle=slintyp{funit(i)};
+            end
+        end
     end
     
     if ~isempty(fground.flabstep)
@@ -873,10 +899,10 @@ if ~isempty(options.fground)
         end
         
         % Label the units
-        text(reshape(repmat(steps,lunits,1),lall,1),...
-            reshape(MDvalues(funit,steps-x(1)+1),lall,1),...
-            reshape(repmat(strings,1,lsteps),lall,1),...
-            {'HorizontalAlignment'},HA);
+%         text(reshape(repmat(steps,lunits,1),lall,1),...
+%             reshape(MDvalues(funit,steps-x(1)+1),lall,1),...
+%             reshape(repmat(strings,1,lsteps),lall,1),...
+%             {'HorizontalAlignment'},HA);
         
     end
     

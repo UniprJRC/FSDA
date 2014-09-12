@@ -306,7 +306,14 @@ if ~isempty(h)
         clickableMultiLegend(hlineh(1:numconflev),legendstring2);
     else
         legend_h = legend(hlineh(1:numconflev),legendstring2);
-        legend(legend_h,'hide');
+        
+        verMatlab=verLessThan('matlab','8.4.0');
+        if verMatlab
+            legend(legend_h,'hide');
+        else
+            legend_h.Visible='off';
+        end
+        
     end
     % Fix the y-axis
     set(h,'YLimMode', 'manual');

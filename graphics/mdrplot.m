@@ -920,7 +920,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 Open_mdr = findobj(0, 'type', 'figure','tag','pl_mdr');
                 if isempty(Open_mdr)  % User closed the main brushing window
                     if ~isempty(Open_yX); delete(Open_yX); end    % yX plot is deleted
-                    if ~isempty(Open_res); delete(Open_res); end  % mdr plot is deleted
+                    if ~isempty(Open_res); delete(Open_res); end  % monitoring residual plot is deleted
                     delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
                 end            
             

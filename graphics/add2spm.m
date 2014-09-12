@@ -211,7 +211,7 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
             set(gcf,'Name','Scatter plot matrix with groups highlighted');
             % Reset the handles of the main diagonal (histograms) to zero.
             H(:,:,1) = ~eye(size(H,1)).*H(:,:,1);
-            % Now reshape the handles array to make it more managebale: while H
+            % Now reshape the handles array to make it more manageable: while H
             % is a 3-dimensional array with the third dimension associated to
             % the groups, newH is 2-dimensional with columns associated to the
             % lines of the scatterplot and lines associated to the groups.
