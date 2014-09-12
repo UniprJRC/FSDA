@@ -463,7 +463,7 @@ load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
 
-% Simulateneous confidence level at 1%
+% Simultaneous confidence level at 1%
 conflev=1-0.01/length(y);
 
 % MMreg using two different level of efficiency
@@ -507,9 +507,6 @@ databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of selected steps while selecting
 databrush.RemoveLabels='off'; % Do not remove labels after selecting
 mdrplot(out,'ylimy',[1 8],'databrush',databrush);
-
-
-
 
 %% WD (Wool data): forward EDA with untransformed data
 load('wool.txt','wool');
@@ -710,6 +707,7 @@ load('hospital.txt');
 y1=hospital(:,5);
 X=hospital(:,1:4);
 [out]=LXS(y1,X,'nsamp',10000,'lms',0); 
+fieldnames(out)
 % [out1]=FSReda(y1,X,out.bs);
 [outFS]=FSR(y1,X,'init',20,'lms',0,'plots',2);
 fieldnames(outFS)

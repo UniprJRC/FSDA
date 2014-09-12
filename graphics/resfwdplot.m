@@ -311,7 +311,7 @@ function plotopt=resfwdplot(out,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2014. 
+% Copyright 2008-2014.
 % Written by FSDA team
 %
 %
@@ -631,6 +631,8 @@ function plotopt=resfwdplot(out,varargin)
 %     close(findobj('type','figure','Tag','pl_resfwd'));
 % end
 
+verMatlab=verLessThan('matlab','8.4.0');
+
 % The rows of matrix residuals are associated with the units in the dataset.
 % The columns are associated with the steps of the fwd search.
 residuals = out.RES;
@@ -879,9 +881,16 @@ if ~isempty(slintyp)
         slintyp=slintyp';
     end
     slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-    set(plot1,{'Line'},slintyp(1:n));
+    
+    if verMatlab
+        set(plot1,{'Line'},slintyp(1:n));
+    else
+        for i=1:n
+            plot1i=plot1(i);
+            plot1i.LineStyle=slintyp{i};
+        end
+    end
 end
-
 % save the resfwdplot lines handles, for subsequent use with option persist
 plot1lines=plot1;
 
@@ -979,13 +988,22 @@ if ~isempty(options.fground)
     if ~isempty(slintyp)
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
         set(plot1(funit),{'LineStyle'},slintyp(1:length(funit)));
-    
+        
     else
         slintyp={'-';'--';':';'-.'};
         % slintyp={'-'};
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        set(plot1(funit),{'Line'},slintyp(1:length(funit)));
-   end
+        
+        if verMatlab
+            set(plot1(funit),{'Line'},slintyp(1:length(funit)));
+        else
+            for i=1:length(funit)
+                plot1i=plot1(i);
+                plot1i.LineStyle=slintyp{i};
+            end
+        end
+        
+    end
     
     if ~isempty(fground.flabstep)
         % lsteps = number of steps for which we add the labels
@@ -1011,10 +1029,20 @@ if ~isempty(options.fground)
         end
         
         % Label the units
-        text(reshape(repmat(steps,lunits,1),lall,1),...
-            reshape(residuals(funit,steps-x(1)+1),lall,1),...
-            reshape(repmat(strings,1,lsteps),lall,1),...
-            {'HorizontalAlignment'},HA,'FontSize',fground.FontSize);
+%         text(reshape(repmat(steps,lunits,1),lall,1),...
+%             reshape(residuals(funit,steps-x(1)+1),lall,1),...
+%             reshape(repmat(strings,1,lsteps),lall,1),...
+%             {'HorizontalAlignment'},HA,'FontSize',fground.FontSize);
+%         text(reshape(repmat(steps,lunits,1),lall,1),...
+%             reshape(residuals(funit,steps-x(1)+1),lall,1),...
+%             reshape(repmat(strings,1,lsteps),lall,1),'FontSize',fground.FontSize);
+%          text(reshape(repmat(steps,lunits,1),lall,1),...
+%             reshape(residuals(funit,steps-x(1)+1),lall,1),...
+%             reshape(repmat(strings,1,lsteps),lall,1),...
+%             {'HorizontalAlignment'},{HA},'FontSize',fground.FontSize);
+%        
+        
+        
         
     end
     
@@ -1530,7 +1558,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 ss=waitforbuttonpressFS;
                 disp('------------------------');
                 
-                % After waitforbuttonpress: 
+                % After waitforbuttonpress:
                 % - the standard MATLAB function to be executed on figure
                 %   close is recovered
                 set(gcf,'CloseRequestFcn','closereq');

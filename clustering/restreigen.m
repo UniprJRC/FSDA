@@ -111,7 +111,7 @@ if nargin<4
 end
 
 % userepmat specifies if it is necessary to use function repmat or bsxfun
-% Remark: repmat has become biult in from Release 2013b so it is faster to
+% Remark: repmat has become built in from Release 2013b so it is faster to
 % use it
 if nargin<5
     userepmat=0;

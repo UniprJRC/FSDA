@@ -1,5 +1,5 @@
 function add2yX(varargin)
-%add2yX adds objects to the yXplot. 
+%add2yX adds objects to the yXplot.
 %
 %<a href="matlab: docsearch('add2yx')">Link to the help page for this function</a>
 %
@@ -9,7 +9,7 @@ function add2yX(varargin)
 % - a multivariate fit that is shown on each panel of yXplt;
 % - the labels of relevant observations, e.g. outliers or brushed groups.
 %
-% Required input arguments: 
+% Required input arguments:
 %
 %
 % Optional input arguments:
@@ -19,7 +19,7 @@ function add2yX(varargin)
 %                       '2' fit a line on all data and a line to relevant data
 %                       ''  the default, nothing is added
 %
-%           multivarfit '1' one multivariate fit on all units 
+%           multivarfit '1' one multivariate fit on all units
 %                       '2' one multivarriate fit on all units and one on relevant data
 %                       ''  the default, nothing is added
 %
@@ -78,14 +78,25 @@ fig = gcf;
 
 % the children of the yXplot
 hChildren  = get(fig,'Children');
-nhChildren = numel(hChildren);
 
 % BigAx: the handle to big (invisible) axes framing the entire plot matrix.
 % remark: fig = ancestor(BigAx,'figure');
 % BigAx = hChildren(nhChildren);
 
 % AX: the handle(s) of the axes of the panels in the yXplot
-AX  = hChildren; AX([1 nhChildren])=[];
+
+% In other words, we have to extract from hchildren just the handles whose
+% Type is axes but not bigaxes (therefore Tag must be empty
+% In Matlab <2014b these tags where all but the first and the last (the
+% first was the legend and the last was bigaxes). From Matlab 2014b the
+% order has changed so it is necessary to use instruction findobj in order
+% to extract just the subhandles axes (excluding PlotMatrixBigAx)
+% AX  = hChildren;
+% nhChildren = numel(hChildren);
+% AX([1 nhChildren])=[];
+
+AX= findobj(hChildren,'Type','axes','-and','Tag','');
+
 nAX = numel(AX);
 
 % For bivariate data no need of multivarfit
@@ -120,7 +131,13 @@ end
 % the same of the Xi extracted here. As a consequence, the observations
 % identified by "group=1" may not be equivalent to (Xigood ygood).
 
-H = NaN(1,nAX,ngroups);
+% verMatlab=verLessThan('matlab','8.4.0');
+if verMatlab
+    H = NaN(1,nAX,ngroups);
+else
+    H=gobjects(1,nAX,ngroups);
+end
+
 if nAX > 1
     for i=1:nAX
         H(1,i,:) = fliplr(hPlotMatrixAxC{i,:}');
@@ -163,6 +180,8 @@ else
     disp('Error: nAX cannot be negative or zero.');
 end
 
+
+
 % Get the labels of the last selected group of units.
 nbrush = get(H(:,1,end), 'UserData');
 
@@ -181,6 +200,8 @@ else
         Xgood = Xigood;
     end
 end
+
+
 [~,p]=size(X);
 
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
