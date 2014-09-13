@@ -12,7 +12,7 @@ function varargout = clickableMultiLegend(varargin)
 % legend label. Therefore, the function should work also through plots in
 % different figures.
 %
-% See also 
+% See also
 % clickableLegend by Ameya Deoras:
 % http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
 %
@@ -36,7 +36,7 @@ function varargout = clickableMultiLegend(varargin)
      plot(z(:,26:5:50))
      grid on;
      hlegend=clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');
-     axis manual; 
+     axis manual;
      legend(hlegend,'off');
 %}
 
@@ -44,7 +44,7 @@ function varargout = clickableMultiLegend(varargin)
 %% Create legend as if it was called directly
 [varargout{1:nargout(@legend)}] = legend(varargin{:});
 
-[~, objhan, plothan] = varargout{1:4}; 
+[~, objhan, plothan] = varargout{1:4};
 varargout = varargout(1:nargout);
 
 % Set the callbacks
@@ -55,6 +55,12 @@ for i = 1:length(plothan)
 end
 
 function togglevisibility(hObject, obj)
+if verLessThan('matlab','8.4.0')
+    histobj='patch';
+else
+    histobj='Bar';
+end
+
 % hObject is the handle of the text of the legend
 if get(hObject, 'UserData') % It is on, turn it off
     set(hObject, 'Color', (get(hObject, 'Color') + 1)/1.5, 'UserData', false);
@@ -64,9 +70,13 @@ if get(hObject, 'UserData') % It is on, turn it off
     similar_obj_h(logical(similar_obj_h==obj)) = [];
     %similar_obj_h(find(similar_obj_h==obj)) = []; %slower than line before
     set(similar_obj_h,'HitTest','off','Visible','off','handlevisibility','on');
-
+    
     % This is to make the patches of a group histogram white
-    h = findobj('Type','patch','Tag',get(obj,'DisplayName'));
+    h = findobj('Type',histobj,'Tag',get(obj,'DisplayName'));
+    
+    % THIS SHOULD ALSO WORK
+    %  h1 = findobj('-not','Type','Line','-not','Type','Axes','-and','Tag',get(obj,'DisplayName'));
+    
     if ~isempty(h)
         set(h, 'UserData',get(h,'FaceColor'));
         set(h, 'FaceColor','w', 'EdgeColor','k');
@@ -80,12 +90,16 @@ else
     similar_obj_h(logical(similar_obj_h==obj)) = [];
     %similar_obj_h(find(similar_obj_h==obj)) = []; %slower than line before
     set(similar_obj_h,'HitTest','on','Visible','on','handlevisibility','on');
-
+    
     % This is to re-establish the color of the white patches of a group histogram
-    h = findobj('Type','patch','Tag',get(obj,'DisplayName'));
+    h = findobj('Type',histobj,'Tag',get(obj,'DisplayName'));
+    
+    % THIS SHOULD ALSO WORK
+    % h = findobj('-not','Type','Line','-not','Type','Axes','-and','Tag',get(obj,'DisplayName'));
+    
     if ~isempty(h)
         cori = get(h(1),'UserData'); cori = cori{1};
         set(h, 'FaceColor',cori, 'EdgeColor','k');
     end
-
+    
 end

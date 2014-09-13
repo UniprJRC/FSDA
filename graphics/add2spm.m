@@ -9,7 +9,7 @@ function add2spm(H,AX,BigAx,varargin)
 % clickable or creates a clickable multilegend if the legend does not
 % exist.
 %
-% Using varargin it is possible to 
+% Using varargin it is possible to
 %
 % 1. personalize the legend of groups in the scatterplot matrix. See option 'userleg'.
 % 2. add labels of the units belonging to the last data group (or to the
@@ -26,9 +26,9 @@ function add2spm(H,AX,BigAx,varargin)
 %                   BigAx is a handle to big (invisible) axes framing the
 %                   entire plot matrix.
 %
-%                    
+%
 %  Optional input arguments:
-%  
+%
 %  labeladd :   Default is '', i.e. no labels are added to the symbols
 %               inside each scatter.
 %               If set to '1', add labels to the units of the last data
@@ -51,7 +51,7 @@ function add2spm(H,AX,BigAx,varargin)
 %               units'), 'brush' (for 'Brushed units 1', 'Brushed units 2',
 %               etc.) and '' (for 'Group 1', 'Group 2', etc.).
 %               If it is a cell of strings, e.g. {'FIAT' ; 'BMW' ; 'VOLVO'},
-%               then such strings are used as legends. 
+%               then such strings are used as legends.
 %
 %
 %   add2spm is essentially used within FSDA function spmplot.m. However its
@@ -98,7 +98,7 @@ function add2spm(H,AX,BigAx,varargin)
     y = randn(100,3);
     group = ones(100,1); group(1:10,1) = 444; group(11:20,1) = 777;
 
-    % Make a scatterplot using gplotmatrix defaults. 
+    % Make a scatterplot using gplotmatrix defaults.
     % The legends automatically created are '1','444' and '777'.
     [H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');
 
@@ -106,7 +106,7 @@ function add2spm(H,AX,BigAx,varargin)
     % will become clickable.
     add2spm(H,AX,BigAx);
 
-    % by running add2spm with option 'userleg' set to '1', the clickable 
+    % by running add2spm with option 'userleg' set to '1', the clickable
     % legends will become 'group 1', 'group 2' and 'group 3'.
     [H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');
     add2spm(H,AX,BigAx,'userleg','1');
@@ -145,6 +145,8 @@ function add2spm(H,AX,BigAx,varargin)
 
 
 %% Beginning of code
+
+H=double(H);
 
 options=struct('labeladd','','userleg','');
 UserOptions=varargin(1:2:length(varargin));
@@ -189,12 +191,12 @@ end
 % 'outliers' (for outliers/normal units), 'brush' (for Brushed units 1,
 % Brushed units 2, etc.) and '' (for 'Group 1, Group 2, etc.).
 if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
-
+    
     % add multilegend
     v = size(AX,2);
     leg = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
     nleg = numel(leg);
-
+    
     if ndims(H) == 3
         % The third dimension of H is to distinguish the groups. In the next
         % 'if' statement we use two equivalent ways to deal with H, considering
@@ -233,7 +235,7 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
         % In this case there are no groups in the data
         set(setdiff(H(:),diag(H)),'DisplayName','Units')
     end
-
+    
     % Make the legends clickable
     legnew = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
 end
@@ -247,7 +249,14 @@ end
 %% histogram in the diagonal
 % tag the histogram group patches with the group labels. The tag is used in
 % clickablemultilegend to show/hide the legends.
-h = findobj(AX, 'Type','patch'); 
+if verLessThan('matlab','8.4.0')
+    h = findobj(AX, 'Type','patch');
+else
+    h = findobj(AX, 'Type','Bar');
+end
+% h = findobj(AX, '-not','Type','Line','-not','Type','Axes');
+
+
 for z=1:nleg
     if length(h) == nleg*size(AX,2)
         set(h(repmat(1:nleg,1,size(AX,2))==z),'Tag',legnew{nleg-z+1});
@@ -263,7 +272,7 @@ end
 % legends.
 if isempty(h)
     for z=1:nleg
-        h = findobj(gcf,'Tag',['boxplot' num2str(z)]); 
+        h = findobj(gcf,'Tag',['boxplot' num2str(z)]);
         set(h,'DisplayName',legnew{z});
     end
 end

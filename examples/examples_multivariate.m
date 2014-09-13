@@ -49,7 +49,7 @@ ylabel('MM estimator')
 
 %% HD (Heads data) -- Forward EDA (Exploratory Data Analysis):
 clearvars;close all;
-% scatterplot of data: one point looks outlying
+% scatterplot of data: two points look outlying
 load('head.mat');
 Y=head.data;
 cnames=head.colnames;
