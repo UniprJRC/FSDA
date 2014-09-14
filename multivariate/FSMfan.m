@@ -20,7 +20,7 @@ function out = FSMfan(Y,la0,varargin)
 % Optional input arguments:
 %
 %        rf :   confidence level for bivariate ellipses (default is
-%               0.9). 
+%               0.9).
 %      init :   scalar, specifies the point where to start monitoring
 %               required diagnostics. Note that if init is not specified it will
 %               be set equal to floor(n*0.6).
@@ -110,7 +110,7 @@ function out = FSMfan(Y,la0,varargin)
 %       Un:     cell of length ColtoComp. Each element of the cell contains the
 %               a (sub)cell of size length(laAround). Each element of the (sub)cell
 %               contains a  n-init+1 x 11 which informs the order of entry of the units
-%               For example Unj=Un{i}{j} refers to ColtoComp(i) and laAround(j) 
+%               For example Unj=Un{i}{j} refers to ColtoComp(i) and laAround(j)
 %               Unj is a (n-init) x 11 matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search
 %               REMARK: in every step the new subset is compared with the
@@ -306,6 +306,8 @@ if length(la0)~=v
     error(['Error:: length of vector la0 (length(la0)=' num2str(length(la0)) ') is not equal' ...
         ' to the number of variables of the dataset (size(Y,2)=' num2str(v) ')']);
 end
+
+verMatlab=verLessThan('matlab','8.4.0');
 
 hdef=floor(n*0.6);
 options=struct('rf',0.9,'init',hdef,'ColToComp','','laAround',-1:0.5:1,'onelambda',0,'signlr',1,...
@@ -785,7 +787,14 @@ if ~isempty(plotslrt)
         end
         % Specify the line type for the trajectories of lRT of
         % transformation parameters
-        set(plot1,{'Line'},LineStyle);
+        if verMatlab
+            set(plot1,{'Line'},LineStyle);
+        else
+            for i=1:length(LineStyle)
+                plot1i=plot1(i);
+                plot1i.LineStyle=LineStyle{i};
+            end
+        end
         
         if ij==cColToComp-nc+1 || ij==cColToComp
             xlabel('Subset size m');

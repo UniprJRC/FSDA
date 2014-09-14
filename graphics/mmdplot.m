@@ -445,7 +445,7 @@ annotation(gcf,'textbox',[0.2 0.8 0.1 0.1],'EdgeColor','none','String',['Envelop
 
 % If mplus1=1 add the line associated with (m+1) ordered MD
 if mplus1;
-    line(mdr(sel,1),mdr(sel,3),'LineWidth',lwd,'LineStyle','.','Color','cyan','tag','env');
+    line(mdr(sel,1),mdr(sel,3),'LineWidth',lwd,'LineStyle',':','Color','cyan','tag','env');
 end
 
 labx=options.labx;

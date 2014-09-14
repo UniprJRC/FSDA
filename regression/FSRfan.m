@@ -118,7 +118,7 @@ function [out]=FSRfan(y,X,varargin)
 %   Springer Verlag, New York.
 %   Atkinson, A.C. and Riani, M. (2002a). Tests in the fan plot for robust,
 %   diagnostic transformations in regression, Chemometrics and Intelligent
-%   Laboratory Systems, Vol. 60, pp. 87–100. 
+%   Laboratory Systems, Vol. 60, pp. 87–100.
 %
 % Copyright 2008-2014.
 % Written by FSDA team
@@ -200,6 +200,8 @@ vvarargin=varargin;
 
 %% User options
 
+verMatlab=verLessThan('matlab','8.4.0');
+
 % If the number of all possible subsets is <1000 the default is to extract
 % all subsets, otherwise just 1000.
 ncomb=bc(n,p);
@@ -212,7 +214,7 @@ hdef=floor(0.5*(n+p+1));
 if n<40
     init=p+1;
 else
-    init=min(3*p+1,floor(0.5*(n+p+1)));  
+    init=min(3*p+1,floor(0.5*(n+p+1)));
 end
 
 options=struct('la',[-1 -0.5 0 0.5 1],'h',hdef,...
@@ -419,7 +421,16 @@ if plo==1
     % Specify the line type for the units inside vector units
     slin={'-';'--';':';'-.'};
     slin=repmat(slin,ceil(lla/4),1);
-    set(plot1,{'Line'},slin(1:lla));
+    
+    if verMatlab
+        set(plot1,{'Line'},slin(1:lla));
+    else
+        for i=1:lla
+            plot1i=plot1(i);
+            plot1i.LineStyle=slin{i};
+        end
+    end
+    
     
     % set the x and y axis
     xlimx=options.xlimx;

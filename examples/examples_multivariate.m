@@ -44,7 +44,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 
 %% HD (Heads data) -- Forward EDA (Exploratory Data Analysis):
@@ -172,7 +172,15 @@ v=size(Y,2);
 v1=v*(v+1)/2;
 slintyp={'--' '-' '-.' ':'}';
 slintyp=repmat(slintyp,ceil(v1/length(slintyp)),1);
-set(plot1,{'Line'},slintyp(1:v1));
+verMatlab=verLessThan('matlab','8.4.0');
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:v1));
+else
+    for i=1:v1
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+    end
+end
 
 %% HD: analysis of transformations
 % FS based on untransformed data H_0:\lambda=1 for all variables
@@ -235,11 +243,21 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
+verMatlab=verLessThan('matlab','8.4.0');
 
+if verMatlab
+    
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
@@ -367,7 +385,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 
 %% TR: analysis of transformations
@@ -547,10 +565,20 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
+
+verMatlab=verLessThan('matlab','8.4.0');
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -576,7 +604,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 %% SB: (Swiss banknotes) Forward EDA minMD
 clearvars;close all;
@@ -644,7 +672,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 
 %% SB: Forward EDA gapplot starting with the first 20 obs (geniune notes)
@@ -735,17 +763,25 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
+
+verMatlab=verLessThan('matlab','8.4.0');
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
-
-
 
 %% SB (genuine notes): Forward EDA malfwdplot
 % Create figure 3.41 p.129 of ARC 2004
@@ -806,7 +842,17 @@ v=size(Y,2);
 v1=v*(v+1)/2;
 slintyp={'--' '-' '-.' ':'}';
 slintyp=repmat(slintyp,ceil(v1/length(slintyp)),1);
-set(plot1,{'Line'},slintyp(1:v1));
+
+
+verMatlab=verLessThan('matlab','8.4.0');
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:v1));
+else
+    for i=1:v1
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+    end
+end
 
 aco=triu(ones(v,v));
 ind = find(abs(aco)>0);
@@ -868,7 +914,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 
 
@@ -902,7 +948,16 @@ v=size(Y,2);
 v1=v*(v+1)/2;
 slintyp={'--' '-' '-.' ':'}';
 slintyp=repmat(slintyp,ceil(v1/length(slintyp)),1);
-set(plot1,{'Line'},slintyp(1:v1));
+verMatlab=verLessThan('matlab','8.4.0');
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:v1));
+else
+    for i=1:v1
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+    end
+end
+
 
 %% SB (forged notes): Forward EDA malfwdplot
 % Create figure 3.46 p.132 of ARC 2004
@@ -957,7 +1012,7 @@ end
 % This dataset has been used in Atkinson and Riani (2007)
 clearvars;close all;
 Y=load('clus2over.txt');
-[n,v]=size(Y);
+n=size(Y,1);
 group=ones(n,1);
 group(501:end)=2;
 spmplot(Y,group);
@@ -980,7 +1035,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 
 
@@ -1006,10 +1061,21 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
+
+verMatlab=verLessThan('matlab','8.4.0');
+
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1047,10 +1113,21 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
+
+verMatlab=verLessThan('matlab','8.4.0');
+
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1062,6 +1139,7 @@ xlabel('Subset size m');
 clearvars;close all;
 Y = load('geyser.txt');
 plot(Y(:,1),Y(:,2),'o')
+[n,v]=size(Y);
 
 conflev=[0.95 0.99 1-0.01/n];
 
@@ -1075,7 +1153,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 
 
@@ -1112,10 +1190,21 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
+
+verMatlab=verLessThan('matlab','8.4.0');
+
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1140,7 +1229,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 
 
@@ -1182,10 +1271,21 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
+
+verMatlab=verLessThan('matlab','8.4.0');
+
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1229,11 +1329,21 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
 
+verMatlab=verLessThan('matlab','8.4.0');
+
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
@@ -1277,10 +1387,22 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
+
+
+verMatlab=verLessThan('matlab','8.4.0');
+
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1288,7 +1410,7 @@ line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
 
-%% FD: analysis using S and MM estimators 
+%% FD: analysis using S and MM estimators
 clearvars;close all;
 % Plot of the data
 Y=load('fondi.txt');
@@ -1307,7 +1429,7 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')
 
 
 
@@ -1347,11 +1469,21 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
 
+verMatlab=verLessThan('matlab','8.4.0');
+
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
@@ -1493,11 +1625,21 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-set(plot1,{'Line'},slintyp(1:nsimul));
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-set(plot1,{'Color'},fcol(1:nsimul));
 
+verMatlab=verLessThan('matlab','8.4.0');
+
+if verMatlab
+    set(plot1,{'Line'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+else
+    for i=1:nsimul
+        plot1i=plot1(i);
+        plot1i.LineStyle=slintyp{i};
+        plot1i.Color=fcol{i};
+    end
+end
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
@@ -1526,4 +1668,4 @@ h2=subplot(2,1,2);
 
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
-ylabel('MM estimator') 
+ylabel('MM estimator')

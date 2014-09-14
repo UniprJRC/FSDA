@@ -502,6 +502,8 @@ if nargin > 1
     end
 end
 
+verMatlab=verLessThan('matlab','8.4.0');
+
 
 % And check if the optional user parameters are reasonable.
 % check init
@@ -1036,7 +1038,14 @@ else
             
             % Specify the line type for the trajectories of MLE of
             % transformation parameters
-            set(plot1,{'Line'},LineStyle);
+            if verMatlab
+                set(plot1,{'Line'},LineStyle);
+            else
+                for i=1:length(LineStyle)
+                    plot1i=plot1(i);
+                    plot1i.LineStyle=LineStyle{i};
+                end
+            end
         end
         
         set(gcf,'Tag',tag)
