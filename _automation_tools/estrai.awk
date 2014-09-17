@@ -30,7 +30,7 @@ END {
 		} else {
 			trovato=1;
 			num++;
-			nomefile=sprintf ("EXAMPLES_test/%s_ex%d.m",nome[1],num) ;
+			nomefile=sprintf ("EXAMPLES_test/%s_ex%02d.m",nome[1],num) ;
 			print nomefile ;
 			print "%% Extracted from " tok[p] > nomefile ;	
 			print tmp >> nomefile;
