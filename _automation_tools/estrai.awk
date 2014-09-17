@@ -14,8 +14,11 @@ BEGIN {
 
 END {
     /* BEGIN_TEST_CLASS */
+    print "clear all;" >> nomefile;
+    print "close all;" >> nomefile;
+    
     print "end % methods" >> classFileName;
-	print "end % class" >> classFileName;
+    print "end % class" >> classFileName;
 	/* END_TEST_CLASS */
 }
 
@@ -30,7 +33,7 @@ END {
 			nomefile=sprintf ("EXAMPLES_test/%s_ex%d.m",nome[1],num) ;
 			print nomefile ;
 			print "%% Extracted from " tok[p] > nomefile ;	
-			print tmp > nomefile;
+			print tmp >> nomefile;
 
 			/* BEGIN_TEST_CLASS */
 			print "function test_" nome[1] "_ex" num "(testCase)" >> classFileName;	
@@ -53,7 +56,7 @@ END {
 	if (trovato==1) {
 		print $0 >> nomefile
 	
-        /* BEGIN_TEST_CLASS */	
+    /* BEGIN_TEST_CLASS */	
 		print $0 >> classFileName;
 		/* END_TEST_CLASS */
 	}   
