@@ -676,13 +676,13 @@ if ~isempty(Aj)
         
         if ~isempty(slintyp)
             slintyp=repmat(slintyp,ceil(length(units)/length(slintyp)),1);
-            set(plot1(units),{'Line'},slintyp(units));
+            set(plot1(units),{'LineStyle'},slintyp(units));
         else
             slintyp={'-';'--';':';'-.'};
             % slintyp={'-'};
             slintyp=repmat(slintyp,ceil(length(units)/length(slintyp)),1);
             % NOTE NOTE set(plot1,{'Line'},slintyp(1:length(units)));
-            set(plot1,{'Line'},slintyp(units));
+            set(plot1,{'LineStyle'},slintyp(1:length(units)));
         end
         
         % if requested, set the color of the selected trajectories
