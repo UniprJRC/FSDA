@@ -14,11 +14,16 @@ BEGIN {
 
 END {
     /* BEGIN_TEST_CLASS */
-    print "clear all;" >> nomefile;
-    print "close all;" >> nomefile;
+    if (nomefile != "") {
+        print "clear all;" >> nomefile;
+        print "close all;" >> nomefile;    	
+    }
     
-    print "end % methods" >> classFileName;
-    print "end % class" >> classFileName;
+    if (classFileName != null) {
+        print "end % methods" >> classFileName;
+        print "end % class" >> classFileName;    	
+    }
+    	
 	/* END_TEST_CLASS */
 }
 
