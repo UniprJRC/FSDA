@@ -54,7 +54,7 @@ function varargout = dsxy2figxy(varargin)
     plot(x,sin(x));
     % set(gcf,'Units','normalized');
     % set(gcf,'Units','points');
-    [figx figy] = dsxy2figxy([0 pi],[0 2]);
+    [figx figy] = dsxy2figxy([0 pi],[0 1]);
     annotation('textarrow',figx,figy)
 %}
 

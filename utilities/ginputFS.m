@@ -29,7 +29,7 @@ function [out1,out2,out3] = ginputFS(arg1,varargin)
 %Examples
 %
 %{
-%example_requiring_interaction
+% Interactive_example
 
 disp('ginputFS is called inside resfwdplot function')
 disp('to get the FS step selected by the user in the interactive session')

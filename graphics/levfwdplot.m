@@ -354,7 +354,7 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Same as above, but the colormap used for leverage trajectories is
-    based on residual values.
+    %based on residual values.
     levfwdplot(out,'fground',fground,'xground','res')
 %}
 %

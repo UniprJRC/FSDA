@@ -388,6 +388,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
+% Interactive_example
     % Another example of the use of option datatooltip.
     % The user can highlight the trajectories of the units that are in
     % the subset at a given step with a mouse click in proximity

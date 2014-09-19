@@ -31,7 +31,7 @@ lambda = eigs(A,size(A,1),sigma)
 %}
 
 %{ 
-%example_producing_error
+% example_producing_error
 
 % the same matrix, but with two identical raws
 clear all;

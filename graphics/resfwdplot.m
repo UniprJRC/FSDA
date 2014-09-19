@@ -322,6 +322,9 @@ function plotopt=resfwdplot(out,varargin)
 
 %{
     % generate input structure for the resfwdplot
+   load('stack_loss.txt');
+    y=stack_loss(:,4);
+    X=stack_loss(:,1:3);
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
 %}
