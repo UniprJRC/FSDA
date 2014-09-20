@@ -172,16 +172,7 @@ v=size(Y,2);
 v1=v*(v+1)/2;
 slintyp={'--' '-' '-.' ':'}';
 slintyp=repmat(slintyp,ceil(v1/length(slintyp)),1);
-verMatlab=verLessThan('matlab','8.4.0');
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:v1));
-else
-    for i=1:v1
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-    end
-end
-
+set(plot1,{'LineStyle'},slintyp(1:v1));
 %% HD: analysis of transformations
 % FS based on untransformed data H_0:\lambda=1 for all variables
 clearvars;close all;
@@ -245,19 +236,10 @@ plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-verMatlab=verLessThan('matlab','8.4.0');
 
-if verMatlab
-    
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
+
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
@@ -568,17 +550,9 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
+
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -766,17 +740,9 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
+
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -844,15 +810,8 @@ slintyp={'--' '-' '-.' ':'}';
 slintyp=repmat(slintyp,ceil(v1/length(slintyp)),1);
 
 
-verMatlab=verLessThan('matlab','8.4.0');
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:v1));
-else
-    for i=1:v1
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-    end
-end
+set(plot1,{'LineStyle'},slintyp(1:v1));
+
 
 aco=triu(ones(v,v));
 ind = find(abs(aco)>0);
@@ -948,15 +907,8 @@ v=size(Y,2);
 v1=v*(v+1)/2;
 slintyp={'--' '-' '-.' ':'}';
 slintyp=repmat(slintyp,ceil(v1/length(slintyp)),1);
-verMatlab=verLessThan('matlab','8.4.0');
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:v1));
-else
-    for i=1:v1
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-    end
-end
+set(plot1,{'LineStyle'},slintyp(1:v1));
+
 
 
 %% SB (forged notes): Forward EDA malfwdplot
@@ -1064,18 +1016,8 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
-
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1116,18 +1058,8 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
-
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1193,18 +1125,9 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
 
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1274,18 +1197,9 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
 
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1332,18 +1246,9 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
 
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
@@ -1391,18 +1296,9 @@ fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
 
-verMatlab=verLessThan('matlab','8.4.0');
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
 
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
 
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
@@ -1472,18 +1368,9 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
 
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
@@ -1628,18 +1515,9 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-verMatlab=verLessThan('matlab','8.4.0');
+set(plot1,{'LineStyle'},slintyp(1:nsimul));
+set(plot1,{'Color'},fcol(1:nsimul));
 
-if verMatlab
-    set(plot1,{'Line'},slintyp(1:nsimul));
-    set(plot1,{'Color'},fcol(1:nsimul));
-else
-    for i=1:nsimul
-        plot1i=plot1(i);
-        plot1i.LineStyle=slintyp{i};
-        plot1i.Color=fcol{i};
-    end
-end
 % Plots lines of theoretical quantiles using order statistics
 mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');

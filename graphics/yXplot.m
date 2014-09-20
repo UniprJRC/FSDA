@@ -33,6 +33,9 @@ function [plot1]=yXplot(y,X,varargin)
 %
 %  Optional input arguments:
 %
+%          group:   vector with n elements, grouping variable that determines the
+%                   marker and color assigned to each point. It can be a categorical
+%                   variable, vector, string matrix, or cell array of strings.
 %       nameX   :   cell array of strings of length p containing the labels
 %                   of the varibles of the regression dataset. If it is empty
 %                 	(default) the sequence X1, ..., Xp will be created
@@ -71,6 +74,7 @@ function [plot1]=yXplot(y,X,varargin)
 %                   selunit is string '2.5' if the input is a structure
 %                   else it is an empty value if if the input is matrices y
 %                   and X.
+%
 %
 %       The options which follow can only be used if the input is a
 %       structure which contains information about the fwd search (i.e. the
@@ -128,7 +132,7 @@ function [plot1]=yXplot(y,X,varargin)
 %                     If persist is 'on' or 'off' brushing can be done as
 %                     many time as the user requires.
 %                     If persist='on' then the unit(s) currently brushed
-%                     are added to those previously brushed. it is
+%                     are added to those previously brushed. It is
 %                     possible, every time a new brushing is done, to use a
 %                     different color for the brushed units.
 %                     If persist='off' every time a new brush is performed
@@ -195,11 +199,26 @@ function [plot1]=yXplot(y,X,varargin)
 % A simple yX plot is created
 %{
     n=100;
-    p=8;
+    p=3;
     X=randn(n,p);
     y=100+randn(n,1);
     % Example of the use of function yXplot with all the default options
     yXplot(y,X);
+%}
+%
+%
+% 
+%{
+    % Example of the use of function yXplot with option group
+    n=100;
+    p=3;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    group=ones(n,1);
+    group(sel)=2;
+    yXplot(y,X,'group',group);
 %}
 %
 %{
@@ -216,9 +235,9 @@ function [plot1]=yXplot(y,X,varargin)
     yXplot(y,X,'selunit',selth);
 %}
 
-% In the following example the input is a strucure which also contains information about the
-% forward search.
 %{
+    % In the following example the input is a strucure which also contains
+    % information about the forward search.
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
     % Example of the use of function yXplot with all the default options
@@ -391,10 +410,9 @@ else
 end
 
 %% User options
-
 options= struct('subsize',x,'selstep',x([1 end]),'selunit',selthdef,...
     'xlim','','ylim','','tag','pl_yX',...
-    'datatooltip',0,'label','','databrush','','nameX','','namey','');
+    'datatooltip',0,'label','','databrush','','nameX','','namey','','group',ones(n,1));
 
 if nargin>2 || (nargin>1 && onlyyX==0)
     
@@ -412,6 +430,8 @@ if nargin>2 || (nargin>1 && onlyyX==0)
         options.(varargin{i})=varargin{i+1};
     end
 end
+
+group=options.group;
 
 % labeladd option
 d=find(strcmp('labeladd',options.databrush));
@@ -586,7 +606,6 @@ set(h,'Name', 'yXplot: plot of y against each column of matrix X', 'NumberTitle'
 hold('all');
 
 % Set default value for potential groups of selected units
-group=ones(n,1);
 unigroup=unique(group);
 styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
@@ -620,6 +639,9 @@ end
 % Display the initial gplotmatrix
 [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
 
+%[H,AX,BigAx] = gplotmatrix(Xsel,Y,group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
+
+
 % default legenda
 set(H,'DisplayName','Units');
 
@@ -633,6 +655,7 @@ set(H,'DisplayName','Units');
 % end
 
 
+verMatlab=verLessThan('matlab','8.4.0');
 for i = 1:length(AX)
     set(gcf,'CurrentAxes',AX(i));
     % If the user has specified the min and max for y limit
@@ -1058,7 +1081,11 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                     %%hLegend(iAxes) = clickableLegend(hLines, eLegend{:});
                     legend_h = legend(hLines);
                     if iAxes < length(AX)
-                        legend(legend_h,'hide');
+                        if verMatlab
+                            legend(legend_h,'hide');
+                        else
+                            legend_h.Visible='off';
+                        end
                     end
                 end
                 hLegend(iAxes) = clickableMultiLegend(hLines, eLegend{:});
@@ -1128,7 +1155,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                 plot(x,residuals(nbrush,:),...
                     strcat(clr(unigroup(length(unigroup))),...
                     char(styp{unigroup(length(unigroup))})),...
-                    'Line','-','MarkerSize',0.3,'tag','data_res',...
+                    'LineStyle','-','MarkerSize',0.3,'tag','data_res',...
                     'LineWidth',linewidthStd+2);
                 
                 %add labels, if necessary.

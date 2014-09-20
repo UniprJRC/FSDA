@@ -1038,14 +1038,7 @@ else
             
             % Specify the line type for the trajectories of MLE of
             % transformation parameters
-            if verMatlab
-                set(plot1,{'Line'},LineStyle);
-            else
-                for i=1:length(LineStyle)
-                    plot1i=plot1(i);
-                    plot1i.LineStyle=LineStyle{i};
-                end
-            end
+                set(plot1,{'LineStyle'},LineStyle);
         end
         
         set(gcf,'Tag',tag)

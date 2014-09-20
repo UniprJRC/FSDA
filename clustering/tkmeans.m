@@ -90,7 +90,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                       weights <> 1 out.weights=(n1/n, ..., nk/n)
 %               out.h : scalar. Number of observations that have determined the
 %                       centroids (number of untrimmed units).
-%               out.h : scalar. Value of the objective function which is minimized 
+%             out.obj : scalar. Value of the objective function which is minimized 
 %                       (value of the best returned solution).
 %              out.Y  : original data matrix Y. The field is present if option
 %                       Ysave is set to 1.

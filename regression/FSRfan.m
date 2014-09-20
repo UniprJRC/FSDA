@@ -200,8 +200,6 @@ vvarargin=varargin;
 
 %% User options
 
-verMatlab=verLessThan('matlab','8.4.0');
-
 % If the number of all possible subsets is <1000 the default is to extract
 % all subsets, otherwise just 1000.
 ncomb=bc(n,p);
@@ -422,17 +420,9 @@ if plo==1
     slin={'-';'--';':';'-.'};
     slin=repmat(slin,ceil(lla/4),1);
     
-    if verMatlab
-        set(plot1,{'Line'},slin(1:lla));
-    else
-        for i=1:lla
-            plot1i=plot1(i);
-            plot1i.LineStyle=slin{i};
-        end
-    end
-    
-    
-    % set the x and y axis
+        set(plot1,{'LineStyle'},slin(1:lla));
+
+        % set the x and y axis
     xlimx=options.xlimx;
     ylimy=options.ylimy;
     

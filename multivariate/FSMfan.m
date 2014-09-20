@@ -307,8 +307,6 @@ if length(la0)~=v
         ' to the number of variables of the dataset (size(Y,2)=' num2str(v) ')']);
 end
 
-verMatlab=verLessThan('matlab','8.4.0');
-
 hdef=floor(n*0.6);
 options=struct('rf',0.9,'init',hdef,'ColToComp','','laAround',-1:0.5:1,'onelambda',0,'signlr',1,...
     'speed',1,'optmin',optimset,'msg',1,'colnames','',...
@@ -787,14 +785,8 @@ if ~isempty(plotslrt)
         end
         % Specify the line type for the trajectories of lRT of
         % transformation parameters
-        if verMatlab
-            set(plot1,{'Line'},LineStyle);
-        else
-            for i=1:length(LineStyle)
-                plot1i=plot1(i);
-                plot1i.LineStyle=LineStyle{i};
-            end
-        end
+            set(plot1,{'LineStyle'},LineStyle);
+
         
         if ij==cColToComp-nc+1 || ij==cColToComp
             xlabel('Subset size m');

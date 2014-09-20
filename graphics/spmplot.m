@@ -1,4 +1,4 @@
-function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
+function [H,AX,BigAx] = spmplot(Y,varargin)
 %spmplot: scatterplot matrix with dynamic scatters and boxplots or histograms on the main diagonal
 %
 %<a href="matlab: docsearch('spmplot')">Link to the help function</a>
@@ -6,19 +6,32 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %  Required input arguments:
 %     Y : Data matrix containing n observations on v variables.
 %         Rows of Y represent observations, and columns represent variables.
-%  group: vector with n elements, grouping variable that determines the
-%         marker and color assigned to each point. It can be a categorical
-%         variable, vector, string matrix, or cell array of strings.
+%
+%
+%  REMARK: varargin can be or the usual name/value pairs described in the
+%  section Optional input arguments or direcly
+%  spmplot(Y,group)
+%  spmplot(Y,group,plo)
+%  spmplot(Y,group,plo,dispopt)
+%  where group, plo and dispopt have the meaning described below in
+%  Optional input arguments
+%
+%  If varargin{1} is a vector with n elements then the program
+%  automatically assumes that varargin{1} is equal to group and the user
+%  has chosen to call the function without the name/value pairs
 %
 %  Optional input arguments:
 %
-%    plo: spmplot(Y,group,plo) enables to specify the names which are
+%  group: vector with n elements, grouping variable that determines the
+%         marker and color assigned to each point. It can be a categorical
+%         variable, vector, string matrix, or cell array of strings.
+%    plo: empty value, scalar of structure which controls
+%         the the names which are
 %         displayed in the margins of the scatter-plot matrix and the
-%         labels of the legend. plo can be an empty value [], a scalar,
-%         or a structure.
+%         labels of the legend.
 %         If plo is set to the empty vector [], then nameY and labeladd are
-%         both set to the empty string '' (default), and no labels nor
-%         names are added to the plot.
+%         both set to the empty string '' (default), and no label and
+%         no name is added to the plot.
 %         If plo = 1 the names Y1,..., Yv are added to the margins of the
 %         the scatter plot matrix else nothing is added.
 %         If plo is a structure it may contain the following fields:
@@ -42,17 +55,14 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 %                the figure window. Default is siz = '' (empty value).
 %       - doleg: a string to control whether legends are created or not.
 %                Set doleg to 'on' (default) or 'off'.
-%
-%   dispopt: spmplot(Y,group,[],dispopt) enables to add on the main diagonal
-%       of the scatter plot matrix stacked histograms, or univariate boxplots
-%       for each of the groups.
-%       dispopt is a string which lets you control how to fill the diagonals
-%       in a plot of Y vs Y. Set dispopt to 'hist' (default) to plot histograms,
+%dispopt: string which controls how to fill the diagonals
+%       in a plot of Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to 'hist' (default) to plot histograms,
 %       or 'box' to plot boxplots.
-%       Remark: to set dispopt without changing the defaults for plo use, e.g.,
-%          spmplot(Y,group,[],'box');
 %          REMARK: The style which is used for univariate boxplots is
 %          'traditional' if the number of groups is <=5, else it is compact
+%       Remark: if spmplot is called with specifying the pairs name/value
+%       for the optional arguments to set dispopt without changing the
+%       defaults for plo use, e.g., spmplot(Y,group,[],'box');
 %
 %  Output:
 %
@@ -74,6 +84,43 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 
 % Examples:
 
+
+%{
+    % Iris data: scatter plot matrix with univariate boxplots on the main
+    % diagonal (call of spmplot without name/value pairs)
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'};
+    spmplot(meas,species,plo,'box');
+
+%}
+
+%{
+    % Iris data: scatter plot matrix with univariate boxplots on the main
+    % diagonal (call of spmplot with name/value pairs)
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'};
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box');
+
+%}
+
+%{
+    % Iris data: scatter plot matrix with univariate boxplots on the main
+    % diagonal and personalized options for symbols, colors and symbol
+    % size and no legend
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'}; % Name of the variables
+    plo.clr='kbr'; % Colors of the groups
+    plo.sym={'+' '+' 'v'}; % Symbols of the groups (inside a cell)
+    % Symbols can also be specified as characters
+    % plo.sym='++v'; % Symbols of the groups
+    plo.siz=3.4; % Symbol size
+    plo.doleg='off'; % Remove the legend
+    spmplot(meas,species,plo,'box');
+%}
+%
 %
 %{
 
@@ -130,32 +177,6 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 
 %}
 
-%{
-    % Iris data: scatter plot matrix with univariate boxplots on the main
-    % diagonal
-    load fisheriris;
-    plo=struct;
-    plo.nameY={'SL','SW','PL','PW'}
-    spmplot(meas,species,plo,'box');
-
-%}
-
-
-%{
-    % Iris data: scatter plot matrix with univariate boxplots on the main
-    % diagonal and personalized options for symbols, colors and symbol
-    % size and no legend
-    load fisheriris;
-    plo=struct;
-    plo.nameY={'SL','SW','PL','PW'}; % Name of the variables
-    plo.clr='kbr'; % Colors of the groups
-    plo.sym={'+' '+' 'v'}; % Symbols of the groups (inside a cell)
-    % Symbols can also be specified as characters
-    % plo.sym='++v'; % Symbols of the groups
-    plo.siz=3.4; % Symbol size
-    plo.doleg='off'; % Remove the legend
-    spmplot(meas,species,plo,'box');
-%}
 
 %{
 % An example with 5 groups
@@ -185,18 +206,69 @@ function [H,AX,BigAx] = spmplot(Y,group,plo,dispopt)
 
 
 %% Beginning of code
-ngroups = numel(unique(group,'stable'));
-
 [n,v]=size(Y);
-if nargin<3;
-    plo=1;
-end
-
-if nargin<4;
+% if length(varargin{1})==n then we are in the old format of the function
+% spmplot(Y,group)
+% or
+% spmplot(Y,group,plo)
+% or
+% spmplot(Y,group,plo,dispopt)
+if nargin>1
+    if length(varargin{1})==n
+        
+        group=varargin{1};
+        
+        if length(varargin)<2
+            plo=1;
+        else
+            plo=varargin{2};
+        end
+        
+        if length(varargin)<3
+            dispopt='hist';
+        else
+            dispopt=varargin{3};
+        end
+    else
+        % In the case the user has called function spmplot with the new
+        % format name/value pairs
+        options=struct('group',ones(n,1),'plo','',...
+            'dispopt','hist');
+        
+        UserOptions=varargin(1:2:length(varargin));
+        
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        
+        % Check if all the specified optional arguments were present
+        % in structure options
+        % Remark: the nocheck option has already been dealt by routine
+        % chkinputR
+        inpchk=isfield(options,UserOptions);
+        WrongOptions=UserOptions(inpchk==0);
+        if ~isempty(WrongOptions)
+            disp(strcat('Non existent user option found->', char(WrongOptions{:})))
+            error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        end
+    
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin);
+        options.(varargin{i})=varargin{i+1};
+    end
+    group=options.group;
+    plo=options.plo;
+    dispopt=options.dispopt;
+    end
+else
+    group=ones(n,1);
+    plo='';
     dispopt='hist';
 end
 
-% Specify default values for colors, symbols, size of symbols and precence
+ngroups=length(unique(group));
+% Specify default values for colors, symbols, size of symbols and presence
 % of legend
 clrdef='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
 symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
@@ -308,8 +380,6 @@ else
 end
 
 unigroup = 1:ngroups;
-
-
 
 
 %% The scatterplot matrix with histograms or boxplots (on the main diagonal) generalised to groups

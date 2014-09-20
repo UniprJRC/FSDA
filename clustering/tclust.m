@@ -630,12 +630,12 @@ U=sigmaini;
 % iteration
 fullsol=zeros(nselected,1);
 
-verMATLAB=ver('MATLAB');
-verMATLAB=str2double(verMATLAB.Version);
-if verMATLAB>8.1
-    userepmat=1;
-else
+verMatlab=verLessThan('matlab','8.2.0');
+
+if verMatlab ==1
     userepmat=0;
+else
+    userepmat=1;
 end
 
 
@@ -679,7 +679,7 @@ for i=1:nselected
         autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
         
         % Covariance matrices are reconstructed keeping into account the
-        % constraints of the eigenvalues
+        % constraints on the eigenvalues
         for j=1:k
             %disp(j)
             sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
