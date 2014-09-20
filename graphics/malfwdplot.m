@@ -285,7 +285,7 @@ function plotopt=malfwdplot(out,varargin)
     % Example of the use of some options inside structure standard.
     % Initialize structure standard
     standard=struct;
-    standard.LineStyle={'-';'-.';'.'};
+    standard.LineStyle={'-';'-.';':'};
     % Specify the line width
     standard.LineWidth=0.5;
     malfwdplot(out,'standard',standard)
@@ -388,7 +388,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
-% Interactive_example
+    % Interactive_example
     % Another example of the use of option datatooltip.
     % The user can highlight the trajectories of the units that are in
     % the subset at a given step with a mouse click in proximity
@@ -602,7 +602,6 @@ if nargin>1
     end
 end
 
-verMatlab=verLessThan('matlab','8.4.0');
 
 % if LineColor and SubsetLinesColor are not specified, set to default.
 LineColor=[1 0 0];      %[1 0 0] is red.
@@ -747,15 +746,7 @@ if ~isempty(slintyp)
     slintyp=slintyp(:);
     slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
     
-    if verMatlab
-        set(plot1,{'Line'},slintyp(1:n));
-    else
-        for i=1:n
-            plot1i=plot1(i);
-            plot1i.LineStyle=slintyp{i};
-        end
-    end
-    
+    set(plot1,{'LineStyle'},slintyp(1:n));
 end
 
 % save the resfwdplot lines handles, for subsequent use with option persist
@@ -853,27 +844,11 @@ if ~isempty(options.fground)
     
     if ~isempty(slintyp)
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        
-        if verMatlab
-            set(plot1(funit),{'Line'},slintyp(funit));
-        else
-            for i=1:length(funit)
-                plot1i=plot1(i);
-                plot1i.LineStyle=slintyp{funit(i)};
-            end
-        end
+        set(plot1(funit),{'LineStyle'},slintyp(funit));
     else
         slintyp={'-'};
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        
-        if verMatlab
-            set(plot1(funit),{'Line'},slintyp(funit));
-        else
-            for i=1:length(funit)
-                plot1i=plot1(i);
-                plot1i.LineStyle=slintyp{funit(i)};
-            end
-        end
+        set(plot1(funit),{'LineStyle'},slintyp(funit));
     end
     
     if ~isempty(fground.flabstep)
@@ -900,11 +875,10 @@ if ~isempty(options.fground)
         end
         
         % Label the units
-%         text(reshape(repmat(steps,lunits,1),lall,1),...
-%             reshape(MDvalues(funit,steps-x(1)+1),lall,1),...
-%             reshape(repmat(strings,1,lsteps),lall,1),...
-%             {'HorizontalAlignment'},HA);
-        
+        h=text(reshape(repmat(steps,lunits,1),lall,1),...
+            reshape(MDvalues(funit,steps-x(1)+1),lall,1),...
+            reshape(repmat(strings,1,lsteps),lall,1));
+        set(h,{'HorizontalAlignment'},HA)
     end
     
     % if requested, set the color of the selected trajectories note that if

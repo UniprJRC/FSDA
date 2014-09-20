@@ -354,7 +354,7 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Same as above, but the colormap used for leverage trajectories is
-    %based on residual values.
+    % based on residual values.
     levfwdplot(out,'fground',fground,'xground','res')
 %}
 %
@@ -951,11 +951,11 @@ if ~isempty(options.fground)
     slintyp=fground.LineStyle;
     if ~isempty(slintyp)
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        set(plot1(funit),{'Line'},slintyp(funit));
+        set(plot1(funit),{'LineStyle'},slintyp(funit));
     else
         slintyp={'-'};
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        set(plot1(funit),{'Line'},slintyp(funit));
+        set(plot1(funit),{'LineStyle'},slintyp(funit));
     end
     
     % fground.flabstep

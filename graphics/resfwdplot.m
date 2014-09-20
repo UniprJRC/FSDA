@@ -322,9 +322,9 @@ function plotopt=resfwdplot(out,varargin)
 
 %{
     % generate input structure for the resfwdplot
-   load('stack_loss.txt');
-    y=stack_loss(:,4);
-    X=stack_loss(:,1:3);
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
 %}
@@ -339,7 +339,7 @@ function plotopt=resfwdplot(out,varargin)
     % Initialize structure standard
     % Specify the steps in which labels have to be put
     standard=struct;
-    standard.LineStyle={'-';'-.';'.'};
+    standard.LineStyle={'-';'-.';':'};
     % Specify the line width
     standard.LineWidth=0.5;
     resfwdplot(out,'standard',standard)
@@ -634,7 +634,6 @@ function plotopt=resfwdplot(out,varargin)
 %     close(findobj('type','figure','Tag','pl_resfwd'));
 % end
 
-verMatlab=verLessThan('matlab','8.4.0');
 
 % The rows of matrix residuals are associated with the units in the dataset.
 % The columns are associated with the steps of the fwd search.
@@ -885,14 +884,7 @@ if ~isempty(slintyp)
     end
     slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
     
-    if verMatlab
-        set(plot1,{'Line'},slintyp(1:n));
-    else
-        for i=1:n
-            plot1i=plot1(i);
-            plot1i.LineStyle=slintyp{i};
-        end
-    end
+    set(plot1,{'LineStyle'},slintyp(1:n));
 end
 % save the resfwdplot lines handles, for subsequent use with option persist
 plot1lines=plot1;
@@ -997,14 +989,7 @@ if ~isempty(options.fground)
         % slintyp={'-'};
         slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
         
-        if verMatlab
-            set(plot1(funit),{'Line'},slintyp(1:length(funit)));
-        else
-            for i=1:length(funit)
-                plot1i=plot1(i);
-                plot1i.LineStyle=slintyp{i};
-            end
-        end
+        set(plot1(funit),{'LineStyle'},slintyp(1:length(funit)));
         
     end
     
@@ -1032,21 +1017,11 @@ if ~isempty(options.fground)
         end
         
         % Label the units
-%         text(reshape(repmat(steps,lunits,1),lall,1),...
-%             reshape(residuals(funit,steps-x(1)+1),lall,1),...
-%             reshape(repmat(strings,1,lsteps),lall,1),...
-%             {'HorizontalAlignment'},HA,'FontSize',fground.FontSize);
-%         text(reshape(repmat(steps,lunits,1),lall,1),...
-%             reshape(residuals(funit,steps-x(1)+1),lall,1),...
-%             reshape(repmat(strings,1,lsteps),lall,1),'FontSize',fground.FontSize);
-%          text(reshape(repmat(steps,lunits,1),lall,1),...
-%             reshape(residuals(funit,steps-x(1)+1),lall,1),...
-%             reshape(repmat(strings,1,lsteps),lall,1),...
-%             {'HorizontalAlignment'},{HA},'FontSize',fground.FontSize);
-%        
-        
-        
-        
+        h=text(reshape(repmat(steps,lunits,1),lall,1),...
+            reshape(residuals(funit,steps-x(1)+1),lall,1),...
+            reshape(repmat(strings,1,lsteps),lall,1),...
+            'FontSize',fground.FontSize);
+        set(h,{'HorizontalAlignment'},HA)
     end
     
     % if requested, set the color of the selected trajectories note that if
