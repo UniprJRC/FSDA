@@ -145,7 +145,6 @@ function add2spm(H,AX,BigAx,varargin)
 
 
 %% Beginning of code
-H1=H;
 H=double(H);
 
 
@@ -287,13 +286,13 @@ if strcmp('1',labeladd)
     set(AX,'NextPlot','add');
     % The UserData field of the last selected group of H(:,:,end) contains
     % the indices of the last selected units.
-    if verLessThan('matlab','8.4.0')
-        nbrush = get(H(1,1,end), 'UserData');
-    else
-        a=findobj(H1,'Type','Line');
-        nbrush=[a.UserData];
-        nbrush=nbrush(:,1);
-    end
+    nbrush = get(H(end,1,end), 'UserData');
+    
+    % Below there is an alternative inefficient code to extract brushed
+    % units
+    % a=findobj(H1,'Type','Line');
+    % nbrush=[a.UserData];
+    % nbrush=nbrush(:,1);
     
     % AX has as many columns as the variables in the scatterplot data
     v = size(AX,2);
