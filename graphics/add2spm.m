@@ -34,7 +34,7 @@ function add2spm(H,AX,BigAx,varargin)
 %               If set to '1', add labels to the units of the last data
 %               group (or the group with the largest value of the grouping
 %               variable) in each panel of the scatter matrix. The labels
-%               whicha are added are based on the content of the 'UserData' field of
+%               which are added are based on the content of the 'UserData' field of
 %               the last group. This can be achieved by means of
 %               instruction set(H(:,:,end), 'UserData' , unit_labels),
 %               where unit_labels is a column vector of numbers or strings.
@@ -270,7 +270,8 @@ end
 % boxplot. In this case we have to set the 'DisplayName' property of the
 % boxplot groups, which is used in clickablemultilegend to show/hide the
 % legends.
-if isempty(h)
+h = findobj(gcf,'Tag',['boxplot' num2str(1)]);
+if ~isempty(h)
     for z=1:nleg
         h = findobj(gcf,'Tag',['boxplot' num2str(z)]);
         set(h,'DisplayName',legnew{z});

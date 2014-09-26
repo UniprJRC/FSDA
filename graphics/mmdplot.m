@@ -202,7 +202,7 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    %Example of the use of persistent non cumualtive brush. Every time a
+    %Example of the use of persistent non cumulative brush. Every time a
     %brushing action is performed previous highlightments are removed
     databrush=struct
     databrush.persist='off'
@@ -405,7 +405,7 @@ for i=1:length(quant)
         line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
     end
     
-    [figx figy] = dsxy2figxy(gca, xcoord,gmin(gmin(:,1)==xcoord,i+1));
+    [figx, figy] = dsxy2figxy(gca, xcoord,gmin(gmin(:,1)==xcoord,i+1));
     kx=0; ky=0;
     
     if isempty(figy) || figy<0;

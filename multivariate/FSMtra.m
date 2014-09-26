@@ -502,9 +502,6 @@ if nargin > 1
     end
 end
 
-verMatlab=verLessThan('matlab','8.4.0');
-
-
 % And check if the optional user parameters are reasonable.
 % check init
 init1=options.init;

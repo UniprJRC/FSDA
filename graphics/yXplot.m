@@ -183,7 +183,7 @@ function [plot1]=yXplot(y,X,varargin)
 %                   n are respectively the first and final step of the
 %                   search.
 %
-% See also: mdrplot, fanplot, resfwdplot.
+% See also: spmplot, mdrplot, fanplot, resfwdplot.
 %
 % Copyright 2008-2014.
 % Written by FSDA team
@@ -207,7 +207,7 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 %
 %
-% 
+%
 %{
     % Example of the use of function yXplot with option group
     n=100;
@@ -335,6 +335,14 @@ function [plot1]=yXplot(y,X,varargin)
                             'Label' 'off' 'RemoveLabels' 'on'})
 %}
 
+
+%{
+    %   Example of the use of persistent cumulative brush.
+    %   with option labeladd '1'. In this case the row numbers of the
+    %   selected units is displayed in the monitoring residuals plot
+    yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
+                            'labeladd' '1'})
+%}
 %% Initialization (common with resfwdplot)
 %
 % Close existing yXplot and resfwdplot
@@ -655,7 +663,6 @@ set(H,'DisplayName','Units');
 % end
 
 
-verMatlab=verLessThan('matlab','8.4.0');
 for i = 1:length(AX)
     set(gcf,'CurrentAxes',AX(i));
     % If the user has specified the min and max for y limit
@@ -1081,11 +1088,13 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                     %%hLegend(iAxes) = clickableLegend(hLines, eLegend{:});
                     legend_h = legend(hLines);
                     if iAxes < length(AX)
-                        if verMatlab
-                            legend(legend_h,'hide');
-                        else
-                            legend_h.Visible='off';
-                        end
+                        %                         if verMatlab
+                        %                             legend(legend_h,'hide');
+                        %                         else
+                        %                             legend_h.Visible='off';
+                        %                         end
+                        set(legend_h,'Visible','off')
+                        
                     end
                 end
                 hLegend(iAxes) = clickableMultiLegend(hLines, eLegend{:});

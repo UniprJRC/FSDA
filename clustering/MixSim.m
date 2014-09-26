@@ -232,7 +232,7 @@ function [out]  = MixSim(k,v,varargin)
 %{
     % Example of use of optional input option restrfactor. In the first case
     % restrfactor is 1.1 and the clusters are roughly homogeneous. In the
-    % second second case no constraint is imposed on the ratio of maximum and
+    % second case no constraint is imposed on the ratio of maximum and
     % minimum eigevalue among clusters so elliptical shape clusters are
     % allowed. In both cases the same random seed together with the same level
     % of average and maximum overlapping is used

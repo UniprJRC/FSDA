@@ -330,12 +330,14 @@ if ~isempty(h)
     else
         legend_h = legend(hlineh(1:numconflev),legendstring2);
         
-        verMatlab=verLessThan('matlab','8.4.0');
-        if verMatlab
-            legend(legend_h,'hide');
-        else
-            legend_h.Visible='off';
-        end
+        %         verMatlab=verLessThan('matlab','8.4.0');
+        %         if verMatlab
+        %             legend(legend_h,'hide');
+        %         else
+        %             legend_h.Visible='off';
+        %         end
+        set(legend_h,'Visible','off')
+        
     end
     % Fix the y-axis
     set(h,'YLimMode', 'manual');

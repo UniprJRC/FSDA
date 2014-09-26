@@ -6,7 +6,7 @@ function out = FSMeda(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           Y = n x v data matrix; n observations
+% Y :           n x v data matrix; n observations
 %               and v variables
 %               Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
@@ -452,7 +452,11 @@ else
         % Compute theoretical envelops for minimum Mahalanobis distance based on all
         % the observations for the above quantiles.
         [gmin] = FSMenvmmd(n,v,'prob',quant,'init',init1,'scaled',scaled);
-        plot(mmd(:,1),mmd(:,2));
+        plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
+        
+        % include specified tag in the current plot
+        set(gcf,'tag','pl_mmd');
+        set(gcf,'Name', 'Monitoring of Minimum Mahalnobis distance', 'NumberTitle', 'off');
         
         % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
         lwdenv=2;
@@ -468,6 +472,7 @@ else
         else
             ylabel('Monitoring of minimum Mahlanobis distance');
         end
+        
     end
     
     
