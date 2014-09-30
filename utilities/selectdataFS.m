@@ -106,14 +106,17 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %  'Label' - {'off', 'on'}
 %
 %           Causes text labels with their (x,y) coordinates to appear
-%           next to each point selected.
+%           next to each point selected. Remark: if brushing is done on the
+%           mmdplot (Minium Mahalanobis Distance plot) or on the mdrplot
+%           (Minimum Deletion Residual plot), the unit(s) which are about
+%           to be included in the subset in the next step will be shown.
+%           For example when Label='on', sample size n=100 and the step
+%           brushed is 99, the indication of the unit which will be
+%           included in the final step will automatically appear on the
+%           plot.
 %
 %           Beware that selecting large numbers of points and creating
 %           and displaying the label for them can be time consuming.
-%           This option is a great one for single point selection,
-%           but I have seen system-related problems when rapidly
-%           selecting & deselecting large numbers of points with the
-%           rect tool.
 %
 %           DEFAULT VALUE: 'off'
 %
@@ -1120,6 +1123,8 @@ end
             
         elseif strcmp(get(gcf,'tag'),'pl_mdr') || ...
                 strcmp(get(gcf,'tag'),'pl_mmd')
+            % Matrix Un had been added to gcf UserData
+            Un=get(gcf,'UserData');
             % create a new set of handles
             if ~iscell(xselect)
                 xtext = xselect;
@@ -1128,12 +1133,22 @@ end
                 xtext = vertcat(xselect{:});
                 ytext = vertcat(yselect{:});
             end
+           
             textlabels = cell(1,length(xtext));
             
             for ii=1:length(xtext)
                 % label to include on the plot
-                textlabels{ii}=num2str(xtext(ii));
+                Unrow=Un(Un(:,1) == xtext(ii)+1,2:end);
+                Unrow(isnan(Unrow))=[];
+                textlabels{ii}=num2str(Unrow);
+                % Just uncommment the line below if you prefer to use as
+                % label the x coordinated insted of the units which entered
+                % the seacrh at a particular step
+                % textlabels{ii}=num2str(xtext(ii));
             end
+            % This is just to displace a bit on the right the labels
+             xtext=xtext+0.2;
+            
             %  if params.RemoveLabels
             if strcmpi(params.RemoveLabels,'on')
                 texthandles = text(xtext,ytext,textlabels,'tag','selected','FontSize',12);
