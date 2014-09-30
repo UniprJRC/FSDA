@@ -498,6 +498,13 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     
     if isstruct(options.databrush)
         
+        % If option Label is 'on' then matrix Un is added to UserData
+        d=max(strcmp('Label',fieldnames(databrush)));
+        if d==1 && strcmp(databrush.Label,'on')
+            set(gcf,'UserData',Un)
+        end
+        
+        
         cv=[fieldnames(databrush) struct2cell(databrush)]';
         
         sele=[cv(:)' 'Ignore' {findobj(gcf,'tag','env')}];

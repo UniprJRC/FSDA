@@ -102,12 +102,15 @@ function plotopt=malfwdplot(out,varargin)
 %                       trajectories as markers.
 %                       if 1 each line is plotted using a different marker
 %                       else no marker is used (default).
+%                FontSize  : scalar controlling font size of the labels of
+%                       the trajectories in foreground
 %
 %                   The default values of structure fground are:
 %                    fground.fthresh=2.5
 %                    fground.flabstep=[m0 n]
 %                    fground.LineWidth=1
 %                    fground.LineStyle={'-'}
+%                    fground.FontSize=12
 %
 %
 %                   Remark: if fground='' no unit is highlighted and no
@@ -568,7 +571,7 @@ standarddef = struct(...
 % Default options for the trajectories in foreground
 fgrounddef = struct(...
     'fthresh',fthresh,'funit','','flabstep',x([1 end]),...
-    'fmark',0,'LineWidth','','Color','','LineStyle','');
+    'fmark',0,'LineWidth','','Color','','LineStyle','','FontSize',12);
 
 % Default options for the trajectories in background
 bgrounddef=struct('bthresh',bthresh, 'bstyle',bstyle);
@@ -877,7 +880,8 @@ if ~isempty(options.fground)
         % Label the units
         h=text(reshape(repmat(steps,lunits,1),lall,1),...
             reshape(MDvalues(funit,steps-x(1)+1),lall,1),...
-            reshape(repmat(strings,1,lsteps),lall,1));
+            reshape(repmat(strings,1,lsteps),lall,1),...
+            'FontSize',fground.FontSize);
         set(h,{'HorizontalAlignment'},HA)
     end
     

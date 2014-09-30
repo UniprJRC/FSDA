@@ -618,6 +618,13 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     
     
     if isstruct(options.databrush)
+        
+        % If option Label is 'on' then matrix Un is added to UserData
+        d=max(strcmp('Label',fieldnames(databrush)));
+        if d==1 && strcmp(databrush.Label,'on')
+            set(gcf,'UserData',out.Un)
+        end
+        
         % sele={options.databrush{:} 'Ignore' findobj(gcf,'tag','env')}; % old code
         % we need to transform the input structure databrush into a cell array
         
@@ -639,8 +646,6 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     
     % sele={sele{:} 'Tag' options.tag}; OLD inefficient code
     sele=[sele 'Tag' {options.tag}];
-    
-    
     
     % group = VECTOR WHICH WILL CONTAIN THE IDENTIFIER OF EACH GROUP
     % e.g. group(14)=3 means that unit 14 was selected at the third brush
@@ -906,23 +911,23 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             disp('Press a mouse key to continue brushing, a keyboard key to stop')
             ss=waitforbuttonpressFS;
             disp('------------------------')
-%             % After waitforbuttonpress:
-%             % - the standard MATLAB function to be executed on figure
-%             %   close is recovered
-%             set(gcf,'CloseRequestFcn','closereq');
+            %             % After waitforbuttonpress:
+            %             % - the standard MATLAB function to be executed on figure
+            %             %   close is recovered
+            %             set(gcf,'CloseRequestFcn','closereq');
             
-                % After waitforbuttonpress:
-                % - the standard MATLAB function to be executed on figure
-                %   close is recovered
-                set(gcf,'CloseRequestFcn','closereq');
-                Open_yX = findobj(0, 'type', 'figure','tag','pl_yX');
-                Open_res = findobj(0, 'type', 'figure','tag','pl_resfwd');
-                Open_mdr = findobj(0, 'type', 'figure','tag','pl_mdr');
-                if isempty(Open_mdr)  % User closed the main brushing window
-                    if ~isempty(Open_yX); delete(Open_yX); end    % yX plot is deleted
-                    if ~isempty(Open_res); delete(Open_res); end  % monitoring residual plot is deleted
-                    delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
-                end            
+            % After waitforbuttonpress:
+            % - the standard MATLAB function to be executed on figure
+            %   close is recovered
+            set(gcf,'CloseRequestFcn','closereq');
+            Open_yX = findobj(0, 'type', 'figure','tag','pl_yX');
+            Open_res = findobj(0, 'type', 'figure','tag','pl_resfwd');
+            Open_mdr = findobj(0, 'type', 'figure','tag','pl_mdr');
+            if isempty(Open_mdr)  % User closed the main brushing window
+                if ~isempty(Open_yX); delete(Open_yX); end    % yX plot is deleted
+                if ~isempty(Open_res); delete(Open_res); end  % monitoring residual plot is deleted
+                delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
+            end
             
             
             

@@ -108,15 +108,15 @@ function plotopt=resfwdplot(out,varargin)
 %                       trajectories as markers.
 %                       if 1 each line is plotted using a different marker
 %                       else no marker is used (default).
-%                FontSize  : font size of the labels of the trajectories in
-%                           foreground
+%                FontSize  : scalar controlling font size of the labels of
+%                       the trajectories in foreground
 %
 %                   The default values of structure fground are:
 %                    fground.fthresh=2.5
 %                    fground.flabstep=[m0 n]
 %                    fground.LineWidth=1
 %                    fground.LineStyle={'-'}
-%                    fground.FontSize=10
+%                    fground.FontSize=12
 %
 %                   Remark: if fground='' no unit is highlighted and no
 %                   label is inserted into the plot.
@@ -469,7 +469,7 @@ function plotopt=resfwdplot(out,varargin)
     resfwdplot(out,'databrush',databrush)
 %}
 %
-%   All previuos examples used a non persistent brushing (that is brushing
+%   All previous examples used a non persistent brushing (that is brushing
 %   could be done only once). The examples below use persistent brushing
 %   (that is brushing can be done multiple times)
 %

@@ -1,41 +1,51 @@
 function [H,AX,BigAx] = spmplot(Y,varargin)
-%spmplot: scatterplot matrix with dynamic scatters and boxplots or histograms on the main diagonal
+%spmplot: interactive scatterplot matrix with boxplots or histograms on the main diagonal
 %
 %<a href="matlab: docsearch('spmplot')">Link to the help function</a>
 %
 %  Required input arguments:
-%     Y : Data matrix (2D array) containing n observations on v variables.
-%         or a structure out coming from function FSMeda
 %
-%  REMARK: if Y a 2D array varargin can be or the usual name/value pairs
-%  described in the section Optional input arguments or direcly
-%  spmplot(Y,group)
-%  spmplot(Y,group,plo)
-%  spmplot(Y,group,plo,dispopt)
-%  where group, plo and dispopt have the meaning described below in
-%  Optional input arguments
+%     Y : data matrix (2D array) containing n observations on v variables
+%         or a structure 'out' coming from function FSMeda
 %
-%  If varargin{1} is a vector with n elements then the program
-%  automatically assumes that varargin{1} is equal to group and the user
-%  has chosen to call the function without the name/value pairs
+%  Optional input arguments if Y is a 2D array:
 %
-%  Optional input arguments (if input Y is a matrix):
+%     If Y is a 2D array, varargin can be either a sequence of name/value
+%     pairs, detailed below, or one of the following explicit assignments:
 %
-%  group: vector with n elements, grouping variable that determines the
-%         marker and color assigned to each point. It can be a categorical
+%       spmplot(Y,group)
+%
+%       spmplot(Y,group,plo)
+%
+%       spmplot(Y,group,plo,dispopt)
+%
+%     where group, plo and dispopt have the meaning described below.
+%
+%     Remark: if varargin{1} is a n-elements vector, then it is interpreted
+%     as a grouping variable vector 'group'. In this case, it can only be
+%     followed by 'plo' and 'dispopt'. Otherwise, the program expects a
+%     sequence of name/value pairs.
+%
+%  List of optional input arguments if input Y is a matrix:
+%
+%  group: vector with n elements. It is a grouping variable that determines 
+%         the marker and color assigned to each point. It can be a categorical
 %         variable, vector, string matrix, or cell array of strings.
-%    plo: empty value, scalar of structure which controls
-%         the the names which are
-%         displayed in the margins of the scatter-plot matrix and the
+%
+%    plo: empty value, scalar of structure which controls the names which
+%         are displayed in the margins of the scatter-plot matrix and the
 %         labels of the legend.
-%         If plo is set to the empty vector [], then nameY and labeladd are
-%         both set to the empty string '' (default), and no label and
-%         no name is added to the plot.
+%
+%         If plo is the empty vector [], then nameY and labeladd are
+%           both set to the empty string '' (default), and no label and
+%           no name is added to the plot.
+%
 %         If plo = 1 the names Y1,..., Yv are added to the margins of the
-%         the scatter plot matrix else nothing is added.
+%           the scatter plot matrix else nothing is added.
+%
 %         If plo is a structure it may contain the following fields:
-%         - labeladd: if this option is '1', the elements belonging to the
-%                max(group) in the spm are labelled with their unit row index.
+%         - labeladd: if it is '1', the elements belonging to the max(group) 
+%                in the spm are labelled with their unit row index.
 %                The default value is labeladd = '', i.e. no label is added.
 %         - nameY: cell array of strings containing the labels of the
 %                variables. As default value, the labels which are added
@@ -54,40 +64,57 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                the figure window. Default is siz = '' (empty value).
 %       - doleg: a string to control whether legends are created or not.
 %                Set doleg to 'on' (default) or 'off'.
-%dispopt: string which controls how to fill the diagonals
-%       in a plot of Y vs Y (main diagonal of the scatter plot matrix). Set
-%       dispopt to 'hist' (default) to plot histograms, or 'box' to plot
-%       boxplots.
-%          REMARK: The style which is used for univariate boxplots is
-%          'traditional' if the number of groups is <=5, else it is compact
-%       Remark: if spmplot is called with specifying the pairs name/value
-%       for the optional arguments to set dispopt without changing the
-%       defaults for plo use, e.g., spmplot(Y,group,[],'box');
+%
+% dispopt: string which controls how to fill the diagonals in a plot of
+%       Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to 
+%       'hist' (default) to plot histograms, or 'box' to plot boxplots.
+%       
+%       REMARK 1: the style which is used for univariate boxplots is
+%       'traditional' if the number of groups is <=5, else it is 'compact'.
+%
+%       REMARK 2: to set dispopt without changing the defaults for plo use,
+%       e.g., spmplot(Y,group,[],'box');
+%
+%
+%  Y is a structure.
 %
 %  If first input Y is a structure (generally created by function FSMeda),
 %  then this structure must have the following field
-%       REQUIRED FIELD IN INPUT STRUCTURE Y
-%       Y.Y   =   a data matrix of size n-by-v
 %
-%               If input structure Y contains just the above field the
-%               spmplot will be immediately created. On the other hand, if
-%               Y also contains information about the search, it is
-%               possible to exploit the brushing (i.e. the automatic
-%               interaction with the other plots) and datatooltip
-%               possibilities
+%       REQUIRED FIELD IN INPUT STRUCTURE Y
+%
+%       Y.Y   = a data matrix of size n-by-v
+%
+%               If the input structure Y contains just the data matrix, a
+%               standard static scatter plot matrix will be created. 
+%
+%               On the other hand, if Y also contains information on
+%               statistics monitored along a search, then the scatter plots
+%               will be linked with other (forward) plots with interaction
+%               possibilities, enabled via brushing and datatooltip. More
+%               precisely, with option databrush it is possible to create
+%               an automatic interaction with the other plots, while with
+%               option datatooltip it is possible to retrieve information
+%               about a particular unit once selected with the mouse)
 %
 %       OPTIONAL FIELDS IN INPUT STRUCTURE Y
-%       Y.MAL =   matrix containing the Mahalanobis distances monitored in each
+%
+%       Y.MAL = matrix containing the Mahalanobis distances monitored in each
 %               step of the forward search. Every row is associated with a
 %               unit (this is a necessary field if the user wants to brush
 %               the scatter plot matrix)
-%       Y.Un  =   matrix containing the order of entry of each unit
+%       Y.Un  = matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not
 %               empty)
+%       label = cell of length n containing the labels of the units
+%               (optional argument used when datatooltip=1. If this
+%               field is not present labels row1, ..., rown will be
+%               automatically created and included in the pop up
+%               datatooltip window)
 %
-%       The options which follow can only be used if the the first argument
-%       of spmplot is a structure which contains information about the fwd
-%       search (i.e. the two fields MAL and Un)
+%       The options which follow can only be used if the first argument
+%       of spmplot is a structure containing information about the fwd
+%       search (i.e. the fields MAL, Un and eventually label)
 %
 %   datatooltip :   empty value or structure. The default is datatooltip=''
 %                   If datatooltip is not empty the user can use the mouse
@@ -99,10 +126,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   datacursormode for more details or the examples below).
 %                   The default options of the structure are
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
-%       label   :   cell containing the labels of the units (optional
-%                   argument used when datatooltip=1. If this field is not
-%                   present labels row1, ..., rown will be automatically
-%                   created and included in the pop up datatooltip window)
 %     databrush :   empty value, scalar or cell.
 %                   DATABRUSH IS AN EMPTY VALUE
 %                   If databrush is an empty value (default), no brushing
@@ -110,13 +133,13 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   The activation of this option (databrush is a scalar or
 %                   a cell) enables the user  to select a set of
 %                   observations in the current plot and to see them
-%                   highlighted in the resfwdplot, i.e. the plot of the
+%                   highlighted in the malfwdplot, i.e. the plot of the
 %                   trajectories of all observations, grouped according
 %                   to the selection(s) done by brushing. If the malfwdplot
 %                   does not exist it is automatically created.
 %                   In addition, brushed units can be highlighted in the
 %                   other following plots (only if they are already open):
-%                   - minimum Mahalanobis plot;
+%                   - minimum Mahalanobis distance plot;
 %                   Remark: the window style of the other figures is set
 %                   equal to that which contains the spmplot. In other
 %                   words, if the scatterplot matrix plot is docked all the
@@ -182,7 +205,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 % Examples:
 
-
 %{
     % Iris data: scatter plot matrix with univariate boxplots on the main
     % diagonal (call of spmplot without name/value pairs)
@@ -237,7 +259,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 %{
 
-    % Now test the direct use of FSM. Set two groups, e.g. those obtained
+  
+  % Now test the direct use of FSM. Set two groups, e.g. those obtained
     % from FSM
     % Generate contaminated data
     state=100;
@@ -252,11 +275,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
     group = zeros(n,1);
     group(out.outliers)=1;
-    plo=struct; plo.labeladd='1'; % option plo is used to label the outliers
+    plo=struct; 
+    plo.labeladd='1'; % option plo.labeladd is used to label the outliers
 
     % By default, the legend identifies the groups with 'Group 1', Group 2', etc.
     spmplot(Ycont,group,plo,'box');
-
 %}
 
 %{
@@ -300,7 +323,76 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(Y,group,[],'box');
 %}
 
+%{
+    % In all previous examples spmplot was called without the
+    % name/value pairs arguments
+    % The example which follow make use of the name/value pairs arguments
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'}; % Name of the variables
+    plo.clr='kbr'; % Colors of the groups
+    plo.sym={'+' '+' 'v'}; % Symbols of the groups (inside a cell)
+    % Symbols can also be specified as characters
+    % plo.sym='++v'; % Symbols of the groups
+    plo.siz=3.4; % Symbol size
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box');
+%}
 
+% In the previous examples the first argument of spmplot was a matrix. In
+% the two examples below the first argument is a structure which contains
+% the fields Y and Un
+
+%{
+    % Example of use of option datatooltip
+    n=100;
+    v=3;
+    m0=3;
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:10,:)=5;
+    [fre]=unibiv(Ycont);
+    %create an initial subset with the 3 observations with the lowest
+    %Mahalanobis Distance
+    fre=sortrows(fre,4);
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Ycont,bs,'plots',1);
+    % mmdplot(out);
+    figure
+    plo=struct;
+    plo.labeladd='1';
+    spmplot(out,'datatooltip',1)
+%}
+
+%{ 
+    % Interactive_example
+    % Example of use of option databrush
+    close all
+    rng(841,'shr3cong');
+    n=100;
+    v=3;
+    m0=v+1;
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [fre]=unibiv(Y);
+    %create an initial subset with the 3 observations with the lowest
+    %Mahalanobis Distance
+    fre=sortrows(fre,4);
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Ycont,bs,'plots',1);
+    % mmdplot(out);
+    figure
+    plo=struct;
+    plo.labeladd='1';
+    % Plase note the difference between plo.labeladd='1' and option labeladd
+    % '1' inside databrush.
+    % plo.labeladd enables the user to label the units in the scatterplot
+    % matrix once selected. Option labeladd '1' inside databrush enables to add
+    % the labels on the selected units in the linked plots 
+    spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect','labeladd','1'},'plo',plo,'dispopt','hist')
+%}
 
 %% Beginning of code
 % if length(varargin{1})==n then we are in the old format of the function
@@ -431,6 +523,8 @@ else
     dispopt='hist';
     tag='pl_spm';
     datatooltip=0;
+    databrush='';
+    namevaluepairs=1;
 end
 
 ngroups=length(unique(group));
@@ -564,8 +658,6 @@ end
 
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
-
-
 if strcmp(dispopt,'box')==1
     ahist=findobj(AX,'type','patch') ;
     set(ahist,'MarkerEdgeColor','none','EdgeColor','none','FaceColor','none')
@@ -663,7 +755,7 @@ if ndims(H) == 3
     else
         set(double(H(:,:,end)), 'UserData' , seq(groupv==max(groupv)));
     end
-end
+
 
 if strcmp(doleg,'on')
     % Add to the spm the clickable multilegend and eventually the text labels
@@ -676,7 +768,7 @@ if strcmp(doleg,'on')
         add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg',guni);
     end
 end
-
+end
 % the handle of the figure including the gplotmatrix
 % (i.e. the closest ancestor of BigAx).
 fig = ancestor(BigAx,'figure');
@@ -921,7 +1013,18 @@ if ~isempty(databrush) || iscell(databrush)
         disp('Left mouse button picks points.');
         ss=waitforbuttonpressFS;
         
-        set(get(0,'CurrentFigure'),'CloseRequestFcn','closereq'); %
+        % After waitforbuttonpress:
+        % - the standard MATLAB function to be executed on figure
+        %   close is recovered
+        set(gcf,'CloseRequestFcn','closereq');
+        Open_YY = findobj(0, 'type', 'figure','tag','pl_spm');
+        Open_res = findobj(0, 'type', 'figure','tag','data_res');
+        Open_mmd = findobj(0, 'type', 'figure','tag','pl_mmd');
+        if isempty(Open_YY)  % User closed the main brushing window
+            if ~isempty(Open_res); delete(Open_res); end    % spm plot is deleted
+            if ~isempty(Open_mmd); delete(Open_mmd); end  % mmd plot is deleted
+            delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
+        end
         
         if ss==1;
             but=2;
@@ -944,17 +1047,6 @@ if ~isempty(databrush) || iscell(databrush)
             [indicer,indicec]=ind2sub(size(AX),indice);
             
             otherAxes = AX;
-            
-            %{
-            TODO DA ELIMINARE DOME????????????????????
-            %otherAxes is the list of the not selected scatterplot axes
-            otherAxes(indicer,indicec)=[];
-            
-            %During the selection, not selected axes must have properties HandleVisibility and
-            %HitTest set to off.
-            set(otherAxes,'HandleVisibility','off');
-            set(otherAxes,'HitTest','off');
-            %}
             
             
             %% - call selectdataFS
@@ -1439,6 +1531,18 @@ if ~isempty(databrush) || iscell(databrush)
                     ss=waitforbuttonpressFS;
                     set(get(0,'CurrentFigure'),'CloseRequestFcn','closereq');
                     disp('------------------------')
+                    
+                    set(gcf,'CloseRequestFcn','closereq');
+                    Open_YY = findobj(0, 'type', 'figure','tag','pl_spm');
+                    Open_res = findobj(0, 'type', 'figure','tag','data_res');
+                    Open_mmd = findobj(0, 'type', 'figure','tag','pl_mmd');
+                    if isempty(Open_YY)  % User closed the main brushing window
+                        if ~isempty(Open_res); delete(Open_res); end    % spm plot is deleted
+                        if ~isempty(Open_mmd); delete(Open_mmd); end  % mmd plot is deleted
+                        delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
+                    end
+                    
+                    
                     if ss==1;
                         but=2;
                     end
