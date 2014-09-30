@@ -854,6 +854,33 @@ Y=swiss_banknotes.data;
 Y=Y(1:100,:);
 [out]=FSM(Y);
 
+%% SB (genuine notes): brushing from mmdplot
+clearvars;close all;
+load('swiss_banknotes');
+Y=swiss_banknotes.data;
+Y=Y(1:100,:);
+[fre]=unibiv(Y);
+fre=sortrows(fre,[3 4]);
+bs=fre(1:size(Y,2)+5,1);
+[out]=FSMeda(Y,bs,'init',30,'scaled',0);
+databrush=struct;
+databrush.labeladd='1';
+databrush.Label='on';
+databrush.RemoveLabels  = 'off';
+databrush.BrushShape='rect';
+% Control the characteristics of the units in foreground in the resfwdplot
+fground=struct;
+% Labels will be included for units (these are the units entering the last
+% six steps of the search
+fground.funit=[1 13 40 70 71 5];
+% FontSize of the Labels
+fground.FontSize=14;
+% The Labels will be put when m=30
+fground.flabstep=30;
+standard.xlim=[28 100];
+malfwdplot(out,'standard',standard,'fground',fground);
+mmdplot(out,'databrush',databrush);
+
 %% SB:  analysis using S and MM estimators
 clearvars;close all;
 load('swiss_banknotes');
