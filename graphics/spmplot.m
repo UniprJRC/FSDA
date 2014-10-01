@@ -28,7 +28,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %  List of optional input arguments if input Y is a matrix:
 %
-%  group: vector with n elements. It is a grouping variable that determines 
+%  group: vector with n elements. It is a grouping variable that determines
 %         the marker and color assigned to each point. It can be a categorical
 %         variable, vector, string matrix, or cell array of strings.
 %
@@ -44,7 +44,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %           the scatter plot matrix else nothing is added.
 %
 %         If plo is a structure it may contain the following fields:
-%         - labeladd: if it is '1', the elements belonging to the max(group) 
+%         - labeladd: if it is '1', the elements belonging to the max(group)
 %                in the spm are labelled with their unit row index.
 %                The default value is labeladd = '', i.e. no label is added.
 %         - nameY: cell array of strings containing the labels of the
@@ -66,9 +66,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                Set doleg to 'on' (default) or 'off'.
 %
 % dispopt: string which controls how to fill the diagonals in a plot of
-%       Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to 
+%       Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to
 %       'hist' (default) to plot histograms, or 'box' to plot boxplots.
-%       
+%
 %       REMARK 1: the style which is used for univariate boxplots is
 %       'traditional' if the number of groups is <=5, else it is 'compact'.
 %
@@ -86,7 +86,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       Y.Y   = a data matrix of size n-by-v
 %
 %               If the input structure Y contains just the data matrix, a
-%               standard static scatter plot matrix will be created. 
+%               standard static scatter plot matrix will be created.
 %
 %               On the other hand, if Y also contains information on
 %               statistics monitored along a search, then the scatter plots
@@ -260,7 +260,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %{
 
   
-  % Now test the direct use of FSM. Set two groups, e.g. those obtained
+    % Now test the direct use of FSM. Set two groups, e.g. those obtained
     % from FSM
     % Generate contaminated data
     state=100;
@@ -275,7 +275,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
     group = zeros(n,1);
     group(out.outliers)=1;
-    plo=struct; 
+    plo=struct;
     plo.labeladd='1'; % option plo.labeladd is used to label the outliers
 
     % By default, the legend identifies the groups with 'Group 1', Group 2', etc.
@@ -364,7 +364,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(out,'datatooltip',1)
 %}
 
-%{ 
+%{
     % Interactive_example
     % Example of use of option databrush
     close all
@@ -386,11 +386,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     figure
     plo=struct;
     plo.labeladd='1';
-    % Plase note the difference between plo.labeladd='1' and option labeladd
+    % Please note the difference between plo.labeladd='1' and option labeladd
     % '1' inside databrush.
     % plo.labeladd enables the user to label the units in the scatterplot
     % matrix once selected. Option labeladd '1' inside databrush enables to add
-    % the labels on the selected units in the linked plots 
+    % the labels of the selected units in the linked plots
     spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect','labeladd','1'},'plo',plo,'dispopt','hist')
 %}
 
@@ -405,8 +405,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 if nargin<1
     error('A required input argument is missing.')
 end
-
-verMatlab=verLessThan('matlab','8.4.0');
 
 % Check if the first argument is a structure or not
 if ~isstruct(Y);
@@ -514,8 +512,6 @@ if nargin>1
         databrush=options.databrush;
         tag=options.tag;
         datatooltip=options.datatooltip;
-        label=options.label;
-        
     end
 else
     group=ones(n,1);
@@ -701,12 +697,11 @@ for i=1:size(AX,2)
         set(get(ax,'YLabel'),'String',YLabel);
         
     else
-        % Add the boxplots generalised to groups
-        if verMatlab
-            ax = AX(i,i);
-        else
-            ax = AX(end,i);
-        end
+        % Add the boxplots generalised to groups Note that instead of using
+        % ax = AX(i,i); we use AX(end,i); because the last row of AX
+        % contains the handles to the invisible axes in which the
+        % histograms or boxplots are plotted
+        ax = AX(end,i);
         
         axPosition = get(ax,'position');
         
@@ -755,19 +750,19 @@ if ndims(H) == 3
     else
         set(double(H(:,:,end)), 'UserData' , seq(groupv==max(groupv)));
     end
-
-
-if strcmp(doleg,'on')
-    % Add to the spm the clickable multilegend and eventually the text labels
-    % of the selections
-    if isnumeric(group)
-        % use context sensitive legends
-        add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
-    else
-        % use legends in guni
-        add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg',guni);
+    
+    
+    if strcmp(doleg,'on')
+        % Add to the spm the clickable multilegend and eventually the text labels
+        % of the selections
+        if isnumeric(group)
+            % use context sensitive legends
+            add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
+        else
+            % use legends in guni
+            add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg',guni);
+        end
     end
-end
 end
 % the handle of the figure including the gplotmatrix
 % (i.e. the closest ancestor of BigAx).
@@ -1237,9 +1232,12 @@ if ~isempty(databrush) || iscell(databrush)
                         set(get(ax,'YLabel'),'String',YLabel);
                         
                     else
-                        % Add the boxplots generalised to groups
+                        % Modify the boxplots generalised to groups Note that instead of using
+                        % ax = AX(i,i); we use AX(end,i); because the last row of AX
+                        % contains the handles to the invisible axes in which the
+                        % histograms or boxplots are plotted
+                        ax=AX(end,i);
                         
-                        ax = AX(i,i);
                         % get the position of AX(i,i)
                         axPosition = get(ax,'position');
                         
@@ -1250,7 +1248,6 @@ if ~isempty(databrush) || iscell(databrush)
                         end
                         
                         hbp = boxplot(ax,Y(:,i),groupv,'plotstyle',plotstyle,'colors',clr(unigroup),'labelverbosity','minor','symbol','+');
-                        
                         
                         % Remove the x tick labels from the graph containing boxplots
                         set(ax,'XTickLabel',{' '});
