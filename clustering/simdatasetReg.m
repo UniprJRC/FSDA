@@ -262,8 +262,7 @@ for j=1:k
             X(aa:bb,:)=Xab;
         end
         
-    elseif find(strcmp('HalfNormal',fXdistrib))
-        
+        elseif find(strcmp('HalfNormal', Xdistrib.type))
         if intercept==1
             Xab=bsxfun(@times, abs(randn(Nk(j),p-1)),(Xdistrib.sigma(:,j))');
             X(aa:bb,2:end)=Xab;
@@ -271,9 +270,9 @@ for j=1:k
             Xab=bsxfun(@times, abs(randn(Nk(j),p)),(Xdistrib.sigma(:,j))');
             X(aa:bb,:)=Xab;
         end
-    elseif find(strcmp('user',fXdistrib))
-        X=find(strcmp('X',fXdistrib));
-        if d==1;
+    elseif find(strcmp('User',Xdistrib.type))
+        d=find(strcmp(fieldnames(Xdistrib),'X'),1);
+        if ~isempty(d);
             X= Xdistrib.X;
         else
             error('If string Xdistrib = user than the user must provide input matrix X')

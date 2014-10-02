@@ -147,7 +147,7 @@ function [out]  = MixSimReg(k,p,varargin)
 %                   means of the p explanatory variables for each group.
 %                   So, if distrib.type is 'User', we expect there is a field
 %                   called Xbar.
-%                 > Xdistrib.Xbar= (p-1)-by k (if intercept is present)
+%                 > Xdistrib.BarX= (p-1)-by k (if intercept is present)
 %                   or p-by-k (if intercept is not present) containing the
 %                   means of the p explanatory variables for each group.
 % betadistrib : scalar or structure which specifies the distribution to use
