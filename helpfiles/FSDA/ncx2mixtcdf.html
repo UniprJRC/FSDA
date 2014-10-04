@@ -64,7 +64,7 @@ nc<sub>1</sub>, ..., nc<sub>k</sub> and degrees of freedom n<sub>1</sub>, ...,
 n<sub>k</sub> and λ<sub>i</sub>  are real numbers and N(0,1) is a standard
 normal random variable, the purpose of this routine is to compute
 F<sub>Q</sub>(c | df, nc) = P(Q &lt; c) , that is the cdf of Q evaluated at
-c.</p>
+c, where df=[n<sub>1</sub>,, ..., nc<sub>k</sub> and nc=[nc<sub>1</sub>, ..., nc<sub>k</sub>)].</p>
 
 <h2>Syntax </h2>
 
@@ -211,10 +211,10 @@ procedure</p>
 
 <p> </p>
 
-<p>Davies (1973), Numerical inversion of a characteristic function, vol. 60,
+<p>Davies <span class="st">R. B. </span>(1973), Numerical inversion of a characteristic function, vol. 60,
 Biometrika, pp. 415-417<br>
 <br>
-Davies (1980), The distribution of a linear combination of  X<sup>2</sup>
+Davies <span class="st">R. B. </span>(1980), The distribution of a linear combination of  X<sup>2</sup>
 Random variables, Applied Statistics vol. pp. 323-333</p>
 
 <h2>Examples</h2>
@@ -242,7 +242,8 @@ nc=[1;6];
 and coefficients of the linear combination 2 and 3 and non centrality
 parameters 1 and 6. Evaluate the cdf in a series of values of x and plot the
 output </p>
-<pre class="programlisting"> df=[5;4]; 
+<pre class="programlisting"> 
+df=[5;4]; 
 lb=[2;3]; 
 nc=[1;6]; 
 xx=0:1:100; 

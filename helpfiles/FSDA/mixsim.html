@@ -10,6 +10,11 @@
   <meta content="fcn" name="toctype">
   <script type="text/javascript" language="javaScript" src="bottom.js">
  </script>
+  <style type="text/css">
+.auto-style1 {
+	vertical-align: middle;
+}
+</style>
 </head>
 
 <body>
@@ -76,7 +81,8 @@ probability of overlapping, defined as a sum of two misclassification
 probabilities, measures the degree of interaction between components and can be
 readily employed to control the clustering complexity of datasets simulated
 from mixtures. These datasets can then be used for systematic performance
-investigation of clustering and finite mixture modeling algorithms. More
+investigation of clustering and finite mixture modeling algorithms. </p>
+<p>More
 specifically, the probability of overlapping between groups i and j (called
 p<sub>ij</sub>) is given by p<sub>ij </sub>=p<sub>ji </sub>= w<sub>j|i</sub> +
 w<sub>i|j</sub> = OmegaMap(i,j)+OmegaMap(j,i),  i,j=1,2, ..., k. The diagonal
@@ -88,7 +94,8 @@ j=1,2, ..., k</sub> p<sub>ij </sub>) divided by k(k-1)/2. The maximum overlap
 as max(w<sub>j|i</sub> + w<sub>i|j</sub> ) = max p<sub>ij </sub> i ≠ j=1,2,
 ..., k. The standard deviation of overlap (which in the code is called <a
 href="#StdOmega">StdOmega</a>) is the standard deviation of the k(k-1)/2
-elements  p<sub>ij</sub>. The probability of misclassification w<sub>j|i</sub>
+elements  p<sub>ij</sub>. </p>
+<p>The probability of misclassification w<sub>j|i</sub>
 (w<sub>i|j</sub>) is nothing but the cdf of a linear combination of non central
 Χ<sup>2</sup> distributions with 1 degree of freedom + a linear combination of
 N(0,1) evaluated in a point c. The coefficients of the linear combinations of
@@ -134,7 +141,7 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
       <li><tt><a name="BarOmega">BarOmega</a></tt> − scalar. Value of average
         overlap. BarOmega is computed as <br>
         (sum(sum(OmegaMap))-k)/(0.5*k(k-1)). </li>
-      <li><tt><a name="MaxOmega">MaxOmega</a></tt> − scalar. Value of average
+      <li><tt><a name="MaxOmega">MaxOmega</a></tt> − scalar. Value of maximum
         overlap.  MaxOmega is the<br>
          maximum of OmegaMap(i,j)+OmegaMap(j,i). In other words MaxOmega=<br>
          OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1)).</li>
@@ -229,17 +236,19 @@ table.</p>
         the maximum ratio to allow between the largest eigenvalue and the
         smallest eigenvalue of the k covariance matrices which are generated.
         More in detail, if for example restrfactor=c, after generating the
-        covariance matrices, we check that the ratio</p>
-
-        <p> <img alt="" height="95" src="images_help/img14.jpg"
-        width="500"></p>
-
-        <p>between the largest eigenvalue of the k cov matrices and the
-        smallest eigenvalue of the k cov matrices is not larger than c. In
+        covariance matrices, we check that the ratio between the largest eigenvalue of the k cov matrices and the
+        smallest eigenvalue of the k cov matrices is not larger than <tt>'restrfactor'</tt> 
+	  that is</p>
+	  <p>
+	  <img alt="" height="93" src="images_help/img14.jpg"
+        width="483" class="auto-style1"> <tt>restrfactor</tt></p>
+	  <p>In
         order to apply this restriction (which is typical of <a
-        href="tclust">tclust</a> we call routine <a
-        href="restreigen.html">restreigen</a>). The default value of restrfactor
+        href="tclust">tclust</a>) we call routine <a
+        href="restreigen.html">restreigen</a>. The default value of restrfactor
         is  Inf that is no restriction is imposed. </p>
+	  <p>Remark: note that while optional parameter <tt>'ecc'</tt> is referred to each group, 
+	  parameter <tt>'restrfactor'</tt> consideres all eigenvalues of all covariance matrices together.</p>
       </td>
     </tr>
     <tr>
@@ -259,8 +268,8 @@ table.</p>
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>'resN'</tt></td>
-      <td bgcolor="#F2F2F2"><p>maximum number of mixture resimulations to find
-        a similation setting with prespecified level of overlapping. <br>
+      <td bgcolor="#F2F2F2"><p>maximum number of mixture simulations to find
+        a simulation setting with prespecified level of overlapping. <br>
         The default value of resN is 100. </p>
       </td>
     </tr>

@@ -80,7 +80,8 @@ probability of overlapping, defined as a sum of two misclassification
 probabilities, measures the degree of interaction between components and can be
 readily employed to control the clustering complexity of datasets simulated
 from mixtures. These datasets can then be used for systematic performance
-investigation of clustering and finite mixture modeling algorithms. More
+investigation of clustering and finite mixture modeling algorithms. </p>
+<p>More
 specifically, the probability of overlapping between groups i and j (called
 p<sub>ij</sub>) is given by p<sub>ij </sub>=p<sub>ji </sub>= w<sub>j|i</sub> +
 w<sub>i|j</sub> = OmegaMap(i,j)+OmegaMap(j,i),  i,j=1,2, ..., k. The diagonal
@@ -92,7 +93,8 @@ j=1,2, ..., k</sub> p<sub>ij </sub>) divided by k(k-1)/2. The maximum overlap
 as max(w<sub>j|i</sub> + w<sub>i|j</sub> ) = max p<sub>ij </sub> i ≠ j=1,2,
 ..., k. The standard deviation of overlap (which in the code is called <a
 href="#StdOmega">StdOmega</a>) is the standard deviation of the k(k-1)/2
-elements  p<sub>ij</sub>. The probability of misclassification w<sub>j|i</sub>
+elements  p<sub>ij</sub>. </p>
+<p>The probability of misclassification w<sub>j|i</sub>
 (w<sub>i|j</sub>) is nothing but the cdf of a linear combination of non central
 Χ<sup>2</sup> distributions with 1 degree of freedom + a linear combination of
 N(0,1) evaluated in a point c. The coefficients of the linear combinations of
@@ -122,7 +124,7 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
         More precisely when hom=0: <br>
         if fix(i)=0 di(i,j,:)=di(i,j,:)/c<sup>0.5</sup> (because di(i,j,:)=Γ
         (c Σ<sub>i</sub>)<sup>-0.5</sup>(μ<sub>i</sub>-μ<sub>j</sub>) where
-        Gamma is the matrix of eigenvectors of  Σ<sub>j|i</sub> =
+        Γ is the matrix of eigenvectors of  Σ<sub>j|i</sub> =
         Σ<sup>0.5</sup><sub>i</sub> Σ<sup>-1</sup><sub>j
         </sub>Σ<sup>0.5</sup><sub>i</sub>.) <br>
         if fix(i)=0 and fix(j)=1 li(i,j,:)=c li(i,j,:), <br>
@@ -136,7 +138,7 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
         Σ<sub>j</sub>) <sup>-1</sup> (c<sup>0.5</sup>
         Σ<sub>i</sub><sup>0.5</sup>) const1(i,j)=log((Pi(j)/Pi(i))^2 * c
         detS(i)/(c detS(j))) remain unaltered. Following the symbolism at the
-        beginning of Section 'description', the last term can be reformulated
+        beginning of Section 'Description', the last term can be reformulated
         as follows: const1(i,j)=log((π<sub>j</sub>/π<sub>i</sub>)<sup>2</sup>
         * c |Σ<sub>i</sub>|/|(c Σ<sub>j</sub>)|).</td>
     </tr>
@@ -179,8 +181,8 @@ routine <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>.</p>
     <tr>
       <td><p><tt>di</tt></p>
       </td>
-      <td><p>3D array of size k-by-k-by-p di(i,j,l)=γ<sub>l</sub> '
-        Σ<sub>i</sub><sup>-0.5</sup>(μ<sub>i</sub>-μ<sub>j</sub>)l=1, 2,
+      <td><p>3D array of size k-by-k-by-v di(i,j,l)=γ<sub>l</sub> '
+        Σ<sub>i</sub><sup>-0.5</sup>(μ<sub>i</sub>-μ<sub>j</sub>) l=1, 2,
         ...,v, where γ<sub>l</sub> is the l-th eigenvector coming from the
         spectral decomposition of matrix Σ<sub>j|i</sub>. Vector di(i,j,:)
         contains the coefficients of N(0,1) (called W<sub>l</sub> in equation
@@ -263,7 +265,7 @@ misclassification</p>
         More precisely,  if  clusters i and j have different covariance
         matrices  the misclassification probability w<sub>j|i</sub> (that is
         with respect to the centroid and covariance matrix of group i) is given
-        by Σ<sub>l=1</sub><sup>p</sup> (λ<sub>l</sub>-1)
+        by Σ<sub>l=1</sub><sup>v</sup> (λ<sub>l</sub>-1)
         Χ<sup>2</sup><sub>1</sub> ≤  log π<sub>j</sub><sup>2</sup>
         |Σ<sub>j</sub>| / π<sub>i</sub><sup>2</sup> |Σ<sub>i</sub>| where
         Χ<sup>2</sup><sub>1 </sub> are central Χ<sup>2 </sup>with one degree
@@ -273,6 +275,11 @@ misclassification</p>
 
         <p>If, on the other hand, clusters i and j have the same covariance
         matrix </p>
+	  <p>w<sub>j|i</sub>=  &Phi;(-0.5&nbsp; (Σ<sub>l=1</sub><sup>v</sup> &delta;<sub>l</sub>)<sup>0.5</sup> +log π<sub>j</sub> / π<sub>i </sub>&nbsp;/ 
+	  (Σ<sub>l=1</sub><sup>v</sup> &delta;<sub>l</sub>)<sup>0.5</sup> )where </p>
+	  <p>&nbsp;&delta;<sub>l</sub>=di(i,j,l)=γ<sub>l</sub> '
+        Σ<sub>i</sub><sup>-0.5</sup>(μ<sub>i</sub>-μ<sub>j</sub>),&nbsp;&nbsp; 
+	  l=1, 2, ..., v.</p>
 
         <p>Note that parameter asympt is set to 1 in the preliminary phase just
         to check whether the requested average or  maximum or standard
@@ -315,7 +322,7 @@ const1, fix, tol, lim, asympt)</tt> returns the following information </p>
   <li><tt><a name="BarOmega">BarOmega</a></tt> − scalar. Value of average
     overlap. BarOmega is computed as <br>
     (sum(sum(OmegaMap))-k)/(0.5*k(k-1)) </li>
-  <li><tt><a name="MaxOmega">MaxOmega</a></tt> − scalar. Value of average
+  <li><tt><a name="MaxOmega">MaxOmega</a></tt> − scalar. Value of maximum
     overlap.  MaxOmega is the  maximum of OmegaMap(i,j)+OmegaMap(j,i). In
     other words
     MaxOmega=OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1)).</li>
