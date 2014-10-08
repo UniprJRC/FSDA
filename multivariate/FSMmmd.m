@@ -1,7 +1,7 @@
 function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %FSMmmd monitors minMD
 %
-%<a href="matlab: docsearch('FSMmmd')">Link to the help function</a>
+%<a href="matlab: docsearch('fsmmmd')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -78,7 +78,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 % Copyright 2008-2014.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('FSMmmd')">Link to the help function</a>
+%<a href="matlab: docsearch('fsmmmd')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 
@@ -184,7 +184,7 @@ end
 % percn = scalar which controls up to which point of the search it is
 % better to use linear indexing to extract the units forming subset. For
 % example percn=0.85*n means that units belonging to susbet are found using
-% linear indexiing up to step m=0.85*n. After m=0.85*n units belonging to
+% linear indexing up to step m=0.85*n. After m=0.85*n units belonging to
 % subset are found using a n-by-1 logical vector
 percn=.85*n;
 % nrepmin = scalar which controls the maximum number of repeated minima
