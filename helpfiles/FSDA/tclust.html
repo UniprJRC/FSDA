@@ -217,7 +217,10 @@ class="zptmcm7t-">)] </span>where symbol <span
 class="zptmcm7t-">[</span><span 
 class="zptmcm7y-">&#x22C5;</span><span 
 class="zptmcm7t-">] </span>denotes the integer part.
-Note that in equation&#x00A0;(<a 
+Equation (<a href="#eqweights">2</a>) is obtained as a special case of equation 
+(<a 
+href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>)&nbsp; setting <span
+class="zptmcm7m-">α=0. </span> Note that in equation&#x00A0;(<a 
 href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>) we have used symbol <span 
 class="zptmcm7m-">&#x03C0;</span><span 
 class="zptmcm7y-">&#x2032;</span><sub><span 
@@ -232,6 +235,7 @@ likelihood.
 <!--l. 101--><p class="nopar" >
 The natural extension of equation (3) to mixture models (García-Escudero et al., 
 2014)
+  is
   <table 
 class="equation"><tr><td style="width: 1207px">
   <center class="math-display" >
@@ -243,7 +247,26 @@ i&#x2208;Rjj=1
  id="x1-1004r4"></a></center></td><td class="equation-label">(4)</td></tr></table>
 <!--l. 95-->
 <p class="nopar" >
-&nbsp;<p class="indent" >  In optional parameter 
+with the constraint that <span 
+class="zptmcm7t-">#</span><span 
+class="zptmcm7v-">&#x22C3;</span><sub>
+<span 
+class="zptmcm7m-x-x-74">j</span><span 
+class="zptmcm7t-x-x-74">=1</span></sub><sup><span 
+class="zptmcm7m-x-x-74">k</span></sup><span 
+class="zptmcm7m-">R</span><sub><span 
+class="zptmcm7m-x-x-74">j</span></sub> <span 
+class="zptmcm7t-">= [</span><span 
+class="zptmcm7m-">n</span><span 
+class="zptmcm7t-">(1</span><span 
+class="zptmcm7y-">-</span><span 
+class="zptmcm7m-">&#x03B1;</span><span 
+class="zptmcm7t-">)] </span>where symbol <span 
+class="zptmcm7t-">[</span><span 
+class="zptmcm7y-">&#x22C5;</span><span 
+class="zptmcm7t-">] </span>denotes the integer part.
+<p class="nopar" >
+Both models are considered in this function. More precisely, in optional parameter 
         <tt><a href="#mixt">mixt</a></tt> the user can specify if he wants to maximize (<a 
 href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>) or
 (<a 
@@ -295,9 +318,8 @@ class="zptmcm7t-">= 0 </span>and <span class="zptmcm7m-">π</span><span
 class="zptmcm7y-">′</span><sub><span class="zptmcm7m-x-x-74">j</span></sub>
 <span class="zptmcm7t-">= 1 </span>in equation (<a
 href="#x1-1003r3">3<!--tex4ht:ref: tclustlik --></a>) and <tt>restrfactor</tt>=1&nbsp; in
-equation (<a href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>). The idea of
-trimming under the eigenvalue constraint ratio of equation (<a
-href="#x1-1004r4">4<!--tex4ht:ref: restreig --></a>) can also be applied in the
+equation (<a href="#x1-1004r4">5</a>). The idea of
+trimming under the eigenvalue constraint ratio of equation (<a href="#x1-1004r4">5</a>) can also be applied in the
 context of the mixture likelihood (see option <tt><a href="#mixt">mixt</a></tt>
 below) given in equation (<a href="#x1-1001r1">1<!--tex4ht:ref: mixlik --></a>)
 with important consequences. In the crisp assignment in each iteration of the
