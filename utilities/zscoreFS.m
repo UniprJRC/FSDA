@@ -97,7 +97,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 
 %{
     % zscoreFS with all default options (that is remove the medians and
-    divide by mads)
+    % divide by mads)
     n=200;
     v=3;
     randn('state', 123456);
@@ -110,7 +110,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 
 %{
     % zscoreFS (remove the medians and
-    divide by Qn)
+    % divide by Qn)
     n=200;
     v=1;
     randn('state', 123456);

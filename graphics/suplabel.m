@@ -56,10 +56,8 @@ function [ax,h]=suplabel(text,whichaxis,possuperaxes)
     % Two panel with a common y label
     figure
     subplot(2,1,1);
-    plot((1:10).^2)
-    = subplot(2,1,2);
-    plot((1:10).^3)
-    suplabel('Population growth','y')
+    plot((1:10).^2)= subplot(2,1,2);
+    plot((1:10).^3)= suplabel('Population growth','y')
 %}
 
 %{
