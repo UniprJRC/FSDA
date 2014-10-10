@@ -64,17 +64,17 @@ function y=triu2vec(A,k)
 %       Remark 2: the linear indices of the upper triangualar part of a
 %       square matrix A of size r can be also obtained with the following
 %       formulas and code:
-%{
-                ind=(1:(r*(r-1)/2))';
-
-                j = round(floor(-.5 + .5 * sqrt(1 + 8 * (ind - 1))) + 2);
-                i = round(j .* (3 - j) / 2 + ind - 1);
-
-                y = i + (j - 1).*r; % the linear indexes
-
-                A1 = A(:);
-                y  = A1(y);         % the elements above diagonal of matrix A
-%}
+%
+%               ind=(1:(r*(r-1)/2))';
+% 
+%                 j = round(floor(-.5 + .5 * sqrt(1 + 8 * (ind - 1))) + 2);
+%                 i = round(j .* (3 - j) / 2 + ind - 1);
+% 
+%                 y = i + (j - 1).*r; % the linear indexes
+% 
+%                 A1 = A(:);
+%                 y  = A1(y);         % the elements above diagonal of matrix A
+%
 %
 %
 % Copyright 2008-2014.
