@@ -249,6 +249,7 @@ function [plot1]=yXplot(y,X,varargin)
 %   RES and Un)
 %
 %{
+% Interactive_example
 %   Example of the use of options selunit and selstep
    yXplot(out,'selunit',[2 5 20 23 35 45],'selstep',[20 22 27 36],...
             'databrush',{'persist','off','selectionmode' 'Rect'})
@@ -257,6 +258,7 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 %
 %{
+% Interactive_example
 %   Example of the use of options selstep, selunit, selunitbold and
 %   selunitcolor
    yXplot(out,'selstep',[40 21 80],'selunit','1.5',...
@@ -268,9 +270,10 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 %
 %{
-%   Example of the use of options selline and selunit (notice that in this
+% Interactive_example
+%   Example of the use of option selunit (notice that in this
 %   case selunit is a cell array of string
-   yXplot(out,'selline',[-3 2],'selunit',{'-3';'2'},...
+   yXplot(out,'selunit',{'-3';'2'},...
             'databrush',{'selectionmode' 'Rect'});
 %   highlight only the trajectories which in at least one step of the
 %   search had a value smaller than -3 or greater than 2 and label
@@ -286,6 +289,7 @@ function [plot1]=yXplot(y,X,varargin)
 %
 %}
 %{
+% Interactive_example
 %   Example of the use of option databrush
 %   (brushing is done only once using a rectangular selection tool)
    yXplot(out,'databrush',1)
@@ -294,22 +298,26 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 %
 %{
-%   Example of the use of brush using a reactangular selection tool and a
+% Interactive_example
+%   Example of the use of brush using a rectangular selection tool and a
 %   cyan colour
    yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
 %}
 %
 %{
 %   Example of the use of brush using multile selection circular tools
+% Interactive_example
     yXplot(out,'databrush',{'selectionmode' 'Brush'})
 %}
 %
 %{
+% Interactive_example
 %   Example of the use of brush using lasso selection tool and fleur pointer
     yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'})
 %}
 %
 %{
+% Interactive_example
 %   Example of the use of rectangular brush with superimposed labels for
 %   the brushed units and persistent labels in the plot which has been
 %   brushed
@@ -323,21 +331,24 @@ function [plot1]=yXplot(y,X,varargin)
 %   Example of the use of persistent non cumulative brush. Every time a
 %   brushing action is performed previous highlightments are removed
 %{
+% Interactive_example
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...
                             'Label' 'on' 'RemoveLabels' 'off'})
 %}
-%
+
+%{
+% Interactive_example
 %   Example of the use of persistent cumulative brush.
 %   Every time a brushing action is performed
 %   current highlightments are added to previous highlightments
-%{
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'Label' 'off' 'RemoveLabels' 'on'})
 %}
 
 
 %{
-    %   Example of the use of persistent cumulative brush.
+% Interactive_example
+   %   Example of the use of persistent cumulative brush.
     %   with option labeladd '1'. In this case the row numbers of the
     %   selected units is displayed in the monitoring residuals plot
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
