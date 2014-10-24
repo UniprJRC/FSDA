@@ -21,7 +21,7 @@ function addFSDA2path(FSDApath)
 %      If FSDA has been installed in D:\matlab\FSDA
 %      in order to include the required subfolders of FSDA use the following sintax
  
-       addFSDA2path('D:\matlab\FSDA')
+       addFSDA2path('E:\usr_MATLAB\FSDA')
 %}
 
 %% Beginning of code

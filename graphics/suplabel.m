@@ -90,9 +90,6 @@ function [ax,h]=suplabel(text,whichaxis,possuperaxes)
     suplabel('Months','x',possuperaxes)
 %}
 
-
-
-
 %% Beginning of code
 if nargin < 1,
     help(mfilename); 

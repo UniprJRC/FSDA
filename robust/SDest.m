@@ -31,12 +31,6 @@ function [out, varargout] = SDest(Y,varargin)
 %                jpcorr=2 we end up with Juan and Prieto suggestion, that
 %                is the unit which has the largest MD is removed from each subsample
 %               The default value of jpcorr is 0
-% da togliere
-% % % %     normdir : Scalar which specifies if it is necessary to normalize the
-% % % %               directions of the projections. The default value of normdir
-% % % %               is 1 (that is to use normalized projections). Remark: SD
-% % % %               estimator is affine equivariant therefore normalization is
-% % % %               not strictly necessary.
 %     conflev : Scalar between 0 and 1 containing confidence level which is
 %               used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -390,11 +384,6 @@ if margin>0
     mads=median(abs(Ytilde));
     Y = bsxfun(@rdivide, Ytilde, mads);
 end
-
-% normdir = options which controls if it is necessary to normalize the
-% directions associated with the projections. The default value of normdir
-% is 1 (yes)
-
 
 %% Extract in the rows of matrix C the indexes of all required subsets
 % jpcorr Juan and Prieto correction
