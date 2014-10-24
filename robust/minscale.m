@@ -5,6 +5,8 @@
 function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 %minscale finds the M estimator of the scale for TB
 %
+%<a href="matlab: docsearch('minscale')">Link to the help function</a>
+%
 % u = residuals or Mahalanobis distances 
 % (note that u is kept fixed in each iteration)
 % Remark: the scale must satisfy the following equation
@@ -41,7 +43,9 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 % 176).
 %
 % See also Mscale1, minscale
-
+%
+%<a href="matlab: docsearch('minscale')">Link to the help function</a>
+%
 % Copyright 2008-2014.
 % Written by FSDA team
 %

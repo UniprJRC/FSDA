@@ -1279,8 +1279,8 @@ end
 % CLACLA = BIC which uses parameters estimated using the classification
 % likelihood and the maximized classification likelihood as goodness of fit
 % measure (New New)
-CLACLA      = 2*NlogL +nParam*logh;
-CLACLAold   = 2*NlogL +nParamOld*logh;
+CLACLA      = 2*NlogL + nParam*logh;
+CLACLAold   = 2*NlogL + nParamOld*logh;
 
 out.CLACLA=CLACLA;
 out.CLACLAold=CLACLAold;

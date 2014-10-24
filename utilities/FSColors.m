@@ -1,6 +1,9 @@
 classdef FSColors
-%FScolors is a MATLAB class encapsulating some common color definitions  
-%used in the FSDA toolbox. The associated method returns a cell formed by 
+%FScolors is a MATLAB class encapsulating some common color definitions  used in the FSDA toolbox. 
+%
+%  <a href="matlab: docsearch('fscolors')">Link to the help function</a>
+%
+%The associated method returns a cell formed by 
 %the RGB vector of the color and a short name for it.
 % The colors currently addressed by the method include the standard MATLAB
 % colors, i.e.:
@@ -14,7 +17,8 @@ classdef FSColors
 % Copyright 2008-2014.
 % Written by FSDA team
 % Last modified 08-Dec-2013
-
+%
+%  <a href="matlab: docsearch('fscolors')">Link to the help function</a>
 %
 % Examples:
 %

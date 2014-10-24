@@ -1,6 +1,8 @@
 function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
 %logmvnpdfFS log of Multivariate normal probability density function (pdf)
 %
+%<a href="matlab: docsearch('logmvnpdffs')">Link to the help function</a>
+%
 % This function is a much faster version than (log of) Matlab function mvnpdf
 %
 %   y = logmvnpdfFS(X,Mu,Sigma) returns the log-density of the multivariate normal
@@ -27,6 +29,8 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
 %   and d which are directly passed to the compiled mex function
 %
 %   In the examples below we compare the speed of the different solutions
+%
+%   <a href="matlab: docsearch('logmvnpdffs')">Link to the help function</a>
 %
 %   Examples:
 %
