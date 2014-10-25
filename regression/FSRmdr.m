@@ -59,7 +59,14 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               the final n-mnofullrank steps else the search continues
 %               using as estimate of beta at step m the estimate of beta
 %               found in the previous step.
-%
+%   bsbsteps :  vector which specifies for which steps of the fwd search it
+%               is necessary to save the units forming subset If bsbsteps
+%               is 0 we store the units forming
+%               subset in all steps. The default is store the units forming
+%               subset in all steps if n<=5000 else to store the units
+%               forming subset at steps init and steps which are multiple of
+%               100. For example, if n=753 and init=6, units forming subset
+%               are stored for m=init, 100, 200, 300, 400, 500 and 600.
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
@@ -91,12 +98,22 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:           n x (n-init+1) matrix which the units belonging to the
-%               subset at each step of the forward search.
-%               1st col = index forming subset in the initial step
-%               ...
-%               last column = units forming subset in the final step (i.e.
-%               all units).
+%  BB:          n x (n-init+1) or n-by-length(bsbsteps) (depending on input
+%               option bsbsteps) which contains information about the units
+%               belonging to the subset at each step of the forward search.
+%               BB has the following structure
+%               1-st row has number 1 in correspondence of the steps in
+%                   which unit 1 is included inside subset and a missing
+%                   value for the other steps
+%               ......
+%               (n-1)-th row has number n-1 in correspondence of the steps in
+%                   which unit n-1 is included inside subset and a missing
+%                   value for the other steps
+%               n-th row has number n in correspondence of the steps in
+%                   which unit n is included inside subset and a missing
+%                   value for the other steps
+%               The size of matrix BB is n x (n-init+1) if option input
+%               bsbsteps is 0 else the size is n-by-length(bsbsteps).
 %  Bols:         (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
@@ -129,32 +146,44 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %{
 %Common part to all examples: load fishery dataset
 %
- load('fishery');
- y=fishery.data(:,2);
- X=fishery.data(:,1);
- [out]=LXS(y,X,'nsamp',10000);
+     load('fishery');
+     y=fishery.data(:,2);
+     X=fishery.data(:,1);
+     [out]=LXS(y,X,'nsamp',10000);
 %}
 
 %{
-% FSR with all default options.
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);
+    % FSR with all default options.
+    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);
 %}
 
 %{
-% FSRmdr monitoring from step 60.
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'init',60);
+    % FSRmdr monitoring from step 60.
+    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'init',60);
 %}
 
 %{
-% FSRmdr using a regression model without intercept.
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');
+    % FSRmdr using a regression model without intercept.
+    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');
 %}
 
 %{
-%FSRmdr applied without doing any checks on y and X variables.
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);
+    %FSRmdr applied without doing any checks on y and X variables.
+    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',1);
 %}
 
+
+%{
+    % In this example the units forming subset are stored just for
+    % selected steps 
+    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'bsbsteps',[30 60]);
+    % BB has just two columns
+    % First column contains information about units forming subset at step m=30
+    % sum(~isnan(BB(:,1))) is 30
+    % Second column contains information about units forming subset at step m=60
+    % sum(~isnan(BB(:,2))) is 60
+
+%}
 
 
 %% Input parameters checking
@@ -166,12 +195,21 @@ vvarargin=varargin;
 %% User options
 
 if n<40
-    init=p+1;
+    initdef=p+1;
 else
-    init=min(3*p+1,floor(0.5*(n+p+1)));
+    initdef=min(3*p+1,floor(0.5*(n+p+1)));
 end
-options=struct('intercept',1,'init',init,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','bsbmfullrank',1);
+
+% Default for vector bsbsteps which indicates for which steps of the fwd
+% search units forming subset have to be saved
+if n<=2000
+    bsbstepdef = initdef:n;
+else
+    bsbstepdef = [initdef 100:100:100*floor(n/100)];
+end
+
+options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
+    'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -238,6 +276,7 @@ end
 msg=options.msg;
 constr=options.constr;
 bsbmfullrank=options.bsbmfullrank;
+bsbsteps=options.bsbsteps;
 
 %% Initialise key matrices
 
@@ -270,13 +309,23 @@ S2=[(init1:n)' NaN(n-init1+1,2)];        %initial value of S2 (R2) is set to NaN
 mdr=[(init1:n-1)'  NaN(n-init1,1)];      %initial value of mdr is set to NaN
 
 % Matrix BB will contain the units forming subset in each step of the
-% forward search. The first column contains the units forming subset at
-% step init1
+% forward search. The first column contains information about units forming subset at
+% step init1. 
+if bsbsteps == 0
 BB = NaN(n,n-init1+1);
+else
+BB = NaN(n,length(bsbsteps));
+end
+
+% ij = index which is linked with the columns of matrix BB. During the
+% search every time a subset is stored inside matrix BB ij icreases by one
+ij=1;
+
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just
 %  included.
 Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
+
 
 %% Start of the forward search
 if (rank(Xb)~=p)
@@ -356,7 +405,10 @@ else
         
         if (mm>=init1);
             % Store units belonging to the subset
-            BB(bsb,mm-init1+1)=bsb;
+            if intersect(mm,bsbsteps)==mm
+            BB(bsb,ij)=bsb;
+            ij=ij+1;
+            end
             
             if NoRankProblem
                 % Store beta coefficients if there is no rank problem
