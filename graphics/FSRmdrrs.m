@@ -126,29 +126,28 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               ...
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
 %
-%       BBrs    3D array which contains
-%               the units belonging to the subset at the steps specified by
-%               input option bsbsteps. If bsbsteps=0 BBrs has size  
-%               n-by-(n-init+1)-by-nsimul. In this case 
-%               BBrs(:,:,j) with j=1, 2, ..., nsimul has the following
-%               structure
+%       BBrs    3D array which contains the units belonging to the subset 
+%               at the steps specified by input option bsbsteps. 
+%               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul. 
+%               In this case BBrs(:,:,j) with j=1, 2, ..., nsimul 
+%               has the following structure:
 %               1-st row has number 1 in correspondence of the steps in
 %                   which unit 1 is included inside subset and a missing
-%                   value for the other steps
+%                   value for the other steps;
 %               ......
-%               (n-1)-th row has number n-1 in correspondence of the steps in
-%                   which unit n-1 is included inside subset and a missing
-%                   value for the other steps
+%               (n-1)-th row has number n-1 in correspondence of the steps 
+%                   in which unit n-1 is included inside subset and a 
+%                   missing value for the other steps;
 %               n-th row has the number n in correspondence of the steps in
 %                   which unit n is included inside subset and a missing
-%                   value for the other steps
+%                   value for the other steps.
 %               If, on the other hand, bsbsteps is a vector which specifies
 %               the steps of the search in which it is necessary to store
-%               subset BBrs has size n-by-length(bsbsteps)-by-nsimul. 
+%               subset, BBrs has size n-by-length(bsbsteps)-by-nsimul.
 %               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
-%               the same structure of before, but now it contains just
-%               length(bsbsteps) columns
-%               
+%               the same structure as before, but now contains just
+%               length(bsbsteps) columns.  
+%
 %
 % See also:     FSRmdr, FSMmmdrs, FSMmmd
 %
@@ -201,13 +200,12 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     y=[y1;y2];
     X=[X1;X2];
     figure
-    % parfor of Parallel Computing Toolbox is used (if present in current
-    % computer) and pool is not cleaned after
-    % the execution of the random starts
+    % parfor of Parallel Computing Toolbox is used (if present in current computer)
+    % and pool is not cleaned after % the execution of the random starts
     [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',0);
-    disp('The two peaks in the trajectories of minimum deletion residual (mdr)')
-    disp('clearly show the presence of two groups')
-    disp('The decrease after the peak in the trajectories of mdr is due to the masking effect')
+    disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
+    disp('clearly show the presence of two groups.')
+    disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')
 %}
 
 %{
@@ -239,33 +237,33 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     % computer) and pool is not cleaned after
     % the execution of the random starts
     [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',0);
-    disp('The two peaks in the trajectories of minimum deletion residual (mdr)')
-    disp('clearly show the presence of two groups')
-    disp('The decrease after the peak in the trajectories of mdr is due to the masking effect')
+    disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
+    disp('clearly show the presence of two groups.')
+    disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')
 %}
 
 %{
     % Same example as before but now there is one group which has a size
-    % much greater than the other (n1=60 and n2=150)
-    % In this case it is possible to see that there is a trajectory of minimum
-    % deletion residual which goes outside the envelope in steps 60-110.
-    % This corresponds to the searches initialized using the units coming from
-    % the smaller group. Note that due to the partial overlapping after the peak in steps 60-110
-    % there is a gradual decrease. When m is around 160 most
-    % of the units from this group tend to get out of the subset therefore the
-    % value of mdr becomes much smaller than it should be. Please note the dip
-    % around step m=165 which is due to entrance of the units of the second
-    % larger group. This trajectory just after the dip collapses into the
-    % trajectory which starts from the second group.
-    % Around steps 90-110 it is also possible to
-    % see two trajectories inside the bands which collaps into one around
-    % m=120. Please use mdrrsplot with option databrush in order to explore the
-    % units belonging to subset. Here we limit ourselves to notice that around
-    % m =180 all the units from second group are included into subset (plus
-    % some of group 1 given that the two groups partially overlap). Also notice
-    % once again the decrease in the unique trajectory of minimum deletion
-    % residual after m around 180 which is due to the entry of the units of the
-    % first smaller group.
+    % much greater than the other (n1=60 and n2=150). In this case it is
+    % possible to see that there is a trajectory of minimum deletion
+    % residual which goes outside the envelope in steps 60-110. This
+    % corresponds to the searches initialized using the units coming from
+    % the smaller group. Note that due to the partial overlapping after the
+    % peak in steps 60-110 there is a gradual decrease. When m is around
+    % 160, most of the units from this group tend to get out of the subset.
+    % Therefore the value of mdr becomes much smaller than it should be.
+    % Please note the dip around step m=165, which is due to entrance of the
+    % units of the second larger group. This trajectory just after the dip
+    % collapses into the trajectory which starts from the second group.
+    % Around steps 90-110 it is also possible to see two trajectories
+    % inside the bands which collaps into one around m=120. Please use
+    % mdrrsplot with option databrush in order to explore the units
+    % belonging to subset. Here we limit ourselves to notice that around m
+    % =180 all the units from second group are included into subset (plus
+    % some of group 1 given that the two groups partially overlap). Also
+    % notice once again the decrease in the unique trajectory of minimum
+    % deletion residual after m around 180 which is due to the entry of the
+    % units of the first smaller group.
     close all
     rng(2);
     b1=[1 1];
@@ -286,8 +284,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     X=[X1;X2];
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current
-    % computer). Parallel pool is closed after
-    % the execution of the random starts
+    % computer). Parallel pool is closed after the execution of the random starts
     [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1);
 %}
 
@@ -297,8 +294,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     load('fishery.txt');
     y=fishery(:,2);
     X=fishery(:,1);
-    % parfor of Parallel Computing Toolbox is used (if present in current
-    % computer)
+    % parfor of Parallel Computing Toolbox is used (if installed)
     figure
     [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1);
 %}
@@ -313,22 +309,22 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     % computer)
     figure
     [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'bsbsteps',[10 300 600]);
-    % sum(~isnan(BBrs(:,1,1))) 
-    % 
+    % sum(~isnan(BBrs(:,1,1)))
+    %
     % ans =
-    % 
+    %
     %     10
-    % 
+    %
     % sum(~isnan(BBrs(:,2,1)))
-    % 
+    %
     % ans =
-    % 
+    %
     %    300
-    % 
+    %
     % sum(~isnan(BBrs(:,3,1)))
-    % 
+    %
     % ans =
-    % 
+    %
     %    600
 %}
 
@@ -355,17 +351,15 @@ vvarargin = varargin;
 % release).
 numpool = feature('numCores');
 
-initdef   = p+1;
-
 % Default for vector bsbsteps which indicates for which steps of the fwd
 % search units forming subset have to be saved
+initdef   = p+1;
 if n<=500
     bsbstepdef = initdef:n;
 else
     bsbstepdef = [initdef 100:100:100*floor(n/100)];
 end
 
-    
 nsimuldef = 200; % nsimuldef = default number of random starts
 options   = struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
     'constr','','nsimul',nsimuldef,'numpool',numpool, 'cleanpool', 1, ...
@@ -434,9 +428,9 @@ if usePCT==1 % In this case Parallel Computing Toolbox Exists
     
     % First check if there is a parallel pool open. If this is the case,
     % then the pool will be used. To keep it open for later reuse is
-    % useful, as opening a pool takes some time.
-    % Variable 'pworkers' is 0 if there is no parallel pool open; otherwise
-    % it contains the number of workers allocated for the parallel pool.
+    % useful, as opening a pool takes some time. Variable 'pworkers' is 0
+    % if there is no parallel pool open; otherwise it contains the number
+    % of workers allocated for the parallel pool.
     if usematlabpool
         pworkers = matlabpool('size'); %#ok<DPOOL>
     else
@@ -460,7 +454,7 @@ if usePCT==1 % In this case Parallel Computing Toolbox Exists
             parpool(numpool);
         end
     end
-
+    
 end
 
 %% Monitoring minimum deletion residual with random starts
@@ -470,7 +464,7 @@ tstart = tic;
 
 if usePCT == 1 && msg == 1
     progbar = ProgressBar(nsimul);
-else 
+else
     % In the parfor, 'progbar' will not be instanciated if usePCT is 0. In
     % this case, as a measure of precaution, the MATLAB interpreter
     % generates an error, to force the user to treat the case. This
@@ -489,23 +483,26 @@ end
 parfor (j = 1:nsimul , numpool)
     [mdr,~,BB] = FSRmdr(y,X,0,'init',init,'intercept',intercept,...
         'nocheck',1,'msg',0,'constr',constr,'bsbsteps',bsbsteps);
+    
     % Store units forming subset at each step
     BBrs(:,:,j) = BB;
+    
     % Store minimum deletion residual
     mdrrs(:,j+1) = mdr(:,2);
     
     if msg==1
         if usePCT == 1
-             progbar.progress;  %#ok<PFBNS>
+            progbar.progress;  %#ok<PFBNS>
         else
             if j==nsimul/2 || j==nsimul/4  || j==nsimul*0.75 || j==nsimul*0.9;
                 disp(['Simul nr. ' num2str(nsimul-j) ' n=' num2str(n)]);
                 % note that a parfor, used in sequential mode, iterates in
-                % the inverse order
+                % the inverse order (this explains why we display
+                % the simulation number nsimul-j rather than j).
             end
         end
     end
-
+    
 end
 
 tend = toc(tstart);
@@ -517,7 +514,6 @@ if msg==1
     disp(['Total time required by the multiple start monitoring: ' num2str(tend) ' seconds']);
 end
 
-
 % close parallel jobs if necessary
 if usePCT == 1 && cleanpool > 0
     if usematlabpool
@@ -526,8 +522,6 @@ if usePCT == 1 && cleanpool > 0
         delete(gcp);
     end
 end
-
-
 
 %% Plot statistic with random starts
 

@@ -5,7 +5,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 % Required input arguments:
 %
-%  y:            A vector with n elements that contains the response variables.
+%  y:           A vector with n elements that contains the response variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
@@ -36,9 +36,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               bands else (default) no plot is shown.
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
-%               connect it dynamically to the other forward plots it is necessary to use
-%               function mdrplot
-%  nocheck:      Scalar. If nocheck is equal to 1 no check is performed on
+%               connect it dynamically to the other forward plots it is
+%               necessary to use function mdrplot.
+%  nocheck:     Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additioanl column of ones for
 %               the intercept is not added. As default nocheck=0. The
@@ -50,23 +50,23 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %  constr :     r x 1 vector which contains the list of units which are
 %               forced to join the search in the last r steps. The default
 %               is constr=''.  No constraint is imposed
-% bsbmfullrank :scalar which tells how to behave in case subset at step m
-%               (say bsbm) produces a non singular X. In other words,
+% bsbmfullrank :scalar which specifies how to behave in case subset at step 
+%               m (say bsbm) produces a non singular X. More precisely,
 %               this options controls what to do when rank(X(bsbm,:)) is
 %               smaller then number of explanatory variables. If
-%               bsbmfullrank = 1 (default is 1) these units (whose number is
-%               say mnofullrank) are constrained to enter the search in
+%               bsbmfullrank = 1 (default is 1) these units (whose number
+%               is say mnofullrank) are constrained to enter the search in
 %               the final n-mnofullrank steps else the search continues
 %               using as estimate of beta at step m the estimate of beta
 %               found in the previous step.
 %   bsbsteps :  vector which specifies for which steps of the fwd search it
-%               is necessary to save the units forming subset If bsbsteps
-%               is 0 we store the units forming
-%               subset in all steps. The default is store the units forming
-%               subset in all steps if n<=5000 else to store the units
-%               forming subset at steps init and steps which are multiple of
-%               100. For example, if n=753 and init=6, units forming subset
-%               are stored for m=init, 100, 200, 300, 400, 500 and 600.
+%               is necessary to save the units forming subset. If bsbsteps
+%               is 0 we store the units forming subset in all steps. The
+%               default is store the units forming subset in all steps if
+%               n<=5000, else to store the units forming subset at steps
+%               init and steps which are multiple of 100. For example, if
+%               n=753 and init=6, units forming subset are stored for
+%               m=init, 100, 200, 300, 400, 500 and 600.
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
@@ -129,10 +129,10 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %   Springer Verlag, New York.
 %   Atkinson, A.C. and Riani, M. (2006). Distribution theory and
 %   simulations for tests of outliers in regression. Journal of
-%   Computational and Graphical Statistics, Vol. 15, pp. 460–476
+%   Computational and Graphical Statistics, Vol. 15, pp. 460?476
 %   Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward
 %   search for testing multiple outliers in regression, Advances in Data
-%   Analysis and Classification, Vol. 1, pp. 123–141.
+%   Analysis and Classification, Vol. 1, pp. 123?141.
 %
 % Copyright 2008-2014.
 % Written by FSDA team
