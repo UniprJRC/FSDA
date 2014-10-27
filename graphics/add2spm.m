@@ -13,7 +13,7 @@ function add2spm(H,AX,BigAx,varargin)
 %
 % 1. personalize the legend of groups in the scatterplot matrix. See option 'userleg'.
 % 2. add labels of the units belonging to the last data group (or to the
-%   grouop with the largest value in the grouping variable) of each scatter
+%   group with the largest value in the grouping variable) of each scatter
 %   (panel). See option 'labeladd'.
 %
 %  Required input arguments:
@@ -180,7 +180,7 @@ if isempty(userleg) || (~isempty(userleg) && iscell(userleg))
     H(:,:,1) = ~eye(size(H,1)).*H(:,:,1);
     newH = reshape(H,numel(H)/nleg,nleg);
     for i = 1 : nleg
-        set(newH(newH(:,i)~=0,i),'DisplayName',legnew{i});
+        set(newH(newH(:,1)~=0,i),'DisplayName',legnew{i});
     end
     set(gcf,'Name','Scatter plot matrix with groups highlighted');
 end
@@ -223,11 +223,11 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
                 set(newH(newH(:,1)~=0),'DisplayName','Unbrushed units');
                 % set the legend of the brushed units
                 for i = 2 : nleg
-                    set(newH(newH(:,i)~=0,i),'DisplayName',['Brushed units ' num2str(i-1)]);
+                    set(newH(newH(:,1)~=0,i),'DisplayName',['Brushed units ' num2str(i-1)]);
                 end
             else
                 for i = 1 : nleg
-                    set(newH(newH(:,i)~=0,i),'DisplayName',['Group ' num2str(i)]);
+                    set(newH(newH(:,1)~=0,i),'DisplayName',['Group ' num2str(i)]);
                 end
             end
         end

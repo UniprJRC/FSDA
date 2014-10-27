@@ -743,12 +743,15 @@ for i=1:size(AX,2)
 end
 
 if ndims(H) == 3
+    H=double(H);
+    H(:,:,end) = ~eye(size(H,1)).*H(:,:,end);
+    
     % Put in the figure UserData field the list of units in the last group,
     % i.e. (depending on context) the outliers or the units last brushed.
     if isnumeric(group)
-        set(double(H(:,:,end)), 'UserData' , seq(group==max(group)));
+        set(H(:,:,end), 'UserData' , seq(group==max(group)));
     else
-        set(double(H(:,:,end)), 'UserData' , seq(groupv==max(groupv)));
+        set(H(:,:,end), 'UserData' , seq(groupv==max(groupv)));
     end
     
     
@@ -1291,13 +1294,16 @@ if ~isempty(databrush) || iscell(databrush)
                 
                 % Now update the legends and make them clickable.
                 if strcmp(doleg,'on')
+                    H=double(H);
+                    H(:,:,end) = ~eye(size(H,1)).*H(:,:,end);
+                    
                     if ~isempty(labeladd)
                         % Put in the figure UserData field the list of units in the last group,
                         % i.e. the units last brushed.
                         if isnumeric(group)
-                            set(double(H(:,:,end)), 'UserData' , seq(group==max(group)));
+                            set(H(:,:,end), 'UserData' , seq(group==max(group)));
                         else
-                            set(double(H(:,:,end)), 'UserData' , seq(groupv==max(groupv)));
+                            set(H(:,:,end), 'UserData' , seq(groupv==max(groupv)));
                         end
                     end
                     
