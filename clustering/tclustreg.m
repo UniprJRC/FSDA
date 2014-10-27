@@ -235,7 +235,6 @@ for iter=1:niter
                 % xmodj Data points in each group
                 xmodj = xmod(xmod(:,end)==jk,:);
                 
-                
                 % Perform the second trimming
                 % disp(num2str(length(xmodj)))
                 
@@ -380,8 +379,11 @@ for jk=1:k
     
     
     if (p==2 && plots)
+        plot(xxx(:,end),yyy,'.w');
         % points of each component (pch=k+2)
-        text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)))
+        text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)) , ...
+            'HorizontalAlignment','center',...
+            'VerticalAlignment','middle');
         % second level trimming points
         plot(xxx0(:,end),yyy0,'*','color','c')
     end
@@ -390,10 +392,11 @@ for jk=1:k
     asig2(qqf) = jk;
     
     if (p==2 && plots)
-        
         reg=xxx\yyy;
-        v=axis';
-        plot(v(1:2),reg(1)+reg(2)*v(1:2))
+%         v=axis';
+%         plot(v(1:2),reg(1)+reg(2)*v(1:2))
+        v = [min(X(:,end)) max(X(:,end))];
+        plot(v,reg(1)+reg(2)*v)
     end
 end
 

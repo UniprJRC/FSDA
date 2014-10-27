@@ -240,11 +240,15 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
     legnew = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
 end
 
-% Now update the legends and make them clickable
+% Now update the legends and make them clickable.
 hLines  = findobj(AX(1,end), 'type', 'line');
 if ~isempty(legnew)
-    clickableMultiLegend(sort(hLines), legnew{:});
+    clickableMultiLegend(sort(double(hLines)), legnew{:});
 end
+% Remark:
+% hLines is an array of handles before R2014b and a HG2 object wirh R2014b
+% Therefore, sort(hLines) has been modified with sort(double(hLines)) to
+% guarantee the correct sorting of the legends in both cases.
 
 %% histogram in the diagonal
 % tag the histogram group patches with the group labels. The tag is used in
