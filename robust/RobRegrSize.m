@@ -1,7 +1,7 @@
 function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %RobRegrSize provides proper threshold for robust estimators to obtain an empirical size = 1% nominal size
 %
-%<a href="matlab: docsearch('robregrsize')">Link to the help function</a>
+%<a href="matlab: docsearchFS('robregrsize')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -112,7 +112,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('robregrsize')">Link to the help function</a>
+%<a href="matlab: docsearchFS('robregrsize')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 %{

@@ -2,7 +2,7 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 %tclustreg performs robust linear grouping analysis
 %
 %
-%<a href="matlab: docsearch('tclustreg')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tclustreg')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -42,7 +42,7 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 % Copyright 2008-2014.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('rlga')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('rlga')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 

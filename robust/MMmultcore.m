@@ -4,7 +4,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 % location" (loc0) and shape matrix (shape0) keeping the estimate of the
 % scale (auxscale) fixed.
 %
-%<a href="matlab: docsearch('MMmultcore')">Link to the help function</a>
+%<a href="matlab: docsearchFS('MMmultcore')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -86,7 +86,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mmmultcore')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mmmultcore')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

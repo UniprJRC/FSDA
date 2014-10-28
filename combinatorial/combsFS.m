@@ -4,7 +4,7 @@ function P = combsFS(v,m)
 % order from the vector v.
 % 
 %
-%<a href="matlab: docsearch('combsFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('combsFS')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -27,7 +27,7 @@ function P = combsFS(v,m)
 % than over lines. This is faster, as MATLAB indexes the elements of a
 % matrix by column first.
 %
-%<a href="matlab: docsearch('combsFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('combsFS')">Link to the help page for this function</a>
 %
 %
 % Copyright 2008-2014.

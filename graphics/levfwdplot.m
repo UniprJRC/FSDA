@@ -1,7 +1,7 @@
 function plotopt=levfwdplot(out,varargin)
 %Plots the trajectories of leverage along the search
 %
-%<a href="matlab: docsearch('levfwdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('levfwdplot')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -301,7 +301,7 @@ function plotopt=levfwdplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('resfwdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('resfwdplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

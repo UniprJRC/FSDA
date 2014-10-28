@@ -1,7 +1,7 @@
 function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 %TBc computes breakdown point and efficiency associated with constant c for Tukey's biweight
 %
-%<a href="matlab: docsearch('tbc')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tbc')">Link to the help function</a>
 %
 %
 %
@@ -42,7 +42,7 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
 %
-%<a href="matlab: docsearch('tbc')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tbc')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

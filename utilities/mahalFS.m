@@ -7,7 +7,7 @@ function d = mahalFS(Y,MU,SIGMA)
 %      d(I) = (Y(I,:)-MU) * SIGMA^(-1) * (Y(I,:)-MU)',
 %
 %
-%<a href="matlab: docsearch('mahalFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mahalFS')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -23,7 +23,7 @@ function d = mahalFS(Y,MU,SIGMA)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mahalFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mahalFS')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 

@@ -1,7 +1,7 @@
 function mdrplot(out,varargin)
 %mdrplot plots the trajectory of minimum deletion residual (mdr)
 %
-%<a href="matlab: docsearch('mdrplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdrplot')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -171,7 +171,7 @@ function mdrplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mdrplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdrplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

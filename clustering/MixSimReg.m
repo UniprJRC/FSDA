@@ -1,7 +1,7 @@
 function [out]  = MixSimReg(k,p,varargin)
 %MixSim generates k regression hyperplanes in p dimensions with given overlap
 %
-%<a href="matlab: docsearch('mixsimreg')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mixsimreg')">Link to the help function</a>
 %
 %  MixSimReg(k,p) generates k groups in p dimensions. It is possible to
 %  control the average and maximum or standard deviation of overlapping.
@@ -303,7 +303,7 @@ function [out]  = MixSimReg(k,p,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mixsimreg')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mixsimreg')">Link to the help function</a>
 % Last modified 08-Dec-2013
 %
 

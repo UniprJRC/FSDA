@@ -1,7 +1,7 @@
 function w = HYPwei(u, cktuning)
 %HYPwei computes weight function psi(u)/u for hyperbolic tangent estimator
 %
-%<a href="matlab: docsearch('hypwei')">Link to the help function</a>
+%<a href="matlab: docsearchFS('hypwei')">Link to the help function</a>
 %
 %
 %
@@ -52,7 +52,7 @@ function w = HYPwei(u, cktuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hypwei')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hypwei')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:
@@ -77,7 +77,7 @@ function w = HYPwei(u, cktuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('tbwei')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tbwei')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

@@ -1,7 +1,7 @@
 function psiHYPx = HYPpsix(u, cktuning,varargin)
 %HYPpsix computes psi function for hyperbolic tangent estimator times x
 %
-%<a href="matlab: docsearch('hyppsix')">Link to the help function</a>
+%<a href="matlab: docsearchFS('hyppsix')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -47,7 +47,7 @@ function psiHYPx = HYPpsix(u, cktuning,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hyppsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hyppsi')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

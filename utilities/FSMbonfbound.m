@@ -2,7 +2,7 @@ function Bbound = FSMbonfbound(n,p,varargin)
 %FSMbonfbound computes the Bonferroni bounds for each step of the search of
 %the minimum Mahalanobis distance.
 %
-%<a href="matlab: docsearch('FSMbonfbound')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMbonfbound')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -43,7 +43,7 @@ function Bbound = FSMbonfbound(n,p,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSMbonfbound')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMbonfbound')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

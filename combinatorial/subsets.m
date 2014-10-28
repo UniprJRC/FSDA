@@ -1,7 +1,7 @@
 function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %subsets creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements
 %
-%<a href="matlab: docsearch('subsets')">Link to the help function</a>
+%<a href="matlab: docsearchFS('subsets')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -41,7 +41,7 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('subsets')">Link to the help function</a>
+%<a href="matlab: docsearchFS('subsets')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

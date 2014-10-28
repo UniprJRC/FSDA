@@ -1,7 +1,7 @@
 function varargout = clickableMultiLegend(varargin)
 %clickableMultiLegend extends the clickableLegend by Ameya Deoras to figures with one legend for several subplots
 %
-%<a href="matlab: docsearch('clickableMultiLegend')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('clickableMultiLegend')">Link to the help page for this function</a>
 %
 % An example could be a gplotmatrix figure. In this case, by clicking on a
 % text label in the legend, we want to turn on and off (hide or show) the
@@ -20,7 +20,7 @@ function varargout = clickableMultiLegend(varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('clickableMultiLegend')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('clickableMultiLegend')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples

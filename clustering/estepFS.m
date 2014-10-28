@@ -1,7 +1,7 @@
 function  [obj, varargout1, varargout2]=estepFS(log_lh)
 %estepFS performs e-step for Gaussian mixture distribution
 %
-%<a href="matlab: docsearch('estepFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('estepFS')">Link to the help function</a>
 %
 %   obj = estepFS(log_lh) returns value of the loglikelihood of mixture model.
 %
@@ -72,7 +72,7 @@ function  [obj, varargout1, varargout2]=estepFS(log_lh)
 %
 % Copyright 2008-2014. FSDA toolbox
 %
-%<a href="matlab: docsearch('estepFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('estepFS')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

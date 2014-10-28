@@ -1,7 +1,7 @@
 function x = shuffling(x)
 %shuffling does a random permutation of the elements of input vector  
 %
-%<a href="matlab: docsearch('shuffling')">Link to the help function</a>
+%<a href="matlab: docsearchFS('shuffling')">Link to the help function</a>
 %
 %  Required input arguments:
 %  x :  vector of length t
@@ -25,7 +25,7 @@ function x = shuffling(x)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('shuffling')">Link to the help function</a>
+%<a href="matlab: docsearchFS('shuffling')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

@@ -1,7 +1,7 @@
 function [MMDenv] = FSMenvmmd(n,v,varargin)
 %FSMenvmmd computes the theoretical envelopes of Minimum MD outside subset during the search
 %
-%<a href="matlab: docsearch('FSMenvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMenvmmd')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -56,7 +56,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRenvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRenvmmd')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

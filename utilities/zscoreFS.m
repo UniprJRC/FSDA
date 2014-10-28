@@ -1,7 +1,7 @@
 function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %zscoresFS computes (robust) standardized z scores
 %
-%<a href="matlab: docsearch('zscorefs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('zscorefs')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -89,7 +89,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('zscorefs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('zscorefs')">Link to the help function</a>
 % Last modified 08-Dec-2013
 %
 

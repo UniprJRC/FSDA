@@ -1,7 +1,7 @@
 function psiHYPder = HYPpsider(u, cktuning)
 %HYPpsider computes derivative of psi function for hyperbolic tangent estimator
 %
-%<a href="matlab: docsearch('hyppsider')">Link to the help function</a>
+%<a href="matlab: docsearchFS('hyppsider')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -48,7 +48,7 @@ function psiHYPder = HYPpsider(u, cktuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hyppsider')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hyppsider')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

@@ -1,7 +1,7 @@
 function y = rescale(x,a,b)
 %Rescale numeric array to have specified minimum (a)  and maximum (b)
 %
-%<a href="matlab: docsearch('rescale')">Link to the help function</a>
+%<a href="matlab: docsearchFS('rescale')">Link to the help function</a>
 %
 %  Required input arguments:
 %     x : vector or matrix or 3D array of elements which must be rescaled
@@ -17,7 +17,7 @@ function y = rescale(x,a,b)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('rescale')">Link to the help function</a>
+%<a href="matlab: docsearchFS('rescale')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

@@ -2,7 +2,7 @@ function resindexplot(residuals,varargin)
 %resindexplot plots the residuals from a regression analysis versus index
 %number or any other variable
 %
-%<a href="matlab: docsearch('resindexplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('resindexplot')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -143,7 +143,7 @@ function resindexplot(residuals,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('resindexplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('resindexplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

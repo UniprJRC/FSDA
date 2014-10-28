@@ -1,7 +1,7 @@
 function c = bc(n,k)
 %bc returns the Binomial coefficient
 %
-%<a href="matlab: docsearch('bc')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('bc')">Link to the help page for this function</a>
 %
 % Required input arguments:
 %
@@ -23,7 +23,7 @@ function c = bc(n,k)
 %
 % See also the MATLAB function nchoosek
 %
-%<a href="matlab: docsearch('bc')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('bc')">Link to the help page for this function</a>
 %
 % Copyright 2008-2014.
 % Matlab function bc has been adapted to this toolbox by: 

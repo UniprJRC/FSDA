@@ -1,7 +1,7 @@
 function y = randsampleFS(n,k,method)
 %randsampleFS generates a random sample of k elements from the integers 1 to n (k<=n)
 %
-%<a href="matlab: docsearch('randsampleFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('randsampleFS')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -55,7 +55,7 @@ function y = randsampleFS(n,k,method)
 %
 %
 %
-%<a href="matlab: docsearch('randsampleFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('randsampleFS')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

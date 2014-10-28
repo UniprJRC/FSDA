@@ -1,7 +1,7 @@
 function add2yX(varargin)
 %add2yX adds objects to the yXplot.
 %
-%<a href="matlab: docsearch('add2yx')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('add2yx')">Link to the help page for this function</a>
 %
 % At the current stage the objects that can be added to yXplot using add2yX
 % are:
@@ -41,7 +41,7 @@ function add2yX(varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('add2yX')">Link to the help function</a>
+%<a href="matlab: docsearchFS('add2yX')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 

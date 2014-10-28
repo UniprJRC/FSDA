@@ -1,7 +1,7 @@
 function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %histFS plots a histogram with the elements in each bin grouped according to a vector of labels. 
 %
-%<a href="matlab: docsearch('histFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('histFS')">Link to the help function</a>
 %
 %  Required input arguments
 %
@@ -31,7 +31,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %                 of elements of group i in each bin.
 %     hb        : a vector hb with the handles to the barseries objects.
 %
-%<a href="matlab: docsearch('histFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('histFS')">Link to the help function</a>
 %
 % Example:
 %{

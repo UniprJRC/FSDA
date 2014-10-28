@@ -1,7 +1,7 @@
 function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, const1, fix, tol, lim, asympt, toll)
 %GetOmegaMap calculates the map of misclassificaton between groups
 %
-%<a href="matlab: docsearch('GetOmegaMap')">Link to the help function</a>
+%<a href="matlab: docsearchFS('GetOmegaMap')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -107,7 +107,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('GetOmegaMap')">Link to the help function</a>
+%<a href="matlab: docsearchFS('GetOmegaMap')">Link to the help function</a>
 %
 %{
     k=4; % Number of groups

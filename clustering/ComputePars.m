@@ -60,7 +60,7 @@ function [li,di,const1]=ComputePars(v, k, Pi, Mu, S, S05, Sinv, detS)
 %              To be precise, sums in (1) and (3) are for l:li(i,j,l) is different from 1
 %              Similarly, sums in (2) and (4) are for l:li(i,j,l) is = 1
 %
-%<a href="matlab: docsearch('computepars')">Link to the help function</a>
+%<a href="matlab: docsearchFS('computepars')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

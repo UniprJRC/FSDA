@@ -2,7 +2,7 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %Simulates a dataset n given parameters of finite mixture model with Gaussian components
 %
 %
-%<a href="matlab: docsearch('simdataset')">Link to the help function</a>
+%<a href="matlab: docsearchFS('simdataset')">Link to the help function</a>
 %
 %   simdataset(n, Pi, Mu, S) generates a matrix of size n-by-p containing n
 %   observations p dimensions from k groups. In other words, this function
@@ -79,7 +79,7 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('simdataset')">Link to the help function</a>
+%<a href="matlab: docsearchFS('simdataset')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

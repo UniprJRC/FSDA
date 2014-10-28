@@ -2,7 +2,7 @@ function malindexplot(md,v,varargin)
 %malindexplot plots the Mahalanobis distances versus a selected variable.
 %The selected variable is typically a generic index number.
 %
-%<a href="matlab: docsearch('malindexplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('malindexplot')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -98,7 +98,7 @@ function malindexplot(md,v,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('malindexplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('malindexplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

@@ -31,7 +31,7 @@ function h = olsline(varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('olsline')">Link to the help function</a>
+%<a href="matlab: docsearchFS('olsline')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

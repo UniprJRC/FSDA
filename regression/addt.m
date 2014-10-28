@@ -1,7 +1,7 @@
 function [out]=addt(y,X,w,varargin)
 %addt produces the t test for an additional expl. variable
 %
-%<a href="matlab: docsearch('addt')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('addt')">Link to the help page for this function</a>
 %
 % Required input arguments:
 %
@@ -53,7 +53,7 @@ function [out]=addt(y,X,w,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('addt')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('addt')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

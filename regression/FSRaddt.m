@@ -1,7 +1,7 @@
 function [out]=FSRaddt(y,X,varargin)
 %FSRaddt produces t deletion tests for each expl. variable.
 %
-%<a href="matlab: docsearch('FSRaddt')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRaddt')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -107,7 +107,7 @@ function [out]=FSRaddt(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRaddt')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRaddt')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples

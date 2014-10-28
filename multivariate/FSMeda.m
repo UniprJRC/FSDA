@@ -2,7 +2,7 @@ function out = FSMeda(Y,bsb,varargin)
 %FSMeda performs forward search in multivariate analysis with exploratory data analysis purposes
 %
 %
-%<a href="matlab: docsearch('FSMeda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMeda')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -111,7 +111,7 @@ function out = FSMeda(Y,bsb,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSMeda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMeda')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

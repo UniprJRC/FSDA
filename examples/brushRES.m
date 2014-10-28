@@ -2,7 +2,7 @@ function brushRES
 %brushRES displays a GUI where it is possible to brush steps from the monitoring residuals plot 
 %and to see the corresponding units highlighted in other plots
 %
-%<a href="matlab: docsearch('brushRES')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('brushRES')">Link to the help page for this function</a>
 %
 % See also: brushFAN, brushROB
 %
@@ -10,7 +10,7 @@ function brushRES
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('brushRES')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('brushRES')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % other open demos create problems. Delete them before starting this new one. 
@@ -302,7 +302,7 @@ a=version;
 if str2double(a(1))>=8
     stri='Detailed information about the datasets used in this GUI can be found in the <a href="matlab: doc -classic">section USER GUIDE of the FSDA html help system </a>';
 else
-    stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearch(''datasets_reg'')">here</a>';
+    stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
 end
 disp(stri)
 

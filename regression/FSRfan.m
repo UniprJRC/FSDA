@@ -1,7 +1,7 @@
 function [out]=FSRfan(y,X,varargin)
 %FSRfan monitors the values of the score test statistic for each lambda
 %
-%<a href="matlab: docsearch('FSRfan')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRfan')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -124,7 +124,7 @@ function [out]=FSRfan(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRfan')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRfan')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

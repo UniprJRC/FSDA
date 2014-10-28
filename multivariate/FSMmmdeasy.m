@@ -1,7 +1,7 @@
 function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %FSMmmdeasy is exactly equal to minMD but much less efficient
 %
-%<a href="matlab: docsearch('FSMmmdeasy')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMmmdeasy')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -73,7 +73,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSMmmdeasy')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMmmdeasy')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 

@@ -1,7 +1,7 @@
 function c = nchoosekFS(v,k)
 %nchoosekFS produces Binomial coefficient or matrix containing all combinations.
 %
-%<a href="matlab: docsearch('nchoosekFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('nchoosekFS')">Link to the help function</a>
 %
 %   This function is similar to nchoosek of Statistics Toolbox but it is
 %   much faster and makes a more efficient use of memory.
@@ -20,7 +20,7 @@ function c = nchoosekFS(v,k)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('nchoosekFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('nchoosekFS')">Link to the help function</a>
 %
 %{
 % Profile generation of 2118760 combinations.

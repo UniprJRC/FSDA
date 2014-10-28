@@ -1,7 +1,7 @@
 function [bdp,eff,approxsheff] = OPTc(c,p,varargin)
 %OPTc computes breakdown point and efficiency associated with constant c for Optimal rho function
 %
-%<a href="matlab: docsearch('OPTc')">Link to the help function</a>
+%<a href="matlab: docsearchFS('OPTc')">Link to the help function</a>
 %
 %
 %
@@ -45,7 +45,7 @@ function [bdp,eff,approxsheff] = OPTc(c,p,varargin)
 % Copyright 2008-2014.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('OPTc')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('OPTc')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

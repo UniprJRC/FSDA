@@ -1,7 +1,7 @@
 function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %tclust computes trimmed clustering
 %
-%<a href="matlab: docsearch('tclust')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
 %
 %   tclust(Y, k, alpha) partitions the points in the n-by-v data matrix Y
 %   into k clusters.  This partition minimizes the trimmed sum, over all
@@ -233,7 +233,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % indicating that nsamp has to be increased.
 %
 %
-%<a href="matlab: docsearch('tclust')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:
@@ -1381,7 +1381,7 @@ end
     function [out]  = restreigen(eigenvalues,niini,restr,tol,userepmat)
         %restreigen computes eigenvalues restriction (without Dykstra algorithm)
         %
-        %<a href="matlab: docsearch('restreigen')">Link to the help function</a>
+        %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
         %
         %   restreigen restricts the eigenvalues according to the constraint
         %   specified in scalar restr This function is called in every
@@ -1436,7 +1436,7 @@ end
         %
         %
         %
-        %<a href="matlab: docsearch('restreigen')">Link to the help function</a>
+        %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
         % Last modified 08-Dec-2013
         
         % Examples:

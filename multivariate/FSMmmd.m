@@ -1,7 +1,7 @@
 function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %FSMmmd monitors minMD
 %
-%<a href="matlab: docsearch('fsmmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsmmmd')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -78,7 +78,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 % Copyright 2008-2014.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('fsmmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsmmmd')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 

@@ -6,7 +6,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 % regression structures are investigated by monitoring the minimum deletion
 % residual outside the FS subset.
 %
-%<a href="matlab: docsearch('fsrmdrrs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsrmdrrs')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -172,7 +172,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('fsrmdrrs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsrmdrrs')">Link to the help function</a>
 % Last modified 30-Apr-2014
 %
 % Examples:

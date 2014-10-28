@@ -1,7 +1,7 @@
 function [RAW,REW,varargout] = mve(Y,varargin)
 %mve computes Minimum volume ellipsoid
 %
-%<a href="matlab: docsearch('mve')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mve')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -162,7 +162,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mve')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mve')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

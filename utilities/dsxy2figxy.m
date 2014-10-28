@@ -1,7 +1,7 @@
 function varargout = dsxy2figxy(varargin)
 %dsxy2figxy transforms points or positions from 'axes data units' to 'normalized figure units'
 %
-%<a href="matlab: docsearch('dsxy2figxy')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('dsxy2figxy')">Link to the help page for this function</a>
 %
 % Required input arguments:
 %
@@ -44,7 +44,7 @@ function varargout = dsxy2figxy(varargin)
 %
 %
 %
-%<a href="matlab: docsearch('dsxy2figxy')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('dsxy2figxy')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 %{

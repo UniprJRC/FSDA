@@ -1,7 +1,7 @@
 function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %FSMinvmmd converts values of minimum Mahalanobis distance into confidence levels
 %
-%<a href="matlab: docsearch('FSMinvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMinvmmd')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -62,7 +62,7 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSMinvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMinvmmd')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

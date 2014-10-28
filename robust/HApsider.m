@@ -1,7 +1,7 @@
 function psiHAder = HApsider(u, ctuning,varargin)
 %HApsider computes derivative of psi function  using Hampel proposal
 %
-%<a href="matlab: docsearch('HApsider')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HApsider')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -50,7 +50,7 @@ function psiHAder = HApsider(u, ctuning,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hapsider')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hapsider')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

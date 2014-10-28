@@ -1,7 +1,7 @@
 function w = OPTwei(x,c)
 %OPTwei computes weight function psi(u)/u for optimal weight function
 %
-%<a href="matlab: docsearch('optwei')">Link to the help function</a>
+%<a href="matlab: docsearchFS('optwei')">Link to the help function</a>
 %
 %
 %
@@ -35,7 +35,7 @@ function w = OPTwei(x,c)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('optwei')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('optwei')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

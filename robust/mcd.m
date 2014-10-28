@@ -1,7 +1,7 @@
 function [RAW,REW,varargout] = mcd(Y,varargin)
 %mcd computes Minimum covariance determinant
 %
-%<a href="matlab: docsearch('mcd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mcd')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -226,7 +226,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mcd')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mcd')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

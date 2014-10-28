@@ -1,7 +1,7 @@
 function Ytra=normBoxCox(Y,ColtoTra,la)
 %normBoxCox computes normalized Box-Cox transformation
 %
-%<a href="matlab: docsearch('normBoxCox')">Link to the help function</a>
+%<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -20,7 +20,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('normBoxCox')">Link to the help function</a>
+%<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 

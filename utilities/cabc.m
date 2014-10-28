@@ -8,7 +8,7 @@ function cabc
 %
 %
 %
-%<a href="matlab: docsearch('mve')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mve')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

@@ -3,7 +3,7 @@ function ceff = TBeff(eff,p,varargin)
 %for Tukey biweight estimator
 %
 %
-%<a href="matlab: docsearch('tbeff')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tbeff')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -31,7 +31,7 @@ function ceff = TBeff(eff,p,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('tbeff')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tbeff')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 

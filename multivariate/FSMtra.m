@@ -4,7 +4,7 @@ function out = FSMtra(Y,varargin)
 %transformations.
 %
 %
-%<a href="matlab: docsearch('fsmtra')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsmtra')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -151,7 +151,7 @@ function out = FSMtra(Y,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('fsmtra')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsmtra')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

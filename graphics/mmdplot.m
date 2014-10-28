@@ -1,7 +1,7 @@
 function mmdplot(out,varargin)
 %mmdplot plots the trajectory of minimum mhalanobis distance (mmd)
 %
-%<a href="matlab: docsearch('mmdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mmdplot')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -132,7 +132,7 @@ function mmdplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mmdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mmdplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

@@ -1,7 +1,7 @@
 function [out] = FSReda(y,X,bsb,varargin)
 %FSReda enables to monitor several quantities in each step of the search
 %
-%<a href="matlab: docsearch('FSReda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSReda')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -132,7 +132,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSReda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSReda')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

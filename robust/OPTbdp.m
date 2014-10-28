@@ -3,7 +3,7 @@ function c = OPTbdp(bdp,p)
 % The constant is found through a dichotomic search
 %
 %
-%<a href="matlab: docsearch('OPTbdp')">Link to the help function</a>
+%<a href="matlab: docsearchFS('OPTbdp')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -31,7 +31,7 @@ function c = OPTbdp(bdp,p)
 % Copyright 2008-2014.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('OPTbdp')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('OPTbdp')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 

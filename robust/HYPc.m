@@ -2,7 +2,7 @@ function [bdp,eff,A,B,d] = HYPc(c,p,varargin)
 %HYPc computes breakdown point and efficiency associated with constant c for
 %hyperbolic tangent estimator (for a given value of k=sup CVC)
 %
-%<a href="matlab: docsearch('hypc')">Link to the help function</a>
+%<a href="matlab: docsearchFS('hypc')">Link to the help function</a>
 %
 %
 %
@@ -51,7 +51,7 @@ function [bdp,eff,A,B,d] = HYPc(c,p,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hypc')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hypc')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

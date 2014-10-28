@@ -1,7 +1,7 @@
 function psiHA = HApsi(u, ctuning,varargin)
 %HApsi computes psi function  using Hampel proposal
 %
-%<a href="matlab: docsearch('HApsi')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HApsi')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -58,7 +58,7 @@ function psiHA = HApsi(u, ctuning,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hapsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hapsi')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

@@ -1,7 +1,7 @@
 function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %FSRmdr computes minimum deletion residual and other basic linear regression quantities in each step of the search
 %
-%<a href="matlab: docsearch('FSRmdr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRmdr')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -138,7 +138,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRmdr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRmdr')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

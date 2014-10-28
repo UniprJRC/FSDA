@@ -2,7 +2,7 @@ function out = rlga(X,k,alpha,varargin)
 %rlga performs robust linear grouping analysis
 %
 %
-%<a href="matlab: docsearch('rlga')">Link to the help function</a>
+%<a href="matlab: docsearchFS('rlga')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -45,7 +45,7 @@ function out = rlga(X,k,alpha,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('rlga')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('rlga')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 

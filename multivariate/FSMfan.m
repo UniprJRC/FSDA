@@ -3,7 +3,7 @@ function out = FSMfan(Y,la0,varargin)
 %It uses the multivariate version of the parametric family of power
 %transformations.
 %
-%<a href="matlab: docsearch('FSMfan')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMfan')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -130,7 +130,7 @@ function out = FSMfan(Y,la0,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSMtra')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMtra')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

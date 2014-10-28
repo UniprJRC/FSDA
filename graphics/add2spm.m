@@ -2,7 +2,7 @@ function add2spm(H,AX,BigAx,varargin)
 %add2spm adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix
 %
 %
-%<a href="matlab: docsearch('add2spm')">Link to the help function</a>
+%<a href="matlab: docsearchFS('add2spm')">Link to the help function</a>
 %
 %
 % As default add2spm makes legends in the existing scatter plot matrix
@@ -62,7 +62,7 @@ function add2spm(H,AX,BigAx,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('add2spm')">Link to the help function</a>
+%<a href="matlab: docsearchFS('add2spm')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

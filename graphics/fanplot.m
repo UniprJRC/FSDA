@@ -1,7 +1,7 @@
 function fanplot(out,varargin)
 %fanplot plots the fan plot for transformation in linear regression
 %
-%<a href="matlab: docsearch('fanplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -164,7 +164,7 @@ function fanplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('fanplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

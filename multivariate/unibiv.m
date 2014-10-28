@@ -1,7 +1,7 @@
 function [fre]=unibiv(Y,varargin)
 %unibiv has the purpose of detecting univariate and bivariate outliers
 %
-%<a href="matlab: docsearch('unibiv')">Link to the help function</a>
+%<a href="matlab: docsearchFS('unibiv')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -88,7 +88,7 @@ function [fre]=unibiv(Y,varargin)
 %
 %
 %
-%<a href="matlab: docsearch('unibiv')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('unibiv')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

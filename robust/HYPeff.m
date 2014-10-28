@@ -2,7 +2,7 @@ function [c,A,B,d] = HYPeff(eff, ~,k,traceiter)
 %HYPeff finds constant c which is associated to the requested efficiency
 %for hyperbolic estimator
 %
-%<a href="matlab: docsearch('hypeff')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hypeff')">Link to the help page for this function</a>
 %
 %  Required input arguments:
 %
@@ -52,7 +52,7 @@ function [c,A,B,d] = HYPeff(eff, ~,k,traceiter)
 %
 %
 %
-%<a href="matlab: docsearch('hypeff')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hypeff')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 %

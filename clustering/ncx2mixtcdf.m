@@ -1,7 +1,7 @@
 function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %ncx2mixtcdf cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ \sigma * N(0,1))
 %
-%<a href="matlab: docsearch('ncx2mixtcdf')">Link to the help function</a>
+%<a href="matlab: docsearchFS('ncx2mixtcdf')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -80,7 +80,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 % Copyright 2008-2014.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('ncx2mixtcdf')">Link to the help function</a>
+%<a href="matlab: docsearchFS('ncx2mixtcdf')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 

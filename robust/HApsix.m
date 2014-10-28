@@ -1,7 +1,7 @@
 function psiHAx = HApsix(u, ctuning,varargin)
 %HApsix computes psi function  using Hampel proposal times x
 %
-%<a href="matlab: docsearch('HApsix')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HApsix')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -50,7 +50,7 @@ function psiHAx = HApsix(u, ctuning,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hapsix')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hapsix')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

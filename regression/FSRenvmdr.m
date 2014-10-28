@@ -1,7 +1,7 @@
 function [MDRenv] = FSRenvmdr(n,p,varargin)
 %FSRenvmdr computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search
 %
-%<a href="matlab: docsearch('FSRenvmdr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRenvmdr')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -56,7 +56,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRenvmdr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRenvmdr')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

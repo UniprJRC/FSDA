@@ -28,7 +28,7 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
 %motivation.
 %
 %
-%<a href="matlab: docsearch('lexunrank')">Link to the help function</a>
+%<a href="matlab: docsearchFS('lexunrank')">Link to the help function</a>
 %
 %
 % Required input arguments:
@@ -108,7 +108,7 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
 %
 %
 %
-%<a href="matlab: docsearch('lexunrank')">Link to the help function</a>
+%<a href="matlab: docsearchFS('lexunrank')">Link to the help function</a>
 % Last modified 08-Dec-2013
 %
 % References:

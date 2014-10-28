@@ -1,7 +1,7 @@
 function y=Qn(X,dim)
 %Qn robust estimator of scale (first quartile of interpoint distances |x_i-x_j|)
 %
-%<a href="matlab: docsearch('qn')">Link to the help function</a>
+%<a href="matlab: docsearchFS('qn')">Link to the help function</a>
 %
 %
 %   For vectors, Qn(X) is the scale estimator of the elements in X. For
@@ -32,7 +32,7 @@ function y=Qn(X,dim)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('qn')">Link to the help function</a>
+%<a href="matlab: docsearchFS('qn')">Link to the help function</a>
 % Last modified 08-Dec-2013
 %
 

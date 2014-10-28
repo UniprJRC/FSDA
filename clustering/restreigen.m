@@ -1,7 +1,7 @@
 function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %restreigen computes eigenvalues restriction (without Dykstra algorithm)
 %
-%<a href="matlab: docsearch('restreigen')">Link to the help function</a>
+%<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
 %
 %   restreigen restricts the eigenvalues according to the constraint
 %   specified in scalar restr. This function is called in every
@@ -60,7 +60,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %
 %
-%<a href="matlab: docsearch('restreigen')">Link to the help function</a>
+%<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

@@ -3,7 +3,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 % It does iterative reweighted least squares (IRWLS) steps from "initial
 % beta" (b0) keeping the estimate of the scale (auxscale) fixed.
 %
-%<a href="matlab: docsearch('MMregcore')">Link to the help function</a>
+%<a href="matlab: docsearchFS('MMregcore')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -107,7 +107,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mmregcore')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mmregcore')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

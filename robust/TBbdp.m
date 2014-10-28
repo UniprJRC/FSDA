@@ -3,7 +3,7 @@ function c = TBbdp(bdp,p)
 % The constant is found through a dichotomic search
 %
 %
-%<a href="matlab: docsearch('tbbdp')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tbbdp')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -18,7 +18,7 @@ function c = TBbdp(bdp,p)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('tbbdp')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tbbdp')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 %

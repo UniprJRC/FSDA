@@ -41,7 +41,7 @@ function ceff = OPTeff(eff,p,varargin)
 %   interval 0---2c, 2c---3c, >3c it is necessary to divide the output of
 %   function OPTeff by 3.
 %
-%<a href="matlab: docsearch('OPTeff')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('OPTeff')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 %

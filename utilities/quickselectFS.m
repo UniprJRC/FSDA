@@ -1,7 +1,7 @@
 function kE = quickselectFS(A,k,kiniindex)
 %quickselectFS finds the k-th order statistic
 %
-%<a href="matlab: docsearch('quickselectfs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('quickselectfs')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -28,7 +28,7 @@ function kE = quickselectFS(A,k,kiniindex)
 %       Very Large Datasets, submitted
 %
 %
-%<a href="matlab: docsearch('quickselectFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('quickselectFS')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

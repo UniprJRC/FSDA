@@ -1,7 +1,7 @@
 function plotopt=malfwdplot(out,varargin)
 %malfwdplot plots the trajectories of scaled Mahalanobis distances along the search
 %
-%<a href="matlab: docsearch('malfwdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('malfwdplot')">Link to the help function</a>
 %
 %  Required input arguments:
 %  out :  structure containing the following fields
@@ -262,7 +262,7 @@ function plotopt=malfwdplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('malfwdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('malfwdplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

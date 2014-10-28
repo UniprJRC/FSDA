@@ -2,7 +2,7 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 %HYPck computes values of the scalars A, B, d for hyperbolic tangent estimator
 %
 %
-%<a href="matlab: docsearch('hypck')">Link to the help function</a>
+%<a href="matlab: docsearchFS('hypck')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -34,7 +34,7 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
 %
-%<a href="matlab: docsearch('hypck')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hypck')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 %

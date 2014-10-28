@@ -1,7 +1,7 @@
 function [outSC]=Score(y,X,varargin)
 %Score computes the score test for transformation
 %
-%<a href="matlab: docsearch('Score')">Link to the help function</a>
+%<a href="matlab: docsearchFS('Score')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -46,7 +46,7 @@ function [outSC]=Score(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('Score')">Link to the help function</a>
+%<a href="matlab: docsearchFS('Score')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples

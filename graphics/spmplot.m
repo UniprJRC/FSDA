@@ -1,7 +1,7 @@
 function [H,AX,BigAx] = spmplot(Y,varargin)
 %spmplot: interactive scatterplot matrix with boxplots or histograms on the main diagonal
 %
-%<a href="matlab: docsearch('spmplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -200,7 +200,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % Copyright 2008-2014.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('spmplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

@@ -5,7 +5,7 @@ function ellipse(mu,Sigma,conflev)
 %
 %    (x-mu)' \Sigma^{-1} (x-mu) = c
 %
-%<a href="matlab: docsearch('ellipse')">Link to the help function</a>
+%<a href="matlab: docsearchFS('ellipse')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -27,7 +27,7 @@ function ellipse(mu,Sigma,conflev)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('ellipse')">Link to the help function</a>
+%<a href="matlab: docsearchFS('ellipse')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

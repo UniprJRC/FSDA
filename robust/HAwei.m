@@ -1,7 +1,7 @@
 function w = HAwei(u, ctuning,varargin)
 %HAwei computes weight function psi(u)/u using Hampel proposal
 %
-%<a href="matlab: docsearch('HAwei')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HAwei')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -56,7 +56,7 @@ function w = HAwei(u, ctuning,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('hawei')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('hawei')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 % Examples:

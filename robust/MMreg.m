@@ -1,7 +1,7 @@
 function [out , varargout] = MMreg(y,X,varargin)
 %MMreg computes MM estimator of regression coefficients
 %
-%<a href="matlab: docsearch('mmreg')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mmreg')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -126,7 +126,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mmreg')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mmreg')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

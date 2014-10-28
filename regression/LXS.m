@@ -1,7 +1,7 @@
 function [out , varargout] = LXS(y,X,varargin)
 %LXS computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators
 %
-%<a href="matlab: docsearch('lxs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('lxs')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -163,7 +163,7 @@ function [out , varargout] = LXS(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('LXS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('LXS')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

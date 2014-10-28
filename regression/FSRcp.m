@@ -1,7 +1,7 @@
 function outCp = FSRcp(y,X,smallp,varargin)
 %FSRcp monitors Cp and AIC for all models of interest of size smallp
 %
-%<a href="matlab: docsearch('FSRcp')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRcp')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -206,7 +206,7 @@ function outCp = FSRcp(y,X,smallp,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRcp')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRcp')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

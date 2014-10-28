@@ -1,7 +1,7 @@
 function y=Sn(X,dim)
 %Sn robust estimator of scale (robust version of Gini's average difference)
 %
-%<a href="matlab: docsearch('sn')">Link to the help function</a>
+%<a href="matlab: docsearchFS('sn')">Link to the help function</a>
 %
 %
 %   For vectors, Sn(X) is the scale estimator of the elements in X. For
@@ -34,7 +34,7 @@ function y=Sn(X,dim)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('sn')">Link to the help function</a>
+%<a href="matlab: docsearchFS('sn')">Link to the help function</a>
 % Last modified 08-Dec-2013
 %
 

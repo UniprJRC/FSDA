@@ -1,7 +1,7 @@
 function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %FSRbsb computes the units belonging to the subset in each step of the forward search
 %
-%<a href="matlab: docsearch('FSRbsb')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRbsb')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -69,7 +69,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRbsb')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRbsb')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

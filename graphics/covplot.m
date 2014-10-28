@@ -2,7 +2,7 @@ function covplot(out,varargin)
 %covplot plots the trajectories of the elements of the covariance (correlation) matrix monitored
 %along the forward search
 %
-%<a href="matlab: docsearch('covplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('covplot')">Link to the help function</a>
 %
 %  Required input arguments:
 %  out :  structure containing the following fields
@@ -137,7 +137,7 @@ function covplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('covplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('covplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

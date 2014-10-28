@@ -1,7 +1,7 @@
 function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %tkmeans computes trimmed k-means
 %
-%<a href="matlab: docsearch('tkmeans')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tkmeans')">Link to the help function</a>
 %
 %   tkmeans(Y, k, alpha) partitions the points in the n-by-v data matrix Y
 %   into k clusters.  This partition minimizes the trimmed sum, over all
@@ -120,7 +120,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 % indicating that nsamp has to be increased.
 %
 %
-%<a href="matlab: docsearch('tkmeans')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tkmeans')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

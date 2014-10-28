@@ -1,7 +1,7 @@
 function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %FSMbbm gives the units belonging to subset at step(s) msel of the forward search
 %
-%<a href="matlab: docsearch('FSMbbm')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMbbm')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -74,7 +74,7 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSMbbm')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMbbm')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 

@@ -1,7 +1,7 @@
 function Bbound = FSRbonfbound(n,p,varargin)
 %FSRbonfbound computes the Bonferroni bounds for each step of the search
 %
-%<a href="matlab: docsearch('FSRbonfbound')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRbonfbound')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -45,7 +45,7 @@ function Bbound = FSRbonfbound(n,p,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRbonfbound')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRbonfbound')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

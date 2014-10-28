@@ -2,7 +2,7 @@ function plotopt=resfwdplot(out,varargin)
 %resfwdplot plots the trajectories of the scaled (squared) residuals monitored
 %along the forward search
 %
-%<a href="matlab: docsearch('resfwdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('resfwdplot')">Link to the help function</a>
 %
 %  Required input arguments:
 %  out :  structure containing the following fields
@@ -315,7 +315,7 @@ function plotopt=resfwdplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('resfwdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('resfwdplot')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:

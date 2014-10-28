@@ -3,7 +3,7 @@ function ctun = HAbdp(bdp,p,abc)
 % The constant is found through a dichotomic search
 %
 %
-%<a href="matlab: docsearch('habdp')">Link to the help function</a>
+%<a href="matlab: docsearchFS('habdp')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -21,7 +21,7 @@ function ctun = HAbdp(bdp,p,abc)
 %  ctun = scalar of Hampel rho function associated to that particular breakdown point
 %
 %
-%<a href="matlab: docsearch('habdp')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('habdp')">Link to the help page for this function</a>
 % Last modified 08-Dec-2013
 %
 %

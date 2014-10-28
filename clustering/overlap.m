@@ -1,7 +1,7 @@
 function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu, S, tol, lim)
 %overlap computes the exact overlap given the parameters of the mixture
 %
-%<a href="matlab: docsearch('overlap')">Link to the help function</a>
+%<a href="matlab: docsearchFS('overlap')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -51,7 +51,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('overlap')">Link to the help function</a>
+%<a href="matlab: docsearchFS('overlap')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:
