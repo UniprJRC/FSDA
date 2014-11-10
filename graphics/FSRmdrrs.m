@@ -39,7 +39,10 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               to store the units forming subset at step init and steps
 %               which are multiple of 100. For example, if n=753 and
 %               init=6, units forming subset are stored for m=init, 100,
-%               200, 300, 400, 500 and 600.
+%               200, 300, 400, 500 and 600. 
+%               REMARK: vector bsbsteps must contain numbers from init to
+%               n. if min(bsbsteps)<init a warning message will appear on
+%               the screen.  
 %     nsimul :  scalar, number of random starts. Default value=200.
 %   nocheck  :  Scalar. If nocheck is equal to 1, no check is performed on
 %               matrix y and matrix X, which are left unchanged. In other
@@ -398,6 +401,13 @@ end
 if bsbsteps == 0
     BBrs  = zeros(n,n-init+1,nsimul);
 else
+    
+    if ~isempty(bsbsteps(bsbsteps<init))
+     warning('It is not possible to store subset for values of m smaller than init')
+       bsbsteps=bsbstesp(bsbsteps>=init);
+    end 
+  
+        
     BBrs=zeros(n,length(bsbsteps),nsimul);
 end
 
