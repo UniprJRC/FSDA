@@ -69,7 +69,7 @@ function [out]  = MixSim(k,v,varargin)
 %               restrfactor=10 after generating the covariance matrices we
 %               check that the ratio
 %               \[
-%                 \frac{   \max_{l=1, \ldots, v} \max_{j=1, \ldots, k}  \lambda_l(\hat \Sigma_j)}{   \min_{l=1, \ldots, p} \min_{j=1, \ldots, k}  \lambda_l(\hat \Sigma_j)} \leq c.
+%                 \frac{   \max_{l=1, \ldots, v} \max_{j=1, \ldots, k}  \lambda_l(\hat \Sigma_j)}{   \min_{l=1, \ldots, v} \min_{j=1, \ldots, k}  \lambda_l(\hat \Sigma_j)}.
 %               \]
 %               between the largest eigenvalue of the k cov matrices
 %               and the smallest eigenvalue of the k cov matrices is not
