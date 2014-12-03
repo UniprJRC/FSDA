@@ -5,7 +5,7 @@ BEGIN {
 {    
 	if (index($0, "Execution of") > 0) {
 		  n = split($0, records, "\\");
-		  print records[n-1];
+ 		  print substr(records[n], 1, index(records[n], " "));
 	    counter++;
         if (index($0, "completed successfully")) {	    
 	        print "ok " counter " - completed successfully " >>"pippo.tap"
