@@ -1,14 +1,14 @@
 #!/bin/sh
 
-tapfile=${WORKSPACE}/pippo.tap
+tapfile=$1/pippo.tap
 
 rm -f $tapfile
-awk -f ${WORKSPACE}/_automation_tools/create_tap.awk execution_log.txt
+awk -f $1/_automation_tools/create_tap.awk execution_log.txt
 
 test_count=`wc -l $tapfile | awk '{ RS=" "; print $1; }'`
 
-echo "1..$test_count" >${WORKSPACE}/tempfile.tap
+echo "1..$test_count" >$1/tempfile.tap
 cat $tapfile >>tempfile.tap
 rm $tapfile
-mv ${WORKSPACE}/tempfile.tap $tapfile
-rm ${WORKSPACE}/tempfile.tap
+mv $1/tempfile.tap $tapfile
+rm $1/tempfile.tap
