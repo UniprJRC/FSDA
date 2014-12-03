@@ -11,4 +11,4 @@ echo "1..$test_count" >$1/tempfile.tap
 cat $tapfile >>$1/tempfile.tap
 rm $tapfile
 mv $1/tempfile.tap $tapfile
-rm $1/tempfile.tap
+rm -f $1/tempfile.tap
