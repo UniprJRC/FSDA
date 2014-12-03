@@ -3,7 +3,7 @@
 tapfile="pippo.tap"
 
 rm -f $tapfile
-awk -f ./_automation_tools/create_tap.awk execution_log.txt
+awk -f ${WORKSPACE}/_automation_tools/create_tap.awk execution_log.txt
 
 test_count=`wc -l $tapfile | awk '{ RS=" "; print $1; }'`
 
