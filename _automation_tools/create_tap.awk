@@ -7,6 +7,7 @@ BEGIN {
  		  s = substr($0, index($0, "EXAMPLES_test"));
  		  n = split(s, records, " ");
  		  testName = print substr(records[1], 15);		  
+ 		  print "Parsing: " testName;
 	    counter++;
         if (index($0, "completed successfully")) {	    
 	        print "ok " counter " - " testName " " completed successfully " >>"pippo.tap"
