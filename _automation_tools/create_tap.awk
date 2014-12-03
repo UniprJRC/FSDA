@@ -3,10 +3,10 @@ BEGIN {
 }
 
 {    
-	if (index($0, "Execution of") > 0) {
-		  n = split($0, records, "\\");
+	if (index($0, "Execution of") > 0) {		  
  		  s = substr($0, index($0, "EXAMPLES_test"));
- 		  print substr(s, 14, index(s, " "));		  
+ 		  n = split(s, records, " ");
+ 		  print records[1];		  
 	    counter++;
         if (index($0, "completed successfully")) {	    
 	        print "ok " counter " - completed successfully " >>"pippo.tap"
