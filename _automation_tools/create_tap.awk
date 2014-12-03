@@ -10,7 +10,7 @@ BEGIN {
  		  print "Parsing: " testName;
 	    counter++;
         if (index($0, "completed successfully")) {	    
-	        print "ok " counter " - " testName " " completed successfully " >>"pippo.tap"
+	        print "ok " counter " - " testName " completed successfully " >>"pippo.tap"
 	    } else if (index($0, "FAILED") > 0) {
             errorMessage = substr($0, index($0, "FAILED") + 8);
 	        print "not ok " counter " - " testName " " errorMessage >>"pippo.tap"
