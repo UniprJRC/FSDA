@@ -6,7 +6,7 @@ BEGIN {
 	if (index($0, "Execution of") > 0) {		  
  		  s = substr($0, index($0, "EXAMPLES_test"));
  		  n = split(s, records, " ");
- 		  testName = substr(records[1], 15));		  
+ 		  testName = substr(records[1], 15);		  
  		  print "Parsing: " testName;
 	    counter++;
         if (index($0, "completed successfully")) {	    
