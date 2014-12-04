@@ -15,7 +15,7 @@ BEGIN {
         if (index($0, "completed successfully")) {	    
             print "ok " counter " - " testName " completed successfully " >>tapFile;
         } else if (index($0, "FAILED") > 0) {
-            gsub(":", "");
+            gsub("/:/", "");
             errorMessage = substr($0, index($0, "FAILED") + 8);
             print "not ok " counter " - " testName " " errorMessage >>tapFile;
             print "  ---" >>tapFile;
