@@ -1,6 +1,6 @@
 #!/bin/sh
 
-tapfile=$1/pippo.tap
+tapfile=$1/results.tap
 
 rm -f $tapfile
 awk -f $1/_automation_tools/create_tap.awk execution_log.txt
