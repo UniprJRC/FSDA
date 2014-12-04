@@ -15,7 +15,7 @@ BEGIN {
         if (index($0, "completed successfully")) {	    
             print "ok " counter " - " testName " completed successfully " >>tapFile;
         } else if (index($0, "FAILED") > 0) {
-            errorMessage = substr($0, index($0, "FAILED") + 8);
+            errorMessage = substr($0, index($0, "FAILED") + 7);
             print "not ok " counter " - " testName " " errorMessage >>tapFile;
             print "  ---" >>tapFile;
             print "  message: " "\x22" errorMessage "\x22" >>tapFile;
