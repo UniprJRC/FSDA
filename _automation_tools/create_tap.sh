@@ -3,7 +3,10 @@
 tapfile=$1/results.tap
 
 rm -f $tapfile
-awk -f $1/_automation_tools/create_tap.awk execution_log.txt
+
+cat execution_log.txt | tr '\\' '/' | sed 's/C://g' | sed 's/://g' >execution_log2.txt
+
+awk -f $1/_automation_tools/create_tap.awk execution_log2.txt
 
 test_count=`wc -l $tapfile | awk '{ RS=" "; print $1; }'`
 
