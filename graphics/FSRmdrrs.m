@@ -404,7 +404,7 @@ else
     
     if ~isempty(bsbsteps(bsbsteps<init))
      warning('It is not possible to store subset for values of m smaller than init')
-       bsbsteps=bsbstesp(bsbsteps>=init);
+       bsbsteps=bsbsteps(bsbsteps>=init);
     end 
   
         
