@@ -31,4 +31,7 @@ done
 
 echo -e "exit(0);\n" >>test_runner.m
 
-'/cygdrive/c/Program Files/MATLAB/R2013b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner"
+# '/cygdrive/c/Program Files/MATLAB/R2015aPrerelease/bin/matlab'
+# '/cygdrive/c/Program Files/MATLAB/R2013b/bin/matlab'
+
+'/cygdrive/c/Program Files/MATLAB/R2015aPrerelease/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner"
