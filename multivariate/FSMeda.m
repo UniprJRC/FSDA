@@ -205,8 +205,6 @@ function out = FSMeda(Y,bsb,varargin)
 %}
 
 %% Input parameters checking
-
-%% Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;

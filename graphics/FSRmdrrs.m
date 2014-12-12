@@ -185,6 +185,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     % We start with an example with simulated data with regression lines
     % with roughly the same number of observations
     close all
+    rng('default')
     rng(2);
     b1=[1 1];
     b2=[1 2.6];

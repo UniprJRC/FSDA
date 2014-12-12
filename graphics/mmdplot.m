@@ -368,7 +368,7 @@ end
 h=findobj('-depth',1,'tag',options.tag);
 if (~isempty(h))
     clf(h);
-    figure(h)
+    figure(h(end))
     axes;
 else
     % create a new figure
