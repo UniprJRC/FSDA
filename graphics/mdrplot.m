@@ -238,11 +238,13 @@ function mdrplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %Example of the use of function mdrplot with databrush
      mdrplot(out,'databrush',1);
 %}
 
 %{
+    % Interactive_example
     %Example where databrush is a structure
     databrush=struct
     databrush.selectionmode='Lasso'
@@ -250,6 +252,7 @@ function mdrplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %Example of the use of brush using brush mode
     databrush=struct
     databrush.selectionmode='Brush'
@@ -258,6 +261,7 @@ function mdrplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %Example of the use of persistent non cumualtive brush. Every time a
     %brushing action is performed previous highlightments are removed
     databrush=struct
@@ -267,9 +271,10 @@ function mdrplot(out,varargin)
 %}
 
 %{
-   %Example of the use of persistent cumulative brush. Every time a
-   %brushing action is performed current highlightments are added to
-   %previous highlightments
+    % Interactive_example
+    %Example of the use of persistent cumulative brush. Every time a
+    %brushing action is performed current highlightments are added to
+    %previous highlightments
     databrush=struct
     databrush.persist='on';
     databrush.selectionmode='Rect'

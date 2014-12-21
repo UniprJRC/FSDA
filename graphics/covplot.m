@@ -350,7 +350,7 @@ if ~isempty(slintyp)
         slintyp=slintyp';
     end
     slintyp=repmat(slintyp,ceil(vv/length(slintyp)),1);
-    set(plot1,{'Line'},slintyp(1:vv));
+    set(plot1,{'LineStyle'},slintyp(1:vv));
 end
 
 % control minimum and maximum for x and y axis

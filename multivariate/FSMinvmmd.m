@@ -1,7 +1,7 @@
 function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %FSMinvmmd converts values of minimum Mahalanobis distance into confidence levels
 %
-%<a href="matlab: docsearchFS('FSMinvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsminvmmd')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -62,69 +62,69 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('FSMinvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsminvmmd')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:
 
 %{
-% Example of creation of 99% confidence envelopes based on 1000
-% observations and 5 variables
-  v=5;
-  mmdenv=FSMenvmmd(100,v,'prob',0.99);
+    % Example of creation of 99% confidence envelopes based on 1000
+    % observations and 5 variables
+      v=5;
+      mmdenv=FSMenvmmd(100,v,'prob',0.99);
 
-% Example of finding the confidence level of mmdenv
-% MDinv is a matrix which in the second colum contains
-% all values equal to 0.99
-  mmdinv=FSMinvmmd(mmdenv,v);
+    % Example of finding the confidence level of mmdenv
+    % MDinv is a matrix which in the second colum contains
+    % all values equal to 0.99
+      mmdinv=FSMinvmmd(mmdenv,v);
 %}
 
 %{
-% FORGERY SWISS BANKNOTES
-% Example of finding confidence level of mmd  
-load('swiss_banknotes');
-Y=swiss_banknotes.data;
-Y=Y(101:200,:);
-% The line below shows the plot of mmd
-[out]=FSM(Y,'plots',1);
+    % FORGERY SWISS BANKNOTES
+    % Example of finding confidence level of mmd  
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    Y=Y(101:200,:);
+    % The line below shows the plot of mmd
+    [out]=FSM(Y,'plots',1);
 
-% The line below transforms the values of mmd into observed confidence
-% levels and shows the output in a plot in normal coordinates using all
-% default options
-plots=struct;
-plots.conflev=[0.01 0.5 0.99 0.999 0.9999 0.99999];
-mmdinv=FSMinvmmd(out.mmd,size(Y,2),'plots',plots);
+    % The line below transforms the values of mmd into observed confidence
+    % levels and shows the output in a plot in normal coordinates using all
+    % default options
+    plots=struct;
+    plots.conflev=[0.01 0.5 0.99 0.999 0.9999 0.99999];
+    mmdinv=FSMinvmmd(out.mmd,size(Y,2),'plots',plots);
 %}
 
 %{
-% FORGERY SWISS BANKNOTES
-% Comparison of resuperimposing envelopes using mmd coordinates and normal
-% coordinates
-load('swiss_banknotes');
-Y=swiss_banknotes.data;
-Y=Y(101:200,:);
-% The line below shows the plot of mmd
-[out]=FSM(Y,'plots',2);
+    % FORGERY SWISS BANKNOTES
+    % Comparison of resuperimposing envelopes using mmd coordinates and normal
+    % coordinates
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    Y=Y(101:200,:);
+    % The line below shows the plot of mmd
+    [out]=FSM(Y,'plots',2);
 
-n0=83:86;
-quantplo=[0.01 0.5 0.99 0.999 0.9999 0.99999];
-ninv=norminv(quantplo);
-lwdenv=2;
-supn0=max(n0);
+    n0=83:86;
+    quantplo=[0.01 0.5 0.99 0.999 0.9999 0.99999];
+    ninv=norminv(quantplo);
+    lwdenv=2;
+    supn0=max(n0);
 
-ij=0;
-for jn0=n0;
-    ij=ij+1;
-    MMDinv = FSMinvmmd(out.mmd,size(Y,2),'n',jn0);
-    % Resuperimposed envelope in normal coordinates
-    subplot(2,2,ij)
-    plot(MMDinv(:,1),MMDinv(:,3),'LineWidth',2)
-    xlim([out.mmd(1,1) supn0])
-    v=axis;
-    line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');
-    text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));
-    title(['Resuperimposed envelope n=' num2str(jn0)]);
-end
+    ij=0;
+    for jn0=n0;
+        ij=ij+1;
+        MMDinv = FSMinvmmd(out.mmd,size(Y,2),'n',jn0);
+        % Resuperimposed envelope in normal coordinates
+        subplot(2,2,ij)
+        plot(MMDinv(:,1),MMDinv(:,3),'LineWidth',2)
+        xlim([out.mmd(1,1) supn0])
+        v=axis;
+        line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');
+        text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));
+        title(['Resuperimposed envelope n=' num2str(jn0)]);
+    end
 %}
 
 
@@ -313,7 +313,7 @@ if ~isempty(options.plots)
     plot1=plot(mmdinv(:,1),mmdncoord,'LineWidth',LineWidth);
     
     % Specify the line style of the trajectory of mmd in normal coordinates
-    set(plot1,{'Line'},LineStyle);
+    set(plot1,{'LineStyle'},LineStyle);
     
     
     set(gcf,'Tag',tag)

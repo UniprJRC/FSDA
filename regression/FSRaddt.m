@@ -124,7 +124,7 @@ function [out]=FSRaddt(y,X,varargin)
 %}
 
 %{
-% Forward deletion t stat for transformed wool data
+    % Forward deletion t stat for transformed wool data
     load('wool');
     y=log(wool.data(:,end));
     X=wool.data(:,1:end-1);
@@ -362,7 +362,7 @@ if plo==1
     % Specify the line type for the units inside vector units
     slin={'-';'--';':';'-.'};
     slin=repmat(slin,ceil(p/4),1);
-    set(plot1,{'Line'},slin(1:p-1));
+    set(plot1,{'LineStyle'},slin(1:p-1));
 
 
     % Main title of the plot and labels for the axes

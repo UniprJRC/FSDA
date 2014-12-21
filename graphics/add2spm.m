@@ -310,7 +310,11 @@ if strcmp('1',labeladd)
                 XDataLast = get(H(i,j,end),'XData');
                 YDataLast = get(H(i,j,end),'YData');
                 htxt=text(XDataLast,YDataLast,num2str(nbrush,'% d'),'HorizontalAlignment', 'Left');
-                set(htxt, 'DisplayName', legnew{end});
+                % Remark DisplayName with releases>2014a does not work
+                % anymore. It must bre replaced by String
+                % set(htxt, 'DisplayName', legnew{end});
+                set(htxt, 'String', legnew{end});
+                
             end
         end
     end

@@ -201,6 +201,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %FSRfan and fanplot with databrush option
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -211,6 +212,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %FSRfan and fanplot with databrush, persist, label and  RemoveLabels
     %option options.
     %Removelabels is a parameter of SelectdataFS function
@@ -223,6 +225,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %FSRfan and fanplot with databrush, bivarfit, label and  RemoveLabels option
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -233,6 +236,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %FSRfan and fanplot with databrush  and selectionmode options
     %Example of the use of persistent cumulative brush.
     %Every time a brushing action is performed
@@ -280,6 +284,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %Example of the use of FlagSize, namey, namex, lwd,FontSize, SizeAxesNum.
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -295,6 +300,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     % Only one brush specifying labels for y and X
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -434,7 +440,7 @@ set(gcf,'Tag',options.tag)
 % Specify the line type for the units inside vector units
 slin={'-';'--';':';'-.'};
 slin=repmat(slin,ceil(lla/4),1);
-set(plot1,{'Line'},slin(1:lla));
+set(plot1,{'LineStyle'},slin(1:lla));
 
 % set the x and y axis
 xlimx=options.xlimx;

@@ -37,7 +37,7 @@ function varargout = clickableMultiLegend(varargin)
      grid on;
      hlegend=clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');
      axis manual;
-     legend(hlegend,'off');
+     % legend(hlegend,'off');
 %}
 
 

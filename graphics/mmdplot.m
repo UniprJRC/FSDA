@@ -157,6 +157,7 @@ function mmdplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %Example of the use of function mmdplot with datatooltip passed as
     %scalar (that is using default options for datacursor (i.e.
     %DisplayStyle =window)
@@ -164,6 +165,7 @@ function mmdplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %Example of the use of function mmdplot with datatooltip passed as
     %structure
 
@@ -182,11 +184,13 @@ function mmdplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %Example of the use of function mdrplot with databrush
     mmdplot(out,'databrush',1);
 %}
 
 %{
+    % Interactive_example
     %Example where databrush is a structure
     databrush=struct
     databrush.selectionmode='Lasso'
@@ -194,6 +198,7 @@ function mmdplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %Example of the use of brush using brush mode
     databrush=struct
     databrush.selectionmode='Brush'
@@ -202,6 +207,7 @@ function mmdplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %Example of the use of persistent non cumulative brush. Every time a
     %brushing action is performed previous highlightments are removed
     databrush=struct
@@ -212,9 +218,10 @@ function mmdplot(out,varargin)
 %}
 
 %{
-   %Example of the use of persistent cumulative brush. Every time a
-   %brushing action is performed current highlightments are added to
-   %previous highlightments
+    % Interactive_example
+    %Example of the use of persistent cumulative brush. Every time a
+    %brushing action is performed current highlightments are added to
+    %previous highlightments
     databrush=struct
     databrush.persist='on';
     databrush.selectionmode='Rect'

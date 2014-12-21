@@ -307,7 +307,7 @@ function plotopt=levfwdplot(out,varargin)
 % Examples:
 
 %{
-    % generate input structure for the levfwdplot
+    % Generate input structure for the levfwdplot
     n=200;
     p=3;
     randn('state', 123456);
@@ -330,7 +330,7 @@ function plotopt=levfwdplot(out,varargin)
     % Initialize structure standard
     % Specify the steps in which labels have to be put
     standard=struct;
-    standard.LineStyle={'-';'-.';'.'};
+    standard.LineStyle={'-';'-.';':'};
     % Specify the line width
     standard.LineWidth=0.5;
     levfwdplot(out,'standard',standard)
@@ -871,7 +871,7 @@ if ~isempty(slintyp)
         slintyp=slintyp';
     end
     slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-    set(plot1,{'Line'},slintyp(1:n));
+    set(plot1,{'LineStyle'},slintyp(1:n));
 end
 
 % control minimum and maximum for x and y axis
