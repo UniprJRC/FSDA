@@ -93,7 +93,6 @@ X=multiple_regression(:,1:3);
 % yX plot: called just using as input y and X, it reduces to a standard gplotmatrix
 yXplot(y,X);
 
-% MMreg using two different level of efficiency
 conflev=[0.95 0.99];
 % Note that the pattern of residuals changes completely
 % Using bdp=0.5 the outliers are correctly found, on the other hand using
