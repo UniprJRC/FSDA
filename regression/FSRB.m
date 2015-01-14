@@ -13,6 +13,28 @@ function [out]=FSRB(y,X,varargin)
 %       Missing values (NaN's) and infinite values (Inf's) are allowed,
 %       since observations (rows) with missing or infinite values will
 %       automatically be excluded from the computations.
+
+%               PRIOR INFORMATION (bayes structure)
+%               A structure containing all the following required parameters must
+%               be supplied
+%
+% bayes.beta0:  p-times-1 vector containing prior mean of \beta
+% bayes.R    :  p-times-p positive definite matrix
+%               which can be interepreted as X0'X0 where X0 is a n0 x p
+%               matrix coming from previous experiments (assuming that the
+%               intercept is included in the model
+%
+%               The prior distribution of tau0 is a gamma distribution with
+%               paramters a and b, that is
+%                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
+%                         E(tau0)= a0/b0
+%
+%
+%    bayes.tau0 :     scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0
+%      bayes.n0 :     scalar. Sometimes it helps to think of the prior
+%               information as coming from n0 previous experiments.
+%               Therefore we assume that matrix X0 (which defines R), was
+%               made up of n0 observations.
 %
 % Optional input arguments:
 %
@@ -167,13 +189,15 @@ function [out]=FSRB(y,X,varargin)
 %       number of multivariate outliers. Journal of the Royal Statistical
 %       Society Series B, Vol. 71, pp. 201–221.
 %
+%       Chaloner and Brant (1988) Biometrika, Vol 75 pp. 651-659.
+%
 % Copyright 2008-2015.
 % Written by Marco Riani, Domenico Perrotta, Francesca Torti, Aldo
 % Corbellini and Vytis Kopustinskas (2009-2015)
 %
 %
 %<a href="matlab: docsearch('fsrb')">Link to the help page for this function</a>
-% Last modified 12-Jan-2015
+% Last modified 14-Jan-2015
 
 % Examples:
 
@@ -222,7 +246,7 @@ function [out]=FSRB(y,X,varargin)
 %}
 
 %{
-    % Fishery Example with prior
+    % Fishery Example with Empirical prior
    
 nsamp=1000;
 
@@ -235,7 +259,7 @@ n=length(X);
 seq=1:n;
 one=ones(n,1);
 
-
+% frequentist Forward Search
 [out]=FSR(y,X,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n/2),'bonflev',1);
 
 FRgood=setdiff(seq,out.ListOut);
