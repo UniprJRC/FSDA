@@ -85,5 +85,5 @@ echo -e "exit(0);\n" >>test_runner2015a.m
 # '/cygdrive/c/Program Files/MATLAB/R2013b/bin/matlab'
 
 '/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
-'/cygdrive/c/Program Files/MATLAB/R2014b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2014b"
-'/cygdrive/c/Program Files/MATLAB/R2015aPrerelease/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2015a"
+# '/cygdrive/c/Program Files/MATLAB/R2014b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2014b"
+# '/cygdrive/c/Program Files/MATLAB/R2015aPrerelease/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2015a"
