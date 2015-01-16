@@ -187,7 +187,7 @@ function fanplot(out,varargin)
     X=loyalty(:,1:3);
 %}
 %
-
+%
 %{
     %FSRfan and fanplot with specified lambda
     load('loyalty.txt');
