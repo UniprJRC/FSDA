@@ -189,7 +189,6 @@ function fanplot(out,varargin)
 %
 
 %{
-    % Interactive_example
     %FSRfan and fanplot with specified lambda
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -275,6 +274,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %Example of the use of multivarfit and xlimx
     load('loyalty.txt');
     y=loyalty(:,4);
