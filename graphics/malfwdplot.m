@@ -412,6 +412,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %   Example of the use of option databrush
     %   (brushing is done only once using a rectangular selection tool)
     malfwdplot(out,'databrush',1)
