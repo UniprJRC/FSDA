@@ -279,11 +279,13 @@ function [out]  = MixSim(k,v,varargin)
     disp(out1.OmegaMap)
 
     disp('Comparison using interactive scatter plot matrices')
-    spmplot(X,id)
+    spmplot(X,id,[],'box')
     set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
+    title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
     figure
-    spmplot(X1,id1)
+    spmplot(X1,id1,[],'box')
     set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
+    title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
 %}
 
 %% User options
