@@ -1,7 +1,7 @@
 function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %regressB computes Bayesian estimates of regression parameters
 %
-%<a href="matlab: docsearch('regressB')">Link to the help function</a>
+%<a href="matlab: docsearch('regressb')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -27,10 +27,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %    R    :     p-times-p positive definite matrix
 %               which can be interepreted as X0'X0 where X0 is a n0 x p
 %               matrix coming from previous experiments (assuming that the
-%               intercept is included in the model
+%               intercept is included in the model)
 %
 %               The prior distribution of tau0 is a gamma distribution with
-%               paramters a and b, that is
+%               parameters a and b, that is
 %                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
 %                         E(tau0)= a0/b0
 %
@@ -40,9 +40,6 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               information as coming from n0 previous experiments.
 %               Therefore we assume that matrix X0 (which defines R), was
 %               made up of n0 observations.
-%
-% Optional input arguments:
-%
 %
 %  Optional input arguments:
 %
@@ -72,10 +69,18 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               be useful in scaling X0 if the prior information is chosen
 %               according to a design that is not of the appropriate size
 %               to represent the amount of prior knowledge.
-%
-%   stats:      Boolean, default=0, Additional statistics taken from the book:
-%               'Bayesian Econometrics' by Gary Koop, Chapt. 3
-%
+%   stats:      scalar. If stats =1 the following additional statistics are
+%               computed:
+%               1) Bayesian p-values
+%               2) highest posterior density intervals (HPDI) for each value
+%               of input option conflev
+%               3) posterior odds for beta_j=0
+%               4) posterior model probability of the model which excludes
+%               variable j
+%  conflev:     vector which contains the confidence levels to be used to
+%               compute HPDI. This input option is used just if input
+%               stats=1. The default value of conflev is [0.95 0.99] that
+%               is 95% and 99% HPDI confidence intervals are computed
 %
 % Output:
 %
@@ -104,9 +109,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %       res :   n1-times-2 matrix
 %               1st column = raw residuals
 %               res(i,1) is computed as y(i) - X(i,:)*beta1 where beta1 is
-%               computed using the units forming subset
-%               In the Bayesian approach are they are the posterior means of the \epsilon_i
-%               and can be interpreted as point estimates of the \epsilon_i
+%               computed using the units forming subset.
+%               In the Bayesian approach they are the posterior means of
+%               the \epsilon_i and can be interpreted as point estimates of
+%               the \epsilon_i
 %               2nd col = deletion residuals (just computed for the units
 %               which do not form the subset).
 %               res(i,2) with i \not \in  subset
@@ -115,11 +121,32 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               where
 %               hii = X(i,:)* (c*R + Xm'*Xm)^{-1} * X(i,:)'
 %
-%   probpos:    Posterior Odds probability for \beta_j=0
-%   bhpdi95:    Bayesian Highest Posterior Density Intervals, 95% quantiles 
-%   bhpdi99:    Bayesian Highest Posterior Density Intervals, 99% quantiles 
-
-% See also FSRmmd.m,
+%       The additional output which follows is produced just if input
+%       scalar stats is equal 1
+%
+%     Bpval :   k-by-1 vector containing Bayesian p-values.
+%               p-value = P(|t| > | \hat \beta se(beta) |)
+%               = prob. of beta different from 0
+%    Bhpd   :   k-by-2*length(conflev) matrix. 
+%               1st column = lower bound of HPDI associated with conflev(1)
+%               2st column = upper bound of HPDI associated with conflev(1)
+%               ...
+%               2*length(conflev)-1 column = lower bound of HPDI associated
+%               with conflev(end)
+%               2*length(conflev) column (last column) = upper bound of
+%               HPDI associated with conflev(end)
+%  postodds :   k-by-1 vector which contains posterior odds for betaj=0
+%               For example the posterior odd of beta0=0 is p(y| model which contains
+%               all expl variables except the one associated with beta0) divided by
+%               p(y| model which contains all expl variables)
+% modelprob :   k-by-1 vector which contains  posterior model probability
+%               of the model which excludes variable j. For example if
+%               modelprob(j)= 0.28, that is if the probability of the model
+%               which does not contain variable j is equal to 0.28, it
+%               means that there is a 28% chance that beta_j=0 and a 72%
+%               chance that it is not.
+%
+% See also regress.m,
 %
 % References:
 %
@@ -130,39 +157,81 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 % Copyright 2008-2015.
 % FSDA toolbox.
 %
-%<a href="matlab: docsearch('regressB')">Link to the help function</a>
+%<a href="matlab: docsearch('regressb')">Link to the help function</a>
 %
 % Last modified 01-Jan-2015
 %
 % Examples:
 
 %{
-%Common part to all examples:
-% PRIOR INFORMATION
-p=3;
-n0=30;
-X0=[ones(n0,1) randn(n0,p-1)];
-R=X0'*X0;
-beta0=zeros(p,1);
-tau0=1;
+    %Common part to all examples:
+    % PRIOR INFORMATION
+    p=3;
+    n0=30;
+    X0=[ones(n0,1) randn(n0,p-1)];
+    R=X0'*X0;
+    beta0=zeros(p,1);
+    tau0=1;
 
 
-% SAMPLE INFORMATION
-n1=100;
-X=randn(n1,p-1);
-y=randn(n1,1);
+    % SAMPLE INFORMATION
+    n1=100;
+    X=randn(n1,p-1);
+    y=randn(n1,1);
 
-% Run regressB using all n1 data and use the default value of c=1
-out=regressB(y, X, beta0, R, tau0, n0);
-
+    % Run regressB using all n1 data and use the default value of c=1
+    out=regressB(y, X, beta0, R, tau0, n0);
 %}
 
 %{
-% Run regressB and compute new estimate of beta using just the first 20
-% observations and use a value of c equal to 1.2
-bsb=1:20;
-c=1.2;
-out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'c',c);
+    % Run regressB and compute new estimate of beta using just the first 20
+    % observations and use a value of c equal to 1.2
+    bsb=1:20;
+    c=1.2;
+    out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'c',c);
+%}
+
+%{
+    % Example of the use of input option stats
+    bsb=1:20;
+    c=1.2;
+    stats=true;
+    out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'stats',stats);
+%}
+
+%{
+    % Example of Houses Price
+    % load dataset
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
+
+    % define a Bayes structure with previous data
+    out=regressB(y, X, beta0, R, tau0, n0,'stats',1);
+    % Compare the output with Table 3.3 of Koop (2004) p. 52
 %}
 
 %% Beginning of code
@@ -174,14 +243,14 @@ end
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n1] = chkinputR(y,X,nnargin,vvarargin);
 
 % default arguments values
-bsbini=1:n;
+bsbini=1:n1;
 cini=1;
 stats=0;
 
-options=struct('intercept',1,'bsb',bsbini,'c',cini,'stats',stats);
+options=struct('intercept',1,'bsb',bsbini,'c',cini,'stats',stats,'conflev',[0.95 0.99]);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -201,29 +270,36 @@ end
 
 c=options.c;
 bsb=options.bsb;
+stats=options.stats;
 
 nbsb=numel(bsb);
 Xbsb=X(bsb,:);
 ybsb=y(bsb,:);
 
-if nbsb>0 && nbsb<n;
-    aco=norminv(0.5*(1+nbsb/n));
-    corr=1-2*(n./nbsb).*aco.*normpdf(aco);
+if nbsb>0 && nbsb<n1;
+    aco=norminv(0.5*(1+nbsb/n1));
+    corr=1-2*(n1./nbsb).*aco.*normpdf(aco);
     corr=sqrt(corr);
 else
     corr=1;
 end
 
-cRX1=(c*R+Xbsb'*Xbsb);
-cRX1inv=inv(cRX1);
+% if stats=1 compute the ingredients to compute Bayesian confidence
+% (credible) intervals
+if stats==1
+    cRXX1=(c*R+Xbsb'*Xbsb);
+    cRXX1inv=inv(cRXX1);
+end
+
 Xbsb = Xbsb/corr;
 ybsb=ybsb/corr;
 
 
 % beta1=inv(c*R+Xbsb'*Xbsb)*(c*R*beta0+Xbsb'*ybsb);
-cRX=(c*R+Xbsb'*Xbsb);
-cRXinv=inv(cRX);
-beta1=cRXinv*(c*R*beta0+Xbsb'*ybsb); %#ok<MINV>
+XXbsb=Xbsb'*Xbsb;
+cRXX=(c*R+XXbsb);
+cRXXinv=inv(cRXX);
+beta1=cRXXinv*(c*R*beta0+Xbsb'*ybsb); %#ok<MINV>
 
 % The posterior distribution of \tau  is gamma distribution with parameters
 % a1 and b1
@@ -235,22 +311,22 @@ b1 = 0.5 * ( n0 / tau0 + ((ybsb-Xbsb*beta1)'*ybsb -beta1'*R*beta0) +beta0'*R*bet
 tau1=a1/b1;
 
 % covbeta1 = (1/tau1) * inv(c*R + Xbsb'*Xbsb);
-covbeta1 = (1/tau1)*cRXinv; %#ok<MINV>
+covbeta1 = (1/tau1)*cRXXinv; %#ok<MINV>
 
-res=nan(n,2);
+res=nan(n1,2);
 
 res(:,1)=y-X*beta1;
 
 
-if nbsb<n
-    seq=1:n;
+if nbsb<n1
+    seq=1:n1;
     ncl=setdiff(seq,bsb);
     Xncl = X(ncl,:);
     
     % hi= element i,i of matrix H = Xncl * (c*R + Xm'*Xm)^{-1} * Xncl'
     % hi = X(i,:)* (c*R + Xbsb'*Xbsb)^{-1} * X(i,:)'
     % with i \not in bsb
-    hi = sum((Xncl*cRXinv).*Xncl,2);   %#ok<MINV>
+    hi = sum((Xncl*cRXXinv).*Xncl,2);   %#ok<MINV>
     
     res(ncl,2) = sqrt(tau1)*(res(ncl,1)./(1+hi))/corr;
     % res(ncl,3)= res(ncl,2)/corr;
@@ -260,29 +336,93 @@ if stats==1
     %posterior probability that each element of beta is positive
     %as well as 95 and 99 HPDIs for each element of beta
     k=length(beta1);
-    probpos=zeros(k,1);
-    bhpdi95=zeros(k,2);
-    bhpdi99=zeros(k,2);
     s12=1/abs(tau1);
-    v1=n0+n;
-    %
-    % get quantiles of t for calculating HPDIs
-    invcdf95=tdis_inv(.975,v1);
-    invcdf99=tdis_inv(.995,v1);
-    %
-    for i = 1:k
-        tnorm = -beta1(i,1)/sqrt(s12*cRX1inv(i,i));
-        probpos(i,1) = 1 - tdis_cdf(tnorm,v1);
-        % column 1
-        bhpdi95(i,1) = beta1(i,1)-invcdf95*sqrt(s12*cRX1inv(i,i));
-        % column 2
-        bhpdi95(i,2) = beta1(i,1)+invcdf95*sqrt(s12*cRX1inv(i,i));
-        bhpdi99(i,1) = beta1(i,1)-invcdf99*sqrt(s12*cRX1inv(i,i));
-        bhpdi99(i,2) = beta1(i,1)+invcdf99*sqrt(s12*cRX1inv(i,i));
+    n0nbsb=n0+nbsb;
+    
+    % Bpval = Bayesian p-values
+    % p-value = P(|t| > | \hat \beta se(beta) |)
+    % = prob. of beta different from 0
+    ci=sqrt(s12*diag(cRXX1inv));
+    tstat = -abs(beta1)./ci;
+    Bpval = 2*tcdf(tstat,n0nbsb);
+    
+    
+    % Compute highest posterior density interval for each value of
+    % vector conflev
+    conflev=options.conflev;
+    conflev=1-(1-conflev)/2;
+    invcdf=tinv(conflev,n0nbsb);
+    Bhpd=zeros(k,2*length(conflev));
+    
+    % The first two columns of matrix Bhpd refer to conflev(1)
+    % Columns three and four of matrix Bhpd refer to conflev(2) ...
+    for j=1:length(conflev)
+        Bhpd(:,j*2-1:j*2)=[ beta1-invcdf(j)*ci  beta1+invcdf(j)*ci];
     end
     
-    % output structure with additional statistics
-    % see Gary Koop Book
+    
+    % Computation of posterior odds for betaj=0
+    
+    %log of marginal likelihood for the model if prior is informative
+    s02=1/tau0;
+    Rinv=inv(R);
+    % bols = ols beta coefficients
+    bols=Xbsb\ybsb;
+    % df = degrees of freedom
+    df=nbsb-k;
+    % resols = ols residuals of units forming subset
+    resols=(ybsb-Xbsb*bols);
+    % estimate of sigma^2 using units of the subsets
+    s2 = resols'*resols/df;
+    % deltab = difference between beta ols and beta of the prior
+    deltab=(bols-beta0);
+    % v1s12 = ingredient to compute the marginal likelihood (see lmarglik
+    % below). v1s12 is nothing but equation (3.33), p. 41 of Koop (2004)
+    v1s12 = n0*s02 + df*s2 + deltab'* ((Rinv + inv(XXbsb))\deltab);
+    % logcj = log of (cj) see equation (3.35), p. 41 of Koop (2004)
+    logcj=gammaln(.5*n0nbsb) + .5*n0*log(n0*s02)- gammaln(.5*n0) -.5*nbsb*log(pi);
+    % lmarglik = log of the marginal likelihood for the full modell
+    % lmarglik = log (y|full model which contains all expl variables)
+    lmarglik=logcj + .5*log(det(cRXX1inv)/det(Rinv)) - .5*n0nbsb*log(v1s12);
+    
+    
+    % postodds = vector which contains posterior odds for betaj=0
+    % For example the posteriorodd of beta0=0 is p(y| model which contains
+    % all expl variables except the one associated with beta0) divided by
+    % p(y| model which contains all expl variables)
+    postodds=zeros(k,1);
+    seq1k=1:k;
+    for j=seq1k
+        selj=setdiff(seq1k,j);
+        Rj=R(selj,selj);
+        Xbsbj=Xbsb(:,selj);
+        Rinvj=inv(Rj);
+        cRXX1inv=inv(c*Rj+Xbsbj'*Xbsbj);
+        beta0j=beta0(selj);
+        bolsj=Xbsbj\ybsb;
+        resolsj=ybsb-Xbsbj*bolsj;
+        s2j = resolsj'*resolsj/(nbsb-(k-1));
+        v1s12 = n0*s02 + (df+1)*s2j + (bolsj-beta0j)'* ((Rinvj + inv(Xbsbj'*Xbsbj))\(bolsj-beta0j));
+        % v1s12 = v0*s02 + v*s2 + (bols-beta0)'*inv(capv0 + inv(X'*X))*(bols-beta0);
+        logcj=gammaln(.5*n0nbsb) + .5*n0*log(n0*s02)- gammaln(.5*n0) -.5*nbsb*log(pi);
+        % lmarglikj = log of the marginal likelihood for the model
+        % which does not contain variable j
+        % lmarglik = log (y|model which does not contain variable j)
+        lmarglikj=logcj + .5*log(det(cRXX1inv)/det(Rinvj)) - .5*n0nbsb*log(v1s12);
+        postodds(j)=exp(lmarglikj-lmarglik);
+        % Remark: The noninformative choice, p(M_1)=p(M_2)=0.5 is commonly made
+        % where  p(M_1) is the model without variable j and p(M_2) is the
+        % full model with all the explanatory variables
+    end
+    
+    % Remark: in order to obtain the posterior model probabilities for each
+    % restricted model it is enough to do the following calculation
+    % For example if modelprob(j)= 0.28, that is if the probability of the
+    % model which does not contain variable j is equal to 0.28, it means
+    % that there is a 28% chance that beta_j=0 and a 72% chance that it is
+    % not.
+    modelprob = postodds./(1+postodds);
+    
     out=struct;
     out.beta1=beta1;
     out.tau1=tau1;
@@ -290,9 +430,10 @@ if stats==1
     out.a1=a1;
     out.b1=b1;
     out.res=res;
-    out.probpos=probpos;
-    out.bhpdi95=bhpdi95;
-    out.bhpdi99=bhpdi99;
+    out.Bpval=Bpval;
+    out.Bhpd=Bhpd;
+    out.postodds=postodds;
+    out.modelprob=modelprob;
 else
     % ordinary output structure
     out=struct;
