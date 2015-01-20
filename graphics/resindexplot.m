@@ -178,6 +178,7 @@ function resindexplot(residuals,varargin)
 %}
 
 %{
+    % Interactive_example
     databrush=struct;
     databrush.selectionmode='Brush'; % Brush selection
     databrush.persist='on'; % Enable repeated mouse selections
