@@ -423,6 +423,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %   Example of the use of brush using a rectangular selection tool and
     %   a cyan colour
     databrush=struct;
@@ -432,6 +433,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %   Example of the use of brush using multile selection circular tools
     databrush=struct;
     databrush.selectionmode='Brush';
@@ -439,6 +441,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %   Example of the use of brush using lasso selection tool and fleur
     %   pointer
     databrush=struct;
@@ -448,6 +451,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %   Example of the use of rectangular brush with superimposed labels
     %   for the brushed units and persistent labels in the plot which has
     %   been brushed
@@ -463,6 +467,7 @@ function plotopt=malfwdplot(out,varargin)
 %   (that is brushing can be done multiple times)
 %
 %{
+    % Interactive_example
     %   Example of the use of persistent non cumulative brush. Every time a
     %   brushing action is performed previous highlightments are removed
     databrush=struct;
@@ -474,6 +479,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example
     %   Example of the use of persistent cumulative brush. Every time a
     %   brushing action is performed current highlightments are added to
     %   previous highlightments
