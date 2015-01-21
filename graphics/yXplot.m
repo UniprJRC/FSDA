@@ -305,8 +305,8 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 %
 %{
-%   Example of the use of brush using multile selection circular tools
 % Interactive_example
+%   Example of the use of brush using multile selection circular tools
     yXplot(out,'databrush',{'selectionmode' 'Brush'})
 %}
 %
