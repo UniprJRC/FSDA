@@ -48,7 +48,8 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %      bsb :    m x 1 vector containing the units forming subset.
 %               The default value of bsb is 1:n1, that is all n1 units are
 %               used to compute beta1
-%               If bsb=NaN just prior information is used
+%               REMARK: if bsb='' (empty value) just prior information is
+%               used
 %      c  :     scalar between 0 (excluded) and 1 (included) which can be
 %               used to control the prior information
 %               about beta. The covariance matrix of the prior distribution
@@ -152,10 +153,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %   Chaloner and Brant (1988) Biometrika, Vol 75 pp. 651-659.
 %
-%   Gary Koop, Bayesian Econometrics (2003) Chapt. 3
+%   Koop G., Bayesian Econometrics (2003) Chapt. 3, WIley, NJ
 %
-% Copyright 2008-2015.
-% FSDA toolbox.
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %<a href="matlab: docsearch('regressb')">Link to the help function</a>
 %
@@ -229,7 +230,6 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
     R(5,5)=.6;
     R=inv(R);
 
-    % define a Bayes structure with previous data
     out=regressB(y, X, beta0, R, tau0, n0,'stats',1);
     % Compare the output with Table 3.3 of Koop (2004) p. 52
 %}

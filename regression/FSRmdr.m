@@ -50,7 +50,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %  constr :     r x 1 vector which contains the list of units which are
 %               forced to join the search in the last r steps. The default
 %               is constr=''.  No constraint is imposed
-% bsbmfullrank :scalar which specifies how to behave in case subset at step 
+% bsbmfullrank :scalar which specifies how to behave in case subset at step
 %               m (say bsbm) produces a non singular X. More precisely,
 %               this options controls what to do when rank(X(bsbm,:)) is
 %               smaller then number of explanatory variables. If
@@ -175,7 +175,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 
 %{
     % In this example the units forming subset are stored just for
-    % selected steps 
+    % selected steps
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'bsbsteps',[30 60]);
     % BB has just two columns
     % First column contains information about units forming subset at step m=30
@@ -290,9 +290,9 @@ ncl=setdiff(seq,bsb);
 % of the search
 r=[seq zeros(n,1)];
 
-% If n is very large, the step of the search is printed every 100 step
-% seq100 is linked to printing
-seq100=100*(1:1:ceil(n/100));
+% If n is very large (>500), the step of the search is printed every 500 step
+% seq500 is linked to printing
+seq500=500*(1:1:ceil(n/500));
 
 % Matrix BB will contain the beta coefficients in each step of the fwd
 % search. The first row will contain the units forming initial subset
@@ -310,11 +310,11 @@ mdr=[(init1:n-1)'  NaN(n-init1,1)];      %initial value of mdr is set to NaN
 
 % Matrix BB will contain the units forming subset in each step of the
 % forward search. The first column contains information about units forming subset at
-% step init1. 
+% step init1.
 if bsbsteps == 0
-BB = NaN(n,n-init1+1);
+    BB = NaN(n,n-init1+1);
 else
-BB = NaN(n,length(bsbsteps));
+    BB = NaN(n,length(bsbsteps));
 end
 
 % ij = index which is linked with the columns of matrix BB. During the
@@ -338,13 +338,12 @@ else
         
         
         
-        % if n>200 show every 100 steps the fwd search index
-        if msg==1 && n>500;
-            if length(intersect(mm,seq100))==1;
+        % if n>5000 show every 500 steps the fwd search index
+        if msg==1 && n>5000;
+            if length(intersect(mm,seq500))==1;
                 disp(['m=' int2str(mm)]);
             end
         end
-        
         
         
         NoRankProblem=(rank(Xb) == p);
@@ -406,8 +405,8 @@ else
         if (mm>=init1);
             % Store units belonging to the subset
             if intersect(mm,bsbsteps)==mm
-            BB(bsb,ij)=bsb;
-            ij=ij+1;
+                BB(bsb,ij)=bsb;
+                ij=ij+1;
             end
             
             if NoRankProblem

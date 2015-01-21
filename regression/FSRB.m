@@ -41,24 +41,6 @@ function [out]=FSRB(y,X,varargin)
 %
 %   intercept   : If 1, a model with constant term will be fitted (default),
 %                 if 0, no constant term will be included.
-%           h   : The number of observations that have determined the least
-%                 trimmed squares estimator. h is an integer greater or
-%                 equal than p but smaller then n. Generally if the purpose
-%                 is outlier detection h=[0.5*(n+p+1)] (default value). h
-%                 can be smaller than this threshold if the purpose is to find
-%                 subgroups of homogeneous observations.
-%       nsamp   : Number of subsamples which will be extracted to find the
-%                 robust estimator. If nsamp=0 all subsets will be extracted.
-%                 They will be (n choose p).
-%                 Remark: if the number of all possible subset is <1000 the
-%                 default is to extract all subsets otherwise just 1000.
-%       lms     : Scalar or vector.
-%                 If lms=1 (default) Least Median of Squares is
-%                 computed,
-%                 elseif lms is a scalar different from 1 Least trimmed of
-%                 Squares is computed.
-%                 else if lms is a vector it contains the list of units
-%                 forming the initial subset
 %       plots   : Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
@@ -72,15 +54,6 @@ function [out]=FSRB(y,X,varargin)
 %                 init is not specified it set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%       exact   : scalar, if it is equal to 1 the calculation of the quantiles
-%                 of the T and F distribution is based on functions finv
-%                 and tinv from the Matlab statistics toolbox, else the
-%                 calculations of the former quantiles is based on
-%                 functions invcdff and invcdft.
-%                 The solution has a tolerance of 1e-8 (change variable tol
-%                 in files invcdff.m and invcdft.m if required
-%                 Remark: the use of functions tinv and finv is more precise
-%                 but requires more time.
 %       nocheck : Scalar. If nocheck is equal to 1 no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
@@ -158,10 +131,10 @@ function [out]=FSRB(y,X,varargin)
 %  The output consists of a structure 'out' containing the following fields:
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
-% out.mdr    =  (n-init) x 2 matrix
+% out.mdrB    =  (n-init) x 2 matrix
 %               1st col = fwd search index
-%               2nd col = value of minimum deletion residual in each step
-%               of the fwd search
+%               2nd col = value of Bayesian minimum deletion residual in
+%               each step of the fwd search
 % out.Un     =  (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
@@ -182,20 +155,16 @@ function [out]=FSRB(y,X,varargin)
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
 %
-% See also: FSReda, LXS.m
+% See also: FSRBmdr, LXS.m
 %
 % References:
-%
-%       Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
-%       number of multivariate outliers. Journal of the Royal Statistical
-%       Society Series B, Vol. 71, pp. 201–221.
 %
 %       Chaloner and Brant (1988) Biometrika, Vol 75 pp. 651-659.
 %
 % Copyright 2008-2015.
 %
-% Written by Marco Riani, Domenico Perrotta, Francesca Torti, Aldo
-% Corbellini and Vytis Kopustinskas (2009-2015)
+% Copyright 2008-2014.
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearch('fsrb')">Link to the help page for this function</a>
@@ -212,9 +181,7 @@ function [out]=FSRB(y,X,varargin)
     % setup parameters
     n=size(hprice,1);
     y=hprice(:,1);
-    x=hprice(:,2:5);
-    % we also add manually the intercept
-    X=[ones(n,1) x];
+    X=hprice(:,2:5);
     n0=5;
 
     % set \beta components
@@ -242,7 +209,6 @@ function [out]=FSRB(y,X,varargin)
     bayes.n0=n0;
     bayes.beta0=beta0;
     bayes.tau0=tau0;
-    intercept=0;
 
     % function call
     outBA=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)
@@ -251,82 +217,82 @@ function [out]=FSRB(y,X,varargin)
 %{
     % Fishery Example with Empirical prior
    
-nsamp=1000;
+    nsamp=1000;
 
-% Load data w/Spain
-[M,~,~]=xlsread('lobsterIDyears.xlsx','2002ws');
-y=M(:,17);
-X=M(:,15);
+    % Load data w/Spain
+    [M,~,~]=xlsread('lobsterIDyears.xlsx','2002ws');
+    y=M(:,17);
+    X=M(:,15);
 
-n=length(X);
-seq=1:n;
-one=ones(n,1);
+    n=length(X);
+    seq=1:n;
+    one=ones(n,1);
 
-% frequentist Forward Search
-[out]=FSR(y,X,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n/2),'bonflev',1);
+    % frequentist Forward Search
+    [out]=FSR(y,X,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n/2),'bonflev',1);
 
-FRgood=setdiff(seq,out.ListOut);
+    FRgood=setdiff(seq,out.ListOut);
 
-Xgood=[ones(length(FRgood),1) X(FRgood,:)];
-ygood=y(FRgood);
-bgood=Xgood\ygood;
+    Xgood=[ones(length(FRgood),1) X(FRgood,:)];
+    ygood=y(FRgood);
+    bgood=Xgood\ygood;
 
 
-resF=(y-[ones(length(X),1) X]*bgood).^2;
-resFout=resF(out.ListOut);
+    resF=(y-[ones(length(X),1) X]*bgood).^2;
+    resFout=resF(out.ListOut);
 
-sel=resFout<250^2;
-% units to add
-unitsFadd=out.ListOut(sel);
-if ~isempty(unitsFadd)
-    
-    FRgood1=[FRgood unitsFadd];
-else
-    FRgood1=FRgood;
-end
-SFfinal=resF(FRgood);
-SFfinal=sum(SFfinal)/(length(SFfinal)-2);
+    sel=resFout<250^2;
+    % units to add
+    unitsFadd=out.ListOut(sel);
+    if ~isempty(unitsFadd)
 
-% quelli in mezzo
-halfbad=setdiff(out.ListOut, unitsFadd);
-good=setdiff(seq,out.ListOut);
+        FRgood1=[FRgood unitsFadd];
+    else
+        FRgood1=FRgood;
+    end
+    SFfinal=resF(FRgood);
+    SFfinal=sum(SFfinal)/(length(SFfinal)-2);
 
-% find prior \beta ....
-Xgood=[ones(length(good),1) X(good,:)];
-ygood=y(good);
-bgood=Xgood\ygood;
+    % quelli in mezzo
+    halfbad=setdiff(out.ListOut, unitsFadd);
+    good=setdiff(seq,out.ListOut);
 
-% ... and \sigma^2
-% i residui sono solo sulle unità non outliers!!!!
+    % find prior \beta ....
+    Xgood=[ones(length(good),1) X(good,:)];
+    ygood=y(good);
+    bgood=Xgood\ygood;
 
-res=(ygood-Xgood*bgood).^2;
-S2=sum(res)/(length(res)-2);
+    % ... and \sigma^2
+    % i residui sono solo sulle unità non outliers!!!!
 
-% start bayesian part
+    res=(ygood-Xgood*bgood).^2;
+    S2=sum(res)/(length(res)-2);
 
-% definitions of bayes structure (beta,R,tau0)
-bayes=struct;
-bayes.beta0=bgood;
-tau0=1/S2;
-bayes.tau0=tau0;
+    % start bayesian part
 
-R=Xgood'*Xgood;
-%bayes.n0b=size(Xgood,1);
-bayes.n0=size(FRgood1',1);
+    % definitions of bayes structure (beta,R,tau0)
+    bayes=struct;
+    bayes.beta0=bgood;
+    tau0=1/S2;
+    bayes.tau0=tau0;
 
-bayes.R=R;
+    R=Xgood'*Xgood;
+    %bayes.n0b=size(Xgood,1);
+    bayes.n0=size(FRgood1',1);
 
-% Load data w/Spain
-[M1,~,~]=xlsread('lobsterIDyears.xlsx','2003ws');
+    bayes.R=R;
 
-y1=M1(:,17);
-X1=M1(:,15);
+    % Load data w/Spain
+    [M1,~,~]=xlsread('lobsterIDyears.xlsx','2003ws');
 
-n1=length(X1);
-seq=1:n1;
-one=ones(n1,1);
+    y1=M1(:,17);
+    X1=M1(:,15);
 
-outBA=FSRB(y1,X1,'bayes',bayes,'msg',0,'plots',1,'init',round(n1/2),'bonflev',1);
+    n1=length(X1);
+    seq=1:n1;
+    one=ones(n1,1);
+
+    outBA=FSRB(y1,X1,'bayes',bayes,'msg',0,'plots',1,'init',round(n1/2),'bonflev',1);
 %}
 
 
@@ -371,7 +337,7 @@ bayesdef.R=eye(p+1);
 bayesdef.tau0=1;
 bayesdef.n0=n;
 
-   
+
 options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',1,...
     'init',init,'exact',1,...
@@ -452,31 +418,21 @@ quant=[0.99;0.999;0.9999;0.99999;0.01;0.5;0.00001];
 % Thus, Set the columns of gmin where the theoretical quantiles are located.
 [c99 , c999 , c9999 , c99999 , c001 , c50] = deal(2,3,4,5,6,7);
 
+[mdrB,Un,bb,~,~] = FSRBmdr(y, X, beta0, R, tau0, n0,'nocheck',1);
 
 
-% Compute Minimum Deletion Residual for each step of the search
-% [mdr,Un,bb] = FSRmdrbayes3(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg);
-
-%[mdr,Un,bb] = FSRmdrlsbayes3(y, X(:,2:end), beta0, R, tau0, n0, '');
-if intercept==1
-    [Bmdr,Un,bb,BBayes,S2Bayes] = FSRBmdr(y, X(:,2:end), beta0, R, tau0, n0,'', 'intercept', intercept);
-else
-    [Bmdr,Un,bb,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0,'', 'intercept', intercept);
-end
-
-
-bool=Bmdr(:,1)>=init;
-Bmdr=Bmdr(bool,:);
+bool=mdrB(:,1)>=init;
+mdrB=mdrB(bool,:);
 gmin=gmin(gmin(:,1)>=init,:);
 
 
 % Store in nout the number of times the observed mdr (d_min) lies above:
 [out99 , out999 , out9999 , out99999 , out001] = deal( ...
-    Bmdr(Bmdr(:,2)>gmin(:,c99),:) , ...       % the 99% envelope
-    Bmdr(Bmdr(:,2)>gmin(:,c999),:) , ...      % the 99.9% envelope
-    Bmdr(Bmdr(:,2)>gmin(:,c9999),:) , ...     % the 99.99% envelope
-    Bmdr(Bmdr(:,2)>gmin(:,c99999),:) , ...    % the 99.999% envelope
-    Bmdr(Bmdr(:,2)<gmin(:,c001),:) );         % the 1% envelope
+    mdrB(mdrB(:,2)>gmin(:,c99),:) , ...       % the 99% envelope
+    mdrB(mdrB(:,2)>gmin(:,c999),:) , ...      % the 99.9% envelope
+    mdrB(mdrB(:,2)>gmin(:,c9999),:) , ...     % the 99.99% envelope
+    mdrB(mdrB(:,2)>gmin(:,c99999),:) , ...    % the 99.999% envelope
+    mdrB(mdrB(:,2)<gmin(:,c001),:) );         % the 1% envelope
 
 nout = [[1 99 999 9999 99999]; ...
     [size(out001,1) size(out99,1) size(out999,1) size(out9999,1) size(out99999,1)]];
@@ -499,7 +455,7 @@ end
 istep = n-floor(13*sqrt(n/200));
 
 %% Part 1. Signal detection and validation
-nmdr=size(Bmdr,1);
+nmdr=size(mdrB,1);
 if nmdr<4
     error('ratio n/p too small; modify init (i.e. decrease initial subset size)')
 end
@@ -520,7 +476,7 @@ end
 
 % Signal detection loop
 for i=3:nmdr;
- 
+    
     % Check if signal must be based on consecutive exceedances of envelope
     % of mdr or on exceedance of global Bonferroni level
     if isempty(bonflev)
@@ -529,32 +485,32 @@ for i=3:nmdr;
             % Extreme triplet or an extreme single value
             % Three consecutive values of d_min above the 99.99% threshold or 1
             % above 99.999% envelope
-            if ((Bmdr(i,2)>gmin(i,c9999) && Bmdr(i+1,2)>gmin(i+1,c9999) && Bmdr(i-1,2)>gmin(i-1,c9999)) || Bmdr(i,2)>gmin(end,c99) || Bmdr(i,2)>gmin(i,c99999));
+            if ((mdrB(i,2)>gmin(i,c9999) && mdrB(i+1,2)>gmin(i+1,c9999) && mdrB(i-1,2)>gmin(i-1,c9999)) || mdrB(i,2)>gmin(end,c99) || mdrB(i,2)>gmin(i,c99999));
                 if msg
-                    disp(['Tentative signal in central part of the search: step m=' int2str(Bmdr(i,1)) ' because']);
+                    disp(['Tentative signal in central part of the search: step m=' int2str(mdrB(i,1)) ' because']);
                 end
-                if (Bmdr(i,2)>gmin(i,c9999) && Bmdr(i+1,2)>gmin(i+1,c9999) && Bmdr(i-1,2)>gmin(i-1,c9999));
+                if (mdrB(i,2)>gmin(i,c9999) && mdrB(i+1,2)>gmin(i+1,c9999) && mdrB(i-1,2)>gmin(i-1,c9999));
                     if msg
-                        disp(['rmin('  int2str(Bmdr(i,1)) ',' int2str(n) ')>99.99% and rmin(' int2str(Bmdr(i-1,1)) ',' int2str(n) ')>99.99% and rmin(' int2str(Bmdr(i+1,1)) ',' int2str(n) ')>99.99%']);
+                        disp(['rmin('  int2str(mdrB(i,1)) ',' int2str(n) ')>99.99% and rmin(' int2str(mdrB(i-1,1)) ',' int2str(n) ')>99.99% and rmin(' int2str(mdrB(i+1,1)) ',' int2str(n) ')>99.99%']);
                     end
-                    strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99.99\%$ and $r_{min}(' int2str(Bmdr(i-1,1)) ',' int2str(n) ')>99.99\%$ and $r_{min}(' int2str(Bmdr(i+1,1)) ',' int2str(n) ')>99.99\%$'];
-                    mdrsel=Bmdr(i-1:i+1,1:2);
+                    strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99.99\%$ and $r_{min}(' int2str(mdrB(i-1,1)) ',' int2str(n) ')>99.99\%$ and $r_{min}(' int2str(mdrB(i+1,1)) ',' int2str(n) ')>99.99\%$'];
+                    mdrsel=mdrB(i-1:i+1,1:2);
                 end
                 
-                if (Bmdr(i,2)>gmin(i,c99999));
+                if (mdrB(i,2)>gmin(i,c99999));
                     if msg
-                        disp(['rmin(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99.999%']);
+                        disp(['rmin(' int2str(mdrB(i,1)) ',' int2str(n) ')>99.999%']);
                     end
-                    strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99.999\%$'];
-                    mdrsel=Bmdr(i-1:i+1,1:2);
+                    strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99.999\%$'];
+                    mdrsel=mdrB(i-1:i+1,1:2);
                 end;
                 
-                if (Bmdr(i,2)>gmin(end,c99));
+                if (mdrB(i,2)>gmin(end,c99));
                     if msg
-                        disp(['rmin(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the central part of the search.']);
+                        disp(['rmin(' int2str(mdrB(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the central part of the search.']);
                     end
-                    strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
-                    mdrsel=Bmdr(i,1:2);
+                    strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
+                    mdrsel=mdrB(i,1:2);
                     NoFalseSig=1; % i.e., no need of further validation
                 end;
                 
@@ -562,53 +518,53 @@ for i=3:nmdr;
                 
                 signal=1;
                 
-            elseif (Bmdr(i,2)<gmin(i,end)) && lowexceed==1  % && mdr(i,1)>round(n/2); % exceedance of the lower band
+            elseif (mdrB(i,2)<gmin(i,end)) && lowexceed==1  % && mdr(i,1)>round(n/2); % exceedance of the lower band
                 if msg
-                    disp(['rmin(' int2str(Bmdr(i,1)) ',' int2str(n) ')<0.00001% Bonferroni signal in the central part of the search.']);
+                    disp(['rmin(' int2str(mdrB(i,1)) ',' int2str(n) ')<0.00001% Bonferroni signal in the central part of the search.']);
                 end
-                strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')<0.00001\%$  (Bonferroni signal)'];
-                mdrsel=Bmdr(i,1:2);
+                strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')<0.00001\%$  (Bonferroni signal)'];
+                mdrsel=mdrB(i,1:2);
                 NoFalseSig=1; % i.e., no need of further validation
                 signal=2;
-                mdag=Bmdr(i,1);
+                mdag=mdrB(i,1);
             else
             end
-        elseif i<size(Bmdr,1)-1; % FINAL PART OF THE SEARCH
+        elseif i<size(mdrB,1)-1; % FINAL PART OF THE SEARCH
             % Extreme couple adjacent to an exceedance
             % Two consecutive values of mdr above the 99.99% envelope and 1 above 99%
-            if ((Bmdr(i,2)>gmin(i,c999) && Bmdr(i+1,2)>gmin(i+1,c999) && Bmdr(i-1,2)>gmin(i-1,c99)) || (Bmdr(i-1,2)>gmin(i-1,c999) && Bmdr(i,2)>gmin(i,c999) && Bmdr(i+1,2)>gmin(i+1,c99)) || Bmdr(i,2)>gmin(end,c99) || Bmdr(i,2)>gmin(i,c99999));
+            if ((mdrB(i,2)>gmin(i,c999) && mdrB(i+1,2)>gmin(i+1,c999) && mdrB(i-1,2)>gmin(i-1,c99)) || (mdrB(i-1,2)>gmin(i-1,c999) && mdrB(i,2)>gmin(i,c999) && mdrB(i+1,2)>gmin(i+1,c99)) || mdrB(i,2)>gmin(end,c99) || mdrB(i,2)>gmin(i,c99999));
                 % 'Signal in final part of the search: step '; disp(mdr(i,1)); 'because';
-                if (Bmdr(i,2)>gmin(i,c999) && Bmdr(i+1,2)>gmin(i+1,c999) && Bmdr(i-1,2)>gmin(i-1,c99));
+                if (mdrB(i,2)>gmin(i,c999) && mdrB(i+1,2)>gmin(i+1,c999) && mdrB(i-1,2)>gmin(i-1,c99));
                     if msg
-                        disp(['rmin('  int2str(Bmdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(Bmdr(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(Bmdr(i-1,1)) ',' int2str(n) ')>99%']);
+                        disp(['rmin('  int2str(mdrB(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdrB(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdrB(i-1,1)) ',' int2str(n) ')>99%']);
                     end
-                    strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(Bmdr(i-1,1)) ',' int2str(n) ')>99\%$ and $r_{min}(' int2str(Bmdr(i+1,1)) ',' int2str(n) ')>99.9\%$'];
-                    mdrsel=Bmdr(i-1:i+1,1:2);
+                    strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdrB(i-1,1)) ',' int2str(n) ')>99\%$ and $r_{min}(' int2str(mdrB(i+1,1)) ',' int2str(n) ')>99.9\%$'];
+                    mdrsel=mdrB(i-1:i+1,1:2);
                 end
                 
-                if (Bmdr(i-1,2)>gmin(i-1,c999) && Bmdr(i,2)>gmin(i,c999) && Bmdr(i+1,2)>gmin(i+1,c99));
+                if (mdrB(i-1,2)>gmin(i-1,c999) && mdrB(i,2)>gmin(i,c999) && mdrB(i+1,2)>gmin(i+1,c99));
                     if msg
-                        disp(['rmin('  int2str(Bmdr(i-1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(Bmdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(Bmdr(i+1,1)) ',' int2str(n) ')>99%']);
+                        disp(['rmin('  int2str(mdrB(i-1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdrB(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdrB(i+1,1)) ',' int2str(n) ')>99%']);
                     end
-                    strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(Bmdr(i-1,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(Bmdr(i+1,1)) ',' int2str(n) ')>99\%$'];
-                    mdrsel=Bmdr(i-1:i+1,1:2);
+                    strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdrB(i-1,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdrB(i+1,1)) ',' int2str(n) ')>99\%$'];
+                    mdrsel=mdrB(i-1:i+1,1:2);
                 end
                 
-                if (Bmdr(i,2)>gmin(end,c99));
+                if (mdrB(i,2)>gmin(end,c99));
                     if msg
-                        disp(['rmin('  int2str(Bmdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
+                        disp(['rmin('  int2str(mdrB(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
                     end
-                    strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
-                    mdrsel=Bmdr(i:i,1:2);
+                    strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
+                    mdrsel=mdrB(i:i,1:2);
                 end
                 
                 % Extreme single value above the upper threshold
-                if Bmdr(i,2)>gmin(i,c99999);
+                if mdrB(i,2)>gmin(i,c99999);
                     if msg
-                        disp(['rmin('  int2str(Bmdr(i,1)) ',' int2str(n) ')>99.999%']);
+                        disp(['rmin('  int2str(mdrB(i,1)) ',' int2str(n) ')>99.999%']);
                     end
-                    strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99.999\%$'];
-                    mdrsel=Bmdr(i:i,1:2);
+                    strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99.999\%$'];
+                    mdrsel=mdrB(i:i,1:2);
                 end
                 
                 '------------------------------------------------';
@@ -617,44 +573,44 @@ for i=3:nmdr;
                 NoFalseSig=1;
                 signal=1;
             end
-        elseif (Bmdr(i,2)>gmin(i,c999) || Bmdr(i,2)>gmin(end,c99)) && i==size(Bmdr,1)-1;
+        elseif (mdrB(i,2)>gmin(i,c999) || mdrB(i,2)>gmin(end,c99)) && i==size(mdrB,1)-1;
             % potential couple of outliers
             signal=1;
             if msg
                 disp('Signal is in penultimate step of the search');
             end
             
-            if (Bmdr(i,2)>gmin(i,c999));
+            if (mdrB(i,2)>gmin(i,c999));
                 if msg
-                    disp(['rmin(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99.9%']);
+                    disp(['rmin(' int2str(mdrB(i,1)) ',' int2str(n) ')>99.9%']);
                 end
-                strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99.9\%$'];
+                strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99.9\%$'];
             end;
             
-            if (Bmdr(i,2)>gmin(end,c99));
+            if (mdrB(i,2)>gmin(end,c99));
                 if msg
-                    disp(['rmin('  int2str(Bmdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
+                    disp(['rmin('  int2str(mdrB(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
                 end
-                strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
+                strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
             end
-            mdrsel=Bmdr(i:i,1:2);
-        elseif  Bmdr(i,2)>gmin(i,c99) && i==size(Bmdr,1);
+            mdrsel=mdrB(i:i,1:2);
+        elseif  mdrB(i,2)>gmin(i,c99) && i==size(mdrB,1);
             % a single outlier
             signal=1;
             if msg
                 disp('Signal is in final step of the search');
             end
-            strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99\%$ at final step'];
-            mdrsel=Bmdr(i:i,1:2);
+            strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')>99\%$ at final step'];
+            mdrsel=mdrB(i:i,1:2);
             
-        elseif Bmdr(i,2)<gmin(i,end) && lowexceed==1; % exceedance of the lower extreme envelope
+        elseif mdrB(i,2)<gmin(i,end) && lowexceed==1; % exceedance of the lower extreme envelope
             signal=2;
             if msg
-                disp(['rmin('  int2str(Bmdr(i,1)) ',' int2str(n) ')<0.0001%']);
+                disp(['rmin('  int2str(mdrB(i,1)) ',' int2str(n) ')<0.0001%']);
             end
-            strplot=['$r_{min}(' int2str(Bmdr(i,1)) ',' int2str(n) ')<0.0001\%$'];
-            mdrsel=Bmdr(i:i,1:2);
-            mdag=Bmdr(i,1);
+            strplot=['$r_{min}(' int2str(mdrB(i,1)) ',' int2str(n) ')<0.0001\%$'];
+            mdrsel=mdrB(i:i,1:2);
+            mdag=mdrB(i,1);
         end
         
         %% Stage 1b: signal validation
@@ -664,15 +620,15 @@ for i=3:nmdr;
                 disp('Signal validation exceedance of upper envelopes');
             end
             % mdag is $m^\dagger$
-            mdag=Bmdr(i,1);
+            mdag=mdrB(i,1);
             
-            if Bmdr(i,1)<n-2;
+            if mdrB(i,1)<n-2;
                 % Check if the signal is incontrovertible
                 % Incontrovertible signal = 3 consecutive values of d_min >
                 % 99.999% threshold
-                if Bmdr(i,2)>gmin(i,c99999) && Bmdr(i-1,2)>gmin(i-1,c99999) &&  Bmdr(i+1,2)>gmin(i+1,c99999);
+                if mdrB(i,2)>gmin(i,c99999) && mdrB(i-1,2)>gmin(i-1,c99999) &&  mdrB(i+1,2)>gmin(i+1,c99999);
                     if msg
-                        disp(['3 consecutive values of r_min greater than 99.999% envelope in step mdag= ' int2str(Bmdr(i,1))]);
+                        disp(['3 consecutive values of r_min greater than 99.999% envelope in step mdag= ' int2str(mdrB(i,1))]);
                     end
                     NoFalseSig=1;
                     extram3='Extreme signal';
@@ -683,13 +639,13 @@ for i=3:nmdr;
             
             % if the following statement is true, observed curve of r_min is
             % above 99.99% and later is below 1%: peak followed by dip
-            if size(Bmdr,1)>mdag-Bmdr(1,1)+31;
-                if sum(Bmdr(i+1:i+31,2)<gmin(i+1:i+31,c001))>=2;
+            if size(mdrB,1)>mdag-mdrB(1,1)+31;
+                if sum(mdrB(i+1:i+31,2)<gmin(i+1:i+31,c001))>=2;
                     NoFalseSig=1;  % Peak followed by dip
                     extram2='Peak followed by dip (d_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope';
                 end;
             else
-                if sum(Bmdr(i+1:end,2) < gmin(i+1:end,c001))>=2;
+                if sum(mdrB(i+1:end,2) < gmin(i+1:end,c001))>=2;
                     NoFalseSig=1;  %Peak followed by dip in the final part of the search';
                     extram2='Peak followed by dip (r_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope)';
                 end;
@@ -705,7 +661,7 @@ for i=3:nmdr;
                 % mdr(i+1,1)=mdagger+1 observations
                 %[gval]=FSRenvmdr(mdag+1,p,'prob',0.01,'m0',mdag);
                 [gval]=FSRenvmdr(mdag+1,p,'prob',0.01,'init',mdag);
-                if Bmdr(i,2)<gval(1,2);
+                if mdrB(i,2)<gval(1,2);
                     if msg
                         disp('false signal in step');
                         disp(['mdag='  int2str(mdag)]);
@@ -734,12 +690,12 @@ for i=3:nmdr;
         end
     else
         % Outlier detection based on Bonferroni threshold
-        if (Bmdr(i,2)>bonfthresh(i,end)) && Bmdr(i,1)>floor(0.5*n);
+        if (mdrB(i,2)>bonfthresh(i,end)) && mdrB(i,1)>floor(0.5*n);
             if msg
-                disp(['mdr(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99% Bonferroni level']);
+                disp(['mdr(' int2str(mdrB(i,1)) ',' int2str(n) ')>99% Bonferroni level']);
             end
-            strplot=['$mdr(' int2str(Bmdr(i,1)) ',' int2str(n) ')>99\%$ (Bonferroni level)'];
-            mdrsel=Bmdr(i:i,1:2);
+            strplot=['$mdr(' int2str(mdrB(i,1)) ',' int2str(n) ')>99\%$ (Bonferroni level)'];
+            mdrsel=mdrB(i:i,1:2);
             
             signal=1;
             break
@@ -769,7 +725,7 @@ if plo==1 || plo ==2
     %     set(hzoom_figure1,'ActionPostCallback',@figure1_postcallback_zoom);
     
     if isempty(xlimx)
-        xl1=init-3; xl2=Bmdr(end,1);
+        xl1=init-3; xl2=mdrB(end,1);
     else
         xl1=xlimx(1);
         xl2=xlimx(2);
@@ -777,8 +733,8 @@ if plo==1 || plo ==2
     
     if isempty(ylimy)
         
-        yl1=min([gmin(:,c001);Bmdr(:,2)]);
-        yl2=max([gmin(:,c999);Bmdr(:,2)]);
+        yl1=min([gmin(:,c001);mdrB(:,2)]);
+        yl2=max([gmin(:,c999);mdrB(:,2)]);
     else
         yl1=ylimy(1);
         yl2=ylimy(2);
@@ -792,7 +748,7 @@ if plo==1 || plo ==2
     
     box('on'); hold('all');
     
-    plot(Bmdr(:,1),Bmdr(:,2));
+    plot(mdrB(:,1),mdrB(:,2));
     
     
     if isempty(bonflev)
@@ -937,18 +893,18 @@ if plo==1 || plo ==2
             strmin='Exceedance based on Bonferroni threshold';
             annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
                 PrVaCell{:});
-            msg=['$r_{min}(' num2str(Bmdr(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
+            msg=['$r_{min}(' num2str(mdrB(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
             annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msg,PrVaCell{:});
         else
             strmin='Exceedance based on user supplied threshold';
             annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
                 PrVaCell{:});
-            msg=['$r_{min}(' num2str(Bmdr(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
+            msg=['$r_{min}(' num2str(mdrB(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
             annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msg,PrVaCell{:});
         end
     end
     if signal==1
-        stem(Bmdr(i,1),Bmdr(i,2),'LineWidth',1,...
+        stem(mdrB(i,1),mdrB(i,2),'LineWidth',1,...
             'Color',[0.4784 0.06275 0.8941], 'DisplayName','Signal');
     end
 end
@@ -971,7 +927,7 @@ if signal==1 || signal==2;
             % nc is the number of columns panes in the plot
             jwind=1;
             nc=2;
-            if Bmdr(i,1)>=n-2;
+            if mdrB(i,1)>=n-2;
                 nr=1;
             else
                 nr=2;
@@ -993,20 +949,20 @@ if signal==1 || signal==2;
                 % CHECK IF STOPPING RULE IS FULFILLED
                 % ii>=size(gmin1,1)-2 = final, penultimate or antepenultimate value
                 % of the resuperimposed envelope based on tr observations
-                if Bmdr(ii,2)>gmin1(ii,c99) && ii>=size(gmin1,1)-2;
+                if mdrB(ii,2)>gmin1(ii,c99) && ii>=size(gmin1,1)-2;
                     % Condition S1
-                    mes=['$r_{min}('   int2str(Bmdr(ii,1)) ',' int2str(tr) ')>99$\% envelope'];
+                    mes=['$r_{min}('   int2str(mdrB(ii,1)) ',' int2str(tr) ')>99$\% envelope'];
                     if msg
-                        disp(['Superimposition stopped because r_{min}(' int2str(Bmdr(ii,1)) ',' int2str(tr) ')>99% envelope']);
+                        disp(['Superimposition stopped because r_{min}(' int2str(mdrB(ii,1)) ',' int2str(tr) ')>99% envelope']);
                         disp(mes);
                     end
                     sto=1;
                     break
-                elseif ii<size(gmin1,1)-2 &&  Bmdr(ii,2)>gmin1(ii,c999);
+                elseif ii<size(gmin1,1)-2 &&  mdrB(ii,2)>gmin1(ii,c999);
                     % Condition S2
-                    mes=['$r_{min}('   int2str(Bmdr(ii,1)) ',' int2str(tr) ')>99.9$\% envelope'];
+                    mes=['$r_{min}('   int2str(mdrB(ii,1)) ',' int2str(tr) ')>99.9$\% envelope'];
                     if msg
-                        disp(['Superimposition stopped because r_{min}(' int2str(Bmdr(ii,1)) ',' int2str(tr) ')>99.9% envelope']);
+                        disp(['Superimposition stopped because r_{min}(' int2str(mdrB(ii,1)) ',' int2str(tr) ')>99.9% envelope']);
                     end
                     sto=1;
                     break
@@ -1024,7 +980,7 @@ if signal==1 || signal==2;
                 % Show curve of mdr up to step tr-1 (notice that the envelope is
                 % based on tr observations. Step tr-1 in matrix mdr is
                 % (tr-1)-mdr(1,1)+1=tr-mdr(1,1)
-                plot(Bmdr(1:(tr-Bmdr(1,1)),1),Bmdr(1:(tr-Bmdr(1,1)),2));
+                plot(mdrB(1:(tr-mdrB(1,1)),1),mdrB(1:(tr-mdrB(1,1)),2));
                 
                 % Display the lines associated with 1%, 99% and 99.9% envelopes
                 line(gmin1(:,1),gmin1(:,[2 3 4]),'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
@@ -1120,9 +1076,9 @@ if signal==1 || signal==2;
         % m*=mdr(ii,1)
         % Condition H2
         % Check if stopping rule takes place at m* <m^\dagger+k
-        if (Bmdr(ii,1)<tr-1);
+        if (mdrB(ii,1)<tr-1);
             % Condition H2b and H2a
-            if sum(gmin1(ii+1:end,4)>Bmdr(ii+1:size(gmin1,1),2))>0;
+            if sum(gmin1(ii+1:end,4)>mdrB(ii+1:size(gmin1,1),2))>0;
                 if msg
                     disp(['Subsample of ' int2str(tr-1) ' units is not homogeneous because the curve was above 99.99% and later it was below 1%']);
                     disp('----------------------------------------');
@@ -1130,7 +1086,7 @@ if signal==1 || signal==2;
                 % Find m^{1%} that is the step where mdr goes below the 1%
                 % threshold for the first time
                 % ginfd = concatenate all the steps from m^*+1 to m^\dagger+k-1
-                gfind=[gmin1(i+1:end,1) gmin1(i+1:end,4)>Bmdr(i+1:size(gmin1,1),2)];
+                gfind=[gmin1(i+1:end,1) gmin1(i+1:end,4)>mdrB(i+1:size(gmin1,1),2)];
                 % select from gfind the steps where mdr was below 1% threshold
                 % gfind(1,1) contains the first step where mdr was below 1%
                 gfind=gfind(gfind(:,2)>0,1);
@@ -1139,7 +1095,7 @@ if signal==1 || signal==2;
                 if length(gfind)==1
                     tr=gfind;
                 else
-                    tr=sortrows(Bmdr(i:gfind(1,1)-Bmdr(1,1),1:2),2);
+                    tr=sortrows(mdrB(i:gfind(1,1)-mdrB(1,1),1:2),2);
                     tr=tr(end,1);
                 end
                 if msg
@@ -1181,11 +1137,11 @@ if signal==1 || signal==2;
             % CHECK IF STOPPING RULE IS FULFILLED
             % resuperimposed envelope based on tr observations is greater
             % than 0.1% threshold
-            if Bmdr(ii,2)>gmin1(ii,5);
+            if mdrB(ii,2)>gmin1(ii,5);
                 % Condition N1
-                mes=['$r_{min}('   int2str(Bmdr(ii,1)) ',' int2str(tr) ')>0.1$\% envelope'];
+                mes=['$r_{min}('   int2str(mdrB(ii,1)) ',' int2str(tr) ')>0.1$\% envelope'];
                 if msg
-                    disp(['Superimposition stopped because r_{min}(' int2str(Bmdr(ii,1)) ',' int2str(tr) ')>1% envelope']);
+                    disp(['Superimposition stopped because r_{min}(' int2str(mdrB(ii,1)) ',' int2str(tr) ')>1% envelope']);
                     disp(mes);
                 end
                 sto=1;
@@ -1207,7 +1163,7 @@ if signal==1 || signal==2;
                 % Show curve of mdr up to step tr-1 (notice that the envelope is
                 % based on tr observations. Step tr-1 in matrix mdr is
                 % (tr-1)-mdr(1,1)+1=tr-mdr(1,1)
-                plot(Bmdr(1:(tr-Bmdr(1,1)),1),Bmdr(1:(tr-Bmdr(1,1)),2));
+                plot(mdrB(1:(tr-mdrB(1,1)),1),mdrB(1:(tr-mdrB(1,1)),2));
                 
                 % Display the lines associated with 1%, 50% and 99% envelopes
                 line(gmin1(:,1),gmin1(:,2:4),'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
@@ -1302,7 +1258,7 @@ if signal==1 || signal==2;
         
         
     else
-        ndecl=n-Bmdr(i,1);
+        ndecl=n-mdrB(i,1);
     end
     
     if msg
@@ -1376,7 +1332,6 @@ end
 %% Scatter plot matrix with the outliers shown with a different symbol
 
 if plo==1 || plo==2
-    %intercept=1;
     figure;
     if isempty(options.namey)
         namey=char('y');
@@ -1416,10 +1371,10 @@ if plo==1 || plo==2
     
     % The following line adds objects to the panels of the yX
     % add2yX(H,AX,BigAx,outadd,group,ListOut,bivarfit,multivarfit,labeladd)
-   % add2yX('intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
+    add2yX('intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
 end
 
-%% Structure returned by function FSR
+%% Structure returned by function FSRB
 out=struct;
 out.ListOut=ListOut;
 
@@ -1428,13 +1383,10 @@ out.ListOut=ListOut;
 % ListIn=seq(~isnan(bb(:,end-ndecl)));
 % out.ListIn=ListIn;
 
-out.Bmdr=Bmdr;
+out.mdrB=mdrB;
 out.Un=Un;
 out.bb=bb;
 out.nout=nout;
-out.BBayes=BBayes;
-out.S2Bayes=S2Bayes;
-
 
 %% Callback functions used to "pin" quantile labels and vertical line to axes.
 
