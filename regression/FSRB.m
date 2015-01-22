@@ -219,30 +219,28 @@ function [out]=FSRB(y,X,varargin)
    
     nsamp=1000;
 
-    % Load data w/Spain
-    [M,~,~]=xlsread('lobsterIDyears.xlsx','2002ws');
-    y=M(:,17);
-    X=M(:,15);
+    % Load 2002 Fishery dataset
+    Fishery2002=load('Fishery2002.txt');
+    y=Fishery2002(:,3);
+    X=Fishery2002(:,2);
 
     n=length(X);
     seq=1:n;
-    one=ones(n,1);
-
+    
     % frequentist Forward Search
-    [out]=FSR(y,X,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n/2),'bonflev',1);
-
+    [out]=FSR(y,X,'nsamp',nsamp,'plots',0,'msg',0,'init',round(n/2),'bonflev',0.99);
+    % only the good statistical units are retained
     FRgood=setdiff(seq,out.ListOut);
-
     Xgood=[ones(length(FRgood),1) X(FRgood,:)];
     ygood=y(FRgood);
+    % bgood is obtained using only the good statistical units
     bgood=Xgood\ygood;
-
-
+    % residuals
     resF=(y-[ones(length(X),1) X]*bgood).^2;
     resFout=resF(out.ListOut);
-
-    sel=resFout<250^2;
-    % units to add
+    % the threshold of good statistical units is set at 250
+    sel=resFout<500^2;
+    % units to add to the good units subset
     unitsFadd=out.ListOut(sel);
     if ~isempty(unitsFadd)
 
@@ -252,47 +250,35 @@ function [out]=FSRB(y,X,varargin)
     end
     SFfinal=resF(FRgood);
     SFfinal=sum(SFfinal)/(length(SFfinal)-2);
-
-    % quelli in mezzo
-    halfbad=setdiff(out.ListOut, unitsFadd);
     good=setdiff(seq,out.ListOut);
 
-    % find prior \beta ....
+    % set a prior for \beta ....
     Xgood=[ones(length(good),1) X(good,:)];
     ygood=y(good);
     bgood=Xgood\ygood;
 
-    % ... and \sigma^2
-    % i residui sono solo sulle unità non outliers!!!!
-
+    % ... and for \sigma^2
     res=(ygood-Xgood*bgood).^2;
     S2=sum(res)/(length(res)-2);
 
-    % start bayesian part
-
-    % definitions of bayes structure (beta,R,tau0)
+    % start of the bayesian part
+    % definitions of bayes structure (beta,R,tau0,...)
     bayes=struct;
     bayes.beta0=bgood;
     tau0=1/S2;
     bayes.tau0=tau0;
-
     R=Xgood'*Xgood;
-    %bayes.n0b=size(Xgood,1);
     bayes.n0=size(FRgood1',1);
-
     bayes.R=R;
 
-    % Load data w/Spain
-    [M1,~,~]=xlsread('lobsterIDyears.xlsx','2003ws');
-
-    y1=M1(:,17);
-    X1=M1(:,15);
-
+    % Load 2003 Fishery dataset
+    Fishery2003=load('Fishery2002.txt');
+    y1=Fishery2003(:,3);
+    X1=Fishery2003(:,2);
     n1=length(X1);
-    seq=1:n1;
-    one=ones(n1,1);
-
-    outBA=FSRB(y1,X1,'bayes',bayes,'msg',0,'plots',1,'init',round(n1/2),'bonflev',1);
+    % Bayesian Forward Search
+    outBA=FSRB(y1,X1,'bayes',bayes,'msg',0,'plots',1,'init',round(n1/2),'bonflev',0.99);
+    outF=FSR(y1,X1,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n1/2),'bonflev',0.99);
 %}
 
 
