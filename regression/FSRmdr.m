@@ -203,7 +203,7 @@ end
 % Default for vector bsbsteps which indicates for which steps of the fwd
 % search units forming subset have to be saved
 if n<=5000
-    bsbstepdef = initdef:n;
+    bsbstepdef = 0;
 else
     bsbstepdef = [initdef 100:100:100*floor(n/100)];
 end
@@ -273,10 +273,12 @@ elseif init1>=n;
     init1=n-1;
 end
 
+
 msg=options.msg;
 constr=options.constr;
 bsbmfullrank=options.bsbmfullrank;
 bsbsteps=options.bsbsteps;
+
 
 %% Initialise key matrices
 
@@ -312,6 +314,7 @@ mdr=[(init1:n-1)'  NaN(n-init1,1)];      %initial value of mdr is set to NaN
 % forward search. The first column contains information about units forming subset at
 % step init1.
 if bsbsteps == 0
+    bsbsteps=init1:n;
     BB = NaN(n,n-init1+1);
 else
     BB = NaN(n,length(bsbsteps));
