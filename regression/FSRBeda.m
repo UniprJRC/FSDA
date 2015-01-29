@@ -1,7 +1,7 @@
 function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 %FSRBeda enables to monitor several quantities in each step of the Bayesian search
 %
-%<a href="matlab: docsearchFS('FSRBeda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsrbeda')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -39,14 +39,6 @@ function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 %               information as coming from n0 previous experiments.
 %               Therefore we assume that matrix X0 (which defines R), was
 %               made up of n0 observations.
-%   stats:      scalar. If stats =1 the following additional statistics are
-%               computed:
-%               1) Bayesian p-values
-%               2) highest posterior density intervals (HPDI) for each value
-%               of input option conflev
-%               3) posterior odds for beta_j=0
-%               4) posterior model probability of the model which excludes
-%               variable j
 %
 % Optional input arguments:
 %
@@ -66,20 +58,11 @@ function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 %               unchanged. In other words the additional column of ones for
 %               the intercept is not added. As default nocheck=0. The
 %               controls on h, alpha and nsamp still remain
-%        tstat: character string which specifies the kind of t-statistics
-%               which have to be monitored. tstat = 'trad' implies
-%               monitoring of traditional t
-%               statistics (out.Tols). In this case the estimate of \sigma^2 at step m
-%               is based on s^2_m (notice that s^2_m<<\sigma^2 when m/n is
-%               small) tstat = 'resc' (default) implies monitoring of
-%               rescaled t statistics In this scale the estimate of
-%               \sigma^2 at step m is based on s^_m / var_truncnorm(m/n)
-%               where var_truncnorm(m/n) is the variance of the truncated
-%               normal distribution.
 %  conflev:     vector which contains the confidence levels to be used to
 %               compute HPDI. This input option is used just if input
 %               stats=1. The default value of conflev is [0.95 0.99] that
 %               is 95% and 99% HPDI confidence intervals are computed.
+%
 % Remark:       The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
@@ -106,9 +89,9 @@ function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 %               1st col = indexes of the units forming subset in the initial step
 %               ...
 %               last column = units forming subset in the final step (all units)
-%   mdr:        n-init x 3 matrix which contains the monitoring of minimum
-%               deletion residual or (m+1)ordered residual  at each step of
-%               the forward search.
+%   mdr:        n-init x 3 matrix which contains the monitoring of Bayesian
+%               minimum deletion residual or (m+1)ordered residual  at each
+%               step of the forward search.
 %               1st col = fwd search index (from init to n-1)
 %               2nd col = minimum deletion residual
 %               3rd col = (m+1)-ordered residual
@@ -120,28 +103,64 @@ function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 %               1st col = fwd search index (from init to n)
 %               2nd col = maximum studentized residual
 %               3rd col = (m)-ordered studentized residual
-%   nor:        (n-init+1) x 4 matrix containing the monitoring of
-%               normality test in each step of the forward search
-%               1st col = fwd search index (from init to n)
-%               2nd col = Asymmetry test
-%               3rd col = Kurtosis test
-%               4th col = Normality test
 %  Bols:        (n-init+1) x (p+1) matrix containing the monitoring of
-%               estimated beta coefficients in each step of the forward search
-%    S2:        (n-init+1) x 3 matrix containing the monitoring of S2 or R2
-%               in each step of the forward search
+%               posterior mean (conditional on
+%               tau0) of \beta (regression coefficents)
+%               beta1 = (c*R + X'X)^{-1} (c*R*beta0 + X'y)
+%  covbeta1:    p x p x (n-init+1) 3D array containing posterior covariance matrix
+%               (conditional on tau1) of \beta
+%               covbeta1 = (1/tau1) * (c*R + X'X)^{-1}
+%               where tau1 is defined as a1/b1 (that is through the gamma
+%               parameters of the posterior distribution of \tau)
+%               The posterior distribution of \tau is a gamma distribution
+%               with parameters a1 and b1
+%    Gam    :   (n-init+1) x 3 matrix containing
 %               1st col = fwd search index (from init to n)
-%               2nd col = monitoring of S2
-%               3rd col = monitoring of R2
-%   Coo:        (n-init+1) x 3 matrix containing the monitoring of Cook or
+%               2nd col = parameter a1 of the posterior gamma distribution of tau
+%               3rd col = parameter b1 of the posterior gamma distribution of tau
+%               Remark: a1 = 0.5 (c*n0 + m) where m is subset size
+%                       b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )
+%   Coo:        (n-init+1) x 2 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = monitoring of Cook distance
-%               3rd col = monitoring of modified Cook distance
-%  Tols:        (n-init+1) x (p+1) matrix containing the monitoring of
-%               estimated t-statistics (as specified in option input 'tstat'
-%               in each step of the forward search
-%    Un:        (n-init) x 11 Matrix which contains the unit(s)
+%      Tols:    (n-init+1) x (p+1) matrix containing the monitoring of
+%               estimated t-statistics
+%               1st col = fwd search index (from init to n)
+%               2nd col = t stat for first variable
+%               ...
+%               (p+1) col = t stat for p-th variable
+%     Bpval :   (n-init+1) x (p+1) containing Bayesian p-values.
+%               p-value = P(|t| > | \hat \beta se(beta) |)
+%               = prob. of beta different from 0
+%               1st col = fwd search index (from init to n)
+%               2nd col = p-value for first variable
+%               ...
+%               (p+1) col = p-value for p-th variable
+%    Bhpd   :   (n-init+1)-by-2-by-p 3D array.
+%               Bhpd(:,:,1) = lower and upper HPDI conflev for first variable
+%               ...
+%               Bhpd(:,:,p) = lower and upper HPDI conflev for p-th variable
+%  postodds :   (n-init+1)-by-(p+1) matrix which contains posterior odds for betaj=0
+%               For example the posterior odd of beta0=0 is p(y| model which contains
+%               all expl variables except the one associated with beta0) divided by
+%               p(y| model which contains all expl variables)
+%               1st col = fwd search index (from init to n)
+%               2nd col = posterior odd for beta1
+%               ...
+%               (p+1) col = posterior odd for betap
+% modelprob :   (n-init+1)-by-(p+1) matrix which contains which contains
+%               posterior model probability of the model which excludes
+%               variable j. For example if modelprob(j)= 0.28, that is if
+%               the probability of the model which does not contain
+%               variable j is equal to 0.28, it means that there is a 28%
+%               chance that beta_j=0 and a 72% chance that it is not.
+%               1st col = fwd search index (from init to n)
+%               2nd col = posterior model prob of the model which excludes beta1
+%               ...
+%               (p+1) col = posterior model prob of the model which
+%               excludes betap
+%    Un:        (n-init) x 11 matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -205,38 +224,9 @@ function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 
 
 %% Input parameters checking
-if nargin<1
-    stack_loss=load('stack_loss.txt');
-    y=stack_loss(:,4);
-    X=stack_loss(:,1:3);
-    % LMS using all subsets
-    [out]=LXS(y,X,'nsamp',0);
-    % Forward search with EDA purposes
-    [out1]=FSRBeda(y,X,out.bs,'init',5);
-    % Create scaled squared residuals
-    out1.RES=out1.RES.^2;
-    % Specify the characteristics of the highlighted trajectories 
-    fground=struct;
-    fground.LineStyle={'-';'--';':';'-.'};
-    fground.LineWidth=3;
-    fground.Color={'r'};
-    % Plot of monitoring of scaled squared residuals 
-    resfwdplot(out1,'fground',fground)
-    title('Monitoring squared scaled residuals for Stack loss dataset')
-    
-    noargmsg = sprintf(['To use FSReda with your own data y (response vector) and X (design matrix), type:\n\n' ...
-                     '    [out]=LXS(y,X) \n' ...
-                     '    [out]=FSReda(y,X,out.bs)\n' ...
-                     '    resfwdplot(out) \n\n' ...
-                     'Type "help FSReda" for more information\n\n' ...
-                     'Click OK to view the monitoring residual plot for the stack loss data.']);
-                 titl='Example of the use of the Forward search with EDA purposes';
-     [cdata, colormap] = imread('logo.png','BackgroundColor',(240/255)*[1 1 1]); 
-     msgbox(noargmsg,titl,'custom',cdata,colormap,'modal');
-    return
-end
 
-if nargin>3
+
+if nargin>6
     
     % chklist = vector containing the names of optional arguments
     chklist=varargin(1:2:length(varargin));
@@ -253,55 +243,14 @@ if ~isempty(chkint) && cell2mat(varargin(2*chkint))==1;
     [n,p]=size(X);
 else
     
-    % The first argument which is passed is y
-    if nargin<1 || isempty(y)==1
-        error('Not enough input arguments.');
-    end
     
-    [m,q]=size(y);
-    
-    % If y is a row vector it is transformed in a column vector
-    if q~=1
-        if m==1
-            y=y';
-        else
-            error('y is not one-dimensional.');
-        end
-    end
-    
-    
-    % The second argument which is passed is X
-    if nargin<2 || isempty(X)==1
-        error('Input matrix X not specified.');
-    else
-        % X must be a 2-dimensional array
-        % (line below correspods to if ndims(X)>2)
-        if ~ismatrix(X)
-            error('Invalid data set X.');
-        end
-    end
-    
-    % Missing values are removed from X and y
-    na.X=~isfinite(X*ones(size(X,2),1)); % na.X is a logical vector
-    na.y=~isfinite(y);
-    if size(na.X,1)~=size(na.y,1)
-        error('Number of observations in X and y not equal.');
-    end
-    
-    % Observations with missing or infinite values are ommitted.
-    ok=~(na.X|na.y); % | = Element-wise logical OR
-    X=X(ok,:);
-    y=y(ok,:);
     
     % Now n is the new number of non missing observations
     n=length(y);
     
-    if nargin<3
-        error('Initial subset is missing');
-    end
     
     % Now check if the intercept has to be added
-    if nargin > 3
+    if nargin > 6
         
         % chklist = vector containing the names of optional arguments
         chklist=varargin(1:2:length(varargin));
@@ -327,14 +276,6 @@ else
     % p is the number of parameters to be estimated
     p=size(X,2);
     
-    if n < p
-        error(['Need more observations than variables: n=' int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
-    end
-    
-    rk=rank(X);
-    if rk < p
-        error('Matrix X is singular');
-    end
 end
 
 %% User options
@@ -343,7 +284,9 @@ if n<40
 else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
-options=struct('intercept',1,'init',init,'tstat','scal','nocheck',0);
+bsb='';
+conflevdef=0.99;
+options=struct('intercept',1,'init',init,'bsb',bsb,'nocheck',0,'conflev',conflevdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -364,21 +307,17 @@ if nargin > 3
         options.(varargin{i})=varargin{i+1};
     end
 end
+intercept=options.intercept;
+conflev=options.conflev;
 
+
+bsb=options.bsb;
 if bsb==0
-    Ra=1; nwhile=0;
-    while and(Ra,nwhile<100)
-        bsb=randsample(n,p);
-        Xb=X(bsb,:);
-        Ra=~(rank(Xb)==p);
-        nwhile=nwhile+1;
-    end
-    if nwhile==100
-        warning('FSReda:message','Unable to randomly sample full rank matrix');
-    end
+    bsb=randsample(n,p);
+    % Xb=X(bsb,:);
     yb=y(bsb);
 else
-    Xb=X(bsb,:);
+    % Xb=X(bsb,:);
     yb=y(bsb);
 end
 
@@ -426,9 +365,12 @@ zer1=NaN(n-init+1,2);
 % The first row will contain the units forming initial subset
 Bols=[(init:n)' NaN(n-init+1,p)];
 
-% Vector of the beta coefficients from the last correctly calculated step
-% Used in case the rank of Xb is less than p
-blast=NaN(p,1);
+% covbeta1 3D array will contain posterior covariance matrix
+covbeta1=NaN(p,p,n-init+1);
+
+% Gam
+Gam=Bols(:,1:3);
+
 
 % S2=(n-init+1) x 3  matrix which will contain
 % 1st col = fwd search index
@@ -449,9 +391,9 @@ mdr=[(init:n-1)'  zer];
 %  among bsb and m-th studentized residual
 msr=[(init:n)'  zer1];
 
-% coo= (n-init) x 3 matrix which will contain Cook distances
-%  (2nd col) and modified Cook distance (3rd col)
-coo=[((init+1):n)'  NaN(n-init,6)];
+% coo= (n-init) x 2 matrix which will contain Cook distances
+%  (2nd col)
+coo=[((init+1):n)'  NaN(n-init,1)];
 
 % nor= (n-init+1) x 3 matrix which will contain asymmetry (2nd col)
 % kurtosis (3rd col) and normality test (4th col)
@@ -478,205 +420,178 @@ Un=[(init+1:n)' Un];
 
 %  Tols = Matrix whose columns contain t statistics specified in option
 %  tstat
-Tols=Bols;
+% Tols=Bols;
 
+% Bpval will contain (n-init+1) x (p+1) containing Bayesian p-values.
+Bpval=Bols;
+% Bhpd will contain (n-init+1)-by-2-by-p 3D array.
+Bhpd=NaN(n-init+1,2,p);
+% postodds will contain (n-init+1)-by-(p+1) matrix which contains posterior
+% odds for betaj=0
+postodds=Bols;
+% modelprob will contain (n-init+1)-by-(p+1) matrix which contains which
+% contains posterior model probability of the model which excludes variable j.
+modelprob=Bols;
 
 %% Start of the forward search
-if (rank(Xb)~=p)
-    warning('FSReda:message','The provided initial subset does not form full rank matrix');
-    % FS loop will not be performed
-else
-    for mm=ini0:n;
-        
-        % if n>200 show every 100 steps the fwd search index
-        if n>200;
-            if length(intersect(mm,seq100))==1;
-                disp(['m=' int2str(mm)]);
-            end
-        end
-        
-        NoRankProblem=(rank(Xb) == p);
-        if NoRankProblem  % rank is ok
-            %b=Xb\yb;
-            % call bayesian procedure
-            [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'stats',1);
-            % why not bayes.res?
-            b=bayes.beta1;
-            resBSB=yb-Xb*b;
-            blast=b;   % Store correctly computed b for the case of rank problem
-        else   % number of independent columns is smaller than number of parameters
-            warning('FSR:FSReda','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
-            b=blast;
-        end
-        
-        if (mm>=init);
-            
-            % Store Units belonging to the subset
-            BB(bsb,mm-init+1)=bsb;
-            
-            if NoRankProblem
-                
-                % Store beta coefficients
-                Bols(mm-init+1,2:p+1)=b';
-                
-                
-                % Measure of asymmetry
-                sqb1=(sum(resBSB.^3)/mm) / (sum(resBSB.^2)/mm)^(3/2);
-                
-                % Measure of Kurtosis  */
-                b2=(sum(resBSB.^4)/mm) / (sum(resBSB.^2)/mm)^2;
-                
-                % Asymmetry test
-                nor(mm-init+1,2)=  (mm/6)*  sqb1  ^2  ;
-                
-                % Kurtosis test
-                nor(mm-init+1,3)=(mm/24)*((b2 -3)^2);
-                
-                % Normality test
-                nor(mm-init+1,4)=nor(mm-init+1,2)+nor(mm-init+1,3);
-                
-                % Store leverage for the units belonging to subset
-                % hi contains leverage for all units
-                % It is a proper leverage for the units belonging to susbet
-                % It is a pseudo leverage for the unit not belonging to the subset
-                mAm=Xb'*Xb;
-                
-                mmX=inv(mAm);
-                dmmX=diag(mmX);
-                % Notice that we could replace the lowwing line with 
-                % hi=sum((X/mAm).*X,2); but there is no gain since we need
-                % to compute dmmX=diag(mmX);
-                hi=sum((X*mmX).*X,2); %#ok<MINV>
-                 
-                LEV(bsb,mm-init+1)=hi(bsb);
-            end % no rank problem
-        end
-        
-        if (mm>p)
-            
-            % store res. sum of squares/(mm-k)
-            % Store estimate of \sigma^2 using units forming subset
-            if NoRankProblem
-                Sb=(resBSB)'*(resBSB)/(mm-p);
-            end;
-            
-        else
-            Sb=0;
-        end
-        
-        % e= vector of residual for all units using b estimated using subset
-        e=y-X*b;
-        
-        if (mm>=init)
-            % Store all residuals
-            RES(:,mm-init+1)=e;
-            
-            if NoRankProblem
-                % Store S2 for the units belonging to subset
-                
-                %S2(mm-init+1,2)=Sb;
-                S2(mm-init+1,2)=1/bayes.tau1;
-                % Store maximum studentized residual
-                % among the units belonging to the subset
-                msrsel=sort(abs(resBSB)./sqrt(Sb*(1-hi(bsb))));
-                msr(mm-init+1,2)=msrsel(mm);
-                
-                % Store R2
-                S2(mm-init+1,3)=1-var(resBSB)/var(yb);
-            end
-            
-        end
-        
-        r(:,2)=e.^2;
-        
-        if mm>init;
-            
-            if NoRankProblem
-                
-                % Store in the second column of matrix coo the Cook
-                % distance
-                bib=Bols(mm-init+1,2:p+1)-Bols(mm-init,2:p+1);
-                if S2(mm-init+1,2)>0;
-                    coo(mm-init,2)=bib*mAm*(bib')/(p*S2(mm-init+1,2));
-                end
-                
-                if length(unit)>5;
-                    unit=unit(1:5);
-                end
-                if S2(mm-init,2)>0;
-                    coo(mm-init,3:length(unit)+2)= 1./(1-hi(unit)).* sqrt(((mm-p)/p)*hi(unit).*r(unit,2)./S2(mm-init,2));
-                end
-            end % NoRankProblem
-        end
-        
-        if mm<n;
-            if mm>=init;
-                if NoRankProblem
-                    % ord = matrix whose first col (divided by S2(i)) contains the deletion residuals
-                    % for all units. For the units belonging to the subset these are proper deletion residuals
-                    ord = [(r(:,2)./(1+hi)) e];
-                    
-                    % Store minimum deletion residual in 2nd col of matrix mdr
-                    selmdr=sortrows(ord(ncl,:),1);
-                    mdr(mm-init+1,2)=sign(selmdr(1,2))*sqrt(selmdr(1,1)/S2(mm-init+1,2));
-                    
-                    % Store (m+1) ordered pseudodeletion residual in 3rd col of matrix
-                    % mdr
-                    selmdr=sortrows(ord,1);
-                    mdr(mm-init+1,3)=sign(selmdr(mm+1,2))*sqrt(selmdr(mm+1,1)/S2(mm-init+1,2));
-                end % NoRankProblem
-            end
-            
-            % store units forming old subset in vector oldbsb
-            oldbsb=bsb;
-            
-            % order the r_i and include the smallest among the units
-            %  forming the group of potential outliers
-            ord=sortrows(r,2);
-            
-            % bsb= units forming the new  subset
-            bsb=ord(1:(mm+1),1);
-            
-            Xb=X(bsb,:);  % subset of X
-            yb=y(bsb);    % subset of y
-            
-            if mm>=init;
-                unit=setdiff(bsb,oldbsb);
-                if length(unit)<=10
-                    Un(mm-init+1,2:(length(unit)+1))=unit;
-                else
-                    disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
-                    Un(mm-init+1,2:end)=unit(1:10);
-                end;
-            end
-            
-            
-            if mm < n-1;
-                
-                % ncl= units forming the new noclean
-                ncl=ord(mm+2:n,1);
-                
-            end;
-        end
-        
-        if mm >= init;
-            if NoRankProblem
-                if strcmp(options.tstat,'scal')
-                    % Compute the variance of the truncated normal distribution
-                    if mm<n
-                        a=norminv(0.5*(1+mm/n));
-                        corr=1-2*(n./mm).*a.*normpdf(a);
-                    else
-                        corr=1;
-                    end
-                    Tols(mm-init+1,2:end)=sqrt(corr)*Bols(mm-init+1,2:end)./sqrt(Sb*dmmX');
-                elseif strcmp(options.tstat,'trad')
-                    Tols(mm-init+1,2:end)=Bols(mm-init+1,2:end)./sqrt(Sb*dmmX');
-                end
-            end % NoRankProblem
+for mm=ini0:n;
+    
+    % if n>200 show every 100 steps the fwd search index
+    if n>200;
+        if length(intersect(mm,seq100))==1;
+            disp(['m=' int2str(mm)]);
         end
     end
-end   %Rank check
+    
+    
+    %b=Xb\yb;
+    % call bayesian procedure
+    [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'stats',1,'conflev',conflev);
+    % why not bayes.res?
+    b=bayes.beta1;
+    
+    if (mm>=init);
+        
+        % Store Units belonging to the subset
+        BB(bsb,mm-init+1)=bsb;
+        
+        
+        % Store beta coefficients
+        Bols(mm-init+1,2:p+1)=b';
+        
+        
+        % Store leverage for the units belonging to subset
+        % hi contains leverage for all units
+        % It is a proper leverage for the units belonging to susbet
+        % It is a pseudo leverage for the unit not belonging to the subset
+        mAm=bayes.covbeta1;
+        
+        mmX=inv(mAm);
+        dmmX=diag(mmX);
+        % Notice that we could replace the lowwing line with
+        % hi=sum((X/mAm).*X,2); but there is no gain since we need
+        % to compute dmmX=diag(mmX);
+        hi=sum((X*mmX).*X,2); %#ok<MINV>
+        
+        LEV(bsb,mm-init+1)=hi(bsb);
+        % store all data quantities
+        covbeta1(:,:,mm-init+1)=bayes.covbeta1;
+        % is mm the fwd search index?
+        Gam(mm-init+1,:)=[mm bayes.a1 bayes.b1];
+        % coo non riesco a gestirlo! ci penso un attimo...
+        %
+        Bpval(mm-init+1,:)=[mm bayes.Bpval'];
+        Bhpd(mm-init+1,:,:)=bayes.Bhpd(:,1:2)';
+        postodds(mm-init+1,:)=[mm bayes.postodds'];
+        modelprob(mm-init+1,:)=[mm bayes.modelprob'];
+    end
+    
+    
+    % store res. sum of squares/(mm-k)
+    % Store estimate of \sigma^2 using units forming subset
+    
+    Sb=1/bayes.tau1;
+    
+    
+    % e= vector of residual for all units using b estimated using subset
+    e=y-X*b;
+    
+    if (mm>=init)
+        % Store all residuals
+        RES(:,mm-init+1)=e;
+        
+        
+        % Store S2 for the units belonging to subset
+        
+        %S2(mm-init+1,2)=Sb;
+        S2(mm-init+1,2)=Sb;
+        if ~isempty(yb)
+            resBSB=bayes.res(bsb);
+            
+            % Store maximum studentized residual
+            % among the units belonging to the subset
+            msrsel=sort(abs(resBSB)./sqrt(Sb*(1-hi(bsb))));
+            msr(mm-init+1,2)=msrsel(mm);
+        end
+        
+        % Store R2
+        S2(mm-init+1,3)=1-var(resBSB)/var(yb);
+        
+    end
+    
+    r(:,2)=e.^2;
+    
+    if mm>init;
+        
+        
+        
+        % Store in the second column of matrix coo the Cook
+        % distance
+        bib=Bols(mm-init+1,2:p+1)-Bols(mm-init,2:p+1);
+        if S2(mm-init+1,2)>0;
+            coo(mm-init,2)=bib*mAm*(bib')/(p*S2(mm-init+1,2));
+        end
+        
+        if length(unit)>5;
+            unit=unit(1:5);
+        end
+        if S2(mm-init,2)>0;
+            coo(mm-init,3:length(unit)+2)= 1./(1-hi(unit)).* sqrt(((mm-p)/p)*hi(unit).*r(unit,2)./S2(mm-init,2));
+        end
+    end
+    
+    if mm<n;
+        if mm>=init;
+            % ord = matrix whose first col (divided by S2(i)) contains the deletion residuals
+            % for all units. For the units belonging to the subset these are proper deletion residuals
+            ord = [(r(:,2)./(1+hi)) e];
+            
+            % Store minimum deletion residual in 2nd col of matrix mdr
+            selmdr=sortrows(ord(ncl,:),1);
+            mdr(mm-init+1,2)=sign(selmdr(1,2))*sqrt(selmdr(1,1)/S2(mm-init+1,2));
+            
+            % Store (m+1) ordered pseudodeletion residual in 3rd col of matrix
+            % mdr
+            selmdr=sortrows(ord,1);
+            mdr(mm-init+1,3)=sign(selmdr(mm+1,2))*sqrt(selmdr(mm+1,1)/S2(mm-init+1,2));
+        end
+        
+        % store units forming old subset in vector oldbsb
+        oldbsb=bsb;
+        
+        % order the r_i and include the smallest among the units
+        %  forming the group of potential outliers
+        ord=sortrows(r,2);
+        
+        % bsb= units forming the new  subset
+        bsb=ord(1:(mm+1),1);
+        
+        % Xb=X(bsb,:);  % subset of X
+        yb=y(bsb);    % subset of y
+        
+        if mm>=init;
+            unit=setdiff(bsb,oldbsb);
+            if length(unit)<=10
+                Un(mm-init+1,2:(length(unit)+1))=unit;
+            else
+                disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+                Un(mm-init+1,2:end)=unit(1:10);
+            end;
+        end
+        
+        
+        if mm < n-1;
+            
+            % ncl= units forming the new noclean
+            ncl=ord(mm+2:n,1);
+            
+        end;
+    end
+    
+%     if mm >= init;
+%             Tols(mm-init+1,2:end)=Bols(mm-init+1,2:end)./sqrt(Sb*dmmX');
+%     end
+end
 
 %% Structure returned by function FSReda
 out=struct;
@@ -689,7 +604,7 @@ out.nor=nor;
 out.Bols=Bols;
 out.S2=S2;
 out.coo=coo;
-out.Tols=Tols;
+% out.Tols=Tols;
 out.Un=Un;
 out.y=y;
 out.X=X;
