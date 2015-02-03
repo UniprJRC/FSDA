@@ -1,4 +1,4 @@
-function [out]=FSRBn(y,X,varargin)
+function [out]=FSRB(y,X,varargin)
 %FSRB gives an automatic outlier detection procedure in linear regression
 %in the bayesian framework
 %
@@ -14,33 +14,39 @@ function [out]=FSRBn(y,X,varargin)
 %       Missing values (NaN's) and infinite values (Inf's) are allowed,
 %       since observations (rows) with missing or infinite values will
 %       automatically be excluded from the computations.
-
-%               PRIOR INFORMATION (bayes structure)
-%               A structure containing all the following required parameters must
-%               be supplied
-%
-% bayes.beta0:  p-times-1 vector containing prior mean of \beta
-% bayes.R    :  p-times-p positive definite matrix
-%               which can be interepreted as X0'X0 where X0 is a n0 x p
-%               matrix coming from previous experiments (assuming that the
-%               intercept is included in the model
-%
-%               The prior distribution of tau0 is a gamma distribution with
-%               paramters a and b, that is
-%                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
-%                         E(tau0)= a0/b0
-%
-%
-%    bayes.tau0 :     scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0
-%      bayes.n0 :     scalar. Sometimes it helps to think of the prior
-%               information as coming from n0 previous experiments.
-%               Therefore we assume that matrix X0 (which defines R), was
-%               made up of n0 observations.
 %
 % Optional input arguments:
 %
 %   intercept   : If 1, a model with constant term will be fitted (default),
 %                 if 0, no constant term will be included.
+%    bayes      : a structure which specifies prior information
+%               Strucure bayes contains the following fields
+%               beta0:  p-times-1 vector containing prior mean of \beta
+%               R    :  p-times-p positive definite matrix which can be
+%                       interepreted as X0'X0 where X0 is a n0 x p matrix
+%                       coming from previous experiments (assuming that the
+%                       intercept is included in the model
+%
+%               The prior distribution of tau0 is a gamma distribution with
+%               parameters a and b, that is
+%                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
+%                         E(tau0)= a0/b0
+%
+%               tau0 : scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0
+%               n0   : scalar. Sometimes it helps to think of the prior
+%                      information as coming from n0 previous experiments.
+%                      Therefore we assume that matrix X0 (which defines
+%                      R), was made up of n0 observations.
+%              REMARK: if structure bayes is not supplied the default
+%                      values which are used are
+%                      beta0= zeros(p,1)  % vector of zeros
+%                      R=eye(p);          % Identity matrix
+%                      tau0=1/1e+6;       % Very large value for the
+%                                         % prior variance, that is a very
+%                                         % small value for tau0
+%                      n0=1;              % just one prior observation
+%
+%
 %       plots   : Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
@@ -212,7 +218,7 @@ function [out]=FSRBn(y,X,varargin)
     intercept=1;
 
     % function call
-    outBA=FSRBn(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)
+    outBA=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)
 %}
 
 %{
@@ -291,29 +297,24 @@ vvarargin=varargin;
 
 %% User options
 
-
-% The default value of h is floor(0.5*(n+p+1))
-hdef=floor(0.5*(n+p+1));
 if n<40
     init=p+1;
 else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
+
 % ini0=init;
 bayesdef=struct;
 bayesdef.beta0=zeros(p,1);
-bayesdef.R=eye(p+1);
-bayesdef.tau0=1;
-bayesdef.n0=n;
+bayesdef.R=eye(p);
+bayesdef.tau0=1/1e+6;
+bayesdef.n0=1;
 
 
 options=struct('plots',1,'init',init,...
     'labeladd','','bivarfit','','multivarfit','',...
-    'xlim','','ylim','','nameX','','namey','','msg',1,'nocheck',0,'intercept',1,'bonflev','', ...
-    'bayes',bayesdef);
-
-
-
+    'xlim','','ylim','','nameX','','namey','','msg',1, ...
+    'nocheck',0,'intercept',1,'bonflev','', 'bayes',bayesdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -347,7 +348,6 @@ n0=bayes.n0;
 
 
 %% Start of the forward search
-
 [mdrB,Un,bb,~,~] = FSRBmdr(y, X, beta0, R, tau0, n0,'nocheck',1);
 
 %% Call core function which computes exceedances to thresholds of mdr

@@ -1,4 +1,4 @@
-function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
+function [out] = FSRBeda(y, X, varargin)
 %FSRBeda enables to monitor several quantities in each step of the Bayesian search
 %
 %<a href="matlab: docsearchFS('fsrbeda')">Link to the help function</a>
@@ -22,35 +22,45 @@ function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 %               (1/tau0) (X0'X0)^{-1}
 %               \beta~N(    beta0, (1/tau0) (X0'X0)^{-1}    )
 %
-%   beta0 :     p-times-1 vector containing prior mean of \beta
-%    R    :     p-times-p positive definite matrix
-%               which can be interepreted as X0'X0 where X0 is a n0 x p
-%               matrix coming from previous experiments (assuming that the
-%               intercept is included in the model)
+%
+% Optional input arguments:
+%
+%   intercept : If 1, a model with constant term will be fitted (default),
+%               if 0, no constant term will be included.
+%    bayes    : a structure which specifies prior information
+%               Strucure bayes contains the following fields
+%               beta0:  p-times-1 vector containing prior mean of \beta
+%               R    :  p-times-p positive definite matrix which can be
+%                       interepreted as X0'X0 where X0 is a n0 x p matrix
+%                       coming from previous experiments (assuming that the
+%                       intercept is included in the model
 %
 %               The prior distribution of tau0 is a gamma distribution with
 %               parameters a and b, that is
 %                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
 %                         E(tau0)= a0/b0
 %
-%
-%    tau0 :     scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0
-%      n0 :     scalar. Sometimes it helps to think of the prior
-%               information as coming from n0 previous experiments.
-%               Therefore we assume that matrix X0 (which defines R), was
-%               made up of n0 observations.
-%
-% Optional input arguments:
-%
-%   bsb :       vector containing the list of units forming the initial
-%               subset, if bsb=0 (default) then the procedure starts with p
+%               tau0 : scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0
+%               n0   : scalar. Sometimes it helps to think of the prior
+%                      information as coming from n0 previous experiments.
+%                      Therefore we assume that matrix X0 (which defines
+%                      R), was made up of n0 observations.
+%              REMARK: if structure bayes is not supplied the default
+%                      values which are used are
+%                      beta0= zeros(p,1)  % vector of zeros
+%                      R=eye(p);          % Identity matrix
+%                      tau0=1/1e+6;       % Very large value for the
+%                                         % prior variance, that is a very
+%                                         % small value for tau0
+%                      n0=1;              % just one prior observation
+%       bsb   : vector containing the list of units forming the initial
+%               subset, if bsb=0 then the procedure starts with p
 %               units randomly chosen else if bsb is not 0 the search will
-%               start with m0=length(bsb)
-%   intercept : If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%        init : scalar, specifies the point where to initialize the search
-%               and start monitoring required diagnostics. if init is not
-%               specified it will be set equal to :
+%               start with m0=length(bsb). The default value of bsb is ''
+%               that is in the first step just prior information is used.
+%        init : scalar, specifies the point where to start monitoring
+%               required diagnostics. if init is not specified it will be
+%               set equal to :
 %                 p+1, if the sample size is smaller than 40;
 %                 min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
@@ -120,16 +130,15 @@ function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 %               3rd col = parameter b1 of the posterior gamma distribution of tau
 %               Remark: a1 = 0.5 (c*n0 + m) where m is subset size
 %                       b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )
+%    S2:        (n-init+1) x 3 matrix containing the monitoring of S2 or R2
+%               in each step of the forward search
+%               1st col = fwd search index (from init to n)
+%               2nd col = monitoring of S2 (S2 is nothing but 1/tau1)
+%               3rd col = monitoring of R2
 %   Coo:        (n-init+1) x 2 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = monitoring of Cook distance
-%      Tols:    (n-init+1) x (p+1) matrix containing the monitoring of
-%               estimated t-statistics
-%               1st col = fwd search index (from init to n)
-%               2nd col = t stat for first variable
-%               ...
-%               (p+1) col = t stat for p-th variable
 %     Bpval :   (n-init+1) x (p+1) containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
@@ -172,59 +181,71 @@ function [out] = FSRBeda(y, X, beta0, R, tau0, n0, varargin)
 %     X:        Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1)
+%class :        string FSRBeda.
 %
 %
-% See also LXS.m, FSRbsb.m
+% See also FSRB, regressB, FSRBmdr
 %
 % References:
 %
-%   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
-%   Springer Verlag, New York.
+%   Atkinson A.C., Corbellini A. and Riani M. (2015), Robust Bayesian
+%   Regression, submitted
 %
 %
 % Copyright 2008-2014.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('FSReda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsrbeda')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:
 
 %{
-       %Example of use of FSReda based on a starting point coming
-       %from LMS
-        n=200;
-        p=3;
-        randn('state', 123456);
-        X=randn(n,p);
-        % Uncontaminated data
-        y=randn(n,1);
-        % Contaminated data
-        ycont=y;
-        ycont(1:5)=ycont(1:5)+6;
-        [out]=LXS(y,X,'nsamp',1000);
-        out=FSReda(y,X,out.bs);
+    % Example of Houses Price
+    % load dataset
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
+
+    % define a Bayes structure with previous data
+    bayes=struct;
+    bayes.R=R;
+    bayes.n0=n0;
+    bayes.beta0=beta0;
+    bayes.tau0=tau0;
+    intercept=1;
+
+    % function call
+    outBA=FSRBeda(y,X,'bayes',bayes,'init',round(n/2),'intercept', intercept)
 %}
 
-%{
-    %Example of use of function FSReda using a random start and traditional
-    %t-stat monitoring
-    out=FSReda(y,X,0,'tstat','trad');
-%}
-
-%{
-    %Examples with real data: wool data
-    xx=load('wool.txt');
-    X=xx(:,1:3);
-    y=log(xx(:,4));
-    [out]=LXS(y,X,'nsamp',0);
-    [out]=FSReda(y,X,out.bs,'tstat','scal');
-%}
 
 
 %% Input parameters checking
-
 
 if nargin>6
     
@@ -271,7 +292,7 @@ else
         % If the user has not specified a value for the intercept than the
         % column of ones is automatically attached
         X=cat(2,ones(n,1),X); % add column of ones
-    end;
+    end
     
     % p is the number of parameters to be estimated
     p=size(X,2);
@@ -279,14 +300,31 @@ else
 end
 
 %% User options
+
+% init = scalar which specifies where to start monitoring required statistics
 if n<40
     init=p+1;
 else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
+
+% Initialize bsb as empty. That is in the initial step, the estimate is
+% just based on prior values
 bsb='';
+
+% ini0=init;
+bayesdef=struct;
+bayesdef.beta0=zeros(p,1);
+bayesdef.R=eye(p);
+bayesdef.tau0=1/1e+6;
+bayesdef.n0=1;
+
+
 conflevdef=0.99;
-options=struct('intercept',1,'init',init,'bsb',bsb,'nocheck',0,'conflev',conflevdef);
+options=struct('intercept',1,'init',init,'bayes',bayesdef,'bsb',bsb,...
+    'nocheck',0,'conflev',conflevdef);
+
+%beta0, R, tau0, n0,
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -310,17 +348,24 @@ end
 intercept=options.intercept;
 conflev=options.conflev;
 
+bayes=options.bayes;
+
+beta0=bayes.beta0;
+R=bayes.R;
+tau0=bayes.tau0;
+n0=bayes.n0;
 
 bsb=options.bsb;
 if bsb==0
     bsb=randsample(n,p);
-    % Xb=X(bsb,:);
+    Xb=X(bsb,:);
     yb=y(bsb);
 else
-    % Xb=X(bsb,:);
+    Xb=X(bsb,:);
     yb=y(bsb);
 end
 
+% is bsb is empty ini0 =0
 ini0=length(bsb);
 
 % check init
@@ -368,7 +413,12 @@ Bols=[(init:n)' NaN(n-init+1,p)];
 % covbeta1 3D array will contain posterior covariance matrix
 covbeta1=NaN(p,p,n-init+1);
 
-% Gam
+%    Gam    :   (n-init+1) x 3 matrix containing
+%               1st col = fwd search index (from init to n)
+%               2nd col = parameter a1 of the posterior gamma distribution of tau
+%               3rd col = parameter b1 of the posterior gamma distribution of tau
+%               Remark: a1 = 0.5 (c*n0 + m) where m is subset size
+%                       b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )
 Gam=Bols(:,1:3);
 
 
@@ -380,24 +430,18 @@ S2=[(init:n)' zer1];
 
 % mdr= (n-init) x 3 matrix
 % 1st column = fwd search index
-% 2nd col min deletion residual among observerations non belonging to the
+% 2nd col min deletion residual among observations non belonging to the
 % subset
-% 3rd column (m+1)-th ordered residual
-% They are stored with sign, that is the min deletion residual
-% is stored with negative sign if it corresponds to a negative residual
-mdr=[(init:n-1)'  zer];
+mdr=[(init:n-1)'  zer(:,1)];
 
 % mdr= (n-init+1) x 3 matrix which will contain max studentized residual
 %  among bsb and m-th studentized residual
-msr=[(init:n)'  zer1];
+msr=[(init:n)'  zer1(:,1)];
 
 % coo= (n-init) x 2 matrix which will contain Cook distances
 %  (2nd col)
 coo=[((init+1):n)'  NaN(n-init,1)];
 
-% nor= (n-init+1) x 3 matrix which will contain asymmetry (2nd col)
-% kurtosis (3rd col) and normality test (4th col)
-nor=[(init:n)'  zer1];
 
 % Matrix RES will contain the resisuals for each unit in each step of the forward search
 % The first row refers to the residuals of the first unit
@@ -417,10 +461,6 @@ LEV=RES;
 %  Un= Matrix whose 2nd column:11th col contain the unit(s) just included
 Un=NaN(n-init,10);
 Un=[(init+1:n)' Un];
-
-%  Tols = Matrix whose columns contain t statistics specified in option
-%  tstat
-% Tols=Bols;
 
 % Bpval will contain (n-init+1) x (p+1) containing Bayesian p-values.
 Bpval=Bols;
@@ -446,7 +486,12 @@ for mm=ini0:n;
     
     %b=Xb\yb;
     % call bayesian procedure
-    [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'stats',1,'conflev',conflev);
+    if mm>=init
+        [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'stats',1);
+    else
+        [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'stats',0,'conflev',conflev);
+    end
+    
     % why not bayes.res?
     b=bayes.beta1;
     
@@ -456,7 +501,7 @@ for mm=ini0:n;
         BB(bsb,mm-init+1)=bsb;
         
         
-        % Store beta coefficients
+        % Store posterior beta coefficients
         Bols(mm-init+1,2:p+1)=b';
         
         
@@ -466,22 +511,24 @@ for mm=ini0:n;
         % It is a pseudo leverage for the unit not belonging to the subset
         mAm=bayes.covbeta1;
         
-        mmX=inv(mAm);
-        dmmX=diag(mmX);
-        % Notice that we could replace the lowwing line with
-        % hi=sum((X/mAm).*X,2); but there is no gain since we need
-        % to compute dmmX=diag(mmX);
-        hi=sum((X*mmX).*X,2); %#ok<MINV>
+        mmX=bayes.tau1*mAm;
+        % Leverage for the units belonging to subset
+        hi=sum((Xb*mmX).*Xb,2);
         
-        LEV(bsb,mm-init+1)=hi(bsb);
-        % store all data quantities
+        LEV(bsb,mm-init+1)=hi;
+        
+        % Store cov matrix of beta
         covbeta1(:,:,mm-init+1)=bayes.covbeta1;
-        % is mm the fwd search index?
-        Gam(mm-init+1,:)=[mm bayes.a1 bayes.b1];
-        % coo non riesco a gestirlo! ci penso un attimo...
-        %
+        
+        % Store paramters a and b associated with the posterior estimate of tau
+        Gam(mm-init+1,2:3)=[bayes.a1 bayes.b1];
+        
+        
+        % Store p-values
         Bpval(mm-init+1,:)=[mm bayes.Bpval'];
         Bhpd(mm-init+1,:,:)=bayes.Bhpd(:,1:2)';
+        
+        %
         postodds(mm-init+1,:)=[mm bayes.postodds'];
         modelprob(mm-init+1,:)=[mm bayes.modelprob'];
     end
@@ -489,30 +536,28 @@ for mm=ini0:n;
     
     % store res. sum of squares/(mm-k)
     % Store estimate of \sigma^2 using units forming subset
-    
     Sb=1/bayes.tau1;
     
     
-    % e= vector of residual for all units using b estimated using subset
-    e=y-X*b;
+    % e= vector of residuals for all units using b estimated using subset
+    % e= y-X*b;
+    e=bayes.res(:,1);
     
     if (mm>=init)
         % Store all residuals
         RES(:,mm-init+1)=e;
         
-        
         % Store S2 for the units belonging to subset
         
         %S2(mm-init+1,2)=Sb;
         S2(mm-init+1,2)=Sb;
-        if ~isempty(yb)
-            resBSB=bayes.res(bsb);
-            
-            % Store maximum studentized residual
-            % among the units belonging to the subset
-            msrsel=sort(abs(resBSB)./sqrt(Sb*(1-hi(bsb))));
-            msr(mm-init+1,2)=msrsel(mm);
-        end
+        resBSB=bayes.res(bsb,1);
+        
+        % Store maximum studentized residual
+        % among the units belonging to the subset
+        msrsel=sort(abs(resBSB)./sqrt(Sb*(1-hi)));
+        msr(mm-init+1,2)=msrsel(mm);
+        
         
         % Store R2
         S2(mm-init+1,3)=1-var(resBSB)/var(yb);
@@ -522,21 +567,16 @@ for mm=ini0:n;
     r(:,2)=e.^2;
     
     if mm>init;
-        
-        
-        
         % Store in the second column of matrix coo the Cook
         % distance
         bib=Bols(mm-init+1,2:p+1)-Bols(mm-init,2:p+1);
-        if S2(mm-init+1,2)>0;
-            coo(mm-init,2)=bib*mAm*(bib')/(p*S2(mm-init+1,2));
-        end
+        
+        coo(mm-init,2)=bib*(mAm\(bib'))/p;
+        % bib*inv(bayes.covbeta1)*(bib')/(p)
+        
         
         if length(unit)>5;
             unit=unit(1:5);
-        end
-        if S2(mm-init,2)>0;
-            coo(mm-init,3:length(unit)+2)= 1./(1-hi(unit)).* sqrt(((mm-p)/p)*hi(unit).*r(unit,2)./S2(mm-init,2));
         end
     end
     
@@ -544,16 +584,13 @@ for mm=ini0:n;
         if mm>=init;
             % ord = matrix whose first col (divided by S2(i)) contains the deletion residuals
             % for all units. For the units belonging to the subset these are proper deletion residuals
-            ord = [(r(:,2)./(1+hi)) e];
+            % ord = [(r(:,2)./(1+hi)) e];
+            ord = abs(bayes.res(ncl,2));
             
             % Store minimum deletion residual in 2nd col of matrix mdr
-            selmdr=sortrows(ord(ncl,:),1);
-            mdr(mm-init+1,2)=sign(selmdr(1,2))*sqrt(selmdr(1,1)/S2(mm-init+1,2));
+            selmdr=sort(ord,1);
             
-            % Store (m+1) ordered pseudodeletion residual in 3rd col of matrix
-            % mdr
-            selmdr=sortrows(ord,1);
-            mdr(mm-init+1,3)=sign(selmdr(mm+1,2))*sqrt(selmdr(mm+1,1)/S2(mm-init+1,2));
+            mdr(mm-init+1,2)=selmdr(1);
         end
         
         % store units forming old subset in vector oldbsb
@@ -566,7 +603,7 @@ for mm=ini0:n;
         % bsb= units forming the new  subset
         bsb=ord(1:(mm+1),1);
         
-        % Xb=X(bsb,:);  % subset of X
+        Xb=X(bsb,:);  % subset of X
         yb=y(bsb);    % subset of y
         
         if mm>=init;
@@ -576,21 +613,16 @@ for mm=ini0:n;
             else
                 disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                 Un(mm-init+1,2:end)=unit(1:10);
-            end;
+            end
         end
         
         
         if mm < n-1;
-            
             % ncl= units forming the new noclean
             ncl=ord(mm+2:n,1);
-            
-        end;
+        end
     end
     
-%     if mm >= init;
-%             Tols(mm-init+1,2:end)=Bols(mm-init+1,2:end)./sqrt(Sb*dmmX');
-%     end
 end
 
 %% Structure returned by function FSReda
@@ -600,18 +632,18 @@ out.LEV=LEV;
 out.BB=BB;
 out.mdr=mdr;
 out.msr=msr;
-out.nor=nor;
 out.Bols=Bols;
+out.covbeta1=covbeta1;
+out.Gam=Gam;
 out.S2=S2;
 out.coo=coo;
-% out.Tols=Tols;
-out.Un=Un;
-out.y=y;
-out.X=X;
 out.Bpval=Bpval;
 out.Bhpd=Bhpd;
 out.postodds=postodds;
 out.modelprob=modelprob;
+out.Un=Un;
+out.y=y;
+out.X=X;
 out.class='FSRBeda';
 end
 
