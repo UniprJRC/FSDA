@@ -125,10 +125,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %       The additional output which follows is produced just if input
 %       scalar stats is equal 1
 %
-%     Bpval :   k-by-1 vector containing Bayesian p-values.
+%     Bpval :   p-by-1 vector containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
-%    Bhpd   :   k-by-2*length(conflev) matrix. 
+%    Bhpd   :   p-by-2*length(conflev) matrix. 
 %               1st column = lower bound of HPDI associated with conflev(1)
 %               2st column = upper bound of HPDI associated with conflev(1)
 %               ...
@@ -136,11 +136,11 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               with conflev(end)
 %               2*length(conflev) column (last column) = upper bound of
 %               HPDI associated with conflev(end)
-%  postodds :   k-by-1 vector which contains posterior odds for betaj=0
+%  postodds :   p-by-1 vector which contains posterior odds for betaj=0
 %               For example the posterior odd of beta0=0 is p(y| model which contains
 %               all expl variables except the one associated with beta0) divided by
 %               p(y| model which contains all expl variables)
-% modelprob :   k-by-1 vector which contains  posterior model probability
+% modelprob :   p-by-1 vector which contains  posterior model probability
 %               of the model which excludes variable j. For example if
 %               modelprob(j)= 0.28, that is if the probability of the model
 %               which does not contain variable j is equal to 0.28, it
