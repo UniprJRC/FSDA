@@ -268,6 +268,7 @@ if ~isempty(UserOptions)
     
 end
 
+
 c=options.c;
 bsb=options.bsb;
 stats=options.stats;
@@ -328,11 +329,11 @@ if nbsb<n1
     % with i \not in bsb
     hi = sum((Xncl*cRXXinv).*Xncl,2);   %#ok<MINV>
     
-    res(ncl,2) = sqrt(tau1)*(res(ncl,1)./(1+hi))/corr;
+    res(ncl,2) = sqrt(tau1)*(res(ncl,1)./sqrt(1+hi))/corr;
     % res(ncl,3)= res(ncl,2)/corr;
 end
 
-if stats==1
+if stats==1 && nbsb>0
     %posterior probability that each element of beta is positive
     %as well as 95 and 99 HPDIs for each element of beta
     k=length(beta1);
