@@ -133,7 +133,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('FSReda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsreda')">Link to the help function</a>
 % Last modified 08-Dec-2013
 
 % Examples:
