@@ -320,7 +320,7 @@ bayesdef.tau0=1/1e+6;
 bayesdef.n0=1;
 
 
-conflevdef=0.99;
+conflevdef=[0.95 0.99];
 options=struct('intercept',1,'init',init,'bayes',bayesdef,'bsb',bsb,...
     'nocheck',0,'conflev',conflevdef);
 
@@ -465,7 +465,7 @@ Un=[(init+1:n)' Un];
 % Bpval will contain (n-init+1) x (p+1) containing Bayesian p-values.
 Bpval=Bols;
 % Bhpd will contain (n-init+1)-by-2-by-p 3D array.
-Bhpd=NaN(n-init+1,2,p);
+Bhpd=NaN(n-init+1,2*length(conflev),p);
 % postodds will contain (n-init+1)-by-(p+1) matrix which contains posterior
 % odds for betaj=0
 postodds=Bols;
@@ -526,7 +526,7 @@ for mm=ini0:n;
         
         % Store p-values
         Bpval(mm-init+1,:)=[mm bayes.Bpval'];
-        Bhpd(mm-init+1,:,:)=bayes.Bhpd(:,1:2)';
+        Bhpd(mm-init+1,:,:)=bayes.Bhpd';
         
         %
         postodds(mm-init+1,:)=[mm bayes.postodds'];

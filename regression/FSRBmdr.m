@@ -5,7 +5,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 %<a href="matlab: docsearch('fsrbmdr')">Link to the help function</a>
 %
-% Required input arguments2
+% Required input arguments
 %
 %  y:            A vector with n elements that contains the response variables.
 %               Missing values (NaN's) and infinite values (Inf's) are

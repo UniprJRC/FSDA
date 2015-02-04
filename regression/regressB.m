@@ -243,7 +243,7 @@ end
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n1] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n1,p] = chkinputR(y,X,nnargin,vvarargin);
 
 % default arguments values
 bsbini=1:n1;
@@ -304,9 +304,9 @@ beta1=cRXXinv*(c*R*beta0+Xbsb'*ybsb); %#ok<MINV>
 
 % The posterior distribution of \tau  is gamma distribution with parameters
 % a1 and b1
-a1 = 0.5 *(c*n0 + nbsb);
+a1 = 0.5 *(c*n0 + nbsb -p);
 
-b1 = 0.5 * ( n0 / tau0 + ((ybsb-Xbsb*beta1)'*ybsb -beta1'*R*beta0) +beta0'*R*beta0 );
+b1 = 0.5 * ( c*(n0-p) / tau0 + ((ybsb-Xbsb*beta1)'*ybsb -beta1'*R*beta0) +beta0'*R*beta0 );
 
 % tau1 = posterior mean of \tau
 tau1=a1/b1;
@@ -314,7 +314,7 @@ tau1=a1/b1;
 % covbeta1 = (1/tau1) * inv(c*R + Xbsb'*Xbsb);
 covbeta1 = (1/tau1)*cRXXinv; %#ok<MINV>
 
-res=nan(n1,2);
+res=NaN(n1,2);
 
 res(:,1)=y-X*beta1;
 
@@ -330,7 +330,6 @@ if nbsb<n1
     hi = sum((Xncl*cRXXinv).*Xncl,2);   %#ok<MINV>
     
     res(ncl,2) = sqrt(tau1)*(res(ncl,1)./sqrt(1+hi))/corr;
-    % res(ncl,3)= res(ncl,2)/corr;
 end
 
 if stats==1 && nbsb>0
@@ -338,7 +337,7 @@ if stats==1 && nbsb>0
     %as well as 95 and 99 HPDIs for each element of beta
     k=length(beta1);
     s12=1/abs(tau1);
-    n0nbsb=n0+nbsb;
+    n0nbsb=n0+nbsb-p;
     
     % Bpval = Bayesian p-values
     % p-value = P(|t| > | \hat \beta se(beta) |)
