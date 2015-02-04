@@ -243,6 +243,84 @@ function [out] = FSRBeda(y, X, varargin)
     outBA=FSRBeda(y,X,'bayes',bayes,'init',round(n/2),'intercept', intercept)
 %}
 
+%{
+load hprice.txt;
+close all;
+n=size(hprice,1);
+y=hprice(:,1);
+x=hprice(:,2:5);
+x=[ones(n,1) x];
+k=5;
+vx=1;
+n0=5;
+
+%Hyperparameters for natural conjugate prior
+v0=75;
+b0=0*ones(k,1);
+b0(2,1)=10;
+b0(3,1)=5000;
+b0(4,1)=10000;
+b0(5,1)=10000;
+% s02=1/4.0e-1;
+s02=1/4.0e-8*vx;
+capv0=2.4*eye(k);
+capv0(2,2)=6e-7;
+capv0(3,3)=.15;
+capv0(4,4)=.6;
+capv0(5,5)=.6;
+capv0=capv0*vx;
+capv0inv=inv(capv0);
+X=x;
+R=capv0inv;
+beta0=b0;
+tau0=1/s02;
+
+
+bayes=struct;
+bayes.R=capv0inv;
+bayes.n0=n0;
+bayes.beta0=b0;
+bayes.tau0=tau0;
+intercept=1;
+
+outBA=FSRBeda(y,X(:,2:end),'bayes',bayes,'init',round(5),'intercept', intercept, 'conflev', [0.99 0.95]);
+
+
+% Plot
+figure;
+lwd=3;
+FontSize=18;
+linst={'-','--',':','-.','--',':'};
+
+for ij=1:5
+    my_subplot=subplot(3,2,ij);
+    hold('on')
+    plot(outBA.Bhpd(:,1:2,ij),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+    plot(outBA.Bhpd(:,3:4,ij),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+    plot(outBA.Bols(:,ij+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+    xL = get(my_subplot,'XLim');
+    db0=b0(ij,1);
+    line(xL,[db0 db0],'Color','r','LineWidth',lwd);
+    % dout=n-length(outBA.ListOut);
+    % lim=axis;
+    limU=max(outBA.Bhpd(50:end,2,ij))*1.3;
+    limL=min(outBA.Bhpd(50:end,1,ij))- min(outBA.Bhpd(50:end,1,ij))*0.3;
+    
+    ylim([limL limU])
+    
+    %line([dout; dout],[limL; limU],'Color','r','LineWidth',lwd);
+    
+    xlim([50 530]);
+    %title(['Value of $\hat{\beta}$ components HPDI (99%) through the FS'],'Interpreter','LaTeX');
+    %title('Values of $\hat{\beta}$ components HPDI $99\%$ through the FS','Interpreter','LaTeX');
+    ylabel(['$\hat{\beta_' num2str(ij-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
+    set(gca,'FontSize',FontSize);
+    if ij>4
+        xlabel('Subset size m','FontSize',FontSize);
+    end
+end
+%}
+
 
 
 %% Input parameters checking
