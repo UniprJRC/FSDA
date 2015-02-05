@@ -201,124 +201,96 @@ function [out] = FSRBeda(y, X, varargin)
 
 % Examples:
 
+
 %{
-    % Example of Houses Price
-    % load dataset
+    % In this example for the house price data we monitor the forward plots
+    % in the second half of the search of HPD regions for the parameters of
+    % the linear model and, bottom right-hand panel, the estimate of ?2.
+    % The horizontal lines correspond to prior values
     load hprice.txt;
-    
-    % setup parameters
+    close all;
     n=size(hprice,1);
     y=hprice(:,1);
     X=hprice(:,2:5);
     n0=5;
+    p=5;
 
-    % set \beta components
-    beta0=0*ones(5,1);
-    beta0(2,1)=10;
-    beta0(3,1)=5000;
-    beta0(4,1)=10000;
-    beta0(5,1)=10000;
-
-    % \tau
+    % Hyperparameters for natural conjugate prior
+    b0=zeros(p,1);
+    b0(2,1)=10;
+    b0(3,1)=5000;
+    b0(4,1)=10000;
+    b0(5,1)=10000;
+    % s02=1/4.0e-1;
     s02=1/4.0e-8;
+    capv0=2.4*eye(p);
+    capv0(2,2)=6e-7;
+    capv0(3,3)=.15;
+    capv0(4,4)=.6;
+    capv0(5,5)=.6;
+    capv0inv=inv(capv0);
+    R=capv0inv;
     tau0=1/s02;
 
-    % R prior settings
-    R=2.4*eye(5);
-    R(2,2)=6e-7;
-    R(3,3)=.15;
-    R(4,4)=.6;
-    R(5,5)=.6;
-    R=inv(R);
 
-    % define a Bayes structure with previous data
     bayes=struct;
-    bayes.R=R;
+    bayes.R=capv0inv;
     bayes.n0=n0;
-    bayes.beta0=beta0;
+    bayes.beta0=b0;
     bayes.tau0=tau0;
-    intercept=1;
 
-    % function call
-    outBA=FSRBeda(y,X,'bayes',bayes,'init',round(n/2),'intercept', intercept)
-%}
+    % init = point to start monitoring diagnostics along the FS
+    init=250;
 
-%{
-load hprice.txt;
-close all;
-n=size(hprice,1);
-y=hprice(:,1);
-x=hprice(:,2:5);
-x=[ones(n,1) x];
-k=5;
-vx=1;
-n0=5;
+    outBA=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
 
-%Hyperparameters for natural conjugate prior
-v0=75;
-b0=0*ones(k,1);
-b0(2,1)=10;
-b0(3,1)=5000;
-b0(4,1)=10000;
-b0(5,1)=10000;
-% s02=1/4.0e-1;
-s02=1/4.0e-8*vx;
-capv0=2.4*eye(k);
-capv0(2,2)=6e-7;
-capv0(3,3)=.15;
-capv0(4,4)=.6;
-capv0(5,5)=.6;
-capv0=capv0*vx;
-capv0inv=inv(capv0);
-X=x;
-R=capv0inv;
-beta0=b0;
-tau0=1/s02;
+    % Set font size, line width and line style
+    figure;
+    lwd=3;
+    FontSize=18;
+    linst={'-','--',':','-.','--',':'};
 
+    for ij=1:5
+        my_subplot=subplot(3,2,ij);
+        hold('on')
+        % plot 95% and 99% HPD  trajectories
+        plot(outBA.Bols(:,1),outBA.Bhpd(:,1:2,ij),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+        plot(outBA.Bols(:,1),outBA.Bhpd(:,3:4,ij),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
 
-bayes=struct;
-bayes.R=capv0inv;
-bayes.n0=n0;
-bayes.beta0=b0;
-bayes.tau0=tau0;
-intercept=1;
+        % plot posterior estimate
+        plot(outBA.Bols(:,1),outBA.Bols(:,ij+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
 
-outBA=FSRBeda(y,X(:,2:end),'bayes',bayes,'init',round(5),'intercept', intercept, 'conflev', [0.99 0.95]);
+        % Add the horizontal line which corresponds to prior values
+        xL = get(my_subplot,'XLim');
+        db0=b0(ij,1);
+        line(xL,[db0 db0],'Color','r','LineWidth',lwd);
 
+        % Set ylim
+        limU=max([outBA.Bhpd(:,4,ij); b0(ij)]);
+        limL=min([outBA.Bhpd(:,3,ij); b0(ij)]);
+        ylim([limL limU])
 
-% Plot
-figure;
-lwd=3;
-FontSize=18;
-linst={'-','--',':','-.','--',':'};
+        % Set xlim
+        xlim([init n]);
 
-for ij=1:5
-    my_subplot=subplot(3,2,ij);
-    hold('on')
-    plot(outBA.Bhpd(:,1:2,ij),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
-    plot(outBA.Bhpd(:,3:4,ij),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
-    plot(outBA.Bols(:,ij+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
-    xL = get(my_subplot,'XLim');
-    db0=b0(ij,1);
-    line(xL,[db0 db0],'Color','r','LineWidth',lwd);
-    % dout=n-length(outBA.ListOut);
-    % lim=axis;
-    limU=max(outBA.Bhpd(50:end,2,ij))*1.3;
-    limL=min(outBA.Bhpd(50:end,1,ij))- min(outBA.Bhpd(50:end,1,ij))*0.3;
-    
-    ylim([limL limU])
-    
-    %line([dout; dout],[limL; limU],'Color','r','LineWidth',lwd);
-    
-    xlim([50 530]);
-    %title(['Value of $\hat{\beta}$ components HPDI (99%) through the FS'],'Interpreter','LaTeX');
-    %title('Values of $\hat{\beta}$ components HPDI $99\%$ through the FS','Interpreter','LaTeX');
-    ylabel(['$\hat{\beta_' num2str(ij-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
-    set(gca,'FontSize',FontSize);
-    if ij>4
-        xlabel('Subset size m','FontSize',FontSize);
+        ylabel(['$\hat{\beta_' num2str(ij-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
+        set(gca,'FontSize',FontSize);
+        if ij>4
+            xlabel('Subset size m','FontSize',FontSize);
+        end
     end
-end
+
+    % Subplot associatied with the monitoring of sigma^2
+    subplot(3,2,6);
+    plot(outBA.S2(:,1),outBA.S2(:,2),'LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+    set(gca,'FontSize',FontSize);
+    xlabel('Subset size m','FontSize',FontSize);
+    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20);
+
+
+    % Add multiple title
+    suplabel('Housing data; forward plots in the second half of the search of HPD regions for beta','t')
+
 %}
 
 
