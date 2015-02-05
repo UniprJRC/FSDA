@@ -224,23 +224,24 @@ function [out]=FSR_H(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out_Hmodel0_scoring0]=FSR_H(v,q,'Hmodel',0,'scoring',0);
+    [out_Hmodel0_scoring0]=FSR_H(y,X,'Hmodel',0,'scoring',0);
 %}
 
 %{
     % Monitor the exceedances from m=60 without showing plots
     n=200;
-    p=3;
+    p=1;
     X=rand(n,p);
     y=rand(n,1);
     [out]=FSR_H(y,X,'init',60,'plots',0);
 %}
 
 %{
+
     % Initialize the search with the subsample which produces the smallest
     % [h/n] quantile of squared residuals
     n=200;
-    p=3;
+    p=1;
     X=randn(n,p);
     y=randn(n,1);
     [out]=FSR_H(y,X,'h',120);

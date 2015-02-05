@@ -142,22 +142,22 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRmdr_H(y,X,bsb,varargin)
 
 %{
 % FSR with all default options.
-[mdr,Un,BB,Bols,S2] = FSRmdrH(y,X,out.bs);
+[mdr,Un,BB,Bols,S2] = FSRmdr_H(y,X,out.bs);
 %}
 
 %{
 % FSRmdr monitoring from step 60.
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'init',60);
+[mdr,Un,BB,Bols,S2] = FSRmdr_H(y,X,out.bs,'init',60);
 %}
 
 %{
 % FSRmdr using a regression model without intercept.
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');
+[mdr,Un,BB,Bols,S2] = FSRmdr_H(y,X,out.bs,'intercept','0');
 %}
 
 %{
 %FSRmdr applied without doing any checks on y and X variables.
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);
+[mdr,Un,BB,Bols,S2] = FSRmdr_H(y,X,out.bs);
 %}
 
 
@@ -323,7 +323,7 @@ else
                 if scoring==1
                     
                     if size(Xb,1)<=5
-                        HET=regressMH1mleN(yb,Xb(:,end),Xb(:,end),'intercept',intercept);%era regressMHmleN ????
+                        HET=regressMH1greed(yb,Xb(:,end),Xb(:,end),'intercept',intercept);%era regressMHmleN ????
                     else
                         HET=regressMH1(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept);
                         % HET=regressMHpow(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
@@ -332,7 +332,7 @@ else
                     end
                     
                 elseif scoring==0
-                    HET=regressMH1mleN(yb,Xb(:,end),Xb(:,end),'intercept',intercept);
+                    HET=regressMH1greed(yb,Xb(:,end),Xb(:,end),'intercept',intercept);
                 end
                 
                 %% Harvey heteroscedastic model
@@ -341,7 +341,7 @@ else
                 if scoring==1
                     
                     if size(Xb,1)<=5
-                        HET=regressMHmleN(yb,Xb(:,end),Xb(:,end),'intercept',intercept);%era regressMHmleN ????
+                        HET=regressMHgreed(yb,Xb(:,end),Xb(:,end),'intercept',intercept);%era regressMHmleN ????
                     else
                         HET=regressMH(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept);
                         % HET=regressMHpow(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
@@ -349,14 +349,14 @@ else
                     end
                     
                 elseif scoring==0
-                    HET=regressMHmleN(yb,Xb(:,end),Xb(:,end),'intercept',intercept);
+                    HET=regressMHgreed(yb,Xb(:,end),Xb(:,end),'intercept',intercept);
                 end
             end
             gam=HET.Gamma;
             alp=HET.alpha;
             sigma2hati=1+real(X(:,end).^alp)*gam;%equaz 6 di paper
 %             else
-%              HET=regressMHmleN(yb,Xb,Xb);
+%              HET=regressMHgreed(yb,Xb,Xb);
 %             gam=HET.Gamma;
 %             alp=HET.alpha;
 %             sigma2hati=1+real(X(:,2).^alp)*gam;
