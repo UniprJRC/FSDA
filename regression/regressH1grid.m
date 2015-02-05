@@ -1,8 +1,8 @@
-function [out] = regressMHgreed(y,X,sel,varargin)
-
+function [out] = regressH1grid(y,X,sel,varargin)
+% likelihood for models with 1+exp(Z*gamma)
 nnargin = nargin;
 vvarargin = varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,~] = chkinputR(y,X,nnargin,vvarargin);
 
 options=struct('intercept',1,'msgiter',0);
 
@@ -15,7 +15,7 @@ if nargin > 3
 end
 intercept=options.intercept;
 
-%alpha=[1.7217 0.1:0.1:7];
+alpha=0.1:0.1:4;
 %alpha=3;
 %alpha=2;
 %alpha=1:0.1:2;
@@ -23,13 +23,11 @@ intercept=options.intercept;
 %alpha=2.9;
 %alpha=1;
 %gam=[0.000001 0.00001 0.0001 0.001 0.01 0.1:0.1:15]; %  16:1000]; %  6:10000];
-%gam=[5.1868e+04 0.001 0.01 0.1  1 10:120 500 1000 5000 10000 50000]; %  6:10000];
-alpha=0.1:0.1:4;
-gam=[0.001 0.01 0.1 1 10:120 500 1000 5000 10000 50000]; 
+gam=[0.001 0.01 0.1 1 10:120 500 1000 5000 10000 50000]; %  6:10000];
 %gam=1;
 %gam=1;
 % const = constant in the scedastc equation
-const=0.000001;
+%const=0.000001;
 const=1;
 
 logL=zeros(length(gam)*length(alpha),3);
@@ -59,7 +57,7 @@ for i_alpha=1:length(alpha)
     Zi=real(Z.^alpha(i_alpha));
     for j_gamma=1:length(gam)
         
-        sigma2hati=const+Zi*gam(j_gamma);
+        sigma2hati=const+exp(Z'*Zi*gam(j_gamma));%aggiunto il trasposto
         
         sqweights = sigma2hati.^(-0.5);
         

@@ -1,7 +1,7 @@
-function out=regressMH1(y,X,sel,varargin)
+function out=regressH(y,X,sel,varargin)
 %regressMH fits a multiple linear regression model with multiplicative heteroskedasticity
 %
-%<a href="matlab: docsearchFS('regressmh1')">Link to the help function</a>
+%<a href="matlab: docsearchFS('regressmh')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -17,13 +17,13 @@ function out=regressMH1(y,X,sel,varargin)
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows
 %
-%               \sigma^2_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+%               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
 %
 %               If Z is a vector of length r it contains the indexes of the
 %               columns of matrix X which form the scedastic function as
 %               follows
 %
-%               \sigma^2_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
+%               \sigma^2_i = exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
 %
 %               Therefore, if for example the explanatory variables
@@ -94,7 +94,7 @@ function out=regressMH1(y,X,sel,varargin)
 %   multiplicative heteroscedasticity which is a very flexible, general
 %   model that includes most of the useful formulations as special cases.
 %   The general formulation is
-%       \sigma^2_i =1 + \sigma^2 exp(z_i \alpha)
+%       \sigma^2_i =\sigma^2 exp(z_i \alpha)
 %   Let z_i include a constant term so that z_i'=(1 q_i) where q_i is the
 %   original set of variables which are supposed to explain
 %   heteroscedasticity. This routine automatically adds a column of 1 to
@@ -159,13 +159,6 @@ function out=regressMH1(y,X,sel,varargin)
     % The variables which enter the scedastic function are Income and
     % Income square (that is columns 3 and 4 of matrix X)
     out=regressMH(y,X,[3 4],'msgiter',0);
-    out1=regressMH1(y,X,[3 4],'msgiter',0);
-    n=100;
-    y=randn(n,1);
-    X=abs(randn(n,1));
-    out=regressMHpow(y,X,X);
-    out1=regressMH1(y,X,X);
-
 
     % Plot OLS residuals againt Income (This is nothing but Figure 11.1 of
     % Green (5th edition) p. 216)
@@ -251,10 +244,9 @@ vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
 % maxiter = maximum number of iterations in the iterative procedure
-maxiterdef=10000;
+maxiterdef=200;
 % Scalar defining convergence tolerance of iterative procedure
 toldef=1e-08;
-toldef=1e-13;
 
 options=struct('intercept',1,'maxiter',maxiterdef,...
     'initialbeta','','initialgamma','','tol',toldef,'msgiter',0);
@@ -263,7 +255,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -274,7 +266,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error: in total %d non-existent user options found.', length(WrongOptions));
+        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
     end
     
     % Write in structure 'options' the options chosen by the user
@@ -293,11 +285,10 @@ end
 
 r=y-X*b0;
 oldbeta=b0;
-sigma2=r'*r/n;
 
 % logL_R = -2*restricted loglikelihood  (without ln 2 \pi)
 % -2* ( (-n/2)*[1+ln(r'r/n)   +ln 2 \pi]
-logL_R= n*(1+log(sigma2));
+logL_R= n*(1+log(r'*r/n));
 
 %Initialization of gamma
 % Z = n-by-r matrix which contains the explanatory variables for
@@ -321,11 +312,7 @@ end
 % \sigma_i^2 = exp( \gamma_0 + \gamma_1*Z(i,2) + ... + \gamma_{r}*Z(i,r))
 initialgamma=options.initialgamma;
 if isempty(initialgamma)
-    %    gamma0=Z\(r.^2/mean(r.^2)-1);
-    gamma0=Z\(n*r.^2/sum(r.^2)-1);
-    %    gamma0=Z\log(r.^2);
-    %  gamma0=[0; 0];
-    % gamma0=[log(50000); 1.9];
+    gamma0=Z\log(r.^2);
 else
     gamma0= initialgamma;
 end
@@ -341,8 +328,6 @@ iter=0;
 
 maxiter=options.maxiter;
 
-    delt=1;
-
 % d is the column vector which contains the full set of
 % parameters (beta and gamma)
 dold=[oldbeta;oldgamma];
@@ -353,8 +338,7 @@ while cont==1 && iter<maxiter
     % \sigma^2_i with \exp(\gamma_i' z_i)
     % sigma2hat1 = vector of length n which contains the n estimates of the
     % disturbance variance
-    Zgamma=exp(Z*oldgamma);
-    sigma2hati=(1+Zgamma);
+    sigma2hati=exp(Z*oldgamma);
     % sigma2hati(sigma2hati>1e+8)=1e+8;
     
     % 2. Compute \beta_{t+1} (new estimate of \beta using FGLS)
@@ -369,34 +353,22 @@ while cont==1 && iter<maxiter
     
     % 3. Update estimate of \gamma adding the vector of slopes in the least
     % squares regression of [\epsilon_i^2/exp(z_i^' \gamma)-1] on z_i
-    newres2=(yw-Xw*newbeta).^2;
-    newsigma2=sum(newres2)/n;
+    newres2=(y-X*newbeta).^2;
+    newgamma=oldgamma+ Z\(newres2./exp(Z*oldgamma)-1);
+    newgamma(newgamma>5)=5;
+    newgamma(newgamma<-5)=-5;
     
-    Qweights=(Zgamma./(1+Zgamma));
-    Zq = bsxfun(@times, Z, Qweights);
-    %yq = (newres2./(newsigma2*(1+Zgamma))-1).* Qweights;
-    % yq = (newres2./(newsigma2*(1+Zgamma))-1) ./ Qweights;
-    newres2ori=(y-X*newbeta).^2;
-    yq = (newres2ori./(newsigma2*(1+Zgamma))-1);
-    
-    newgamma=oldgamma+ delt*Zq\yq;
-    % newgamma(abs(newgamma)>10)=10;
-    th=15;
-         newgamma(newgamma>th)=th;
-      newgamma(newgamma<-th)=-th;
- 
     dnew=[newbeta;newgamma];
     
     % Show estimate of beta in each step of the iteration
     if options.msgiter>1
-        % disp(['Values of hat beta iteration' num2str(iter)])
-        % disp(newbeta)
+        disp(['Values of hat beta iteration' num2str(iter)])
+        disp(newbeta)
         disp(['Values of hat gamma iteration' num2str(iter)])
         disp(newgamma)
     end
     
-    % lik=-0.5*(sum(log(sigma2hati))+sum((newres2./sigma2hati)));
-    %disp(lik)
+    
     % Check if convergence has been achieved
     if sum((dnew-dold).^2)/sum(dold.^2)>tol;
         cont=1;
@@ -415,32 +387,118 @@ end
 % Store results
 
 % Store beta coefficients, standard errors and corresponding tstats
-BetaM=zeros(p,3);
-BetaM(:,1)=newbeta;
+Beta=zeros(p,3);
+Beta(:,1)=newbeta;
 % Compute standard errors of beta coefficients
-BetaM(:,2)=sqrt(diag(inv(Xw'*Xw)));
+Beta(:,2)=sqrt(diag(inv(Xw'*Xw)));
 % Compute t-stat of beta coefficients
-BetaM(:,3)=BetaM(:,1)./BetaM(:,2);
-out.BetaM=BetaM;
-out.Beta=newbeta';
-out.sigma2=newsigma2;
+Beta(:,3)=Beta(:,1)./Beta(:,2);
+out.Beta=Beta;
 
 % Store parameters of scedastic function with associated standard errors
-GammaM=zeros(length(newgamma),3);
-GammaM(:,1)=newgamma;
+Gamma=zeros(length(newgamma),3);
+Gamma(:,1)=newgamma;
 % Find standard errors of elements of \gamma
 % ZZ=Z'*Z;
 % ZZ=0.5*ZZ(2:end,2:end);
-covZ=2*inv(Zq'*Zq); %#ok<MINV>
-GammaM(:,2)=diag(sqrt(covZ));
-GammaM(:,3)=GammaM(:,1)./GammaM(:,2);
+covZ=2*inv(Z'*Z); %#ok<MINV>
+Gamma(:,2)=diag(sqrt(covZ));
+% % Estimate of sigma^2 Remark: \sigma^2 = exp( \hat gamma_1)
+% Gamma(1,1)=exp(newgamma(1));
+% % Find standard error of estimate of \sigma^2
+% % The asymptotic variance of \sigma^2 is [exp(\gamma_1)]^2* Asy. Var
+% % (\gamma_1)
+% Gamma(1,2)=Gamma(1,1)*Gamma(1,2);
+Gamma(:,3)=Gamma(:,1)./Gamma(:,2);
 
+% Wald test
+% This test is computed extracting from the full parameter vector \gamma
+% and its estimated asymptotic covariance matrix, the subvector \hat alpha
+% and its asymptotic covariance matrix
+% In the case of multiplicative heteroscedasticity
+% \gamma=[ln \sigma^2 alpha'] so alpha are all elements of vector gamma but
+% the first
+% Wald = \hat \alpha' \left{[0 I] [2 (Z'Z)]^{-1} [0 I] \right}^{-1} \hat \alpha
+% See p. 556 of Greene 7th edition. Note that on p. 556 of Greene there is
+% a missing inverse after the right curly bracket.
+alpha=Gamma(2:end,1);
+Varalpha=covZ(2:end,2:end);
+% Wald=alpha'*inv(Varalpha)*alpha;
+WA=alpha'*(Varalpha\alpha);
+
+% logL_U = -2*unrestricted loglikelihood
+Zgamma=Z*newgamma;
+logL_U= sum(Zgamma)+sum(newres2./exp(Zgamma));
+
+% LR = Likelihood ratio test
+LR=logL_R-logL_U;
+
+% Complete maximized log likelihood
+LogL= -(logL_U+n*log(2*pi))/2;
+
+% Lagrange multiplier test
+% Take residuals from OLS model and form reponse variable h (nx1) where
+% the ith element of vector h is given by
+% h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
+% i=1, ..., n
+h=r.^2/(sum(r.^2)/n)-1;
+% Regress h on Z and find the explained sum of squares
+% bh = vector of regression coefficients from regression of h on Z
+bh=Z\h;
+% Zbh = fitted values from the regression of h on Z
+Zbh=Z*bh;
+% LM is nothing but one-half times the explained sum of squares in the
+% linear regression of the variable h on Z
+LM=Zbh'*Zbh/2;
+
+% Below it is possible to find two alternative (inefficient) ways of
+% computing the LM test
+%{
+    % The row below is an inefficient way of computing the LM test
+    % See equation 9.28 p. 276 of Greene 7th edition
+    LM=h'*Z*inv(Z'*Z)*Z'*h/2;
+
+    % An additional alternative way of computing LM is as follows
+    % vg is row vector of length columns of Z
+    % vg = \sum v_i*z_i where v_i is a scalar equal to
+    % h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
+    vg = bsxfun(@times, Z(:,2:end), h);
+    LM=sum(vg,1)*inv((n-1)*cov(Z(:,2:end)))*(sum(vg,1)')/2;
+%}
 
 % Store inside out structure standard error of regression and heteroskedastic parameters
-out.GammaM=GammaM;
-% The two lines below are temporary just to have the connection with power
-% model
-out.alpha=out.GammaM(end,1);
-out.Gamma=exp(out.GammaM(1,1));
+out.Gamma=Gamma;
+out.alpha=out.Gamma(end,1);%added by frt. non so se giusto.
+% Store value of Likelihood ratio test
+out.LR = LR;
+% Store value of Lagrange multiplier test
+out.LM = LM;
+% Store value of Wald test
+out.WA = WA;
+% Store value of complete maximized log likelihood
+out.LogL=LogL;
+msgiter=options.msgiter;
+if msgiter ==1
+    if maxiter>1
+        disp('Regression parameters beta')
+        disp('Coeff.   SE     t-stat')
+        disp(Beta)
+        disp('Scedastic parameters gamma')
+        disp('Coeff.   SE ')
+        disp(Gamma)
+        disp('Tests')
+        disp(['Likelihood ratio test    (LR)=' num2str(LR)])
+        disp(['Lagrange multiplier test (LM)=' num2str(LM)])
+        disp(['Wald test                (Wa)=' num2str(WA)])
+        disp(['Complete maximized log likelihood=' num2str(LogL)])
+    else
+        disp('Regression parameters beta')
+        disp('Coeff.   SE     t-stat')
+        disp(Beta)
+        disp('Scedastic parameters gamma from first iteration')
+        disp('Coeff.')
+        disp(gamma0)
+    end
+end
 end
 

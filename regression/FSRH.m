@@ -1,4 +1,4 @@
-function [out]=FSR_H(y,X,varargin)
+function [out]=FSRH(y,X,varargin)
 %FSRH gives an automatic outlier detection procedure in linear regression
 %with heteroskedasticity
 %
@@ -224,7 +224,7 @@ function [out]=FSR_H(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out_Hmodel0_scoring0]=FSR_H(y,X,'Hmodel',0,'scoring',0);
+    [out_Hmodel0_scoring0]=FSRH(y,X,'Hmodel',0,'scoring',0);
 %}
 
 %{
@@ -233,7 +233,7 @@ function [out]=FSR_H(y,X,varargin)
     p=1;
     X=rand(n,p);
     y=rand(n,1);
-    [out]=FSR_H(y,X,'init',60,'plots',0);
+    [out]=FSRH(y,X,'init',60,'plots',0);
 %}
 
 %{
@@ -244,19 +244,19 @@ function [out]=FSR_H(y,X,varargin)
     p=1;
     X=randn(n,p);
     y=randn(n,1);
-    [out]=FSR_H(y,X,'h',120);
+    [out]=FSRH(y,X,'h',120);
 %}
 
 %{
     % Extract all possible subsamples in order to find susbet to initialize
     % the search
-    [out]=FSR_H(y,X,'nsamp',0);
+    [out]=FSRH(y,X,'nsamp',0);
 %}
 
 %{
     % This is to try various combinations of the labeladd, bivarfit
     % and multivarfit options.
-    [out]=FSR_H(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');
+    [out]=FSRH(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');
 %}
 
 %{
@@ -266,11 +266,11 @@ function [out]=FSR_H(y,X,varargin)
     y=hawkins(:,9);
     X=hawkins(:,1:8);
     % Use of FSR starting with 1000 subsamples
-    [out]=FSR(y,X,'nsamp',1000);
+    [out]=FSRH(y,X,'nsamp',1000);
     % Use of FSR starting with 1000 subsamples
     % focusing in the output plots to the interval 1-6 on the y axis and
     % to steps 30-90.
-    [out]=FSR_H(y,X,'nsamp',1000,'ylim',[1 6],'xlim',[30 90]);
+    [out]=FSRH(y,X,'nsamp',1000,'ylim',[1 6],'xlim',[30 90]);
 %}
 
 %{
@@ -286,7 +286,7 @@ function [out]=FSR_H(y,X,varargin)
     y(1:kk)=y(1:kk)+6;
     nameX={'age', 'salary', 'position'};
     namey='salary';
-    [out]=FSR_H(y,X,'nameX',nameX,'namey',namey);
+    [out]=FSRH(y,X,'nameX',nameX,'namey',namey);
 %}
 
 %{
@@ -301,7 +301,7 @@ function [out]=FSR_H(y,X,varargin)
     % point mass contamination of the first kk units
     X(1:kk,:)=1;
     y(1:kk)=3;
-    [out]=FSR_H(y,X);
+    [out]=FSRH(y,X);
 %}
 
 
@@ -430,7 +430,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,~,~,Hetero,WEI] = FSRmdr_H(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'Hmodel',Hmodel,'scoring',scoring);
+    [mdr,Un,bb,~,~,Hetero,WEI] = FSRHmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'Hmodel',Hmodel,'scoring',scoring);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2;
@@ -468,7 +468,7 @@ else % initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,~,S2,Hetero,WEI] = FSRmdr_H(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'Hmodel',Hmodel,'scoring',scoring);
+        [mdr,Un,bb,~,S2,Hetero,WEI] = FSRHmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'Hmodel',Hmodel,'scoring',scoring);
         
         % If FSRmdr run without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
