@@ -114,7 +114,108 @@
 		</tocitem>
 		
 		
-		<tocreference target="helpfuncbycat.xml"></tocreference>
+		<tocitem target="function_reference.html">Functions 
+ 
+  <tocitem target="function_reference.html#statvis">Dynamic Statistical Visualization
+    <tocitem target="add2spm.html">add2spm - Add objects to the scatter plot matrix</tocitem> 
+    <tocitem target="cdsplot.html">cdsplot - Candlestick plot for robust model selection</tocitem> 
+   	<tocitem target="covplot.html">covplot - Forward plot of the monitoring of the trajectories of elements of the covariance (correlation) matrix</tocitem> 
+   	<tocitem target="fanplot.html">fanplot - Forward plot of the monitoring of the score test statistic</tocitem> 
+    <tocitem target="histFS.html">histFS - plots a histogram with the elements in each bin grouped according to a vector of labels.</tocitem> 
+    <tocitem target="levfwdplot.html">levfwdplot - Plots the trajectories of leverage along the search</tocitem> 
+  	<tocitem target="malfwdplot.html">malfwdplot - Plots the trajectories of Mahalanobis distances along the search</tocitem>
+  	<tocitem target="malindexplot.html">malindexplot - Plots the Mahalanobis distances against index number or any other variable</tocitem>
+  	<tocitem target="mdrplot.html">mdrplot - Plots the trajectory of minimum deletion residual (mdr) along the search</tocitem> 
+    <tocitem target="mmdplot.html">mmdplot - Plots the trajectory of minimum Mahalanobis distance (mmd) along the search</tocitem> 
+  	<tocitem target="olsline.html">olsline - Add least-squares fit line(s) to scatter plot(s)</tocitem> 
+    <tocitem target="resfwdplot.html">resfwdplot - Plots the trajectories of scaled (squared) residuals along the search</tocitem>
+	<tocitem target="resindexplot.html">resindexplot - Plots the residuals against index number or any other variable</tocitem>
+	<tocitem target="selectdatafs.html">selectdataFS - Graphical selection of data points on scatter plot matrices or trajectories in the forward plots using the mouse</tocitem>
+	<tocitem target="spmplot.html">spmplot - Scatterplot matrix with dynamic scatters and histograms</tocitem>
+	<tocitem target="yxplot.html">yXplot - Graphical selection of data points on scatter plot matrices or trajectories in the forward plots using the mouse</tocitem>
+  </tocitem>
+	
+	
+ <tocitem target="function_reference.html#robreg">Robust linear regression and transformations
+    <tocitem target="addt.html">addt - Added t test</tocitem> 
+    <tocitem target="fsr.html">FSR - Forward search in linear regression with automatic outlier detection procedure</tocitem> 
+     <tocitem target="fsraddt.html">FSRaddt - Forward added t-tests for each explanatory variable</tocitem> 
+   <tocitem target="fsrbonfbound.html">FSRbonfbound - Theoretical Bonferroni bounds of minimum deletion residual</tocitem> 
+ 	<tocitem target="fsrbsb.html">FSRbsb - Units belonging to the subset in each step of the forward search</tocitem> 
+   	<tocitem target="fsreda.html">FSReda - Forward search in linear regression with exploratory data analysis purposes</tocitem> 
+   	<tocitem target="fsrenvmdr.html">FSRenvmdr - Theoretical envelopes of Minimum Deletion Residual outside subset during the search</tocitem> 
+    <tocitem target="fsrfan.html">FSRfan - Score test statistic for transformation in each step of the forward search</tocitem> 
+    <tocitem target="fsrmdr.html">FSRmdr - Stores minimum deletion residual and other basic regression quantities. </tocitem> 
+    <tocitem target="lxs.html">LXS - Least Median of Squares or Least Trimmed of squares</tocitem> 
+     <tocitem target="minscale.html">minscale - Computes minimum value of the scale</tocitem> 
+   <tocitem target="mmreg.html">MMreg - MM estimators in linear regression</tocitem> 
+    <tocitem target="mmregcore.html">MMregcore - MM estimators in linear regression</tocitem> 
+    <tocitem target="sreg.html">Sreg - S estimator in linear regression</tocitem> 
+  	<tocitem target="score.html">Score - Score test for transformation</tocitem> 
+  </tocitem> 
+	<tocitem target="function_reference.html#robms">Robust model selection
+    <tocitem target="fsraddt.html">FSRaddt - Forward added t-tests for each explanatory variable</tocitem> 
+    <tocitem target="fsrcp.html">FSRcp - Forward Cp for models of interest</tocitem> 
+    <tocitem target="fsrms.html">FSRms - Model selection using Cp</tocitem> 
+  </tocitem> 
+
+	<tocitem target="function_reference.html#robmult">Robust multivariate analysis and transformations
+    <tocitem target="fsm.html">FSM - Forward search in multivariate analysis with automatic outlier detection procedure</tocitem> 
+     <tocitem target="fsmbonfbound.html">FSMbonfbound - Theoretical Bonferroni bounds of minimum Mahalanobis distance in each step of the forward search.</tocitem> 
+    <tocitem target="fsmeda.html">FSMeda - Forward search in multivariate analysis with exploratory data analysis purposes</tocitem> 
+    <tocitem target="fsmenvmmd.html">FSMenvmmd - Theoretical envelopes of Minimum Mahalanobis Distance outside subset during the search</tocitem> 
+    <tocitem target="fsmfan.html">FSMfan - Multivariate transformations (validation step)</tocitem> 
+    <tocitem target="fsmmmd.html">FSMmmd - Stores minimum Mahalanobis Distance (uses fast recursive routines)</tocitem> 
+     <tocitem target="fsmmmdeasy.html">FSMmmdeasy - Stores minimum Mahalanobis Distance (does not use recursive routines)</tocitem> 
+    <tocitem target="fsmtra.html">FSMtra - Multivariate transformations (estimation step)</tocitem> 
+    <tocitem target="mcd.html">mcd - Minimum covariance determinant</tocitem> 
+    <tocitem target="minscale.html">minscale - Computes minimum value of the scale</tocitem> 
+    <tocitem target="mmmult.html">MMmult - MM estimators in Multivariate Analysis</tocitem> 
+	<tocitem target="mmmultcore.html">MMmultcore - MM estimators in Multivariate Analysis</tocitem> 
+    <tocitem target="mve.html">mve - Minimum volume ellipsoid</tocitem> 
+	<tocitem target="smult.html">Smult - S estimators in Multivariate Analysis</tocitem> 
+	<tocitem target="unibiv.html">unibiv - Detects univariate and bivariate outliers.</tocitem> 
+</tocitem> 
+
+
+	<tocitem target="function_reference.html#GUIs">Interactive demo tools with GUIs
+    <tocitem target="brushres.html">BrushRES - Example of interactive brushing starting from the monitoring residual plot</tocitem> 
+    <tocitem target="brushfan.html">BrushFAN - Example of interactive brushing starting from the FAN plot</tocitem> 
+    <tocitem target="brushrob.html">BrushROB - Example of interactive brushing starting from the index plot of robust residuals</tocitem> 
+	</tocitem>
+	
+	
+	<tocitem target="function_reference.html#utilities">Utilities
+ 	   <tocitem target="clickablemultilegend.html">clickableMultiLegend - Make legends clickable in a scatter plot matrix</tocitem> 
+	   <tocitem target="dsxy2figxy.html">dsxy2figxy - Transform points or positions from axis coords to figure coords</tocitem> 
+	   <tocitem target="ellipse.html">ellipse - Draw an ellpse starting from loc vector and scatter matrix</tocitem> 
+	   <tocitem target="fscolors.html">FScolors - A MATLAB class encapsulating some common color definitions</tocitem> 
+	   <tocitem target="fsminvmmd.html">fsminvmmd - Converts values of minimum Mahalanobis distance into confidence levels</tocitem> 
+	   <tocitem target="fsrinvmdr.html">fsrinvmdr - Converts values of minimum deletion residual into confidence levels</tocitem> 
+	   <tocitem target="mahalfs.html">mahalFS - Mahalanobis distances from supplied centroid and covariance matrix</tocitem> 
+	   <tocitem target="normboxcox.html">normBoxCox - Normalized Box-Cox transformation</tocitem> 
+	   <tocitem target="quickselectFS.html">quickselectfs - Finds the k-th ordered statistic</tocitem> 
+	   	<tocitem target="rescale.html">rescale - Rescale data in a given interval</tocitem> 
+	   <tocitem target="tbbdp.html">TBbdp - Finds constant c of Tukey biweight given breakdown point</tocitem> 
+	   <tocitem target="tbc.html">TBc - Finds breakdownpoint and efficiency given constant c</tocitem> 
+	   <tocitem target="tbeff.html">TBeff - Finds constant c of Tukey biweight given nominal efficiency</tocitem> 
+	   <tocitem target="tbpsi.html">TBpsi - Function ψ(x) for Tukey biweight</tocitem> 
+	   <tocitem target="tbrho.html">TBrho - Function ρ(x) for Tukey biweight</tocitem> 
+	   <tocitem target="tbwei.html">TBwei - Function w=ψ(x)/x for Tukey biweight</tocitem> 
+	</tocitem>	
+
+	<tocitem target="function_reference.html#combinatorial">Combinatorial
+	   <tocitem target="bc.html">bc - Binomial Coefficient</tocitem> 
+	   <tocitem target="combsFS.html">combsFS - All possible combinations of n elements taken k at time</tocitem> 
+	   <tocitem target="nchoosekfs.html">nchoosekFS - Binomial coefficient or matrix containing all combinations</tocitem> 
+	   <tocitem target="randsamplefs.html">randsampleFS - Random sample, with or without replacement</tocitem> 
+	   <tocitem target="shuffling.html">shuffling - Random permutation of the elements of a vector</tocitem> 
+	   <tocitem target="subsets.html">subsets - Indexes of distinct subsets extracted from a set of n elements </tocitem> 
+	</tocitem>	
+
+	
+</tocitem>
+
 
 		<tocitem target="exampleindex.html" image="$toolbox/matlab/icons/help_ex.png">Examples</tocitem>
 

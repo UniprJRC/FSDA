@@ -1,4 +1,10 @@
-﻿body {background-color: white; color: black;}
+﻿body { color: black;font-family: Arial, Helvetica, sans-serif;margin: 0px;
+padding: 0px;
+border: 0px none;
+outline: 0px none;
+font-size: 100%;
+vertical-align: baseline;
+background: none repeat scroll 0% 0% transparent;}
 a:link {color: #0000FF;}
 a:active {color: #0000FF;}
 a:visited {color: #840084;}
@@ -125,8 +131,7 @@ img.baseline15 {vertical-align:-15pt;}
 /* Footer monospace */
 tt.minicdot {font-size: 1.6ex; }
 
-/* For WebRenderer, avoid shifting of next/previous buttons when page is short. */
-html { height: 101%; } 
+
 
 /* Headings and category tables on Functions -- By Category pages  */
 .categorytitle {margin-top:8px; padding-top:0px;}
