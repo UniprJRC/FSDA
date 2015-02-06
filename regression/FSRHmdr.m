@@ -127,7 +127,7 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,bsb,varargin)
 %
 %
 %<a href="matlab: docsearch('FSRmdr')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 

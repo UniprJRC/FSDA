@@ -64,7 +64,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %
 %
 %<a href="matlab: docsearchFS('fsrinvmdr')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 

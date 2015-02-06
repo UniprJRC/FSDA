@@ -12,9 +12,11 @@ fi
 
 cd $what
 
-for fold in clustering combinatorial examples graphics multivariate regression robust utilities
+for fold in clustering combinatorial examples FSDAdemos graphics multivariate regression robust utilities
 do
 	cd $fold
+	>patrizia
+	mv Contents.m patrizia
 	echo "% $fold" | tr '[:lower:]' '[:upper:]' >Contents.m
 	echo "%" >>Contents.m
 	echo "% Files :" >>Contents.m
@@ -27,8 +29,8 @@ do
 		printf "%% %-28s - %s\n" "$base" "$comm" >>Contents.m
 	done
 	unix2dos Contents.m
-#echo "DIFFERENZA PER $fold"
-#sdiff Contents.m patri.m
+echo "DIFFERENZA PER $fold <nuovo >vecchio"
+sdiff Contents.m patrizia
 echo Contents.m in $fold generato
 echo prosegui
 read avanti
@@ -39,11 +41,11 @@ cd datasets
 echo prosegui
 read avanti
 
-echo "<a href=""matlab: docsearch('datasets_reg')"">Link to the help function</a>" >Contents.m
-echo "<a href=""matlab: docsearch('datasets_mult')"">Link to the help function</a>" >>Contents.m
+echo "<a href=""matlab: docsearchFS('datasets_reg')"">Link to the help function</a>" >Contents.m
+echo "<a href=""matlab: docsearchFS('datasets_mult')"">Link to the help function</a>" >>Contents.m
 echo "" >>Contents.m
 
-find multivariate multivariate_regression regression -name "*.txt" >>Contents.m
+find clustering multivariate multivariate_regression regression -name "*.txt" >>Contents.m
 sed -e ' {
         1,2 s/^/%/
         3,$ s/^/% /

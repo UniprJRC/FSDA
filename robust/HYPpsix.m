@@ -48,7 +48,7 @@ function psiHYPx = HYPpsix(u, cktuning,varargin)
 %
 %
 %<a href="matlab: docsearchFS('hyppsi')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 % Examples:
 

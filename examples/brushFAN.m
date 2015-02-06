@@ -11,7 +11,7 @@ function brushFAN
 %
 %
 %<a href="matlab: docsearchFS('brushFAN')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % other open demos create problems. Delete them before starting this new one. 
 delete(((findobj('type','figure','Tag','demo'))));

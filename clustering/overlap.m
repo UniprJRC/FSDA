@@ -52,7 +52,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %
 %
 %<a href="matlab: docsearchFS('overlap')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 

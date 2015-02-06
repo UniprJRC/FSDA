@@ -160,7 +160,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %<a href="matlab: docsearch('regressb')">Link to the help function</a>
 %
-% Last modified 01-Jan-2015
+% Last modified 06-Feb-2015
 %
 % Examples:
 

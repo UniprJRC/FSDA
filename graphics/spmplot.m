@@ -201,7 +201,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 

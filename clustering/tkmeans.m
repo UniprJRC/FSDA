@@ -121,7 +121,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %
 %
 %<a href="matlab: docsearchFS('tkmeans')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 

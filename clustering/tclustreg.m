@@ -43,7 +43,7 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('rlga')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 
 %

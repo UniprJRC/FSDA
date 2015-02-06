@@ -26,7 +26,7 @@ function ceff = HAeff(eff,v,abc)
 %
 %
 %<a href="matlab: docsearchFS('haeff')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 % Paramter ceff multiplies parameters (a,b,c) of Hampel estimator
 %

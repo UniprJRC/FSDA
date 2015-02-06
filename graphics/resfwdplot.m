@@ -316,7 +316,7 @@ function plotopt=resfwdplot(out,varargin)
 %
 %
 %<a href="matlab: docsearchFS('resfwdplot')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 

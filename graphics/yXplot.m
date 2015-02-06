@@ -190,7 +190,7 @@ function [plot1]=yXplot(y,X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('yxplot')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 

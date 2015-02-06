@@ -234,7 +234,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %
 %<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 
@@ -1437,7 +1437,7 @@ end
         %
         %
         %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
-        % Last modified 08-Dec-2013
+        % Last modified 06-Feb-2015
         
         % Examples:
         %

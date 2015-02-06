@@ -1,6 +1,12 @@
-<a href=matlab: docsearch('datasets_reg')>Link to the help function</a>
-<a href=matlab: docsearch('datasets_mult')>Link to the help function</a>
+<a href=matlab: docsearchFS('datasets_reg')>Link to the help function</a>
+<a href=matlab: docsearchFS('datasets_mult')>Link to the help function</a>
 
+clustering/cluster3.txt
+clustering/geyser2.txt
+clustering/M5data.txt
+clustering/mixture100.txt
+clustering/structurednoise.txt
+clustering/X.txt
 multivariate/biochemical.txt
 multivariate/bus.txt
 multivariate/clus2over.txt

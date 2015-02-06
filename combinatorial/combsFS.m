@@ -34,7 +34,7 @@ function P = combsFS(v,m)
 % Written by FSDA team
 %
 %
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 %
 % Examples:

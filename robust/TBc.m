@@ -43,7 +43,7 @@ function [bdp,eff,approxsheff] = TBc(c,p,varargin)
 % pp. 643-648 (HRR)
 %
 %<a href="matlab: docsearchFS('tbc')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 % Examples:
 

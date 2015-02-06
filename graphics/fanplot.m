@@ -165,7 +165,7 @@ function fanplot(out,varargin)
 %
 %
 %<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 % Examples:
 
@@ -1164,7 +1164,7 @@ end % close options.databrush
         %
         % Written by FSDA team
         %
-        % Last modified 08-Dec-2013
+        % Last modified 06-Feb-2015
         
         %%
         pos = get(event_obj,'Position');

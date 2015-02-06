@@ -13,7 +13,7 @@ function sigmaest = eigs_sigma(y,varargin)
 %Copyright 2008-2014.
 % Written by FSDA team
 %
-% Last modified 06-Jun-2014
+% Last modified 06-Feb-2015
 %
 % Examples
 %

@@ -60,7 +60,7 @@ function rhoHYP = HYPrho(u, cktuning)
 %
 %
 %<a href="matlab: docsearchFS('hyprho')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 % Examples:
 

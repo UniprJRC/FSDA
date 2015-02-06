@@ -53,7 +53,7 @@ function w = HYPwei(u, cktuning)
 %
 %
 %<a href="matlab: docsearchFS('hypwei')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 % Examples:
 %
@@ -78,7 +78,7 @@ function w = HYPwei(u, cktuning)
 %
 %
 %<a href="matlab: docsearchFS('tbwei')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 % Examples:
 

@@ -42,7 +42,7 @@ function add2yX(varargin)
 %
 %
 %<a href="matlab: docsearchFS('add2yX')">Link to the help function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 
 
 %% Beginning of code

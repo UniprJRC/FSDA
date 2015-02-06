@@ -24,7 +24,7 @@ function ceff = OPTeff(eff,p,varargin)
 %
 % Copyright 2008-2014.
 % Written by FSDA team
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 %
 %    REMARK: \rho (\psi) function which is considered is standardized 
@@ -42,7 +42,7 @@ function ceff = OPTeff(eff,p,varargin)
 %   function OPTeff by 3.
 %
 %<a href="matlab: docsearchFS('OPTeff')">Link to the help page for this function</a>
-% Last modified 08-Dec-2013
+% Last modified 06-Feb-2015
 %
 %
 %

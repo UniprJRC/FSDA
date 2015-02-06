@@ -20,7 +20,7 @@ function cascade
 %
 % Adapted to FSDA by FSDA team
 %
-% Last modified 06-Jun-2014
+% Last modified 06-Feb-2015
 %
 % Examples
 %{
