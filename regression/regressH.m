@@ -1,7 +1,7 @@
 function out=regressH(y,X,sel,varargin)
-%regressMH fits a multiple linear regression model with multiplicative heteroskedasticity
+%regressH fits a multiple linear regression model with Harvey heteroskedasticity
 %
-%<a href="matlab: docsearchFS('regressmh')">Link to the help function</a>
+%<a href="matlab: docsearchFS('regressh')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -29,9 +29,9 @@ function out=regressH(y,X,sel,varargin)
 %               Therefore, if for example the explanatory variables
 %               responsible for heteroscedisticity are columns 3 and 5
 %               of matrix X, it is possible to use both the sintax
-%                    regressMH(y,X,X(:,[3 5]))
+%                    regressH(y,X,X(:,[3 5]))
 %               or the sintax
-%                    regressMH(y,X,[3 5])
+%                    regressH(y,X,[3 5])
 %
 %               Remark: Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
@@ -116,7 +116,7 @@ function out=regressH(y,X,sel,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('regressmh')">Link to the help function</a>
+%<a href="matlab: docsearchFS('regressh')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

@@ -1,5 +1,5 @@
 function y = rescale(x,a,b)
-%Rescale numeric array to have specified minimum (a)  and maximum (b)
+%rescale rescales numeric array to have specified minimum (a)  and maximum (b)
 %
 %<a href="matlab: docsearchFS('rescale')">Link to the help function</a>
 %

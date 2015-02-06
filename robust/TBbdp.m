@@ -1,5 +1,5 @@
 function c = TBbdp(bdp,p)
-%TBbdp finds the constant c associated to the supplied breakdown point
+%TBbdp finds the constant c associated to the supplied breakdown point for Tukey's biweight
 % The constant is found through a dichotomic search
 %
 %

@@ -1,5 +1,5 @@
 function [X,id]=simdataset(n, Pi, Mu, S,varargin)
-%Simulates a dataset n given parameters of finite mixture model with Gaussian components
+%simdataset simulates a dataset given the parameters of finite mixture model with Gaussian components
 %
 %
 %<a href="matlab: docsearchFS('simdataset')">Link to the help function</a>

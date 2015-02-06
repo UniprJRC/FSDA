@@ -1,4 +1,7 @@
 function [kcomb,calls]=lexunrank(n,k,N,varargin)
+%lexunrank gives the the k-combination of n elements of position N
+%
+%
 %lexunrank(n,k,N) gives the k-combination of n elements of position N 
 %in the reverse co-lexicographic order of such combinations or, equivalently,
 %of position bc(n,k)-N in the lexicographic order of the same combinations.

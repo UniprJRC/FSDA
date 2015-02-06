@@ -1,8 +1,8 @@
 function [out]=FSRH(y,X,varargin)
-%FSRH gives an automatic outlier detection procedure in linear regression
-%with heteroskedasticity
+%FSRH gives an automatic outlier detection procedure in heteroskedastic linear regression
 %
-%<a href="matlab: docsearch('FSR')">Link to the help function</a>
+%
+%<a href="matlab: docsearch('fsrh')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -207,7 +207,8 @@ function [out]=FSRH(y,X,varargin)
 %
 %
 %
-%<a href="matlab: docsearch('fsr')">Link to the help page for this function</a>
+%<a href="matlab: docsearch('fsrh')">Link to the help page for this function</a>
+%
 % Last modified 06-Feb-2015
 
 % Examples:

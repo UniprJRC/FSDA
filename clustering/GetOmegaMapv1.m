@@ -1,5 +1,5 @@
 function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMapv1(c, Pi, Mu, S, fix, asympt)
-%GetOmegaMap calculates the map of misclassificaton between groups when v=1
+%GetOmegaMapv1 calculates the map of misclassificaton between groups when v=1
 %
 %  Required input arguments:
 %

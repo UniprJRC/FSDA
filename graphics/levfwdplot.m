@@ -1,5 +1,5 @@
 function plotopt=levfwdplot(out,varargin)
-%Plots the trajectories of leverage along the search
+%levfwdplot plots the trajectories of leverage along the search
 %
 %<a href="matlab: docsearchFS('levfwdplot')">Link to the help function</a>
 %

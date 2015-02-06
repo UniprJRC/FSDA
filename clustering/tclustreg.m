@@ -6,7 +6,7 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 %
 %  Required input arguments:
 %
-%     PER ORA C'E' SOLO LA MATRICE X
+%     SO FAR THERE IS JUST MATRIX X
 %
 %    y: A vector with n elements that contains the response variable. y can
 %       be both a row of column vector.

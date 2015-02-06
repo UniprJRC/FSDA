@@ -1,5 +1,5 @@
 function [out]  = MixSimReg(k,p,varargin)
-%MixSim generates k regression hyperplanes in p dimensions with given overlap
+%MixSimReg generates k regression hyperplanes in p dimensions with given overlap
 %
 %<a href="matlab: docsearchFS('mixsimreg')">Link to the help function</a>
 %

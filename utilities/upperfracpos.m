@@ -1,5 +1,7 @@
 function upperfracpos(hfigl , hfigr , fraction)
 %upperfracpos positions two figures on the upper part of the screen.
+%
+%
 %upperfracpos positions two figures with handles hfigl and hfigr
 %respectively on the mid half-right and mid half-left of the upper part of
 %the screen. The fraction of the screen which will be occupied is

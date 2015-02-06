@@ -1,6 +1,6 @@
 function ceff = TBeff(eff,p,varargin)
-%Tbeff finds the constant c which is associated to the requested efficiency
-%for Tukey biweight estimator
+%Tbeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
+%
 %
 %
 %<a href="matlab: docsearchFS('tbeff')">Link to the help function</a>

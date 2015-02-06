@@ -1,5 +1,5 @@
 function [H,AX,BigAx] = spmplot(Y,varargin)
-%spmplot: interactive scatterplot matrix with boxplots or histograms on the main diagonal
+%spmplot produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal
 %
 %<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>
 %

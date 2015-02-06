@@ -1,5 +1,5 @@
 function [plot1]=yXplot(y,X,varargin)
-%yXplot Generates the scatterplot of y against each variable of X in the input dataset.
+%yXplot produces an interactive scatterplot of y against each variable of X in the input dataset.
 %
 %<a href="matlab: docsearchFS('yxplot')">Link to the help function</a>
 %

@@ -1,5 +1,5 @@
 function [y,X,id]=simdatasetReg(n, Pi, Beta, S, Xdistrib, varargin)
-%simdatasetReg simulates regression dataset from a given mixture regression model
+%simdatasetReg simulates regression dataset given the parameters of a mixture regression model
 %
 %
 %<a href="matlab: docsearchFS('simdatasetreg')">Link to the help function</a>

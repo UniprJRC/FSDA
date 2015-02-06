@@ -1,5 +1,5 @@
 function c = nchoosekFS(v,k)
-%nchoosekFS produces Binomial coefficient or matrix containing all combinations.
+%nchoosekFS produces Binomial coefficient or matrix containing all combinations
 %
 %<a href="matlab: docsearchFS('nchoosekFS')">Link to the help function</a>
 %

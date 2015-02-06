@@ -1,5 +1,5 @@
 function ellipse(mu,Sigma,conflev)
-%ellipse generates an ellipse given mu (locatioin vector) and Sigma (scatter matrix)
+%ellipse generates an ellipse given mu (location vector) and Sigma (scatter matrix)
 %
 %   The ellipse is generated using the equation:
 %

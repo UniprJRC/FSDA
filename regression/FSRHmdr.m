@@ -1,7 +1,7 @@
 function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,bsb,varargin)
-%FSRmdr computes minimum deletion residual and other basic linear regression quantities in each step of the search
+%FSRHmdr computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search
 %
-%<a href="matlab: docsearch('FSRmdrh')">Link to the help function</a>
+%<a href="matlab: docsearch('fsrhmdr')">Link to the help function</a>
 %
 % Required input arguments:
 %

@@ -1,5 +1,4 @@
-%Connect_Matlab_with_R_HELP prepare connection with R in order to execute R
-%commands from within MATLAB.
+%Connect_Matlab_with_R_HELP prepares connection with R in order to execute R commands from within MATLAB.
 %
 %   In order to achieve the goal above it is necessary to follow the 3
 %   following steps.
