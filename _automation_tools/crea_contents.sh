@@ -41,8 +41,8 @@ cd datasets
 echo prosegui
 read avanti
 
-echo "<a href=""matlab: docsearchFS('datasets_reg')"">Link to the help function</a>" >Contents.m
-echo "<a href=""matlab: docsearchFS('datasets_mult')"">Link to the help function</a>" >>Contents.m
+echo "<a href=""matlab: docsearchFS('datasets')"">Link to the help function</a>" >Contents.m
+echo "<a href=""matlab: docsearchFS('datasets_mv')"">Link to the help function</a>" >>Contents.m
 echo "" >>Contents.m
 
 find clustering multivariate multivariate_regression regression -name "*.txt" >>Contents.m

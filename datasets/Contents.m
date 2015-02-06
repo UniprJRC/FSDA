@@ -1,5 +1,5 @@
-<a href=matlab: docsearchFS('datasets_reg')>Link to the help function</a>
-<a href=matlab: docsearchFS('datasets_mult')>Link to the help function</a>
+<a href=matlab: docsearchFS('datasets')>Link to the help function</a>
+<a href=matlab: docsearchFS('datasets_mv')>Link to the help function</a>
 
 clustering/cluster3.txt
 clustering/geyser2.txt
