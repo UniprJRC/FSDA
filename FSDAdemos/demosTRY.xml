@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<demos>
+    <name>My Sample</name>
+    <type>toolbox</type>
+    <icon>HelpIcon.DEMOS</icon>
+    <description>This text appears on the main page for your examples.</description>
+    <website><a href="http://www.mathworks.com">Link to your Web site</a></website>
+
+    <demosection>
+        <label>First Section</label>
+        <demoitem>
+            <label>My Example Title</label>
+            <type>M-file</type>
+            <source>brushRES</source>
+        </demoitem>
+        
+                <demoitem>
+            <label>xxx</label>
+            <type>other</type>
+            <callback>brushRES</callback>
+        </demoitem>
+
+    </demosection>
+
+    <demosection>
+        <label>Second Section</label>
+        <demoitem>
+            <label>My Video (5 min, 21 sec)</label>
+            <type>video</type>
+            <callback>
+              playbackdemo('WorkingInTheDevelopmentEnvironment','toolbox/matlab/web/demos');
+            </callback>
+        </demoitem>
+    </demosection>
+
+</demos>
