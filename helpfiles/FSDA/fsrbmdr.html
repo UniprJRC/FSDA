@@ -34,9 +34,11 @@ n0)<br>[mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0,<i>param1<
 </p>
 <a name="bq24of9-2"></a>
 <h2>Description</h2>
-<p><tt>[mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0)</tt> stores 
+<p><tt>[mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0)</tt> </p>
+<p>stores 
 the values of the Bayesian minimum deletion residual and other basic regression 
-quantities in each step of the forward search. This function is called from FSRB 
+quantities in each step of the forward search. This function is called from 
+<a href="fsrb.html">FSRB</a> 
 in order to compute and store the information which is required to run the automatic 
 outlier detection procedure. </p>
 
@@ -68,9 +70,10 @@ Missing values (NaN's) and infinite values (Inf's) are allowed, since observatio
 	<tr>
 		<td bgcolor="#F2F2F2"></td>
 		<td bgcolor="#F2F2F2">PRIOR INFORMATION:
-		&beta; is assumed to have a normal distribution with mean &beta; and (conditional 
+		<br>&beta; is assumed to have a normal distribution with mean &beta; and (conditional 
 on &tau;) covariance (1/&tau;<sub>0</sub>) (X<sub>0</sub>'X<sub>0</sub>)<sup>-1</sup> &beta;~N(&beta;<sub>0</sub>, 
-(1/&tau;<sub>0</sub>) (X<sub>0</sub>'X<sub>0</sub>)<sup>-1</sup>) </td>
+(1/&tau;<sub>0</sub>) (X<sub>0</sub>'X<sub>0</sub>)<sup>-1</sup>) <br>The prior distribution of &tau;<sub>0</sub> is a &gamma; distribution with parameters a and b, 
+that is p(&tau;<sub>0</sub>) &#8733;  &tau;<sup>a<sub>0</sub>-1</sup> Exp(-b<sub>0</sub>, &tau;) and  E(&tau;<sub>0</sub>)= a<sub>0</sub>/b<sub>0</sub></td>
 	</tr>
 	<tr>
 		<td bgcolor="#F2F2F2"><tt>'beta0'</tt>
@@ -81,9 +84,8 @@ on &tau;) covariance (1/&tau;<sub>0</sub>) (X<sub>0</sub>'X<sub>0</sub>)<sup>-1<
 		<td bgcolor="#F2F2F2"><tt>'R'</tt></td>
 		<td bgcolor="#F2F2F2">
 		p-x-p positive definite matrix which can be interepreted as X<sub>0</sub>'X<sub>0</sub> 
-where X<sub>0</sub>is a n<sub>0</sub> x p matrix coming from previous experiments (assuming that the 
-intercept is included in the model) <br>The prior distribution of &tau;<sub>0</sub> is a &gamma; distribution with parameters a and b, 
-that is p(&tau;<sub>0</sub>) &#8733;  &tau;<sup>a<sub>0</sub>-1</sup> Exp(-b<sub>0</sub>, &tau;) and  E(&tau;<sub>0</sub>)= a<sub>0</sub>/b<sub>0</sub></td>
+where X<sub>0 </sub>is a n<sub>0</sub> x p matrix coming from previous experiments (assuming that the 
+intercept is included in the model) <br></td>
 	</tr>
 	<tr>
 		<td bgcolor="#F2F2F2"><tt>'tau0'</tt></td>
@@ -112,7 +114,8 @@ that matrix X<sub>0 </sub>(which defines R), was made up of n<sub>0 </sub> obser
 
 </p>
 <p><tt><a name="bq24of9-3"></a>[mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, 
-R, tau0, n0)</tt> returns the following information </p>
+R, tau0, n0)</tt> 
+returns the following information </p>
 <ul type="disc">
 	<li>
 	<p><tt>mdrB</tt>: n x 2 matrix which contains the monitoring of minimum deletion 
@@ -120,7 +123,7 @@ R, tau0, n0)</tt> returns the following information </p>
 	0 to n-1).<br>2nd col = minimum deletion residual.<br></p>
 	</li>
 	<li>
-	<p><tt>Un</tt>: (n-init) x 11 Matrix which contains the unit(s) included in 
+	<p><tt>Un</tt>: (n-init) x 11 matrix which contains the unit(s) included in 
 	the subset at each step of the search.<br>REMARK: in every step the new subset 
 	is compared with the old subset. Un contains the unit(s) present in the new 
 	subset but not in the old one.<br>Un(1,2) for example contains the unit included 
@@ -198,7 +201,7 @@ specifies one or more of the name/value pairs described in the following table.<
 		with 1%, 50% and 99% confidence bands else (default) no plot is shown. Remark: 
 		the plot which is produced is very simple. In order to control a series 
 		of options in this plot and in order to connect it dynamically to the other 
-		forward plots it is necessary to use function mdrplot.</p>
+		forward plots it is necessary to use function <a href="mdrplot.html">mdrplot</a>.</p>
 		</td>
 	</tr>
 	<tr>
@@ -207,7 +210,7 @@ specifies one or more of the name/value pairs described in the following table.<
 		<p>Scalar. If <tt>nocheck</tt> is equal to 1 no check is performed on matrix 
 		y and matrix X. Notice that y and X are left unchanged. In other words the 
 		additional column of ones for the intercept is not added. As default <tt>
-		nocheck=0</tt>. The controls on h, alpha and nsamp still remain</p>
+		nocheck=0</tt>.</p>
 		</td>
 	</tr>
 	
@@ -286,7 +289,7 @@ mdrB=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 <p>In this second example we increase n<sub>0</sub> from 5 to 250 and start monitoring the 
 Bayesian minimum deletion residual starting from step 300</p>
 <pre class="programlisting">
- % We change n0 from 5 to 250
+% We change n0 from 5 to 250
 n0=250
 % FSRmdr monitoring from step 300.
 mdrB=FSRBmdr(y,X,beta0, R, tau0, n0,'init',300,'plots',1);
