@@ -1,6 +1,5 @@
 function [out]=FSRB(y,X,varargin)
-%FSRB gives an automatic outlier detection procedure in linear regression
-%in the bayesian framework
+%FSRB gives an automatic outlier detection procedure in Bayesian linear regression
 %
 %<a href="matlab: docsearch('frsb')">Link to the help function</a>
 %
