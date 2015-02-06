@@ -28,7 +28,7 @@ function c = OPTbdp(bdp,p)
 %   interval 0---2c, 2c---3c, >3c it is necessary to divide the output of
 %   function OPTbdp by 3.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('OPTbdp')">Link to the help page for this function</a>

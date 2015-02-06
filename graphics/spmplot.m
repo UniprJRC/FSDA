@@ -197,7 +197,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %   will be centered with respect to the matrix of axes.
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>

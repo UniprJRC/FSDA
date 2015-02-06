@@ -2,7 +2,7 @@ function cabc
 %cabc closes all open figures except the one in foreground (the current)
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

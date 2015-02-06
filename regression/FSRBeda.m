@@ -192,7 +192,7 @@ function [out] = FSRBeda(y, X, varargin)
 %   Regression, submitted
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

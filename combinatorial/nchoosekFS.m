@@ -16,7 +16,7 @@ function c = nchoosekFS(v,k)
 %
 % See also: bc, combsFS, nchoosek.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

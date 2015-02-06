@@ -14,7 +14,7 @@ function chkoptions(options,UserOptions)
 %
 % See also  chkinputR.m
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

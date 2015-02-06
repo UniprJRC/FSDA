@@ -19,7 +19,7 @@ function d = mahalFS(Y,MU,SIGMA)
 %      SIGMA:   v x v matrix containing covariance matrix which must be used
 %       
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

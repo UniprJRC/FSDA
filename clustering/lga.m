@@ -37,7 +37,7 @@ function out = lga(X,k,varargin)
 %           out.biter     : the biter setting used.
 %           out.niter	  : the niter setting used.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

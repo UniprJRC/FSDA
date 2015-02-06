@@ -129,7 +129,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %   Springer Verlag, New York.
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

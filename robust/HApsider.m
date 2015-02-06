@@ -46,7 +46,7 @@ function psiHAder = HApsider(u, ctuning,varargin)
 % Exploratory Data Analysis Wiley, New York.
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

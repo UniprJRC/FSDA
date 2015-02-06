@@ -131,7 +131,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 % Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian
 % Regression, submitted
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %<a href="matlab: docsearch('fsrbmdr')">Link to the help function</a>

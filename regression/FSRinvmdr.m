@@ -59,7 +59,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %   search for testing multiple outliers in regression, Advances in Data
 %   Analysis and Classification, Vol. 1, pp. 123–141.
 %
-% Copyright 2008-2014
+% Copyright 2008-2015
 % Written by FSDA team
 %
 %

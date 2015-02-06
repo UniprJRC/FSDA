@@ -37,7 +37,7 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 % References: see references in randsampleFS.m, lexunrank.m and bc.m
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

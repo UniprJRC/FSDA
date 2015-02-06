@@ -58,7 +58,7 @@ function add2spm(H,AX,BigAx,varargin)
 %   logic can be also demonstrated with MATLAB function gplotmatrix, as in
 %   the following examples:
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

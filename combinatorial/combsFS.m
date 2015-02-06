@@ -30,7 +30,7 @@ function P = combsFS(v,m)
 %<a href="matlab: docsearchFS('combsFS')">Link to the help page for this function</a>
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

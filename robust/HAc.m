@@ -49,7 +49,7 @@ function [bdp,eff] = HAc(ctun,p,varargin)
 %	It is necessary to have 0 <= a <= b <= c%%
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

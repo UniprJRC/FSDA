@@ -16,7 +16,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la)
 %               variables are transformed
 %       
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

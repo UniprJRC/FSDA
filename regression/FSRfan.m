@@ -120,7 +120,7 @@ function [out]=FSRfan(y,X,varargin)
 %   diagnostic transformations in regression, Chemometrics and Intelligent
 %   Laboratory Systems, Vol. 60, pp. 87–100.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

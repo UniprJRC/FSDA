@@ -32,7 +32,7 @@ function psider=OPTpsider(x,c)
 % Wiley 2006.
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

@@ -6,7 +6,7 @@ function brushFAN
 %
 % See also: brushRES, brushROB
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

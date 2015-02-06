@@ -297,7 +297,7 @@ function plotopt=levfwdplot(out,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2014. 
+% Copyright 2008-2015. 
 % Written by FSDA team
 %
 %

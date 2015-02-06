@@ -244,7 +244,7 @@ function [out, varargout] = SDest(Y,varargin)
 %
 % See also MCD, Smult, MMmult, FSM
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

@@ -21,7 +21,7 @@ function ceff = HAeff(eff,v,abc)
 %  c = scalar of Hampel estimator associated to the nominal location
 %  efficiency
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

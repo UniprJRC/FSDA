@@ -103,7 +103,7 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
 % require one or several, but not all, k-combinations at given generation
 % order(s).
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

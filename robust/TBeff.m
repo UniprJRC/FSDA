@@ -27,7 +27,7 @@ function ceff = TBeff(eff,p,varargin)
 %  c = scalar of Tukey Biweight associated to the nominal (location or
 %  shape) efficiency
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

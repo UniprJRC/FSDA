@@ -218,7 +218,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 % DETAILS. This iterative algorithm initializes k clusters randomly and
@@ -1425,7 +1425,7 @@ end
         % clustering. Available at
         % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf%
         %
-        % Copyright 2008-2014.
+        % Copyright 2008-2015.
         % Written by FSDA team
         %
         % DETAILS. This algorithm solves the minimization problem with constraints

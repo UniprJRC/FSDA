@@ -69,7 +69,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %}
 %   See also hist, bar.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

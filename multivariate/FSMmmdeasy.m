@@ -69,7 +69,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %   Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
 %   forward search Springer Verlag, New York.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

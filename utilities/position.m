@@ -16,7 +16,7 @@ function position(plmain)
 %
 % Reminder: the position property format is [left, bottom, width, height]
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

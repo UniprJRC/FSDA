@@ -85,7 +85,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 % See also zscore, MCD, Smult, MMmult, FSM
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

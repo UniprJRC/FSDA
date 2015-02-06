@@ -42,7 +42,7 @@ function [bdp,eff,approxsheff] = OPTc(c,p,varargin)
 %   in the rho (psi) function defined in the
 %   interval 0---2c, 2c---3c, >3c 
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('OPTc')">Link to the help page for this function</a>

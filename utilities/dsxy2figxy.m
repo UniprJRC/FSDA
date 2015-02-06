@@ -38,7 +38,7 @@ function varargout = dsxy2figxy(varargin)
 % See also 
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % REMARK: function  dsxy2figxy has been written by MATLAB programmers but for some
 % strange reason has not included yet into the standard documentation
 %

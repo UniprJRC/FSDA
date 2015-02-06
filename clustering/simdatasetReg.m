@@ -126,7 +126,7 @@ function [y,X,id]=simdatasetReg(n, Pi, Beta, S, Xdistrib, varargin)
 % transformation of y providing a coefficient 'lambda'. The value 1
 % implies that no transformation is needed for the response
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

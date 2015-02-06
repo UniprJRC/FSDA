@@ -41,7 +41,7 @@ function out = rlga(X,k,alpha,varargin)
 %           out.niter	  : the niter setting used.
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

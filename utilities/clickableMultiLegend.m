@@ -16,7 +16,7 @@ function varargout = clickableMultiLegend(varargin)
 % clickableLegend by Ameya Deoras:
 % http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

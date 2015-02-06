@@ -105,7 +105,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 % DETAILS. This iterative algorithm initializes k clusters randomly and

@@ -189,7 +189,7 @@ function [out]  = MixSim(k,v,varargin)
 %  Eigenvalues and Eigenvectors,” Handbook for Auto. Comp., Vol. II, Linear
 %  Algebra, 1971,pp. 315-326.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

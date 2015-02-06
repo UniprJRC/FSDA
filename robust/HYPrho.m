@@ -55,7 +55,7 @@ function rhoHYP = HYPrho(u, cktuning)
 % Riani M., Cerioli A., Atkinson A.C., Perrotta D.  (2014). Monitoring
 % Robust Regression. Electronic Journal of Statistics, Vol. 8 pp.  646–677
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

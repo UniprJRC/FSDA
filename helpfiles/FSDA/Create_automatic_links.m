@@ -28,7 +28,7 @@ function Create_automatic_links()
 %
 % are ignored
 
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 % Last modified 06-Feb-2015

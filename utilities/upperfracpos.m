@@ -8,7 +8,7 @@ function upperfracpos(hfigl , hfigr , fraction)
 %half of the screen and with  fraction=0.3 they will occupy the upper third
 %of the screen.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 % Last modified 06-Feb-2015

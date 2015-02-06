@@ -133,7 +133,7 @@ function covplot(out,varargin)
 %   the Forward Search,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

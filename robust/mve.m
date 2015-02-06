@@ -158,7 +158,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 % Note that MMY_J= (RL)^{2/v}
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

@@ -112,7 +112,7 @@ function out=regressH(y,X,sel,varargin)
 %   pp. 232-235), (7th edition, section  9.7.1 pp. 280-.
 %   Prentice Hall,.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

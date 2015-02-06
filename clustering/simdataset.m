@@ -75,7 +75,7 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 % implies that no transformation is needed for the corresponding
 % coordinate
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

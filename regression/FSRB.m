@@ -171,7 +171,7 @@ function [out]=FSRB(y,X,varargin)
 % Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian
 % Regression, submitted
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

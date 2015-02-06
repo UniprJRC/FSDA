@@ -21,7 +21,7 @@ function x = shuffling(x)
 % agricultural and medical research (3rd ed.). London: Oliver & Boyd. pp.
 % 26–27.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

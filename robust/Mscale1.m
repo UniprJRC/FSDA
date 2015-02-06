@@ -51,7 +51,7 @@ function sc = Mscale1(u, psifunc, initialsc, tol, maxiter)
 %
 % See also Mscale, minscale
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 

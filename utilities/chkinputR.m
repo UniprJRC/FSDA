@@ -26,7 +26,7 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
 %
 % See also
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

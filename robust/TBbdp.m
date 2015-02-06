@@ -14,7 +14,7 @@ function c = TBbdp(bdp,p)
 %
 %  c = scalar of Tukey Biweight associated to that particular breakdown point
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

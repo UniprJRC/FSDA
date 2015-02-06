@@ -36,7 +36,7 @@ function rhoTB = TBrho(u,c)
 % efficiency of robust S-estimators TEST, Volume 23, Issue 2, pp 356-387.
 % DOI: 10.1007/s11749-014-0357-7
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

@@ -11,7 +11,7 @@ function docsearchFS(varargin)
 %   <=2012a) or opens FSDA documentation associated to namehtmlhelpfile.
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

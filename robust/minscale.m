@@ -46,7 +46,7 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 %
 %<a href="matlab: docsearchFS('minscale')">Link to the help function</a>
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 

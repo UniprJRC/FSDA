@@ -39,7 +39,7 @@ function Bbound = FSMbonfbound(n,p,varargin)
 % References:
 %
 %
-% Copyright 2008-2014
+% Copyright 2008-2015
 % Written by FSDA team
 %
 %

@@ -47,7 +47,7 @@ function [c,A,B,d] = HYPeff(eff, ~,k,traceiter)
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

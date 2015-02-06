@@ -25,7 +25,7 @@ function c = bc(n,k)
 %
 %<a href="matlab: docsearchFS('bc')">Link to the help page for this function</a>
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Matlab function bc has been adapted to this toolbox by: 
 % FSDA team 
 %

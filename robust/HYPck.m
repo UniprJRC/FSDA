@@ -23,7 +23,7 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 %  Bnew = scalar. Value of parameter B
 %  d = scalar. Value of parameter d
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 % References:

@@ -42,7 +42,7 @@ function [outSC]=Score(y,X,varargin)
 % Reference:    Atkinson Riani (2000), equation (2.30) for the expression
 %               for score test statistic.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

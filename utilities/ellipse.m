@@ -23,7 +23,7 @@ function ellipse(mu,Sigma,conflev)
 % See also ellipsoid
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

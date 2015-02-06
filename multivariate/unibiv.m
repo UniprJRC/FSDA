@@ -83,7 +83,7 @@ function [fre]=unibiv(Y,varargin)
 %       Riani, M., Zani S. (1997). An iterative method for the detection of
 %       multivariate outliers, Metron, vol. LV, pp. 101-117.
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %

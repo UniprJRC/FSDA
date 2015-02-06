@@ -77,7 +77,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %   Random variables, Applied Statistics vol. pp. 323-333
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('ncx2mixtcdf')">Link to the help function</a>

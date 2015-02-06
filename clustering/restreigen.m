@@ -49,7 +49,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 % clustering. Available at
 % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf%
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 % DETAILS. This algorithm solves the minimization problem with constraints

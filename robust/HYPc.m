@@ -47,7 +47,7 @@ function [bdp,eff,A,B,d] = HYPc(c,p,varargin)
 %		        { 0,			                         |u| >= c.
 %
 %
-% Copyright 2008-2014.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %
