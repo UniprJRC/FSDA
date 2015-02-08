@@ -196,7 +196,7 @@ function [out]=FSR(y,X,varargin)
 %
 %       Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
 %       number of multivariate outliers. Journal of the Royal Statistical
-%       Society Series B, Vol. 71, pp. 201–221.
+%       Society Series B, Vol. 71, pp. 201-221.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
