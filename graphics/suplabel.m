@@ -1,7 +1,6 @@
 function [ax,h]=suplabel(text,whichaxis,possuperaxes)
 %suplabel places text as a title, xlabel, or ylabel on a group of subplots.
 %
-%<a href="matlab: docsearchFS('suplabel')">Link to the help function</a>
 %
 % Required input arguments:
 %
