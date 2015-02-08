@@ -43,11 +43,11 @@ function setuphelp(FSDApath)
 a=version;
 
 if str2double(a(1)) >= 8
-    source= [FSDApath '\helpfiles\FSDAR8'];
-    toremove= [FSDApath '\helpfiles\FSDAR7'];
+    source   = [FSDApath filesep 'helpfiles' filesep 'FSDAR8'];
+    toremove = [FSDApath filesep 'helpfiles' filesep 'FSDAR7'];
 else
-    source= [FSDApath '\helpfiles\FSDAR7'];
-    toremove= [FSDApath '\helpfiles\FSDAR8'];
+    source   = [FSDApath filesep 'helpfiles' filesep 'FSDAR7'];
+    toremove = [FSDApath filesep 'helpfiles' filesep 'FSDAR8'];
 end
 
 % destination folder
