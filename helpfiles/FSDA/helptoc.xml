@@ -111,6 +111,7 @@
 
 			<tocitem target="function_reference.html#statvis">Dynamic Statistical Visualization
 				<tocitem target="add2spm.html">add2spm</tocitem> 
+				<tocitem target="add2yX.html">add2yX</tocitem> 
 				<tocitem target="cdsplot.html">cdsplot</tocitem> 
 				<tocitem target="covplot.html">covplot</tocitem> 
 				<tocitem target="fanplot.html">fanplot</tocitem> 
@@ -132,20 +133,28 @@
 			<tocitem target="function_reference.html#robreg">Robust linear regression and transformations
 				<tocitem target="addt.html">addt</tocitem> 
 				<tocitem target="fsr.html">FSR</tocitem> 
+				<tocitem target="FSRB.html">FSRB</tocitem> 
+				<tocitem target="FSRBmdr.html">FSRBmdr</tocitem> 
 				<tocitem target="fsraddt.html">FSRaddt</tocitem> 
 				<tocitem target="fsrbonfbound.html">FSRbonfbound</tocitem> 
 				<tocitem target="fsrbsb.html">FSRbsb</tocitem> 
 				<tocitem target="fsreda.html">FSReda</tocitem> 
+				<tocitem target="FSRBeda.html">FSRBeda</tocitem> 
 				<tocitem target="fsrenvmdr.html">FSRenvmdr</tocitem> 
 				<tocitem target="fsrfan.html">FSRfan</tocitem> 
+				<tocitem target="FSRH.html">FSRH</tocitem> 
 				<tocitem target="fsrmdr.html">FSRmdr</tocitem> 
 				<tocitem target="lxs.html">LXS</tocitem> 
 				<tocitem target="minscale.html">minscale</tocitem> 
 				<tocitem target="mmreg.html">MMreg</tocitem> 
 				<tocitem target="mmregcore.html">MMregcore</tocitem> 
+				<tocitem target="regressB.html">regressB</tocitem> 
+				<tocitem target="regressH.html">regressH</tocitem> 
 				<tocitem target="sreg.html">Sreg</tocitem> 
+				<tocitem target="Taureg.html">Taureg</tocitem> 
 				<tocitem target="score.html">Score</tocitem> 
 			</tocitem> 
+
 			<tocitem target="function_reference.html#robms">Robust model selection
 				<tocitem target="fsraddt.html">FSRaddt</tocitem> 
 				<tocitem target="fsrcp.html">FSRcp</tocitem> 
@@ -154,11 +163,14 @@
 
 			<tocitem target="function_reference.html#robmult">Robust multivariate analysis and transformations
 				<tocitem target="fsm.html">FSM</tocitem> 
+				<tocitem target="FSMbbm.html">FSMbbm</tocitem> 
 				<tocitem target="fsmbonfbound.html">FSMbonfbound</tocitem> 
 				<tocitem target="fsmeda.html">FSMeda</tocitem> 
 				<tocitem target="fsmenvmmd.html">FSMenvmmd</tocitem> 
 				<tocitem target="fsmfan.html">FSMfan</tocitem> 
-				<tocitem target="fsmmmd.html">FSMmmd</tocitem> 
+				<tocitem target="fsmfan.html">FSMfan</tocitem> 
+				<tocitem target="FSMinvmmd.html">FSMinvmmd</tocitem> 
+				<tocitem target="FSMmmd.html">FSMmmd</tocitem> 
 				<tocitem target="fsmmmdeasy.html">FSMmmdeasy</tocitem> 
 				<tocitem target="fsmtra.html">FSMtra</tocitem> 
 				<tocitem target="mcd.html">mcd</tocitem> 
@@ -166,10 +178,28 @@
 				<tocitem target="mmmult.html">MMmult</tocitem> 
 				<tocitem target="mmmultcore.html">MMmultcore</tocitem> 
 				<tocitem target="mve.html">mve</tocitem> 
+				<tocitem target="SDest.html">SDest</tocitem> 
 				<tocitem target="smult.html">Smult</tocitem> 
 				<tocitem target="unibiv.html">unibiv</tocitem> 
 			</tocitem> 
 
+
+			<tocitem target="function_reference.html#robmult">Clustering
+				<tocitem target="demoMixSim.html">demoMixSim</tocitem> 
+				<tocitem target="GetOmegaMap.html">GetOmegaMap</tocitem> 
+				<tocitem target="GetOmegaMapv1.html">GetOmegaMapv1</tocitem> 
+				<tocitem target="lga.html">lga</tocitem> 
+				<tocitem target="MixSim.html">MixSim</tocitem> 
+				<tocitem target="MixSimReg.html">MixSimReg</tocitem> 
+				<tocitem target="overlap.html">overlap</tocitem> 
+				<tocitem target="restreigen.html">restreigen</tocitem> 
+				<tocitem target="rlga.html">rlga</tocitem> 
+				<tocitem target="simdataset.html">simdataset</tocitem> 
+				<tocitem target="simdatasetReg.html">simdatasetReg</tocitem> 
+				<tocitem target="tclust.html">tclust</tocitem> 
+				<tocitem target="tclustreg.html">tclustreg</tocitem> 
+				<tocitem target="tkmeans.html">tkmeans</tocitem> 
+			</tocitem> 
 
 			<tocitem target="function_reference.html#GUIs">Interactive demo tools with GUIs
 				<tocitem target="brushres.html">BrushRES</tocitem> 
@@ -184,17 +214,54 @@
 				<tocitem target="ellipse.html">ellipse</tocitem> 
 				<tocitem target="fscolors.html">FScolors</tocitem> 
 				<tocitem target="fsminvmmd.html">fsminvmmd</tocitem> 
+				<tocitem target="FSMbonfbound.html">FSMbonfbound</tocitem> 
+				<tocitem target="FSRbonfbound.html">FSRbonfbound</tocitem> 
 				<tocitem target="fsrinvmdr.html">fsrinvmdr</tocitem> 
+				<tocitem target="HAbdp.html">HAbdp</tocitem> 
+				<tocitem target="HAc.html">HAc</tocitem> 
+				<tocitem target="HAeff.html">HAeff</tocitem> 
+				<tocitem target="HApsi.html">HApsi</tocitem> 
+				<tocitem target="HApsider.html">HApsider</tocitem> 
+				<tocitem target="HApsix.html">HApsix</tocitem> 
+				<tocitem target="HArho.html">HArho</tocitem> 
+				<tocitem target="HAwei.html">HAwei</tocitem> 
+				<tocitem target="HYPbdp.html">HYPbdp</tocitem> 
+				<tocitem target="HYPc.html">HYPc</tocitem> 
+				<tocitem target="HYPck.html">HYPck</tocitem> 
+				<tocitem target="HYPeff.html">HYPeff</tocitem> 
+				<tocitem target="HYPk.html">HYPk</tocitem> 
+				<tocitem target="HYPpsi.html">HYPpsi</tocitem> 
+				<tocitem target="HYPpsider.html">HYPpsider</tocitem> 
+				<tocitem target="HYPpsix.html">HYPpsix</tocitem> 
+				<tocitem target="HYPrho.html">HYPrho</tocitem> 
+				<tocitem target="HYPwei.html">HYPwei</tocitem> 
+				<tocitem target="logmvnpdfFS.html">logmvnpdfFS</tocitem> 
 				<tocitem target="mahalfs.html">mahalFS</tocitem> 
+				<tocitem target="ncx2mixtcdf.html">ncx2mixtcdf</tocitem> 
 				<tocitem target="normboxcox.html">normBoxCox</tocitem> 
+				<tocitem target="OPTc.html">OPTc</tocitem> 
+				<tocitem target="OPTeff.html">OPTeff</tocitem> 
+				<tocitem target="OPTpsi.html">OPTpsi</tocitem> 
+				<tocitem target="OPTpsider.html">OPTpsider</tocitem> 
+				<tocitem target="OPTpsix.html">OPTpsix</tocitem> 
+				<tocitem target="OPTrho.html">OPTrho</tocitem> 
+				<tocitem target="OPTwei.html">OPTwei</tocitem> 
 				<tocitem target="quickselectFS.html">quickselectfs</tocitem> 
 				<tocitem target="rescale.html">rescale</tocitem> 
+				<tocitem target="RobRegrSize.html">RobRegrSize</tocitem>				
+				<tocitem target="Sn.html">Sn</tocitem> 
 				<tocitem target="tbbdp.html">TBbdp</tocitem> 
 				<tocitem target="tbc.html">TBc</tocitem> 
 				<tocitem target="tbeff.html">TBeff</tocitem> 
 				<tocitem target="tbpsi.html">TBpsi</tocitem> 
-				<tocitem target="tbrho.html">TBrho</tocitem> 
+				<tocitem target="tbpsi.html">TBpsi</tocitem> 
+				<tocitem target="TBpsider.html">TBpsider</tocitem> 
+				<tocitem target="TBpsix.html">TBpsix</tocitem> 
+				<tocitem target="TBrho.html">TBrho</tocitem> 
 				<tocitem target="tbwei.html">TBwei</tocitem> 
+				<tocitem target="triu2vec.html">triu2vec</tocitem> 
+				<tocitem target="Qn.html">Qn</tocitem> 
+				<tocitem target="zscoreFS.html">zscoreFS</tocitem> 
 			</tocitem>	
 
 			<tocitem target="function_reference.html#combinatorial">Combinatorial
@@ -210,24 +277,23 @@
 		</tocitem>
 
 		<tocitem target="datasets.html">Datasets
-				<tocitem target="datasets_reg.html" image="$toolbox/matlab/icons/reficon.gif">Regression Data Sets</tocitem>
-				<tocitem target="datasets_mv.html" image="$toolbox/matlab/icons/reficon.gif">Multivariate Data Sets</tocitem>
-				<tocitem target="datasets_clu.html" image="$toolbox/matlab/icons/reficon.gif">Clustering Data Sets</tocitem>
+			<tocitem target="datasets_reg.html" image="$toolbox/matlab/icons/reficon.gif">Regression Data Sets</tocitem>
+			<tocitem target="datasets_mv.html" image="$toolbox/matlab/icons/reficon.gif">Multivariate Data Sets</tocitem>
+			<tocitem target="datasets_clu.html" image="$toolbox/matlab/icons/reficon.gif">Clustering Data Sets</tocitem>
 		</tocitem>
-		
+
 		<tocitem target="bibliography.html" image="$toolbox/matlab/icons/reficon.gif">Bibliography</tocitem>
 
 		<tocitem target="release_notes.html" image="$toolbox/matlab/icons/help_rn.png">
 			Release Notes
 		</tocitem>
 
-		
+
 		<tocitem target="exampleindex.html" image="$toolbox/matlab/icons/help_ex.png">Examples</tocitem>
-		
-		
+
+
 		<tocreference target="demos.xml">
-		xxxx
-		</toc>
+		</tocreference>
 
 
 	</tocitem>
