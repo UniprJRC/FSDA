@@ -21,11 +21,11 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 %
 %   intercept : If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-%     niter : an integer for the number of iterations to attempt for convergence
-%      Kiter : integer. Number of concentrarion steps
-%    plots  : scalar. If plots=1 a plot is showed on the screen with the
-%             final allocation (and if size(X,2)==2 with the lines
-%             associated to the groups)
+%      niter  : an integer for the number of iterations to attempt for convergence
+%      Kiter  : integer. Number of concentrarion steps
+%      plots  : scalar. If plots=1 a plot is showed on the screen with the
+%               final allocation (and if size(X,2)==2 with the lines
+%               associated to the groups)
 %
 %  Output:
 %
@@ -52,11 +52,20 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 %{
     % The constant c associated to a breakdown point of 50% in regression is
     n=200;
-    X=randn(n,2);
+    X=randn(n,1);
     X=load('X.txt');
     X=X(:,2:3);
     out=lga(X,3);
     out=tclustreg(X,3,5,0.1,0.1);
+%}
+%{
+    load fishery;
+    X=fishery.data;
+    % some jittering is necessary because duplicated units are not treated
+    % in tclustreg: this needs to be addressed
+    X=X+0.000001*randn(677,2);
+    out=lga(X,3);
+    out=tclustreg(X,3,5,0.1,0.1,'intercept',0);
 %}
 %
 
@@ -311,7 +320,7 @@ for iter=1:niter
         numopt = niini;
         sigmaopt = sigmaini;
     end
-    
+    disp(['iter ' num2str(iter)]);
 end
 
 %Last part of the program prepares some graphs and numerical outputs for the program
@@ -340,7 +349,7 @@ end
 plots=options.plots;
 
 % A graph summarizing the results is given if dimension is equal p = 2
-if (p==2 && plots)
+if (p<=2 && plots)
     plot(X(dist<val,end),y(dist<val),'o','color','r')
     hold('on')
 end
@@ -378,7 +387,7 @@ for jk=1:k
     yyy0 = xmodjk(qqsn,end-1);
     
     
-    if (p==2 && plots)
+    if (p<=2 && plots)
         plot(xxx(:,end),yyy,'.w');
         % points of each component (pch=k+2)
         text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)) , ...
@@ -391,12 +400,16 @@ for jk=1:k
     qqf = qqk(qqs);
     asig2(qqf) = jk;
     
-    if (p==2 && plots)
+    if (p<=2 && plots)
         reg=xxx\yyy;
-%         v=axis';
-%         plot(v(1:2),reg(1)+reg(2)*v(1:2))
+        %         v=axis';
+        %         plot(v(1:2),reg(1)+reg(2)*v(1:2))
         v = [min(X(:,end)) max(X(:,end))];
-        plot(v,reg(1)+reg(2)*v)
+        if intercept==1
+            plot(v,reg(1)+reg(2)*v)
+        elseif intercept==0
+            plot(v,reg*v)
+        end
     end
 end
 
@@ -472,7 +485,6 @@ out.asig2=asig2;
             
             %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','interior-point-convex','Display','iter');
             %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','active-set');
-            
             
             gnew =a(1:nscat);
             
