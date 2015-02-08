@@ -257,7 +257,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     %  overlapped with another one. A 10% background noise is added uniformly
     %  distributed in a rectangle containing the three normal components and not
     %  very overlapped with the three mixture components. A precise description
-    %  of the M5 data set can be found in García-Escudero et al. (2008).
+    %  of the M5 data set can be found in Garcia-Escudero et al. (2008).
     Y=load('M5data.txt');
     plot(Y(:,1),Y(:,2),'o')
 
