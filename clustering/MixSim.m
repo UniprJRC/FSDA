@@ -161,20 +161,20 @@ function [out]  = MixSim(k,v,varargin)
 %
 % References:
 %
-%   Maitra, R. and Melnykov, V. (2010) “Simulating data to study performance
-%   of finite mixture modeling and clustering algorithms”, The Journal of
+%   Maitra, R. and Melnykov, V. (2010) Simulating data to study performance
+%   of finite mixture modeling and clustering algorithms, The Journal of
 %   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
 %   this publication we will use "MM2010 JCGS")
 %
-%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012) “MixSim: An R Package
-%   for Simulating Data to Study Performance of Clustering Algorithms”,
+%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012) MixSim: An R Package
+%   for Simulating Data to Study Performance of Clustering Algorithms,
 %   Journal of Statistical Software, 51:12, 1-25.
 %
-%   Davies, R. (1980) “The distribution of a linear combination of
-%   chi-square random variables”, Applied Statistics, 29, 323-333.
+%   Davies, R. (1980) The distribution of a linear combination of
+%   chi-square random variables, Applied Statistics, 29, 323-333.
 %
 %   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
-%   (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
+%   (2008), A General Trimming Approach to Robust Cluster Analysis. Annals
 %   of Statistics, Vol.36, 1324-1345. Technical Report available at
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
@@ -185,8 +185,8 @@ function [out]  = MixSim(k,v,varargin)
 %   Balancing a matrix for calculation of eigenvalues and eigenvectors
 %   Dr. B. N. Parlett, Dr. C. Reinsch
 %
-%  Parlett, B. N. and C. Reinsch, “Balancing a Matrix for Calculation of
-%  Eigenvalues and Eigenvectors,” Handbook for Auto. Comp., Vol. II, Linear
+%  Parlett, B. N. and C. Reinsch, ?Balancing a Matrix for Calculation of
+%  Eigenvalues and Eigenvectors,? Handbook for Auto. Comp., Vol. II, Linear
 %  Algebra, 1971,pp. 315-326.
 %
 % Copyright 2008-2015.
@@ -247,13 +247,17 @@ function [out]  = MixSim(k,v,varargin)
 
     n=200;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-    spmplot(X,id)
+    spmplot(X,id,[],'box')
+    set(gca,'fontsize',18);
     set(gcf,'Name','restrfactor=1.2: almost homogeneous groups')
+    title('restrfactor=1.2: almost homogeneous groups','fontsize',18);
 
     [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
     figure;
-    spmplot(X1,id1)
+    spmplot(X1,id1,[],'box')
+    set(gca,'fontsize',18);
     set(gcf,'Name','Heterogeneous groups')
+    title('Heterogeneous groups','fontsize',18)
 %}
 
 %{
