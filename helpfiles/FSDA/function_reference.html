@@ -51,6 +51,9 @@
 <a href="matlab:web(['jar:file:///',matlabroot,'/help/toolbox/stats/help.jar!/gplotmatrix.html'],'-helpbrowser')">
 <tt>gplotmatrix</tt></a> of Statistics toolbox)</td>
 				</tr><tr>
+					<td width="300"><a href="add2yX.html">add2yX</a></td>
+					<td>add2yX adds objects to the yXplot.</td>
+				</tr><tr>
 					<td width="300"><a href="cdsplot.html">cdsplot</a></td>
 					<td>Candlestick plot for robust model selection in linear regression	</td>
 				</tr><tr>
@@ -112,7 +115,7 @@ trajectories in the forward plots. </td>
 					</td>
 				</tr>
 			</table><p class="pagenavlink">
-			<a href="#top_of_page">Back to Top</a><p></p><h2 class="categorytitle">Robust Regression Analysis</h2>
+			<a href="#top_of_page">Back to Top</a><p></p><h2 class="categorytitle">Robust Regression Analysis and transformations</h2>
 			<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
 			<p class="pagenavlink">
 			<table border="1">
@@ -121,22 +124,18 @@ trajectories in the forward plots. </td>
 						<table border="0" cellpadding="5" class="subcategorylist"><tr>
 					<td width="300"><a href="addt.html">addt</a></td>
 					<td>t test for an additional explanatory variable</td>
-				</tr></table>
-					</td>
-				</tr>
-			</table><p class="pagenavlink">
-			<a href="#top_of_page">Back to Top</a><p></p><h2 class="categorytitle">Robust Regression Analysis and transformations</h2>
-			<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
-			<p class="pagenavlink">
-			<table border="1">
-				<tr>
-					<td>
-						<table border="0" cellpadding="5" class="subcategorylist"><tr>
+				</tr><tr>
 					<td width="300"><a href="fsr.html">FSR</a></td>
 					<td>Automatic Outlier Detection Procedure based on Forward
 Search Estimator </td>
 				</tr><tr>
-					<td width="300"><a href="fsrbonfbound.html">FSRbonfbound</a></td>
+					<td width="300"><a href="FSRB.html">FSRB</a></td>
+					<td>Automatic outlier detection procedure in Bayesian linear regression</td>
+				</tr><tr>
+					<td width="300"><a href="FSRBmdr.html">FSRBmdr</a></td>
+					<td>Bayesian minimum deletion residual </td>
+				</tr><tr>
+					<td width="300"><a href="FSRbonfbound.html">FSRbonfbound</a></td>
 					<td>Bonferroni bounds of minimum deletion residual along the forward search</td>
 				</tr><tr>
 					<td width="300"><a href="fsrbsb.html">FSRbsb</a></td>
@@ -147,6 +146,10 @@ Search Estimator </td>
 					<td>Forward search in linear regression (FSR) with exploratory data 
 analysis (eda) purposes </td>
 				</tr><tr>
+					<td width="300"><a href="FSRBeda.html">FSRBeda</a></td>
+					<td>FSRBeda enables to monitor several quantities in each step
+of the Bayesian search.</td>
+				</tr><tr>
 					<td width="300"><a href="fsrenvmdr.html">FSRenvmdr</a></td>
 					<td>Theoretical envelopes of Minimum Deletion Residual outside subset during the search </td>
 				</tr><tr>
@@ -154,6 +157,10 @@ analysis (eda) purposes </td>
 					<td>Score test statistic (see function
 <a href="transf_score.html">Score</a>) for several values of the transformation 
 parameter &lambda; in each step of the forward search. </td>
+				</tr><tr>
+					<td width="300"><a href="FSRH.html">FSRH</a></td>
+					<td>FSRH gives an automatic outlier detection procedure in
+linear regression with heteroskedasticity.</td>
 				</tr><tr>
 					<td width="300"><a href="fsrmdr.html">FSRmdr</a></td>
 					<td>Minimum deletion residual 
@@ -174,9 +181,20 @@ starting values)</td>
 					<td>MM estimators in linear regression (using  
 starting values provided by the user)</td>
 				</tr><tr>
+					<td width="300"><a href="regressB.html">regressB</a></td>
+					<td>regressB computes Bayesian estimates of regression
+parameters </td>
+				</tr><tr>
+					<td width="300"><a href="regressH.html">regressH</a></td>
+					<td>regressH fits a multiple linear regression model with
+multiplicative heteroskedasticity throught a scoring algorithm</td>
+				</tr><tr>
 					<td width="300"><a href="sreg.html">Sreg</a></td>
 					<td>S estimators in linear regression
 </td>
+				</tr><tr>
+					<td width="300"><a href="Taureg.html">Taureg</a></td>
+					<td></td>
 				</tr><tr>
 					<td width="300"><a href="score.html">Score</a></td>
 					<td>Approximate score test statistic for
@@ -219,7 +237,11 @@ regression  </td>
 					<td>Automatic Outlier Detection Procedure based on Forward
 Search Estimator </td>
 				</tr><tr>
-					<td width="300"><a href="fsmbonfbound.html">FSMbonfbound</a></td>
+					<td width="300"><a href="FSMbbm.html">FSMbbm</a></td>
+					<td>Store information about units forming subset at specific 
+steps of the forward search</td>
+				</tr><tr>
+					<td width="300"><a href="FSMbonfbound.html">FSMbonfbound</a></td>
 					<td>Bonferroni bounds of minimum Mahalanobis distance along the 
 forward search</td>
 				</tr><tr>
@@ -234,7 +256,10 @@ Distance outside subset during the search </td>
 					<td width="300"><a href="fsmfan.html">FSMfan</a></td>
 					<td>Confirmatory lrt of a suggested transformation (multivariate fan plot). </td>
 				</tr><tr>
-					<td width="300"><a href="fsmmmd.html">FSMmmd</a></td>
+					<td width="300"><a href="FSMinvmmd.html">FSMinvmmd</a></td>
+					<td>Converts values of minimum Mahalanobis distance into confidence levels</td>
+				</tr><tr>
+					<td width="300"><a href="FSMmmd.html">FSMmmd</a></td>
 					<td>(FAST) Minimum Mahalanobis distance 
 </td>
 				</tr><tr>
@@ -276,6 +301,230 @@ outliers
 					</td>
 				</tr>
 			</table><p class="pagenavlink">
+			<a href="#top_of_page">Back to Top</a><p></p><h2 class="categorytitle">Utilities</h2>
+			<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
+			<p class="pagenavlink">
+			<table border="1">
+				<tr>
+					<td>
+						<table border="0" cellpadding="5" class="subcategorylist"><tr>
+					<td width="300"><a href="SDest.html">SDest</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="clickablemultilegend.html">clickableMultiLegend</a></td>
+					<td>Hide or show symbols inside all subplots of a gplotmatrix (or 
+similar multi-plot) clicking on the legend.</td>
+				</tr><tr>
+					<td width="300"><a href="dsxy2figxy.html">dsxy2figxy</a></td>
+					<td>Transform point or position from data space coordinates into 
+normalized figure coordinates (that is coordinates with values between 0 and 1).
+</td>
+				</tr><tr>
+					<td width="300"><a href="ellipse.html">ellipse</a></td>
+					<td>Plots an ellipse starting from centroid and covariance matrix </td>
+				</tr><tr>
+					<td width="300"><a href="fscolors.html">FScolors</a></td>
+					<td>A MATLAB class encapsulating some common color definitions</td>
+				</tr><tr>
+					<td width="300"><a href="HAbdp.html">HAbdp</a></td>
+					<td>HAbdp finds the constant c associated to the supplied
+breakdown point</td>
+				</tr><tr>
+					<td width="300"><a href="HAc.html">HAc</a></td>
+					<td>HAc computes breakdown point and efficiency associated with
+constant c for hyperbolic tangent estimator (for a given value of k=sup CVC)</td>
+				</tr><tr>
+					<td width="300"><a href="HAeff.html">HAeff</a></td>
+					<td>HAeff finds the tuning constant guarrantes a requested
+asymptotic efficiency.</td>
+				</tr><tr>
+					<td width="300"><a href="HApsi.html">HApsi</a></td>
+					<td>HApsi computes psi function using Hampel proposal.</td>
+				</tr><tr>
+					<td width="300"><a href="HApsider.html">HApsider</a></td>
+					<td>HApsider computes derivative of psi function using Hampel
+proposal.</td>
+				</tr><tr>
+					<td width="300"><a href="HApsix.html">HApsix</a></td>
+					<td>HApsix computes psi function using Hampel proposal times
+x.</td>
+				</tr><tr>
+					<td width="300"><a href="HAwei.html">HAwei</a></td>
+					<td>HAwei computes weight function psi(u)/u using Hampel
+proposal.</td>
+				</tr><tr>
+					<td width="300"><a href="HYPbdp.html">HYPbdp</a></td>
+					<td>HYPbdp finds constant c which is associated to the requested
+breakdown point for hyperbolic estimator.</td>
+				</tr><tr>
+					<td width="300"><a href="HYPc.html">HYPc</a></td>
+					<td>HYPc computes breakdown point and efficiency associated with
+constant c for hyperbolic tangent estimator (for a given value of k=sup CVC)</td>
+				</tr><tr>
+					<td width="300"><a href="HYPck.html">HYPck</a></td>
+					<td>HYPck computes values of the scalars A, B, d for hyperbolic
+tangent estimator</td>
+				</tr><tr>
+					<td width="300"><a href="HYPeff.html">HYPeff</a></td>
+					<td>HYPeff finds constant c which is associated to the requested
+efficiency for hyperbolic estimator.</td>
+				</tr><tr>
+					<td width="300"><a href="HYPk.html">HYPk</a></td>
+					<td>HYPk computes breakdown point and efficiency associated with
+constant k=sup CVC for hyperbolic tangent estimator (for a given value of c)</td>
+				</tr><tr>
+					<td width="300"><a href="HYPpsi.html">HYPpsi</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="HYPpsider.html">HYPpsider</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="logmvnpdfFS.html">logmvnpdfFS</a></td>
+					<td>log of Multivariate normal probability density function
+(pdf)</td>
+				</tr><tr>
+					<td width="300"><a href="mahalfs.html">mahalFS</a></td>
+					<td>Computes Mahalanobis distances (in squared units) from a prespecified centroid 
+MU and scatter matrix SIGMA</td>
+				</tr><tr>
+					<td width="300"><a href="normboxcox.html">normBoxCox</a></td>
+					<td>Normalized Box Cox transformation 
+</td>
+				</tr><tr>
+					<td width="300"><a href="OPTc.html">OPTc</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="OPTeff.html">OPTeff</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="OPTpsi.html">OPTpsi</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="OPTpsider.html">OPTpsider</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="OPTpsix.html">OPTpsix</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="OPTrho.html">OPTrho</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="OPTwei.html">OPTwei</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="quickselectFS.html">quickselectfs</a></td>
+					<td>Finds the k-th ordered statistic.
+</td>
+				</tr><tr>
+					<td width="300"><a href="rescale.html">rescale</a></td>
+					<td>Rescales data in a given interval</td>
+				</tr><tr>
+					<td width="300"><a href="RobRegrSize.html">RobRegrSize</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="Sn.html">Sn</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="tbbdp.html">TBbdp</a></td>
+					<td>Compute the value of the constant c which we have to put in&nbsp; ρ function
+ for Tukey biweight to obtain a prefixed breakdown point</td>
+				</tr><tr>
+					<td width="300"><a href="tbc.html">TBc</a></td>
+					<td>Compute breakdown point and asymptotic efficiency of c coefficient for Tukey biweght function for Tukey biweight.</td>
+				</tr><tr>
+					<td width="300"><a href="tbeff.html">TBeff</a></td>
+					<td>Compute the value of the constant c which we have to put in&nbsp; ρ function
+ for Tukey biweight to obtain a prefixed location or scale efficiency </td>
+				</tr><tr>
+					<td width="300"><a href="tbpsi.html">TBpsi</a></td>
+					<td>Compute ψ function for Tukey biweight</td>
+				</tr><tr>
+					<td width="300"><a href="TBpsider.html">TBpsider</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="TBpsix.html">TBpsix</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="TBrho.html">TBrho</a></td>
+					<td>Compute ρ function for Tukey biweight</td>
+				</tr><tr>
+					<td width="300"><a href="tbwei.html">TBwei</a></td>
+					<td>Compute W (weight) function (ψ(x)/x)) for Tukey biweight</td>
+				</tr><tr>
+					<td width="300"><a href="triu2vec.html">triu2vec</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="Qn.html">Qn</a></td>
+					<td></td>
+				</tr><tr>
+					<td width="300"><a href="bc.html">bc</a></td>
+					<td>Binomial Coefficient </td>
+				</tr><tr>
+					<td width="300"><a href="nchoosekfs.html">nchoosekFS</a></td>
+					<td>Creates all combinations of n elements taken k at time or computes the number of such combinations.
+</td>
+				</tr></table>
+					</td>
+				</tr>
+			</table><p class="pagenavlink">
+			<a href="#top_of_page">Back to Top</a><p></p><h2 class="categorytitle">Clustering</h2>
+			<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
+			<p class="pagenavlink">
+			<table border="1">
+				<tr>
+					<td>
+						<table border="0" cellpadding="5" class="subcategorylist"><tr>
+					<td width="300"><a href="GetOmegaMap.html">GetOmegaMap</a></td>
+					<td>Calculates the map of misclassificaton between groups </td>
+				</tr><tr>
+					<td width="300"><a href="lga.html">lga</a></td>
+					<td>lga performs linear grouping analysis</td>
+				</tr><tr>
+					<td width="300"><a href="MixSim.html">MixSim</a></td>
+					<td>Generates k clusters in v dimensions with a prespecified
+average, maximum and/or standard deviation of  overlap </td>
+				</tr><tr>
+					<td width="300"><a href="MixSimReg.html">MixSimReg</a></td>
+					<td>MixSimReg generates k regression hyperplanes in p dimensions
+with given overlap.</td>
+				</tr><tr>
+					<td width="300"><a href="overlap.html">overlap</a></td>
+					<td> </td>
+				</tr><tr>
+					<td width="300"><a href="restreigen.html">restreigen</a></td>
+					<td>restreigen restricts the eigenvalues according to the
+constraint specified in scalar restr. This function is called in every
+concentration step of function <a href="tclust.html">tclust</a> and can also be
+used inside function <a href="mixsim.html">MixSim</a> to generate groups with
+shape restrictions </td>
+				</tr><tr>
+					<td width="300"><a href="rlga.html">rlga</a></td>
+					<td>rlga performs robust linear grouping analysis.</td>
+				</tr><tr>
+					<td width="300"><a href="simdataset.html">simdataset</a></td>
+					<td>simdataset simulates a dataset given the parameters of
+finite mixture model with Gaussian components.</td>
+				</tr><tr>
+					<td width="300"><a href="simdatasetReg.html">simdatasetReg</a></td>
+					<td>simdatasetReg simulates regression dataset from a given
+mixture regression model.</td>
+				</tr><tr>
+					<td width="300"><a href="tclust.html">tclust</a></td>
+					<td>tclust computes trimmed clustering </td>
+				</tr><tr>
+					<td width="300"><a href="tclustreg.html">tclustreg</a></td>
+					<td>tclustreg performs robust linear grouping analysis.</td>
+				</tr><tr>
+					<td width="300"><a href="tkmeans.html">tkmeans</a></td>
+					<td>tkmeans computes trimmed k-means </td>
+				</tr><tr>
+					<td width="300"><a href="ncx2mixtcdf.html">ncx2mixtcdf</a></td>
+					<td>Cumulative distribution function (cdf) of a linear
+combination of non-central chi-squared r.v.  (+ σ  * N(0,1))</td>
+				</tr></table>
+					</td>
+				</tr>
+			</table><p class="pagenavlink">
 			<a href="#top_of_page">Back to Top</a><p></p><h2 class="categorytitle">GUIs</h2>
 			<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
 			<p class="pagenavlink">
@@ -292,73 +541,6 @@ residuals plot.</td>
 				</tr><tr>
 					<td width="300"><a href="brushrob.html">BrushROB</a></td>
 					<td>Interactive brushing starting from the index plot of robust residuals</td>
-				</tr></table>
-					</td>
-				</tr>
-			</table><p class="pagenavlink">
-			<a href="#top_of_page">Back to Top</a><p></p><h2 class="categorytitle">Utilities</h2>
-			<a class="indexterm" name="zmw57dd0e24781"></a><a name="br0bjd1-1"></a>
-			<p class="pagenavlink">
-			<table border="1">
-				<tr>
-					<td>
-						<table border="0" cellpadding="5" class="subcategorylist"><tr>
-					<td width="300"><a href="clickablemultilegend.html">clickableMultiLegend</a></td>
-					<td>Hide or show symbols inside all subplots of a gplotmatrix (or 
-similar multi-plot) clicking on the legend.</td>
-				</tr><tr>
-					<td width="300"><a href="dsxy2figxy.html">dsxy2figxy</a></td>
-					<td>Transform point or position from data space coordinates into 
-normalized figure coordinates (that is coordinates with values between 0 and 1).
-</td>
-				</tr><tr>
-					<td width="300"><a href="ellipse.html">ellipse</a></td>
-					<td>Plots an ellipse starting from centroid and covariance matrix </td>
-				</tr><tr>
-					<td width="300"><a href="fscolors.html">FScolors</a></td>
-					<td>A MATLAB class encapsulating some common color definitions</td>
-				</tr><tr>
-					<td width="300"><a href="mahalfs.html">mahalFS</a></td>
-					<td>Computes Mahalanobis distances (in squared units) from a prespecified centroid 
-MU and scatter matrix SIGMA</td>
-				</tr><tr>
-					<td width="300"><a href="normboxcox.html">normBoxCox</a></td>
-					<td>Normalized Box Cox transformation 
-</td>
-				</tr><tr>
-					<td width="300"><a href="quickselectFS.html">quickselectfs</a></td>
-					<td>Finds the k-th ordered statistic.
-</td>
-				</tr><tr>
-					<td width="300"><a href="rescale.html">rescale</a></td>
-					<td>Rescales data in a given interval</td>
-				</tr><tr>
-					<td width="300"><a href="tbbdp.html">TBbdp</a></td>
-					<td>Compute the value of the constant c which we have to put in&nbsp; ρ function
- for Tukey biweight to obtain a prefixed breakdown point</td>
-				</tr><tr>
-					<td width="300"><a href="tbc.html">TBc</a></td>
-					<td>Compute breakdown point and asymptotic efficiency of c coefficient for Tukey biweght function for Tukey biweight.</td>
-				</tr><tr>
-					<td width="300"><a href="tbeff.html">TBeff</a></td>
-					<td>Compute the value of the constant c which we have to put in&nbsp; ρ function
- for Tukey biweight to obtain a prefixed location or scale efficiency </td>
-				</tr><tr>
-					<td width="300"><a href="tbpsi.html">TBpsi</a></td>
-					<td>Compute ψ function for Tukey biweight</td>
-				</tr><tr>
-					<td width="300"><a href="tbrho.html">TBrho</a></td>
-					<td>Compute ρ function for Tukey biweight</td>
-				</tr><tr>
-					<td width="300"><a href="tbwei.html">TBwei</a></td>
-					<td>Compute W (weight) function (ψ(x)/x)) for Tukey biweight</td>
-				</tr><tr>
-					<td width="300"><a href="bc.html">bc</a></td>
-					<td>Binomial Coefficient </td>
-				</tr><tr>
-					<td width="300"><a href="nchoosekfs.html">nchoosekFS</a></td>
-					<td>Creates all combinations of n elements taken k at time or computes the number of such combinations.
-</td>
 				</tr></table>
 					</td>
 				</tr>
