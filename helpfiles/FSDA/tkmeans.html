@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 <head>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <title>tclust :: Functions (Flexible Statistics Data Analysis
@@ -43,7 +43,7 @@ center { margin-top:1em; margin-bottom:1em; }
 <!--FScategory:Clustering-->
 <a name="top_of_page"></a> 
 
-<p style="font-size: 1px;">&nbsp;</p>
+<p style="font-size: 1px;"> </p>
 
 <table border="0" cellpadding="0" cellspacing="0" class="nav"
 summary="Navigation aid" width="100%">
@@ -60,31 +60,27 @@ summary="Navigation aid" width="100%">
   </tbody>
 </table>
 
-
-<h1 class="reftitle">tclust</h1>
+<h1 class="reftitle">tkmeans</h1>
 
 <p class="purpose">tkmeans computes trimmed k-means </p>
 
 <h2>Syntax </h2>
 
 <p class="synopsis"><tt>[out] = tclust(Y,k,alpha)<br>
-[out] = tclust(Y,k,alpha,param1,val1,param2,val2,...)
-</tt></p>
+[out] = tclust(Y,k,alpha,param1,val1,param2,val2,...) </tt></p>
 <a name="f4811966"></a> 
 
 <h2>Description </h2>
 
-<p>&nbsp;</p>
-<p><tt>tkmeans</tt>
- partitions the points in the n-by-v data matrix Y
-   into k clusters.  This partition minimizes the trimmed sum, over all
-   clusters, of the within-cluster sums of point-to-cluster-centroid
-   distances.  Rows of Y correspond to points, columns correspond to
-   variables. tkmeans returns inside structure out an n-by-1 vector idx
-   containing the cluster indices of each point.  By default, tkmeans uses
-   (squared) Euclidean distances.
- </p>
-  
+<p> </p>
+
+<p><tt>tkmeans</tt> partitions the points in the n-by-v data matrix Y into k
+clusters. This partition minimizes the trimmed sum, over all clusters, of the
+within-cluster sums of point-to-cluster-centroid distances. Rows of Y
+correspond to points, columns correspond to variables. tkmeans returns inside
+structure out an n-by-1 vector idx containing the cluster indices of each
+point. By default, tkmeans uses (squared) Euclidean distances. </p>
+
 <p>DETAILS. This iterative algorithm initializes k clusters randomly and
 performs "concentration steps" in order to improve the current cluster
 assignment. The number of maximum concentration steps to be performed is
@@ -97,7 +93,7 @@ extra computation time). However, if more then 10% of the iterations do not
 converge, a warning message is issued, indicating that <a
 href="#nsamp">nsamp</a> has to be increased. </p>
 
-<p>&nbsp;</p>
+<p> </p>
 
 <p><tt>tkmeans</tt> requires  the following input</p>
 
@@ -137,8 +133,8 @@ href="#nsamp">nsamp</a> has to be increased. </p>
   </tbody>
 </table>
 
-<p class="auto-style2"><tt>[out] = tkmeans(Y, k, alpha)</tt> returns
-the following information</p>
+<p class="auto-style2"><tt>[out] = tkmeans(Y, k, alpha)</tt> returns the
+following information</p>
 <ul type="disc">
   <li><tt>out</tt> − A structure of additional statistics with the following
     fields. 
@@ -152,23 +148,23 @@ the following information</p>
         centroids of the groups. </p>
       </li>
       <li><p><tt>bs</tt> − <tt>k</tt>-by-1 vector containing the units
-        forming initial subset associated with <tt>muopt</tt>.
+        forming initial subset associated with <tt>muopt</tt>. </p>
       </li>
-      <li><tt>post</tt> − <tt>n</tt>-by-<tt>k</tt> matrixatrix containing squared Euclidean
-                       distances from each point to every centroid.</li>
+      <li><tt>post</tt> − <tt>n</tt>-by-<tt>k</tt> matrixatrix containing
+        squared Euclidean distances from each point to every centroid.</li>
       <li><tt>siz</tt> − <tt>k</tt>-by-3 matrix <br>
         1st col = sequence from 0 to k<br>
         2nd col = number of observations in each cluster<br>
         3rd col = percentage of observations in each cluster<br>
         Remark: 0 denotes unassigned units</li>
       <li><tt>weights</tt> −numerical vector of length k, containing the
-                       weights of each cluster. If input option weights=1
-                       out.weights=(1/k, ...., 1/k) else if input option
-                       weights <> 1 out.weights=(n1/n, ..., nk/n)</li>
+        weights of each cluster. If input option weights=1 out.weights=(1/k,
+        ...., 1/k) else if input option weights <> 1 out.weights=(n1/n, ...,
+        nk/n)></li>
       <li><tt>h</tt> − scalar. Number of observations that have determined
         the centroids (number of untrimmed units).</li>
-      <li><tt>obj</tt> − scalar. Value of the objective function which is 
-	  minimized (value of the best returned solution).</li>
+      <li><tt>obj</tt> − scalar. Value of the objective function which is
+        minimized (value of the best returned solution).</li>
     </ul>
     <ul>
       <li><tt>Y</tt> − scalar. original data matrix Y. The field is present
@@ -177,11 +173,10 @@ the following information</p>
   </li>
 </ul>
 
-<p>&nbsp;</p>
+<p> </p>
 
-<p><tt>[out] = tkmeans(Y,k,alpha,param1,val1,param2,val2,...)
-</tt>specifies one or more of the name/value pairs described in the following
-table.</p>
+<p><tt>[out] = tkmeans(Y,k,alpha,param1,val1,param2,val2,...) </tt>specifies
+one or more of the name/value pairs described in the following table.</p>
 
 <table border="2" cellpadding="4" cellspacing="0" class="body">
   <colgroup><col width="21%">
@@ -196,11 +191,10 @@ table.</p>
   <tbody>
     <tr valign="top">
       <td bgcolor="#F2F2F2"><tt><a name="nsamp">'nsamp'</a></tt></td>
-      <td bgcolor="#F2F2F2"><p>Number of subsamples which will be extracted to find the
-               partition. If nsamp=0 all subsets will be extracted.
-               They will be (n choose k).
-               Remark: if the number of all possible subset is <300 the
-               default is to extract all subsets, otherwise just 300 </p>
+      <td bgcolor="#F2F2F2"><p>Number of subsamples which will be extracted to
+        find the partition. If nsamp=0 all subsets will be extracted. They will
+        be (n choose k). Remark: if the number of all possible subset is <300
+        the default is to extract all subsets, otherwise just 300 </p></p>
       </td>
     </tr>
     <tr>
@@ -216,13 +210,12 @@ table.</p>
       </td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt><a
-      name="equalweights">'weights'</a></tt></td>
-      <td bgcolor="#F2F2F2"><p>a dummy scalar, specifying whether cluster weights
-               (1) shall be considered in the concentration and
-               assignment steps. Remark: if weights=1 in the assignment
-               step to the squared Euclidean distance of unit i to group j
-               log n_j is substracted. The default is no cluster weights</p>
+      <td bgcolor="#F2F2F2"><tt><a name="equalweights">'weights'</a></tt></td>
+      <td bgcolor="#F2F2F2"><p>a dummy scalar, specifying whether cluster
+        weights (1) shall be considered in the concentration and assignment
+        steps. Remark: if weights=1 in the assignment step to the squared
+        Euclidean distance of unit i to group j log n_j is substracted. The
+        default is no cluster weights</p>
       </td>
     </tr>
     <tr>
@@ -261,7 +254,7 @@ table.</p>
 
 <p></p>
 
-<p>&nbsp;</p>
+<p> </p>
 
 <h2>References </h2>
 
@@ -275,31 +268,28 @@ www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</p>
 
 <h3>Example 1</h3>
 
-<p class="auto-style1">tkmeans applied to geyser data with with option weights 
+<p class="auto-style1">tkmeans applied to geyser data with with option weights
 =0</p>
-<pre class="programlisting">&nbsp;</pre>
+<pre class="programlisting"> </pre>
 <pre class="programlisting">    % Trimmed k-means using geyser data
     % 3 groups and trimming level of 3%
     Y=load('geyser2.txt');
     out=tkmeans(Y,3,0.03,'plots',1)
-    </pre>
+</pre>
 
-<p>
-<img alt="" src="images_help/img8.jpg"></p>
+<p><img alt="" src="images_help/img8.jpg"></p>
 
 <p>Compare the above solution with the one obtained with option weights =1</p>
-<pre class="programlisting">
-    % Trimmed k-means using geyser data
+<pre class="programlisting">    % Trimmed k-means using geyser data
     % option weights =1
     Y=load('geyser2.txt');
-    out=tkmeans(Y,3,0.03,'plots',1,'weights',1)
-</pre>
+    out=tkmeans(Y,3,0.03,'plots',1,'weights',1)</pre>
+
 <p><img alt="" src="images_help/imgE1.jpg"></p>
 
 <h3>See Also</h3>
 
 <p><tt><a href="tclust.html">tclust</a></tt> </p>
-
 
 <p></p>
 
