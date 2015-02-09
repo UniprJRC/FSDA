@@ -20,6 +20,9 @@ function ctun = HAbdp(bdp,p,abc)
 %
 %  ctun = scalar of Hampel rho function associated to that particular breakdown point
 %
+% Copyright 2008-2015.
+% Written by FSDA team
+%
 %
 %<a href="matlab: docsearchFS('habdp')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015

@@ -6,6 +6,11 @@ function [out]=FSRcore(y,X,n,p,mdr,init,Un,bb,options)
 % FSR  = outlier detection procedure for linear regression
 % FSRB = outlier detection procedure in Bayesian linear regression
 % FSRH = outlier detection procedure for heteroskedastic models
+% Copyright 2008-2015.
+% Written by FSDA team
+%
+%
+% Last modified 06-Feb-2015
 
 %% Beginning of code
 

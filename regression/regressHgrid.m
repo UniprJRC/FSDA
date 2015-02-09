@@ -1,4 +1,10 @@
 function [out] = regressHgrid(y,X,sel,varargin)
+% Copyright 2008-2015.
+% Written by FSDA team
+%
+%
+% Last modified 06-Feb-2015
+
 
 nnargin = nargin;
 vvarargin = varargin;

@@ -1,5 +1,12 @@
 function [out] = regressH1grid(y,X,sel,varargin)
 % likelihood for models with 1+exp(Z*gamma)
+% Copyright 2008-2015.
+% Written by FSDA team
+%
+%
+%
+% Last modified 06-Feb-2015
+
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,~] = chkinputR(y,X,nnargin,vvarargin);

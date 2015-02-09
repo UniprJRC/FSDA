@@ -11,6 +11,10 @@
 % performance investigation of clustering and finite mixture
 % modeling algorithms. 
 
+% Copyright 2008-2015. FSDA toolbox
+
+% Last modified 06-Feb-2015
+
 %% Test main MixSim functions
 
 chkMatlab_With_R_connection=exist('openR','file');

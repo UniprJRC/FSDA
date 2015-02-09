@@ -109,6 +109,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %<a href="matlab: docsearchFS('GetOmegaMap')">Link to the help function</a>
 %
+% Last modified 06-Feb-2015
 %{
     k=4; % Number of groups
     p=5;    % Number of dimensions

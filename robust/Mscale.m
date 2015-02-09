@@ -50,7 +50,8 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %
 % Copyright 2008-2015.
 % Written by FSDA team
-%
+
+% Last modified 06-Feb-2015
 
 % Examples
 

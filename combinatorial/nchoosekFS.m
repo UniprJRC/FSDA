@@ -22,6 +22,7 @@ function c = nchoosekFS(v,k)
 %
 %<a href="matlab: docsearchFS('nchoosekFS')">Link to the help function</a>
 %
+% Last modified 06-Feb-2015
 %{
 % Profile generation of 2118760 combinations.
 v = 1:50; k = 4; 

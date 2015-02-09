@@ -4,7 +4,8 @@ function status = closereqFS(~,~)
 %
 % Copyright 2008-2015.
 % Written by FSDA team
-%
+% Copyright 2008-2015.
+% Last modified 06-Feb-2015
 %
 
 %% Beginning of code

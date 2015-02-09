@@ -85,6 +85,9 @@
 %         privileges in a path different from "C:\Program files" and not to use
 %         spaces in the path.
 
+% Copyright 2008-2015. FSDA toolbox
+% Last modified 06-Feb-2015
+
 %% EXAMPLE 1: create from within R an identity matrix
 
 openR

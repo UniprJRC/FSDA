@@ -1,4 +1,8 @@
 %examples_regression shows a series of analysis of regression datasets 
+% Copyright 2008-2015.
+% Written by FSDA team
+
+% Last modified 06-Feb-2015
 
 %% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
 clearvars;close all;

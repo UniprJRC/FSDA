@@ -32,6 +32,12 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
 %
 %   <a href="matlab: docsearchFS('logmvnpdffs')">Link to the help function</a>
 %
+% Copyright 2008-2015.
+% Written by FSDA team
+%
+%
+% Last modified 06-Feb-2015
+
 %   Examples:
 %
 %{
