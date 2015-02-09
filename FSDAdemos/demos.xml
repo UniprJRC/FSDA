@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Revision: 1.7.4.11 $  $Date: 2009/05/07 18:30:50 $ -->
 <demos>
-	<name>FSDA</name>
+	<name>FSDA Toolbox</name>
 	<type>toolbox</type>
 	<icon>HelpIcon.DEMOS</icon>
 	<description isCdata="no">
@@ -34,22 +34,21 @@
 		
 	<label>Regression</label>		
 		<demoitem>
-            	<label>Hawkins data (4 min, 0 sec)</label>
-            	<type>M-file</type>
-            	<source>hawkins</source>
-        	</demoitem>
+            <label>Hawkins data (4 min, 0 sec)</label>
+            <type>M-file</type>
+            <source>hawkins</source>
+        </demoitem>
+
 		<demoitem>
 			<label>Multiple regression data (6 min, 17 sec)</label>
-			<type>M-file</type>
-			<source>AR</source>
+			<type>video</type>
+			<callback>playbackdemoFS('AR');</callback>
 		</demoitem>
 		<demoitem>
 			<label>Fishery data (5 min, 52 sec)</label>
-			<type>M-file</type>
-			<source>fishery</source>
-			<!--  <callback>playbackdemoFS('fishery');</callback> -->
+			<type>video</type>
+			<callback>playbackdemoFS('fishery');</callback>
 		</demoitem>
-
 	</demosection>
 	<demosection>
 		<label>Multivariate Analysis</label>
@@ -62,20 +61,19 @@
 		<label>Transformations in linear regression</label>
 		<demoitem>
 			<label>Loyalty cards data (6 min, 7 sec)</label>
-			<type>M-file</type>
-			<source>loyalty</source>
+			<type>video</type>
+			<callback>playbackdemoFS('loyalty');</callback>
 		</demoitem>
 		<demoitem>
 			<label>Hospital data: analysis of the homogeneity of the sample</label>
-			<type>M-file</type>
-			<source>hospital</source>
+			<type>video</type>
+			<callback>playbackdemoFS('hospital');</callback>
 		</demoitem>
-		<!--  
-		<demoitem>
-		      <label>Simulating Dependent Random Variables Using Copulas</label>
-      		<type>video</type>
-      		<callback>playbackdemoFS('copulademo');</callback> 
-   		</demoitem>
- 		-->
+		   <demoitem>
+      <label>Simulating Dependent Random Variables Using Copulas</label>
+      <type>M-file</type>
+      <source>copulademo</source>
+   </demoitem>
+
 	</demosection>
 </demos>
