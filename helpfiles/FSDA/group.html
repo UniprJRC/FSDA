@@ -28,7 +28,7 @@ li.MsoNormal {
 <h1>The forward search group</h1>
 
 The core of the Forward Search group comes both from the the members of
-the division of statistics and computing of the University of Parma and
+the division of Statistics and Computing of the University of Parma and
 the
 Department of Statistics of the London School of Economics (from now on
 ParmaLSE) made up of Anthony Atkinson (LSE), Marco Riani and Andrea
@@ -37,7 +37,7 @@ Cerioli
 Springer-Verlag New York (Atkinson and Riani, 2000; Atkinson Riani and
 Cerioli,
 2004) and many papers in prestigious international journals. The last
-15 years
+20 years
 of joint research of people from ParmaLSE can be summarized as follows:
 <p><strong>1994-2002.</strong> Introduction of the new approach. At
 that time
@@ -59,7 +59,9 @@ on the results of traditional analyses (Riani and Atkinson, 2000). </p>
 analysis of
 multivariate data based on a combination of statistical modelling and
 graphical
-diagnostics.&nbsp; </p>
+diagnostics.&nbsp; In these years we also realized the importance of monitoring 
+statistics and developed diagnostic tools specifically based on these monitoring 
+plots. Our "monitoring philosophy" started in these years.</p>
 
 <p><strong>2005-2008. </strong> In this period we began to introduce
 the Forward
@@ -95,12 +97,28 @@ the University of Parma), Vytis Kopustinskas and the head of the group,
 Spyros Arsenis. The joint activities of the two teams progressed till
 today with always-new stimuli and challenging problems.&nbsp; The FSDA
 toolbox is one of the main outcomes of this collaboration. </p>
+<p><strong>2010 on</strong>. We started including in the toolbox all traditional 
+robust estimators (S, MM and tau) with the different weight functions (Hampel, 
+hyperbolic, optimal and biweght) together with high breakdown estimators (LMS, 
+LTS, MVE and MCD) and their reweighted version. We have also implemented the 
+accurate distributional approximations to the finite sample distribution of the 
+corresponding diagnostic tools (Cerioli Riani and Atkinson, 2009; Cerioli, 
+2010). In this FSDA became a general tool for robust data analysis (regression 
+and multivariate) and even changed its name in "Flexible Statistics and Data 
+Analysis toolbox".</p>
+<p><strong>2014 on.</strong> The  concept ot monitoring was applied to the 
+traditional robust estimators (such as S, MM and tau) and to high breakdown 
+estimators based on trimming (such as LTS and LMS). We plan to extend it to the 
+multivariate context soon.  </p>
+<p><strong>2015</strong>. Robust clustering methods have been introduced into 
+the toolbox (tclust and MixSim).  </p>
+<p>&nbsp;</p>
 
 <p>The ParmaLSE - JRC teams created in the last years lot of synergies
 with new research groups, extending considerably the network of
 scientists interested in (robust) solutions to anti-fraud problems and
 in the Forward Search as an original approach for data analysis. With
-apologies for possible unvoluntaries omissions, we mention here some
+apologies for possible involuntary omissions, we mention here some
 milestones and groups:</p>
 
 <p style="margin-left: 40px;"><strong>2009. </strong>Fruitful contacts
@@ -135,7 +153,11 @@ collaboration include methodological studies (e.g. on the determination
 of the number of groups in TCLUST), applications of TCLUST and RLGA in
 antifraud,&nbsp; and new FSDA functions for trimmed based clustering
 methods, including tools for the generation of simulated clustering
-data based on prespecified level of overlap (MixSim).&nbsp;<br />
+data based on prespecified level of overlap (MixSim).&nbsp;</p>
+<p style="margin-left: 40px;"><strong>2012</strong>. FSDA routines have been 
+adopted by ISTAT, the Italian National Institute of Statistics,&nbsp; for the 
+correction and control of Italian Agriculture Census data (Reale, Bianchi,
+<span class="st">Francescangeli Ruocco and <span>Manzari, ISTAT</span>).</span>&nbsp; <br />
  </p>
 
 <p style="margin-left: 40px;"><strong>2013-2014.</strong> This may
@@ -151,7 +173,7 @@ SAS platform for both inferential and exploratory data analysis
 purposes, including several of the interactive and dynamic plotting
 features that characterize FSDA.</p>
 
-<p style="margin-left: 40px;"><strong>2013-2014.</strong> A second
+<p style="margin-left: 40px;"><strong>2013-2015.</strong> A second
 factor potentially limiting the diffusion of the new philosophy was the
 lack of sound asymptotic theory for the Forward Search monitoring
 process. Johansen and Nielsen (2013, 2014), starting from several
@@ -169,51 +191,28 @@ forward search literature. For example, Fabio Crosilla of the
 University of
 Udine has extended the forward routines to data on photogrammetry. This
 extension has considerably improved the classification of spatial
-objects
-(Crosilla et al., 2007). Nadia Solaro is currently working to extend
+objects. Nadia Solaro is currently working to extend
 this new
-philosophy to multilevel models (Solaro and Pagani, 2009). Daniela Calò
+philosophy to multilevel models. Daniela Calò
 has
 investigated the use of forward search routines for finding groups of
-homogeneous observations in the context of robust cluster analysis
-(Calò,
-2008). Silvia Salini has recently worked on robust extensions of
+homogeneous observations in the context of robust cluster analysis. Silvia Salini has recently worked on robust extensions of
 calibration
-models using forward search tools (Salini, 2006). Matilde Bini has used
+models using forward search tools. Matilde Bini has used
 the
 forward search to develop robust transformations in percentage data
-(Bini and
-Bertaccini, 2007) while Bruno Bertaccini, together with Roberta
-Varriale, has
-extended the new philosophy to the robust analysis of variance
-(Bertaccini and
-Varriale, 2007). </p>
+while Bruno Bertaccini, together with Roberta Varriale, has extended the new 
+philosophy to the robust analysis of variance. Moustaki and Mavridis extended 
+the forward serach approach to perform robust factor analysis. Recently, C. 
+Chakraborty and S. S. Dhar extended the asymtptic theory monitoring approach to 
+elliptical distributions, while M. Baragilly created new tools for assessing the 
+number of clusters based on the idea of monitoring in presence of non elliptical 
+distributions.</p>
+<p>&nbsp;</p>
 
-<p>We also advise interaction with researchers who use approaches based
-on dynamic models which show strong points of contact with our
-philosophy (A.
-Monti). For example, the group intends to investigate the use of the
-robust
-adaptive estimates proposed in Di Ciccio and Monti (2004, 2008) and
-their
-integration into our philosophy of data analysis. Another contact point
-with
-the robust literature is linked to weighted likelihood (Markatou, Basu
-and
-Lindsay, 1998) and minimum distance methods, where outliers and inliers
-are
-defined according to a probabilistic scale. This scale is based on the
-comparison between the empirical distribution function and that of the
-assumed
-model. The advantages of using definitions of outliers and inliers
-based on a
-probabilistic scale, rather than on a geometric one, are several. Here
-we just
-mention direct applicability in a wide set of models including circular
-data
-(Agostinelli, 2007), mixture models (Markatou, 2000) and generalized
-linear
-models (Agostinelli and Al-quallaf, 2009). </p>
+<p>We finally hope further interaction with researchers who use approaches based 
+on dynamic models which show strong points of contact with our philosophy.</p>
+<p>&nbsp;</p>
 
 <p>In summary, it is true to say that the growth of the Forward Search
 method
