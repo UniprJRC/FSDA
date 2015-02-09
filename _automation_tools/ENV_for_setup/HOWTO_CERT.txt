@@ -1,0 +1,12 @@
+psw = psw4FSDA
+
+
+"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\makecert.exe" -cy end -pe -r -n "CN= Test FSDA certificate" -sky Signature -sv "E:\usr_MATLAB\FSDA_setup\CERT\key.pvk" "E:\usr_MATLAB\FSDA_setup\CERT\Key.cer"
+
+
+"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\pvk2pfx.exe" -pvk "E:\usr_MATLAB\FSDA_setup\CERT\key.pvk" -spc "E:\usr_MATLAB\FSDA_setup\CERT\Key.cer" -pfx "E:\usr_MATLAB\FSDA_setup\CERT\Key.pfx"
+
+
+"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe" sign /f E:\usr_MATLAB\FSDA_setup\CERT\key.pfx /p psw4FSDA $f
+
+"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe" sign /f "E:\usr_MATLAB\FSDA_setup\CERT\key.pfx" /d "FSDA Toolbox" /du "http://www.riani.it" /t "http://timestamp.verisign.com/scripts/timestamp.dll" "FSDAtoolbox_for_MATLAB-setup.exe"
