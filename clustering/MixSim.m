@@ -185,8 +185,8 @@ function [out]  = MixSim(k,v,varargin)
 %   Balancing a matrix for calculation of eigenvalues and eigenvectors
 %   Dr. B. N. Parlett, Dr. C. Reinsch
 %
-%  Parlett, B. N. and C. Reinsch, ?Balancing a Matrix for Calculation of
-%  Eigenvalues and Eigenvectors,? Handbook for Auto. Comp., Vol. II, Linear
+%  Parlett, B. N. and C. Reinsch, Balancing a Matrix for Calculation of
+%  Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear
 %  Algebra, 1971,pp. 315-326.
 %
 % Copyright 2008-2015.
