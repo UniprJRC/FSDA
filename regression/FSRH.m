@@ -17,10 +17,6 @@ function [out]=FSRH(y,X,varargin)
 %
 % Optional input arguments:
 %
-%   Hmodel: if Hmodel=1, our model is executed, if Hmodel=0 Harvey model is
-%                   executed;
-%   scoring: if scoring=1 a scoring algorithm is executed, if scoring=0,
-%   standard algorithm is executed.
 %   intercept   : If 1, a model with constant term will be fitted (default),
 %                 if 0, no constant term will be included.
 %           h   : The number of observations that have determined the least
@@ -75,6 +71,8 @@ function [out]=FSRH(y,X,varargin)
 %                 init is not specified it set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%        scoring: if scoring=1 a scoring algorithm is executed, if scoring=0,
+%                 standard algorithm is executed.
 %       exact   : scalar, if it is equal to 1 the calculation of the quantiles
 %                 of the T and F distribution is based on functions finv
 %                 and tinv from the Matlab statistics toolbox, else the
@@ -198,9 +196,8 @@ function [out]=FSRH(y,X,varargin)
 %
 % References:
 %
-%       Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
-%       number of multivariate outliers. Journal of the Royal Statistical
-%       Society Series B, Vol. 71, pp. 201–221.
+%   Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for
+%   heteroskedastic regression, submitted (ART)
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -214,96 +211,54 @@ function [out]=FSRH(y,X,varargin)
 % Examples:
 
 %{
-    % FSR with all default options
-    % Run this code to see the output shown in the help file
-    n=200;
-    p=1;
-    randn('state', 123456);
-    X=randn(n,p);
-    % Uncontaminated data
-    y=randn(n,1);
-    % Contaminated data
-    ycont=y;
-    ycont(1:5)=ycont(1:5)+6;
-    [out_Hmodel0_scoring0]=FSRH(y,X,'Hmodel',0,'scoring',0);
+    XX=load('tradeH.txt')
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    %% Plot the data
+    plot(X,y,'o')
+    fs=14;
+    ylabel('Value','FontSize',fs)
+    xlabel('Quantity','FontSize',fs)
+
+    % Run the automatic outlier detection procedure 
+    out=FSRH(y,X,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);
+
+    % Create figure 3 of ART
+    figure
+    subplot(2,2,1)
+    n=length(y);
+    seq=1:n;
+    sel=setdiff(seq,out.ListOut);
+    hold('on')
+    plot(X(sel),y(sel),'o')
+    plot(X(out.ListOut),y(out.ListOut),'rx','MarkerSize',12,'LineWidth',2)
+    % fs=12;
+    % ylabel('Value','FontSize',fs)
+    % xlabel('Quantity','FontSize',fs)
+    % set(gca,'FontSize',fs)
+    %
+    subplot(2,2,2)
+    plot(out.Hetero(:,1),out.Hetero(:,2))
+    xlabel('Subset size m')
+    kk=20;
+    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
+    ylim([1.7 2.7])
+    title('\alpha')
+    subplot(2,2,3)
+    plot(out.Hetero(:,1),log(out.Hetero(:,3)))
+    title('log(\theta)')
+    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
+    %ylim([5 7.5])
+    xlabel('Subset size m')
+    subplot(2,2,4)
+    plot(out.S2(:,1),out.S2(:,2))
+    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
+    ylim([0 300000])
+    title('\sigma^2')
+    xlabel('Subset size m')
 %}
 
-%{
-    % Monitor the exceedances from m=60 without showing plots
-    n=200;
-    p=1;
-    X=rand(n,p);
-    y=rand(n,1);
-    [out]=FSRH(y,X,'init',60,'plots',0);
-%}
-
-%{
-
-    % Initialize the search with the subsample which produces the smallest
-    % [h/n] quantile of squared residuals
-    n=200;
-    p=1;
-    X=randn(n,p);
-    y=randn(n,1);
-    [out]=FSRH(y,X,'h',120);
-%}
-
-%{
-    % Extract all possible subsamples in order to find susbet to initialize
-    % the search
-    [out]=FSRH(y,X,'nsamp',0);
-%}
-
-%{
-    % This is to try various combinations of the labeladd, bivarfit
-    % and multivarfit options.
-    [out]=FSRH(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');
-%}
-
-%{
-    % Example of use of options xlim and ylim: Hawkins data
-    % load dataset Hawkins
-    load('hawkins.txt','hawkins');
-    y=hawkins(:,9);
-    X=hawkins(:,1:8);
-    % Use of FSR starting with 1000 subsamples
-    [out]=FSRH(y,X,'nsamp',1000);
-    % Use of FSR starting with 1000 subsamples
-    % focusing in the output plots to the interval 1-6 on the y axis and
-    % to steps 30-90.
-    [out]=FSRH(y,X,'nsamp',1000,'ylim',[1 6],'xlim',[30 90]);
-%}
-
-%{
-    % Example of use of options nameX and nameY with contaminated data
-    n=200;
-    p=3;
-    state1=123498;
-    randn('state', state1);
-    X=randn(n,p);
-    y=randn(n,1);
-    kk=33;
-    % shift contamination of the first 6 units of the response
-    y(1:kk)=y(1:kk)+6;
-    nameX={'age', 'salary', 'position'};
-    namey='salary';
-    [out]=FSRH(y,X,'nameX',nameX,'namey',namey);
-%}
-
-%{
-    % Example of point mass contamination
-    n=130;
-    p=5;
-    state1=123498;
-    randn('state', state1);
-    X=randn(n,p);
-    y=randn(n,1);
-    kk=30;
-    % point mass contamination of the first kk units
-    X(1:kk,:)=1;
-    y(1:kk)=3;
-    [out]=FSRH(y,X);
-%}
 
 
 
@@ -348,7 +303,7 @@ options=struct('h',hdef,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
     'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
-    'bsbmfullrank',1,'Hmodel',1,'scoring',1);
+    'bsbmfullrank',1,'scoring',1);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -381,8 +336,6 @@ xlimx=options.xlim;
 ylimy=options.ylim;
 msg=options.msg;
 bsbmfullrank=options.bsbmfullrank;
-%Hmodel==1 our model;Hmodel==1 harvey model
-Hmodel=options.Hmodel;
 scoring=options.scoring;
 
 bonflev=options.bonflev;
@@ -431,7 +384,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,~,~,Hetero,WEI] = FSRHmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'Hmodel',Hmodel,'scoring',scoring);
+    [mdr,Un,bb,~,~,Hetero,WEI] = FSRHmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'scoring',scoring);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2;
@@ -469,7 +422,7 @@ else % initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,~,S2,Hetero,WEI] = FSRHmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'Hmodel',Hmodel,'scoring',scoring);
+        [mdr,Un,bb,~,S2,Hetero,WEI] = FSRHmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'scoring',scoring);
         
         % If FSRmdr run without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual

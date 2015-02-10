@@ -113,51 +113,32 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,bsb,varargin)
 %
 % References:
 %
-%   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
-%   Springer Verlag, New York.
-%   Atkinson, A.C. and Riani, M. (2006). Distribution theory and
-%   simulations for tests of outliers in regression. Journal of
-%   Computational and Graphical Statistics, Vol. 15, pp. 460–476
-%   Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward
-%   search for testing multiple outliers in regression, Advances in Data
-%   Analysis and Classification, Vol. 1, pp. 123–141.
+%   Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for
+%   heteroskedastic regression, submitted (ART)
+
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRmdr')">Link to the help function</a>
+%<a href="matlab: docsearch('FSRHmdr')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:
 
-%{
-%Common part to all examples: load fishery dataset
-%
- load('fishery');
- y=fishery.data(:,2);
- X=fishery.data(:,1);
- [out]=LXS(y,X,'nsamp',10000);
-%}
+
 
 %{
-% FSR with all default options.
-[mdr,Un,BB,Bols,S2] = FSRHmdr(y,X,out.bs,'Hmodel',0,'scoring',0);
-%}
+    % Load international trade data used in the paper ART
+    XX=load('tradeH.txt')
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
 
-%{
-% FSRmdr monitoring from step 60.
-[mdr,Un,BB,Bols,S2] = FSRHmdr(y,X,out.bs,'init',60);
-%}
+    [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,0,'init',round(length(y)/2));
 
-%{
-% FSRmdr using a regression model without intercept.
-[mdr,Un,BB,Bols,S2] = FSRHmdr(y,X,out.bs,'intercept','0');
-%}
-
-%{
-%FSRmdr applied without doing any checks on y and X variables.
-[mdr,Un,BB,Bols,S2] = FSRHmdr(y,X,out.bs);
+    % Plot monitoring of alpha parameter
+    plot(Hetero(:,1),Hetero(:,2))
 %}
 
 
@@ -242,9 +223,7 @@ end
 
 msg=options.msg;
 constr=options.constr;
-bsbmfullrank=options.bsbmfullrank;
 intercept=options.intercept;
-Hmodel=options.Hmodel;
 scoring=options.scoring;
 %% Initialise key matrices
 
@@ -287,7 +266,7 @@ BB = NaN(n,n-init1+1);
 % 3rd col = estimate of gamma in the scedastic equation
 Hetero=[(init1:n)' NaN(n-init1+1,2)];
 
-% Matrix which contains in each column the estimate of the weights 
+% Matrix which contains in each column the estimate of the weights
 WEI = NaN(n,n-init1+1);
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just
@@ -307,7 +286,7 @@ else
         
         
         % if n>200 show every 100 steps the fwd search index
-        if msg==1 && n>500;
+        if msg==1 && n>5000;
             if length(intersect(mm,seq100))==1;
                 disp(['m=' int2str(mm)]);
             end
@@ -317,50 +296,31 @@ else
         
         NoRankProblem=(rank(Xb) == p);
         if NoRankProblem  % rank is ok
-            %% our heteroscedastic model
-            if Hmodel==1
-                
-                if scoring==1
-                    
-                    if size(Xb,1)<=5
-                        HET=regressH1grid(yb,Xb(:,end),Xb(:,end),'intercept',intercept);%era regressMHmleN ????
-                    else
-                        HET=regressH1(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept);
-                        % HET=regressMHpow(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
-                        % HET=regressMH1(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept,'initialgamma',[log(HET.Gamma);HET.alpha]);
-                    
-                    end
-                    
-                elseif scoring==0
-                    HET=regressH1grid(yb,Xb(:,end),Xb(:,end),'intercept',intercept);
+            
+            
+            if scoring==1
+                if size(Xb,1)<=5
+                    HET=regressHart_grid(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
+                    % HET=regressH1grid(yb,Xb(:,end),Xb(:,end),'intercept',intercept);%era regressMHmleN ????
+                else
+                    HET=regressHart(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept);
+                    % HET=regressMHpow(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
+                    % HET=regressMH1(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept,'initialgamma',[log(HET.Gamma);HET.alpha]);
                 end
-                
-                %% Harvey heteroscedastic model
-            elseif Hmodel==0
-                
-                if scoring==1
-                    
-                    if size(Xb,1)<=5
-                        HET=regressHgrid(yb,Xb(:,end),Xb(:,end),'intercept',intercept);%era regressMHmleN ????
-                    else
-                        HET=regressH(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept);
-                        % HET=regressMHpow(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
-                        % HET=regressMH1(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept,'initialgamma',[log(HET.Gamma);HET.alpha]);
-                    end
-                    
-                elseif scoring==0
-                    HET=regressHgrid(yb,Xb(:,end),Xb(:,end),'intercept',intercept);
-                end
+            else
+                HET=regressHart_grid(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
             end
+            
+            
             gam=HET.Gamma;
             alp=HET.alpha;
             sigma2hati=1+real(X(:,end).^alp)*gam;%equaz 6 di paper
-%             else
-%              HET=regressHgrid(yb,Xb,Xb);
-%             gam=HET.Gamma;
-%             alp=HET.alpha;
-%             sigma2hati=1+real(X(:,2).^alp)*gam;
-%             end               
+            %             else
+            %              HET=regressHgrid(yb,Xb,Xb);
+            %             gam=HET.Gamma;
+            %             alp=HET.alpha;
+            %             sigma2hati=1+real(X(:,2).^alp)*gam;
+            %             end
             sqweights = sigma2hati.^(-0.5);
             
             % Xw and yw are referred to all the observations
@@ -368,10 +328,10 @@ else
             % at step m
             % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
             Xw = bsxfun(@times, X, sqweights);
-             if (mm>=init1);
-            % Store weights
-            WEI(:,mm-init1+1)=sqweights;
-             end
+            if (mm>=init1);
+                % Store weights
+                WEI(:,mm-init1+1)=sqweights;
+            end
             yw = y .* sqweights;
             Xb=Xw(bsb,:);
             yb=yw(bsb);
@@ -379,55 +339,8 @@ else
             % b=Xb\yb;   % HHH
             b=HET.Beta';
             resBSB=yb-Xb*b;
-            blast=b;   % Store correctly computed b for the case of rank problem
         else   % number of independent columns is smaller than number of parameters
-%             if bsbmfullrank
-%                 Xbx=Xb;
-%                 nclx=ncl;
-%                 bsbx=zeros(n,1);
-%                 bsbx(1:mm)=bsb;
-%                 norank=1;
-%                 while norank ==1
-%                     
-%                     norank=1;
-%                     % Increase the size of the subset by one unit iteratively until you
-%                     % obtain a full rank matrix
-%                     for i=1:length(nclx)
-%                         Xbb=[Xbx;X(nclx(i),:)];
-%                         if rank(Xbb)==p
-%                             norank=0;
-%                         else
-%                             bsbx(1:size(Xbb,1))=[bsbx(1:size(Xbb,1)-1);nclx(i)];
-%                             Xbx=X(bsbx(1:size(Xbb,1)),:);
-%                             nclx=setdiff(seq,bsbx(1:size(Xbb,1)));
-%                             norank=1;
-%                             break
-%                         end
-%                     end
-%                 end
-%                 % check how many observations produce a singular X matrix
-%                 bsbsing=bsbx(1:size(Xbb,1)-1);
-%                 
-%                 if msg==1
-%                     warning('FSDA:FSRmdr','Rank problem in step %d:',mm);
-%                     disp('Observations')
-%                     disp(bsbsing')
-%                     disp('produce a singular matrix')
-%                 end
-%                 mdr=bsbsing;
-%                 Un=NaN;
-%                 BB=NaN;
-%                 Bols=NaN;
-%                 S2=NaN;
-%                 return
-%                 
-%             else
-%                 disp(['Matrix without full rank at step m=' num2str(mm)])
-%                 disp('Estimate of \beta which is used is based on previous step with full rank')
-%                 b=blast;
-%                 % disp([mm b'])
-%             end
-error('not full rank stop')
+            error('not full rank stop')
         end
         % HHH
         if hhh==1
@@ -474,11 +387,11 @@ error('not full rank stop')
                     hi=sum((Xncl/mAm).*Xncl,2);
                     
                     if hhh==1
-                    ord = [(r(ncl,2)./(1+hi)) e(ncl)];
+                        ord = [(r(ncl,2)./(1+hi)) e(ncl)];
                     else
-                    ord = [(r(ncl,2)./(sigma2hati(ncl)+hi)) e(ncl)];
-                    end    
-                        
+                        ord = [(r(ncl,2)./(sigma2hati(ncl)+hi)) e(ncl)];
+                    end
+                    
                     % Store minimum deletion residual in matrix mdr
                     selmdr=sortrows(ord,1);
                     if S2(mm-init1+1,2)==0
