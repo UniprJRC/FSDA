@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Revision: 1.7.4.11 $  $Date: 2009/05/07 18:30:50 $ -->
 <demos>
-	<name>FSDA</name>
+	<name>FSDA Toolbox</name>
 	<type>toolbox</type>
 	<icon>HelpIcon.DEMOS</icon>
 	<description isCdata="no">
