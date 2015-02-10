@@ -27,7 +27,452 @@
 <a name="bq24of9-1"></a><a class="indexterm" name="zmw57dd0e69698"></a>
 <h1 class="reftitle">FSRB</h1>
 <p class="purpose">Automatic outlier detection procedure in Bayesian linear regression</p>
+<h2>Syntax </h2>
+<p class="synopsis"><tt>[out]
+= FSRB(y, X)<br>
+[out] = FSRB(y, X,&nbsp;<i>param1</i>,
+<i><tt>val1</tt></i>, <i><tt>param2</tt></i>,
+<i><tt>val2</tt></i>,...)<br>
+</tt></p>
+<a name="bq24of9-2"></a>
+<h2>Description</h2>
+<p><tt>[out] = FSRB(y, X)</tt> </p>
+<p>enables to monitor several quantities in each step of the
+Bayesian search. </p>
+<table class="body" border="2" cellpadding="4" cellspacing="0">
+<colgroup><col width="21%"><col width="79%"></colgroup>
+<thead> <tr>
+<th bgcolor="#b2b2b2">Parameter</th>
+<th bgcolor="#b2b2b2">Value</th>
+</tr>
+</thead> <tbody>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'y'</tt></td>
+<td bgcolor="#f2f2f2">A vector with n elements that
+contains the response variables.&nbsp;Missing values (NaN's) and
+infinite values (Inf's) are&nbsp;allowed, since observations (rows)
+with missing or infinite&nbsp;values will automatically beexcluded
+from the computations.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'X'</tt></td>
+<td bgcolor="#f2f2f2"> Data matrix of explanatory
+variables (also called 'regressors') of dimension (n x p-1). Rows of <tt>X</tt>
+represent observations, and columns represent variables. Missing values
+(NaN's) and infinite values (Inf's) are allowed, since observations
+(rows) with missing or infinite values will automatically be excluded
+from the computations.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"></td>
+<td bgcolor="#f2f2f2">PRIOR INFORMATION: <br>
+β is assumed to have a normal distribution with mean β and (conditional
+on τ) covariance (1/τ<sub>0</sub>) (X<sub>0</sub>'X<sub>0</sub>)<sup>-1</sup>
+β~N(β<sub>0</sub>, (1/τ<sub>0</sub>) (X<sub>0</sub>'X<sub>0</sub>)<sup>-1</sup>)
+<br>
+The prior distribution of τ<sub>0</sub> is a γ distribution
+with parameters a and b, that is p(τ<sub>0</sub>) ∝ τ<sup>a<sub>0</sub>-1</sup>
+Exp(-b<sub>0</sub>, τ) and E(τ<sub>0</sub>)= a<sub>0</sub>/b<sub>0</sub></td>
+</tr>
+</tbody>
+</table>
+<p>Remark: The user should only give the input arguments that
+have to change their default value. The name of the input arguments
+needs to be followed by their value. The order of the input arguments
+is of no importance. Missing values (NaN's) and infinite values (Inf's)
+are allowed, since observations (rows) with missing or infinite values
+will automatically be excluded from the computations. y can be both a
+row of column vector.
+</p>
+<p><tt><a name="bq24of9-3"></a>[out]=FSRBeda(y,
+X)</tt> returns the following information </p>
+<ul type="disc">
+<li>
+<tt>RES: n-by-(n-init+1)</tt> matrix containing the
+monitoring of scaled residuals<br>
+1st row = residual for first unit<br>
+......<br>
+nth row = residual for nth unit.
+</li>
+<li>
+<tt>LEV: (n+1)-by-(n-init+1)</tt> matrix containing
+the monitoring of leverage
+1st row = leverage for first unit<br>
+......<br>
+nth row = leverage for nth unit.
+</li>
+<li>
+<tt>BB: n-by-(n-init+1)</tt> matrix which the
+units belonging to the subset at each step of the forward search.<br>
+1st col = index forming subset in the initial step<br>
+...<br>
+last column = units forming subset in the final step (i.e. all units).<br>
+
+</li>
+<li>
+<p><tt>mdr: (n-init)-by-3</tt> matrix which contains
+the monitoring of Bayesian minimum deletion residual or (m+1)ordered
+residual at each step of the forward search.
+1st col = fwd search index (from init to n-1)<br>
+2nd col = minimum deletion residual<br>
+3rd col = (m+1)-ordered residual<br>
+Remark: these quantities are stored with sign, that is the min deletion
+residual is stored with negative sign if it corresponds to a negative
+residual.
+</p>
+</li>
+<li>
+<p><tt>msr: (n-init)-by-3</tt> matrix which
+contains the monitoring of Bayesian minimum deletion residual or
+(m+1)ordered residual at each step of the forward search.
+1st col = fwd search index (from init to n-1)<br>
+2nd col = minimum deletion residual
+3rd col = (m+1)-ordered residual
+Remark: these quantities are stored with sign, that is the min deletion
+residual is stored with negative sign if it corresponds to a negative
+residual
+</p>
+</li>
+<li>
+<p><tt>Bols</tt>: <tt>(n-init+1)-by-(p+1)</tt> matrix
+containing the monitoring of posterior mean (conditional on τ<sub>0</sub>)
+of
+β (regression coefficents) β<sub>1</sub> = (cR + X'X)<sup>-1</sup>
+(cRβ<sub>0</sub>+X'y)<br>
+</p>
+</li>
+<li>
+<tt>covbeta1</tt>: <tt> p-by-p-by-(n-init+1)</tt> 3D array containing posterior covariance matrix (conditional on τ<sub>1</sub>) of β
+<tt>covbeta1</tt> = (1/τ<sub>1</sub>) * (cR + X'X)<sup>-1</sup> where τ<sub>1</sub> is defined as a<sub>1</sub>/b<sub>1</sub>
+(that is through the gamma parameters of the posterior distribution of
+τ) The posterior distribution of τ is a gamma distribution with
+parameters a<sub>1</sub> and b<sub>1</sub>.
+</li>
+<li>
+<tt>gam</tt>: <tt> (n-init+1)-by-3</tt> matrix containing:<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = parameter a<sub>1</sub> of the posterior gamma distribution of &tau;<br>
+3rd col = parameter b<sub>1</sub> of the posterior gamma distribution of &tau;<br>
+Remark: a<sub>1</sub> = 0.5(cn<sub>0</sub> + m) where m is subset size b<sub>1</sub> 
+= 0.5( n0 / &tau;<sub>0</sub> + (y-X*&beta;<sub>1</sub>)'y +(&beta;<sub>0</sub>-&beta;<sub>1</sub>)'cR&beta;<sub>0</sub> )
+</li>
+<li>
+<tt>S2</tt>: <tt> (n-init+1)-by-3</tt> matrix containing the monitoring of S<sup>2</sup> or R<sup>2</sup> in each step of the forward search<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = monitoring of S<sup>2</sup> (S<sup>2</sup> is nothing but 1/&tau;<sub>1</sub>)<br>
+3rd col = monitoring of R<sup>2</sup>
+</li>
+<li>
+<tt>Coo</tt>: <tt> (n-init+1)-by-2</tt> matrix containing the monitoring of Cook or modified Cook distance in each step of the forward search<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = monitoring of Cook distance
+</li>
+<li>
+<tt>Bpval</tt>: <tt> (n-init+1)-by-(p+1)</tt>  containing Bayesian p-values.<br>
+p-value = P(|t| > | \hat &beta; se(&beta;) |)= prob. of beta different from 0<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = p-value for first variable<br>
+...<br>
+(p+1) col = p-value for p-th variable
+</li>
+<li>
+<tt>Bhpd: (n-init+1)-by-2-by-p</tt> 3D array.<br>
+<tt>Bhpd(:,:,1)</tt> = lower and upper HPDI conflev for first variable<br>
+...<BR>
+<tt>Bhpd(:,:,p)</tt> = lower and upper HPDI conflev for p-th variable
+</li>
+<li>
+<tt>postodds: (n-init+1)-by-(p+1)</tt> matrix which contains posterior odds for &beta;<sub>j</sub>=0
+For example the posterior odd of &beta;<sub>0</sub>=0 is p(y| model which contains all expl variables 
+except the one associated with &beta;<sub>0</sub>) divided by 
+p(y| model which contains all expl. variables)<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = posterior odd for &beta;<sub>1</sub><br>
+...<br>
+(p+1) col = posterior odd for &beta;<sub>p</sub>
+</li>
+<li>
+<tt>modelprob: (n-init+1)-by-(p+1)</tt> matrix which contains which contains
+posterior model probability of the model which excludes
+variable j. For example if modelprob(j)= 0.28, that is if
+the probability of the model which does not contain
+variable j is equal to 0.28, it means that there is a 28%
+chance that &beta;<sub>j</sub>=0 and a 72% chance that it is not.<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = posterior model prob of the model which excludes &beta;<sub>1</sub><br>
+...<br>
+(p+1) col = posterior model prob of the model which excludes &beta;<sub>p</sub>
+</li>
+<li>
+<tt>Un: (n-init)-by-11</tt>  matrix which contains the unit(s)
+included in the subset at each step of the fwd search.<br>
+REMARK: in every step the new subset is compared with the
+old subset.<br> 
+<tt>Un</tt> contains the unit(s) present in the new
+ubset but not in the old one <tt>Un(1,2)</tt> for example contains
+the unit included in step <tt>init+1<br> Un(end,2)</tt> contains the
+units included in the final step of the search.
+</li>
+<li>
+<tt>y: </tt> A vector with n elements that contains the response variable which has been used
+</li>
+<li>
+<tt>X: </tt> Data matrix of explanatory variables
+which has been used (it also contains the column of ones if
+input option intercept was missing or equal to 1)
+</li>
+</ul>
+<ul>
+<a name="zmw57dd0e69798"></a>
+<table style="width: 811px; height: 65px;" class="note" summary="Note" border="1" cellpadding="5" cellspacing="0">
+<tbody>
+<tr width="90%">
+<td>
+<p><b>Note</b>&nbsp;<tt>FSRBeda</tt>
+is an enhanced version of function <tt>FSRBmdr</tt>
+with a set of flexible options and an articulate output. </p>
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+<p></p>
+<p><tt>[out] = FSRB(y,X,<i><tt>param1</tt></i>,<i><tt>val1</tt></i>,<i><tt>param2</tt></i>,<i><tt>val2</tt></i>,...)</tt>
+specifies one or more of the name/value pairs described in the
+following table.</p>
+<table class="body" border="2" cellpadding="4" cellspacing="0">
+<colgroup><col width="21%"><col width="79%"></colgroup>
+<thead> <tr>
+<th bgcolor="#b2b2b2">Parameter</th>
+<th bgcolor="#b2b2b2">Value</th>
+</tr>
+</thead> <tbody>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'intercept'</tt></td>
+<td bgcolor="#f2f2f2">
+<p>If 1, a model with constant term will be fitted
+(default) else no constant term will be included.</p>
+</td>
+</tr>
+<tr>
+<td><tt>'bayes'</tt></td>
+<td>a structure which specifies prior information<br>
+Strucure bayes contains the following fields<br>
+<tt>beta0</tt>:&nbsp; p-times-1 vector containing
+prior mean of &beta;<br>
+<tt>R</tt>&nbsp; p-x-p positive definite matrix
+which can be
+interepreted as X<sub>0</sub>'X<sub>0</sub>
+where X<sub>0 </sub>is a n<sub>0</sub> x p
+matrix coming from previous experiments (assuming that the intercept is
+included in the model) <br>
+The prior distribution of τ<sub>0</sub> is a γ distribution
+with parameters a and b, that is p(τ<sub>0</sub>) ∝ τ<sup>a<sub>0</sub>-1</sup>
+Exp(-b<sub>0</sub>, τ) and E(τ<sub>0</sub>)= a<sub>0</sub>/b<sub>0</sub><br>
+<br>
+<tt>tau0</tt>:&nbsp; scalar. Prior estimate of
+τ=1/ σ<sup>2</sup> =a<sub>0</sub>/b<sub>0</sub><br>
+<tt>n0</tt>&nbsp;: scalar.
+Sometimes it helps to think of the prior information as coming from n<sub>0</sub>
+previous experiments. Therefore we assume that matrix X<sub>0 </sub>(which
+defines R), was made up of n<sub>0 </sub> observations. </td>
+</tr>
+<tr>
+<td></td>
+<td>
+REMARK: if structure bayes is not supplied the default&nbsp;values
+which are used are:<br>
+<tt>beta0</tt>=zeros(p,1)vector of zeros<br>
+<tt>R</tt>
+=eye(p)Identity matrix<br>
+<tt>tau0</tt>=1/1e+6; Very large value for the prior
+variance, that is a
+very small value for&nbsp;τ<sub>0</sub><br>
+<tt>n0</tt>=1; just one prior observation</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'plots'</tt></td>
+<td bgcolor="#f2f2f2"> Scalar.<br>If <tt>plots=1</tt> (default) the 
+plot of minimum deletion residual with envelopes based on n observations and the 
+scatterplot matrix with the outliers highlighted is produced.<br>
+If <tt>plots=2</tt> the user can also monitor the intermediate plots based on envelope 
+superimposition, else no plot is produced.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'init'</tt></td>
+<td bgcolor="#f2f2f2">
+<p>scalar, which specifies the point where to initialize
+the search and start monitoring required diagnostics. Notice that if
+bsb is supplied init&gt;=length(bsb). if init is not specified it
+will be set equal to <tt>p+1</tt>, if the sample size is
+smaller than 40; <tt>min(3*p+1,floor(0.5*(n+p+1)))</tt>,
+otherwise.</p>
+</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'nocheck'</tt></td>
+<td bgcolor="#f2f2f2">
+<p>Scalar. If <tt>nocheck</tt> is equal to 1
+no check is performed on matrix y and matrix X. Notice that y and X are
+left unchanged. In other words the additional column of ones for the
+intercept is not added. As default <tt> nocheck=0</tt>.</p>
+</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'bivarfit'</tt></td>
+<td bgcolor="#f2f2f2">
+This option adds one or more least square lines, based on SIMPLE REGRESSION of y on X<sub>i</sub>, to the plots of y|X<sub>i</sub>.<br>
+<tt>bivarfit = ''</tt> is the default: no line is fitted.<br>
+<tt>bivarfit = '1'</tt> fits a single ols line to all points of each bivariate plot in the scatter matrix y|X.<br>
+<tt>bivarfit = '2'</tt> fits two ols lines: one to all points and another to the group of the genuine observations. The group of the potential outliers is not fitted.<br>
+<tt>bivarfit = '0'</tt> fits one ols line to each group. This is useful for the purpose of fitting mixtures of regression lines.<br>
+<tt>bivarfit = 'i1' or 'i2' or 'i3'</tt> etc. fits an ols line to a specific group, the one with index 'i' equal to 1, 2, 3 etc. Again, useful in case of mixtures. </td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'multivarfit'</tt></td>
+<td bgcolor="#f2f2f2">
+This option adds one or more least square lines, based on
+MULTIVARIATE REGRESSION of y on X, to the plots of y|X<sub>i</sub>.<br>
+<tt>multivarfit = ''</tt> is the default: no line is fitted.<br>
+<tt>multivarfit = '1'</tt> fits a single ols line to all points of each bivariate plot in the scatter matrix y|X. The line added to the scatter plot 
+y|X<sub>i</sub> is avconst + C<sub>i</sub>X<sub>i</sub>, where C<sub>i</sub> is the
+coefficient of X<sub>i</sub> in the multivariate regression and avconst is the effect of all the other explanatory
+variables different from X<sub>i</sub> evaluated at their centroid (that is y&#772;'C))<br>
+<tt>multivarfit = '2'</tt> equal to <tt>multivarfit ='1'</tt> but this time we also add the
+line based on the group of unselected observations (i.e. the normal units). 
+</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'labeladd'</tt></td>
+<td bgcolor="#f2f2f2">
+If this option is '1',  we label the outliers with the
+unit row index in matrices X and y. <br>
+The default value is <tt>labeladd=''</tt>, i.e. no label is added.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'nameX'</tt></td>
+<td bgcolor="#f2f2f2">
+cell array of strings of length <tt>p</tt> containing the labels of
+the variables of the regression dataset. If it is empty
+(default) the sequence X<sub>1</sub>, ..., X<sub>p</sub> will be created automatically
+</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'namey'</tt></td>
+<td bgcolor="#f2f2f2">
+character containing the label of the response.
+</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'ylim'</tt></td>
+<td bgcolor="#f2f2f2">
+vector with two elements controlling minimum and maximum
+on the y axis. Default value is <tt>''</tt> (automatic scale)</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'xlim'</tt></td>
+<td bgcolor="#f2f2f2">
+vector with two elements controlling minimum and maximum
+on the x axis. Default value is <tt>''</tt> (automatic scale)</td>
+</tr>
+
+<tr>
+<td bgcolor="#f2f2f2"><tt>'bonflev'</tt></td>
+<td bgcolor="#f2f2f2">
+option to be used if the distribution of the data is
+strongly non normal and, thus, the general signal
+detection rule based on consecutive exceedances cannot be
+used. In this case bonflev can be:<br>
+- a scalar smaller than 1 which specifies the confidence
+level for a signal and a stopping rule based on the
+comparison of the minimum MD with a
+Bonferroni bound. For example if <tt>bonflev=0.99</tt> the
+procedure stops when the trajectory exceeds for the
+first time the 99% bonferroni bound.<br>
+- a scalar value greater than 1. In this case the
+procedure stops when the residual trajectory exceeds
+for the first time this value.
+Default value is <tt>''</tt>, which means to rely on general rules
+based on consecutive exceedances.
+</td>
+</tr>
+
+<tr>
+<td bgcolor="#f2f2f2"><tt>'msg'</tt></td>
+<td bgcolor="#f2f2f2">
+scalar which controls whether to display or not messages
+ on the screen.<br>
+If <tt>msg=1</tt> (default) messages are displayed on the screen about
+step in which signal took place and .... else no message is displayed on the screen. 
+</td>
+</tr>
+
+</tbody>
+</table>
+<p>References:<br>
+ Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and
+ Residual Analysis, Biometrika, Vol 75 pp. 651-659.<br>
+ Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian
+ Regression for Fraud Detection, submitted<br>
+ Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian
+ Regression, submitted.</p>
+<p><br>
+Copyright 2008-2014.<br>
+Written by FSDA team</p>
+<a name="bq9x7hn"></a><a name="bq5gf2y"></a>
+<h3>Examples</h3>
+In this example for the house price data we monitor the forward plots
+in the second half of the search of HPD regions for the parameters of
+the linear model and, bottom right-hand panel, the estimate of S<sup>2</sup>.<br>
+The horizontal lines correspond to prior values.
+<pre>
+ % Example of Houses Price
+    % load dataset
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
+
+    % define a Bayes structure with previous data
+    bayes=struct;
+    bayes.R=R;
+    bayes.n0=n0;
+    bayes.beta0=beta0;
+    bayes.tau0=tau0;
+    intercept=1;
+
+    % function call
+    outBA=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)
+</pre>
+<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrbeda01.jpg">
+
+
 <p>HTML help to be written</p>
+
+
+
 <h3>See Also</h3>
 <p><a href="fsrb.html"><tt>FSRB</tt></a>, <a href="fsrbeda.html"><tt>FSRBeda</tt></a></p>
 <p></p>
