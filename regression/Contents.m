@@ -20,8 +20,9 @@
 % FSRms                        - FSRms performs robust model selection using flexible trimming in linear regression
 % LXS                          - LXS computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators
 % regressB                     - regressB computes Bayesian estimates of regression parameters
-% regressH                     - regressH fits a multiple linear regression model with Harvey heteroskedasticity
-% regressH1                    - regressMH fits a multiple linear regression model with multiplicative heteroskedasticity
-% regressH1grid                -  likelihood for models with 1+exp(Z*gamma)
-% regressHgrid                 -  Copyright 2008-2015.
+% regressH                     - regressH fits a multiple linear regression model with heteroskedasticity
 % Score                        - Score computes the score test for transformation
+% regressHart                  - regressHart fits a multiple linear regression model using art heteroskedasticity
+% regressHart_grid             - regressHart_grid grid search to find minimum for ART model
+% regressHhar                  - regressHhar fits a multiple linear regression model with Harvey heteroskedasticity
+
