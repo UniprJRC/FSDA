@@ -1,46 +1,82 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration target="target.mlapps" target-name="Package App" name="brushROB" location="E:\usr_MATLAB\FSDA_setup\brushROB" file="E:\usr_MATLAB\FSDA_setup\brushROB\brushROB.prj" build-checksum="872850431">
+  <configuration build-checksum="2555969660" file="C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\_automation_tools\ENV_for_setup\APP\brushROB\brushROB.prj" location="C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\_automation_tools\ENV_for_setup\APP\brushROB" name="brushROB" target="target.mlapps" target-name="Package App">
     <param.appname>brushROB</param.appname>
     <param.authnamewatermark>FSDA team</param.authnamewatermark>
     <param.email>toolboxfs@unipr.it</param.email>
     <param.company>Univ. of Parma and JRC of EC</param.company>
     <param.icon>${PROJECT_ROOT}\brushROB_24.png</param.icon>
+    <param.icons />
     <param.summary>The purpose of this GUI is to show how dynamic brushing inside the index plot of residuals works. FSDA toolbox.</param.summary>
     <param.description>&lt;b&gt;brushROB&lt;/b&gt; displays a GUI to brush units from the index plot of residuals and see the corresponding units highlighted in the yXplot. brushROB is part of the FSDA toolbox</param.description>
     <param.screenshot>${PROJECT_ROOT}\brushROB.bmp</param.screenshot>
     <param.version>1.0</param.version>
     <param.products.name>
-      <item>Statistics Toolbox</item>
       <item>MATLAB</item>
+      <item>Statistics and Machine Learning Toolbox</item>
     </param.products.name>
     <param.products.id>
-      <item>19</item>
-      <item>1</item>
+      <item>'1'</item>
+      <item>'19'</item>
     </param.products.id>
     <param.products.version>
-      <item>8.2</item>
-      <item>8.1</item>
+      <item>8.5</item>
+      <item>10.0</item>
     </param.products.version>
     <param.platforms />
     <param.output>${PROJECT_ROOT}\brushROB.mlappinstall</param.output>
-    <param.guid>b577b2d4-4dd1-48f9-b72f-2e0100a3d197</param.guid>
+    <param.guid>3d0bd007-19fd-4886-af7b-f501ef1765e8</param.guid>
     <unset>
+      <param.icons />
       <param.version />
       <param.platforms />
     </unset>
     <fileset.main>
-      <file>E:\usr_MATLAB\FSDA\examples\brushROB.m</file>
+      <file>C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\examples\brushROB.m</file>
     </fileset.main>
-    <fileset.depfun />
+    <fileset.depfun>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\combinatorial\bc.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\combinatorial\combsFS.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\combinatorial\lexunrank.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\combinatorial\randsampleFS.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\combinatorial\shuffling.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\combinatorial\subsets.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\graphics\add2yX.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\graphics\olsline.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\graphics\resindexplot.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\regression\LXS.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\HAbdp.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\HAeff.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\HArho.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\HYPbdp.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\HYPck.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\HYPeff.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\HYPrho.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\MMreg.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\MMregcore.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\Mscale.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\OPTbdp.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\OPTeff.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\OPTrho.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\Sreg.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\TBbdp.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\TBeff.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\robust\TBrho.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\utilities\chkinputR.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\utilities\chkoptions.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\utilities\clickableMultiLegend.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\utilities\closereqFS.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\utilities\position.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\utilities\selectdataFS.m</file>
+      <file>C:\Program Files (x86)\FSDAtoolbox\FSDA\utilities\waitforbuttonpressFS.m</file>
+    </fileset.depfun>
     <fileset.resources />
     <fileset.package />
     <build-deliverables>
-      <file name="brushROB.mlappinstall" location="E:\usr_MATLAB\FSDA_setup\brushROB" optional="false">E:\usr_MATLAB\FSDA_setup\brushROB\brushROB.mlappinstall</file>
+      <file location="C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\_automation_tools\ENV_for_setup\APP\brushROB" name="brushROB.mlappinstall" optional="false">C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\_automation_tools\ENV_for_setup\APP\brushROB\brushROB.mlappinstall</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\MATLAB\R2013a</root>
+      <root>C:\Program Files\MATLAB\R2015aPrerelease</root>
       <toolboxes />
     </matlab>
     <platform>
@@ -60,4 +96,3 @@
     </platform>
   </configuration>
 </deployment-project>
-
