@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration target="target.mlapps" target-name="Package App" name="brushFAN" location="e:\usr_MATLAB\FSDA_setup\brushFAN" file="e:\usr_MATLAB\FSDA_setup\brushFAN\brushFAN.prj" build-checksum="827590676">
+    <param.appname>brushFAN</param.appname>
+    <param.authnamewatermark>M. Riani, D. Perrotta and F.Torti</param.authnamewatermark>
+    <param.email>toolboxfs@unipr.it</param.email>
+    <param.company>Univ. of Parma and JRC of EC</param.company>
+    <param.icon>${PROJECT_ROOT}\brushFAN_24.png</param.icon>
+    <param.summary>The purpose of this GUI is to show how dynamic brushing inside FAN plot  works. FSDA toolbox.</param.summary>
+    <param.description>&lt;b&gt;brushFAN&lt;/b&gt; displays a GUI where it is possible to brush steps from the fan plot and to see the corresponding units highlighted in other plots brushFAN is part of the FSDA toolbox.</param.description>
+    <param.screenshot>${PROJECT_ROOT}\brushFAN.jpg</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.products.name>
+      <item>FSDA Toolbox</item>
+      <item>MATLAB</item>
+    </param.products.name>
+    <param.products.id>
+      <item>19</item>
+      <item>1</item>
+    </param.products.id>
+    <param.products.version>
+      <item>8.2</item>
+      <item>8.1</item>
+    </param.products.version>
+    <param.platforms />
+    <param.output>${PROJECT_ROOT}\brushFAN.mlappinstall</param.output>
+    <param.guid>511a4642-a3ed-47e9-abca-3cbc9445bde2</param.guid>
+    <unset>
+      <param.version />
+      <param.platforms />
+    </unset>
+    <fileset.main>
+      <file>E:\usr_MATLAB\FSDA\examples\brushFAN.m</file>
+    </fileset.main>
+    <fileset.depfun />
+    <fileset.resources />
+    <fileset.package />
+    <build-deliverables>
+      <file name="brushFAN.mlappinstall" location="e:\usr_MATLAB\FSDA_setup\brushFAN" optional="false">e:\usr_MATLAB\FSDA_setup\brushFAN\brushFAN.mlappinstall</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\MATLAB\R2013a</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>6.1</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
+
