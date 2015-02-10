@@ -37,8 +37,8 @@
 <a name="bq24of9-2"></a>
 <h2>Description</h2>
 <p><tt>[out] = FSRB(y, X)</tt> </p>
-<p>enables to monitor several quantities in each step of the
-Bayesian search. </p>
+<p>performs the automatic outlier detection procedure in Bayesian linear 
+regression. </p>
 <table class="body" border="2" cellpadding="4" cellspacing="0">
 <colgroup><col width="21%"><col width="79%"></colgroup>
 <thead> <tr>
@@ -118,24 +118,25 @@ Second row contains the frequency distribution.
 certain step a non singular matrix X. In this case the
 search run in a constrained mode, that is including the
 units which produced a singular matrix in the last n-constr
-steps.<br> 
-<tt>out.constr</tt> is a vector which contains the list of
+steps. <tt>out.constr</tt> is a vector which contains the list of
 units which produced a singular X matrix.
 </li>
 </ul>
 <ul>
-<a name="zmw57dd0e69798"></a>
-<table style="width: 811px; height: 65px;" class="note" summary="Note" border="1" cellpadding="5" cellspacing="0">
-<tbody>
-<tr width="90%">
-<td>
-<p><b>Note</b>&nbsp;<tt>FSRB</tt>
-is a simple version of function <tt>FSRBeda</tt>
-with a small set of options and a less articulate output but with an integrated plot feature. </p>
-</td>
-</tr>
-</tbody>
-</table>
+<a name="zmw57dd0e69798"> 
+
+      <table border="1" cellpadding="5" cellspacing="0" class="note"
+      summary="Note">
+        <tbody>
+          <tr>
+            <td><p><b>Note</b>   <tt>FSRB</tt> automatically includes a
+              constant term in all models. Do not enter a column of 1s directly
+              into <tt>X</tt>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </a>
 </ul>
 <p></p>
 <p><tt>[out] = FSRB(y,X,<i><tt>param1</tt></i>,<i><tt>val1</tt></i>,<i><tt>param2</tt></i>,<i><tt>val2</tt></i>,...)</tt>
@@ -325,7 +326,7 @@ Written by FSDA team</p>
 In this example for the house price data we monitor the Minimum Deletion Residual in the first plot and in the
 second plot we display the outliers in red dots and the non outling statistical units in blue crosses.
 <pre>
- % Example of Houses Price
+     % Example of Houses Price
     % load dataset
     load hprice.txt;
     
@@ -365,13 +366,15 @@ second plot we display the outliers in red dots and the non outling statistical 
     % function call
     outBA=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)
 </pre>
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb01.jpg">
+<img src="plots/fsrb01.jpg">
 
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb02.jpg">
+<img src="plots/fsrb02.jpg">
 
-In this second example we compare the frequantist forward search along with plot of the bonferronized 
+<p>&nbsp;</p>
+
+In this second example we compare the frequentist forward search along with plot of the bonferronized 
 Minimum Deletion Residual threshold, with the equivalent Bayesian forward search, with an empirical prior
-information of both years t<sub>-1</sub> and t<sub>-2</sub>.
+information of both years t-1 and t-2.
 
 <pre>
     close all
@@ -599,18 +602,18 @@ information of both years t<sub>-1</sub> and t<sub>-2</sub>.
     title('Frequentist - 2004');
 </pre>
 
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb01b.jpg">
+<img src="plots/fsrb01b.jpg">
 
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb02b.jpg">
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb03b.jpg">
+<img src="plots/fsrb02b.jpg">
+<img src="plots/fsrb03b.jpg">
 
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb04b.jpg">
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb05b.jpg">
+<img src="plots/fsrb04b.jpg">
+<img src="plots/fsrb05b.jpg">
 
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb06b.jpg">
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb07b.jpg">
+<img src="plots/fsrb06b.jpg">
+<img src="plots/fsrb07b.jpg">
 
-<img src="../../../../../FSDA/helpfiles/FSDA/plots/fsrb08b.jpg">
+<img src="plots/fsrb08b.jpg">
 
 <h3>See Also</h3>
 <p><a href="fsrb.html"><tt>FSRB</tt></a>, <a href="fsrbeda.html"><tt>FSRBeda</tt></a></p>
