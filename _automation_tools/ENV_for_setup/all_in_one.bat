@@ -76,7 +76,7 @@ del FSDA\mgmhlpR8.bat
 "C:\cygwin64\bin\gzip.exe" FSDA.tar
 echo "ECCO FSDA.tar.gz !!!!!!!!!!!!!!"
 pause
-exit
+
 
 echo "FTP  MR_webserver ........"
 pause
