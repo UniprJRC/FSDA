@@ -186,6 +186,7 @@
 
 			<tocitem target="function_reference.html#robmult">Clustering
 				<tocitem target="demoMixSim.html">demoMixSim</tocitem> 
+				<tocitem target="fsrmdrrs.html">fsrmdrrs</tocitem> 
 				<tocitem target="GetOmegaMap.html">GetOmegaMap</tocitem> 
 				<tocitem target="GetOmegaMapv1.html">GetOmegaMapv1</tocitem> 
 				<tocitem target="lga.html">lga</tocitem> 
