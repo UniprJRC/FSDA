@@ -2,7 +2,7 @@
 <a href=matlab: docsearchFS('datasets_mv')>Link to the help function</a>
 
 clustering/cluster3.txt
-clustering/geyser2.txt
+clustering/geyser.txt
 clustering/M5data.txt
 clustering/mixture100.txt
 clustering/structurednoise.txt
@@ -19,7 +19,6 @@ multivariate/dystrosmall.txt
 multivariate/electrodes.txt
 multivariate/emilia2001.txt
 multivariate/fondi.txt
-multivariate/geyser.txt
 multivariate/head.txt
 multivariate/ir.txt
 multivariate/milk.txt

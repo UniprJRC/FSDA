@@ -24,7 +24,7 @@ do
 	ls -1 *.m |grep -v "Contents.m" | while read file
 	do
 		riga=`grep -m 1 "^%" $file`
-		comm=`echo $riga |cut -c2-`
+		comm=`echo "$riga" |cut -c2-`
 		base=`basename $file .m`
 		printf "%% %-28s - %s\n" "$base" "$comm" >>Contents.m
 	done
