@@ -2,7 +2,7 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
   <configuration target="target.mlapps" target-name="Package App" name="brushRES" location="e:\usr_MATLAB\FSDA_setup\brushRES" file="e:\usr_MATLAB\FSDA_setup\brushRES\brushRES.prj" build-checksum="2221911134">
     <param.appname>brushRES</param.appname>
-    <param.authnamewatermark>M. Riani, D. Perrotta and F.Torti</param.authnamewatermark>
+    <param.authnamewatermark>FSDA team</param.authnamewatermark>
     <param.email>toolboxfs@unipr.it</param.email>
     <param.company>Univ. of Parma and JRC of EC</param.company>
     <param.icon>${PROJECT_ROOT}\brushRES_24.png</param.icon>

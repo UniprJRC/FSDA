@@ -2,7 +2,7 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
   <configuration target="target.mlapps" target-name="Package App" name="brushFAN" location="e:\usr_MATLAB\FSDA_setup\brushFAN" file="e:\usr_MATLAB\FSDA_setup\brushFAN\brushFAN.prj" build-checksum="827590676">
     <param.appname>brushFAN</param.appname>
-    <param.authnamewatermark>M. Riani, D. Perrotta and F.Torti</param.authnamewatermark>
+    <param.authnamewatermark>FSDA team</param.authnamewatermark>
     <param.email>toolboxfs@unipr.it</param.email>
     <param.company>Univ. of Parma and JRC of EC</param.company>
     <param.icon>${PROJECT_ROOT}\brushFAN_24.png</param.icon>
