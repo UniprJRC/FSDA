@@ -22,11 +22,11 @@ rename FSDAR8 FSDA
 
 set matpat=%matexe:bin\matlab.exe=%
 
-set matpatN=%matpat:\=\\%
+rem set matpatN=%matpat:\=\\%
 
-set matpatF=%matpatN:"=%
+rem set matpatF=%matpatN:"=%
 
-set final=help\\documentation-center.html
+rem set final=help\\documentation-center.html
 
 rem echo var home = 'file:///%matpatF%%final%';  >FSDA\home.js
-echo var home = 'fsda_product_page.html' ; >FSDA\home.js
+rem echo var home = 'fsda_product_page.html' ; >FSDA\home.js
