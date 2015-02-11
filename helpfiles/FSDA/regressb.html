@@ -52,12 +52,12 @@ It can be either a row or a column vector.</td>
 <tr>
 <td bgcolor="#f2f2f2"><tt>'X'</tt></td>
 <td bgcolor="#f2f2f2"> Data matrix of explanatory variables (also called 'regressors')
-of dimension <tt>(n1-by-p-1)</tt>. Rows of X represent observations, and
+of dimension <tt>(n1-by-(p-1))</tt>. Rows of X represent observations, and
 columns represent variables.<br>
 REMARK: note that here we use symbol <tt>n1</tt> instead of
 traditional symbol <tt>n</tt> because we want to better separate
 sample information coming from <tt>n1</tt> values to prior
-information coming from n0 previous experiments.</td>
+information coming from <tt>n0</tt> previous experiments.</td>
 </tr>
 <tr>
 <td bgcolor="#f2f2f2" style="height: 75px"></td>
@@ -77,7 +77,7 @@ Exp(-b<sub>0</sub>, τ) and E(τ<sub>0</sub>)= a<sub>0</sub>/b<sub>0</sub></td>
 <tr>
 <td bgcolor="#f2f2f2"><tt>'R'</tt></td>
 <td bgcolor="#f2f2f2"> <tt>p-by-p</tt> positive definite matrix
-which can be interepreted as X<sub>0</sub>'X<sub>0</sub> where X<sub>0</sub> is a <tt>n0 x p</tt>
+which can be interepreted as X<sub>0</sub>'X<sub>0</sub> where X<sub>0</sub> is a <tt>n0-by-p</tt>
 matrix coming from previous experiments (assuming that the
 intercept is included in the model).<br>
 The prior distribution of &tau;<sub>0</sub> is a &gamma; distribution
@@ -110,7 +110,7 @@ defines R), was made up of n<sub>0 </sub> observations.</td>
 <tt>covbeta1</tt>: <tt> p-by-p-by-(n-init+1)</tt> 3D array containing posterior covariance matrix (conditional on τ<sub>1</sub>) of β
 <tt>covbeta1</tt> = (1/τ<sub>1</sub>) * (cR + X'X)<sup>-1</sup> where τ<sub>1</sub> is defined as a<sub>1</sub>/b<sub>1</sub>
 (that is through the gamma parameters of the posterior distribution of
-τ) The posterior distribution of τ is a gamma distribution with
+τ). The posterior distribution of τ is a gamma distribution with
 parameters a<sub>1</sub> and b<sub>1</sub>.
 </li>
 <li>
@@ -120,10 +120,9 @@ a<sub>1</sub>=0.5(cn<sub>0</sub> + n<sub>1</sub>)
 <li>
 <tt>b1: </tt> scalar parameter of the posterior gamma distribution of &tau;<br>
 b<sub>1</sub>=0.5( n<sub>0</sub> / &tau;<sub>0</sub> + 
-(y-X*&beta;</sub>1</sub>)'y +(&beta;</sub>0</sub>-&beta;<sub>1</sub>)'cR&beta;<sub>0</sub>)
-Remark: note that if bsb is supplied X'X and X'y and n<sub>1</sub> are
+(y-X*&beta;</sub>1</sub>)'y +(&beta;</sub>0</sub>-&beta;<sub>1</sub>)'cR&beta;<sub>0</sub>).<br>Remark: note that if bsb is supplied X'X and X'y and n<sub>1</sub> are
 transformed respectively into Xm'Xm and Xm'ym and m where
-Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the
+<tt>Xm=X(bsb,:)</tt>, <tt>ym=y(bsb)</tt> and <tt>m=length(bsb)</tt>, therefore all the
 previous quantities are estimated just using the units
 forming subset
 </li>
@@ -161,7 +160,7 @@ p-value = P(|t| > | \hat &beta; se(&beta;) |)= prob. of beta different from 0<br
 <tt>Bhpd(:,:,p)</tt> = lower and upper HPDI conflev for p-th variable
 </li>
 <li>
-<tt>postodds: (n-init+1)-by-(p+1)</tt> matrix which contains posterior odds for &beta;<sub>j</sub>=0
+<tt>postodds: (n-init+1)-by-(p+1)</tt> matrix which contains posterior odds for &beta;<sub>j</sub>=0.
 For example the posterior odd of &beta;<sub>0</sub>=0 is p(y| model which contains all expl variables 
 except the one associated with &beta;<sub>0</sub>) divided by 
 p(y| model which contains all expl. variables)<br>
@@ -227,7 +226,7 @@ divided by c. So, once again, given that c < 1, the new
 variance of &tau; increases.
 The value of c will usually be the default, i,e., 1.
 It was included to clarify the difference from Zellner's
-procedure and has the effect of changing n0. For we can write
+procedure and has the effect of changing <tt>n0</tt>. For we can write
 <tt>n0' = cn0</tt> and use <tt>n0'</tt> in the calculations. However, it may
 be useful in scaling X<sub>0</sub> if the prior information is chosen
 according to a design that is not of the appropriate size
@@ -259,7 +258,7 @@ is 95% and 99% HPDI confidence intervals are computed.</td>
  Regression for Fraud Detection, submitted<br>
  Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian
  Regression, submitted.
- Koop G., Bayesian Econometrics (2003) Chapt. 3, WIley, NJ
+ <br>Koop G., Bayesian Econometrics (2003) Chapt. 3, WIley, NJ
  </p>
  
 <p><br>
@@ -272,6 +271,7 @@ Example 1: supplynig prior information.
 <pre> 
     % Common part to all examples:
     % PRIOR INFORMATION
+    rng(100) % set seed for replicability
     p=3;
     n0=30;
     X0=[ones(n0,1) randn(n0,p-1)];
