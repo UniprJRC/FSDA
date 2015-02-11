@@ -288,43 +288,42 @@ Example 1: supplynig prior information.
     % Run regressB using all n1 data and use the default value of c=1
     out=regressB(y, X, beta0, R, tau0, n0);
     
-    out = 
+>> out
+
+out = 
 
        beta1: [3x1 double]
-        tau1: 1.0971
+        tau1: 0.9323
     covbeta1: [3x3 double]
           a1: 63.5000
-          b1: 57.8816
+          b1: 68.1135
          res: [100x2 double]
 
 >> out.beta1
 
 ans =
 
-   -0.1159
-    0.0455
-   -0.1075
+   -0.0514
+   -0.0067
+    0.0663
 
 >> out.covbeta1
 
 ans =
 
-    0.0071   -0.0005   -0.0003
-   -0.0005    0.0083   -0.0008
-   -0.0003   -0.0008    0.0086
-   
+    0.0083    0.0005   -0.0007
+    0.0005    0.0086   -0.0011
+   -0.0007   -0.0011    0.0083
+
 >> out.res
 
 ans =
 
-   -1.6822       NaN
-    1.7078       NaN
-    0.3892       NaN
-   -0.6729       NaN
-    2.6516       NaN
-    0.1601       NaN
-    ...          ... 
-    1.4333       NaN
+    0.0851       NaN
+   -0.3282       NaN
+    0.2911       NaN
+    ...          ...
+    0.7235       NaN
 
 </pre>
 </p>
@@ -340,10 +339,10 @@ Example 2: Run regressB and compute new estimate of beta using just the first 20
 
 ans =
 
-    0.0781
-    0.0757
-   -0.0914    
-
+    0.0715
+   -0.1365
+    0.2401
+    
 </pre>
 </p>
 <p>
@@ -358,10 +357,10 @@ Example 3: the use of input option <tt>stats</tt>
     out = 
 
         beta1: [3x1 double]
-         tau1: 0.0346
+         tau1: 0.0364
      covbeta1: [3x3 double]
            a1: 23.5000
-           b1: 680.0459
+           b1: 644.8454
           res: [100x2 double]
         Bpval: [3x1 double]
          Bhpd: [3x4 double]
@@ -372,33 +371,33 @@ Example 3: the use of input option <tt>stats</tt>
 
 ans =
 
-    0.9200
-    0.9139
-    0.9069
+    0.9235
+    0.8500
+    0.7580
 
 >> out.Bhpd
 
 ans =
 
-   -1.4798    1.6363   -2.0009    2.1574
-   -1.3281    1.4798   -1.7976    1.9493
-   -1.6621    1.4785   -2.1873    2.0037
+   -1.4255    1.5692   -1.9262    2.0699
+   -1.5851    1.3113   -2.0694    1.7956
+   -1.3266    1.8098   -1.8511    2.3342
 
 >> out.postodds
 
 ans =
 
-    0.0594
-    0.0631
-    0.0555
+    0.0634
+    0.0508
+    0.0285
 
 >> out.modelprob
 
 ans =
 
-    0.0561
-    0.0594
-    0.0526
+    0.0596
+    0.0483
+    0.0277
 </pre>
 </p>
 <p>

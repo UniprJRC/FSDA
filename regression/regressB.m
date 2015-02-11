@@ -167,6 +167,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %{
     %Common part to all examples:
     % PRIOR INFORMATION
+    rng(100) % set seed for replicability
     p=3;
     n0=30;
     X0=[ones(n0,1) randn(n0,p-1)];
