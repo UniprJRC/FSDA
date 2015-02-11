@@ -1,66 +1,579 @@
-<html>
-<head>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-  <title>regressB :: Functions (Flexible Statistics Data Analysis Toolbox™)
-  </title>
-  <link href="docstyle.css" rel="stylesheet" type="text/css">
-  <meta content="refpage" name="chunktype">
-  <script type="text/javascript" language="javaScript" src="bottom.js">
- </script>
-</head>
-
-<body>
 <!DOCTYPE html
   PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
 <!--FScategory:Robust Regression Analysis and transformations-->
-<a name="top_of_page"></a> 
 
-<p style="font-size: 1px;"> </p>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>regressB :: Functions (Flexible Statistics Data Analysis Toolbox&trade;)
+</title>
+<link href="docstyle.css" rel="stylesheet" type="text/css">
+<meta content="refpage" name="chunktype">
+<script language="javaScript" src="bottom.js" type="text/javascript"></script>
+</head>
 
-<table border="0" cellpadding="0" cellspacing="0" class="nav"
-summary="Navigation aid" width="100%">
-  <tbody>
-    <tr>
-      <td valign="baseline"><b>Flexible Statistics Data Analysis
-      Toolbox™</b></td>
-      <td align="right" valign="baseline"><a href="randsamplefs.html"><img
-        align="bottom" alt="FSRfan" border="0"
-        src="images_help/b_prev.gif"></a>   <a href="regressh.html"><img
-        align="bottom" alt="" border="0" src="images_help/b_next.gif"></a></td>
-    </tr>
-  </tbody>
+<body>
+
+<a name="top_of_page"></a>
+<p style="font-size: 1px;">&nbsp;</p>
+<table border="0" cellpadding="0" cellspacing="0" class="nav" summary="Navigation aid" width="100%">
+	<tr>
+		<td valign="baseline"><b>Flexible Statistics Data Analysis Toolbox&trade;</b></td>
+		<td align="right" valign="baseline"><a href="fsraddt.html">
+		<img align="bottom" alt="FSRfan" border="0" src="images_help/b_prev.gif"></a>&nbsp;&nbsp;
+		<a href="fsrbeda.html">
+		<img align="bottom" alt="" border="0" src="images_help/b_next.gif"></a></td>
+	</tr>
 </table>
-<a name="bq24of9-1"></a><a class="indexterm" name="zmw57dd0e69698"></a> 
-
+<a name="bq24of9-1"></a><a class="indexterm" name="zmw57dd0e69698"></a>
 <h1 class="reftitle">regressB</h1>
+<p class="purpose">Automatic outlier detection procedure in Bayesian linear regression</p>
+<h2>Syntax </h2>
+<p class="synopsis"><tt>out = regressB(y, X, beta0, R, tau0, n0)<br>
+out = regressB(y, X, beta0, R, tau0, n0, <i>param1</i>,
+<i><tt>val1</tt></i>, <i><tt>param2</tt></i>,
+<i><tt>val2</tt></i>,...)<br>
+</tt></p>
+<a name="bq24of9-2"></a>
+<h2>Description</h2>
+<p><tt>out = regressB(y, X, beta0, R, tau0, n0)</tt> </p>
+<p>computes Bayesian estimates of regression parameters. </p>
+<table class="body" border="2" cellpadding="4" cellspacing="0">
+<colgroup><col width="21%"><col width="79%"></colgroup>
+<thead> <tr>
+<th bgcolor="#b2b2b2">Parameter</th>
+<th bgcolor="#b2b2b2">Value</th>
+</tr>
+</thead> <tbody>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'y'</tt></td>
+<td bgcolor="#f2f2f2">A vector with <tt>n1</tt> elements that contains the response variable.
+It can be either a row or a column vector.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'X'</tt></td>
+<td bgcolor="#f2f2f2"> Data matrix of explanatory variables (also called 'regressors')
+of dimension <tt>(n1-by-p-1)</tt>. Rows of X represent observations, and
+columns represent variables.<br>
+REMARK: note that here we use symbol <tt>n1</tt> instead of
+traditional symbol <tt>n</tt> because we want to better separate
+sample information coming from <tt>n1</tt> values to prior
+information coming from n0 previous experiments.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2" style="height: 75px"></td>
+<td bgcolor="#f2f2f2" style="height: 75px">PRIOR INFORMATION: <br>
+β is assumed to have a normal distribution with mean β and (conditional
+on τ) covariance (1/τ<sub>0</sub>) (X<sub>0</sub>'X<sub>0</sub>)<sup>-1</sup>
+β~N(β<sub>0</sub>, (1/τ<sub>0</sub>) (X<sub>0</sub>'X<sub>0</sub>)<sup>-1</sup>)
+<br>
+The prior distribution of τ<sub>0</sub> is a γ distribution
+with parameters a and b, that is p(τ<sub>0</sub>) ∝ τ<sup>a<sub>0</sub>-1</sup>
+Exp(-b<sub>0</sub>, τ) and E(τ<sub>0</sub>)= a<sub>0</sub>/b<sub>0</sub></td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'beta0'</tt></td>
+<td bgcolor="#f2f2f2"> <tt>p-by-1</tt> vector containing prior mean of &beta;.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'R'</tt></td>
+<td bgcolor="#f2f2f2"> <tt>p-by-p</tt> positive definite matrix
+which can be interepreted as X<sub>0</sub>'X<sub>0</sub> where X<sub>0</sub> is a <tt>n0 x p</tt>
+matrix coming from previous experiments (assuming that the
+intercept is included in the model).<br>
+The prior distribution of &tau;<sub>0</sub> is a &gamma; distribution
+with parameters a and b, that is p(&tau;<sub>0</sub>) &prop; &tau;<sup>a<sub>0</sub>-1</sup>
+Exp(-b<sub>0</sub>, &tau;) and E(&tau;<sub>0</sub>)= a<sub>0</sub>/b<sub>0</sub>
+</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'tau0'</tt></td>
+<td bgcolor="#f2f2f2">scalar. Prior estimate of &tau;=1/&sigma;<sup>2</sup> =a<sub>0</sub>/b<sub>0</sub>.
+</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'n0'</tt></td>
+<td bgcolor="#f2f2f2"> scalar.
+Sometimes it helps to think of the prior information as coming from n<sub>0</sub>
+previous experiments. Therefore we assume that matrix X<sub>0 </sub>(which
+defines R), was made up of n<sub>0 </sub> observations.</td>
+</tr>
+</tbody>
+</table>
+<p><tt><a name="bq24of9-3"></a>out = regressB(y, X, beta0, R, tau0, n0)</tt> returns the following information: </p>
+<ul type="disc">
+<li>
+<tt>beta1: p-by-1</tt> vector containing posterior mean (conditional on
+&tau;<sub>0</sub>) of &beta; (regression coefficents)
+&beta;<sub>1</sub> = (cR + X'X)<sup>-1</sup> (cR&beta;<sub>0</sub> + X'y)
+</li>
+<li>
+<tt>covbeta1</tt>: <tt> p-by-p-by-(n-init+1)</tt> 3D array containing posterior covariance matrix (conditional on τ<sub>1</sub>) of β
+<tt>covbeta1</tt> = (1/τ<sub>1</sub>) * (cR + X'X)<sup>-1</sup> where τ<sub>1</sub> is defined as a<sub>1</sub>/b<sub>1</sub>
+(that is through the gamma parameters of the posterior distribution of
+τ) The posterior distribution of τ is a gamma distribution with
+parameters a<sub>1</sub> and b<sub>1</sub>.
+</li>
+<li>
+<tt>a1: </tt>  scalar parameter of the posterior gamma distribution of &tau; 
+a<sub>1</sub>=0.5(cn<sub>0</sub> + n<sub>1</sub>)
+</li>
+<li>
+<tt>b1: </tt> scalar parameter of the posterior gamma distribution of &tau;<br>
+b<sub>1</sub>=0.5( n<sub>0</sub> / &tau;<sub>0</sub> + 
+(y-X*&beta;</sub>1</sub>)'y +(&beta;</sub>0</sub>-&beta;<sub>1</sub>)'cR&beta;<sub>0</sub>)
+Remark: note that if bsb is supplied X'X and X'y and n<sub>1</sub> are
+transformed respectively into Xm'Xm and Xm'ym and m where
+Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the
+previous quantities are estimated just using the units
+forming subset
+</li>
+<li>
+<tt>res: n1-times-2 matrix</tt><br>
+1st column = raw residuals <tt>res(i,1)</tt> is computed as <tt>y(i) - X(i,:)*beta1</tt> where <tt>beta1</tt> is
+computed using the units forming subset.
+In the Bayesian approach they are the posterior means of
+the &epsilon;<sub>i</sub> and can be interpreted as point estimates of
+the &epsilon;<sub>i</sub><br>
+2nd col = deletion residuals (just computed for the units
+which do not form the subset).
+res(i,2) with i \not \in  subset
+is computed as
+<tt>(y(i)-X(i,:)*beta1) * sqrt ((a1/b1)/(1+hii))</tt>
+where
+<tt>hii = X(i,:)* (c*R + Xm'*Xm)^{-1} * X(i,:)'</tt>.
+</li>
+<p>
+The additional output which follows is produced just if input
+scalar <tt>stats</tt> is equal 1
+</p>
+<li>
+<tt>Bpval</tt>: <tt> (n-init+1)-by-(p+1)</tt>  containing Bayesian p-values.<br>
+p-value = P(|t| > | \hat &beta; se(&beta;) |)= prob. of beta different from 0<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = p-value for first variable<br>
+...<br>
+(p+1) col = p-value for p-th variable
+</li>
+<li>
+<tt>Bhpd: (n-init+1)-by-2-by-p</tt> 3D array.<br>
+<tt>Bhpd(:,:,1)</tt> = lower and upper HPDI conflev for first variable<br>
+...<BR>
+<tt>Bhpd(:,:,p)</tt> = lower and upper HPDI conflev for p-th variable
+</li>
+<li>
+<tt>postodds: (n-init+1)-by-(p+1)</tt> matrix which contains posterior odds for &beta;<sub>j</sub>=0
+For example the posterior odd of &beta;<sub>0</sub>=0 is p(y| model which contains all expl variables 
+except the one associated with &beta;<sub>0</sub>) divided by 
+p(y| model which contains all expl. variables)<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = posterior odd for &beta;<sub>1</sub><br>
+...<br>
+(p+1) col = posterior odd for &beta;<sub>p</sub>
+</li>
+<li>
+<tt>modelprob: (n-init+1)-by-(p+1)</tt> matrix which contains which contains
+posterior model probability of the model which excludes
+variable j. For example if modelprob(j)= 0.28, that is if
+the probability of the model which does not contain
+variable j is equal to 0.28, it means that there is a 28%
+chance that &beta;<sub>j</sub>=0 and a 72% chance that it is not.<br>
+1st col = fwd search index (from init to n)<br>
+2nd col = posterior model prob of the model which excludes &beta;<sub>1</sub><br>
+...<br>
+(p+1) col = posterior model prob of the model which excludes &beta;<sub>p</sub>
+</li>
+</ul>
+<ul>
+<p></p>
+<p><tt>out = regressB(y, X, beta0, R, tau0, n0, <i>param1</i>,
+<i><tt>val1</tt></i>, <i><tt>param2</tt></i>,
+<i><tt>val2</tt></i>,...)</tt> specifies one or more of the name/value pairs described in the
+following table.</p>
+<table class="body" border="2" cellpadding="4" cellspacing="0">
+<colgroup><col width="21%"><col width="79%"></colgroup>
+<thead> <tr>
+<th bgcolor="#b2b2b2">Parameter</th>
+<th bgcolor="#b2b2b2">Value</th>
+</tr>
+</thead> <tbody>
 
-<p class="purpose">regressB computes Bayesian estimates of regression
-parameters </p>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'intercept'</tt></td>
+<td bgcolor="#f2f2f2"> If 1, a model with constant term will be fitted (default),
+if 0, no constant term will be included.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'bsb'</tt></td>
+<td bgcolor="#f2f2f2"> <tt>m-by-1</tt> vector containing the units forming subset.
+The default value of bsb is <tt>1:n1</tt>, that is all <tt>n1</tt> units are
+used to compute &beta;<sub>1</sub><br>
+REMARK: if <tt>bsb=''</tt> (empty value) just prior information is used</td>
+</tr>
+<tr>
+<td><tt>'c'</tt></td>
+<td>scalar between 0 (excluded) and 1 (included) which can be
+used to control the prior information
+about &beta;. The covariance matrix of the prior distribution
+of &beta; is (1/&tau;<sub>0</sub>)(cX<sub>0</sub>'X<sub>0</sub>)<sup>-1</sup> = (1/&tau;<sub>0</sub>)(cR)<sup>-1</sup>
+therefore multiplication of R by c (with c<1) increases the
+variance of &beta;.
+The default value of <tt>c</tt> is 1. Note also that if we adjust
+the information for &beta; multiplying its covariance matrix
+by c we need to make a similar adjustment to the variance
+of &tau;. 
+Simple mathematical calculations show that the new
+variance of &tau; is equal to the old variance of &tau;
+divided by c. So, once again, given that c < 1, the new
+variance of &tau; increases.
+The value of c will usually be the default, i,e., 1.
+It was included to clarify the difference from Zellner's
+procedure and has the effect of changing n0. For we can write
+<tt>n0' = cn0</tt> and use <tt>n0'</tt> in the calculations. However, it may
+be useful in scaling X<sub>0</sub> if the prior information is chosen
+according to a design that is not of the appropriate size
+to represent the amount of prior knowledge.</td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'stats'</tt></td>
+<td bgcolor="#f2f2f2">  scalar. If stats =1 the following additional statistics are computed:<br>
+1) Bayesian p-values<br>
+2) highest posterior density intervals (HPDI) for each value
+of input option conflev<br>
+3) posterior odds for &beta;<sub>j</sub>=0<br>
+4) posterior model probability of the model which excludes
+variable j.<br></td>
+</tr>
+<tr>
+<td bgcolor="#f2f2f2"><tt>'conflev'</tt></td>
+<td bgcolor="#f2f2f2">
+vector which contains the confidence levels to be used to
+compute HPDI. This input option is used just if input
+<tt>stats=1</tt>. The default value of conflev is [0.95 0.99] that
+is 95% and 99% HPDI confidence intervals are computed.</td>
+</tbody>
+</table>
+<p>References:<br>
+ Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and
+ Residual Analysis, Biometrika, Vol 75 pp. 651-659.<br>
+ Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian
+ Regression for Fraud Detection, submitted<br>
+ Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian
+ Regression, submitted.
+ Koop G., Bayesian Econometrics (2003) Chapt. 3, WIley, NJ
+ </p>
+ 
+<p><br>
+Copyright 2008-2015.<br>
+Written by FSDA team</p>
+<a name="bq9x7hn"></a><a name="bq5gf2y"></a>
+<h3>Examples</h3>
+<p>
+Example 1: supplynig prior information.
+<pre> 
+    % Common part to all examples:
+    % PRIOR INFORMATION
+    p=3;
+    n0=30;
+    X0=[ones(n0,1) randn(n0,p-1)];
+    R=X0'*X0;
+    beta0=zeros(p,1);
+    tau0=1;
 
-<p>HTML help to be written</p>
+
+    % SAMPLE INFORMATION
+    n1=100;
+    X=randn(n1,p-1);
+    y=randn(n1,1);
+
+    % Run regressB using all n1 data and use the default value of c=1
+    out=regressB(y, X, beta0, R, tau0, n0);
+    
+    out = 
+
+       beta1: [3x1 double]
+        tau1: 1.0971
+    covbeta1: [3x3 double]
+          a1: 63.5000
+          b1: 57.8816
+         res: [100x2 double]
+
+>> out.beta1
+
+ans =
+
+   -0.1159
+    0.0455
+   -0.1075
+
+>> out.covbeta1
+
+ans =
+
+    0.0071   -0.0005   -0.0003
+   -0.0005    0.0083   -0.0008
+   -0.0003   -0.0008    0.0086
+   
+>> out.res
+
+ans =
+
+   -1.6822       NaN
+    1.7078       NaN
+    0.3892       NaN
+   -0.6729       NaN
+    2.6516       NaN
+    0.1601       NaN
+    ...          ... 
+    1.4333       NaN
+
+</pre>
+</p>
+<p>
+Example 2: Run regressB and compute new estimate of beta using just the first 20 observations and use a value of <tt>c</tt> equal to 1.2
+<pre>
+    
+    bsb=1:20;
+    c=1.2;
+    out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'c',c);
+    
+>> out.beta1
+
+ans =
+
+    0.0781
+    0.0757
+   -0.0914    
+
+</pre>
+</p>
+<p>
+Example 3: the use of input option <tt>stats</tt>
+<pre>
+   
+    bsb=1:20;
+    c=1.2;
+    stats=true;
+    out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'stats',stats);
+    
+    out = 
+
+        beta1: [3x1 double]
+         tau1: 0.0346
+     covbeta1: [3x3 double]
+           a1: 23.5000
+           b1: 680.0459
+          res: [100x2 double]
+        Bpval: [3x1 double]
+         Bhpd: [3x4 double]
+     postodds: [3x1 double]
+    modelprob: [3x1 double]
+
+>> out.Bpval
+
+ans =
+
+    0.9200
+    0.9139
+    0.9069
+
+>> out.Bhpd
+
+ans =
+
+   -1.4798    1.6363   -2.0009    2.1574
+   -1.3281    1.4798   -1.7976    1.9493
+   -1.6621    1.4785   -2.1873    2.0037
+
+>> out.postodds
+
+ans =
+
+    0.0594
+    0.0631
+    0.0555
+
+>> out.modelprob
+
+ans =
+
+    0.0561
+    0.0594
+    0.0526
+</pre>
+</p>
+<p>
+Example 4: Houses Price dataset is analyzied: please compare the output with Table 3.3 of Koop (2004) p. 52.
+<pre>
+    
+    % load dataset
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
+
+    out=regressB(, R, tau0, y, X, beta0n0,'stats',1);
+    
+    out = 
+
+        beta1: [5x1 double]
+         tau1: 3.0224e-09
+     covbeta1: [5x5 double]
+           a1: 273
+           b1: 9.0326e+10
+          res: [546x2 double]
+        Bpval: [5x1 double]
+         Bhpd: [5x4 double]
+     postodds: [5x1 double]
+    modelprob: [5x1 double]
+
+>> out.beta1
+
+ans =
+
+   1.0e+04 *
+
+   -0.4035
+    0.0005
+    0.2887
+    1.6965
+    0.7641
+
+>> out.covbeta1
+
+ans =
+
+   1.0e+07 *
+
+    1.2522   -0.0000   -0.2607   -0.1087   -0.0228
+   -0.0000    0.0000   -0.0000   -0.0000    0.0000
+   -0.2607   -0.0000    0.1411   -0.0530   -0.0385
+   -0.1087   -0.0000   -0.0530    0.2931   -0.0347
+   -0.0228    0.0000   -0.0385   -0.0347    0.0999
+
+>> out.res
+
+ans =
+
+   1.0e+04 *
+
+   -2.6648       NaN
+   -0.9572       NaN
+    0.3647       NaN
+   -1.2493       NaN
+    0.0110       NaN
+    1.4173       NaN
+   -0.8913       NaN
+    0.1890       NaN
+    2.8496       NaN
+   -1.0495       NaN
+    0.4695       NaN
+   -1.2140       NaN
+   -1.9107       NaN
+   -0.8875       NaN
+   -0.8899       NaN
+   -0.5745       NaN
+   -1.4297       NaN
+   -3.4896       NaN
+    0.2803       NaN
+   -1.9961       NaN
+   -1.4363       NaN
+   -1.5322       NaN
+   -2.0700       NaN
+   -0.9713       NaN
+   -1.1286       NaN
+   -0.7981       NaN
+    ...	         ...
+    3.5537       NaN
+
+>> out.Bhpd
+
+ans =
+
+   1.0e+04 *
+
+   -1.0986    0.2916   -1.3182    0.5112
+    0.0005    0.0006    0.0004    0.0006
+    0.0554    0.5220   -0.0183    0.5957
+    1.3602    2.0328    1.2540    2.1391
+    0.5678    0.9604    0.5058    1.0225
+
+>> out.Bpval
+
+ans =
+
+    0.2547
+    0.0000
+    0.0154
+    0.0000
+    0.0000
+
+>> out.postodds
+
+ans =
+
+    4.1618
+    0.0000
+    0.4040
+    0.0000
+    0.0000
+
+>> out.modelprob
+
+ans =
+
+    0.8063
+    0.0000
+    0.2877
+    0.0000
+    0.0000
+
+  
+</pre>
+</p>
 
 <h3>See Also</h3>
-
-<p><a href="regress.html"><tt>regress</tt></a></p>
-
+<p><a href="fsrb.html"><tt>FSRB</tt></a>, <a href="fsrbeda.html"><tt>FSRBeda</tt></a></p>
 <p></p>
-
-<table border="0" cellpadding="0" cellspacing="0" class="nav"
-summary="Navigation aid" width="100%">
-  <tbody>
-    <tr>
-      <td align="left" width="20"><a href="randsamplefs.html"><img align="bottom"
-        alt="FSRfan" border="0" src="images_help/b_prev.gif"></a> </td>
-      <td align="left">randsamplefs.html</td>
-      <td> </td>
-      <td align="right">regressh.html</td>
-      <td align="right" width="20"><a href="regressh.html"><img align="bottom"
-        alt="levfwdplot " border="0" src="images_help/b_next.gif"></a></td>
-    </tr>
-  </tbody>
+<table border="0" cellpadding="0" cellspacing="0" class="nav" summary="Navigation aid" width="100%">
+	<tr>
+		<td align="left" width="20"><a href="fsraddt.html">
+		<img align="bottom" alt="FSRfan" border="0" src="images_help/b_prev.gif"></a>
+		</td>
+		<td align="left">fsraddt.html</td>
+		<td>&nbsp;</td>
+		<td align="right">fsrbeda.html</td>
+		<td align="right" width="20"><a href="fsrbeda.html">
+		<img align="bottom" alt="levfwdplot
+" border="0" src="images_help/b_next.gif"></a></td>
+	</tr>
 </table>
-<script type="text/javascript" language="javaScript">
-document.write(barra);</script>
+<script language="javaScript" type="text/javascript">
+document.write(barra);
+</script>
 <!-- Last updated: Fri Jan 23 17:00:05 EST 2009-->
+
 </body>
+
 </html>
