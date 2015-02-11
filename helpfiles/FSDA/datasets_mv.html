@@ -6,7 +6,7 @@
   <meta content="refpage" name="chunktype">
   <meta content="text/javascript" http-equiv="Content-Script-Type">
   <script type="text/javascript" language="javaScript" src="bottom.js">
-  </script>
+ </script>
 </head>
 
 <body>
@@ -30,48 +30,8 @@ summary="Navigation aid" width="100%">
   </tbody>
 </table>
 
-
 <h1 class="title"><a name="bq9uxn4"></a>Multivariate Data Sets</h1>
 <hr>
-
-<p>The Flexible Statistics Data Analysis Toolbox™ software includes a number
-of sample data sets provided in tab separated data file (.txt file). The
-simplest way to load a data set into the MATLAB workspace is to type:</p>
-<pre class="programlisting"> <tt>load <i>filename</i>.txt</tt> </pre>
-
-<p>where <i><tt>filename</tt></i> is one of the files listed in the table. This
-will load the original txt file into a standard data matrix. Note that this
-straightforward loading option will not work for datasets mixing numerical and
-categorical variables, like fishery.txt. </p>
-
-<p>The datasets have been also organized in a <a
-href="matlab:web(['jar:file:///',matlabroot,'/help/techdoc/help.jar!/ref/struct.html'],'-helpbrowser')"><tt>structure</tt></a>
-complementing the data matrix with the variable and observation names and data
-specific notes. Once the structure is loaded in the workspace by typing</p>
-<pre class="programlisting"> load <tt><i>filename</i>.mat</tt></pre>
-the four structure fields can be retrieved with: 
-<ul>
-  <li><tt>data = <i>filename</i>.data;</tt></li>
-  <li><tt>rownames = <i>filename</i>.rownames;</tt></li>
-  <li><tt>colnames  = <i>filename</i>.colnames;</tt></li>
-  <li><tt>notes = <i>filename</i>.notes;</tt></li>
-</ul>
-
-<p>Finally, the datasets are also provided as <a
-href="matlab:web(['jar:file:///',matlabroot,'/help/techdoc/help.jar!/ref/cell.html'],'-helpbrowser')"><tt>cell</tt></a>
-and <a
-href="matlab:web(['jar:file:///',matlabroot,'/help/toolbox/stats/help.jar!/dataset.html'],'-helpbrowser')"><tt>dataset</tt></a>
-structures, which can be loaded by typing respectively:</p>
-<pre class="programlisting"> load <tt><i>filename</i>C</tt></pre>
-<pre class="programlisting"> load <tt><i>filename</i>D</tt></pre>
-
-<p>The <tt>dataset </tt>and <tt>cell</tt> formats are convenient for data
-mixing numerical and categorical variables. In particular, the <tt>cell</tt>
-can be used for displaying data through GUI components such as <a
-href="matlab:web(['jar:file:///',matlabroot,'/help/techdoc/help.jar!/ref/uitable.html'],'-helpbrowser')"><tt>uitables</tt></a>.
-</p>
-
-<p> </p>
 
 <table border="2" cellpadding="4" cellspacing="0" class="body">
   <colgroup><col width="30%">
@@ -381,7 +341,6 @@ href="matlab:web(['jar:file:///',matlabroot,'/help/techdoc/help.jar!/ref/uitable
 <p></p>
 
 <p></p>
-
 
 <p></p>
 
