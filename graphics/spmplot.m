@@ -299,8 +299,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 
 %{
-% An example with 5 groups
-   rng(2); n1=100;
+    % An example with 5 groups
+    rng('default')
+    rng(2); n1=100;
     n2=80;
     n3=50;
     n4=80;

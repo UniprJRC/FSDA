@@ -220,7 +220,7 @@ function [out]=FSR(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out]=FSRn(ycont,X);
+    [out]=FSR(ycont,X);
 %}
 
 %{

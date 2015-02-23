@@ -50,11 +50,7 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 % Examples:
 %
 %{
-    % The constant c associated to a breakdown point of 50% in regression is
-    n=200;
-    X=randn(n,1);
     X=load('X.txt');
-    X=X(:,2:3);
     out=lga(X,3);
     out=tclustreg(X,3,5,0.1,0.1);
 %}

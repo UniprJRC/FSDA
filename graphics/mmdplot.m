@@ -114,7 +114,7 @@ function mmdplot(out,varargin)
 %                 	(default) the sequence Y1, ..., Yp will be created
 %                   automatically
 %       lwd     :   Scalar which controls linewidth of the curve which
-%                   contains the monitoring of minimum deletion residual.
+%                   contains the monitoring of minimum Mahalanobis distance.
 %                   Default line width=2
 %       titl    :   a label for the title (default: '')
 %       labx    :   a label for the x-axis (default: 'Subset size m')

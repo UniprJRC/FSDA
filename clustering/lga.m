@@ -49,11 +49,7 @@ function out = lga(X,k,varargin)
 % Examples:
 %
 %{
-    % The constant c associated to a breakdown point of 50% in regression is
-    n=200;
-    X=randn(n,2);
     X=load('X.txt');
-    X=X(:,2:3);
     out=lga(X,3);
     out=lga(X,4,'niter',1000,'biter',3000);
 %}

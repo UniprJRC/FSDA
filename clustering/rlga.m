@@ -6,7 +6,7 @@ function out = rlga(X,k,alpha,varargin)
 %
 %  Required input arguments:
 %
-%      X    : scalar defining breakdown point (i.e a number between 0 and 0.5)
+%       X   : scalar defining breakdown point (i.e a number between 0 and 0.5)
 %       k   : scalar number of clusters
 %    alpha  : a numeric value between 0.5 and 1. For the robust estimate of
 %             LGA, specifying the percentage of points in the best subset.
@@ -53,12 +53,8 @@ function out = rlga(X,k,alpha,varargin)
 % Examples:
 %
 %{
-    % The constant c associated to a breakdown point of 50% in regression is
-    n=200;
-    X=randn(n,2);
     X=load('X.txt');
-    X=X(:,2:3);
-    out=lga(X,3);
+    out=rlga(X,3,0.5);
     out=rlga(X,4,0.5,'niter',1000,'biter',3000);
 %}
 %
