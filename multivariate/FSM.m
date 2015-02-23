@@ -88,6 +88,11 @@ function [out]=FSM(Y,varargin)
 %                   nameY : cell array of strings containing the labels of
 %                       the variables. As default value, the labels which are
 %                       added are Y1, ...Yv.
+%                    lwd  :   Scalar which controls linewidth of the curve which
+%                       contains the monitoring of minimum Mahalanobis distance.
+%                       Default line width=2
+%                 lwdenv  :   Scalar which controls linewidth of the
+%                       envelopes. Default line width=2
 %      bonflev  : option that might be used to identify extreme outliers
 %                 when the distribution of the data is strongly non normal
 %                 and, thus, the general signal detection rule based on
@@ -295,6 +300,10 @@ plo=options.plots;
 msg=options.msg;
 crit=options.crit;
 m0=options.m0;
+
+% fsizeannot is a scalar which Font Size of the annotations which are
+% shown on the screen
+fsizeannot=11;
 
 %% Start of the forward search
 
@@ -660,10 +669,27 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             ncoord=0;
         end
         
+                d=find(strcmp('lwd',fplo));
+        if d>0
+            lwd=plo.lwd;
+        else
+            lwd=2;
+        end
+
+                  d=find(strcmp('lwdenv',fplo));
+        if d>0
+            lwdenv=plo.lwdenv;
+        else
+            lwdenv=2;
+        end
+
+      
     else
         xlimx='';
         ylimy='';
         ncoord=0;
+        lwd=2;
+        lwdenv=2;
     end
     
     if isempty(xlimx)
@@ -701,15 +727,15 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             
             ylim([yl1 yl2]);
             
-            plot(mmd(:,1),mmd(:,2));
+            plot(mmd(:,1),mmd(:,2),'LineWidth',lwd);
             
             
             % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
-            line(gmin(:,1),gmin(:,[c001 c99 c999]),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
+            line(gmin(:,1),gmin(:,[c001 c99 c999]),'Parent',axes1,'LineWidth',lwdenv,'LineStyle','--','Color',[0 0 1]);
             % Superimpose 99.99% and 99.999% envelopes based on all the observations
-            line(gmin(:,1),gmin(:,[c9999 c99999]),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[1 0 0]);
+            line(gmin(:,1),gmin(:,[c9999 c99999]),'Parent',axes1,'LineWidth',lwdenv,'LineStyle','--','Color',[1 0 0]);
             % Superimpose 50% envelope based on all the observations
-            line(gmin(:,1),gmin(:,c50),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[1 0.69 0.39]);
+            line(gmin(:,1),gmin(:,c50),'Parent',axes1,'LineWidth',lwdenv,'LineStyle','--','Color',[1 0.69 0.39]);
             
             % Property-value pairs which are common to all quantile-labels
             PrVaCell{1,1} = 'HorizontalAlignment'; PrVaCell{2,1} = 'center';
@@ -724,7 +750,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
                 annotation(figure1,'textbox',[figx figy kx ky],...
                     'String',{'1%'},...
                     'UserData',[gmin(:,1) gmin(:,c001)],...
-                    PrVaCell{:});
+                    PrVaCell{:},'FontSize',fsizeannot);
             end
             
             % Create textbox with 99% label
@@ -734,7 +760,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
                 annotation(figure1,'textbox',[figx figy kx ky],...
                     'String',{'99%'},...
                     'UserData',[gmin(:,1) gmin(:,c99)],...
-                    PrVaCell{:});
+                    PrVaCell{:},'FontSize',fsizeannot);
             end
             
             % Create textbox with 50% label
@@ -744,7 +770,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
                 annotation(figure1,'textbox',[figx figy kx ky],...
                     'String',{'50%'},...
                     'UserData',[gmin(:,1) gmin(:,c50)],...
-                    PrVaCell{:});
+                    PrVaCell{:},'FontSize',fsizeannot);
             end
             
             % Create textbox with 99.9% label
@@ -753,7 +779,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
                 annotation(figure1,'textbox',[figx figy kx ky],...
                     'String',{'99.9%'},...
                     'UserData',[gmin(:,1) gmin(:,c999)],...
-                    PrVaCell{:});
+                    PrVaCell{:},'FontSize',fsizeannot);
             end
             
             % Create textbox with 99.99% label
@@ -762,7 +788,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
                 annotation(figure1,'textbox',[figx figy kx ky],...
                     'String',{'99.99%'},...
                     'UserData',[gmin(:,1) gmin(:,c9999)],...
-                    PrVaCell{:});
+                    PrVaCell{:},'FontSize',fsizeannot);
             end
             
             if gmin(1,c99999)<=yl2
@@ -772,7 +798,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
                     annotation(figure1,'textbox',[figx figy kx ky],...
                         'String',{'99.999%'},...
                         'UserData',[gmin(:,1) gmin(:,c99999)],...
-                        PrVaCell{:});
+                        PrVaCell{:},'FontSize',fsizeannot);
                 end
             end
             
@@ -795,11 +821,11 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             % latex annotations informing that the envelopes are based on
             % all the observations
             strmin=['$d_{min}(m,' int2str(n) ')$. '];
-            annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',{[strmin strsig]},...
-                PrVaCell{:});
+            annotation(figure1,'textbox',[0.5 0.90 kx ky],'String',{[strmin strsig]},...
+                PrVaCell{:},'FontSize',fsizeannot);
             
             annotation(figure1,'textbox',[0.5 0.85 kx ky],'String',{strplot},...
-                PrVaCell{:});
+                PrVaCell{:},'FontSize',fsizeannot);
             
             if istep<=xl2
                 % Add vertical line which divides central part from final part of the
@@ -813,7 +839,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
                 if figx>=0;
                     annotation(figure1,'line',[figx figx],[figy figy2],...
                         'UserData',[istep yl1 yl2],...
-                        'Tag','FinalPartLine');
+                        'Tag','FinalPartLine')
                 end
             end
         else % show the above plot in normal coordinates
@@ -834,7 +860,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             
             
             % Plot in normal coordinates
-            plot(mmdinv(:,1),mmdinv(:,3));
+            plot(mmdinv(:,1),mmdinv(:,3),'LineWidth',lwd);
             
             ylim([yl1 yl2]);
             
@@ -849,7 +875,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
                 else
                     col='r';
                 end
-                line(vaxis(1:2)',[ninv(i);ninv(i)],'color',col,'LineWidth',2,'LineStyle','--','Tag','env');
+                line(vaxis(1:2)',[ninv(i);ninv(i)],'color',col,'LineWidth',lwdenv,'LineStyle','--','Tag','env');
             end
             text(vaxis(1)*ones(length(ninv),1),ninv+0.2,strcat(num2str(100*quant),'%'),...
                 'FontSize',12,'HorizontalAlignment','Left');
@@ -876,16 +902,18 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
             
             
-            
-            
             % latex annotations informing that the envelopes are based on
             % all the observations
+                        % ycoordinates of the messages displayed on the screen 
+            ycoordannott=0.90;
+            ycoordannotb=0.85;
+
             strmin=['$d_{min}(m,' int2str(n) ')$. '];
-            annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',{[strmin strsig]},...
-                PrVaCell{:});
+            annotation(figure1,'textbox',[0.5 ycoordannott kx ky],'String',{[strmin strsig]},...
+                PrVaCell{:},'FontSize',fsizeannot);
             
-            annotation(figure1,'textbox',[0.5 0.85 kx ky],'String',{strplot},...
-                PrVaCell{:});
+            annotation(figure1,'textbox',[0.5 ycoordannotb kx ky],'String',{strplot},...
+                PrVaCell{:},'FontSize',fsizeannot);
             
             if istep<=xl2
                 % Add vertical line which divides central part from final part of the
@@ -918,10 +946,10 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
         ylim([yl1 yl2]);
         
         
-        plot(mmd(:,1),mmd(:,2));
+        plot(mmd(:,1),mmd(:,2),'LineWidth',lwd);
         
         % Superimpose Bonferroni line to the plot
-        line(gmin(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
+        line(gmin(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',lwdenv,'LineStyle','--','Color',[0 0 1]);
         % Property-value pairs which are common to the next latex annotations
         
         PrVaCell{1,1} = 'Interpreter'; PrVaCell{2,1} = 'latex';
@@ -935,16 +963,16 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             % latex annotations informing that the envelopes are based on
             % all the observations
             strmin='Exceedance based on Bonferroni threshold';
-            annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
+            annotation(figure1,'textbox',[0.5 0.90 kx ky],'String',strmin,...
                 PrVaCell{:});
             msg=['$d_{min}(' num2str(mmd(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
-            annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msg,PrVaCell{:});
+            annotation(figure1,'textbox',[0.5 0.80 kx ky],'String',msg,PrVaCell{:},'FontSize',fsizeannot);
         else
             strmin='Exceedance based on user supplied threshold';
-            annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
-                PrVaCell{:});
+            annotation(figure1,'textbox',[0.5 0.90 kx ky],'String',strmin,...
+                PrVaCell{:},'FontSize',fsizeannot);
             msg=['$d_{min}(' num2str(mmd(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
-            annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msg,PrVaCell{:});
+            annotation(figure1,'textbox',[0.5 0.80 kx ky],'String',msg,PrVaCell{:},'FontSize',fsizeannot);
         end
         if signal==1
             stem(mmd(i,1),mmd(i,2),'LineWidth',1,...
@@ -1041,11 +1069,12 @@ if (signal==1);
                     % Show curve of mmd up to step tr-1 (notice that the envelope is
                     % based on tr observations. Step tr-1 in matrix mmd is
                     % (tr-1)-mmd(1,1)+1=tr-mmd(1,1)
-                    plot(mmd(1:(tr-mmd(1,1)),1),mmd(1:(tr-mmd(1,1)),2));
+                    plot(mmd(1:(tr-mmd(1,1)),1),mmd(1:(tr-mmd(1,1)),2),'LineWidth',lwd);
+                    
                     
                     % Display the lines associated with 1%, 50% 99% and 99.9% envelopes
-                    line(gmin1(:,1),gmin1(:,[2 3 4]),'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
-                    line(gmin1(:,1),gmin1(:,5),'LineWidth',2,'LineStyle','--','Color',[0.3 0.3 0.2]);
+                    line(gmin1(:,1),gmin1(:,[2 3 4]),'LineWidth',lwdenv,'LineStyle','--','Color',[0 0 1]);
+                    line(gmin1(:,1),gmin1(:,5),'LineWidth',lwdenv,'LineStyle','--','Color',[0.3 0.3 0.2]);
                     
                 else % superimposition in normal coordinates
                     
@@ -1053,7 +1082,7 @@ if (signal==1);
                     % tr observations
                     mmdinvr = FSMinvmmd(mmd,v,'n',tr);
                     
-                    plot(mmdinvr(1:(tr-mmd(1,1)),1),mmdinvr(1:(tr-mmd(1,1)),3));
+                    plot(mmdinvr(1:(tr-mmd(1,1)),1),mmdinvr(1:(tr-mmd(1,1)),3),'LineWidth',lwd);
                     
                     
                     for iq=[1 2 5 6]
@@ -1064,7 +1093,7 @@ if (signal==1);
                         else
                             col='r';
                         end
-                        line(vaxis(1:2)',[ninv(iq);ninv(iq)],'color',col,'LineWidth',2,'LineStyle','--','Tag','env');
+                        line(vaxis(1:2)',[ninv(iq);ninv(iq)],'color',col,'LineWidth',lwdenv,'LineStyle','--','Tag','env');
                     end
                     
                 end
@@ -1102,7 +1131,7 @@ if (signal==1);
                 annotation(figure2,...
                     'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)+0.05],...
                     'String',{strtemp},'Tag','mes1',...
-                    PrVaCell{:});
+                    PrVaCell{:},'FontSize',fsizeannot);
                 
                 hold('off');
                 jwind=jwind+1;
@@ -1114,7 +1143,7 @@ if (signal==1);
                     annotation(figure2,...
                         'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)],...
                         'String',{mes},'Tag','mes2',...
-                        PrVaCell{:});
+                        PrVaCell{:},'FontSize',fsizeannot);
                     
                     % Unless for all plots not located on the right hand side
                     % For the final plot put the yaxis location on the right
