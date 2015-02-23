@@ -88,11 +88,11 @@ function [out]=FSM(Y,varargin)
 %                   nameY : cell array of strings containing the labels of
 %                       the variables. As default value, the labels which are
 %                       added are Y1, ...Yv.
-%                    lwd  :   Scalar which controls linewidth of the curve which
+%                    lwd  :   Scalar which controls line width of the curve which
 %                       contains the monitoring of minimum Mahalanobis distance.
-%                       Default line width=2
+%                       Default line of lwd=2
 %                 lwdenv  :   Scalar which controls linewidth of the
-%                       envelopes. Default line width=2
+%                       envelopes. Default value of lwdenv=2
 %      bonflev  : option that might be used to identify extreme outliers
 %                 when the distribution of the data is strongly non normal
 %                 and, thus, the general signal detection rule based on
