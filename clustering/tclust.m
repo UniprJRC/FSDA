@@ -1130,7 +1130,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Find final trimmed and untrimmed units for final classification
-if mixt==2
+if mixt>=1; % ==2
     
     % Sort the n likelihood contributions
     % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
@@ -1187,6 +1187,7 @@ if mixt>=1
 else
     out.idx=idx;
 end
+
 
 % siz = matrix of size k x 3,
 % 1st col = sequence from 0 to k
@@ -1345,31 +1346,49 @@ end
 %% Create plots
 % Plot the groups in the scatter plot matrix
 if plots==1;
+    % The following statement is necessary because if mixt>0 idx was called
+    % ixmixt;
+    idx=out.idx;
+
     if v==1
         histFS(Y,length(Y),idx)
     elseif v==2
+        
+        idx=out.idx;
         colors = 'brcmykgbrcmykgbrcmykg';
         figure
         hold('on')
         for j=1:k
             idxj=idx==j;
             if sum(idxj)>0
-                plot(Y(idxj,1),Y(idxj,2),'o','color',colors(j));
+                plot(Y(idxj,1),Y(idxj,2),'o','color',colors(j),'DisplayName',num2str(j));
                 ellipse(muopt(j,:),sigmaopt(:,:,j))
             end
         end
         if alpha>0
             idxj=idx==0;
-            plot(Y(idxj,1),Y(idxj,2),'x','color','k');
+            plot(Y(idxj,1),Y(idxj,2),'x','color','k','DisplayName','Trimmed units');
         end
         
         axis equal
-        iidx=unique(idx);
+%         id=cellstr(num2str(idx));
+%         id(idx==0)=cellstr('Trimmed units');
         hall = findobj(gca, 'type', 'line');
         hellipses = findobj(gca, 'type', 'line','Marker','none');
-        hpoints = setdiff(hall,hellipses);
-        clickableMultiLegend(hpoints,cellstr(num2str(iidx)));
+        hpoints = setdiff(hall,hellipses,'sorted');
+%         hpoints=sort(hpoints,'ascend');
+%         clickableMultiLegend(hpoints,unique(id,'stable'));
+        
+         clickableMultiLegend(hpoints,{hpoints.DisplayName})
         axis manual;
+        
+%         axis equal
+%         iidx=unique(idx);
+%         hall = findobj(gca, 'type', 'line');
+%         hellipses = findobj(gca, 'type', 'line','Marker','none');
+%         hpoints = setdiff(hall,hellipses);
+%         clickableMultiLegend(hpoints,cellstr(num2str(iidx)));
+%         axis manual;
     else
         id=cellstr(num2str(idx));
         id(idx==0)=cellstr('Trimmed units');
