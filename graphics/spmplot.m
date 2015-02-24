@@ -212,7 +212,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'};
     spmplot(meas,species,plo,'hist');
-
 %}
 
 %{
@@ -222,7 +221,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'};
     spmplot(meas,'group',species,'plo',plo,'dispopt','box');
-
 %}
 
 %{
@@ -243,7 +241,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %
 %{
-
     % Generate contaminated data
     state=100;
     randn('state', state);
@@ -254,12 +251,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
     % spmplot is called automatically by all outlier detection methods, e.g. FSM
     [out]=FSM(Ycont,'plots',1);
-
 %}
 
 %{
-
-  
     % Now test the direct use of FSM. Set two groups, e.g. those obtained
     % from FSM
     % Generate contaminated data
@@ -283,7 +277,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
-
     % With two groups, and if the tag figure includes the word 'outlier',
     % the legend will identify one group for outliers and the other for
     % normal units
@@ -434,7 +427,6 @@ else
     end
 end
 
-
 if nargin>1
     if length(varargin{1})==n
         % In this case the user has called function spmplot with the
@@ -535,7 +527,6 @@ dolegdef='on';
 % seq= column vector containing the sequence 1 to n
 seq= (1:n)';
 
-
 if isstruct(plo)
     fplo=fieldnames(plo);
     
@@ -611,8 +602,8 @@ if isstruct(plo)
         doleg='on';
     end
     
-    
 else
+    
     if ischar(plo) && namevaluepairs==0
         error('FSDA: Third argument must be a structure, or a scalar or an empty value []')
     end
@@ -642,7 +633,6 @@ end
 
 unigroup = 1:ngroups;
 
-
 %% The scatterplot matrix with histograms or boxplots (on the main diagonal) generalised to groups
 
 % sym can be either a cell array or a character
@@ -651,18 +641,22 @@ if iscell(sym)
 else
     charsym=sym(unigroup);
 end
-% [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,dispopt,nameY,nameY);
+
+% The scatter matrix is generated with histograms on the main diagonal and
+% the axes matrix AX will therefore contain handles for these histograms;
+% later we superimpose new group histograms using the FSDA function histFS;
+% we do not use gplotmatrix with option 'grpbars' because this would not
+% work in MATLAB releases previous to R2015a.
 
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
-% The following lines are not necessary anymore
+% Not necessary anymore: lines will be removed after additional testing.
 % if strcmp(dispopt,'box')==1
 %     % ahist=findobj(AX,'type','patch') ;
 %     %set(ahist,'MarkerEdgeColor','none','EdgeColor','none','FaceColor','none')
 % ahist=findobj(AX,'type','histogram');
 % set(ahist,'Visible','off')
 % end
-
 
 % The third dimension of H distinguishes the groups. If there are no groups
 % then ndims(H) = 2.
@@ -677,9 +671,10 @@ for i=1:size(AX,2)
         Xlim=get(ax,'Xlim');
         
         ax = AX(end,i);
-        % Ylim=get(ax,'Ylim');
         
-        %set(gcf,'CurrentAxes',ax);
+        % Not necessary anymore: lines will be removed after additional testing.
+        % Ylim=get(ax,'Ylim');
+        % set(gcf,'CurrentAxes',ax);
         
         % the strings used to label the tick marks
         XTickLabel = get(ax,'XTickLabel');
@@ -702,14 +697,14 @@ for i=1:size(AX,2)
         set(get(ax,'XLabel'),'String',XLabel);
         set(get(ax,'YLabel'),'String',YLabel);
         
-    else
-        % Add the boxplots generalised to groups Note that we use AX(i,i) 
+    else % if strcmp(dispopt,'box')==1
+        % Add the boxplots generalised to groups. Note that we use AX(i,i)
         % just to find the position of the required panel on the main
         % diagonal to superimpose boxplots
         ax=AX(i,i);
         
         axPosition = get(ax,'position');
-        % Now we create ax axes object using axPosition.
+        % Now we create an axes object using axPosition.
         ax = axes('Position',axPosition);
         
         if length(unigroup) <= 5
@@ -730,7 +725,7 @@ for i=1:size(AX,2)
         % Put the graph containing boxplots in the correct position
         set(ax,'position',axPosition);
         
-        % The code below now seems unnecessary
+        % Not necessary anymore: lines will be removed after additional testing.
         % Adjust the vertical scale (using the y scale of a scatter in
         % the same row of the scatter plot matrix)
         %         if i < size(Y,2);
@@ -742,12 +737,10 @@ for i=1:size(AX,2)
         %         end
         %         set(ax,'Ylim',Ylim)
         
-        % The tag is set for later use in add2spm by
-        % clickableMultiLegend
+        % The tag is set for later use in add2spm by clickableMultiLegend
         for gg=1:numel(unigroup)
             set(hbp(:,gg),'Tag',['boxplot' num2str(gg)]);
         end
-        
     end
 end
 
@@ -763,7 +756,6 @@ if ndims(H) == 3
         set(H(:,:,end), 'UserData' , seq(groupv==max(groupv)));
     end
     
-    
     if strcmp(doleg,'on')
         % Add to the spm the clickable multilegend and eventually the text labels
         % of the selections
@@ -776,14 +768,12 @@ if ndims(H) == 3
         end
     end
 end
-% the handle of the figure including the gplotmatrix
-% (i.e. the closest ancestor of BigAx).
-fig = ancestor(BigAx,'figure');
 
+% the handle of the figure including the gplotmatrix (i.e. the closest ancestor of BigAx).
+fig = ancestor(BigAx,'figure');
 
 % set the options.datatooltip (enable/disable interactive data cursor mode)
 if datatooltip;
-    
     
     hdt = datacursormode;
     set(hdt,'Enable','on');
@@ -802,6 +792,7 @@ if datatooltip;
 end
 
 %% Brush mode (call to function selectdataFS)
+
 % BEGINNING OF DATABRUSH OPTION
 if ~isempty(databrush) || iscell(databrush)
     % Initialize line width
@@ -858,6 +849,7 @@ if ~isempty(databrush) || iscell(databrush)
         end
         
     else
+        
         if iscellstr(units)
             selunit=str2double(units);
             selmax=max(residuals,[],2);
@@ -893,9 +885,6 @@ if ~isempty(databrush) || iscell(databrush)
     lsteps=length(steps);
     lall=lunits*lsteps;
     
-    
-    
-    
     % numtext= a cell of strings used to labels the units with their position
     % in the dataset.
     numtext=cellstr(num2str(seq,'%d'));
@@ -914,8 +903,6 @@ if ~isempty(databrush) || iscell(databrush)
     
     % Set default value for potential groups of selected units
     styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
-    
-    
     styp=repmat(styp,ceil(n/13),1);
     
     % displays the boundary of the current axes.
@@ -923,8 +910,6 @@ if ~isempty(databrush) || iscell(databrush)
     
     % set the specified tag in the current plot
     set(gcf,'tag',tag)
-    
-    
     
     % labeladd option
     d=find(strcmp('labeladd',databrush));
@@ -938,7 +923,6 @@ if ~isempty(databrush) || iscell(databrush)
         labeladdDB='';
     end
     
-    
     % persist option
     d=find(strcmp('persist',databrush));
     if d>0
@@ -946,7 +930,6 @@ if ~isempty(databrush) || iscell(databrush)
         % This option must be removed from cell options.databrush because it is
         % not a valid option for the function selectdataFS.
         databrush(d:d+1)=[];
-        
         ColorOrd=[1 0 0;0 1 1; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
         ColorOrd=repmat(ColorOrd,4,1);
     else
@@ -955,17 +938,15 @@ if ~isempty(databrush) || iscell(databrush)
     end
     
     % FlagColor option
-    % Initialize colors: default colors are blue (unbrushed unit)
-    % and red (brushed units)
+    % Initialize colors: default colors are blue (unbrushed unit) and red
+    % (brushed units)
     d=find(strcmp('FlagColor',databrush));
     if d>0
         flagcol=databrush{d+1};
         clr=['b' flagcol 'cmykgbrcmykg'];
     else
         clr='brcmykgbrcmykgbrcmykg';
-        
     end
-    
     
     if isscalar(databrush)
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
@@ -1054,7 +1035,6 @@ if ~isempty(databrush) || iscell(databrush)
             [indicer,indicec]=ind2sub(size(AX),indice);
             
             otherAxes = AX;
-            
             
             %% - call selectdataFS
             if ij>1;
@@ -1322,7 +1302,6 @@ if ~isempty(databrush) || iscell(databrush)
                     add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
                 end
                 
-                
                 hLines = findobj(AX(1,end), 'type', 'line');
                 eLegend = cell(length(hLines), 1);
                 for iLines = 1:length(hLines)
@@ -1330,7 +1309,6 @@ if ~isempty(databrush) || iscell(databrush)
                 end
                 hLegend=zeros(size(AX));
                 hLegend(1,end) = clickableMultiLegend(hLines, eLegend{:});
-                
                 
                 %% - display the malfwdplot with the corresponding groups of trajectories highlighted.
                 
@@ -1349,6 +1327,7 @@ if ~isempty(databrush) || iscell(databrush)
                     
                     set(gcf,'tag','data_res');
                     hold('off')
+                    
                     % control minimum and maximum for y axis
                     % TODO
                     %if ~isempty(options.ylim)
@@ -1358,7 +1337,6 @@ if ~isempty(databrush) || iscell(databrush)
                     % displays the boundary of the current axes.
                     box on
                 end
-                
                 
                 %check if the malfwdplot is already open
                 hh=findobj('-depth',1,'tag','data_res');
@@ -1554,7 +1532,6 @@ if ~isempty(databrush) || iscell(databrush)
                         delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
                     end
                     
-                    
                     if ss==1;
                         but=2;
                     end
@@ -1615,7 +1592,6 @@ end
         %
         %             otherAxes = AX;
         
-        
         %otherAxes is the list of the not selected scatterplot axes
         %{
         TODO
@@ -1647,7 +1623,6 @@ end
             % indexes of the scatter in which points have been selected
             [indr,indc]=ind2sub(size(AX),ind);
             
-            
             %uno=vector of zeros and ones of the same length of X and
             %y. The ones are reported in the rows where the X values
             %are equal to the X selected
@@ -1663,8 +1638,6 @@ end
             %coi=list of selected units
             row=find(tre==2);
             
-            
-            
             % If structure out does not contain labels for the rows then labels
             % row1....rown are added automatically
             if isempty(intersect('label',fieldnames(out)))
@@ -1674,7 +1647,6 @@ end
             output_txt=cell(length(row)*2+2,1);
             % output_txt is what it is shown on the screen
             output_txt(1) = {['Y(,:' num2str(indr) ') value equal to: ',num2str(y,4)]};
-            
             
             output_txt(2) = {['Y(,:' num2str(indc) ') value equal to: ',num2str(x,4)]};
             
@@ -1703,7 +1675,6 @@ end
                 ij=ij+2;
             end
             
-            %
             %         %When the selection has been completed, axes properties
             %         %'HandleVisibility' and 'HitTest' must be set to on for an eventual
             %         %possible future selection.
