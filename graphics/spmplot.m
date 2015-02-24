@@ -655,10 +655,13 @@ end
 
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
-if strcmp(dispopt,'box')==1
-    ahist=findobj(AX,'type','patch') ;
-    set(ahist,'MarkerEdgeColor','none','EdgeColor','none','FaceColor','none')
-end
+% The following lines are not necessary anymore
+% if strcmp(dispopt,'box')==1
+%     % ahist=findobj(AX,'type','patch') ;
+%     %set(ahist,'MarkerEdgeColor','none','EdgeColor','none','FaceColor','none')
+% ahist=findobj(AX,'type','histogram');
+% set(ahist,'Visible','off')
+% end
 
 
 % The third dimension of H distinguishes the groups. If there are no groups
@@ -674,7 +677,7 @@ for i=1:size(AX,2)
         Xlim=get(ax,'Xlim');
         
         ax = AX(end,i);
-        Ylim=get(ax,'Ylim');
+        % Ylim=get(ax,'Ylim');
         
         %set(gcf,'CurrentAxes',ax);
         
@@ -684,12 +687,14 @@ for i=1:size(AX,2)
         XLabel = get(get(ax,'XLabel'),'String');
         YLabel = get(get(ax,'YLabel'),'String');
         
-        [~, ~] = histFS(Y(:,i),10,groupv,'',ax,clr(unigroup)); %'br'
+        [countfreq, ~] = histFS(Y(:,i),10,groupv,'',ax,clr(unigroup)); %'br'
+        
         % Prevent from changing the limits when the figure is resized:
         % 1.Freeze the current limits
         set(ax,'XLimMode','manual','YLimMode','manual');
         set(ax,'xlim',Xlim)
-        set(ax,'ylim',Ylim)
+        % set(ax,'ylim',Ylim)
+        set(ax,'ylim',[0 max(sum(countfreq,2))])
         % 2.Freeze the current tick values
         set(ax,'XTickMode','manual','YTickMode','manual');
         %Now restore the labels of the gplotmatrix
@@ -698,13 +703,14 @@ for i=1:size(AX,2)
         set(get(ax,'YLabel'),'String',YLabel);
         
     else
-        % Add the boxplots generalised to groups Note that instead of using
-        % ax = AX(i,i); we use AX(end,i); because the last row of AX
-        % contains the handles to the invisible axes in which the
-        % histograms or boxplots are plotted
-        ax = AX(end,i);
+        % Add the boxplots generalised to groups Note that we use AX(i,i) 
+        % just to find the position of the required panel on the main
+        % diagonal to superimpose boxplots
+        ax=AX(i,i);
         
         axPosition = get(ax,'position');
+        % Now we create ax axes object using axPosition.
+        ax = axes('Position',axPosition);
         
         if length(unigroup) <= 5
             plotstyle = 'traditional';
@@ -712,6 +718,7 @@ for i=1:size(AX,2)
             plotstyle = 'compact';
         end
         
+        % Boxplots are superimposed on object ax
         hbp = boxplot(ax,Y(:,i),groupv,'plotstyle',plotstyle,'colors',clr(unigroup),'labelverbosity','minor','symbol','+');
         
         % Remove the x tick labels from the graph containing boxplots
@@ -723,16 +730,17 @@ for i=1:size(AX,2)
         % Put the graph containing boxplots in the correct position
         set(ax,'position',axPosition);
         
+        % The code below now seems unnecessary
         % Adjust the vertical scale (using the y scale of a scatter in
         % the same row of the scatter plot matrix)
-        if i < size(Y,2);
-            ax1 = AX(i,end);
-            Ylim=get(ax1,'Ylim');
-        else
-            ax1 = AX(i,1);
-            Ylim=get(ax1,'Ylim');
-        end
-        set(ax,'Ylim',Ylim)
+        %         if i < size(Y,2);
+        %             ax1 = AX(i,end);
+        %             Ylim=get(ax1,'Ylim');
+        %         else
+        %             ax1 = AX(i,1);
+        %             Ylim=get(ax1,'Ylim');
+        %         end
+        %         set(ax,'Ylim',Ylim)
         
         % The tag is set for later use in add2spm by
         % clickableMultiLegend
