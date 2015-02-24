@@ -454,18 +454,18 @@ LM=Zbh'*Zbh/2;
 
 % Below it is possible to find two alternative (inefficient) ways of
 % computing the LM test
-%{
-    % The row below is an inefficient way of computing the LM test
-    % See equation 9.28 p. 276 of Greene 7th edition
-    LM=h'*Z*inv(Z'*Z)*Z'*h/2;
+%
+%     % The row below is an inefficient way of computing the LM test
+%     % See equation 9.28 p. 276 of Greene 7th edition
+%     LM=h'*Z*inv(Z'*Z)*Z'*h/2;
+% 
+%     % An additional alternative way of computing LM is as follows
+%     % vg is row vector of length columns of Z
+%     % vg = \sum v_i*z_i where v_i is a scalar equal to
+%     % h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
+%     vg = bsxfun(@times, Z(:,2:end), h);
+%     LM=sum(vg,1)*inv((n-1)*cov(Z(:,2:end)))*(sum(vg,1)')/2;
 
-    % An additional alternative way of computing LM is as follows
-    % vg is row vector of length columns of Z
-    % vg = \sum v_i*z_i where v_i is a scalar equal to
-    % h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
-    vg = bsxfun(@times, Z(:,2:end), h);
-    LM=sum(vg,1)*inv((n-1)*cov(Z(:,2:end)))*(sum(vg,1)')/2;
-%}
 
 % Store inside out structure standard error of regression and heteroskedastic parameters
 out.Gamma=Gamma;
