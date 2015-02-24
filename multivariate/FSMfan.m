@@ -383,7 +383,7 @@ optmin.Display='off';
 % optmin=optimset(defopt,newopts);
 %warning('off','optim:fminunc:SwitchingMethod');
 
-% Check if minimization toolbox is installed in current computer
+% Check if optimization toolbox is installed in current computer
 typemin=exist('fminunc','file');
 
 

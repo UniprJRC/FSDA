@@ -67,6 +67,13 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 
 %% Beginning of code
 
+% Check if optimization toolbox is installed in current computer
+typemin=exist('fminunc','file');
+
+if typemin ~=2
+    error('This function requires the optimization toolbox')
+end
+
 [n,p]=size(X);
 
 niterdef=20;
