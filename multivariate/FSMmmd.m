@@ -405,6 +405,16 @@ else
                 S=inv(Ym(bsb,:)'*Ym(bsb,:));
                 [~,R]=qr(Ym(bsb,:),0);
             end
+            if sum(isinf(S(:)))>0
+                warning('FSMmmd:message',['Subset at step mm= ' num2str(mm) ' is not full rank matrix']);
+                warning('FS loop will not be performed')
+                
+                mmd=NaN;
+                Un=NaN;
+                varargout={NaN};
+                return
+            end
+            
             u=(Ym/R);
             % Compute squared Mahalanobis distances
             MD=(mm-1)*sum(u.^2,2);
@@ -593,7 +603,12 @@ else
                 else
                     bsbmin=seq(MD<ksor);
                     bsbeq=seq(MD==ksor);
-                    bsb=[bsbmin;bsbeq(1:mm+1-length(bsbmin))];
+                    try
+                        bsb=[bsbmin;bsbeq(1:mm+1-length(bsbmin))];
+                    catch
+                        ddd=1;
+                    end
+                    
                     bsbT=zeron1;
                     bsbT(bsb)=true;
                 end

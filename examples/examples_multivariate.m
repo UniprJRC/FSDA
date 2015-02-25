@@ -1074,13 +1074,17 @@ plot(Y(:,1),Y(:,2),'o')
 init=20;
 nsimul=100;
 
-mmdStore=zeros(n-init,nsimul);
+mmdStore=nan(n-init,nsimul);
+ij=0;
 for j=1:nsimul
-    disp(num2str(j));
     mmd = FSMmmd(Y,0,'init',init);
-    mmdStore(:,j)=mmd(:,2);
+    if ~isnan(mmd)
+        mmdStore(:,j)=mmd(:,2);
+    else
+        ij=ij+1;
+    end
 end
-
+disp(['Number of random starts with no full rank subsets =' num2str(ij)])
 % Plot minMD with random starts
 figure;
 hold('on');
@@ -1099,6 +1103,7 @@ mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 % compare the output with Figure 5 of Atkinson and Riani (2007)
+
 
 %% OF: analysis using S and MM estimators
 clearvars;close all;

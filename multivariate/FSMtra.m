@@ -750,7 +750,7 @@ else
                     fval=nan;
                 end
             end
-            % Store maximum likelihood estimates of tranformation parameters
+            % Store maximum likelihood estimates of transformation parameters
             Exflag(mm-init1+1,2)=exitflag;
             
             % Store value of the likelihood ratio for H0
