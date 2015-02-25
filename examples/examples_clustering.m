@@ -1,22 +1,21 @@
-%demoMixSim prepares connection with R and runs the examples contained in
-%the R MixSim library to check consistency of results.
+%examples_clustering shows a series of examples where a connection with R
+%is prepared and the examples contained in the R MixSim library are run, to
+%check consistency of results.
 
-% Description: MixSim allows simulating mixtures of Gaussian
-% distributions with different levels of overlap between mixture
-% components.  Pairwise overlap, defined as a sum of two
-% misclassification probabilities, measures the degree of
-% interaction between components and can be readily employed to
-% control the clustering complexity of datasets simulated from
-% mixtures. These datasets can then be used for systematic
-% performance investigation of clustering and finite mixture
-% modeling algorithms. 
+% Description: MixSim allows simulating mixtures of Gaussian distributions
+% with different levels of overlap between mixture components.  Pairwise
+% overlap, defined as a sum of two misclassification probabilities,
+% measures the degree of interaction between components and can be readily
+% employed to control the clustering complexity of datasets simulated in
+% each example.
 
-% Copyright 2008-2015. FSDA toolbox
+% Copyright 2008-2015.
+% Written by FSDA team
 
-% Last modified 06-Feb-2015
+% Last modified 25-Feb-2015
 
 %% Test main MixSim functions
-
+clearvars;close all;
 chkMatlab_With_R_connection=exist('openR','file');
 if chkMatlab_With_R_connection==0
     disp('Connection with R has not been setup yet')
@@ -45,7 +44,7 @@ disp(StdOmega);
 disp(rcMax);
 
 %% Example 1 of Section 3.1
-
+clearvars;close all;
 R_seed = 1234;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -54,7 +53,7 @@ end
 ex1 = MixSim(4, 5, 'BarOmega' , 0.05, 'MaxOmega' , 0.15, 'R_seed', R_seed);
 
 %% Example 2 of Section 3.1
-
+clearvars;close all;
 R_seed = 1234;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -63,7 +62,7 @@ end
 ex2 = MixSim(3, 2, 'MaxOmega' , 0.1, 'sph' , true, 'PiLow' , 0.1, 'R_seed', R_seed);
 
 %% Example 3 of Section 3.1
-
+clearvars;close all;
 R_seed = 1234;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -72,7 +71,7 @@ end
 ex3 = MixSim(2, 4, 'BarOmega' , 0.05, 'sph' , true, 'hom' , true,  'tol', [1e-10 1e-10], 'int', [0 10], 'R_seed', R_seed);
 
 %% Example for Section 3.2
-
+clearvars;close all;
 % iris data
 Y=load('ir.txt');
 p=size(Y,2);
@@ -93,7 +92,7 @@ S(:,:,3) = cov(Y(id==3,:));
 [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(K, p, Pi, Mu, S);
 
 %% Example 1 of Section 3.3 plot (a)
-
+clearvars;close all;
 R_seed = 1234;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -105,7 +104,7 @@ Q1a = MixSim(5, 2, 'MaxOmega' , 0.20, 'BarOmega' , 0.05, 'R_seed', R_seed);
 gscatter(A1a(:,1),A1a(:,2),id1a);
 
 %% Example 1 of Section 3.3 plot (b)
-
+clearvars;close all;
 R_seed = 1235;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -117,7 +116,7 @@ Q1b = MixSim(5, 2, 'MaxOmega' , 0.20, 'BarOmega' , 0.05, 'R_seed', R_seed);
 gscatter(A1b(:,1),A1b(:,2),id1b);
 
 %% Example 2 of Section 3.3 plot (b)
-
+clearvars;close all;
 R_seed = 1238;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -129,7 +128,7 @@ Q2 = MixSim(5, 2, 'MaxOmega' , 0.20, 'BarOmega' , 0.05, 'R_seed', R_seed);
 gscatter(A2(:,1), A2(:,2), id2);
 
 %% Example 2 of Section 3.3 plot (c)
-
+clearvars;close all;
 R_seed = 1238;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -141,7 +140,7 @@ Q3 = MixSim(3, 2, 'MaxOmega' , 0.1, 'int', [0.2 1], 'R_seed', R_seed);
 gscatter(A3(:,1), A3(:,2), id3);
 
 %% Example 2 of Section 3.3 plot (d)
-
+clearvars;close all;
 R_seed = 1238;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -153,7 +152,7 @@ Q4 = MixSim(3, 2, 'MaxOmega' , 0.1, 'int', [0.2 1], 'R_seed', R_seed);
 gscatter(A4(:,1) , A4(:,2), id4);
 
 %% Example 3 of Section 3.3 plot (a)
-
+clearvars;close all;
 R_seed = 1234;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -164,7 +163,7 @@ Q5 = MixSim(4, 2, 'BarOmega' , 0.01, 'R_seed', R_seed);
 gscatter(A5(:,1), A5(:,2), id5);
 
 %% Example 3 of Section 3.3 plot (b)
-
+clearvars;close all;
 R_seed = 1237;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -175,7 +174,7 @@ Q6 = MixSim(4, 2, 'BarOmega' , 0.01, 'R_seed', R_seed);
 gscatter(A6(:,1), A6(:,2), id6);
 
 %% Example 4 of Section 3.3 plot (c)
-
+clearvars;close all;
 R_seed = 1235;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -186,6 +185,7 @@ Q7 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
 % gscatter(A7(:,1), A7(:,2), id7);
 
 %% Example 4 of Section 3.3 plot (c) bis
+clearvars;close all;
 % Same as cell above but with all options for simdataset
 R_seed = 1235;
 if R_seed
@@ -205,7 +205,7 @@ gscatter(A7(:,1), A7(:,2), id7);
 
 
 %% Example 4 of Section 3.3 plot (d)
-
+clearvars;close all;
 R_seed = 1236;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -217,7 +217,7 @@ gscatter(A8(:,1), A8(:,2), id8);
 
 
 %% Example of Section 3.4 plot (a)
-
+clearvars;close all;
 % this cell demos the pdplot: not yet implemented
 
 % iris data
@@ -240,6 +240,7 @@ S(:,:,3) = cov(Y(id==3,:));
 %pdplot(Pi, Mu, S);
 
 %% Example of Section 3.4 plot (b)
+clearvars;close all;
 R_seed = 1234;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -250,7 +251,7 @@ Q9 = MixSim(6, 4, 'BarOmega' , 0.001, 'R_seed', R_seed);
 %pdplot(Q9.Pi, Q9.Mu, Q9.S);
 
 %% Example of Section 3.4 plot (c)
-
+clearvars;close all;
 R_seed = 1232;
 if R_seed
     [~] = evalR(['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')']);
@@ -262,7 +263,6 @@ Q10 = MixSim(6, 4, 'BarOmega' , 0.05, 'R_seed', R_seed);
 
 
 %% close connection with R
-
 if R_seed
     closeR;
 end

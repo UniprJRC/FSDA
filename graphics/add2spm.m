@@ -135,7 +135,7 @@ function add2spm(H,AX,BigAx,varargin)
     labels = (1:numel(get(H(1,end,end),'YData')))';
 
     % assign labels to the 'UserData' property of the last data group
-    set(H(:,:,end), 'UserData' , labels);
+    set(H(:,:,1), 'UserData' , labels);
 
     % try add2spm with 'labeladd' option set to '1'
     add2spm(H,AX,BigAx,'labeladd','1');

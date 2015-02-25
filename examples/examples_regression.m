@@ -5,6 +5,7 @@
 % Last modified 06-Feb-2015
 
 %% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
+% Interactive_example
 clearvars;close all;
 % scatterplot of data: one point looks outlying 
 load('forbes.txt');
@@ -35,6 +36,7 @@ resfwdplot(out,'databrush',databrush);
 
 
 %% FD (Forbes data) -- EDA and Analysis using S estimators 
+% Interactive_example
 % scatterplot of data: one point looks outlying 
 clearvars;close all;
 load('forbes.txt');
@@ -180,6 +182,7 @@ resfwdplot(out1,'standard',standard,'fground',fground,'bground',bground);
 
 
 %% MR (Multiple regression data): Forward EDA using personalized datatooltip
+% Interactive_example
 clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -197,6 +200,7 @@ datatooltip.SubsetLinesColor=[1 0 0];
 resfwdplot(out,'datatooltip',datatooltip)
 
 %% MR (Multiple regression data): Forward EDA using persistent brushing
+% Interactive_example
 clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -230,6 +234,7 @@ databrush.RemoveTool='on'; % Remove yellow selection after finishing brushing
 resfwdplot(out1,'fground',fground,'databrush',databrush);
 
 %% MR: Forward EDA persistent brushing with other options
+% Interactive_example
 clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -257,6 +262,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selection
 resfwdplot(out1,'fground',fground,'databrush',databrush);
 
 %% MR: Forward EDA persistent brushing with labels at specific steps (e.g. 15 and 20). 
+% Interactive_example
 clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -280,6 +286,7 @@ resfwdplot(out1,'fground',fground,'databrush',databrush);
 
 
 %% MR (Multiple regression data): S estimators with persistent brushing
+% Interactive_example
 clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -400,6 +407,7 @@ for j=3:size(Bols,2);
 end
 
 %%  HD: resfwdplot persistent brushing
+% Interactive_example
 clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
@@ -417,6 +425,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selection
 resfwdplot(out,'databrush',databrush);
 
 %%  HD: resfwdplot with persistent brushing and line fit resuperimposing
+% Interactive_example
 clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
@@ -513,6 +522,7 @@ mdrplot(out,'ylimy',[1 8],'datatooltip',1);
 
 %% HD: Example of dynamic brushing starting highlighting from the mdrplot 
 % (that is the plot of minimum deletion residual)
+% Interactive_example
 clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
@@ -531,6 +541,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selecting
 mdrplot(out,'ylimy',[1 8],'databrush',databrush);
 
 %% WD (Wool data): forward EDA with untransformed data
+% Interactive_example
 clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
@@ -548,6 +559,7 @@ resfwdplot(out,'databrush',databrush);
 
 
 %% WD (Wool data): analysis using S estimators and brushing
+% Interactive_example
 clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
@@ -572,6 +584,7 @@ X=wool(:,1:3);
 [outFSR]=FSR(log(y),X);
 
 %% WD: analysis using LTS
+% Interactive_example
 clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
@@ -583,6 +596,7 @@ resindexplot(out,'databrush',1,'conflev',conflev);
 
 
 %% WD: analysis using MM estimators and residual brushing
+% Interactive_example
 clearvars;close all;
 load('wool.txt','wool');
 y=wool(:,4);
@@ -615,6 +629,7 @@ resfwdplot(out1,'datatooltip',1)
 
 
 %% SD: Brush starting from the monitoring residuals plot
+% Interactive_example
 clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
@@ -726,6 +741,7 @@ X=hospital(:,1:4);
 mdrplot(out1,'quant',[0.01 0.5 0.99 0.9999 0.99999],'ylimy',[1 5],'lwdenv',2,'xlimx',[10 110]);
 
 %% SP: persistent brushing starting from the plot of minimum deletion residual
+% Interactive_example
 clearvars;close all;
 load('hospital.txt');
 y1=hospital(:,5);
@@ -854,6 +870,7 @@ yXplot(y,X,'nameX',nameX,'namey',namey);
 fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11)
 
 %% LD: dynamic brushing from the fan plot with dynamic brushing
+% Interactive_example
 clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
@@ -887,6 +904,7 @@ resfwdplot(out);
 mdrplot(out);
 
 %% LD: Interactive monitoring of the trajectories of scaled residuals
+% Interactive_example
 % using persistent brushing
 clearvars;close all;
 load('loyalty.txt');
@@ -993,6 +1011,7 @@ namey1='Sales^{0.4}';
 [outFS]=FSR(y1,X,'namey',namey1,'nameX',nameX);
 
 %% LD: analysis using S estimators and brushing
+% Interactive_example
 clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
@@ -1006,6 +1025,7 @@ namey1='Sales^{0.4}';
 resindexplot(out,'databrush',1,'nameX',nameX,'namey',namey1);
 
 %% LD: analysis using MM estimators and brushing
+% Interactive_example
 clearvars;close all;
 load('loyalty.txt');
 y=loyalty(:,4);
@@ -1049,6 +1069,7 @@ resfwdplot(out,'datatooltip',1,'tag','resfwdplot')
 
 %% SL: Interactive monitoring of the trajectories of scaled residuals using
 % persistent brushing
+% Interactive_example
 clearvars;close all;
 load('salinity.txt');
 y=salinity(:,4);
@@ -1104,6 +1125,7 @@ X=[(1:length(y))' ozone(:,1:8)];
 fieldnames(out)
 
 %% OD: forward analysis with residuals brushing
+% Interactive_example
 clearvars;close all;
 load('ozone.txt','ozone');
 y=ozone(:,9);
@@ -1157,6 +1179,7 @@ xlabel('Quantity (Tons)');
 ylabel('Values (Thousands of Euros)');
 
 %% FP: Dynamic brushing from the fan plot without persistent option
+% Interactive_example
 clearvars;close all;
 % Multiple trajectories can be selected
 lobyx=load('fishery.mat');

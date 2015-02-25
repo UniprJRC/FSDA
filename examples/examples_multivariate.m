@@ -138,6 +138,7 @@ set(h,'FontSize',14);
 
 
 %% HD persistent brushing from the malfwdplot (scaled distances)
+% Interactive_example;
 clearvars;close all;
 load('head.mat');
 Y=head.data;
@@ -858,6 +859,7 @@ Y=Y(1:100,:);
 [out]=FSM(Y);
 
 %% SB (genuine notes): brushing from mmdplot
+% Interactive_example
 clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
@@ -1074,6 +1076,7 @@ nsimul=100;
 
 mmdStore=zeros(n-init,nsimul);
 for j=1:nsimul
+    disp(num2str(j));
     mmd = FSMmmd(Y,0,'init',init);
     mmdStore(:,j)=mmd(:,2);
 end
@@ -1120,6 +1123,7 @@ ylabel('MM estimator')
 
 
 %% 6080 data
+% Interactive_example
 clearvars;close all;
 Y=load('sixty_eighty.txt');
 [fre]=unibiv(Y,'plots',1,'textlab',1,'rf',0.5);
@@ -1187,6 +1191,7 @@ ylabel('MM estimator')
 
 
 %% 3C 3 clusters 2 outliers
+% Interactive_example
 clearvars;close all;
 Y=load('three_clust_2outl.txt');
 [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
@@ -1237,6 +1242,7 @@ line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
 %% BD bridge data
+% Interactive_example
 clearvars;close all;
 Y=load('databri.txt');
 [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
@@ -1286,6 +1292,7 @@ xlabel('Subset size m');
 
 
 %% FD Financial data
+% Interactive_example
 clearvars;close all;
 Y=load('fondi.txt');
 [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
@@ -1360,6 +1367,7 @@ ylabel('MM estimator')
 
 
 %% DD Diabetes data
+% Interactive_example
 clearvars;close all;
 Y=load('diabetes.txt');
 [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
