@@ -51,7 +51,7 @@
 % Last modified 25-Feb-2015
 
 %% Generate 5 groups in 7 dimensions controlling average and maximum overlapping
-clearvars; close all;
+clearvars -except RandomDataFromR; close all;
 
 % RandomDataFromR is a boolean which enables to specify whether the random
 % numbers bust be generated directly from R (in this case the MATLAB R
@@ -98,7 +98,7 @@ disp('Indexes of the two groups producing the highest overlap')
 disp(Q.rcMax);
 
 %% Example 1 of Section 3.1 "MCM2012 JSS", 4 groups in 5 dimensions with prespecified average and maximum overlapping
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1234;
     
@@ -112,7 +112,7 @@ end
 ex1 = MixSim(4, 5, 'BarOmega' , 0.05, 'MaxOmega' , 0.15, 'R_seed', R_seed);
 
 %% Example 2 of Section 3.1, 3 spherical components in two dimensions and a control on mixture proportions
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1234;
     if R_seed
@@ -126,7 +126,7 @@ end
 ex2 = MixSim(3, 2, 'MaxOmega' , 0.1, 'sph' , true, 'PiLow' , 0.1, 'R_seed', R_seed);
 
 %% Example 3 of Section 3.1, 2 homogeneous spherical components in two dimensions
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1234;
     if R_seed
@@ -139,7 +139,7 @@ end
 ex3 = MixSim(2, 4, 'BarOmega' , 0.05, 'sph' , true, 'hom' , true,  'tol', [1e-10 1e-10], 'int', [0 10], 'R_seed', R_seed);
 
 %% Example for Section 3.2, analysis of degree of overlapping of Fisher Iris data
-close all;
+clearvars -except RandomDataFromR; close all;
 % iris data
 Y=load('ir.txt');
 p=size(Y,2);
@@ -160,7 +160,7 @@ S(:,:,3) = cov(Y(id==3,:));
 [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(K, p, Pi, Mu, S);
 
 %% Example 1 of Section 3.3 plot (a), 500 observations generated from 5 groups with prespecified maximum and average overlap
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1234;
     if R_seed
@@ -176,7 +176,7 @@ Q1a = MixSim(5, 2, 'MaxOmega' , 0.20, 'BarOmega' , 0.05, 'R_seed', R_seed);
 gscatter(A1a(:,1),A1a(:,2),id1a);
 
 %% Example 1 of Section 3.3 plot (b), 500 observations generated from 2 groups in two dimensions with prespecified maximum and average overlap
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1235;
     if R_seed
@@ -192,7 +192,7 @@ Q1b = MixSim(5, 2, 'MaxOmega' , 0.20, 'BarOmega' , 0.05, 'R_seed', R_seed);
 gscatter(A1b(:,1),A1b(:,2),id1b);
 
 %% Example 2 of Section 3.3 plot (b), 500 observations generated from 5 groups in two dimensions with prespecified maximum and average overlap
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1238;
     if R_seed
@@ -208,7 +208,7 @@ Q2 = MixSim(5, 2, 'MaxOmega' , 0.20, 'BarOmega' , 0.05, 'R_seed', R_seed);
 gscatter(A2(:,1), A2(:,2), id2);
 
 %% Example 2 of Section 3.3 plot (c), 300 observations in 2 dimensions with prespecififed max overlap, transformed using Box Cox
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1238;
     if R_seed
@@ -224,7 +224,7 @@ Q3 = MixSim(3, 2, 'MaxOmega' , 0.1, 'int', [0.2 1], 'R_seed', R_seed);
 gscatter(A3(:,1), A3(:,2), id3);
 
 %% Example 2 of Section 3.3 plot (d),  300 observations in 2 dimensions with prespecififed max overlap, transformed using Box Cox
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1238;
     if R_seed
@@ -240,7 +240,7 @@ Q4 = MixSim(3, 2, 'MaxOmega' , 0.1, 'int', [0.2 1], 'R_seed', R_seed);
 gscatter(A4(:,1) , A4(:,2), id4);
 
 %% Example 3 of Section 3.3 plot (a),  500 observations in 2 dimensions with prespecififed max overlap, transformed using Box Cox  + 10 outliers
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1234;
     if R_seed
@@ -255,7 +255,7 @@ Q5 = MixSim(4, 2, 'BarOmega' , 0.01, 'R_seed', R_seed);
 gscatter(A5(:,1), A5(:,2), id5);
 
 %% Example 3 of Section 3.3 plot (b),  500 observations in 2 dimensions with prespecififed average overlap + 10 outliers
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1237;
     if R_seed
@@ -270,7 +270,7 @@ Q6 = MixSim(4, 2, 'BarOmega' , 0.01, 'R_seed', R_seed);
 gscatter(A6(:,1), A6(:,2), id6);
 
 %% Example 4 of Section 3.3 plot (c),  300 observations in 1 dimension with prespecififed max overlap + 1 noise variable
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1235;
     if R_seed
@@ -285,7 +285,7 @@ Q7 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
 gscatter(A7(:,1), A7(:,2), id7);
 
 %% Example 4 of Section 3.3 plot (c) bis "MCM2012 JSS"
-close all;
+clearvars -except RandomDataFromR; close all;
 % Same as cell above but with all options for simdataset
 if RandomDataFromR == true
     R_seed = 1235;
@@ -309,7 +309,7 @@ gscatter(A7(:,1), A7(:,2), id7);
 
 
 %% Example 4 of Section 3.3 plot (d)  300 observations in 1 dimension with prespecififed max overlap + 1 noise variable
-close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1236;
     if R_seed
@@ -325,7 +325,7 @@ gscatter(A8(:,1), A8(:,2), id8);
 
 
 %% Example of Section 3.4 plot (a) "MCM2012 JSS"
-close all;
+clearvars -except RandomDataFromR; close all;
 % this cell demos the pdplot: not yet implemented
 
 % iris data
@@ -348,7 +348,7 @@ S(:,:,3) = cov(Y(id==3,:));
 %pdplot(Pi, Mu, S);
 
 %% Example of Section 3.4 plot (b), 6 groups in 4 dimensions with prespecified average overlap
-clearvars;close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1234;
     if R_seed
@@ -361,7 +361,7 @@ end
 Q9 = MixSim(6, 4, 'BarOmega' , 0.001, 'R_seed', R_seed);
 
 %% Example of Section 3.4 plot (c), 6 groups in 4 dimensions with prespecified average overlap
-clearvars;close all;
+clearvars -except RandomDataFromR; close all;
 if RandomDataFromR == true
     R_seed = 1232;
     if R_seed
@@ -394,7 +394,7 @@ end
 % minimum eigevalue among clusters so elliptical shape clusters are
 % allowed. In both cases the same random seed together with the same level
 % of average and maximum overlapping is used
-close all
+clearvars -except RandomDataFromR; close all;
 rng(2);
 out=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2, 'restrfactor',1.1);
 rng(2);
@@ -416,7 +416,7 @@ disp('Comparison using interactive scatter plot matrices')
 disp('Please click on the legends to hide/show groups')
 
 %% Generate clusters controlling average and standard deviation of overlap
-close all
+clearvars -except RandomDataFromR; close all;
 rng(10,'twister')
 k=4;
 v=5;
