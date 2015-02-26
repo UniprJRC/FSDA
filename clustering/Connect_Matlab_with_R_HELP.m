@@ -32,9 +32,9 @@
 %         When installing package rscproxy, take care to specify
 %         %R_HOME%/library as destination.
 %         For example, assuming that R has been installed in 
-%         D:\packages\packages\R-3.1.1
+%         C:\packages\packages\R-3.1.2
 %         library rscproxy can be installed from R using the instruction 
-%         install.packages("rscproxy",lib="D:/packages/R-3.1.1/library")
+%         install.packages("rscproxy",lib="C:/packages/R-3.1.2/library")
 %         Please, verify correct installation afterwards (open
 %         %R_HOME% in Windows Explorer and verify that rscproxy has been
 %         installed into %R_HOME%\library)!".
@@ -80,7 +80,7 @@
 %         previously installed in folder "C:\Program files". In this case it
 %         is necessary to reinstall R in a different folder without spaces.
 %
-%         It the problem persists it is necessary 
+%         If the problem persists it is necessary 
 %         to install statconnDCOM.latest.exe using administrator
 %         privileges in a path different from "C:\Program files" and not to use
 %         spaces in the path.

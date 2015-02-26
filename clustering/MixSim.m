@@ -247,21 +247,24 @@ function [out]  = MixSim(k,v,varargin)
 
     n=200;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-    spmplot(X,id,[],'box')
-    set(gca,'fontsize',18);
+    spmplot(X,id,[],'box');
     set(gcf,'Name','restrfactor=1.2: almost homogeneous groups')
     title('restrfactor=1.2: almost homogeneous groups','fontsize',18);
 
     [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
     figure;
     spmplot(X1,id1,[],'box')
-    set(gca,'fontsize',18);
     set(gcf,'Name','Heterogeneous groups')
     title('Heterogeneous groups','fontsize',18)
+    cascade
 %}
 
 %{
+    % Control of average and standard deviation of overlap. Given an
+    % average value of overlap, we explore the differences between imposing a
+    % small or a large value of standard deviation of overlap.
     clc
+    close all
     rng(10,'twister')
     k=4;
     v=5;
@@ -283,13 +286,14 @@ function [out]  = MixSim(k,v,varargin)
     disp(out1.OmegaMap)
 
     disp('Comparison using interactive scatter plot matrices')
-    spmplot(X,id,[],'box')
+    spmplot(X,id,[],'box');
     set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
     title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
     figure
-    spmplot(X1,id1,[],'box')
+    spmplot(X1,id1,[],'box');
     set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
     title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
+    cascade
 %}
 
 %% User options
