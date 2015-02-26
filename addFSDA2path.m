@@ -6,8 +6,6 @@ function addFSDA2path(FSDApath)
 %    FSDA:      A string containing the path which contains the root folder of FSDA toolbox
 %
 %
-%    REMARK: Remember to save the added folders to path in the MATLAB window
-%    set path, to be able to use FSDA in future sessions
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -46,4 +44,7 @@ else
         FSDApath '/clustering;' FSDApath '/datasets/clustering;' FSDApath '/FSDAdemos'];
 end
 path(addp,path);
+
+% Save current path for future sessions
+savepath
 end

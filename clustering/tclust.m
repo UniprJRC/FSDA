@@ -1378,9 +1378,13 @@ if plots==1;
         hpoints = setdiff(hall,hellipses,'sorted');
 %         hpoints=sort(hpoints,'ascend');
 %         clickableMultiLegend(hpoints,unique(id,'stable'));
-        
-         clickableMultiLegend(hpoints,{hpoints.DisplayName})
-        axis manual;
+
+%         In recent version it is possible to do without get as follows.
+%         However for compatibility reasons we use the old way
+%          clickableMultiLegend(hpoints,{hpoints.DisplayName})
+         clickableMultiLegend(hpoints,get(hpoints,'DisplayName'))
+
+         axis manual;
         
 %         axis equal
 %         iidx=unique(idx);

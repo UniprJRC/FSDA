@@ -50,7 +50,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMapv1(c, Pi, Mu, S, fix, 
 %
 % Last modified 06-Feb-2015
 %{
-    % COMPARE OLD AND NEW FUNCTION 
+    % COMPARE OLD AND NEW FUNCTION
     rng(65123,'twister');
     k=4; % Number of groups
     p=1; % Number of dimensions
@@ -147,14 +147,23 @@ while ii < k
         
         if s2i>s2j
             OmegaMap(ii,jj) = ncx2cdf(xij,1,deltaij);
-            OmegaMap(jj,ii)=ncx2cdf(xji,1,deltaji,'upper');
+            OmegaMap(jj,ii) = 1- ncx2cdf(xji,1,deltaji);
+            % Remark: the instruction which follows is a bit more accurate
+            % to compute upper tail probability however for compatibility
+            % reasons we use the old way
+            % OmegaMap(jj,ii) = ncx2cdf(xji,1,deltaji,'upper');
         elseif s2i == s2j
             
-            OmegaMap(ii,jj)=normcdf(-0.5*abs(mui-muj)/sqrt(s2i)+sqrt(s2i)*log(pij/pii)/abs(mui-muj));
-            OmegaMap(jj,ii)=normcdf(-0.5*abs(mui-muj)/sqrt(s2i)+sqrt(s2i)*log(pii/pij)/abs(mui-muj));
+            OmegaMap(ii,jj)= normcdf(-0.5*abs(mui-muj)/sqrt(s2i)+sqrt(s2i)*log(pij/pii)/abs(mui-muj));
+            OmegaMap(jj,ii)= normcdf(-0.5*abs(mui-muj)/sqrt(s2i)+sqrt(s2i)*log(pii/pij)/abs(mui-muj));
         else
-            OmegaMap(ii,jj) = ncx2cdf(xij,1,deltaij,'upper');
-            OmegaMap(jj,ii)=ncx2cdf(xji,1,deltaji);
+            % Remark: the instruction which follows is a bit more accurate
+            % to compute upper tail probability however for compatibility
+            % reasons we use the old way
+            % OmegaMap(ii,jj) = ncx2cdf(xij,1,deltaij,'upper');
+            
+            OmegaMap(ii,jj) = 1-ncx2cdf(xij,1,deltaij);
+            OmegaMap(jj,ii) = ncx2cdf(xji,1,deltaji);
         end
     else % use formulae for asymptotic overlap
         
@@ -180,13 +189,23 @@ while ii < k
                 % deflation process than use the usual formulae
                 if s2i>s2j
                     OmegaMap(ii,jj) = ncx2cdf(xij,1,deltaij);
-                    OmegaMap(jj,ii)=ncx2cdf(xji,1,deltaji,'upper');
+                    % Remark: the instruction which follows is a bit more accurate
+                    % to compute upper tail probability however for compatibility
+                    % reasons we use the old way
+                    %    OmegaMap(jj,ii)=ncx2cdf(xji,1,deltaji,'upper');
+                    
+                    OmegaMap(jj,ii)=1-ncx2cdf(xji,1,deltaji);
                 elseif s2i == s2j
                     
                     OmegaMap(ii,jj)=normcdf(-0.5*abs(mui-muj)/sqrt(s2i)+sqrt(s2i)*log(pij/pii)/abs(mui-muj));
                     OmegaMap(jj,ii)=normcdf(-0.5*abs(mui-muj)/sqrt(s2i)+sqrt(s2i)*log(pii/pij)/abs(mui-muj));
                 else
-                    OmegaMap(ii,jj) = ncx2cdf(xij,1,deltaij,'upper');
+                    % Remark: the instruction which follows is a bit more accurate
+                    % to compute upper tail probability however for compatibility
+                    % reasons we use the old way
+                    % OmegaMap(ii,jj) = ncx2cdf(xij,1,deltaij,'upper');
+                    
+                    OmegaMap(ii,jj) = 1 - ncx2cdf(xij,1,deltaij);
                     OmegaMap(jj,ii)=ncx2cdf(xji,1,deltaji);
                 end
                 
