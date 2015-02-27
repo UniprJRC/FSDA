@@ -201,7 +201,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:MMreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -210,7 +210,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:MMreg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 

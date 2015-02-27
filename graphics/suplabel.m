@@ -100,7 +100,7 @@ if nargin < 2
 end
 
 if ~ischar(text) || ~ischar(whichaxis)
-    error('text and whichLabel must be strings')
+    error('FSDA:suplabel:WrongInput','text and whichLabel must be strings')
 end
 whichaxis=lower(whichaxis);
 
@@ -145,7 +145,7 @@ elseif strcmp('yy',whichaxis) % Global y label (on the right(
     ylabel(text);
     set(ax,'YAxisLocation','right')
 else
-    error('String label must be any of ''x'', ''y'', ''yy'', or ''t''')
+    error('FSDA:suplabel:WrongInput','String label must be any of ''x'', ''y'', ''yy'', or ''t''')
 end
 
 for k=1:length(currax), 

@@ -97,7 +97,7 @@ function rhoHA = HArho(u, ctuning,varargin)
 if length(ctuning)>1,
     
     if ((ctuning(2) < 0) || (ctuning(3) < ctuning(2)) || (ctuning(4) < ctuning(3)))
-        error([' Illegal choice of parameters in Hampel: ' ...
+        error('FSDA:HArho:WrongAbc',[' Illegal choice of parameters in Hampel: ' ...
             num2str(ctuning(2:4)) ]')
     end
     a =  ctuning(2)*ctuning(1);

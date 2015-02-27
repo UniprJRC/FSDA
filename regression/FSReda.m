@@ -221,7 +221,7 @@ else
     
     % The first argument which is passed is y
     if nargin<1 || isempty(y)==1
-        error('Not enough input arguments.');
+        error('FSDA:FSReda:missingInputs','vector y is missing');
     end
     
     [m,q]=size(y);
@@ -231,19 +231,19 @@ else
         if m==1
             y=y';
         else
-            error('y is not one-dimensional.');
+            error('FSDA:FSReda:Wrongy','y is not one-dimensional.');
         end
     end
     
     
     % The second argument which is passed is X
     if nargin<2 || isempty(X)==1
-        error('Input matrix X not specified.');
+        error('FSDA:FSReda:missingInputs','Input matrix X not specified.');
     else
         % X must be a 2-dimensional array
         % (line below correspods to if ndims(X)>2)
         if ~ismatrix(X)
-            error('Invalid data set X.');
+            error('FSDA:FSReda:WrongX','X must be a matrix (2D array)');
         end
     end
     
@@ -251,7 +251,7 @@ else
     na.X=~isfinite(X*ones(size(X,2),1)); % na.X is a logical vector
     na.y=~isfinite(y);
     if size(na.X,1)~=size(na.y,1)
-        error('Number of observations in X and y not equal.');
+        error('FSDA:FSReda:WrongInputs','Number of observations in X and y not equal.');
     end
     
     % Observations with missing or infinite values are ommitted.
@@ -263,7 +263,7 @@ else
     n=length(y);
     
     if nargin<3
-        error('Initial subset is missing');
+        error('FSDA:FSReda:missingInputs','Initial subset is missing');
     end
     
     % Now check if the intercept has to be added
@@ -294,12 +294,12 @@ else
     p=size(X,2);
     
     if n < p
-        error(['Need more observations than variables: n=' int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
+        error('FSDA:FSReda:NsmallerP',['Need more observations than variables: n=' int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
     end
     
     rk=rank(X);
     if rk < p
-        error('Matrix X is singular');
+        error('FSDA:FSReda:NoFullRank','Matrix X is singular');
     end
 end
 
@@ -315,7 +315,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSReda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)

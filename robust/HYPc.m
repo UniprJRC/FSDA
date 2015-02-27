@@ -113,7 +113,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:HYPc:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -121,7 +121,7 @@ end
 
 
 if nargin<2
-    error('Initial value of p is missing');
+    error('FSDA:HYPc:missingInputs','Initial value of p is missing');
 end
 
 if nargin > 3

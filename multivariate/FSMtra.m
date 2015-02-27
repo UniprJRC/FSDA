@@ -475,7 +475,7 @@ seq=(1:n)';
 one=ones(n,1);
 
 if nargin<1
-    error('Initial data matrix is missing');
+    error('FSDA:FSMtra:missingInputs','Initial data matrix is missing');
 end
 
 hdef=floor(n*0.6);
@@ -488,7 +488,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSMtra:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -525,7 +525,7 @@ ColToTra=options.ColToTra;
 if isempty(ColToTra)
     ColToTra=(1:v);
 elseif max(ColToTra)>v || min(ColToTra)<1
-    error(['Error:: the columns to transform are not in the range. 1-' num2str(v)]);
+    error('FSDA:FSMtra:WorngColtToTra',['The columns to transform are not in the range. 1-' num2str(v)]);
 end
 
 ctra=length(ColToTra);
@@ -577,9 +577,9 @@ prolik=options.prolik;
 
 
 if length(la0) ~= length(ColToTra) && onelambda~=1
-    error('Error:: length of vector lambda must be equal the length of the vector which contains the columns to transform');
+    error('FSDA:FSMtra:WrongLambda','Length of vector lambda must be equal the length of the vector which contains the columns to transform');
 elseif onelambda==1 && length(la0)>1
-    error('Error:: onelambda=1 therefore lambda must a scalar');
+    error('FSDA:FSMtra:WrongLambda','onelambda=1 therefore lambda must a scalar');
 end
 
 if onelambda==1
@@ -613,7 +613,7 @@ if ~isempty(prolik)
         nr=5;
         nc=5;
     else
-        error('Error:: profile loglikelihood is required for more than 25 variables')
+        error('FSDA:FSMtra:TooManyVars','Profile loglikelihood can be displayed for not more than 25 variables')
     end
     
     if isstruct(prolik)
@@ -693,9 +693,9 @@ mala=[seq zeros(n,1)];
 
 
 if (rank(Ytr(bsb,:))<v)
-    warning('FSMtra:message','The supplied initial subset is not full rank matrix');
-    % FS loop will not be performed
-    % out=struct;
+    warning('FSDA:FSMtra:NoFullRank','The supplied initial subset is not full rank matrix');
+    disp('FS loop will not be performed')
+    out=struct;
 else
     
     for mm = ini0:n

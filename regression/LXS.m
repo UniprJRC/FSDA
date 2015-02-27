@@ -273,7 +273,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:LXS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -284,7 +284,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:LXS:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
@@ -296,7 +296,7 @@ if nargin > 2
     % Check whether the user has selected both h and bdp.
     chktrim=sum(strcmp(chklist,'h')+2*strcmp(chklist,'bdp'));
     if chktrim ==3
-        error('Both input arguments bdp and h are provided. Only one is required.')
+        error('FSDA:LXS:TooManyInputArgs','Both input arguments bdp and h are provided. Only one is required.')
     end
     
     % Write in structure 'options' the options chosen by the user
@@ -310,21 +310,21 @@ if nargin > 2
     % The user has only specified h: no need to specify bdp.
     if chktrim==1
         if options.h < hmin
-            error(['The LTS (LMS) must cover at least ' int2str(hmin) ' observations.'])
+            error('FSDA:LXS:Wrongh',['The LTS (LMS) must cover at least ' int2str(hmin) ' observations.'])
         elseif options.h >= n
-            error('h is greater or equal to the number of non-missings and non-infinites.')
+            error('FSDA:LXS:Wrongh','h is greater or equal to the number of non-missings and non-infinites.')
         end
         
         % the user has only specified bdp: h is defined accordingly
     elseif chktrim==2
         if options.bdp <= 0
-            error('Attention: bdp should be larger than 0');
+            error('FSDA:LXS:WrongBdp','Attention: bdp should be larger than 0');
         end
         
         nalpha=floor(n*(1-options.bdp));
         
         if nalpha <p+1
-            error(['Attention: the specified trimming proportion is too high.\n',...
+            error('FSDA:LXS:WrongAlpha',['Attention: the specified trimming proportion is too high.\n',...
                 'It is necessary to specify bdp in such way that n*(1-options.bdp)>=p+1.']);
         end
         options.h=nalpha;
@@ -337,7 +337,7 @@ if nargin > 2
          end
         options.nsamp=0;
     elseif  options.nsamp<0;
-        error('Number of subsets to extract must be 0 (all) or a positive number');
+        error('FSDA:LXS:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
 end
 
@@ -554,7 +554,7 @@ for i=1:nselected
 end
 
 if brob==-99;
-    error('No subset had full rank. Please increase the number of subsets or check your design matrix X')
+    error('FSDA:LXS:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
 else
 end
 

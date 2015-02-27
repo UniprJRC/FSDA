@@ -178,7 +178,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:Smult:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -318,7 +318,7 @@ for i = 1:nselected
     
 end
 if singsub==nsamp
-    error('No subset had full rank. Please increase the number of subsets or check your design matrix X')
+    error('FSDA:Smult:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
 end
 
 if singsub/nsamp>0.1;

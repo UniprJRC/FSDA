@@ -267,7 +267,7 @@ else % Input is at least a two dimensional array
             end
         end
     else
-        error('Not implemented for array of size greater than 3')
+        error('FSDA:zscoreFS:WrongInput','Not implemented for array of size greater than 3')
     end
 end
 
@@ -302,9 +302,9 @@ end
                     % beta = constant necessary to rescale the modified MAD
                     beta = norminv(0.5*(nb/n+1),0,1);
                 else
-                    warning('Modified MAD has been selected of a matrix which has a number of columns greater than half the number of rows')
-                    warning('Use simple MAD instead')
-                    error('Stop execution')
+                    disp('Modified MAD has been selected of a matrix which has a number of columns greater than half the number of rows')
+                    disp('Use simple MAD instead')
+                    error('FSDA:zscoreFS:WrongInput','Stop execution')
                 end
                 
             else % Simple MAD has been selected
@@ -345,7 +345,7 @@ end
         elseif strcmp(scale,'std')
             scaleest=std(x);
         else
-            error('Scale estimate can be Sn, Qn or std')
+            error('FSDA:zscoreFS:WrongScale','Scale estimate can be Sn, Qn or std')
         end
         
         z = bsxfun(@minus,x, locest);

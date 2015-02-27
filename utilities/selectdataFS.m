@@ -1285,7 +1285,7 @@ if isempty(par.Axes)
     par.Axes = gca;
 else
     if ~ishandle(par.Axes)
-        error 'Axes must be the handle to a valid set of axes.'
+        error('FSDA:selectdataFS:WrongHandle','Axes must be the handle to a valid set of axes')
     end
 end
 
@@ -1295,14 +1295,14 @@ if isempty(par.SelectionMode)
 else
     valid = {'rect', 'brush', 'lasso', 'closest'};
     if ~ischar(par.SelectionMode)
-        error 'Invalid Style: Must be character'
+        error('FSDA:selectdataFS:WrongStyle','Invalid Style: Must be character')
     end
     
     %ind = strmatch(lower(par.SelectionMode),valid);
     ind = find(strcmpi(par.SelectionMode,valid));
     
     if isempty(ind) || (length(ind)>1)
-        error(['Invalid SelectionMode: ',par.SelectionMode])
+        error('FSDA:selectdataFS:WrongSelection',['Invalid SelectionMode: ',par.SelectionMode])
     end
     par.SelectionMode = valid{ind};
 end
@@ -1313,13 +1313,13 @@ if isempty(par.BrushShape)
 else
     valid = {'rect', 'circle', 'vrect'};
     if ~ischar(par.BrushShape)
-        error 'Invalid Style: Must be character'
+        error('FSDA:selectdataFS:WrongStyle','Invalid Style: Must be character')
     end
     
     %ind = strmatch(lower(par.BrushShape),valid);
     ind = find(strcmpi(par.BrushShape,valid));
     if isempty(ind) || (length(ind)>1)
-        error(['Invalid SelectionMode: ',par.BrushShape])
+        error('FSDA:selectdataFS:WrongBrush',['Invalid SelectionMode: ',par.BrushShape])
     end
     par.BrushShape = valid{ind};
 end
@@ -1330,13 +1330,13 @@ if isempty(par.Action)
 else
     valid = {'list', 'delete'};
     if ~ischar(par.Action)
-        error 'Invalid Action: Must be character'
+        error('FSDA:selectdataFS:WrongAction','Invalid Action: Must be character')
     end
     
     %ind = strmatch(lower(par.Action),valid);
     ind = find(strcmpi(par.Action,valid));
     if isempty(ind) || (length(ind)>1)
-        error(['Invalid Action: ',par.Action])
+        error('FSDA:selectdataFS:WrongAction',['Invalid Action: ',par.Action])
     end
     par.Action = valid{ind};
 end
@@ -1350,7 +1350,7 @@ if ~isempty(par.Pointer)
         'custom', 'hand'};
     
     if ~ischar(par.Pointer)
-        error 'Invalid Pointer: Must be character'
+        error('FSDA:selectdataFS:WrongPointer', 'Invalid Pointer: Must be character')
     end
     
     %ind = strmatch(lower(par.Pointer),valid,'exact');
@@ -1359,7 +1359,7 @@ if ~isempty(par.Pointer)
         %ind = strmatch(lower(par.Pointer),valid);
         ind = find(strcmpi(par.Pointer,valid));
         if isempty(ind) || (length(ind)>1)
-            error(['Invalid Pointer: ',par.Pointer])
+            error('FSDA:selectdataFS:WrongPointer',['Invalid Pointer: ',par.Pointer])
         end
     end
     par.Pointer = valid{ind};
@@ -1371,13 +1371,13 @@ if isempty(par.Identify)
 else
     valid = {'on', 'off'};
     if ~ischar(par.Identify)
-        error 'Value for Identify is invalid: Must be character'
+        error('FSDA:selectdataFS:WrongIdentify','Value for Identify is invalid: Must be character')
     end
     
     %ind = strmatch(lower(par.Identify),valid);
     ind = find(strcmpi(par.Identify,valid));
     if isempty(ind) || (length(ind)>1)
-        error(['Invalid Action: ',par.Identify])
+        error('FSDA:selectdataFS:WrongAction',['Invalid Action: ',par.Identify])
     end
     par.Identify = valid{ind};
 end
@@ -1388,13 +1388,13 @@ if isempty(par.Label)
 else
     valid = {'on', 'off'};
     if ~ischar(par.Label)
-        error 'Value for Label is invalid: Must be character'
+        error('FSDA:selectdataFS:WrongLabel','Value for Label is invalid: Must be character')
     end
     
     %ind = strmatch(lower(par.Label),valid);
     ind = find(strcmpi(par.Label,valid));
     if isempty(ind) || (length(ind)>1)
-        error(['Invalid Action: ',par.Label])
+        error('FSDA:selectdataFS:WrongAction',['Invalid Action: ',par.Label])
     end
     par.Label = valid{ind};
 end
@@ -1405,13 +1405,13 @@ if isempty(par.Return)
 else
     valid = {'selected', 'unselected'};
     if ~ischar(par.Return)
-        error 'Value for Return is invalid: Must be character'
+        error('FSDA:selectdataFS:WrongReturn','Value for Return is invalid: Must be character')
     end
     
     %ind = strmatch(lower(par.Return),valid);
     ind = find(strcmpi(par.Return,valid));
     if isempty(ind) || (length(ind)>1)
-        error(['Invalid Action: ',par.Return])
+        error('FSDA:selectdataFS:WrongAction',['Invalid Action: ',par.Return])
     end
     par.Return = valid{ind};
 end
@@ -1422,13 +1422,13 @@ if isempty(par.Verify)
 else
     valid = {'on', 'off'};
     if ~ischar(par.Verify)
-        error 'Value for Verify is invalid: Must be character'
+        error('FSDA:selectdataFS:WrongVerify','Value for Verify is invalid: Must be character')
     end
     
     %ind = strmatch(lower(par.Verify),valid);
     ind = find(strcmpi(par.Verify,valid));
     if isempty(ind) || (length(ind)>1)
-        error(['Invalid Action: ',par.Verify])
+        error('FSDA:selectdataFS:WrongAction',['Invalid Action: ',par.Verify])
     end
     par.Verify = valid{ind};
 end
@@ -1438,7 +1438,7 @@ if isempty(par.BrushSize)
     par.BrushSize = 0.05;
 else
     if (length(par.BrushSize)>1) || (par.BrushSize<=0) || (par.BrushSize>par.MaxBrush)
-        error 'Brushsize must be scalar, and 0 < BrushSize <= 0.25'
+        error('FSDA:selectdataFS:BrushSize','Brushsize must be scalar, and 0 < BrushSize <= 0.25')
     end
 end
 
@@ -1450,14 +1450,14 @@ else
     %par.FlagSize=str2num(par.FlagSize);
     par.FlagSize=str2double(par.FlagSize);
     if (length(par.FlagSize)>1) || (par.FlagSize<=0)
-        error 'FlagSize must be scalar and >0'
+        error('FSDA:selectdataFS:WrongFlagSize','FlagSize must be scalar and >0')
     end
 end
 
 
 % Ignore == [] by default
 if ~isempty(par.Ignore) && any(~ishandle(par.Ignore))
-    error 'Ignore must be empty, or a data handle'
+    error('FSDA:selectdataFS:WrongIgnore','Ignore must be empty, or a data handle')
 end
 
 end % check_params
@@ -1526,7 +1526,7 @@ npv = length(pv_pairs);
 n = npv/2;
 
 if n~=floor(n)
-    error 'Property/value pairs must come in PAIRS.'
+        error('FSDA:selectdataFS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
 end
 if n<=0
     % just return the defaults
@@ -1534,7 +1534,7 @@ if n<=0
 end
 
 if ~isstruct(params)
-    error 'No structure for defaults was supplied'
+    error('FSDA:selectdataFSWrongParams','No structure for defaults was supplied')
 end
 
 % there was at least one pv pair. process any supplied
@@ -1549,9 +1549,9 @@ for i=1:n
     if isempty(ind)
         ind = find(strncmp(p_i,lpropnames,length(p_i)));
         if isempty(ind)
-            error(['No matching property found for: ',pv_pairs{2*i-1}])
+            error('FSDA:selectdataFS:WrongInput',['No matching property found for: ',pv_pairs{2*i-1}])
         elseif length(ind)>1
-            error(['Ambiguous property name: ',pv_pairs{2*i-1}])
+            error('FSDA:selectdataFS:WrongInput',['Ambiguous property name: ',pv_pairs{2*i-1}])
         end
     end
     p_i = propnames{ind};

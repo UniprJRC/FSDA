@@ -136,10 +136,10 @@ elseif ismatrix(A) && ~isscalar(A)
     [r,c]=size(A);
     sizeA=[r,c];
     if r ~= c
-        error('Input matrix must be square')
+        error('FSDA:triu2vec:WrongInput','Input matrix must be square')
     end
 else
-    error('Input must be a non negative integer or a square matrix')
+    error('FSDA:triu2vec:WrongInput','Input must be a non negative integer or a square matrix')
 end
 
 if nargin == 1 || rem(k,1) ~= 0 || k<0

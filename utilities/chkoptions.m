@@ -45,7 +45,7 @@ WrongOptions=UserOptions(inpchk==0);
 if ~isempty(WrongOptions)
     disp('-------------------------');
     disp(['Non existent user option found-> ' cellstr(WrongOptions)])
-    error('Error: in total %d non-existent user options found.', length(WrongOptions));
+    error('FSDA:chkoptions:WrongInputOpt','In total %d non-existent user options found.', length(WrongOptions));
 end
 
 end

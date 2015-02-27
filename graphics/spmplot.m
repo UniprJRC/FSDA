@@ -397,7 +397,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % spmplot(Y,group,plo,dispopt)
 
 if nargin<1
-    error('A required input argument is missing.')
+    error('FSDA:spmplot:missingInputs','A required input argument is missing.')
 end
 
 % Check if the first argument is a structure or not
@@ -481,7 +481,7 @@ if nargin>1
         
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:spmplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         
         % Check if all the specified optional arguments were present
@@ -492,7 +492,7 @@ if nargin>1
         WrongOptions=UserOptions(inpchk==0);
         if ~isempty(WrongOptions)
             disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-            error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+            error('FSDA:spmplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
         
         % Write in structure 'options' the options chosen by the user
@@ -547,7 +547,7 @@ if isstruct(plo)
         clr=plo.clr;
         
         if length(clr) ~= ngroups
-            warning('Number of colors which have been supplied is not equal to the number of groups')
+            warning('FSDA:spmplot:WrongNumColors','Number of colors which have been supplied is not equal to the number of groups')
             disp(['Number of groups =' num2str(ngroups)])
             disp(['Number of colors =' num2str(length(clr))])
             if length(clr)< ngroups
@@ -572,7 +572,7 @@ if isstruct(plo)
     if d>0 % && (ngroups == numel(plo.sym))
         sym=plo.sym;
         if length(sym) ~= ngroups
-            warning('Number of symbols which have been supplied is not equal to the number of groups')
+            warning('FSDA:spmplot:WrongNumSymb','Number of symbols which have been supplied is not equal to the number of groups')
             disp(['Number of groups =' num2str(ngroups)])
             disp(['Number of symbols =' num2str(length(sym))])
             if length(sym)< ngroups
@@ -605,7 +605,7 @@ if isstruct(plo)
 else
     
     if ischar(plo) && namevaluepairs==0
-        error('FSDA: Third argument must be a structure, or a scalar or an empty value []')
+        error('FSDA:spmplot:InvalidArg3',' Third argument must be a structure, or a scalar or an empty value []')
     end
     
     if plo==1
@@ -780,7 +780,7 @@ set(gcf,'CurrentAx',BigAx)
 
 % Also set Title and X/YLabel visibility to on and strings to empty
 set([get(BigAx,'Title'); get(BigAx,'XLabel'); get(BigAx,'YLabel')], ...
- 'String','','Visible','on')
+    'String','','Visible','on')
 
 
 % set the options.datatooltip (enable/disable interactive data cursor mode)

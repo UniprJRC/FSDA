@@ -106,7 +106,7 @@ else % Input is at least a two dimensional array
             end
         end
     else
-        error('Not implemented for array of size greater than 3')
+        error('FSDA:Qn:WrongInput','Not implemented for array of size greater than 3')
     end
 end
 
@@ -156,7 +156,7 @@ end
 
         switch n
             case 1
-                error('Sample size too small');
+                error('FSDA:Qn:TooSmalln','Sample size too small');
             case 2
                 dn=0.399;
             case 3

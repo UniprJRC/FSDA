@@ -107,7 +107,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
 
 
                 if (sum(sum(abs(y0-yD))))>10^-6  || (sum(sum(abs(y0-yI)))) >10^-6
-                   error('Difference in results: stop');
+                   error('FSDA:logmvnpdfFS:ShouldBeEq','Difference in results: stop');
                 end
 
             end
@@ -272,7 +272,7 @@ end
 % Take Choleski of Sigma
 [Sigma,err] = chol(Sigma);
 if err ~= 0
-    error(message('FSDA:logmvnpdfFS:BadMatrixSigma'));
+    error('FSDA:logmvnpdfFS:BadMatrixSigma','Cholesky of Sigma is impossible');
 end
 
 

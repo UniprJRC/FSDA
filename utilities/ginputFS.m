@@ -104,7 +104,7 @@ else
                 || size(how_many,1) ~= 1 || size(how_many,2) ~= 1 ...
                 || ~(fix(how_many) == how_many) ...
                 || how_many < 0
-            error('MATLAB:ginput:NeedPositiveInt', 'Requires a positive integer.')
+            error('FSDA:ginputFS:NeedPositiveInt', 'Requires a positive integer.')
         end
         if how_many == 0
         % FSDAmodif
@@ -117,7 +117,7 @@ else
             pt = [scrn_pt(1) - loc(1), scrn_pt(2) - loc(2)];
             out1 = pt(1); y = pt(2);
         elseif how_many < 0
-            error('MATLAB:ginput:InvalidArgument', 'Argument must be a positive integer.')
+            error('FSDA:ginputFS:InvalidArgument', 'Argument must be a positive integer.')
         end
         % FSDAmodifEnd
     end
@@ -164,10 +164,9 @@ else
             if(ishghandle(fig))
                 set(fig,'Units',fig_units);
                 uirestore(state);
-                error('MATLAB:ginput:Interrupted', 'Interrupted');
+                error('FSDA:ginputFS:Interrupted', 'Interrupted');
             else
                 % FSDAmodif
-                %error('MATLAB:ginput:FigureDeletionPause', 'Interrupted by figure deletion');
                 disp('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 disp('The figure you are interacting with has been deleted: PROCESS ENDED');
                 disp('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
@@ -183,7 +182,7 @@ else
         if ~isempty(figchildren)
             ptr_fig = figchildren(1);
         else
-            error('MATLAB:ginput:FigureUnavailable','No figure available to process a mouse/key event');
+            error('FSDA:ginputFS:FigureUnavailable','No figure available to process a mouse/key event');
         end
         %         old code -> ptr_fig = get(0,'CurrentFigure'); Fails when the
         %         clicked figure has handlevisibility set to callback
@@ -208,7 +207,7 @@ else
                 elseif strcmp(button,'alt')
                     button = 3;
                 else
-                    error('MATLAB:ginput:InvalidSelection', 'Invalid mouse selection.')
+                    error('FSDA:ginpuFSt:InvalidSelection', 'Invalid mouse selection.')
                 end
             end
             pt = get(gca, 'CurrentPoint');

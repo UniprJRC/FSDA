@@ -295,15 +295,15 @@ seq=(1:n)';
 one=ones(n,1);
 
 if nargin<1
-    error('Initial data matrix is missing');
+        error('FSDA:FSMfan:missingInputs','Initial data matrix is missing')
 end
 
 if nargin<2
-    error('Vector la0 is missing');
+    error('FSDA:FSMfan:missingInputs','Vector la0 is missing');
 end
 
 if length(la0)~=v
-    error(['Error:: length of vector la0 (length(la0)=' num2str(length(la0)) ') is not equal' ...
+    error('FSDA:FSMfan:WrongLambda',['length of vector la0 (length(la0)=' num2str(length(la0)) ') is not equal' ...
         ' to the number of variables of the dataset (size(Y,2)=' num2str(v) ')']);
 end
 
@@ -317,7 +317,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSMfan:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -358,7 +358,7 @@ ColToComp=options.ColToComp;
 if isempty(ColToComp)
     ColToComp=(1:v);
 elseif max(ColToComp)>v || min(ColToComp)<1
-    error(['Error:: the columns to test are not in the range. 1-' num2str(v)]);
+    error('FSDA:FSMfan:WrongColToComp',['The columns to test are not in the range. 1-' num2str(v)]);
 end
 
 % Ytr = matrix which contains Box Cox transformed values using la0

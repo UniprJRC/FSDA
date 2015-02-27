@@ -108,7 +108,7 @@ else % Input is at least a two dimensional array
             end
         end
     else
-        error('Not implemented for array of size greater than 3')
+        error('FSDA:Sn:WrongInput','Not implemented for array of size greater than 3')
     end
 end
 

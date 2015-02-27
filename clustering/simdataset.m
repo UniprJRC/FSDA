@@ -121,11 +121,11 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %% Beginning of code
 
 if (n < 1)
-    error('Wrong sample size n...')
+    error('FSDA:simdataset:Wrongn','Wrong sample size n...')
 end
 
 if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
-    error('Wrong vector of mixing proportions Pi..')
+    error('FSDA:simdataset:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
 end
 
 nnoisedef=0;
@@ -144,7 +144,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:simdataset:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -155,7 +155,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:simdataset:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
     % Write in structure 'options' the options chosen by the user
@@ -175,19 +175,19 @@ lambda=options.lambda;
 
 
 if (nnoise < 0)
-    error('Wrong value of nnoise')
+    error('FSDA:simdataset:Wrongnnoise','Wrong value of nnoise: it cannot be smaller than 0')
 end
 
 if (nout < 0)
-    error('Wrong value of nout...')
+    error('FSDA:simdataset:Wrongnout','Wrong value of nout: it cannot be smaller than 0')
 end
 
 if ((alpha >= 1) || (alpha <= 0))
-    error('wrong value of alpha')
+    error('FSDA:simdataset:WrongAlpha','Wrong value of alpha: it must be in the interval (0 1)')
 end
 
 if (maxiter < 1)
-    error('Wrong value for maximum number of iterations')
+    error('FSDA:simdataset:WrongMaxIter','Wrong value for maximum number of iterations: it cannot be <1')
 end
 
 [k,p]=size(Mu);
@@ -214,7 +214,7 @@ if (n >= k)
     % Nk contains the sizes of the clusters
     Nk = ones(1,k)+mrr;
 else
-    error('Sample size (n) cannot be less than the number of clusters')
+    error('FSDA:simdataset:Wrongn','Sample size (n) cannot be less than the number of clusters (k)')
 end
 
 X=zeros(n,p);
@@ -246,7 +246,7 @@ for j=1:k
         evalR(mvrnorms);
         Xab = getRdata('Xab');
         if isempty(Xab)
-            error('Could not load library(MASS) in R, please install it')
+            error('FSDA:simdataset:MissingRlibrary','Could not load library(MASS) in R, please install it')
         end
         X(a:b,:) = Xab;
     else
@@ -257,7 +257,7 @@ end
 if nout ~= 0
     [Xout, fail] = getOutliers(nout, Mu, S, alpha, maxiter,int);
     if fail == 1
-        warning(['Output matrix X will have just ' num2str(n) ...
+        warning('FSDA:simdataset:Modifiedn',['Output matrix X will have just ' num2str(n) ...
             ' rows and not ' num2str(n+nout)])
     else
         X =[X;Xout];
@@ -303,11 +303,11 @@ if ~isempty(lambda)
         for j=1:(p + nnoise)
             X(:,j) = (lambda(j) * X(:, j) + 1).^(1/lambda(j)) - 1;
             if (sum(isnan(X(:,j))) ~= 0)
-                warning('NaNs were produced during transformation')
+                warning('FSDA:simdataset:NaNs','NaNs were produced during transformation')
             end
         end
     else
-        error('The number of transformation coefficients lambda should be equal to ndimensions + nnoise')
+        error('FSDA:simdataset:WrongLambda','The number of transformation coefficients lambda should be equal to ndimensions + nnoise')
     end
 end
 %% Inner functions

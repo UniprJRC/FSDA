@@ -363,7 +363,7 @@ function [plot1]=yXplot(y,X,varargin)
 % end
 
 if nargin<1
-    error('A required input argument is missing.')
+    error('FSDA:yXplot:missingInputs','A required input argument is missing.')
 end
 
 % Check if the first argument is a structure or not
@@ -439,7 +439,7 @@ if nargin>2 || (nargin>1 && onlyyX==0)
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:tclust:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)
@@ -1018,7 +1018,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                                     %do nothing: no line is fit.
                                 end
                             else
-                                error('Valid values for option ''bivarfit'' are: '''', ''0'', ''1'', ''2'', ''i1'', ''i2'', ... , ''ig'', ... being ''g'' the index of a selected group.')
+                                error('FSDA:yXplot:WrongBivarfit','''Valid values for option ''bivarfit'' are: '''', ''0'', ''1'', ''2'', ''i1'', ''i2'', ... , ''ig'', ... being ''g'' the index of a selected group.')
                                 %do nothing: no line is fit
                             end
                     end

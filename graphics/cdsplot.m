@@ -136,14 +136,14 @@ function cdsplot(outms,varargin)
 %}
 
 if nargin < 1
-    error('FSDAtoolbox:cdsplot:missingInputs', ...
+    error('FSDA:cdsplot:missingInputs', ...
         'Missing input structure containing required arguments to compute cdsplot.')
 end
 
 stat=outms.stor;
 
 if size(stat,2)<8;
-    error('FSDAtoolbox:cdsplot:missingInputs', ...
+    error('FSDA:cdsplot:missingInputs', ...
         'Missing matrix containing: max, min, averages, or medians of Cp values.')
 end
 

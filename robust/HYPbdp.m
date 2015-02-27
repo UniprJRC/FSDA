@@ -109,7 +109,7 @@ function [c,A,B,d] = HYPbdp(bdp, ~,k,traceiter)
 
 if (nargin >2),
     if (k < 0) ,
-        error([' Illegal choice of parameters in hyperbolic tangent estimator: ' ...
+        error('FSDA:HYPbdp:WrongK',[' Illegal choice of parameters in hyperbolic tangent estimator: ' ...
             num2str(k) ]')
     end
 else

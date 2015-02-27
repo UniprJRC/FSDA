@@ -86,23 +86,21 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:rlga:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
     % in structure options
-    % Remark: the nocheck option has already been dealt by routine
-    % chkinputR
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:rlga:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
 if alpha<0.5 || alpha>1
-     error('Error:: alpha must be in [0.5, 1]');
+     error('FSDA:rlga:WrongAlpha','Error:: alpha must be in [0.5, 1]');
 end
 
 biter=options.biter;
@@ -159,7 +157,7 @@ end
 % Find the number of converged results
 nconverg = sum(outputs(n+1,:));
 if nconverg == 0
-    warning('LGA failed to converge for any iteration')
+    warning('FSDA:rlga:NoConvergence','rlga failed to converge for any iteration')
 end
 
 showall=options.showall;

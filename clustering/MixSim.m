@@ -300,15 +300,15 @@ function [out]  = MixSim(k,v,varargin)
 
 % Default
 if nargin<2;
-    error('k=number of components and v = number of dimensions must be specified');
+    error('FSDA:MixSim:Missingv','k=number of components and v = number of dimensions must be specified');
 end
 
 if (v < 1)
-    error('Wrong number of dimensions v')
+    error('FSDA:MixSim:Wrongv','Wrong number of dimensions v')
 end
 
 if k<=1
-    error('Wrong number of mixture components k')
+        error('FSDA:MixSim:Wrongk','Wrong number of mixture components k')
 end
 
 Rseeddef = 0;
@@ -332,7 +332,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:MixSim:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present in
@@ -341,7 +341,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:MixSim:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
@@ -404,7 +404,7 @@ if R_seed > 0
         disp('To ensure replicability of R examples contained in file demoMixSim.R');
         disp('i.e. to use R random number generators, first run openR');
         disp(['See instructions in file <a href="matlab:opentoline(''',examp1,''',5)">Connect_Matlab_with_R_HELP.m</a>']);
-        error('--------------------------');
+        error('FSDA:MixSim:NoRConn','--------------------------');
     end
     
     setseed = ['set.seed(' num2str(R_seed) ', kind=''Mersenne-Twister'', normal.kind = ''Inversion'')'];
@@ -412,35 +412,35 @@ if R_seed > 0
 end
 
 if ~islogical(sph)
-    error('Wrong value of sph')
+    error('FSDA:MixSim:Wrongsph','option sph must be a logical value')
 end
 
 if ~islogical(hom)
-    error('Wrong value of hom')
+    error('FSDA:MixSim:Wronghom','option hom must be a logical value')
 end
 
 if ecc <= 0 || ecc > 1
-    error('Wrong value of ecc')
+    error('FSDA:MixSim:Wrongecc','ecc must be a scalar in the interval (0 1]')
 end
 
 if PiLow < 0 || PiLow > 1
-    error('Wrong value of PiLow')
+    error('FSDA:MixSim:WrongPiLow','Option PiLow must be in interval [0 1]')
 end
 
 if int(1) >= int(2)
-    error('Wrong interval int')
+    error('FSDA:MixSim:Wrongint','Second element of int must be greater than first, that is: int(2) >int(1)')
 end
 
 if resN < 1
-    error('Wrong value of resN')
+    error('FSDA:MixSim:WrongresN','Number of resimulations cannot be smaller than 1')
 end
 
 if (min(options.tol) <= 0)
-    error('Wrong value of tolerance')
+    error('FSDA:MixSim:Wrongtol','Wrong value of tolerance, it must a scalar stricty greater than 0')
 end
 
 if lim < 1
-    error('Wrong value of lim')
+    error('FSDA:MixSim:Wronglim','Wrong value of lim, it cannot be smaller than 1')
 end
 
 if isempty(MaxOmega) && isempty(StdOmega)  && ~isempty(BarOmega)
@@ -501,13 +501,13 @@ elseif method ==3
         emax, tol, lim, resN, sph, hom, BarOmega, StdOmega, restrfactor, Display);
 elseif method ==4
     % In this case both MaxOmega, BarOmega and StdOmega have been specified
-    error('It is not possible to specify both MaxOmega, BarOmega and StdOmega at the same time')
+    error('FSDA:MixSim:TooManyConstr','It is not possible to specify both MaxOmega, BarOmega and StdOmega at the same time')
     
 elseif method~=-1
-    error('Should never enter here')
+    error('FSDA:MixSim:WrongMethod','Should never enter here')
 else
     % isempty(BarOmega) && isempty(MaxOmega)
-    error('At least one overlap characteristic between MaxOmega and BarOmega should be specified')
+    error('FSDA:MixSim:ConstrRequired','At least one overlap characteristic between MaxOmega and BarOmega should be specified')
 end
 
 out = Q;
@@ -754,8 +754,8 @@ out = Q;
         
         
         if isamp == resN
-            warning(['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
-            warning('Please increase the number of simulations allowed (option resN) or change the value of overlap');
+            warning('FSDA:MixSim:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+            warning('FSDA:MixSim:NsimulTooSmall','Please increase the number of simulations allowed (option resN) or change the value of overlap');
             fail = 1;
         end
         
@@ -860,7 +860,7 @@ out = Q;
             disp('Both conditions should hold:')
             disp('1. MaxOverlap > AverOverlap')
             disp('2.  MaxOverlap < AverOverlap * K (K - 1) / 2')
-            error('incorrect values of average and maximum overlaps...');
+            error('FSDA:MixSim:WrongOverlapSupplied','Incorrect values of average and maximum overlaps...');
             
         else
             
@@ -1123,8 +1123,8 @@ out = Q;
             end
             
             if isamp == resN && resN>1
-                warning(['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
-                warning('Increase the number of simulations allowed (option resN) or change the value of overlap');
+                warning('FSDA:MixSim:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+                warning('FSDA:MixSim:NsimulTooSmall','Increase the number of simulations allowed (option resN) or change the value of overlap');
                 
                 fail = 1;
                 
@@ -1216,7 +1216,7 @@ out = Q;
         %                  everything went well fail=0
         
         if k<=2
-            error('Average and std can be both set when k>2');
+            error('FSDA:MixSim:WrongOverlapSupplied','Average and std of overlap can be both set when k>2');
         end
         
         if nargin< 15
@@ -1582,8 +1582,8 @@ out = Q;
             end
         end
         if isamp == resN && resN>1
-            warning(['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
-            warning('Increase the number of simulations allowed (option resN) or change the value of overlap');
+                warning('FSDA:MixSim:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+                warning('FSDA:MixSim:NsimulTooSmall','Increase the number of simulations allowed (option resN) or change the value of overlap');
             
             fail = 1;
             
@@ -1654,7 +1654,7 @@ out = Q;
                 end
             end
             if (flag == 1)
-                warning('off','PiLow is too high... generated equal mixing proportions...');
+                warning('FSDA:MixSim:WrongPiLow','PiLow is too high... generated equal mixing proportions...');
                 Pigen=zeros(k,1)+1/k;
             end
         end

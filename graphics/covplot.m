@@ -276,7 +276,7 @@ options=struct('standard',standarddef,'fground',fgrounddef,'tag','pl_cov','datat
 %% Preliminary checks
 
 if nargin<1
-    error('A required input argument is missing.')
+    error('FSDA:covplot:missingInputs','A required input argument is missing.')
 end
 
 %get optional user options
@@ -285,7 +285,7 @@ if nargin>1
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:covplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)

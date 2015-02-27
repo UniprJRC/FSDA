@@ -337,7 +337,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -465,13 +465,10 @@ end
 
 
 if iter >=5
-    disp('No convergence')
-    disp('No convergence')
-    disp('No convergence')
     %     out.mdr = NaN;
     %     out.Un  = NaN;
     %     out.nout= NaN;
-         error('no convergence')
+         error('FSDA:FSR:NoConv','No convergence')
 end
 
 %% Call core function which computes exceedances to thresholds of mdr

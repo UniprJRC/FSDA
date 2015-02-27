@@ -192,7 +192,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %% Input parameters checking
 
 if nargin < 6
-    error('Some Bayesian input (beta0, R, tau0, n0) is missing');
+    error('FSDA:FSRBmdr:missingInputs','Some Bayesian input (beta0, R, tau0, n0) is missing');
 end
 
 nnargin=nargin;
@@ -231,7 +231,7 @@ if nargin > 7
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:FSRBmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)

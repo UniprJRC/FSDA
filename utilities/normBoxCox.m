@@ -10,11 +10,11 @@ function Ytra=normBoxCox(Y,ColtoTra,la)
 %               Rows of Y represent observations, and columns represent
 %               variables.
 %        la :   k x 1 vector containing set of transformation
-%               parameters for the k ColtoTra. 
+%               parameters for the k ColtoTra.
 %   ColToTra:   k x 1 integer vector specifying the variables which must be
 %               transformed. If it is missing and length(la)=v all
 %               variables are transformed
-%       
+%
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -42,15 +42,15 @@ function Ytra=normBoxCox(Y,ColtoTra,la)
 v=size(Y,2);
 
 if nargin<1
-    error('Initial data matrix is missing');
+    error('FSDA:normBoxCox:missingInputs','Input data matrix is missing');
 end
 
 if nargin<2
-     error('Vector ColtoTra which specifies which variables to transform is missing');
+    error('FSDA:normBoxCox:missingInputs','Vector ColtoTra which specifies which variables to transform is missing');
 end
 
 if nargin<3
-    error('Vector la which specifies how to transforme the variables is missing');
+    error('FSDA:normBoxCox:missingInputs','Vector la which specifies how to transforme the variables is missing');
 end
 
 if isempty(ColtoTra) && length(la)==v

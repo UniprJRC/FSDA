@@ -156,7 +156,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:regressHart:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -167,7 +167,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:regressHart:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
     % Write in structure 'options' the options chosen by the user
@@ -302,7 +302,7 @@ end
 
 % Display a warning if convergence has not been achieved
 if iter==maxiter && options.maxiter >1
-    warning('Maximum number of iteration has been reached without convergence')
+    warning('FSDA:regressHart:NoConvergence','Maximum number of iteration has been reached without convergence')
 end
 
 % Store results

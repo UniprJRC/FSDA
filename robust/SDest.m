@@ -359,7 +359,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:SDest:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -389,7 +389,7 @@ end
 % jpcorr Juan and Prieto correction
 jpcorr=options.jpcorr;
 if jpcorr-floor(jpcorr)>0
-    error('jpcorr must be an integer value [0, 1 2 ....]')
+    error('FSDA:SDest:WrongJpcorr','jpcorr must be an integer value [0, 1 2 ....]')
 end
 
 if jpcorr==0
@@ -614,8 +614,8 @@ for i = 1:nselected
             end
             newoutlvec = Qtildeabs/stdEst;
         else
-            warning('Supplied scale measure to standardize scaled projections is not in the list')
-            error('You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
+            warning('FSDA:SDest:WrongScale','Supplied scale measure to standardize scaled projections is not in the list')
+            error('FSDA:SDest:WrongScale','You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
         end
         
         if rstprojsave==1
@@ -940,8 +940,8 @@ if margin >0
                 end
                 newoutlvec = Qtildeabs/stdEst;
             else
-                warning('Supplied scale measure to standardize scaled projections is not in the list')
-                error('You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
+                warning('FSDA:SDest:WrongScale','Supplied scale measure to standardize scaled projections is not in the list')
+                error('FSDA:SDest:WrongScale','You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
             end
             
             %%%%%%%%%%%%%%%%%%%%%%%%%

@@ -322,14 +322,14 @@ options=struct('quant', quant,'exact',0,'sign',0,'mplus1',0,...
     'titl','','labx',labx,'laby',laby,'nameX','','namey','','label','');
 
 if nargin<1
-    error('A required input argument is missing.')
+    error('FSDA:mdrplot:missingInputs','A required input argument is missing.')
 end
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:mdrplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)

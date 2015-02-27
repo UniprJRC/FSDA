@@ -82,9 +82,10 @@ elseif nargin == 2
     with_intercept = varargin{2};
     if (with_intercept ~= 0) && (with_intercept ~= 1)
         with_intercept = 1;
-        warning('The intercept option can be either 0 or 1: it was set to 1 (default)');
+        warning('FSDA:olsline:WrongIntercept','The intercept option can be either 0 or 1: it was set to 1 (default)');
     end
-else error('Too many arguments. First argument: \n 0 to add a line for each group; \n an index i >= 1 to add a single ols line to group i.');
+else
+    error('FSDA:olsline:TooManyArgs','Too many arguments. First argument: \n 0 to add a line for each group; \n an index i >= 1 to add a single ols line to group i.');
 end
 
 % Find any line objects that are descendents of the axes.

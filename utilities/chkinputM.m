@@ -62,11 +62,11 @@ else
     
     % The second argument which is passed is X
     if nnargin<1 || isempty(X)
-        error('Input matrix X not specified.');
+        error('FSDA:chkinputM:missingInputs','Input matrix X not specified.');
         
         % X must be a 2-dimensional array
     elseif ~ismatrix(X)
-        error('Invalid data set X.');
+        error('FSDA:chkinputM:WrongX','Invalid data set X.');
     end
     
     % Check dimension consistency of X and y
@@ -88,13 +88,13 @@ else
     p=size(X,2);
     
     if n < p
-        error(['Need more observations than variables: n=' ...
+        error('FSDA:chkinputM:NSmallerP',['Need more observations than variables: n=' ...
             int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
     end
     
     rk = rank(X);
     if rk < p
-        error('Matrix X is singular');
+        error('FSDA:chkinputM:NoFullRank','Matrix X is singular');
     end
 end
 

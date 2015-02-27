@@ -67,7 +67,7 @@ else precision = 'int32';
 end
 
 if(m > n)
-    error('FStoolbox:combsFS:WrongInputNum', 'm > n !!');
+    error('FSDA:combsFS:WrongInputNum', 'm > n !!');
 elseif n == m
     P = v;
 elseif m == 1

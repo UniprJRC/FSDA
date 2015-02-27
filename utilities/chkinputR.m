@@ -73,12 +73,12 @@ else
     
     % The first argument which is passed is y
     if nnargin<1 || isempty(y)==1
-        error('Not enough input arguments.');
+                error('FSDA:chkinputR:missingInputs','Input vector y not specified.');
     end
     
     [m,q]=size(y);
     if min(m,q)>1
-        error('y is not one-dimensional.');
+        error('FSDA:chkinputR:Wrongy','y is not one-dimensional.');
     elseif q~=1
         
         % If y is a row vector it is transformed in a column vector
@@ -87,18 +87,18 @@ else
     
     % The second argument which is passed is X
     if nnargin<2  || isempty(X)
-        error('Input matrix X not specified.');
+      error('FSDA:chkinputR:missingInputs','Input matrix X not specified.');
         
     % X must be a 2-dimensional array
     elseif ~ismatrix(X)
-        error('Invalid data set X.');
+        error('FSDA:chkinputR:WrongX','Invalid data set X.');
     end
     
     % Check dimension consistency of X and y
     na.X=~isfinite(X*ones(size(X,2),1));
     na.y=~isfinite(y);
     if size(na.X,1)~=size(na.y,1)
-        error('Number of observations in X and y not equal.');
+        error('FSDA:chkinputR:NxDiffNy','Number of observations in X and y not equal.');
     end
     
     % Observations with missing or infinite values are removed from X and y
@@ -141,13 +141,13 @@ else
     p=size(X,2);
     
     if n < p
-        error(['Need more observations than variables: n=' ...
+        error('FSDA:chkinputR:NSmallerP',['Need more observations than variables: n=' ...
             int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
     end
     
     rk=rank(X);
     if rk < p
-        error('Matrix X is singular');
+        error('FSDA:chkinputR:NoFullRank','Matrix X is singular');
     end
 end
 

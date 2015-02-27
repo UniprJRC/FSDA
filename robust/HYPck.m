@@ -103,7 +103,7 @@ while max(abs([A-Anew,B-Bnew,dd-d]))>1e-8
         dinit=d;
     else
         
-        error('Solution for k is impossible: increase the value of k');
+        error('FSDA:HYPck:NoConvergence','Solution for k is impossible: increase the value of k');
         %         B=(2*normcdf(c)-1-2*c*normpdf(c))*rand(1,1);
         %         A=B*rand(1,1);
     end

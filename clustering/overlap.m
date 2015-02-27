@@ -87,7 +87,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %% Beginning of code
 
 if nargin<5
-    error('error: not all input terms have been supplied')
+    error('FSDA:overlap:MissingInput','Not all input terms have been supplied (5 input terms are needed)')
 end
 if nargin==6
     lim=1e06;

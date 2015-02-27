@@ -388,7 +388,7 @@ if nargin>4
                 disp('Please generate nsamp using')
                 disp('nsamp=subsets(number_desired_subsets,n,k) or')
                 disp('nsamp=subsets(number_desired_subsets,n,(v+1)*k)')
-                error('Wrong number of columns in matrix nsamp')
+                error('FSDA:tclust:WrongNsamp','Wrong number of columns in matrix nsamp')
             end
             NoPriorSubsets=0;
         else
@@ -468,7 +468,7 @@ end
 % h = number of observations which is used to compute the centroids
 
 if alpha<0
-    error('alpha must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
+    error('FSDA:tclust:WrongAlpha','alpha must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
 end
 
 if nargin<4
@@ -493,7 +493,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:tclust:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -504,8 +504,8 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
-    end
+        error('FSDA:tclust:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+   end
 end
 
 if nargin > 4
@@ -522,7 +522,7 @@ if nargin > 4
         disp('Number of subsets to extract greater than (n k). It is set to (n k)');
         options.nsamp=0;
     elseif  options.nsamp<0;
-        error('Number of subsets to extract must be 0 (all) or a positive number');
+        error('FSDA:tclust:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
     
     % Check restriction factor
@@ -558,8 +558,8 @@ msg=options.msg;            % Scalar which controls the messages displayed on th
 mixt=options.mixt;         % if options.mixt==1 mixture model is assumed
 
 if mixt>=1 && equalweights == 1
-    warning('options equalweights must be different from 1 if mixture model approach is assumed')
-    warning('options equalweights is reset to 0')
+    warning('FSDA:tclust:WrongEqualWeights','option equalweights must be different from 1 if mixture model approach is assumed')
+    warning('FSDA:tclust:WrongEqualWeights','options equalweights is reset to 0')
 end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
@@ -1305,14 +1305,14 @@ out.notconver=notconver;
 alp=alpha>0;
 if msg==1
     if size(siz,1)<k+alp;
-        warning('The total number of estimated clusters is smaller than the number supplied')
-        warning(['Number of supplied clusters =' num2str(k)])
-        warning(['Number of estimated clusters =' num2str(size(siz,1)-alp)])
+        disp(['Number of supplied clusters =' num2str(k)])
+        disp(['Number of estimated clusters =' num2str(size(siz,1)-alp)])
+        warning('FSDA:tclust:WrongKObtained','The total number of estimated clusters is smaller than the number supplied')
     end
 end
 
 if min(out.siz((1+alp):end,2)< n*0.02)
-    warning('FSDA:tclust','Clusters with size < n * 0.02 found - try reducing k')
+    warning('FSDA:tclust:TooSmallNj','Clusters with size < n * 0.02 found - try reducing k')
 end
 
 
@@ -1320,7 +1320,7 @@ end
 out.obj=vopt;
 
 if out.obj==-1e+25;
-    warning('FSDA:tclust','The result is artificially constrained due to restr.fact = 1')
+    warning('FSDA:tclust:NoConvergence','The result is artificially constrained due to restr.fact = 1')
 end
 
 

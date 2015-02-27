@@ -69,12 +69,6 @@ niterdef=10;
 options=struct('biter',biterdef,'niter',niterdef,'showall',false,...
     'stand',true,'nnode','','silent',false,'plots',1);
 
-% Write in structure 'options' the options chosen by the user
-for i=1:2:length(varargin);
-    options.(varargin{i})=varargin{i+1};
-end
-
-% Default value of p
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -82,19 +76,22 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:lga:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
     % in structure options
-    % Remark: the nocheck option has already been dealt by routine
-    % chkinputR
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:lga:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
+end
+
+% Write in structure 'options' the options chosen by the user
+for i=1:2:length(varargin);
+    options.(varargin{i})=varargin{i+1};
 end
 
 biter=options.biter;
@@ -151,7 +148,7 @@ end
 % Find the number of converged results
 nconverg = sum(outputs(n+1,:));
 if nconverg == 0
-    warning('LGA failed to converge for any iteration')
+    warning('FSDA:lga:NoConvergence','lga failed to converge for any iteration')
 end
 
 showall=options.showall;
@@ -261,7 +258,7 @@ end
     function outputsj=lgaiterate(hpcoef, xsc, k, d, n, niter)
         
         % give the function the inital set of hyperplanes (in hpcoef)
-        groups = lgadodist(xsc, hpcoef, k, d, n);
+        groups = lgadodist(xsc, hpcoef, d, n);
         iter = 0;
         tabgrs=tabulate(groups);
         if min(tabgrs(:,2)< d) || length(unique(groups)) < k
@@ -275,7 +272,7 @@ end
             for ii=1:k
                 hpcoef(ii,:) = lgaorthreg(xsc(groups==ii,:));
             end
-            groups = lgadodist(xsc, hpcoef, k, d, n);
+            groups = lgadodist(xsc, hpcoef, d, n);
             
             tabgrs=tabulate(groups);
             if min(tabgrs(:,2))< d || length(unique(groups)) < k
@@ -292,7 +289,7 @@ end
         
     end
 
-    function indmax=lgadodist(y, coeff, k, d, n)
+    function indmax=lgadodist(y, coeff, d, n)
         % This function calculates the (orthogonal) Residuals for different hyerplanes,
         % and returns the closest for each observation
         
@@ -338,7 +335,7 @@ end
         end
         if (sum(index) > 1)
             % In the incredibly unlikely situation....
-            warning('more than one unique solutions with identical ROSS -  returning first solution only')
+            warning('FSDA:lga:MultipleSolutions','More than one unique solutions with identical ROSS -  returning first solution only')
             [~,index]=max(index);
             
         end

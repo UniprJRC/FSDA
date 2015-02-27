@@ -239,7 +239,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %% Beginning of code
 % nargin number of input arguments
 if nargin<5
-    error('Some input elements are missing');
+    error('FSDA:regressB:missingInputs','A required input argument is missing.')
 end
 
 
@@ -258,7 +258,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:regressB:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)

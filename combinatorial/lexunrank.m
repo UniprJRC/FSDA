@@ -173,7 +173,7 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
 
 if 0
     if k >= n %#ok<UNRCH>
-        error('lexunrank: k must be < n');
+        error('FSDA:lexunrank:Wrongk','k must be < n');
     end
     
     % rank numbers range over the integers in [0 ncomb-1] (see combinatorial

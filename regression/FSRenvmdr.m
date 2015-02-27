@@ -99,11 +99,11 @@ end
 %% Input parameters checks
 
 if ~isscalar(n) || isempty(n) || isnan(n)
-    error('n must be scalar non empty and non missing!!');
+    error('FSDA:FSRenvmdr:missingInputs','n must be scalar non empty and non missing!!');
 end
 
 if ~isscalar(p) || isempty(n) || isnan(p)
-    error('p must be scalar non empty and non missing!!!');
+    error('FSDA:FSRenvmdr:missingInputs','p must be scalar non empty and non missing!!!');
 end
 
 if n<40
@@ -120,7 +120,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSRenvmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -137,7 +137,7 @@ exact=options.exact;
 
 % Check that the initial subset size is not greater than n-1
 if m0>n-1
-    error(['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
+    error('FSDA:FSRenvmdr:TooLargen',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
 end
 
 %% Envelopes generation
@@ -305,7 +305,7 @@ function F = tcdfFS(x,v)
 %
 
 if any(any(v<=0))
-    error('Degrees of freedom must be positive')
+    error('FSDA:FSRenvmdr:WrongDf','Degrees of freedom must be positive')
 end
 
 v = min(v,1000000); % make it converge and also accept Inf.
@@ -338,7 +338,7 @@ f = f./(x+c).^2.*c;
         %
         
         if any(any((v1<=0)|(v2<=0)))
-            error('Parameter v1 or v2 is nonpositive')
+            error('FSDA:FSRenvmdr:WrongV1OrV2','Parameter v1 or v2 is nonpositive')
         end
         
         I = find((x<0)|(x>1));
@@ -368,7 +368,7 @@ F = pbeta(x,v1./2,v2./2);
         %
         
         if any(any((v1<=0)|(v2<=0)))
-            error('Parameter v1 or v2 is non positive')
+            error('FSDA:FSRenvmdr:WrongV1OrV2','Parameter v1 or v2 is nonpositive')
         end
         
         % Il = find(x<=0);

@@ -126,11 +126,11 @@ MMDenv1=FSMenvmmd(10000,5,'exact',0);
 %% Input parameters checks
 
 if ~isscalar(n) || isempty(n) || isnan(n)
-    error('n must be scalar non empty and non missing!!');
+    error('FSDA:FSMenvmmd:Wrongn','n must be scalar non empty and non missing!!');
 end
 
 if ~isscalar(v) || isempty(n) || isnan(v)
-    error('v must be scalar non empty and non missing!!!');
+    error('FSDA:FSMenvmmd:Wrongv','v must be scalar non empty and non missing!!!');
 end
 
 inisearch=floor(n*0.6);
@@ -143,7 +143,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSMenvmmd:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -163,7 +163,7 @@ scaled=options.scaled;
 
 % Check that the initial subset size is not greater than n-1
 if m0>n-1
-    error(['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
+    error('FSDA:FSMenvmmd:WrongM0',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
 end
 
 %% Envelopes generation
@@ -299,7 +299,7 @@ f = f./(x+c).^2.*c;
         %
         
         if any(any((a<=0)|(b<=0)))
-            error('Parameter a or b is nonpositive')
+            error('FSDA:FSMenvmmd:WrongAorB','Parameter a or b is nonpositive')
         end
         
         I = find((x<0)|(x>1));
@@ -328,7 +328,7 @@ F = pbeta(x,a./2,b./2);
         %
         
         if any(any((a<=0)|(b<=0)))
-            error('Parameter a or b is nonpositive')
+            error('FSDA:FSMenvmmd:WrongAorB','Parameter a or b is nonpositive')
         end
         
         % Il = find(x<=0);

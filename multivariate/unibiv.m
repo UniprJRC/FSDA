@@ -124,7 +124,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:unibiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -266,7 +266,7 @@ for il=1:v;      % il is linked to the rows
                 Xs=(x-Tx)/(madcoef*madx);
             else
                 if robscale==1
-                    warning('Median is 0 therefore robut correlation is computed using ranks')
+                    warning('FSDA:unibiv:Median0','Median is 0 therefore robut correlation is computed using ranks')
                     robscale=2;
                 end
                 
@@ -274,9 +274,9 @@ for il=1:v;      % il is linked to the rows
                 if iqrx>0
                     madx=1.3490*iqrx/0.6745;
                     Xs=(x-Tx)/(madcoef*madx);
-                    warning('Interquartile range is used to scale the data')
+                    warning('FSDA:unibiv:IqrUsed','Interquartile range is used to scale the data')
                 else
-                    warning('Mean absolute deviation is used to scale the data')
+                    warning('FSDA:unibiv:MadUsed','Mean absolute deviation is used to scale the data')
                     madx=1.2533*mad(x)/0.6745;
                     Xs=(x-Tx)/(madcoef*madx);
                 end

@@ -216,7 +216,7 @@ if ~isempty(UserOptions)
     % And check if the optional user parameters are reasonable.
     
     if options.bdp <0 || options.bdp >0.5
-        error('bdp must be a number greater than 0 and smaller or equal than 0.5')
+        error('FSDA:mve:WrongBdp','bdp must be a number greater than 0 and smaller or equal than 0.5')
     end
     
     
@@ -225,7 +225,7 @@ if ~isempty(UserOptions)
         disp('Number of subsets to extract greater than (n v+1). It is set to (n  +1)');
         options.nsamp=0;
     elseif  options.nsamp<0;
-        error('Number of subsets to extract must be 0 (all) or a positive number');
+        error('FSDA:mve:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
 end
 
@@ -241,9 +241,9 @@ h=floor(2*floor((n+v+1)/2)-n+2*(n-floor((n+v+1)/2))*(1-bdp));
 hmin=floor(2*floor((n+v+1)/2)-n+2*(n-floor((n+v+1)/2))*(0.5));
 
 if h < hmin
-    error(['The MVE must cover at least ' int2str(hmin) ' observations.'])
+    error('FSDA:mve:Wrongh',['The MVE must cover at least ' int2str(hmin) ' observations.'])
 elseif h > n
-    error('h is greater than the number of non-missings and non-infinites.')
+    error('FSDA:mve:Wrongh','h is greater than the number of non-missings and non-infinites.')
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -400,7 +400,7 @@ for i=1:nselected
 end
 
 if volmin==Inf;
-    error('No subset had full rank. Please increase the number of subsets or check your design matrix X')
+    error('FSDA:mve:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
 else
 end
 

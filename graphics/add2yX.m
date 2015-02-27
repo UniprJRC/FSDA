@@ -56,7 +56,7 @@ if nargin>0
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:add2yX:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)
@@ -254,7 +254,7 @@ for i = 1:length(AX)
                     %do nothing: no line is fit.
                 end
             else
-                error('Valid values for option ''bivarfit'' are: '''', ''0'', ''1'', ''2'', ''i1'', ''i2'', ... , ''ig'', ... being ''g'' the index of a selected group.')
+                error('FSDA:add2yX:WrongBivarifit','Valid values for option ''bivarfit'' are: '''', ''0'', ''1'', ''2'', ''i1'', ''i2'', ... , ''ig'', ... being ''g'' the index of a selected group.')
                 %do nothing: no line is fit
             end
     end

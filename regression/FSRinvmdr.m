@@ -170,7 +170,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSRinvmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -185,11 +185,10 @@ end
 n=options.n;
 
 if ~isscalar(n) || isempty(n) || isnan(n)
-    error('n must be scalar non empty and non missing!!');
-end
+error('FSDA:FSRinvmdr:missingInputs','n must be scalar non empty and non missing!!');end
 
 if ~isscalar(p) || isempty(n) || isnan(p)
-    error('p must be scalar non empty and non missing!!!');
+    error('FSDA:FSRinvmdr:missingInputs','p must be scalar non empty and non missing!!!');
 end
 
 

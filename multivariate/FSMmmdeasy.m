@@ -110,14 +110,14 @@ hdef=floor(n*0.6);
 options=struct('init',hdef,'plots',0,'msg',1);
 
 if nargin<2
-    error('Initial subset is missing');
+        error('FSDA:FSMmmdeasy:missingInputs','Initial subset is missing')
 end
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSMmmdeasy:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -143,7 +143,7 @@ if bsb==0;
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSMmmd:message','Unable to randomly sample full rank matrix');
+        warning('FSDA:FSMmmd:NoFullRank','Unable to randomly sample full rank matrix');
     end
 else
 end
@@ -193,8 +193,8 @@ mmd=[(init1:n-1)' zeros(n-init1,1)];
 mala=[seq zeros(n,1)];
 
 if (rank(Y(bsb,:))<v)
-    warning('FSMmmd:message','The supplied initial subset is not full rank matrix');
-    warning('FS loop will not be performed')
+    warning('FSDA:FSMmmdeasy:NoFullRank','The supplied initial subset is not full rank matrix');
+    disp('FS loop will not be performed')
     mmd=NaN;
     Un=NaN;
     varargout={NaN};

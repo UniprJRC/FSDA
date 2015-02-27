@@ -175,15 +175,15 @@ function malindexplot(md,v,varargin)
 %% Initialization
 
 if nargin<1
-    error('To run this function a vector of Mahalanobis distances has to be supplied')
+        error('FSDA:malindexplot:missingInputs','To run this function a vector of Mahalanobis distances has to be supplied')
 end
 
 if nargin<2
-    error('To run this function the number of variables which have been used to construct md has to be supplied')
+     error('FSDA:malindexplot:missingInputs','To run this function the number of variables which have been used to construct md has to be supplied')
 end
 
 if ~isscalar(v) || isempty(v) || isnan(v)
-    error('v must be scalar non empty and non missing!!!');
+    error('FSDA:malindexplot:Wrongv','v must be scalar non empty and non missing!!!');
 end
 
 
@@ -211,7 +211,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:malindexplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)

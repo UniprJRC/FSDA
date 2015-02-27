@@ -688,7 +688,7 @@ options=struct(...
 %% User options
 
 if nargin<1
-    error('A required input argument is missing.')
+    error('FSDA:levfwdplot:missingInputs','A required input argument is missing.')
 end
 
 % Get optional user options
@@ -697,7 +697,7 @@ if nargin>1
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:levfwdplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)
@@ -1006,7 +1006,7 @@ if ~isempty(options.bground)
     bthresh=bground.bthresh;
 
     if ~isempty(bthresh) && ischar(bthresh)
-            error('Specify bthresh as a numeric vector');
+            error('FSDA:levfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
     else
         if length(bthresh)>1;
             units=seq(selmax>bthresh(2) | selmin<bthresh(1));

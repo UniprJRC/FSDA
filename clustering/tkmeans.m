@@ -216,7 +216,7 @@ end
 % h = number of observations which is used to compute the centroids
 
 if alpha<0 || alpha>0.5
-    error('alpha must a scalar in the interval [0 0.5]')
+    error('FSDA:tkmeans:WrongAlpha','alpha must a scalar in the interval [0 0.5]')
 end
 
 
@@ -232,7 +232,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:tkmeans:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -243,7 +243,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:tkmeans:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
@@ -261,7 +261,7 @@ if nargin > 2
         disp('Number of subsets to extract greater than (n k). It is set to (n k)');
         options.nsamp=0;
     elseif  options.nsamp<0;
-        error('Number of subsets to extract must be 0 (all) or a positive number');
+        error('FSDA:tkmeans:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
 end
 

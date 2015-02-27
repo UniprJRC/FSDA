@@ -86,11 +86,11 @@ function Bbound = FSMbonfbound(n,p,varargin)
 %% Input parameters checks
 
 if ~isscalar(n) || isempty(n) || isnan(n)
-    error('n must be scalar non empty and non missing!!');
+    error('FSDA:FSMbonfbound:Wrongn','n must be scalar non empty and non missing!!');
 end
 
 if ~isscalar(p) || isempty(n) || isnan(p)
-    error('p must be scalar non empty and non missing!!!');
+    error('FSDA:FSMbonfbound:Wrongp','p must be scalar non empty and non missing!!!');
 end
 
 % The default starting point to monitor mdr is equal to the integer part of
@@ -115,7 +115,7 @@ prob=options.prob;
 distrib=options.distrib;
 % Check that the initial subset size is not greater than n-1
 if m0>n-1
-    error(['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
+    error('FSDA:FSMbonfbound:WrongM0',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
 end
 
 %% Bonferroni bound generation

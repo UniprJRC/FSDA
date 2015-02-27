@@ -215,7 +215,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSRmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -223,7 +223,7 @@ end
 
 
 if nargin<3
-    error('Initial subset is missing');
+    error('FSDA:FSRmdr:missingInputs','Initial subset is missing');
 end
 %init1=options.init;
 if nargin > 3

@@ -143,14 +143,14 @@ hdef=floor(n*0.6);
 options=struct('init',hdef,'plots',0,'msg',1,'nocheck',0);
 
 if nargin<2
-    error('Initial subset is missing');
+        error('FSDA:FSMmmd:missingInputs','Initial subset is missing')
 end
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSMmmd:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -176,7 +176,7 @@ if bsb==0;
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSMmmd:message','Unable to randomly sample full rank matrix');
+        warning('FSDA:FSMmmd:NoFullRank','Unable to randomly sample full rank matrix');
     end
 else
 end
@@ -277,8 +277,8 @@ lunit=length(unit);
 % If the subset Y(bsb,:) is not full rank or a column is constant, then we
 % return as output an empty structure.
 if (rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0
-    warning('FSMmmd:message','The supplied initial subset is not full rank matrix');
-    warning('FS loop will not be performed')
+    warning('FSMmmd:NoFullRank','The supplied initial subset is not full rank matrix');
+    disp('FS loop will not be performed')
     mmd=NaN;
     Un=NaN;
     varargout={NaN};
@@ -406,8 +406,8 @@ else
                 [~,R]=qr(Ym(bsb,:),0);
             end
             if sum(isinf(S(:)))>0
-                warning('FSMmmd:message',['Subset at step mm= ' num2str(mm) ' is not full rank matrix']);
-                warning('FS loop will not be performed')
+                warning('FSDA:FSMmmd:NoFullRank',['Subset at step mm= ' num2str(mm) ' is not full rank matrix']);
+                disp('FS loop will not be performed')
                 
                 mmd=NaN;
                 Un=NaN;

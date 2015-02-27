@@ -77,7 +77,7 @@ vvarargin=varargin;
 
 % Add the extra check on vector y
 if min(y)<0
-    error('Score test cannot be computed because min(y) is smaller than 0')
+    error('FSDA:Score:ynegative','Score test cannot be computed because min(y) is smaller than 0')
 end
 
 options=struct('Lik',0,'la',[-1 -0.5 0 0.5 1],'nocheck',0,'intercept',0);
@@ -86,7 +86,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:Score:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)

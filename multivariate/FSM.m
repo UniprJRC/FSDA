@@ -280,7 +280,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSM:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -325,7 +325,7 @@ else
     elseif strcmp(crit,'uni')==1
         fre=sortrows(fre,[2 4]);
     else
-        error('Error:: supplied options to initialize the search does not exist.');
+        error('FSDA:FSM:WrongInputOpt','Supplied options to initialize the search does not exist. crit must be ''md'' ''biv'' or ''uni''');
     end
     
     % initial subset
@@ -402,7 +402,7 @@ istep = n-floor(13*sqrt(n/200));
 %% Part 1. Signal detection and validation
 nmmd=size(mmd,1);
 if nmmd<4
-    error('ratio n/v too small; modify init (i.e. decrease initial subset size)')
+    error('FSDA:FSM:WrongRationv','ratio n/v too small; modify init (i.e. decrease initial subset size)')
 end
 signal=0;
 sto=0;

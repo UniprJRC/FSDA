@@ -177,25 +177,26 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %% Beginning of code
 
 if nargin <2
-    error('n and/or p are missing')
+        error('FSDA:RobRegrSize:missingInputs','n and/or p are missing');
+
 else
     if p>20
-        warning('The number of variables is too large to produce reliable estimates')
+        warning('FSDA:RobRegrSize:Wrongp','The number of variables is too large to produce reliable estimates')
     end
     
     if n<50 || n>500
         if n<50
-            error('Correction factors have been estimated for n in the range [50 500]')
+            error('FSDA:RobRegrSize:Wrongn','Correction factors have been estimated for n in the range [50 500]')
         end
         
         if n>500 && p<=10
             disp('Correction factors are not needed for n greater than 500')
-            error('Please use the nominal chi2 threshold')
+            error('FSDA:RobRegrSize:Wrongn','Please use the nominal chi2 threshold')
         end
         
         if n>500 && p>10
-            warning('Simulations have been done for n in the range [50 500] and p<=10')
-            warning('The resulting interpolated factors may produce a conservative test')
+            warninging('FSDA:RobRegrSize:Wrongn','Simulations have been done for n in the range [50 500] and p<=10')
+            warning('FSDA:RobRegrSize:Wrongn','The resulting interpolated factors may produce a conservative test')
             n=500;
         end
         
@@ -223,14 +224,14 @@ else
     robestchk={'LTS','LTSr','S','MM'};
     if sum(strcmp(robest,robestchk)) ~= 1
         disp('Supplied estimator is not in the list of the estimators which have been considered')
-        error('Estimators considered are LTS, LTSr (LTS reweighted) S and MM')
+        error('FSDA:RobRegrSize:WrongEstimator','Estimators considered are LTS, LTSr (LTS reweighted) S and MM')
     end
 end
 
 % Check
    if (strcmp(robest,'LTS') || strcmp(robest,'LTSr')) && ~isempty(rhofunc) 
-       warning('Robust estimator which has been chosen is of the LTS form')
-       warning('Therefore rho function is set to empty')
+       warning('FSDA:RobRegrSize:WrongEstimator','Robust estimator which has been chosen is of the LTS form')
+       warning('FSDA:RobRegrSize:WrongEstimator','Therefore rho function is set to empty')
        rhofunc='';
    end     
 
@@ -243,7 +244,7 @@ else
         if sum(strcmp(rhofunc,rhofuncchk)) ~= 1
             disp('rho function which has been supplied is not in the list of rho functions which have been considered')
             disp('rho functions considered are')
-            error('TB=tukey biweight, OP=optimal, HA=Hampel, HY=hyperbolic')
+            error('FSDA:RobRegrSize:WrongRho','TB=tukey biweight, OP=optimal, HA=Hampel, HY=hyperbolic')
         end
     end
 end
@@ -254,7 +255,7 @@ if nargin<5 || isempty(bdp)
 else
     
     if bdp>0.5
-        error('bdp must be a number in the interval [0+epsilon-0.5]')
+        error('FSDA:RobRegrSize:WrongBdp','bdp must be a number in the interval [0+epsilon-0.5]')
     end
     
     if Tallis==1
@@ -279,9 +280,9 @@ else
         end
     else
          if bdp<0.25
-            warning('Simulations have been done for bdp=.25 and bdp=0.5')
-            warning('The resulting interpolated factors may produce a conservative test')
-            warning('Please use input option Tallis if you want to use a recalibrated threshold')
+            disp('Simulations have been done for bdp=.25 and bdp=0.5')
+            disp('The resulting interpolated factors may produce a conservative test')
+            warning('FSDA:RobRegrSize:WrongBdp','Please use input option Tallis if you want to use a recalibrated threshold')
          end
 
         corr=1;
@@ -292,7 +293,7 @@ end
 if nargin<6 || isempty(eff)
     eff=0.90;
     if eff<0.6 || eff>=1
-        error('eff must be a number in the interval [0.6-(1-epsilon)]')
+        error('FSDA:RobRegrSize:WrongEff','eff must be a number in the interval [0.6-(1-epsilon)]')
     end
 end
 
