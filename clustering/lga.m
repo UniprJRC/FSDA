@@ -6,7 +6,7 @@ function out = lga(X,k,varargin)
 %
 %  Required input arguments:
 %
-%      X    : scalar defining breakdown point (i.e a number between 0 and 0.5)
+%       X   : scalar defining breakdown point (i.e a number between 0 and 0.5)
 %       k   : scalar number of clusters
 %
 %  Optional input arguments:
@@ -27,15 +27,15 @@ function out = lga(X,k,varargin)
 %
 %  The output consists of a structure 'out' containing the following fields:
 %
-%            out.cluster  : vector containing the cluster memberships.
-%              out.ROSS   : the Residual Orthogonal Sum of Squares for the solution.
+%             out.cluster : vector containing the cluster memberships.
+%                out.ROSS : the Residual Orthogonal Sum of Squares for the solution.
 %           out.converged : logical. True if at least one solution has converged.
-%          out.nconverg   : the number of converged solutions (out of biter starts).
-%           out.x	      : the (scaled if selected) dataset.
-%          out.scaled     : logical. Is the data scaled?
-%          out.k          : the number of clusters to be found.
-%           out.biter     : the biter setting used.
-%           out.niter	  : the niter setting used.
+%            out.nconverg : the number of converged solutions (out of biter starts).
+%                   out.x : the (scaled if selected) dataset.
+%              out.scaled : logical. Is the data scaled?
+%                   out.k : the number of clusters to be found.
+%               out.biter : the biter setting used.
+%               out.niter : the niter setting used.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -44,7 +44,7 @@ function out = lga(X,k,varargin)
 %<a href="matlab: docsearchFS('lga')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
-
+%
 %
 % Examples:
 %
@@ -57,7 +57,6 @@ function out = lga(X,k,varargin)
 
 %% Beginning of code
 
-
 [n,d]=size(X);
 
 n1= ceil(n/k);
@@ -69,14 +68,12 @@ niterdef=10;
 options=struct('biter',biterdef,'niter',niterdef,'showall',false,...
     'stand',true,'nnode','','silent',false,'plots',1);
 
-
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
-    
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:lga:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:lga:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -118,15 +115,14 @@ hpcoef=zeros(k,d+1,biter);
 for j=1:biter
     % Choose starting clusters
     clindex=reshape(randsample(1:n,k*d),k,d);
-%     clindex(1,:)=[191 185];
-%     clindex(2,:)=[51, 27];
-%     clindex(3,:)=[8, 35];
+    %     clindex(1,:)=[191 185];
+    %     clindex(2,:)=[51, 27];
+    %     clindex(3,:)=[8, 35];
     
     for i=1:k
         hpcoef(i,:,j)=lgaorthreg(X(clindex(i,:),:));
     end
 end
-
 
 % nnode = an integer of many CPUS to use for parallel processing. Defaults
 % to NULL i.e. no parallel processing.
@@ -140,7 +136,8 @@ for j=1:biter
     outputs(:,j)=lgaiterate(hpcoef(:,:,j),X, k, d, n, niter);
 end
 % else
-%     % parallel
+%
+%     % parallel code to be introduced
 %
 % end
 
@@ -148,7 +145,7 @@ end
 % Find the number of converged results
 nconverg = sum(outputs(n+1,:));
 if nconverg == 0
-    warning('FSDA:lga:NoConvergence','lga failed to converge for any iteration')
+    warning('FSDA:lga:NoConvergence','lga failed to converge for any iteration');
 end
 
 showall=options.showall;
@@ -156,7 +153,6 @@ showall=options.showall;
 if ~showall
     % remove any columns of matrix outputs which contains NAs
     outputs = outputs(:, sum(isnan(outputs))==0);
-    
     
     if (nconverg ~= 0)
         outputs = outputs(:,outputs(n+1,:)==1);
@@ -166,18 +162,15 @@ if ~showall
     % associated to the first minimum
     [~,minoutindcol]=min(outputs(n+2,:));
     outputs=outputs(:,minoutindcol);
-    
-    
-    % In the instruction below we check whether there is more than one
-    % minimum
+      
+    % Below we check whether there is more than one minimum
     %{
-    minout=min(outputs(n+2,:));
-    minoutindcol=outputs(n+2,:)==minout;
-    outputs = outputs(:,minoutindcol);
-    
-    if size(outputs,2) > 1
-        outputs = lgaCheckUnique(outputs);
-    end
+        minout=min(outputs(n+2,:));
+        minoutindcol=outputs(n+2,:)==minout;
+        outputs = outputs(:,minoutindcol);
+        if size(outputs,2) > 1
+            outputs = lgaCheckUnique(outputs);
+        end
     %}
     
 end
@@ -191,7 +184,6 @@ if showall
     ROSS = outputs(n+2,:);
     hp =nan;
 else
-    
     
     % Fit the best hyerplane(s) with ROSS
     hp =nan(k,d+1);
@@ -210,35 +202,30 @@ out.nconverg=nconverg;
 out.X=X;
 out.hpcoeff=hp;
 
-
 out.biter=biter;
 out.niter=niter;
 out.scaled=stand;
 out.k=k;
 out.class='lga';
 
-
 plots=options.plots;
 
 if plots
     if d==2
-        
         % spmplot(X,cluster)
-        gscatter(X(:,1),X(:,2),out.cluster)
+        gscatter(X(:,1),X(:,2),out.cluster);
         v=axis';
-        hold('on')
+        hold('on');
         for i=1:k
             a= hp(i, 3)/hp(i, 2);
             b= -hp(i, 1)/hp(i, 2);
-            plot(v(1:2),a+b*v(1:2))
+            plot(v(1:2),a+b*v(1:2));
         end
     else
-        spmplot(X,out.cluster)
-        
+        spmplot(X,out.cluster);
     end
     
 end
-
 
     function yorthreg=lgaorthreg(X)
         % Perform orthogonal regression.
@@ -253,7 +240,6 @@ end
         % emat <- svd(y)$v[,dim(y)[2]]
         % return(c(emat, emat %*% attr(y, 'scaled:center')))
     end
-
 
     function outputsj=lgaiterate(hpcoef, xsc, k, d, n, niter)
         
@@ -303,20 +289,19 @@ end
         z = bsxfun(@minus,xsc *(hpcoef(:,1:d)'), hpcoef(:,d+1)');
         dist = z.^2;
         
-        % modo alternativo per estrarre gli elementi di dist
         seq=(1:n)';
-        % dist(sub2ind(size(dist), indici(:,1), indici(:,2)))
-        
-        %         indici=[(1:n)' groups];
-        %    dist((indici(:,2)-1) * size(dist,1) + indici(:,1))
-        
-        %dist((groups-1) * n + seq)
-        
         ROSS=sum(dist((groups-1) * n + seq));
+        
+        % Next lines are alternative ways to extract the elements of dist
+        % dist(sub2ind(size(dist), indici(:,1), indici(:,2)))
+        % indici=[(1:n)' groups];
+        % dist((indici(:,2)-1) * size(dist,1) + indici(:,1))
+        % dist((groups-1) * n + seq)
     end
 
 
     function xbest=lgaCheckUnique(x)
+        % function used above to check whether there is more than one minimum
         function zfin=CheckUniqueRand (z)
             zfin=sum(sum(z.^2))-0.5*(sum((sum(z,2)').^2)+ sum((sum(z,1)').^2));
         end
@@ -337,7 +322,6 @@ end
             % In the incredibly unlikely situation....
             warning('FSDA:lga:MultipleSolutions','More than one unique solutions with identical ROSS -  returning first solution only')
             [~,index]=max(index);
-            
         end
         
         xbest=x(:,index);
