@@ -61,7 +61,7 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
     % in tclustreg: this needs to be addressed
     X=X+0.000001*randn(677,2);
     out=lga(X,3);
-    out=tclustreg(X,3,5,0.1,0.1,'intercept',0);
+    out=tclustreg(X,3,5,0.01,0.01,'intercept',0);
 %}
 %
 
