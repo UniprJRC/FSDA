@@ -238,9 +238,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 
 % Examples:
 
-%
-
-
 %{
     % tclust using geyser data
     Y=load('geyser2.txt');
@@ -277,18 +274,14 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     %    v <- runif (100, -2 * pi, 2 * pi)
     %    noise <- cbind (100 + 25 * sin (v), 10 + 5 * v)
     %
-    %
     %    x <- rbind (
     %        rmvnorm (360, c (0.0,  0), matrix (c (1,  0,  0, 1), ncol = 2)),
     %        rmvnorm (540, c (5.0, 10), matrix (c (6, -2, -2, 6), ncol = 2)),
     %        noise)
 
-
-    %
     Y=load('structurednoise.txt');
     out=tclust(Y(:,1:2),2,0.1,100,'plots',1)
     out=tclust(Y(:,1:2),5,0.15,1,'plots',1)
-
 %}
 
 %{
@@ -299,8 +292,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     %                rmvnorm (540, c (  5, 10), matrix (c (6, -2, -2,  6), ncol = 2)),
     %                rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))
 
-
-    %
     Y=load('mixture100.txt');
     out=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)
     out=tclust(Y(:,1:2),3,0.05,1,'refsteps',20,'plots',1)
@@ -317,7 +308,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     % Tclust with mixture models (selection of untrimmed units according to
     % densities weighted by estimates of the probability of the components)
     out3=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',2)
-
 %}
 
 %{
@@ -341,8 +331,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 
 
     Y=[Y1;Y2;Y3;Y4;Y5];
-   out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1)
-   
+    out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1)
 %}
 
 
@@ -351,7 +340,6 @@ nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
-
 
 %% User options
 % startv1def = default value of startv1 =1, initialization using covariance
@@ -463,7 +451,6 @@ if nargin<4;
     restrfactor=12;
 end
 
-
 % Fix alpha equal to the trimming size
 % h = number of observations which is used to compute the centroids
 
@@ -474,7 +461,6 @@ end
 if nargin<4
     restrfactor=12;
 end
-
 
 % h = number of untrimmed units
 if alpha>=1
@@ -505,7 +491,7 @@ if ~isempty(UserOptions)
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:tclust:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
-   end
+    end
 end
 
 if nargin > 4
@@ -590,8 +576,8 @@ Y0tmp=zeros(n,v);
 
 if mixt>=1
     % log_lh = h-by-k matrix containing the log of component conditional
-    %               density weighted by the component probability.
-    %               log_lh = log( \pi_j \phi (y_i; \; \theta_j))
+    %          density weighted by the component probability.
+    % log_lh = log( \pi_j \phi (y_i; \; \theta_j))
     log_lh=zeros(h,k);
 end
 
@@ -665,7 +651,7 @@ for i=1:nselected
             
             Yseljc = bsxfun(@minus,Yselj,cini(j,:));
             sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
-            
+            % lines above are a faster solution for instruction below
             % sigmaini(:,:,j)=cov(Y(selj,:));
             
             % Eigenvalue eigenvector decomposition for group j
@@ -681,13 +667,11 @@ for i=1:nselected
         % Covariance matrices are reconstructed keeping into account the
         % constraints on the eigenvalues
         for j=1:k
-            %disp(j)
             sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
             
             % Alternative code: in principle more efficient but slower
             % because diag is a built in function
             % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-            
         end
     else
         
@@ -706,8 +690,6 @@ for i=1:nselected
     % sigmaopt will be final estimate of the covariance matrices
     % sigmaopt=sigmaini;
     
-    
-    
     iter=0;
     mudiff=1e+15;
     
@@ -717,14 +699,11 @@ for i=1:nselected
     % refsteps "concentration" steps will be carried out
     while ( (mudiff > reftol) && (iter < refsteps) )
         iter = iter + 1;
-        %disp(iter)
         if equalweights
-            
             % In this case we are (ideally) assuming equally sized groups
             for j=1:k
                 ll(:,j)= logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v);
             end
-            
         else
             
             % In this case we allow for different group weights or we are
@@ -733,20 +712,10 @@ for i=1:nselected
                 % REMARK: we use log(niini(j)) instead of log(niini(j)/h)
                 % because h is constant
                 ll(:,j)= log(niini(j)/h) +  logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v);
-                
-                % TODELETE
-                %                 llchk= log(niini(j)/h) +  logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j));
-                %                 if max(abs(ll(:,j)-llchk))>1e-14;
-                %                     error('stop')
-                %                 end
-                
-                
-                % This is faster but equivalent to
+                % Line above is faster but equivalent to
                 % ll(:,j)= (niini(j)/h)*mvnpdf(Y,cini(j,:),sigmaini(:,:,j));
             end
-            
-            
-            
+              
         end
         
         if mixt==2
@@ -755,11 +724,9 @@ for i=1:nselected
             
             [~,postprob,disc]=estepFS(ll);
             
-            
             % Sort the n likelihood contributions
             % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
             [~,qq]=sort(disc,'descend');
-            
             
             % qq = vector of size h which contains the indexes associated with the largest n(1-alpha)
             % (weighted) likelihood contributions
@@ -770,9 +737,7 @@ for i=1:nselected
             % which have the largest n(1-alpha) likelihood contributions
             Ytri=Y(qq,:);
             
-            
             postprob(qqunassigned,:)=0;
-            
             
             % M-step update of niini
             % niini = numerator of component probabilities
@@ -781,11 +746,11 @@ for i=1:nselected
         else
             indold=ind;
             
-            % In this part we select the untrimmed units
+            % In this part we select the untrimmed units.
             % They are those which have the n(1-alpha) largest values among the
-            % maxima of each row of matrix ll
+            % maxima of each row of matrix ll.
             % vector disc of length(n) contains the (weighted) contribution of
-            % each unit to the log likelihood
+            % each unit to the log likelihood.
             [disc,ind]= max(ll,[],2);
             
             % Sort the n likelihood contributions
@@ -823,7 +788,6 @@ for i=1:nselected
             % covariance matrices
             
             postprobold=postprob;
-            % OLD             [~,postprob]=estepFS(ll(qq,:));
             [~,postprob]=estepFS(ll);
             
             postprob(qqunassigned,:)=0;
@@ -842,9 +806,9 @@ for i=1:nselected
             
             if mixt>=1
                 % Matrix cini is updated using weighted means. The weights
-                % are given by the posterior probabilities
+                % are given by the posterior probabilities.
                 % Note that Y is used instead of Ytri because posterior
-                % probabilities for unassigned units are 0
+                % probabilities for unassigned units are 0.
                 cini(j,:)= sum(bsxfun(@times, Y, postprob(:,j)),1)/niini(j);
                 
                 if niini(j)>0
@@ -859,6 +823,7 @@ for i=1:nselected
                     
                     % Eigenvalue eigenvector decomposition for group j
                     [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                    
                     % Store eigenvectors and eigenvalues of group j
                     U(:,:,j)=Uj;
                     Lambda_vk(:,j)=diag(Lambdaj);
@@ -868,7 +833,8 @@ for i=1:nselected
                     Lambda_vk(:,j)=onev1;
                 end
                 
-            else  % crisp assignment
+            else  % This is the "crisp assignment" setting
+                
                 % Boolean index of units forming group j
                 groupj=groupind==j;
                 
@@ -877,22 +843,31 @@ for i=1:nselected
                 
                 % Group j values
                 Ytrij=Ytri(groupj,:);
+                
                 % Means of group j
                 cini(j,:)=sum(Ytrij)/niini(j);
                 
                 % niini=sum(Ytri(:,v+1)==j);
                 if niini(j)>0
-                    % Covariance of group j
+                    % Covariance of group j:
                     % sigmaini(:,:,j)=cov(Ytrij);
-                    % cov would recompute the sample means; code below is more
-                    % efficient
+                    % cov would recompute the sample means; code below is
+                    % more efficient
                     
-                    %Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
+                    % Important remark: DfM is a mex file with the compiled
+                    % code of an efficient method to compute the following
+                    % element by element operation:
+                    % Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
+                    % The mex has been compiled for the following
+                    % platforms: 32 and 64 bit MS Windows, 64 bit Linux
+                    % and 64 bit MacOS. However, if you experience an error
+                    % in correspondence to the DfM execution, you should
+                    % comment the DfM line below and uncomment the bsxfun
+                    % instruction above. In contexts where this is called
+                    % many times, this solution is much more performant. 
                     DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
                     
-                    
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
-                    
                     
                     % Eigenvalue eigenvector decomposition for group j
                     [Uj,Lambdaj] = eig(sigmaini(:,:,j));
@@ -908,9 +883,6 @@ for i=1:nselected
             end
             
         end
-        %disp(['iteration' num2str(iter)])
-        %disp(niini)
-        
         
         % Lambda_vk is a v-by-k  matrix whose jth column contains the
         % unrestricted eigenvalues of cov. matrix of group j   j=1, ..., k
@@ -922,13 +894,11 @@ for i=1:nselected
         % Covariance matrices are reconstructed keeping into account the
         % constraints of the eigenvalues
         for j=1:k
-            %disp(j)
             sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
             
             % Alternative code: in principle more efficient but slower
             % because diag is a built in function
             % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-            
         end
         
         % BELOW THERE IS AN ALTERNATIVE WAY OF FINDING sigmaini without the loop
@@ -945,8 +915,6 @@ for i=1:nselected
         
         % Alternative code based on gpuArrary
         % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
-        
-        
         
         % Calculus of the objective function (E-step)
         % oldobj=obj;
@@ -965,12 +933,11 @@ for i=1:nselected
                 log_lh(:,j)=  log(niini(j)/h)+logmvnpdfFS(Ytri,cini(j,:),sigmaini(:,:,j),Y0tmp(1:h,:),eyev,h,v);
             end
             
-            
             % obj contains the value of the log likelihood for mixture models
             obj=estepFS(log_lh);
             
-            
         else
+            
             % Likelihood for  crisp clustering
             for j=1:k
                 % disp(ni)
@@ -980,12 +947,9 @@ for i=1:nselected
                         % units
                         obj=obj+ sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j)));
                     else
-                        % niini(j)*log(niini(j)/h) is the so called entropy term
-                        % which allows for different group weights
-                        
-                        % OLD
-                        % obj=obj+ niini(j)*log(niini(j)/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j)));
-                        
+                        % niini(j)*log(niini(j)/h) is the so called entropy 
+                        % term which allows for different group weights
+                                               
                         niinij=niini(j);
                         obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v));
                     end
@@ -993,7 +957,6 @@ for i=1:nselected
             end
             
         end
-        
         
         if mixt>0
             % if mixt >0 stopping criterion is referred to postprob
@@ -1007,7 +970,7 @@ for i=1:nselected
         
         %disp(num2str(iter))
         %disp(mudiff)
-        
+        %
         % Alternative stopping criterion was based  on the relative
         % modification of the objective function.
         %                  mudiff =abs(oldobj-obj)/abs(obj);
@@ -1077,13 +1040,11 @@ out.sigmaopt=sigmaopt;
 % solution
 out.bs=bs;
 
-
 % With the best obtained values for the parameters, we compute the final
 % assignments and parameters
 
-
-% construct the  log of component conditional
-% density weighted by the component probability.
+% construct the  log of component conditional density weighted by the
+% component probability.
 % ll = log( \pi_j \phi (y_i; \; \theta_j))
 % Get the likelihood for each point with each component
 % ll is a n by k matrix,
@@ -1102,14 +1063,15 @@ else
     end
 end
 
-% matrix ll forms the input to compute both the MIXTURE and the CLASSIFICATION LIKELIHOOD
+% matrix ll forms the input to compute both the MIXTURE and the
+% CLASSIFICATION LIKELIHOOD
 
 % postprob n x k containing posterior probabilities
 % logpdf n x 1 vector containg the n contributions to the log
 % likelihood of mixture models
 [~,postprob,logpdf]=estepFS(ll);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%
 % In this part we select the untrimmed units
 % They are those which have the n(1-alpha) largest values among the
 % maxima of each row of matrix ll
@@ -1124,10 +1086,8 @@ end
 % Sort the n likelihood contributions
 % qq contains the orderd (weighted) likelihood contributions
 [~,qq]=sort(disc,'descend');
-% assigned=qq(1:h);
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%
 
 % Find final trimmed and untrimmed units for final classification
 if mixt>=1; % ==2
@@ -1162,7 +1122,6 @@ if mixt>=1
     % Compute value of the maximized MiXTURE log likelihood
     [NlogLmixt]=estepFS(ll(assignedmixt,:));
     
-    
     % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
     % Note that if there was convergence NlogL should be exactly equal to
     % -vopt
@@ -1180,14 +1139,13 @@ loglik=disc(qq(1:h));
 % -vopt
 NlogL =-sum(loglik);
 
-% Store the assignments in matrix out
-% Unassigned units have an assignment equal to 0
+% Store the assignments in matrix out. Unassigned units have an assignment
+% equal to 0
 if mixt>=1
     out.idx=idxmixt;
 else
     out.idx=idx;
 end
-
 
 % siz = matrix of size k x 3,
 % 1st col = sequence from 0 to k
@@ -1198,18 +1156,15 @@ end
 siz=tabulate(out.idx);
 out.siz=siz;
 
-
 % Number of estimated parameters
 % k centroids of size v
 % 0.5*v*(v+1) estimates for each of the k covariance matrices
-npar=v*k; 
+npar=v*k;
 
 % if equalweights = 0 the k-1 mixture proportions parameters must be added
 if equalweights==0
     npar=npar +(k-1);
 end
-
-
 
 % Find number of constraints which are imposed on the covariance matrices
 covunrestr=zeros(v,v,k);
@@ -1235,9 +1190,8 @@ for j=1:k
             eigun=values./values(1);
             % maximum value of r is v-1
             r=sum(eigun(2:end)>=restrfactor);
-            
+            %
             constr(j)=r;
-            
         else
             constr(j)=0;
         end
@@ -1246,14 +1200,14 @@ for j=1:k
     end
     
     %     eigunrestr((v*(j-1)+1):j*v)=diag(values);
-    %        [~,values] = eigs(sigmaopt(:,:,j));
-    %    eigrestr((v*(j-1)+1):j*v)=diag(values);
+    %     [~,values] = eigs(sigmaopt(:,:,j));
+    %     eigrestr((v*(j-1)+1):j*v)=diag(values);
     %
 end
 
 
 
-%% Compute INFORMATION CRITERIA 
+%% Compute INFORMATION CRITERIA
 
 nParam=npar+(0.5*v*(v+1)*k-1)*( (1-1/restrfactor)^(k*v-1) )+1;
 nParamOld=npar+0.5*v*(v+1)*k;
@@ -1290,15 +1244,13 @@ out.CLACLAold=CLACLAold;
 % % NlogL = - maximized log likelihood (for untrimmed observations)
 % BIC = 2*NlogL + nParam*log(h); % Note log(h) instead of log(n)  h=untrimmed units
 % AIC = 2*NlogL + 2*nParam;
-% 
-% 
+%
 % BICold = 2*NlogL + nParamOld*log(h); % Note log(h) instead of log(n)  h=untrimmed units
 % AICold = 2*NlogL + 2*nParamOld;
 % out.BIC=BIC;
 % out.AIC=AIC;
 % out.BICold=BICold;
 % out.AICold=AICold;
-
 
 % Store the fraction of subsamples without convergence.
 out.notconver=notconver;
@@ -1349,7 +1301,7 @@ if plots==1;
     % The following statement is necessary because if mixt>0 idx was called
     % ixmixt;
     idx=out.idx;
-
+    
     if v==1
         histFS(Y,length(Y),idx)
     elseif v==2
@@ -1371,28 +1323,17 @@ if plots==1;
         end
         
         axis equal
-%         id=cellstr(num2str(idx));
-%         id(idx==0)=cellstr('Trimmed units');
+
         hall = findobj(gca, 'type', 'line');
         hellipses = findobj(gca, 'type', 'line','Marker','none');
         hpoints = setdiff(hall,hellipses,'sorted');
-%         hpoints=sort(hpoints,'ascend');
-%         clickableMultiLegend(hpoints,unique(id,'stable'));
-
-%         In recent version it is possible to do without get as follows.
-%         However for compatibility reasons we use the old way
-%          clickableMultiLegend(hpoints,{hpoints.DisplayName})
-         clickableMultiLegend(hpoints,get(hpoints,'DisplayName'))
-
-         axis manual;
+        %         In recent version it is possible to do without get as follows.
+        %         However for compatibility reasons we use the old way
+        %         clickableMultiLegend(hpoints,{hpoints.DisplayName})
+        clickableMultiLegend(hpoints,get(hpoints,'DisplayName'))
         
-%         axis equal
-%         iidx=unique(idx);
-%         hall = findobj(gca, 'type', 'line');
-%         hellipses = findobj(gca, 'type', 'line','Marker','none');
-%         hpoints = setdiff(hall,hellipses);
-%         clickableMultiLegend(hpoints,cellstr(num2str(iidx)));
-%         axis manual;
+        axis manual;
+        
     else
         id=cellstr(num2str(idx));
         id(idx==0)=cellstr('Trimmed units');
@@ -1465,33 +1406,33 @@ end
         % Examples:
         %
         %{
-    % Suppose matrix eigenvalues is 3-by-4
-    % that is there are four groups and the number of variables is equal to 3
-    % First column of matrix eigenvalues contains the eigenvalues of the first group
-    % Second column of matrix eigenvalues contains the eigenvalues of the second group
-    % Thrid column of matrix eigenvalues contains the eigenvalues of the third group
-    % Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group
-    eigenvalues=abs(randn(3,4));
-    % niini is the vector containing the sizes of the 4 groups
-    niini=[30;40;20;10];
-    restreigen(eigenvalues,niini,1.1)
+            % Suppose matrix eigenvalues is 3-by-4
+            % that is there are four groups and the number of variables is equal to 3
+            % First column of matrix eigenvalues contains the eigenvalues of the first group
+            % Second column of matrix eigenvalues contains the eigenvalues of the second group
+            % Thrid column of matrix eigenvalues contains the eigenvalues of the third group
+            % Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group
+            eigenvalues=abs(randn(3,4));
+            % niini is the vector containing the sizes of the 4 groups
+            niini=[30;40;20;10];
+            restreigen(eigenvalues,niini,1.1)
         %}
         %
         %
         %{
-    eigenvalues=abs(randn(3,4));
-    eigenvalues(:,3)=0;
-    restreigen(eigenvalues,niini,1.1)
-    eigenvalues(:,3)=1;
-    restreigen(eigenvalues,niini,1.1)
+            eigenvalues=abs(randn(3,4));
+            eigenvalues(:,3)=0;
+            restreigen(eigenvalues,niini,1.1)
+            eigenvalues(:,3)=1;
+            restreigen(eigenvalues,niini,1.1)
         %}
         %
         %
         %{
-    % Trimmed k-means using geyser data
-    % 3 groups and trimming level of 3%
-    Y=load('geyser2.txt');
-    out=tkmeans(Y,3,0.03,'plots',1)
+            % Trimmed k-means using geyser data
+            % 3 groups and trimming level of 3%
+            Y=load('geyser2.txt');
+            out=tkmeans(Y,3,0.03,'plots',1)
         %}
         
         
@@ -1522,7 +1463,6 @@ end
         nis=niini*one1v;
         % Below is the alternative inefficient code
         % nis = repmat(niini,1,v);
-        
         
         % niini=niini';
         
@@ -1741,7 +1681,6 @@ end
                 
                 % m is the optimum value for the eigenvalues procedure
                 m=solmp(indmax);
-                
                 
                 % plot(1:dimsor,obj)
                 
