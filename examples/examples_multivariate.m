@@ -93,7 +93,6 @@ quant=[0.05 0.95];
 line(xplo,Yband(:,nsimul*quant),'color','g');
 
 %% HD Preliminary analysis based on robust bivariate ellipses and minMD
-% Interactive_example
 % Figure 3.2
 clearvars;close all;
 load('head.mat');
@@ -108,6 +107,7 @@ bs=fre(1:size(Y,2),1);
 [out]=FSMeda(Y,bs,'plots',1,'init',60); %#ok<*NASGU>
 
 %% HD Plot of max MD and gap
+% Interactive_example
 clearvars;close all;
 load('head.mat');
 Y=head.data;
