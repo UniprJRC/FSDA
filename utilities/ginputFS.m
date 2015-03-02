@@ -141,7 +141,7 @@ else
     end
     if ~isempty(exception)
         set(fig,'pointer','fullcrosshair');
-        warning('FSDA:FGinput:WrongPointer','Wrong pointer style selected. Set to fullcrosshair');
+        warning('FSDA:ginputFS:WrongPointer','Wrong pointer style selected. Set to fullcrosshair');
     end
     
     fig_units = get(fig,'Units');
@@ -207,7 +207,7 @@ else
                 elseif strcmp(button,'alt')
                     button = 3;
                 else
-                    error('FSDA:ginpuFSt:InvalidSelection', 'Invalid mouse selection.')
+                    error('FSDA:ginpuFS:InvalidSelection', 'Invalid mouse selection.')
                 end
             end
             pt = get(gca, 'CurrentPoint');
@@ -276,7 +276,7 @@ end
 drawnow;
 if(waserr == 1)
     set(h,'Accelerator','C');                          % Set back the accelerator if it errored out.
-    error('MATLAB:ginput:Interrupted', 'Interrupted');
+    error('MATLAB:ginputFS:Interrupted', 'Interrupted');
 end
 
 if nargout>0, key = keydown; end

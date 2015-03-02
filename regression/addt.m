@@ -170,7 +170,7 @@ if rank(X)==p && rank([X w])==p+1      % Full rank
         Sz_square=NaN;
         Tl=NaN;
         b=NaN;
-        warning('Addt:message','The augmented X matrix is nearly singular');
+        warning('FSDA:addt:NearlySingularMatrix','The augmented X matrix is nearly singular');
     else
         % b=regress(Az,Aw);
         b=zAw/wAw;
@@ -190,7 +190,7 @@ if rank(X)==p && rank([X w])==p+1      % Full rank
     end
 
 else % Rank is not full
-    warning('Addt:message','Matrix rank is low, the added t-test can not be performed');
+    warning('FSDA:addt:NoFullRank','Matrix rank is low, the added t-test can not be performed');
     b=NaN;
     Tl=NaN;
     Sz_square=NaN;

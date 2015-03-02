@@ -192,7 +192,7 @@ if bsb==0;
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSRmdr:message','Unable to randomly sample full rank matrix');
+        warning('FSDA:FSRHmdr:message','Unable to randomly sample full rank matrix');
     end
     yb=y(bsb);
 else
@@ -276,8 +276,8 @@ Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 hhh=1;
 %% Start of the forward search
 if (rank(Xb)~=p)
-    warning('FSRmdr:message','Supplied initial subset does not produce full rank matrix');
-    warning('FSRmdr:message','FS loop will not be performed');
+    warning('FSDA:FSRHmdr:message','Supplied initial subset does not produce full rank matrix');
+    warning('FSDA:FSRHmdr:message','FS loop will not be performed');
     mdr=NaN;
     % FS loop will not be performed
 else
@@ -395,7 +395,7 @@ else
                     % Store minimum deletion residual in matrix mdr
                     selmdr=sortrows(ord,1);
                     if S2(mm-init1+1,2)==0
-                        warning('FSRmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init1+1);
+                        warning('FSDA:FSRHmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init1+1);
                     else
                         mdr(mm-init1+1,2)=sqrt(selmdr(1,1)/HET.sigma2);
                     end

@@ -613,7 +613,7 @@ if ~isempty(prolik)
         nr=5;
         nc=5;
     else
-        error('FSDA:FSMtra:TooManyVars','Profile loglikelihood can be displayed for not more than 25 variables')
+        error('FSDA:FSMtra:TooManyVars','Profile loglikelihood cannot be displayed for more than 25 variables')
     end
     
     if isstruct(prolik)

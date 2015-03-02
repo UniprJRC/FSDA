@@ -206,7 +206,7 @@ function resindexplot(residuals,varargin)
 %% Initialization
 
 if nargin<1
-    error('In order to run this function a vector of residuals has to be supplied')
+    error('FSDA:resindexplot:missingInputs','In order to run this function a vector of residuals has to be supplied')
 end
 
 if isstruct(residuals)
@@ -235,7 +235,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:resindexplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -465,7 +465,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             'Note that the estimator which generated the Mahalanobis distances has an option \n',...
             'to automatically save the input data in the output structure.   \n',...
             ''];
-        error('FSDA:malindexplot:InvalidArg1',mess);
+        error('FSDA:resindexplot:InvalidArg1',mess);
     else
         y=out.y;
         X=out.X;

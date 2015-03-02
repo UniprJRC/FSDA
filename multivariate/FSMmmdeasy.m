@@ -143,7 +143,7 @@ if bsb==0;
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSDA:FSMmmd:NoFullRank','Unable to randomly sample full rank matrix');
+        warning('FSDA:FSMmmdeasy:NoFullRank','Unable to randomly sample full rank matrix');
     end
 else
 end

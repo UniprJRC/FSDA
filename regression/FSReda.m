@@ -340,7 +340,7 @@ if bsb==0
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSReda:message','Unable to randomly sample full rank matrix');
+        warning('FSDA:FSReda:NoFullRank','Unable to randomly sample full rank matrix');
     end
     yb=y(bsb);
 else
@@ -449,7 +449,7 @@ Tols=Bols;
 
 %% Start of the forward search
 if (rank(Xb)~=p)
-    warning('FSReda:message','The provided initial subset does not form full rank matrix');
+    warning('FSDA:FSReda:NoFullRank','The provided initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
     for mm=ini0:n;
@@ -467,7 +467,7 @@ else
             resBSB=yb-Xb*b;
             blast=b;   % Store correctly computed b for the case of rank problem
         else   % number of independent columns is smaller than number of parameters
-            warning('FSR:FSReda','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+            warning('FSDA:FSReda','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
             b=blast;
         end
         

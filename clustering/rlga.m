@@ -345,7 +345,7 @@ end
         end
         if (sum(index) > 1)
             % In the incredibly unlikely situation....
-            warning('more than one unique solutions with identical ROSS -  returning first solution only')
+            warning('FSDA:rlga:DuplicateSol','More than one unique solutions with identical ROSS -  returning first solution only')
             [~,index]=max(index);
             
         end

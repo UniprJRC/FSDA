@@ -179,7 +179,7 @@ end
 BBmsel=NaN(n,length(msel),'single');
 
 if (rank(Y(bsb,:))<v)
-    warning('FSDA:FSMmmd:','The supplied initial subset is not full rank matrix');
+    warning('FSDA:FSMbbm:NoFullRank','The supplied initial subset is not full rank matrix');
     % FS loop will not be performed
 else
     

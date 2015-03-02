@@ -163,8 +163,8 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d)
     % Remark: this function is present from  MATLAB 2013b
 
     if verLessThan('matlab', '8.2.0')
-        warning('This example needs routine timeit which has been introduced in Matlab 2013b')
-        warning('You have a version of Matlab which is < 2013b and you cannot run this example')
+        warning('FSDA:logmvnpdfFS:MatlabTooOld','This example needs routine timeit which has been introduced in Matlab 2013b')
+        warning('FSDA:logmvnpdfFS:MatlabTooOld','You have a version of Matlab which is < 2013b and you cannot run this example')
     else   
         % nn = sample size
         % vv = number of variables

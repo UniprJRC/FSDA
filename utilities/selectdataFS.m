@@ -1534,7 +1534,7 @@ if n<=0
 end
 
 if ~isstruct(params)
-    error('FSDA:selectdataFSWrongParams','No structure for defaults was supplied')
+    error('FSDA:selectdataFS:WrongParams','No structure for defaults was supplied')
 end
 
 % there was at least one pv pair. process any supplied

@@ -593,7 +593,7 @@ for i = 1:nselected
         Qtildeabs = abs(Qtilde);
         
         if strcmp(projscale,'mad')
-         % Modified MAD
+            % Modified MAD
             ordprojs = sort(Qtildeabs);
             MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
             newoutlvec = Qtildeabs/MADmod;
@@ -798,8 +798,8 @@ for i = 1:nselected
             end
             newoutlmat = bsxfun(@rdivide, Qtildeabs, stdEst);
         else
-            warning('Supplied scale measure to standardize scaled projections is not in the list')
-            error('You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
+            disp('Supplied scale measure to standardize scaled projections is not in the list')
+            error('FSDA:SDest:WrongScale','You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
         end
         
         
@@ -1006,63 +1006,63 @@ if margin >0
                         Ysel=Yselori*onesignc;
                         Q=Ysel/normj;
                         
-% OLD CODE TO DELETE                        
-%                         Qtildeabs = abs(Q-median(Q));
-%                         ordprojs = sort(Qtildeabs);
-%                         % Modified MAD
-%                         MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
-%                         newoutlvec = Qtildeabs/MADmod;
- %%%%%%                       
+                        % OLD CODE TO DELETE
+                        %                         Qtildeabs = abs(Q-median(Q));
+                        %                         ordprojs = sort(Qtildeabs);
+                        %                         % Modified MAD
+                        %                         MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
+                        %                         newoutlvec = Qtildeabs/MADmod;
+                        %%%%%%
                         
-             if strcmp(projloc,'median') % Center with median
-                
-                % Find the median of Q=Y*dir (it is much better to compute the median
-                % directly rather than computing function median of stat toolbox)
-                Qsor = sort(Q);
-                % half = floor(n/2);
-                
-                me = Qsor(half+1);
-                if 2*half == n       % Average if even number of elements
-                    me =(Qsor(half)+me)/2;
-                end
-            else % Center with mean
-                me=sum(Q)/n;
-            end
-            
-            % Qtilde = centered projected points
-            % Qtilde = projected points - estimate of location of projected points
-            Qtilde = Q-me;
-            
-            % Qtildeabs = absolute values of centered projected points
-            Qtildeabs = abs(Qtilde);
-            
-            if strcmp(projscale,'mad')
-                % Modified MAD
-                ordprojs = sort(Qtildeabs);
-                MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
-                newoutlvec = Qtildeabs/MADmod;
-            elseif strcmp(projscale,'sn')
-                SnEst = Sn(Q);
-                newoutlvec = Qtildeabs/SnEst;
-            elseif strcmp(projscale,'qn')
-                QnEst = Qn(Q);
-                newoutlvec = Qtildeabs/QnEst;
-            elseif strcmp(projscale,'std')
-                if strcmp(projloc,'median')
-                    stdEst = std(Q);
-                else
-                    % if measure of location was the mean then instead of
-                    % using inefficient function std compute standard
-                    % deviations using signres (deviations from the mean)
-                    stdEst = sqrt(sum(Qtilde.^2, 1)/(n-1));
-                end
-                newoutlvec = Qtildeabs/stdEst;
-            else
-                warning('Supplied scale measure to standardize scaled projections is not in the list')
-                error('You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
-            end
-
- %%%%%%%%%%%
+                        if strcmp(projloc,'median') % Center with median
+                            
+                            % Find the median of Q=Y*dir (it is much better to compute the median
+                            % directly rather than computing function median of stat toolbox)
+                            Qsor = sort(Q);
+                            % half = floor(n/2);
+                            
+                            me = Qsor(half+1);
+                            if 2*half == n       % Average if even number of elements
+                                me =(Qsor(half)+me)/2;
+                            end
+                        else % Center with mean
+                            me=sum(Q)/n;
+                        end
+                        
+                        % Qtilde = centered projected points
+                        % Qtilde = projected points - estimate of location of projected points
+                        Qtilde = Q-me;
+                        
+                        % Qtildeabs = absolute values of centered projected points
+                        Qtildeabs = abs(Qtilde);
+                        
+                        if strcmp(projscale,'mad')
+                            % Modified MAD
+                            ordprojs = sort(Qtildeabs);
+                            MADmod = (ordprojs(n1)+ordprojs(n2))/(2*beta);
+                            newoutlvec = Qtildeabs/MADmod;
+                        elseif strcmp(projscale,'sn')
+                            SnEst = Sn(Q);
+                            newoutlvec = Qtildeabs/SnEst;
+                        elseif strcmp(projscale,'qn')
+                            QnEst = Qn(Q);
+                            newoutlvec = Qtildeabs/QnEst;
+                        elseif strcmp(projscale,'std')
+                            if strcmp(projloc,'median')
+                                stdEst = std(Q);
+                            else
+                                % if measure of location was the mean then instead of
+                                % using inefficient function std compute standard
+                                % deviations using signres (deviations from the mean)
+                                stdEst = sqrt(sum(Qtilde.^2, 1)/(n-1));
+                            end
+                            newoutlvec = Qtildeabs/stdEst;
+                        else
+                            disp('Supplied scale measure to standardize scaled projections is not in the list')
+                            error('FSDA:SDest:WrongScale','You must supply as scale measure one of the following strings ''mad'' ''qn'' ''sn'' or ''std''')
+                        end
+                        
+                        %%%%%%%%%%%
                         for ii = 1:n
                             if newoutlvec(ii)>=outlvec(ii)
                                 maxdir(ii,:) = zeros(1,v);

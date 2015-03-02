@@ -71,7 +71,7 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 typemin=exist('fminunc','file');
 
 if typemin ~=2
-    error('This function requires the optimization toolbox')
+    error('FSDA:tclustreg:MissingOptToolbox','This function requires the optimization toolbox')
 end
 
 [n,p]=size(X);
@@ -94,7 +94,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:tclustreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -105,7 +105,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:tclustreg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 

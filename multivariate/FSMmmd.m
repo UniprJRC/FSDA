@@ -277,7 +277,7 @@ lunit=length(unit);
 % If the subset Y(bsb,:) is not full rank or a column is constant, then we
 % return as output an empty structure.
 if (rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0
-    warning('FSMmmd:NoFullRank','The supplied initial subset is not full rank matrix');
+    warning('FSDA:FSMmmd:NoFullRank','The supplied initial subset does not produce a full rank matrix');
     disp('FS loop will not be performed')
     mmd=NaN;
     Un=NaN;

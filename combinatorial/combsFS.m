@@ -48,7 +48,9 @@ function P = combsFS(v,m)
  
 
 %% Beginning of code
-if nargin~=2, error('FSDAtoolbox:combsFS:WrongInputNum', 'Requires 2 input arguments.'); end
+if nargin~=2, 
+    error('FSDA:combsFS:WrongInputNum', 'Requires 2 input arguments.') 
+end
 
 v = v(:).';     % Make sure v is a row vector.
 n = length(v);  % Elements of v.

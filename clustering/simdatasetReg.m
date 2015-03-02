@@ -140,11 +140,11 @@ function [y,X,id]=simdatasetReg(n, Pi, Beta, S, Xdistrib, varargin)
 %% Beginning of code
 
 if (n < 1)
-    error('FSDA:simdatasetreg:Wrongn','Wrong sample size n...')
+    error('FSDA:simdatasetReg:Wrongn','Wrong sample size n...')
 end
 
 if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
-    error('FSDA:simdatasetreg:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
+    error('FSDA:simdatasetReg:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
 end
 
 nnoisedef=0;
@@ -163,7 +163,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:simdataset:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:simdatasetReg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -174,7 +174,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:simdataset:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:simdatasetReg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
     % Write in structure 'options' the options chosen by the user
@@ -194,19 +194,19 @@ lambda=options.lambda;
 
 
 if (nnoise < 0)
-    error('FSDAreg:simdataset:Wrongnnoise','Wrong value of nnoise: it cannot be smaller than 0')
+    error('FSDA:simdatasetReg:Wrongnnoise','Wrong value of nnoise: it cannot be smaller than 0')
 end
 
 if (nout < 0)
-    error('FSDAreg:simdataset:Wrongnout','Wrong value of nout: it cannot be smaller than 0')
+    error('FSDA:simdatasetReg:Wrongnout','Wrong value of nout: it cannot be smaller than 0')
 end
 
 if ((alpha >= 1) || (alpha <= 0))
-    error('FSDAreg:simdataset:WrongAlpha','Wrong value of alpha: it must be in the interval (0 1)')
+    error('FSDA:simdatasetReg:WrongAlpha','Wrong value of alpha: it must be in the interval (0 1)')
 end
 
 if (maxiter < 1)
-    error('FSDAreg:simdataset:WrongMaxIter','Wrong value for maximum number of iterations: it cannot be <1')
+    error('FSDA:simdatasetReg:WrongMaxIter','Wrong value for maximum number of iterations: it cannot be <1')
 end
 
 [p,k]=size(Beta);
@@ -217,7 +217,7 @@ if (n >= k)
     % Nk contains the sizes of the clusters
     Nk = ones(1,k)+(mrr);
 else
-    error('FSDA:simdataset:Wrongn','Sample size (n) cannot be less than the number of clusters (k)')
+    error('FSDA:simdatasetReg:Wrongn','Sample size (n) cannot be less than the number of clusters (k)')
 end
 
 

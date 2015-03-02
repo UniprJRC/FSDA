@@ -59,7 +59,7 @@ end
 % the first argument is a scalar integer
 if isscalar(v) && v >= 0
     if k > v
-        error('FSDA:nchoosek:WrongK','K must be an integer between 0 and N.');
+        error('FSDA:nchoosekFS:WrongK','K must be an integer between 0 and N.');
     end
     
     % if the first argument is a scalar, then, we only return the number of

@@ -149,7 +149,7 @@ if bsb==0;
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSRbsb:message','Unable to randomly sample full rank matrix');
+        warning('FSDA:FSRbsb:NoFullRank','Unable to randomly sample full rank matrix');
     end    
     yb=y(bsb);
 else
@@ -206,7 +206,7 @@ blast=NaN(p,1);
 
 %% Forward search loop
 if (rank(Xb)~=p) 
-    warning('FSRbsb:message','The provided initial subset does not form full rank matrix');
+    warning('FSDA:FSRbsb:NoFullRank','The provided initial subset does not form a full rank matrix');
      % FS loop will not be performed
 else
 for mm = ini0:n;

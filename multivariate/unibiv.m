@@ -144,7 +144,7 @@ textlab=options.textlab;
 robscale=options.robscale;
 
 if rf<=0 || rf>=1;
-    errorlog "ERROR: The confidence threshold must be greater than 0 and smaller than 1";
+    error('FSDA:unibiv:Wrongrf','The confidence threshold must be greater than 0 and smaller than 1')
 end;
 
 if plo==1

@@ -295,7 +295,7 @@ seq=(1:n)';
 one=ones(n,1);
 
 if nargin<1
-        error('FSDA:FSMfan:missingInputs','Initial data matrix is missing')
+    error('FSDA:FSMfan:missingInputs','Initial data matrix is missing')
 end
 
 if nargin<2
@@ -475,7 +475,7 @@ for jj=ColToComp;
         
         
         if (rank(Ytrlai(bsb,:))<v)
-            warning('FSMtra:message','The supplied initial subset is not full rank matrix');
+            warning('FSDA:FSMfan:NoFullRank','The supplied initial subset is not full rank matrix');
             % FS loop will not be performed
             % out=struct;
         else
@@ -653,7 +653,7 @@ if ~isempty(plotslrt)
         nr=5;
         nc=5;
     else
-        error('Error:: plot or lrt is required for more than 25 variables')
+        error('FSDA:FSMfan:TooManyVars','plot of lrt cannot be displayed for more than 25 variables')
     end
     
     if isstruct(plotslrt)
@@ -785,8 +785,8 @@ if ~isempty(plotslrt)
         end
         % Specify the line type for the trajectories of lRT of
         % transformation parameters
-            set(plot1,{'LineStyle'},LineStyle);
-
+        set(plot1,{'LineStyle'},LineStyle);
+        
         
         if ij==cColToComp-nc+1 || ij==cColToComp
             xlabel('Subset size m');

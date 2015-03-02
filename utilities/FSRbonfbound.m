@@ -61,12 +61,13 @@ function Bbound = FSRbonfbound(n,p,varargin)
 %% Input parameters checks
 
 if ~isscalar(n) || isempty(n) || isnan(n)
-    error('n must be scalar non empty and non missing!!');
+    error('FSDA:FSRbonfbound:Wrongn','n must be scalar non empty and non missing!!');
 end
 
 if ~isscalar(p) || isempty(n) || isnan(p)
-    error('p must be scalar non empty and non missing!!!');
+    error('FSDA:FSRbonfbound:Wrongp','p must be scalar non empty and non missing!!!');
 end
+
 
 % The default starting point to monitor mdr is equal to the integer part of
 % floor(0.5*(n+p+1))

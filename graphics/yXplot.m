@@ -439,7 +439,7 @@ if nargin>2 || (nargin>1 && onlyyX==0)
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:tclust:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+            error('FSDA:yXplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)

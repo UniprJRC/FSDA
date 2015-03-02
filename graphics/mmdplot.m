@@ -264,7 +264,7 @@ options=struct('quant', quant,'exact',0,'sign',0,'mplus1',0,...
     'titl','','labx',labx,'laby',laby,'nameY','','label','','scaled',0);
 
 if nargin<1
-    error('A required input argument is missing.')
+    error('FSDA:mmdplot:missingInputs','A required input argument is missing.')
 end
 
 UserOptions=varargin(1:2:length(varargin));

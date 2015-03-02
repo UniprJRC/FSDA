@@ -323,7 +323,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:MCD:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:mcd:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -370,9 +370,9 @@ hmin=floor(2*floor((n+v+1)/2)-n+2*(n-floor((n+v+1)/2))*(0.5));
 h=floor(2*floor((n+v+1)/2)-n+2*(n-floor((n+v+1)/2))*(1-bdp));
 
 if h < hmin
-    error('FSDA:MCD:Wrongh',['The MCD must cover at least ' int2str(hmin) ' observations.'])
+    error('FSDA:mcd:Wrongh',['The MCD must cover at least ' int2str(hmin) ' observations.'])
 elseif h > n
-    error('FSDA:MCD:Wrongh','h is greater than the number of non-missings and non-infinites.')
+    error('FSDA:mcd:Wrongh','h is greater than the number of non-missings and non-infinites.')
 end
 
 % bestsubset is the matrix which will contain the indexes of the bestr

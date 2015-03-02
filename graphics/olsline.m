@@ -200,7 +200,7 @@ if numlines > 0
     hlslines(hlslines==0) = [];
     set(hlslines,'Tag','lsline');
 else
-    warning('olsline:NoLinesFound','No allowed line types or scatterplots found. Nothing done.');
+    warning('FSDA:olsline:NoLinesFound','No allowed line types or scatterplots found. Nothing done.');
     hlslines = [];
 end
 

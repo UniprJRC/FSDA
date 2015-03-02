@@ -404,7 +404,7 @@ if bsbsteps == 0
 else
     
     if ~isempty(bsbsteps(bsbsteps<init))
-     warning('It is not possible to store subset for values of m smaller than init')
+     warning('FSDA:FSRmdrrs:Wronginit','It is not possible to store subset for values of m smaller than init')
        bsbsteps=bsbsteps(bsbsteps>=init);
     end 
   
