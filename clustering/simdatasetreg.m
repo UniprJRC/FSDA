@@ -1,10 +1,10 @@
-function [y,X,id]=simdatasetReg(n, Pi, Beta, S, Xdistrib, varargin)
+function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %simdatasetReg simulates regression dataset given the parameters of a mixture regression model
 %
 %
 %<a href="matlab: docsearchFS('simdatasetreg')">Link to the help function</a>
 %
-%   [y,X,id]=simdatasetReg(n, Pi, Beta, S) generates a regression dataset
+%   [y,X,id]=simdatasetreg(n, Pi, Beta, S) generates a regression dataset
 %   of size n from a mixture model with parameters 'Pi' (mixing
 %   proportions), 'Beta' (matrix of regression coefficients), and 'S'
 %   (vector of variances of the distributions of the points around each
@@ -140,11 +140,11 @@ function [y,X,id]=simdatasetReg(n, Pi, Beta, S, Xdistrib, varargin)
 %% Beginning of code
 
 if (n < 1)
-    error('FSDA:simdatasetReg:Wrongn','Wrong sample size n...')
+    error('FSDA:simdatasetreg:Wrongn','Wrong sample size n...')
 end
 
 if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
-    error('FSDA:simdatasetReg:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
+    error('FSDA:simdatasetreg:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
 end
 
 nnoisedef=0;
@@ -163,7 +163,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:simdatasetReg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:simdatasetreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -174,7 +174,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:simdatasetReg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:simdatasetreg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
     % Write in structure 'options' the options chosen by the user
@@ -194,19 +194,19 @@ lambda=options.lambda;
 
 
 if (nnoise < 0)
-    error('FSDA:simdatasetReg:Wrongnnoise','Wrong value of nnoise: it cannot be smaller than 0')
+    error('FSDA:simdatasetreg:Wrongnnoise','Wrong value of nnoise: it cannot be smaller than 0')
 end
 
 if (nout < 0)
-    error('FSDA:simdatasetReg:Wrongnout','Wrong value of nout: it cannot be smaller than 0')
+    error('FSDA:simdatasetreg:Wrongnout','Wrong value of nout: it cannot be smaller than 0')
 end
 
 if ((alpha >= 1) || (alpha <= 0))
-    error('FSDA:simdatasetReg:WrongAlpha','Wrong value of alpha: it must be in the interval (0 1)')
+    error('FSDA:simdatasetreg:WrongAlpha','Wrong value of alpha: it must be in the interval (0 1)')
 end
 
 if (maxiter < 1)
-    error('FSDA:simdatasetReg:WrongMaxIter','Wrong value for maximum number of iterations: it cannot be <1')
+    error('FSDA:simdatasetreg:WrongMaxIter','Wrong value for maximum number of iterations: it cannot be <1')
 end
 
 [p,k]=size(Beta);
@@ -217,7 +217,7 @@ if (n >= k)
     % Nk contains the sizes of the clusters
     Nk = ones(1,k)+(mrr);
 else
-    error('FSDA:simdatasetReg:Wrongn','Sample size (n) cannot be less than the number of clusters (k)')
+    error('FSDA:simdatasetreg:Wrongn','Sample size (n) cannot be less than the number of clusters (k)')
 end
 
 
@@ -275,10 +275,10 @@ for j=1:k
         if ~isempty(d);
             X= Xdistrib.X;
         else
-            error('FSDA:simdatasetReg:MissingField','If string Xdistrib = ''User'' then the user must provide input matrix X')
+            error('FSDA:simdatasetreg:MissingField','If string Xdistrib = ''User'' then the user must provide input matrix X')
         end
     else
-        error('FSDA:simdatasetReg:Wrongbetadistrib','Possible values for option betadistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
+        error('FSDA:simdatasetreg:Wrongbetadistrib','Possible values for option betadistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
     end
     
     
@@ -295,7 +295,7 @@ end
 if nout ~= 0
     [Xout, fail] = getOutliers(nout, Beta, S, alpha, maxiter,int);
     if fail == 1
-        warning('FSDA:simdatasetReg:Modifiedn',['Output matrix X will have just ' num2str(n) ...
+        warning('FSDA:simdatasetreg:Modifiedn',['Output matrix X will have just ' num2str(n) ...
             ' rows and not ' num2str(n+nout)])
         
     else
@@ -336,11 +336,11 @@ if ~isempty(lambda)
         for j=1:(p + nnoise)
             X(:,j) = (lambda(j) * X(:, j) + 1).^(1/lambda(j)) - 1;
             if (sum(isnan(X(:,j))) ~= 0)
-                warning('FSDA:simdatasetReg:NaNs','NaNs were produced during transformation')
+                warning('FSDA:simdatasetreg:NaNs','NaNs were produced during transformation')
             end
         end
     else
-        error('FSDA:simdatasetReg:WrongLambda','The number of transformation coefficients lambda should be equal to ndimensions + nnoise')
+        error('FSDA:simdatasetreg:WrongLambda','The number of transformation coefficients lambda should be equal to ndimensions + nnoise')
     end
 end
 %% Inner functions

@@ -1,9 +1,9 @@
-function [out]  = MixSimReg(k,p,varargin)
-%MixSimReg generates k regression hyperplanes in p dimensions with given overlap
+function [out]  = MixSimreg(k,p,varargin)
+%MixSimreg generates k regression hyperplanes in p dimensions with given overlap
 %
-%<a href="matlab: docsearchFS('mixsimreg')">Link to the help function</a>
+%<a href="matlab: docsearchFS('MixSimreg')">Link to the help function</a>
 %
-%  MixSimReg(k,p) generates k groups in p dimensions. It is possible to
+%  MixSimreg(k,p) generates k groups in p dimensions. It is possible to
 %  control the average and maximum or standard deviation of overlapping.
 %
 %  Notation and background.
@@ -229,7 +229,7 @@ function [out]  = MixSimReg(k,p,varargin)
 %               If both BarOmega and MaxOmega are not specified the
 %               function generates a mixture using MaxOmega=0.15.
 %               If both BarOmega and MaxOmega are empty values
-%               (e.g. out=MixSimReg(3,4,'MaxOmega','','BarOmega','')
+%               (e.g. out=MixSimreg(3,4,'MaxOmega','','BarOmega','')
 %               the following message appears on the screen
 %               Error: At least one overlap characteristic between BarOmega
 %               and MaxOmega should be specified...
@@ -303,7 +303,7 @@ function [out]  = MixSimReg(k,p,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('mixsimreg')">Link to the help function</a>
+%<a href="matlab: docsearchFS('MixSimreg')">Link to the help function</a>
 % Last modified 06-Feb-2015
 %
 
@@ -319,7 +319,7 @@ function [out]  = MixSimReg(k,p,varargin)
     % 3) regression hyperplanes contain intercepts
     p=5;
     k=3;
-    Q=MixSimReg(k,p,'BarOmega',0.01);
+    Q=MixSimreg(k,p,'BarOmega',0.01);
     n=200;
     % Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to
     % 1.0000    1.0000    1.0000
@@ -349,7 +349,7 @@ function [out]  = MixSimReg(k,p,varargin)
     Xdistrib.b=ones(p-1,k);
     Xdistrib.b(2,3)=3;
     % 3) regression hyperplanes contain intercepts
-    Q=MixSimReg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib);
+    Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib);
     n=200;
     % Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to
     %     1.0000    1.0000    1.0000
@@ -380,7 +380,7 @@ function [out]  = MixSimReg(k,p,varargin)
     betadistrib=struct;
     betadistrib.type='Normal';
     betadistrib.sigma=6;
-    Q=MixSimReg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
+    Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
     n=200;
     % Probabilitties of overlapping are evaluated at
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
@@ -409,7 +409,7 @@ function [out]  = MixSimReg(k,p,varargin)
     betadistrib=struct;
     betadistrib.type='HalfNormal';
     betadistrib.sigma=6;
-    Q=MixSimReg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
+    Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
     n=200;
 
     [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
@@ -439,7 +439,7 @@ function [out]  = MixSimReg(k,p,varargin)
     % Strong overlap BarOmega=0.2
     close all
     rng(10,'twister')
-    Q=MixSimReg(k,p,'BarOmega',0.2,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
+    Q=MixSimreg(k,p,'BarOmega',0.2,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
     [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     spmplot([y X],id)
     set(gcf,'Name','Strong overlap')
@@ -447,7 +447,7 @@ function [out]  = MixSimReg(k,p,varargin)
     % Small overlap BarOmega=0.01
     figure
     rng(10,'twister')
-    Q=MixSimReg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
+    Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
     [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     spmplot([y X],id)
     set(gcf,'Name','Small overlap')
@@ -457,15 +457,15 @@ function [out]  = MixSimReg(k,p,varargin)
 
 % Default
 if nargin<2;
-    error('FSDA:MixSimReg:Missingp','k=number of components and p = number of explanatory variables (includind intercept) must be specified');
+    error('FSDA:MixSimreg:Missingp','k=number of components and p = number of explanatory variables (includind intercept) must be specified');
 end
 
 if (p < 1)
-    error('FSDA:MixSimReg:Wrongp','Wrong number of explanatory variables p')
+    error('FSDA:MixSimreg:Wrongp','Wrong number of explanatory variables p')
 end
 
 if k<=1
-    error('FSDA:MixSimReg:Wrongk','Wrong number of mixture components k')
+    error('FSDA:MixSimreg:Wrongk','Wrong number of mixture components k')
 end
 
 Rseeddef = 0;
@@ -489,7 +489,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:MixSimReg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:MixSimreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present in
@@ -498,7 +498,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:MixSimReg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:MixSimreg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
@@ -616,14 +616,14 @@ if isstruct(Xdistrib)
                     'Distribution is ''User'' but the matrix BarX containing the means\n'...
                     'of the p explanatory has not been given']);
                 disp(str)
-                error('FSDA:MixSimReg:MissingField','Please also supply inside Xdistrib field BarX')
+                error('FSDA:MixSimreg:MissingField','Please also supply inside Xdistrib field BarX')
             end
             Xdistribdef.type='User';
             Xdistribdef.BarX=BarX;
             Xdistribdef.intercept=intercept;
             
         else
-            error('FSDA:MixSimReg:WrongXdistrib','Possible values for option Xdistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
+            error('FSDA:MixSimreg:WrongXdistrib','Possible values for option Xdistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
         end
     else
         Xdistribdef.type='Uniform';
@@ -679,7 +679,7 @@ elseif find(strcmp('User',Xdistrib.type))
     % In this case there is no additional computation to do because the user
     % has already supplied matrix BarX
 else
-    error('FSDA:MixSimReg:WrongXdistrib','Possible values for option Xdistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
+    error('FSDA:MixSimreg:WrongXdistrib','Possible values for option Xdistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
 end
 
 Xdistrib.BarX=BarX;
@@ -720,10 +720,10 @@ if isstruct(betadistrib)
         if ~isempty(d);
             Beta= betadistrib.Beta;
         else
-            error('FSDA:MixSimReg:MissingField','If betadistrib =''User'' then the user must provide input matrix Beta')
+            error('FSDA:MixSimreg:MissingField','If betadistrib =''User'' then the user must provide input matrix Beta')
         end
     else
-        error('FSDA:MixSimReg:Wrongbetadistrib','Possible values for option betadistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
+        error('FSDA:MixSimreg:Wrongbetadistrib','Possible values for option betadistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
     end
 else
     betadistrib=struct;
@@ -732,37 +732,32 @@ else
     betadistrib.sigma=1;
 end
 
-
-if ~islogical(sph)
-    error('FSDA:MixSimReg:Wrongsph','option sph must be a logical value')
-end
-
 if ~islogical(hom)
-    error('FSDA:MixSimReg:Wronghom','option hom must be a logical value')
+    error('FSDA:MixSimreg:Wronghom','option hom must be a logical value')
 end
 
 if ecc <= 0 || ecc > 1
-    error('FSDA:MixSimReg:Wrongecc','ecc must be a scalar in the interval (0 1]')
+    error('FSDA:MixSimreg:Wrongecc','ecc must be a scalar in the interval (0 1]')
 end
 
 if PiLow < 0 || PiLow > 1
-    error('FSDA:MixSimReg:WrongPiLow','Option PiLow must be in interval [0 1]')
+    error('FSDA:MixSimreg:WrongPiLow','Option PiLow must be in interval [0 1]')
 end
 
 if int(1) >= int(2)
-    error('FSDA:MixSimReg:Wrongint','Second element of int must be greater than first, that is: int(2) >int(1)')
+    error('FSDA:MixSimreg:Wrongint','Second element of int must be greater than first, that is: int(2) >int(1)')
 end
 
 if resN < 1
-    error('FSDA:MixSimReg:WrongresN','Number of resimulations cannot be smaller than 1')
+    error('FSDA:MixSimreg:WrongresN','Number of resimulations cannot be smaller than 1')
 end
 
 if (min(options.tol) <= 0)
-    error('FSDA:MixSimReg:Wrongtol','Wrong value of tolerance, it must a scalar stricty greater than 0')
+    error('FSDA:MixSimreg:Wrongtol','Wrong value of tolerance, it must a scalar stricty greater than 0')
 end
 
 if lim < 1
-    error('FSDA:MixSimReg:Wronglim','Wrong value of lim, it cannot be smaller than 1')
+    error('FSDA:MixSimreg:Wronglim','Wrong value of lim, it cannot be smaller than 1')
 end
 
 if isempty(MaxOmega) && isempty(StdOmega)  && ~isempty(BarOmega)
@@ -822,13 +817,13 @@ elseif method ==3
         tol, lim, resN, hom, BarOmega, StdOmega, restrfactor, Display);
 elseif method ==4
     % In this case both MaxOmega, BarOmega and StdOmega have been specified
-    error('FSDA:MixSimReg:TooManyConstr','It is not possible to specify both MaxOmega, BarOmega and StdOmega at the same time')
+    error('FSDA:MixSimreg:TooManyConstr','It is not possible to specify both MaxOmega, BarOmega and StdOmega at the same time')
     
 elseif method~=-1
-    error('FSDA:MixSimReg:WrongMethod','Should never enter here')
+    error('FSDA:MixSimreg:WrongMethod','Should never enter here')
 else
     % isempty(BarOmega) && isempty(MaxOmega)
-    error('FSDA:MixSimReg:ConstrRequired','At least one overlap characteristic between MaxOmega and BarOmega should be specified')
+    error('FSDA:MixSimreg:ConstrRequired','At least one overlap characteristic between MaxOmega and BarOmega should be specified')
 end
 
 % Add details about the distribution of X which has been used
@@ -1068,8 +1063,8 @@ out = Q;
         
         
         if isamp == resN
-            warning('FSDA:MixSimReg:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
-            warning('FSDA:MixSimReg:NsimulTooSmall','Please increase the number of simulations allowed (option resN) or change the value of overlap');
+            warning('FSDA:MixSimreg:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+            warning('FSDA:MixSimreg:NsimulTooSmall','Please increase the number of simulations allowed (option resN) or change the value of overlap');
             
             fail = 1;
         end
@@ -1204,7 +1199,7 @@ out = Q;
             disp('Both conditions should hold:')
             disp('1. MaxOverlap > AverOverlap')
             disp('2.  MaxOverlap < AverOverlap * K (K - 1) / 2')
-            error('FSDA:MixSimReg:WrongOverlapSupplied','Incorrect values of average and maximum overlaps...');
+            error('FSDA:MixSimreg:WrongOverlapSupplied','Incorrect values of average and maximum overlaps...');
             
         else
             
@@ -1450,8 +1445,8 @@ out = Q;
             end
             
             if isamp == resN && resN>1
-                warning('FSDA:MixSimReg:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
-                warning('FSDA:MixSimReg:NsimulTooSmall','Increase the number of simulations allowed (option resN) or change the value of overlap');
+                warning('FSDA:MixSimreg:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+                warning('FSDA:MixSimreg:NsimulTooSmall','Increase the number of simulations allowed (option resN) or change the value of overlap');
                 
                 fail = 1;
                 
@@ -1577,7 +1572,7 @@ out = Q;
         %           S    : array of size v-by-v-by-k containing covariance matrices
         
         if k<=2
-            error('FSDA:MixSimReg:WrongOverlapSupplied','Average and std of overlap can be both set when k>2');
+            error('FSDA:MixSimreg:WrongOverlapSupplied','Average and std of overlap can be both set when k>2');
         end
         
         if nargin< 13
@@ -1923,8 +1918,8 @@ out = Q;
             end
         end
         if isamp == resN && resN>1
-            warning('FSDA:MixSimReg:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
-            warning('FSDA:MixSimReg:NsimulTooSmall','Increase the number of simulations allowed (option resN) or change the value of overlap');
+            warning('FSDA:MixSimreg:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+            warning('FSDA:MixSimreg:NsimulTooSmall','Increase the number of simulations allowed (option resN) or change the value of overlap');
             
             fail = 1;
             
@@ -1990,7 +1985,7 @@ out = Q;
                 end
             end
             if (flag == 1)
-                warning('FSDA:MixSimReg:WrongPiLow','PiLow is too high... generated equal mixing proportions...');
+                warning('FSDA:MixSimreg:WrongPiLow','PiLow is too high... generated equal mixing proportions...');
                 Pigen=zeros(k,1)+1/k;
             end
         end
@@ -2063,7 +2058,7 @@ out = Q;
         elseif find(strcmp('User',betadistrib.type))
             Beta=betadistrib.Beta;
         else
-            error('FSDA:MixSimReg:Wrongbetadistrib','Possible values for option betadistrib are ''Normal'' ''Uniform'' ''Halfnormal'' and ''User'' ')
+            error('FSDA:MixSimreg:Wrongbetadistrib','Possible values for option betadistrib are ''Normal'' ''Uniform'' ''Halfnormal'' and ''User'' ')
         end
         
         Mugen=   sum(Beta.*BarX,1)';
