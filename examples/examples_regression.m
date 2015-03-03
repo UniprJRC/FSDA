@@ -521,8 +521,9 @@ X=hawkins(:,1:8);
 mdrplot(out,'ylimy',[1 8],'datatooltip',1);
 
 %% HD: Example of dynamic brushing starting highlighting from the mdrplot 
-% (that is the plot of minimum deletion residual)
 % Interactive_example
+% Example of dynamic brushing starting highlighting from the mdrplot 
+% (that is the plot of minimum deletion residual)
 clearvars;close all;
 load('hawkins.txt');
 y=hawkins(:,9);
@@ -1068,8 +1069,10 @@ resfwdplot(out,'datatooltip',1,'tag','resfwdplot')
 
 
 %% SL: Interactive monitoring of the trajectories of scaled residuals using
-% persistent brushing
 % Interactive_example
+
+% Interactive monitoring of the trajectories of scaled residuals using
+% persistent brushing
 clearvars;close all;
 load('salinity.txt');
 y=salinity(:,4);
