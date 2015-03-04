@@ -6,13 +6,9 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 %
 %  Required input arguments:
 %
-%     SO FAR THERE IS JUST MATRIX X
+%TODO:tclustreg:inputyX
 %
-%    y: A vector with n elements that contains the response variable. y can
-%       be both a row of column vector.
-%    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension (n x p-1). Rows of X represent observations, and columns
-%       represent variables.
+%       X   : a matrix of size n-by-(p+1) (last column is the response)
 %       k   : scalar number of clusters
 %     factor: scalar. This is the constant c controlling the scatter constrain
 %

@@ -19,7 +19,8 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 %    c :       scalar greater than 0 which controls the robustness/efficiency of the estimator
 %              Default value is c=4
 %   shapeeff : If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location (TODO TODO)
+%              is referred to the location
+%TODO:HYPk:shapeeff 
 %
 % Output:
 %

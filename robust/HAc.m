@@ -16,7 +16,8 @@ function [bdp,eff] = HAc(ctun,p,varargin)
 %  Optional input arguments:
 %
 %   shapeeff : If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location (TODO TODO)
+%              is referred to the location 
+%TODO:Hac:shapeeff           
 %      param : vector of length 3 specifying the parameters a, b and c of the
 %              weight function of the hyperbolic tangent estimator.
 %              param(1)=a param(2)=b param(3)=c

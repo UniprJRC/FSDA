@@ -7,8 +7,9 @@ function [c,A,B,d] = HYPbdp(bdp, ~,k,traceiter)
 %  Required input arguments:
 %
 %      bdp    : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%        p    : scalar, number of response variables (e.g. in regression p=1)  (UP TO NOW p=1 JUST
-%                   REGRESSION, TODO FOR MULTIVARIATE ANALYSIS)
+%        p    : scalar, number of response variables (e.g. in regression p=1)  
+%
+%TODO:HYPbdp:pgreat1
 %
 %  Optional input arguments:
 %

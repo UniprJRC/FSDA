@@ -8,14 +8,7 @@ function ceff = OPTeff(eff,p,varargin)
 %               Generally eff=0.85, 0.9 or 0.95
 %    p :        scalar, number of response variables
 %
-%  Optional input arguments: NOT DONE YET, TODO TODO
-%
-%   shapeeff : If 1, the efficiency is referred to shape else (default)
-%              is referred to location
-% approxsheff: If 1, when p > 1 the approximate formula for scale
-%              efficiency is used else (default) the exact formula of the
-%              variance of the robust estimator of the scale is used
-%
+%TODO:OPTeff_INPUT_OPTIONS
 %
 % Output:
 %

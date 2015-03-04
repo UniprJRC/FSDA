@@ -196,7 +196,6 @@ psifunc=struct;
 
 if strcmp(rhofunc,'bisquare')
     
-% TODO TODO TODO TODO TODO effshape is only implemented for TB 
     % Compute tuning constant associated to the requested nominal efficiency
     % c = consistency factor for a given value of efficiency
 if effshape==1
@@ -204,7 +203,8 @@ if effshape==1
 else
     c=TBeff(eff,1);
 end
-    
+%TODO:MMregcore:shapeff
+
     psifunc.c=c;
     psifunc.class='TB';
     

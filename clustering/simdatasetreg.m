@@ -67,7 +67,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                   containing the parameters sigma for each explanatory variable
 %                   and each group. The default value of Xdistrib.sigma is
 %                   ones(p-1, k).
-%               OTHER DISTRIBUTION  (TODO)
+%TODO:simdatasetReg:OTHER_DISTRIB
 %                   Xdistrib.type='user'.
 %                   Xdistrib.X = matrix with at least n rows and p-1 (if
 %                   intercept is present) or p (if intercept is not
@@ -78,25 +78,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %
 %  Optional input arguments: (TODO TODO)
 %
-%       nnoise : scalar, which specifies the number of noise variables (the
-%               default value of nnoise is zero).
-%         nout : scalar, which specifies the number of outlying observations.
-%                The default value of nout is 0
-%       alpha  : level for simulating outliers. The default value of alpha
-%                is 0.001,
-%       maxiter: maximum number of trials to simulate outliers. The default
-%                value of maxout is 1e+05
-%       int    : vector or string.
-%                If int is a vector of length 2 it contains min and maximum values
-%                of the interval in which noise has to be simulated
-%                It int is empty (default) noise and outliers are simulated uniformly
-%                between the smallest and largest coordinates of mean
-%                vectors.
-%                If int='minmax' noise and outliers are simulated uniformly
-%                between the smallest and largest coordinates of simulated
-%                data matrix X
-%       lambda : scalar containing inverse Box-Cox
-%                transformation coefficient to apply to the response y
+%TODO:simdatasetReg:INPUT_OPTIONS
 %
 %
 %  Output:

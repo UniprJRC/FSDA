@@ -1339,12 +1339,6 @@ if ~isempty(databrush) || iscell(databrush)
                     set(gcf,'tag','data_res');
                     hold('off')
                     
-                    % control minimum and maximum for y axis
-                    % TODO
-                    %if ~isempty(options.ylim)
-                    %    ylim(options.ylim);
-                    %end
-                    
                     % displays the boundary of the current axes.
                     box on
                 end
@@ -1592,27 +1586,9 @@ end
         % fig is the closest ancestor figure of BigAx. Set property CurrentAxes
         % equal to the axes of the scatterplot that we have selected
         set(fig,'CurrentAxes',gca);
-        %
-        %         %indice is a scalar identyfing the selected axes
-        %         indice=find(AX==gca);
-        %
-        %
-        %             % indicer and indicec respectively contain the row and colum
-        %             % indexes of the scatter in which points have been selected
-        %             [indicer,indicec]=ind2sub(size(AX),indice);
-        %
-        %             otherAxes = AX;
         
-        %otherAxes is the list of the not selected scatterplot axes
-        %{
-        TODO
-        otherAxes(indice)=[];
+        %TODO:spmplot:ControlAxes
         
-        %During the selection, not selected axes must have properties
-        %HandleVisibility and HitTest set to off.
-        set(otherAxes,'HandleVisibility','off');
-        set(otherAxes,'HitTest','off');
-        %}
         pos = get(event_obj,'Position');
         
         % x and y, plot coordinates of the mouse

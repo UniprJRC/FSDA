@@ -131,7 +131,7 @@ if nargin<=2 || varargin{1} ~=1
         eff=(bet^2)/(Epsisq/p);    
     
 else
-    % SCALE EFFICIENCY  TODO TODO TODO
+%TODO:OPTc:shapeff
     p4=(p+4);
     p6=p4*(p+6);
     p8=p6*(p+8);

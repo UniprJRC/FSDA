@@ -19,7 +19,8 @@ function [bdp,eff,A,B,d] = HYPc(c,p,varargin)
 %              supCVC(psi,x) x \in R
 %              Default value is k=4.5
 %   shapeeff : If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location (TODO TODO)
+%              is referred to the location 
+%TODO:HYPc:shapeeff 
 %      param : vector of length 3 specifying the parameters A, B and d of the
 %              weight function of the hyperbolic tangent estimator.
 %              param(1)=A param(2)=B param(3)=d
