@@ -1396,10 +1396,12 @@ Y=load('diabetes.txt');
 init=20;
 nsimul=300;
 
-mmdStore=zeros(n-init,nsimul);
+mmdStore=NaN(n-init,nsimul);
 for j=1:nsimul
     mmd = FSMmmd(Y,0,'init',init);
-    mmdStore(:,j)=mmd(:,2);
+    if ~isnan(mmd)
+        mmdStore(:,j)=mmd(:,2);
+    end
 end
 
 % Plot minMD with random starts

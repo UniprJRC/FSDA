@@ -329,8 +329,8 @@ function [out]  = MixSimreg(k,p,varargin)
     % 0.5000    0.5000    0.5000
     % Probabilities of overlapping are evaluated at
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
-    [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X(:,2:end)],id)%}
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    spmplot([y X(:,2:end)],id)
 %}
 
 %{
@@ -359,7 +359,7 @@ function [out]  = MixSimreg(k,p,varargin)
     %     0.5000    0.5000    0.5000
     % Probabilitties of overlapping are evaluated at
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
-    [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     spmplot([y X(:,2:end)],id)
 %}
 
@@ -388,7 +388,7 @@ function [out]  = MixSimreg(k,p,varargin)
     %      type: 'Normal'
     %     sigma: 6
     %        mu: 0.5000
-    [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     spmplot([y X(:,2:end)],id)
 %}
 
@@ -412,7 +412,7 @@ function [out]  = MixSimreg(k,p,varargin)
     Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
     n=200;
 
-    [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     spmplot([y X],id)
 %}
 
