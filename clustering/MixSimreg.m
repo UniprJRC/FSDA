@@ -440,7 +440,7 @@ function [out]  = MixSimreg(k,p,varargin)
     close all
     rng(10,'twister')
     Q=MixSimreg(k,p,'BarOmega',0.2,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
-    [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     spmplot([y X],id)
     set(gcf,'Name','Strong overlap')
     
@@ -448,7 +448,7 @@ function [out]  = MixSimreg(k,p,varargin)
     figure
     rng(10,'twister')
     Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
-    [y,X,id]=simdatasetReg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     spmplot([y X],id)
     set(gcf,'Name','Small overlap')
 %}

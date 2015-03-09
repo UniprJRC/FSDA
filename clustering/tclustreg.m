@@ -479,8 +479,15 @@ out.asig2=asig2;
             % Solve this quadratic problem
             % a = quadprog(Vmat,dvec,[],[],Amat,bvec',uvecmin,uvecmax,g,'Algorithm','interior-point-convex');
             
-            option = optimoptions('quadprog','algorithm','interior-point-convex','Display','off');
+            % FSDATOAPP:tclustreg:DF
+            % Remark: for compatibilty with old version of MATLAB we use
+            % intruction optimset. However recent versions of Matlab accept
+            % function optimoptions as follows
+            % option = optimoptions('quadprog','algorithm','interior-point-convex','Display','off');
+            option = optimset('OutputFcn','quadprog','algorithm','interior-point-convex','Display','off');
+            
             a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],option);
+            
             
             %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','interior-point-convex','Display','iter');
             %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','active-set');
