@@ -12,7 +12,7 @@ then
         exit 1
 fi
 
-find $what -name "*.m" >lista_func
+find $what -name \"*.m\" >lista_func
 
 >func_without_examples.txt
 echo -e "The following MATLAB files contain no examples:\n" >>func_without_examples.txt
