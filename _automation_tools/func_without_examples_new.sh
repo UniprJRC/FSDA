@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#set -x
+set -x
 #echo "Inserisci il nome dell'archivio FSDA da analizzare : "
 #read what
 
