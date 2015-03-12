@@ -13,6 +13,17 @@ function brushROB
 %<a href="matlab: docsearchFS('brushROB')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
+% Examples:
+
+%{
+    % Interactive_example
+    % Display a GUI to brush units from the index plot of residuals
+    % and see the corresponding units highlighted in the yXplot
+    brushROB
+%}
+
+%% Beginning of code
+
 % other open demos create problems. Delete them before starting this new one.
 delete(((findobj('type','figure','Tag','demo'))));
 

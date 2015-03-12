@@ -317,3 +317,17 @@ end
 % annotation('textbox',[0.3 0 0.7 1],'String',str,'Interpreter','none','FontSize',fontsizebig,'FontName',fontname,'BackgroundColor',backgroundcolor);
 %stri=['See file <a href="matlab: opentoline(' examp1 ',27)">example_regression.m</a>  or the help files of the above functions for more information'];
 %disp(stri)
+%
+%
+%<a href="matlab: docsearchFS('brushRES')">Link to the help function</a>
+% Last modified 06-Feb-2015
+
+% Examples:
+
+%{
+    % Interactive_example
+    % Display a GUI where it is possible to brush steps from the monitoring
+    % residuals plot and to see the corresponding units highlighted in
+    % other plots
+    brushRES
+%}

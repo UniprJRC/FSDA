@@ -13,6 +13,16 @@ function brushFAN
 %<a href="matlab: docsearchFS('brushFAN')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
+% Examples:
+
+%{
+    % Interactive_example
+    % Display a GUI where it is possible to brush steps from the fan plot
+    % and to see the corresponding units highlighted in other plots
+    brushFAN
+%}
+
+%% Beginning of code
 % other open demos create problems. Delete them before starting this new one. 
 delete(((findobj('type','figure','Tag','demo'))));
 

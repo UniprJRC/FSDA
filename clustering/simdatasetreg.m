@@ -116,7 +116,30 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 % Last modified 06-Feb-2015
 
 % Examples:
-
+%
+%{
+    % Example 1
+    % Generate mixture of regression using an average overlapping at
+    % centroids =0.01. Use all default options
+    % 1) Beta is generated according to random normal for each group with
+    % mu=0 and sigma=1
+    % 2) X in each dimension and each group is generated according to U(0, 1)
+    % 3) regression hyperplanes contain intercepts
+    p=5;
+    k=3;
+    Q=MixSimreg(k,p,'BarOmega',0.01);
+    n=200;
+    % Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to
+    % 1.0000    1.0000    1.0000
+    % 0.5000    0.5000    0.5000
+    % 0.5000    0.5000    0.5000
+    % 0.5000    0.5000    0.5000
+    % 0.5000    0.5000    0.5000
+    % Probabilities of overlapping are evaluated at
+    % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    spmplot([y X(:,2:end)],id)
+%}
 
 
 %% Beginning of code
