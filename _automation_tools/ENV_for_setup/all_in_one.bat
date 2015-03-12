@@ -1,19 +1,26 @@
 @echo off
-set /p SOURCE="Inserisci il path assoluto dell'archivio FSDA --> "
+rem set /p SOURCE="Inserisci il path assoluto dell'archivio FSDA --> "
+set TOOL=%cd%
+cd ..\..
+set SOURCE=%cd%
 
-if exist "%SOURCE%" goto ok 
-if not exist "%SOURCE%" goto err
-
-:ok
-echo "RIMOZIONE O RINOMINA COPIA LOCALE FSDA ........."
-IF EXIST FSDA.OLD rmdir /S /Q FSDA.old
-IF EXIST FSDA move /Y FSDA FSDA.old
-mkdir FSDA
-echo "COPIA NUOVO ARCHIVIO FSDA ........."
+echo "CREAZIONE COPIA TEMPORANEA FSDA ........."
 pause
-Xcopy /E /H /EXCLUDE:exclude.txt "%SOURCE%"\* FSDA\.
+set TEMP="C:\cygwin64\tmp\FSDA_package"
+IF EXIST %TEMP% rmdir /S /Q %TEMP%
 
-set PWD=%~dp0
+mkdir %TEMP%
+
+rem IF EXIST %TEMP%\FSDA.OLD rmdir /S /Q %TEMP%\FSDA.old
+rem IF EXIST %TEMP%\FSDA move /Y %TEMP%\FSDA %TEMP%\FSDA.old
+
+mkdir %TEMP%\FSDA
+
+Xcopy /E /H /EXCLUDE:%TOOL%\exclude.txt "%SOURCE%"\* %TEMP%\FSDA\.
+
+rem set PWD=%~dp0
+
+cd %TEMP%
 
 cd FSDA\helpfiles\FSDA
 mkdir ..\XML
@@ -27,9 +34,6 @@ pause
 cd ..
 rename FSDA FSDAR8
 rename XML FSDAR7
-rem mkdir FSDAR8
-
-rem Xcopy /E /H ..\..\new_helps\* FSDAR8\.
 
 cd ..\..
 
@@ -37,14 +41,23 @@ rem transform_help.exe %PWD%\FSDA\helpfiles\FSDA\ %PWD%\FSDA\helpfiles\FSDAR8\ h
 
 rem rmdir /s /q "%PWD%\FSDA\helpfiles\FSDA"
 
-copy mgmhlpR7.bat FSDA\.
-copy mgmhlpR8.bat FSDA\.
+copy %TOOL%\mgmhlpR7.bat FSDA\.
+copy %TOOL%\mgmhlpR8.bat FSDA\.
 rem copy brushFAN.mlappinstall FSDA\.
 rem copy brushRES.mlappinstall FSDA\.
 rem copy brushROB.mlappinstall FSDA\.
 
 echo " mgmhlpRx.bat copiati""
 pause
+
+copy %TOOL%\licence.txt .
+copy "%TOOL%\before inst.txt" .
+copy "%TOOL%\after inst.txt" .
+copy %TOOL%\logo.ico .
+copy %TOOL%\fsda_black_trasp_300dpi_recol.bmp .
+copy %TOOL%\FSDA_logo_trasp_58.bmp .
+copy %TOOL%\FSDAscript.iss .
+
 
 echo "MODIFICA data setup................"
 pause
@@ -58,7 +71,7 @@ pause
 
 "C:\Program Files (x86)\Inno Setup 5\Compil32.exe" /cc FSDAscript.iss
 
-echo "ECCO FSDAtoolbox_for_MATLAB-setup.exe  !!!!!!"
+echo "----> FSDAtoolbox_for_MATLAB-setup.exe  generato in " %TEMP% " !!!!!!"
 pause
 
 rem "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe" sign /f "E:\usr_MATLAB\FSDA_setup\CERT\key.pfx" /d "FSDA Toolbox" /du "http://www.riani.it" /t "http://timestamp.verisign.com/scripts/timestamp.dll" "FSDAtoolbox_for_MATLAB-setup.exe"
@@ -69,19 +82,21 @@ rem pause
 echo "Generazione tar package per Linux"
 pause
 
-del FSDA\mgmhlpR7.bat
-del FSDA\mgmhlpR8.bat
+del %TEMP%\FSDA\mgmhlpR7.bat
+del %TEMP%\FSDA\mgmhlpR8.bat
+
+copy %TOOL%\setupLINUX.sh .
 
 "C:\cygwin64\bin\tar.exe" cvf FSDA.tar FSDA setupLINUX.sh
 "C:\cygwin64\bin\gzip.exe" FSDA.tar
-echo "ECCO FSDA.tar.gz !!!!!!!!!!!!!!"
+echo "---> FSDA.tar.gz genearto in " %TEMP% " !!!!!!!!!!!!!!"
 pause
 
 
 echo "FTP  MR_webserver ........"
 pause
 
-ftp -s:ftp.txt
+ftp -s:%TOOL%\ftp.txt
 pause
 
 
