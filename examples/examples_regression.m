@@ -384,7 +384,7 @@ y=hawkins(:,9);
 X=hawkins(:,1:8);
 
 [outLXS]=LXS(y,X,'nsamp',10000);
-[~,~,~,Bols,S2] = FSRmdr(y,X,outLXS.bs);
+[~,~,~,Bols,S2] = FSRmdr(y,X,outLXS.bs,'bsbmfullrank',0);
 
 % Plot of the monitoring of S2 and R2
 figure;
@@ -855,7 +855,7 @@ fieldnames(outFS)
 %% LD (Loyalty cards data): fan plot
 clearvars;close all;
 load('loyalty.txt');
-y=loyalty(:,4);
+y=loyalty(:,4); %#ok<SUSENS>
 X=loyalty(:,1:3);
 namey='Sales';
 nameX={'Number of visits', 'Age', 'Number of persons in the family'};
@@ -1198,7 +1198,7 @@ fanplot(out,'ylimy',[-40,20],'databrush',{'selectionmode' 'Rect' 'persist' '' 's
 %% PD (Poison data): Fan plot
 clearvars;close all;
 load('poison.txt');
-y=poison(:,end);
+y=poison(:,end); %#ok<SUSENS>
 X=poison(:,1:6);
 
 [out]=FSRfan(y,X,'plots',1,'intercept',0,'ylimy',[-14 3]);

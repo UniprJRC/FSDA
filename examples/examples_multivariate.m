@@ -1091,7 +1091,11 @@ figure;
 hold('on');
 % Plot lines of empirical quantiles
 LineStyle={'-';'--';':';'-.'};
-plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
+% REMARK: in the instruction below it is possible to use instruction
+% plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
+% provided mmd is not NaN (that is provided that the last value of the random 
+% starts loop produces a no full rank subset)
+plot1=plot((init:n-1)',mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 fcol={'b';'g';'r';'c';'m';'y';'k'};
 fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
@@ -1104,7 +1108,6 @@ mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 % compare the output with Figure 5 of Atkinson and Riani (2007)
-
 
 %% OF: analysis using S and MM estimators
 clearvars;close all;

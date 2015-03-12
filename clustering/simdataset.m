@@ -309,6 +309,10 @@ if ~isempty(lambda)
     else
         error('FSDA:simdataset:WrongLambda','The number of transformation coefficients lambda should be equal to ndimensions + nnoise')
     end
+    % Remark: if lambda is very large MATLAB can create a complex X, so it
+    % is necessary to have this further check
+    X=real(X);
+    
 end
 %% Inner functions
 % Xout with nout rows which contains the outliers

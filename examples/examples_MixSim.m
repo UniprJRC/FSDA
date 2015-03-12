@@ -225,6 +225,7 @@ gscatter(A3(:,1), A3(:,2), id3);
 
 %% Example 2 of Section 3.3 plot (d),  300 observations in 2 dimensions with prespecififed max overlap, transformed using Box Cox
 clearvars -except RandomDataFromR; close all;
+    
 if RandomDataFromR == true
     R_seed = 1238;
     if R_seed
@@ -238,6 +239,7 @@ Q4 = MixSim(3, 2, 'MaxOmega' , 0.1, 'int', [0.2 1], 'R_seed', R_seed);
 [A4 , id4] = simdataset(300, Q4.Pi, Q4.Mu, Q4.S, 'lambda' , [10 10],'R_seed', R_seed);
 
 gscatter(A4(:,1) , A4(:,2), id4);
+
 
 %% Example 3 of Section 3.3 plot (a),  500 observations in 2 dimensions with prespecififed max overlap, transformed using Box Cox  + 10 outliers
 clearvars -except RandomDataFromR; close all;
@@ -395,6 +397,7 @@ end
 % allowed. In both cases the same random seed together with the same level
 % of average and maximum overlapping is used
 clearvars -except RandomDataFromR; close all;
+rng('default')
 rng(2);
 out=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2, 'restrfactor',1.1);
 rng(2);
