@@ -171,7 +171,7 @@ closeR
 
 openR
 evalR('demo("persp")');
-close R
+closeR
 
 % Other examples can be found in files Rdemo.m and Rdemo.html in folder MATLAB_R_LINK
 % At the MATLAB prompt type
