@@ -13,7 +13,7 @@
 %
 % Based on the documentation provided by the authors of statconnDCOM and
 % based on our experience, in order to connect MATLAB with R it is
-% necessary to follow the next 4 steps:
+% necessary to follow the next 5 steps:
 %
 % STEP 1: INSTALL R (>= 2.12.0)
 %         When you install R in a 64bit CPU, make sure that you also
