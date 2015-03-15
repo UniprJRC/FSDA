@@ -143,7 +143,7 @@ hdef=floor(n*0.6);
 options=struct('init',hdef,'plots',0,'msg',1,'nocheck',0);
 
 if nargin<2
-        error('FSDA:FSMmmd:missingInputs','Initial subset is missing')
+    error('FSDA:FSMmmd:missingInputs','Initial subset is missing')
 end
 
 UserOptions=varargin(1:2:length(varargin));
@@ -603,11 +603,8 @@ else
                 else
                     bsbmin=seq(MD<ksor);
                     bsbeq=seq(MD==ksor);
-                    try
-                        bsb=[bsbmin;bsbeq(1:mm+1-length(bsbmin))];
-                    catch
-                        ddd=1;
-                    end
+                    
+                    bsb=[bsbmin;bsbeq(1:mm+1-length(bsbmin))];
                     
                     bsbT=zeron1;
                     bsbT(bsb)=true;
