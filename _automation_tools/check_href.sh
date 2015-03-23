@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#set -x
+set -x
 >REP/help_href-references.txt
 >REP/help_href-ERROR.txt
 
@@ -13,29 +13,30 @@ then
         exit 1
 fi
 
+mydir=`pwd`
 cd $what/helpfiles/FSDA
 
 find . -name "*.html" |while read help_file
 do
-	awk -f ../../../check_hr.awk $help_file >>../../../REP/help_href-references.txt
+	awk -f $mydir/check_hr.awk $help_file >>$mydir/REP/help_href-references.txt
 done
 
 
-cat ../../../REP/help_href-references.txt |while read href
+cat $mydir/REP/help_href-references.txt |while read href
 do
  	init=${href:0:1}
 	if [ $init ==  "." ]
 	then 
 		dove=$href
 	fi
-	if [ ! -e $href ]
+	if [ ! -e "$href" ]
 	then	
-		echo "ERRORE in $dove : href=" $href " --- IL FILE NON ESISTE" >>../../../REP/help_href-ERROR.txt
+		echo "ERRORE in $dove : href=" $href " --- IL FILE NON ESISTE" >>$mydir/REP/help_href-ERROR.txt
 	fi
 done
 
-unix2dos REP/help_href-references.txt
-unix2dos REP/help_href-ERROR.txt
+unix2dos $mydir/REP/help_href-references.txt
+unix2dos $mydir/REP/help_href-ERROR.txt
 
 echo "I risultati sono in REP/help_href-references.txt e REP/help_href-ERROR.txt"
 exit 0

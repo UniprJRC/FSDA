@@ -283,7 +283,7 @@ class xml2Array {
 	
 		foreach($this->alphabetical as $key => $value)
 		{
-			$body = $body."<tr><td style='height: 26px' valign='top'><a href='".$value."'>".$key."</a></td><td style=\"height: 26px\">".$this->pageDescriptions[$value]."</td></tr>";
+			$body = $body."<tr><td style='height: 26px' valign='top'><a href=\"".$value."\">".$key."</a></td><td style=\"height: 26px\">".$this->pageDescriptions[$value]."</td></tr>\n";
 		}
 		$body = $body."</table>";		
 		$temp_file = str_replace("DOCUMENTO",$body,$temp_file);

@@ -29,17 +29,18 @@ do
 		printf "%% %-28s - %s\n" "$base" "$comm" >>Contents.m
 	done
 	unix2dos Contents.m
-echo "DIFFERENZA PER $fold <nuovo >vecchio"
-sdiff Contents.m patrizia
-echo Contents.m in $fold generato
-echo prosegui
-read avanti
+	
+	echo "Contents.m in $fold GENERATO !!!!"
+	echo "DIFFERENZA  di Contents.m < nuovo_file > vecchio_file"
+	sdiff Contents.m patrizia
+	echo " <Enter> per continuare "
+	read avanti
 	cd ..
 done
 
 cd datasets
-echo prosegui
-read avanti
+>patrizia
+mv Contents.m patrizia
 
 echo "<a href=""matlab: docsearchFS('datasets')"">Link to the help function</a>" >Contents.m
 echo "<a href=""matlab: docsearchFS('datasets_mv')"">Link to the help function</a>" >>Contents.m
@@ -51,7 +52,13 @@ sed -e ' {
         3,$ s/^/% /
         }' Contents.m
 unix2dos Contents.m
-echo Contents.m in datasets generato
+
+echo "Contents.m in datasets GENERATO !!!!"
+echo "DIFFERENZA  di Contents.m < nuovo_file > vecchio_file"
+sdiff Contents.m patrizia
+echo " <Enter> per continuare "
+read avanti
+echo " I file Contents.m sono stati ricreati. I vecchi Contents.m sono salvati come 'patrizia'"
 
 exit 0
 
