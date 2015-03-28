@@ -1,7 +1,30 @@
-function out=regressHart(y,X,sel,varargin)
+function out=regressHart(y,X,Z,varargin)
 %regressHart fits a multiple linear regression model using art heteroskedasticity
 %
 %<a href="matlab: docsearchFS('regresshart')">Link to the help function</a>
+%
+%  THE MODEL IS y=X*\beta+ \epsilon,
+%               \epsilon ~ N(0 \Sigma) = N(0 \sigma^2*\Omega)
+%                   \Omega=diag(\omega_1, ..., \omega_n)
+%                   \omega_i=1+exp(z_i^T*\gamma)
+%                   \Sigma=diag(\sigma_1^2, ..., \sigma_n^2)
+%                         =diag(\sigma^2*\omega_1, ..., \sigma^2*\omega_n)
+%                   var(\epsilon_i)=\sigma^2_i = \sigma^2 \omega_i i=1, ..., n
+%               \beta = vector which contains regression parameters
+%               \gamma= vector which contains skedastic parameters
+%               REMARK2: if Z=log(X) then 1+exp(z_i(1:end)^T*\gamma(1:end)) =
+%                         1+exp(\gamma(1))* \prod x_{ij}^\gamma_j j=1, ..., p-1
+%               REMARK3: if there is just one explanatory variable (say x)
+%               which is responsible for heteroskedasticity and the model is
+%               \sigma_i=\sigma_2(1+ \theta*x_i^\alpha)
+%               then it is necessary to to supply Z as Z=log(x). In this
+%               case, given that the program automatically adds a column of
+%               ones to Z
+%                  exp(Z(i,1)*\gamma(1) +Z(i,2)*\gamma(2))=
+%                  exp(\gamma(1))*x_i^\gamma(2)
+%               therefore exp(gamma(1)) is the estimate of \theta while
+%               \gamma(2) is the estimate of alpha
+%
 %
 %  Required input arguments:
 %
@@ -17,13 +40,13 @@ function out=regressHart(y,X,sel,varargin)
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows
 %
-%               \sigma^2_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+%               \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
 %
 %               If Z is a vector of length r it contains the indexes of the
 %               columns of matrix X which form the scedastic function as
 %               follows
 %
-%               \sigma^2_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
+%               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
 %
 %               Therefore, if for example the explanatory variables
@@ -82,15 +105,15 @@ function out=regressHart(y,X,sel,varargin)
 %                       1st col = Estimates of scedastic coefficients
 %                       2nd col = Standard errors of the estimates of scedastic coeff
 %                       3rd col = t tests of the estimates of scedastic coeff
-%                       Remark: the first row of matrix out.Gamma is
-%                       referred to the estimate of \sigma
+%          out.sigma2 : scalar. Estimate of \sigma^2 (sum of squares of
+%                       residuals divided by n in the transformed scale)
 %              out.WA : scalar. Wald test
 %              out.LR : scalar. Likelihood ratio test
 %              out.LM : scalar. Lagrange multiplier test
 %            out.LogL : scalar. Complete maximized log likelihood
 %
 %
-%   DETAILS. This routine implements art heteroscedasticity 
+%   DETAILS. This routine implements art heteroscedasticity
 %
 % See also regress, regstats
 %
@@ -192,18 +215,20 @@ sigma2=r'*r/n;
 % -2* ( (-n/2)*[1+ln(r'r/n)   +ln 2 \pi]
 logL_R= n*(1+log(sigma2));
 
+
+
 %Initialization of gamma
 % Z = n-by-r matrix which contains the explanatory variables for
 % heteroskedasticity
-if size(sel,1)==n
-    Z=[ones(n,1) sel];
+if size(Z,1)==n
+    Z=[ones(n,1) Z];
 else
     % Check if interecept was true
     intercept=options.intercept;
     if intercept==1
-        Z=[ones(n,1) X(:,sel+1)];
+        Z=[ones(n,1) X(:,Z+1)];
     else
-        Z=[ones(n,1) X(:,sel)];
+        Z=[ones(n,1) X(:,Z)];
     end
 end
 % Estimate of gamma is nothing but the OLS estimate in a regression where
@@ -236,6 +261,11 @@ maxiter=options.maxiter;
 
 delt=1;
 
+% Given that exp(z'\gamma) it is necessary in the estimatio procedure to
+% put a threshold to z'\gamma. scalar |th| is the maximum value allowed during the
+% estimation procedure for each element of gamma
+th=8;
+
 % d is the column vector which contains the full set of
 % parameters (beta and gamma)
 dold=[oldbeta;oldgamma];
@@ -246,12 +276,23 @@ while cont==1 && iter<maxiter
     % \sigma^2_i with \exp(\gamma_i' z_i)
     % sigma2hat1 = vector of length n which contains the n estimates of the
     % disturbance variance
-    Zgamma=exp(Z*oldgamma);
-    sigma2hati=(1+Zgamma);
-    % sigma2hati(sigma2hati>1e+8)=1e+8;
+    Zoldgamma=Z*oldgamma;
+    
+    greatth=Zoldgamma>th;
+    Zoldgamma(greatth)=th;
+    
+    smallth=Zoldgamma<-th;
+    Zoldgamma(smallth)=-th;
+    
+    expZgamma=exp(Zoldgamma);
+    
+    omegahat=(1+expZgamma);
     
     % 2. Compute \beta_{t+1} (new estimate of \beta using FGLS)
-    sqweights = sigma2hati.^(-0.5);
+    % Remark: as useual exp log in MATLAB is much more efficient than ^
+    % sqweights = omegahat.^(-0.5);
+    sqweights = exp(-0.5*log(omegahat));
+    
     
     % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
     Xw = bsxfun(@times, X, sqweights);
@@ -265,25 +306,22 @@ while cont==1 && iter<maxiter
     newres2=(yw-Xw*newbeta).^2;
     newsigma2=sum(newres2)/n;
     
-    Qweights=(Zgamma./(1+Zgamma));
+    Qweights=(expZgamma./(1+expZgamma));
     Zq = bsxfun(@times, Z, Qweights);
     %yq = (newres2./(newsigma2*(1+Zgamma))-1).* Qweights;
     % yq = (newres2./(newsigma2*(1+Zgamma))-1) ./ Qweights;
     newres2ori=(y-X*newbeta).^2;
-    yq = (newres2ori./(newsigma2*(1+Zgamma))-1);
+    yq = (newres2ori./(newsigma2*(1+expZgamma))-1);
     
     newgamma=oldgamma+ delt*Zq\yq;
-    % newgamma(abs(newgamma)>10)=10;
-    th=8;
-    newgamma(newgamma>th)=th;
-    newgamma(newgamma<-th)=-th;
+    
     
     dnew=[newbeta;newgamma];
     
     % Show estimate of beta in each step of the iteration
     if options.msgiter>1
-        % disp(['Values of hat beta iteration' num2str(iter)])
-        % disp(newbeta)
+        disp(['Values of hat beta iteration' num2str(iter)])
+        disp(newbeta)
         disp(['Values of hat gamma iteration' num2str(iter)])
         disp(newgamma)
     end
@@ -302,38 +340,42 @@ end
 
 % Display a warning if convergence has not been achieved
 if iter==maxiter && options.maxiter >1
-    warning('FSDA:regressHart:NoConvergence','Maximum number of iteration has been reached without convergence')
+    warning('FSDA:regressHart:NoConvergence','Maximum number of iterations has been reached without convergence')
+end
+
+if max(abs(newgamma))==th
+    disp(['Max. value of \gamma during iterative procedure has been reached n.obs=' num2str(n)])
 end
 
 % Store results
 
 % Store beta coefficients, standard errors and corresponding tstats
-BetaM=zeros(p,3);
-BetaM(:,1)=newbeta;
+Beta=zeros(p,3);
+Beta(:,1)=newbeta;
 % Compute standard errors of beta coefficients
-BetaM(:,2)=sqrt(diag(inv(Xw'*Xw)));
+Beta(:,2)=sqrt(newsigma2*diag(inv(Xw'*Xw)));
 % Compute t-stat of beta coefficients
-BetaM(:,3)=BetaM(:,1)./BetaM(:,2);
-out.BetaM=BetaM;
-out.Beta=newbeta';
+Beta(:,3)=Beta(:,1)./Beta(:,2);
+out.Beta=Beta;
+out.BetaOLD=newbeta;
 out.sigma2=newsigma2;
 
 % Store parameters of scedastic function with associated standard errors
-GammaM=zeros(length(newgamma),3);
-GammaM(:,1)=newgamma;
+Gamma=zeros(length(newgamma),3);
+Gamma(:,1)=newgamma;
 % Find standard errors of elements of \gamma
 % ZZ=Z'*Z;
 % ZZ=0.5*ZZ(2:end,2:end);
 covZ=2*inv(Zq'*Zq); %#ok<MINV>
-GammaM(:,2)=diag(sqrt(covZ));
-GammaM(:,3)=GammaM(:,1)./GammaM(:,2);
+Gamma(:,2)=diag(sqrt(covZ));
+Gamma(:,3)=Gamma(:,1)./Gamma(:,2);
 
 
 % Store inside out structure standard error of regression and heteroskedastic parameters
-out.GammaM=GammaM;
+out.Gamma=Gamma;
 % The two lines below are temporary just to have the connection with power
 % model
-out.alpha=out.GammaM(end,1);
-out.Gamma=exp(out.GammaM(1,1));
+out.alphaOLD=out.Gamma(end,1);
+out.GammaOLD=exp(out.Gamma(1,1));
 end
 

@@ -1,7 +1,34 @@
-function out=regressHhar(y,X,sel,varargin)
+function out=regressHhar(y,X,Z,varargin)
 %regressH fits a multiple linear regression model with Harvey heteroskedasticity
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
+%
+%  THE MODEL IS y=X*\beta+ \epsilon, 
+%               \epsilon ~ N(0 \Sigma) 
+%                   \Sigma=diag(\sigma_1^2, ..., \sigma_n^2)
+%                   \sigma_i^2=exp(z_i^T*\gamma)
+%                   var(\epsilon_i)=\sigma_i^2 i=1, ..., n
+%               \beta = vector which contains regression parameters
+%               \gamma= vector which contains skedastic parameters
+%               Remark1: given that the first element of \z_i is equal to 1
+%               \sigma_i^2 can be written as 
+%               \sigma_i^2 = \sigma^2*exp(z_i(2:end)^T*\gamma(2:end))
+%                          = exp(\gamma(1))*exp(z_i(2:end)^T*\gamma(2:end))
+%               that is, once the full parameter vector \gamma containing 
+%               the skedastic parameters is estimated \exp( \gamma(1))
+%               provides the estimator for \sigma^2
+%               REMARK2: if Z=log(X) then exp(z_i(2:end)^T*\gamma(2:end)) =
+%                           \prod x_{ij}^\gamma_j j=2, ..., p
+%               REMARK3: if there is just one explanatory variable (say x)
+%               which is responsible for heteroskedasticity and the model is
+%               \sigma_i=( \sigma^2*x_i^\alpha) 
+%               then it is necessary to to supply Z as Z=log(x). In this
+%               case, given that the program automatically adds a column of
+%               ones to Z
+%                  exp(Z(i,1)*\gamma(1) +Z(i,2)*\gamma(2))=
+%                  exp(\gamma(1))*x_i^\gamma(2) 
+%               therefore exp(gamma(1)) is the estimate of \sigma^2 while
+%               \gamma(2) is the estimate of alpha
 %
 %  Required input arguments:
 %
@@ -69,7 +96,7 @@ function out=regressHhar(y,X,sel,varargin)
 %               monitor the estimates of the coefficients in each step of
 %               the iteration. If msgiter<1 nothing is displayed on the
 %               screen
-%               e
+%               
 %  Output:
 %
 %  The output consists of a structure 'out' containing the following fields:
@@ -101,10 +128,10 @@ function out=regressHhar(y,X,sel,varargin)
 %   input matrix Z (therefore Z does not have to include a constant term).
 %   Now let \gamma'=[ln \sigma^2 \alpha']. Then the model is simply
 %       \sigma^2_i = exp(\gamma_' z_i)
-%   Once the full parameter vector is estimated \exp( \gamma_1) provides the
+%   Once the full parameter vector is estimated \exp( \gamma(1)) provides the
 %   estimator for \sigma^2
 %
-% See also regress, regstats
+% See also regressHart
 %
 % References:
 %
@@ -177,9 +204,9 @@ function out=regressHhar(y,X,sel,varargin)
 
     % Monthly credit card expenditure for 100 individuals.
 
-    % Results in structure "out.Beta" coincide with "Iterated" lines in
-    % table 9.2, page 282, 7th edition of Greene (2007).
-
+    % Results in structure "out.Beta" coincide with those of 
+    % table 14.3 page 557, 7th edition of Greene (2007).
+    % (line of the table which starts with MLE)
 
     load('TableF61_Greene');
     Y=TableF61_Greene.data;
@@ -293,16 +320,17 @@ logL_R= n*(1+log(r'*r/n));
 
 %Initialization of gamma
 % Z = n-by-r matrix which contains the explanatory variables for
-% heteroskedasticity
-if size(sel,1)==n
-    Z=[ones(n,1) sel];
+% heteroskedasticity or vector containing the indexes of the columns of the
+% explanatory variables responsible for heteroskedasticity
+if size(Z,1)==n
+    Z=[ones(n,1) Z];
 else
-    % Check if interecept was true
+    % Check if intercept is true
     intercept=options.intercept;
     if intercept==1
-        Z=[ones(n,1) X(:,sel+1)];
+        Z=[ones(n,1) X(:,Z+1)];
     else
-        Z=[ones(n,1) X(:,sel)];
+        Z=[ones(n,1) X(:,Z)];
     end
 end
 % Estimate of gamma is nothing but the OLS estimate in a regression where
@@ -332,18 +360,26 @@ maxiter=options.maxiter;
 % d is the column vector which contains the full set of
 % parameters (beta and gamma)
 dold=[oldbeta;oldgamma];
+      
+th=38;
+      
 while cont==1 && iter<maxiter
     iter=iter+1;
     
     % 1. Estimate the disturbance variance
     % \sigma^2_i with \exp(\gamma_i' z_i)
-    % sigma2hat1 = vector of length n which contains the n estimates of the
+    % sigma2hat = vector of length n which contains the n estimates of the
     % disturbance variance
-    sigma2hati=exp(Z*oldgamma);
+    Zoldgamma=Z*oldgamma;
+    
+    Zoldgamma(Zoldgamma>th)=th;
+    Zoldgamma(Zoldgamma<-th)=-th;
+
+    sigma2hat=exp(Zoldgamma);
     % sigma2hati(sigma2hati>1e+8)=1e+8;
     
     % 2. Compute \beta_{t+1} (new estimate of \beta using FGLS)
-    sqweights = sigma2hati.^(-0.5);
+    sqweights = sigma2hat.^(-0.5);
     
     % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
     Xw = bsxfun(@times, X, sqweights);
@@ -355,9 +391,9 @@ while cont==1 && iter<maxiter
     % 3. Update estimate of \gamma adding the vector of slopes in the least
     % squares regression of [\epsilon_i^2/exp(z_i^' \gamma)-1] on z_i
     newres2=(y-X*newbeta).^2;
-    newgamma=oldgamma+ Z\(newres2./exp(Z*oldgamma)-1);
-    newgamma(newgamma>15)=5;
-    newgamma(newgamma<-15)=-5;
+    % newgamma=oldgamma+ Z\(newres2./exp(Zoldgamma)-1);
+    newgamma=oldgamma+ Z\(newres2./sigma2hat-1);
+    
     
     dnew=[newbeta;newgamma];
     
@@ -470,6 +506,8 @@ LM=Zbh'*Zbh/2;
 % Store inside out structure standard error of regression and heteroskedastic parameters
 out.Gamma=Gamma;
 out.alpha=out.Gamma(end,1);%added by frt. non so se giusto.
+out.sigma2=exp(out.Gamma(1,1));
+
 % Store value of Likelihood ratio test
 out.LR = LR;
 % Store value of Lagrange multiplier test

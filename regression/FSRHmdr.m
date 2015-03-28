@@ -1,4 +1,4 @@
-function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,bsb,varargin)
+function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %FSRHmdr computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search
 %
 %<a href="matlab: docsearch('fsrhmdr')">Link to the help function</a>
@@ -17,6 +17,25 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,bsb,varargin)
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
+%     Z :       n x r matrix or vector of length r.
+%               If Z is a n x r matrix it contains the r variables which
+%               form the scedastic function as follows (if input optin art==1)
+%
+%               \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+%
+%               If Z is a vector of length r it contains the indexes of the
+%               columns of matrix X which form the scedastic function as
+%               follows
+%
+%               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
+%               \gamma_{r} X(i,Z(r)))
+%
+%               Therefore, if for example the explanatory variables
+%               responsible for heteroscedisticity are columns 3 and 5
+%               of matrix X, it is possible to use both the sintax
+%                    FSRHmdr(y,X,X(:,[3 5]),0)
+%               or the sintax
+%                    FSRHmdr(y,X,[3 5],0)
 %  bsb :         list of units forming the initial subset, if bsb=0
 %               (default) then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
@@ -47,6 +66,7 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,bsb,varargin)
 %               about great interchange on the screen
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
+% gridsearch
 %  constr :     r x 1 vector which contains the list of units which are
 %               forced to join the search in the last r steps. The default
 %               is constr=''.  No constraint is imposed
@@ -130,12 +150,12 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,bsb,varargin)
 
 %{
     % Load international trade data used in the paper ART
-    XX=load('tradeH.txt')
+    XX=load('tradeH.txt');
     y=XX(:,2);
     X=XX(:,1);
     X=X./max(X);
-
-    [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,0,'init',round(length(y)/2));
+    Z=log(X);
+    [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
 
     % Plot monitoring of alpha parameter
     plot(Hetero(:,1),Hetero(:,2))
@@ -157,7 +177,7 @@ else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
 options=struct('intercept',1,'init',init,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','bsbmfullrank',1,'Hmodel',1,'scoring',1);
+    'constr','','bsbmfullrank',1,'modeltype','art','gridsearch',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -170,18 +190,32 @@ if ~isempty(UserOptions)
 end
 
 
-if nargin<3
+
+if nargin<4
     error('FSDA:FSRHmdr:missingInputs','Initial subset is missing');
 end
 %init1=options.init;
-if nargin > 3
+if nargin > 4
     
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin);
         options.(varargin{i})=varargin{i+1};
     end
 end
-% And check if the optional user parameters are reasonable.
+
+
+% Z = n-by-r matrix which contains the explanatory variables for
+% heteroskedasticity
+if size(Z,1)~=n
+    % Check if interecept was true
+    intercept=options.intercept;
+    if intercept==1
+        Z=X(:,Z+1);
+    else
+        Z=X(:,Z);
+    end
+end
+
 
 if bsb==0;
     Ra=1; nwhile=1;
@@ -192,12 +226,30 @@ if bsb==0;
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSDA:FSRHmdr:message','Unable to randomly sample full rank matrix');
+        warning('FSDA:FSRHmdr:NoFullRankMatrix','Unable to randomly sample full rank matrix');
     end
+    Zb=Z(bsb,:);
     yb=y(bsb);
+    
 else
     Xb=X(bsb,:);
+    Zb=Z(bsb,:);
     yb=y(bsb);
+end
+
+gridsearch=options.gridsearch;
+if gridsearch==1 && size(Z,2)>1
+    warning('FSDA:FSRHmdr:WrongInputOpts','To perform a grid search you cannot have more than one varaible responsible for heteroskedasticity');
+    warning('FSDA:FSRHmdr:WrongInputOpts','Scoring algorith is used');
+    gridsearch=0;
+end
+
+modeltype=options.modeltype;
+
+if strcmp(modeltype,'art') ==1
+    art=1;
+else
+    art=0;
 end
 
 ini0=length(bsb);
@@ -224,8 +276,9 @@ end
 msg=options.msg;
 constr=options.constr;
 intercept=options.intercept;
-scoring=options.scoring;
+
 %% Initialise key matrices
+
 
 % sequence from 1 to n.
 seq=(1:n)';
@@ -264,7 +317,7 @@ BB = NaN(n,n-init1+1);
 % 1st col = fwd search index
 % 2nd col = estimate of alpha in the scedastic equation
 % 3rd col = estimate of gamma in the scedastic equation
-Hetero=[(init1:n)' NaN(n-init1+1,2)];
+Hetero=[(init1:n)' NaN(n-init1+1,size(Z,2)+1)];
 
 % Matrix which contains in each column the estimate of the weights
 WEI = NaN(n,n-init1+1);
@@ -283,8 +336,6 @@ if (rank(Xb)~=p)
 else
     for mm=ini0:n;
         
-        
-        
         % if n>200 show every 100 steps the fwd search index
         if msg==1 && n>5000;
             if length(intersect(mm,seq100))==1;
@@ -292,36 +343,45 @@ else
             end
         end
         
-        
-        
         NoRankProblem=(rank(Xb) == p);
         if NoRankProblem  % rank is ok
-            
-            
-            if scoring==1
-                if size(Xb,1)<=5
-                    HET=regressHart_grid(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
-                    % HET=regressH1grid(yb,Xb(:,end),Xb(:,end),'intercept',intercept);%era regressMHmleN ????
+            if art==1
+                if  mm > 5  && gridsearch ~=1
+                    % Use scoring
+                    HET=regressHart(yb,Xb(:,2:end),Zb,'intercept',intercept);
                 else
-                    HET=regressHart(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept);
-                    % HET=regressMHpow(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
-                    % HET=regressMH1(yb,Xb(:,end),log(Xb(:,end)),'intercept',intercept,'initialgamma',[log(HET.Gamma);HET.alpha]);
+                    if size(Zb,2)==1
+                        % Use grid search algorithm if Z has just one column
+                        HET=regressHart_grid(yb,Xb(:,end),exp(Zb),'intercept',intercept);
+                    else
+                        HET=regressHart(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                    end
                 end
+                
+                % gam=HET.GammaOLD;
+                % alp=HET.alphaOLD;
+                % omegahat=1+real(X(:,end).^alp)*gam;%equaz 6 di paper
+                
+                omegahat=1+exp(HET.Gamma(1,1))*exp(Z*HET.Gamma(2:end,1));
             else
-                HET=regressHart_grid(yb,Xb(:,end),(Xb(:,end)),'intercept',intercept);
+                if  mm > 5  && gridsearch ~=1
+                    % Use scoring
+                    HET=regressHhar(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                else
+                    if size(Zb,2)==1
+                        % Use grid search algorithm if Z has just one column
+                        HET=regressHhar_grid(yb,Xb(:,end),exp(Zb),'intercept',intercept);
+                    else
+                        HET=regressHhar(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                    end
+                end
+                
+                
+                omegahat=exp(Z*HET.Gamma(2:end,1));
+                
             end
             
-            
-            gam=HET.Gamma;
-            alp=HET.alpha;
-            sigma2hati=1+real(X(:,end).^alp)*gam;%equaz 6 di paper
-            %             else
-            %              HET=regressHgrid(yb,Xb,Xb);
-            %             gam=HET.Gamma;
-            %             alp=HET.alpha;
-            %             sigma2hati=1+real(X(:,2).^alp)*gam;
-            %             end
-            sqweights = sigma2hati.^(-0.5);
+            sqweights = omegahat.^(-0.5);
             
             % Xw and yw are referred to all the observations
             % They contains transformed values of X and y using estimates
@@ -335,9 +395,11 @@ else
             yw = y .* sqweights;
             Xb=Xw(bsb,:);
             yb=yw(bsb);
+            % The instruction below should not be necessary
+            % Zb=Z(bsb,:);
             
             % b=Xb\yb;   % HHH
-            b=HET.Beta';
+            b=HET.Beta(:,1);
             resBSB=yb-Xb*b;
         else   % number of independent columns is smaller than number of parameters
             error('FSDA:FSRHmdr:NoFullRank','Not full rank stop')
@@ -359,7 +421,7 @@ else
                 % Store beta coefficients if there is no rank problem
                 Bols(mm-init1+1,2:p+1)=b';
                 % Store parameters of the scedastic equation
-                Hetero(mm-init1+1,2:3)=[alp gam];
+                Hetero(mm-init1+1,2:end)=HET.Gamma(:,1)';
                 
                 % Compute and store estimate of sigma^2
                 % using y and X transformed
@@ -389,7 +451,7 @@ else
                     if hhh==1
                         ord = [(r(ncl,2)./(1+hi)) e(ncl)];
                     else
-                        ord = [(r(ncl,2)./(sigma2hati(ncl)+hi)) e(ncl)];
+                        ord = [(r(ncl,2)./(omegahat(ncl)+hi)) e(ncl)];
                     end
                     
                     % Store minimum deletion residual in matrix mdr
@@ -424,6 +486,7 @@ else
             
             Xb=X(bsb,:);  % subset of X     HHH  OK
             yb=y(bsb);    % subset of y     HHH   OK
+            Zb=Z(bsb,:);  % subset of Z
             
             if mm>=init1;
                 unit=setdiff(bsb,oldbsb);

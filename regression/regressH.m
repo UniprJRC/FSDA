@@ -1,4 +1,4 @@
-function out=regressH(y,X,sel,varargin)
+function out=regressH(y,X,Z,varargin)
 %regressH fits a multiple linear regression model with heteroskedasticity
 %
 %<a href="matlab: docsearchFS('regressh')">Link to the help function</a>
@@ -28,12 +28,15 @@ function out=regressH(y,X,sel,varargin)
 %               If type is 'arc' (default) than the skedastic function is
 %               modelled as follows
 %
-%               \sigma^2_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+%               \sigma^2_i = \sigma^2 (1 + exp(\gamma_0 + \gamma_1 Z(i,1) +
+%                           ...+ \gamma_{r} Z(i,r)))
 %
 %               on the other hand, if type is 'har' then traditional
 %               formulation due to Harvey is used as follows
 %
-%               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+%               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z(i,1) + ...+
+%                           \gamma_{r} Z(i,r)) =\sigma^2 (exp(\gamma_1
+%                           Z(i,1) + ...+ \gamma_{r} Z(i,r))
 %               
 %
 %
@@ -246,11 +249,11 @@ if nargin>3
     
     chktype = find(strcmpi('type',chklist)); 
     if ~isempty(chktype) && strcmp(varargin{2*chktype},'har') ==1
-        out=regressHhar(y,X,sel,varargin{:});
+        out=regressHhar(y,X,Z,varargin{:});
     else
-        out=regressHart(y,X,sel,varargin{:});
+        out=regressHart(y,X,Z,varargin{:});
     end
 else
-     out=regressHart(y,X,sel,varargin);
+     out=regressHart(y,X,Z,varargin);
 end
 

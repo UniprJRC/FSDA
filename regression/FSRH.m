@@ -1,4 +1,4 @@
-function [out]=FSRH(y,X,varargin)
+function [out]=FSRH(y,X,Z,varargin)
 %FSRH gives an automatic outlier detection procedure in heteroskedastic linear regression
 %
 %
@@ -302,7 +302,7 @@ options=struct('h',hdef,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
     'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
-    'bsbmfullrank',1,'scoring',1);
+    'bsbmfullrank',1,'gridsearch',0,'modeltype','art');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -328,7 +328,8 @@ lms=options.lms;
 nsamp=options.nsamp;
 msg=options.msg;
 bsbmfullrank=options.bsbmfullrank;
-scoring=options.scoring;
+gridsearch=options.gridsearch;
+modeltype=options.modeltype;
 
 %% Start of the forward search
 
@@ -350,7 +351,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,~,~,Hetero,WEI] = FSRHmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'scoring',scoring);
+    [mdr,Un,bb,~,~,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2;
@@ -388,7 +389,8 @@ else % initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,~,S2,Hetero,WEI] = FSRHmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'scoring',scoring);
+        [mdr,Un,bb,~,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,...
+            'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'modeltype',modeltype,'gridsearch',gridsearch);
         
         % If FSRmdr run without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -445,7 +447,7 @@ if iter >=5
     %     out.nout= NaN;
     %     error('no convergence')
 end
-bool=mdr(:,1)>=init;
+bool=Hetero(:,1)>=init;
 Hetero=Hetero(bool,:);
 
 %% Call core function which computes exceedances to thresholds of mdr
