@@ -19,7 +19,7 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               computations.
 %     Z :       n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
-%               form the scedastic function as follows (if input optin art==1)
+%               form the scedastic function as follows (if input option art==1)
 %
 %               \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
 %

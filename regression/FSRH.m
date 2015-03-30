@@ -14,6 +14,26 @@ function [out]=FSRH(y,X,Z,varargin)
 %       Missing values (NaN's) and infinite values (Inf's) are allowed,
 %       since observations (rows) with missing or infinite values will
 %       automatically be excluded from the computations.
+%     Z :       n x r matrix or vector of length r.
+%               If Z is a n x r matrix it contains the r variables which
+%               form the scedastic function as follows (if input option art==1)
+%
+%               \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+%
+%               If Z is a vector of length r it contains the indexes of the
+%               columns of matrix X which form the scedastic function as
+%               follows
+%
+%               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
+%               \gamma_{r} X(i,Z(r)))
+%
+%               Therefore, if for example the explanatory variables
+%               responsible for heteroscedisticity are columns 3 and 5
+%               of matrix X, it is possible to use both the sintax
+%                    FSRH(y,X,X(:,[3 5]))
+%               or the sintax
+%                    FSRH(y,X,[3 5])
+%
 %
 % Optional input arguments:
 %
@@ -215,6 +235,7 @@ function [out]=FSRH(y,X,Z,varargin)
     y=XX(:,2);
     X=XX(:,1);
     X=X./max(X);
+    Z=log(X);
     %% Plot the data
     plot(X,y,'o')
     fs=14;
@@ -222,7 +243,7 @@ function [out]=FSRH(y,X,Z,varargin)
     xlabel('Quantity','FontSize',fs)
 
     % Run the automatic outlier detection procedure 
-    out=FSRH(y,X,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);
+    out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);
 
     % Create figure 3 of ART
     figure
