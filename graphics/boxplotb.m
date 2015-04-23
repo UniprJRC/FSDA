@@ -285,7 +285,11 @@ Ospl=bsxfun(@minus,Inspl,cent)*(1+coeff);
 Ospl=bsxfun(@plus,Ospl,cent);
 
 % Find the points which are outside the outer contour
-[outliers]=outcor(Y(:,1),Y(:,2),Ospl(:,1),Ospl(:,2),cent(1:2));
+[in]=inpolygon(Y(:,1),Y(:,2),Ospl(:,1),Ospl(:,2));
+outliers=seq(in==0);
+
+% outcor is the old function
+% [outlierschk]=outcor(Y(:,1),Y(:,2),Ospl(:,1),Ospl(:,2),cent(1:2));
 
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
     if isstruct(plo)
@@ -454,64 +458,68 @@ for i = 2:n-2
         
     end
 end
-X=X(2:z - 30);
-Y=Y(2:z - 30);
+% X=X(2:z - 30);
+% Y=Y(2:z - 30);
+
+X=X(1:z);
+Y=Y(1:z);
+
 end
 
-% local function
-function [pointIndex]=outcor(x,y,splx,sply,cent)
-
-centrx=cent(1);
-centry=cent(2);
-
-% sensitivity
-eps=0.001;
-% points length
-nn=length(x);
-X =zeros(nn,1);
-% spline length
-ll = length(splx);
-
-% accumulation counters
-k = 0;
-n = 1;
-
-    xa = centrx;
-    ya = centry;
-
-while(n < nn)
-    xb = x(n);
-    yb = y(n);
-    j = 2;
-    while(j < ll)
-        xc = splx(j - 1);
-        xd = splx(j);
-        yc = sply(j - 1);
-        yd = sply(j);
-        den = (xb - xa) * (yd - yc) - (yb - ya) * (xd - xc);
-        r = ((ya - yc) * (xd - xc) - (xa - xc) * (yd - yc))/den;
-        s = ((ya - yc) * (xb - xa) - (xa - xc) * (yb - ya))/den;
-        if((s >= 0 && s <= 1) && (r >= 0 && r <= 1))
-            xk = xa + r * (xb - xa);
-            yk = ya + r * (yb - ya);
-            dp1 = sqrt((xk-xa)*(xk-xa)+(yk-ya)*(yk-ya));
-            dp2 = sqrt((xb-xa)*(xb-xa)+(yb-ya)*(yb-ya));
-            dp = sqrt((dp1-dp2)*(dp1-dp2));
-            if (dp > eps)
-                % the point lies outside the spline curve
-                X(n) = 1;
-                k=k+1;
-            else
-                % the point lies inside the spline curve
-                X(n) = 0;
-                k=k+1;
-            end
-        end
-        j=j+1;
-    end
-    n=n+1;
-end
-% find the indexes of outlying points
-pointIndex=find(X==1);
-end
+% % local function
+% function [pointIndex]=outcor(x,y,splx,sply,cent)
+% 
+% centrx=cent(1);
+% centry=cent(2);
+% 
+% % sensitivity
+% eps=0.001;
+% % points length
+% nn=length(x);
+% X =zeros(nn,1);
+% % spline length
+% ll = length(splx);
+% 
+% % accumulation counters
+% k = 0;
+% n = 1;
+% 
+%     xa = centrx;
+%     ya = centry;
+% 
+% while(n < nn)
+%     xb = x(n);
+%     yb = y(n);
+%     j = 2;
+%     while(j < ll)
+%         xc = splx(j - 1);
+%         xd = splx(j);
+%         yc = sply(j - 1);
+%         yd = sply(j);
+%         den = (xb - xa) * (yd - yc) - (yb - ya) * (xd - xc);
+%         r = ((ya - yc) * (xd - xc) - (xa - xc) * (yd - yc))/den;
+%         s = ((ya - yc) * (xb - xa) - (xa - xc) * (yb - ya))/den;
+%         if((s >= 0 && s <= 1) && (r >= 0 && r <= 1))
+%             xk = xa + r * (xb - xa);
+%             yk = ya + r * (yb - ya);
+%             dp1 = sqrt((xk-xa)*(xk-xa)+(yk-ya)*(yk-ya));
+%             dp2 = sqrt((xb-xa)*(xb-xa)+(yb-ya)*(yb-ya));
+%             dp = sqrt((dp1-dp2)*(dp1-dp2));
+%             if (dp > eps)
+%                 % the point lies outside the spline curve
+%                 X(n) = 1;
+%                 k=k+1;
+%             else
+%                 % the point lies inside the spline curve
+%                 X(n) = 0;
+%                 k=k+1;
+%             end
+%         end
+%         j=j+1;
+%     end
+%     n=n+1;
+% end
+% % find the indexes of outlying points
+% pointIndex=find(X==1);
+% end
 
