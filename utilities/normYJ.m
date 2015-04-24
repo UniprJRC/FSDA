@@ -1,7 +1,7 @@
-function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
-%normBoxCox computes normalized Box-Cox transformation
+function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
+%normYJ computes normalized Yeo-Johnson transformation
 %
-%<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
+%<a href="matlab: docsearchFS('normYJ')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -23,37 +23,37 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
 % Output:
 %
 %   Ytra    : n x v data matrix containing transformed observations
+%             The Yeo-Johnson transformation is the Box-Cox transformation
+%             of y+1 for nonnegative values, and of |y|+1 with parameter
+%             2-lambda for U negative.
 %
-%             When \lambda \ne 0
-%             if jacobian=true
-%             ytra = (y^\lambda-1)/ (G^{(\lambda-1)} \lambda)
-%             else if jacobian=false
-%             ytra = (y^\lambda-1)/ \lambda
-%             where G is the geometric mean of the observations
-%
-%             When \lambda = 0
-%             if jacobian=true
-%             ytra = G log(y)
-%             else if jacobian=false
-%             ytra = log(y)
-%             where G is the geometric mean of the observations
-%
-% References:
-%
-%   BOX, G. E. P. & COX, D. R. (1964). An analysis of transformations (with
-%   Discussion). J. R. Statist. Soc. B 26, 211–252
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-% See also normYJ
-% 
+% Yeo, I.-K. and Johnson, R. (2000) A new family of power
+% transformations to improve normality or symmetry. Biometrika, 87,
+% 954-959.
 %
-%<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
+%
+% See also normBoxCox
+%
+%
+%<a href="matlab: docsearchFS('normYJ')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
-
 % Examples:
+
+%{
+    % Transform value -3, -2, ..., 3
+    y=(-3:3)';
+    lambda=0
+    y1=normYJ(y,1,lambda)
+    plot(y,y1)
+    xlabel('Original values')
+    ylabel('Transformed values')
+
+%}
 
 %{
     % Comparison between Box-Cox and Yeo-Johnson transformation
@@ -97,7 +97,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
     Y=mussels.data;
     la=[0.5 0 0.5 0 0];
     % Transform all columns of matrix Y according to the values of la
-    Y=normBoxCox(Y,[],la);
+    Y=normYJ(Y,[],la);
 %}
 
 
@@ -122,33 +122,38 @@ if isempty(ColtoTra) && length(la)==v
     ColtoTra=1:v;
 end
 
+
 if nargin<4
     Jacobian=true;
 end
 
-%% Normalized Box Cox transformation of columns ColtoTra using la
+%% Normalized Yeo-Johnson transformation of columns ColtoTra using la
 Ytra=Y;
 for j=1:length(ColtoTra);
     cj=ColtoTra(j);
     laj=la(j);
     Ycj=Y(:,cj);
     
-    if min(Ycj)<=0 && laj==1;
-        % if min(Ycj)<=0 and la(cj)=1 then variable is not transformed
-    elseif min(Ycj)<=0 && cj ~=1;
-        error('FSDA:normBoxCox:Wronglaj',['lambda=' num2str(laj) ' for column ' num2str(cj) ' but min(Ycj)=' num2str(min(Ycj))])
+    nonnegs = Ycj >= 0;
+    negs = ~nonnegs; 
+    % YJ transformation is the Box-Cox transformation of 
+    % y+1 for nonnegative values of y
+    if laj ~=0
+    Ytra(nonnegs,cj)= ((Y(nonnegs,cj)+1).^laj-1)/laj;
     else
-        if Jacobian ==true
-            Gj=exp(mean(log(Ycj)));
-        else
-            Gj=1;
-        end
-        
-        if laj~=0
-            Ytra(:,cj)=(Y(:,cj).^laj-1)/(laj*(Gj^(laj-1)));
-        else
-            Ytra(:,cj)=Gj*log(Y(:,cj));
-        end
+    Ytra(nonnegs,cj)= log(Y(nonnegs,cj)+1);
+    end    
+
+    % YJ transformation is the Box-Cox transformation of 
+    %  |y|+1 with parameter 2-lambda for y negative.
+    if 2-laj~=0
+        Ytra(negs,cj) = - ((-Y(negs,cj)+1).^(2-laj)-1)/(2-laj);
+    else
+        Ytra(negs,cj) = -log(-Y(negs,cj)+1);
+    end
+   
+    if Jacobian ==true
+        Ytra(:,cj)=Ytra(:,cj) * (exp(mean(log(   (1 + abs(Y(:,cj))).^(2 * nonnegs - 1)) )))^(1 - laj);
     end
 end
 
