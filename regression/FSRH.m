@@ -93,15 +93,6 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %       scoring:  if scoring=1 a scoring algorithm is executed, if scoring=0,
 %                 standard algorithm is executed.
-%       exact   : scalar, if it is equal to 1 the calculation of the quantiles
-%                 of the T and F distribution is based on functions finv
-%                 and tinv from the Matlab statistics toolbox, else the
-%                 calculations of the former quantiles is based on
-%                 functions invcdff and invcdft.
-%                 The solution has a tolerance of 1e-8 (change variable tol
-%                 in files invcdff.m and invcdft.m if required
-%                 Remark: the use of functions tinv and finv is more precise
-%                 but requires more time.
 %       nocheck : Scalar. If nocheck is equal to 1 no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
@@ -319,7 +310,7 @@ end
 
 options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',1,...
-    'init',init,'exact',1,...
+    'init',init,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
     'msg',1,'nocheck',0,'intercept',1,'bonflev','',...

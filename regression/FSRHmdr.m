@@ -62,11 +62,15 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               unchanged. In other words the additioanl column of ones for
 %               the intercept is not added. As default nocheck=0. The
 %               controls on h, alpha and nsamp still remain
-%  msg  :       scalar which controls whether to display or not messages
+%    msg  :     scalar which controls whether to display or not messages
 %               about great interchange on the screen
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
-% gridsearch
+% gridsearch:   scalar. If gridsearch ==1 grid search will be used else the
+%               scoring algorith will be used. 
+%               REMARK: the grid search has only been implemented when
+%               there is just one explantory variable which controls
+%               heteroskedasticity
 %  constr :     r x 1 vector which contains the list of units which are
 %               forced to join the search in the last r steps. The default
 %               is constr=''.  No constraint is imposed
