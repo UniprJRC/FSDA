@@ -1,5 +1,5 @@
 function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
-%normBoxCox computes normalized Box-Cox transformation
+%normBoxCox computes (normalized) Box-Cox transformation
 %
 %<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
 %
@@ -138,6 +138,8 @@ for j=1:length(ColtoTra);
     elseif min(Ycj)<=0 && cj ~=1;
         error('FSDA:normBoxCox:Wronglaj',['lambda=' num2str(laj) ' for column ' num2str(cj) ' but min(Ycj)=' num2str(min(Ycj))])
     else
+        % If Jacobian ==true the transformation is normalized so that its
+        % Jacobian will be 1
         if Jacobian ==true
             Gj=exp(mean(log(Ycj)));
         else

@@ -1,5 +1,5 @@
 function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
-%normYJ computes normalized Yeo-Johnson transformation
+%normYJ computes (normalized) Yeo-Johnson transformation
 %
 %<a href="matlab: docsearchFS('normYJ')">Link to the help function</a>
 %
@@ -25,7 +25,7 @@ function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
 %   Ytra    : n x v data matrix containing transformed observations
 %             The Yeo-Johnson transformation is the Box-Cox transformation
 %             of y+1 for nonnegative values, and of |y|+1 with parameter
-%             2-lambda for U negative.
+%             2-lambda for y negative.
 %
 %
 % Copyright 2008-2015.
@@ -135,23 +135,26 @@ for j=1:length(ColtoTra);
     Ycj=Y(:,cj);
     
     nonnegs = Ycj >= 0;
-    negs = ~nonnegs; 
-    % YJ transformation is the Box-Cox transformation of 
+    negs = ~nonnegs;
+    % YJ transformation is the Box-Cox transformation of
     % y+1 for nonnegative values of y
     if laj ~=0
-    Ytra(nonnegs,cj)= ((Y(nonnegs,cj)+1).^laj-1)/laj;
+        Ytra(nonnegs,cj)= ((Y(nonnegs,cj)+1).^laj-1)/laj;
     else
-    Ytra(nonnegs,cj)= log(Y(nonnegs,cj)+1);
-    end    
-
-    % YJ transformation is the Box-Cox transformation of 
+        Ytra(nonnegs,cj)= log(Y(nonnegs,cj)+1);
+    end
+    
+    % YJ transformation is the Box-Cox transformation of
     %  |y|+1 with parameter 2-lambda for y negative.
     if 2-laj~=0
         Ytra(negs,cj) = - ((-Y(negs,cj)+1).^(2-laj)-1)/(2-laj);
     else
         Ytra(negs,cj) = -log(-Y(negs,cj)+1);
     end
-   
+    
+    % If Jacobian ==true the transformation is normalized so that its
+    % Jacobian will be 1
+    
     if Jacobian ==true
         Ytra(:,cj)=Ytra(:,cj) * (exp(mean(log(   (1 + abs(Y(:,cj))).^(2 * nonnegs - 1)) )))^(1 - laj);
     end

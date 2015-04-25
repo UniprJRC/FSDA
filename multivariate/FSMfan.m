@@ -19,7 +19,21 @@ function out = FSMfan(Y,la0,varargin)
 %
 % Optional input arguments:
 %
-%        rf :   confidence level for bivariate ellipses (default is
+%    family :   string which identifies the family of transformations which
+%               must be used. Possible values are 'BoxCox' (deafult) or
+%               'YJ'
+%               The Box-Cox family of power transformations equals
+%               (y^{?}-1)/? for ? not equal to zero, and
+%               log(y)
+%               if ? = 0.
+%               The Yeo-Johnson (YJ) transformation is the Box-Cox
+%               transformation of y+1 for nonnegative values, and of |y|+1 with
+%               parameter 2-? for y negative.
+%               The basic power transformation returns y^{?} if ? is not
+%               zero, and log(?) otherwise.
+%               Remark: BoxCox and the basic power family can be used just
+%               if input y is positive. YeoJohnson family of
+%               transformations does not have this limitation.%        rf :   confidence level for bivariate ellipses (default is
 %               0.9).
 %      init :   scalar, specifies the point where to start monitoring
 %               required diagnostics. Note that if init is not specified it will
@@ -215,6 +229,26 @@ function out = FSMfan(Y,la0,varargin)
 %}
 
 %{
+    % Emilia Romagna data (modified wealth variables), Yeo and Johnson
+    % parametric family is used
+    load('emilia2001')
+    Y=emilia2001.data;
+
+    % Modify wealth variables
+    Y(:,16)=100-Y(:,16);
+    Y(:,23)=100-Y(:,23);
+    % Extract wealth variables
+    Y1=Y(:,[14:23]);
+    colnames={'14' '15' '16' '17' '18' '19' '20' '21' '22' '23'};
+    plotslrt=struct;
+    plotslrt.ylim=[-7 7];
+    la0=[0 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];
+    ColToComp=[3 9];
+    laAround=[0 0.25 1/3 0.5];
+    [out]=FSMfan(Y1,la0,'laAround',laAround,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames,'family','YJ');
+%}
+
+%{
     % Emilia Romagna data (work variables)
     load('emilia2001')
     Y=emilia2001.data;
@@ -287,6 +321,32 @@ function out = FSMfan(Y,la0,varargin)
     % Compare the plot with Figure 4.45 p. 199 of ARC (2004)
 %}
 
+%{
+    % Emilia Romagna data (all variables). Same example as before but now
+    % Yeo and Johnson parametric family is used
+    load('emilia2001')
+    Y=emilia2001.data;
+    % Replace zeros with min values for variables specified in sel
+    sel=[6 10 12 13 19 21];
+    for i=sel
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)>0,i));
+    end
+    % Modify variables y16 y23 y25 y26
+    sel=[16 23 25 26];
+    Y(:,sel)=100-Y(:,sel);
+                        
+    colnames={'y6' 'y7' 'y8' 'y9' 'y24' 'y25' 'y26' 'y27' 'y28'};
+    la0demo=[0,0.25,0,0.5,0.5,0,0,0.5,0.25];
+    la0weal=[0,1,0.25,1,1,0.5,-0.5,0.25,0.25,-1];
+    la0work=[0.25,0,2,-1,0,0,1,1,1];
+    la0C1=[la0demo(1:5) la0work(1:4) la0demo(6:9) la0weal la0work(5:9)];
+    plotslrt=struct;
+    plotslrt.ylim=[-8.2 8.2];
+    ColToComp=[8 9 14 25];
+    laAround=[-1 -0.5 0 0.25 0.5 1 1.5 2];
+    [out]=FSMfan(Y,la0C1,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'init',100,'family','YJ');
+%}
+
 %% Input parameters checking
 % Extract size of the data
 [n,v]=size(Y);
@@ -307,10 +367,11 @@ if length(la0)~=v
         ' to the number of variables of the dataset (size(Y,2)=' num2str(v) ')']);
 end
 
+family='BoxCox';
 hdef=floor(n*0.6);
 options=struct('rf',0.9,'init',hdef,'ColToComp','','laAround',-1:0.5:1,'onelambda',0,'signlr',1,...
     'speed',1,'optmin',optimset,'msg',1,'colnames','',...
-    'plotslrt','');
+    'plotslrt','','family',family);
 
 
 UserOptions=varargin(1:2:length(varargin));
@@ -329,6 +390,19 @@ if nargin > 1
     for i=1:2:length(varargin);
         options.(varargin{i})=varargin{i+1};
     end
+    family=options.family;
+end
+
+Xnormfamily=strcat('norm',family);
+familytra=str2func(Xnormfamily);
+
+if strcmp(family,'BoxCox')
+    loglik=@likBoxCox;
+elseif strcmp(family,'YJ')
+    loglik=@likYJ;
+else
+    warning('FSDA:FSMfan:WrongFamily','Transformation family which has been chosen is not supported')
+    error('FSDA:FSMfan:WrongFamily','Supported values are BoxCox or YaoJohnson')
 end
 
 
@@ -362,10 +436,7 @@ elseif max(ColToComp)>v || min(ColToComp)<1
 end
 
 % Ytr = matrix which contains Box Cox transformed values using la0
-Ytr=normBoxCox(Y,1:v,la0);
-
-% for columns specified in ColToComp
-%Ytr=normBoxCox(Y,ColToComp,la0(ColToComp));
+Ytr=feval(familytra,Y,1:v,la0);
 
 % laAround= values of transformation parameter(s) to do the expansion
 laAround=options.laAround;
@@ -465,7 +536,7 @@ for jj=ColToComp;
         % This matrix will be used to compute MD at each step and in procedure
         % unibiv to find initial subset
         % Ytrlai=Ytr;
-        Ytrlai=normBoxCox(Yjj,jj,lai);
+        Ytrlai=feval(familytra,Yjj,jj,lai);
         
         % Find initial subset to initialize the search
         [fre]=unibiv(Ytrlai,'rf',rf);
@@ -526,12 +597,12 @@ for jj=ColToComp;
                         % function fminsearch or function fminunc from the optimization
                         % toolbox
                         if typemin==2;
-                            [laout,fval,exitflag]  = fminunc(@lik,lainit,optmin);
+                            [laout,fval,exitflag]  = fminunc(loglik,lainit,optmin);
                         else
-                            [laout,fval,exitflag]  = fminsearch(@lik,lainit,optmin);
+                            [laout,fval,exitflag]  = fminsearch(loglik,lainit,optmin);
                         end
                         %laout=5*sin(laout);
-                    catch exception
+                    catch
                         disp(['Warning: non convergence at step mm=' num2str(mm)])
                         disp(['Variable' colnames(jj) ' laAround=' num2str(lai) ])
                         
@@ -543,7 +614,7 @@ for jj=ColToComp;
                     end
                     
                     % Store transformed data for variable jj using subset
-                    Ytrb0=normBoxCox(Yb,jj,lai);
+                    Ytrb0=feval(familytra,Yb,jj,lai);
                     
                     lrat=mm*(log(det(cov(Ytrb0)))-fval);
                     
@@ -611,7 +682,7 @@ end % Close loop associated with columns of the datasets specified in ColToComp
 
 % lik computes the likelihood when different lambdas are possible for
 % different variables
-    function dZ=lik(laj)
+    function dZ=likBoxCox(laj)
         Z=Yb;
         
         Gj=exp(mean(log(Yb(:,jj))));
@@ -625,6 +696,40 @@ end % Close loop associated with columns of the datasets specified in ColToComp
         dZ=log(det(cov(Z)));
         % disp(dZ);
     end
+
+% lik computes the likelihood when different lambdas are possible for
+% different variables
+    function dZ=likYJ(laj)
+        
+        Z=Yb;
+        
+        nonnegs = Yb(:,jj) > 0;
+        negs = ~nonnegs;
+        % YJ transformation is the Box-Cox transformation of
+        % y+1 for nonnegative values of y
+        if laj ~=0
+            Z(nonnegs,jj)= ((Yb(nonnegs,jj)+1).^laj-1)/laj;
+        else
+            Z(nonnegs,jj)= log(Yb(nonnegs,jj)+1);
+        end
+        
+        % YJ transformation is the Box-Cox transformation of
+        %  |y|+1 with parameter 2-lambda for y negative.
+        if 2-laj~=0
+            Z(negs,jj) = - ((-Yb(negs,jj)+1).^(2-laj)-1)/(2-laj);
+        else
+            Z(negs,jj) = -log(-Yb(negs,jj)+1);
+        end
+        
+        % transformation is normalized so that its
+        % Jacobian will be 1
+        Z(:,jj)=Z(:,jj) * (exp(mean(log(   (1 + abs(Yb(:,jj))).^(2 * nonnegs - 1)) )))^(1 - laj);
+        
+        dZ=log(det(cov(Z)));
+        % disp(dZ);
+    end
+
+
 
 %% Plot of (signed sqrt root) LRT
 plotslrt=options.plotslrt;

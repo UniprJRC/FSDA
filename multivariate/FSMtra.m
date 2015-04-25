@@ -19,6 +19,21 @@ function out = FSMtra(Y,varargin)
 %
 % Optional input arguments:
 %
+%    family :   string which identifies the family of transformations which
+%               must be used. Possible values are 'BoxCox' (deafult) or
+%               'YJ'
+%               The Box-Cox family of power transformations equals
+%               (y^{?}-1)/? for ? not equal to zero, and
+%               log(y)
+%               if ? = 0.
+%               The Yeo-Johnson (YJ) transformation is the Box-Cox
+%               transformation of y+1 for nonnegative values, and of |y|+1 with
+%               parameter 2-? for y negative.
+%               The basic power transformation returns y^{?} if ? is not
+%               zero, and log(?) otherwise.
+%               Remark: BoxCox and the basic power family can be used just
+%               if input y is positive. YeoJohnson family of
+%               transformations does not have this limitation.
 %      init :   scalar, specifies the point where to start monitoring
 %               required diagnostics. Note that if init is not specified it will
 %               be set equal to floor(n*0.6).
@@ -363,6 +378,18 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
+    % Emilia Romagna data, Yeo and Johnson family of transformations is
+    % used. In this case there is no need to correct 0 values
+    load('emilia2001')
+    Y=emilia2001.data;
+
+    % Extract demographic variables
+    Y1=Y(:,[1 2 3 4 5 10 11 12 13]);
+    colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'};
+    [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames,'family','YJ');
+%}
+
+%{
     % Emilia Romagna data: demographic data
     load('emilia2001')
     Y=emilia2001.data;
@@ -477,11 +504,11 @@ one=ones(n,1);
 if nargin<1
     error('FSDA:FSMtra:missingInputs','Initial data matrix is missing');
 end
-
+family='BoxCox';
 hdef=floor(n*0.6);
 options=struct('init',hdef,'bsb','','ColToTra','','la0','','onelambda',0,'rf',0.9,...
     'speed',1,'optmin',optimset,'msg',1,'colnames','',...
-    'prolik','','plotsmle','','plotslrt','');
+    'prolik','','plotsmle','','plotslrt','','family',family);
 
 
 UserOptions=varargin(1:2:length(varargin));
@@ -500,7 +527,12 @@ if nargin > 1
     for i=1:2:length(varargin);
         options.(varargin{i})=varargin{i+1};
     end
+    family=options.family;
 end
+
+
+Xnormfamily=strcat('norm',family);
+familytra=str2func(Xnormfamily);
 
 % And check if the optional user parameters are reasonable.
 % check init
@@ -540,7 +572,15 @@ onelambda=options.onelambda;
 % monitored in each step
 if onelambda==1
     MLEtra=cat(2,(init1:n)',NaN(n-init1+1,1));
-    loglik=@likonelambda;
+    if strcmp(family,'BoxCox')
+        loglik=@likonelambdaBoxCox;
+    elseif strcmp(family,'YJ')
+        loglik=@likonelambdaYJ;
+    else
+        warning('FSDA:FSMtra:WrongFamily','Transformation family which has been chosen is not supported')
+        error('FSDA:FSMtra:WrongFamily','Supported values are BoxCox or YaoJohnson or basicpower')
+    end
+    
     if isempty(la0)
         la0=1;
     end
@@ -549,7 +589,15 @@ else
         la0=ones(1,ctra);
     end
     MLEtra=cat(2,(init1:n)',NaN(n-init1+1,v));
-    loglik=@lik;
+    
+    if strcmp(family,'BoxCox')
+        loglik=@likBoxCox;
+    elseif strcmp(family,'YJ')
+        loglik=@likYJ;
+    else
+        warning('FSDA:FSMtra:WrongFamily','Transformation family which has been chosen is not supported')
+        error('FSDA:FSMtra:WrongFamily','Supported values are BoxCox or YaoJohnson')
+    end
 end
 
 % lainit starting value for minimization at step m=init
@@ -584,9 +632,9 @@ end
 
 if onelambda==1
     % Ytr contains the matrix of transformed values.
-    Ytr=normBoxCox(Y,ColToTra,la0*ones(length(ColToTra),1));
+    Ytr=feval(familytra,Y,ColToTra,la0*ones(length(ColToTra),1));
 else
-    Ytr=normBoxCox(Y,ColToTra,la0);
+    Ytr=feval(familytra,Y,ColToTra,la0);
 end
 
 if ~isempty(options.colnames)
@@ -742,7 +790,7 @@ else
                     [laout,fval,exitflag]  = fminsearch(loglik,lainit,optmin);
                 end
                 %laout=5*sin(laout);
-            catch exception
+            catch
                 disp(['Warning: non convergence at step mm=' num2str(mm)])
                 if isempty(fval)
                     exitflag=nan;
@@ -757,11 +805,11 @@ else
             if onelambda==1;
                 % Store common maximum likelihood estimate of tranformation parameter
                 MLEtra(mm-init1+1,2)=laout;
-                Ytrb0=normBoxCox(Yb,ColToTra,la0*ones(length(ColToTra),1));
+                Ytrb0=feval(familytra,Yb,ColToTra,la0*ones(length(ColToTra),1));
             else
                 % Store maximum likelihood estimates of tranformation parameters
                 MLEtra(mm-init1+1,1+ColToTra)=laout;
-                Ytrb0=normBoxCox(Yb,ColToTra,la0);
+                Ytrb0=feval(familytra,Yb,ColToTra,la0);
             end
             
             LIKrat(mm-init1+1,2)=mm*(log(det(cov(Ytrb0)))-fval);
@@ -784,7 +832,7 @@ else
                     % Loop over lambda (values defined in seqla)
                     il=1;
                     for lai=seqla
-                        Ybpro=normBoxCox(Yb,ColToTra,lai*ones(ctra,1));
+                        Ybpro=feval(familytra,Yb,ColToTra,lai*ones(ctra,1));
                         Loglikj(il,2)=-mm*log(det(cov(Ybpro)));
                         il=il+1;
                     end
@@ -825,7 +873,7 @@ else
                     % Ymax contains normalized Box Cox transformed values of Y in
                     % correspondence of maximum likelihood estimate of
                     % transformation parameters
-                    Ybmax=normBoxCox(Yb,ColToTra,laout);
+                    Ybmax=feval(familytra,Yb,ColToTra,laout);
                     
                     % loop over the variables which have to be transformed
                     ij=1;
@@ -838,7 +886,7 @@ else
                         for lai=seqla
                             Ybpro=Ybmax;
                             Ybpro(:,cj)=Yb(:,cj);
-                            Ybpro=normBoxCox(Ybpro,cj,lai);
+                            Ybpro=feval(familytra,Ybpro,cj,lai);
                             Loglikj(il,2)=-mm*log(det(cov(Ybpro)));
                             il=il+1;
                         end
@@ -1035,7 +1083,7 @@ else
             
             % Specify the line type for the trajectories of MLE of
             % transformation parameters
-                set(plot1,{'LineStyle'},LineStyle);
+            set(plot1,{'LineStyle'},LineStyle);
         end
         
         set(gcf,'Tag',tag)
@@ -1184,7 +1232,7 @@ end
 
 % lik computes the likelihood when different lambdas are possible for
 % different variables
-    function dZ=lik(la)
+    function dZ=likBoxCox(la)
         Z=Yb;
         
         for j=1:ctra;
@@ -1206,7 +1254,7 @@ end
 
 
 % lik computes the likelihood when just one value of lambda is allowed
-    function dZ=likonelambda(la)
+    function dZ=likonelambdaBoxCox(la)
         Z=Yb;
         
         for j=1:ctra;
@@ -1223,5 +1271,79 @@ end
         dZ=log(det(cov(Z)));
     end
 
+
+
+% lik computes the likelihood when different lambdas are possible for
+% different variables
+    function dZ=likYJ(la)
+        
+        Z=Yb;
+        
+        for j=1:ctra;
+            laj=la(j);
+            cj=ColToTra(j);
+            
+            nonnegs = Yb(:,cj) > 0;
+            negs = ~nonnegs;
+            % YJ transformation is the Box-Cox transformation of
+            % y+1 for nonnegative values of y
+            if laj ~=0
+                Z(nonnegs,cj)= ((Yb(nonnegs,cj)+1).^laj-1)/laj;
+            else
+                Z(nonnegs,cj)= log(Yb(nonnegs,cj)+1);
+            end
+            
+            % YJ transformation is the Box-Cox transformation of
+            %  |y|+1 with parameter 2-lambda for y negative.
+            if 2-laj~=0
+                Z(negs,cj) = - ((-Yb(negs,cj)+1).^(2-laj)-1)/(2-laj);
+            else
+                Z(negs,cj) = -log(-Yb(negs,cj)+1);
+            end
+            
+            % transformation is normalized so that its
+            % Jacobian will be 1
+            Z(:,cj)=Z(:,cj) * (exp(mean(log(   (1 + abs(Yb(:,cj))).^(2 * nonnegs - 1)) )))^(1 - laj);
+            
+        end
+        
+        dZ=log(det(cov(Z)));
+        % disp(dZ);
+    end
+
+
+% lik computes the likelihood when just one value of lambda is allowed
+    function dZ=likonelambdaYJ(la)
+        Z=Yb;
+        
+        for j=1:ctra;
+            cj=ColToTra(j);
+            
+            
+            nonnegs = Yb(:,cj) >= 0;
+            negs = ~nonnegs;
+            % YJ transformation is the Box-Cox transformation of
+            % y+1 for nonnegative values of y
+            if la ~=0
+                Z(nonnegs,cj)= ((Yb(nonnegs,cj)+1).^la-1)/la;
+            else
+                Z(nonnegs,cj)= log(Yb(nonnegs,cj)+1);
+            end
+            
+            % YJ transformation is the Box-Cox transformation of
+            %  |y|+1 with parameter 2-lambda for y negative.
+            if 2-la~=0
+                Z(negs,cj) = - ((-Yb(negs,cj)+1).^(2-la)-1)/(2-la);
+            else
+                Z(negs,cj) = -log(-Yb(negs,cj)+1);
+            end
+            
+            % If Jacobian ==true the transformation is normalized so that its
+            % Jacobian will be 1
+            Z(:,cj)=Z(:,cj) * (exp(mean(log(   (1 + abs(Yb(:,cj))).^(2 * nonnegs - 1)) )))^(1 - la);
+        end
+        
+        dZ=log(det(cov(Z)));
+    end
 end
 
