@@ -114,7 +114,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               values of
 %                   \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)
 %                    i=1, 2, ..., n
-%               elseif mixt==1 the criterior to select the h units is
+%               elseif mixt==1 the criterion to select the h units is
 %               exactly the same as the one which is used in crisp
 %               assignment. That is: the n units are allocated to a cluster
 %               cluster according to criterior

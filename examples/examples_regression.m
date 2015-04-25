@@ -1617,6 +1617,8 @@ stars=load('stars.txt');
 y=stars(:,2);
 X=stars(:,1);
 plot(X,y,'o');
+xlabel('Log effective surface temperature')
+ylabel('Log light intensity')
 set(gca,'XDir','reverse');
 [out]=FSR(y,X,'plots',2);
 
