@@ -385,7 +385,11 @@ function out = FSMtra(Y,varargin)
 
     % Extract demographic variables
     Y1=Y(:,[1 2 3 4 5 10 11 12 13]);
-    colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'};
+    colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'}; 
+    plotslrt=struct;
+    plotslrt.ylim=[-8.2 8.2];
+    ColToComp=[1 3 5 9];
+    la0=[0 0.25 0 0.5 0.5 0 0 0.5 0.25];
     [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames,'family','YJ');
 %}
 
