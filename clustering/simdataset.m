@@ -1,4 +1,4 @@
-function [X,id]=simdataset(n, Pi, Mu, S,varargin)
+function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %simdataset simulates a dataset given the parameters of finite mixture model with Gaussian components
 %
 %
@@ -27,24 +27,93 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %
 %  Optional input arguments:
 %
-%       nnoise : scalar, which specifies the number of noise variables (the
-%               default value of nnoise is zero).
-%         nout : scalar, which specifies the number of outlying observations.
-%                The default value of nout is 0. If nout is (for example
-%                10) than n+nout observations are generated.
-%       alpha  : level for simulating outliers. The default value of alpha
-%                is 0.001,
-%       maxiter: maximum number of trials to simulate outliers. The default
-%                value of maxout is 1e+05
-%       int    : vector or string.
-%                If int is a vector of length 2 it contains min and maximum
-%                values of the interval in which noise has to be simulated
-%                It int is empty (default) noise and outliers are simulated
-%                uniformly between the smallest and largest coordinates of
-%                mean vectors.
-%                If int='minmax' noise and outliers are simulated uniformly
-%                between the smallest and largest coordinates of simulated
-%                data matrix X
+%    noisevars : missing value, scale or structure.
+%                If noisevars is a
+%                missing value (default) no noise variable is added to the
+%                matrix of simulated data.
+%                If noisevars is a scalar equal to r then r new noise
+%                variables are added to matrix of simulated data using the
+%                uniform distribution in the range min(X) max(X)
+%                If noisevars is a strcture it may contain the following
+%                fields
+%                   number = scalar, or vector of length f . The sum of
+%                       elements of vector number is equal to the total
+%                       number of noise variables which has to be addded.
+%                   distribution = string or cell array of strings of
+%                       length f which specifies the distribution to be
+%                       used to simulate noise variables. If field
+%                       distribution is not present then uniform
+%                       distribution is used to simulate noise variables
+%                       String 'distribution' can assume the following values:
+%                       uniform = uniform distribution
+%                       normal = normal distribution
+%                       t or T followed by a number which controls the
+%                       degreess of freedom. For example, t6 specifies to
+%                       generate the data according to a Student T with 6
+%                       degrees of freedom.
+%                       chisquare followed by a number which controls the
+%                       degreess of freedom. For example, chisquare8 specifies to
+%                       generate the data according to a Chi square
+%                       distribution with 8 degrees of freedom.
+%                   int = string or vector of length 2 or matrix of length
+%                       2-by-f which controls for each element of vector
+%                       'number' or each element of cell 'distribution',
+%                       the min and max of the generated data.
+%                       If int is empty (default) noise variables are
+%                       simulated uniformly between the smallest and
+%                       largest coordinates of mean vectors elseif int is
+%                       'minmax' noise varaibles are simulated
+%                       uniformly between the smallest and largest
+%                       coordinates of simulated data matrix X
+%                   For example, the code
+%                   noisevars=struct;
+%                   noisevars.number=[3 2]
+%                   noisevars.distribution={'chisquare5' 'T3'}
+%                   noisevars.int='minmax';
+%                   adds 5 noise varibles. The first 3 are generated using
+%                   the chi2 with 5 degrees of freedom and the last two
+%                   using the Student t with 3 degrees of freedom. Noise
+%                   variables are generated in the interval min(X) max(X)
+%   noiseunits : missing value, scalar or structure. scalar, which
+%                specifies the number and type of outlying observations.
+%                The default value of noiseunits is 0. If noiseunits is a
+%                scalar t different from 0 to r then t units from the
+%                uniform distribution in the interval min(X) max(X) are
+%                generated in wuch a way that their squared Mahalanobis
+%                distance from the centroids of each existing group is
+%                larger then the quantile 1-0.999 of the chi^2 distribution
+%                with p degrees of freedom. In order to generate these
+%                these units the maximum number of attempts is equal to
+%                10000
+%                If noiseunits is a strcture it may contain the following
+%                fields
+%                   number : scalar, or vector of length f . The sum of
+%                       elements of vector number is equal to the total
+%                       number of outliers which are simulated
+%                   alpha  : scalar or vector of legth f containin the
+%                       levels for simulating outliers. The default value of
+%                       alpha is 0.001,
+%                   maxiter: maximum number of trials to simulate outliers.
+%                       The default value of maxiter is 10000
+%                   typeout: list of length f containing the type of
+%                       outliers which must be simulated. Possible values
+%                       for typeout are
+%                       unif (or uniform) = if the outliers must be
+%                       generated using the uniform distribution
+%                       norm (or normal) = if the outliers must be
+%                       generated using the normal distribution
+%                       Chisquarez = if the outliers must be
+%                       generated using the Chi2 distribution with z
+%                       degrees of freedom
+%                       Tz or tz = if the outliers must be
+%                       generated using the Student T distribution with z
+%                       degrees of freedom
+%                       pointmass = if the outliers are concentrated on a
+%                       particular point
+%                       componentwise = if the outliers must have the same
+%                       coordinates of the existing rows of matrix X apart
+%                       from a single coordinate (which will be to the min
+%                       or max in that particular dimension)
 %       lambda : vector of length p containing inverse Box-Cox
 %                transformation coefficients. The value false (default)
 %                implies that no transformation is applied to any variable.
@@ -54,14 +123,15 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 %
 %           X  : simulated dataset of size (n + nout)-by-(p + nnoise);
 %                Noise coordinates are provided in the last nnoise columns.
-%           id : classification vector of length n + nout; 0 represents an
-%                outlier.
+%           id : classification vector of length n + noiseunits; negative
+%           numbers represents the groups associated to contaminated units
 %
-%            REMARK: If nout outliers could not be generated a warning is
+%            REMARK: If noiseunits outliers could not be generated a warning is
 %                produced. In this case matrix X and vector id will have
-%                just n rows.
+%                less than n+noiseunits rows.
 %
 %   DETAILS
+%
 % To make a dataset more challenging for clustering, a user might want to
 % simulate noise variables or outliers. Parameter 'nnoise' specifies the
 % desired number of noise variables. If an interval 'int' is specified,
@@ -99,7 +169,7 @@ function [X,id]=simdataset(n, Pi, Mu, S,varargin)
 
 
 %{
-    % Check if it is possible to generate the outliers given alpha  
+    % Check if it is possible to generate the outliers given alpha
     % in the interval specified by input option int and if it not possible
     % modify int by adding 0.1 until the outliers can be found
     out = MixSim(4,3,'BarOmega',0.1);
@@ -128,15 +198,15 @@ if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
     error('FSDA:simdataset:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
 end
 
-nnoisedef=0;
-noutdef=0;
+noisevarsdef='';
+noiseunits='';
 alphadef=0.001;
 intdef='';
 maxiterdef=1e+05;
 lambdadef='';
 Rseeddef = 0;
 
-options=struct('nnoise',nnoisedef,'nout',noutdef,'alpha',alphadef,'int',intdef,...
+options=struct('noisevars',noisevarsdef,'noiseunits',noiseunits,'alpha',alphadef,'int',intdef,...
     'maxiter',maxiterdef,'lambda',lambdadef,'R_seed', Rseeddef);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -166,29 +236,12 @@ if ~isempty(UserOptions)
 end
 
 R_seed   = options.R_seed;
-nnoise=options.nnoise;
-nout=options.nout;
-alpha=options.alpha;
+noisevars=options.noisevars;
+noiseunits=options.noiseunits;
 int=options.int;
-maxiter=options.maxiter;
+
 lambda=options.lambda;
 
-
-if (nnoise < 0)
-    error('FSDA:simdataset:Wrongnnoise','Wrong value of nnoise: it cannot be smaller than 0')
-end
-
-if (nout < 0)
-    error('FSDA:simdataset:Wrongnout','Wrong value of nout: it cannot be smaller than 0')
-end
-
-if ((alpha >= 1) || (alpha <= 0))
-    error('FSDA:simdataset:WrongAlpha','Wrong value of alpha: it must be in the interval (0 1)')
-end
-
-if (maxiter < 1)
-    error('FSDA:simdataset:WrongMaxIter','Wrong value for maximum number of iterations: it cannot be <1')
-end
 
 [k,p]=size(Mu);
 
@@ -254,53 +307,174 @@ for j=1:k
     end
 end
 
-if nout ~= 0
-    [Xout, fail] = getOutliers(nout, Mu, S, alpha, maxiter,int);
-    if fail == 1
-        warning('FSDA:simdataset:Modifiedn',['Output matrix X will have just ' num2str(n) ...
-            ' rows and not ' num2str(n+nout)])
-    else
-        X =[X;Xout];
-        id =[id;zeros(nout,1)];
-    end
-end
-
-if nnoise ~= 0
-    if isempty(int)
-        L = min(min(Mu));
-        U = max(max(Mu));
-    elseif strcmp('minmax',int)
-        L = min(X);
-        U = max(X);
-    else
-        L = int(1);
-        U = int(2);
+if isstruct(noiseunits) || ~isnan(noiseunits)
+    if isstruct(noiseunits)
+        fnoiseunits=fieldnames(noiseunits);
+        % labeladd option
+        d=find(strcmp('number',fnoiseunits));
+        if d>0
+            number=noiseunits.number;
+            if (min(number) < 0)
+                error('FSDA:simdataset:Wrongnnoise','Wrong value of outliers: it cannot be smaller than 0')
+            end
+        else
+            number=1;
+        end
+        
+        d=find(strcmp('typeout',fnoiseunits));
+        if d>0
+            typeout=noiseunits.typeout;
+        else
+            typeout={'uniform'};
+        end
+        
+        d=find(strcmp('alpha',fnoiseunits));
+        if d>0
+            alpha=noiseunits.alpha;
+        else
+            alpha=0.001*ones(length(number),1);
+        end
+        
+        d=find(strcmp('maxiter',fnoiseunits));
+        if d>0
+            maxiter=noiseunits.maxiter;
+        else
+            maxiter=10000;
+        end
+        
+        if (number < 0)
+            error('FSDA:simdataset:Wrongnout','Wrong value of number: it cannot be smaller than 0')
+        end
+        
+        if ((max(alpha) >= 1) || (min(alpha) <= 0))
+            error('FSDA:simdataset:WrongAlpha','Wrong value of alpha: it must be in the interval (0 1)')
+        end
+        
+        if (maxiter < 1)
+            error('FSDA:simdataset:WrongMaxIter','Wrong value for maximum number of iterations: it cannot be <1')
+        end
+        
+        % nout = total number of outliers  which has to be
+        % simulated
+        noiseunits=sum(number);
+    else % in this case noisevars is a scalar different from missing
+        number=noiseunits;
+        noiseunits=number;
+        typeout={'uniform'};
+        alpha=0.001;
+        maxiter=10000;
     end
     
+    Xout=zeros(noiseunits, p);
+    ni=0;
+    idtmp=zeros(sum(number),1);
+    for ii=1:length(number);
+        typeouti=typeout{ii};
+        
+        [Xouti, ~] = getOutliers(number(ii), Mu, S, alpha(ii), maxiter, typeouti);
+        Xout(ni+1:ni+size(Xouti,1),:)=Xouti;
+        idtmp(ni+1:ni+size(Xouti,1))=-ii;
+        ni=ni+size(Xouti,1);
+    end
+    
+    if ni<noiseunits
+        warning('FSDA:simdataset:Modifiedn',['Output matrix X will have just ' num2str(n+ni) ...
+            ' rows and not ' num2str(n+noiseunits)])
+    else
+        X =[X;Xout];
+    end
+    id =[id;idtmp(1:ni)];
+end
+
+if isstruct(noisevars) || ~isnan(noisevars)
+    if isstruct(noisevars)
+        fnoisevars=fieldnames(noisevars);
+        % labeladd option
+        d=find(strcmp('number',fnoisevars));
+        if d>0
+            number=noisevars.number;
+            if (min(number) < 0)
+                error('FSDA:simdataset:Wrongnnoise','Wrong value of number of noisevars: it cannot be smaller than 0')
+            end
+        else
+            number=1;
+        end
+        
+        d=find(strcmp('distribution',fnoisevars));
+        if d>0
+            distribution=noisevars.distribution;
+        else
+            distribution='uniform';
+        end
+        
+        d=find(strcmp('int',fnoisevars));
+        if d>0
+            int=noisevars.int;
+        else
+            int='';
+        end
+        
+        % nvars = total number of noise variables which has to be
+        % simulated
+        nvars=sum(number);
+        
+        %  if noisevars ~= 0
+        if isempty(int)
+            L = min(min(Mu));
+            U = max(max(Mu));
+            L = L* ones(1,nvars);
+            U = U* ones(1,nvars);
+        elseif strcmp('minmax',int)
+            L = min(X);
+            U = max(X);
+        else
+            L = int(1,:);
+            U = int(2,:);
+        end
+    else % in this case noisevars is a scalar different from missing
+        L = min(min(Mu));
+        U = max(max(Mu));
+        number=noisevars;
+        nvars=number;
+        distribution={'uniform'};
+    end
     
     if R_seed
         % equivalent of 'rand(k,p)' in R is 'matrix(runif(k*p),k,p)'
-        rn1s = ['matrix(runif(' num2str((n + nout)*nnoise) '),' num2str(n + nout) ',' num2str(nnoise) ')'];
+        rn1s = ['matrix(runif(' num2str((n + noiseunits)*nvars) '),' num2str(n + noiseunits) ',' num2str(nvars) ')'];
         rrr = evalR(rn1s);
     else
-        rrr = rand(n + nout,  nnoise);
+        
+        rrr=zeros(n + noiseunits, nvars);
+        for ii=1:length(number);
+            distributioni=distribution{ii};
+            
+            if strcmp(distributioni,'uniform')
+                rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rand(n + noiseunits,  number(ii));
+            elseif strcmp(distributioni,'norm') || strcmp(distributioni,'normal')
+                % data generated from the normal distribution rescaled in the
+                % interval [0 1]
+                rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescale(randn(n + noiseunits,  number(ii)));
+            elseif strcmp(distributioni(1),'T') || strcmp(distributioni(1),'t')
+                nu=str2double(distributioni(2:end));
+                rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescale(trnd(nu, n + noiseunits,  number(ii)));
+            elseif strcmp(distributioni(1),'Chisquare')
+                nu=str2double(distributioni(10:end));
+                rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescale(chi2rnd(nu, n + noiseunits,  number(ii)));
+            end
+        end
     end
     
-    % Xnoise = (U-L)*rrr+L;
-    if nnoise>length(U);
-        U=repmat(U,10);
-        L=repmat(L,10);
-    end
-    
-    Xnoise=bsxfun(@times,rrr,(U(1:nnoise)-L(1:nnoise)));
-    Xnoise=bsxfun(@plus,Xnoise,L(1:nnoise));
+    % Values of noise variables were constrained to lie in the interval [0 1]
+    % Now we rescale them to the interval [L U]
+    Xnoise=bsxfun(@times,rrr,U-L);
+    Xnoise=bsxfun(@plus,Xnoise,L);
     X = [X, Xnoise];
-    
 end
 
 if ~isempty(lambda)
-    if (length(lambda) == p + nnoise)
-        for j=1:(p + nnoise)
+    if (length(lambda) == p + noisevars)
+        for j=1:(p + noisevars)
             X(:,j) = (lambda(j) * X(:, j) + 1).^(1/lambda(j)) - 1;
             if (sum(isnan(X(:,j))) ~= 0)
                 warning('FSDA:simdataset:NaNs','NaNs were produced during transformation')
@@ -314,45 +488,90 @@ if ~isempty(lambda)
     X=real(X);
     
 end
-%% Inner functions
+%% Nested functions
 % Xout with nout rows which contains the outliers
 % fail = scalar. If fail =1 than it was not possible to generate the
 % outliers in the interval specified by input option int in maxiter trials
 % else fail =0
-    function [Xout,fail] = getOutliers(nout, Mu, S, alpha, maxiter,int)
+    function [Xout,fail] = getOutliers(nout, Mu, S, alpha, maxiter, typeout)
         fail = 0;
         % maxiter = maximum number of iterations to generate outliers
-        
         critval =chi2inv(1-alpha,p);
         
         Xout = zeros(nout,p);
+        L = min(X);
+        U = max(X);
         
-        if isempty(int)
-            L = min(min(Mu));
-            U = max(max(Mu));
-        elseif strcmp(int,'minmax')
-            L = min(X);
-            U = max(X);
-            
-        else
-            L = int(1);
-            U = int(2);
-        end
+        %         if isempty(int)
+        %             L = min(min(Mu));
+        %             U = max(max(Mu));
+        %         elseif strcmp(int,'minmax')
+        %             L = min(X);
+        %             U = max(X);
+        %
+        %         else
+        %             L = int(1);
+        %             U = int(2);
+        %         end
         
         i = 1;
+        
+        % Remark: maxiter1 must be much greater than nout
+        if nout<2000
+            maxiter1=20000;
+        else
+            maxiter1=nout*10;
+            maxiter=maxiter1;
+        end
+        
+        if strcmp(typeout(1:4),'unif')
+            rrall = rand(maxiter1,p);
+        elseif strcmp(typeout(1:4),'norm')
+            rrall = rescale(randn(maxiter1,p));
+        elseif strcmp(typeout(1),'T') || strcmp(typeout(1),'t')
+            nuT=str2double(typeout(2:end));
+            rrall = rescale(trnd(nuT, maxiter1, p));
+        elseif strcmp(typeout(1:9),'Chisquare')
+            nuC=str2double(typeout(10:end));
+            rrall = rescale(chi2rnd(nuC,maxiter1,p));
+        elseif   strcmp(typeout,'pointmass')
+            rrall=rand(maxiter1,p);
+        elseif   strcmp(typeout,'componentwise')
+            % component wise contamination
+        else
+            error('FSDA:simdataset:WrongDistrib','Outlier distribution type not supported')
+        end
         
         iter=0;
         while (i <= nout  &&  iter<maxiter)
             iter=iter+1;
-            if R_seed
-                % equivalent of 'rand(k,p)' in R is 'matrix(runif(k*p),k,p)'
-                rn1 = ['matrix(runif(' num2str(p) '),' num2str(1) ',' num2str(p) ')'];
-                rr = evalR(rn1);
+            
+            if strcmp(typeout,'componentwise')
+                
+                % extract one unit among those already extracted and
+                % contaminate just a single random coordinate
+                Xout(i,:)=X(randsample(1:n,1),:);
+                contj=randsample(1:p,1);
+                if rand(1,1)>0.5
+                    Xout(i,contj)=U(contj);
+                else
+                    Xout(i,contj)=L(contj);
+                end
             else
-                rr = rand(1,p);
+                
+                if R_seed
+                    % equivalent of 'rand(k,p)' in R is 'matrix(runif(k*p),k,p)'
+                    rn1 = ['matrix(runif(' num2str(p) '),' num2str(1) ',' num2str(p) ')'];
+                    rr = evalR(rn1);
+                else
+                    rindex=randsample(maxiter1,1);
+                    rr=rrall(rindex,:);
+                end
+                
+                Xout(i,:) = (U-L).*rr+L;
+                
             end
             
-            Xout(i,:) = (U-L).*rr+L;
             
             ij=0;
             for jj=1:k
@@ -362,10 +581,21 @@ end
                 end
             end
             
+            
             if ij==0
                 i = i + 1;
             end
+            
+            if ij==0 && strcmp(typeout,'pointmass')
+                % Row of point mass contamination which has been found is
+                % replicated nout times and stored inside matrix Xout
+                % In other words, Xout will have nout equal rows
+                Xalleq=repmat(Xout(1,:),nout,1);
+                Xout=Xalleq;
+                break
+            end
         end
+        
         % If iter = maxiter than it was not possible  to generate nout
         % outliers in maxiter simulations.
         if iter== maxiter
@@ -374,7 +604,7 @@ end
                 '--' num2str(U(1)) ']'])
             disp('Please modify the interval inside input option ''int'' ')
             disp('or increase input option ''alpha''')
-            disp(['The values of int and alpha now are ' num2str(int) ' and ' num2str(alpha)]); 
+            disp(['The values of int and alpha now are ' num2str(int) ' and ' num2str(alpha)]);
             
             % If max number of iteration has been reached fail is 1
             fail=1;
