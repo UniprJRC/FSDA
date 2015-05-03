@@ -1,22 +1,21 @@
 function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %simdataset simulates a dataset given the parameters of finite mixture model with Gaussian components
 %
-%
 %<a href="matlab: docsearchFS('simdataset')">Link to the help function</a>
 %
 %   simdataset(n, Pi, Mu, S) generates a matrix of size n-by-p containing n
-%   observations p dimensions from k groups. In other words, this function
+%   observations p dimensions from k groups. More precisely, this function
 %   produces a dataset of n observations from a mixture model with
 %   parameters 'Pi' (mixing proportions), 'Mu' (mean vectors), and 'S'
 %   (covariance matrices). Mixture component sample sizes are produced as a
 %   realization from a multinomial distribution with probabilities given by
-%   mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,
-%   0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integer
-%   numbers (whose sum is n-k) from the multinominal distribution with
-%   parameters n-k and Pi. The size of the groups is given by Nk1+1. The
-%   first Nk1(1)+1  observations are generated using centroid Mu(1,:) and
-%   covariance S(:,:,1), ..., the last Nk1(k)+1  observations are generated
-%   using centroid Mu(k,:) and covariance S(:,:,k)
+%   the mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,
+%   0.25, 0.25), function Nk1 = mnrnd( n-k, Pi) is used to generate k
+%   integers (whose sum is n-k) from the multinominal distribution with
+%   parameters n-k and Pi. The size of the groups is Nk1+1. The first
+%   Nk1(1)+1  observations are generated using centroid Mu(1,:) and
+%   covariance S(:,:,1), ... , the last Nk1(k)+1 observations are generated
+%   using centroid Mu(k,:) and covariance S(:,:,k).
 %
 %  Required input arguments:
 %
@@ -27,108 +26,114 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Optional input arguments:
 %
-%    noisevars : missing value, scale or structure.
-%                If noisevars is a
-%                missing value (default) no noise variable is added to the
-%                matrix of simulated data.
-%                If noisevars is a scalar equal to r then r new noise
-%                variables are added to matrix of simulated data using the
-%                uniform distribution in the range min(X) max(X)
-%                If noisevars is a strcture it may contain the following
-%                fields
-%                   number = scalar, or vector of length f . The sum of
-%                       elements of vector number is equal to the total
-%                       number of noise variables which has to be addded.
-%                   distribution = string or cell array of strings of
-%                       length f which specifies the distribution to be
-%                       used to simulate noise variables. If field
-%                       distribution is not present then uniform
-%                       distribution is used to simulate noise variables
-%                       String 'distribution' can assume the following values:
-%                       uniform = uniform distribution
-%                       normal = normal distribution
-%                       t or T followed by a number which controls the
-%                       degreess of freedom. For example, t6 specifies to
-%                       generate the data according to a Student T with 6
-%                       degrees of freedom.
-%                       chisquare followed by a number which controls the
-%                       degreess of freedom. For example, chisquare8 specifies to
-%                       generate the data according to a Chi square
-%                       distribution with 8 degrees of freedom.
+%    noisevars : empty value, scalar or structure.
+%                - If noisevars is not specified or is an empty value
+%                  (default) no noise variable is added to the matrix of
+%                  simulated data.
+%                - If noisevars is a scalar equal to r, then r new noise
+%                  variables are added to the matrix of simulated data
+%                  using the uniform distribution in the range [min(X)
+%                  max(X)].
+%                - If noisevars is a strcture it may contain the following
+%                  fields:
+%                  number: a scalar or a vector of length f. The sum of
+%                       elements of vector 'number' is equal to the total
+%                       number of noise variables to be addded.
+%                  distribution: string or cell array of strings of length
+%                       f which specifies the distribution to be used to 
+%                       simulate the noise variables. 
+%                       If field distribution is not present then the
+%                       uniform distribution is used to simulate the noise
+%                       variables.
+%                       String 'distribution' can be one of the following
+%                       values:
+%                       * uniform = uniform distribution
+%                       * normal  = normal distribution
+%                       * t or T followed by a number which controls the
+%                         degrees of freedom. For example, t6 specifies to
+%                         generate the data according to a Student T with 6
+%                         degrees of freedom.
+%                       * chisquare followed by a number which controls the
+%                         degreess of freedom. For example, chisquare8
+%                         specifies to generate the data according to a Chi
+%                         square distribution with 8 degrees of freedom.
 %                   int = string or vector of length 2 or matrix of length
-%                       2-by-f which controls for each element of vector
-%                       'number' or each element of cell 'distribution',
-%                       the min and max of the generated data.
-%                       If int is empty (default) noise variables are
-%                       simulated uniformly between the smallest and
-%                       largest coordinates of mean vectors elseif int is
-%                       'minmax' noise varaibles are simulated
-%                       uniformly between the smallest and largest
-%                       coordinates of simulated data matrix X
-%                   For example, the code
-%                   noisevars=struct;
-%                   noisevars.number=[3 2]
-%                   noisevars.distribution={'chisquare5' 'T3'}
-%                   noisevars.int='minmax';
-%                   adds 5 noise varibles. The first 3 are generated using
-%                   the chi2 with 5 degrees of freedom and the last two
-%                   using the Student t with 3 degrees of freedom. Noise
-%                   variables are generated in the interval min(X) max(X)
-%   noiseunits : missing value, scalar or structure. scalar, which
-%                specifies the number and type of outlying observations.
-%                The default value of noiseunits is 0. If noiseunits is a
-%                scalar t different from 0 to r then t units from the
-%                uniform distribution in the interval min(X) max(X) are
-%                generated in wuch a way that their squared Mahalanobis
-%                distance from the centroids of each existing group is
-%                larger then the quantile 1-0.999 of the chi^2 distribution
-%                with p degrees of freedom. In order to generate these
-%                these units the maximum number of attempts is equal to
-%                10000
-%                If noiseunits is a strcture it may contain the following
-%                fields
-%                   number : scalar, or vector of length f . The sum of
-%                       elements of vector number is equal to the total
-%                       number of outliers which are simulated
-%                   alpha  : scalar or vector of legth f containin the
-%                       levels for simulating outliers. The default value of
-%                       alpha is 0.001,
-%                   maxiter: maximum number of trials to simulate outliers.
-%                       The default value of maxiter is 10000
-%                   typeout: list of length f containing the type of
+%                         2-by-f which controls for each element of vector
+%                         'number' or each element of cell 'distribution',
+%                         the min and max of the generated data.
+%                         If int is empty (default), the noise variables 
+%                         are simulated uniformly between the smallest and
+%                         the largest coordinates of mean vectors.
+%                         If int is 'minmax' the noise varaibles are
+%                         simulated uniformly between the smallest and the
+%                         largest coordinates of the simulated data matrix.
+%                For example, the code:
+%{
+                   noisevars=struct;
+                   noisevars.number=[3 2];
+                   noisevars.distribution={'chisquare5' 'T3'};
+                   noisevars.int='minmax';
+%}
+%                adds 5 noise varibles, the first 3 generated using
+%                the chi2 with 5 degrees of freedom and the last two
+%                using the Student t with 3 degrees of freedom. Noise
+%                variables are generated in the interval min(X) max(X).
+%
+%   noiseunits : missing value, scalar or structure, specifyin the number 
+%                and type of outlying observations. The default value of 
+%                noiseunits is 0. 
+%                - If noiseunits is a scalar t different from 0, then t  
+%                  units from the uniform distribution in the interval
+%                  min(X) max(X) are generated in such a way that their
+%                  squared Mahalanobis distance from the centroids of each
+%                  existing group is larger then the quantile 1-0.999 of
+%                  the chi^2 distribution with p degrees of freedom. In
+%                  order to generate these these units the maximum number
+%                  of attempts is equal to 10000.
+%                - If noiseunits is a strcture it may contain the following
+%                  fields:
+%                  number : scalar, or vector of length f. The sum of the
+%                       elements of vector 'number' is equal to the total
+%                       number of outliers which are simulated.
+%                  alpha : scalar or vector of legth f containing the
+%                       percentages of simulated outliers. The default value 
+%                       of alpha is 0.001.
+%                  maxiter : maximum number of trials to simulate outliers.
+%                       The default value of maxiter is 10000.
+%                  typeout : list of length f containing the type of
 %                       outliers which must be simulated. Possible values
-%                       for typeout are
-%                       unif (or uniform) = if the outliers must be
-%                       generated using the uniform distribution
-%                       norm (or normal) = if the outliers must be
-%                       generated using the normal distribution
-%                       Chisquarez = if the outliers must be
-%                       generated using the Chi2 distribution with z
-%                       degrees of freedom
-%                       Tz or tz = if the outliers must be
-%                       generated using the Student T distribution with z
-%                       degrees of freedom
-%                       pointmass = if the outliers are concentrated on a
-%                       particular point
-%                       componentwise = if the outliers must have the same
-%                       coordinates of the existing rows of matrix X apart
-%                       from a single coordinate (which will be to the min
-%                       or max in that particular dimension)
+%                       for typeout are:
+%                       * unif (or uniform), if the outliers must be
+%                         generated using the uniform distribution;
+%                       * norm (or normal), if the outliers must be
+%                         generated using the normal distribution;
+%                       * Chisquarez, if the outliers must be generated
+%                         using the Chi2 distribution with z degrees of
+%                         freedom;                      
+%                       * Tz or tz, if the outliers must be generated using 
+%                         the Student T distribution with z degrees of
+%                         freedom;                         
+%                       * pointmass, if the outliers are concentrated on a
+%                         particular point;
+%                       * componentwise, if the outliers must have the same
+%                         coordinates of the existing rows of matrix X apart
+%                         from a single coordinate (which will be to the min
+%                         or max in that particular dimension).
 %       lambda : vector of length p containing inverse Box-Cox
 %                transformation coefficients. The value false (default)
 %                implies that no transformation is applied to any variable.
 %
-%
 %  Output:
 %
-%           X  : simulated dataset of size (n + nout)-by-(p + nnoise);
+%           X  : simulated dataset of size (n + nout)-by-(p + nnoise).
 %                Noise coordinates are provided in the last nnoise columns.
-%           id : classification vector of length n + noiseunits; negative
-%           numbers represents the groups associated to contaminated units
+%           id : classification vector of length n + noiseunits. Negative
+%                numbers represents the groups associated to the
+%                contaminated units.
 %
-%            REMARK: If noiseunits outliers could not be generated a warning is
-%                produced. In this case matrix X and vector id will have
-%                less than n+noiseunits rows.
+%           REMARK: If noiseunits outliers could not be generated a warning 
+%                   is produced. In this case matrix X and vector id will
+%                   have less than n + noiseunits rows.
 %
 %   DETAILS
 %
@@ -142,8 +147,8 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 % weighted component distributions. Outliers are simulated on a hypercube
 % specified by the interval 'int'. A user can apply an inverse Box-Cox
 % transformation providing a vector of coefficients 'lambda'. The value 1
-% implies that no transformation is needed for the corresponding
-% coordinate
+% implies that no transformation is needed for the corresponding coordinate
+% 
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -158,7 +163,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
     out = MixSim(4,2,'BarOmega',0.01);
     n=60;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',10);
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',10);
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'nout',10,'int','minmax');
 
 
