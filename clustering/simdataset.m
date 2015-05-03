@@ -57,21 +57,21 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         degreess of freedom. For example, chisquare8
 %                         specifies to generate the data according to a Chi
 %                         square distribution with 8 degrees of freedom.
-%                   int = string or vector of length 2 or matrix of length
+%                  interval: string or vector of length 2 or matrix of length
 %                         2-by-f which controls for each element of vector
 %                         'number' or each element of cell 'distribution',
 %                         the min and max of the generated data.
-%                         If int is empty (default), the noise variables
+%                         If interval is empty (default), the noise variables
 %                         are simulated uniformly between the smallest and
 %                         the largest coordinates of mean vectors.
-%                         If int is 'minmax' the noise varaibles are
+%                         If interval is 'minmax' the noise varaibles are
 %                         simulated uniformly between the smallest and the
 %                         largest coordinates of the simulated data matrix.
 %                For example, the code:
 %                   noisevars=struct;
 %                   noisevars.number=[3 2];
 %                   noisevars.distribution={'chisquare5' 'T3'};
-%                   noisevars.int='minmax';
+%                   noisevars.interval='minmax';
 %                adds 5 noise varibles, the first 3 generated using
 %                the chi2 with 5 degrees of freedom and the last two
 %                using the Student t with 3 degrees of freedom. Noise
@@ -94,7 +94,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                       elements of vector 'number' is equal to the total
 %                       number of outliers which are simulated.
 %                  alpha : scalar or vector of legth f containing the
-%                       percentages of simulated outliers. The default value
+%                       level(s) of simulated outliers. The default value
 %                       of alpha is 0.001.
 %                  maxiter : maximum number of trials to simulate outliers.
 %                       The default value of maxiter is 10000.
@@ -122,9 +122,9 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                implies that no transformation is applied to any variable.
 %
 %  Output:
-%
-%           X  : simulated dataset of size (n + nout)-by-(p + nnoise).
-%                Noise coordinates are provided in the last nnoise columns.
+% 
+%           X  : simulated dataset of size (n + noiseunits)-by-(p + noisevars).
+%                Noise coordinates are provided in the last noisevars columns.
 %           id : classification vector of length n + noiseunits. Negative
 %                numbers represents the groups associated to the
 %                contaminated units.
@@ -136,14 +136,14 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %   DETAILS
 %
 % To make a dataset more challenging for clustering, a user might want to
-% simulate noise variables or outliers. Parameter 'nnoise' specifies the
-% desired number of noise variables. If an interval 'int' is specified,
+% simulate noise variables or outliers. Parameter 'noisevars' specifies the
+% desired number of noise variables. If an interval 'interval' is specified,
 % noise will be simulated from a Uniform distribution on the interval given
-% by 'int'. Otherwise, noise will be simulated uniformly between the
-% smallest and largest coordinates of mean vectors. 'nout' specifies the
+% by 'interval'. Otherwise, noise will be simulated uniformly between the
+% smallest and largest coordinates of mean vectors. 'noiseunits' specifies the
 % number of observations outside (1 - 'alpha') ellipsoidal contours for the
 % weighted component distributions. Outliers are simulated on a hypercube
-% specified by the interval 'int'. A user can apply an inverse Box-Cox
+% specified by the interval 'interval'. A user can apply an inverse Box-Cox
 % transformation providing a vector of coefficients 'lambda'. The value 1
 % implies that no transformation is needed for the corresponding coordinate
 %
@@ -166,7 +166,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',10);
     spmplot(X,id);
 
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',10,'int','minmax');
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',10,'interval','minmax');
     spmplot(X,id);
 
     out = MixSim(4,3,'BarOmega',0.1);
@@ -188,22 +188,22 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
     noisevars=struct;
     noisevars.number=[1 1];
     noisevars.distribution={'chisquare5' 'T3'};
-    noisevars.int='minmax';
+    noisevars.interval='minmax';
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',noiseunits,'noisevars',noisevars);
     spmplot(X,id);
 %}
 
 %{
     % Check if it is possible to generate the outliers given alpha in the
-    % interval specified by input option int and if it not possible modify
-    % int by adding 0.1 until the outliers can be found
+    % interval specified by input option interval and if it not possible modify
+    % interval by adding 0.1 until the outliers can be found
     out = MixSim(4,3,'BarOmega',0.1);
     % Point mass contamination of 30 observations in interval [0.4 0.4]
     nout=30;
     outint=[0.4 0.4];
     n=200;
     for j=1:10
-        [X,id]=simdataset(n, out.Pi, out.Mu, out.S, 'noiseunits', nout, 'alpha', 0.01, 'int', outint);
+        [X,id]=simdataset(n, out.Pi, out.Mu, out.S, 'noiseunits', nout, 'alpha', 0.01, 'interval', outint);
         if size(X,1)== n+nout
             break
         else
@@ -232,7 +232,7 @@ lambdadef       = '';
 Rseeddef        = 0;
 
 options=struct('noisevars',noisevarsdef,'noiseunits',noiseunitsdef,'alpha',alphadef,...
-    'int',intdef,'maxiter',maxiterdef,'lambda',lambdadef,'R_seed', Rseeddef);
+    'interval',intdef,'maxiter',maxiterdef,'lambda',lambdadef,'R_seed', Rseeddef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -263,7 +263,7 @@ end
 R_seed     = options.R_seed;
 noisevars  = options.noisevars;
 noiseunits = options.noiseunits;
-int        = options.int;
+interval   = options.interval;
 lambda     = options.lambda;
 
 [k,p]=size(Mu);
@@ -378,7 +378,7 @@ if (isstruct(noiseunits) || ~isempty(noiseunits)) || (isempty(noiseunits) && ~is
             error('FSDA:simdataset:WrongMaxIter','Wrong value for maximum number of iterations: it cannot be <1')
         end
         
-        % nout = total number of outliers  which has to be
+        % noiseunits = total number of outliers  which has to be
         % simulated
         noiseunits=sum(number);
         
@@ -439,28 +439,28 @@ if isstruct(noisevars) || ~isempty(noisevars)
             distribution='uniform';
         end
         
-        d=find(strcmp('int',fnoisevars));
+        d=find(strcmp('interval',fnoisevars));
         if d>0
-            int=noisevars.int;
+            interval=noisevars.interval;
         else
-            int='';
+            interval='';
         end
         
         % nvars = total number of noise variables to be simulated
         nvars=sum(number);
         
         %  if noisevars ~= 0
-        if isempty(int)
+        if isempty(interval)
             L = min(min(Mu));
             U = max(max(Mu));
             L = L* ones(1,nvars);
             U = U* ones(1,nvars);
-        elseif strcmp('minmax',int)
+        elseif strcmp('minmax',interval)
             L = min(X);
             U = max(X);
         else
-            L = int(1,:);
-            U = int(2,:);
+            L = interval(1,:);
+            U = interval(2,:);
         end
     else % in this case noisevars is a scalar different from missing
         L = min(min(Mu));
@@ -512,7 +512,7 @@ if ~isempty(lambda)
             end
         end
     else
-        error('FSDA:simdataset:WrongLambda','The number of transformation coefficients lambda should be equal to ndimensions + nnoise')
+        error('FSDA:simdataset:WrongLambda','The number of transformation coefficients lambda should be equal to ndimensions + noisevars')
     end
     % Remark: if lambda is very large MATLAB can create a complex X, so it
     % is necessary to have this further check
@@ -522,7 +522,7 @@ end
 %% Nested functions
 % Xout with nout rows which contains the outliers fail = scalar. If fail=1
 % than it was not possible to generate the outliers in the interval
-% specified by input option int in maxiter trials else fail=0
+% specified by input option interval in maxiter trials else fail=0
     function [Xout,fail] = getOutliers(nout, Mu, S, alpha, maxiter, typeout)
         fail = 0;
         % maxiter = maximum number of iterations to generate outliers
@@ -532,16 +532,16 @@ end
         L = min(X);
         U = max(X);
         
-        %         if isempty(int)
+        %         if isempty(interval)
         %             L = min(min(Mu));
         %             U = max(max(Mu));
-        %         elseif strcmp(int,'minmax')
+        %         elseif strcmp(interval,'minmax')
         %             L = min(X);
         %             U = max(X);
         %
         %         else
-        %             L = int(1);
-        %             U = int(2);
+        %             L = interval(1);
+        %             U = interval(2);
         %         end
         
         i = 1;
@@ -629,9 +629,9 @@ end
             disp(['Warning: it was not possible to generate ' num2str(nout) ' outliers'])
             disp(['in ' num2str(maxiter) ' replicates in the interval [' num2str(L(1)) ...
                 '--' num2str(U(1)) ']'])
-            disp('Please modify the interval inside input option ''int'' ')
+            disp('Please modify the interval inside input option ''interval'' ')
             disp('or increase input option ''alpha''')
-            disp(['The values of int and alpha now are ' num2str(int) ' and ' num2str(alpha)]);
+            disp(['The values of interval and alpha now are ' num2str(interval) ' and ' num2str(alpha)]);
             
             % If max number of iteration has been reached fail is 1
             fail=1;
