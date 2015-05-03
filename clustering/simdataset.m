@@ -17,6 +17,18 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %   covariance S(:,:,1), ... , the last Nk1(k)+1 observations are generated
 %   using centroid Mu(k,:) and covariance S(:,:,k).
 %
+%   DETAILS
+%
+% To make a dataset more challenging for clustering, a user might want to
+% simulate noise variables or outliers. The optional parameter 'noiseunits'
+% controls the number and the type of outliers which must be added. The
+% optional parameter 'noisevars' controls the number and the type of noise
+% variables which must be added (it is possible to control the
+% distribution, the interval and the number). Finally, the user can apply
+% an inverse Box-Cox transformation providing a vector of coefficients
+% 'lambda'. The value 1 implies that no transformation is needed for the
+% corresponding coordinate.
+%
 %  Required input arguments:
 %
 %         n   : scalar, sample size  of the dataset
@@ -25,6 +37,47 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %         S   : v-by-v-by-k arrary containing components' covariance matrices
 %
 %  Optional input arguments:
+%
+%   noiseunits : missing value, scalar or structure, specifyin the number
+%                and type of outlying observations. The default value of
+%                noiseunits is 0.
+%                - If noiseunits is a scalar t different from 0, then t
+%                  units from the uniform distribution in the interval
+%                  min(X) max(X) are generated in such a way that their
+%                  squared Mahalanobis distance from the centroids of each
+%                  existing group is larger then the quantile 1-0.999 of
+%                  the chi^2 distribution with p degrees of freedom. In
+%                  order to generate these these units the maximum number
+%                  of attempts is equal to 10000.
+%                - If noiseunits is a strcture it may contain the following
+%                  fields:
+%                  number : scalar, or vector of length f. The sum of the
+%                       elements of vector 'number' is equal to the total
+%                       number of outliers which are simulated.
+%                  alpha : scalar or vector of legth f containing the
+%                       level(s) of simulated outliers. The default value
+%                       of alpha is 0.001.
+%                  maxiter : maximum number of trials to simulate outliers.
+%                       The default value of maxiter is 10000.
+%                  typeout : list of length f containing the type of
+%                       outliers which must be simulated. Possible values
+%                       for typeout are:
+%                       * unif (or uniform), if the outliers must be
+%                         generated using the uniform distribution;
+%                       * norm (or normal), if the outliers must be
+%                         generated using the normal distribution;
+%                       * Chisquarez, if the outliers must be generated
+%                         using the Chi2 distribution with z degrees of
+%                         freedom;
+%                       * Tz or tz, if the outliers must be generated using
+%                         the Student T distribution with z degrees of
+%                         freedom;
+%                       * pointmass, if the outliers are concentrated on a
+%                         particular point;
+%                       * componentwise, if the outliers must have the same
+%                         coordinates of the existing rows of matrix X apart
+%                         from a single coordinate (which will be to the min
+%                         or max in that particular dimension).
 %
 %    noisevars : empty value, scalar or structure.
 %                - If noisevars is not specified or is an empty value
@@ -77,53 +130,14 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                using the Student t with 3 degrees of freedom. Noise
 %                variables are generated in the interval min(X) max(X).
 %
-%   noiseunits : missing value, scalar or structure, specifyin the number
-%                and type of outlying observations. The default value of
-%                noiseunits is 0.
-%                - If noiseunits is a scalar t different from 0, then t
-%                  units from the uniform distribution in the interval
-%                  min(X) max(X) are generated in such a way that their
-%                  squared Mahalanobis distance from the centroids of each
-%                  existing group is larger then the quantile 1-0.999 of
-%                  the chi^2 distribution with p degrees of freedom. In
-%                  order to generate these these units the maximum number
-%                  of attempts is equal to 10000.
-%                - If noiseunits is a strcture it may contain the following
-%                  fields:
-%                  number : scalar, or vector of length f. The sum of the
-%                       elements of vector 'number' is equal to the total
-%                       number of outliers which are simulated.
-%                  alpha : scalar or vector of legth f containing the
-%                       level(s) of simulated outliers. The default value
-%                       of alpha is 0.001.
-%                  maxiter : maximum number of trials to simulate outliers.
-%                       The default value of maxiter is 10000.
-%                  typeout : list of length f containing the type of
-%                       outliers which must be simulated. Possible values
-%                       for typeout are:
-%                       * unif (or uniform), if the outliers must be
-%                         generated using the uniform distribution;
-%                       * norm (or normal), if the outliers must be
-%                         generated using the normal distribution;
-%                       * Chisquarez, if the outliers must be generated
-%                         using the Chi2 distribution with z degrees of
-%                         freedom;
-%                       * Tz or tz, if the outliers must be generated using
-%                         the Student T distribution with z degrees of
-%                         freedom;
-%                       * pointmass, if the outliers are concentrated on a
-%                         particular point;
-%                       * componentwise, if the outliers must have the same
-%                         coordinates of the existing rows of matrix X apart
-%                         from a single coordinate (which will be to the min
-%                         or max in that particular dimension).
+%
 %       lambda : vector of length p containing inverse Box-Cox
 %                transformation coefficients. The value false (default)
 %                implies that no transformation is applied to any variable.
 %
 %  Output:
 % 
-%           X  : simulated dataset of size (n + noiseunits)-by-(p + noisevars).
+%           X  : simulated dataset of size (n + noiseunits)-by-(v + noisevars).
 %                Noise coordinates are provided in the last noisevars columns.
 %           id : classification vector of length n + noiseunits. Negative
 %                numbers represents the groups associated to the
@@ -132,20 +146,6 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %           REMARK: If noiseunits outliers could not be generated a warning
 %                   is produced. In this case matrix X and vector id will
 %                   have less than n + noiseunits rows.
-%
-%   DETAILS
-%
-% To make a dataset more challenging for clustering, a user might want to
-% simulate noise variables or outliers. Parameter 'noisevars' specifies the
-% desired number of noise variables. If an interval 'interval' is specified,
-% noise will be simulated from a Uniform distribution on the interval given
-% by 'interval'. Otherwise, noise will be simulated uniformly between the
-% smallest and largest coordinates of mean vectors. 'noiseunits' specifies the
-% number of observations outside (1 - 'alpha') ellipsoidal contours for the
-% weighted component distributions. Outliers are simulated on a hypercube
-% specified by the interval 'interval'. A user can apply an inverse Box-Cox
-% transformation providing a vector of coefficients 'lambda'. The value 1
-% implies that no transformation is needed for the corresponding coordinate
 %
 %
 % Copyright 2008-2015.
@@ -168,14 +168,173 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',10,'interval','minmax');
     spmplot(X,id);
+%}
 
-    out = MixSim(4,3,'BarOmega',0.1);
-    noiseunits=struct;
-    noiseunits.typeout='uniform';
-    noiseunits.number=10;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',noiseunits);
+%{
+    % Generate 4 groups in 2 dimensions
+    rng(100)
+    out = MixSim(4,2,'BarOmega',0.01);
+    n=300;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
     spmplot(X,id);
+    title('4 groups without noise and outliers')
+%}
 
+%{
+    %% Add outliers generated from uniform distribution
+    n=300;
+    noisevars=0;
+    noiseunits=10000;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from uniform')
+%}
+
+%{
+    %% Add outliers generated from Chi2 with 5 degrees of freedom
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=10000;
+    % Add asymmetric very concentrated noise
+    noiseunits.typeout={'Chisquare5'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_5$','Interpreter','Latex')
+%}
+
+%{
+    %% Add outliers generated from Chi2 with 40 degrees of freedom
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=10000;
+    % Add asymmetric concentrated noise
+    noiseunits.typeout={'Chisquare40'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')
+%}
+
+%{
+    %% Add outliers generated from normal distribution
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=10000;
+    % Add asymmetric concentrated noise
+    noiseunits.typeout={'normal'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from normal distribution','Interpreter','Latex')
+%}
+
+%{
+    %% Add outliers generated from Student T with 5 degrees of freedom
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=10000;
+    % Add outliers from T5
+    noiseunits.typeout={'T5'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from Student T with 5 degrees if freedom','Interpreter','Latex')
+%}
+
+%{
+    %% Add componentwise contamination
+    n=300;
+    noisevars='';
+    noiseunits=struct;
+    noiseunits.number=10000;
+    % Add asymmetric concentrated noise
+    noiseunits.typeout={'componentwise'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with component wise outliers','Interpreter','Latex')
+%}
+
+%{
+    %% Add outliers generated from Chisquare and T distribution
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=5000*ones(2,1);
+    noiseunits.typeout={'Chisquare3','T20'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')
+%}
+
+%{
+    %% Add outliers from Chisquare and T distribution and use a personalized value of alpha
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=5000*ones(2,1);
+    noiseunits.typeout={'Chisquare3','T20'};
+    noiseunits.alpha=0.2;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$','Interpreter','Latex')
+%}
+
+%{
+    %% Add outliers from Chi2 + point mass contamination and add one noise variable
+    noisevars=struct;
+    noisevars.number=1;
+    noiseunits=struct;
+    noiseunits.number=[100 100];
+    noiseunits.typeout={'pointmass' 'Chisquare5'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')
+%}
+
+%{
+    %% Add 5 noise variables 
+    n=300;
+    noisevars=struct;
+    noisevars.number=[2 3];
+    noisevars.distribution={'Chisquare3','T20'};
+    noiseunits='';
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id,[],'box');
+    title('4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$','Interpreter','Latex')
+%}
+
+%{
+    %% Add 3 noise variables 
+    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={'Chisquare3','T2'};
+    noiseunits='';
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$','Interpreter','Latex')
+%}
+
+%{
+    %% Add 3 noise variables and use a personalized interval
+    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={'Chisquare3','T20'};
+    noisevars.int='minmax';
+    noiseunits='';
+    % In this example we supply min and max for each noise variable
+    v1=sum(noisevars.number);
+    noisevars.int=[3*ones(1,v1); 10*ones(1,v1)];
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')
+%}
+
+%  DOME QUESTI ESEMPI C'ERANO NELLA VERSIONE PRECEDENTE
+
+%{
     out = MixSim(2,2,'BarOmega',0.1);
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',10,'noisevars',1);
     spmplot(X,id);
