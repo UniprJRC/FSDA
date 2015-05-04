@@ -11,8 +11,9 @@ function add2spm(H,AX,BigAx,varargin)
 %
 % Using varargin it is possible to
 %
-% 1. personalize the legend of groups in the scatterplot matrix. See option 'userleg'.
-% 2. add labels of the units belonging to the last data group (or to the
+% 1. Personalize the legend of groups in the scatterplot matrix. See option
+%    'userleg'.
+% 2. Add labels of the units belonging to the last data group (or to the
 %   group with the largest value in the grouping variable) of each scatter
 %   (panel). See option 'labeladd'.
 %
@@ -26,7 +27,6 @@ function add2spm(H,AX,BigAx,varargin)
 %                   BigAx is a handle to big (invisible) axes framing the
 %                   entire plot matrix.
 %
-%
 %  Optional input arguments:
 %
 %  labeladd :   Default is '', i.e. no labels are added to the symbols
@@ -34,33 +34,39 @@ function add2spm(H,AX,BigAx,varargin)
 %               If set to '1', add labels to the units of the last data
 %               group (or the group with the largest value of the grouping
 %               variable) in each panel of the scatter matrix. The labels
-%               which are added are based on the content of the 'UserData' field of
-%               the last group. This can be achieved by means of
+%               which are added are based on the content of the 'UserData'
+%               field of the last group. This can be achieved by means of
 %               instruction set(H(:,:,end), 'UserData' , unit_labels),
 %               where unit_labels is a column vector of numbers or strings.
 %               See last example below for a concrete case.
-%  userleg  :   Default is '', i.e. the existing legends are left as they
-%               are and are simply made clickable. However, if there is no
-%               legend, a default one is created ('Group 1', 'Group
-%               2', etc.).
-%               If it is set to '1', the legends are updated depending on
-%               the context of use and are made clickable. The context is
-%               determined by the occurence of specific words in the Tag of
-%               the current figure. The strings/contexts currently
-%               addressed are 'outlier' (for 'Outliers' and 'Normal
-%               units'), 'brush' (for 'Brushed units 1', 'Brushed units 2',
-%               etc.) and '' (for 'Group 1', 'Group 2', etc.).
-%               If it is a cell of strings, e.g. {'FIAT' ; 'BMW' ; 'VOLVO'},
-%               then such strings are used as legends.
+%  userleg  :   It is used to control the legend of the plot.
+%               - Default is ''. In this case, existing legends are left as 
+%                 they are and simply made clickable; however, if there is
+%                 no legend, a default one is created using the syntax
+%                 'Group 1', 'Group 2', etc.
+%               - If it is set to '1', the legends are updated depending on
+%                 the context of use and are made clickable. The context is
+%                 determined by the occurence of specific words in the Tag
+%                 of the current figure. The strings/contexts currently
+%                 addressed are:
+%                 'outlier' (for 'Outliers' and 'Normal units'), 
+%                 'brush'   (for 'Brushed units 1', 'Brushed units 2', etc.), 
+%                 'group'   (for 'Group 1', 'Group 2', etc.), 
+%                 ''         i.e. the Tag of the figure is not defined; 
+%                            in this case the legend takes the values in    
+%                            the DisplayName property of the scatter
+%                            matrix: this is determined by the 'group'     
+%                            option of the spmplot or gplotmatrix functions. 
+%               - If it is a cell of strings, e.g. {'FIAT' ; 'BMW' ; 'VOLVO'},
+%                 then such strings are used for the legend.
 %
 %
 %   add2spm is essentially used within FSDA function spmplot.m. However its
 %   logic can be also demonstrated with MATLAB function gplotmatrix, as in
-%   the following examples:
+%   the examples below.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
-%
 %
 %<a href="matlab: docsearchFS('add2spm')">Link to the help function</a>
 % Last modified 06-Feb-2015
@@ -106,15 +112,29 @@ function add2spm(H,AX,BigAx,varargin)
     % will become clickable.
     add2spm(H,AX,BigAx);
 
-    % by running add2spm with option 'userleg' set to '1', the clickable
+    % by running add2spm with option 'userleg' set to '1', and by setting
+    % the figure Tag to a string containing the word 'group', the clickable
     % legends will become 'group 1', 'group 2' and 'group 3'.
     [H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');
+    set(gcf, 'Tag', 'this is a string with group')
     add2spm(H,AX,BigAx,'userleg','1');
 
     % by running add2spm with 'userleg', {'my group 1' ; 'my group 4' ; 'my
     % group 7'} the legends change as desired.
     [H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');
     add2spm(H,AX,BigAx,'userleg',{'FIAT' ; 'BMW' ; 'VOLVO'});
+
+    % Now create a group on units contaminated by outliers. By running
+    % add2spm with option 'userleg' set to '1', and by setting the figure
+    % Tag to a string containing the word 'outlier', the clickable legends
+    % become 'normal units' and 'outliers'. Remark: the keep the proper
+    % order of the legends, it is sufficient to reserve for the outlier id
+    % variable the largest id number.
+    y = randn(100,2); y(25:35,:) = y(25:35,:) + 10; 
+    group = ones(100,1);group(25:35,1) = 5; 
+    figure('Tag','this is a dataset with outliers');
+    [H,AX,BigAx] = gplotmatrix(y,[],group,'br','ox');
+    add2spm(H,AX,BigAx,'userleg','1');
 
 %}
 
@@ -188,8 +208,8 @@ end
 % if 'userleg' is '1', set context sensitive group-specific legends.
 % The context is determined by the occcurence of specific words in the Tag
 % of the current figure. The currently addressed strings/contexts are
-% 'outliers' (for outliers/normal units), 'brush' (for Brushed units 1,
-% Brushed units 2, etc.) and '' (for 'Group 1, Group 2, etc.).
+% 'outlier' (for outliers/normal units), 'brush' (for Brushed units 1,
+% Brushed units 2, etc.) and 'group' (for 'Group 1, Group 2, etc.).
 if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
     
     % add multilegend
@@ -225,10 +245,13 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
                 for i = 2 : nleg
                     set(newH(newH(:,1)~=0,i),'DisplayName',['Brushed units ' num2str(i-1)]);
                 end
-            else
+            elseif ~isempty(strfind(lower(get(gcf, 'Tag')),'group'))
                 for i = 1 : nleg
                     set(newH(newH(:,1)~=0,i),'DisplayName',['Group ' num2str(i)]);
                 end
+            else
+                % here the tag is empty: in this case do nothing, i.e. keep
+                % the legends as provided by the user.
             end
         end
     else
@@ -313,6 +336,7 @@ if strcmp('1',labeladd)
                 % Remark DisplayName with releases>2014a does not work
                 % anymore. It must bre replaced by String
                 % set(htxt, 'DisplayName', legnew{end});
+                %set(htxt, 'String', leg{end});
                 set(htxt, 'String', legnew{end});
                 
             end

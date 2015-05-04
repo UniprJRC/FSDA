@@ -30,7 +30,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %  group: vector with n elements. It is a grouping variable that determines
 %         the marker and color assigned to each point. It can be a categorical
-%         variable, vector, string matrix, or cell array of strings.
+%         variable, vector, string matrix, or cell array of strings. 
+%         Remark: if 'group' is used to distinguish a set of outliers from
+%         a set of good units, the id number for the outliers should be the
+%         larger (see optional field 'labeladd' of option 'plo' for details).
+%         
 %
 %    plo: empty value, scalar of structure which controls the names which
 %         are displayed in the margins of the scatter-plot matrix and the
@@ -272,16 +276,24 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo=struct;
     plo.labeladd='1'; % option plo.labeladd is used to label the outliers
 
-    % By default, the legend identifies the groups with 'Group 1', Group 2', etc.
+    % By default, the legend identifies the groups with the identifiers
+    % given in vector 'group'. 
     spmplot(Ycont,group,plo,'box');
+
 %}
 
 %{
-    % With two groups, and if the tag figure includes the word 'outlier',
-    % the legend will identify one group for outliers and the other for
-    % normal units
-    figure('tag','This is an outlier scatterplot');
-    spmplot(Ycont,group,plo);
+    % With two groups, and if the Tag of the figure contains the word
+    % 'outlier', the legend will identify one group for outliers and the
+    % other for normal units. The largest number in the 'group' variable
+    % identifies the group of outliers.
+    figure('tag','This is a scatterplot with ouTliErs');
+    spmplot(Ycont,group);
+
+    % If the Tag of the Figure contains the string 'group', then the
+    % legend identifies the groups with 'Group 1', Group 2', etc.
+    figure('tag','This scatterplot contains groups');
+    spmplot(Ycont,group,plo,'box');
 
     % If the tag figure includes the word 'brush', the legend will identify
     % one group for 'Unbrushed units' and the others for 'Brushed units 1',
@@ -627,6 +639,7 @@ if iscell(group)
     for ii=1:numel(guni)
         groupv(strcmp(group,guni(ii))) = ii;
     end
+    %guniv = cellstr(num2str(unique(groupv,'stable')));
 else
     groupv = group;
 end
