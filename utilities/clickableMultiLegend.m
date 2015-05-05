@@ -82,6 +82,11 @@ if get(hObject, 'UserData') % It is on, turn it off
         set(h, 'FaceColor','w', 'EdgeColor','k');
     end
     
+%     h_plo_labeladd = findobj('-regexp','Tag','plo_labeladd');
+%     if ~isempty(h_plo_labeladd)
+%         set(h_plo_labeladd,'HitTest','off','Visible','off','handlevisibility','off');
+%     end
+    
 else
     set(hObject, 'Color', get(hObject, 'Color')*1.5 - 1, 'UserData', true);
     set(obj, 'HitTest','on','visible','on','handlevisibility','on');
@@ -102,4 +107,9 @@ else
         set(h, 'FaceColor',cori, 'EdgeColor','k');
     end
     
+%     h_plo_labeladd = findobj('-regexp','Tag','plo_labeladd');
+%     if ~isempty(h_plo_labeladd)
+%         set(h_plo_labeladd,'HitTest','on','Visible','on','handlevisibility','on');
+%     end
+
 end
