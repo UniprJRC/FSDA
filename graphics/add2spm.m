@@ -184,9 +184,12 @@ if ~isappdata(AX(1,end),'LegendPeerHandle');
     userleg = '1';
 end
 
+% These are the legends already in the plot
+legplot = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
+
 % if 'userleg' is empty, use the legend already in the plot.
 if isempty(userleg)
-    legnew = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
+    legnew = legplot;
 end
 
 % if 'userleg' is a cell of string, use such strings as user-defined legends
@@ -250,8 +253,12 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
                     set(newH(newH(:,1)~=0,i),'DisplayName',['Group ' num2str(i)]);
                 end
             else
-                % here the tag is empty: in this case do nothing, i.e. keep
-                % the legends as provided by the user.
+                % here the tag is empty: in this case take the legends
+                % provided by the user
+                for i = 1 : nleg
+                    %leguser = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
+                    set(newH(newH(:,1)~=0,i),'DisplayName',legplot{i});
+                end
             end
         end
     else
@@ -259,11 +266,11 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
         set(setdiff(H(:),diag(H)),'DisplayName','Units')
     end
     
-    % Make the legends clickable
+    % Get the final legends
     legnew = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
 end
 
-% Now update the legends and make them clickable.
+% Now update the legends in the plot and make them clickable.
 hLines  = findobj(AX(1,end), 'type', 'line');
 if ~isempty(legnew)
     clickableMultiLegend(sort(double(hLines)), legnew{:});
@@ -329,16 +336,17 @@ if strcmp('1',labeladd)
             if i ~=  j;
                 % Set AX(i) the current axes
                 set(fig,'CurrentAxes',AX(i,j));
-                % Add the labels for the last selected group.
+                % Add the id labels for the units in last group.
                 XDataLast = get(H(i,j,end),'XData');
                 YDataLast = get(H(i,j,end),'YData');
-                htxt=text(XDataLast,YDataLast,num2str(nbrush,'% d'),'HorizontalAlignment', 'Left');
+                htxt=text(XDataLast,YDataLast,num2str(nbrush,'% d'),'HorizontalAlignment', 'Center','VerticalAlignment','Top');
                 % Remark DisplayName with releases>2014a does not work
                 % anymore. It must bre replaced by String
-                % set(htxt, 'DisplayName', legnew{end});
-                %set(htxt, 'String', leg{end});
-                set(htxt, 'String', legnew{end});
-                
+                %  if  isempty(userleg)
+                %      %set(htxt, 'String', legplot{end});
+                %      %set(htxt, 'String', legnew{end});
+                %  end
+                set(htxt,'Color',get(H(i,j,end),'Color'),'Tag','plo_labeladd');
             end
         end
     end
