@@ -983,7 +983,7 @@ out = Q;
                     while fail ~=0
                         
                         % find constant c for two clusters which show the
-                        % highest ovelapping
+                        % highest overlap
                         
                         % Extract parameters for the two clusters with the
                         % highest overlapping
@@ -1084,8 +1084,8 @@ out = Q;
                     fixcl(rcMax(2)) = 1;
                     upper = 1;
                     
-                    % Now find the c which guarrantees the average
-                    % requested ovelapping BarOmega
+                    % Now find the c which guarantees the average
+                    % requested overlap BarOmega
                     % method =0 because average overlapping is requested
                     method = 0;
                     Malphain=Malpha;
@@ -1342,7 +1342,7 @@ out = Q;
             
             
             if diff < -tolmap % Requested StdOmega of overlapping is reachable
-                disp('Requested sigma of ovelap must be smaller than')
+                disp('Requested sigma of overlap must be smaller than')
                 disp('BarOmega*(MaxOmega(achievable) - BarOmega)')
                 disp(['In simulation ' num2str(isamp)])
                 disp(['MaxOmega(achievable)=' num2str(Malphaini) ' and'])
@@ -1372,8 +1372,8 @@ out = Q;
                     if step<1e-15
                         break
                     end
-                    % if the value of MaxOmegaloop is greater than than the max
-                    % overlap achivable (which is Malphaini) than requested
+                    % if the value of MaxOmegaloop is greater than the max
+                    % overlap achievable (which is Malphaini) then requested
                     % standard deviation is too large and it is necessary to
                     % decrease it
                     if MaxOmegaloop> Malphaini
@@ -1392,9 +1392,11 @@ out = Q;
                         detS=detSini;
                     end
                     
-                    Malpha=Malphaini;
-                    Balpha=Balphaini;
-                    % rcMaxini=[1;2];
+                    % Malpha=Malphaini;     % ?????????? REMOVED
+                    % Balpha=Balphaini;     % ??????????? REMOVED
+                    
+                    % At each iteration rcMax is always initialized with
+                    % rcMaxini, however, inside the iteration it may change
                     rcMax=rcMaxini;
                     li=liini;
                     di=diini;
@@ -1407,7 +1409,7 @@ out = Q;
                     while fail ~=0
                         
                         % Extract parameters for the two clusters with the
-                        % highest overlapping
+                        % highest overlap
                         li2(1,2,:) = li(rcMax(1),rcMax(2),:);
                         di2(1,2,:) = di(rcMax(1),rcMax(2),:);
                         const12(1,2)=const1(rcMax(1),rcMax(2));
@@ -1441,10 +1443,10 @@ out = Q;
                         [OmegaMap, Balpha, Malpha, rcMax]=GetOmegaMap(c, p, k, li, di, const1, fixcl, tolncx2, lim, asympt);
                         upper = c;
                         
-                        % We hope that Balpha (overall average overlapping)
+                        % We hope that Balpha (overall average overlap)
                         % obtained using c associated with the two clusters
-                        % which showed the highest overlapping is greater
-                        % than BarOmega (average requested overlapping).
+                        % which showed the highest overlap is greater
+                        % than BarOmega (average requested overlap).
                         diff = Balpha - BarOmega;
                         % If diff<tolmap the desired average overlap characteristic is
                         % possibly unattainable using the candidate \mu
@@ -1456,28 +1458,16 @@ out = Q;
                             fail = 1;
                             break
                         end
-                        
-                        % Now we make sure that none of pairwise overlaps
-                        % (that is  make sure that the maximum pairwise
-                        % overlap (which is Malpha) does not exceed MaxOmega
-                        % (the maximum requested overlap). If this is the
-                        % case  do another iteration of the loop (while
-                        % fail ~=0) using rcMax which has just been found.
-                        
-                        % TO CHECK REMOVED
-                        % diff = Malpha - MaxOmegaloop;
-                        %if (diff < tolmap) %  MaxOmega has been reached
                         fail = 0;
-                        %  break
-                        % end
-                        
                     end
                     
-                    
-                    
                     if fail == 0
-                        %  OmegaMax is reached and OmegaBar is reachable
-                        %  correct covariances by multiplier C
+                        % 1) correct covariances by multiplier c
+                        % 2) isolate the two components (groups) which
+                        %    produce the highest overlap
+                        % 3) use routine findC to find the
+                        %   new value of c which produces the average
+                        %   requested overlap
                         
                         if nargin>13 && ~isempty(restrfactor)
                             S05=(c^0.5)*S05;
@@ -1490,22 +1480,22 @@ out = Q;
                         end
                         
                         % The two clusters which enabled to obtain the highest
-                        % overlap are kept unchanged all the way through the
-                        % termination of the algorithm
+                        % overlap are kept unchanged (that is are not
+                        % multiplied by c) in the call below to routine
+                        % findC, which finds the value of c which produces
+                        % the average requested overlap BarOmega
                         fixcl(rcMax(1)) = 1;
                         fixcl(rcMax(2)) = 1;
                         upper = 1;
                         
-                        % Now find the c which guarrantees the average
-                        % requested ovelapping BarOmega
-                        % method =0 because average overlapping is requested
+                        % Now find the c which guarantees the average
+                        % requested overlap BarOmega
+                        % method =0 because average overlap is requested
                         method = 0;
-                        % Malphain=Malpha;
-                        % FindC(lower, upper, Balpha, method, p, K, li, di, const1, fix, pars, lim, &c, OmegaMap, &Balpha, &Malpha, rcMax);
                         [c, OmegaMap, Balpha, Malpha, rcMax]=FindC(lower, upper, BarOmega, method, p, k, li, di, const1, fixcl, tol, lim);
                         
                         % If c =0 max number of iterations has been reached
-                        % inside findc therefore another simulation is
+                        % inside findC therefore another simulation is
                         % requested
                         if c==0 % || abs(Malphain-Malpha)>1*tolmap
                             if Erho1<10 &&  prnt >=1
@@ -1879,7 +1869,7 @@ out = Q;
         %
         % lower : scalar - lower bound of the interval
         % upper : scalar - upper bound of the interval
-        % Omega : scalar, associated with maximum or average overlapping requested
+        % Omega : scalar, associated with maximum or average overlap which is requested
         % method : scalar which specifies whether average (method=0) or maximum
         %          overlap is requested
         %     v  : dimensionality
