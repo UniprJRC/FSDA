@@ -253,7 +253,7 @@ else
 end
 
 Q5 = MixSim(4, 2, 'BarOmega' , 0.01, 'R_seed', R_seed);
-[A5 , id5] = simdataset(500, Q5.Pi, Q5.Mu, Q5.S, 'nout',10,'R_seed', R_seed);
+[A5 , id5] = simdataset(500, Q5.Pi, Q5.Mu, Q5.S, 'noiseunits',10,'R_seed', R_seed);
 gscatter(A5(:,1), A5(:,2), id5);
 
 %% Example 3 of Section 3.3 plot (b),  500 observations in 2 dimensions with prespecififed average overlap + 10 outliers
@@ -268,7 +268,7 @@ else
 end
 
 Q6 = MixSim(4, 2, 'BarOmega' , 0.01, 'R_seed', R_seed);
-[A6 , id6] = simdataset(500, Q6.Pi, Q6.Mu, Q6.S, 'nout',10,'R_seed', R_seed);
+[A6 , id6] = simdataset(500, Q6.Pi, Q6.Mu, Q6.S, 'noiseunits',10,'R_seed', R_seed);
 gscatter(A6(:,1), A6(:,2), id6);
 
 %% Example 4 of Section 3.3 plot (c),  300 observations in 1 dimension with prespecififed max overlap + 1 noise variable
@@ -283,7 +283,7 @@ else
 end
 
 Q7 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
-[A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'R_seed', R_seed);
+[A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'noisevars',1,'R_seed', R_seed);
 gscatter(A7(:,1), A7(:,2), id7);
 
 %% Example 4 of Section 3.3 plot (c) bis "MCM2012 JSS"
@@ -300,7 +300,14 @@ end
 
 Q7 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
 
-[A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'nnoise',1,'nout',20,'alpha',0.1,'int',[10 50],'lambda',[0.5 0.8],'R_seed', R_seed,'maxiter',100);
+noiseunits=struct;
+noiseunits.number=20;
+noiseunits.alpha=0.1;
+noiseunits.maxiter=100;
+noisevars=struct;
+noisevars.number=1;
+noisevars.interval=[10; 50];
+[A7 , id7] = simdataset(300, Q7.Pi, Q7.Mu, Q7.S, 'noisevars',noisevars,'noiseunits',noiseunits,'lambda',[0.5 0.8],'R_seed', R_seed);
 gscatter(A7(:,1), A7(:,2), id7);
 % To run the code above in R please use the following sintax
 % set.seed(1235, kind='Mersenne-Twister' , normal.kind = 'Inversion')
@@ -322,7 +329,7 @@ else
 end
 
 Q8 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
-[A8 , id8] = simdataset(300, Q8.Pi, Q8.Mu, Q8.S, 'nnoise',1,'R_seed', R_seed);
+[A8 , id8] = simdataset(300, Q8.Pi, Q8.Mu, Q8.S, 'noisevars',1,'R_seed', R_seed);
 gscatter(A8(:,1), A8(:,2), id8);
 
 
