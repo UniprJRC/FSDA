@@ -118,7 +118,7 @@ function [out]  = MixSim(k,v,varargin)
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
 %               arguments is of no importance.
-%       Remark: If 'BarOmega', 'MaxOmega' and 'StdOmega' are not specified, 
+%       Remark: If 'BarOmega', 'MaxOmega' and 'StdOmega' are not specified,
 %               the function generates a mixture solely based on
 %               'MaxOmega'=0.15. If both BarOmega, StdOmega and MaxOmega are
 %               empty values as follows
@@ -308,7 +308,7 @@ if (v < 1)
 end
 
 if k<=1
-        error('FSDA:MixSim:Wrongk','Wrong number of mixture components k')
+    error('FSDA:MixSim:Wrongk','Wrong number of mixture components k')
 end
 
 Rseeddef = 0;
@@ -478,7 +478,7 @@ end
 
 % Get in vector indabovediag the linear indices of the elements above
 % diagonal in a matrix of size k-by-k. This will be necessary to compute the
-% starndard deviation of overlapping
+% standard deviation of overlap
 indabovediag=triu2vec(k,1);
 
 if method == 0 || method == 1 || method == 1.5
@@ -523,8 +523,8 @@ out = Q;
         %
         % Omega     : scalar containing requested overlap value
         % method    : scalar which specifies whether average or maximum
-        %             overlap is requested. 
-        %             If method == 0 average overlap is requested 
+        %             overlap is requested.
+        %             If method == 0 average overlap is requested
         %             If method == 1 max overlap is requested
         %             If method == 1.5 std of overlap is requested
         % v         : scalar, dimensionality (number of variables)
@@ -1325,7 +1325,7 @@ out = Q;
             
             [OmegaMap, Balphaini, Malphaini, rcMaxini]=GetOmegaMap(c, p, k, liini, diini, const1ini, fixclini, tolncx2, lim, asympt);
             
-            % Malpha is the maximum level of overlapping which can be
+            % Malphaini is the maximum level of overlapping which can be
             % reached with asympt=1
             
             
@@ -1347,14 +1347,12 @@ out = Q;
                 disp(['In simulation ' num2str(isamp)])
                 disp(['MaxOmega(achievable)=' num2str(Malphaini) ' and'])
                 disp(['Maximum achievable sigma is=' num2str(sigmamax)]);
+                disp(['Requested sigma is=' num2str(StdOmega)])
                 Balpha=Balphaini;
                 Malpha=Malphaini;
                 
             else
                 
-                % Now we loop for different values of MaxOmega in order to
-                % find the one which guarantees the required Std of
-                % overlap
                 if nargin>13 && ~isempty(restrfactor)
                     S05ini=S05;
                     Sinvini=Sinv;
@@ -1366,9 +1364,13 @@ out = Q;
                 step=0.03;
                 step05=0;
                 
+                % Now we loop for different values of MaxOmegaloop in order to
+                % find the one which guarantees the required Std of
+                % overlap
+                
                 MaxOmegaloop=MaxOmegaloopini;
                 iter=0;
-                while abs(Erho1-1)>eps  
+                while abs(Erho1-1)>eps
                     if step<1e-15
                         break
                     end
@@ -1391,9 +1393,6 @@ out = Q;
                         Sinv=Sinvini;
                         detS=detSini;
                     end
-                    
-                    % Malpha=Malphaini;     % ?????????? REMOVED
-                    % Balpha=Balphaini;     % ??????????? REMOVED
                     
                     % At each iteration rcMax is always initialized with
                     % rcMaxini, however, inside the iteration it may change
@@ -1448,13 +1447,18 @@ out = Q;
                         % which showed the highest overlap is greater
                         % than BarOmega (average requested overlap).
                         diff = Balpha - BarOmega;
-                        % If diff<tolmap the desired average overlap characteristic is
+                        % If diff<-tolmap the desired average overlap characteristic is
                         % possibly unattainable using the candidate \mu
                         % \Sigma and \pi and a new candidate is needed
                         if (diff < -tolmap) % BarOmega is not reachable
                             if Erho1<1 && prnt>=1
-                                disp(['Warning: sigma is too small in simulation '  num2str(isamp)]);
+                                disp(['Sigma is likely to be too small in simulation '  num2str(isamp)]);
+                                disp(['Candidate value for MaxOmega inside the loop=' num2str(MaxOmegaloop)])
                             end
+                            % With the following break we get out of the
+                            % loop (while fail ~=0), and setting fail =1 we
+                            % skip the recomputation of parameters in the
+                            % if just below this while loop
                             fail = 1;
                             break
                         end
@@ -1515,7 +1519,12 @@ out = Q;
                         
                     end
                     
+                    
                     % Compute standard deviation of overlap
+                    % If fail was 0 the OmegaMap which is used is the one 
+                    % which has been which uses a value of c associted to
+                    % requested BarOmega, else is the OmegaMap found using
+                    % c associated with MaxOmegaloop
                     cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
                     overlapv=cand(:);
                     %                     overlapv=overlapv(overlapv>0);
@@ -1548,12 +1557,16 @@ out = Q;
                     end
                     
                     if Erho1>1
+                        % If requested StdOmega is greater than that
+                        % obtained using MaxOmegaloop then it is necessary
+                        % to increase MaxOmegaloop
                         MaxOmegaloop=MaxOmegaloop+step;
                     else
                         
                         if MaxOmegaloop-step<=BarOmega && iter >=5
                             if prnt >=1
                                 disp(['Warning: sigma is too small in simulation '  num2str(isamp)]);
+                                disp('Another random draw is tried');
                             end
                             fail=1;
                             break
@@ -1572,8 +1585,8 @@ out = Q;
             end
         end
         if isamp == resN && resN>1
-                warning('FSDA:MixSim:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
-                warning('FSDA:MixSim:NsimulTooSmall','Increase the number of simulations allowed (option resN) or change the value of overlap');
+            warning('FSDA:MixSim:OverlapNotReached',['The desired overlap has not been reached in ' num2str(resN) ' simulations']);
+            warning('FSDA:MixSim:NsimulTooSmall','Increase the number of simulations allowed (option resN) or change the value of overlap');
             
             fail = 1;
             
@@ -1968,12 +1981,13 @@ out = Q;
     function  [c, OmegaMap2, BarOmega2, MaxOmega2, StdOmega2, rcMax]=FindCStd(lower, upper, Omega, v, k, li, di, const1, fix, tol, lim)
         %find multiplier c to be applied to the cov matrices in the
         %interval [lower upper] in order to reach the required std of
+        %overlap
         %
         %  Required input arguments:
         %
         % lower : scalar - lower bound of the interval
         % upper : scalar - upper bound of the interval
-        % Omega : scalar, associated with maximum or average overlapping requested
+        % Omega : scalar, associated with maximum or average overlap requested
         %     v  : dimensionality
         %     k  : number of components
         % li, di, const1 : parameters needed for computing overlap,
