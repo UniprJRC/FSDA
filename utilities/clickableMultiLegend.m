@@ -54,6 +54,9 @@ for i = 1:length(plothan)
         'UserData', true);
 end
 
+
+% The callback function that shows/hides legends
+
 function togglevisibility(hObject, obj)
 if verLessThan('matlab','8.4.0')
     histobj='patch';
@@ -82,12 +85,18 @@ if get(hObject, 'UserData') % It is on, turn it off
         set(h, 'FaceColor','w', 'EdgeColor','k');
     end
     
-%     h_plo_labeladd = findobj('-regexp','Tag','plo_labeladd');
-%     if ~isempty(h_plo_labeladd)
-%         set(h_plo_labeladd,'HitTest','off','Visible','off','handlevisibility','off');
-%     end
+    % this is to hide the labels possibly associated to a group of units
+    h_plo_labeladd = findobj('-regexp','Tag','plo_labeladd');
+    if ~isempty(h_plo_labeladd)
+        color_labeladd = get(h_plo_labeladd, 'Color');
+        color_labeladd_1 = color_labeladd{1,:};
+        if color_labeladd_1 == get(obj, 'Color')
+            set(h_plo_labeladd,'HitTest','off','Visible','off','handlevisibility','on');
+        end
+    end
     
 else
+    
     set(hObject, 'Color', get(hObject, 'Color')*1.5 - 1, 'UserData', true);
     set(obj, 'HitTest','on','visible','on','handlevisibility','on');
     
@@ -107,9 +116,14 @@ else
         set(h, 'FaceColor',cori, 'EdgeColor','k');
     end
     
-%     h_plo_labeladd = findobj('-regexp','Tag','plo_labeladd');
-%     if ~isempty(h_plo_labeladd)
-%         set(h_plo_labeladd,'HitTest','on','Visible','on','handlevisibility','on');
-%     end
-
+    % this is to show the labels possibly associated to a group of units
+    h_plo_labeladd = findobj('-regexp','Tag','plo_labeladd');
+    if ~isempty(h_plo_labeladd)
+        color_labeladd = get(h_plo_labeladd, 'Color');
+        color_labeladd_1 = color_labeladd{1,:};
+        if color_labeladd_1 == get(obj, 'Color')
+            set(h_plo_labeladd,'HitTest','on','Visible','on','handlevisibility','on');
+        end
+    end
+    
 end
