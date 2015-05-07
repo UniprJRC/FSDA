@@ -304,7 +304,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add 5 noise variables 
+    %% Add 5 noise variables
     n=300;
     noisevars=struct;
     noisevars.number=[2 3];
@@ -316,7 +316,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add 3 noise variables 
+    %% Add 3 noise variables
     n=300;
     noisevars=struct;
     noisevars.number=[1 2];
@@ -328,20 +328,33 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add 3 noise variables and use a personalized interval
+    %% Add 3 noise variables and use 'minmax' interval
     n=300;
     noisevars=struct;
     noisevars.number=[1 2];
     noisevars.distribution={'Chisquare3','T20'};
-    noisevars.int='minmax';
+    noisevars.interval='minmax';
+    noiseunits='';
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups in 2 dims with 3 noise variables with ''minimax'' interval','Interpreter','Latex')
+%}
+
+%{
+    %% Add 3 noise variables and use a personalized interval for each variable
+    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={'Chisquare3','T20'};
     noiseunits='';
     % In this example we supply min and max for each noise variable
     v1=sum(noisevars.number);
-    noisevars.int=[3*ones(1,v1); 10*ones(1,v1)];
+    noisevars.interval=[3*ones(1,v1); 10*ones(1,v1)];
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
     title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')
 %}
+
 
 %% Beginning of code
 if (n < 1)
@@ -359,7 +372,7 @@ Rseeddef        = 0;
 
 
 options=struct('noisevars',noisevarsdef,'noiseunits',noiseunitsdef,...
-        'lambda',lambdadef,'R_seed', Rseeddef);
+    'lambda',lambdadef,'R_seed', Rseeddef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -622,7 +635,7 @@ if isstruct(noisevars) || ~isempty(noisevars)
             U = max(max(X));
             L = L* ones(1,nvars);
             U = U* ones(1,nvars);
-       else
+        else
             L = interval(1,:);
             U = interval(2,:);
         end
@@ -781,7 +794,7 @@ end
             end
         end
         
-        % If iter = maxiter than it was not possible  to generate nout
+        % If iter = maxiter then it was not possible  to generate nout
         % outliers in maxiter simulations.
         if iter== maxiter
             disp(['Warning: it was not possible to generate ' num2str(nout) ' outliers'])
@@ -790,11 +803,8 @@ end
             disp(['Number of values which was possible to generate is equal to ' num2str(i)])
             disp('Please modify the type of outliers using option ''typeout'' ')
             disp('or increase input option ''alpha''')
-            if isempty(interval)
-                disp(['The values of int and alpha now are [0 1] and ' num2str(alpha)]);
-            else
-                disp(['The values of int and alpha now are ' num2str(interval) ' and ' num2str(alpha)]);
-            end
+            disp(['The value of alpha now is ' num2str(alpha)]);
+            disp(['Outliers have been generated according to ' typeout])
             % If max number of iteration has been reached fail is 1
             fail=1;
             Xout=Xout(1:i,:);
