@@ -28,11 +28,18 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 % distribution, the interval and the number). Finally, the user can apply
 % an inverse Box-Cox transformation providing a vector of coefficients
 % 'lambda'. The value 1 implies that no transformation is needed for the
-% corresponding coordinate.
+% corresponding coordinate. It is also possible to add outliers to an
+% existing dataset by simply suppling as first argument the matrix of
+% existing data
 %
 %  Required input arguments:
 %
-%         n   : scalar, sample size  of the dataset
+%         n   : scalar or matrix of size n-by-v. If n is a scalar it
+%               is interpreted as the sample size of the dataset which must
+%               be simulated. On the other hand, if n is a n-by-v it is
+%               interpreted as a matrix of size n-by-v which has to be
+%               contaminated with optional input arguments 'noiseunits' and
+%               'noisevars'
 %        Pi   : vector of length(k) defining mixing proportions. \sum_{j=1}^k Pi=1
 %        Mu   : k-by-v matrix containing components' mean vectors
 %         S   : v-by-v-by-k arrary containing components' covariance matrices
@@ -355,15 +362,37 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
     title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')
 %}
 
+%{
+    %% Add noise to an existing dataset
+    %  Add outliers generated from uniform distribution to the IRIS dataset
+    load fisheriris;
+    Y=meas;
+    Mu=grpstats(Y,species);
+
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
+
+    pigen=ones(3,1)/3;
+    % Add 100 outliers and specify a very small value of alpha
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=100;
+    noiseunits.alpha=0.000001;
+    % In this case the first argument which is supplied to simdataset is
+    % the original matrix X
+    [Ywithnoise,id]=simdataset(Y, pigen, Mu, S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(Ywithnoise,id,[],'box');
+    title('4 groups with outliers from uniform')
+%}
+
 
 %% Beginning of code
-if (n < 1)
-    error('FSDA:simdataset:Wrongn','Wrong sample size n...')
+if nargin<4
+    error('FSDA:simdataset:missingInputs','A required input argument is missing.')
 end
 
-if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
-    error('FSDA:simdataset:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
-end
 
 noisevarsdef    = '';
 noiseunitsdef   = '';
@@ -405,70 +434,98 @@ noisevars  = options.noisevars;
 noiseunits = options.noiseunits;
 lambda     = options.lambda;
 
+if isscalar(n)
+   [k,v]=size(Mu);
 
-
-
-[k,v]=size(Mu);
-
-if (n >= k)
-    
-    if R_seed
-        %mrr = rmultinom(1, n - K, Pi)
-        nmk = n-k;
-        putRdata('dd',nmk);
-        putRdata('Pi',Pi);
-        rn1m = 'rmultinom(1,dd,Pi)';
-        mrr = evalR(rn1m);
-        mrr = double(mrr');
-        % Another solution, but more complicated
-        % cPi = num2str(Pi');
-        % cPi = regexprep(cPi, '[ ]{2,}', ',');
-        % rn1m = ['rmultinom(1,' num2str(n - k) ', c(' cPi '))'];
-        % mrr = evalR(rn1m);
-        % mrr = double(mrr');
-    else
-        mrr = mnrnd( n-k, Pi);
+    if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
+        error('FSDA:simdataset:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
     end
-    % Nk contains the sizes of the clusters
-    Nk = ones(1,k)+mrr;
-else
-    error('FSDA:simdataset:Wrongn','Sample size (n) cannot be less than the number of clusters (k)')
-end
 
-X=zeros(n,v);
-id=zeros(n,1);
-for j=1:k
-    a=sum(Nk(1:j-1))+1;
-    b=sum(Nk(1:j));
-    id(a:b)=j*ones(Nk(j),1);
+    if (n < 1)
+        error('FSDA:simdataset:Wrongn','Wrong sample size n...')
+    end
     
-    if R_seed
-        % mvrnorm(n = Nk[j], mu = Mu[j, ], Sigma = S[, , j])
-        % mvrnorm(n = Nk[k], mu = Mu[k, ], Sigma = S[,, k])
-        Muj = Mu(j,:);
-        Sj  = S(:,:,j);
-        Nkj = Nk(j);
-        Xab = [];
-        putRdata('Muj',Muj);
-        putRdata('Sj',Sj);
-        putRdata('Nkj',Nkj);
-        putRdata('Xab',Xab);
-        % Make sure that function mvrnorm is present
-        exists=evalR('exists("mvrnorm",mode="function")');
-        if ~exists
-            % If exists is not true try to install library MASS which
-            % includes function mvrnorm
-            evalR('library(MASS)')
+    if (n >= k)
+        
+        if R_seed
+            %mrr = rmultinom(1, n - K, Pi)
+            nmk = n-k;
+            putRdata('dd',nmk);
+            putRdata('Pi',Pi);
+            rn1m = 'rmultinom(1,dd,Pi)';
+            mrr = evalR(rn1m);
+            mrr = double(mrr');
+            % Another solution, but more complicated
+            % cPi = num2str(Pi');
+            % cPi = regexprep(cPi, '[ ]{2,}', ',');
+            % rn1m = ['rmultinom(1,' num2str(n - k) ', c(' cPi '))'];
+            % mrr = evalR(rn1m);
+            % mrr = double(mrr');
+        else
+            mrr = mnrnd( n-k, Pi);
         end
-        mvrnorms = 'Xab <- mvrnorm(n = Nkj, mu = Muj, Sigma = Sj)';
-        evalR(mvrnorms);
-        Xab = getRdata('Xab');
-        if isempty(Xab)
-            error('FSDA:simdataset:MissingRlibrary','Could not load library(MASS) in R, please install it')
-        end
-        X(a:b,:) = Xab;
+        % Nk contains the sizes of the clusters
+        Nk = ones(1,k)+mrr;
     else
-        X(a:b,:) = mvnrnd(Mu(j,:),S(:,:,j),Nk(j));
+        error('FSDA:simdataset:Wrongn','Sample size (n) cannot be less than the number of clusters (k)')
+    end
+    
+    X=zeros(n,v);
+    id=zeros(n,1);
+    for j=1:k
+        a=sum(Nk(1:j-1))+1;
+        b=sum(Nk(1:j));
+        id(a:b)=j*ones(Nk(j),1);
+        
+        if R_seed
+            % mvrnorm(n = Nk[j], mu = Mu[j, ], Sigma = S[, , j])
+            % mvrnorm(n = Nk[k], mu = Mu[k, ], Sigma = S[,, k])
+            Muj = Mu(j,:);
+            Sj  = S(:,:,j);
+            Nkj = Nk(j);
+            Xab = [];
+            putRdata('Muj',Muj);
+            putRdata('Sj',Sj);
+            putRdata('Nkj',Nkj);
+            putRdata('Xab',Xab);
+            % Make sure that function mvrnorm is present
+            exists=evalR('exists("mvrnorm",mode="function")');
+            if ~exists
+                % If exists is not true try to install library MASS which
+                % includes function mvrnorm
+                evalR('library(MASS)')
+            end
+            mvrnorms = 'Xab <- mvrnorm(n = Nkj, mu = Muj, Sigma = Sj)';
+            evalR(mvrnorms);
+            Xab = getRdata('Xab');
+            if isempty(Xab)
+                error('FSDA:simdataset:MissingRlibrary','Could not load library(MASS) in R, please install it')
+            end
+            X(a:b,:) = Xab;
+        else
+            X(a:b,:) = mvnrnd(Mu(j,:),S(:,:,j),Nk(j));
+        end
+    end
+else
+    % If the first argument is a matrix and not a scalar it is interpreted
+    % as a matrix of existing data.
+    X=n;
+    [n,v]=size(X);
+    [k,vcheck]=size(Mu);
+    
+    if v~=vcheck
+        disp(['Number of columns of matrix X (' num2str(v) ') is differrent'])
+        disp(['from number of columns of matrix of means (' num2str(vcheck) ')']) 
+        error('FSDA:simdataset:Wrongv','Wrong dimension supplied')
+    else
+    end
+    % Construct vector id
+    Nk=Pi*n;
+    id=zeros(n,1);
+    for j=1:k
+        a=sum(Nk(1:j-1))+1;
+        b=sum(Nk(1:j));
+        id(a:b)=j*ones(Nk(j),1);
     end
 end
 
