@@ -170,7 +170,7 @@ function [out]=FSR(y,X,varargin)
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
 %               of the fwd search
-% out.Un     =  (n-init) x 11 Matrix which contains the unit(s) included
+% out.Un     =  (n-init) x 11 matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new

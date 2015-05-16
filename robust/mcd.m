@@ -78,7 +78,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %
 %  Output:
 %
-%  The output consists of two structures RAW and REW. RAW refers ti raw
+%  The output consists of two structures RAW and REW. RAW refers to raw
 %  MCD, on the other hand, REW refers to reweighted MCD
 %
 %         RAW contains the following fields:
