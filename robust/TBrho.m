@@ -22,7 +22,7 @@ function rhoTB = TBrho(u,c)
 % TBrho(u)=
 % (c^2/6)*{ 1-[1-(u/c)^2]^3 }   if |u/c|<=1 
 % (c^2/6)                       if |u/c|>1
-% See also equation (2.37) p. 29 of Maronna et al. (2006)
+% See equation (2.37) p. 29 of Maronna et al. (2006)
 % Remark: equation (2.37) is written in standardized terms in such a way
 % that \rho(c)=1, so it is the previous expression divided by (c^2/6)
 %

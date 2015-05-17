@@ -38,9 +38,13 @@ function [outSC]=Score(y,X,varargin)
 %        outSC.Lik      =    value of the likelihood if input value Lik =1
 %
 % See also
+% 
+% FSRFAN
 %
-% Reference:    Atkinson Riani (2000), equation (2.30) for the expression
-%               for score test statistic.
+% References
+%
+% Atkinson Riani (2000), equation (2.30) for the expression
+% for score test statistic.
 %
 % Copyright 2008-2015.
 % Written by FSDA team

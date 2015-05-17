@@ -402,7 +402,7 @@ for i=1:nREQargin
     % Remove from string descri leading and trailing white spaces
     descriinput=strtrim(descriinput);
     % what is before the first comma or the first full stop is the
-    % premable, the reset in the description
+    % preamble, the reset in the description
     posfirstcomma=regexp(descriinput,',','once');
     posfirstfullstop=regexp(descriinput,'\.','once');
     sep=min([posfirstcomma posfirstfullstop]);
@@ -456,6 +456,101 @@ end
 % 		'</div>\r']);
 
 
+%% OPTIONAL INPUT ARGUMETS PART
+
+insel=regexp(fstring,'Optional input arguments:');
+if isempty(insel)
+    disp('Please check HTML input file')
+    error('FSDA:missInps','HTML file does not contain ''Optional input arguments:'' string')
+end
+
+% substring to search start from Optional input arguments:
+fstringsel=fstring(insel(1):end);
+
+endpoint=regexp(fstringsel,'Output:');
+if isempty(endpoint)
+    disp('Please check HTML input file')
+    error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
+end
+fstringsel=fstringsel(1:endpoint-2);
+
+% Find any string which
+% begins with % sign then
+% contains a series of white space which can go from 0 to 20 then
+% contains any single word
+% a series of white spaces which can go from 0 to 10 then
+% character :
+[ini,fin]=regexp(fstringsel,'%\s{0,20}\w*\s{0,10}:');
+% listOptArgs = list which contains all optional arguments
+% The first column will contain the names (just one word)
+% The second column will contain the title of the option (the first
+% sentence which finishes with a full stop sign)
+% The third column will contain the type (the second sentence which
+% finishes with a comma or full stop sign)
+% The fourth column will contain the long description. What starts with the
+% third sentence
+
+listOptArgs=cell(length(ini),4);
+
+ij=1;
+for i=1:length(ini)
+    % fin(i)-1 because character ':' does not have to be extracted
+    opti=fstringsel(ini(i):fin(i)-1);
+    % Remove from string descri all '% signs
+    posPercentageSigns=regexp(opti,'%');
+    opti(posPercentageSigns)=[];
+    % Remove from string opti leading and trailing white spaces
+    opti=strtrim(opti);
+    % Check if optional argument is the string rEmArK (written in a case
+    % insensitive way)
+    
+    CheckIfRemark=regexp(opti,'remark','match','ignorecase');
+    if ~isempty(CheckIfRemark)
+        if i<length(ini)
+            descradd=fstringsel(ini(i):ini(i+1));
+        else
+            descradd=fstringsel(ini(i):end);
+        end
+        
+        % Remove from string descradd all '% signs
+        posPercentageSigns=regexp(descradd,'%');
+        descradd(posPercentageSigns)=[];
+        descradd=strtrim(descradd);
+        listOptArgs{ij-1,4}=[listOptArgs{ij-1,4} descradd];
+        % listOptArgs{i-1,2}=[listOptArgs{i-1,2}
+    else
+        % Store name in the first column of listOptArgs
+        listOptArgs{ij,1}=opti;
+        % Store short description in the 3nd col of listOptArgs
+        if i<length(ini)
+            descrtosplit=fstringsel(fin(i)+1:ini(i+1)-1);
+        else
+            descrtosplit=fstringsel(fin(i)+1:ini(i+1)-1);
+        end
+        
+        % Remove from string descrtosplit all '% signs
+        posPercentageSigns=regexp(descrtosplit,'%');
+        descrtosplit(posPercentageSigns)=[];
+        
+        [inifullstops]=regexp(descrtosplit,'\.');
+        descrtitle=strtrim(descrtosplit(1:inifullstops(1)-1));
+        listOptArgs{ij,2}=descrtitle;
+        
+        descrtype=strtrim(descrtosplit(inifullstops(1)+1:inifullstops(2)-1));
+        listOptArgs{ij,3}=descrtype;
+        
+        descrlong=strtrim(descrtosplit(inifullstops(2)+1:end));
+        listOptArgs{ij,4}=descrlong;
+        ij=ij+1;
+    end
+    
+    %     if strcmp(opti,'
+    %     listOptArgs{i}=opti;
+end
+listOptArgs=listOptArgs(1:ij-1,:);
+
+
+
 
 optargs=sprintf(['<div id="namevaluepairarguments" class="clearfix">\r'...
     '</div>\r' ...
@@ -472,41 +567,32 @@ optargs=sprintf(['<div id="namevaluepairarguments" class="clearfix">\r'...
     '</strong><code>''Distance'',''cosine'',''Replicates'',10,''Options'',statset(''UseParallel'',1)</code>\r'...
     'specifies xxxxxxxxxx</span></div>']);
 
+% datatype = type of data for that particular option
+datatype='char';
+examplecode=['''Display'',''final'''];
 
-optargsexp=sprintf(['<div class="expandableContent">\r'...
-    '<div id="inputarg_Display" class="clearfix">\r'...
-    '</div>\r'...
-    '<h3 id="input_argument_namevalue_display" class="expand">\r'...
-    '<span>\r'...
-    '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-    '<span class="argument_name"><code>''Display''</code> &#8212;\r'...
-    'Level of output to display</span></a><span class="example_desc"><code>''off''</code>\r'...
-    '(default) | <code>''final''</code> |	<code>''iter''</code></span></span></h3>\r'...
-    '<div class="collapse">\r'...
-    '	<p>Level of output to display in \r'...
-    '	the Command Window, specified as \r'...
-    '	the comma-separated pair consisting\r'...
-    '	of <code>''Display''</code> and a \r'...
-    '	string. Available options are:</p>\r'...
-    '	<ul type="disc">\r'...
-    '		<li>\r'...
-    '		<p><code>''xxx''</code> &#8212;\r'...
-    '		xxxx</p>\r'...
-    '		</li>\r'...
-    '		<li>\r'...
-    '		<p><code>''yyyy''</code> &#8212;\r'...
-    '		yyyyy</p>\r'...
-    '		</li>\r'...
-    '		<li>\r'...
-    '	</ul>\r'...
-    '	<p class="description_valueexample">\r'...
-    '	<strong>Example: </strong><code>\r'...
-    '	''Display'',''final''</code></p>\r'...
-    '	<p class="datatypelist"><strong>\r'...
-    '	Data Types: </strong><code>char</code></p>\r'...
-    '</div>\r'...
-    '</div>']);
-
+optargsexp='';
+for i=1:size(listOptArgs,1);
+    longdescription=listOptArgs{i,4};
+    nameoptarg=listOptArgs{i,1};
+    shortdesc=listOptArgs{i,3};
+    titloptarg=listOptArgs{i,2};
+    optargsexp=[optargsexp sprintf(['<div class="expandableContent">\r'...
+        '<div id="inputarg_Display" class="clearfix">\r'...
+        '</div>\r'...
+        '<h3 id="input_argument_namevalue_display" class="expand">\r'...
+        '<span>\r'...
+        '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+        '<span class="argument_name"><code>' nameoptarg  '</code> \r'...
+        '&#8212;' titloptarg '</span></a><span class="example_desc">' shortdesc  '</span></span></h3>\r'...
+        '<div class="collapse">\r'...
+        '	<p>' longdescription '</p>\r'...
+        '	<p class="description_valueexample">\r'...
+        '       <strong>Example: </strong><code>' examplecode '</code></p>\r'...
+        '	<p class="datatypelist"><strong>Data Types: </strong><code>' datatype '</code></p>\r'...
+        '</div>\r'...
+        '</div>'])];
+end
 % CLOSE OPT ARGS
 
 closeoptargs=sprintf(['</div>\r'...
@@ -671,36 +757,116 @@ Moreabout=sprintf(['<div class="moreabout ref_sect">\r'...
     '</div>']);
 
 %% REFERENCES
-References=sprintf(['<div class="ref_sect" itemprop="content">\r'...
+
+iniref=regexp(fstring,'References:');
+endref=regexp(fstring,'Copyright');
+% stringsel = block of test which contains the references
+fstringsel=fstring(iniref(1)+1:endref(1)-1);
+
+
+% Now we must try to infer how many references there are, that is where
+% each reference starts and ends
+% refsargs is a cell which contains in each row the references
+refsargs=cell(10,1);
+ij=1;
+findnewline=regexp(fstringsel,'\n');
+begref=0;
+endref=0;
+for i=1:length(findnewline)-1
+    % Find candidate for beginning of a reference
+    candiniref=fstringsel(findnewline(i):findnewline(i+1));
+    findref=regexp(candiniref,'\(....\)','once');
+    if ~isempty(findref) && begref==0
+        begreftoadd=findnewline(i);
+        begref=1;
+    elseif ~isempty(findref) && begref==1
+        endreftoadd=findnewline(i)-1;
+        endref=1;
+    else
+    end
+    
+    if (begref==1 && endref ==1) || (begref==1 && endref==0 && i==length(findnewline)-1)
+        if i<length(findnewline)-1
+            ref2add=fstringsel(begreftoadd:endreftoadd);
+        else
+            ref2add=fstringsel(begreftoadd:findnewline(i));
+        end
+        
+        % Remove % characters and white spaces
+        posPercentageSigns=regexp(ref2add,'%');
+        ref2add(posPercentageSigns)=[];
+        ref2add=strtrim(ref2add);
+        refsargs{ij}=ref2add;
+        ij=ij+1;
+        begref=0;
+        endref=0;
+    end
+    
+end
+
+% Now check if there is a final open reference
+refsargs=refsargs(1:ij-1);
+
+Referenceshtml='';
+iniReferences=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<div class="bibliography">\r'...
-    '<h2 id="references">References</h2 \r'...
-    '<div> \r'...
-    '	<p>XXXXXX</p>\r'...
-    '</div>\r'...
-    '<div> \r'...
-    '	<p>YYYYYY</p>\r'...
-    '</div>\r'...
-    '</div>\r'...
+    '<h2 id="references">References</h2 \r']);
+
+for i=1:length(refsargs)
+    Referenceshtml=sprintf([Referenceshtml  '<div><p>' refsargs{i} '</p></div>\r']);
+end
+Referencesclose=sprintf(['</div>\r'...
     '</div>']);
+References=[iniReferences Referenceshtml Referencesclose];
 
 %% SEE ALSO
 
-Seealso=sprintf(['<div class="ref_sect">\r'...
+iniSeealso=sprintf(['<div class="ref_sect">\r'...
     '<h2>See Also</h2>\r'...
-    '<p>\r'...
-    '<span itemprop="seealso">\r'...
-    '<a href="clusterdata.html" itemprop="url">\r'...
-    '<span itemprop="name"><code>clusterdata</code></span></a></span>\r'...
-    '|\r'...
-    '<span itemprop="seealso">\r'...
-    '<a href="gmdistribution-class.html" itemprop="url">\r'...
-    '<span itemprop="name"><code>gmdistribution</code></span></a></span> \r'...
-    '|\r'...
-    '<span itemprop="seealso">\r'...
-    '<a href="linkage.html" itemprop="url">\r'...
-    '<span itemprop="name"><code>linkage</code></span></a></span> \r'...
-    '</div>']);
+    '<p>\r']);
 
+iniref=regexp(fstring,'See also','once');
+endref=regexp(fstring,'References','once');
+seealsostr=fstring(iniref+8:endref-1);
+
+% Remove : character and % character
+posColonSign=regexp(seealsostr,':');
+seealsostr(posColonSign)=[];
+posPercentageSigns=regexp(seealsostr,'%');
+seealsostr(posPercentageSigns)=[];
+seealsostr=strtrim(seealsostr);
+
+% count number of see also
+poscommas=regexp(seealsostr,',');
+nseealso=length(poscommas)+1;
+
+Seealsohtml='';
+for i=1:nseealso
+    if nseealso==1;
+        Seealsoitem= seealsostr;
+    else
+        if i==nseealso
+            Seealsoitem=seealsostr(poscommas(i-1)+1:end);
+        elseif i==1
+            Seealsoitem=seealsostr(1:poscommas(i)-1);
+        else
+            Seealsoitem=seealsostr(poscommas(i-1)+1:poscommas(i)-1);
+        end
+    end
+    
+    Seealsohtml=[Seealsohtml sprintf(['<span itemprop="seealso">\r'...
+        '<a href="' Seealsoitem '.html" itemprop="url">\r'...
+        '<span itemprop="name"><code>' Seealsoitem '</code></span></a></span>\r'])];
+    
+   if i < nseealso
+      Seealsohtml=[Seealsohtml ' | '];
+   end
+end
+
+closeSeealso=sprintf('</div>\r');
+
+Seealso=[iniSeealso Seealsohtml closeSeealso];
+% Seealso='';
 
 %% CLOSE TAGS SECTION
 
