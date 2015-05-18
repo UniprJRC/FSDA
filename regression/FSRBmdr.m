@@ -46,42 +46,60 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 % Optional input arguments:
 %
-%      bsb :    m x 1 vector containing the units forming initial subset. The
+%      bsb :   units forming initial subset. Vector.
+%                 m x 1 vector containing the units forming initial subset. The
 %               default value of bsb is '' (empty value), that is we
 %               initialize the search just using prior information.
-%  init :       scalar, specifies the point where to start monitoring
+%                 Example - 'bsb',[3 6 9] 
+%                 Data Types - double
+%  init :       Search initialization. Scalar.
+%               It specifies the point where to start monitoring
 %               required diagnostics. If it is not specified it is set
 %               equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               The minimum value of init is 0. In this case in the first
 %               step we just use prior information
-%  intercept :  If 1, a model with constant term will be fitted (default),
+%               Example - 'init',100 starts monitoring from step m=100 
+%               Data Types - double
+%  intercept :   Indicator for constant term. Scalar.
+%               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-%  plots :      If equal to one a plot of Bayesian minimum deletion residual
+%               Example - 'intercept',1 
+%               Data Types - double
+%  plots :    Plot on the screen. Scalar. 
+%               If equal to one a plot of Bayesian minimum deletion residual
 %               appears  on the screen with 1%, 50% and 99% confidence
 %               bands else (default) no plot is shown.
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is necessary to use
 %               function mdrplot
-%  nocheck:      Scalar. If nocheck is equal to 1 no check is performed on
+%                 Example - 'plots',1 
+%                 Data Types - double
+%  nocheck:   Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
 %               the intercept is not added. As default nocheck=0.
-%  msg  :        scalar which controls whether to display or not messages
+%               Example - 'nocheck',1 
+%               Data Types - double
+%  msg  :    Level of output to display. Scalar.
+%               It controls whether to display or not messages
 %               about great interchange on the screen
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
-%   bsbsteps :  vector which specifies for which steps of the fwd search it
-%               is necessary to save the units forming subset. If bsbsteps
-%               is 0 we store the units forming subset in all steps. The
+%               Example - 'msg',1 
+%               Data Types - double
+%   bsbsteps :  steps of the fwd search where to save the units forming subset. Vector.
+%               If bsbsteps is 0 we store the units forming subset in all steps. The
 %               default is store the units forming subset in all steps if
 %               n<=5000, else to store the units forming subset at steps
 %               init and steps which are multiple of 100. For example, if
 %               n=753 and init=6, units forming subset are stored for
 %               m=init, 100, 200, 300, 400, 500 and 600.
-%
+%               Example - 'bsbsteps',[10 20 30]
+%               Data Types - double
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by

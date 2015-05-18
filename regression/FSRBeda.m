@@ -25,9 +25,13 @@ function [out] = FSRBeda(y, X, varargin)
 %
 % Optional input arguments:
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%    bayes    : a structure which specifies prior information
+%   intercept :  Indicator for constant term. Scalar.
+%                     If 1, a model with constant term will be fitted (default),
+%                     if 0, no constant term will be included.
+%               Example - 'intercept',1 
+%               Data Types - double
+%    bayes    : It specifies prior information. Structure.
+%               A structure which specifies prior information
 %               Strucure bayes contains the following fields
 %               beta0:  p-times-1 vector containing prior mean of \beta
 %               R    :  p-times-p positive definite matrix which can be
@@ -53,26 +57,37 @@ function [out] = FSRBeda(y, X, varargin)
 %                                         % prior variance, that is a very
 %                                         % small value for tau0
 %                      n0=1;              % just one prior observation
-%       bsb   : vector containing the list of units forming the initial
-%               subset, if bsb=0 then the procedure starts with p
+%                  Example - bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
+%                  Data Types - double
+%       bsb   : list of units forming the initial subset. Vector.
+%                if bsb=0 then the procedure starts with p
 %               units randomly chosen else if bsb is not 0 the search will
 %               start with m0=length(bsb). The default value of bsb is ''
 %               that is in the first step just prior information is used.
-%        init : scalar, specifies the point where to start monitoring
+%               Example - bsb=[2 5 1];
+%               Data Types - double
+%        init : Search initialization. Scalar. 
+%               scalar, specifies the point where to start monitoring
 %               required diagnostics. if init is not specified it will be
 %               set equal to :
 %                 p+1, if the sample size is smaller than 40;
 %                 min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
+%                   Example - 'init',100 starts monitoring from step m=100 
+%                   Data Types - double
+%      nocheck: Check input arguments. Scalar.
+%               Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
 %               the intercept is not added. As default nocheck=0. The
 %               controls on h, alpha and nsamp still remain
-%  conflev:     vector which contains the confidence levels to be used to
-%               compute HPDI. This input option is used just if input
+%               Example - 'nocheck',1 
+%               Data Types - double
+%  conflev:   confidence levels to be used to compute HPDI. Vector.
+%               This input option is used just if input
 %               stats=1. The default value of conflev is [0.95 0.99] that
 %               is 95% and 99% HPDI confidence intervals are computed.
-%
+%               Example - 'conflev',[0.90 0.93] 
+%               Data Types - double
 % Remark:       The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input

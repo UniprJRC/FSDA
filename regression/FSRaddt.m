@@ -16,56 +16,102 @@ function [out]=FSRaddt(y,X,varargin)
 %
 % Optional input arguments:
 %
-%   intercept   : If 1, a model with constant term will be fitted
-%                 (default),
-%                 if 0, no constant term will be included.
-%           h   : The number of observations that have determined the least
-%                 trimmed squares estimator. h is an integer greater or
-%                 equal than [(n+size(X,2)+1)/2] but smaller then n
+%   intercept   :  Indicator for constant term. Scalar. 
+%                       If 1, a model with constant term will be fitted
+%                       (default), if 0, no constant term will be included.
+%                        Example - 'intercept',1 
+%                       Data Types - double
+%           h   :      The number of observations that have determined the
+%                       least trimmed squares estimator. Scalar.
+%                       h is an integer greater or
+%                       equal than [(n+size(X,2)+1)/2] but smaller then n
+%                       Example - 'h',round(n*0,75) 
+%                       Data Types - double
 %       nsamp   : Number of subsamplse which will be extracted to find the
-%                 robust estimator. If nsamp=0 all subsets will be
-%                 extracted. They will be (n choose p). Remark: if the
-%                 number of all possible subset is <1000 the default is to
-%                 extract all subsets otherwise just 1000.
-%       lms     : Scalar. If lms=1 (default) Least Median of Squares is
-%                 computed, else Least trimmed of Squares is computed. else
-%                 (default) no plot is produced
-%       init    : scalar which specifies the initial subset size to start
-%                 monitoring exceedances of minimum deletion residual, if
-%                 init is not specified it will be set equal to:
-%                   p+1, if the sample size is smaller than 40;
-%                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%       rew     : Scalar. If rew=1 the reweighted version of LTS(LMS)
-%                 and the output quantities refer to the reweighted version
-%                 else no reweighting is performed (default).
-%       plots   : Scalar. If plots=1 a plot with forward deletion
-%                 t-statistics is produced
-%        nameX  : cell array of strings of length p containing the labels of
-%                 the varibles of the regression dataset. If it is empty
-%                 (default) the sequence X1, ..., Xp will be created
-%                 automatically
-%       lwdenv  : Line width for envelopes based on student T (default is 2)
-%        quant  : Confidence quantiles for the envelopes of deletion t
-%                 stat. Default is [0.005 0.995] (i.e. a 99% pointwise
-%                 confidence interval)
-%       lwdt    : Line width for deletion T stat(default is 2)
-%       nocheck : Scalar. If nocheck is equal to 1 no check is performed on
-%                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
-%       titl    : a label for the title (default: '')
-%       labx    : a label for the x-axis (default: 'Subset size m')
-%       laby    : a label for the y-axis (default: 'Deletion t statistics')
-%       FontSize: Scalar which controls the font size of the labels of
-%                 the axes and of the labels inside the plot. Default
-%                 value is 12
-%    SizeAxesNum: Scalar which controls the size of the numbers of the
-%                 axes. Default value is 10
-%          ylimy: Vector with two elements controlling minimum and maximum
-%                 on the y axis. Default value is '' (automatic scale)
-%          xlimx: Vector with two elements controlling minimum and maximum
-%                 on the x axis. Default value is '' (automatic scale)
-%
+%                       robust estimator. Scalar.
+%                       If nsamp=0 all subsets will be
+%                       extracted. They will be (n choose p). Remark: if the
+%                       number of all possible subset is <1000 the default is to
+%                       extract all subsets otherwise just 1000.
+%                       Example - 'nsamp',1000 
+%                        Data Types - double
+%       lms     :    Criterion to use to find the initlal subset to
+%                       initialize the search. Scalar,  vector or structure.
+%                       If lms=1 (default) Least Median of Squares is
+%                       computed, else Least trimmed of Squares is computed. else
+%                       (default) no plot is produced
+%                       Example - 'lms',1 
+%                       Data Types - double
+%       init    :       Search initialization. Scalar. 
+%                       scalar which specifies the initial subset size to start
+%                       monitoring exceedances of minimum deletion residual, if
+%                       init is not specified it will be set equal to:
+%                       p+1, if the sample size is smaller than 40;
+%                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                       Example - 'init',100 starts monitoring from step m=100 
+%                       Data Types - double
+%       plots   :    Plot on the screen. Scalar.
+%                       If plots=1 a plot with forward deletion
+%                        t-statistics is produced
+%                        Example - 'plots',1 
+%                        Data Types - double
+%        nameX  : Add variable labels in plot. Cell array of strings.
+%                       cell array of strings of length p containing the labels of
+%                       the varibles of the regression dataset. If it is empty
+%                       (default) the sequence X1, ..., Xp will be created
+%                       automatically
+%                       Example - 'nameX',{'NameVar1','NameVar2'} 
+%                       Data Types - cell
+%       lwdenv  : Line width for envelopes. Scalar.
+%                       Line width for envelopes based on student T (default is 2)
+%                        Example - 'lwdenv',1 
+%                        Data Types - double
+%        quant  :  Confidence quantiles for the envelopes. Vector.
+%                       Confidence quantiles for the envelopes of deletion t
+%                        stat. Default is [0.005 0.995] (i.e. a 99% pointwise
+%                       confidence interval)
+%                        Example - 'quant',[0.025 0.975]
+%                        Data Types - double
+%       lwdt       : Line width for deletion T stat. Scalar.
+%                       (default is 2)
+%                        Example - 'lwdt',1 
+%                        Data Types - double
+%       nocheck : Check input arguments. Scalar.
+%                       If nocheck is equal to 1 no check is performed on
+%                       matrix y and matrix X. Notice that y and X are left
+%                       unchanged. In other words the additional column of ones
+%                       for the intercept is not added. As default nocheck=0.
+%                       Example - 'nocheck',1 
+%                       Data Types - double
+%       titl    :       a label for the title. Character.
+%                       (default: '')
+%                       Example - 'titl','Example' 
+%                       Data Types - char
+%       labx    :   a label for the x-axis. Character.
+%                       (default: 'Subset size m')
+%                       Example - 'labx','Subset' 
+%                       Data Types - char
+%       laby    :     a label for the y-axis. Character.
+%                       (default: 'Deletion t statistics')
+%                       Example - 'laby','statistics' 
+%                       Data Types - char
+%     FontSize:  the font size of the labels of
+%                       the axes and of the labels inside the plot. Scalar.
+%                       Default value is 12
+%                       Example - 'FontSize',11 
+%                       Data Types - double
+% SizeAxesNum: size of the numbers of the axes. Scalar.
+%                       Default value is 10
+%                       Example - 'SizeAxesNum',11 
+%                       Data Types - double
+%          ylimy:    minimum and maximum of the y axis. Vector.
+%                        Default value is '' (automatic scale)
+%                       Example - 'ylimy',[0 1] 
+%                       Data Types - double
+%          xlimx:   minimum and maximum of the x axis. Vector.
+%                       Default value is '' (automatic scale)
+%                       Example - 'xlimy',[0 1] 
+%                       Data Types - double
 % Output:
 %
 %  The output consists of a structure 'out' containing the following fields:
@@ -185,7 +231,7 @@ end
 options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',0,...
     'init',init,'nameX','','lwdenv',2,'quant',[0.005 0.995],'lwdt',2,'xlimx','','ylimy','',...
-    'titl','','labx','Subset size m','laby','Deletion t statistics','FontSize',12,'SizeAxesNum',10,'nocheck',0,'rew',0,'intercept',1);
+    'titl','','labx','Subset size m','laby','Deletion t statistics','FontSize',12,'SizeAxesNum',10,'nocheck',0,'intercept',1);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
