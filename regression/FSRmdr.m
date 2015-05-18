@@ -5,7 +5,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 % Required input arguments:
 %
-%  y:           A vector with n elements that contains the response variables.
+%    y:         A vector with n elements that contains the response variable.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
@@ -17,56 +17,80 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
-%  bsb :         list of units forming the initial subset, if bsb=0
+%  bsb     :    list of units forming the initial subset, if bsb=0
 %               (default) then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
 %               m0=length(bsb)
 %
 % Optional input arguments:
 %
-%  init :       scalar, specifies the point where to initialize the search
-%               and start monitoring required diagnostics. If it is not
+%  init :       Search initialization. Scalar. 
+%               It specifies the point where to initialize the search and
+%               start monitoring required diagnostics. If it is not
 %               specified it is set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%  intercept :  If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%  plots :      If equal to one a plot of minimum deletion residual
-%               appears  on the screen with 1%, 50% and 99% confidence
-%               bands else (default) no plot is shown.
+%               Example - 'init',100 starts monitoring from step m=100 
+%               Data Types - double
+%  intercept :  Indicator for constant term. Scalar. If 1, a model with
+%               constant term will be fitted (default), if 0, no constant
+%               term will be included.
+%               Example - 'intercept',1 
+%               Data Types - double
+%  plots :      Plot on the screen. Scalar. If equal to one a plot of
+%               minimum deletion residual appears  on the screen with 1%,
+%               50% and 99% confidence bands else (default) no plot is
+%               shown.
+%               Example - 'plots',1 
+%               Data Types - double
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrplot.
-%  nocheck:     Scalar. If nocheck is equal to 1 no check is performed on
+%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additioanl column of ones for
 %               the intercept is not added. As default nocheck=0. The
 %               controls on h, alpha and nsamp still remain
-%  msg  :       scalar which controls whether to display or not messages
-%               about great interchange on the screen
-%               If msg==1 (default) messages are displyed on the screen
+%               Example - 'nocheck',1 
+%               Data Types - double
+%  msg  :       Level of output to display. Scalar. It controls whether to
+%               display or not messages about great interchange on the
+%               screen If msg==1 (default)
+%               messages are displayed on the screen
 %               else no message is displayed on the screen
-%  constr :     r x 1 vector which contains the list of units which are
+%               Example - 'msg',1 
+%               Data Types - double
+%  constr :     Constrained search. Vector. r x 1 vector which contains the list of units which are
 %               forced to join the search in the last r steps. The default
 %               is constr=''.  No constraint is imposed
-% bsbmfullrank :scalar which specifies how to behave in case subset at step
-%               m (say bsbm) produces a non singular X. More precisely,
-%               this options controls what to do when rank(X(bsbm,:)) is
+%               Example - 'constr',[1:10] forces the first 10 units to join
+%               the subset in the last 10 steps
+%               Data Types - double
+% bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
+%               non singular X. Scalar. 
+%               This options controls what to do when rank(X(bsbm,:)) is
 %               smaller then number of explanatory variables. If
 %               bsbmfullrank = 1 (default is 1) these units (whose number
 %               is say mnofullrank) are constrained to enter the search in
 %               the final n-mnofullrank steps else the search continues
 %               using as estimate of beta at step m the estimate of beta
 %               found in the previous step.
-%   bsbsteps :  vector which specifies for which steps of the fwd search it
-%               is necessary to save the units forming subset. If bsbsteps
+%               Example - 'bsbmfullrank',1 
+%               Data Types - double
+%   bsbsteps :  Save the units forming subsets. Vector. It specifies for
+%               which steps of the fwd search it
+%               is necessary to save the units forming subsets. If bsbsteps
 %               is 0 we store the units forming subset in all steps. The
 %               default is store the units forming subset in all steps if
 %               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, if
-%               n=753 and init=6, units forming subset are stored for
+%               init and steps which are multiple of 100. For example, as
+%               default, if n=753 and init=6,
+%               units forming subset are stored for
 %               m=init, 100, 200, 300, 400, 500 and 600.
+%               Example - 'bsbsteps',[100 200] stores the unis forming
+%               subset in steps 100 and 200.
+%               Data Types - double
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
@@ -98,7 +122,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:          n x (n-init+1) or n-by-length(bsbsteps) (depending on input
+%  BB:          n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input
 %               option bsbsteps) which contains information about the units
 %               belonging to the subset at each step of the forward search.
 %               BB has the following structure
@@ -121,7 +145,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               column)and R2 (third column) in each step of the forward
 %               search.
 %
-% See also
+% See also: FSR, FSReda
 %
 % References:
 %
@@ -129,10 +153,10 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %   Springer Verlag, New York.
 %   Atkinson, A.C. and Riani, M. (2006). Distribution theory and
 %   simulations for tests of outliers in regression. Journal of
-%   Computational and Graphical Statistics, Vol. 15, pp. 460?476
+%   Computational and Graphical Statistics, Vol. 15, pp. 460-476
 %   Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward
 %   search for testing multiple outliers in regression, Advances in Data
-%   Analysis and Classification, Vol. 1, pp. 123?141.
+%   Analysis and Classification, Vol. 1, pp. 123-141.
 %
 % Copyright 2008-2015.
 % Written by FSDA team

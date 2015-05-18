@@ -17,21 +17,45 @@ function [out]=addt(y,X,w,varargin)
 %
 % Optional input arguments:
 %
-%   intercept : If 1, a column of one will be added to the left of matrix X (default),
-%               if 0, no constant term will be included.
-%   la:         scalar or '' which specifies for which Box Cox transformation parameter it
-%               is necessary to compute the t statistic for the additional
-%               variable. If la is an empty value (default) no transformation is used.
-%   plots:      scalar. If plots=1 the added variable plot is produced else
-%               (default) no plot is produced.
-%   units:      vector containing the list of units which has to be removed
-%               in the computation of the test.
-%   textlab:    if textlab='' default no text label is written on the plot
+%  intercept :  Indicator for constant term. Scalar. 
+%               If 1, a model with
+%               constant term will be fitted (default), if 0, no constant
+%               term will be included.
+%               Example - 'intercept',1 
+%               Data Types - double
+%   la:         Transformation parameter. Scalar or ''. 
+%               It specifies for which Box Cox
+%               transformation parameter it is necessary to compute the t
+%               statistic for the additional variable. If la is an empty
+%               value (default) no transformation is used.
+%               Example - 'la',0.5 tests square root transformation
+%               Data Types - double
+%   plots:      Plot on the screen. Scalar. 
+%               If plots=1 the added variable
+%               plot is produced else (default) no plot is produced.
+%               Example - 'plots',1 
+%               Data Types - double
+%   units:      Units to remove. Vector. 
+%               Vector containing the list of
+%               units which has to be removed in the computation of the
+%               test. The default is to use all units
+%               Example - 'units',[1,3] removes units 1 and 3 
+%               Data Types - double
+%   textlab:    Labels of units in the plot. Character. If textlab=''
+%               default no text label is written on the plot
 %               for units else text label of units are added on the plot
-%   Fontsize:   Scalar which controls the fontsize of the labels of the
-%               axes and eventual plot labels. Default value is 12
-%   SizeAxesNum: Scalar which controls the fontsize of the numbers of the
-%                axes. Default value is 10
+%               Example - 'textlab','1' 
+%               Data Types - char
+%   Fontsize:   Label font size inside plot. Scalar. It controls the
+%               fontsize of the labels of the axes and eventual plot
+%               labels. Default value is 12
+%               Example - 'Fontsize',14 
+%               Data Types - double
+%   SizeAxesNum: Font size of axes numbers. Scalar. It controls the
+%               fontsize of the numbers of the
+%               axes. Default value is 10
+%               Example - SizeAxesNum,12 
+%               Data Types - double
 %
 % Output:
 %
