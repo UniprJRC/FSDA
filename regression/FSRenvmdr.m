@@ -10,15 +10,23 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %
 %  Optional input arguments:
 %
-%   init:       scalar which specifies the initial subset size to monitor
+%   init:       Search initialization. Scalar.
+%               Scalar which specifies the initial subset size to monitor
 %               minimum deletion residual, if init is not specified it will
 %               be set equal to
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%  prob:         1 x k vector containing quantiles for which envelopes have
+%               Example - 'init',100 starts monitoring from step m=100 
+%               Data Types - double
+%  prob:    quantiles for which envelopes have
+%               to be computed. Vector.
+%               1 x k vector containing quantiles for which envelopes have
 %               to be computed. The default is to produce 1%, 50% and 99%
 %               envelopes.
-%  exact:        scalar, if it is equal to 1 (default) the calculation of the quantiles
+%               Example - 'prob',[0.01 0.99] 
+%               Data Types - double
+%  exact:    Method for the calculation of the quantiles. Scalar.
+%                If it is equal to 1 (default) the calculation of the quantiles
 %               of the T and F distribution is based on functions finv and
 %               tinv from the Matlab statistics toolbox, otherwise the
 %               calculations of the former quantiles is based on functions
@@ -27,7 +35,8 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %               required.
 %               Remark: the use of functions tinv and finv is more precise
 %               but requires more time.
-%
+%               Example - 'exact',0
+%               Data Types - double
 %  Output:
 %
 %  MDRenv:      matrix with n-m0+1 rows and length(prob)+1 columns

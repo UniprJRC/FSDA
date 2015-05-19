@@ -16,70 +16,119 @@ function [out]=FSRfan(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%   intercept   :   If 1, a model with constant term will be fitted
+%   intercept   :   Indicator for constant term. Scalar.
+%                       If 1, a model with constant term will be fitted
 %                   (default), if 0, no constant term will be included.
-%       nocheck :   Scalar. If nocheck is equal to 1 no check is performed
+%                   Example - 'intercept',1 
+%                   Data Types - double
+%       nocheck :   Check input arguments. Scalar.
+%                   If nocheck is equal to 1 no check is performed
 %                   on matrix y and matrix X. Notice that y and X are left
 %                   unchanged. In other words the additional column of ones
 %                   for the intercept is not added. As default nocheck=0.
-%           la  :   vector which specifies for which values of the
-%                   transformation parameter it is necessary to compute the
-%                   score test.
+%                   Example - 'nocheck',1 
+%                   Data Types - double
+%           la  :   values of the transformation parameter for which it is
+%                   necessary to compute the score test. Vector.
 %                   Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
 %                   is the five most common values of lambda
+%                   Example - 'la',[-1 -0.5]
+%                   Data Types - double
 %           h   :   The number of observations that have determined the
-%                   least trimmed (median of) squares estimator.
+%                   least trimmed (median of) squares estimator. Integer.
 %                   Generally h is an integer greater or equal than
 %                   [(n+size(X,2)+1)/2] but smaller then n
+%                   Example - 'h',5
+%                   Data Types - double
 %       nsamp   :   Number of subsamples which will be extracted to find
-%                   the robust estimator. If nsamp=0 all subsets will be
+%                   the robust estimator. Scalar.
+%                   If nsamp=0 all subsets will be
 %                   extracted. They will be (n choose p). Remark: if the
 %                   number of all possible subset is <1000 the default is
 %                   to extract all subsets otherwise just 1000.
-%       lms     :   Scalar. If lms=1 (default) Least Median of Squares is
+%                   Example - 'nsamp',1000 
+%                   Data Types - double
+%       lms     :   Criterion to use to find the initlal
+%                 subset to initialize the search. Scalar.
+%                   If lms=1 (default) Least Median of Squares is
 %                   computed, else Least trimmed of Squares is computed.
-%       init    :   scalar which specifies the initial subset size to start
+%                 Example - 'lms',1 
+%                 Data Types - double
+%       init    :   Search initialization. Scalar. 
+%                   It specifies the initial subset size to start
 %                   monitoring the value of the score test, if init is not
 %                   specified it will be set equal to:
 %                    p+1, if the sample size is smaller than 40;
 %                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%       plots   :   Scalar. If plots=1 the fan plot is produced
+%                    Example - 'init',100 starts monitoring from step m=100 
+%                    Data Types - double
+%       plots   :  Plot on the screen. Scalar.
+%                   If plots=1 the fan plot is produced
 %                   else (default) no plot is produced
-%
+%                   Example - 'plots',1 
+%                   Data Types - double
 %                   REMARK: all the following options work only if plots=1
 %
-%       conflev :   confidence level for the bands (default is 0.99 that is
+%       conflev :   confidence level for the bands. Scalar.
+%                   default is 0.99 that is
 %                   we plot two horizontal lines in correspondence of value
 %                   -2.58 and 2.58
-%       titl    :   a label for the title (default: 'Fan plot')
-%       labx    :   a label for the x-axis (default: 'Subset size m')
-%       laby    :   a label for the y-axis (default:'Score test statistic')
-%       xlimx   :   vector with two elements controlling minimum and maximum
-%                   of the x axis. Default value is [init n]
-%       ylimy   :   vector with two elements controlling minimum and
-%                   maximum of the y axis. Default value for
-%                   ylimy(1)=max(min(score_test),-20). Default value for
-%                   ylimy(2)=min(max(score_test),20).
-%       lwd     :   Scalar which controls linewidth of the curves which
-%                   contain the score test. Default line width=2.
-%       lwdenv  :   Scalar which controls the width of the lines associated
-%                   with the envelopes. Default is lwdenv=1.
-%       FontSize:   Scalar which controls the font size of the labels of
-%                   the axes. Default value is 12.
+%                   Example - 'conflev',0.95
+%                   Data Types - double
+%       titl    :   a label for the title. Character.
+%                   default: 'Fan plot'
+%                   Example - 'titl','my title'
+%                   Data Types - char
+%       labx    :   a label for the x-axis. Character.
+%                   default: 'Subset size m'
+%                   Example - 'labx','my labx'
+%                   Data Types - char
+%       laby    :   a label for the y-axis. Character.
+%                   default:'Score test statistic'
+%                   Example - 'laby','my laby'
+%                   Data Types - char
+%       xlimx   :   Minimum and maximum of the x axis. Vector.
+%                   Default value is [init n]
+%                   Example - 'xlimx',[0 1]
+%                   Data Types - double
+%       ylimy   :  Minimum and maximum of the y axis. Vector.
+%                   Default value for ylimy(1)=max(min(score_test),-20).
+%                   Default value for ylimy(2)=min(max(score_test),20).
+%                   Example - 'ylimx',[0 1]
+%                   Data Types - double
+%       lwd     :   linewidth of the curves which
+%                   contain the score test. Scalar.
+%                   Default line width=2.
+%                   Example - 'lwd',5
+%                   Data Types - double
+%       lwdenv  :   width of the lines associated
+%                   with the envelopes. Scalar.
+%                   Default is lwdenv=1.
+%                   Example - 'lwdenv',5
+%                   Data Types - double
+%       FontSize:   font size of the labels of  the axes. Scalar.
+%                   Default value is 12.
+%                   Example - 'FontSize',20
+%                   Data Types - double
 %    SizeAxesNum:   Scalar which controls the size of the numbers of the
 %                   axes. Default value is 10.
-%         msg   :   scalar which controls whether to display or not
-%                   messages on the screen If msg==1 (default) messages are
+%         msg   : Level of output to display. Scalar.
+%                   scalar which controls whether to display or not
+%                   messages on the screen. Scalar.
+%                   If msg==1 (default) messages are
 %                   displayed on the screen about estimated time to compute
 %                   the LMS (LTS) for each value of lamabda else no message
 %                   is displayed on the screen
-%       tag     :   string which identifies the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   'pl_fan'. Notice that if the program finds a plot which
+%                  Example - 'msg',1 
+%                  Data Types - double
+%       tag     :   handle of the plot which is about to be created.
+%                   Character.
+%                   The default is to use tag 'pl_fan'. Notice that if the program finds a plot which
 %                   has a tag equal to the one specified by the user, then
 %                   the output of the new plot overwrites the existing one
 %                   in the same window else a new window is created
-%
+%                   Example - 'tag','mytag'
+%                   Data Types - char
 %  Output:
 %
 %    The output consists of a structure 'out' containing the following fields:

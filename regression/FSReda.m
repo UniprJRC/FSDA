@@ -23,21 +23,30 @@ function [out] = FSReda(y,X,bsb,varargin)
 %
 % Optional input arguments:
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%        init : scalar, specifies the point where to initialize the search
-%               and start monitoring required diagnostics. if init is not
-%               specified it will be set equal to :
-%                 p+1, if the sample size is smaller than 40;
-%                 min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0. The
-%               controls on h, alpha and nsamp still remain
-%        tstat: character string which specifies the kind of t-statistics
-%               which have to be monitored. tstat = 'trad' implies
-%               monitoring of traditional t
+%   intercept : Indicator for constant term. Scalar.
+%                     If 1, a model with constant term will be fitted (default),
+%                     if 0, no constant term will be included.
+%                       Example - 'intercept',1 
+%                       Data Types - double
+%        init :      Search initialization. Scalar.
+%                      It specifies the point where to initialize the search
+%                       and start monitoring required diagnostics. if init is not
+%                       specified it will be set equal to :
+%                       p+1, if the sample size is smaller than 40;
+%                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                       Example - 'init',100 starts monitoring from step m=100 
+%                       Data Types - double
+%      nocheck:  Check input arguments. Scalar. 
+%                       If nocheck is equal to 1 no check is performed on
+%                       matrix y and matrix X. Notice that y and X are left
+%                       unchanged. In other words the additional column of ones for
+%                       the intercept is not added. As default nocheck=0. The
+%                       controls on h, alpha and nsamp still remain
+%                       Example - 'nocheck',1 
+%                       Data Types - double
+%        tstat:      the kind of t-statistics which have to be monitored.
+%               Character.
+%               tstat = 'trad' implies  monitoring of traditional t
 %               statistics (out.Tols). In this case the estimate of \sigma^2 at step m
 %               is based on s^2_m (notice that s^2_m<<\sigma^2 when m/n is
 %               small) tstat = 'resc' (default) implies monitoring of
@@ -45,6 +54,8 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               \sigma^2 at step m is based on s^_m / var_truncnorm(m/n)
 %               where var_truncnorm(m/n) is the variance of the truncated
 %               normal distribution.
+%               Example - 'tstat','trad'
+%               Data Types - char
 % Remark:       The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
