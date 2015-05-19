@@ -4,9 +4,9 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 %<a href="matlab: docsearch('fsrbmdr')">Link to the help function</a>
 %
-% Required input arguments
+% Required input arguments:
 %
-%  y:            A vector with n elements that contains the response variables.
+%  y:            A vector with n elements that contains the response variable.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
@@ -20,12 +20,13 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               computations.
 %
 %               PRIOR INFORMATION
-%               \beta is assumed to have a normal distribution with
-%               mean \beta0 and (conditional on tau0) covariance
+%               beta is assumed to have a normal distribution with
+%               mean beta0 and (conditional on tau0) covariance
 %               (1/tau0) (X0'X0)^{-1}
-%               \beta~N(    beta0, (1/tau0) (X0'X0)^{-1}    )
+%               beta~N(    beta0, (1/tau0) (X0'X0)^{-1}    )
 %
-%   beta0 :     p-times-1 vector containing prior mean of \beta
+%   beta0 :     p-times-1 vector containing prior mean of beta. It
+%               contains a priori estimates of regression coefficients.
 %    R    :     p-times-p positive definite matrix
 %               which can be interepreted as X0'X0 where X0 is a n0 x p
 %               matrix coming from previous experiments (assuming that the
@@ -33,11 +34,11 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 %               The prior distribution of tau0 is a gamma distribution with
 %               parameters a and b, that is
-%                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
+%                     p(tau0) propto tau^{a0-1} exp (-b0 tau)
 %                         E(tau0)= a0/b0
 %
 %
-%    tau0 :     scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0
+%    tau0 :     scalar. Prior estimate of tau=1/ sigma^2 =a0/b0
 %      n0 :     scalar. Sometimes it helps to think of the prior
 %               information as coming from n0 previous experiments.
 %               Therefore we assume that matrix X0 (which defines R), was
@@ -50,7 +51,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %                 m x 1 vector containing the units forming initial subset. The
 %               default value of bsb is '' (empty value), that is we
 %               initialize the search just using prior information.
-%                 Example - 'bsb',[3 6 9] 
+%                 Example - 'bsb',[3,6,9] 
 %                 Data Types - double
 %  init :       Search initialization. Scalar.
 %               It specifies the point where to start monitoring
@@ -71,12 +72,12 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               If equal to one a plot of Bayesian minimum deletion residual
 %               appears  on the screen with 1%, 50% and 99% confidence
 %               bands else (default) no plot is shown.
+%                 Example - 'plots',1 
+%                 Data Types - double
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is necessary to use
 %               function mdrplot
-%                 Example - 'plots',1 
-%                 Data Types - double
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -98,7 +99,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               init and steps which are multiple of 100. For example, if
 %               n=753 and init=6, units forming subset are stored for
 %               m=init, 100, 200, 300, 400, 500 and 600.
-%               Example - 'bsbsteps',[10 20 30]
+%               Example - 'bsbsteps',[10,20,30]
 %               Data Types - double
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
@@ -126,7 +127,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:           n x (n-init+1) matrix which the units belonging to the
+%  BB:           n x (n-init+1) matrix which contains the units belonging to the
 %               subset at each step of the forward search.
 %               1st col = index forming subset in the initial step
 %               ...
@@ -138,6 +139,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %  S2Bayes:     (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
 %               column)and R2 (third column) in each step of the forward
 %               search.
+%
 % See also
 %
 % References:
