@@ -28,41 +28,64 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %
 % Optional input arguments:
 %
-%   intercept   : If 1, a model with constant term will be fitted (default),
-%                 if 0, no constant term will be included.
-%     nocheck   : Scalar. If nocheck is equal to 1 no check is performed on
-%                 matrix y and matrix X. Note that y and X are left
-%                 unchanged. In other words the additioanl column of ones
-%                 for the intercept is not added. As default nocheck=1.
-%           h   : The number of observations that have determined the least
-%                 trimmed squares estimator. h is an integer greater than
-%                 smallp+1 but smaller then n. The default value of h is
-%                 [(n+smallp+1)/2]
-%           lms : Scalar. If lms=1 (default) Least Median of Squares is
-%                 computed, else Least Trimmed of Squares is computed.
-%          nomes: Scalar. If nomes is equal to 1 (default) no message about
-%                 estimated time to compute LMS (LTS) for each considered
-%                 model is displayed, else a message about estimated time
-%                 is displayed.
+%   intercept   : Indicator for constant term. Scalar.
+%                       If 1, a model with constant term will be fitted (default),
+%                       if 0, no constant term will be included.
+%                       Example - 'intercept',1 
+%                       Data Types - double
+%     nocheck   : Check input arguments. Scalar.
+%                        If nocheck is equal to 1 no check is performed on
+%                       matrix y and matrix X. Note that y and X are left
+%                       unchanged. In other words the additioanl column of ones
+%                       for the intercept is not added. As default nocheck=1.
+%                       Example - 'nocheck',1 
+%                       Data Types - double
+%           h   :       number of observations that have determined the least
+%                       trimmed squares estimator. Integer.
+%                       h is an integer greater than
+%                       smallp+1 but smaller then n. The default value of h is
+%                       [(n+smallp+1)/2]
+%                       Example - 'h',3 
+%                       Data Types - double
+%           lms :    Criterion to use to find the initlal  subset to initialize the search. Scalar
+%                       If lms=1 (default) Least Median of Squares is
+%                       computed, else Least Trimmed of Squares is computed.
+%                        nomes: Scalar. If nomes is equal to 1 (default) no message about
+%                       estimated time to compute LMS (LTS) for each considered
+%                       model is displayed, else a message about estimated time
+%                       is displayed.
+%                       Example - 'lms',1 
+%                       Data Types - double
 %         nsamp : Number of subsamples which will be extracted to find the
-%                 robust estimator. If nsamp=0 all subsets will be extracted.
-%                 They will be (n choose smallp).
-%                 Remark: if the number of all possible subset is <1000 the
-%                 default is to extract all subsets otherwise just 1000.
-%          init : scalar which specifies the initial subset size to start
-%                 monitoring the required quantities, if init is not
-%                 specified it will be set equal to
-%                   smallp+1, if the sample size is smaller than 40;
-%                   min(3*smallp+1,floor(0.5*(n+smallp+1))), otherwise.
-%           aic : scalar. If aic=1 the value of AIC is also stored in each
-%                 step of the search else (default) only Mallows Cp is stored
-%        labels : cell array of strings of length bigP-1 containing the
-%                 names of the explanatory variables. If labels is a missing
-%                 value the following sequence of strings will be
-%                 automatically created for X
-%                 (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
-%      fin_step : scalar specifying the portion of the search which has to be
-%                 monitored to choose the best models
+%                       robust estimator. Scalar.
+%                       If nsamp=0 all subsets will be extracted.
+%                       They will be (n choose smallp).
+%                       Remark: if the number of all possible subset is <1000 the
+%                       default is to extract all subsets otherwise just 1000.
+%                       Example - 'nsamp',1000 
+%                       Data Types - double
+%          init :       Search initialization. Scalar. 
+%                       It specifies the initial subset size to start
+%                       monitoring the required quantities, if init is not
+%                       specified it will be set equal to
+%                       smallp+1, if the sample size is smaller than 40;
+%                       min(3*smallp+1,floor(0.5*(n+smallp+1))), otherwise.
+%                       Example - 'init',100 starts monitoring from step m=100 
+%                       Data Types - double
+%           aic :      Akaike's information criterion. Scalar. 
+%                       If aic=1 the value of AIC is also stored in each
+%                       step of the search else (default) only Mallows Cp is stored
+%                       Example - 'aic',1 
+%                       Data Types - double
+%        labels :   names of the explanatory variables. Cell array of strings.
+%                       Cell array of strings of length bigP-1 containing the  names of the explanatory variables.
+%                       If labels is a missing  value the following sequence of strings will be
+%                       automatically created for X
+%                      (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
+%                       Example - 'labels',{'Time','1','2','3','4','5','6','7','8'}
+%                       Data Types - cell
+%      fin_step :  portion of the search which has to be
+%                 monitored to choose the best models. Scalar.
 %                 If fin_step is an integer greater
 %                 or equal 1, it refers to the number of steps.
 %                 For example if fin_step=10 the program considers the last
@@ -78,19 +101,27 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %                 case the value of first_k below is ignored, all models are
 %                 considered of interest and output matrix outCp.Ajout is
 %                 equal to an empty value)
-%       first_k : scalar which specifies the number of best models to
-%                 consider in each of the last fin_step. For example if
-%                 first_k=5 in each of the last fin_step, the models which had
-%                 the 5 smallest values of Cp are considered. As default
-%                 first_k=3
+%                       Example - 'fin_step',1 
+%                       Data Types - double
+%       first_k :  number of best models to
+%                      consider in each of the last fin_step. Scalar.
+%                       For example if first_k=5 in each of the last fin_step, the models which had
+%                       the 5 smallest values of Cp are considered. As default
+%                       first_k=3
+%                       Example - 'first_k',5 
+%                       Data Types - double
 %          Excl : Matrix which contains the models which surely do not have
-%                 to be considered. As default Excl=''
-%                 For example if smallp=3, bigP=6 and
+%                 to be considered. Matrix.
+%                   As default Excl=''
+%                   For example if smallp=3, bigP=6 and
 %                   Excl = [ 2 3;
 %                             2 4;
 %                             2 7];
 %                 the three models 23, 24, and 27 are skipped
-%    ExclThresh : scalar. Exclusion threshold associated to the upper
+%                       Example - 'Excl',[2 3; 2 4]
+%                       Data Types - double
+%    ExclThresh : Exclusion threshold. Scalar.
+%                 Exclusion threshold associated to the upper
 %                 percentage point of the F distribution of Cp which
 %                 defines the threshold for declaring models as unuseful.
 %                 The default value of ExclThresh is 0.99999 that is the
@@ -98,7 +129,9 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %                 search defined by fin_step is above ExclThresh are stored
 %                 in output matrix outCp.Ajout. Notice that ExclThresh must
 %                 be smaller than 1
-%         plots : scalar.
+%                 Example - 'ExclThresh',0.6
+%                 Data Types - double
+%         plots : Plot on the screen. Scalar.
 %                 If plots==1 a plot is created on the screen which
 %                 contains the trajectories of Cp monitored along the
 %                 search with confidence bands
@@ -107,45 +140,78 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %                 confidence bands. The second contains the trajectories of
 %                 AIC monitored along the search
 %                 else (default) no plot is shown on the screen
-%        labout : scalar. If labout=1 the output structure contains a cell
-%                 array of string named LABOUT which contains the list of
-%                 the models whose Cp values are inacceptable else
-%                 (default) no model is created.
-%
+%                 Example - 'plots',1 
+%                 Data Types - double
+%        labout :If labout=1 the output LABOUT contains the list of models 
+%                     whose Cp values are inacceptable. Scalar.
+%                    Default: no model is created.
+%                 Example - 'labout',1 
+%                 Data Types - double
 %                 Remark: the options below only work if plots is equal 1
 %
-%         quant : vector which specifies the quantiles which are used to
-%                 produce Cp envelopes (the elements of quant are numbers
-%                 between 0 and 1). The default value of quant is
+%         quant : It specifies the quantiles which are used to
+%                 produce Cp envelopes. Vector.
+%                The elements of quant are numbers
+%                 between 0 and 1. The default value of quant is
 %                 quant=[0.025 0.5 0.975];
-%         steps : vector which specifies in which steps of the plot which
+%                 Example - 'quant',0.1 
+%                 Data Types - double
+%         steps : It specifies in which steps of the plot which
 %                 monitors Cp it is necessary to include the labels of the
-%                 models which have been previously chosen. The default is
-%                 to write the labels of the models in steps round([n*0.6
+%                 models which have been previously chosen. Vector.
+%                 The default is to write the labels of the models in steps round([n*0.6
 %                 n*0.8 n]);
-%       titl    : a label for the title (default: ['Forward Cp p=' num2str(smallp)])
-%       labx    : a label for the x-axis (default: 'Subset size m')
-%       laby    : a label for the y-axis (default:'')
-%       xlimx   : vector with two elements controlling minimum and maximum
-%                 on the x axis. Default value is '' (automatic scale)
-%       ylimy   : vector with two elements controlling minimum and maximum
-%                 on the y axis. Default value is '' (automatic scale)
-%       lwd     : Scalar which controls linewidth of the curves which
-%                 contain the score test. Default line width=2
-%       lwdenv  : Scalar which controls the width of the lines associated
-%                 with the envelopes. Default is lwdenv=1
-%       FontSize: Scalar which controls the font size of the labels of
-%                 the axes and of the labels inside the plot. Default
-%                 value is 12
-%    SizeAxesNum: Scalar which controls the size of the numbers of the
-%                 axes. Default value is 10
-%   selunitcolor: cell containing the colors to be used for the
-%                 Cp trajectories. If selunittype is not specified or if
+%                 Example - 'steps',[4 8]
+%                 Data Types - double
+%       titl    : a label for the title. Character.
+%               default: ['Forward Cp p=' num2str(smallp)]
+%                 Example - 'titl','my title'
+%                 Data Types - char
+%       labx    : a label for the x-axis. Character.
+%                   default: 'Subset size m'
+%                 Example - 'labx','my label'
+%                 Data Types - double
+%       laby    : a label for the y-axis. Character. 
+%                   default:''
+%                 Example - 'laby','my label'
+%                 Data Types - char
+%       xlimx   :  minimum and maximum on the x axis. Vector.
+%                 Default value is '' (automatic scale)
+%                 Example - 'xlimx',[0 1]
+%                 Data Types - double
+%       ylimy   : minimum and maximum on the y axis. Vector.
+%                 Default value is '' (automatic scale)
+%                 Example - 'ylimx',[0 1]
+%                 Data Types - double
+%       lwd     : linewidth of the curves which contain the score test.
+%                   Scalar.
+%                 Default line width=2
+%                 Example - 'linewidth',6
+%                 Data Types - double
+%       lwdenv  :  width of the lines associated
+%                 with the envelopes. Scalar.
+%                  Default is lwdenv=1
+%                 Example - 'lwdenv',6
+%                 Data Types - double
+%       FontSize: font size of the labels of
+%                 the axes and of the labels inside the plot. Scalar.
+%                 Default value is 12
+%                 Example - 'FontSize',20
+%                 Data Types - double
+%    SizeAxesNum: size of the numbers of the axes. Scalar. 
+%                 Default value is 10
+%                 Example - 'SizeAxesNum',30
+%                 Data Types - double
+%   selunitcolor: colors to be used for the Cp trajectories. Cell array of strings.
+%                   If selunittype is not specified or if
 %                 it is an empty value default Matlab colors are used.
-%   selunittype : cell containing the line types of the
-%                 Cp trajectories. If selunittype is not specified or if
+%                 Example - 'selunitcolor',{'b';'g';'r'}
+%                 Data Types - cell
+%   selunittype : line types of the Cp trajectories. Cell array of strings.
+%                 If selunittype is not specified or if
 %                 it is an empty value all possible line styles are used.
-%
+%                 Example - 'selunittype',{'-';'--';':';'-.'}
+%                 Data Types - cell
 % Output:
 %
 %  The output consists of a structure 'outCp' containing the following fields:

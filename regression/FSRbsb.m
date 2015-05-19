@@ -21,18 +21,26 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %
 % Optional input arguments: 
 %
-%       init  : scalar which specifies the initial subset size to start
-%               monitoring exceedances of minimum deletion residual, if
-%               init is not specified it will be set equal to:
-%                  p+1, if the sample size is smaller than 40;
-%                  min(3*p+1,floor(0.5*(n+p+1))) otherwise.
-%   intercept : If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%    nocheck  : Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additioanl column of ones for
-%               the intercept is not added. As default nocheck=0.
-%
+%       init  :     Search initialization. Scalar. 
+%                   It specifies the initial subset size to start
+%                   monitoring exceedances of minimum deletion residual, if
+%                   init is not specified it will be set equal to:
+%                   p+1, if the sample size is smaller than 40;
+%                   min(3*p+1,floor(0.5*(n+p+1))) otherwise.
+%                   Example - 'init',100 starts monitoring from step m=100 
+%                   Data Types - double
+%   intercept :    Indicator for constant term. Scalar. 
+%                       If 1, a model with constant term will be fitted (default),
+%                        if 0, no constant term will be included.
+%                       Example - 'intercept',1 
+%                       Data Types - double
+%    nocheck  : Check input arguments. Scalar.
+%                       If nocheck is equal to 1 no check is performed on
+%                       matrix y and matrix X. Notice that y and X are left
+%                       unchanged. In other words the additioanl column of ones for
+%                       the intercept is not added. As default nocheck=0.
+%                       Example - 'nocheck',1 
+%                       Data Types - double
 % Remark:       The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
