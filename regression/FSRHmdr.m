@@ -43,47 +43,68 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %
 % Optional input arguments:
 %
-%  init :       scalar, specifies the point where to initialize the search
-%               and start monitoring required diagnostics. If it is not
-%               specified it is set equal to:
+%  init :       Search initialization. Scalar.
+%               It specifies the point where to start monitoring
+%               required diagnostics. If it is not specified it is set
+%               equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%  intercept :  If 1, a model with constant term will be fitted (default),
+%               The minimum value of init is 0. In this case in the first
+%               step we just use prior information
+%               Example - 'init',100 starts monitoring from step m=100 
+%               Data Types - double
+%  intercept :   Indicator for constant term. Scalar.
+%               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-%  plots :      If equal to one a plot of minimum deletion residual
+%               Example - 'intercept',1 
+%               Data Types - double
+%  plots :    Plot on the screen. Scalar. 
+%               If equal to one a plot of Bayesian minimum deletion residual
 %               appears  on the screen with 1%, 50% and 99% confidence
 %               bands else (default) no plot is shown.
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is necessary to use
 %               function mdrplot
-%  nocheck:      Scalar. If nocheck is equal to 1 no check is performed on
+%                 Example - 'plots',1 
+%                 Data Types - double
+%  nocheck:   Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additioanl column of ones for
-%               the intercept is not added. As default nocheck=0. The
-%               controls on h, alpha and nsamp still remain
-%    msg  :     scalar which controls whether to display or not messages
+%               unchanged. In other words the additional column of ones for
+%               the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1 
+%               Data Types - double
+%  msg  :    Level of output to display. Scalar.
+%               It controls whether to display or not messages
 %               about great interchange on the screen
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
-% gridsearch:   scalar. If gridsearch ==1 grid search will be used else the
+%               Example - 'msg',1 
+%               Data Types - double
+% gridsearch:   Algorithm to be used. Scalar.
+%               If gridsearch ==1 grid search will be used else the
 %               scoring algorith will be used. 
 %               REMARK: the grid search has only been implemented when
 %               there is just one explantory variable which controls
 %               heteroskedasticity
-%  constr :     r x 1 vector which contains the list of units which are
-%               forced to join the search in the last r steps. The default
-%               is constr=''.  No constraint is imposed
-% bsbmfullrank :scalar which tells how to behave in case subset at step m
-%               (say bsbm) produces a non singular X. In other words,
-%               this options controls what to do when rank(X(bsbm,:)) is
+%               Example - 'gridsearch',0 
+%               Data Types - double
+%  constr :    units which are forced to join the search in the last r steps. Vector.
+%               r x 1 vector. The default is constr=''.  No constraint is imposed
+%               Example - 'constr',[1 6 3] 
+%               Data Types - double
+% bsbmfullrank :It tells how to behave in case subset at step m
+%               (say bsbm) produces a non singular X. Scalar.
+%               In other words, this options controls what to do when rank(X(bsbm,:)) is
 %               smaller then number of explanatory variables. If
 %               bsbmfullrank = 1 (default is 1) these units (whose number is
 %               say mnofullrank) are constrained to enter the search in
 %               the final n-mnofullrank steps else the search continues
 %               using as estimate of beta at step m the estimate of beta
 %               found in the previous step.
-%
+%               Example - 'bsbmfullrank',0
+%               Data Types - double
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by

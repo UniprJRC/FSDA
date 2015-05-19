@@ -13,9 +13,13 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %
 %  Optional input arguments:
 %
-%        n:     scalar which specifies the size of the sample. If it is not specified
+%        n:     size of the sample. Scalar.
+%               If it is not specified
 %               it is set equal to mdr(end,1)+1
-%   plots :     scalar or structure specifying whether it is necessary to
+%               Example - 'n',10
+%               Data Types - double
+%   plots :  Plot on the screen. Scalar or structure.
+%               It specify whether it is necessary to
 %               plot in normal coordinates the value of mdr
 %               If plots = 1, a plot which shows the
 %               confidence level of mdr in each step is shown on the
@@ -37,7 +41,8 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %                   Tag = tag of the plot (default is pl_mdrinv)
 %                   FontSize = font size of the text labels which identify
 %                   the trajectories
-%
+%                 Example - 'plots',1 
+%                 Data Types - double
 %  Output:
 %
 %   MDRinv:     Matrix with n-m0 rows (same rows of input matrix mdr) and 3 columns
