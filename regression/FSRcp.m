@@ -1,4 +1,4 @@
-function outCp = FSRcp(y,X,smallp,varargin)
+function [outCp] = FSRcp(y,X,smallp,varargin)
 %FSRcp monitors Cp and AIC for all models of interest of size smallp
 %
 %<a href="matlab: docsearchFS('FSRcp')">Link to the help function</a>
@@ -164,7 +164,7 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %                 Example - 'steps',[4 8]
 %                 Data Types - double
 %       titl    : a label for the title. Character.
-%               default: ['Forward Cp p=' num2str(smallp)]
+%               default is ['Forward Cp' p= num2str(smallp)]
 %                 Example - 'titl','my title'
 %                 Data Types - char
 %       labx    : a label for the x-axis. Character.
@@ -216,7 +216,7 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %
 %  The output consists of a structure 'outCp' containing the following fields:
 %
-%           MAL = (n-init+1) x (k+1) matrix
+%         outCp.MAL = (n-init+1) x (k+1) matrix
 %                 Mallows Cp monitored along the search
 %                   1st col is fwd search index
 %                   2nd col is associated with first selected model
@@ -225,7 +225,7 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %                   (k+1)th col is associated with k-th selected model
 %                   Notice that k<=(n choose smallp) and that all
 %                   models contain the constant
-%          AIC = (n-init+1) x (k+1) matrix
+%         outCp.AIC = (n-init+1) x (k+1) matrix
 %                AIC monitored along the search
 %                   1st col is fwd search index
 %                   2nd col is associated with first selected model
@@ -235,16 +235,16 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %                   Remark 1: k<=(n choose smallp)
 %                   Remark 2: all models contain the constant
 %                   Remark 3: matrix AIC is produced only if input option aic=1
-%       UnAll =    cell of dimension k. Each element of the cell is a
+%      outCp.UnAll =    cell of dimension k. Each element of the cell is a
 %                   (n-init) x 11 matrix containing the unit(s) included
 %                   in the subset at each step of the search. REMARK: in
 %                   every step the new subset is compared with the old
 %                   subset. Un contains the unit(s) present in the new
 %                   subset but not in the old one.
-%       LAB    =    cell array of strings of length k containing the labels of the
+%      outCp.LAB    =    cell array of strings of length k containing the labels of the
 %                   models which have been extracted. First element of LAB
 %                   is associated with second column of matrix MAL...
-%       Ajout  =    numeric matrix which contains the list of the models whose Cp
+%     outCp.Ajout  =    numeric matrix which contains the list of the models whose Cp
 %                   values are inacceptable.
 %                   The number of columns of matrix Ajout is equal to
 %                   smallp-1
@@ -258,9 +258,11 @@ function outCp = FSRcp(y,X,smallp,varargin)
 %                   the three models 23, 24, and 27 always have Cp values
 %                   much greater than the threshold (that is variables
 %                   2,3,4,7 are considered unimportant)
-%       LABout  =   it is created only if option labout=1. LABout
+%    outCp.LABout  =   it is created only if option labout=1. LABout
 %                   is a cell array of strings which which contains as
 %                   strings the list of models which are inacceptable
+%
+% See also: FSR, FSReda
 %
 % References:
 %
