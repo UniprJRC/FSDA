@@ -39,7 +39,7 @@ function [out]=FSRB(y,X,varargin)
 %                      information as coming from n0 previous experiments.
 %                      Therefore we assume that matrix X0 (which defines
 %                      R), was made up of n0 observations.
-%              REMARK: if structure bayes is not supplied the default
+%              REMARK if structure bayes is not supplied the default
 %                      values which are used are
 %                      beta0= zeros(p,1)  % vector of zeros
 %                      R=eye(p);          % Identity matrix

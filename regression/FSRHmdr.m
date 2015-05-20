@@ -60,9 +60,9 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               Data Types - double
 %  plots :    Plot on the screen. Scalar. 
 %               If equal to one a plot of Bayesian minimum deletion residual
-%               appears  on the screen with 1%, 50% and 99% confidence
+%               appears  on the screen with 1 per cent, 50 per cent and 99 per cent confidence
 %               bands else (default) no plot is shown.
-%               Remark: the plot which is produced is very simple. In order
+%               Remark. the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is necessary to use
 %               function mdrplot
@@ -85,11 +85,11 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 % gridsearch:   Algorithm to be used. Scalar.
 %               If gridsearch ==1 grid search will be used else the
 %               scoring algorith will be used. 
+%               Example - 'gridsearch',0 
+%               Data Types - double
 %               REMARK: the grid search has only been implemented when
 %               there is just one explantory variable which controls
 %               heteroskedasticity
-%               Example - 'gridsearch',0 
-%               Data Types - double
 %  constr :    units which are forced to join the search in the last r steps. Vector.
 %               r x 1 vector. The default is constr=''.  No constraint is imposed
 %               Example - 'constr',[1 6 3] 
@@ -148,13 +148,15 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %  S2:           (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
 %               column)and R2 (third column) in each step of the forward
 %               search.
-% Hetero = (n-init1+1) x 3 matrix which will contain:
-% 1st col = fwd search index
-% 2nd col = estimate of alpha in the scedastic equation
-% 3rd col = estimate of gamma in the scedastic equation
+%  Hetero :     (n-init1+1) x 3 matrix containing
+%                  1st col = fwd search index
+%                  2nd col = estimate of alpha in the scedastic equation
+%                  3rd col = estimate of gamma in the scedastic equation
+%   WEI   :     n x (n-init1+1) matrix containing estimates ot the weights
+%               during the FS
 %
+% See also:   FSRmdr
 %
-% See also
 %
 % References:
 %
