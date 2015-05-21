@@ -84,7 +84,8 @@ function [out]=FSR(y,X,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100 
 %               Data Types - double
-%       exact   : scalar, if it is equal to 1 the calculation of the quantiles
+%       exact   : quantiles of the T and F distribution. Scalar.
+%               If it is equal to 1 the calculation of the quantiles
 %                 of the T and F distribution is based on functions finv
 %                 and tinv from the Matlab statistics toolbox, else the
 %                 calculations of the former quantiles is based on
@@ -93,6 +94,8 @@ function [out]=FSR(y,X,varargin)
 %                 in files invcdff.m and invcdft.m if required
 %                 Remark: the use of functions tinv and finv is more precise
 %                 but requires more time.
+%               Example - 'exact',1 
+%               Data Types - double
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones

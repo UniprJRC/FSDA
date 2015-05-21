@@ -22,42 +22,71 @@ function outms = FSRms(y,X,varargin)
 %
 % Optional input arguments:
 %
-% intercept   : If 1, a model with constant term will be fitted (default),
+% intercept   : Indicator for constant term. Scalar. 
+%                     If 1, a model with constant term will be fitted (default),
 %               else, no constant term will be included.
-%      init   : scalar which specifies the initial subset size to start
+%               Example - 'intercept',1 
+%               Data Types - double
+%      init   : Search initialization. Scalar. 
+%               It specifies the initial subset size to start
 %               monitoring the required quantities, if
 %               init is not specified it set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%               Example - 'init',100 starts monitoring from step m=100 
+%               Data Types - double
 %         h   : The number of observations that have determined the least
-%               trimmed squares estimator. h is an integer greater or
+%               trimmed squares estimator. Scalar.
+%               h is an integer greater or
 %               equal than [(n+p+1)/2] but smaller then n
+%                 Example - 'h',round(n*0,75) 
+%                 Data Types - double
 %     nsamp   : Number of subsamples which will be extracted to find the
+%                 robust estimator. Scalar.
+%                   Number of subsamples which will be extracted to find the
 %               robust estimator. If nsamp=0 all subsets will be extracted.
 %               They will be (n choose smallp).
 %               Remark: if the number of all possible subset is <1000 the
 %               default is to extract all subsets otherwise just 1000.
-%         lms : Scalar. If lms=1 (default) Least Median of Squares is
+%                 Example - 'nsamp',1000 
+%                 Data Types - double
+%         lms : Criterion to use to find the initlal
+%                 subset to initialize the search. Scalar.
+%                   If lms=1 (default) Least Median of Squares is
 %               computed, else Least Trimmed of Squares is computed.
-%     nocheck : Scalar. If nocheck is equal to 1 no check is performed on
+%                 Example - 'lms',1 
+%                 Data Types - double
+%     nocheck : Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Note that y and X are left
 %               unchanged. In other words the additional column of ones
 %               for the intercept is not added. As default nocheck=0.
-%    smallpint: vector which specifies which submodels (number of variables)
-%               must be considered. The default is to consider all models
+%               Example - 'nocheck',1 
+%               Data Types - double
+%    smallpint: It specifies which submodels (number of variables)
+%               must be considered. Vector.
+%               The default is to consider all models
 %               from size 2 to size bigP-1. In other words, as default,
 %               smallpint=(bigP-1):-1:2.
 %               When smallpint=2 all submodels including one explanatory
 %               variable and the constant will be considered.
 %               When smallpint=3 all submodels including two explanatory
 %               variables and a constant will be considered. ....
-%      labels : cell array of strings of length bigP-1 containing the
-%               names of the explanatory variables. If labels is a missing
+%               Example - 'smallpint',3 
+%               Data Types - double
+%      labels : names of the explanatory variables. Cell array of strings.
+%               Cell array of strings of length bigP-1 containing the
+%               names of the explanatory variables.
+%                If labels is a missing
 %               value the following sequence of strings will be
-%               automatically created for labelling the columnd of matrix X
+%               automatically created for labelling the column of matrix X
 %               (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
-%     fin_step: vector with two elements.
-%               The first element specifies the initial step of the search
+%               Example - 'labels',{'1','2'} 
+%               Data Types - cell
+%     fin_step: initial and final step of the search
+%               which has to be monitored to choose the best models as
+%               specified in scalar first_k. Vector.
+%               The first element of the vector specifies the initial step of the search
 %               which has to be monitored to choose the best models as
 %               specified in scalar first_k below. The second element
 %               specifies the ending point of the central part of the
@@ -76,19 +105,28 @@ function outms = FSRms(y,X,varargin)
 %               As default fin_step(2)=round(n*0.05) that
 %               is the central part of the search extends up to 95% of the
 %               observations
-%      first_k: scalar which specifies the number of best models to
-%               consider in each of the last fin_step. For example if
+%               Example - 'fin_step',[1 50] 
+%               Data Types - double
+%      first_k:  number of best models to
+%               consider in each of the last fin_step. Scalar.
+%               For example if
 %               first_k=5 in each of the fin_step the models which had
 %               the 5 smallest values of Cp are considered. As default
 %               first_k=3
-%       ignore: scalar. If ignore=1, when dealing with p explanatory
+%               Example - 'first_k',5
+%               Data Types - double
+%       ignore: submodels to consider. Scalar. 
+%               If ignore=1, when dealing with p explanatory
 %               variables, the submodels of the models with p+1
 %               explanatory variables which were considered irrelevant
 %               according to option ExclThresh, are not considered. As
 %               default ignore=1, because this saves computational time.
 %               If ignore is different from 1, for each p all submodels of
 %               size p which contain a constant are considered
-%   ExclThresh: scalar which has effect only if ignore=1.
+%               Example - 'ignore',1
+%               Data Types - double
+%   ExclThresh:  Exclusion threshold. Scalar.
+%               It has effect only if ignore=1.
 %               Exclusion threshold associated to the uppper
 %               percentage point of the F distribution of Cp which defines
 %               the threshold for each p declaring models as irrelevant.
@@ -98,34 +136,57 @@ function outms = FSRms(y,X,varargin)
 %               stored for each p. If option ignore=1, the submodels with
 %               p-1 explanatory variables which are contained inside the
 %               models considered irrelevant are not considered
-%     meanmed : specfy how to construct the boxes of the candles. If 
-%               meanmed=1 boxes are constructed using mean and median
+%               Example - 'ExclThresh',0.9
+%               Data Types - double
+%     meanmed : specfy how to construct the boxes of the candles. Scalar.
+%               If meanmed=1 boxes are constructed using mean and median
 %               else using the first and third quartile.
+%               Example - 'meanmed',1
+%               Data Types - double
 %
-%       plots : scalar.
+%       plots :  Plot on the screen. Scalar.
 %               If plot==1 a candlestick Cp plot is created on the screen
 %               else (default) no plot is shown on the screen
 %               The options below only work when plots=1
+%               Example - 'plots',1
+%               Data Types - double
 %
-%          rl : scalar which specifies the spread of the candles around
-%               each integer value defining the size of the submodels 
+%          rl : spread of the candles around
+%               each integer value defining the size of the submodels.
+%               Scalar.
 %               For example if rl=0.4 for each smallp candles are spread in the
 %               interval [smallp-rl smallp+rl]. The default value of rl
 %               is 0.4. rl does not have to be greater than 0.45 otherwise
 %               the candles overlap
-%     quant   : vector containing quantiles for the horizontal lines
-%               associated with the confidence bands of Cp
+%               Example - 'rl',0.3
+%               Data Types - double
+%     quant   :  quantiles for the horizontal lines
+%               associated with the confidence bands of Cp. Vector.
 %               The default is to plot 2.5% and
 %               97.5% envelopes. In other words the default is
 %               quant=[0.025;0.975];
-%  CandleWidth: Scalar defining the width of the boxes associated with
-%               the central part of the search. The default width is 0.05;
+%               Example - 'quant',[0.01;0.99]
+%               Data Types - double
+%  CandleWidth:  width of the boxes associated with
+%               the central part of the search. Scalar.
+%               The default width is 0.05;
+%               Example - 'CandleWidth',0.01
+%               Data Types - double
 %   LineWidth : Line Width (in points) for the vertical lines outside the 
-%               boxes of the candles. The default LineWidth is 0.5 points.
-%     ylimy   : vector with two elements controlling minimum and maximum
-%               on the y axis. Default value is [-2 50] (automatic scale)
-%     xlimx   : vector with two elements controlling minimum and maximum
-%               on the x axis. Default value is '' (automatic scale)
+%               boxes of the candles. Scalar.
+%               The default LineWidth is 0.5 points.
+%               Example - 'LineWidth',0.01
+%               Data Types - double
+%     ylimy   : minimum and maximum
+%               on the y axis. Vector.
+%               Default value is [-2 50] (automatic scale)
+%               Example - 'ylimy',[0 10]
+%               Data Types - double
+%     xlimx   :  minimum and maximum
+%               on the x axis. Vector.
+%               Default value is '' (automatic scale)
+%               Example - 'xlimy',[0 10]
+%               Data Types - double
 %
 %
 %

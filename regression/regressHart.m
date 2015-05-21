@@ -63,28 +63,40 @@ function out=regressHart(y,X,Z,varargin)
 %
 %  Optional input arguments:
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
+%   intercept : Indicator for constant term. Scalar. 
+%               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-% initialbeta : p x 1 vector containing initial estimate of beta. If
-%               initialbeta is not supplied (default) standard least
+%               Example - 'intercept',1 
+%               Data Types - double
+% initialbeta : initial estimate of beta. Vector.
+%               p x 1 vector. If initialbeta is not supplied (default) standard least
 %               squares is used to find initial estimate of beta
-% initialgamma: vector of length (r+1) containing initial estimate of gamma.
-%               If initialgamma is not supplied (default)  initial estimate
+%               Example - 'initialbeta',[3.6 8.1] 
+%               Data Types - double
+% initialgamma: initial estimate of gamma. Vector.
+%                vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
 %               of gamma is nothing but the OLS estimate in a regression
 %               where the response is given by squared residuals and the
 %               regressors are specified in input object Z (this regression
 %               also contains a constant term).
-%     maxiter : scalar. Maximum number of iterations to find model paramters.
+%               Example - 'initialgamma',[0.6 2.8] 
+%               Data Types - double
+%     maxiter : Maximum number of iterations to find model paramters. Scalar. 
 %               If not defined, maxiter is fixed to 200. Remark: in order
 %               to obtain the FGLS estimator (two step estimator) it is
 %               enough to put maxiter=1.
-%     tol     : scalar. The tolerance for controlling convergence.
+%               Example - 'maxiter',8 
+%               Data Types - double
+%     tol     : The tolerance for controlling convergence. Scalar
 %               If not defined, tol is fixed to 1e-8. Convergence is
 %               obtained if ||d_old-d_new||/||d_new||<1e-8 where d is the
 %               vector of length p+r+1 which contains regression and scedastic
 %               coefficients d=(\beta' \gamma')'; while d_old and d_new are
 %               the values of d in iterations t and t+1 t=1,2, ..., maxiter
-%    msgiter : scalar. If msgiter=1 it is possible to see the estimates of
+%               Example - 'tol',0.0001 
+%               Data Types - double
+%    msgiter : Level of output to display. Scalar.
+%               If msgiter=1 it is possible to see the estimates of
 %               the regression and scedastic parameters together with their
 %               standard errors and the values of Wald, LM and
 %               Likelihood ratio test, and the value of the maximized
@@ -92,6 +104,8 @@ function out=regressHart(y,X,Z,varargin)
 %               monitor the estimates of the coefficients in each step of
 %               the iteration. If msgiter<1 nothing is displayed on the
 %               screen
+%               Example - 'msgiter',0 
+%               Data Types - double      
 %
 %  Output:
 %

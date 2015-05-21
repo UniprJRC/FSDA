@@ -43,16 +43,23 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %  Optional input arguments:
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
+%   intercept : Indicator for constant term. Scalar. 
+%               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-%      bsb :    m x 1 vector containing the units forming subset.
+%               Example - 'intercept',1 
+%               Data Types - double
+%      bsb :   units forming subset. Vector.
+%                m x 1 vector.
 %               The default value of bsb is 1:n1, that is all n1 units are
 %               used to compute beta1
 %               REMARK: if bsb='' (empty value) just prior information is
 %               used
-%      c  :     scalar between 0 (excluded) and 1 (included) which can be
-%               used to control the prior information
-%               about beta. The covariance matrix of the prior distribution
+%               Example - 'bsb',[3 5]
+%               Data Types - double
+%      c  :    it can be used to control the prior information
+%               about beta. Scalar.
+%               Scalar between 0 (excluded) and 1 (included).
+%               The covariance matrix of the prior distribution
 %               of \beta is (1/tau0)* (c X0'X0)^{-1} = (1/tau0)* (c*R)^{-1}
 %               therefore multiplication of R by c (with c<1) increases the
 %               variance of \beta.
@@ -70,7 +77,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               be useful in scaling X0 if the prior information is chosen
 %               according to a design that is not of the appropriate size
 %               to represent the amount of prior knowledge.
-%   stats:      scalar. If stats =1 the following additional statistics are
+%               Example - 'c',1.2
+%               Data Types - double
+%   stats:   additional statistics. Scalar.
+%               If stats =1 the following additional statistics are
 %               computed:
 %               1) Bayesian p-values
 %               2) highest posterior density intervals (HPDI) for each value
@@ -78,11 +88,15 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               3) posterior odds for beta_j=0
 %               4) posterior model probability of the model which excludes
 %               variable j
-%  conflev:     vector which contains the confidence levels to be used to
-%               compute HPDI. This input option is used just if input
+%               Example - 'stats',1
+%               Data Types - double
+%  conflev:     confidence levels to be used to
+%               compute HPDI. Vector.
+%               This input option is used just if input
 %               stats=1. The default value of conflev is [0.95 0.99] that
 %               is 95% and 99% HPDI confidence intervals are computed
-%
+%               Example - 'conflev',[0.99 0.999]
+%               Data Types - double
 % Output:
 %
 %  The output consists of a structure 'out' containing the following fields:

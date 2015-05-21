@@ -18,9 +18,14 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
+%   intercept :  Indicator for constant term. Scalar.
+%               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
+%               Example - 'intercept',1 
+%               Data Types - double
 %           h : The number of observations that have determined the least
+%                 trimmed squares estimator. Scalar. 
+%               The number of observations that have determined the least
 %               trimmed squares estimator. h is an integer greater than p
 %               (number of columns of matrix X including the intercept but
 %               smaller then n. If the purpose is outlier detection than h
@@ -28,7 +33,10 @@ function [out , varargout] = LXS(y,X,varargin)
 %               value). On the other hand if the purpose is to find
 %               subgroups of homogeneous observations h can be smaller than
 %               [0.5*(n+p+1)]. If h <p+1 an error will be given.
-%         bdp : scalar, breakdown point, measures the fraction of outliers
+%                 Example - 'h',round(n*0,75) 
+%                 Data Types - double
+%         bdp :  breakdown point. Scalar.
+%               It measures the fraction of outliers
 %               the algorithm should
 %               resist. In this case any value greater than 0 but smaller
 %               or equal than 0.5 will do fine. If on the other hand the
@@ -36,14 +44,20 @@ function [out , varargout] = LXS(y,X,varargin)
 %               0.5. In any case however n*(1-bdp) must be greater than
 %               p. If this condition is not fulfilled an error will be
 %               given. Please specify h or bdp not both.
+%                 Example - 'bdp',0.4
+%                 Data Types - double
 %       nsamp : Number of subsamples which will be extracted to find the
-%               robust estimator. If nsamp=0 all subsets will be extracted.
+%               robust estimator. Scalar.
+%               If nsamp=0 all subsets will be extracted.
 %               They will be (n choose p).
 %               Remark: if the number of all possible subset is <1000 the
 %               default is to extract all subsets, otherwise just 1000 if
 %               fastLTS is used (lms=2 or lms is a structure) or 3000 for
 %               standard LTS or LMS.
-%       lms   : Scalar or structure.
+%                 Example - 'nsamp',0
+%                 Data Types - double
+%       lms   : Criterion to use to find the initlal
+%                 subset to initialize the search. Scalar, vector or structure.
 %               If lms is a scalar = 1 (default) Least Median of Squares is
 %                       computed,
 %               else if lms is a scalar = 2 fast lts with the all default options is used
@@ -64,16 +78,23 @@ function [out , varargout] = LXS(y,X,varargin)
 %              lms.reftolbestr  : scalar. Default value of tolerance for the refining steps
 %                               for each of the best subsets
 %                               The default value is 1e-8.
-%       rew   : Scalar. If rew=1 the reweighted version of LTS (LMS) is
+%                 Example - 'lms',1 
+%                 Data Types - double
+%       rew   : LXS reweighted. Scalar. 
+%                If rew=1 the reweighted version of LTS (LMS) is
 %               used and the output quantities refer to the reweighted
 %               version
 %               else no reweighting is performed (default).
-%     conflev : Scalar between 0 and 1 containing Confidence level which is
-%               used to declare units as outliers.
+%                 Example - 'rew',1 
+%                 Data Types - double
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
-%       plots : Scalar or structure.
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, a plot which shows the
 %               robust residuals against index number is shown on the
 %               screen. The confidence level which is used to draw the
@@ -81,25 +102,37 @@ function [out , varargout] = LXS(y,X,varargin)
 %               residuals is as specified in input option conflev. If
 %               conflev is missing a nominal 0.975 confidence interval will
 %               be used.
-%        msg  : scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displayed
+%                 Example - 'plots',1 
+%                 Data Types - double
+%        msg  : It controls whether to display or not messages on the screen. Scalar.
+%                If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
 %               'MATLAB:nearlySingularMatrix' are set to off
 %               else no message is displayed on the screen
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
+%               Example - 'msg',1 
+%               Data Types - double
+%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additioanl column of ones for
 %               the intercept is not added. As default nocheck=0. The
 %               controls on h, bdp and nsamp still remain.
-%        nomes: Scalar. If nomes is equal to 1 no message about estimated
+%               Example - 'nocheck',1 
+%               Data Types - double
+%        nomes:  It controls whether to display or not on the screen
+%               messages about estimated  time to compute LMS (LTS) . Scalar.
+%               If nomes is equal to 1 no message about estimated
 %               time to compute LMS (LTS) is displayed, else if nomes is
 %               equal to 0 (default), a message about estimated time is
 %               displayed.
-%       yxsave : scalar that is set to 1 to request that the response
-%                vector y and data matrix X are saved into the output
-%                structure out. Default is 0, i.e. no saving is done.
+%               Example - 'nomes',1 
+%               Data Types - double
+%       yxsave : the response vector y and data matrix X are saved into the output
+%                structure out. Scalar.
+%               Default is 0, i.e. no saving is done.
+%               Example - 'yxsave',1 
+%               Data Types - double
 %
 %
 %       Remark: The user should only give the input arguments that have to

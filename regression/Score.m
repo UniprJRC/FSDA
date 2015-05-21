@@ -16,19 +16,30 @@ function [outSC]=Score(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%   intercept   : If 1, a model with constant term will be fitted (default),
-%                 else no constant term will be included.
-%           la  : vector which specifies for which values of the
+%  intercept :  Indicator for constant term. Scalar. If 1, a model with
+%               constant term will be fitted (default), if 0, no constant
+%               term will be included.
+%               Example - 'intercept',1 
+%               Data Types - double
+%           la  :It specifies for which values of the
 %                 transformation parameter it is necessary to compute the
-%                 score test.
+%                 score test. Vector.
 %                 Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
 %                 is the five most common values of lambda
-%           Lik : If 1 the value of the likelihood for the augmented model will be produced
+%               Example - 'la',[0 0.5]
+%               Data Types - double
+%           Lik : likelihood for the augmented model. Scalar.
+%                   If 1 the value of the likelihood for the augmented model will be produced
 %                 else (default) only the value of the score test will be given
-%       nocheck : Scalar. If nocheck is equal to 1 no check is performed on
+%               Example - 'Lik',0
+%               Data Types - double
+%       nocheck : Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
 %                 for the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1 
+%               Data Types - double
 %
 %  Output:
 %
