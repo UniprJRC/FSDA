@@ -116,7 +116,7 @@ function [out]=FSRaddt(y,X,varargin)
 %
 %  The output consists of a structure 'out' containing the following fields:
 %
-%  out.Tdel:    (n-init+1) x (p+1) matrix containing the monitoring of
+%  out.Tdel=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               deletion t stat in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = deletion t stat for first explanatory variable
@@ -124,14 +124,14 @@ function [out]=FSRaddt(y,X,varargin)
 %               ...
 %               (p+1)th col = deletion t stat for pth explanatory variable
 %
-%  out.S2del:   (n-init+1) x (p+1) matrix containing the monitoring of
+%  out.S2del=   (n-init+1) x (p+1) matrix containing the monitoring of
 %               deletion t stat in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = deletion t stat for first explanatory variable
 %               3rd col = deletion t stat for second explanatory variable
 %               ...
 %               (p+1)th col = deletion t stat for pth explanatory variable
-%    out.Una:   cell of size p.
+%    out.Una=   cell of size p.
 %               out.Una{i} (i=1, ..., p) is a (n-init) x 11 matrix which
 %               contains the unit(s) included in the subset at each step in
 %               the search which excludes the ith explanatory variable
