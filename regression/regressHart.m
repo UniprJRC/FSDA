@@ -1,4 +1,4 @@
-function out=regressHart(y,X,Z,varargin)
+function [out]=regressHart(y,X,Z,varargin)
 %regressHart fits a multiple linear regression model using art heteroskedasticity
 %
 %<a href="matlab: docsearchFS('regresshart')">Link to the help function</a>
@@ -109,22 +109,22 @@ function out=regressHart(y,X,Z,varargin)
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%  The output consists of a structure 'out' containing the following fields
 %
-%           out.Beta  : p-by-3 matrix containing
+%           out.Beta  = p-by-3 matrix containing
 %                       1st col = Estimates of regression coefficients
 %                       2nd col = Standard errors of the estimates of regr coeff
 %                       3rd col = t-tests of the estimates of regr coeff
-%           out.Gamma : (r+1)-by-3 matrix containing
+%           out.Gamma = (r+1)-by-3 matrix containing
 %                       1st col = Estimates of scedastic coefficients
 %                       2nd col = Standard errors of the estimates of scedastic coeff
 %                       3rd col = t tests of the estimates of scedastic coeff
-%          out.sigma2 : scalar. Estimate of \sigma^2 (sum of squares of
+%          out.sigma2 = scalar. Estimate of \sigma^2 (sum of squares of
 %                       residuals divided by n in the transformed scale)
-%              out.WA : scalar. Wald test
-%              out.LR : scalar. Likelihood ratio test
-%              out.LM : scalar. Lagrange multiplier test
-%            out.LogL : scalar. Complete maximized log likelihood
+%              out.WA = scalar. Wald test
+%              out.LR = scalar. Likelihood ratio test
+%              out.LM = scalar. Lagrange multiplier test
+%            out.LogL = scalar. Complete maximized log likelihood
 %
 %
 %   DETAILS. This routine implements art heteroscedasticity

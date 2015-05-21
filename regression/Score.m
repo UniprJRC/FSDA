@@ -45,14 +45,16 @@ function [outSC]=Score(y,X,varargin)
 %
 %  The output consists of a structure 'outSC' containing the following fields:
 %
-%        outSC.Score    =    score test (t test for additional constructed variable)
-%        outSC.Lik      =    value of the likelihood if input value Lik =1
+%        outSC.Score    =    score test. Scalar. t test for additional
+%                            constructed variable
+%        outSC.Lik      =    value of the likelihood. Scalar. This output
+%                           is produced just if input value Lik =1
 %
 % See also
 % 
-% FSRFAN
+% FSRfan
 %
-% References
+% References:
 %
 % Atkinson Riani (2000), equation (2.30) for the expression
 % for score test statistic.

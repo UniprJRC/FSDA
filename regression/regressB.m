@@ -23,7 +23,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               (1/tau0) (X0'X0)^{-1}
 %               \beta~N(    beta0, (1/tau0) (X0'X0)^{-1}    )
 %
-%   beta0 :     p-times-1 vector containing prior mean of \beta
+%   beta0 :     p-times-1 vector. Prior mean of \beta
 %    R    :     p-times-p positive definite matrix
 %               which can be interepreted as X0'X0 where X0 is a n0 x p
 %               matrix coming from previous experiments (assuming that the
@@ -52,10 +52,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %                m x 1 vector.
 %               The default value of bsb is 1:n1, that is all n1 units are
 %               used to compute beta1
-%               REMARK: if bsb='' (empty value) just prior information is
-%               used
 %               Example - 'bsb',[3 5]
 %               Data Types - double
+%               REMARK: if bsb='' (empty value) just prior information is
+%               used
 %      c  :    it can be used to control the prior information
 %               about beta. Scalar.
 %               Scalar between 0 (excluded) and 1 (included).
@@ -81,7 +81,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Data Types - double
 %   stats:   additional statistics. Scalar.
 %               If stats =1 the following additional statistics are
-%               computed:
+%               computed
 %               1) Bayesian p-values
 %               2) highest posterior density intervals (HPDI) for each value
 %               of input option conflev
@@ -100,10 +100,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 % Output:
 %
 %  The output consists of a structure 'out' containing the following fields:
-%     beta1:    p x 1 vector containing posterior mean (conditional on
+%   out.beta1=    p x 1 vector containing posterior mean (conditional on
 %               tau0) of \beta (regression coefficents)
 %               beta1 = (c*R + X'X)^{-1} (c*R*beta0 + X'y)
-%  covbeta1:    p x p matrix containing posterior covariance matrix
+%  out.covbeta1=    p x p matrix containing posterior covariance matrix
 %               (conditional on tau1) of \beta
 %               covbeta1 = (1/tau1) * (c*R + X'X)^{-1}
 %               where tau1 is defined as a1/b1 (that is through the gamma
@@ -111,9 +111,9 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %               The posterior distribution of \tau is a gamma distribution
 %               with parameters a1 and b1
-%     a1    :   scalar parameter of the posterior gamma distribution of tau
+%   out.a1    =   scalar parameter of the posterior gamma distribution of tau
 %               a1 = 0.5 (c*n0 + n1)
-%     b1    :   scalar parameter of the posterior gamma distribution of tau
+%   out.b1    =   scalar parameter of the posterior gamma distribution of tau
 %               b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )
 %
 %               Remark: note that if bsb is supplied X'X and X'y and n1 are
@@ -121,7 +121,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the
 %               previous quantities are estimated just using the units
 %               forming subset
-%       res :   n1-times-2 matrix
+%    out.res =   n1-times-2 matrix
 %               1st column = raw residuals
 %               res(i,1) is computed as y(i) - X(i,:)*beta1 where beta1 is
 %               computed using the units forming subset.
@@ -139,10 +139,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %       The additional output which follows is produced just if input
 %       scalar stats is equal 1
 %
-%     Bpval :   p-by-1 vector containing Bayesian p-values.
+%    out.Bpval =   p-by-1 vector containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
-%    Bhpd   :   p-by-2*length(conflev) matrix. 
+%    out.Bhpd  =   p-by-2*length(conflev) matrix. 
 %               1st column = lower bound of HPDI associated with conflev(1)
 %               2st column = upper bound of HPDI associated with conflev(1)
 %               ...
@@ -150,11 +150,11 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               with conflev(end)
 %               2*length(conflev) column (last column) = upper bound of
 %               HPDI associated with conflev(end)
-%  postodds :   p-by-1 vector which contains posterior odds for betaj=0
+%  out.postodds :   p-by-1 vector which contains posterior odds for betaj=0
 %               For example the posterior odd of beta0=0 is p(y| model which contains
 %               all expl variables except the one associated with beta0) divided by
 %               p(y| model which contains all expl variables)
-% modelprob :   p-by-1 vector which contains  posterior model probability
+% out.modelprob :   p-by-1 vector which contains  posterior model probability
 %               of the model which excludes variable j. For example if
 %               modelprob(j)= 0.28, that is if the probability of the model
 %               which does not contain variable j is equal to 0.28, it

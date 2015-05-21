@@ -1,4 +1,4 @@
-function out=regressHhar(y,X,Z,varargin)
+function [out]=regressHhar(y,X,Z,varargin)
 %regressH fits a multiple linear regression model with Harvey heteroskedasticity
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
@@ -113,7 +113,7 @@ function out=regressHhar(y,X,Z,varargin)
 %               
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%  The output consists of a structure 'out' containing the following fields
 %
 %           out.Beta  : p-by-3 matrix containing
 %                       1st col = Estimates of regression coefficients
