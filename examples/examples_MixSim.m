@@ -225,7 +225,7 @@ gscatter(A3(:,1), A3(:,2), id3);
 
 %% Example 2 of Section 3.3 plot (d),  300 observations in 2 dimensions with prespecififed max overlap, transformed using Box Cox
 clearvars -except RandomDataFromR; close all;
-    
+
 if RandomDataFromR == true
     R_seed = 1238;
     if R_seed
@@ -458,3 +458,49 @@ cascade
 disp('Comparison using interactive scatter plot matrices')
 disp('Please click on the legends to hide/show groups')
 
+
+%% Contamination of the denoised M5data with uniform noise
+Y=load('M5data.txt');
+Y1=Y(1:1800,1:2);
+Mu=grpstats(Y1,Y(1:1800,3));
+
+S=zeros(2,2,3);
+S(:,:,1)=cov(Y1(1:360,:));
+S(:,:,2)=cov(Y1(361:361+719,:));
+S(:,:,3)=cov(Y1(361+720:1800,:));
+
+pigen=[0.2;0.4;0.4];
+% Add 1000 outliers from uniform using alpha=0.05
+noisevars=0;
+noiseunits=struct;
+noiseunits.number=1000;
+noiseunits.alpha=0.05;
+
+% In this case the first argument which is supplied to simdataset is
+% the original matrix X
+[Y1withnoise,id]=simdataset(Y1, pigen, Mu, S,'noisevars',noisevars,'noiseunits',noiseunits);
+spmplot(Y1withnoise,id);
+
+
+%% Contamination of the denoised M5data with uniform noise
+Y=load('M5data.txt');
+Y1=Y(1:1800,1:2);
+Mu=grpstats(Y1,Y(1:1800,3));
+
+S=zeros(2,2,3);
+S(:,:,1)=cov(Y1(1:360,:));
+S(:,:,2)=cov(Y1(361:361+719,:));
+S(:,:,3)=cov(Y1(361+720:1800,:));
+
+pigen=[0.2;0.4;0.4];
+% Add 1000 outliers from \chi^2_{40} uniform using alpha=0.05
+noisevars=0;
+noiseunits=struct;
+noiseunits.number=1000;
+noiseunits.alpha=0.05;
+noiseunits.typeout={'Chisquare40'};
+
+% In this case the first argument which is supplied to simdataset is
+% the original matrix X
+[Y1withnoise,id]=simdataset(Y1, pigen, Mu, S,'noisevars',noisevars,'noiseunits',noiseunits);
+spmplot(Y1withnoise,id);
