@@ -87,7 +87,7 @@ function [out]=regressHart(y,X,Z,varargin)
 %               enough to put maxiter=1.
 %               Example - 'maxiter',8 
 %               Data Types - double
-%     tol     : The tolerance for controlling convergence. Scalar
+%     tol     : The tolerance for controlling convergence. Scalar.
 %               If not defined, tol is fixed to 1e-8. Convergence is
 %               obtained if ||d_old-d_new||/||d_new||<1e-8 where d is the
 %               vector of length p+r+1 which contains regression and scedastic

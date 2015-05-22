@@ -46,7 +46,7 @@ function outms = FSRms(y,X,varargin)
 %                   Number of subsamples which will be extracted to find the
 %               robust estimator. If nsamp=0 all subsets will be extracted.
 %               They will be (n choose smallp).
-%               Remark: if the number of all possible subset is <1000 the
+%               Remark. if the number of all possible subset is <1000 the
 %               default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000 
 %                 Data Types - double

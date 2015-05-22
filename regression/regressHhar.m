@@ -91,7 +91,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               enough to put maxiter=1.
 %               Example - 'maxiter',8 
 %               Data Types - double
-%     tol     : The tolerance for controlling convergence. Scalar
+%     tol     : The tolerance for controlling convergence. Scalar.
 %               If not defined, tol is fixed to 1e-8. Convergence is
 %               obtained if ||d_old-d_new||/||d_new||<1e-8 where d is the
 %               vector of length p+r+1 which contains regression and scedastic
@@ -115,20 +115,20 @@ function [out]=regressHhar(y,X,Z,varargin)
 %
 %  The output consists of a structure 'out' containing the following fields
 %
-%           out.Beta  : p-by-3 matrix containing
+%           out.Beta  = p-by-3 matrix containing
 %                       1st col = Estimates of regression coefficients
 %                       2nd col = Standard errors of the estimates of regr coeff
 %                       3rd col = t-tests of the estimates of regr coeff
-%           out.Gamma : (r+1)-by-3 matrix containing
+%           out.Gamma = (r+1)-by-3 matrix containing
 %                       1st col = Estimates of scedastic coefficients
 %                       2nd col = Standard errors of the estimates of scedastic coeff
 %                       3rd col = t tests of the estimates of scedastic coeff
 %                       Remark: the first row of matrix out.Gamma is
 %                       referred to the estimate of \sigma
-%              out.WA : scalar. Wald test
-%              out.LR : scalar. Likelihood ratio test
-%              out.LM : scalar. Lagrange multiplier test
-%            out.LogL : scalar. Complete maximized log likelihood
+%              out.WA = scalar. Wald test
+%              out.LR = scalar. Likelihood ratio test
+%              out.LM = scalar. Lagrange multiplier test
+%            out.LogL = scalar. Complete maximized log likelihood
 %
 %
 %   DETAILS. This routine implements Harvey’s (1976) model of

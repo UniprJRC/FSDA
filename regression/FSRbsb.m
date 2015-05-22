@@ -51,7 +51,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %        automatically be excluded from the computations. y can be both a
 %        row of column vector.
 %
-% OUTPUT 
+% Output: 
 %
 %   Un:         (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search REMARK: in

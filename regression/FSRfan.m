@@ -111,7 +111,10 @@ function [out]=FSRfan(y,X,varargin)
 %                   Example - 'FontSize',20
 %                   Data Types - double
 %    SizeAxesNum:   Scalar which controls the size of the numbers of the
-%                   axes. Default value is 10.
+%                   axes. Scalar.
+%                   Default value is 10. 
+%                  Example - 'SizeAxesNum',12
+%                  Data Types - double
 %         msg   : Level of output to display. Scalar.
 %                   scalar which controls whether to display or not
 %                   messages on the screen. Scalar.
