@@ -100,21 +100,22 @@ function [out] = FSRBeda(y, X, varargin)
 %
 % Output:
 %
-%   The output consists of a structure 'out' containing the following fields
-%   RES:        n x (n-init+1) = matrix containing the monitoring of
+%   The output consists of a structure 'out' containing the following
+%   fields:
+%   out.RES=        n x (n-init+1) = matrix containing the monitoring of
 %               scaled residuals
 %               1st row = residual for first unit ......
 %               nth row = residual for nth unit.
-%   LEV:        (n+1) x (n-init+1) = matrix containing the monitoring of
+%   out.LEV=        (n+1) x (n-init+1) = matrix containing the monitoring of
 %               leverage
 %               1st row = leverage for first unit ......
 %               nth row = leverage for nth unit.
-%    BB:        n x (n-init+1) matrix containing the information about the units belonging
+%    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
 %               to the subset at each step of the forward search.
 %               1st col = indexes of the units forming subset in the initial step
 %               ...
 %               last column = units forming subset in the final step (all units)
-%   mdr:        n-init x 3 matrix which contains the monitoring of Bayesian
+%   out.mdr=        n-init x 3 matrix which contains the monitoring of Bayesian
 %               minimum deletion residual or (m+1)ordered residual  at each
 %               step of the forward search.
 %               1st col = fwd search index (from init to n-1)
@@ -123,49 +124,49 @@ function [out] = FSRBeda(y, X, varargin)
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
 %               it corresponds to a negative residual
-%   msr:        n-init+1 x 3 = matrix which contains the monitoring of
+%   out.msr=       n-init+1 x 3 = matrix which contains the monitoring of
 %               maximum studentized residual or m-th ordered residual
 %               1st col = fwd search index (from init to n)
 %               2nd col = maximum studentized residual
 %               3rd col = (m)-ordered studentized residual
-%  Bols:        (n-init+1) x (p+1) matrix containing the monitoring of
+%  out.Bols:=        (n-init+1) x (p+1) matrix containing the monitoring of
 %               posterior mean (conditional on
 %               tau0) of \beta (regression coefficents)
 %               beta1 = (c*R + X'X)^{-1} (c*R*beta0 + X'y)
-%  covbeta1:    p x p x (n-init+1) 3D array containing posterior covariance matrix
+%  out.covbeta1=    p x p x (n-init+1) 3D array containing posterior covariance matrix
 %               (conditional on tau1) of \beta
 %               covbeta1 = (1/tau1) * (c*R + X'X)^{-1}
 %               where tau1 is defined as a1/b1 (that is through the gamma
 %               parameters of the posterior distribution of \tau)
 %               The posterior distribution of \tau is a gamma distribution
 %               with parameters a1 and b1
-%    Gam    :   (n-init+1) x 3 matrix containing
+%    out.Gam    =  (n-init+1) x 3 matrix containing
 %               1st col = fwd search index (from init to n)
 %               2nd col = parameter a1 of the posterior gamma distribution of tau
 %               3rd col = parameter b1 of the posterior gamma distribution of tau
 %               Remark: a1 = 0.5 (c*n0 + m) where m is subset size
 %                       b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )
-%    S2:        (n-init+1) x 3 matrix containing the monitoring of S2 or R2
+%    out.S2=       (n-init+1) x 3 matrix containing the monitoring of S2 or R2
 %               in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = monitoring of S2 (S2 is nothing but 1/tau1)
 %               3rd col = monitoring of R2
-%   Coo:        (n-init+1) x 2 matrix containing the monitoring of Cook or
+%   out.Coo=        (n-init+1) x 2 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = monitoring of Cook distance
-%     Bpval :   (n-init+1) x (p+1) containing Bayesian p-values.
+%     out.Bpval =   (n-init+1) x (p+1) containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
 %               1st col = fwd search index (from init to n)
 %               2nd col = p-value for first variable
 %               ...
 %               (p+1) col = p-value for p-th variable
-%    Bhpd   :   (n-init+1)-by-2-by-p 3D array.
+%    out.Bhpd   =  (n-init+1)-by-2-by-p 3D array.
 %               Bhpd(:,:,1) = lower and upper HPDI conflev for first variable
 %               ...
 %               Bhpd(:,:,p) = lower and upper HPDI conflev for p-th variable
-%  postodds :   (n-init+1)-by-(p+1) matrix which contains posterior odds for betaj=0
+%  out.postodds =   (n-init+1)-by-(p+1) matrix which contains posterior odds for betaj=0
 %               For example the posterior odd of beta0=0 is p(y| model which contains
 %               all expl variables except the one associated with beta0) divided by
 %               p(y| model which contains all expl variables)
@@ -173,7 +174,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               2nd col = posterior odd for beta1
 %               ...
 %               (p+1) col = posterior odd for betap
-% modelprob :   (n-init+1)-by-(p+1) matrix which contains which contains
+% out.modelprob =   (n-init+1)-by-(p+1) matrix which contains which contains
 %               posterior model probability of the model which excludes
 %               variable j. For example if modelprob(j)= 0.28, that is if
 %               the probability of the model which does not contain
@@ -184,19 +185,19 @@ function [out] = FSRBeda(y, X, varargin)
 %               ...
 %               (p+1) col = posterior model prob of the model which
 %               excludes betap
-%    Un:        (n-init) x 11 matrix which contains the unit(s)
+%    out.Un=        (n-init) x 11 matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
-%     y:        A vector with n elements that contains the response
+%     out.y=        A vector with n elements that contains the response
 %               variable which has been used
-%     X:        Data matrix of explanatory variables
+%     out.X=       Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1)
-%class :        string FSRBeda.
+%out.class =        string FSRBeda.
 %
 %
 % See also FSRB, regressB, FSRBmdr
