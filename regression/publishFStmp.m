@@ -253,13 +253,13 @@ for j=1:length(sintax)
                 end
             elseif i==noutel
                 outi=outs(commaspos(i-1)+1:end);
-                outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' outi(1:end-1) '"><code>' outi(1:end-1) '</code></a>]\r'])];
+                outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' strtrim(outi(1:end-1)) '"><code>' outi(1:end-1) '</code></a>]\r'])];
                 if j==length(sintax)
                     listargouts{i}=strtrim(outi(1:end-1));
                 end
             else
                 outi=outs(commaspos(i-1)+1:commaspos(i));
-                outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' outi(1:end-1) '"><code>' outi(1:end-1) '</code></a>,\r'])];
+                outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' strtrim(outi(1:end-1)) '"><code>' outi(1:end-1) '</code></a>,\r'])];
                 if j==length(sintax)
                     listargouts{i}=strtrim(outi(1:end-1));
                 end
@@ -267,13 +267,13 @@ for j=1:length(sintax)
             
         end
     else
-        outi=outs;
+        outi=strtrim(outs);
         outstring=sprintf(['<a class="intrnllnk" href="#outputarg_' outi '"><code>' outi '</code></a>\r']);
         if j==length(sintax)
             % TOCHECK
             % listargouts{j}=outi;
             listargouts=cell(1,1);
-            listargouts{1}=strtrim(outi);
+            listargouts{1}=outi;
         end
     end
     
@@ -771,13 +771,23 @@ for i=1:nargout
     % substring to search start from Output:
     fstringsel=fstring(outsel(1):end);
     
-    % The initial point of the string is 'listargouts{i} :' or
-    % 'listargouts{i}'
-    if length(listargouts)>1 && isempty(strcmp(listargouts{end},'varargout'))
+    % The initial point of the string is 'listargouts{i}' is there is just
+    % one output else is string 'listargouts{i} :' is there is more than
+    % one output and this is not varargout 
+    % else if there is varargour the initialpoint is the string  
+    % "Optional Output:" 
+    if length(listargouts)==1
+         inipoint=regexp(fstringsel,listargouts{i});
+    elseif  i<length(listargouts) 
         inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
     else
-        inipoint=regexp(fstringsel,listargouts{i});
+        if strcmp(listargouts{end},'varargout') ==0
+             inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
+        else
+        inipoint=regexp(fstringsel,'Optional Output:')+8;
+        end
     end
+    
     if isempty(inipoint)
         error(['Output argument ' listargouts{i} ' has not been found'])
     end

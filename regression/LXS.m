@@ -143,7 +143,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields
+%  out :     A structure containing the following fields
 %
 %            out.rew  = Scalar if out.rew=1 all subsequent output refers to
 %                       reweighted else no reweighting is done.
