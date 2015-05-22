@@ -247,7 +247,7 @@ for j=1:length(sintax)
         for i=1:noutel
             if i==1
                 outi=['[' outs(2:commaspos(i))];
-                outstring=[outstring sprintf(['[' '<a class="intrnllnk" href="#outputarg_' outi(2:end-1) '"><code>' outi(2:end-1) '</code></a>,\r'])];
+                outstring=[outstring sprintf(['[' '<a class="intrnllnk" href="#outputarg_' strtrim(outi(2:end-1)) '"><code>' outi(2:end-1) '</code></a>,\r'])];
                 if j==length(sintax)
                     listargouts{i}=strtrim(outi(2:end-1));
                 end
@@ -297,6 +297,7 @@ for j=1:length(sintax)
             else
                 inpi=inps(commaspos(i-1)+1:commaspos(i));
             end
+           inpi=strtrim(inpi);
            
             if (strcmp(inpi,'Name,') + strcmp(inpi,'Value'))>0
                 inpstring=[inpstring sprintf('<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>\r')]; %#ok<*AGROW>
