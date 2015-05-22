@@ -7,13 +7,14 @@ function [out]=addt(y,X,w,varargin)
 %
 %       y:  A vector with n elements that contains the response variable.
 %           y can be both a row of column vector.
-%       X:  Data matrix of explanatory variables (also called 'regressors')
-%           Rows of X represent observations, and columns represent
+%       X:  Data matrix of explanatory variables (also called
+%           'regressors').
+%           Rows of X represent observations and columns represent
 %           variables.
 %           Missing values (NaN's) and infinite values (Inf's) are allowed,
 %           since observations (rows) with missing or infinite values will
 %           automatically be excluded from the computations.
-%       w:  additional explanatory variable whose t test must be computed
+%       w:  additional explanatory variable whose t test must be computed.
 %
 % Optional input arguments:
 %
@@ -60,11 +61,11 @@ function [out]=addt(y,X,w,varargin)
 % Output:
 %
 %  The output consists of a structure 'out' containing the following fields:
-%       out.b:          estimate of the slope for additional explanatory
+%       out.b=          estimate of the slope for additional explanatory
 %                       variable
-%       out.S2add:  estimate of s^2 of the model which contains the
+%       out.S2add=  estimate of s^2 of the model which contains the
 %                       additional explanatory variable
-%       out.Tadd:         t statistic for additional explanatory variable
+%       out.Tadd=         t statistic for additional explanatory variable
 %
 % See also FSRaddt
 %

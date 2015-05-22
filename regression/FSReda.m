@@ -69,20 +69,20 @@ function [out] = FSReda(y,X,bsb,varargin)
 % Output:
 %
 %   The output consists of a structure 'out' containing the following fields:
-%   RES:        n x (n-init+1) = matrix containing the monitoring of
+%   out.RES=        n x (n-init+1) = matrix containing the monitoring of
 %               scaled residuals
 %               1st row = residual for first unit ......
 %               nth row = residual for nth unit.
-%   LEV:        (n+1) x (n-init+1) = matrix containing the monitoring of
+%   outLEV=        (n+1) x (n-init+1) = matrix containing the monitoring of
 %               leverage
 %               1st row = leverage for first unit ......
 %               nth row = leverage for nth unit.
-%    BB:        n x (n-init+1) matrix containing the information about the units belonging
+%    outBB=        n x (n-init+1) matrix containing the information about the units belonging
 %               to the subset at each step of the forward search.
 %               1st col = indexes of the units forming subset in the initial step
 %               ...
 %               last column = units forming subset in the final step (all units)
-%   mdr:        n-init x 3 matrix which contains the monitoring of minimum
+%   out.mdr=        n-init x 3 matrix which contains the monitoring of minimum
 %               deletion residual or (m+1)ordered residual  at each step of
 %               the forward search.
 %               1st col = fwd search index (from init to n-1)
@@ -91,45 +91,45 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
 %               it corresponds to a negative residual
-%   msr:        n-init+1 x 3 = matrix which contains the monitoring of
+%   out.msr=        n-init+1 x 3 = matrix which contains the monitoring of
 %               maximum studentized residual or m-th ordered residual
 %               1st col = fwd search index (from init to n)
 %               2nd col = maximum studentized residual
 %               3rd col = (m)-ordered studentized residual
-%   nor:        (n-init+1) x 4 matrix containing the monitoring of
+%   out.nor=        (n-init+1) x 4 matrix containing the monitoring of
 %               normality test in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = Asymmetry test
 %               3rd col = Kurtosis test
 %               4th col = Normality test
-%  Bols:        (n-init+1) x (p+1) matrix containing the monitoring of
+%  out.Bols=        (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward search
-%    S2:        (n-init+1) x 3 matrix containing the monitoring of S2 or R2
+%    out.S2=       (n-init+1) x 3 matrix containing the monitoring of S2 or R2
 %               in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = monitoring of S2
 %               3rd col = monitoring of R2
-%   Coo:        (n-init+1) x 3 matrix containing the monitoring of Cook or
+%   out.Coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = monitoring of Cook distance
 %               3rd col = monitoring of modified Cook distance
-%  Tols:        (n-init+1) x (p+1) matrix containing the monitoring of
+%  out.Tols=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated t-statistics (as specified in option input 'tstat'
 %               in each step of the forward search
-%    Un:        (n-init) x 11 Matrix which contains the unit(s)
+%   out.Un=        (n-init) x 11 Matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
-%     y:        A vector with n elements that contains the response
+%     out.y=     A vector with n elements that contains the response
 %               variable which has been used
-%     X:        Data matrix of explanatory variables
+%     out.X=    Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1)
-%class :        string FSReda.
+%  out.class =  string FSReda.
 %
 %
 % See also LXS.m, FSRbsb.m

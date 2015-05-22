@@ -33,10 +33,11 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %               finvFS and tinvFS. The solution has a tolerance of 1e-8
 %               (change variable tol in files finvFS.m and tinvFS.m if
 %               required.
-%               Remark: the use of functions tinv and finv is more precise
-%               but requires more time.
 %               Example - 'exact',0
 %               Data Types - double
+%               Remark: the use of functions tinv and finv is more precise
+%               but requires more time.
+%
 %  Output:
 %
 %  MDRenv:      matrix with n-m0+1 rows and length(prob)+1 columns

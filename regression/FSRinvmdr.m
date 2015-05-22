@@ -24,7 +24,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %               If plots = 1, a plot which shows the
 %               confidence level of mdr in each step is shown on the
 %               screen.
-%               Remark: three horizontal lines associated respectively with
+%               Remark. three horizontal lines associated respectively with
 %               values  0.01 0.5 and 0.99  are added to the plot
 %               If plots is a structure the user can specify the following options
 %                   conflev = vector containing horizontal lines associated

@@ -105,6 +105,7 @@ finsitecont=sprintf(['<h2 id="syntax">Syntax</h2>\r'...
 
 sitecont=[inisitecont htmlsitecont finsitecont];
 
+% Find point where first argument are declared
 
 % Now find the number of required input
 % arguments and if there are varargin
@@ -112,9 +113,20 @@ sitecont=[inisitecont htmlsitecont finsitecont];
 % arguments
 % Find the string containing output arguments
 %outargs= [out1, out2, out3]
-[startIndex] = regexp(fstring,'[');
-[endIndex] = regexp(fstring,']');
-outargs=fstring(startIndex(1):endIndex(1));
+[startIndexEq] = regexp(fstring,'=');
+
+[startIndex] = regexp(fstring(1:startIndexEq(1)),'[');
+[endIndex] = regexp(fstring(1:startIndexEq(1)),']');
+% if startindex is empty it means there is a single output which is not
+% enclosed in square brackets
+if isempty(startIndex)
+    outargs=['[' strtrim(fstring(9:startIndexEq(1)-1)) ']'];
+else
+    outargs=fstring(startIndex(1):endIndex(1));
+    
+end
+
+
 % Find number of output arguments
 % nargout = number of commas in string  outargs= [out1, out2, out3] +1
 [commasOut] = regexp(outargs,',');
@@ -126,10 +138,10 @@ end
 
 % Find number of compulasory input arguments
 % nargin = number of commas in string  functionname(inp1,inp2,inp3, ...)
-[startIndex] = regexp(fstring,'(');
-[endIndex] = regexp(fstring,')');
+[startIndexInp] = regexp(fstring,'(');
+[endIndexInp] = regexp(fstring,')');
 % inputargs =  (inp1,inp2,inp3, ...)
-inputargs=fstring(startIndex(1):endIndex(1));
+inputargs=fstring(startIndexInp(1):endIndexInp(1));
 % Check if inputargs contains the string varargin
 [optargs1]=regexp(inputargs,'varargin');
 [commasIn] = regexp(inputargs,',');
@@ -200,6 +212,10 @@ inidescription=sprintf(['	<div class="ref_sect" itemprop="content">\r'...
 
 descriptionhtml='';
 
+disp('Examples')
+disp(sintax)
+disp('---------------')
+
 for j=1:length(sintax)
     
     descriptionini=sprintf(['<div class="description_element">\r'...
@@ -233,19 +249,19 @@ for j=1:length(sintax)
                 outi=['[' outs(2:commaspos(i))];
                 outstring=[outstring sprintf(['[' '<a class="intrnllnk" href="#outputarg_' outi(2:end-1) '"><code>' outi(2:end-1) '</code></a>,\r'])];
                 if j==length(sintax)
-                    listargouts{i}=outi(2:end-1);
+                    listargouts{i}=strtrim(outi(2:end-1));
                 end
             elseif i==noutel
                 outi=outs(commaspos(i-1)+1:end);
                 outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' outi(1:end-1) '"><code>' outi(1:end-1) '</code></a>]\r'])];
                 if j==length(sintax)
-                    listargouts{i}=outi(1:end-1);
+                    listargouts{i}=strtrim(outi(1:end-1));
                 end
             else
                 outi=outs(commaspos(i-1)+1:commaspos(i));
                 outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' outi(1:end-1) '"><code>' outi(1:end-1) '</code></a>,\r'])];
                 if j==length(sintax)
-                    listargouts{i}=outi(1:end-1);
+                    listargouts{i}=strtrim(outi(1:end-1));
                 end
             end
             
@@ -257,7 +273,7 @@ for j=1:length(sintax)
             % TOCHECK
             % listargouts{j}=outi;
             listargouts=cell(1,1);
-            listargouts{1}=outi;
+            listargouts{1}=strtrim(outi);
         end
     end
     
@@ -281,7 +297,7 @@ for j=1:length(sintax)
             else
                 inpi=inps(commaspos(i-1)+1:commaspos(i));
             end
-            inpi=strtrim(inpi);
+           
             if (strcmp(inpi,'Name,') + strcmp(inpi,'Value'))>0
                 inpstring=[inpstring sprintf('<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>\r')]; %#ok<*AGROW>
                 break
@@ -444,7 +460,12 @@ for i=1:nREQargin
     posfirstcomma=regexp(descriinput,',','once');
     posfirstfullstop=regexp(descriinput,'\.','once');
     sep=min([posfirstcomma posfirstfullstop]);
-    preamble=descriinput(1:sep-1);
+    if isempty(sep)
+        warning('FSDA:MISSdescr',['In the description of ' listargins{i} ' String ''' descriinput ''' does not contain symbols '','' or ''.'''])
+        preamble=descriinput;
+    else
+        preamble=descriinput(1:sep-1);
+    end
     preamble=strtrim(preamble);
     % remove sign : if present at the beginning of the sentence
     if strcmp(preamble(1),':')
@@ -453,8 +474,9 @@ for i=1:nREQargin
     descriinput=descriinput(sep+1:end);
     % Start with upper case character
     descriinput=strtrim(descriinput);
+    if ~isempty(descriinput)
     descriinput=[upper(descriinput(1)) descriinput(2:end)];
-    
+    end
     
     % disp(inpi)
     reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
@@ -627,6 +649,8 @@ for i=1:length(ini)
 end
 listOptArgs=listOptArgs(1:ij-1,:);
 
+disp('Optional arguments found')
+disp(listOptArgs(:,1))
 
 codewithexample=['''Distance'',''cosine'',''Replicates'',10,' ...
     '''Options'',statset(''UseParallel'',1)'];
@@ -636,7 +660,7 @@ for i=1:size(listOptArgs,1)
     NamVali=listOptArgs{i,5};
     if isempty(NamVali)
         error('FSDA:missingex',['Optional input argument  ' listOptArgs{i,1} ...
-            'does not seem to contain an example'])
+            ' does not seem to contain an example (or alternatively string remark has not been put at the end)'])
     end
     % Add as example only those which do finish with </code>, that is just
     % those which do not contain exaplanations
@@ -716,6 +740,12 @@ inioutargs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
 % outargs = strings which contains output arguements (includeing [])
 % nargout = number of output arguments
 outargshtml='';
+
+% check if the last element of listargouts is varargout
+% listargouts
+%  Optional Output:
+
+
 for i=1:nargout
     %     if nargout>1
     %             if i==1
@@ -740,7 +770,10 @@ for i=1:nargout
     
     % substring to search start from Output:
     fstringsel=fstring(outsel(1):end);
-    if length(listargouts)>1
+    
+    % The initial point of the string is 'listargouts{i} :' or
+    % 'listargouts{i}'
+    if length(listargouts)>1 && isempty(strcmp(listargouts{end},'varargout'))
         inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
     else
         inipoint=regexp(fstringsel,listargouts{i});
@@ -750,8 +783,18 @@ for i=1:nargout
     end
     
     % The endpoint of the substring is See also or the next output argument
-    if i <nargout
+    if i <nargout-1
         endpoint=regexp(fstringsel,listargouts{i+1});
+    elseif i==nargout-1
+        
+        if strcmp(listargouts{end},'varargout') ==0
+            endpoint=regexp(fstringsel,listargouts{i+1});
+        else
+            % In this case there are also optional arguments
+            endpoint=regexp(fstringsel,'Optional Output:');
+            outoptargs=1;
+        end
+        
     else
         endpoint=regexp(fstringsel,'See also');
         if isempty(endpoint)
@@ -759,14 +802,15 @@ for i=1:nargout
             error('FSDA:missOuts','HTML file does not contain ''See also:'' string')
         end
     end
+    
+    
+    
     % descri = string which contains the description of i-th output
     % argument
     try
         descrioutput=fstringsel((inipoint(1)+length(listargouts{i})+2):endpoint(1)-1);
     catch
-        disp(['Could not process output argument' listargouts{i}])
-        
-        
+        disp(['Could not process correctly output argument ' listargouts{i}])
         ddd=1;
     end
     
@@ -781,7 +825,12 @@ for i=1:nargout
     
     
     if ~isempty(checkifstructure)
-        [ini,fin]=regexp(descrioutput,['\s{0,5}' outi '\.\w*\s{0,5}=']);
+        [ini,fin]=regexp(descrioutput,['\s{0,8}' outi '\.\w*\s{0,8}=']);
+        if isempty(ini)
+            disp('Probably ":" symbols  must be replaced with "=" symbols in out description')
+            error(['Parser cannot find string' outi '.xxxx = for output structure'])
+        else
+        end
         
         listStruArgs=cell(length(ini),2);
         
@@ -805,6 +854,21 @@ for i=1:nargout
             listStruArgs{k,2}=StructFieldCont;
         end
         
+        % rowtodel = vector which contains the duplicate rows of
+        % listStruArgs which have to be deleted
+        inisel=1:size(listStruArgs,1);
+        
+        % Check if cell listStruArgs contains duplicates in the first column
+        for j=2:size(listStruArgs,1)
+            if strcmp(listStruArgs{j,1},listStruArgs{j-1,1})
+                listStruArgs{j-1,2}=[listStruArgs{j-1,2} listStruArgs{j,1} listStruArgs{j,2}];
+                inisel(j)=999;
+            end
+        end
+        % remove from inisel the rows equal to 999 (that is the rows which
+        % correspond to duplicated arguments)
+        inisel(inisel==999)=[];
+        
         iniTable=sprintf(['<table border="2" cellpadding="4" cellspacing="0" class="body">\r'...
             '<colgroup>\r'...
             '<col width="50%"><col width="50%">\r'...
@@ -817,13 +881,13 @@ for i=1:nargout
             '</thead>']);
         
         Tablehtml='';
-        for k=1:length(ini)
-            Tablehtml=sprintf([Tablehtml '<tr valign="top">\r'...
+        for k=inisel % length(ini)
+            Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
                 '<td><code>' listStruArgs{k,1} '</code></td>\r'...
                 '<td>\r'...
-                '<p>' listStruArgs{k,2} '</p>\r'...
+                '<p>']) listStruArgs{k,2} sprintf(['</p>\r'...
                 '</td>\r'...
-                '</tr>']);
+                '</tr>'])];
         end
         
         cloTable='</table>';
@@ -832,7 +896,7 @@ for i=1:nargout
         
         preamble='A structure containing the following fields:';
         
-        outargshtml=sprintf([outargshtml sprintf(['<div class="expandableContent">\r'...
+        outargshtml=[outargshtml sprintf(['<div class="expandableContent">\r'...
             '<div id="outputarg_' outi '" class="clearfix">\r'...
             '</div>\r'...
             '<h3 id="output_argument_' outi '" class="expand">\r'...
@@ -841,9 +905,9 @@ for i=1:nargout
             '<span class="argument_name"><code>' outi '</code> &#8212; description</span></a>\r'...
             '<span class="example_desc">' preamble '</span></span></h3>\r'...
             '<div class="collapse">\r'...
-            '<p>' descrioutput '</p>\r'...
+            '<p>']) descrioutput sprintf(['</p>\r'...
             '</div>\r'...
-            '</div>'])]);
+            '</div>'])];
         
     else
         % Check if string descrioutput contains the words 'which contains' or
@@ -899,18 +963,18 @@ for i=1:nargout
         
         preamble=strtrim(preamble);
         
-        outargshtml=sprintf([outargshtml sprintf(['<div class="expandableContent">\r'...
+        outargshtml=[outargshtml sprintf(['<div class="expandableContent">\r'...
             '<div id="outputarg_' outi '" class="clearfix">\r'...
             '</div>\r'...
             '<h3 id="output_argument_' outi '" class="expand">\r'...
             '<span>\r'...
             '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
             '<span class="argument_name"><code>' outi '</code> &#8212; description</span></a>\r'...
-            '<span class="example_desc">' preamble '</span></span></h3>\r'...
+            '<span class="example_desc">']) preamble sprintf(['</span></span></h3>\r'...
             '<div class="collapse">\r'...
-            '<p>' descrioutput '</p>\r'...
+            '<p>']) descrioutput sprintf(['</p>\r'...
             '</div>\r'...
-            '</div>'])]);
+            '</div>'])];
         
     end
     
@@ -946,60 +1010,66 @@ Moreabout=sprintf(['<div class="moreabout ref_sect">\r'...
 %% REFERENCES
 
 iniref=regexp(fstring,'References:');
-endref=regexp(fstring,'Copyright');
-% stringsel = block of test which contains the references
-fstringsel=fstring(iniref(1)+1:endref(1)-1);
-
-
-% Now we must try to infer how many references there are, that is where
-% each reference starts and ends
-% refsargs is a cell which contains in each row the references
-refsargs=cell(10,1);
-ij=1;
-findnewline=regexp(fstringsel,'\n');
-begref=0;
-endref=0;
-begreftoaddtmp='';
-for i=1:length(findnewline)-1
-    % Find candidate for beginning of a reference
-    candiniref=fstringsel(findnewline(i):findnewline(i+1));
-    % findref=regexp(candiniref,'\(....\)','once');
-    % Find 4 or 5 characters inside parenthesis. Note that 4 or 5
-    % because the year can be of type (2002) or for example (2002b)
-    findref=regexp(candiniref,'\(.{4,5}\)','once');
+if isempty(iniref)
+    warning('FSDA:missInp',['File ' name '.m does not contain string ''References:'''])
+    refsargs={''};
+else
     
-    if ~isempty(findref) && begref==0
-        begreftoadd=findnewline(i);
-        begref=1;
-    elseif ~isempty(findref) && begref==1
-        endreftoadd=findnewline(i)-1;
-        begreftoaddtmp=findnewline(i);
-        endref=1;
-    else
-    end
+    endref=regexp(fstring,'Copyright');
+    % stringsel = block of test which contains the references
+    fstringsel=fstring(iniref(1)+1:endref(1)-1);
     
-    if (begref==1 && endref ==1) || (begref==1 && endref==0 && i==length(findnewline)-1)
-        if i<length(findnewline)-1
-            ref2add=fstringsel(begreftoadd:endreftoadd);
+    
+    % Now we must try to infer how many references there are, that is where
+    % each reference starts and ends
+    % refsargs is a cell which contains in each row the references
+    refsargs=cell(10,1);
+    ij=1;
+    findnewline=regexp(fstringsel,'\n');
+    begref=0;
+    endref=0;
+    begreftoaddtmp='';
+    for i=1:length(findnewline)-1
+        % Find candidate for beginning of a reference
+        candiniref=fstringsel(findnewline(i):findnewline(i+1));
+        % findref=regexp(candiniref,'\(....\)','once');
+        % Find 4 or 5 characters inside parenthesis. Note that 4 or 5
+        % because the year can be of type (2002) or for example (2002b)
+        findref=regexp(candiniref,'\(.{4,5}\)','once');
+        
+        if ~isempty(findref) && begref==0
+            begreftoadd=findnewline(i);
+            begref=1;
+        elseif ~isempty(findref) && begref==1
+            endreftoadd=findnewline(i)-1;
+            begreftoaddtmp=findnewline(i);
+            endref=1;
         else
-            ref2add=fstringsel(begreftoadd:findnewline(i));
         end
         
-        % Remove % characters and white spaces
-        posPercentageSigns=regexp(ref2add,'%');
-        ref2add(posPercentageSigns)=[];
-        ref2add=strtrim(ref2add);
-        refsargs{ij}=ref2add;
-        ij=ij+1;
-        % begref=0;
-        endref=0;
-        begreftoadd=begreftoaddtmp;
+        if (begref==1 && endref ==1) || (begref==1 && endref==0 && i==length(findnewline)-1)
+            if i<length(findnewline)-1
+                ref2add=fstringsel(begreftoadd:endreftoadd);
+            else
+                ref2add=fstringsel(begreftoadd:findnewline(i));
+            end
+            
+            % Remove % characters and white spaces
+            posPercentageSigns=regexp(ref2add,'%');
+            ref2add(posPercentageSigns)=[];
+            ref2add=strtrim(ref2add);
+            refsargs{ij}=ref2add;
+            ij=ij+1;
+            % begref=0;
+            endref=0;
+            begreftoadd=begreftoaddtmp;
+        end
+        
     end
     
+    % Now check if there is a final open reference
+    refsargs=refsargs(1:ij-1);
 end
-
-% Now check if there is a final open reference
-refsargs=refsargs(1:ij-1);
 
 Referenceshtml='';
 iniReferences=sprintf(['<div class="ref_sect" itemprop="content">\r'...

@@ -244,6 +244,9 @@ function outms = FSRms(y,X,varargin)
 %       considered, then the models with size bigP-2 ...
 %
 %
+%
+% See also FSRcp.m
+%
 % References:
 %
 %   Riani and Atkinson (2010), Robust Model Selection with Flexible Trimming,
