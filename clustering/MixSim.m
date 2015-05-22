@@ -248,14 +248,14 @@ function [out]  = MixSim(k,v,varargin)
     n=200;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
     spmplot(X,id,[],'box');
-    set(gcf,'Name','restrfactor=1.2: almost homogeneous groups')
-    title('restrfactor=1.2: almost homogeneous groups','fontsize',18);
+    set(gcf,'Name','restrfactor=1.1: almost homogeneous groups')
+    title('\texttt{restrfactor=1.1}: almost homogeneous groups','fontsize',17,'interpreter','latex');
 
     [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
     figure;
     spmplot(X1,id1,[],'box')
     set(gcf,'Name','Heterogeneous groups')
-    title('Heterogeneous groups','fontsize',18)
+    title('\texttt{restrfactor=`''}: heterogeneous groups','fontsize',17,'interpreter','latex')
     cascade
 %}
 
