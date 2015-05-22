@@ -47,7 +47,8 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       [(n+smallp+1)/2]
 %                       Example - 'h',3 
 %                       Data Types - double
-%           lms :    Criterion to use to find the initlal  subset to initialize the search. Scalar
+%           lms :    Criterion to use to find the initlal  subset to
+%           initialize the search. Scalar.
 %                       If lms=1 (default) Least Median of Squares is
 %                       computed, else Least Trimmed of Squares is computed.
 %                        nomes: Scalar. If nomes is equal to 1 (default) no message about

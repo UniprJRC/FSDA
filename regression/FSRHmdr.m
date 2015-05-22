@@ -151,8 +151,8 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %  Hetero :     (n-init1+1) x 3 matrix containing
 %                  1st col = fwd search index
 %                  2nd col = estimate of alpha in the scedastic equation
-%                  3rd col = estimate of gamma in the scedastic equation
-%   WEI   :     n x (n-init1+1) matrix containing estimates ot the weights
+%                  3rd col = estimate of gamma in the scedastic equation.
+%   WEI:     n x (n-init1+1) matrix containing estimates ot the weights
 %               during the FS
 %
 % See also:   FSRmdr
