@@ -50,12 +50,12 @@ function [out , varargout] = LXS(y,X,varargin)
 %               robust estimator. Scalar.
 %               If nsamp=0 all subsets will be extracted.
 %               They will be (n choose p).
+%                 Example - 'nsamp',0
+%                 Data Types - double
 %               Remark: if the number of all possible subset is <1000 the
 %               default is to extract all subsets, otherwise just 1000 if
 %               fastLTS is used (lms=2 or lms is a structure) or 3000 for
 %               standard LTS or LMS.
-%                 Example - 'nsamp',0
-%                 Data Types - double
 %       lms   : Criterion to use to find the initlal
 %                 subset to initialize the search. Scalar, vector or structure.
 %               If lms is a scalar = 1 (default) Least Median of Squares is
@@ -143,39 +143,39 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%  The output consists of a structure 'out' containing the following fields
 %
-%            out.rew  : Scalar if out.rew=1 all subsequent output refers to
+%            out.rew  = Scalar if out.rew=1 all subsequent output refers to
 %                       reweighted else no reweighting is done.
-%            out.beta : Vector of beta LTS (LMS) coefficient estimates,
+%            out.beta = Vector of beta LTS (LMS) coefficient estimates,
 %                       including the intercept when options.intercept=1.
 %                       out.beta=[intercept slopes].
-%              out.bs : p x 1 vector containing the units forming subset
+%              out.bs = p x 1 vector containing the units forming subset
 %                       associated with bLMS (bLTS).
-%       out.residuals : Vector containing the standardized residuals from
+%       out.residuals = Vector containing the standardized residuals from
 %                       the regression.
-%           out.scale : Scale estimate of the residuals.
-%         out.weights : Vector like y containing weights. The elements of
+%           out.scale = Scale estimate of the residuals.
+%         out.weights = Vector like y containing weights. The elements of
 %                       this vector are 0 or 1.
 %                       These weights identify the h observations which are
 %                       used to compute the final LTS (LMS) estimate.
 %                       sum(out.weights)=h if there is not a perfect fit
 %                       otherwise sum(out.weights) can be greater than h
-%               out.h : The number of observations that have determined the
+%               out.h = The number of observations that have determined the
 %                       LTS (LMS) estimator, i.e. the value of h.
-%        out.outliers : vector containing the list of the units declared
+%        out.outliers = vector containing the list of the units declared
 %                       as outliers using confidence level specified in
 %                       input scalar conflev
-%         out.conflev : confidence level which is used to declare outliers.
+%         out.conflev = confidence level which is used to declare outliers.
 %                       Remark: scalar out.conflev will be used
 %                       to draw the horizontal lines (confidence bands) in the plots
-%         out.singsub : Number of subsets wihtout full rank. Notice that if
+%         out.singsub = Number of subsets wihtout full rank. Notice that if
 %                       this number is greater than 0.1*(number of
 %                       subsamples) a warning is produced on the screen
-%           out.class : 'LTS', LTSfast (or LMS).
-%            out.y    : response vector Y. The field is present if option
+%           out.class = 'LTS', LTSfast (or LMS).
+%            out.y    = response vector Y. The field is present if option
 %                       yxsave is set to 1.
-%            out.X    : data matrix X. The field is present if option
+%            out.X    = data matrix X. The field is present if option
 %                       yxsave is set to 1.
 %
 %  Optional Output:
