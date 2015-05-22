@@ -1,5 +1,5 @@
 function [out] = FSReda(y,X,bsb,varargin)
-%FSReda enables to monitor several quantities in each step of the Bayeisan forward search
+%FSReda enables to monitor several quantities in each step of the forward search
 %
 %<a href="matlab: docsearchFS('FSReda')">Link to the help function</a>
 %
