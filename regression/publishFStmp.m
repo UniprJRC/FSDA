@@ -205,6 +205,8 @@ sintaxclose=sprintf(['</ul>\r'...
 
 %% DESCRIPTION SECTION
 
+
+
 inidescription=sprintf(['	<div class="ref_sect" itemprop="content">\r'...
     '							<h2 id="description">Description</h2>\r'...
     '							<div class="descriptions">\r'...
@@ -215,6 +217,15 @@ descriptionhtml='';
 disp('Examples')
 disp(sintax)
 disp('---------------')
+
+% start of example j
+[startIndexEx] = regexp(fstring,'%\{');
+[endIndexEx] = regexp(fstring,'%\}');
+
+%listEx = list which contains the examples (associated to sintax)
+% First column= title, second column detailed description. Third column
+% code
+listEx=cell(length(sintax),3);
 
 for j=1:length(sintax)
     
@@ -297,8 +308,8 @@ for j=1:length(sintax)
             else
                 inpi=inps(commaspos(i-1)+1:commaspos(i));
             end
-           inpi=strtrim(inpi);
-           
+            inpi=strtrim(inpi);
+            
             if (strcmp(inpi,'Name,') + strcmp(inpi,'Value'))>0
                 inpstring=[inpstring sprintf('<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>\r')]; %#ok<*AGROW>
                 break
@@ -328,9 +339,44 @@ for j=1:length(sintax)
     %         '	,\r'...
     %         '   <a class="intrnllnk" href="#inputarg_k"><code>k</code></a>)\r']);
     
-    TOWRITE='TOWRITE';
+    %---------
+    stri=fstring(startIndexEx(j)+2:endIndexEx(j)-1);
+    % What is before the first full stop is the title.
+    % What is after the second full stop is the description
+    % The first line which does not contain symbol % is the beginning of the
+    % code
+    [endtitle] = regexp(stri,'\.','once');
+    strititle=stri(1:endtitle);
+    % Remove percentage signs if present.
+    posPercentageSigns=regexp(strititle,'%');
+    strititle(posPercentageSigns)=[];
+    % Remove from string strititle leading and trailing white spaces
+    strititle=strtrim(strititle);
+    % Store title
+    listEx{j,1}=strititle;
+    
+    % Find point where description ends
+    inicr=regexp(stri,'\r');
+    % This is the first line which does not contain symbol %
+    for jj=1:length(inicr)-1
+        strtest=stri(inicr(jj):inicr(jj+1));
+        if isempty(regexp(strtest,'%','once'));
+            break
+        end
+    end
+    findescriptionEx=inicr(jj);
+    strdescrEx=stri(endtitle+1:findescriptionEx);
+    % remove % signs from strdescrEx
+    posPercentageSigns=regexp(strdescrEx,'%');
+    strdescrEx(posPercentageSigns)=[];
+    
+    listEx{j,2}=strdescrEx;
+    listEx{j,3}=stri(findescriptionEx+1:end);
+    
+    %---------
+    
     descriptionend=[sprintf('</code></span>\r') ...
-        TOWRITE sprintf(['</p>\r'...
+        listEx{j,1} sprintf(['</p>\r'...
         '</div>'])];
     description=[descriptionini description descriptionend];
     descriptionhtml= [descriptionhtml description];
@@ -346,6 +392,8 @@ closedescription=sprintf(['								</div>\r'...
 description=[inidescription descriptionhtml closedescription];
 
 %% EXAMPLES
+% the examples which are inside %{   %} are put here.
+% The first sentence which end with a full stop is the title of the example
 iniexamples=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<div class="examples">\r'...
     '<h2 id="examples">Examples</h2>\r'... % start of expandable examples
@@ -354,7 +402,15 @@ iniexamples=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     'href="javascript:void(0);">expand all</a>' ...
     '</p>']);
 
-% start of example j
+
+
+
+
+% for j=1:length(sintax)
+%
+% end
+
+
 
 exampleshtml='';
 for j=1:length(sintax)
@@ -363,25 +419,94 @@ for j=1:length(sintax)
         '</div>\r'...
         '<h3 class="expand"><span>\r'...
         '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-        '<span class="example_title">title' num2str(j) '</span></a></span></h3>\r'...
+        '<span class="example_title">']) listEx{j,1} sprintf(['</span></a></span></h3>\r'...
         '<div class="collapse">\r'...
-        '<p>xxxx</p>\r'...
+        '<p>']) listEx{j,2} sprintf(['<div class="programlisting">\r'...
+        '<div class="codeinput"><pre>\r']) ...
+        listEx{j,3} sprintf(['</pre></div>\r'...
+        '</div>\r'])...
+        sprintf(['</p>\r'...
         '</div>\r'...
         '</div>\r'])]; % close div id="example_j"
 end
 
+if length(startIndexEx)>length(sintax)
+    lsintax=length(sintax);
+    listextraEX=cell(length(startIndexEx)-lsintax,3);
+    
+    
+    for j=1:length(listextraEX)
+        stri=fstring(startIndexEx(j+lsintax)+2:endIndexEx(j+lsintax)-1);
+        % What is before the first full stop is the title.
+        % What is after the second full stop is the description
+        % The first line which does not contain symbol % is the beginning of the
+        % code
+        [endtitle] = regexp(stri,'\.','once');
+        strititle=stri(1:endtitle);
+        % Remove percentage signs if present.
+        posPercentageSigns=regexp(strititle,'%');
+        strititle(posPercentageSigns)=[];
+        % Remove from string strititle leading and trailing white spaces
+        strititle=strtrim(strititle);
+        % Store title
+        listExtraEx{j,1}=strititle;
+        
+        % Find point where description ends
+        inicr=regexp(stri,'\r');
+        % This is the first line which does not contain symbol %
+        for jj=1:length(inicr)-1
+            strtest=stri(inicr(jj):inicr(jj+1));
+            if isempty(regexp(strtest,'%','once'));
+                break
+            end
+        end
+        findescriptionEx=inicr(jj);
+        strdescrEx=stri(endtitle+1:findescriptionEx);
+        % remove % signs from strdescrEx
+        posPercentageSigns=regexp(strdescrEx,'%');
+        strdescrEx(posPercentageSigns)=[];
+        
+        listExtraEx{j,2}=strdescrEx;
+        listExtraEx{j,3}=stri(findescriptionEx+1:end);
+    end
+else
+    listExtraEx='';
+end
+
 closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
-    '<p> </p>\r'... % Related examples are below
-    '<h3 class="bottom_ruled">Related Examples</h3>\r'...
-    '<ul>\r'...
-    '<li>rel1</li>\r'...
-    '<li>rel2 </li>\r'...
-    '<li>rel3 </li>\r'...
-    '</ul>\r'...
-    '</div>\r'... % div class="examples"
+    '<p> </p>\r']);
+% Related examples are below
+iniRelatedExamples=sprintf('<h3 class="bottom_ruled">Related Examples</h3>\r');
+
+  RelatedExamples='';
+for j=1:length(listExtraEx)
+    RelatedExamples=[RelatedExamples  sprintf(['<div id="example_' num2str(j) '" class="example_module expandableContent">\r'...
+        '<div id="ex' num2str(j) '">\r'...
+        '</div>\r'...
+        '<h3 class="expand"><span>\r'...
+        '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+        '<span class="example_title">']) listExtraEx{j,1} sprintf(['</span></a></span></h3>\r'...
+        '<div class="collapse">\r'...
+        '<p>']) listExtraEx{j,2} sprintf(['<div class="programlisting">\r'...
+        '<div class="codeinput"><pre>\r']) ...
+        listExtraEx{j,3} sprintf(['</pre></div>\r'...
+        '</div>\r'])...
+        sprintf(['</p>\r'...
+        '</div>\r'...
+        '</div>\r'])]; % close div id="example_j"
+end
+
+% RelatedExamples=sprintf(['<ul>\r'...
+%     '<li>rel1</li>\r'...
+%     '<li>rel2 </li>\r'...
+%     '<li>rel3 </li>\r'...
+%     '</ul>\r']);
+
+  closeallex=sprintf(['</div>\r'... % div class="examples"
     '</div>']);	 % close class="ref_sect
 
-examples=[iniexamples exampleshtml closeexamples];
+examples=[iniexamples exampleshtml closeexamples iniRelatedExamples...
+    RelatedExamples closeallex];
 
 %% INPUT ARGUMENTS
 iniinputargs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
@@ -476,7 +601,7 @@ for i=1:nREQargin
     % Start with upper case character
     descriinput=strtrim(descriinput);
     if ~isempty(descriinput)
-    descriinput=[upper(descriinput(1)) descriinput(2:end)];
+        descriinput=[upper(descriinput(1)) descriinput(2:end)];
     end
     
     % disp(inpi)
@@ -653,8 +778,8 @@ listOptArgs=listOptArgs(1:ij-1,:);
 disp('Optional arguments found')
 disp(listOptArgs(:,1))
 
-codewithexample=['''Distance'',''cosine'',''Replicates'',10,' ...
-    '''Options'',statset(''UseParallel'',1)'];
+% codewithexample=['''Distance'',''cosine'',''Replicates'',10,' ...
+%     '''Options'',statset(''UseParallel'',1)'];
 codewithexample='';
 for i=1:size(listOptArgs,1)
     
@@ -697,8 +822,8 @@ for i=1:size(listOptArgs,1);
     titloptarg=listOptArgs{i,2};
     
     % datatype = type of data for that particular option
-    examplecode=['''Display'',''final'''];
-    datatype='char';
+%     examplecode=['''Display'',''final'''];
+%     datatype='char';
     
     examplecode=listOptArgs{i,5};
     datatype=listOptArgs{i,6};
@@ -774,23 +899,23 @@ for i=1:nargout
     
     % The initial point of the string is 'listargouts{i}' is there is just
     % one output else is string 'listargouts{i} :' is there is more than
-    % one output and this is not varargout 
-    % else if there is varargour the initialpoint is the string  
-    % "Optional Output:" 
+    % one output and this is not varargout
+    % else if there is varargour the initialpoint is the string
+    % "Optional Output:"
     if length(listargouts)==1
-         inipoint=regexp(fstringsel,listargouts{i});
-    elseif  i<length(listargouts) 
+        inipoint=regexp(fstringsel,listargouts{i});
+    elseif  i<length(listargouts)
         inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
     else
         if strcmp(listargouts{end},'varargout') ==0
-             inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
+            inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
         else
-        inipoint=regexp(fstringsel,'Optional Output:')+8;
+            inipoint=regexp(fstringsel,'Optional Output:')+8;
         end
     end
     
     if isempty(inipoint)
-        error(['Output argument ' listargouts{i} ' has not been found'])
+        error('FSDA:missingOuts',['Output argument ' listargouts{i} ' has not been found'])
     end
     
     % The endpoint of the substring is See also or the next output argument
@@ -803,7 +928,6 @@ for i=1:nargout
         else
             % In this case there are also optional arguments
             endpoint=regexp(fstringsel,'Optional Output:');
-            outoptargs=1;
         end
         
     else
@@ -821,7 +945,7 @@ for i=1:nargout
     try
         descrioutput=fstringsel((inipoint(1)+length(listargouts{i})+2):endpoint(1)-1);
     catch
-        disp(['Could not process correctly output argument ' listargouts{i}])
+        disp(['FSDA:WrongOut','Could not process correctly output argument ' listargouts{i}])
         ddd=1;
     end
     
@@ -839,7 +963,7 @@ for i=1:nargout
         [ini,fin]=regexp(descrioutput,['\s{0,8}' outi '\.\w*\s{0,8}=']);
         if isempty(ini)
             disp('Probably ":" symbols  must be replaced with "=" symbols in out description')
-            error(['Parser cannot find string' outi '.xxxx = for output structure'])
+            error('FSDA:MissingArg',['Parser cannot find string' outi '.xxxx = for output structure'])
         else
         end
         
@@ -952,6 +1076,20 @@ for i=1:nargout
                 preamble='TOWRITE';
             end
         end
+        
+        % From 
+        posfullstop=regexp(descrioutput,'\.', 'once');
+        if ~isempty(posfullstop)
+        descroutputtitl=descrioutput(1:posfullstop);
+        if length(descrioutput)> posfullstop
+        descrioutput=descrioutput(posfullstop+1:end);
+        else
+            descrioutput='';
+        end
+        else
+           descroutputtitl='FULL STOP MISSING IN THE OUTPUT DESCRIPTION';
+        end
+        
         % transform x with by and write in italic the dimensions of the
         % matrices
         if ~strcmp(preamble,'TOWRITE')
@@ -980,7 +1118,7 @@ for i=1:nargout
             '<h3 id="output_argument_' outi '" class="expand">\r'...
             '<span>\r'...
             '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-            '<span class="argument_name"><code>' outi '</code> &#8212; description</span></a>\r'...
+            '<span class="argument_name"><code>' outi '</code> &#8212;']) descroutputtitl   sprintf(['</span></a>\r'...
             '<span class="example_desc">']) preamble sprintf(['</span></span></h3>\r'...
             '<div class="collapse">\r'...
             '<p>']) descrioutput sprintf(['</p>\r'...

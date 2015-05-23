@@ -168,45 +168,79 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 % Examples:
 
 %{
-%Common part to all examples: load fishery dataset
-%
+    % Compute minimum deletion residual.
+    % Monitor minimum deletion residual in each step of the forward search.
+    % Common part to all examples: load fishery dataset
      load('fishery');
      y=fishery.data(:,2);
      X=fishery.data(:,1);
+     % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
+     [mdr] = FSRmdr(y,X,out.bs);
 %}
 
 %{
-    % FSR with all default options.
+    % Choose step to start monitoring.
+    % Compute minimum deletion residual and start monitoring it from step
+    % 60.
+    [mdr] = FSRmdr(y,X,out.bs,'init',60);
+%}
+
+%{
+    % Analyze units entering the search in the final steps.
+    % Compute minimum deletion residual and analyze the units entering
+    % subset in each step of the fwd search (matrix Un).  As is well known,
+    % the FS provides an ordering of the data from those most in agreement
+    % with a suggested model (which enter the first steps) to those least in
+    % agreement with it (which are included in the final steps).
+    [mdr,Un] = FSRmdr(y,X,out.bs);
+%}
+
+
+%{
+    % Units forming subset in each step.
+    % Obtain detailed information about the units forming subset in each
+    % step of the forward search (matrix BB).
+    [mdr,Un,BB,Bols] = FSRmdr(y,X,out.bs);
+%}
+
+%{
+    % Monitor $\hat  beta$.
+    % Monitor how the estimates of beta coefficients changes as the subset
+    % size increases (matrix BB).
+    [mdr,Un,BB,Bols] = FSRmdr(y,X,out.bs);
+%}
+
+%{
+    % Monitor $s^2$.
+    % Monitor the estimate of sigma^2 in each step of the fwd search
+    % (matrix S2).
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);
 %}
 
 %{
-    % FSRmdr monitoring from step 60.
-    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'init',60);
-%}
-
-%{
+    % Specify a regression model without intercept.
     % FSRmdr using a regression model without intercept.
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');
 %}
 
 %{
+    % Example of the use of option nocheck.
     %FSRmdr applied without doing any checks on y and X variables.
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',1);
 %}
 
 
 %{
+    % Store units forming subsets in selected steps.
     % In this example the units forming subset are stored just for
-    % selected steps
+    % selected steps.
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'bsbsteps',[30 60]);
     % BB has just two columns
     % First column contains information about units forming subset at step m=30
     % sum(~isnan(BB(:,1))) is 30
     % Second column contains information about units forming subset at step m=60
     % sum(~isnan(BB(:,2))) is 60
-
 %}
 
 
