@@ -83,8 +83,8 @@ function [out]=addt(y,X,w,varargin)
 
 % Examples:
 
-%
-%{
+%{  
+    % Compute the t test for an additional regressor.
     XX=load('wool.txt');
     y=log(XX(:,end));
     X=XX(:,1:end-2);
@@ -98,24 +98,24 @@ function [out]=addt(y,X,w,varargin)
     stats = regstats(y,XX(:,1:end-1),'linear',whichstats);
     
     % Similarly out.S2add (equal to 0.0345) is exactly equal to stats.mse (estimate of
-    % \sigma^2 for augmented model)
-   
+    % \sigma^2 for augmented model)   
 %}
-%
-%
+
 %{
+    % Excluding one observation from the sample. 
+    % Compare the added variable plot based on all units with that which
+    % excludes unit 43.
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);
-
-    %Compare the added variable plot based on all units
-    % with that which excludes unit 43
     [out]=addt(y,X(:,2:3),X(:,1),'plots',1,'units',[43]','textlab','y');
+%}
 
-    %Compare the added variable plot based on all units
-    %with that which excludes units 9,21,30,31,38 and 47
+%{
+    % Excluding more than one observation from the sample. 
+    % Compare the added variable plot based on all units with that which excludes units 
+    % 9,21,30,31,38 and 47.
     [out]=addt(y,X(:,2:3),X(:,1),'plots',1,'units',[9 21 30 31 38 47]','textlab','y');
-
 %}
 %
 %
