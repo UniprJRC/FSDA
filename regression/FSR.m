@@ -258,8 +258,8 @@ function [out]=FSR(y,X,varargin)
 % Examples:
 
 %{
-    % FSR with all default options
-    % Run this code to see the output shown in the help file
+    % FSR with all default options.
+    % Run this code to see the output shown in the help file.
     n=200;
     p=3;
     randn('state', 123456);
@@ -273,7 +273,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
-    % Monitor the exceedances from m=60 without showing plots
+    % Monitor the exceedances from m=60 without showing plots.
     n=200;
     p=3;
     X=rand(n,p);
@@ -283,7 +283,7 @@ function [out]=FSR(y,X,varargin)
 
 %{
     % Initialize the search with the subsample which produces the smallest
-    % [h/n] quantile of squared residuals
+    % [h/n] quantile of squared residuals.
     n=200;
     p=3;
     X=randn(n,p);
@@ -293,19 +293,26 @@ function [out]=FSR(y,X,varargin)
 
 %{
     % Extract all possible subsamples in order to find susbet to initialize
-    % the search
+    % the search.
+    n=200;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
     [out]=FSR(y,X,'nsamp',0);
 %}
 
 %{
-    % This is to try various combinations of the labeladd, bivarfit
+    % Example for various combinations of the labeladd, bivarfit
     % and multivarfit options.
+    n=200;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
     [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');
 %}
 
 %{
-    % Example of use of options xlim and ylim: Hawkins data
-    % load dataset Hawkins
+    % Example of use of options xlim and ylim (Hawkins data).
     load('hawkins.txt','hawkins');
     y=hawkins(:,9);
     X=hawkins(:,1:8);
@@ -318,7 +325,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
-    % Example of use of options nameX and nameY with contaminated data
+    % Example of use of options nameX and nameY with contaminated data.
     n=200;
     p=3;
     state1=123498;
@@ -334,7 +341,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
-    % Example of point mass contamination
+    % Example of point mass contamination.
     n=130;
     p=5;
     state1=123498;

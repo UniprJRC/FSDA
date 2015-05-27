@@ -435,7 +435,7 @@ if length(startIndexEx)>length(sintax)
     listextraEX=cell(length(startIndexEx)-lsintax,3);
     
     
-    for j=1:size(listextraEX,1) %j=1:length(listextraEX)
+    for j=1:size(listextraEX,1)
         stri=fstring(startIndexEx(j+lsintax)+2:endIndexEx(j+lsintax)-1);
         % What is before the first full stop is the title.
         % What is after the second full stop is the description
@@ -479,7 +479,7 @@ closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
 iniRelatedExamples=sprintf('<h3 class="bottom_ruled">Related Examples</h3>\r');
 
   RelatedExamples='';
-for j=1:size(listextraEX,1) %j=1:length(listExtraEx)
+for j=1:size(listextraEX,1)
     RelatedExamples=[RelatedExamples  sprintf(['<div id="example_' num2str(j) '" class="example_module expandableContent">\r'...
         '<div id="ex' num2str(j) '">\r'...
         '</div>\r'...
