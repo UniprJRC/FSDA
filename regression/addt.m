@@ -84,6 +84,7 @@ function [out]=addt(y,X,w,varargin)
 % Examples:
 
 %{  
+    % addt with all default options.
     % Compute the t test for an additional regressor.
     XX=load('wool.txt');
     y=log(XX(:,end));
@@ -102,9 +103,9 @@ function [out]=addt(y,X,w,varargin)
 %}
 
 %{
-    % Excluding one observation from the sample. 
-    % Compare the added variable plot based on all units with that which
-    % excludes unit 43.
+    % addt with optional arguments.
+    % Excluding one observation from the sample; compare the added variable plot 
+    % based on all units with that which excludes unit 43.
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);

@@ -281,8 +281,9 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 % Examples:
 
 %{
-    % Steps common to all the subsequent examples
-    % Load Ozone data
+    % FSRcp with all default options.
+    % Extract the best models of size 4, also store AIC. 
+    % Common part to all examples: load Ozone dataset.
     X=load('ozone.txt');
     % Transform the response using logs
     X(:,end)=log(X(:,end));
@@ -292,49 +293,52 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     y=X(:,end);
     % Define X
     X=X(:,1:end-1);
-%}
-
-%{
-    % Extract the best models of size 4 and show the plot of Cp All the
-    % default options are used, apart from labels, therefore the plot of Cp
-    % and the output matrix Cpmon.MAL only contains the searches associated
-    % with the smallest 3 values of Cp in the last 16 steps of the search
     smallp=4;
-    labels={'Time','1','2','3','4','5','6','7','8'};
-    [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels);
+    [Cpmon]=FSRcp(y,X,smallp);
 %}
 
 %{
-    % Extract the best models of size 4, also store AIC and show the plots
-    % of Cp and AIC
+    % FSRcp with optional arguments.
+    % Extract the best models of size 4, store AIC and show the plots
+    % of Cp and AIC.
     smallp=4;
     [Cpmon]=FSRcp(y,X,smallp,'plots',1);
 %}
 
 %{
-    % Extract and show the trajectories of all models of size 4
-    % of Cp. Notice that in this last case the forward plot becomes
-    % unreadable
+    % Use labels defined by the user.
+    % Extract the best models of size 4 and show the plot of Cp. All the
+    % default options are used, apart from labels, therefore the plot of Cp
+    % and the output matrix Cpmon.MAL only contains the searches associated
+    % with the smallest 3 values of Cp in the last 16 steps of the search.
+    smallp=4;
+    labels={'Time','1','2','3','4','5','6','7','8'};
+    [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels);
+%}
+
+
+%{
+    % Extract and show the trajectories of all models of size 4 of Cp.
+    % Notice that in this last case the forward plot becomes
+    % unreadable.
     smallp=4;
     [Cpmon]=FSRcp(y,X,smallp,'plots',1,'fin_step','');
 %}
 
 %{
-    % Extract the best models of size 5,
-    % and plot monitoring of Cp.
-    % Use labels defined by the user
-    % Extract 1000 subsets to initialize the search
+    % Extract the best models of size 5 and plot monitoring of Cp.
+    % Extract 1000 subsets to initialize the search and use labels defined 
+    % by the user.
     smallp=5;
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpmon]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);
 %}
 
 %{
-    % Extract the best models of size 6 and 5,
-    % and plot monitoring of Cp.
-    % Use labels defined by the user
-    % Extract 1000 subsets to initialize the search
-    % Eclude the searches of the models which were unacceptable for smallp=5
+    % Extract the best models of size 6 and 5 and plot monitoring of Cp.
+    % Extract 1000 subsets to initialize the search andse labels defined by
+    % the user. Exclude the searches of the models which were unacceptable 
+    % for smallp=5.
     smallp=6;
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpmon6]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);
@@ -342,9 +346,9 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     [Cpmon5]=FSRcp(y,X,smallp,'nsamp',1000,'Excl',Cpmon6.Ajout,'plots',1,'labels',labels);
 %}
 
-
 %{
-    % In the example which follow we play with the graphical options
+    % Graphical options.
+    % In the following example we play with the graphical options
    [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);
 %}
 

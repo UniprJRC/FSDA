@@ -168,9 +168,10 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 % Examples:
 
 %{
+    % FSRmdr with all default options.
     % Compute minimum deletion residual.
     % Monitor minimum deletion residual in each step of the forward search.
-    % Common part to all examples: load fishery dataset
+    % Common part to all examples: load fishery dataset.
      load('fishery');
      y=fishery.data(:,2);
      X=fishery.data(:,1);
@@ -180,6 +181,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %}
 
 %{
+    % FSRmdr with optional arguments.
     % Choose step to start monitoring.
     % Compute minimum deletion residual and start monitoring it from step
     % 60.
@@ -201,13 +203,13 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     % Units forming subset in each step.
     % Obtain detailed information about the units forming subset in each
     % step of the forward search (matrix BB).
-    [mdr,Un,BB,Bols] = FSRmdr(y,X,out.bs);
+    [mdr,Un,BB] = FSRmdr(y,X,out.bs);
 %}
 
 %{
     % Monitor $\hat  beta$.
     % Monitor how the estimates of beta coefficients changes as the subset
-    % size increases (matrix BB).
+    % size increases (matrix Bols).
     [mdr,Un,BB,Bols] = FSRmdr(y,X,out.bs);
 %}
 

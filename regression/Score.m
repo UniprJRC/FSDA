@@ -68,25 +68,32 @@ function [outSC]=Score(y,X,varargin)
 
 % Examples
 
-% WOOL DATA
 %{
-   XX=load('wool.txt');
-   y=XX(:,end);
-   X=XX(:,1:end-1);
-   % Score test using the five most common values of lambda
-   [outSc]=Score(y,X);
+    % Score with all default options.
+    % Wool data.
+    XX=load('wool.txt');
+    y=XX(:,end);
+    X=XX(:,1:end-1);
+    % Score test using the five most common values of lambda
+    [outSc]=Score(y,X);
 %}
-%
-% LOYALTY CARDS DATA
+
 %{
-  load('loyalty.txt');
+    % Score with optional arguments.
+    % Loyalty cards data.
+    load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
-   % la = vector containing the values of the transformation
-   % parameter which have to be tested
-   la=[0.25 1/3 0.4 0.5];
-   [outSc]=Score(y,X,'la',la,'intercept',0);
+    % la = vector containing the values of the transformation
+    % parameter which have to be tested
+    la=[0.25 1/3 0.4 0.5];
+    [outSc]=Score(y,X,'la',la,'intercept',0);
 %}
+
+%{
+
+%}
+
 
 nnargin=nargin;
 vvarargin=varargin;

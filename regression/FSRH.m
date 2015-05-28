@@ -276,21 +276,27 @@ function [out]=FSRH(y,X,Z,varargin)
 % Examples:
 
 %{
-    XX=load('tradeH.txt')
+    % FSRH with all default options.
+    % Before running FSRH, data are plotted. 
+    % Common part to all examples: load tradeH dataset.
+    XX=load('tradeH.txt');
     y=XX(:,2);
     X=XX(:,1);
     X=X./max(X);
     Z=log(X);
-    %% Plot the data
     plot(X,y,'o')
     fs=14;
     ylabel('Value','FontSize',fs)
     xlabel('Quantity','FontSize',fs)
+    out=FSRH(y,X,Z);
+%}
 
-    % Run the automatic outlier detection procedure 
+%{
+    % FSRH with optional arguments.
+    % Specifying the search initialization and controlling the y scale in
+    % plot. In the example, also figure 3 of ART (see References)is created.
+    
     out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);
-
-    % Create figure 3 of ART
     figure
     subplot(2,2,1)
     n=length(y);
@@ -325,7 +331,9 @@ function [out]=FSRH(y,X,Z,varargin)
     xlabel('Subset size m')
 %}
 
+%{
 
+%}
 
 
 %% Input parameters checking

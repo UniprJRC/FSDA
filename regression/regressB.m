@@ -178,9 +178,9 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 % Examples:
 
-%{
-    %Common part to all examples:
-    % PRIOR INFORMATION
+%{  
+    % regressB with all default options.
+    % Common part to all examples: definition of the prior information.
     rng('default')
     rng(100) % set seed for replicability
     p=3;
@@ -189,7 +189,6 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
     R=X0'*X0;
     beta0=zeros(p,1);
     tau0=1;
-
 
     % SAMPLE INFORMATION
     n1=100;
@@ -201,15 +200,16 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %}
 
 %{
+    % regressB with optional arguments.
     % Run regressB and compute new estimate of beta using just the first 20
-    % observations and use a value of c equal to 1.2
+    % observations and use a value of c equal to 1.2.
     bsb=1:20;
     c=1.2;
     out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'c',c);
 %}
 
 %{
-    % Example of the use of input option stats
+    % Example of the use of input option stats.
     bsb=1:20;
     c=1.2;
     stats=true;
@@ -217,8 +217,9 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %}
 
 %{
-    % Example of Houses Price
-    % load dataset
+    % Example of Houses Price.
+    % Compare the output with Table 3.3 of Koop (2004) p. 52.
+    
     load hprice.txt;
     
     % setup parameters
@@ -247,7 +248,6 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
     R=inv(R);
 
     out=regressB(y, X, beta0, R, tau0, n0,'stats',1);
-    % Compare the output with Table 3.3 of Koop (2004) p. 52
 %}
 
 %% Beginning of code

@@ -203,57 +203,61 @@ function [out , varargout] = LXS(y,X,varargin)
 
 %
 %{
-%      Compute LMS estimator without reweighting, add intercept to matrix X
-%      and do not produce plots:
-       n=200;
-       p=3;
-       randn('state', 123456);
-       X=randn(n,p);
-       % Uncontaminated data
-       y=randn(n,1);
-       % Contaminated data
-       y(1:5)=y(1:5)+6;
-       [out]=LXS(y,X);
+    % LXS with default input and output.
+    % Compute LMS estimator without reweighting, add intercept to matrix X
+    % and do not produce plots.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    y(1:5)=y(1:5)+6;
+    [out]=LXS(y,X);
 %}
 
 %{
-%      Compute LMS estimator, reweight and plot the residuals
-       [out]=LXS(y,X,'rew',1,'plots',1);
+    % LXS with optional arguments.
+    % Compute LMS estimator, reweight and plot the residuals.
+    [out]=LXS(y,X,'rew',1,'plots',1);
 %}
 
 %{
-        % Compute reweighted LMS estimator and produce immediately the plot
-        % of robust residuals
-        [out]=LXS(y,X,'rew',1,'plots',1);
+    % LXS with optional output.
+    % Generating the C matrix containing the indices of the subsamples 
+    % extracted for computing the estimate (the so called elemental sets).                  
+    [out,C]=LXS(y,X);
 %}
 
 %{
-        %Compute reweighted LTS estimator and produce the plot of
-        %residuals
-        [out]=LXS(y,X,'rew',1,'lms',0,'plots',1);
+    % Reweighted LTS estimator.
+    % Compute reweighted LTS estimator and produce the plot of
+    % residuals.
+    [out]=LXS(y,X,'rew',1,'lms',0,'plots',1);
 %}
 
 %{
-        %Compute LMS estimator, without plots using 20000 subsamples
-        [out]=LXS(y,X,'nsamp',20000);
+    % Specifying the number of subsamples.
+    % Compute LMS estimator, without plots using 20000 subsamples.
+    [out]=LXS(y,X,'nsamp',20000);
 %}
 
 %{
-        % Compute reweighted LMS and use a confidence level for outlier
-        % detection equal to 0.999
-        [out]=LXS(y,X,'rew',1,'conflev',0.999);
+    % Specifying a confidence level.
+    % Compute reweighted LMS and use a confidence level for outlier
+    % detection equal to 0.999.
+    [out]=LXS(y,X,'rew',1,'conflev',0.999);
 %}
 
 %{
-        % Compute LTS using fast options
-        % detection equal to 0.999
-        % Initialize structure lms
-        lms=struct;
-        % Do 5 refining steps for each elemental subset
-        lms.refsteps=5;
-        % Store the best 10 subsets
-        lms.bestr=10;
-        [out]=LXS(y,X,'lms',lms,'plots',1);
+    % Using fast options.
+    % Compute LTS using fast options
+    % detection equal to 0.999.
+    lms=struct;
+    % Do 5 refining steps for each elemental subset
+    lms.refsteps=5;
+    % Store the best 10 subsets
+    lms.bestr=10;
+    [out]=LXS(y,X,'lms',lms,'plots',1);
 %}
 
 %% Input parameters checking
@@ -664,17 +668,17 @@ else
     % Apply small sample correction factor of Pison et al.
     s0=s0*sqrt(corfactorRAW(1,n,h/n));
     
-    %{
-        % Analysis of the small sample correction factor of Pison et al.
-        rangen=20:100;
-        corf=zeros(length(rangen),1);
-        for i=1:length(rangen)
-            corf(i)=sqrt(corfactorRAW(1,rangen(i),0.7));
-        end
-        plot(rangen',corf)
-        disp('s0 after')
-        disp(s0)
-    %}
+
+%         % Analysis of the small sample correction factor of Pison et al.
+%         rangen=20:100;
+%         corf=zeros(length(rangen),1);
+%         for i=1:length(rangen)
+%             corf(i)=sqrt(corfactorRAW(1,rangen(i),0.7));
+%         end
+%         plot(rangen',corf)
+%         disp('s0 after')
+%         disp(s0)
+
     
 end
 

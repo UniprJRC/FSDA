@@ -150,29 +150,31 @@ function [out] = FSReda(y,X,bsb,varargin)
 % Examples:
 
 %{
-       %Example of use of FSReda based on a starting point coming
-       %from LMS
-        n=200;
-        p=3;
-        randn('state', 123456);
-        X=randn(n,p);
-        % Uncontaminated data
-        y=randn(n,1);
-        % Contaminated data
-        ycont=y;
-        ycont(1:5)=ycont(1:5)+6;
-        [out]=LXS(y,X,'nsamp',1000);
-        out=FSReda(y,X,out.bs);
+    % FSReda with all default options.
+    % Example of use of FSReda based on a starting point coming
+    % from LMS.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    [out]=LXS(y,X,'nsamp',1000);
+    out=FSReda(y,X,out.bs);
 %}
 
 %{
-    %Example of use of function FSReda using a random start and traditional
-    %t-stat monitoring
+    % FSReda with optional argument.
+    % Example of use of function FSReda using a random start and traditional
+    % t-stat monitoring.
     out=FSReda(y,X,0,'tstat','trad');
 %}
 
 %{
-    %Examples with real data: wool data
+    %Examples with real data: wool data.
     xx=load('wool.txt');
     X=xx(:,1:3);
     y=log(xx(:,4));

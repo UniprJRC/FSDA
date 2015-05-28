@@ -5,10 +5,10 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %
 %  Required input arguments:
 %
-%    mdr : n-m0 x 2 matrix 
+%    mdr : matrix, n-m0 x 2
 %          1st col = fwd search index
 %          2nd col = minimum deletion residual  
-%    p : number of explanatory variables of the underlying dataset
+%    p : scalar, number of explanatory variables of the underlying dataset
 %           (including the intercept if present)
 %
 %  Optional input arguments:
@@ -73,36 +73,38 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 
 % Examples:
 
-%{
-    % Example of creation of 99% confidence envelopes based on 1000
-    % observations and 5 explanatory variables
-      p=5;
-      MDRenv=FSRenvmdr(1000,p,'prob',0.99);
-
-    % Example of finding the confidence level of MDRenv
+%{  
+    % FSRinvmdr with all default options.
+    % Example of finding the confidence level of MDRenv, where MDRenv is
+    % the matrix of 99% confidence envelopes based on 1000
+    % observations and 5 explanatory variables.
     % MDinv is a matrix which in the second column contains
     % all values equal to 0.99
-      MDRinv=FSRinvmdr(MDRenv,p);
+    p=5;
+    MDRenv=FSRenvmdr(1000,p,'prob',0.99);
+    MDRinv=FSRinvmdr(MDRenv,p);      
 %}
 
 %{
-    % Example of finding confidence level of mdr for untransformed wool data
+    % FSRinvmdr with optional arguments.
+    % Example of finding confidence level of mdr for untransformed wool
+    % data.
+    % In the example, the values of mdr are plotted and then transformed 
+    % into observed confidence levels.
+    % The output is plotted in normal coordinates.
+
     load('wool.txt','wool');
     y=wool(:,4);
     X=wool(:,1:3);
     % The line below shows the plot of mdr
     [out]=FSR(y,X,'nsamp',0,'plots',1);
-
-    % The line below transforms the values of mdr into observed confidence
-    % levels and shows the output in a plot in normal coordinates using all
-    % default options
     MDRinv=FSRinvmdr(out.mdr,size(X,2)+1,'plots',1);
 %}
 
 %{
-    % WOOL DATA
+    % Resuperimposing envelopes.
     % Comparison of resuperimposing envelopes using mdr coordinates and normal
-    % coordinates
+    % coordinates again on wool data.
     load('wool.txt','wool');
     y=wool(:,4);
     X=wool(:,1:3);
@@ -132,9 +134,9 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %}
 
 %{
-    % HOSPITAL DATA
+    % Example with Hosital Data.
     % Comparison of resuperimposing envelopes using mdr coordinates and normal
-    % coordinates at particular steps
+    % coordinates at particular steps.
     load('hospital.txt');
     y=hospital(:,5);
     X=hospital(:,1:4);
@@ -166,6 +168,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
     end
 
 %}
+
 
 
 %% Input parameters checks

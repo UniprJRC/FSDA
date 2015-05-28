@@ -152,7 +152,7 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %                  1st col = fwd search index
 %                  2nd col = estimate of alpha in the scedastic equation
 %                  3rd col = estimate of gamma in the scedastic equation.
-%   WEI:     n x (n-init1+1) matrix containing estimates ot the weights
+%   WEI:     n x (n-init1+1) matrix containing estimates of the weights
 %               during the FS
 %
 % See also:   FSRmdr
@@ -173,21 +173,69 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 
 % Examples:
 
-
-
 %{
-    % Load international trade data used in the paper ART
+    % FSRHmdr with all default options.
+    % Common part to all examples: load tradeH dataset (used in the paper ART).
     XX=load('tradeH.txt');
     y=XX(:,2);
     X=XX(:,1);
     X=X./max(X);
     Z=log(X);
-    [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+    mdr=FSRHmdr(y,X,Z,0);
+%}
 
-    % Plot monitoring of alpha parameter
+%{
+    % FSRHmdr with otpional arguments.
+    % Specifying the search initialization.
+    mdr=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+%}
+
+%{
+    % Analyze units entering the search in the final steps.
+    % Compute minimum deletion residual and analyze the units entering
+    % subset in each step of the fwd search (matrix Un).  As is well known,
+    % the FS provides an ordering of the data from those most in agreement
+    % with a suggested model (which enter the first steps) to those least in
+    % agreement with it (which are included in the final steps).
+    [mdr,Un]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+%}
+
+%{
+    % Units forming subset in each step.
+    % Obtain detailed information about the units forming subset in each
+    % step of the forward search (matrix BB).
+    [mdr,Un,BB]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+%}
+
+%{
+    % Monitor $\hat  beta$.
+    % Monitor how the estimates of beta coefficients changes as the subset
+    % size increases (matrix Bols).
+    [mdr,Un,BB,Bols]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+%}
+
+%{
+    % Monitor $s^2$.
+    % Monitor the estimate of sigma^2 in each step of the fwd search
+    % (matrix S2).
+    [mdr,Un,BB,Bols,S2]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+%}
+
+%{
+    % Monitoring the estimates of the scedastic equation.
+    % With plot of the \alpha parameter.
+    [mdr,Un,BB,Bols,S2,Hetero]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
     plot(Hetero(:,1),Hetero(:,2))
 %}
 
+%{
+    % Monitoring the estimates of the weights.
+    [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+%}
+
+%{
+
+%}
 
 
 %% Input parameters checking

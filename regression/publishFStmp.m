@@ -303,12 +303,13 @@ for j=1:length(sintax)
         for i=1:ninpel
             if i==1
                 inpi=inps(1:commaspos(i));
+                inpi=strtrim(inpi);
             elseif i==ninpel
                 inpi=[inps(commaspos(i-1)+1:end) ' '];
             else
                 inpi=inps(commaspos(i-1)+1:commaspos(i));
+                inpi=strtrim(inpi);
             end
-            inpi=strtrim(inpi);
             
             if (strcmp(inpi,'Name,') + strcmp(inpi,'Value'))>0
                 inpstring=[inpstring sprintf('<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>\r')]; %#ok<*AGROW>
@@ -478,7 +479,7 @@ closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
 % Related examples are below
 iniRelatedExamples=sprintf('<h3 class="bottom_ruled">Related Examples</h3>\r');
 
-  RelatedExamples='';
+RelatedExamples='';
 for j=1:size(listextraEX,1)
     RelatedExamples=[RelatedExamples  sprintf(['<div id="example_' num2str(j) '" class="example_module expandableContent">\r'...
         '<div id="ex' num2str(j) '">\r'...
@@ -502,7 +503,7 @@ end
 %     '<li>rel3 </li>\r'...
 %     '</ul>\r']);
 
-  closeallex=sprintf(['</div>\r'... % div class="examples"
+closeallex=sprintf(['</div>\r'... % div class="examples"
     '</div>']);	 % close class="ref_sect
 
 examples=[iniexamples exampleshtml closeexamples iniRelatedExamples...
@@ -822,8 +823,8 @@ for i=1:size(listOptArgs,1);
     titloptarg=listOptArgs{i,2};
     
     % datatype = type of data for that particular option
-%     examplecode=['''Display'',''final'''];
-%     datatype='char';
+    %     examplecode=['''Display'',''final'''];
+    %     datatype='char';
     
     examplecode=listOptArgs{i,5};
     datatype=listOptArgs{i,6};
@@ -1077,17 +1078,17 @@ for i=1:nargout
             end
         end
         
-        % From 
+        % From
         posfullstop=regexp(descrioutput,'\.', 'once');
         if ~isempty(posfullstop)
-        descroutputtitl=descrioutput(1:posfullstop);
-        if length(descrioutput)> posfullstop
-        descrioutput=descrioutput(posfullstop+1:end);
+            descroutputtitl=descrioutput(1:posfullstop);
+            if length(descrioutput)> posfullstop
+                descrioutput=descrioutput(posfullstop+1:end);
+            else
+                descrioutput='';
+            end
         else
-            descrioutput='';
-        end
-        else
-           descroutputtitl='FULL STOP MISSING IN THE OUTPUT DESCRIPTION';
+            descroutputtitl='FULL STOP MISSING IN THE OUTPUT DESCRIPTION';
         end
         
         % transform x with by and write in italic the dimensions of the

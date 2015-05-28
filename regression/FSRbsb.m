@@ -83,31 +83,34 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 % Examples:
 
 %{
-%Common part to all examples:
-load('fishery');
-y=fishery.data(:,1);
-X=fishery.data(:,2);
- [out]=LXS(y,X,'nsamp',10000);
+    % FSRbsb with all default options.
+    % Common part to all examples: load fishery dataset.
+    load('fishery');
+    y=fishery.data(:,1);
+    X=fishery.data(:,2);
+    [out]=LXS(y,X,'nsamp',10000);
+    Un = FSRbsb(y,X,out.bs);
 %}
 
 %{
-% FSR with all default options.
-[Un,BB] = FSRbsb(y,X,out.bs);
+    % FSRbsb with optional arguments.
+    % Example with monitoring from step 60.
+    Un = FSRbsb(y,X,out.bs,'init',60);
 %}
 
 %{
-% FSR monitoring from step 60.
-[Un,BB] = FSRbsb(y,X,out.bs,'init',60);
+    % FSRbsb analyzing units entering the search in the final steps.
+    [Un,BB] = FSRbsb(y,X,out.bs,'init',60);
 %}
 
 %{
-% FSR using a regression model without intercept.
-[Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');
+    % FSR using a regression model without intercept.
+    [Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');
 %}
 
 %{
-%FSR applied without doing any checks on y and X variables.
-[Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');
+    %FSR applied without doing any checks on y and X variables.
+    [Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');
 %}
 
 

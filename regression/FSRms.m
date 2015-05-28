@@ -262,38 +262,43 @@ function outms = FSRms(y,X,varargin)
 
 % Examples:
 
-%{
-    % Steps common to all the subsequent examples
-    % Load Ozone data
+%{  
+    % FSRms with all default options.
+    % Common part to all examples: load Ozone dataset, tranform the 
+    % response using logs and add a time trend.
+
     X=load('ozone.txt');
-    % Tranform the response using logs
     X(:,end)=log(X(:,end));
-    % Add a time trend
     X=[(-40:39)' X];
-    % Define y
     y=X(:,end);
-    % Define X
     X=X(:,1:end-1);
+    [Cpms]=FSRms(y,X);
 %}
 
 %{
+    % FSRms with optional arguments.
     % Perform robust model selection and show the generalized candlestick
-    % plot
+    % plot.
+
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpms]=FSRms(y,X,'labels',labels,'plots',1);
 %}
 
 %{
+    % Considering all submodels.
     % Perform robust model selection and show the generalized candlestick
-    % plot considering all submodels for each smallp from 2 to size(X) 
+    % plot considering all submodels for each smallp from 2 to size(X).
+
     [Cpms]=FSRms(y,X,'labels',labels,'ignore',0,'plots',1);
 %}
 
 %{
+    % Comparing results of different settings.
     % Perform robust model selection and show the generalized candlestick
     % plot. Restric attention to the models with size in the interval 4:6
     % Compare the results using ignore=1 with those with ignore=0
-    % default option ignore=1
+    % default option ignore=1.
+
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1);
     % ignore=0
     [Cpms]=FSRms(y,X,'ignore',0,'smallpint',4:6,'labels',labels,'plots',1);
@@ -302,49 +307,52 @@ function outms = FSRms(y,X,varargin)
 %}
 
 %{
-    % Same options as before but using different confidence bands
+    % Changing confidence bands.
+    % Same options as before but using different confidence bands.
+
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'quant',[0.01 0.5 0.99])
 %}
 
 %{
-    % Personalized LineWidth and CandleWidth
+    % Personalized LineWidth and CandleWidth.
     LineWidth=2;
     CandleWidth=0.03;
+
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'LineWidth',LineWidth,'CandleWidth',CandleWidth)
 %}
 
-    % In the examples which follow we explore option fin_step
-
 %{
-    % fin_step supplied as fraction
-    % for example is fin_step=[0.3 0.1] the central part of the search
+    % Input fin_step supplied as fraction (1).
+    % For example when fin_step=[0.3 0.1] the central part of the search
     % goes from m=round(n*0.7)=56 to m=round(n*0.9)=72 and the final part
-    % of the search goes from m=73 to m=80
+    % of the search goes from m=73 to m=80.
+
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.3 0.1])
 %}
 
 %{
-    % fin_step supplied as fraction
-    % for example is fin_step=[0.36 0.06] the central part of the search
+    % Input fin_step supplied as fraction (2).
+    % For example when fin_step=[0.36 0.06] the central part of the search
     % goes from m=round(n*0.64)=51 to m=round(n*0.94)=75 and the final part of the search goes from
-    % m=76 to m=80
+    % m=76 to m=80.
+
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.36 0.06])
 %}
 
 %{
-    % fin_step supplied as integers
-    % for example if fin_step=[20 5] the central part of the search
+    % Input fin_step supplied as integers.
+    % For example when fin_step=[20 5] the central part of the search
     % goes from m=n-20=61 to m=n-5=75 and the final part of the search goes from
-    % m=76 to m=80
-    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5],'CandleWidth',0.01)
-%}
-
+    % m=76 to m=80.
     % It is worthwhile to notice that independently on how fin_step is
     % chosen, the message of the generalized candlestick plot remains the
     % same. In other words, the best two models with 5 variables are always
     % (Time,4,5,6) and (Time,2,4,5)
     % while two reasonable models with 6 variables are (Time,2,4,5,6) and
-    % (Time,2,3,4,5)
+    % (Time,2,3,4,5).
+
+    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5],'CandleWidth',0.01)
+%}
 
 %% Input parameters checking
 

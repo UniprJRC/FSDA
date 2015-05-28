@@ -6,7 +6,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %  Required input arguments:
 %
 %    n : scalar, number of obseravtions
-%    p : number of explanatory variables (including the intercept if present)
+%    p : scalar, number of explanatory variables (including the intercept if present)
 %
 %  Optional input arguments:
 %
@@ -71,37 +71,43 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 
 % Examples:
 
-%{
-% Example of creation of 1% 50% and 99% envelopes based on 1000
-% observations and 5 explanatory variables using exact method
-  MDRenv=FSRenvmdr(10000,5);
+%{  
+    % FSRenvmdr with all default options.
+    % Example of creation of 1%, 50% and 99% envelopes based on 1000
+    % observations and 5 explanatory variables using exact method.
+    MDRenv=FSRenvmdr(10000,5);
+%}
 
-% Example of creation of 1% 50% and 99% envelopes based on 1000
-% observations and 5 explanatory variables using approximate method
-  MDRenv1=FSRenvmdr(10000,5,'exact',0);
+%{  
+    % FSRenvmdr with optional argument.
+    % Example of creation of 1%, 50% and 99% envelopes based on 1000
+    % observations and 5 explanatory variables using approximate method.
+    MDRenv1=FSRenvmdr(10000,5,'exact',0);
 %}
 
 %{
-% Example of creation of 1% 50% and 99% envelopes based on 100
-% observations and 5 explanatory variables using exact method
-Menv=FSRenvmdr(100,5,'exact',1);
-plot(Menv(:,1),Menv(:,2:4));
-  
-% Check the accurary of the envelopes
-n=100;
-p=5;
-state=1000;
-randn('state', 1000);
-X=randn(n,5);
+    % Example with plot of the envelopes.
+    % Example of creation of 1%, 50% and 99% envelopes based on 100
+    % observations and 5 explanatory variables using exact method.
+    Menv=FSRenvmdr(100,5,'exact',1);
+    plot(Menv(:,1),Menv(:,2:4));
+%}
 
-nsimul=1000;
-for j=1:nsimul
-    y=randn(n,1);
-    [out]=LXS(y,X);
-    mdr = FSRmdr(y,X,out.bs,'init',10);
-    mdrStore(:,j)=mdr(:,2);
-end
-  
+%{
+    % Checking the accurary of the envelopes.
+    n=100;
+    p=5;
+    state=1000;
+    randn('state', 1000);
+    X=randn(n,5);
+
+    nsimul=1000;
+    for j=1:nsimul
+        y=randn(n,1);
+        [out]=LXS(y,X);
+        mdr = FSRmdr(y,X,out.bs,'init',10);
+        mdrStore(:,j)=mdr(:,2);
+    end
 %}
 
 

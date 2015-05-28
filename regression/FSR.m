@@ -273,6 +273,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
+    % FSR with optional arguments.
     % Monitor the exceedances from m=60 without showing plots.
     n=200;
     p=3;

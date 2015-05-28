@@ -159,7 +159,7 @@ function [out]=FSRaddt(y,X,varargin)
 % Examples
 
 %{
-    % FSRaddt with all default options
+    % FSRaddt with all default options.
     n=200;
     p=3;
     randn('state', 123456);
@@ -170,7 +170,21 @@ function [out]=FSRaddt(y,X,varargin)
 %}
 
 %{
-    % Forward deletion t stat for transformed wool data
+    % FSRaddt with optional arguments.
+    % Example of use of FSRaddt with plot of deletion t with personalized line
+    % width for the envelopes and personalized confidence interval.
+    n=200;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
+    kk=9;
+    y(1:kk)=y(1:kk)+6;
+    X(1:kk,:)=X(1:kk,:)+3;
+    [out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975]);
+%}
+
+%{
+    % FSRaddt with plots (transformed wool data).
     load('wool');
     y=log(wool.data(:,end));
     X=wool.data(:,1:end-1);
@@ -178,9 +192,8 @@ function [out]=FSRaddt(y,X,varargin)
 %}
 
 %{
-    % Example of use of FSRaddt with plot of deletion t with labels for the
-    % columns of matrix X.
-    % line width equal to 3 for the curves representing envelopes.
+    % FSRaddt with labels for the columns of matrix X.
+    % Line width equal to 3 for the curves representing envelopes; 
     % line width equal to 4 for the curves associated with deletion t stat.
     n=200;
     p=3;
@@ -191,18 +204,6 @@ function [out]=FSRaddt(y,X,varargin)
     [out]=FSRaddt(y,X,'plots',1,'nameX',{'F1','F2','F3'},'lwdenv',3,'lwdt',4);
 %}
 
-% Example of use of FSRaddt with plot of deletion t with personalized line
-% width for the envelopes and personalized confidence interval.
-%{
-    n=200;
-    p=3;
-    X=randn(n,p);
-    y=randn(n,1);
-    kk=9;
-    y(1:kk)=y(1:kk)+6;
-    X(1:kk,:)=X(1:kk,:)+3;
-    [out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975]);
-%}
 
 %% Input parameters checking
 nnargin=nargin;
