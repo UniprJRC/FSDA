@@ -220,16 +220,19 @@ function [out]=FSRB(y,X,varargin)
 
 % Examples:
 
-%{
-    % Example of Houses Price
-    % load dataset
-    load hprice.txt;
+%{  
+    % FSRB with all default options.
+    % Common part to all examples: load Houses Price Dataset.
     
-    % setup parameters
+    load hprice.txt;
     n=size(hprice,1);
     y=hprice(:,1);
     X=hprice(:,2:5);
-    n0=5;
+    outBA=FSRB(y,X);
+%}
+
+%{
+    % FSRB with optional arguments.
 
     % set \beta components
     beta0=0*ones(5,1);
@@ -251,6 +254,7 @@ function [out]=FSRB(y,X,varargin)
     R=inv(R);
 
     % define a Bayes structure with previous data
+    n0=5;
     bayes=struct;
     bayes.R=R;
     bayes.n0=n0;
@@ -263,10 +267,10 @@ function [out]=FSRB(y,X,varargin)
 %}
 
 %{
-    % Fishery Example with Empirical prior
-    close all
-    % nsamp = number of subsamples to use in the frequentist analysis of first
-    % year, in order to find initial subset using LMS
+    % Example on Fishery dataset.
+    % nsamp is the number of subsamples to use in the frequentist analysis of first
+    % year, in order to find initial subset using LMS.
+    close all    
     nsamp=3000;
     % threshold to be used to increase susbet of good units
     threshold=300;

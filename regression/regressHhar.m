@@ -165,6 +165,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 
 %
 %{
+    % regressHhar with all default options.
     % Monthly credit card expenditure for 100 individuals.
     % Results in structure "OUT" coincides with "Maximum Likelihood
     % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
@@ -179,6 +180,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % its square and a dummy variable for home ownership using the 72
     % observations for which expenditure was nonzero produces the residuals
     % plotted below
+
     X=zeros(n,4);
     X(:,1)=data(:,3);%age
     X(:,2)=data(:,6);% Own rent (dummy variable)
@@ -200,9 +202,9 @@ function [out]=regressHhar(y,X,Z,varargin)
     disp('Multiplicative Heteroskedasticity Model')
     % The variables which enter the scedastic function are Income and
     % Income square (that is columns 3 and 4 of matrix X)
-    out=regressHhar(y,X,[3 4],'msgiter',0);
+    out=regressHhar(y,X,[3 4]);
 
-    % Plot OLS residuals againt Income (This is nothing but Figure 11.1 of
+    % Plot OLS residuals against Income (This is nothing but Figure 11.1 of
     % Green (5th edition) p. 216)
     plot(X(:,4),r,'o')
     xlabel('Income')
@@ -210,14 +212,11 @@ function [out]=regressHhar(y,X,Z,varargin)
     grid on
 %}
 
-%
 %{
-    %The data in Appendix Table F6.1 were used in a study of efficiency in
-    %production of airline services in Greene (2007a).
-    % See p. 557 of Green (7th edition)
-
-    % Monthly credit card expenditure for 100 individuals.
-
+    % regressHhar with optional arguments.
+    % The data in Appendix Table F6.1 were used in a study of efficiency in
+    % production of airline services in Greene (2007a).
+    % See p. 557 of Green (7th edition).
     % Results in structure "out.Beta" coincide with those of 
     % table 14.3 page 557, 7th edition of Greene (2007).
     % (line of the table which starts with MLE)
@@ -246,11 +245,10 @@ function [out]=regressHhar(y,X,Z,varargin)
 %}
 
 %{
+    % FGLS estimator.
     % Estimate a multiplicative heteroscedastic model using just one iteration
-    % that is find FGLS estimator (two step estimator)
-
-    % Monthly credit card expenditure for 100 individuals.
-
+    % that is find FGLS estimator (two step estimator).
+    % Data are monthly credit card expenditure for 100 individuals.
     % Results in structure "out" coincide with estimates of row 
     % "\sigma^2*exp(z'*\alpha)" in table 11.2, page 231, 5th edition of
     % Greene (1987).
@@ -264,6 +262,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % its square and a dummy variable for home ownership using the 72
     % observations for which expenditure was nonzero produces the residuals
     % plotted plotted below
+
     X=zeros(n,4);
     X(:,1)=data(:,3);%age
     X(:,2)=data(:,6);% Own rent (dummy variable)
@@ -275,9 +274,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     sel=y>0;
     X=X(sel,:);
     y=y(sel);
-
     out=regressHhar(y,X,[3 4],'msgiter',1,'maxiter',1);
-
 %}
 
 %% Beginning of code

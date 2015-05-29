@@ -159,8 +159,8 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 % Examples:
 
 %{
-    % Example of Houses Price
-    % load dataset
+    % FSRBmdr with all default options.
+    % Common part to all examples: load Houses Price Dataset.
     load hprice.txt;
     
     % setup parameters
@@ -187,23 +187,40 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
     R(4,4)=.6;
     R(5,5)=.6;
     R=inv(R);
+    mdrB=FSRBmdr(y,X,beta0,R,tau0,n0);
+%}
 
-    % define a Bayes structure with previous data
-    bayes=struct;
-    bayes.R=R;
-    bayes.n0=n0;
-    bayes.beta0=beta0;
-    bayes.tau0=tau0;
-    
+%{
+    % FSRBmdr with optional arguments.
     % The trajectory of Bayesian mdr shows that the curve starts exceeding
-    % the upper 99% threshold from steps m=480
+    % the upper 99% threshold from steps m=480.
     mdrB=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 %}
 
 %{
-    % We change n0 from 5 to 250
+    % Analyze units entering the search in the final steps.
+    [mdr,Un]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
+%}
+
+%{
+    % Units forming subset in each step.
+    [mdr,Un,BB]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
+%}
+
+%{
+    % Monitor $\hat  beta$.
+    [mdr,Un,BB,BBayes]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
+%}
+
+%{
+    % Monitor $s^2$.
+    [mdr,Un,BB,BBayes,S2Bayes]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
+%}
+
+%{
+    % Additional example.
+    % We change n0 from 5 to 250 and impose FSRmdr monitoring from step 300.
     n0=250
-    % FSRmdr monitoring from step 300.
     mdrB=FSRBmdr(y,X,beta0, R, tau0, n0,'init',300,'plots',1);
 %}
 

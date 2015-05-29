@@ -146,11 +146,10 @@ function [out]=regressHart(y,X,Z,varargin)
 % Examples:
 
 %{
-    %The data in Appendix Table F6.1 were used in a study of efficiency in
-    %production of airline services in Greene (2007a).
-    % See p. 557 of Green (7th edition)
-
-    % Monthly credit card expenditure for 100 individuals.
+    % regressHart with all default options.
+    % The data in Appendix Table F6.1 were used in a study of efficiency in
+    % production of airline services in Greene (2007a). See p. 557 of Green (7th edition).
+    % Common part to all examples: load TableF61_Greene dataset.
 
     load('TableF61_Greene');
     Y=TableF61_Greene.data;
@@ -168,11 +167,18 @@ function [out]=regressHart(y,X,Z,varargin)
     disp('Ordinary Least Squares Estimates')
     LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];
     disp(LSest)
+    out=regressHart(y,X,Loadfactor);
+%}
 
+%{
+    % regressHart with optional arguments.
     % Estimate a multiplicative heteroscedastic model and print the
     % estimates of regression and scedastic parameters together with LM, LR
     % and Wald test
     out=regressHart(y,X,Loadfactor,'msgiter',1);
+%}
+
+%{
 %}
 
 %% Beginning of code
