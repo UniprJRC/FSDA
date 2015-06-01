@@ -393,6 +393,26 @@ Gamma(:,3)=Gamma(:,1)./Gamma(:,2);
 
 % Store inside out structure standard error of regression and heteroskedastic parameters
 out.Gamma=Gamma;
+
+msgiter=options.msgiter;
+if msgiter ==1
+    if maxiter>1
+        disp('Regression parameters beta')
+        disp('Coeff.   SE     t-stat')
+        disp(Beta)
+        disp('Scedastic parameters gamma')
+        disp('Coeff.   SE ')
+        disp(Gamma)
+    else
+        disp('Regression parameters beta')
+        disp('Coeff.   SE     t-stat')
+        disp(Beta)
+        disp('Scedastic parameters gamma from first iteration')
+        disp('Coeff.')
+        disp(gamma0)
+    end
+end
+
 % The two lines below are temporary just to have the connection with power
 % model
 out.alphaOLD=out.Gamma(end,1);

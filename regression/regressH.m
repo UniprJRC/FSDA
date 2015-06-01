@@ -24,6 +24,9 @@ function out=regressH(y,X,Z,varargin)
 %                    regressH(y,X,X(:,[3 5]))
 %               or the sintax
 %                    regressH(y,X,[3 5])
+%
+%  Optional input arguments:
+%
 %   type:       string specifying the parametric function to be used in the skedastic equation
 %               If type is 'arc' (default) than the skedastic function is
 %               modelled as follows
@@ -37,16 +40,13 @@ function out=regressH(y,X,Z,varargin)
 %               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z(i,1) + ...+
 %                           \gamma_{r} Z(i,r)) =\sigma^2 (exp(\gamma_1
 %                           Z(i,1) + ...+ \gamma_{r} Z(i,r))
-%               
 %
-%
-%               Remark: Missing values (NaN's) and infinite values (Inf's) are
+%               Remark. Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%
-%  Optional input arguments:
-%
+%               Example - 'type','har' 
+%               Data Types - string
 %   intercept : Indicator for constant term. Scalar. 
 %               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
@@ -262,6 +262,6 @@ if nargin>3
         out=regressHart(y,X,Z,varargin{:});
     end
 else
-     out=regressHart(y,X,Z,varargin);
+     out=regressHart(y,X,Z);
 end
 

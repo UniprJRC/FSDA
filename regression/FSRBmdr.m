@@ -51,7 +51,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %                 m x 1 vector containing the units forming initial subset. The
 %               default value of bsb is '' (empty value), that is we
 %               initialize the search just using prior information.
-%                 Example - 'bsb',[3,6,9] 
+%                 Example - 'bsb',[3,6,9]
 %                 Data Types - double
 %  init :       Search initialization. Scalar.
 %               It specifies the point where to start monitoring
@@ -61,18 +61,18 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               The minimum value of init is 0. In this case in the first
 %               step we just use prior information
-%               Example - 'init',100 starts monitoring from step m=100 
+%               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %  intercept :   Indicator for constant term. Scalar.
 %               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
-%  plots :    Plot on the screen. Scalar. 
+%  plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of Bayesian minimum deletion residual
 %               appears  on the screen with 1%, 50% and 99% confidence
 %               bands else (default) no plot is shown.
-%                 Example - 'plots',1 
+%                 Example - 'plots',1
 %                 Data Types - double
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
@@ -83,14 +83,14 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
 %               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
 %               about great interchange on the screen
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
-%               Example - 'msg',1 
+%               Example - 'msg',1
 %               Data Types - double
 %   bsbsteps :  steps of the fwd search where to save the units forming subset. Vector.
 %               If bsbsteps is 0 we store the units forming subset in all steps. The
@@ -279,40 +279,40 @@ if nargin > 7
     for i=1:2:length(varargin);
         options.(varargin{i})=varargin{i+1};
     end
-    
-    % And check if the optional user parameters are reasonable.
-    bsb=options.bsb;
-    
-    if bsb==0;
-        bsb=randsample(n,p);
-        Xb=X(bsb,:);
-        yb=y(bsb);
-    else
-        Xb=X(bsb,:);
-        yb=y(bsb,:);
-    end
-    
-    
-    % check init
-    init1=options.init;
-    if  init1 <0;
-        mess=sprintf(['Attention : init1 should be greater or equal than 0. \n',...
-            'It is set to 0.']);
-        disp(mess);
-        init1=0;
-    elseif init1<length(bsb);
-        mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
-            'It is set equal to ' num2str(length(bsb)) ]);
-        disp(mess);
-        init1=length(bsb);
-    elseif init1>=n;
-        mess=sprintf(['Attention : init1 should be smaller than n. \n',...
-            'It is set to n-1.']);
-        disp(mess);
-        init1=n-1;
-    end
-    
 end
+% And check if the optional user parameters are reasonable.
+bsb=options.bsb;
+
+if bsb==0;
+    bsb=randsample(n,p);
+    Xb=X(bsb,:);
+    yb=y(bsb);
+else
+    Xb=X(bsb,:);
+    yb=y(bsb,:);
+end
+
+
+% check init
+init1=options.init;
+if  init1 <0;
+    mess=sprintf(['Attention : init1 should be greater or equal than 0. \n',...
+        'It is set to 0.']);
+    disp(mess);
+    init1=0;
+elseif init1<length(bsb);
+    mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
+        'It is set equal to ' num2str(length(bsb)) ]);
+    disp(mess);
+    init1=length(bsb);
+elseif init1>=n;
+    mess=sprintf(['Attention : init1 should be smaller than n. \n',...
+        'It is set to n-1.']);
+    disp(mess);
+    init1=n-1;
+end
+
+
 ini0=numel(bsb);
 
 msg=options.msg;
@@ -371,12 +371,12 @@ Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 %mj=1;
 for mm=ini0:n;
     
-        % if n>5000 show every 500 steps the fwd search index
-        if msg==1 && n>5000;
-            if length(intersect(mm,seq500))==1;
-                disp(['m=' int2str(mm)]);
-            end
+    % if n>5000 show every 500 steps the fwd search index
+    if msg==1 && n>5000;
+        if length(intersect(mm,seq500))==1;
+            disp(['m=' int2str(mm)]);
         end
+    end
     
     % call bayesian procedure
     [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept);
@@ -456,23 +456,23 @@ for mm=ini0:n;
 end  % for mm=ini0:n loop
 
 
-    % Plot minimum deletion residual with 1%, 50% and 99% envelopes
-    if options.plots==1
-        quant=[0.01;0.5;0.99];
-        % Compute theoretical envelops for minimum deletion residual based on all
-        % the observations for the above quantiles.
-        [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init1,'exact',1);
-        plot(mdrB(:,1),mdrB(:,2));
-        
-        % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
-        lwdenv=2;
-        % Superimpose 50% envelope
-        line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
-        % Superimpose 1% and 99% envelope
-        line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        
-        xlabel('Subset size m');
-        ylabel('Monitoring of minimum deletion residual');
-    end
+% Plot minimum deletion residual with 1%, 50% and 99% envelopes
+if options.plots==1
+    quant=[0.01;0.5;0.99];
+    % Compute theoretical envelops for minimum deletion residual based on all
+    % the observations for the above quantiles.
+    [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init1,'exact',1);
+    plot(mdrB(:,1),mdrB(:,2));
+    
+    % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
+    lwdenv=2;
+    % Superimpose 50% envelope
+    line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
+    % Superimpose 1% and 99% envelope
+    line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    
+    xlabel('Subset size m');
+    ylabel('Monitoring of minimum deletion residual');
+end
 end

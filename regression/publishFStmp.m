@@ -318,9 +318,9 @@ for j=1:length(sintax)
                 inpstring=[inpstring sprintf([inpi '\r'])]; %#ok<*AGROW>
             else
                 if i<ninpel
-                    inpstring=[inpstring sprintf(['<a class="intrnllnk" href="#inputarg_' inpi(1:end-1) '"><code>' inpi(1:end-1) '</code></a>,\r'])]; %#ok<*AGROW>
+                    inpstring=[inpstring sprintf(['<a class="intrnllnk" href="#inputarg_' strtrim(inpi(1:end-1)) '"><code>' inpi(1:end-1) '</code></a>,\r'])]; %#ok<*AGROW>
                 else
-                    inpstring=[inpstring sprintf(['<a class="intrnllnk" href="#inputarg_' inpi(1:end-1) '"><code>' inpi(1:end-1) '</code></a>\r'])]; %#ok<*AGROW>
+                    inpstring=[inpstring sprintf(['<a class="intrnllnk" href="#inputarg_' strtrim(inpi(1:end-1)) '"><code>' inpi(1:end-1) '</code></a>\r'])]; %#ok<*AGROW>
                 end
                 
             end
