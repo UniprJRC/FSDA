@@ -76,7 +76,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %{  
     % FSRinvmdr with all default options.
     % Example of finding the confidence level of MDRenv, where MDRenv is
-    % the matrix of 99% confidence envelopes based on 1000
+    % the matrix of 99 per cent confidence envelopes based on 1000
     % observations and 5 explanatory variables.
     % MDinv is a matrix which in the second column contains
     % all values equal to 0.99

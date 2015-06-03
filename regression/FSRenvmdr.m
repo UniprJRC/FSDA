@@ -73,22 +73,25 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 
 %{  
     % FSRenvmdr with all default options.
-    % Example of creation of 1%, 50% and 99% envelopes based on 1000
-    % observations and 5 explanatory variables using exact method.
+    % Example of creation of 1 per cent, 50 per cent and 99 per cent 
+    % envelopes based on 1000observations and 5 explanatory variables using 
+    % exact method.
     MDRenv=FSRenvmdr(10000,5);
 %}
 
 %{  
     % FSRenvmdr with optional argument.
-    % Example of creation of 1%, 50% and 99% envelopes based on 1000
-    % observations and 5 explanatory variables using approximate method.
+    % Example of creation of 1 per cent, 50 per cent and 99 per cent 
+    % envelopes based on 1000 observations and 5 explanatory variables 
+    % using approximate method.
     MDRenv1=FSRenvmdr(10000,5,'exact',0);
 %}
 
 %{
     % Example with plot of the envelopes.
-    % Example of creation of 1%, 50% and 99% envelopes based on 100
-    % observations and 5 explanatory variables using exact method.
+    % Example of creation of 1 per cent, 50 per cent and 99 per cent
+    % envelopes based on 100observations and 5 explanatory variables using 
+    % exact method.
     Menv=FSRenvmdr(100,5,'exact',1);
     plot(Menv(:,1),Menv(:,2:4));
 %}
