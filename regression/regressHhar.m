@@ -3,30 +3,30 @@ function [out]=regressHhar(y,X,Z,varargin)
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
 %
-%  THE MODEL IS y=X*\beta+ \epsilon, 
-%               \epsilon ~ N(0 \Sigma) 
+%  THE MODEL IS y=X*\beta+ \epsilon,
+%               \epsilon ~ N(0 \Sigma)
 %                   \Sigma=diag(\sigma_1^2, ..., \sigma_n^2)
 %                   \sigma_i^2=exp(z_i^T*\gamma)
 %                   var(\epsilon_i)=\sigma_i^2 i=1, ..., n
 %               \beta = vector which contains regression parameters
 %               \gamma= vector which contains skedastic parameters
 %               Remark1: given that the first element of \z_i is equal to 1
-%               \sigma_i^2 can be written as 
+%               \sigma_i^2 can be written as
 %               \sigma_i^2 = \sigma^2*exp(z_i(2:end)^T*\gamma(2:end))
 %                          = exp(\gamma(1))*exp(z_i(2:end)^T*\gamma(2:end))
-%               that is, once the full parameter vector \gamma containing 
+%               that is, once the full parameter vector \gamma containing
 %               the skedastic parameters is estimated \exp( \gamma(1))
 %               provides the estimator for \sigma^2
 %               REMARK2: if Z=log(X) then exp(z_i(2:end)^T*\gamma(2:end)) =
 %                           \prod x_{ij}^\gamma_j j=2, ..., p
 %               REMARK3: if there is just one explanatory variable (say x)
 %               which is responsible for heteroskedasticity and the model is
-%               \sigma_i=( \sigma^2*x_i^\alpha) 
+%               \sigma_i=( \sigma^2*x_i^\alpha)
 %               then it is necessary to to supply Z as Z=log(x). In this
 %               case, given that the program automatically adds a column of
 %               ones to Z
 %                  exp(Z(i,1)*\gamma(1) +Z(i,2)*\gamma(2))=
-%                  exp(\gamma(1))*x_i^\gamma(2) 
+%                  exp(\gamma(1))*x_i^\gamma(2)
 %               therefore exp(gamma(1)) is the estimate of \sigma^2 while
 %               \gamma(2) is the estimate of alpha
 %
@@ -67,15 +67,15 @@ function [out]=regressHhar(y,X,Z,varargin)
 %
 %  Optional input arguments:
 %
-%   intercept : Indicator for constant term. Scalar. 
+%   intercept : Indicator for constant term. Scalar.
 %               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 % initialbeta : initial estimate of beta. Vector.
 %               p x 1 vector. If initialbeta is not supplied (default) standard least
 %               squares is used to find initial estimate of beta
-%               Example - 'initialbeta',[3.6 8.1] 
+%               Example - 'initialbeta',[3.6 8.1]
 %               Data Types - double
 % initialgamma: initial estimate of gamma. Vector.
 %                vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
@@ -83,13 +83,13 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               where the response is given by squared residuals and the
 %               regressors are specified in input object Z (this regression
 %               also contains a constant term).
-%               Example - 'initialgamma',[0.6 2.8] 
+%               Example - 'initialgamma',[0.6 2.8]
 %               Data Types - double
-%     maxiter : Maximum number of iterations to find model paramters. Scalar. 
+%     maxiter : Maximum number of iterations to find model paramters. Scalar.
 %               If not defined, maxiter is fixed to 200. Remark: in order
 %               to obtain the FGLS estimator (two step estimator) it is
 %               enough to put maxiter=1.
-%               Example - 'maxiter',8 
+%               Example - 'maxiter',8
 %               Data Types - double
 %     tol     : The tolerance for controlling convergence. Scalar.
 %               If not defined, tol is fixed to 1e-8. Convergence is
@@ -97,7 +97,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               vector of length p+r+1 which contains regression and scedastic
 %               coefficients d=(\beta' \gamma')'; while d_old and d_new are
 %               the values of d in iterations t and t+1 t=1,2, ..., maxiter
-%               Example - 'tol',0.0001 
+%               Example - 'tol',0.0001
 %               Data Types - double
 %    msgiter : Level of output to display. Scalar.
 %               If msgiter=1 it is possible to see the estimates of
@@ -108,9 +108,9 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               monitor the estimates of the coefficients in each step of
 %               the iteration. If msgiter<1 nothing is displayed on the
 %               screen
-%               Example - 'msgiter',0 
-%               Data Types - double      
-%               
+%               Example - 'msgiter',0
+%               Data Types - double
+%
 %  Output:
 %
 %  The output consists of a structure 'out' containing the following fields
@@ -217,7 +217,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % The data in Appendix Table F6.1 were used in a study of efficiency in
     % production of airline services in Greene (2007a).
     % See p. 557 of Green (7th edition).
-    % Results in structure "out.Beta" coincide with those of 
+    % Results in structure "out.Beta" coincide with those of
     % table 14.3 page 557, 7th edition of Greene (2007).
     % (line of the table which starts with MLE)
 
@@ -241,7 +241,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % Estimate a multiplicative heteroscedastic model and print the
     % estimates of regression and scedastic parameters together with LM, LR
     % and Wald test
-    out=regressHhar(y,X,Loadfactor,'msgiter',1);
+    out=regressHhar(y,X,Loadfactor,'msgiter',1,'test',1);
 %}
 
 %{
@@ -249,7 +249,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % Estimate a multiplicative heteroscedastic model using just one iteration
     % that is find FGLS estimator (two step estimator).
     % Data are monthly credit card expenditure for 100 individuals.
-    % Results in structure "out" coincide with estimates of row 
+    % Results in structure "out" coincide with estimates of row
     % "\sigma^2*exp(z'*\alpha)" in table 11.2, page 231, 5th edition of
     % Greene (1987).
     
@@ -286,9 +286,10 @@ vvarargin = varargin;
 maxiterdef=200;
 % Scalar defining convergence tolerance of iterative procedure
 toldef=1e-08;
+test=0;
 
 options=struct('intercept',1,'maxiter',maxiterdef,...
-    'initialbeta','','initialgamma','','tol',toldef,'msgiter',0,'type','har');
+    'initialbeta','','initialgamma','','tol',toldef,'msgiter',0,'test',test);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -314,6 +315,10 @@ if ~isempty(UserOptions)
     end
     
 end
+% if test =1 procedure returns the results of Likelihood ratio, Lagrange
+% multiplier and Wald test, together with the maximed log likelihood
+test=options.test;
+
 initialbeta=options.initialbeta;
 if isempty(initialbeta)
     %Initialization of beta using standard least squares
@@ -371,9 +376,9 @@ maxiter=options.maxiter;
 % d is the column vector which contains the full set of
 % parameters (beta and gamma)
 dold=[oldbeta;oldgamma];
-      
-th=38;
-      
+
+th=20;
+
 while cont==1 && iter<maxiter
     iter=iter+1;
     
@@ -385,7 +390,7 @@ while cont==1 && iter<maxiter
     
     Zoldgamma(Zoldgamma>th)=th;
     Zoldgamma(Zoldgamma<-th)=-th;
-
+    
     sigma2hat=exp(Zoldgamma);
     % sigma2hati(sigma2hati>1e+8)=1e+8;
     
@@ -459,74 +464,77 @@ Gamma(:,2)=diag(sqrt(covZ));
 % Gamma(1,2)=Gamma(1,1)*Gamma(1,2);
 Gamma(:,3)=Gamma(:,1)./Gamma(:,2);
 
-% Wald test
-% This test is computed extracting from the full parameter vector \gamma
-% and its estimated asymptotic covariance matrix, the subvector \hat alpha
-% and its asymptotic covariance matrix
-% In the case of multiplicative heteroscedasticity
-% \gamma=[ln \sigma^2 alpha'] so alpha are all elements of vector gamma but
-% the first
-% Wald = \hat \alpha' \left{[0 I] [2 (Z'Z)]^{-1} [0 I] \right}^{-1} \hat \alpha
-% See p. 556 of Greene 7th edition. Note that on p. 556 of Greene there is
-% a missing inverse after the right curly bracket.
-alpha=Gamma(2:end,1);
-Varalpha=covZ(2:end,2:end);
-% Wald=alpha'*inv(Varalpha)*alpha;
-WA=alpha'*(Varalpha\alpha);
-
-% logL_U = -2*unrestricted loglikelihood
-Zgamma=Z*newgamma;
-logL_U= sum(Zgamma)+sum(newres2./exp(Zgamma));
-
-% LR = Likelihood ratio test
-LR=logL_R-logL_U;
-
-% Complete maximized log likelihood
-LogL= -(logL_U+n*log(2*pi))/2;
-
-% Lagrange multiplier test
-% Take residuals from OLS model and form reponse variable h (nx1) where
-% the ith element of vector h is given by
-% h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
-% i=1, ..., n
-h=r.^2/(sum(r.^2)/n)-1;
-% Regress h on Z and find the explained sum of squares
-% bh = vector of regression coefficients from regression of h on Z
-bh=Z\h;
-% Zbh = fitted values from the regression of h on Z
-Zbh=Z*bh;
-% LM is nothing but one-half times the explained sum of squares in the
-% linear regression of the variable h on Z
-LM=Zbh'*Zbh/2;
-
-% Below it is possible to find two alternative (inefficient) ways of
-% computing the LM test
-%
-%     % The row below is an inefficient way of computing the LM test
-%     % See equation 9.28 p. 276 of Greene 7th edition
-%     LM=h'*Z*inv(Z'*Z)*Z'*h/2;
-% 
-%     % An additional alternative way of computing LM is as follows
-%     % vg is row vector of length columns of Z
-%     % vg = \sum v_i*z_i where v_i is a scalar equal to
-%     % h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
-%     vg = bsxfun(@times, Z(:,2:end), h);
-%     LM=sum(vg,1)*inv((n-1)*cov(Z(:,2:end)))*(sum(vg,1)')/2;
-
-
 % Store inside out structure standard error of regression and heteroskedastic parameters
 out.Gamma=Gamma;
-out.alpha=out.Gamma(end,1);%added by frt. non so se giusto.
+out.alpha=out.Gamma(end,1);
 out.sigma2=exp(out.Gamma(1,1));
 
-% Store value of Likelihood ratio test
-out.LR = LR;
-% Store value of Lagrange multiplier test
-out.LM = LM;
-% Store value of Wald test
-out.WA = WA;
-% Store value of complete maximized log likelihood
-out.LogL=LogL;
+if test==1
+    % Wald test
+    % This test is computed extracting from the full parameter vector \gamma
+    % and its estimated asymptotic covariance matrix, the subvector \hat alpha
+    % and its asymptotic covariance matrix
+    % In the case of multiplicative heteroscedasticity
+    % \gamma=[ln \sigma^2 alpha'] so alpha are all elements of vector gamma but
+    % the first
+    % Wald = \hat \alpha' \left{[0 I] [2 (Z'Z)]^{-1} [0 I] \right}^{-1} \hat \alpha
+    % See p. 556 of Greene 7th edition. Note that on p. 556 of Greene there is
+    % a missing inverse after the right curly bracket.
+    alpha=Gamma(2:end,1);
+    Varalpha=covZ(2:end,2:end);
+    % Wald=alpha'*inv(Varalpha)*alpha;
+    WA=alpha'*(Varalpha\alpha);
+    
+    % logL_U = -2*unrestricted loglikelihood
+    Zgamma=Z*newgamma;
+    logL_U= sum(Zgamma)+sum(newres2./exp(Zgamma));
+    
+    % LR = Likelihood ratio test
+    LR=logL_R-logL_U;
+    
+    % Complete maximized log likelihood
+    LogL= -(logL_U+n*log(2*pi))/2;
+    
+    % Lagrange multiplier test
+    % Take residuals from OLS model and form reponse variable h (nx1) where
+    % the ith element of vector h is given by
+    % h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
+    % i=1, ..., n
+    h=r.^2/(sum(r.^2)/n)-1;
+    % Regress h on Z and find the explained sum of squares
+    % bh = vector of regression coefficients from regression of h on Z
+    bh=Z\h;
+    % Zbh = fitted values from the regression of h on Z
+    Zbh=Z*bh;
+    % LM is nothing but one-half times the explained sum of squares in the
+    % linear regression of the variable h on Z
+    LM=Zbh'*Zbh/2;
+    
+    % Below it is possible to find two alternative (inefficient) ways of
+    % computing the LM test
+    %
+    %     % The row below is an inefficient way of computing the LM test
+    %     % See equation 9.28 p. 276 of Greene 7th edition
+    %     LM=h'*Z*inv(Z'*Z)*Z'*h/2;
+    %
+    %     % An additional alternative way of computing LM is as follows
+    %     % vg is row vector of length columns of Z
+    %     % vg = \sum v_i*z_i where v_i is a scalar equal to
+    %     % h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
+    %     vg = bsxfun(@times, Z(:,2:end), h);
+    %     LM=sum(vg,1)*inv((n-1)*cov(Z(:,2:end)))*(sum(vg,1)')/2;
+    
+    % Store value of Likelihood ratio test
+    out.LR = LR;
+    % Store value of Lagrange multiplier test
+    out.LM = LM;
+    % Store value of Wald test
+    out.WA = WA;
+    % Store value of complete maximized log likelihood
+    out.LogL=LogL;
+    
+end
+
 msgiter=options.msgiter;
 if msgiter ==1
     if maxiter>1
@@ -536,11 +544,13 @@ if msgiter ==1
         disp('Scedastic parameters gamma')
         disp('Coeff.   SE ')
         disp(Gamma)
-        disp('Tests')
-        disp(['Likelihood ratio test    (LR)=' num2str(LR)])
-        disp(['Lagrange multiplier test (LM)=' num2str(LM)])
-        disp(['Wald test                (Wa)=' num2str(WA)])
-        disp(['Complete maximized log likelihood=' num2str(LogL)])
+        if test==1
+            disp('Tests')
+            disp(['Likelihood ratio test    (LR)=' num2str(LR)])
+            disp(['Lagrange multiplier test (LM)=' num2str(LM)])
+            disp(['Wald test                (Wa)=' num2str(WA)])
+            disp(['Complete maximized log likelihood=' num2str(LogL)])
+        end
     else
         disp('Regression parameters beta')
         disp('Coeff.   SE     t-stat')
