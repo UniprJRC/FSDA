@@ -178,9 +178,7 @@ function [out]=regressHart(y,X,Z,varargin)
     out=regressHart(y,X,Loadfactor,'msgiter',1,'test',1);
 %}
 
-%{
 
-%}
 
 %% Beginning of code
 nnargin = nargin;
