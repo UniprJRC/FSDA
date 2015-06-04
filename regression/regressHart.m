@@ -175,10 +175,11 @@ function [out]=regressHart(y,X,Z,varargin)
     % Estimate a multiplicative heteroscedastic model and print the
     % estimates of regression and scedastic parameters together with LM, LR
     % and Wald test
-    out=regressHart(y,X,Loadfactor,'msgiter',1);
+    out=regressHart(y,X,Loadfactor,'msgiter',1,'test',1);
 %}
 
 %{
+
 %}
 
 %% Beginning of code
