@@ -217,8 +217,51 @@ function [out] = FSRBeda(y, X, varargin)
 
 % Examples:
 
+%{
+    % FSRBeda with all default options.
+    % Common part to all examples: load Houses Price Dataset.
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    [out]=FSRBeda(y,X)
+%}
 
 %{
+    % FSRBeda with optional arguments.
+    
+    bayes=struct;
+    n0=5;
+    bayes.n0=n0;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+    bayes.beta0=beta0;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+    bayes.tau0=tau0;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
+    bayes.R=R;
+    [out]=FSRBeda(y,X,'bayes',bayes)    
+%}
+
+%{
+    % Monitoring the forward plots.
     % In this example for the house price data we monitor the forward plots
     % in the second half of the search of HPD regions for the parameters of
     % the linear model and, bottom right-hand panel, the estimate of ?2.
