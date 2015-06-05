@@ -31,10 +31,12 @@ function [out]=FSRB(y,X,varargin)
 %
 %               The prior distribution of tau0 is a gamma distribution with
 %               parameters a and b, that is
-%                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
-%                         E(tau0) is equal to a0/b0
-%
-%               tau0 = scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0
+%               \[
+%                     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
+%                       \qquad E(\tau_0) = a_0/b_0
+%               \]
+%               tau0 = scalar. Prior estimate of 
+%                       \[ \tau=1/ \sigma^2 =a_0/b_0 \]
 %               n0   = scalar. Sometimes it helps to think of the prior
 %                      information as coming from n0 previous experiments.
 %                      Therefore we assume that matrix X0 (which defines

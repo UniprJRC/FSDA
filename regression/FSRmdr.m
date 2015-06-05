@@ -207,15 +207,15 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %}
 
 %{
-    % Monitor $\hat  beta$.
+    % Monitor \( \hat  \beta \).
     % Monitor how the estimates of beta coefficients changes as the subset
     % size increases (matrix Bols).
     [mdr,Un,BB,Bols] = FSRmdr(y,X,out.bs);
 %}
 
 %{
-    % Monitor $s^2$.
-    % Monitor the estimate of sigma^2 in each step of the fwd search
+    % Monitor \( s^2 \).
+    % Monitor the estimate of \( \sigma^2 \) in each step of the fwd search
     % (matrix S2).
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);
 %}
