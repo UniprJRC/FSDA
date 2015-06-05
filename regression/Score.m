@@ -85,7 +85,7 @@ function [outSC]=Score(y,X,varargin)
     y=loyalty(:,4);
     X=loyalty(:,1:3);
     % la = vector containing the values of the transformation
-    % parameter which have to be tested
+    % parameters which have to be tested
     la=[0.25 1/3 0.4 0.5];
     [outSc]=Score(y,X,'la',la,'intercept',0);
 %}
