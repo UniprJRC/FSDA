@@ -192,7 +192,7 @@ toldef=1e-08;
 %toldef=1e-13;
 test=0;
 
-options=struct('intercept',1,'maxiter',maxiterdef,...
+options=struct('intercept',1,'maxiter',maxiterdef,'type','art',...
     'initialbeta','','initialgamma','','tol',toldef,'msgiter',0,'test',test);
 
 UserOptions=varargin(1:2:length(varargin));

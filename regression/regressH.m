@@ -27,20 +27,21 @@ function out=regressH(y,X,Z,varargin)
 %
 %  Optional input arguments:
 %
-%   type:       string specifying the parametric function to be used in the skedastic equation
+%   type:       Parametric function to be used in the skedastic equation.
+%               String.
 %               If type is 'arc' (default) than the skedastic function is
 %               modelled as follows
-%
-%               \sigma^2_i = \sigma^2 (1 + exp(\gamma_0 + \gamma_1 Z(i,1) +
-%                           ...+ \gamma_{r} Z(i,r)))
-%
+%               \[
+%               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
+%                           \cdots + \gamma_{r} Z(i,r)))
+%               \]
 %               on the other hand, if type is 'har' then traditional
 %               formulation due to Harvey is used as follows
-%
-%               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z(i,1) + ...+
-%                           \gamma_{r} Z(i,r)) =\sigma^2 (exp(\gamma_1
-%                           Z(i,1) + ...+ \gamma_{r} Z(i,r))
-%
+%               \[
+%               \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
+%                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
+%                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
+%               \]
 %               Remark. Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
@@ -55,7 +56,7 @@ function out=regressH(y,X,Z,varargin)
 % initialbeta : initial estimate of beta. Vector.
 %               p x 1 vector. If initialbeta is not supplied (default) standard least
 %               squares is used to find initial estimate of beta
-%               Example - 'initialbeta',[3.6 8.1] 
+%               Example - 'initialbeta',[3 8] 
 %               Data Types - double
 % initialgamma: initial estimate of gamma. Vector.
 %                vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
@@ -73,10 +74,11 @@ function out=regressH(y,X,Z,varargin)
 %               Data Types - double
 %     tol     : The tolerance for controlling convergence. Scalar
 %               If not defined, tol is fixed to 1e-8. Convergence is
-%               obtained if ||d_old-d_new||/||d_new||<1e-8 where d is the
-%               vector of length p+r+1 which contains regression and scedastic
-%               coefficients d=(\beta' \gamma')'; while d_old and d_new are
-%               the values of d in iterations t and t+1 t=1,2, ..., maxiter
+%               obtained if \( ||d_{old}-d_{new}||/||d_{new}||<1e-8 \)
+%               where \( d \) is the vector of length p+r+1 which contains
+%               regression and scedastic coefficients \( d=(\beta' \;
+%               \gamma')' \) ; while \( d_{old} \) and \(d_{new} \) are the
+%               values of d in iterations t and t+1 t=1,2, ..., maxiter
 %               Example - 'tol',0.0001 
 %               Data Types - double
 %    msgiter : Level of output to display. Scalar.
@@ -102,35 +104,21 @@ function out=regressH(y,X,Z,varargin)
 %                       1st col = Estimates of scedastic coefficients
 %                       2nd col = Standard errors of the estimates of scedastic coeff
 %                       3rd col = t tests of the estimates of scedastic coeff
-%                       Remark: the first row of matrix out.Gamma is
-%                       referred to the estimate of \sigma
 %              out.WA = scalar. Wald test
 %              out.LR = scalar. Likelihood ratio test
 %              out.LM = scalar. Lagrange multiplier test
-%            out.LogL = scalar. Complete maximized log likelihood
-%
-%
-%   DETAILS. This routine implements Harvey’s (1976) model of
-%   multiplicative heteroscedasticity which is a very flexible, general
-%   model that includes most of the useful formulations as special cases.
-%   The general formulation is
-%       \sigma^2_i =\sigma^2 exp(z_i \alpha)
-%   Let z_i include a constant term so that z_i'=(1 q_i) where q_i is the
-%   original set of variables which are supposed to explain
-%   heteroscedasticity. This routine automatically adds a column of 1 to
-%   input matrix Z (therefore Z does not have to include a constant term).
-%   Now let \gamma'=[ln \sigma^2 \alpha']. Then the model is simply
-%       \sigma^2_i = exp(\gamma_' z_i)
-%   Once the full parameter vector is estimated \exp( \gamma_1) provides the
-%   estimator for \sigma^2
+%            out.LogL = scalar. Complete maximized log likelihood using
+%                       'har' or 'art' heteroskedasticity 
 %
 % See also regress, regstats
 %
 % References:
 %
 %   Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1
-%   pp. 232-235), (7th edition, section  9.7.1 pp. 280-.
-%   Prentice Hall,.
+%   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282).
+%   Prentice Hall.
+%   Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for
+%   heteroskedastic regression, submitted (ART)
 %
 % Copyright 2008-2015.
 % Written by FSDA team

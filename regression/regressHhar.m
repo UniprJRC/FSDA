@@ -3,32 +3,61 @@ function [out]=regressHhar(y,X,Z,varargin)
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
 %
-%  THE MODEL IS y=X*\beta+ \epsilon,
-%               \epsilon ~ N(0 \Sigma)
-%                   \Sigma=diag(\sigma_1^2, ..., \sigma_n^2)
-%                   \sigma_i^2=exp(z_i^T*\gamma)
-%                   var(\epsilon_i)=\sigma_i^2 i=1, ..., n
-%               \beta = vector which contains regression parameters
-%               \gamma= vector which contains skedastic parameters
-%               Remark1: given that the first element of \z_i is equal to 1
-%               \sigma_i^2 can be written as
-%               \sigma_i^2 = \sigma^2*exp(z_i(2:end)^T*\gamma(2:end))
-%                          = exp(\gamma(1))*exp(z_i(2:end)^T*\gamma(2:end))
-%               that is, once the full parameter vector \gamma containing
-%               the skedastic parameters is estimated \exp( \gamma(1))
-%               provides the estimator for \sigma^2
-%               REMARK2: if Z=log(X) then exp(z_i(2:end)^T*\gamma(2:end)) =
-%                           \prod x_{ij}^\gamma_j j=2, ..., p
-%               REMARK3: if there is just one explanatory variable (say x)
-%               which is responsible for heteroskedasticity and the model is
-%               \sigma_i=( \sigma^2*x_i^\alpha)
-%               then it is necessary to to supply Z as Z=log(x). In this
+%  THE MODEL IS 
+%               \[
+%                 y=X \times\beta+ \epsilon,  \qquad 
+%                 \epsilon \sim N(0, \;  \Sigma)
+%               \]
+%               \[
+%                   \Sigma=diag(\sigma_1^2, ..., \sigma_n^2)    \qquad
+%                   \sigma_i^2=\exp(z_i^T \times \gamma)        \qquad
+%                   var(\epsilon_i)=\sigma_i^2                  \qquad
+%                   i=1, ..., n    
+%               \]                                                      
+%               $\beta$ = p-by-1 vector which contains regression
+%               parameters.                                                 
+%               $\gamma$ = (r+1)-times-1 vector $\gamma_0, \ldots,
+%               \gamma_r$ (or written in MATLAB language $(\gamma(1),
+%               \ldots, \gamma(r+1))$) which contains skedastic parameters.
+%               $X$ = n-by-p matrix containing explanatory variables in the
+%               mean equation (including the constant term if present).
+%               $Z$ = n-by-(r+1) matrix containing the explanatory
+%               variables in the skedastic equation. $Z= (z_1^T, \ldots,
+%               z_n^T)^T$ 
+%               $z_i^T=(1, z_{i,1}, \ldots, z_{i,r})$ (or written in MATLAB
+%               language  $z_i=(z(1), \ldots, z(r+1)$).
+%               REMARK1: given that the first element of $z_i$ is equal to 1
+%               $\sigma_i^2$ can be written as
+%               \[
+%               \sigma_i^2 = \sigma^2 \times \exp(z_i(2:r+1)*\gamma(2:r+1))
+%                          = \exp(\gamma(1))*\exp(z_i(2:r+1)*\gamma(2:r+1))
+%               \]
+%               that is, once the full parameter vector $\gamma$ containing
+%               the skedastic parameters is estimated $\exp( \gamma(1))$
+%               provides the estimator for $\sigma^2$
+%               REMARK2: if $Z=log(X)$ then
+%               \[
+%                            \sigma^2_i= \exp(z_i^T \times \gamma) =
+%                           \prod_{j=1}^p x_{ij}^{\gamma_j}     \qquad  
+%                            j=1, ..., p
+%               \]
+%               REMARK3: if there is just one explanatory variable (say $x
+%               =(x_1 \ldots, x_n)$) which is responsible for
+%               heteroskedasticity and the model is
+%               \[
+%               \sigma^2_i=( \sigma^2 \times x_i^\alpha)
+%               \]
+%               then it is necessary to supply $Z$ as $Z=log(x)$. In this
 %               case, given that the program automatically adds a column of
-%               ones to Z
-%                  exp(Z(i,1)*\gamma(1) +Z(i,2)*\gamma(2))=
-%                  exp(\gamma(1))*x_i^\gamma(2)
-%               therefore exp(gamma(1)) is the estimate of \sigma^2 while
-%               \gamma(2) is the estimate of alpha
+%               ones to $Z$
+%               \[
+%                  \exp(Z(i,1) \times \gamma(1) +Z(i,2) \times \gamma(2))=
+%                  \exp(\gamma(1))*x_i^{\gamma(2)}
+%               \]
+%               therefore the $\exp$ of the first element of vector
+%               $\gamma$ (namely exp(gamma(1))) is the estimate of
+%               $\sigma^2$ while the second element of vector $\gamma$
+%               (namely gamma(2)) is the estimate of $\alpha$
 %
 %  Required input arguments:
 %
@@ -43,16 +72,16 @@ function [out]=regressHhar(y,X,Z,varargin)
 %     Z :       n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows
-%
+%               \[
 %               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
-%
+%               \]
 %               If Z is a vector of length r it contains the indexes of the
 %               columns of matrix X which form the scedastic function as
 %               follows
-%
+%               \[
 %               \sigma^2_i = exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
-%
+%               \]
 %               Therefore, if for example the explanatory variables
 %               responsible for heteroscedisticity are columns 3 and 5
 %               of matrix X, it is possible to use both the sintax
@@ -124,7 +153,11 @@ function [out]=regressHhar(y,X,Z,varargin)
 %                       2nd col = Standard errors of the estimates of scedastic coeff
 %                       3rd col = t tests of the estimates of scedastic coeff
 %                       Remark: the first row of matrix out.Gamma is
-%                       referred to the estimate of \sigma
+%                       referred to the estimate of \( \sigma^2 \). In
+%                       other words 
+%                       \[ 
+%                       \hat \sigma^2= \exp(Gamma(1,1)) 
+%                       \]
 %              out.WA = scalar. Wald test
 %              out.LR = scalar. Likelihood ratio test
 %              out.LM = scalar. Lagrange multiplier test
@@ -135,23 +168,31 @@ function [out]=regressHhar(y,X,Z,varargin)
 %   multiplicative heteroscedasticity which is a very flexible, general
 %   model that includes most of the useful formulations as special cases.
 %   The general formulation is
-%       \sigma^2_i =\sigma^2 exp(z_i \alpha)
-%   Let z_i include a constant term so that z_i'=(1 q_i) where q_i is the
+%   \[
+%       \sigma^2_i =\sigma^2 \exp(z_i \alpha)
+%   \]
+%   Let z_i include a constant term so that \( z_i'=(1 \; q_i) \)where \( q_i \) is the
 %   original set of variables which are supposed to explain
 %   heteroscedasticity. This routine automatically adds a column of 1 to
 %   input matrix Z (therefore Z does not have to include a constant term).
-%   Now let \gamma'=[ln \sigma^2 \alpha']. Then the model is simply
-%       \sigma^2_i = exp(\gamma_' z_i)
-%   Once the full parameter vector is estimated \exp( \gamma(1)) provides the
-%   estimator for \sigma^2
+%   Now let 
+%   \[  
+%   \gamma'=[\log \sigma^2 \alpha'] = [ \gamma_0, \ldots, \gamma_r]. 
+%   \] 
+%   Then the model is simply
+%   \[
+%   \sigma^2_i = \exp(\gamma' z_i)
+%   \]
+%   Once the full parameter vector is estimated \( \exp( \gamma_0)\) provides the
+%   estimator for \( \sigma^2 \)
 %
 % See also regressHart
 %
 % References:
 %
 %   Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1
-%   pp. 232-235), (7th edition, section  9.7.1 pp. 280-.
-%   Prentice Hall,.
+%   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282).
+%   Prentice Hall.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -289,7 +330,7 @@ toldef=1e-08;
 test=0;
 
 options=struct('intercept',1,'maxiter',maxiterdef,...
-    'initialbeta','','initialgamma','','tol',toldef,'msgiter',0,'test',test);
+    'initialbeta','','initialgamma','','tol',toldef,'msgiter',0,'test',test,'type','har');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
