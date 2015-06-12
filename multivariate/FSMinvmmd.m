@@ -12,14 +12,19 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %
 %  Optional input arguments:
 %
-%        n:     scalar which specifies the size of the sample. If it is not specified
-%               it is set equal to mmd(end,1)+1
-%   plots :     scalar or structure specifying whether it is necessary to
-%               plot in normal coordinates the value of mmd
+%        n:     It specifies the size of the sample. Scalar. If it is not specified
+%               it is set equal to mmd(end,1)+1.
+%                 Example - 'n',5
+%                 Data Types - double
+%   plots :     It is necessary to
+%               plot in normal coordinates the value of mmd. Scalar or
+%               structure.
 %               If plots = 1, a plot which shows the
 %               confidence level of mmd in each step is shown on the
 %               screen.
-%               Remark: three horizontal lines associated respectively with
+%                 Example - 'plots',1
+%                 Data Types - double
+%               Remark. three horizontal lines associated respectively with
 %               values  0.01 0.5 and 0.99  are added to the plot
 %               If plots is a structure the user can specify the following options
 %                   conflev = vector containing horizontal lines associated

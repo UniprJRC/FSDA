@@ -20,20 +20,27 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
-% init :        scalar, specifies the point where to start monitoring
-%               required diagnostics. Note that if bsb is supplied
+% init :       It specifies the point where to start monitoring
+%               required diagnostics. Scalar. Note that if bsb is supplied
 %               init>=length(bsb). If init is not specified it will
 %               be set equal to floor(n*0.6).
-% plots :       scalar. If plots=1, a plot of the monitoring of minMD among
+%                 Example - 'init',50 
+%                 Data Types - double
+% plots :     It specify whether it is necessary to produce the plots of minimum Mahalanobis
+%                 distance. Scalar. If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
 %               screen with 1% 50% and 99% confidence bands
 %               else (default) no plot is produced.
-%  msg  :       scalar which controls whether to display or not messages
-%               about great interchange on the screen
+%                 Example - 'plots',0 
+%                 Data Types - double
+%  msg  :     It controls whether to display or not messages
+%               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
-%               else no message is displayed on the screen
+%               else no message is displayed on the screen.
+%                 Example - 'msg',0 
+%                 Data Types - double
 %
-% Remark:       The user should only give the input arguments that have to
+% Remark=       The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
 %               their value. The order of the input arguments is of no
@@ -46,11 +53,11 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Output:
 %
-% mmd:          (n-init) x 2 matrix which contains the monitoring of minimum
+% mmd=          (n-init) x 2 matrix which contains the monitoring of minimum
 %               Mahalanobis distance each step of the forward search.
 %               1st col = fwd search index (from init to n-1).
 %               2nd col = minimum Mahalanobis distance.
-% Un:           (n-init) x 11 Matrix which contains the unit(s) included
+% Un=          (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -59,7 +66,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-% varargout :   Matrix containing units belonging to subset in each step of
+% varargout=   Matrix containing units belonging to subset in each step of
 %               the search (from step init to n)
 %
 % See also FSMenvmmd.m, FSM.m

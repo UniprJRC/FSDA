@@ -10,26 +10,35 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %
 % Optional input arguments:
 %
-% init:         scalar which specifies the initial subset size to monitor
-%               minimum Mahalanobis Distance, if init is not specified it will
+% init:         Initial subset size to start monitoring exceedances of
+%                   minimum Mahalanobis distance. Scalar. If init is not specified it will
 %               be set equal to floor(n*0.6).
-% prob:         1 x k vector containing quantiles for which envelopes have
-%               to be computed. The default is to produce 1%, 50% and 99%
-%               envelopes.
-% exact:        scalar, if it is equal to 1 (default) the calculation of
-%               the quantiles of F distribution is based on function finv
-%               and from the Matlab statistics toolbox, otherwise the
+%                 Example - 'init',50 
+%                 Data Types - double
+% prob:        quantiles for which envelopes have
+%               to be computed. Vector. Vector containing 1 x k elements .
+%               The default is to produce 1%, 50% and 99% envelopes.
+%                 Example - 'prob',[0.05 0.95] 
+%                 Data Types - double
+% exact:      It indicates how to calculate the quantiles of F
+%               distribution. Scalar. If it is equal to 1 (default)  is based on function
+%               finv and from the Matlab statistics toolbox, otherwise the
 %               calculations of the former quantiles is based on functions
 %               invcdff. The solution has a tolerance of 1e-8 (change
 %               variable tol in files invcdff.m)
-%               Remark: the use of function finv is more precise
+%               Remark. the use of function finv is more precise
 %               but requires more time.
-%   scaled:     scalar. If scaled=1 the envelopes are produced for
+%                 Example - 'exact',0 
+%                 Data Types - double
+%   scaled:  It indicates how to compute the envelopes. Scalar. If scaled=1
+%               the envelopes are produced for
 %               scaled Mahalanobis distances (no consistency factor is
 %               applied) else the traditional consistency factor is applies
 %               (this is the default)
+%                 Example - 'scaled',0 
+%                 Data Types - double
 %
-% Subfunctions:
+% Subfunctions.
 %   invcdff.
 %
 % Other function dependencies:
@@ -37,7 +46,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %
 % Output:
 %
-%  MMDenv:      matrix with n-m0+1 rows and length(prob)+1 columns
+%  MMDenv=      matrix with n-m0+1 rows and length(prob)+1 columns
 %               1st col = fwd search index from m0 to n-1
 %               2nd col = envelope for quantile prob[1]
 %               3rd col = envelope for quantile prob[2]

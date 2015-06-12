@@ -22,21 +22,28 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %
 % Optional input arguments:
 %
-% init :        scalar, specifies the point where to start monitoring
-%               required diagnostics. Note that if bsb is supplied
+% init :        It specifies the point where to start monitoring
+%               required diagnostics. Scalar. Note that if bsb is supplied
 %               init>=length(bsb). If init is not specified it will
 %               be set equal to floor(n*0.6).
-% plots :       scalar. If plots=1, a plot of the monitoring of minMD among
+%                 Example - 'init',50 
+%                 Data Types - double
+% plots :     Plot on the screen. Scalar.  If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
 %               screen with 1% 50% and 99% confidence bands
 %               else (default) no plot is produced.
-%  msg  :       scalar which controls whether to display or not messages
-%               about great interchange on the screen
+%               Example - 'plots',0
+%               Data Types - double
+%  msg  :   It controls whether to display or not messages
+%               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
-% nocheck :     Scalar. If nocheck is equal to 1 no check is performed on
+%                 Example - 'msg',0 
+%                 Data Types - double
+% nocheck :   It controls whether to perform checks on matrix Y. Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
-%
+%                 Example - 'nocheck',1
+%                 Data Types - double
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
@@ -51,7 +58,7 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 % Output:
 %
 %
-% BBmsel  :     Matrix of size n-times-length(msel) containing units
+% BBmsel  =     Matrix of size n-times-length(msel) containing units
 %               belonging to subset in the steps of
 %               the search defined by input vector msel
 %               More precisely

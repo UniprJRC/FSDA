@@ -14,18 +14,19 @@ function [out]=FSM(Y,varargin)
 %
 % Optional input arguments:
 %
-%          m0   : scalar which specifies the initial subset size or the
-%                 or vector which contains the list of the units forming
-%                 initial subset.
+%          m0   : Initial subset size or vector which contains the list of the units forming
+%                 initial subset. Scalar or vector. 
 %                 The default is to start the search with v+1 units which
 %                 consisting of those observations which are not outlying
 %                 on any scatterplot, found as the intersection of all
 %                 points lying within a robust contour containing a
 %                 specified portion of the data (Riani and Zani 1997) and
 %                 inside the univariate boxplot. Remark: if m0 is a vector
-%                 option below crit is ignored
-%       crit    : String which specified the criterion to be used to
-%                 initialize the search
+%                 option below crit is ignored.
+%                 Example - 'm0',5 
+%                 Data Types - double
+%       crit    : It specified the criterion to be used to
+%                 initialize the search. Character.
 %                 if crit='md' the units which form initial subset are
 %                  those which have the smallest m0 pseudo Mahalanobis
 %                  distances computed using procedure unibiv (bivariate
@@ -48,17 +49,23 @@ function [out]=FSM(Y,varargin)
 %                 search is not going to affect at all the results of the
 %                 analysis. The user can explore this point with his own datasets
 %                 Remark: if crit='biv' the user can also supply in scalar rf
-%                (see below) the confidence level of the bivariate ellipses
-%        rf     : confidence level for bivariate ellipses (default is
-%                 0.95). This option is useful only if crit='biv'
-%       init    : scalar which specifies the initial subset size to start
-%                 monitoring exceedances of minimum Mahalanobis distance, if
-%                 init is not specified it will be set equal to floor(n*0.6).
-%       plots   : missing value scalar or structure specifying whether it
-%                 is necessary to produce the plots of minimum Mahalanobis
-%                 distance
-%                 If plots is a missing value or is a scalar equal to 0 no
-%                 plot is produced
+%                (see below) the confidence level of the bivariate
+%                ellipses.
+%               Example - 'crit','md' 
+%               Data Types - char
+%        rf     : confidence level for bivariate ellipses. Scalar. The default is
+%                 0.95. This option is useful only if crit='biv'.
+%                 Example - 'rf',0.9 
+%                 Data Types - double
+%       init    : Initial subset size to start monitoring exceedances of
+%                   minimum Mahalanobis distance. Scalar. If
+%                 init is not specified it will be set equal to
+%                 floor(n*0.6).
+%                 Example - 'init',50 
+%                 Data Types - double
+%       plots   :It specify whether it is necessary to produce the plots of minimum Mahalanobis
+%                 distance. Scalar or structure. If plots is a missing value or is a scalar equal to 0 no
+%                 plot is produced.
 %                 If plots is a scalar equal to 1 (default) the plot
 %                 of minimum MD with envelopes based on n observations and
 %                 the scatterplot matrix with the outliers highlighted is
@@ -93,9 +100,12 @@ function [out]=FSM(Y,varargin)
 %                       Default line of lwd=2
 %                 lwdenv  :   Scalar which controls linewidth of the
 %                       envelopes. Default value of lwdenv=2
+%               Example - 'plots',2
+%               Data Types - double
 %      bonflev  : option that might be used to identify extreme outliers
-%                 when the distribution of the data is strongly non normal
-%                 and, thus, the general signal detection rule based on
+%                 when the distribution of the data is strongly non normal.
+%                 Scalar.
+%                 In these circumstances, the general signal detection rule based on
 %                 consecutive exceedances cannot be used. In this case
 %                 bonflev can be:
 %                 - a scalar smaller than 1, which specifies the confidence
@@ -109,13 +119,20 @@ function [out]=FSM(Y,varargin)
 %                   for the first time this value.
 %                 Default value is '', which means to rely on general rules
 %                 based on consecutive exceedances.
-%       msg     : scalar which controls whether to display or not messages
-%                 on the screen.
+%                 Example - 'bonflev',0.7
+%                 Data Types - double
+%       msg     : It controls whether to display or not messages
+%                 on the screen. Scalar.
 %                 If msg==1 (default) messages about the progression of the
 %                 search are displayed on the screen otherwise only error
 %                 messages will be displayed.
-%   nocheck     : Scalar. If nocheck is equal to 1 no check is performed on
-%                 matrix Y. As default nocheck=0.
+%                 Example - 'msg',0 
+%                 Data Types - double
+%   nocheck     : It controls whether to perform checks on matrix Y.Scalar.
+%                   If nocheck is equal to 1 no check is performed.
+%                    As default nocheck=0.
+%                 Example - 'nocheck',1
+%                 Data Types - double
 %
 %
 % Output:

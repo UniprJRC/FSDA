@@ -20,7 +20,7 @@ function out = FSMfan(Y,la0,varargin)
 % Optional input arguments:
 %
 %    family :   string which identifies the family of transformations which
-%               must be used. Possible values are 'BoxCox' (deafult) or
+%               must be used. Character. Possible values are 'BoxCox' (deafult) or
 %               'YJ'
 %               The Box-Cox family of power transformations equals
 %               (y^{?}-1)/? for ? not equal to zero, and
@@ -31,40 +31,61 @@ function out = FSMfan(Y,la0,varargin)
 %               parameter 2-? for y negative.
 %               The basic power transformation returns y^{?} if ? is not
 %               zero, and log(?) otherwise.
-%               Remark: BoxCox and the basic power family can be used just
+%               Remark. BoxCox and the basic power family can be used just
 %               if input y is positive. YeoJohnson family of
-%               transformations does not have this limitation.%        rf :   confidence level for bivariate ellipses (default is
-%               0.9).
-%      init :   scalar, specifies the point where to start monitoring
-%               required diagnostics. Note that if init is not specified it will
+%               transformations does not have this limitation.
+%               Example - 'family','YJ' 
+%               Data Types - char
+%        rf :   confidence level for bivariate ellipses. Scalar. Default is
+%               0.9.
+%                 Example - 'rf',0.99 
+%                 Data Types - double
+%      init :   specifies the point where to start monitoring
+%               required diagnostics. Scalar. Note that if init is not specified it will
 %               be set equal to floor(n*0.6).
-% ColToComp :   k x 1 integer vector specifying the
-%               variables for which likelihood ratio tests have to be produced. For
+%                 Example - 'init',50 
+%                 Data Types - double
+% ColToComp :  It specifies the
+%               variables for which likelihood ratio tests have to be produced. Vector. It is a k x 1 integer vector. For
 %               example, if ColToComp = [2 4], the signed likelihood ratio tests
 %               are produced for the second and the fourth column of matrix Y. If
 %               col.to.compare = '' then all variables (columns of matrix Y) are
 %               considered.
-%   laAround:   r x 1 vector specifying for which values
-%               of lambda to compute the likelihood ratio test. If this argument is
+%                 Example - 'ColToComp',[1 3] 
+%                 Data Types - double
+%   laAround:  It specifies for which values
+%               of lambda to compute the likelihood ratio test. Scalar. It is a  r x 1 vector. If this argument is
 %               omitted, the function produces for each variable specified in
 %               ColToComp the likelihood ratio tests associated to the five most
 %               common values of lambda [-1, -0.5, 0, 0.5, 1].
-%   optmin  :   structure containing the options dealing with the
-%               maximization algorithm. Use optimset to set these options.
+%                 Example - 'laAround',[1 0] 
+%                 Data Types - double
+%   optmin  :   It contains the options dealing with the
+%               maximization algorithm. Structure. 
+%               Use optimset to set these options.
 %               Notice that the maximization algorithm which is used is
 %               fminunc if the optimization toolbox is present else is
 %               fminsearch.
-%     speed :   scalar. If speed=1 (default) the initial value at step m of
+%                 Example -'optmin.Display','off' 
+%                 Data Types - double 
+%     speed : It indicates the initial value of
+%               the maximization procedure. Scalar. If speed=1 (default) the initial value at step m of
 %               the maximization procedure (fminunc or fminsearch) is the
 %               final value at step m-1 else it is la0.
-%   colnames:   cell array of strings of length v containing the names of
+%                 Example - 'speed',0
+%                 Data Types - double
+%   colnames: the names of the variables of the dataset. Cell array of strings. Cell array of strings of length v containing the names of
 %               the variables of the dataset. If colnames is empty then the
 %               sequence 1:v is created to label the variables.
-%     signlr:   scalar. If signlr = 1 (default) plots of signed square root
+%                 Example - 'colnames',{'1' '2' '3' '4' '5' '10' '11' '12' '13'}
+%                 Data Types - Cell array of strings.
+%     signlr:  plots of signed square root
+%               likelihood ratios. Scalar. If signlr = 1 (default) plots of signed square root
 %               likelihood ratios are produced, else likelihood ratios are
 %               produced.
-%   plotslrt:   scalar or structure specifying whether it is necessary to
-%               plot the (signed) likelihood ratio test
+%                 Example - 'signlr',0
+%                 Data Types - double
+%   plotslrt:  It indicates if plot the (signed) likelihood ratio test. Scalar or structure.
 %               Structure plotslrt may contain the following fields:
 %                   xlim = minimum and maximum on the x axis
 %                   ylim = minimum and maximum on the y axis
@@ -75,10 +96,14 @@ function out = FSMfan(Y,la0,varargin)
 %                   (default is conflev=[0.95 0.99])
 %                   LineWidthEnv = Line width of the horizontal lines
 %                   Tag = tag of the plot (default is pl_lrt)
-%  msg  :       scalar which controls whether to display or not messages
-%               about great interchange on the screen
+%                 Example - 'plotslrt',struct
+%                 Data Types - double
+%  msg  :       It controls whether to display or not messages
+%               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
+%                 Example - 'msg',0
+%                 Data Types - double
 %
 %
 % Remark:       The user should only give the input arguments that have to
@@ -91,7 +116,7 @@ function out = FSMfan(Y,la0,varargin)
 % Output:
 %
 %   The output consists of a structure 'out' containing the following fields:
-%      LRT:     cell of length ColtoComp. Each element of the cell contains the
+%      LRT=     cell of length ColtoComp. Each element of the cell contains the
 %               a matrix of size n-init+1 x length(laAround)+1 which
 %               contains the monitoring of (signed square root) likelihood
 %               ratio for testing H0:\lambda_j=la0_j when all the other
@@ -105,7 +130,7 @@ function out = FSMfan(Y,la0,varargin)
 %               ...
 %               length(laAround)+1 col = value of the (signed sqrt) likelihood ratio for
 %               testing laj=laAround(end)
-%   Exflag:     cell of length ColtoComp. Each element of the cell contains the
+%   Exflag=     cell of length ColtoComp. Each element of the cell contains the
 %               a matrix of size n-init+1 x length(laAround)+1 which
 %               contains the monitoring of the
 %               integer identifying the reason why the maximization
@@ -121,7 +146,7 @@ function out = FSMfan(Y,la0,varargin)
 %               ...
 %               length(laAround)+1 col = integer identifying the reason the algorithm terminated
 %               when testing laj=laAround(end)
-%       Un:     cell of length ColtoComp. Each element of the cell contains the
+%       Un=     cell of length ColtoComp. Each element of the cell contains the
 %               a (sub)cell of size length(laAround). Each element of the (sub)cell
 %               contains a  n-init+1 x 11 which informs the order of entry of the units
 %               For example Unj=Un{i}{j} refers to ColtoComp(i) and laAround(j)

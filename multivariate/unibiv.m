@@ -16,13 +16,15 @@ function [fre]=unibiv(Y,varargin)
 %
 % Optional input arguments:
 %
-%           rf  :   scalar (0<rf<1) which specifies the confidence
-%                   level of the robust bivariate ellipses. The default value 0.95
+%           rf  :  It specifies the confidence
+%                   level of the robust bivariate ellipses. Scalar. 0<rf<1.The default value 0.95
 %                   that is the outer contour in presence of normality
-%                   for each ellipse should leave outside 5% of the values
-%      robscale :   scalar which specifies the indexes to use
+%                   for each ellipse should leave outside 5% of the values.
+%                 Example - 'rf',0.99 
+%                 Data Types - double
+%      robscale :   It specifies the indexes to use
 %                   to compute the dispersion of each variable and the
-%                   correlation among each pair of variables
+%                   correlation among each pair of variables. Scalar.
 %                   If robscale=1 (default)
 %                   the program uses the median correlation and the MAD as
 %                   estimate of the dispersion of each variable
@@ -41,27 +43,40 @@ function [fre]=unibiv(Y,varargin)
 %                   the correlation and the dispersion of the variables are
 %                   computed using the traditional (non robust) formulae
 %                   around the univariate medians.
-%         plots :   scalar, if plots is equal to 1 a plot
+%                 Example - 'robscale',2 
+%                 Data Types - double
+%         plots :   It specify whether it is necessary to produce a plot
+%                   with univariate standardized boxplots on the
+%                   main diagonal and bivariate confidence ellipses out of
+%                   the main diagonal. Scalar. If plots is equal to 1 a plot
 %                   which contains univariate standardized boxplots on the
 %                   main diagonal and bivariate confidence ellipses out of
 %                   the main diagonal is produced on the screen. If plots is
 %                   <> 1 no plot is produced. As default no plot is
-%                   produced
-%       textlab :   scalar. if textlab=1 and plots=1 the labels associated
+%                   produced.
+%                 Example - 'plots',2 
+%                 Data Types - double
+%       textlab : It controls the labels in the plots. Scalar. If textlab=1
+%                   and plots=1 the labels associated
 %                   to the units which are univariate outliers or which are
 %                   outside the confidence levels of the contours are
-%                   displayed on the screen
-%       tag     :   string which identifies the handle of the plot which
-%                   is about to be created. The default is to use tag
+%                   displayed on the screen.
+%                 Example - 'textlab',0
+%                 Data Types - double
+%       tag     :   It identifies the handle of the plot which
+%                   is about to be created. Character. The default is to use tag
 %                   'pl_unibiv'. Notice that if the program finds a plot which
 %                   has a tag equal to the one specified by the user, then
 %                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
-%       madcoef :   scalar. Coefficient which is used to scale MAD
-%                   coefficient to have a robust estimate of dispersion. The
-%                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1
-%
-%                   REMARK: if mad =median(y-median(y))=0 then the interquartile
+%                   in the same window else a new window is created.
+%                 Example - 'tag','new_tag'
+%                 Data Types - char
+%       madcoef :   Coefficient which is used to scale MAD
+%                   coefficient to have a robust estimate of dispersion. Scalar. The
+%                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1. 
+%                 Example - 'madcoef',2 
+%                 Data Types - double
+%                   REMARK. if mad =median(y-median(y))=0 then the interquartile
 %                   range is used. If also the interquartile range is 0
 %                   than the MD (mean absolute deviation) is used.  In
 %                   other words MD=mean(abs(y-mean(Y))

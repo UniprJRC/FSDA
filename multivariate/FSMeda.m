@@ -21,24 +21,35 @@ function out = FSMeda(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
-% init :        scalar, specifies the point where to start monitoring
-%               required diagnostics. Note that if bsb
+% init :        It specifies the point where to start monitoring
+%               required diagnostics. Scalar. Note that if bsb
 %               is supplied init>=length(bsb). If init is not specified it will
 %               be set equal to floor(n*0.6).
-% plots :       scalar. If plots=1, a plot of the monitoring of minMD among
+%                 Example - 'init',50 
+%                 Data Types - double
+% plots :    It specify whether it is necessary to produce the plots of the
+%               monitoring of minMD.
+%                 Scalar. If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
 %               screen with 1% 50% and 99% confidence bands
-%               else (default), all plots are
-%               suppressed.
-%  msg  :       scalar which controls whether to display or not messages
-%               about great interchange on the screen
+%               else (default), all plots are suppressed.
+%               Example - 'plots',0
+%               Data Types - double
+%  msg  :       It controls whether to display or not messages
+%               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
-%               else no message is displayed on the screen
-% scaled:       scalar. If scaled=1 scaled Mahalanobis distances are
-%               monitored during the search
-% nocheck     : Scalar. If nocheck is equal to 1 no check is performed on
+%               else no message is displayed on the screen.
+%                 Example - 'msg',0 
+%                 Data Types - double
+% scaled:     It controls whether to monitor scaled Mahalanobis distances.
+%               Scalar. If scaled=1 scaled Mahalanobis distances are
+%               monitored during the search.
+%                 Example - 'scaled',0 
+%                 Data Types - double
+% nocheck     : It controls whether to perform checks on matrix Y.Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
-%
+%                 Example - 'nocheck',1
+%                 Data Types - double
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
@@ -53,34 +64,34 @@ function out = FSMeda(Y,bsb,varargin)
 % Output:
 %
 %   The output consists of a structure 'out' containing the following fields:
-%   MAL:        n x (n-init+1) = matrix containing the monitoring of
+%   MAL=        n x (n-init+1) = matrix containing the monitoring of
 %               Mahalanobis distances
 %               1st row = distance for first unit ......
 %               nth row = distance for nth unit.
-%    BB:        n x (n-init+1) matrix containing the information about the units belonging
+%    BB=        n x (n-init+1) matrix containing the information about the units belonging
 %               to the subset at each step of the forward search.
 %               1st col = indexes of the units forming subset in the initial step
 %               ...
 %               last column = units forming subset in the final step (all units)
-%   mmd:        n-init x 3 matrix which contains the monitoring of minimum
+%   mmd=        n-init x 3 matrix which contains the monitoring of minimum
 %               MD or (m+1)th ordered MD  at each step of
 %               the forward search.
 %               1st col = fwd search index (from init to n-1)
 %               2nd col = minimum MD
 %               3rd col = (m+1)th-ordered MD
-%   msr:        n-init+1 x 3 = matrix which contains the monitoring of
+%   msr=        n-init+1 x 3 = matrix which contains the monitoring of
 %               maximum MD or mth ordered MD
 %               1st col = fwd search index (from init to n)
 %               2nd col = maximum MD
 %               3rd col = mth-ordered MD
-%    gap:       n-init+1 x 3 = matrix which contains the monitoring of
+%    gap=       n-init+1 x 3 = matrix which contains the monitoring of
 %               the gap (difference between minMD outside subset and max. inside)
 %               1st col = fwd search index (from init to n)
 %               2nd col = min MD - max MD
 %               3rd col = (m+1)th ordered MD - mth ordered distance
-%   loc:        (n-init+1) x (v+1) matrix containing the monitoring of
+%   loc=        (n-init+1) x (v+1) matrix containing the monitoring of
 %               estimated of the means for each variable in each step of the forward search
-%  S2cov:       (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
+%  S2cov=       (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
 %               of the elements of the covariance matrix in each step
 %               of the forward search
 %               1st col = fwd search index (from init to n)
@@ -88,17 +99,17 @@ function out = FSMeda(Y,bsb,varargin)
 %               3rd col = monitoring of S(1,2)
 %               ....
 %               end col = monitoring of S(v,v)
-%  detS:        (n-init+1) x (2) matrix containing the monitoring of
+%  detS=        (n-init+1) x (2) matrix containing the monitoring of
 %               the determinant of the covariance matrix
 %               in each step of the forward search
-%    Un:        (n-init) x 11 Matrix which contains the unit(s)
+%    Un=        (n-init) x 11 Matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
-%     Y:        Original data input matrix
+%     Y=        Original data input matrix
 %
 % See also FSMmmd.m, FSM.m
 %
