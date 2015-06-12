@@ -168,7 +168,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 % Examples:
 
 %{
-    % FSRmdr with all default options.
+    %% FSRmdr with all default options.
     % Compute minimum deletion residual.
     % Monitor minimum deletion residual in each step of the forward search.
     % Common part to all examples: load fishery dataset.
@@ -178,6 +178,8 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
      [mdr] = FSRmdr(y,X,out.bs);
+     plot(mdr(:,1),mdr(:,2))
+     title('Monitoring of minimum deletion residual')
 %}
 
 %{
@@ -214,10 +216,12 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %}
 
 %{
-    % Monitor \( s^2 \).
-    % Monitor the estimate of \( \sigma^2 \) in each step of the fwd search
+    %% Monitor $s^2$.
+    % Monitor the estimate of $\sigma^2$ in each step of the fwd search
     % (matrix S2).
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);
+    plot(S2(:,1),S2(:,2))
+    title('Monitoring of s2')
 %}
 
 %{
@@ -234,7 +238,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 
 
 %{
-    % Store units forming subsets in selected steps.
+    %% Store units forming subsets in selected steps.
     % In this example the units forming subset are stored just for
     % selected steps.
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'bsbsteps',[30 60]);
@@ -243,6 +247,8 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     % sum(~isnan(BB(:,1))) is 30
     % Second column contains information about units forming subset at step m=60
     % sum(~isnan(BB(:,2))) is 60
+    disp(sum(~isnan(BB(:,1))))
+    disp(sum(~isnan(BB(:,2))))
 %}
 
 

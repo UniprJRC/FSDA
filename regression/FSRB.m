@@ -269,7 +269,7 @@ function [out]=FSRB(y,X,varargin)
 %}
 
 %{
-    % Example on Fishery dataset.
+    %% Example on Fishery dataset.
     % nsamp is the number of subsamples to use in the frequentist analysis of first
     % year, in order to find initial subset using LMS.
     close all    
@@ -359,7 +359,7 @@ function [out]=FSRB(y,X,varargin)
     bayes.n0=n02gi; % n0 is based on g + i units
     bayes.R=R;
 
-    %% 2003 
+    % 2003 
     % Load 2003 Fishery dataset
     Fishery2003=load('Fishery2003.txt');
     y03=Fishery2003(:,3);
@@ -439,7 +439,7 @@ function [out]=FSRB(y,X,varargin)
     bayes.tau0=tau0;
 
 
-    %% Load 2004 Fishery dataset
+    % Load 2004 Fishery dataset
     Fishery2004=load('Fishery2004.txt');
     y04=Fishery2004(:,3);
     X04=Fishery2004(:,2);
@@ -488,7 +488,7 @@ function [out]=FSRB(y,X,varargin)
     ylabel('VALUE in 1000 euro')
 
 
-    %% frequentist Forward Search, 3rd year
+    % frequentist Forward Search, 3rd year
     out04=FSR(y04,X04,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n04/2),'bonflev',bonflev);
     xlabel('QUANTITY in tons')
     ylabel('VALUE in 1000 euro')

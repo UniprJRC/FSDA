@@ -35,7 +35,7 @@ div.not_coming_from_product { display:none; }
 
 /* Fixed Search Box and Breadcrumbs */
 #search_crumb_container { padding:15px 0px 10px; background:#fff; float:left; position:fixed; top:0px; z-index:1001; } 
-.content_container { padding-top:103px; }
+.content_container { padding-top:10px; }
 #search_crumb_container .docsearch_container + .breadcrumb_container { margin-bottom:0px; }
 
 /* Search Refine */
