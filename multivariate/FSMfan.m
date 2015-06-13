@@ -23,14 +23,14 @@ function out = FSMfan(Y,la0,varargin)
 %               must be used. Character. Possible values are 'BoxCox' (deafult) or
 %               'YJ'
 %               The Box-Cox family of power transformations equals
-%               (y^{?}-1)/? for ? not equal to zero, and
+%               (y^{\lambda}-1)/\lambda for \lambda not equal to zero, and
 %               log(y)
-%               if ? = 0.
+%               if \lambda = 0.
 %               The Yeo-Johnson (YJ) transformation is the Box-Cox
 %               transformation of y+1 for nonnegative values, and of |y|+1 with
-%               parameter 2-? for y negative.
-%               The basic power transformation returns y^{?} if ? is not
-%               zero, and log(?) otherwise.
+%               parameter 2-\lambda for y negative.
+%               The basic power transformation returns y^{\lambda} if \lambda is not
+%               zero, and log(\lambda) otherwise.
 %               Remark. BoxCox and the basic power family can be used just
 %               if input y is positive. YeoJohnson family of
 %               transformations does not have this limitation.
@@ -116,7 +116,7 @@ function out = FSMfan(Y,la0,varargin)
 % Output:
 %
 %   The output consists of a structure 'out' containing the following fields:
-%      LRT=     cell of length ColtoComp. Each element of the cell contains the
+%    out.LRT=   cell of length ColtoComp. Each element of the cell contains the
 %               a matrix of size n-init+1 x length(laAround)+1 which
 %               contains the monitoring of (signed square root) likelihood
 %               ratio for testing H0:\lambda_j=la0_j when all the other
@@ -130,7 +130,7 @@ function out = FSMfan(Y,la0,varargin)
 %               ...
 %               length(laAround)+1 col = value of the (signed sqrt) likelihood ratio for
 %               testing laj=laAround(end)
-%   Exflag=     cell of length ColtoComp. Each element of the cell contains the
+%   out.Exflag= cell of length ColtoComp. Each element of the cell contains the
 %               a matrix of size n-init+1 x length(laAround)+1 which
 %               contains the monitoring of the
 %               integer identifying the reason why the maximization
@@ -146,7 +146,7 @@ function out = FSMfan(Y,la0,varargin)
 %               ...
 %               length(laAround)+1 col = integer identifying the reason the algorithm terminated
 %               when testing laj=laAround(end)
-%       Un=     cell of length ColtoComp. Each element of the cell contains the
+%    out.Un=     cell of length ColtoComp. Each element of the cell contains the
 %               a (sub)cell of size length(laAround). Each element of the (sub)cell
 %               contains a  n-init+1 x 11 which informs the order of entry of the units
 %               For example Unj=Un{i}{j} refers to ColtoComp(i) and laAround(j)
@@ -187,7 +187,7 @@ function out = FSMfan(Y,la0,varargin)
 
 
 %{
-    % EmiliaRomagna dataset (demographic variables)
+    % EmiliaRomagna dataset (demographic variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -207,7 +207,7 @@ function out = FSMfan(Y,la0,varargin)
 %}
 
 %{
-    % Emilia Romagna data (modified wealth variables)
+    % Emilia Romagna data (modified wealth variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -230,7 +230,7 @@ function out = FSMfan(Y,la0,varargin)
 %}
 
 %{
-    % Emilia Romagna data (modified wealth variables)
+    % Emilia Romagna data (modified wealth variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -255,7 +255,7 @@ function out = FSMfan(Y,la0,varargin)
 
 %{
     % Emilia Romagna data (modified wealth variables), Yeo and Johnson
-    % parametric family is used
+    % parametric family is used.
     load('emilia2001')
     Y=emilia2001.data;
 
@@ -274,7 +274,7 @@ function out = FSMfan(Y,la0,varargin)
 %}
 
 %{
-    % Emilia Romagna data (work variables)
+    % Emilia Romagna data (work variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -296,7 +296,7 @@ function out = FSMfan(Y,la0,varargin)
 
 
 %{
-    % Emilia Romagna data (modified work variables)
+    % Emilia Romagna data (modified work variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -321,7 +321,7 @@ function out = FSMfan(Y,la0,varargin)
 
 
 %{
-    % Emilia Romagna data (all variables)
+    % Emilia Romagna data (all variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel

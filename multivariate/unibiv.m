@@ -82,13 +82,16 @@ function [fre]=unibiv(Y,varargin)
 %                   other words MD=mean(abs(y-mean(Y))
 %
 %
-% OUTPUT:    fre   = n x 4 matrix.
-%                    1st col = index of the units
-%                    2nd col = number of times unit has been declared
-%                    univariate outliers
-%                    3rd col = number of times unit has been declared
-%                    bivariate outlier
-%                    4th col = pseudo MD as sum of bivariate MD
+% Output:
+%
+%   fre  :  n x 4 matrix which contains details about the univariate and
+%           bivariate outliers.
+%           1st col = index of the units
+%           2nd col = number of times unit has been declared
+%           univariate outliers
+%           3rd col = number of times unit has been declared
+%           bivariate outlier
+%           4th col = pseudo MD as sum of bivariate MD
 %
 %
 % See also: FSMmmd

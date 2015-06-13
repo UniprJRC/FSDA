@@ -11,9 +11,9 @@ function publishFS(file)
 % this string must contain the description of the compulsory input
 % arguments. Each argument must have  the name (a series of spaces from 0
 % to 10) symbol ':' and then the description
-% For example, suppose that the routine has two required input
-% arguments which are respectively called y and X, then the accepted format
-% is as follows
+% For example, suppose that the .m routine which has to be processed has
+% two required input arguments which are respectively called y and X, then
+% the accepted format is as follows
 %
 %               Required input arguments:
 %
@@ -25,11 +25,11 @@ function publishFS(file)
 % IMPORTANT NOTICE: if an input argument is a structure (publishFS
 % automatically checks if the input argument contains the word "structure"
 % then the fields of the structure will be automatically included into a
-% HTML table. In this case the fields of the structure are identified as
+% HTML table). In this case the fields of the structure are identified as
 % the lines which contain "a series of spaces" "a_word" "a series
 % of spaces followed by symbol '='". For example suppose the an input
-% option is called bayes and it is a structure with fieldsnames beta0,
-% R, tau0 and n0, the accepted format is as follows.
+% option is called bayes and object bayes is a structure with field names
+% beta0, R, tau0 and n0, the accepted format is as follows.
 %
 %    bayes      : It specifies prior information. Structure.
 %                       It contains the following fields
@@ -44,20 +44,21 @@ function publishFS(file)
 %                      information as coming from n0 previous experiments.
 %
 % 2) String 'Optional input arguments:' must be present even if there are
-% no optional arguments. publishFS, in order to understand what the names
+% no optional arguments. publishFS, in order to understand what are the names
 % of the optional input arguments scans the rows below the string 'Optional
-% input arguments:' and identify the lines which contain the optional
+% input arguments:' and identifies the lines which contain the optional
 % arguments as those which contains "a series of spaces" "a_word" "a series
 % of spaces followed by symbol ':'". The first sentence after symbol ':' is
-% the title of that particular optional input argumenta and in the HTML
-% file will appear under "description". The second sentence
+% the title of the optional input argument and in the HTML
+% file it will appear under "description". The second sentence
 % after symbol ':' describes the objects (for example, scalar, vector, 3D
-% array) and in the HTML file will appear under "data type". What starts with the third sentence after symbol ':' is the
-% detailed description of that particular input argument and in the HTML
-% file will appear under "long description".
+% array) and in the HTML file will appear under "data type". What starts
+% with the third sentence after symbol ':' is the detailed description of
+% that particular input argument and in the HTML file will appear under
+% "long description".
 % The last two lines of each optional input argument must start with the
 % words 'Example -' and 'Data Types -' followed by a string without spaces
-% whcih specify a possible use of the option and the type of data
+% which specifies a possible use of the option and the type of data
 % For  example, suppose that the first two optional arguments are called
 % respecively 'intercept' and 'h' then the accepted format is as follows
 %
@@ -74,14 +75,14 @@ function publishFS(file)
 %                             Example - 'h',round(n*0,75)
 %                             Data Types - double
 %
-%  IMPORTANT NOTICE: given that options are those which have "%" then "a
-%  series of spaces" then "a word" then "a series of spaces" then ":",
-%  each line inside the description does not have to start as follows
-%  "   ANYWORD   :" because the parses will wrongly identify  "ANYWORD" as an
-%  additional otpional input argument. The only once exception to this rule
-%  is the word " REMARK :". However, if there is a remark, it must be put
-%  at the very end of the description of the optional input argument. At
-%  the very end means after the rows
+%  IMPORTANT NOTICE: given that options are those which have symbol "%"
+%  followd by "a series of spaces" then "a word" then "a series of spaces"
+%  then symbol ":", each line inside the description does not have to start
+%  as follows "   ANYWORD   :" because the parser will wrongly identify
+%  "ANYWORD" as an additional optional input argument. The only once
+%  exception to this rule is the word " REMARK :". However, if there is a
+%  remark, it must be put at the very end of the description of the
+%  optional input argument. At the very end means after the rows
 %   Example and Data Types
 %
 % 3) String 'Output:' must be present. The lines after string 'Output:'
@@ -91,17 +92,15 @@ function publishFS(file)
 % extracted directly from the first line of the file (e.g. if the first
 % line is as follows
 % function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
-% optional arguments are immediately known to the parser.
+% optional arguments are immediately known to the parser).
 % For each output argument, the first sentence after symbol ":" is assumed
 % to be the title of the output argument and in the HTML file goes under
 % the description. What starts with the second sentence is the full
-% description of the output argument. For example suppose that the output
-% of a procedure contains the the objects mdr and Un, the accepted format
+% description of the output argument. For example, suppose that the output
+% of a procedure contains the objects mdr and Un, the accepted format
 % is as follows.
 %              %  Output:
 %              mdr:          n -init x 2 matrix which contains the
-%                           monitoring of minimum deletion residual at each
-%                           step of the forward search.
 %                           1st col = fwd search index (from init to n-1).
 %                           2nd col = minimum deletion residual.
 %                           REMARK: if in a certain step of the search
@@ -115,13 +114,15 @@ function publishFS(file)
 %                           unit(s) present in the new subset but not in
 %                           the old one.
 % IMPORTANT NOTICE: Similarly to what happend for each input argument, if
-% an output  is a structure (publishFS automatically checks if the output
-% argument contains the word "structure". In this case, the fields of the structure will be automatically included into a
-% HTML table. In this case the fields of the structure are identified as
-% the lines which contain "a series of spaces" "a_word" "a series of spaces
+% an output argument is a structure, publishFS automatically checks if it
+% contains the word "structure". In this case, the fields of the
+% structure will be automatically included into a HTML table. In this case
+% the fields of the structure are identified as the lines which contain "a
+% series of spaces" "name_of_output_structure.a_word" "a series of spaces
 % followed by symbol '='". For example suppose that the output of a
-% procedure is an object called out which is a strcutre an accepted format
-% is as follows
+% procedure is an object called out which is a structure with two fields
+% out.rew and out.beta, an accepted format is as follows
+%
 %                          %  Output:
 %
 %                          out :     A structure containing the following fields
@@ -140,12 +141,30 @@ function publishFS(file)
 % PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE
 % = SIGN AND NOT THE : SIGN
 %
-% 4) A line which starts with string 'See also:' must be present. LInked m
+% If the description of a particular output has the string "which contains"
+% or "containing",  as follows
+%
+%              mdr:          n -init x 2 matrix which contains the
+%                           monitoring of minimum deletion residual at each
+%                           step of the forward search.
+%                           1st col = fwd search index (from init to n-1).
+%                           2nd col = minimum deletion residual.
+%
+%publishFS will try to put what comes before the string "which
+%contains" or "containing" inside the subtitle (second row) of the each
+%ouptut argument in the HTML file. For example, the example above in the
+%HTML file will be processed as follows:
+%                mdr —Monitoring of minimum deletion residual at each step of the forward search.
+%                n -init -by- 2 matrix
+% If the user click on the first line the enpanded description will appear
+%
+%
+% 4) A line which starts with string 'See also:' must be present. Linked m
 % files must be separated by symbol ",". For example, suppose that files
-% FSRBmdr.m and FSR.m have connextions with the current file, then an
+% FSRBmdr.m and FSR.m have connections with the current file, then an
 % accepted format is
 %
-% See also: FSRBmdr, FSR.m
+%                   See also: FSRBmdr, FSR.m
 %
 %
 % 5) A line which starts with string 'References:' must be present.
@@ -164,24 +183,24 @@ function publishFS(file)
 % one. The examples in the first positions will appear in
 % the HTML file under the caption "Examples" while the latest will appear
 % under the caption "Related Examples". More precisely, if the output of a
-% procedure contains k outputs and optional arguments the first k+1 comment
-% blocks will appear in the HTML file under "Examples". 
+% procedure contains k outputs and some optional arguments the first k+1 comment
+% blocks will appear in the HTML file under "Examples".
 % First comment block is associated with the call of the procedure with
 % just one output and all default input argument
 % Second comment block is associated with the call of the procedure with
 % just one output and with some optional input arguments
 % Third comment block is associated with the call of the procedure with
-% two output arguments 
+% two output arguments
 % ...
 % k+1 comment block is associated with the call of the procedure with
-% k output arguments 
+% k output arguments
 % k+2 comment block is the first which in the HTML file will appear under
 % the heading "Related Examples
 % For example, suppose that the first example of procedure FSRmdr has to be
-% executed and the output attached to the HTML file, then the accepted
+% executed and its output must be included into the HTML file, then the accepted
 % format is as follows
-% 
-% 
+%
+%
 %                 %{
 %                     %% FSRmdr with all default options.
 %                     % Compute minimum deletion residual.
@@ -196,7 +215,7 @@ function publishFS(file)
 %                      plot(mdr(:,1),mdr(:,2))
 %                      title('Monitoring of minimum deletion residual')
 %                 %}
-% 
+%
 %                 %{
 %                     % FSRmdr with optional arguments.
 %                     % Choose step to start monitoring.
@@ -210,14 +229,14 @@ function publishFS(file)
 % GENERAL REMARKS:
 %
 % ------------------------------------------------------------------------
-% REMARK1: if symbol % is wanted and it is not a simple comment delimiter it
+% REMARK1: if symbol % is wanted and it is not a simple comment delimiter, it
 % must be replaced by words "per cent". For example, string "50% envelope"
 % must become "50 per cent" envelope.
 % ---------------------------------------------------
-% REMARK2: 
+% REMARK2:
 % If there is just one output argument it can be without square brackets
-% Among the input elements of a procedures the number of spaces between the
-% them is not important. For example 
+% Among the input elements of a procedure the number of spaces between 
+% them is not important. For example
 % "y,X,varargin" or "y, X   ,  varargin"   are both fine
 % --------------------------------------------------
 % REMARK 3: publishFS uses javascript matlab-highlighter.min.js in order to
@@ -227,6 +246,9 @@ function publishFS(file)
 % equations inside the .m file written in Latex style. For in line
 % equations both symbols $ $ and \( \) are accepted.
 % For single line equations symbols \[ \] must be used
+% ---------------------------------------------------
+% REMARK 5: if there are not eanough examples in the .m file the procedure
+% still runs but a warning will be automatically produced
 
 
 
@@ -638,7 +660,14 @@ for j=1:length(sintax)
     %         '   <a class="intrnllnk" href="#inputarg_k"><code>k</code></a>)\r']);
     
     %---------
-    stri=fstring(startIndexEx(j)+2:endIndexEx(j)-1);
+    try
+        stri=fstring(startIndexEx(j)+2:endIndexEx(j)-1);
+    catch
+        %disp(stri)
+        warning('FSDA:wrongEx','This file does not contain enough examples, please add them!')
+    stri='EXAMPLS TO ADD';
+    end
+    
     % What is before the first full stop is the title.
     % What is after the second full stop is the description
     % The first line which does not contain symbol % is the beginning of the
@@ -703,7 +732,7 @@ closedescription=sprintf(['								</div>\r'...
 
 description=[inidescription descriptionhtml closedescription];
 
-%% CREATE EXAMPLES SECTION OF HTML FILE 
+%% CREATE EXAMPLES SECTION OF HTML FILE
 % the examples which are inside %{   %} are put here.
 % The first sentence which end with a full stop is the title of the example
 iniexamples=sprintf(['<div class="ref_sect" itemprop="content">\r'...
@@ -734,7 +763,7 @@ for j=1:length(sintax)
         '</div>\r'])]; % close div id="example_j"
 end
 
-%% CREATE RELATED EXAMPLES SECTION OF HTML FILE 
+%% CREATE RELATED EXAMPLES SECTION OF HTML FILE
 if length(startIndexEx)>length(sintax)
     lsintax=length(sintax);
     % Fourth column of listextraEX contains flag 1 or 0 depending on the
@@ -797,11 +826,11 @@ end
 closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
     '<p> </p>\r']);
 % Related examples are below
-iniRelatedExamples=sprintf('<h3 class="bottom_ruled">Related Examples</h3>\r');
-
+iniRelatedExamples='';
 RelatedExamples='';
 if length(startIndexEx)>length(sintax)
-    
+ iniRelatedExamples=sprintf('<h3 class="bottom_ruled">Related Examples</h3>\r');
+   
     for j=1:size(listextraEX,1)
         RelatedExamples=[RelatedExamples  sprintf(['<div id="example_' num2str(j) '" class="example_module expandableContent">\r'...
             '<div id="ex' num2str(j) '">\r'...
@@ -832,7 +861,7 @@ closeallex=sprintf(['</div>\r'... % div class="examples"
 examples=[iniexamples exampleshtml closeexamples iniRelatedExamples...
     RelatedExamples closeallex];
 
-%% CREATE INPUT ARGUMENTS SECTIOn OF HTML file
+%% CREATE INPUT ARGUMENTS SECTION OF HTML file
 iniinputargs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<h2 id="inputs">Input Arguments</h2>\r'...
     '<div class="expandableContent">\r'...
@@ -1124,7 +1153,7 @@ for i=1:size(listOptArgs,1);
     nameoptarg=listOptArgs{i,1};
     titloptarg=listOptArgs{i,2};
     shortdesc=listOptArgs{i,3};
-    if strcmp(shortdesc,'Structure')
+    if strcmp(shortdesc,'Structure') && ~isempty(strfind(listOptArgs{i,4},'field'))
         longdesc=listOptArgs{i,4};
         
         [inistructfield,finstructfield]=regexp(longdesc,'\s{8,18}\w*\s{0,8}=');
@@ -1303,6 +1332,9 @@ for i=1:nargout
     descrioutput(posPercentageSigns)=[];
     % Remove from string descri leading and trailing white spaces
     descrioutput=strtrim(descrioutput);
+    if strcmp(descrioutput(1),':')
+        descrioutput=strtrim(descrioutput(2:end));
+    end
     
     % Check if the output is a structure. If this is the case
     checkifstructure=regexp(descrioutput,[outi '\.'],'once');
@@ -1390,8 +1422,10 @@ for i=1:nargout
             % Remove word the at the beginning of the sentence and starts with
             % uppercase
             StartsWithThe=regexp(descrioutput,'the');
+            if ~isempty(StartsWithThe)
             if StartsWithThe(1)<4
                 descrioutput=descrioutput(StartsWithThe(1)+4:end);
+            end
             end
             descrioutput=strtrim(descrioutput);
             descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
@@ -1619,7 +1653,7 @@ Seealso=[iniSeealso Seealsohtml closeSeealso];
 
 %% CLOSE TAGS SECTION
 
-clos=sprintf(['<h1>Automatically generated by FSDA parser</h1>\r'...
+clos=sprintf(['<h1>Automatically generated by routine publishFS</h1>\r'...
     '</div>\r'...
     '</section>\r'...
     '</div>\r'...
@@ -1669,104 +1703,86 @@ if ~isempty(listExtraEx)
     end
 end
 
-nametmp=[name 'tmp.m'];
-fullPathToScript=[pathstr '\helpfiles\FSDA\' nametmp];
-filetmp=fopen(fullPathToScript,'w');
-
-% Replace < and > HTML symbols with < and >
-ExToExec=strrep(ExToExec,'&lt;','<');
-ExToExec=strrep(ExToExec,'&gt;','>');
-
-fprintf(filetmp,'%s',ExToExec);
-fclose(filetmp);
-
-options=struct;
-options = supplyDefaultOptions(options);
-options.codeToEvaluate=[name 'tmp'];
-options.createThumbnail=0;
-[dom,cellBoundaries] = m2mxdom(ExToExec);
-% imageDir folder where images will be put
-imageDir=[pathstr '\helpfiles\FSDA\images'];
-% outputDir folder where html file will be put
-outputDir=[pathstr '\helpfiles\FSDA'];
-prefix=[name 'tmp'];
-% file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
-dom = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imageDir,outputDir,options);
-%
-ext='html';
-AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
-[xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
-
-% Now remove the temporary .m file with the examples which had been created
-delete(fullPathToScript)
-
-% load html output in a string and extract the parts which are required
-fileHTML = fopen(xResultURI(7:end), 'r+');
-% Insert the file into fstring
-fstringHTML=fscanf(fileHTML,'%c');
-
-totex=numexToExec+numextraexToExec;
-texttoadd=cell(totex,1);
-
-fHTML=regexp(fstringHTML,'<h2>Ex');
-if isempty(fHTML)
-    fHTML=regexp(fstringHTML,'<pre class="codeoutput">','once');
-end
-
-for j=1:totex
-    if j<totex && totex>1
-        fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
-    else
-        fendHTML=regexp(fstringHTML,'<p class="footer">','once');
-        fcand=fstringHTML(fHTML(end):fendHTML-1);
+if numextraexToExec+numexToExec>0
+    nametmp=[name 'tmp.m'];
+    fullPathToScript=[pathstr '\helpfiles\FSDA\' nametmp];
+    filetmp=fopen(fullPathToScript,'w');
+    
+    % Replace < and > HTML symbols with < and >
+    ExToExec=strrep(ExToExec,'&lt;','<');
+    ExToExec=strrep(ExToExec,'&gt;','>');
+    
+    fprintf(filetmp,'%s',ExToExec);
+    fclose(filetmp);
+    
+    options=struct;
+    options = supplyDefaultOptions(options);
+    options.codeToEvaluate=[name 'tmp'];
+    options.createThumbnail=0;
+    [dom,cellBoundaries] = m2mxdom(ExToExec);
+    % imageDir folder where images will be put
+    imageDir=[pathstr '\helpfiles\FSDA\images'];
+    % outputDir folder where html file will be put
+    outputDir=[pathstr '\helpfiles\FSDA'];
+    prefix=[name 'tmp'];
+    % file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
+    dom = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imageDir,outputDir,options);
+    %
+    ext='html';
+    AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
+    [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
+    
+    % Now remove the temporary .m file with the examples which had been created
+    delete(fullPathToScript)
+    
+    % load html output in a string and extract the parts which are required
+    fileHTML = fopen(xResultURI(7:end), 'r+');
+    % Insert the file into fstring
+    fstringHTML=fscanf(fileHTML,'%c');
+    
+    totex=numexToExec+numextraexToExec;
+    texttoadd=cell(totex,1);
+    
+    fHTML=regexp(fstringHTML,'<h2>Ex');
+    if isempty(fHTML)
+        fHTML=regexp(fstringHTML,'<pre class="codeoutput">','once');
+    end
+    % If fHTML is still empty it means that the ouptu only generates images
+    if isempty(fHTML)
+        fHTML=regexp(fstringHTML,'<img vspace','once');
     end
     
-    % in fcand search the two following strings
-    fcode=regexp(fcand,'<pre class="codeoutput">','once');
-    if isempty(fcode)
-        fcode=Inf;
+    for j=1:totex
+        if j<totex && totex>1
+            fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
+        else
+            fendHTML=regexp(fstringHTML,'<p class="footer">','once');
+            fcand=fstringHTML(fHTML(end):fendHTML-1);
+        end
+        
+        % in fcand search the two following strings
+        fcode=regexp(fcand,'<pre class="codeoutput">','once');
+        if isempty(fcode)
+            fcode=Inf;
+        end
+        fimg=regexp(fcand,'<img','once');
+        if isempty(fimg)
+            fimg=Inf;
+        end
+        if min(fcode,fimg)<Inf
+            texttoadd{j}=fcand(min(fcode,fimg):end);
+        end
     end
-    fimg=regexp(fcand,'<img','once');
-    if isempty(fimg)
-        fimg=Inf;
-    end
-    if min(fcode,fimg)<Inf
-        texttoadd{j}=fcand(min(fcode,fimg):end);
-    end
-end
-
-% Now insert the strings which have been stored in cell texttoadd in the
-% appropriate position of outstring
-a=cell2mat(listEx(:,4));
-seqa=1:length(a);
-sel=seqa(a==1);
-
-for i=1:length(sel)
-    % Process string listEx{i,1}
-    listExi=listEx{sel(i),1};
-    % If there are signs $ ^  replace them with \$ and \^
-    listExi=strrep(listExi,'$','\$');
-    listExi=strrep(listExi,'^','\^');
     
-    iniout=regexp(outstring,listExi);
-    finout=regexp(outstring,'</pre>');
-    finout=finout(finout>iniout(2));
-    % outstring(finout:finout+11)
-    % inclplint = point where output of the example must be included
-    inclpoint=finout(1)+18;
-    % incl= string which contains the output of the code
-    incl=texttoadd{i};
-    outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
-end
-
-if ~isempty(listExtraEx)
-    a=cell2mat(listExtraEx(:,4));
+    % Now insert the strings which have been stored in cell texttoadd in the
+    % appropriate position of outstring
+    a=cell2mat(listEx(:,4));
     seqa=1:length(a);
     sel=seqa(a==1);
     
     for i=1:length(sel)
         % Process string listEx{i,1}
-        listExi=listExtraEx{sel(i),1};
+        listExi=listEx{sel(i),1};
         % If there are signs $ ^ [ ] replace them with \$ and \^ \[ \]
         listExi=strrep(listExi,'$','\$');
         listExi=strrep(listExi,'^','\^');
@@ -1775,17 +1791,49 @@ if ~isempty(listExtraEx)
         
         iniout=regexp(outstring,listExi);
         finout=regexp(outstring,'</pre>');
-        finout=finout(finout>iniout);
+        finout=finout(finout>iniout(2));
         % outstring(finout:finout+11)
         % inclplint = point where output of the example must be included
         inclpoint=finout(1)+18;
         % incl= string which contains the output of the code
-        incl=texttoadd{i+numexToExec};
+        incl=texttoadd{i};
         outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
     end
+    
+    if ~isempty(listExtraEx)
+        a=cell2mat(listExtraEx(:,4));
+        seqa=1:length(a);
+        sel=seqa(a==1);
+        
+        for i=1:length(sel)
+            % Process string listEx{i,1}
+            listExi=listExtraEx{sel(i),1};
+            % If there are signs $ ^ [ ] replace them with \$ and \^ \[ \]
+            listExi=strrep(listExi,'$','\$');
+            listExi=strrep(listExi,'^','\^');
+            listExi=strrep(listExi,'[','\[');
+            listExi=strrep(listExi,']','\]');
+            
+            iniout=regexp(outstring,listExi);
+            if length(iniout)>2
+                disp(['Duplicate name for: ' listExi ' found'])
+                error('FSDA:WrongArg','There are examples with the same title, please use a title which is unique')
+            end
+            iniout=iniout(1);
+            
+            finout=regexp(outstring,'</pre>');
+            finout=finout(finout>iniout);
+            % outstring(finout:finout+11)
+            % inclplint = point where output of the example must be included
+            inclpoint=finout(1)+18;
+            % incl= string which contains the output of the code
+            incl=texttoadd{i+numexToExec};
+            outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
+        end
+    end
+    
+    close all
 end
-
-close all
 %% WRITE string outstring into the final HTML file
 fprintf(file1ID,'%s',outstring);
 fclose('all');

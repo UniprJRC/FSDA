@@ -5,10 +5,10 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %
 %  Required input arguments:
 %
-%    mmd : n-m0 x 2 matrix 
+%    mmd : n-m0 x 2 matrix. 
 %          1st col = fwd search index
 %          2nd col = minimum Mahalanobis distance
-%    v : number of variables of the underlying dataset
+%    v : number of variables of the underlying dataset. Scalar.
 %
 %  Optional input arguments:
 %
@@ -16,14 +16,11 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %               it is set equal to mmd(end,1)+1.
 %                 Example - 'n',5
 %                 Data Types - double
-%   plots :     It is necessary to
-%               plot in normal coordinates the value of mmd. Scalar or
+%   plots :     Plot on the screen. Scalar or
 %               structure.
 %               If plots = 1, a plot which shows the
 %               confidence level of mmd in each step is shown on the
 %               screen.
-%                 Example - 'plots',1
-%                 Data Types - double
 %               Remark. three horizontal lines associated respectively with
 %               values  0.01 0.5 and 0.99  are added to the plot
 %               If plots is a structure the user can specify the following options
@@ -41,10 +38,14 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %                   Tag = tag of the plot (default is pl_mmdinv)
 %                   FontSize = font size of the text labels which identify
 %                   the trajectories
+%                 Example - 'plots',1
+%                 Data Types - double
 %
 %  Output:
 %
-%   mmdinv:     Matrix with n-m0 rows (same rows of input matrix mmd) and 3 columns
+%   mmdinv:     (n-m0) x 3 matrix (same rows of input matrix mmd)
+%               which contains information about requested
+%               confidence levels plotted in normal coordinates.
 %               1st col = fwd search index from m0 to n-1
 %               2nd col = confidence level of each value of mmd
 %               3rd col = confidence level in normal coordinates 
@@ -74,18 +75,18 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 
 %{
     % Example of creation of 99% confidence envelopes based on 1000
-    % observations and 5 variables
+    % observations and 5 variables.
       v=5;
       mmdenv=FSMenvmmd(100,v,'prob',0.99);
 
     % Example of finding the confidence level of mmdenv
     % MDinv is a matrix which in the second colum contains
-    % all values equal to 0.99
+    % all values equal to 0.99.
       mmdinv=FSMinvmmd(mmdenv,v);
 %}
 
 %{
-    % FORGERY SWISS BANKNOTES
+    % FORGERY SWISS BANKNOTES.
     % Example of finding confidence level of mmd  
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
@@ -102,7 +103,7 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %}
 
 %{
-    % FORGERY SWISS BANKNOTES
+    % FORGERY SWISS BANKNOTES.
     % Comparison of resuperimposing envelopes using mmd coordinates and normal
     % coordinates
     load('swiss_banknotes');

@@ -46,7 +46,8 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %
 % Output:
 %
-%  MMDenv=      matrix with n-m0+1 rows and length(prob)+1 columns
+%  MMDenv=      n-m0+1 x length(prob)+1 columns containing the envelopes
+%               for the requested quantiles.
 %               1st col = fwd search index from m0 to n-1
 %               2nd col = envelope for quantile prob[1]
 %               3rd col = envelope for quantile prob[2]
@@ -82,7 +83,7 @@ MMDenv1=FSMenvmmd(10000,5,'exact',0);
 %}
 
 %{
-    %In this example we compare the accuracy of the envelopes computed with 
+    %% In this example we compare the accuracy of the envelopes computed with 
     %order statistics with those which come from simulations. 
 
     % Fix a seed 

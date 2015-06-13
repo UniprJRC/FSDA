@@ -45,7 +45,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %                 Example - 'nocheck',0 
 %                 Data Types - double
 %
-% Remark:       The user should only give the input arguments that have to
+% Remark       The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
 %               their value. The order of the input arguments is of no
@@ -58,11 +58,11 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %
 % Output:
 %
-% mmd=          (n-init) x 2 matrix which contains the monitoring of minimum
+% mmd :          (n-init) x 2 matrix which contains the monitoring of minimum
 %               Mahalanobis distance each step of the forward search.
 %               1st col = fwd search index (from init to n-1).
 %               2nd col = minimum Mahalanobis distance.
-% Un=           (n-init) x 11 Matrix which contains the unit(s) included
+% Un :           (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -74,8 +74,9 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %
 %  Optional Output:
 %
-% varargout :   Matrix containing units belonging to subset in each step of
-%               the search (from step init to n)
+% BB :   n x (n-init+1) matrix containing units belonging to subset in
+%               each step of the search. Each row is associated to a unit
+%               while each colum is associated to a step of the fwd search.
 %
 % See also FSMenvmmd.m, FSM.m, FSMmmdeasy, quickselectFS.m
 %
@@ -94,7 +95,11 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 % Examples:
 
 %{
-    % Run this code to see the output shown in the help file
+    % Personalized initial subset (small n).
+    % Run this code to see the output shown in the help file.
+    %create an initial subset with the 4 observations, which fell the smallest
+    %number of times outside the robust bivariate ellipses, and with the
+    %lowest Mahalanobis Distance.
     n=200;
     v=3;
     m0=4;
@@ -104,9 +109,6 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
     [fre]=unibiv(Y);
-    %create an initial subset with the 4 observations, which fell the smallest
-    %number of times outside the robust bivariate ellipses, and with the
-    %lowest Mahalanobis Distance.
     fre=sortrows(fre,[3 4]);
     bs=fre(1:m0,1);
     [mmd,Un]=FSMmmd(Ycont,bs,'plots',1);
@@ -115,18 +117,19 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %}
 
 %{
+    % Personalized initial subset (large n).
+    % Create an initial subset with the 4 observations, which fell the smallest
+    % number of times outside the robust bivariate ellipses, and with the
+    % lowest Mahalanobis Distance.
     n=20000;
     v=3;
     m0=10;
     randn('state',123456);
     Y=randn(n,v);
-    % 25\% of Contaminated data
+    % 25 per cent of Contaminated data
     Ycont=Y;
     Ycont(1:5000,:)=Ycont(1:5000,:)+3;
     [fre]=unibiv(Y);
-    %create an initial subset with the 4 observations, which fell the smallest
-    %number of times outside the robust bivariate ellipses, and with the
-    %lowest Mahalanobis Distance.
     fre=sortrows(fre,[3 4]);
     bs=fre(1:m0,1);
     [mmd,Un]=FSMmmd(Ycont,bs,'plots',1);
@@ -135,7 +138,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 
 
 %% Beginning of code
-%% Input parameters checking
+% Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;

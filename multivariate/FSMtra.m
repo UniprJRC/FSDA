@@ -158,25 +158,25 @@ function out = FSMtra(Y,varargin)
 % Output:
 %
 %   The output consists of a structure 'out' containing the following fields:
-%   MLEtra=     n-init+1 x v = matrix which contains the monitoring of
+%   out.MLEtra= n-init+1 x v = matrix which contains the monitoring of
 %               MLE of transformation parameters
 %               1st col = fwd search index (from init to n)
 %               2nd col = MLE of variable 1
 %               3rd col = MLE of variable 2
 %               ...
 %               (v+1)th col = MLE of variable v
-%   LIKrat=     n-init+1 x 2 = matrix which contains the monitoring of
+%   out.LIKrat= n-init+1 x 2 = matrix which contains the monitoring of
 %               likelihood ratio for testing H0:\lambda=la0
 %               1st col = fwd search index (from init to n)
 %               2nd col = value of the likelihood ratio
-%   Exflag=     n-init+1 x 2 = matrix which contains the monitoring of
+%   out.Exflag= n-init+1 x 2 = matrix which contains the monitoring of
 %               the integer identifying the reason why the maximization
 %               algorithm terminated. See help page fminunc of the
 %               optimization toolbox  for the list of values of exitflag
 %               and the corresponding reasons the algorithm terminated.
 %               1st col = fwd search index (from init to n)
 %               2nd col = the value that describes the exit condition
-%    Un=        (n-init) x 11 Matrix which contains the unit(s)
+%   out.Un =    (n-init) x 11 Matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -313,7 +313,7 @@ function out = FSMtra(Y,varargin)
 
 
 %{
-    % Swiss bank notes
+    % Swiss bank notes.
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     n=size(Y,1);
@@ -325,7 +325,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Swiss bank notes
+    % Swiss bank notes.
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     n=size(Y,1);
@@ -338,7 +338,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Genuine Swiss bank notes
+    % Genuine Swiss bank notes.
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     Y=Y(1:100,:);
@@ -356,7 +356,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Swiss bank notes
+    % Swiss bank notes.
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     n=size(Y,1);
@@ -370,7 +370,7 @@ function out = FSMtra(Y,varargin)
 
 %{
 
-    % Track records
+    %% Track records.
     load('recordfg');
     Y=recordfg.data;
     n=size(Y,1);
@@ -386,6 +386,7 @@ function out = FSMtra(Y,varargin)
         [out]=FSMtra(Y,'plotslrt',plotslrt,'onelambda',1,'la0',la);
         ii=ii+1;
     end
+    disp(out)
 % Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)
 %}
 

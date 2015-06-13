@@ -5,7 +5,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           Y = n x p data matrix; n observations
+% Y :           n x p data matrix; n observations
 %               and p variables
 %               Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
@@ -53,11 +53,11 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Output:
 %
-% mmd=          (n-init) x 2 matrix which contains the monitoring of minimum
+% mmd:          (n-init) x 2 matrix which contains the monitoring of minimum
 %               Mahalanobis distance each step of the forward search.
 %               1st col = fwd search index (from init to n-1).
 %               2nd col = minimum Mahalanobis distance.
-% Un=          (n-init) x 11 Matrix which contains the unit(s) included
+% Un:          (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -66,8 +66,12 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-% varargout=   Matrix containing units belonging to subset in each step of
-%               the search (from step init to n)
+%
+%  Optional Output:
+%
+% BB :   n x (n-init+1) matrix containing units belonging to subset in
+%               each step of the search. Each row is associated to a unit
+%               while each colum is associated to a step of the fwd search.
 %
 % See also FSMenvmmd.m, FSM.m
 %
@@ -105,7 +109,9 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
     [mmd,Un,BB]=FSMmmd(Ycont,bs,'plots',1);
 %}
 
-% rows(Y)
+%% Beginning of code 
+
+
 [n,v]=size(Y);
 % Initialize matrix which will contain Mahalanobis distances in each step
 seq=(1:n)';
