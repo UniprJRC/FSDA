@@ -247,7 +247,7 @@ function publishFS(file)
 % equations both symbols $ $ and \( \) are accepted.
 % For single line equations symbols \[ \] must be used
 % ---------------------------------------------------
-% REMARK 5: if there are not eanough examples in the .m file the procedure
+% REMARK 5: if there are not enough examples in the .m file the procedure
 % still runs but a warning will be automatically produced
 
 
