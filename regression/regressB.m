@@ -217,7 +217,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %}
 
 %{
-    % Example of Houses Price.
+    %% Example of Houses Price.
     % Compare the output with Table 3.3 of Koop (2004) p. 52.
     
     load hprice.txt;
@@ -248,6 +248,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
     R=inv(R);
 
     out=regressB(y, X, beta0, R, tau0, n0,'stats',1);
+    disp(out)
 %}
 
 %% Beginning of code

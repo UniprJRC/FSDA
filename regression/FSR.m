@@ -258,7 +258,7 @@ function [out]=FSR(y,X,varargin)
 % Examples:
 
 %{
-    % FSR with all default options.
+    %% FSR with all default options.
     % Run this code to see the output shown in the help file.
     n=200;
     p=3;
@@ -283,7 +283,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
-    % Initialize the search with the subsample which produces the smallest
+    %% Initialize the search with the subsample which produces the smallest
     % [h/n] quantile of squared residuals.
     n=200;
     p=3;
