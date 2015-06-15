@@ -179,7 +179,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 % Examples:
 
 %{  
-    % regressB with all default options.
+    %% regressB with all default options.
     % Common part to all examples: definition of the prior information.
     rng('default')
     rng(100) % set seed for replicability

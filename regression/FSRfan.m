@@ -182,7 +182,7 @@ function [out]=FSRfan(y,X,varargin)
 % Examples:
 
 %{
-    % FSRfan with all default options.
+    %% FSRfan with all default options.
     % Store values of the score test statistic
     % for the five most common values of lambda.
     % Produce also a fan plot and display it on the screen.
@@ -231,7 +231,7 @@ function [out]=FSRfan(y,X,varargin)
 %}
 
 %{
-    % Fan plot using fidelity cards data.
+    %% Fan plot using fidelity cards data.
     % In the example, la is the vector contanining the most common values 
     % of the transformation parameter.
     % Store the score test statistics for the specified values of lambda

@@ -281,7 +281,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 % Examples:
 
 %{
-    % FSRcp with all default options.
+    %% FSRcp with all default options.
     % Extract the best models of size 4, also store AIC. 
     % Common part to all examples: load Ozone dataset.
     X=load('ozone.txt');
@@ -335,7 +335,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %}
 
 %{
-    % Extract the best models of size 6 and 5 and plot monitoring of Cp.
+    %% Extract the best models of size 6 and 5 and plot monitoring of Cp.
     % Extract 1000 subsets to initialize the search andse labels defined by
     % the user. Exclude the searches of the models which were unacceptable 
     % for smallp=5.

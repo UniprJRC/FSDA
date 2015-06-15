@@ -86,7 +86,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %}
 
 %{
-    % FSRinvmdr with optional arguments.
+    %% FSRinvmdr with optional arguments.
     % Example of finding confidence level of mdr for untransformed wool
     % data.
     % In the example, the values of mdr are plotted and then transformed 

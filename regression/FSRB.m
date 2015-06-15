@@ -234,7 +234,7 @@ function [out]=FSRB(y,X,varargin)
 %}
 
 %{
-    % FSRB with optional arguments.
+    %% FSRB with optional arguments.
 
     % set \beta components
     beta0=0*ones(5,1);

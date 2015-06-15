@@ -283,7 +283,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
-    %% Initialize the search with the subsample which produces the smallest
+    % Initialize the search with the subsample which produces the smallest
     % [h/n] quantile of squared residuals.
     n=200;
     p=3;
@@ -303,7 +303,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
-    % Example for various combinations of the labeladd, bivarfit
+    %% Example for various combinations of the labeladd, bivarfit
     % and multivarfit options.
     n=200;
     p=3;

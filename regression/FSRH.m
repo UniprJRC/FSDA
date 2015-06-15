@@ -276,7 +276,7 @@ function [out]=FSRH(y,X,Z,varargin)
 % Examples:
 
 %{
-    % FSRH with all default options.
+    %% FSRH with all default options.
     % Before running FSRH, data are plotted. 
     % Common part to all examples: load tradeH dataset.
     XX=load('tradeH.txt');

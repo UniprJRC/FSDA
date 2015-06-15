@@ -276,7 +276,7 @@ function outms = FSRms(y,X,varargin)
 %}
 
 %{
-    % FSRms with optional arguments.
+    %% FSRms with optional arguments.
     % Perform robust model selection and show the generalized candlestick
     % plot.
 
@@ -293,7 +293,7 @@ function outms = FSRms(y,X,varargin)
 %}
 
 %{
-    % Comparing results of different settings.
+    %% Comparing results of different settings.
     % Perform robust model selection and show the generalized candlestick
     % plot. Restric attention to the models with size in the interval 4:6
     % Compare the results using ignore=1 with those with ignore=0

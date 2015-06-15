@@ -150,7 +150,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 % Examples:
 
 %{
-    % FSReda with all default options.
+    %% FSReda with all default options.
     % Example of use of FSReda based on a starting point coming
     % from LMS.
     n=200;
@@ -174,7 +174,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %}
 
 %{
-    %Examples with real data: wool data.
+    %%Examples with real data: wool data.
     xx=load('wool.txt');
     X=xx(:,1:3);
     y=log(xx(:,4));

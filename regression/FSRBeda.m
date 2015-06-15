@@ -261,7 +261,7 @@ function [out] = FSRBeda(y, X, varargin)
 %}
 
 %{
-    % Monitoring the forward plots.
+    %% Monitoring the forward plots.
     % In this example for the house price data we monitor the forward plots
     % in the second half of the search of HPD regions for the parameters of
     % the linear model and, bottom right-hand panel, the estimate of ?2.

@@ -170,7 +170,7 @@ function [out]=FSRaddt(y,X,varargin)
 %}
 
 %{
-    % FSRaddt with optional arguments.
+    %% FSRaddt with optional arguments.
     % Example of use of FSRaddt with plot of deletion t with personalized line
     % width for the envelopes and personalized confidence interval.
     n=200;
@@ -192,7 +192,7 @@ function [out]=FSRaddt(y,X,varargin)
 %}
 
 %{
-    % FSRaddt with labels for the columns of matrix X.
+    %% FSRaddt with labels for the columns of matrix X.
     % Line width equal to 3 for the curves representing envelopes; 
     % line width equal to 4 for the curves associated with deletion t stat.
     n=200;

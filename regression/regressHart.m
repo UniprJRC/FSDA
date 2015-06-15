@@ -146,7 +146,7 @@ function [out]=regressHart(y,X,Z,varargin)
 % Examples:
 
 %{
-    % regressHart with all default options.
+    %% regressHart with all default options.
     % The data in Appendix Table F6.1 were used in a study of efficiency in
     % production of airline services in Greene (2007a). See p. 557 of Green (7th edition).
     % Common part to all examples: load TableF61_Greene dataset.

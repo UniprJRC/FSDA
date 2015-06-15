@@ -213,7 +213,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %}
 
 %{
-    % Monitor $s^2$.
+    %% Monitor $s^2$.
     [mdr,Un,BB,BBayes,S2Bayes]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 %}
 

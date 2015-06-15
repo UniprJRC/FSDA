@@ -130,7 +130,7 @@ function out=regressH(y,X,Z,varargin)
 % Examples:
 
 %{
-    % regressH with all default options.
+    %% regressH with all default options.
     % The data in Appendix Table F6.1 were used in a study of efficiency in
     % production of airline services in Greene (2007a).
     % See p. 557 of Green (7th edition). 
@@ -204,7 +204,7 @@ function out=regressH(y,X,Z,varargin)
 %}
 
 %{
-    % Comparing Harvey's and ART models.
+    %% Comparing Harvey's and ART models.
     % Data are monthly credit card expenditure for 100 individuals.
     % Results in structure "out" coincides with estimates of row 
     % "\sigma^2*exp(z'*\alpha)" in table 11.2, page 231, 5th edition of

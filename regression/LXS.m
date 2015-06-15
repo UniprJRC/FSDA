@@ -216,7 +216,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %}
 
 %{
-    % LXS with optional arguments.
+    %% LXS with optional arguments.
     % Compute LMS estimator, reweight and plot the residuals.
     [out]=LXS(y,X,'rew',1,'plots',1);
 %}
@@ -229,7 +229,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %}
 
 %{
-    % Reweighted LTS estimator.
+    %% Reweighted LTS estimator.
     % Compute reweighted LTS estimator and produce the plot of
     % residuals.
     [out]=LXS(y,X,'rew',1,'lms',0,'plots',1);

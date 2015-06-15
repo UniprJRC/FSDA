@@ -206,7 +206,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 
 %
 %{
-    % regressHhar with all default options.
+    %% regressHhar with all default options.
     % Monthly credit card expenditure for 100 individuals.
     % Results in structure "OUT" coincides with "Maximum Likelihood
     % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
@@ -286,7 +286,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %}
 
 %{
-    % FGLS estimator.
+    %% FGLS estimator.
     % Estimate a multiplicative heteroscedastic model using just one iteration
     % that is find FGLS estimator (two step estimator).
     % Data are monthly credit card expenditure for 100 individuals.

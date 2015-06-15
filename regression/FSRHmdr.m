@@ -174,7 +174,7 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 % Examples:
 
 %{
-    % FSRHmdr with all default options.
+    %% FSRHmdr with all default options.
     % Common part to all examples: load tradeH dataset (used in the paper ART).
     XX=load('tradeH.txt');
     y=XX(:,2);
@@ -222,7 +222,7 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %}
 
 %{
-    % Monitoring the estimates of the scedastic equation.
+    %% Monitoring the estimates of the scedastic equation.
     % With plot of the \alpha parameter.
     [mdr,Un,BB,Bols,S2,Hetero]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
     plot(Hetero(:,1),Hetero(:,2))

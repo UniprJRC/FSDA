@@ -83,7 +83,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 % Examples:
 
 %{
-    % FSRbsb with all default options.
+    %% FSRbsb with all default options.
     % Common part to all examples: load fishery dataset.
     load('fishery');
     y=fishery.data(:,1);
@@ -104,7 +104,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %}
 
 %{
-    % FSR using a regression model without intercept.
+    %% FSR using a regression model without intercept.
     [Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');
 %}
 

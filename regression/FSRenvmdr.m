@@ -97,7 +97,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %}
 
 %{
-    % Checking the accurary of the envelopes.
+    %% Checking the accurary of the envelopes.
     n=100;
     p=5;
     state=1000;
