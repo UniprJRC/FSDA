@@ -156,8 +156,8 @@ function publishFS(file)
 %HTML file will be processed as follows:
 %                mdr —Monitoring of minimum deletion residual at each step of the forward search.
 %                n -init -by- 2 matrix
-% If, in the HTML file, the user clicks on the first line, 
-%               "mdr —Monitoring..." 
+% If, in the HTML file, the user clicks on the first line,
+%               "mdr —Monitoring..."
 %the expanded description will automatically appear
 %
 % 4) A line which starts with string 'See also:' must be present. Linked m
@@ -175,13 +175,13 @@ function publishFS(file)
 % because the reference can be for example 2003 or 2003a" + symbol ")"
 % For example, an acceptable format for the two references below is
 %
-% 
+%
 %                 Chaloner and Brant (1988). A Bayesian Approach to Outlier
 %                 Detection and Residual Analysis, Biometrika, Vol 75 pp.
 %                 651-659.
 %                 Riani M., Corbellini A., Atkinson A.C. (2015), Very
 %                 Robust Bayesian Regression for Fraud Detection, submitted
-% 
+%
 % 6) All the examples associated with the file which has to be processed
 % must be enclosed inside Percent-braces (comments blocks, i.e. smbols %{
 % and %} ). The first sentence identifies the title of the comment which
@@ -232,17 +232,17 @@ function publishFS(file)
 %                     [mdr] = FSRmdr(y,X,out.bs,'init',60);
 %                 %}
 %
-% 7) If a procedure contains varargout then a section string 
+% 7) If a procedure contains varargout then a section string
 %               Optional Output:
 % must be present. For example suppose there is a function called mcd which
 % has the following sintax:
 %
 %                 function [RAW,REW,varargout] = mcd(Y,varargin)
-% 
+%
 % then at the end of the output argument the format must be as follows
 %
 %                       Optional Output:
-%                     
+%
 %                                 C     : matrix of the indices of the
 %                                         subsamples extracted for
 %                                         computing the estimate
@@ -265,7 +265,7 @@ function publishFS(file)
 % ---------------------------------------------------
 % REMARK2:
 % If there is just one output argument it can be without square brackets
-% Among the input elements of a procedure the number of spaces between 
+% Among the input elements of a procedure the number of spaces between
 % them is not important. For example
 % "y,X,varargin" or "y, X   ,  varargin"   are both fine
 % --------------------------------------------------
@@ -344,7 +344,25 @@ beforemetacontent=['<meta content="refpage" name="chunktype">\r' ...
 % startIndex(2)-3 because there is also the carriage return
 purpose=fstring(startIndex(1)+1:startIndex(2)-3);
 aftermetacontent=['." itemprop="description" name="description" />\r'...
+    '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\r'...
+    '<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />\r'...
+    '<script type="text/x-mathjax-config">\r'...
+    'MathJax.Hub.Config({\r'...
+    'extensions: ["tex2jax.js"],\r'...
+    'jax: ["input/TeX","output/HTML-CSS"],\r'...
+    'menuSettings: {zoom: "Double-Click", zscale: "300"},\r'...
+    'tex2jax: {inlineMath: [["$","$"],["\\\\(","\\\\)"]]},\r'...
+    'MathMenu: {showRenderer: false},\r'...
+    '"HTML-CSS": {\r'...
+    'availableFonts: ["TeX"],\r'...
+    'preferredFont: "TeX",\r'...
+    'imageFont: null\r'...
+    '}\r'...
+    '});\r'...
+    '</script>\r'...
+    '<script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script>\r'...
     '<script src="includesFS/matlab-highlighter.min.js"></script>\r'...
+    '<link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css">\r'...    
     '<script src="includesFS/jquery-latest.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/l10n.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/docscripts.js" type="text/javascript"></script>\r'...
@@ -352,13 +370,6 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
     '<script src="includesFS/mw.imagescaling.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/mw.imageanimation.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/bottom.js" type="text/javascript"></script>\r'...
-    '<script type="text/x-mathjax-config">\r'...
-    'MathJax.Hub.Config({\r'...
-    'tex2jax: {inlineMath: [[''$'',''$''], [''\\\\('',''\\\\)'']]}\r'...
-    '});\r'...
-    '</script>\r'...
-    '<script src="includesFS/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>\r'...
-    '<link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css">\r'...
     '<link href="includesFS/reset.css" rel="stylesheet" type="text/css">\r'...
     '<link href="includesFS/960.css" rel="stylesheet" type="text/css">\r'...
     '<link href="includesFS/site5.css" rel="stylesheet" type="text/css">\r'...
@@ -367,9 +378,8 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
     '<link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css">\r'...
     '</head>\r'...
     '<body  onload="highlightMATLABCode();">\r'];
+
 metacontent=sprintf([beforemetacontent purpose aftermetacontent]);
-
-
 % Insert navigation bar on top of the page
 % necessary to insert sprintf later because there is symbol % in 100%
 insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="100%">'...
@@ -695,7 +705,7 @@ for j=1:length(sintax)
     catch
         %disp(stri)
         warning('FSDA:wrongEx','This file does not contain enough examples, please add them!')
-    stri='EXAMPLS TO ADD';
+        stri='EXAMPLS TO ADD';
     end
     
     % What is before the first full stop is the title.
@@ -763,6 +773,10 @@ closedescription=sprintf(['								</div>\r'...
 description=[inidescription descriptionhtml closedescription];
 
 %% CREATE EXAMPLES SECTION OF HTML FILE
+
+% imgtemplate = iamge to include for the examples which can be executed
+imgtemplate='<img alt="" src="images_help/M.png" style="width: 30px; height: 30px">';
+
 % the examples which are inside %{   %} are put here.
 % The first sentence which end with a full stop is the title of the example
 iniexamples=sprintf(['<div class="ref_sect" itemprop="content">\r'...
@@ -773,16 +787,21 @@ iniexamples=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     'href="javascript:void(0);">expand all</a>' ...
     '</p>']);
 
-
-
 exampleshtml='';
 for j=1:length(sintax)
+    
+    if listEx{j,4}==1
+        addimg=imgtemplate;
+    else
+        addimg='';
+    end
+    
     exampleshtml=[exampleshtml  sprintf(['<div id="example_' num2str(j) '" class="example_module expandableContent">\r'...
         '<div id="ex' num2str(j) '">\r'...
         '</div>\r'...
         '<h3 class="expand"><span>\r'...
         '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-        '<span class="example_title">']) listEx{j,1} sprintf(['</span></a></span></h3>\r'...
+        '<span class="example_title">']) addimg listEx{j,1} sprintf(['</span></a></span></h3>\r'...
         '<div class="collapse">\r'...
         '<p>']) listEx{j,2} sprintf(['<div class="programlisting">\r'...
         '<div class="codeinput"><pre class="matlab-code">\r']) ...
@@ -798,10 +817,10 @@ if length(startIndexEx)>length(sintax)
     lsintax=length(sintax);
     % Fourth column of listextraEX contains flag 1 or 0 depending on the
     % fact that the example must be executed or not
-    listextraEX=cell(length(startIndexEx)-lsintax,4);
+    listExtraEx=cell(length(startIndexEx)-lsintax,4);
     
     
-    for j=1:size(listextraEX,1)
+    for j=1:size(listExtraEx,1)
         stri=fstring(startIndexEx(j+lsintax)+2:endIndexEx(j+lsintax)-1);
         % What is before the first full stop is the title.
         % What is after the second full stop is the description
@@ -859,15 +878,22 @@ closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
 iniRelatedExamples='';
 RelatedExamples='';
 if length(startIndexEx)>length(sintax)
- iniRelatedExamples=sprintf('<h3 class="bottom_ruled">Related Examples</h3>\r');
-   
-    for j=1:size(listextraEX,1)
+    iniRelatedExamples=sprintf('<h3 class="bottom_ruled">Related Examples</h3>\r');
+    
+    for j=1:size(listExtraEx,1)
+        
+        if listExtraEx{j,4}==1
+            addimg=imgtemplate;
+        else
+            addimg='';
+        end
+        
         RelatedExamples=[RelatedExamples  sprintf(['<div id="example_' num2str(j) '" class="example_module expandableContent">\r'...
             '<div id="ex' num2str(j) '">\r'...
             '</div>\r'...
             '<h3 class="expand"><span>\r'...
             '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-            '<span class="example_title">']) listExtraEx{j,1} sprintf(['</span></a></span></h3>\r'...
+            '<span class="example_title">']) addimg listExtraEx{j,1} sprintf(['</span></a></span></h3>\r'...
             '<div class="collapse">\r'...
             '<p>']) listExtraEx{j,2} sprintf(['<div class="programlisting">\r'...
             '<div class="codeinput"><pre class="matlab-code">\r']) ...
@@ -1453,9 +1479,9 @@ for i=1:nargout
             % uppercase
             StartsWithThe=regexp(descrioutput,'the');
             if ~isempty(StartsWithThe)
-            if StartsWithThe(1)<4
-                descrioutput=descrioutput(StartsWithThe(1)+4:end);
-            end
+                if StartsWithThe(1)<4
+                    descrioutput=descrioutput(StartsWithThe(1)+4:end);
+                end
             end
             descrioutput=strtrim(descrioutput);
             descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
@@ -1734,10 +1760,13 @@ if ~isempty(listExtraEx)
 end
 
 if numextraexToExec+numexToExec>0
+    % tmp .file containing all the .m examples will be created. It will be
+    % created in subfolder tmp of helpfiles and then automatically removed.
+    % This subfolder will be added to put for this session
     nametmp=[name 'tmp.m'];
-    fullPathToScript=[pathstr '\helpfiles\FSDA\' nametmp];
+    fullPathToScript=[pathstr '\helpfiles\FSDA\tmp\' nametmp];
     filetmp=fopen(fullPathToScript,'w');
-    
+    addpath([pathstr '\helpfiles\FSDA\tmp'])
     % Replace < and > HTML symbols with < and >
     ExToExec=strrep(ExToExec,'&lt;','<');
     ExToExec=strrep(ExToExec,'&gt;','>');
