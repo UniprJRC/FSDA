@@ -47,7 +47,7 @@ function publishFS(file)
 % no optional arguments. publishFS, in order to understand what are the names
 % of the optional input arguments scans the rows below the string 'Optional
 % input arguments:' and identifies the lines which contain the optional
-% arguments as those which contains "a series of spaces" "a_word" "a series
+% arguments as those which contain "a series of spaces" "a_word" "a series
 % of spaces followed by symbol ':'". The first sentence after symbol ':' is
 % the title of the optional input argument and in the HTML
 % file it will appear under "description". The second sentence
@@ -60,7 +60,7 @@ function publishFS(file)
 % words 'Example -' and 'Data Types -' followed by a string without spaces
 % which specifies a possible use of the option and the type of data
 % For  example, suppose that the first two optional arguments are called
-% respecively 'intercept' and 'h' then the accepted format is as follows
+% respecively 'intercept' and 'h', then the accepted format is as follows
 %
 %               Optional input arguments:
 %
@@ -75,14 +75,14 @@ function publishFS(file)
 %                             Example - 'h',round(n*0,75)
 %                             Data Types - double
 %
-%  IMPORTANT NOTICE: given that options are those which have symbol "%"
-%  followd by "a series of spaces" then "a word" then "a series of spaces"
-%  then symbol ":", each line inside the description does not have to start
-%  as follows "   ANYWORD   :" because the parser will wrongly identify
-%  "ANYWORD" as an additional optional input argument. The only once
-%  exception to this rule is the word " REMARK :". However, if there is a
-%  remark, it must be put at the very end of the description of the
-%  optional input argument. At the very end means after the rows
+%  IMPORTANT NOTICE: given that options are arguments are those which have
+%  symbol "%" followd by "a series of spaces" then "a word" then "a series
+%  of spaces" then symbol ":", each line inside the description does not
+%  have to start as follows "   ANYWORD   :" because the parser will
+%  wrongly identify "ANYWORD" as an additional optional input argument. The
+%  only once exception to this rule is the word " REMARK :". However, if
+%  there is a remark, it must be put at the very end of the description of
+%  the optional input argument. At the very end means after the rows
 %   Example and Data Types
 %
 % 3) String 'Output:' must be present. The lines after string 'Output:'
@@ -92,7 +92,7 @@ function publishFS(file)
 % extracted directly from the first line of the file (e.g. if the first
 % line is as follows
 % function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
-% optional arguments are immediately known to the parser).
+% output arguments are immediately known to the parser).
 % For each output argument, the first sentence after symbol ":" is assumed
 % to be the title of the output argument and in the HTML file goes under
 % the description. What starts with the second sentence is the full
@@ -115,9 +115,9 @@ function publishFS(file)
 %                           the old one.
 % IMPORTANT NOTICE: Similarly to what happend for each input argument, if
 % an output argument is a structure, publishFS automatically checks if it
-% contains the word "structure". In this case, the fields of the
-% structure will be automatically included into a HTML table. In this case
-% the fields of the structure are identified as the lines which contain "a
+% contains the words "structure" and "field". In this case, the fields of
+% the structure will be automatically included into a HTML table. The
+% fields of the structure are identified as the lines which contain "a
 % series of spaces" "name_of_output_structure.a_word" "a series of spaces
 % followed by symbol '='". For example suppose that the output of a
 % procedure is an object called out which is a structure with two fields
@@ -139,7 +139,7 @@ function publishFS(file)
 %                                               slopes].
 %
 % PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE
-% = SIGN AND NOT THE : SIGN
+% "=" SIGN AND NOT THE ":" SIGN
 %
 % If the description of a particular output has the string "which contains"
 % or "containing",  as follows
@@ -156,8 +156,9 @@ function publishFS(file)
 %HTML file will be processed as follows:
 %                mdr —Monitoring of minimum deletion residual at each step of the forward search.
 %                n -init -by- 2 matrix
-% If the user click on the first line the enpanded description will appear
-%
+% If, in the HTML file, the user clicks on the first line, 
+%               "mdr —Monitoring..." 
+%the expanded description will automatically appear
 %
 % 4) A line which starts with string 'See also:' must be present. Linked m
 % files must be separated by symbol ",". For example, suppose that files
@@ -169,24 +170,31 @@ function publishFS(file)
 %
 % 5) A line which starts with string 'References:' must be present.
 % The year of each reference must be enclosed in round parenthesis.
-% PublishFS decides that a new reference starts if a new line contain
-% "symbol (" + " a sequence of 4 or 5 charathers identifying the year
-% because the refernce can be for example 2003 or 2003a "+ then symbol )"
+% PublishFS decides that a new reference starts if a new line contains
+% symbol "(" + "a sequence of 4 or 5 characthers identifying the year
+% because the reference can be for example 2003 or 2003a" + symbol ")"
 % For example, an acceptable format for the two references below is
 %
+% 
+%                 Chaloner and Brant (1988). A Bayesian Approach to Outlier
+%                 Detection and Residual Analysis, Biometrika, Vol 75 pp.
+%                 651-659.
+%                 Riani M., Corbellini A., Atkinson A.C. (2015), Very
+%                 Robust Bayesian Regression for Fraud Detection, submitted
+% 
 % 6) All the examples associated with the file which has to be processed
 % must be enclosed inside Percent-braces (comments blocks, i.e. smbols %{
 % and %} ). The first sentence identifies the title of the comment which
 % will appear in the HTML file.
 % IMPORTANT NOTICE: if the comment has to be executed, the first line
-% associated with the title must start with two %% symbols instead of just
-% one. The examples in the first positions will appear in
+% associated with the title must start with two "%%" symbols instead of just
+% one "%" symbol. The examples in the first positions will appear in
 % the HTML file under the caption "Examples" while the latest will appear
 % under the caption "Related Examples". More precisely, if the output of a
-% procedure contains k outputs and some optional arguments the first k+1 comment
-% blocks will appear in the HTML file under "Examples".
+% procedure contains k outputs and some optional input arguments the first
+% k+1 comment blocks will appear in the HTML file under "Examples".
 % First comment block is associated with the call of the procedure with
-% just one output and all default input argument
+% just one output and all default input arguments
 % Second comment block is associated with the call of the procedure with
 % just one output and with some optional input arguments
 % Third comment block is associated with the call of the procedure with
@@ -198,7 +206,7 @@ function publishFS(file)
 % the heading "Related Examples
 % For example, suppose that the first example of procedure FSRmdr has to be
 % executed and its output must be included into the HTML file, then the accepted
-% format is as follows
+% format is as follows ("please notice the two symbols %% in the first row")
 %
 %
 %                 %{
@@ -224,7 +232,29 @@ function publishFS(file)
 %                     [mdr] = FSRmdr(y,X,out.bs,'init',60);
 %                 %}
 %
+% 7) If a procedure contains varargout then a section string 
+%               Optional Output:
+% must be present. For example suppose there is a function called mcd which
+% has the following sintax:
 %
+%                 function [RAW,REW,varargout] = mcd(Y,varargin)
+% 
+% then at the end of the output argument the format must be as follows
+%
+%                       Optional Output:
+%                     
+%                                 C     : matrix of the indices of the
+%                                         subsamples extracted for
+%                                         computing the estimate
+%
+% 8) If the .m file contains string  "More About:" a particular section
+% called "More about" in the HTML file will be created. The format of what
+% is below More about: is as follows. The first sentence is associated with
+% the title  and click on it in the HTML file it will be expanded (what is
+% after the first sentence will be shown'.
+% 9) If the .m file contains string 'Acknowledgements:' then a particular
+% section named "Acknowledgements" will be created just above the
+% references.
 %
 % GENERAL REMARKS:
 %
