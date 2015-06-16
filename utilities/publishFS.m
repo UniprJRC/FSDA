@@ -249,9 +249,9 @@ function publishFS(file)
 %
 % 8) If the .m file contains string  "More About:" a particular section
 % called "More about" in the HTML file will be created. The format of what
-% is below More about: is as follows. The first sentence is associated with
-% the title  and click on it in the HTML file it will be expanded (what is
-% after the first sentence will be shown'.
+% is below "More about:" is as follows. The first sentence is associated with
+% the title  and it will be expandaible in the HTML file. 
+% More precisely, what is after the first sentence will be shown'.
 % 9) If the .m file contains string 'Acknowledgements:' then a particular
 % section named "Acknowledgements" will be created just above the
 % references.
@@ -465,7 +465,7 @@ finsitecont=sprintf(['<h2 id="syntax">Syntax</h2>\r'...
 
 sitecont=[insnav inisitecont htmlsitecont finsitecont];
 
-%% Mnanagin input and output arguments:
+%% Managing input and output arguments:
 % Find point where first input argument starts
 
 % Now find the number of required input
@@ -775,7 +775,7 @@ description=[inidescription descriptionhtml closedescription];
 %% CREATE EXAMPLES SECTION OF HTML FILE
 
 % imgtemplate = iamge to include for the examples which can be executed
-imgtemplate='<img alt="" src="images_help/M.png" style="width: 30px; height: 30px">';
+imgtemplate='<img alt="" src="images_help/M.png" style="width: 12px; height: 12px"> ';
 
 % the examples which are inside %{   %} are put here.
 % The first sentence which end with a full stop is the title of the example
@@ -1767,6 +1767,8 @@ if numextraexToExec+numexToExec>0
     fullPathToScript=[pathstr '\helpfiles\FSDA\tmp\' nametmp];
     filetmp=fopen(fullPathToScript,'w');
     addpath([pathstr '\helpfiles\FSDA\tmp'])
+    addpath([pathstr '\utilities\privateFS'])
+    
     % Replace < and > HTML symbols with < and >
     ExToExec=strrep(ExToExec,'&lt;','<');
     ExToExec=strrep(ExToExec,'&gt;','>');
@@ -1876,7 +1878,7 @@ if numextraexToExec+numexToExec>0
             iniout=regexp(outstring,listExi);
             if length(iniout)>2
                 disp(['Duplicate name for: ' listExi ' found'])
-                error('FSDA:WrongArg','There are examples with the same title, please use a title which is unique')
+                warning('FSDA:WrongArg','There are examples with the same title, please use a title which is unique')
             end
             iniout=iniout(1);
             
@@ -1892,6 +1894,11 @@ if numextraexToExec+numexToExec>0
     end
     
     close all
+    
+    % Remove folder which ahve temporarily added to path
+    rmpath([pathstr '\helpfiles\FSDA\tmp'])
+    rmpath([pathstr '\utilities\privateFS'])
+
 end
 %% WRITE string outstring into the final HTML file
 fprintf(file1ID,'%s',outstring);

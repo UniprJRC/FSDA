@@ -8,7 +8,7 @@ if ~isfield(options,'stylesheet') || isempty(options.stylesheet)
     switch format
         case 'html'
             codepadDir = fileparts(which(mfilename));
-            styleSheet = fullfile(codepadDir,'private','mxdom2simplehtml.xsl');
+            styleSheet = fullfile(codepadDir,'mxdom2simplehtml.xsl');
             options.stylesheet = styleSheet;
         case 'latex'
             codepadDir = fileparts(which(mfilename));
