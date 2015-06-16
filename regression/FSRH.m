@@ -257,7 +257,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
 %
-% See also: FSReda, LXS.m
+% See also: FSReda.m, LXS.m
 %
 % References:
 %

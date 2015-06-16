@@ -1,5 +1,5 @@
 function [RAW,REW,varargout] = mcd(Y,varargin)
-%mcd computes Minimum covariance determinant
+%mcd computes Minimum Covariance Determinant
 %
 %<a href="matlab: docsearchFS('mcd')">Link to the help function</a>
 %
@@ -13,37 +13,59 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %
 %  Optional input arguments:
 %
-%      bdp    : scalar defining breakdown point (i.e a number between 0
-%               and 0.5). The default value is 0.5
-%      nsamp  : scalar defining number of subsamples of size v which have
-%               to be extracted (if not given, default = 1000)
-%    refsteps : scalar defining number of refining iterations in each
+%      bdp    : scalar. Breakdown point (i.e a number between 0
+%               and 0.5). The default value is 0.5.
+%               Example - 'bdp',1/4 
+%               Data Types - double
+%      nsamp  : scalar. Number of subsamples of size v which have
+%               to be extracted (if not given, default = 1000).
+%               Example - 'nsamp',10000 
+%               Data Types - double
+%    refsteps : scalar. Number of refining iterations in each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%     reftol  : scalar. Default value of tolerance for the refining steps
+%               Example - 'refsteps',10 
+%               Data Types - double
+%     reftol  : scalar. Tolerance for the refining steps.
 %               The default value is 1e-6;
-%refstepsbestr: scalar defining number of refining iterations for each
+%               Example - 'reftol',1e-8 
+%               Data Types - double
+%refstepsbestr: scalar. Number of refining iterations for each
 %               best subset (default = 50).
-% reftolbestr : scalar. Default value of tolerance for the refining steps
-%               for each of the best subsets
+%               Example - 'refstepsbestr',10 
+%               Data Types - double
+% reftolbestr : scalar. Value of tolerance for the refining steps
+%               for each of the best subsets.
 %               The default value is 1e-8;
-%      bestr  : scalar defining number of "best locations" to remember from
+%               Example - 'reftolbestr',1e-8
+%               Data Types - double
+%      bestr  : scalar. Number of "best locations" to remember from
 %               the subsamples. These will be later iterated until
 %               convergence (default=5)
-%     conflev : Scalar between 0 and 1 containing confidence level which is
+%               Example - 'bestr',10
+%               Data Types - double
+%     conflev : Scalar. Number between 0 and 1 containing confidence level which is
 %               used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
-%  conflevrew : Scalar between 0 and 1 containing confidence level which is
+%               Example - 'conflev',0.99
+%               Data Types - double
+%  conflevrew : Scalar. Number between 0 and 1 containing confidence level which is
 %               used to do the reweighting step.
 %               Default value is the one specified in previous option conflev
-%  betathresh : Scalar. If betathresh = 1 the distribution which is used to
+%               Example - 'conflevrew',0.99
+%               Data Types - double
+%  betathresh : Scalar. Distribution to use. If betathresh = 1 the distribution which is used to
 %               declare units as outliers is a mixture of Rocke scaled F
 %               distribution and beta else (default) traditional chi^2
-%               distribution is used
+%               distribution is used.
+%               Example - 'betathresh',1
+%               Data Types - double
 %      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
+%               Example - 'nocheck',1
+%               Data Types - double
 %       plots : Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates
 %               (1) a plot of robust Mahalanobis distances (raw and
@@ -54,115 +76,127 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               used.
 %               (2) a scatter plot matrix with the outliers highlighted
 %               If plots is a structure it may contain the following fields
-%                   labeladd : if this option is '1', the outliers in the
+%                   labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added.
-%                   nameY : cell array of strings containing the labels of
+%                   nameY = cell array of strings containing the labels of
 %                       the variables. As default value, the labels which
 %                       are added are Y1, ...Yv.
-%        msg  : scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displyed
+%               Example - 'plots',1
+%               Data Types - double or structure
+%        msg  : scalar. Display or not messages
+%               on the screen. If msg==1 (default) messages are displyed
 %               on the screen about estimated time to compute the final
-%               estimator else no message is displayed on the screen
+%               estimator else no message is displayed on the screen.
+%               Example - 'msg',1
+%               Data Types - double
 %     tolMCD  : scalar. Tolerance to declare a subset as singular. The
 %               default value of tolMCD is exp(-50*v).
+%               Example - 'tolMCD',1e-20
+%               Data Types - double
 %    ysaveRAW : scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure RAW. This feature is
 %               meant at simplifying the use of function malindeplot.
 %               Default is 0, i.e. no saving is done.
+%               Example - 'ysaveRAW',1
+%               Data Types - double
 %    ysaveREW : scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure REW. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
+%               Example - 'ysaveREW',1
+%               Data Types - double
 %
 %  Output:
 %
 %  The output consists of two structures RAW and REW. RAW refers to raw
 %  MCD, on the other hand, REW refers to reweighted MCD
 %
-%         RAW contains the following fields:
+%         RAW:   structure which contains the following fields
 %
-%         RAW.h    : scalar. The number of observations that have
+%         RAW.h    = scalar. The number of observations that have
 %                    determined the MCD estimator
-%         RAW.loc  : 1 x v  vector containing raw MCD location of the data
-%         RAW.cov  : robust MCD estimate of
+%         RAW.loc  = 1 x v  vector containing raw MCD location of the data
+%         RAW.cov  = robust MCD estimate of
 %                    covariance matrix. It is the raw MCD covariance matrix
 %                    (multiplied by a finite sample correction factor and
 %                    an asymptotic consistency factor).
-%           RAW.cor: The raw MCD correlation matrix
-%           RAW.obj: The determinant of the raw MCD covariance matrix.
-%           RAW.bs : (v+1) x 1 vector containing the units forming best
+%           RAW.cor= The raw MCD correlation matrix
+%           RAW.obj= The determinant of the raw MCD covariance matrix.
+%           RAW.bs = (v+1) x 1 vector containing the units forming best
 %                    subset associated with MCD estimate of location.
-%           RAW.md : n x 1 vector containing the estimates of the robust
+%           RAW.md = n x 1 vector containing the estimates of the robust
 %                    Mahalanobis distances (in squared units). This vector
 %                    contains the distances of each observation from the
 %                    raw MCD location of the data, relative to the raw MCD
 %                    scatter matrix RAW.cov
-%     RAW.outliers : A vector containing the list of the units declared as
+%     RAW.outliers = A vector containing the list of the units declared as
 %                    outliers using confidence level specified in input
 %                    scalar conflev
-%      RAW.conflev : Confidence level that was used to declare outliers
-%      RAW.singsub : Number of subsets without full rank. Notice that
+%      RAW.conflev = Confidence level that was used to declare outliers
+%      RAW.singsub = Number of subsets without full rank. Notice that
 %                    out.singsub > 0.1*(number of subsamples) produces a
 %                    warning
-%      RAW.weights : n x 1 vector containing the estimates of the weights.
+%      RAW.weights = n x 1 vector containing the estimates of the weights.
 %                    Weights assume values 0 or 1. Weight is 1 if the
 %                    associated observation has been used to compute
 %                    centroid and covariance matrix. These weights
 %                    determine which observations are used to compute the
 %                    final MCD estimates. Unless there is a perfect fit
 %                    sum(RAW.weights)=h
-%        RAW.plane : In case of an exact fit, RAW.plane contains the
+%        RAW.plane = In case of an exact fit, RAW.plane contains the
 %                    coefficients of a (hyper)plane
 %                    a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0
 %                    containing at least h observations, where (m_1,...,m_p)
 %                    is the MCD location of these observations.
-%            RAW.Y : Data matrix Y. The field is present if option
+%            RAW.Y = Data matrix Y. The field is present if option
 %                    ysaveRAW was set to 1.
-%        RAW.class : 'mcd'
+%        RAW.class = 'mcd'
 %
-%                   REW contains the following fields:
+%         REW : structure which contains the following fields:
 %
-%       REW.loc    : The robust location of the data, obtained after
+%       REW.loc    = The robust location of the data, obtained after
 %                    reweighting, if the raw MCD is not singular.
 %                    Otherwise the raw MCD center is given here.
-%       REW.cov    : The robust covariance matrix, obtained after
+%       REW.cov    = The robust covariance matrix, obtained after
 %                    reweighting and multiplying with a finite sample
 %                    correction factor and an asymptotic consistency
 %                    factor, if the raw MCD is not singular.  Otherwise the
 %                    raw MCD covariance matrix is given here.
-%       REW.cor    : The robust correlation matrix, obtained after reweighting
-%       REW.md     : n x 1 vector containing the estimates of the robust
+%       REW.cor    = The robust correlation matrix, obtained after reweighting
+%       REW.md     = n x 1 vector containing the estimates of the robust
 %                    Mahalanobis distances (in squared units). This vector
 %                    contains the distances of each observation from the
 %                    reweighted MCD location of the data, relative to the
 %                    reweighted MCD scatter of the data These distances
 %                    allow us to easily identify the outliers. If the
 %                    reweighted MCD is singular, RAW.md is given here.
-%      REW.weights : n x 1 vector containing the estimates of the weights.
+%      REW.weights = n x 1 vector containing the estimates of the weights.
 %                    Weights assume values 0 or 1. Weight is 0 if the
 %                    associated observation has been declared outlier.
 %                    These weights determine which observations are used to
 %                    compute the final MCD estimates.
 %                    Remark: if the reweighted MCD is singular, RAW.weights
 %                    is given here.
-%       REW.method : In case of an exact fit, REW.method contains a
+%       REW.method = In case of an exact fit, REW.method contains a
 %                    character string containing information about the
 %                    method and about singular subsamples (if any).
-%       REW.plane  : In case of an exact fit, res.plane contains the
+%       REW.plane  = In case of an exact fit, res.plane contains the
 %                    coefficients of a (hyper)plane
 %                    a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0
 %                    containing at least h observations, where (m_1,...,m_p)
-%            REW.Y : Data matrix Y. The field is present if option
+%            REW.Y = Data matrix Y. The field is present if option
 %                    ysaveREW was set to 1.
-%        REW.class : 'mcdr'
+%        REW.class = 'mcdr'
 %
 %  Optional Output:
 %
-%            C     : matrix of the indices of the subsamples extracted for
-%                    computing the estimate
+%            C     : matrix of size nsamp-by-v which contains the indices
+%                    of the subsamples extracted for
+%                    computing the estimate.
 %
+% More About:
 %
 % MCD computes the MCD estimator of a multivariate data set.  This
 % estimator is given by the subset of h observations with smallest
@@ -201,6 +235,8 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % case) the program still yields the MCD location and scatter matrix, the
 % latter being singular (as it should be), as well as the equation of the
 % hyperplane.
+%
+% See also: mve.m
 %
 % References:
 %

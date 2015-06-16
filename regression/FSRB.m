@@ -235,7 +235,10 @@ function [out]=FSRB(y,X,varargin)
 
 %{
     %% FSRB with optional arguments.
-
+    load hprice.txt;
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
     % set \beta components
     beta0=0*ones(5,1);
     beta0(2,1)=10;

@@ -101,6 +101,7 @@ function publishFS(file)
 % is as follows.
 %              %  Output:
 %              mdr:          n -init x 2 matrix which contains the
+%                           monitoring of minimum deletion residual.
 %                           1st col = fwd search index (from init to n-1).
 %                           2nd col = minimum deletion residual.
 %                           REMARK: if in a certain step of the search
@@ -250,7 +251,7 @@ function publishFS(file)
 % 8) If the .m file contains string  "More About:" a particular section
 % called "More about" in the HTML file will be created. The format of what
 % is below "More about:" is as follows. The first sentence is associated with
-% the title  and it will be expandaible in the HTML file. 
+% the title  and it will be expandaible in the HTML file.
 % More precisely, what is after the first sentence will be shown'.
 % 9) If the .m file contains string 'Acknowledgements:' then a particular
 % section named "Acknowledgements" will be created just above the
@@ -362,7 +363,7 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
     '</script>\r'...
     '<script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script>\r'...
     '<script src="includesFS/matlab-highlighter.min.js"></script>\r'...
-    '<link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css">\r'...    
+    '<link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css">\r'...
     '<script src="includesFS/jquery-latest.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/l10n.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/docscripts.js" type="text/javascript"></script>\r'...
@@ -775,7 +776,7 @@ description=[inidescription descriptionhtml closedescription];
 %% CREATE EXAMPLES SECTION OF HTML FILE
 
 % imgtemplate = iamge to include for the examples which can be executed
-imgtemplate='<img alt="" src="images_help/M.png" style="width: 12px; height: 12px"> ';
+imgtemplate='<img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ';
 
 % the examples which are inside %{   %} are put here.
 % The first sentence which end with a full stop is the title of the example
@@ -1127,6 +1128,7 @@ for i=1:length(ini)
         try
             descrtype=strtrim(descrtosplit(inifullstops(1)+1:inifullstops(2)-1));
         catch
+            warning('FSDA:publishFS:WrongInp',['Option: ' listOptArgs{ij,1}])
             error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
         end
         
@@ -1353,32 +1355,61 @@ for i=1:nargout
         error('FSDA:missingOuts',['Output argument ' listargouts{i} ' has not been found'])
     end
     
-    % The endpoint of the substring is See also or the next output argument
+    % The endpoint of the substring is 'more About'. or sSee also or the next output argument
     if i <nargout-1
-        endpoint=regexp(fstringsel,listargouts{i+1});
+        endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
     elseif i==nargout-1
         
         if strcmp(listargouts{end},'varargout') ==0
-            endpoint=regexp(fstringsel,listargouts{i+1});
+            endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
         else
             % In this case there are also optional arguments
             endpoint=regexp(fstringsel,'Optional Output:');
         end
         
     else
-        endpoint=regexp(fstringsel,'See also');
-        if isempty(endpoint)
-            disp('Please check HTML input file')
-            error('FSDA:missOuts','HTML file does not contain ''See also:'' string')
+        
+        inipointSeeAlso=regexp(fstringsel,'See also','once');
+        
+        if isempty(inipointSeeAlso)
+            disp('Please check .m input file')
+            error('FSDA:missOuts','Input .m file does not contain ''See also:'' string')
         end
+        
+        inipointMoreAbout=regexp(fstringsel,'More About:','once');
+        if ~isempty(inipointMoreAbout);
+            MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
+            posPercentageSigns=regexp(MoreAbout,'%');
+            MoreAbout(posPercentageSigns)=[];
+            
+newl=regexp(MoreAbout,'\r[\s0-200]\r');
+MoreAboutHTML=MoreAbout(1:newl(1));
+for j=1:(length(newl)-1)
+    MoreAboutHTML=[MoreAboutHTML '</p> <p>' MoreAbout(newl(j):newl(j+1))];
+end
+
+        else
+            MoreAboutHTML='';
+            inipointMoreAbout=Inf;
+        end
+        
+        endpoint=min(inipointSeeAlso,inipointMoreAbout);
+        
     end
-    
-    
     
     % descri = string which contains the description of i-th output
     % argument
     try
         descrioutput=fstringsel((inipoint(1)+length(listargouts{i})+2):endpoint(1)-1);
+        if isempty(descrioutput)
+            initmp=inipoint(1);
+            disp('Starting point of the description')
+            disp([fstringsel(initmp:initmp+50) '.....'])
+            disp('Final point of the description')
+            endtmp=endpoint(1);
+            disp(['....' fstringsel(endtmp-50:endtmp)]);
+            disp(['FSDA:WrongOut','Could not process correctly output argument ' listargouts{i}])
+        end
     catch
         disp(['FSDA:WrongOut','Could not process correctly output argument ' listargouts{i}])
     end
@@ -1565,6 +1596,7 @@ outargs=[inioutargs outargshtml closeoutargs];
 
 %% CREATE MORE ABOUT SECTION
 
+if ~isempty(MoreAboutHTML)
 Moreabout=sprintf(['<div class="moreabout ref_sect">\r'...
     '<h2 id="moreabout">More About</h2>\r'...
     '<div class="expandableContent">\r'...
@@ -1574,13 +1606,16 @@ Moreabout=sprintf(['<div class="moreabout ref_sect">\r'...
     '<div class="expandableContent" itemprop="content">\r'...
     '<h3 class="expand"><span>\r'...
     '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-    '<span>ADDITIONAL EXAMPLE</span></a></span></h3>\r'...
+    '<span>Methodological Details </span></a></span></h3>\r'...
     '<div class="collapse">\r'...
-    '<p>describe describe </p>\r'...
+    '<p>' MoreAboutHTML ' </p>\r'...
     '</div>\r'...
     '</div>\r'...
     '</div>\r'...
     '</div>']);
+else
+   Moreabout=''; 
+end
 
 %% REFERENCES
 
@@ -1590,7 +1625,24 @@ if isempty(iniref)
     refsargs={''};
 else
     
-    endref=regexp(fstring,'Copyright');
+    inipointAcknowledgements=regexp(fstring,'Acknowledgements:');
+    
+    
+    inipointCopyright=regexp(fstring,'Copyright');
+    
+    
+    if ~isempty(inipointAcknowledgements);
+        Acknowledgements=fstring(inipointAcknowledgements+18:inipointCopyright-1);
+        posPercentageSigns=regexp(Acknowledgements,'%');
+        Acknowledgements(posPercentageSigns)=[];
+        
+    else
+        Acknowledgements='';
+        inipointAcknowledgements=Inf;
+    end
+    
+    endref=min(inipointAcknowledgements,inipointCopyright);
+    
     % stringsel = block of test which contains the references
     fstringsel=fstring(iniref(1)+1:endref(1)-1);
     
@@ -1658,6 +1710,20 @@ Referencesclose=sprintf(['</div>\r'...
     '</div>']);
 References=[iniReferences Referenceshtml Referencesclose];
 
+%% ACKNOWLEDGEMENTS
+if ~isempty(Acknowledgements)
+iniAcknowledgements=sprintf(['<div class="ref_sect" itemprop="content">\r'...
+    '<div class="bibliography">\r'...
+    '<h2 id="references">Acknowledgements</h2> \r']);
+
+Acknowledgementshtml=sprintf(['<div><p>' Acknowledgements '</p></div>\r']);
+
+Ack=[iniAcknowledgements Acknowledgementshtml Referencesclose];
+else
+    Ack='';
+end
+
+
 %% SEE ALSO
 
 iniSeealso=sprintf(['<div class="ref_sect">\r'...
@@ -1682,7 +1748,7 @@ nseealso=length(poscommas)+1;
 Seealsohtml='';
 for i=1:nseealso
     if nseealso==1;
-        Seealsoitem= seealsostr;
+        Seealsoitem= seealsostr(1:end);
     else
         if i==nseealso
             Seealsoitem=seealsostr(poscommas(i-1)+1:end);
@@ -1692,7 +1758,11 @@ for i=1:nseealso
             Seealsoitem=seealsostr(poscommas(i-1)+1:poscommas(i)-1);
         end
     end
-    
+    % Remove .m if present at the end of the reference
+    if strcmp(Seealsoitem(end-1:end),'.m')
+        Seealsoitem=Seealsoitem(1:end-2);
+    end
+        
     Seealsohtml=[Seealsohtml sprintf(['<span itemprop="seealso">\r'...
         '<a href="' Seealsoitem '.html" itemprop="url">\r'...
         '<span itemprop="name"><code>' Seealsoitem '</code></span></a></span>\r'])];
@@ -1729,7 +1799,7 @@ closbody=sprintf(['</body>\r'...
 fclose(fileID);
 
 outstring=([titl metacontent sitecont sintaxhtml sintaxclose description  ....
-    examples inputargs outargs Moreabout References Seealso clos insnav insbarra closbody]);
+    examples inputargs outargs Moreabout References Ack Seealso clos insnav insbarra closbody]);
 
 % Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
 FileWithFullPath=which('docsearchFS.m');
@@ -1898,7 +1968,7 @@ if numextraexToExec+numexToExec>0
     % Remove folder which ahve temporarily added to path
     rmpath([pathstr '\helpfiles\FSDA\tmp'])
     rmpath([pathstr '\utilities\privateFS'])
-
+    
 end
 %% WRITE string outstring into the final HTML file
 fprintf(file1ID,'%s',outstring);
