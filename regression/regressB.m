@@ -6,11 +6,24 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 % Required input arguments:
 %
 %               SAMPLE INFORMATION
-%    y:         A vector with n1 elements that contains the response variable.
-%               It can be either a row or a column vector.
-%    X :        Data matrix of explanatory variables (also called 'regressors')
-%               of dimension (n1 x p-1). Rows of X represent observations, and
-%               columns represent variables.
+%    y:         Response variable. Vector. Response variable, specified as
+%               a vector of length n1, where n1 is the number of
+%               observations. Each entry in y is the response for the
+%               corresponding row of X.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%  X :          Predictor variables. Matrix. Matrix of explanatory variables (also called
+%               'regressors') of dimension n1 x (p-1) where p denotes the
+%               number of explanatory variables including the intercept.
+%               Rows of X represent observations, and columns represent
+%               variables. By default, there is a constant term in the
+%               model, unless you explicitly remove it using input option
+%               intercept, so do not include a column of 1s in X. Missing
+%               values (NaN's) and infinite values (Inf's) are allowed,
+%               since observations (rows) with missing or infinite values
+%               will automatically be excluded from the computations.
 %               Remark: note that here we use symbol n1 instead of
 %               traditional symbol n because we want to better separate
 %               sample information coming from n1 values to prior
@@ -18,28 +31,29 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %
 %               PRIOR INFORMATION
-%               \beta is assumed to have a normal distribution with
-%               mean \beta0 and (conditional on tau0) covariance
-%               (1/tau0) (X0'X0)^{-1}
-%               \beta~N(    beta0, (1/tau0) (X0'X0)^{-1}    )
+%               $\beta$ is assumed to have a normal distribution with
+%               mean $\beta_0$ and (conditional on $\tau_0$) covariance
+%               $(1/\tau_0) (X_0'X_0)^{-1}$.
+%               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$
 %
-%   beta0 :     p-times-1 vector. Prior mean of \beta
-%    R    :     p-times-p positive definite matrix
-%               which can be interepreted as X0'X0 where X0 is a n0 x p
+%   beta0 :     Prior mean of $\beta$. p-times-1 vector. 
+%    R    :     Matrix associated with covariance matrix of $\beta$. p-times-p
+%               positive definite matrix.
+%               It can be interpreted as X0'X0 where X0 is a n0 x p
 %               matrix coming from previous experiments (assuming that the
 %               intercept is included in the model)
 %
-%               The prior distribution of tau0 is a gamma distribution with
-%               parameters a and b, that is
-%                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
-%                         E(tau0)= a0/b0
+%               The prior distribution of $\tau_0$ is a gamma distribution with
+%               parameters $a_0$ and $b_0$, that is
+%               
+%                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
+%                       \qquad   E(\tau_0)= a_0/b_0               \]
 %
-%
-%    tau0 :     scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0
-%      n0 :     scalar. Sometimes it helps to think of the prior
-%               information as coming from n0 previous experiments.
-%               Therefore we assume that matrix X0 (which defines R), was
-%               made up of n0 observations.
+%    tau0 :     Prior estimate of tau. Scalar. Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.
+%      n0 :     Number of previous experiments. Scalar. Sometimes it helps
+%               to think of the prior information as coming from n0
+%               previous experiments. Therefore we assume that matrix X0
+%               (which defines R), was made up of n0 observations.
 %
 %  Optional input arguments:
 %
@@ -102,7 +116,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %  The output consists of a structure 'out' containing the following fields:
 %   out.beta1=    p x 1 vector containing posterior mean (conditional on
 %               tau0) of \beta (regression coefficents)
-%               beta1 = (c*R + X'X)^{-1} (c*R*beta0 + X'y)
+%               $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$
 %  out.covbeta1=    p x p matrix containing posterior covariance matrix
 %               (conditional on tau1) of \beta
 %               covbeta1 = (1/tau1) * (c*R + X'X)^{-1}
@@ -121,20 +135,20 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the
 %               previous quantities are estimated just using the units
 %               forming subset
-%    out.res =   n1-times-2 matrix
+%    out.res =   n1-times-2 matrix.
 %               1st column = raw residuals
 %               res(i,1) is computed as y(i) - X(i,:)*beta1 where beta1 is
 %               computed using the units forming subset.
 %               In the Bayesian approach they are the posterior means of
 %               the \epsilon_i and can be interpreted as point estimates of
-%               the \epsilon_i
+%               the \epsilon_i.
 %               2nd col = deletion residuals (just computed for the units
 %               which do not form the subset).
 %               res(i,2) with i \not \in  subset
 %               is computed as
 %               (y(i)-X(i,:)*beta1) * sqrt ((a1/b1)/(1+hii))
 %               where
-%               hii = X(i,:)* (c*R + Xm'*Xm)^{-1} * X(i,:)'
+%               hii = X(i,:)* (c*R + Xm'*Xm)^{-1} * X(i,:)'.
 %
 %       The additional output which follows is produced just if input
 %       scalar stats is equal 1
@@ -143,23 +157,26 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
 %    out.Bhpd  =   p-by-2*length(conflev) matrix. 
-%               1st column = lower bound of HPDI associated with conflev(1)
-%               2st column = upper bound of HPDI associated with conflev(1)
+%               1st column =lower bound of HPDI associated with conflev(1).
+%               2st column =upper bound of HPDI associated with conflev(1).
 %               ...
 %               2*length(conflev)-1 column = lower bound of HPDI associated
-%               with conflev(end)
+%               with conflev(end).
 %               2*length(conflev) column (last column) = upper bound of
-%               HPDI associated with conflev(end)
-%  out.postodds :   p-by-1 vector which contains posterior odds for betaj=0
-%               For example the posterior odd of beta0=0 is p(y| model which contains
-%               all expl variables except the one associated with beta0) divided by
-%               p(y| model which contains all expl variables)
-% out.modelprob :   p-by-1 vector which contains  posterior model probability
-%               of the model which excludes variable j. For example if
-%               modelprob(j)= 0.28, that is if the probability of the model
-%               which does not contain variable j is equal to 0.28, it
-%               means that there is a 28% chance that beta_j=0 and a 72%
-%               chance that it is not.
+%               HPDI associated with conflev(end).
+%  out.postodds = p-by-1 vector which contains posterior odds for
+%               betaj=0.
+%               For example the posterior odd of beta0=0 is p(y| model
+%               which contains all expl variables except the one associated
+%               with beta0) divided by p(y| model which contains all expl
+%               variables).
+% out.modelprob =   p-by-1 vector which contains  posterior model probability
+%               of the model which excludes variable j. 
+%               For example if modelprob(j)= 0.28, that is if the
+%               probability of the model which does not contain variable j
+%               is equal to 0.28, it means that there is a 28 per cent
+%               chance that beta_j=0 and a 72 per cent chance that it is
+%               not.
 %
 % See also regress.m,
 %

@@ -117,8 +117,8 @@ function [out]=FSR(y,X,varargin)
 %                 bivarfit = '0'
 %                   fits one ols line to each group. This is useful for the
 %                   purpose of fitting mixtures of regression lines.
-%                 bivarfit = 'i1' or 'i2' or 'i3' etc.
-%                   fits an ols line to a specific group, the one with
+%                 bivarfit = 'i1' or 'i2' or 'i3' etc. fits 
+%                   an ols line to a specific group, the one with
 %                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
 %                   of mixtures.
 %               Example - 'bivarfit',2 

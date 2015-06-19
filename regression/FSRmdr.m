@@ -5,19 +5,25 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 % Required input arguments:
 %
-%    y:         A vector with n elements that contains the response variable.
+%    y:         Response variable. Vector. Response variable, specified as
+%               a vector of length n, where n is the number of
+%               observations. Each entry in y is the response for the
+%               corresponding row of X.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%  X :           Data matrix of explanatory variables (also called
-%               'regressors') of dimension (n x p-1).
+%  X :          Predictor variables. Matrix of explanatory variables (also called
+%               'regressors') of dimension n x (p-1) where p denotes the
+%               number of explanatory variables including the intercept.
 %               Rows of X represent observations, and columns represent
-%               variables. Missing values (NaN's) and infinite values
-%               (Inf's) are allowed, since observations (rows) with missing
-%               or infinite values will automatically be excluded from the
-%               computations.
-%  bsb     :    list of units forming the initial subset, if bsb=0
+%               variables. By default, there is a constant term in the
+%               model, unless you explicitly remove it using input option
+%               intercept, so do not include a column of 1s in X. Missing
+%               values (NaN's) and infinite values (Inf's) are allowed,
+%               since observations (rows) with missing or infinite values
+%               will automatically be excluded from the computations.
+%  bsb     :    list of units forming the initial subset. Vector. If bsb=0
 %               (default) then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
 %               m0=length(bsb)

@@ -64,15 +64,15 @@ function [out , varargout] = LXS(y,X,varargin)
 %               else if lms is a scalar different from 1 and 2 standard lts
 %                       is used (without concentration steps)
 %               else if lms is a struct fast lts (with concentration steps) is used.
-%                  In this case the user can control the following options
+%                  In this case the user can control the following options:
 %                  lms.refsteps : scalar defining number of refining iterations in each
 %                               subsample (default = 3).
 %                               refsteps = 0 means "raw-subsampling" without iterations.
 %                   lms.reftol  : scalar. Default value of tolerance for the refining steps
-%                               The default value is 1e-6;
+%                               The default value is 1e-6.
 %                   lms.bestr   : scalar defining number of "best betas" to remember from the
 %                               subsamples. These will be later iterated until convergence
-%                               (default=5)
+%                               (default=5).
 %             lms.refstepsbestr : scalar defining number of refining iterations for each
 %                               best subset (default = 50).
 %              lms.reftolbestr  : scalar. Default value of tolerance for the refining steps

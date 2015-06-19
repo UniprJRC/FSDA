@@ -13,7 +13,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %
 %  Optional input arguments:
 %
-%      bdp    : scalar. Breakdown point (i.e a number between 0
+%      bdp    : scalar. Breakdown point. (Number between 0
 %               and 0.5). The default value is 0.5.
 %               Example - 'bdp',1/4 
 %               Data Types - double

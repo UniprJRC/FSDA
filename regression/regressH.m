@@ -5,17 +5,28 @@ function out=regressH(y,X,Z,varargin)
 %
 %  Required input arguments:
 %
-%    y:         A vector with n elements that contains the response variable.
-%               It can be either a row or column vector.
-%    X :        Data matrix of explanatory variables (also called 'regressors')
-%               of dimension (n x p-1). Rows of X represent observations, and
-%               columns represent variables.
-%               By default, there is a constant term in the model, unless
-%               you explicitly remove it using option intercept, so do not
-%               include a column of 1s in X.
-%     Z :       n x r matrix or vector of length r.
+%    y:         Response variable. Vector. Response variable, specified as
+%               a vector of length n, where n is the number of
+%               observations. Each entry in y is the response for the
+%               corresponding row of X.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%  X :          Predictor variables in the regression equation. Matrix. Matrix of
+%               explanatory variables (also called 'regressors') of
+%               dimension n x (p-1) where p denotes the number of
+%               explanatory variables including the intercept. Rows of X
+%               represent observations, and columns represent variables. By
+%               default, there is a constant term in the model, unless you
+%               explicitly remove it using input option intercept, so do
+%               not include a column of 1s in X. Missing values (NaN's) and
+%               infinite values (Inf's) are allowed, since observations
+%               (rows) with missing or infinite values will automatically
+%               be excluded from the computations.
+%     Z :       Predictor variables in the skedastic equation. n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
-%               form the scedastic function 
+%               form the scedastic function .
 %               If Z is a vector of length r it contains the indexes of the
 %               columns of matrix X which form the scedastic function 
 %               Therefore, if for example the explanatory variables

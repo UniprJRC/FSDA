@@ -5,14 +5,28 @@ function [out]=FSRB(y,X,varargin)
 %
 % Required input arguments:
 %
-%    y: A vector with n elements that contains the response variable. y can
-%       be both a row of column vector.
-%    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension (n x p-1). Rows of X represent observations, and columns
-%       represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       automatically be excluded from the computations.
+%    y:         Response variable. Vector. Response variable, specified as
+%               a vector of length n1, where n1 is the number of
+%               observations. Each entry in y is the response for the
+%               corresponding row of X.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%  X :          Predictor variables. Matrix. Matrix of explanatory variables (also called
+%               'regressors') of dimension n1 x (p-1) where p denotes the
+%               number of explanatory variables including the intercept.
+%               Rows of X represent observations, and columns represent
+%               variables. By default, there is a constant term in the
+%               model, unless you explicitly remove it using input option
+%               intercept, so do not include a column of 1s in X. Missing
+%               values (NaN's) and infinite values (Inf's) are allowed,
+%               since observations (rows) with missing or infinite values
+%               will automatically be excluded from the computations.
+%               Remark: note that here we use symbol n1 instead of
+%               traditional symbol n because we want to better separate
+%               sample information coming from n1 values to prior
+%               information coming from n0 previous experiments.
 %
 % Optional input arguments:
 %
@@ -21,7 +35,8 @@ function [out]=FSRB(y,X,varargin)
 %                       (default), if 0, no constant term will be included.
 %                        Example - 'intercept',1 
 %                       Data Types - double
-%    bayes      : It specifies prior information. Structure.
+%    bayes      : Prior information. Structure.
+%
 %                       It contains the following fields
 %               beta0=  p-times-1 vector containing prior mean of \beta
 %               R    =  p-times-p positive definite matrix which can be
@@ -42,13 +57,19 @@ function [out]=FSRB(y,X,varargin)
 %                      Therefore we assume that matrix X0 (which defines
 %                      R), was made up of n0 observations.
 %              REMARK if structure bayes is not supplied the default
-%                      values which are used are
-%                      beta0= zeros(p,1)  % vector of zeros
-%                      R=eye(p);          % Identity matrix
-%                      tau0=1/1e+6;       % Very large value for the
+%                      values which are used are.
+%                      beta0= zeros(p,1)  % Vector of zeros.
+%                      R=eye(p)           % Identity matrix.
+%                      tau0=1/1e+6        % Very large value for the
 %                                         % prior variance, that is a very
-%                                         % small value for tau0
-%                      n0=1;              % just one prior observation
+%                                         % small value for tau0.
+%                      n0=1               % just one prior observation.
+%
+%               $\beta$ is assumed to have a normal distribution with
+%               mean $\beta_0$ and (conditional on $\tau_0$) covariance
+%               $(1/\tau_0) (X_0'X_0)^{-1}$.
+%               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$
+%
 %                     Example - bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
 %                     Data Types - double
 % plots   :    Plot on the screen. Scalar.

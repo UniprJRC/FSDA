@@ -1,26 +1,56 @@
-function publishFS(file)
+function publishFS(file,varargin)
 %Enables to create automatic HELP FILES from structured .m function files
 %
-% REQUIRED INPUT ARGUMENTS
-% file = string containing the name of a .m file whose HTML help has to be
-% created.
-% The .m file must satisfy the following characteristics to be correctly
+% Required input arguments:
+%
+%    file:         MATLAB File. String. Full or partial
+%                  path of the MATLAB file for which Structured Matlab
+%                  whose HTML help has to be created
+%                  Example-'myfile.m'
+% The .m file (which must be located on the MATLAB path or on the currect
+% folder) must satisfy the following characteristics to be correctly
 % processed.
 %
-% 1) String 'Required input arguments:' must be present. The lines below
+% 1) The row below the row which starts with function .... must contain the
+% description of the purpose of the .m file. Remark: generally the row
+% which starts with function .... is the first row of an .m file
+% 2) String 'Required input arguments:' must be present. The lines below
 % this string must contain the description of the compulsory input
 % arguments. Each argument must have  the name (a series of spaces from 0
-% to 10) symbol ':' and then the description
-% For example, suppose that the .m routine which has to be processed has
-% two required input arguments which are respectively called y and X, then
-% the accepted format is as follows
+% to 10) symbol ':' and then the description. The format of the description
+% is as follows:
+% The first sentence after symbol ':' is the title of the input argument
+% and in the HTML file it will appear in bold face in the same line of the
+% input argument. (this is the short description of the optional input
+% argument). The second sentence after symbol ':' describes the objects
+% (for example, scalar, vector, 3D array) and in the HTML file will appear
+% in the second row. These first two rows will always be visible. What
+% starts with the third sentence after symbol ':' is the detailed
+% description of that particular input argument and in the HTML file it
+% will be visible just if the user clicks on any point in the first two
+% lines or the user clicks on the option expand all. The last line may
+% start with the words "Data Types:" and contains the specification of a
+% particular input argument (e.g. Data Types: single | double). For
+% example, suppose that the .m routine which has to be processed has two
+% required input arguments which are respectively called y and X, then the
+% accepted format is as follows.
 %
 %               Required input arguments:
 %
-%               y   : A vector with n elements that contains the response
-%               variable. y can be both a row of column vector.
-%               X : Data matrix of explanatory variables (also called
-%               'regressors')
+%                y:         Response variable. Vector. Response variable,
+%                           specified as a vector of length n, where n is
+%                           the number of observations. Each entry in y is
+%                           the response for the corresponding row of X.
+%              X :          Predictor variables. Matrix of explanatory
+%                           variables (also called 'regressors') of
+%                           dimension n x (p-1) where p denotes the number
+%                           of explanatory variables including the
+%                           intercept. Rows of X represent observations,
+%                           and columns represent variables. By default,
+%                           there is a constant term in the model, unless
+%                           you explicitly remove it using input option
+%                           intercept, so do not include a column of 1s in
+%                           X.
 %
 % IMPORTANT NOTICE: if an input argument is a structure (publishFS
 % automatically checks if the input argument contains the word "structure"
@@ -31,7 +61,7 @@ function publishFS(file)
 % option is called bayes and object bayes is a structure with field names
 % beta0, R, tau0 and n0, the accepted format is as follows.
 %
-%    bayes      : It specifies prior information. Structure.
+%    bayes      : prior information. Structure.
 %                       It contains the following fields
 %               beta0=  p-times-1 vector containing prior mean of \beta
 %               R    =  p-times-p positive definite matrix which can be
@@ -49,14 +79,17 @@ function publishFS(file)
 % input arguments:' and identifies the lines which contain the optional
 % arguments as those which contain "a series of spaces" "a_word" "a series
 % of spaces followed by symbol ':'". The first sentence after symbol ':' is
-% the title of the optional input argument and in the HTML
-% file it will appear under "description". The second sentence
-% after symbol ':' describes the objects (for example, scalar, vector, 3D
-% array) and in the HTML file will appear under "data type". What starts
-% with the third sentence after symbol ':' is the detailed description of
-% that particular input argument and in the HTML file will appear under
-% "long description".
-% The last two lines of each optional input argument must start with the
+% the title of the optional input argument and in the HTML file it will
+% appear in the same row of the name of the optional input argument (this
+% is the short description of the optional input argument). The second
+% sentence after symbol ':' describes the objects (for example, scalar,
+% vector, 3D array) and in the HTML file will appear
+% in the second row. These first two rows will always be visible. What
+% starts with the third sentence after symbol ':' is the detailed
+% description of that particular optional input argument and in the HTML file it
+% will be visible just if the user clicks on any point in the first two
+% lines or the user clicks on the option expand all.
+% The last two lines of each optional input argument MUST start with the
 % words 'Example -' and 'Data Types -' followed by a string without spaces
 % which specifies a possible use of the option and the type of data
 % For  example, suppose that the first two optional arguments are called
@@ -85,7 +118,7 @@ function publishFS(file)
 %  the optional input argument. At the very end means after the rows
 %   Example and Data Types
 %
-% 3) String 'Output:' must be present. The lines after string 'Output:'
+% 4) String 'Output:' must be present. The lines after string 'Output:'
 % must contain the list of the output arguments using the same rules
 % described above for the optional arguments. In this case, however, the
 % identification of the ouptut arguments is easier because they are
@@ -94,13 +127,15 @@ function publishFS(file)
 % function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
 % output arguments are immediately known to the parser).
 % For each output argument, the first sentence after symbol ":" is assumed
-% to be the title of the output argument and in the HTML file goes under
-% the description. What starts with the second sentence is the full
+% to be the title of the output argument and in the HTML file it will
+% appear in bold face in the same line of the name of output
+% argument. What starts with the second sentence is the full
 % description of the output argument. For example, suppose that the output
 % of a procedure contains the objects mdr and Un, the accepted format
 % is as follows.
 %              %  Output:
-%              mdr:          n -init x 2 matrix which contains the
+%              mdr:         Minimum deletion residual. Matrix.  n -init x 2
+%                           matrix which contains the
 %                           monitoring of minimum deletion residual.
 %                           1st col = fwd search index (from init to n-1).
 %                           2nd col = minimum deletion residual.
@@ -139,8 +174,13 @@ function publishFS(file)
 %                                               out.beta=[intercept
 %                                               slopes].
 %
+%
 % PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE
 % "=" SIGN AND NOT THE ":" SIGN
+%
+% REMARK: If there is the string REMARK after the description of the last
+% field of the structure, all the words after REMARK are put outside and
+% below the HTML table
 %
 % If the description of a particular output has the string "which contains"
 % or "containing",  as follows
@@ -161,7 +201,7 @@ function publishFS(file)
 %               "mdr —Monitoring..."
 %the expanded description will automatically appear
 %
-% 4) A line which starts with string 'See also:' must be present. Linked m
+% 5) A line which starts with string 'See also:' must be present. Linked m
 % files must be separated by symbol ",". For example, suppose that files
 % FSRBmdr.m and FSR.m have connections with the current file, then an
 % accepted format is
@@ -169,7 +209,7 @@ function publishFS(file)
 %                   See also: FSRBmdr, FSR.m
 %
 %
-% 5) A line which starts with string 'References:' must be present.
+% 6) A line which starts with string 'References:' must be present.
 % The year of each reference must be enclosed in round parenthesis.
 % PublishFS decides that a new reference starts if a new line contains
 % symbol "(" + "a sequence of 4 or 5 characthers identifying the year
@@ -183,7 +223,7 @@ function publishFS(file)
 %                 Riani M., Corbellini A., Atkinson A.C. (2015), Very
 %                 Robust Bayesian Regression for Fraud Detection, submitted
 %
-% 6) All the examples associated with the file which has to be processed
+% 7) All the examples associated with the file which has to be processed
 % must be enclosed inside Percent-braces (comments blocks, i.e. smbols %{
 % and %} ). The first sentence identifies the title of the comment which
 % will appear in the HTML file.
@@ -233,7 +273,7 @@ function publishFS(file)
 %                     [mdr] = FSRmdr(y,X,out.bs,'init',60);
 %                 %}
 %
-% 7) If a procedure contains varargout then a section string
+% 8) If a procedure contains varargout then a section string
 %               Optional Output:
 % must be present. For example suppose there is a function called mcd which
 % has the following sintax:
@@ -248,12 +288,12 @@ function publishFS(file)
 %                                         subsamples extracted for
 %                                         computing the estimate
 %
-% 8) If the .m file contains string  "More About:" a particular section
+% 9) If the .m file contains string  "More About:" a particular section
 % called "More about" in the HTML file will be created. The format of what
 % is below "More about:" is as follows. The first sentence is associated with
 % the title  and it will be expandaible in the HTML file.
 % More precisely, what is after the first sentence will be shown'.
-% 9) If the .m file contains string 'Acknowledgements:' then a particular
+% 10) If the .m file contains string 'Acknowledgements:' then a particular
 % section named "Acknowledgements" will be created just above the
 % references.
 %
@@ -265,7 +305,7 @@ function publishFS(file)
 % must become "50 per cent" envelope.
 % ---------------------------------------------------
 % REMARK2:
-% If there is just one output argument it can be without square brackets
+% If there is just one output argument it can be without square brackets.
 % Among the input elements of a procedure the number of spaces between
 % them is not important. For example
 % "y,X,varargin" or "y, X   ,  varargin"   are both fine
@@ -280,19 +320,144 @@ function publishFS(file)
 % ---------------------------------------------------
 % REMARK 5: if there are not enough examples in the .m file the procedure
 % still runs but a warning will be automatically produced
+% -----------------------------------------------------
+% REMARK 6: the output file to be correctly viewed must be located in a
+% folder which contains a subfolder named includesFS containing the files
+% present inside (home FSDA)\helpfiles\FSDA\includesFS. Therefore if the
+% the directory which contains the output file is not located inside (home
+% FSDA)\helpfiles\FSDA subfolder includesFS must be copied into the current
+% folder
+% -----------------------------------------------------
+% REMARK 7: strings are HTML formatted as follows. Every time there is
+% symbol ". one_or_more_space symbol_of carriage_return" or
+% ". one_or_more_space symbol_of carriage_return" the parser adds HTML
+% string '</p>/<p>' after just symbol "."  or symbol ":".
+% This is done using subfunction named formatHTML at the end of this file.
+%
+%
+%
+% Optional input arguments:
+%
+%   Display : Level of display. String.
+%             'off' or 'none' displays no output.
+%             'iter' displays a series of messages on the screen about
+%             the execution of the different section of the input .m file
+%             'iter-detailed' displays a series of messages on the screen not only about
+%             the execution of the different section of the input .m file,
+%             but also about cells containing information about the required input arguments,
+%             optional input arguments, and output arguments
+%             Example - 'Display','none'
+%             Data Types - string
+% outputDir : Output folder. String.
+%             Output folder to which the HTML document is saved, specified
+%             as the comma-separated pair consisting of 'outputDir' and the
+%             full path. You must specify the full path as a string, for
+%             example 'C:\myPublishedOutput'.
+%             The default value, '', specifies the (FSDA root)\helpfiles\FSDA
+%             path.
+%             Remark - outputDir must be a valid path.
+%             Example - 'outputDir','C:\myPublishedOutput'
+%             Data Types - string
+% imagesDir : Output folder of png images. String.
+%             Output folder to which the images attached to the HTML
+%             document are saved, specified as the comma-separated pair
+%             consisting of 'outputDir' and the full path. You must specify
+%             the full path as a string, for example
+%             'C:\myPublishedOutput'.
+%             The default value, '', specifies the
+%             "(FSDA root)\helpfiles\FSDA\images" path.
+%             Remark: if imageDir is not specified but outputDir is
+%             specified images will be save into the same folder of the
+%             HTML output file
+%             Remark - imagesDir must be a valid path.
+%             Example - 'outputDir','C:\myPublishedOutput'
+%             Data Types - string
+% evalCode :  Option to run code. Logical. Option to evaluate code of the
+%             examples in the input .m files enclosed in tags %{ %} whise
+%             first line starts with symbols %% and include the MATLAB
+%             output in the HTML file. The iamges will be save in subfolder
+%             iamges_help of the outputDir. The default value of evalCode
+%             is true.
+%             Example - 'evalCode','false'
+%             Data Types - Boolean
+%
+%
+% See also: publish
+%
+%
+% Copyright 2008-2015.
+% Written by FSDA team
+%
+%
+%<a href="matlab: docsearchFS('publishFS')">Link to the help function</a>
+% Last modified 06-Feb-2015
 
+% Examples:
 
+%{
+  % Create file FSRmdr.html starting from file FSRmdr.
+  % Display detailed information about the Input, Output and Optional arguments
+  publishFS('FSRmdr','evalCode',false,'Display','iter-detailed')
+%}
+
+%{
+  % Create HTML file with embedded images in folder C:\tmp
+    publishFS('FSRmdr','evalCode',true,'outputDir','C:\tmp')
+%}
 
 %% Beginning of code
 
+evalCode=true;
+Display='none';
+
+% Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
+FileWithFullPath=which('docsearchFS.m');
+[pathstr]=fileparts(FileWithFullPath);
+outputDir=[pathstr '\helpfiles\FSDA'];
+imagesDir=[pathstr '\helpfiles\FSDA\images'];
+
+if nargin>1
+    options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:regressB:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+        
+        % Write in structure 'options' the options chosen by the user
+        for i=1:2:length(varargin);
+            options.(varargin{i})=varargin{i+1};
+        end
+        
+    end
+    
+    evalCode=options.evalCode;
+    outputDir=options.outputDir;
+    Display=options.Display;
+    checkimageDir = strcmp(UserOptions,'imageDir');
+    checkoutputDir = strcmp(UserOptions,'outputDir');
+    
+    if sum(checkimageDir)==0 && sum(checkoutputDir)==1
+        imagesDir=outputDir;
+    elseif sum(checkimageDir)==1 && sum(checkoutputDir)==1
+        imagesDir=options.imageDir;
+    else
+    end
+end
+
+%% Open input .m file put it in astring a do preliminary operations
 FileWithFullPath=which(file);
-[pathstr,name,ext]=fileparts(FileWithFullPath);
+[pathstrcf,name,ext]=fileparts(FileWithFullPath);
 
 if ~strcmp('.m',ext)
     error('FSDA:publishFS:WrongFileExt','Input file must have m extension')
 end
 
-if isempty(pathstr)
+if isempty(pathstrcf)
     error('FSDA:publishFS:WrongFile','SourceNotFound');
 end
 
@@ -334,7 +499,7 @@ beforetitl=['<!DOCTYPE HTML> \r'  ...
 aftertitle='</title>';
 titl=sprintf([beforetitl    name  aftertitle]);
 
-%% Add purpose of the file (what is in the second row of .m file)
+%% Add purpose of the file (extract what is in the second row of .m file)
 beforemetacontent=['<meta content="refpage" name="chunktype">\r' ...
     '<meta content="function:' name '" itemprop="refentity" name="refentity">\r'...
     '<meta content="text/javascript" http-equiv="Content-Script-Type">\r'...
@@ -571,10 +736,11 @@ inidescription=sprintf(['	<div class="ref_sect" itemprop="content">\r'...
     '								<div class="description_module">\r']);
 
 descriptionhtml='';
-
-disp('Examples')
-disp(sintax)
-disp('---------------')
+if strcmp(Display,'iter-detailed')
+    disp('Examples')
+    disp(sintax)
+    disp('---------------')
+end
 
 % start of example j
 [startIndexEx] = regexp(fstring,'%\{');
@@ -773,6 +939,11 @@ closedescription=sprintf(['								</div>\r'...
 
 description=[inidescription descriptionhtml closedescription];
 
+if strcmp(Display,'iter-detailed')
+    disp('Detailed information about all the examples')
+    disp(listEx)
+end
+
 %% CREATE EXAMPLES SECTION OF HTML FILE
 
 % imgtemplate = iamge to include for the examples which can be executed
@@ -869,6 +1040,11 @@ if length(startIndexEx)>length(sintax)
         % listExtraEx{j,3}=stri(findescriptionEx+1:end);
         listExtraEx{j,3}=StringWithoutLTandGT;
     end
+    
+    if strcmp(Display,'iter-detailed')
+        disp('Detailed information about all the Extra examples')
+        disp(listExtraEx)
+    end
 else
     listExtraEx='';
 end
@@ -906,11 +1082,6 @@ if length(startIndexEx)>length(sintax)
     end
     
 end
-% RelatedExamples=sprintf(['<ul>\r'...
-%     '<li>rel1</li>\r'...
-%     '<li>rel2 </li>\r'...
-%     '<li>rel3 </li>\r'...
-%     '</ul>\r']);
 
 closeallex=sprintf(['</div>\r'... % div class="examples"
     '</div>']);	 % close class="ref_sect
@@ -957,15 +1128,30 @@ for i=1:nREQargin
 end
 
 reqargs='';
+
+% listInpArgs = list which contains all required input arguments
+% The first column will contain the names (just one word)
+% The second column will contain the title of the input argument (the first
+% sentence which finishes with a full stop sign)
+% The third column will contain the type (the second sentence which
+% finishes with a comma or full stop sign), e.g. scalar, matrix ...
+% The fourth column will contain the long description. What starts with the
+% third sentence
+% The fifth column will contain the example what starts just after
+% string  Example -
+listInpArgs=cell(length(nREQargin),5);
+
 for i=1:nREQargin
     
+    % Name of the input argument (just one word)
     inpi=listargins{i};
+    listInpArgs{i,1}=inpi;
     
     
     insel=regexp(fstring,'Required input arguments:');
     if isempty(insel)
-        disp('Please check HTML input file')
-        error('FSDA:missInps','HTML file does not contain ''Required input arguments:'' string')
+        disp('Please check .m input file')
+        error('FSDA:missInps','.m file does not contain ''Required input arguments:'' string')
     end
     
     % substring to search start from Required input arguments:
@@ -978,41 +1164,103 @@ for i=1:nREQargin
     else
         endpoint=regexp(fstringsel,'Optional input arguments:');
         if isempty(endpoint)
-            disp('Please check HTML input file')
-            error('FSDA:missOuts','HTML file does not contain ''Optional input arguments:'' string')
+            disp('Please check .m input file')
+            error('FSDA:missOuts','.m file does not contain ''Optional input arguments:'' string')
         end
     end
-    % descri = string which contains the description of i-th input
+    % DescrInputToSplit = string which contains all the information about the i-th input
     % argument
-    descriinput=fstringsel((inipoint(1)+length(listargins{i})+2):endpoint(1)-1);
+    DescrInputToSplit=fstringsel((inipoint(1)+length(listargins{i})+2):endpoint(1)-1);
     
     % Remove from string descri all '% signs
-    posPercentageSigns=regexp(descriinput,'%');
-    descriinput(posPercentageSigns)=[];
+    posPercentageSigns=regexp(DescrInputToSplit,'%');
+    DescrInputToSplit(posPercentageSigns)=[];
     % Remove from string descri leading and trailing white spaces
-    descriinput=strtrim(descriinput);
-    % what is before the first comma or the first full stop is the
-    % preamble, the reset in the description
-    posfirstcomma=regexp(descriinput,',','once');
-    posfirstfullstop=regexp(descriinput,'\.','once');
-    sep=min([posfirstcomma posfirstfullstop]);
-    if isempty(sep)
-        warning('FSDA:MISSdescr',['In the description of ' listargins{i} ' String ''' descriinput ''' does not contain symbols '','' or ''.'''])
-        preamble=descriinput;
+    DescrInputToSplit=strtrim(DescrInputToSplit);
+    
+    %------------------
+    
+    [inifullstops]=regexp(DescrInputToSplit,'\.');
+    if isempty(inifullstops)
+        warning('FSDA:publishFS:WrongInp',['Sentence''' DescrInputToSplit '''must contain at least two full stops'])
+        % error('Wrong input')
+    end
+    shortdesc=strtrim(DescrInputToSplit(1:inifullstops(1)-1));
+    % Store title of the i-th input argument
+    %     % remove sign : if present at the beginning of the sentence
+    if strcmp(shortdesc(1),':')
+        shortdesc=strtrim(shortdesc(2:end));
+    end
+    listInpArgs{i,2}= shortdesc;
+    
+    try
+        descrtype=strtrim(DescrInputToSplit(inifullstops(1)+1:inifullstops(2)-1));
+    catch
+        % warning('FSDA:publishFS:WrongInp',['Input: ' listInpArgs{i,1}])
+        errmsg=['Input argument ' listInpArgs{i,1} ' Sentence ''' DescrInputToSplit ''' must contain at least two full stops'];
+        error('FSDA:publishFS:WrongInp',errmsg)
+    end
+    
+    listInpArgs{i,3}=descrtype;
+    
+    try
+        descrlong=strtrim(DescrInputToSplit(inifullstops(2)+1:end));
+    catch
+        error('FSDA:publishFS:WrongInp',['Sentence''' DescrInputToSplit '''must contain at least two full stops'])
+    end
+    
+    Datatypes=regexp(descrlong,'Data Types -','once');
+    if ~isempty(Datatypes)
+        listInpArgs{i,4}=descrlong(1:Datatypes-1);
+        listInpArgs{i,5}=descrlong(Datatypes+13:end);
     else
-        preamble=descriinput(1:sep-1);
+        newl=regexp(descrlong,'[\.\s0-200]\r');
+        if ~isempty(newl)
+            descrlongHTML=['<p>' descrlong(1:newl(1))];
+            if length(newl)==1
+                descrlongHTML=[descrlongHTML '</p> <p>' descrlong(newl(1)+1:end)];
+            else
+                for j=1:(length(newl)-1)
+                    descrlongHTML=[descrlongHTML '</p> <p>' descrlong(newl(j)+1:newl(j+1))];
+                end
+                descrlongHTML=[descrlongHTML descrlong(newl(j+1):end)];
+            end
+        else
+            descrlongHTML=descrlong;
+        end
+        descrlongHTML=[descrlongHTML '</p>'];
+        
+        listInpArgs{i,4}=descrlongHTML;
+        warning('FSDA:publishFS:MissingDataType',['Input argument ''' inpi ''' does not contain DataType line, by default string  ''single| double'' has been added'])
+        
+        listInpArgs{i,5}='single| double';
     end
-    preamble=strtrim(preamble);
-    % remove sign : if present at the beginning of the sentence
-    if strcmp(preamble(1),':')
-        preamble=strtrim(preamble(2:end));
-    end
-    descriinput=descriinput(sep+1:end);
-    % Start with upper case character
-    descriinput=strtrim(descriinput);
-    if ~isempty(descriinput)
-        descriinput=[upper(descriinput(1)) descriinput(2:end)];
-    end
+    
+    %  %-----------
+    %  shortdescr='';
+    %     % what is before the first comma or the first full stop is the
+    %     % preamble, the reset in the description
+    %     posfirstcomma=regexp(descriinput,',','once');
+    %     posfirstfullstop=regexp(descriinput,'\.','once');
+    %     sep=min([posfirstcomma posfirstfullstop]);
+    %     if isempty(sep)
+    %         warning('FSDA:MISSdescr',['In the description of ' listargins{i} ' String ''' descriinput ''' does not contain symbols '','' or ''.'''])
+    %         preamble=descriinput;
+    %     else
+    %         preamble=descriinput(1:sep-1);
+    %     end
+    %     preamble=strtrim(preamble);
+    %     % remove sign : if present at the beginning of the sentence
+    %     if strcmp(preamble(1),':')
+    %         preamble=strtrim(preamble(2:end));
+    %     end
+    %     descriinput=descriinput(sep+1:end);
+    %     % Start with upper case character
+    %     descriinput=strtrim(descriinput);
+    %     if ~isempty(descriinput)
+    %         descriinput=[upper(descriinput(1)) descriinput(2:end)];
+    %     end
+    %  %------------------------
     
     % disp(inpi)
     reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
@@ -1021,18 +1269,21 @@ for i=1:nREQargin
         ' <h3 id="input_argument_' inpi '" class="expand">\r'...
         ' <span>\r'...
         ' <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-        ' <span class="argument_name"><code>' inpi '</code> &#8212; \r'...  % &#8212; = long dash
-        ' Data</span></a><span class="example_desc">' preamble '</span></span></h3>\r'...
+        ' <span class="argument_name"><code>' inpi '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
+        ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
         ' <div class="collapse">\r'...
-        ' <p>']) descriinput sprintf(['</p>\r'...
+        ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
         ' <p class="datatypelist"><strong>\r'...
-        ' Data Types: </strong><code>single</code> \r'...
-        ' | <code>double</code></p>\r'...
+        ' Data Types: </strong><code>' listInpArgs{i,5}  '</code></p>\r'...
         ' </div>\r'...
         ' </div>\r'])];
     
 end
 
+if strcmp(Display,'iter-detailed')
+    disp('Detailed information about Input arguments')
+    disp(listInpArgs)
+end
 
 %% CREATE Name-Value Pair Arguments SECTION OF HTML FILE
 insel=regexp(fstring,'Optional input arguments:');
@@ -1108,8 +1359,6 @@ for i=1:length(ini)
         if i<length(ini)
             descrtosplit=fstringsel(fin(i)+1:ini(i+1)-1);
         else
-            % TOCHECK
-            % descrtosplit=fstringsel(fin(i)+1:ini(i+1)-1);
             descrtosplit=fstringsel(fin(i)+1:end);
         end
         
@@ -1167,8 +1416,11 @@ for i=1:length(ini)
 end
 listOptArgs=listOptArgs(1:ij-1,:);
 
-disp('Optional arguments found')
-disp(listOptArgs(:,1))
+if strcmp(Display,'iter-detailed')
+    disp('Detailed information about Optional arguments')
+    disp(listOptArgs)
+end
+
 
 % codewithexample=['''Distance'',''cosine'',''Replicates'',10,' ...
 %     '''Options'',statset(''UseParallel'',1)'];
@@ -1225,7 +1477,7 @@ for i=1:size(listOptArgs,1);
             finstructfield=finstructfield(boo);
         end
         % Insert all fields of inside listStruArgs
-        listStruArgs=cell(length(inistructfield),2);
+        listOutArgs=cell(length(inistructfield),2);
         for k=1:length(inistructfield)
             % fin(i)-1 because character ':' does not have to be extracted
             StructFieldName=longdesc(inistructfield(k):finstructfield(k)-1);
@@ -1233,7 +1485,7 @@ for i=1:size(listOptArgs,1);
             StructFieldName=strtrim(StructFieldName);
             
             % Store name in the first column
-            listStruArgs{k,1}=StructFieldName;
+            listOutArgs{k,1}=StructFieldName;
             % Store short description in the 3nd col of listOptArgs
             if k<length(inistructfield)
                 StructFieldCont=longdesc(finstructfield(k)+1:inistructfield(k+1));
@@ -1245,7 +1497,7 @@ for i=1:size(listOptArgs,1);
                 end
             end
             % Store name in the first column
-            listStruArgs{k,2}=StructFieldCont;
+            listOutArgs{k,2}=StructFieldCont;
         end
         
         
@@ -1253,21 +1505,26 @@ for i=1:size(listOptArgs,1);
         Tablehtml='';
         for k=1:length(inistructfield)
             Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
-                '<td><code>' listStruArgs{k,1} '</code></td>\r'...
+                '<td><code>' listOutArgs{k,1} '</code></td>\r'...
                 '<td>\r'...
-                '<p>']) listStruArgs{k,2} sprintf(['</p>\r'...
+                '<p>']) listOutArgs{k,2} sprintf(['</p>\r'...
                 '</td>\r'...
                 '</tr>'])];
         end
         
         % Add the Remark after the table, if it is present
         if ~isempty(posREMARK)
-            longdescription=[iniTable Tablehtml cloTable '<p>' longdesc(posREMARK:end) '</p>'];
+            descrREMARK=longdesc(posREMARK:end);
+            descrREMARKHTML=formatHTML(descrREMARK);
+            
+            longdescription=[iniTable Tablehtml cloTable '<p>' descrREMARKHTML '</p>'];
         else
             longdescription=[iniTable Tablehtml cloTable];
         end
     else
-        longdescription=listOptArgs{i,4};
+        longdescriptionHTML=formatHTML(listOptArgs{i,4});
+        
+        longdescription=longdescriptionHTML;
     end
     % datatype = type of data for that particular option
     %     examplecode=['''Display'',''final'''];
@@ -1382,12 +1639,12 @@ for i=1:nargout
             posPercentageSigns=regexp(MoreAbout,'%');
             MoreAbout(posPercentageSigns)=[];
             
-newl=regexp(MoreAbout,'\r[\s0-200]\r');
-MoreAboutHTML=MoreAbout(1:newl(1));
-for j=1:(length(newl)-1)
-    MoreAboutHTML=[MoreAboutHTML '</p> <p>' MoreAbout(newl(j):newl(j+1))];
-end
-
+            newl=regexp(MoreAbout,'\r[\s0-200]\r');
+            MoreAboutHTML=MoreAbout(1:newl(1));
+            for j=1:(length(newl)-1)
+                MoreAboutHTML=[MoreAboutHTML '</p> <p>' MoreAbout(newl(j):newl(j+1))];
+            end
+            
         else
             MoreAboutHTML='';
             inipointMoreAbout=Inf;
@@ -1435,7 +1692,7 @@ end
         else
         end
         
-        listStruArgs=cell(length(ini),2);
+        listOutArgs=cell(length(ini),2);
         
         for k=1:length(ini)
             % fin(i)-1 because character ':' does not have to be extracted
@@ -1445,7 +1702,7 @@ end
             StructFieldName=StructFieldName(length(outi)+2:end);
             
             % Store name in the first column
-            listStruArgs{k,1}=StructFieldName;
+            listOutArgs{k,1}=StructFieldName;
             % Store short description in the 3nd col of listOptArgs
             if k<length(ini)
                 StructFieldCont=descrioutput(fin(k)+1:ini(k+1)-1);
@@ -1454,30 +1711,42 @@ end
             end
             
             % Store name in the first column
-            listStruArgs{k,2}=StructFieldCont;
+            listOutArgs{k,2}=StructFieldCont;
         end
         
         % rowtodel = vector which contains the duplicate rows of
         % listStruArgs which have to be deleted
-        inisel=1:size(listStruArgs,1);
+        inisel=1:size(listOutArgs,1);
         
         % Check if cell listStruArgs contains duplicates in the first column
-        for j=2:size(listStruArgs,1)
-            if strcmp(listStruArgs{j,1},listStruArgs{j-1,1})
-                listStruArgs{j-1,2}=[listStruArgs{j-1,2} listStruArgs{j,1} listStruArgs{j,2}];
+        for j=2:size(listOutArgs,1)
+            if strcmp(listOutArgs{j,1},listOutArgs{j-1,1})
+                listOutArgs{j-1,2}=[listOutArgs{j-1,2} listOutArgs{j,1} listOutArgs{j,2}];
                 inisel(j)=999;
             end
         end
+        
+        if strcmp(Display,'iter-detailed')
+            disp('Detailed information about Output arguments')
+            disp(listOutArgs)
+        end
+        
         % remove from inisel the rows equal to 999 (that is the rows which
         % correspond to duplicated arguments)
         inisel(inisel==999)=[];
         
         Tablehtml='';
         for k=inisel % length(ini)
+            
+            descrlong=listOutArgs{k,2};
+            
+            descrlongHTML=formatHTML(descrlong);
+            
+            % listOutArgs{k,2}
             Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
-                '<td><code>' listStruArgs{k,1} '</code></td>\r'...
+                '<td><code>' listOutArgs{k,1} '</code></td>\r'...
                 '<td>\r'...
-                '<p>']) listStruArgs{k,2} sprintf(['</p>\r'...
+                '<p>']) descrlongHTML  sprintf(['</p>\r'...
                 '</td>\r'...
                 '</tr>'])];
         end
@@ -1597,24 +1866,24 @@ outargs=[inioutargs outargshtml closeoutargs];
 %% CREATE MORE ABOUT SECTION
 
 if ~isempty(MoreAboutHTML)
-Moreabout=sprintf(['<div class="moreabout ref_sect">\r'...
-    '<h2 id="moreabout">More About</h2>\r'...
-    '<div class="expandableContent">\r'...
-    '<p class="switch">\r'...
-    '<a class="expandAllLink" href="javascript:void(0);">\r'...
-    'expand all</a></p>\r'...
-    '<div class="expandableContent" itemprop="content">\r'...
-    '<h3 class="expand"><span>\r'...
-    '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-    '<span>Methodological Details </span></a></span></h3>\r'...
-    '<div class="collapse">\r'...
-    '<p>' MoreAboutHTML ' </p>\r'...
-    '</div>\r'...
-    '</div>\r'...
-    '</div>\r'...
-    '</div>']);
+    Moreabout=sprintf(['<div class="moreabout ref_sect">\r'...
+        '<h2 id="moreabout">More About</h2>\r'...
+        '<div class="expandableContent">\r'...
+        '<p class="switch">\r'...
+        '<a class="expandAllLink" href="javascript:void(0);">\r'...
+        'expand all</a></p>\r'...
+        '<div class="expandableContent" itemprop="content">\r'...
+        '<h3 class="expand"><span>\r'...
+        '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+        '<span>Methodological Details </span></a></span></h3>\r'...
+        '<div class="collapse">\r'...
+        '<p>' MoreAboutHTML ' </p>\r'...
+        '</div>\r'...
+        '</div>\r'...
+        '</div>\r'...
+        '</div>']);
 else
-   Moreabout=''; 
+    Moreabout='';
 end
 
 %% REFERENCES
@@ -1712,13 +1981,13 @@ References=[iniReferences Referenceshtml Referencesclose];
 
 %% ACKNOWLEDGEMENTS
 if ~isempty(Acknowledgements)
-iniAcknowledgements=sprintf(['<div class="ref_sect" itemprop="content">\r'...
-    '<div class="bibliography">\r'...
-    '<h2 id="references">Acknowledgements</h2> \r']);
-
-Acknowledgementshtml=sprintf(['<div><p>' Acknowledgements '</p></div>\r']);
-
-Ack=[iniAcknowledgements Acknowledgementshtml Referencesclose];
+    iniAcknowledgements=sprintf(['<div class="ref_sect" itemprop="content">\r'...
+        '<div class="bibliography">\r'...
+        '<h2 id="references">Acknowledgements</h2> \r']);
+    
+    Acknowledgementshtml=sprintf(['<div><p>' Acknowledgements '</p></div>\r']);
+    
+    Ack=[iniAcknowledgements Acknowledgementshtml Referencesclose];
 else
     Ack='';
 end
@@ -1759,10 +2028,10 @@ for i=1:nseealso
         end
     end
     % Remove .m if present at the end of the reference
-    if strcmp(Seealsoitem(end-1:end),'.m')
+    if ~isempty(Seealsoitem) &&  strcmp(Seealsoitem(end-1:end),'.m')
         Seealsoitem=Seealsoitem(1:end-2);
     end
-        
+    
     Seealsohtml=[Seealsohtml sprintf(['<span itemprop="seealso">\r'...
         '<a href="' Seealsoitem '.html" itemprop="url">\r'...
         '<span itemprop="name"><code>' Seealsoitem '</code></span></a></span>\r'])];
@@ -1801,144 +2070,118 @@ fclose(fileID);
 outstring=([titl metacontent sitecont sintaxhtml sintaxclose description  ....
     examples inputargs outargs Moreabout References Ack Seealso clos insnav insbarra closbody]);
 
-% Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
-FileWithFullPath=which('docsearchFS.m');
-[pathstr]=fileparts(FileWithFullPath);
+file1ID=fopen([outputDir '\' name 'tmp.html'],'w');
 
-file1ID=fopen([pathstr '\helpfiles\FSDA\' name 'tmp.html'],'w');
-
-%% EXECUTE THE EXAMPLES WHICH START WITH SYMBOLS %%
-% Create a temporary file with all the examples which must be executed
-% ExToExec= string which contains the examples which must be executed
-ExToExec='';
-numexToExec=0;
-for i=1:size(listEx,1)
-    if listEx{i,4}==1
-        ExToExec=[ExToExec '%% Ex' num2str(i) listEx{i,3}];
-        numexToExec=numexToExec+1;
-    end
+if file1ID==-1
+    outputDir=strrep(outputDir,'\','\\');
+    errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
+    error('FSDA:publishFS:WrngOutFolder',errmsg)
 end
 
-numextraexToExec=0;
-if ~isempty(listExtraEx)
-    for i=1:size(listExtraEx,1)
-        if listExtraEx{i,4}==1
-            ExToExec=[ExToExec '%% Ex' num2str(i) listExtraEx{i,3}];
-            numextraexToExec=numextraexToExec+1;
-        end
-    end
-end
-
-if numextraexToExec+numexToExec>0
-    % tmp .file containing all the .m examples will be created. It will be
-    % created in subfolder tmp of helpfiles and then automatically removed.
-    % This subfolder will be added to put for this session
-    nametmp=[name 'tmp.m'];
-    fullPathToScript=[pathstr '\helpfiles\FSDA\tmp\' nametmp];
-    filetmp=fopen(fullPathToScript,'w');
-    addpath([pathstr '\helpfiles\FSDA\tmp'])
-    addpath([pathstr '\utilities\privateFS'])
-    
-    % Replace < and > HTML symbols with < and >
-    ExToExec=strrep(ExToExec,'&lt;','<');
-    ExToExec=strrep(ExToExec,'&gt;','>');
-    
-    fprintf(filetmp,'%s',ExToExec);
-    fclose(filetmp);
-    
-    options=struct;
-    options = supplyDefaultOptions(options);
-    options.codeToEvaluate=[name 'tmp'];
-    options.createThumbnail=0;
-    [dom,cellBoundaries] = m2mxdom(ExToExec);
-    % imageDir folder where images will be put
-    imageDir=[pathstr '\helpfiles\FSDA\images'];
-    % outputDir folder where html file will be put
-    outputDir=[pathstr '\helpfiles\FSDA'];
-    prefix=[name 'tmp'];
-    % file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
-    dom = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imageDir,outputDir,options);
-    %
-    ext='html';
-    AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
-    [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
-    
-    % Now remove the temporary .m file with the examples which had been created
-    delete(fullPathToScript)
-    
-    % load html output in a string and extract the parts which are required
-    fileHTML = fopen(xResultURI(7:end), 'r+');
-    % Insert the file into fstring
-    fstringHTML=fscanf(fileHTML,'%c');
-    
-    totex=numexToExec+numextraexToExec;
-    texttoadd=cell(totex,1);
-    
-    fHTML=regexp(fstringHTML,'<h2>Ex');
-    if isempty(fHTML)
-        fHTML=regexp(fstringHTML,'<pre class="codeoutput">','once');
-    end
-    % If fHTML is still empty it means that the ouptu only generates images
-    if isempty(fHTML)
-        fHTML=regexp(fstringHTML,'<img vspace','once');
-    end
-    
-    for j=1:totex
-        if j<totex && totex>1
-            fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
-        else
-            fendHTML=regexp(fstringHTML,'<p class="footer">','once');
-            fcand=fstringHTML(fHTML(end):fendHTML-1);
-        end
-        
-        % in fcand search the two following strings
-        fcode=regexp(fcand,'<pre class="codeoutput">','once');
-        if isempty(fcode)
-            fcode=Inf;
-        end
-        fimg=regexp(fcand,'<img','once');
-        if isempty(fimg)
-            fimg=Inf;
-        end
-        if min(fcode,fimg)<Inf
-            texttoadd{j}=fcand(min(fcode,fimg):end);
+if evalCode==true
+    %% EXECUTE THE EXAMPLES WHICH START WITH SYMBOLS %%
+    % Create a temporary file with all the examples which must be executed
+    % ExToExec= string which contains the examples which must be executed
+    ExToExec='';
+    numexToExec=0;
+    for i=1:size(listEx,1)
+        if listEx{i,4}==1
+            ExToExec=[ExToExec '%% Ex' num2str(i) listEx{i,3}];
+            numexToExec=numexToExec+1;
         end
     end
     
-    % Now insert the strings which have been stored in cell texttoadd in the
-    % appropriate position of outstring
-    a=cell2mat(listEx(:,4));
-    seqa=1:length(a);
-    sel=seqa(a==1);
-    
-    for i=1:length(sel)
-        % Process string listEx{i,1}
-        listExi=listEx{sel(i),1};
-        % If there are signs $ ^ [ ] replace them with \$ and \^ \[ \]
-        listExi=strrep(listExi,'$','\$');
-        listExi=strrep(listExi,'^','\^');
-        listExi=strrep(listExi,'[','\[');
-        listExi=strrep(listExi,']','\]');
-        
-        iniout=regexp(outstring,listExi);
-        finout=regexp(outstring,'</pre>');
-        finout=finout(finout>iniout(2));
-        % outstring(finout:finout+11)
-        % inclplint = point where output of the example must be included
-        inclpoint=finout(1)+18;
-        % incl= string which contains the output of the code
-        incl=texttoadd{i};
-        outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
-    end
-    
+    numextraexToExec=0;
     if ~isempty(listExtraEx)
-        a=cell2mat(listExtraEx(:,4));
+        for i=1:size(listExtraEx,1)
+            if listExtraEx{i,4}==1
+                ExToExec=[ExToExec '%% Ex' num2str(i) listExtraEx{i,3}];
+                numextraexToExec=numextraexToExec+1;
+            end
+        end
+    end
+    
+    if numextraexToExec+numexToExec>0
+        % tmp .file containing all the .m examples will be created. It will be
+        % created in subfolder tmp of helpfiles and then automatically removed.
+        % This subfolder will be added to put for this session
+        nametmp=[name 'tmp.m'];
+        fullPathToScript=[pathstr '\helpfiles\FSDA\tmp\' nametmp];
+        filetmp=fopen(fullPathToScript,'w');
+        addpath([pathstr '\helpfiles\FSDA\tmp'])
+        addpath([pathstr '\utilities\privateFS'])
+        
+        % Replace < and > HTML symbols with < and >
+        ExToExec=strrep(ExToExec,'&lt;','<');
+        ExToExec=strrep(ExToExec,'&gt;','>');
+        
+        fprintf(filetmp,'%s',ExToExec);
+        fclose(filetmp);
+        
+        options=struct;
+        options = supplyDefaultOptions(options);
+        options.codeToEvaluate=[name 'tmp'];
+        options.createThumbnail=0;
+        [dom,cellBoundaries] = m2mxdom(ExToExec);
+        prefix=[name 'tmp'];
+        % file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
+        dom = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
+        %
+        ext='html';
+        AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
+        [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
+        
+        % Now remove the temporary .m file with the examples which had been created
+        delete(fullPathToScript)
+        
+        % load html output in a string and extract the parts which are required
+        fileHTML = fopen(xResultURI(7:end), 'r+');
+        % Insert the file into fstring
+        fstringHTML=fscanf(fileHTML,'%c');
+        
+        totex=numexToExec+numextraexToExec;
+        texttoadd=cell(totex,1);
+        
+        fHTML=regexp(fstringHTML,'<h2>Ex');
+        if isempty(fHTML)
+            fHTML=regexp(fstringHTML,'<pre class="codeoutput">','once');
+        end
+        % If fHTML is still empty it means that the ouptu only generates images
+        if isempty(fHTML)
+            fHTML=regexp(fstringHTML,'<img vspace','once');
+        end
+        
+        for j=1:totex
+            if j<totex && totex>1
+                fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
+            else
+                fendHTML=regexp(fstringHTML,'<p class="footer">','once');
+                fcand=fstringHTML(fHTML(end):fendHTML-1);
+            end
+            
+            % in fcand search the two following strings
+            fcode=regexp(fcand,'<pre class="codeoutput">','once');
+            if isempty(fcode)
+                fcode=Inf;
+            end
+            fimg=regexp(fcand,'<img','once');
+            if isempty(fimg)
+                fimg=Inf;
+            end
+            if min(fcode,fimg)<Inf
+                texttoadd{j}=fcand(min(fcode,fimg):end);
+            end
+        end
+        
+        % Now insert the strings which have been stored in cell texttoadd in the
+        % appropriate position of outstring
+        a=cell2mat(listEx(:,4));
         seqa=1:length(a);
         sel=seqa(a==1);
         
         for i=1:length(sel)
             % Process string listEx{i,1}
-            listExi=listExtraEx{sel(i),1};
+            listExi=listEx{sel(i),1};
             % If there are signs $ ^ [ ] replace them with \$ and \^ \[ \]
             listExi=strrep(listExi,'$','\$');
             listExi=strrep(listExi,'^','\^');
@@ -1946,33 +2189,82 @@ if numextraexToExec+numexToExec>0
             listExi=strrep(listExi,']','\]');
             
             iniout=regexp(outstring,listExi);
-            if length(iniout)>2
-                disp(['Duplicate name for: ' listExi ' found'])
-                warning('FSDA:WrongArg','There are examples with the same title, please use a title which is unique')
-            end
-            iniout=iniout(1);
-            
             finout=regexp(outstring,'</pre>');
-            finout=finout(finout>iniout);
+            finout=finout(finout>iniout(2));
             % outstring(finout:finout+11)
             % inclplint = point where output of the example must be included
             inclpoint=finout(1)+18;
             % incl= string which contains the output of the code
-            incl=texttoadd{i+numexToExec};
+            incl=texttoadd{i};
             outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
         end
+        
+        if ~isempty(listExtraEx)
+            a=cell2mat(listExtraEx(:,4));
+            seqa=1:length(a);
+            sel=seqa(a==1);
+            
+            for i=1:length(sel)
+                % Process string listEx{i,1}
+                listExi=listExtraEx{sel(i),1};
+                % If there are signs $ ^ [ ] replace them with \$ and \^ \[ \]
+                listExi=strrep(listExi,'$','\$');
+                listExi=strrep(listExi,'^','\^');
+                listExi=strrep(listExi,'[','\[');
+                listExi=strrep(listExi,']','\]');
+                
+                iniout=regexp(outstring,listExi);
+                if length(iniout)>2
+                    disp(['Duplicate name for: ' listExi ' found'])
+                    warning('FSDA:WrongArg','There are examples with the same title, please use a title which is unique')
+                end
+                iniout=iniout(1);
+                
+                finout=regexp(outstring,'</pre>');
+                finout=finout(finout>iniout);
+                % outstring(finout:finout+11)
+                % inclplint = point where output of the example must be included
+                inclpoint=finout(1)+18;
+                % incl= string which contains the output of the code
+                incl=texttoadd{i+numexToExec};
+                outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
+            end
+        end
+        
+        close all
+        
+        % Remove folder which ahve temporarily added to path
+        rmpath([pathstr '\helpfiles\FSDA\tmp'])
+        rmpath([pathstr '\utilities\privateFS'])
     end
-    
-    close all
-    
-    % Remove folder which ahve temporarily added to path
-    rmpath([pathstr '\helpfiles\FSDA\tmp'])
-    rmpath([pathstr '\utilities\privateFS'])
-    
 end
+
 %% WRITE string outstring into the final HTML file
 fprintf(file1ID,'%s',outstring);
 fclose('all');
 
 
+
+end
+
+% This inner function  has the purpose of add symbols </p> <p> every time
+% a full stop is followed by a series of space and then a carriage return.
+function descrlongHTML=formatHTML(descrlong)
+newlinewithFullStop=regexp(descrlong,'[\.\s1-200]\r');
+newlinewithColon=regexp(descrlong,'[\:\s1-200]\r');
+newl=sort([newlinewithColon newlinewithFullStop]);
+if ~isempty(newl)
+    descrlongHTML=['<p>' descrlong(1:newl(1))];
+    if length(newl)==1
+        descrlongHTML=[descrlongHTML '</p> <p>' descrlong(newl(1)+1:end)];
+    else
+        for j=1:(length(newl)-1)
+            descrlongHTML=[descrlongHTML '</p> <p>' descrlong(newl(j)+1:newl(j+1))];
+        end
+        descrlongHTML=[descrlongHTML descrlong(newl(j+1):end)];
+    end
+else
+    descrlongHTML=descrlong;
+end
+descrlongHTML=[descrlongHTML '</p>'];
 end
