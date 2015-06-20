@@ -1246,8 +1246,8 @@ h3.expand span.example_title { color:#3c3c3c; }
 .doc_categories h3.expand a:hover,
 .doc_categories h3.expand a:visited { color:#005fce; }
 
-.expand { padding-left:12px; background:transparent url(../images/nextgen/supporting/apps/doc_center/ico-collapsed.png) no-repeat 0px 5px; }
-.expand.expanded { padding-left:12px; background:transparent url(../images/nextgen/supporting/apps/doc_center/ico-expanded.png) no-repeat 0px 7px; }
+.expand { padding-left:12px; background:transparent url(ico-collapsed.png) no-repeat 0px 5px; }
+.expand.expanded { padding-left:12px; background:transparent url(ico-expanded.png) no-repeat 0px 7px; }
 
 .collapse { padding:10px !important; background:#fafafa; }
 .reveal .collapse { padding:0px !important; background:transparent; }

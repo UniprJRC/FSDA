@@ -7,20 +7,20 @@ function out = FSMfan(Y,la0,varargin)
 %
 % Required input arguments:
 %
-% Y :           Y = n x v data matrix; n observations
-%               and v variables
+% Y :           Data matrix. n x v data matrix. n observations
+%               and v variables.
 %               Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
-% la0:          a vector of length v=size(Y,2) specifying a reasonable set
+% la0:          Transformation parameters. Vector. Vector of length v=size(Y,2) specifying a reasonable set
 %               of transformations for the columns of the multivariate data set.
 %
 % Optional input arguments:
 %
 %    family :   string which identifies the family of transformations which
-%               must be used. Character. Possible values are 'BoxCox' (deafult) or
+%               must be used. Character. Possible values are 'BoxCox' (default) or
 %               'YJ'
 %               The Box-Cox family of power transformations equals
 %               (y^{\lambda}-1)/\lambda for \lambda not equal to zero, and
@@ -40,13 +40,12 @@ function out = FSMfan(Y,la0,varargin)
 %               0.9.
 %                 Example - 'rf',0.99 
 %                 Data Types - double
-%      init :   specifies the point where to start monitoring
+%      init :   point where to start monitoring
 %               required diagnostics. Scalar. Note that if init is not specified it will
 %               be set equal to floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
-% ColToComp :  It specifies the
-%               variables for which likelihood ratio tests have to be produced. Vector. It is a k x 1 integer vector. For
+% ColToComp :  variables for which likelihood ratio tests have to be produced. Vector. It is a k x 1 integer vector. For
 %               example, if ColToComp = [2 4], the signed likelihood ratio tests
 %               are produced for the second and the fourth column of matrix Y. If
 %               col.to.compare = '' then all variables (columns of matrix Y) are
