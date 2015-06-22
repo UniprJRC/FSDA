@@ -30,7 +30,7 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %                 Data Types - double
 % plots :     Plot on the screen. Scalar.  If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
-%               screen with 1% 50% and 99% confidence bands
+%               screen with 1 per cent, 50 per cent and 99 per cent confidence bands
 %               else (default) no plot is produced.
 %               Example - 'plots',0
 %               Data Types - double
