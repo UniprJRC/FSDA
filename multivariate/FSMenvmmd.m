@@ -5,8 +5,10 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %
 % Required input arguments:
 %
-%    n : scalar, number of obseravtions
-%    v : number of variables
+% n :           Number of observations. Scalar. Number of observations.
+%               Data Types - single | double
+% v :           Number of variables. Scalar. Number of variables.
+%               Data Types - single | double
 %
 % Optional input arguments:
 %
@@ -17,7 +19,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %                 Data Types - double
 % prob:        quantiles for which envelopes have
 %               to be computed. Vector. Vector containing 1 x k elements .
-%               The default is to produce 1%, 50% and 99% envelopes.
+%               The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.
 %                 Example - 'prob',[0.05 0.95] 
 %                 Data Types - double
 % exact:      It indicates how to calculate the quantiles of F
@@ -73,18 +75,25 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 
 %
 %{
-% Example of creation of 1% 50% and 99% envelopes based on 10000
-% observations and 5 explanatory variables using exact method
-MMDenv=FSMenvmmd(10000,5);
-
-% Example of creation of 1% 50% and 99% envelopes based on 10000
-% observations and 5 explanatory variables using approximate method
-MMDenv1=FSMenvmmd(10000,5,'exact',0);
+    %% FSMenvmmd with all default options.
+    % Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000
+    % observations and 5 explanatory variables using exact method.
+    MMDenv=FSMenvmmd(10000,5);
+    plot(MMDenv(:,1),MMDenv(:,2:end))
 %}
 
 %{
-    %% In this example we compare the accuracy of the envelopes computed with 
-    %order statistics with those which come from simulations. 
+    % FSMenvmmd with otpional arguments.
+    % Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000
+    % observations and 5 explanatory variables using approximate method
+    MMDenv1=FSMenvmmd(10000,5,'exact',0);
+    plot(MMDenv(:,1),MMDenv(:,2:end))
+%}
+
+%{
+    %% Order statistics and simulations envelopes .
+    % In this example we compare the accuracy of the envelopes computed with 
+    % order statistics with those which come from simulations. 
 
     % Fix a seed 
     state=1000;
