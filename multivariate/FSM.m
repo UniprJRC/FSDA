@@ -5,12 +5,12 @@ function [out]=FSM(Y,varargin)
 %
 % Required input arguments:
 %
-%    Y: Data matrix containining n observations on v variables
+%    Y: Variables. Matrix. Data matrix containining n observations on v variables
 %       Rows of Y represent observations, and columns
-%       represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
+%       represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed,
 %       since observations (rows) with missing or infinite values will
 %       automatically be excluded from the computations.
+%       Data Types - single | double
 %
 % Optional input arguments:
 %
@@ -49,8 +49,8 @@ function [out]=FSM(Y,varargin)
 %                 search is not going to affect at all the results of the
 %                 analysis. The user can explore this point with his own datasets
 %                 Remark: if crit='biv' the user can also supply in scalar rf
-%                (see below) the confidence level of the bivariate
-%                ellipses.
+%                 (see below) the confidence level of the bivariate
+%                 ellipses.
 %               Example - 'crit','md' 
 %               Data Types - char
 %        rf     : confidence level for bivariate ellipses. Scalar. The default is
