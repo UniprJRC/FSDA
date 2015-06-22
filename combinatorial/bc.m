@@ -5,21 +5,30 @@ function c = bc(n,k)
 %
 % Required input arguments:
 %
-%       n:  a non negative integer
-%       k:  a non negative integer
+%       n:  Number of elements. Non negative integer. 
+%       k:  Items to choose from the set of n elements. Non negative
+%           integer. 
 %
-% Output:
+% Optional input arguments:
 %
-%  bc(n,k) = where n and k are non-negative integers returns n!/k!(n-k)!,
-%            i.e. the coefficient of the x^k term in the polynomial
-%            expansion of the binomial power (1 + x)^n. This is also the so
-%            called choose function of n and k (nchoosek in MATLAB), i.e.
-%            the number of k-element subsets (the k-combinations) of a set
-%            of n objects. When a coefficient is large, results may be
-%            inexact. The result is only accurate to 15 digits for
-%            double-precision inputs in 32bits computers.
+% Output:    
+% 
+%   bc(n,k): The binomial coefficient $n!/k!(n-k)!$. Integer. This is the 
+%            coefficient of the $x^k$ term in the polynomial expansion of
+%            the binomial power $(1 + x)^n$. This is also the so called
+%            choose function of n and k (nchoosek in MATLAB), i.e. the
+%            number of k-element subsets (the k-combinations) of a set of n
+%            objects. When a coefficient is large, results may be inexact.
+%            The result is only accurate to 15 digits for double-precision
+%            inputs in 32bits computers.
 %
 % See also: nchoosek
+%
+% References:
+%
+%    Knuth, Donald E. (1997). The Art of Computer Programming, Volume 1:
+%    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52–74. ISBN
+%    0-201-89683-4.
 %
 % Copyright 2008-2015.
 % Matlab function bc has been adapted to this toolbox by FSDA team
