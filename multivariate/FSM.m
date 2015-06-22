@@ -188,7 +188,7 @@ function [out]=FSM(Y,varargin)
 % Examples:
 
 %{
-    % FSM with all default options
+    %% FSM with all default options.
     n=200;
     v=3;
     randn('state', 123456);
@@ -200,7 +200,8 @@ function [out]=FSM(Y,varargin)
 %}
 
 %{
-    % FSM with plots showing envelope superimposition
+    %% FSM with optional arguments.
+    % FSM with plots showing envelope superimposition.
     n=200;
     v=3;
     randn('state', 123456);
@@ -212,7 +213,8 @@ function [out]=FSM(Y,varargin)
 %}
 
 %{
-    % FSM with plots showing envelope superimposition in normal coordinates
+    %% FSM with plots showing envelope superimposition in normal
+    % coordinates.
     n=200;
     v=3;
     randn('state', 123456);
@@ -227,7 +229,7 @@ function [out]=FSM(Y,varargin)
 
 
 %{
-    % Monitor the exceedances from m=200 without showing plots
+    % Monitor the exceedances from m=200 without showing plots.
     n=1000;
     v=10;
     Y=randn(n,v);
@@ -235,8 +237,8 @@ function [out]=FSM(Y,varargin)
 %}
 
 %{
-    % Run the FS on a simulated dataset by choosing an initial subset
-    % formed by the three observations with the smallest Mahalanobis Distance
+    % Choosing an initial subset formed by the three observations with 
+    % the smallest Mahalanobis Distance.
     n=100;
     v=3;
     Y=randn(n,v);
@@ -247,28 +249,19 @@ function [out]=FSM(Y,varargin)
 %}
 
 %{
-    % Monitor the exceedances of Minimum Mahalanobis Distance in dataset
-    % of forgery Swiss banknotes
+    % Forgery Swiss banknotes examples.
+
     load('swiss_banknotes');
+
+    % Monitor the exceedances of Minimum Mahalanobis Distance 
     [out]=FSM(swiss_banknotes.data(101:200,:),'plots',1);
-%}
 
-
-%{
-    % Monitor the exceedances of Minimum Mahalanobis Distance in dataset
-    % of forgery Swiss banknotes
-    load('swiss_banknotes');
+    % Control minimum and maximum on the x axis
     plots=struct;
     plots.xlim=[60 90];
     [out]=FSM(swiss_banknotes.data(101:200,:),'plots',plots);
-%}
 
-%{
-    % Monitor the exceedances of Minimum Mahalanobis Distance in dataset
-    % of forgery Swiss banknotes using normal coordinates for mmd
-    load('swiss_banknotes');
-    plots=struct;
-    plots.xlim=[60 90];
+    % Monitor the exceedances of Minimum Mahalanobis Distance using normal coordinates for mmd.
     plots.ncoord=1;
     [out]=FSM(swiss_banknotes.data(101:200,:),'plots',plots);
 %}
