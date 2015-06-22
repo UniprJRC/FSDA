@@ -6,18 +6,18 @@ function out = FSMeda(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           n x v data matrix; n observations
-%               and v variables
+% Y :           Variables. Matrix. n x v data matrix; n observations and v variables
 %               Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
-% bsb :         list of units forming the initial subset, if bsb=0
+%               Data Types - single | double
+% bsb :         Units forming subset. Vector. List of units forming the initial subset. If bsb=0
 %               (default) then the procedure starts with v units randomly
 %               chosen else if bsb is not 0 the search will start with
-%               m0=length(bsb)
-%
+%               m0=length(bsb).
+%               Data Types - single | double
 %
 % Optional input arguments:
 %
@@ -31,7 +31,7 @@ function out = FSMeda(Y,bsb,varargin)
 %               monitoring of minMD.
 %                 Scalar. If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
-%               screen with 1% 50% and 99% confidence bands
+%               screen with 1 per cent, 50 per cent and 99 per cent confidence bands
 %               else (default), all plots are suppressed.
 %               Example - 'plots',0
 %               Data Types - double
@@ -64,34 +64,34 @@ function out = FSMeda(Y,bsb,varargin)
 % Output:
 %
 %   The output consists of a structure 'out' containing the following fields:
-%   MAL=        n x (n-init+1) = matrix containing the monitoring of
+%   out.MAL=        n x (n-init+1) = matrix containing the monitoring of
 %               Mahalanobis distances
 %               1st row = distance for first unit ......
 %               nth row = distance for nth unit.
-%    BB=        n x (n-init+1) matrix containing the information about the units belonging
+%    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
 %               to the subset at each step of the forward search.
 %               1st col = indexes of the units forming subset in the initial step
 %               ...
 %               last column = units forming subset in the final step (all units)
-%   mmd=        n-init x 3 matrix which contains the monitoring of minimum
+%   out.mmd=        n-init x 3 matrix which contains the monitoring of minimum
 %               MD or (m+1)th ordered MD  at each step of
 %               the forward search.
 %               1st col = fwd search index (from init to n-1)
 %               2nd col = minimum MD
 %               3rd col = (m+1)th-ordered MD
-%   msr=        n-init+1 x 3 = matrix which contains the monitoring of
+%   out.msr=        n-init+1 x 3 = matrix which contains the monitoring of
 %               maximum MD or mth ordered MD
 %               1st col = fwd search index (from init to n)
 %               2nd col = maximum MD
 %               3rd col = mth-ordered MD
-%    gap=       n-init+1 x 3 = matrix which contains the monitoring of
+%    out.gap=       n-init+1 x 3 = matrix which contains the monitoring of
 %               the gap (difference between minMD outside subset and max. inside)
 %               1st col = fwd search index (from init to n)
 %               2nd col = min MD - max MD
 %               3rd col = (m+1)th ordered MD - mth ordered distance
-%   loc=        (n-init+1) x (v+1) matrix containing the monitoring of
+%   out.loc=        (n-init+1) x (v+1) matrix containing the monitoring of
 %               estimated of the means for each variable in each step of the forward search
-%  S2cov=       (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
+%  out.S2cov=       (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
 %               of the elements of the covariance matrix in each step
 %               of the forward search
 %               1st col = fwd search index (from init to n)
@@ -99,17 +99,17 @@ function out = FSMeda(Y,bsb,varargin)
 %               3rd col = monitoring of S(1,2)
 %               ....
 %               end col = monitoring of S(v,v)
-%  detS=        (n-init+1) x (2) matrix containing the monitoring of
+%  out.detS=        (n-init+1) x (2) matrix containing the monitoring of
 %               the determinant of the covariance matrix
 %               in each step of the forward search
-%    Un=        (n-init) x 11 Matrix which contains the unit(s)
+%    out.Un=        (n-init) x 11 Matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
-%     Y=        Original data input matrix
+%     out.Y=        Original data input matrix
 %
 % See also FSMmmd.m, FSM.m
 %
@@ -129,8 +129,28 @@ function out = FSMeda(Y,bsb,varargin)
 
 
 %{
+    % FSMeda with all default options.
     % Run the FS on a simulated dataset by choosing an initial subset
-    % formed by the three observations with the smallest Mahalanobis Distance
+    % formed by the three observations with the smallest Mahalanobis
+    % Distance.
+    n=100;
+    v=3;
+    m0=3;
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [fre]=unibiv(Y);
+    %create an initial subset with the 3 observations with the lowest
+    %Mahalanobis Distance
+    fre=sortrows(fre,4);
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Ycont,bs);
+%}
+
+%{
+    %% FSMeda with optional arguments.
+    % Monitoring the evolution of minimum Mahlanobis distance.
     n=100;
     v=3;
     m0=3;
@@ -147,9 +167,9 @@ function out = FSMeda(Y,bsb,varargin)
 %}
 
 %{
-    % Analysis of the Swiss bank notes
+    %% Example with the Swiss bank notes data.
     load('swiss_banknotes')
-    Y=swiss_banknotes.data
+    Y=swiss_banknotes.data;
     [fre]=unibiv(Y);
     %create an initial subset with the 3 observations with the lowest
     %Mahalanobis Distance
@@ -160,7 +180,7 @@ function out = FSMeda(Y,bsb,varargin)
 %}
 
 %{
-    % Analysis of the Emilia Romagna data
+    % Example with the Emilia Romagna data.
     load('emilia2001')
     Y=emilia2001.data;
     [fre]=unibiv(Y);
@@ -180,7 +200,7 @@ function out = FSMeda(Y,bsb,varargin)
 
 
 %{
-    % Emilia Romagna data (all variables)
+    % Example with the Emilia Romagna data (all variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
