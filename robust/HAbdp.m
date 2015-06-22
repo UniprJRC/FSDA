@@ -3,28 +3,34 @@ function ctun = HAbdp(bdp,p,abc)
 % The constant is found through a dichotomic search
 %
 %
-%<a href="matlab: docsearchFS('habdp')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HAbdp')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%      bdp    : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%        p    : number of response variables (e.g. in regression p=1)
+%      bdp    : breakdown point. Scalar. Scalar defining breakdown point
+%               (i.e a number between 0 and 0.5)
+%        p    : number of response variables. Scalar. e.g. in regression p=1
 %
 %  Optional input arguments:
 %
-%     abc     : vector of length 3 which contains the parameters of Hampel
-%               estimator. If vector abc is not specified it is set equal
-%               to [2, 4, 8]
+%     abc     : parameters of Hampel estimator. Vector. Vector of length 3
+%               which contains the parameters of Hampel estimator. If
+%               vector abc is not specified it is set equal to [2, 4, 8]
+%               Example - 'abc',[1.5,3.5,8]
+%               Data Types - double
 %
 % Output:
 %
-%  ctun = scalar of Hampel rho function associated to that particular breakdown point
+%  ctun = scalar of Hampel rho function associated to that particular
+%         breakdown point
+%
+% See also: TBbdp, HYPbdp, OPTbdp
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('habdp')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HAbdp')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 %
@@ -32,11 +38,20 @@ function ctun = HAbdp(bdp,p,abc)
 % Examples:
 %
 %{
-    % The constant c associated to a breakdown point of 50% in regression is
+    %% Find constant c for bdp=0.5.
+    % The constant c associated to a breakdown point of 50 per cent in regression is
     % 0.198131771596856
-    c=HAbdp(0.5,1)
+    c=HAbdp(0.5,1);
+    disp(c);
 %}
-%
+
+%{
+    %% Find constant c for bdp=0.5 when abc=[1.5 3.5 8].
+    % The constant c associated to a breakdown point of 50 per cent in regression is
+    c=HAbdp(0.5,1,[1.5 3.5 8]);
+    disp(c);
+%}
+
 
 
 %% Beginning of code
@@ -46,7 +61,7 @@ if (nargin >2),
     if ((abc(1) < 0) || (abc(2) < abc(1)) || (abc(3) < abc(2))),
         error('FSDA:HAbdp:WrongAbc',[' illegal choice of parameters in Hampel: ' ...
             num2str(abc) ]')
-
+        
     end
     a0 = abc(1);
     b0 = abc(2);
@@ -97,30 +112,30 @@ while abs(Erho1-1)>eps
     % rhoab = @(u,a,b,c)((a*u-0.5*a^2).*(1/sqrt(2*pi)).*exp(-0.5*u.^2));
     % Erhoabck=2*integral(@(u)rhoab(u,a,b,c),a,b);
     
-     % b< |u| <c
+    % b< |u| <c
     % Erhobc = \int_b^c \rho(x) \Phi(x)
-    Erhobc1=2*(a*b-0.5*a^2+0.5*(c-b)*a*(1 -c^2/((c-b)^2)))*(normcdf(c)-normcdf(b)); 
+    Erhobc1=2*(a*b-0.5*a^2+0.5*(c-b)*a*(1 -c^2/((c-b)^2)))*(normcdf(c)-normcdf(b));
     Erhobc2=0.5*a*p*(gammainc(b2,(p+2)/2) -gammainc(c2,(p+2)/2)) /(c-b);
     Erhobc3=2*a*c*(normpdf(b)-normpdf(c))/(c-b);
     Erhobc=Erhobc1+Erhobc2+Erhobc3;
     
-%     psi2 = @(u,a,b,c) (a*b-0.5*a^2+0.5*(c-b)*a*(1 -(c-u).^2/((c-b)^2))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
-%     Erhobcck=2*integral(@(u)psi2(u,a,b,c),b,c);
-%     
-%     psi2 = @(u,a,b,c) (a*b-0.5*a^2+0.5*(c-b)*a*(1 -(c.^2)/((c-b)^2))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
-%     Erhobc1ck=2*integral(@(u)psi2(u,a,b,c),b,c);
-%     
-%     psi2 = @(u,a,b,c) (0.5*(c-b)*a*( -u.^2/((c-b)^2))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
-%     Erhobc2ck=2*integral(@(u)psi2(u,a,b,c),b,c);
-%     
-%     psi2 = @(u,a,b,c) (0.5*(c-b)*a*( 2*c*u/((c-b)^2))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
-%     Erhobc3ck=2*integral(@(u)psi2(u,a,b,c),b,c);
+    %     psi2 = @(u,a,b,c) (a*b-0.5*a^2+0.5*(c-b)*a*(1 -(c-u).^2/((c-b)^2))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
+    %     Erhobcck=2*integral(@(u)psi2(u,a,b,c),b,c);
+    %
+    %     psi2 = @(u,a,b,c) (a*b-0.5*a^2+0.5*(c-b)*a*(1 -(c.^2)/((c-b)^2))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
+    %     Erhobc1ck=2*integral(@(u)psi2(u,a,b,c),b,c);
+    %
+    %     psi2 = @(u,a,b,c) (0.5*(c-b)*a*( -u.^2/((c-b)^2))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
+    %     Erhobc2ck=2*integral(@(u)psi2(u,a,b,c),b,c);
+    %
+    %     psi2 = @(u,a,b,c) (0.5*(c-b)*a*( 2*c*u/((c-b)^2))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
+    %     Erhobc3ck=2*integral(@(u)psi2(u,a,b,c),b,c);
     
     
     % |u| >c
     Erhoc=phic*( 1-gammainc(c2,p/2) );
     
-   
+    
     Erho= Erhoa+Erhoab+Erhobc+Erhoc;
     
     Erho1=Erho/(phic*bdp);

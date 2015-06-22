@@ -23,7 +23,8 @@ function y=Sn(X,dim)
 %   and is equal to 1.1926 while cn is a finite sample correction factor to
 %   make the estimator unbiased.
 %   
-% Reference:
+% References:
+%
 % Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute deviation,
 % Journal of American Statistical Association 88, 1273-1283
 % Croux C. and Rousseeuw P.J.(1992)  Time-efficient algorithms for two

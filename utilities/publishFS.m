@@ -5,7 +5,7 @@ function publishFS(file,varargin)
 %
 %    file:         MATLAB File. String. Full or partial
 %                  path of the MATLAB file for which Structured Matlab
-%                  whose HTML help has to be created
+%                  HTML help has to be created
 %                  Example-'myfile.m'
 % The .m file (which must be located on the MATLAB path or on the currect
 % folder) must satisfy the following characteristics to be correctly
@@ -41,6 +41,7 @@ function publishFS(file,varargin)
 %                           specified as a vector of length n, where n is
 %                           the number of observations. Each entry in y is
 %                           the response for the corresponding row of X.
+%                           Data Types: single | double
 %              X :          Predictor variables. Matrix of explanatory
 %                           variables (also called 'regressors') of
 %                           dimension n x (p-1) where p denotes the number
@@ -51,6 +52,7 @@ function publishFS(file,varargin)
 %                           you explicitly remove it using input option
 %                           intercept, so do not include a column of 1s in
 %                           X.
+%                           Data Types: single | double
 %
 % IMPORTANT NOTICE: if an input argument is a structure (publishFS
 % automatically checks if the input argument contains the word "structure"
@@ -86,14 +88,15 @@ function publishFS(file,varargin)
 % vector, 3D array) and in the HTML file will appear
 % in the second row. These first two rows will always be visible. What
 % starts with the third sentence after symbol ':' is the detailed
-% description of that particular optional input argument and in the HTML file it
-% will be visible just if the user clicks on any point in the first two
-% lines or the user clicks on the option expand all.
+% description of that particular optional input argument and in the HTML
+% file it will be visible just if the user clicks on any point in the first
+% two lines or the user clicks on the option expand all.
 % The last two lines of each optional input argument MUST start with the
 % words 'Example -' and 'Data Types -' followed by a string without spaces
-% which specifies a possible use of the option and the type of data
-% For  example, suppose that the first two optional arguments are called
-% respecively 'intercept' and 'h', then the accepted format is as follows
+% which specifies a possible use of the option and the type of data. For
+% example, suppose that the first two optional arguments are called
+% respecively 'intercept' and 'h', then the
+% accepted format is as follows
 %
 %               Optional input arguments:
 %
@@ -108,12 +111,13 @@ function publishFS(file,varargin)
 %                             Example - 'h',round(n*0,75)
 %                             Data Types - double
 %
-%  IMPORTANT NOTICE: given that options are arguments are those which have
-%  symbol "%" followd by "a series of spaces" then "a word" then "a series
+%
+%  IMPORTANT NOTICE: given that options are identified as those which have
+%  symbol "%" followed by "a series of spaces" then "a word" then "a series
 %  of spaces" then symbol ":", each line inside the description does not
-%  have to start as follows "   ANYWORD   :" because the parser will
+%  have to start as follows "%   ANYWORD   :" because the parser will
 %  wrongly identify "ANYWORD" as an additional optional input argument. The
-%  only once exception to this rule is the word " REMARK :". However, if
+%  only once exception to this rule is the word "%  REMARK :". However, if
 %  there is a remark, it must be put at the very end of the description of
 %  the optional input argument. At the very end means after the rows
 %   Example and Data Types
@@ -407,6 +411,10 @@ function publishFS(file,varargin)
 
 %% Beginning of code
 
+if ~ischar(file)
+    error('FSDA:publishFS:WrongInputOpt','input must be a string containing the name of the file.');
+end
+
 evalCode=true;
 Display='none';
 
@@ -474,6 +482,152 @@ fstring=fscanf(fileID,'%c');
 fstring=regexprep(fstring,'<','&lt;');
 fstring=regexprep(fstring,'>','&gt;');
 
+
+%-----------------
+%% CREATE Name-Value Pair Arguments SECTION OF HTML FILE
+inselOpt=regexp(fstring,'Optional input arguments:');
+if isempty(inselOpt)
+    disp('Please check HTML input file')
+    error('FSDA:missInps','HTML file does not contain ''Optional input arguments:'' string')
+end
+
+% substring to search start from Optional input arguments:
+fstringselOpt=fstring(inselOpt(1):end);
+
+endpoint=regexp(fstringselOpt,'Output:');
+if isempty(endpoint)
+    disp('Please check HTML input file')
+    error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
+end
+fstringselOpt=fstringselOpt(1:endpoint-2);
+
+% Find any string which
+% begins with % sign then
+% contains a series of white space which can go from 0 to 15 then
+% contains any single word
+% a series of white spaces which can go from 0 to 10 then
+% character : then
+% a seris of white spaces
+% The inipoint of the following two regular xpessions is the same but
+% however we want to exclude the lines where symbol : is followed by a
+% series of white spaces and then by a carriage return because these are
+% input arguments but simply are the beginning of a list
+[~,fint]=regexp(fstringselOpt,'%\s{0,15}\w*\s{0,10}:');
+[ini,~]=regexp(fstringselOpt,'%\s{0,15}\w*\s{0,10}:\s{0,10}\w');
+fin=fint(1:length(ini));
+
+% listOptArgs = list which contains all optional arguments
+% The first column will contain the names (just one word)
+% The second column will contain the title of the option (the first
+% sentence which finishes with a full stop sign)
+% The third column will contain the type (the second sentence which
+% finishes with a comma or full stop sign)
+% The fourth column will contain the long description. What starts with the
+% third sentence
+% The fifth column will contain the example what starts just after
+% string  Example -
+% The sixth column will contain the example what starts just after
+% string  Data Types -
+listOptArgs=cell(length(ini),6);
+
+ij=1;
+for i=1:length(ini)
+    % fin(i)-1 because character ':' does not have to be extracted
+    opti=fstringselOpt(ini(i):fin(i)-1);
+    % Remove from string descri all '% signs
+    posPercentageSigns=regexp(opti,'%');
+    opti(posPercentageSigns)=[];
+    % Remove from string opti leading and trailing white spaces
+    opti=strtrim(opti);
+    % Check if optional argument is the string rEmArK (written in a case
+    % insensitive way)
+    
+    CheckIfRemark=regexp(opti,'remark','match','ignorecase');
+    if ~isempty(CheckIfRemark)
+        if i<length(ini)
+            descradd=fstringselOpt(ini(i):ini(i+1));
+        else
+            descradd=fstringselOpt(ini(i):end);
+        end
+        
+        % Remove from string descradd all '% signs
+        posPercentageSigns=regexp(descradd,'%');
+        descradd(posPercentageSigns)=[];
+        descradd=strtrim(descradd);
+        listOptArgs{ij-1,4}=[listOptArgs{ij-1,4} descradd];
+        % listOptArgs{i-1,2}=[listOptArgs{i-1,2}
+    else
+        % Store name in the first column of listOptArgs
+        listOptArgs{ij,1}=opti;
+        % Store short description in the 3nd col of listOptArgs
+        if i<length(ini)
+            descrtosplit=fstringselOpt(fin(i)+1:ini(i+1)-1);
+        else
+            descrtosplit=fstringselOpt(fin(i)+1:end);
+        end
+        
+        % Remove from string descrtosplit all '% signs
+        posPercentageSigns=regexp(descrtosplit,'%');
+        descrtosplit(posPercentageSigns)=[];
+        
+        [inifullstops]=regexp(descrtosplit,'\.');
+        if isempty(inifullstops)
+            error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
+            % error('Wrong input')
+        end
+        descrtitle=strtrim(descrtosplit(1:inifullstops(1)-1));
+        listOptArgs{ij,2}=descrtitle;
+        
+        try
+            descrtype=strtrim(descrtosplit(inifullstops(1)+1:inifullstops(2)-1));
+        catch
+            warning('FSDA:publishFS:WrongInp',['Option: ' listOptArgs{ij,1}])
+            error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
+        end
+        
+        
+        listOptArgs{ij,3}=descrtype;
+        
+        try
+            descrlong=strtrim(descrtosplit(inifullstops(2)+1:end));
+        catch
+            error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
+        end
+        
+        % Check if descr long contains
+        % Example - and Data types -
+        
+        CheckExample=regexp(descrlong,'Example -','once');
+        if ~isempty(CheckExample)
+            Datatypes=regexp(descrlong,'Data Types -','once');
+            listOptArgs{ij,4}=descrlong(1:CheckExample-1);
+            
+            % The first word of example code must be embedded around tags <code> </code>
+            examplecode=descrlong(CheckExample+10:Datatypes-1);
+            posspace=regexp(examplecode,'      ');
+            examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
+            listOptArgs{ij,5}=strtrim(examplecode);
+            listOptArgs{ij,6}=descrlong(Datatypes+13:end);
+        else
+            listOptArgs{ij,4}=descrlong;
+        end
+        
+        ij=ij+1;
+    end
+    
+    %     if strcmp(opti,'
+    %     listOptArgs{i}=opti;
+end
+listOptArgs=listOptArgs(1:ij-1,:);
+
+if strcmp(Display,'iter-detailed')
+    disp('Detailed information about Optional arguments')
+    disp(listOptArgs)
+end
+
+
+
+%------------------
 
 % Define iniTable and cloTable which are respectively the beginning and the
 % end of the table which will contains the fields of the structure argument
@@ -631,7 +785,7 @@ finsitecont=sprintf(['<h2 id="syntax">Syntax</h2>\r'...
 
 sitecont=[insnav inisitecont htmlsitecont finsitecont];
 
-%% Managing input and output arguments:
+%% Create Sintax section of HTML file (referred to the loop of input arguments)
 % Find point where first input argument starts
 
 % Now find the number of required input
@@ -668,19 +822,72 @@ end
 [startIndexInp] = regexp(fstring,'(');
 [endIndexInp] = regexp(fstring,')');
 % inputargs =  (inp1,inp2,inp3, ...)
-inputargs=fstring(startIndexInp(1):endIndexInp(1));
+InputArgs=fstring(startIndexInp(1):endIndexInp(1));
 % Check if inputargs contains the string varargin
-[optargs1]=regexp(inputargs,'varargin');
-[commasIn] = regexp(inputargs,',');
-if isempty(optargs1)
-    sintax=cell(nargout,1);
-    sintax{1}=[outargs(2:commasOut(1)-1) '=' name inputargs];
-    j=2;
-    nREQargin=length(commasIn)+1; % nREQargin = number of required input args
+[OptArgsVarargin]=regexp(InputArgs,'varargin');
+
+
+[commasIn] = regexp(InputArgs,',');
+j=1;
+
+% nTOTargin= total number of input arguments (requested + optional),
+% excluding name-value pairs arguments
+
+if isempty(OptArgsVarargin)
+    % Write all required input arguments in cell listargins
+    nTOTargin=length(commasIn)+1;
+else
+    nTOTargin=length(commasIn);
+end
+
+listargins=cell(nTOTargin,1);
+for i=1:nTOTargin
+    if nTOTargin>1
+        if i==1
+            inpi=InputArgs(2:commasIn(i)-1);
+        elseif i==nTOTargin && isempty(OptArgsVarargin)
+            inpi=InputArgs(commasIn(i-1)+1:end-1);
+            
+        else
+            inpi=InputArgs(commasIn(i-1)+1:commasIn(i)-1);
+        end
+    else
+        if isempty(OptArgsVarargin) % if there are no optional input arguments
+            inpi=InputArgs(2:end-1);
+        else
+            inpi=InputArgs(2:commasIn(i)-1);
+        end
+    end
+    inpi=strtrim(inpi);
+    listargins{i}=inpi;
+end
+
+% Check if among the input arguments there are explicitly declared inputs
+% which are optionals. That is check if the intersection between the first
+% columns of cell listOptArgs and vector listargins is empty
+[OptArgsWithoutNameValue,PosOpt]=intersect(listargins(:,1),listOptArgs(:,1));
+nOPTargin=length(OptArgsWithoutNameValue);
+% nREQargin = number of required input arguments
+nREQargin=nTOTargin-nOPTargin;
+
+sintax=cell(nargout+1+nOPTargin,1);
+
+if nOPTargin>0
+    for j=1:nOPTargin;
+        sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs(1:commasIn(PosOpt-1)-1) ')'];
+    end
+    j=j+1;
+else
+    j=1;
+end
+
+
+if isempty(OptArgsVarargin)
+    sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs];
+    j=j+1;
 else
     % In this case there is also Name Value line
-    sintax=cell(nargout+1,1);
-    strinputarg=strtrim(inputargs(1:optargs1-1));
+    strinputarg=strtrim(InputArgs(1:OptArgsVarargin-1));
     if strcmp(strinputarg(end),',')
         strinputarg=strinputarg(1:end-1);
     end
@@ -688,14 +895,15 @@ else
     %sintax{1}=[outargs(2:commasOut(1)-1) '=' name strtrim(inputargs(1:optargs1-2)) ')'];
     %sintax{2}=[outargs(2:commasOut(1)-1) '=' name strtrim(inputargs(1:optargs1-2)) ',Name,Value)'];
     
-    sintax{1}=[outargs(2:commasOut(1)-1) '=' name strinputarg ')'];
-    sintax{2}=[outargs(2:commasOut(1)-1) '=' name strinputarg ',Name,Value)'];
+    sintax{j}=[outargs(2:commasOut(1)-1) '=' name strinputarg ')'];
+    sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg ',Name,Value)'];
     
-    j=3;
-    nREQargin=length(commasIn); % nREQargin = number of required input args
+    j=j+2;
 end
-
-%% Create Sintax section of HTML file
+if j>1
+    sintax=sintax(1:j-1);
+end
+%% Create Sintax section of HTML file (referred to the loop of output arguments)
 if nargout>1
     for i=2:nargout
         if i<nargout
@@ -879,7 +1087,7 @@ for j=1:length(sintax)
     % What is after the second full stop is the description
     % The first line which does not contain symbol % is the beginning of the
     % code
-    [endtitle] = regexp(stri,'\.','once');
+    [endtitle] = regexp(stri,'\.\s{1,3}','once');
     strititle=stri(1:endtitle);
     % Remove percentage signs if present.
     posPercentageSigns=regexp(strititle,'%');
@@ -1089,8 +1297,8 @@ closeallex=sprintf(['</div>\r'... % div class="examples"
 examples=[iniexamples exampleshtml closeexamples iniRelatedExamples...
     RelatedExamples closeallex];
 
-%% CREATE INPUT ARGUMENTS SECTION OF HTML file
-iniinputargs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
+%% CREATE REQUIRED NPUT ARGUMENTS SECTION OF HTML file
+iniReqInputArgs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<h2 id="inputs">Input Arguments</h2>\r'...
     '<div class="expandableContent">\r'...
     '<div class="arguments">\r'...
@@ -1099,36 +1307,9 @@ iniinputargs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<a class="expandAllLink" href="javascript:void(0);">\r'...
     'expand all</a></p>']);
 
-%       inputargs
-%[optargs1,optargs2]=regexp(inputargs,'varargin');
-%[commasIn] = regexp(inputargs,',');
-%if isempty(optargs1)
-
-% in string inpi there will the required input argument
-
-
-% Write all required input arguments in cell listargins
-listargins=cell(nREQargin,1);
-for i=1:nREQargin
-    if nREQargin>1
-        if i==1
-            inpi=inputargs(2:commasIn(i)-1);
-        else
-            inpi=inputargs(commasIn(i-1)+1:commasIn(i)-1);
-        end
-    else
-        if isempty(optargs1) % if there are no optional input arguments
-            inpi=inputargs(2:end-1);
-        else
-            inpi=inputargs(2:commasIn(i)-1);
-        end
-    end
-    inpi=strtrim(inpi);
-    listargins{i}=inpi;
-end
 
 reqargs='';
-
+%% Create listInptArgs and related HTML code
 % listInpArgs = list which contains all required input arguments
 % The first column will contain the names (just one word)
 % The second column will contain the title of the input argument (the first
@@ -1138,10 +1319,14 @@ reqargs='';
 % The fourth column will contain the long description. What starts with the
 % third sentence
 % The fifth column will contain the example what starts just after
-% string  Example -
-listInpArgs=cell(length(nREQargin),5);
+% string  Example - (This is necessary just if the input argument is
+% optional)
+% The sixth column will contain the example what starts just after
+% string  Data Types -
 
-for i=1:nREQargin
+listInpArgs=cell(length(nTOTargin),6);
+
+for i=1:nTOTargin
     
     % Name of the input argument (just one word)
     inpi=listargins{i};
@@ -1156,31 +1341,53 @@ for i=1:nREQargin
     
     % substring to search start from Required input arguments:
     fstringsel=fstring(insel(1):end);
-    inipoint=regexp(fstringsel,[listargins{i} '\s{0,10}:']);
     
-    % The endpoint of the substring is See also or the next output argument
+    inipoint=regexp(fstringsel,['%\s{0,10}' listargins{i} '\s{0,10}:']);
+    
+    % The endpoint of the substring is See also or the next optional input argument
     if i <nREQargin
-        endpoint=regexp(fstringsel,[listargins{i+1} '\s{0,10}:']);
-    else
+        endpoint=regexp(fstringsel,['%\s{0,10}' listargins{i+1} '\s{0,10}:']);
+    elseif i==nREQargin
         endpoint=regexp(fstringsel,'Optional input arguments:');
         if isempty(endpoint)
             disp('Please check .m input file')
             error('FSDA:missOuts','.m file does not contain ''Optional input arguments:'' string')
         end
+    elseif i<nTOTargin
+        endpoint=regexp(fstringsel,['%\s{0,10}' listargins{i+1} '\s{0,10}:']);
+    else
+        endpoint=regexp(fstringsel,'Output:');
+        if isempty(endpoint)
+            disp('Please check .m input file')
+            error('FSDA:missOuts','.m file does not contain ''Output:'' string')
+        end
     end
     % DescrInputToSplit = string which contains all the information about the i-th input
-    % argument
-    DescrInputToSplit=fstringsel((inipoint(1)+length(listargins{i})+2):endpoint(1)-1);
+    % argument (excluding xxxx :)
+    % fstringseltmp = string which contains all the information about the i-th input
+    % argument (including  xxxx :)
+    fstringseltmp=fstringsel(inipoint(1)+1:endpoint(1)-1);
+    inipoint=regexp(fstringseltmp,':');
+    
+    
+    DescrInputToSplit=fstringseltmp(inipoint(1)+1:end);
+    %    DescrInputToSplit=fstringseltmp((inipoint(1)+length(listargins{i})+2):endpoint(1)-1);
     
     % Remove from string descri all '% signs
     posPercentageSigns=regexp(DescrInputToSplit,'%');
     DescrInputToSplit(posPercentageSigns)=[];
     % Remove from string descri leading and trailing white spaces
     DescrInputToSplit=strtrim(DescrInputToSplit);
-    
     %------------------
+    % Add an artificial space character at the end just in case sentence
+    % terminates with a full stop followed by no white space character
+    % because in the next regexp we search for full stops followed by one
+    % up to three spaces. At least one space is necessary otherwise we
+    % misinterpret number as 0.234 (in this last case the full stop is a
+    % decimal separatorand not the end of a sentence)
+    DescrInputToSplit=[DescrInputToSplit ' '];
     
-    [inifullstops]=regexp(DescrInputToSplit,'\.');
+    [inifullstops]=regexp(DescrInputToSplit,'\.[\s1-3]');
     if isempty(inifullstops)
         warning('FSDA:publishFS:WrongInp',['Sentence''' DescrInputToSplit '''must contain at least two full stops'])
         % error('Wrong input')
@@ -1197,7 +1404,7 @@ for i=1:nREQargin
         descrtype=strtrim(DescrInputToSplit(inifullstops(1)+1:inifullstops(2)-1));
     catch
         % warning('FSDA:publishFS:WrongInp',['Input: ' listInpArgs{i,1}])
-        errmsg=['Input argument ' listInpArgs{i,1} ' Sentence ''' DescrInputToSplit ''' must contain at least two full stops'];
+        errmsg=['Input argument ' listInpArgs{i,1} ' Sentence ''' DescrInputToSplit ''' must contain at least two full stops followed by a white space'];
         error('FSDA:publishFS:WrongInp',errmsg)
     end
     
@@ -1209,353 +1416,248 @@ for i=1:nREQargin
         error('FSDA:publishFS:WrongInp',['Sentence''' DescrInputToSplit '''must contain at least two full stops'])
     end
     
-    Datatypes=regexp(descrlong,'Data Types -','once');
-    if ~isempty(Datatypes)
-        listInpArgs{i,4}=descrlong(1:Datatypes-1);
-        listInpArgs{i,5}=descrlong(Datatypes+13:end);
-    else
-        newl=regexp(descrlong,'[\.\s0-200]\r');
-        if ~isempty(newl)
-            descrlongHTML=['<p>' descrlong(1:newl(1))];
-            if length(newl)==1
-                descrlongHTML=[descrlongHTML '</p> <p>' descrlong(newl(1)+1:end)];
-            else
-                for j=1:(length(newl)-1)
-                    descrlongHTML=[descrlongHTML '</p> <p>' descrlong(newl(j)+1:newl(j+1))];
-                end
-                descrlongHTML=[descrlongHTML descrlong(newl(j+1):end)];
-            end
+    
+    
+    if i<=nREQargin
+        
+        Datatypes=regexp(descrlong,'Data Types -','once');
+        if ~isempty(Datatypes)
+            listInpArgs{i,6}=descrlong(Datatypes+13:end);
+            
+            descrlong=descrlong(1:Datatypes-1);
+            descrlongHTML=formatHTML(descrlong);
+            listInpArgs{i,4}=descrlongHTML;
         else
-            descrlongHTML=descrlong;
+            
+            descrlongHTML=formatHTML(descrlong);
+            
+            listInpArgs{i,4}=descrlongHTML;
+            warning('FSDA:publishFS:MissingDataType',['Input argument ''' inpi ''' does not contain DataType line, by default string  ''single| double'' has been added'])
+            
+            listInpArgs{i,6}='single| double';
         end
-        descrlongHTML=[descrlongHTML '</p>'];
         
-        listInpArgs{i,4}=descrlongHTML;
-        warning('FSDA:publishFS:MissingDataType',['Input argument ''' inpi ''' does not contain DataType line, by default string  ''single| double'' has been added'])
         
-        listInpArgs{i,5}='single| double';
+        reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
+            ' <div id="inputarg_' inpi '" class="clearfix">\r'...
+            ' </div>\r'...
+            ' <h3 id="input_argument_' inpi '" class="expand">\r'...
+            ' <span>\r'...
+            ' <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+            ' <span class="argument_name"><code>' inpi '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
+            ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
+            ' <div class="collapse">\r'...
+            ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
+            ' <p class="datatypelist"><strong>\r'...
+            ' Data Types: </strong><code>' listInpArgs{i,6}  '</code></p>\r'...
+            ' </div>\r'...
+            ' </div>\r'])];
+    else
+        
+        
+        % Check if descrlong contains
+        % Example - and Data types -
+        
+        CheckExample=regexp(descrlong,'Example -','once');
+        if ~isempty(CheckExample)
+            Datatypes=regexp(descrlong,'Data Types -','once');
+            descrlonginp=descrlong(1:CheckExample-1);
+            descrlongHTML=formatHTML(descrlonginp);
+            listInpArgs{i,4}=descrlongHTML;
+            
+            % The first word of example code must be embedded around tags <code> </code>
+            examplecode=descrlong(CheckExample+10:Datatypes-1);
+            posspace=regexp(examplecode,'      ');
+            examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
+            listInpArgs{i,5}=strtrim(examplecode);
+            listInpArgs{i,6}=descrlong(Datatypes+13:end);
+            
+            
+        else
+            listInpArgs{i,4}=descrlong;
+            warning('FSDA:publishFS:MissingExample',['Optional input argument ''' inpi ''' does not contain an Example'])
+            
+        end
+        
+        
+        reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
+            ' <div id="inputarg_' inpi '" class="clearfix">\r'...
+            ' </div>\r'...
+            ' <h3 id="input_argument_' inpi '" class="expand">\r'...
+            ' <span>\r'...
+            ' <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+            ' <span class="argument_name"><code>' inpi '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
+            ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
+            ' <div class="collapse">\r'...
+            ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
+            '	<p class="description_valueexample">\r'...
+            '       <strong>Example: </strong>' listInpArgs{i,6} '</p>\r'...
+            ' <p class="datatypelist"><strong>\r'...
+            ' Data Types: </strong><code>' listInpArgs{i,5}  '</code></p>\r'...
+            ' </div>\r'...
+            ' </div>\r'])];
+        
+        
     end
-    
-    %  %-----------
-    %  shortdescr='';
-    %     % what is before the first comma or the first full stop is the
-    %     % preamble, the reset in the description
-    %     posfirstcomma=regexp(descriinput,',','once');
-    %     posfirstfullstop=regexp(descriinput,'\.','once');
-    %     sep=min([posfirstcomma posfirstfullstop]);
-    %     if isempty(sep)
-    %         warning('FSDA:MISSdescr',['In the description of ' listargins{i} ' String ''' descriinput ''' does not contain symbols '','' or ''.'''])
-    %         preamble=descriinput;
-    %     else
-    %         preamble=descriinput(1:sep-1);
-    %     end
-    %     preamble=strtrim(preamble);
-    %     % remove sign : if present at the beginning of the sentence
-    %     if strcmp(preamble(1),':')
-    %         preamble=strtrim(preamble(2:end));
-    %     end
-    %     descriinput=descriinput(sep+1:end);
-    %     % Start with upper case character
-    %     descriinput=strtrim(descriinput);
-    %     if ~isempty(descriinput)
-    %         descriinput=[upper(descriinput(1)) descriinput(2:end)];
-    %     end
-    %  %------------------------
-    
-    % disp(inpi)
-    reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
-        ' <div id="inputarg_' inpi '" class="clearfix">\r'...
-        ' </div>\r'...
-        ' <h3 id="input_argument_' inpi '" class="expand">\r'...
-        ' <span>\r'...
-        ' <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-        ' <span class="argument_name"><code>' inpi '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
-        ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
-        ' <div class="collapse">\r'...
-        ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
-        ' <p class="datatypelist"><strong>\r'...
-        ' Data Types: </strong><code>' listInpArgs{i,5}  '</code></p>\r'...
-        ' </div>\r'...
-        ' </div>\r'])];
-    
+    if i==nREQargin
+        reqargs = [reqargs sprintf(['<div id="optionalarguments" class="clearfix">\r'...
+            '</div>\r' ...
+            '<h3 id="namevaluepairs" class="bottom_ruled">\r'...
+            'Optional Arguments</h3>'])];
+    end
 end
+
+
+%% CREATE Optional Arguments SECTION OF HTML FILE (excluding Name-Value pair)
+
 
 if strcmp(Display,'iter-detailed')
     disp('Detailed information about Input arguments')
     disp(listInpArgs)
 end
 
+
 %% CREATE Name-Value Pair Arguments SECTION OF HTML FILE
-insel=regexp(fstring,'Optional input arguments:');
-if isempty(insel)
-    disp('Please check HTML input file')
-    error('FSDA:missInps','HTML file does not contain ''Optional input arguments:'' string')
-end
-
-% substring to search start from Optional input arguments:
-fstringsel=fstring(insel(1):end);
-
-endpoint=regexp(fstringsel,'Output:');
-if isempty(endpoint)
-    disp('Please check HTML input file')
-    error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
-end
-fstringsel=fstringsel(1:endpoint-2);
-
-% Find any string which
-% begins with % sign then
-% contains a series of white space which can go from 0 to 20 then
-% contains any single word
-% a series of white spaces which can go from 0 to 10 then
-% character :
-% [ini,fin]=regexp(fstringsel,'%\s{0,20}\w*\s{0,10}:');
-[ini,fin]=regexp(fstringsel,'%\s{0,15}\w*\s{0,10}:');
-
-% listOptArgs = list which contains all optional arguments
-% The first column will contain the names (just one word)
-% The second column will contain the title of the option (the first
-% sentence which finishes with a full stop sign)
-% The third column will contain the type (the second sentence which
-% finishes with a comma or full stop sign)
-% The fourth column will contain the long description. What starts with the
-% third sentence
-% The fifth column will contain the example what starts just after
-% string  Example -
-% The sixth column will contain the example what starts just after
-% string  Data Types -
-
-listOptArgs=cell(length(ini),6);
-
-ij=1;
-for i=1:length(ini)
-    % fin(i)-1 because character ':' does not have to be extracted
-    opti=fstringsel(ini(i):fin(i)-1);
-    % Remove from string descri all '% signs
-    posPercentageSigns=regexp(opti,'%');
-    opti(posPercentageSigns)=[];
-    % Remove from string opti leading and trailing white spaces
-    opti=strtrim(opti);
-    % Check if optional argument is the string rEmArK (written in a case
-    % insensitive way)
-    
-    CheckIfRemark=regexp(opti,'remark','match','ignorecase');
-    if ~isempty(CheckIfRemark)
-        if i<length(ini)
-            descradd=fstringsel(ini(i):ini(i+1));
-        else
-            descradd=fstringsel(ini(i):end);
-        end
-        
-        % Remove from string descradd all '% signs
-        posPercentageSigns=regexp(descradd,'%');
-        descradd(posPercentageSigns)=[];
-        descradd=strtrim(descradd);
-        listOptArgs{ij-1,4}=[listOptArgs{ij-1,4} descradd];
-        % listOptArgs{i-1,2}=[listOptArgs{i-1,2}
-    else
-        % Store name in the first column of listOptArgs
-        listOptArgs{ij,1}=opti;
-        % Store short description in the 3nd col of listOptArgs
-        if i<length(ini)
-            descrtosplit=fstringsel(fin(i)+1:ini(i+1)-1);
-        else
-            descrtosplit=fstringsel(fin(i)+1:end);
-        end
-        
-        % Remove from string descrtosplit all '% signs
-        posPercentageSigns=regexp(descrtosplit,'%');
-        descrtosplit(posPercentageSigns)=[];
-        
-        [inifullstops]=regexp(descrtosplit,'\.');
-        if isempty(inifullstops)
-            error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
-            % error('Wrong input')
-        end
-        descrtitle=strtrim(descrtosplit(1:inifullstops(1)-1));
-        listOptArgs{ij,2}=descrtitle;
-        
-        try
-            descrtype=strtrim(descrtosplit(inifullstops(1)+1:inifullstops(2)-1));
-        catch
-            warning('FSDA:publishFS:WrongInp',['Option: ' listOptArgs{ij,1}])
-            error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
-        end
-        
-        
-        listOptArgs{ij,3}=descrtype;
-        
-        try
-            descrlong=strtrim(descrtosplit(inifullstops(2)+1:end));
-        catch
-            error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
-        end
-        
-        % Check if descr long contains
-        % Example - and Data types -
-        
-        CheckExample=regexp(descrlong,'Example -','once');
-        if ~isempty(CheckExample)
-            Datatypes=regexp(descrlong,'Data Types -','once');
-            listOptArgs{ij,4}=descrlong(1:CheckExample-1);
-            
-            % The first word of example code must be embedded around tags <code> </code>
-            examplecode=descrlong(CheckExample+10:Datatypes-1);
-            posspace=regexp(examplecode,'      ');
-            examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
-            listOptArgs{ij,5}=strtrim(examplecode);
-            listOptArgs{ij,6}=descrlong(Datatypes+13:end);
-        else
-            listOptArgs{ij,4}=descrlong;
-        end
-        
-        ij=ij+1;
-    end
-    
-    %     if strcmp(opti,'
-    %     listOptArgs{i}=opti;
-end
-listOptArgs=listOptArgs(1:ij-1,:);
-
-if strcmp(Display,'iter-detailed')
-    disp('Detailed information about Optional arguments')
-    disp(listOptArgs)
-end
-
-
 % codewithexample=['''Distance'',''cosine'',''Replicates'',10,' ...
 %     '''Options'',statset(''UseParallel'',1)'];
-codewithexample='';
-for i=1:size(listOptArgs,1)
+if isempty(OptArgsVarargin)
+    OptArgsNameValueHeading='';
+    OptArgsNameValue='';
     
-    NamVali=listOptArgs{i,5};
-    if isempty(NamVali)
-        error('FSDA:missingex',['Optional input argument  ' listOptArgs{i,1} ...
-            ' does not seem to contain an example (or alternatively string remark has not been put at the end)'])
-    end
-    % Add as example only those which do finish with </code>, that is just
-    % those which do not contain exaplanations
-    if strcmp('</code>',NamVali(end-6:end))
-        if i<size(listOptArgs,1)
-            codewithexample=[codewithexample NamVali ',' ];
-        else
-            codewithexample=[codewithexample NamVali];
-        end
-    end
-end
-optargs=sprintf(['<div id="namevaluepairarguments" class="clearfix">\r'...
-    '</div>\r' ...
-    '<h3 id="namevaluepairs" class="bottom_ruled">\r'...
-    'Name-Value Pair Arguments</h3>\r'...
-    '<div class="namevaluecontainer">\r'...
-    '<p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments.\r'...
-    ' <code>Name</code> is the argument name and <code>Value</code>\r'...
-    ' is the corresponding value. <code>Name</code> must appear \r'...
-    ' inside single quotes (<code>'' ''</code>). \r'...
-    ' You can specify several name and value pair arguments in any order as <code> \r'...
-    ' Name1,Value1,...,NameN,ValueN</code>.</p> \r'...
-    ' <span class="example_desc"><strong>Example:\r'...
-    '</strong><code>' codewithexample '</code>\r'...
-    '</span></div>']);
-
-
-optargsexp='';
-for i=1:size(listOptArgs,1);
-    nameoptarg=listOptArgs{i,1};
-    titloptarg=listOptArgs{i,2};
-    shortdesc=listOptArgs{i,3};
-    if strcmp(shortdesc,'Structure') && ~isempty(strfind(listOptArgs{i,4},'field'))
-        longdesc=listOptArgs{i,4};
+else
+    codewithexample='';
+    for i=1:size(listOptArgs,1)
         
-        [inistructfield,finstructfield]=regexp(longdesc,'\s{8,18}\w*\s{0,8}=');
-        posREMARK=regexp(longdesc,'REMARK','once');
-        % If there is the string REMARK it means that all that which is after
-        % remark is a general statement which does not have to be contained in the
-        % table with the associated fields
-        if ~isempty(posREMARK)
-            boo=inistructfield<posREMARK;
-            inistructfield=inistructfield(boo);
-            finstructfield=finstructfield(boo);
+        NamVali=listOptArgs{i,5};
+        if isempty(NamVali)
+            error('FSDA:missingex',['Optional input argument  ' listOptArgs{i,1} ...
+                ' does not seem to contain an example (or alternatively string remark has not been put at the end)'])
         end
-        % Insert all fields of inside listStruArgs
-        listOutArgs=cell(length(inistructfield),2);
-        for k=1:length(inistructfield)
-            % fin(i)-1 because character ':' does not have to be extracted
-            StructFieldName=longdesc(inistructfield(k):finstructfield(k)-1);
-            % Remove from string opti leading and trailing white spaces
-            StructFieldName=strtrim(StructFieldName);
-            
-            % Store name in the first column
-            listOutArgs{k,1}=StructFieldName;
-            % Store short description in the 3nd col of listOptArgs
-            if k<length(inistructfield)
-                StructFieldCont=longdesc(finstructfield(k)+1:inistructfield(k+1));
+        % Add as example only those which do finish with </code>, that is just
+        % those which do not contain exaplanations
+        if strcmp('</code>',NamVali(end-6:end))
+            if i<size(listOptArgs,1)
+                codewithexample=[codewithexample NamVali ',' ];
             else
-                if ~isempty(posREMARK)
-                    StructFieldCont=longdesc(finstructfield(k)+1:posREMARK-1);
-                else
-                    StructFieldCont=longdesc(finstructfield(k)+1:end);
-                end
+                codewithexample=[codewithexample NamVali];
             end
-            % Store name in the first column
-            listOutArgs{k,2}=StructFieldCont;
         end
-        
-        
-        
-        Tablehtml='';
-        for k=1:length(inistructfield)
-            Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
-                '<td><code>' listOutArgs{k,1} '</code></td>\r'...
-                '<td>\r'...
-                '<p>']) listOutArgs{k,2} sprintf(['</p>\r'...
-                '</td>\r'...
-                '</tr>'])];
-        end
-        
-        % Add the Remark after the table, if it is present
-        if ~isempty(posREMARK)
-            descrREMARK=longdesc(posREMARK:end);
-            descrREMARKHTML=formatHTML(descrREMARK);
-            
-            longdescription=[iniTable Tablehtml cloTable '<p>' descrREMARKHTML '</p>'];
-        else
-            longdescription=[iniTable Tablehtml cloTable];
-        end
-    else
-        longdescriptionHTML=formatHTML(listOptArgs{i,4});
-        
-        longdescription=longdescriptionHTML;
     end
-    % datatype = type of data for that particular option
-    %     examplecode=['''Display'',''final'''];
-    %     datatype='char';
+    OptArgsNameValueHeading=sprintf(['<div id="namevaluepairarguments" class="clearfix">\r'...
+        '</div>\r' ...
+        '<h3 id="namevaluepairs" class="bottom_ruled">\r'...
+        'Name-Value Pair Arguments</h3>\r'...
+        '<div class="namevaluecontainer">\r'...
+        '<p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments.\r'...
+        ' <code>Name</code> is the argument name and <code>Value</code>\r'...
+        ' is the corresponding value. <code>Name</code> must appear \r'...
+        ' inside single quotes (<code>'' ''</code>). \r'...
+        ' You can specify several name and value pair arguments in any order as <code> \r'...
+        ' Name1,Value1,...,NameN,ValueN</code>.</p> \r'...
+        ' <span class="example_desc"><strong>Example:\r'...
+        '</strong><code>' codewithexample '</code>\r'...
+        '</span></div>']);
     
-    examplecode=listOptArgs{i,5};
-    datatype=listOptArgs{i,6};
     
-    optargsexp=[optargsexp sprintf(['<div class="expandableContent">\r'...
-        '<div id="inputarg_Display" class="clearfix">\r'...
-        '</div>\r'...
-        '<h3 id="input_argument_namevalue_display" class="expand">\r'...
-        '<span>\r'...
-        '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-        '<span class="argument_name"><code>' nameoptarg  '</code> \r'...
-        '&#8212;']) titloptarg sprintf(['</span></a><span class="example_desc">' shortdesc  '</span></span></h3>\r'...
-        '<div class="collapse">\r'...
-        '	<p>']) longdescription sprintf(['</p>\r'...
-        '	<p class="description_valueexample">\r'...
-        '       <strong>Example: </strong>' examplecode '</p>\r'...
-        '	<p class="datatypelist"><strong>Data Types: </strong><code>' datatype '</code></p>\r'...
-        '</div>\r'...
-        '</div>'])];
+    OptArgsNameValue='';
+    for i=1:size(listOptArgs,1);
+        nameoptarg=listOptArgs{i,1};
+        titloptarg=listOptArgs{i,2};
+        shortdesc=listOptArgs{i,3};
+        if strcmp(shortdesc,'Structure') && ~isempty(strfind(listOptArgs{i,4},'field'))
+            longdesc=listOptArgs{i,4};
+            
+            [inistructfield,finstructfield]=regexp(longdesc,'\s{8,18}\w*\s{0,8}=');
+            posREMARK=regexp(longdesc,'REMARK','once');
+            % If there is the string REMARK it means that all that which is after
+            % remark is a general statement which does not have to be contained in the
+            % table with the associated fields
+            if ~isempty(posREMARK)
+                boo=inistructfield<posREMARK;
+                inistructfield=inistructfield(boo);
+                finstructfield=finstructfield(boo);
+            end
+            % Insert all fields of inside listStruArgs
+            listOutArgs=cell(length(inistructfield),2);
+            for k=1:length(inistructfield)
+                % fin(i)-1 because character ':' does not have to be extracted
+                StructFieldName=longdesc(inistructfield(k):finstructfield(k)-1);
+                % Remove from string opti leading and trailing white spaces
+                StructFieldName=strtrim(StructFieldName);
+                
+                % Store name in the first column
+                listOutArgs{k,1}=StructFieldName;
+                % Store short description in the 3nd col of listOptArgs
+                if k<length(inistructfield)
+                    StructFieldCont=longdesc(finstructfield(k)+1:inistructfield(k+1));
+                else
+                    if ~isempty(posREMARK)
+                        StructFieldCont=longdesc(finstructfield(k)+1:posREMARK-1);
+                    else
+                        StructFieldCont=longdesc(finstructfield(k)+1:end);
+                    end
+                end
+                % Store name in the first column
+                listOutArgs{k,2}=StructFieldCont;
+            end
+            
+            
+            
+            Tablehtml='';
+            for k=1:length(inistructfield)
+                Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
+                    '<td><code>' listOutArgs{k,1} '</code></td>\r'...
+                    '<td>\r'...
+                    '<p>']) listOutArgs{k,2} sprintf(['</p>\r'...
+                    '</td>\r'...
+                    '</tr>'])];
+            end
+            
+            % Add the Remark after the table, if it is present
+            if ~isempty(posREMARK)
+                descrREMARK=longdesc(posREMARK:end);
+                descrREMARKHTML=formatHTML(descrREMARK);
+                
+                longdescription=[iniTable Tablehtml cloTable '<p>' descrREMARKHTML '</p>'];
+            else
+                longdescription=[iniTable Tablehtml cloTable];
+            end
+        else
+            longdescriptionHTML=formatHTML(listOptArgs{i,4});
+            
+            longdescription=longdescriptionHTML;
+        end
+        % datatype = type of data for that particular option
+        %     examplecode=['''Display'',''final'''];
+        %     datatype='char';
+        
+        examplecode=listOptArgs{i,5};
+        datatype=listOptArgs{i,6};
+        
+        OptArgsNameValue=[OptArgsNameValue sprintf(['<div class="expandableContent">\r'...
+            '<div id="inputarg_Display" class="clearfix">\r'...
+            '</div>\r'...
+            '<h3 id="input_argument_namevalue_display" class="expand">\r'...
+            '<span>\r'...
+            '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+            '<span class="argument_name"><code>' nameoptarg  '</code> \r'...
+            '&#8212;']) titloptarg sprintf(['</span></a><span class="example_desc">' shortdesc  '</span></span></h3>\r'...
+            '<div class="collapse">\r'...
+            '	<p>']) longdescription sprintf(['</p>\r'...
+            '	<p class="description_valueexample">\r'...
+            '       <strong>Example: </strong>' examplecode '</p>\r'...
+            '	<p class="datatypelist"><strong>Data Types: </strong><code>' datatype '</code></p>\r'...
+            '</div>\r'...
+            '</div>'])];
+    end
+    % CLOSE OPT ARGS NAME VALUE
 end
-% CLOSE OPT ARGS
 
-closeoptargs=sprintf(['</div>\r'...
+closeinputargs=sprintf(['</div>\r'...
     '</div>\r'...
     '</div>\r'...
     '</div>\r']);
-inputargs=[iniinputargs reqargs  optargs optargsexp closeoptargs];
+InputArgs=[iniReqInputArgs reqargs  OptArgsNameValueHeading OptArgsNameValue closeinputargs];
 
 
 %% CREATE OUTPUT ARGUMENTS SECTION OF HTML FILE
@@ -1887,14 +1989,19 @@ else
 end
 
 %% REFERENCES
+inipointAcknowledgements=regexp(fstring,'Acknowledgements:');
+if isempty(inipointAcknowledgements);
+    Acknowledgements='';
+end
 
 iniref=regexp(fstring,'References:');
 if isempty(iniref)
     warning('FSDA:missInp',['File ' name '.m does not contain string ''References:'''])
-    refsargs={''};
+   % refsargs={''};
+        References='';
+
 else
     
-    inipointAcknowledgements=regexp(fstring,'Acknowledgements:');
     
     
     inipointCopyright=regexp(fstring,'Copyright');
@@ -1960,24 +2067,25 @@ else
             endref=0;
             begreftoadd=begreftoaddtmp;
         end
-        
     end
     
     % Now check if there is a final open reference
     refsargs=refsargs(1:ij-1);
+    
+    
+    Referenceshtml='';
+    iniReferences=sprintf(['<div class="ref_sect" itemprop="content">\r'...
+        '<div class="bibliography">\r'...
+        '<h2 id="references">References</h2> \r']);
+    
+    for i=1:length(refsargs)
+        Referenceshtml=sprintf([Referenceshtml  '<div><p>' refsargs{i} '</p></div>\r']);
+    end
+    Referencesclose=sprintf(['</div>\r'...
+        '</div>']);
+    References=[iniReferences Referenceshtml Referencesclose];
 end
 
-Referenceshtml='';
-iniReferences=sprintf(['<div class="ref_sect" itemprop="content">\r'...
-    '<div class="bibliography">\r'...
-    '<h2 id="references">References</h2> \r']);
-
-for i=1:length(refsargs)
-    Referenceshtml=sprintf([Referenceshtml  '<div><p>' refsargs{i} '</p></div>\r']);
-end
-Referencesclose=sprintf(['</div>\r'...
-    '</div>']);
-References=[iniReferences Referenceshtml Referencesclose];
 
 %% ACKNOWLEDGEMENTS
 if ~isempty(Acknowledgements)
@@ -2000,8 +2108,8 @@ iniSeealso=sprintf(['<div class="ref_sect">\r'...
     '<p>\r']);
 
 iniref=regexp(fstring,'See also','once');
-endref=regexp(fstring,'References','once');
-seealsostr=fstring(iniref+8:endref-1);
+endref=regexp(fstring(iniref:end),'%','once');
+seealsostr=fstring(iniref+8:iniref+endref-2);
 
 % Remove : character and % character
 posColonSign=regexp(seealsostr,':');
@@ -2068,7 +2176,7 @@ closbody=sprintf(['</body>\r'...
 fclose(fileID);
 
 outstring=([titl metacontent sitecont sintaxhtml sintaxclose description  ....
-    examples inputargs outargs Moreabout References Ack Seealso clos insnav insbarra closbody]);
+    examples InputArgs outargs Moreabout References Ack Seealso clos insnav insbarra closbody]);
 
 file1ID=fopen([outputDir '\' name 'tmp.html'],'w');
 
@@ -2263,8 +2371,9 @@ if ~isempty(newl)
         end
         descrlongHTML=[descrlongHTML descrlong(newl(j+1):end)];
     end
+    descrlongHTML=[descrlongHTML '</p>'];
 else
     descrlongHTML=descrlong;
 end
-descrlongHTML=[descrlongHTML '</p>'];
+
 end
