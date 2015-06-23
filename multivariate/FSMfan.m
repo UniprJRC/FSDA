@@ -197,7 +197,7 @@ function out = FSMfan(Y,la0,varargin)
 
 
 %{
-    % EmiliaRomagna dataset (demographic variables).
+    % EmiliaRomagna data (demographic variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
