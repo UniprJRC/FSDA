@@ -130,7 +130,7 @@ function publishFS(file,varargin)
 % line is as follows
 % function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
 % output arguments are immediately known to the parser).
-% In the case of output argument publishFS checks if the first 120
+% In the case of output argument publishFS checks if the first 50
 % characters contain the words "which contains" or "containing" e.g.:
 %
 %              mdr:         n -init x 2
@@ -159,8 +159,8 @@ function publishFS(file,varargin)
 % If in the HTML file the user clicks on them the expdanded description
 % (that is what starts after the second full stop will appear).
 %
-% Alternatively, if the first 120 characters of each output argument do not
-% contain the words "which contains" or "containing" the following
+% Alternatively, if the first 50 characters of each output argument do not
+% contain the strings "which contains" or "containing" the following
 % convention is used. The first sentence after symbol ":" is assumed
 % to be the title of the output argument and in the HTML file it will
 % appear in bold face in the same line of the name of output
@@ -1728,7 +1728,7 @@ for i=1:nargout
         error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
     end
     
-    % substring to search start from Output:
+    % substring to search starting from Output:
     fstringsel=fstring(outsel(1):end);
     
     % The initial point of the string is 'listargouts{i}' is there is just
@@ -1910,11 +1910,12 @@ for i=1:nargout
         
     else
         % Check if string descrioutput contains the words 'which contains' or
-        % 'containing';
+        % 'containing'; in the first 'numcharcontains'
         poswhichcontains=regexp(descrioutput,'which contains');
         poscontaining=regexp(descrioutput,'containing');
+        numcharcontains=50;
         
-        if ~isempty(poswhichcontains) && poswhichcontains(1)<50
+        if ~isempty(poswhichcontains) && poswhichcontains(1)<numcharcontains
             preamble=descrioutput(1:poswhichcontains(1)-1);
             descrioutput=descrioutput(poswhichcontains(1)+14:end);
             % Remove word the at the beginning of the sentence and starts with
@@ -1927,7 +1928,7 @@ for i=1:nargout
             end
             descrioutput=strtrim(descrioutput);
             descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
-        elseif ~isempty(poscontaining) && poscontaining(1)<50
+        elseif ~isempty(poscontaining) && poscontaining(1)<numcharcontains
             preamble=descrioutput(1:poscontaining(1)-1);
             descrioutput=descrioutput(poscontaining(1)+10:end);
             % Remove word the at the beginning of the sentence and starts with
@@ -2340,8 +2341,17 @@ if evalCode==true
             listExi=strrep(listExi,'^','\^');
             listExi=strrep(listExi,'[','\[');
             listExi=strrep(listExi,']','\]');
+            listExi=strrep(listExi,'(','\(');
+            listExi=strrep(listExi,')','\)');
             
             iniout=regexp(outstring,listExi);
+            if length(iniout)<2
+                errmsg= [' Title of example \n''' listExi '''\n could not be found \n'...
+                    'Probably because the string contains special characters\n' ...
+                    'which cannot be interpreted by MATLAB function regexp'];
+                error('FSDA:publishFS:WrngOutFolder',errmsg)
+            end
+            
             finout=regexp(outstring,'</pre>');
             finout=finout(finout>iniout(2));
             % outstring(finout:finout+11)
