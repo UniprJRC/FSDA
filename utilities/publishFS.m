@@ -130,29 +130,67 @@ function publishFS(file,varargin)
 % line is as follows
 % function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
 % output arguments are immediately known to the parser).
-% For each output argument, the first sentence after symbol ":" is assumed
+% In the case of output argument publishFS checks if the first 120
+% characters contain the words "which contains" or "containing" e.g.:
+%
+%              mdr:         n -init x 2
+%                           matrix containing the
+%                           monitoring of minimum deletion residual.
+%                           1st col = fwd search
+%                           ........
+%                Un:        (n-init) x 11 Matrix
+%                           which contains the unit(s) included in the
+%                           subset at each step of the search.
+%                           ...........
+%
+% In this case what is after the strings "which contains" or "containing"
+% will appear in bold face as the title of the output argument. What is
+% before the strings "which contains" or "containing" will appear in the
+% second row.
+%
+% For example, the above lines will be processed as follows:
+%
+%      mdr   -  Monitoring of minimum deletion residual
+%      n -init x 2 matrix
+%
+%      Un    - unit(s) included in the subset at each step of the search.
+%      (n-init) x 11 Matrix
+%
+% If in the HTML file the user clicks on them the expdanded description
+% (that is what starts after the second full stop will appear).
+%
+% Alternatively, if the first 120 characters of each output argument do not
+% contain the words "which contains" or "containing" the following
+% convention is used. The first sentence after symbol ":" is assumed
 % to be the title of the output argument and in the HTML file it will
 % appear in bold face in the same line of the name of output
-% argument. What starts with the second sentence is the full
-% description of the output argument. For example, suppose that the output
-% of a procedure contains the objects mdr and Un, the accepted format
+% argument. The second sentence (words between first and second full stop)
+% will appear in the second row. The third sentence is the full description
+% of the output argument. For example, suppose that the output of a
+% procedure contains the objects mdr and Un, the accepted format
 % is as follows.
+%
 %              %  Output:
 %              mdr:         Minimum deletion residual. Matrix.  n -init x 2
 %                           matrix which contains the
 %                           monitoring of minimum deletion residual.
-%                           1st col = fwd search index (from init to n-1).
-%                           2nd col = minimum deletion residual.
-%                           REMARK: if in a certain step of the search
-%                           matrix is singular, this procedure checks how
-%                           many observations produce a singular matrix.
-%              Un:           (n-init) x 11 Matrix which contains the
-%                           unit(s) included
-%                           in the subset at each step of the search.
-%                           REMARK: in every step the new subset is
-%                           compared with the old subset. Un contains the
-%                           unit(s) present in the new subset but not in
-%                           the old one.
+%                           1st col = ...
+%              Un:          Units included. Matrix. (n-init) x 11 Matrix
+%                           which contains the unit(s) included in the
+%                           subset at each step of the search.
+%                           REMARK: in every step ....
+%
+% The above lines will be processed as follows:
+%
+%      mdr   -  Minimum deletion residual
+%      Matrix
+%
+%      Un    - Units included.
+%      Matrix
+%
+% If in the HTML file the user clicks on them the expdanded description
+% (that is what starts after the second full stop will appear).
+%
 % IMPORTANT NOTICE: Similarly to what happend for each input argument, if
 % an output argument is a structure, publishFS automatically checks if it
 % contains the words "structure" and "field". In this case, the fields of
@@ -1499,7 +1537,7 @@ for i=1:nTOTargin
         
         
     end
-    if i==nREQargin
+    if i==nREQargin && i<nTOTargin
         reqargs = [reqargs sprintf(['<div id="optionalarguments" class="clearfix">\r'...
             '</div>\r' ...
             '<h3 id="namevaluepairs" class="bottom_ruled">\r'...
@@ -1874,7 +1912,9 @@ for i=1:nargout
         % Check if string descrioutput contains the words 'which contains' or
         % 'containing';
         poswhichcontains=regexp(descrioutput,'which contains');
-        if ~isempty(poswhichcontains) && poswhichcontains(1)<120
+        poscontaining=regexp(descrioutput,'containing');
+        
+        if ~isempty(poswhichcontains) && poswhichcontains(1)<50
             preamble=descrioutput(1:poswhichcontains(1)-1);
             descrioutput=descrioutput(poswhichcontains(1)+14:end);
             % Remove word the at the beginning of the sentence and starts with
@@ -1887,21 +1927,26 @@ for i=1:nargout
             end
             descrioutput=strtrim(descrioutput);
             descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
+        elseif ~isempty(poscontaining) && poscontaining(1)<50
+            preamble=descrioutput(1:poscontaining(1)-1);
+            descrioutput=descrioutput(poscontaining(1)+10:end);
+            % Remove word the at the beginning of the sentence and starts with
+            % uppercase
+            StartsWithThe=regexp(descrioutput,'the');
+            if StartsWithThe(1)<4
+                descrioutput=descrioutput(StartsWithThe(1)+4:end);
+            end
+            descrioutput=strtrim(descrioutput);
+            descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
         else
-            poscontaining=regexp(descrioutput,'containing');
-            if ~isempty(poscontaining) && poscontaining(1)<120
-                preamble=descrioutput(1:poscontaining(1)-1);
-                descrioutput=descrioutput(poscontaining(1)+10:end);
-                % Remove word the at the beginning of the sentence and starts with
-                % uppercase
-                StartsWithThe=regexp(descrioutput,'the');
-                if StartsWithThe(1)<4
-                    descrioutput=descrioutput(StartsWithThe(1)+4:end);
-                end
-                descrioutput=strtrim(descrioutput);
-                descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
+            posfullstops=regexp(descrioutput,'\.[1-3\s]');
+            if length(posfullstops)<2
+                warn1=[' Wrong format for ouptut argument ' outi '\n'];
+                error('FSDA:publishFS:WrongOut',[ warn1 'Sentence ''' descrioutput ''' must contain at least two full stops'])
+                
             else
-                preamble='TOWRITE';
+                preamble=descrioutput(posfullstops(1)+1:posfullstops(2)-1);
+                descrioutput=[descrioutput(1:posfullstops(1)) descrioutput(posfullstops(2)+1:end)];
             end
         end
         
@@ -1997,9 +2042,9 @@ end
 iniref=regexp(fstring,'References:');
 if isempty(iniref)
     warning('FSDA:missInp',['File ' name '.m does not contain string ''References:'''])
-   % refsargs={''};
-        References='';
-
+    % refsargs={''};
+    References='';
+    
 else
     
     
