@@ -2388,12 +2388,22 @@ if evalCode==true
                 listExi=strrep(listExi,'^','\^');
                 listExi=strrep(listExi,'[','\[');
                 listExi=strrep(listExi,']','\]');
+                listExi=strrep(listExi,'(','\(');
+                listExi=strrep(listExi,')','\)');
+                listExi=strrep(listExi,'.','\.');
                 
                 iniout=regexp(outstring,listExi);
                 if length(iniout)>2
                     disp(['Duplicate name for: ' listExi ' found'])
                     warning('FSDA:WrongArg','There are examples with the same title, please use a title which is unique')
+                elseif isempty(iniout)
+                    errmsg= [' Title of example \n''' listExi '''\n could not be found \n'...
+                        'Probably because the string contains special characters\n' ...
+                        'which cannot be interpreted by MATLAB function regexp'];
+                    error('FSDA:publishFS:WrngEx',errmsg)
+                else
                 end
+                
                 iniout=iniout(1);
                 
                 finout=regexp(outstring,'</pre>');

@@ -5,8 +5,8 @@ function [out]=FSR(y,X,varargin)
 %
 % Required input arguments:
 %
-%    y: A vector with n elements that contains the response variable. y can
-%       be both a row of column vector.
+%    y: Response variable. Vector. A vector with n elements that contains
+%       the response variable. y can be either a row or a column vector.
 %    X: Data matrix of explanatory variables (also called 'regressors') of
 %       dimension (n x p-1). Rows of X represent observations, and columns
 %       represent variables.
