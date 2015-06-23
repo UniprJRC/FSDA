@@ -21,8 +21,32 @@ function ctun = HAbdp(bdp,p,abc)
 %
 % Output:
 %
-%  ctun = scalar of Hampel rho function associated to that particular
-%         breakdown point
+%  ctun = Requested tuning constat. Scalar. Tuning constatnt of Hampel rho
+%         function associated to requestedt particular breakdown point
+%
+%
+% More About:
+% Function HApsi transforms vector u as follows.
+%  \[
+%  HApsi(u)  = \left\{   
+%  \begin{array}{cc}
+%    u & |u| <= a                                       \\
+%    a \times sign(u) & a <= |u| < b                    \\
+%    a \frac{c-|u|}{c-b} \times sign(u) & b <= |u| <  c \\
+%    0 & |u| >= c 
+%  \end{array} \right.
+% \]
+%
+%             where $a$= ctun *param(1).
+%                   $b$= ctun *param(2).
+%                   $c$= ctun *param(3).
+%
+%             The default is
+%                   $a$= 2*ctun. 
+%                   $b$= 4*ctun. 
+%                   $c$= 8*ctun. 
+%
+%	It is necessary to have 0 <= a <= b <= c
 %
 % See also: TBbdp, HYPbdp, OPTbdp
 %

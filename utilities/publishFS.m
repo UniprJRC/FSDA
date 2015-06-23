@@ -331,10 +331,8 @@ function publishFS(file,varargin)
 %                                         computing the estimate
 %
 % 9) If the .m file contains string  "More About:" a particular section
-% called "More about" in the HTML file will be created. The format of what
-% is below "More about:" is as follows. The first sentence is associated with
-% the title  and it will be expandaible in the HTML file.
-% More precisely, what is after the first sentence will be shown'.
+% called "More about" in the HTML file will be created (just before See
+% Also).
 % 10) If the .m file contains string 'Acknowledgements:' then a particular
 % section named "Acknowledgements" will be created just above the
 % references.
@@ -1427,7 +1425,7 @@ for i=1:nTOTargin
     
     [inifullstops]=regexp(DescrInputToSplit,'\.[\s1-3]');
     if isempty(inifullstops)
-        warning('FSDA:publishFS:WrongInp',['Sentence''' DescrInputToSplit '''must contain at least two full stops'])
+        warning('FSDA:publishFS:WrongInp',['Input option: ''' inpi '''\n Sentence''' DescrInputToSplit '''must contain at least two full stops'])
         % error('Wrong input')
     end
     shortdesc=strtrim(DescrInputToSplit(1:inifullstops(1)-1));
@@ -1779,12 +1777,27 @@ for i=1:nargout
             posPercentageSigns=regexp(MoreAbout,'%');
             MoreAbout(posPercentageSigns)=[];
             
-            newl=regexp(MoreAbout,'\r[\s0-200]\r');
-            MoreAboutHTML=MoreAbout(1:newl(1));
-            for j=1:(length(newl)-1)
-                MoreAboutHTML=[MoreAboutHTML '</p> <p>' MoreAbout(newl(j):newl(j+1))];
-            end
+            % Check if symbols \[ \] are present
+            % If this is the case it is necessary to split Moreabout into
+            % the text_part and the Mathjax_part and apply HTML format just
+            % to the complementary of MathJax part
+            iniMathJax=regexp(MoreAbout,'\\\[');
+            finMathJax=regexp(MoreAbout,'\\\]');
             
+            if ~isempty(iniMathJax)
+                MoreA=formatHTML(MoreAbout(1:iniMathJax-1));
+                for k=1:length(iniMathJax)
+                    MoreA=[MoreA MoreAbout(iniMathJax(k):finMathJax(k)+1)];
+                    if k==length(iniMathJax)
+                        MoreA=[MoreA formatHTML(MoreAbout(finMathJax(k)+2:end))];
+                    else
+                        MoreA=[MoreA formatHTML(MoreAbout(finMathJax(k)+2:iniMathJax(k+1)))];
+                    end
+                end
+                MoreAboutHTML=MoreA;
+            else
+                MoreAboutHTML=formatHTML(MoreAbout);
+            end
         else
             MoreAboutHTML='';
             inipointMoreAbout=Inf;
@@ -1821,14 +1834,14 @@ for i=1:nargout
     end
     
     % Check if the output is a structure. If this is the case
-    checkifstructure=regexp(descrioutput,[outi '\.'],'once');
+    checkifstructure=regexp(descrioutput,[outi '\.\w'],'once');
     
     
     if ~isempty(checkifstructure)
         [ini,fin]=regexp(descrioutput,['\s{0,8}' outi '\.\w*\s{0,8}=']);
         if isempty(ini)
             disp('Probably ":" symbols  must be replaced with "=" symbols in out description')
-            error('FSDA:MissingArg',['Parser cannot find string' outi '.xxxx = for output structure'])
+            error('FSDA:MissingArg',['Parser cannot find string \n''' outi '.xxxx'' = \n for output structure ' outi])
         else
         end
         
@@ -2014,7 +2027,7 @@ outargs=[inioutargs outargshtml closeoutargs];
 %% CREATE MORE ABOUT SECTION
 
 if ~isempty(MoreAboutHTML)
-    Moreabout=sprintf(['<div class="moreabout ref_sect">\r'...
+    Moreabout=[sprintf(['<div class="moreabout ref_sect">\r'...
         '<h2 id="moreabout">More About</h2>\r'...
         '<div class="expandableContent">\r'...
         '<p class="switch">\r'...
@@ -2025,11 +2038,11 @@ if ~isempty(MoreAboutHTML)
         '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
         '<span>Methodological Details </span></a></span></h3>\r'...
         '<div class="collapse">\r'...
-        '<p>' MoreAboutHTML ' </p>\r'...
+        '<p>']) MoreAboutHTML sprintf(['</p>\r'...
         '</div>\r'...
         '</div>\r'...
         '</div>\r'...
-        '</div>']);
+        '</div>'])];
 else
     Moreabout='';
 end
@@ -2413,8 +2426,8 @@ end
 % This inner function  has the purpose of add symbols </p> <p> every time
 % a full stop is followed by a series of space and then a carriage return.
 function descrlongHTML=formatHTML(descrlong)
-newlinewithFullStop=regexp(descrlong,'[\.\s1-200]\r');
-newlinewithColon=regexp(descrlong,'[\:\s1-200]\r');
+newlinewithFullStop=regexp(descrlong,'[\.\s1-50]\r');
+newlinewithColon=regexp(descrlong,'[\:\s1-50]\r');
 newl=sort([newlinewithColon newlinewithFullStop]);
 if ~isempty(newl)
     descrlongHTML=['<p>' descrlong(1:newl(1))];

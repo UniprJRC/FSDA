@@ -1,65 +1,76 @@
 function [bdp,eff] = HAc(ctun,p,varargin)
-%HAc computes breakdown point and efficiency associated with constant c for
-%hyperbolic tangent estimator (for a given value of k=sup CVC)
+%HAc computes breakdown point and efficiency associated with constant c 
 %
-%<a href="matlab: docsearchFS('hypc')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HAc')">Link to the help function</a>
 %
 %
 %
 %  Required input arguments:
 %
-%    ctun :     scalar greater than 0 which controls the robustness/efficiency of the estimator
-%    p :        number of response variables of the dataset (for regression p=1)
+%    ctun :     tuning constant c. Scalar. Scalar greater than 0 which
+%               controls the robustness/efficiency of the estimator
+%    p :        number of response variables. Scalar. Number of variables of
+%               the  dataset (for regression p=1)
 %               UP TO NOW p=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE
 %               ANALYSIS
 %
 %  Optional input arguments:
 %
-%   shapeeff : If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location 
-%TODO:Hac:shapeeff           
-%      param : vector of length 3 specifying the parameters a, b and c of the
-%              weight function of the hyperbolic tangent estimator.
+%      param : tuning parameters. Vector. Vector of length 3 specifying the parameters a, b and c of the
+%              weight function of the Hampel estimator.
 %              param(1)=a param(2)=b param(3)=c
 %              If these values are not supplied they will be automatically
 %              set to a=2, b=4 c=8
+%               Example - 'param',[1.5,3.5,8] 
+%               Data Types - double
+%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency is referred to the shape else (default)
+%              is referred to the location. TODO:Hac:shapeeff  
+%               Example - 'shapeeff',1 
+%               Data Types - double
 %
 % Output:
 %
-%     bdp      :  scalar, breakdown point associated to the supplied
-%                 value of c
-%     eff      :  scalar, efficiency associated to the supplied
-%                 value of c
+%     bdp      :  bdp. Scalar. Breakdown point associated to the supplied
+%                 value of c for Hampel rho function 
+%     eff      :  eff. Scalar. Efficiency associated to the supplied
+%                 value of c for Hampel rho function 
 %
-% Function HApsi transforms vector u as follows
+% More About:
+% Function HApsi transforms vector u as follows.
+%  \[
+%  HApsi(u)  = \left\{   
+%  \begin{array}{cc}
+%    u & |u| <= a                                       \\
+%    a \times sign(u) & a <= |u| < b                    \\
+%    a \frac{c-|u|}{c-b} \times sign(u) & b <= |u| <  c \\
+%    0 & |u| >= c 
+%  \end{array} \right.
+% \]
 %
-% HApsi(u) = 	{ u,			                               |u| <= a,
-%		        { a*sign(u),		                      a <= |u| < b,
-%		        { a((c-|u|)/(c-b))*sign(u),	                 b <= |u| <  c,
-%		        { 0,			                                |u| >= c.
+%             where $a$= ctun *param(1).
+%                   $b$= ctun *param(2).
+%                   $c$= ctun *param(3).
 %
-%             where a= ctuning(2) *ctuning(1)
-%                   b= ctuning(3) *ctuning(1)
-%                   c= ctuning(4) *ctuning(1)
+%             The default is
+%                   $a$= 2*ctun. 
+%                   $b$= 4*ctun. 
+%                   $c$= 8*ctun. 
 %
-%             The default (if input ctuning is a scalar) is
-%                   a= 2*ctuning
-%                   b= 4*ctuning
-%                   c= 8*ctuning
+%	It is necessary to have 0 <= a <= b <= c
 %
-%	It is necessary to have 0 <= a <= b <= c%%
-%
+% See also: HYPc, TB, OPTc
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('hypc')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HAc')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:
 
 %{
+    %% bdp and eff as function of c.
     %Analysis of breakdown point and asymptotic efficiency
     %at the normal distribution as a function of c in regression.
     cc=0.15:0.05:1.2;
