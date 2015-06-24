@@ -8,8 +8,9 @@ function out = FSMtra(Y,varargin)
 %
 % Required input arguments:
 %
-% Y :           Y = n x v data matrix; n observations
-%               and v variables
+% Y :           Data matrix. n x v numeric matrix.
+%               Input data for which to compute the transformation
+%               parameters, specified as an n-by-v matrix
 %               Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
@@ -19,18 +20,17 @@ function out = FSMtra(Y,varargin)
 %
 % Optional input arguments:
 %
-%    family :    string which identifies the family of transformations which
+%    family :   string which identifies the family of transformations which
 %               must be used. Character. Possible values are 'BoxCox' (deafult) or
 %               'YJ'
 %               The Box-Cox family of power transformations equals
-%               (y^{?}-1)/? for ? not equal to zero, and
-%               log(y)
-%               if ? = 0.
+%               $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero, and
+%               $\log(y)$ if $\lambda = 0$.
 %               The Yeo-Johnson (YJ) transformation is the Box-Cox
 %               transformation of y+1 for nonnegative values, and of |y|+1 with
-%               parameter 2-? for y negative.
-%               The basic power transformation returns y^{?} if ? is not
-%               zero, and log(?) otherwise.
+%               parameter 2-lambda for y negative.
+%               The basic power transformation returns $y^{\lambda}$ if
+%               $\lambda$ is not zero, and $\log(\lambda)$  otherwise.
 %               Remark. BoxCox and the basic power family can be used just
 %               if input y is positive. YeoJohnson family of
 %               transformations does not have this limitation.
