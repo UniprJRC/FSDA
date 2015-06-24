@@ -1,13 +1,14 @@
-function psiHAder = HApsider(u, ctuning,varargin)
+function psiHAder = HApsider(u, ctuning)
 %HApsider computes derivative of psi function  using Hampel proposal
 %
 %<a href="matlab: docsearchFS('HApsider')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    ctuning :  scalar or vector of length 4 which specifies the value of the tuning
+%    ctuning :  tuning parameters. Scalar or Vector. Scalar or vector of length 4 which specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed values of paramters a, b, c
@@ -22,23 +23,41 @@ function psiHAder = HApsider(u, ctuning,varargin)
 %                resulting influence function is nearly identical to the
 %                biweight with parameter 8.
 %
-% Function HApsi transforms vector u as follows
+% Optional input arguments:
 %
-% HApsider(u) = { 1,			                               |u| <= a,
-%		        { 0,                                           a <= |u| < b,
-%		        { -a/(c-b),                                     b <= |u| <  c,
-%		        { 0,			                                |u| >= c.
+%  Output:
 %
-%             where a= ctuning(2) *ctuning(1)
-%                   b= ctuning(3) *ctuning(1)
-%                   c= ctuning(4) *ctuning(1)
+%   psiHAder :     n x 1 vector which contains the values of derivative of Hampel psi(u)
+%                function associated to the residuals or Mahalanobis
+%                distances for the n units of the sample.
+%
+%
+% More About:
+%
+% Function HApsider transforms vector u as follows
+%
+%  \[
+%  HApsi(u)  = \left\{   
+%  \begin{array}{cc}
+%    1 & |u| <= a                                       \\
+%    0 & a <= |u| < b                    \\
+%     -\frac{a}{c-b}  & b <= |u| <  c \\
+%    0 & |u| >= c 
+%  \end{array} \right.
+% \]
+%
+%             where $a$= ctuning(2) *ctuning(1).
+%                   $b$= ctuning(3) *ctuning(1).
+%                   $c$= ctuning(4) *ctuning(1).
 %              
 %             The default (if input ctuning is a scalar) is  
-%                   a= 2*ctuning
-%                   b= 4*ctuning
-%                   c= 8*ctuning
+%                   $a$= 2*ctuning.
+%                   $b$= 4*ctuning.
+%                   $c$= 8*ctuning.
 %
-%	It is necessary to have 0 <= a <= b <= c%
+%	It is necessary to have 0 <= $a$ <= $b$ <= $c$
+%
+% See also: TBpsix, HYPpsix, OPTpsix
 %
 % References:
 %

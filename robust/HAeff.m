@@ -3,23 +3,60 @@ function ceff = HAeff(eff,v,abc)
 %
 %  Required input arguments:
 %
-%    eff:       scalar which contains the required efficiency (of location
-%               of scale estimator)
+%    eff:       efficiency. Scalar.  Scalar which contains the required efficiency (of location
+%               or scale estimator).
 %               Generally eff=0.85, 0.9 or 0.95
-%    v :        scalar, number of response variables
+%    v :        number of response variables. Scalar. Number of variables of
+%               the  dataset (for regression v=1)
+%               UP TO NOW v=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE
+%               ANALYSIS
 %
 %
 %  Optional input arguments:
 %
-%     abc     : vector of length 3 which contains the parameters of Hampel
-%               estimator. If vector abc is not specified it is set equal
-%               to [2, 4, 8]
+%     abc     : parameters of Hampel estimator. Vector. Vector of length 3
+%               which contains the parameters of Hampel estimator. If
+%               vector abc is not specified it is set equal to [2, 4, 8]
+%               Example - 'abc',[1.5,3.5,8]
+%               Data Types - double
 %
 %
 % Output:
 %
-%  c = scalar of Hampel estimator associated to the nominal location
-%  efficiency
+%  ceff : Requested tuning constant. Scalar. Tuning constatnt of Hampel rho
+%         function associated to requested value of efficiency
+%
+%
+% More About:
+%
+% Function HApsi transforms vector u as follows.
+%  \[
+%  HApsi(u)  = \left\{   
+%  \begin{array}{cc}
+%    u & |u| <= a                                       \\
+%    a \times sign(u) & a <= |u| < b                    \\
+%    a \frac{c-|u|}{c-b} \times sign(u) & b <= |u| <  c \\
+%    0 & |u| >= c 
+%  \end{array} \right.
+% \]
+%
+%             where $a$= ctun *param(1).
+%                   $b$= ctun *param(2).
+%                   $c$= ctun *param(3).
+%
+%             The default is
+%                   $a$= 2*ctun. 
+%                   $b$= 4*ctun. 
+%                   $c$= 8*ctun. 
+%
+%	It is necessary to have 0 <= a <= b <= c
+%
+% See also: TBeff, HYPeff, OPTeff
+%
+% References:
+%
+% D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and
+% Exploratory Data Analysis Wiley, New York.
 %
 % Copyright 2008-2015.
 % Written by FSDA team

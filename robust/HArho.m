@@ -1,16 +1,17 @@
-function rhoHA = HArho(u, ctuning,varargin)
+function rhoHA = HArho(u, ctuning)
 %HArho computes rho function  using Hampel proposal
 %
 %<a href="matlab: docsearchFS('harho')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    ctuning :  scalar or vector of length 4 which specifies the value of the tuning
+%    ctuning :  tuning parameters. Scalar or Vector. Scalar or vector of length 4 which specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
-%                and the prefixed values of parameters a, b, c
+%                and the prefixed values of paramters a, b, c
 %                ctuning(1) = tuning constant which will multiply
 %                parameters a, b and c of Hampel rho (psi) function
 %                ctuning(2) = paramter a of Hampel rho (psi) function
@@ -23,33 +24,43 @@ function rhoHA = HArho(u, ctuning,varargin)
 %                biweight with parameter 8.
 %
 %
+% Optional input arguments:
+%
+%
 %  Output:
 %
 %
 %   rhoHA :     n x 1 vector which contains the Hampel rho
 %                associated to the residuals or Mahalanobis distances for
-%                the n units of the sample
+%                the n units of the sample.
+%
+% More About:
 %
 % Function HArho transforms vector u as follows
 %
-% HArho(u) = 	{ u^2/2,			                               |u| <= a,
-%		        { a*|u|-0.5 a^2,		                        a <= |u| < b,
-%		        { ab-0.5a^2+0.5*(c-b)*a(1- ((c-|u|)/(c-B))^2 ),	  b <= |u| <  c,
-%		        { ab-0.5a^2+0.5*(c-b)*a,			              |u| >= c.
+%  \[
+%  HArho(u)  = \left\{   
+%  \begin{array}{cc}
+%    \frac{u^2}{2} & |u| <= a                                       \\
+%    a \times |u| -0.5 a^2 & a <= |u| < b                    \\
+%    ab-0.5a^2+0.5*(c-b)*a(1- \left( \frac{c-|u|}{c-b}\right)^2 )  & b <= |u| <  c \\
+%    ab-0.5a^2+0.5*(c-b)*a & |u| >= c 
+%  \end{array} \right.
+% \]
 %
-%             where a= ctuning(2) *ctuning(1)
-%                   b= ctuning(3) *ctuning(1)
-%                   c= ctuning(4) *ctuning(1)
-%              
-%             The default (if input ctuning is a scalar) is  
-%                   a= 2*ctuning
-%                   b= 4*ctuning
-%                   c= 8*ctuning
+%             where $a$= ctun *ctuning(2).
+%                   $b$= ctun *ctuning(3).
+%                   $c$= ctun *ctuning(4).
+%
+%             The default is
+%                   $a$= 2*ctun. 
+%                   $b$= 4*ctun. 
+%                   $c$= 8*ctun. 
 %
 %	It is necessary to have 0 <= a <= b <= c
 %
 %
-% See also HYPrho, Tbrho, OPTrho
+% See also HYPrho, TBrho, OPTrho
 %
 %
 % References:
@@ -62,7 +73,7 @@ function rhoHA = HArho(u, ctuning,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('harho')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HArho')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

@@ -1,13 +1,14 @@
-function psiHA = HApsi(u, ctuning,varargin)
+function psiHA = HApsi(u, ctuning)
 %HApsi computes psi function  using Hampel proposal
 %
 %<a href="matlab: docsearchFS('HApsi')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    ctuning :  scalar or vector of length 4 which specifies the value of the tuning
+%    ctuning :  tuning parameters. Scalar or Vector. Scalar or vector of length 4 which specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed values of paramters a, b, c
@@ -23,30 +24,41 @@ function psiHA = HApsi(u, ctuning,varargin)
 %                biweight with parameter 8.
 %
 %
+% Optional input arguments:
+%
 %  Output:
 %
 %
 %   psiHA :     n x 1 vector which contains the values of Hampel psi
 %                function associated to the residuals or Mahalanobis
-%                distances for the n units of the sample
+%                distances for the n units of the sample.
 %
-% Remark: function HApsi transforms vector u as follows
 %
-% HApsi(u) = 	{ u,			                               |u| <= a,
-%		        { a*sign(u),		                      a <= |u| < b,
-%		        { a((c-|u|)/(c-b))*sign(u),	                 b <= |u| <  c,
-%		        { 0,			                                |u| >= c.
+% More About:
 %
-%             where a= ctuning(2) *ctuning(1)
-%                   b= ctuning(3) *ctuning(1)
-%                   c= ctuning(4) *ctuning(1)
-%              
-%             The default (if input ctuning is a scalar) is  
-%                   a= 2*ctuning
-%                   b= 4*ctuning
-%                   c= 8*ctuning
+% Function HApsi transforms vector u as follows.
+%  \[
+%  HApsi(u)  = \left\{   
+%  \begin{array}{cc}
+%    u & |u| <= a                                       \\
+%    a \times sign(u) & a <= |u| < b                    \\
+%    a \frac{c-|u|}{c-b} \times sign(u) & b <= |u| <  c \\
+%    0 & |u| >= c 
+%  \end{array} \right.
+% \]
 %
-%	It is necessary to have 0 <= a <= b <= c%
+%             where $a$= ctun *ctuning(2).
+%                   $b$= ctun *ctuning(3).
+%                   $c$= ctun *ctuning(4).
+%
+%             The default is
+%                   $a$= 2*ctun. 
+%                   $b$= 4*ctun. 
+%                   $c$= 8*ctun. 
+%
+%	It is necessary to have 0 <= a <= b <= c
+%
+% See also: TBpsi, HYPpsi, OPTpsi
 %
 % References:
 %
@@ -66,7 +78,7 @@ function psiHA = HApsi(u, ctuning,varargin)
 %{
 
     % Obtain bottom panel of Figure 11.10 p. 375 of
-    % Hoaglin et al. (1987)
+    % Hoaglin et al. (1987).
     x=-9:0.1:9;
     psiHA=HApsi(x,1);
     plot(x,psiHA)

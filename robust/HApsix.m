@@ -1,13 +1,14 @@
-function psiHAx = HApsix(u, ctuning,varargin)
+function psiHAx = HApsix(u, ctuning)
 %HApsix computes psi function  using Hampel proposal times x
 %
 %<a href="matlab: docsearchFS('HApsix')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    ctuning :  scalar or vector of length 4 which specifies the value of the tuning
+%    ctuning :  tuning parameters. Scalar or Vector. Scalar or vector of length 4 which specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed values of paramters a, b, c
@@ -22,23 +23,42 @@ function psiHAx = HApsix(u, ctuning,varargin)
 %                resulting influence function is nearly identical to the
 %                biweight with parameter 8.
 %
+% Optional input arguments:
+%
+%  Output:
+%
+%
+%   psiHAx :     n x 1 vector which contains the values of Hampel psi(u)*u
+%                function associated to the residuals or Mahalanobis
+%                distances for the n units of the sample.
+%
+%
+% More About:
+%
 % Function HApsix transforms vector u as follows
 %
-% HApsi(u) = 	{ u^2,			                               |u| <= a,
-%		        { a*sign(u)*u,		                      a <= |u| < b,
-%		        { a((c-|u|)/(c-b))*sign(u)*u,	                 b <= |u| <  c,
-%		        { 0,			                                |u| >= c.
+%  \[
+%  HApsi(u)  = \left\{   
+%  \begin{array}{cc}
+%    u^2 & |u| <= a                                       \\
+%    a \times sign(u)u & a <= |u| < b                    \\
+%    a \frac{c-|u|}{c-b} \times sign(u)\times u & b <= |u| <  c \\
+%    0 & |u| >= c 
+%  \end{array} \right.
+% \]
 %
-%             where a= ctuning(2) *ctuning(1)
-%                   b= ctuning(3) *ctuning(1)
-%                   c= ctuning(4) *ctuning(1)
+%             where $a$= ctuning(2) *ctuning(1).
+%                   $b$= ctuning(3) *ctuning(1).
+%                   $c$= ctuning(4) *ctuning(1).
 %              
 %             The default (if input ctuning is a scalar) is  
-%                   a= 2*ctuning
-%                   b= 4*ctuning
-%                   c= 8*ctuning
+%                   $a$= 2*ctuning.
+%                   $b$= 4*ctuning.
+%                   $c$= 8*ctuning.
 %
-%	It is necessary to have 0 <= a <= b <= c
+%	It is necessary to have 0 <= $a$ <= $b$ <= $c$
+%
+% See also: TBpsix, HYPpsix, OPTpsix
 %
 % References:
 %
@@ -57,8 +77,8 @@ function psiHAx = HApsix(u, ctuning,varargin)
 
 %{
 
-    % Obtain bottom panel of Figure 11.10 p. 375 of
-    % Hoaglin et al. (1987)
+    %% Obtain bottom panel of Figure 11.10. 
+    % p. 375 of Hoaglin et al. (1987)
     x=-9:0.1:9;
     psiHAx=HApsix(x,1);
     plot(x,psiHAx)

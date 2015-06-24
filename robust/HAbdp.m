@@ -21,8 +21,8 @@ function ctun = HAbdp(bdp,p,abc)
 %
 % Output:
 %
-%  ctun = Requested tuning constat. Scalar. Tuning constatnt of Hampel rho
-%         function associated to requestedt particular breakdown point
+%  ctun : Requested tuning constant. Scalar. Tuning constatnt of Hampel rho
+%         function associated to requested breakdown point
 %
 %
 % More About:
@@ -50,6 +50,11 @@ function ctun = HAbdp(bdp,p,abc)
 %
 % See also: TBbdp, HYPbdp, OPTbdp
 %
+% References:
+%
+% D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and
+% Exploratory Data Analysis Wiley, New York.
+
 % Copyright 2008-2015.
 % Written by FSDA team
 %

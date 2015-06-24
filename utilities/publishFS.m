@@ -373,7 +373,9 @@ function publishFS(file,varargin)
 % ". one_or_more_space symbol_of carriage_return" the parser adds HTML
 % string '</p>/<p>' after just symbol "."  or symbol ":".
 % This is done using subfunction named formatHTML at the end of this file.
-%
+% subfunction formatHTMLwithMATHJAX is even more general because it applies
+% function formatHTML just to the parts of the input string which are not
+% enclosed inside symbols '\[ \]'.
 %
 %
 % Optional input arguments:
@@ -617,8 +619,7 @@ for i=1:length(ini)
         try
             descrtype=strtrim(descrtosplit(inifullstops(1)+1:inifullstops(2)-1));
         catch
-            warning('FSDA:publishFS:WrongInp',['Option: ' listOptArgs{ij,1}])
-            error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
+            error('FSDA:publishFS:WrongInp',['Option: ' listOptArgs{ij,1} '\nSentence\n''' strtrim(descrtosplit) '''\nmust contain at least two full stops'])
         end
         
         
@@ -1776,28 +1777,7 @@ for i=1:nargout
             MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
             posPercentageSigns=regexp(MoreAbout,'%');
             MoreAbout(posPercentageSigns)=[];
-            
-            % Check if symbols \[ \] are present
-            % If this is the case it is necessary to split Moreabout into
-            % the text_part and the Mathjax_part and apply HTML format just
-            % to the complementary of MathJax part
-            iniMathJax=regexp(MoreAbout,'\\\[');
-            finMathJax=regexp(MoreAbout,'\\\]');
-            
-            if ~isempty(iniMathJax)
-                MoreA=formatHTML(MoreAbout(1:iniMathJax-1));
-                for k=1:length(iniMathJax)
-                    MoreA=[MoreA MoreAbout(iniMathJax(k):finMathJax(k)+1)];
-                    if k==length(iniMathJax)
-                        MoreA=[MoreA formatHTML(MoreAbout(finMathJax(k)+2:end))];
-                    else
-                        MoreA=[MoreA formatHTML(MoreAbout(finMathJax(k)+2:iniMathJax(k+1)))];
-                    end
-                end
-                MoreAboutHTML=MoreA;
-            else
-                MoreAboutHTML=formatHTML(MoreAbout);
-            end
+            MoreAboutHTML=formatHTMLwithMATHJAX(MoreAbout);
         else
             MoreAboutHTML='';
             inipointMoreAbout=Inf;
@@ -2453,5 +2433,33 @@ if ~isempty(newl)
 else
     descrlongHTML=descrlong;
 end
+end
+
+function StringHTML=formatHTMLwithMATHJAX(inputSring)
+
+% Check if symbols \[ \] are present
+% If this is the case it is necessary to split inputSring into
+% the text_part and the Mathjax_part and apply HTML format just
+% to the complementary of the MathJax part
+iniMathJax=regexp(inputSring,'\\\[');
+finMathJax=regexp(inputSring,'\\\]');
+
+if ~isempty(iniMathJax)
+    MoreA=formatHTML(inputSring(1:iniMathJax-1));
+    for k=1:length(iniMathJax)
+        MoreA=[MoreA inputSring(iniMathJax(k):finMathJax(k)+1)];
+        if k==length(iniMathJax)
+            MoreA=[MoreA formatHTML(inputSring(finMathJax(k)+2:end))];
+        else
+            MoreA=[MoreA formatHTML(inputSring(finMathJax(k)+2:iniMathJax(k+1)))];
+        end
+    end
+    StringHTML=MoreA;
+else
+    % In this case there are not latex formulae so just apply
+    % routine formatHTML
+    StringHTML=formatHTML(inputSring);
+end
 
 end
+

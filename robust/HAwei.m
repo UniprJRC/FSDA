@@ -1,13 +1,15 @@
-function w = HAwei(u, ctuning,varargin)
+function w = HAwei(u, ctuning)
 %HAwei computes weight function psi(u)/u using Hampel proposal
 %
 %<a href="matlab: docsearchFS('HAwei')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    ctuning :  scalar or vector of length 4 which specifies the value of the tuning
+%    ctuning :  tuning parameters. Scalar or Vector. Scalar or vector of
+%               length 4 which specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed values of paramters a, b, c
@@ -20,31 +22,49 @@ function w = HAwei(u, ctuning,varargin)
 %                set to a=2*ctuning b=4*ctuning c=4*ctuning 
 %                With these choices, if ctuning=1  the
 %                resulting influence function is nearly identical to the
-%                biweight with parameter 8.%
+%                biweight with parameter 8.
+%
+%
+% Optional input arguments:
 %
 %  Output:
 %
-%    w :         n x 1 vector contains the Hampel weights associated to the residuals or
-%                Mahalanobis distances for the n units of the sample
+%
+%  Output:
+%
+%    w :         n x 1 vector which contains the Hampel weights associated
+%                to the residuals or Mahalanobis distances for the n units
+%                of the sample.
+%
+%
+% More About:
 %
 % Function HAwei transforms vector u as follows
 %
-% HAwei(u) = 	{ 1,			              |u| <= a,
-%		        { a/|u|,		         a <= |u| < b,
-%		        { a/|u|*(c-|u|)/(c-b),	 b <= |u| <  c,
-%		        { 0,			              |u| >= c.
 %
-%             where a= ctuning(2) *ctuning(1)
-%                   b= ctuning(3) *ctuning(1)
-%                   c= ctuning(4) *ctuning(1)
-%              
-%             The default (if input ctuning is a scalar) is  
-%                   a= 2*ctuning
-%                   b= 4*ctuning
-%                   c= 8*ctuning
+%  \[
+%  HAwei(u)  = \left\{   
+%  \begin{array}{cc}
+%    1 & |u| <= a                                       \\
+%    \frac{a}{|u|}   & a <= |u| < b                    \\
+%    \frac{a}{|u|} *  \frac{c-|u|}{c-b},  & b <= |u| <  c \\
+%    0 & |u| >= c 
+%  \end{array} \right.
+% \]
 %
-%	It is necessary to have 0 <= a <= b <= c%
+%           
+%             where ctun=ctuning(1).
+%                   $a$= ctun *ctuning(2).
+%                   $b$= ctun *ctuning(3).
+%                   $c$= ctun *ctuning(4).
 %
+%             The default is
+%                   $a$= 2*ctun. 
+%                   $b$= 4*ctun. 
+%                   $c$= 8*ctun. 
+%
+%
+% See also: TBwei, HYPwei, OPTwei
 %
 % References:
 %
@@ -56,14 +76,14 @@ function w = HAwei(u, ctuning,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('hawei')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HAwei')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:
 
 %{
 
-    % Obtain Figure 11.15 (panel b) p. 382 of
+    %% Obtain Figure 11.15 (panel b) p. 382 of
     % Hoaglin et al. (1987)
     x=-8:0.01:8;
     weiHA=HAwei(x,[1 2 4 8]);

@@ -60,6 +60,11 @@ function [bdp,eff] = HAc(ctun,p,varargin)
 %
 % See also: HYPc, TB, OPTc
 %
+% References:
+%
+% D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and
+% Exploratory Data Analysis Wiley, New York.
+%
 % Copyright 2008-2015.
 % Written by FSDA team
 %
