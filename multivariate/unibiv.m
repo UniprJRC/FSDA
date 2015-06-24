@@ -5,42 +5,37 @@ function [fre]=unibiv(Y,varargin)
 %
 % Required input arguments:
 %
-%           Y :     n x v data matrix; n observations
-%                   and v variables
-%                   Rows of Y represent observations, and columns represent
-%                   variables. Missing values (NaN's) and infinite values
-%                   (Inf's) are allowed, since observations (rows) with
-%                   missing or infinite values will automatically be
-%                   excluded from the computations.
+%       Y :     Variables. Matrix. n x v data matrix; n observations
+%               and v variables. Rows of Y represent observations, and columns represent
+%               variables. Missing values (NaN's) and infinite values
+%               (Inf's) are allowed, since observations (rows) with
+%               missing or infinite values will automatically be
+%               excluded from the computations.
+%               Data Types - single | double
 %
 %
 % Optional input arguments:
 %
 %           rf  :  It specifies the confidence
-%                   level of the robust bivariate ellipses. Scalar. 0<rf<1.The default value 0.95
-%                   that is the outer contour in presence of normality
-%                   for each ellipse should leave outside 5% of the values.
+%                  level of the robust bivariate ellipses. Scalar. 0<rf<1.
+%                  The default value is 0.95 that is the outer contour in presence of normality
+%                  for each ellipse should leave outside 5% of the values.
 %                 Example - 'rf',0.99 
 %                 Data Types - double
 %      robscale :   It specifies the indexes to use
 %                   to compute the dispersion of each variable and the
 %                   correlation among each pair of variables. Scalar.
-%                   If robscale=1 (default)
-%                   the program uses the median correlation and the MAD as
-%                   estimate of the dispersion of each variable
-%                   elseif robscale=2
-%                   the correlation coefficient among ranks is used
-%                   (Spearman's rho) and the MAD as estimate of the
-%                   dispersion of each variable
-%                   elseif robscale=3
-%                   the correlation coefficient is based on Kendall's tau b
+%                   robscale=1 (default): the program uses the median correlation
+%                   and the MAD as estimate of the dispersion of each variable; 
+%                   robscale=2: the correlation coefficient among ranks is used
+%                   (Spearman's rho) and the MAD as estimate of the dispersion
+%                   of each variable; 
+%                   robscale=3: the correlation coefficient is based on Kendall's tau b
 %                   and the MAD as estimate of the dispersion of each
-%                   variable
-%                   elseif robscale=4
-%                   tetracoric correlation coefficient is used and the MAD
-%                   as estimate of the dispersion of each variableels
-%                   else
-%                   the correlation and the dispersion of the variables are
+%                   variable; 
+%                   robscale=4: tetracoric correlation coefficient is used and the MAD
+%                   as estimate of the dispersion of each variable; 
+%                   otherwise: the correlation and the dispersion of the variables are
 %                   computed using the traditional (non robust) formulae
 %                   around the univariate medians.
 %                 Example - 'robscale',2 
@@ -56,8 +51,8 @@ function [fre]=unibiv(Y,varargin)
 %                   produced.
 %                 Example - 'plots',2 
 %                 Data Types - double
-%       textlab : It controls the labels in the plots. Scalar. If textlab=1
-%                   and plots=1 the labels associated
+%       textlab : It controls the labels in the plots. Scalar. If textlab=1 and
+%                   plots=1 the labels associated
 %                   to the units which are univariate outliers or which are
 %                   outside the confidence levels of the contours are
 %                   displayed on the screen.
@@ -86,12 +81,12 @@ function [fre]=unibiv(Y,varargin)
 %
 %   fre  :  n x 4 matrix which contains details about the univariate and
 %           bivariate outliers.
-%           1st col = index of the units
+%           1st col = index of the units; 
 %           2nd col = number of times unit has been declared
-%           univariate outliers
+%           univariate outliers; 
 %           3rd col = number of times unit has been declared
-%           bivariate outlier
-%           4th col = pseudo MD as sum of bivariate MD
+%           bivariate outlier; 
+%           4th col = pseudo MD as sum of bivariate MD.
 %
 %
 % See also: FSMmmd
@@ -112,7 +107,7 @@ function [fre]=unibiv(Y,varargin)
 % Examples:
 
 %{
-    % unibiv with all default options
+    % unibiv with all default options.
     % Run this code to see the output shown in the help file
     n=500;
     p=5;
@@ -122,7 +117,8 @@ function [fre]=unibiv(Y,varargin)
 %}
 
 %{
-    % unibiv for the stack loss data
+    %% unibiv with optional arguments.
+    % Stack loss data.
     Y=load('stack_loss.txt');
     % Show robust confidence ellipses
     out=unibiv(Y,'plots',1,'textlab',1);
