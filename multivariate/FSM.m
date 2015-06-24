@@ -74,32 +74,34 @@ function [out]=FSM(Y,varargin)
 %                 envelope resuperimposition are
 %                 produced.
 %                 If plots is a structure it is possible to specify the
-%                 following options below
-%                   ylim    : vector with two elements controlling minimum and maximum
-%                       on the y axis. Default value is '' (automatic scale)
-%                   xlim    : vector with two elements controlling minimum and maximum
-%                       on the x axis. Default value is '' (automatic scale)
-%                   resuper : vector which specifies for which steps it is
+%                 following options below: 
+%                   - ylim    : vector with two elements controlling minimum and maximum
+%                       on the y axis. Default value is '' (automatic
+%                       scale); 
+%                   - xlim    : vector with two elements controlling minimum and maximum
+%                       on the x axis. Default value is '' (automatic
+%                       scale); 
+%                   - resuper : vector which specifies for which steps it is
 %                       necessary to show the plots of resuperimposed envelopes
 %                       if resuper is not supplied a plot of each step in which the
-%                       envelope is resuperimposed is shown.
-%                       Example if resuper =[85 87] plots of resuperimposed
-%                       envelopes are shown at steps m=85 and m=87
-%                   ncoord : scalar. If ncoord=1 plots are shown in normal
+%                       envelope is resuperimposed is shown. Example if resuper =[85 87]
+%                       plots of resuperimposedenvelopes are shown at steps
+%                       m=85 and m=87; 
+%                   - ncoord : scalar. If ncoord=1 plots are shown in normal
 %                       coordinates else (default) plots are shown in
-%                       traditional mmd coordinates
-%                   labeladd : If this option is '1', the outliers in the
+%                       traditional mmd coordinates; 
+%                   - labeladd : If this option is '1', the outliers in the
 %                       spm are labelled with the unit row index. The
 %                       default value is labeladd='', i.e. no label is
-%                       added.
-%                   nameY : cell array of strings containing the labels of
+%                       added; 
+%                   - nameY : cell array of strings containing the labels of
 %                       the variables. As default value, the labels which are
-%                       added are Y1, ...Yv.
-%                    lwd  :   Scalar which controls line width of the curve which
-%                       contains the monitoring of minimum Mahalanobis distance.
-%                       Default line of lwd=2
-%                 lwdenv  :   Scalar which controls linewidth of the
-%                       envelopes. Default value of lwdenv=2
+%                       added are Y1, ...Yv; 
+%                    - lwd  :   Scalar which controls line width of the curve which
+%                       contains the monitoring of minimum Mahalanobis
+%                       distance. Default line of lwd=2.
+%                 - lwdenv  :   Scalar which controls linewidth of the
+%                       envelopes. Default value of lwdenv=2. 
 %               Example - 'plots',2
 %               Data Types - double
 %      bonflev  : option that might be used to identify extreme outliers
@@ -117,7 +119,7 @@ function [out]=FSM(Y,varargin)
 %                 - A scalar value greater than 1.. In this case the
 %                   procedure stops when the residual trajectory exceeds
 %                   for the first time this value.
-%                 Default value is '', which means to rely on general rules
+%                 Default value is ' ', which means to rely on general rules
 %                 based on consecutive exceedances.
 %                 Example - 'bonflev',0.7
 %                 Data Types - double
@@ -129,8 +131,8 @@ function [out]=FSM(Y,varargin)
 %                 Example - 'msg',0 
 %                 Data Types - double
 %   nocheck     : It controls whether to perform checks on matrix Y.Scalar.
-%                   If nocheck is equal to 1 no check is performed.
-%                    As default nocheck=0.
+%                 If nocheck is equal to 1 no check is performed.
+%                 As default nocheck=0.
 %                 Example - 'nocheck',1
 %                 Data Types - double
 %
@@ -140,30 +142,27 @@ function [out]=FSM(Y,varargin)
 %  The output consists of a structure 'out' containing the following fields:
 %out.outliers=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
-% out.mmd    =  (n-init) x 2 matrix
-%               1st col = fwd search index
+% out.mmd    =  (n-init) x 2 matrix. 
+%               1st col = fwd search index; 
 %               2nd col = value of minimum Mahalanobis Distance in each step
-%               of the fwd search
+%               of the fwd search.
 % out.Un     =  (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
-%               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
-%               init+1.
-%               Un(end,2) contains the units included in the final step
-%               of the search.
+%               subset but not in the old one. Un(1,2) for example
+%               contains the unit included in step init+1. Un(end,2)
+%               contains the units included in the final step of the search.
 % out.nout    = 2 x 5 matrix containing the number of times mmd went out
 %               of particular quantiles.
-%               First row contains quantiles 1 99 99.9 99.99 99.999.
+%               First row contains quantiles 1 99 99.9 99.99 99.999; 
 %               Second row contains the frequency distribution.
 % out.loc     = 1 x v  vector containing location of the data.
 % out.cov     = v x v robust estimate of covariance matrix.
 % out.md      = n x 1 vector containing the estimates of the robust
-%                    Mahalanobis distances (in squared units). This vector
-%                    contains the distances of each observation from the
-%                    location of the data, relative to the scatter 
-%                    matrix cov.
+%               Mahalanobis distances (in squared units). This vector
+%               contains the distances of each observation from the
+%               location of the data, relative to the scatter matrix cov.
 %
 % See also: FSMeda, unibiv.m, FSMmmd.m
 %
