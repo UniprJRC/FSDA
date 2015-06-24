@@ -5,17 +5,18 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           n x p data matrix; n observations
-%               and p variables
-%               Rows of Y represent observations, and columns represent
+% Y :           Variables. Matrix. n x p data matrix; n observations
+%               and p variables. Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
-% bsb :         list of units forming the initial subset, if bsb=0
-%               (default) then the procedure starts with p units randomly
+%               Data Types - single | double
+% bsb :         Units forming subset. Vector. List of units forming the initial subset.
+%               If bsb=0 (default) then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
 %               m0=length(bsb)
+%               Data Types - single | double
 %
 %
 % Optional input arguments:
@@ -91,7 +92,11 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 % Examples:
 
 %{
-    % Run this code to see the output shown in the help file
+    %% Minimum Mahalanobis distance.
+    % Personalized initial subset (small n). Create an initial subset with
+    % the 4 observations which fell the smallest
+    % number of times outside the robust bivariate ellipses and with the
+    % lowest Mahalanobis Distance.
     n=200;
     v=3;
     m0=4;
@@ -101,13 +106,65 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
     [fre]=unibiv(Y);
-    %create an initial subset with the 4 observations, which fell the smallest
-    %number of times outside the robust bivariate ellipses, and with the
-    %lowest Mahalanobis Distance.
     fre=sortrows(fre,[3 4]);
     bs=fre(1:m0,1);
-    [mmd,Un,BB]=FSMmmd(Ycont,bs,'plots',1);
+    mmd=FSMmmdeasy(Ycont,bs);
+    plot(mmd(:,1),mmd(:,2))
 %}
+
+%{
+    %% FSMmmdeasy with optional arguments.
+    % Plotting the bandwith of the minimum Mahalanobis distance
+    n=200;
+    v=3;
+    m0=4;
+    randn('state',123456);
+    Y=randn(n,v);
+    %Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    bs=fre(1:m0,1);
+    [mmd]=FSMmmdeasy(Ycont,bs,'plots',1);
+%}
+
+%{
+    % Checking the unit(s) included in the subset at each step of the
+    % search.
+    % Un contains the unit(s) present in the new subset but not in the old one.
+    n=200;
+    v=3;
+    m0=4;
+    randn('state',123456);
+    Y=randn(n,v);
+    %Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    bs=fre(1:m0,1);
+    [mmd,Un]=FSMmmdeasy(Ycont,bs,'plots',1);
+%}
+
+%{
+    % Checking the units belonging to subset in each step of the search.
+    % Personalized initial subset (large n). Each row of BB matrix 
+    % is associated to a unitwhile each colum is associated to a step of the fwd search.
+    n=20000;
+    v=3;
+    m0=10;
+    randn('state',123456);
+    Y=randn(n,v);
+    % 25 per cent of Contaminated data
+    Ycont=Y;
+    Ycont(1:5000,:)=Ycont(1:5000,:)+3;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    bs=fre(1:m0,1);
+    [mmd,Un,BB]=FSMmmdeasy(Ycont,bs,'plots',1);
+%}
+
 
 %% Beginning of code 
 
