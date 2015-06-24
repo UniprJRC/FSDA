@@ -95,11 +95,11 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Data Types - double
 %   stats:   additional statistics. Scalar.
 %               If stats =1 the following additional statistics are
-%               computed
-%               1) Bayesian p-values
+%               computed:
+%               1) Bayesian p-values.
 %               2) highest posterior density intervals (HPDI) for each value
-%               of input option conflev
-%               3) posterior odds for beta_j=0
+%               of input option conflev.
+%               3) posterior odds for beta_j=0.
 %               4) posterior model probability of the model which excludes
 %               variable j
 %               Example - 'stats',1
