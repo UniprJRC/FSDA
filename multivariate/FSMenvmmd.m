@@ -32,8 +32,8 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %               but requires more time.
 %                 Example - 'exact',0 
 %                 Data Types - double
-%   scaled:  It indicates how to compute the envelopes. Scalar. If scaled=1
-%               the envelopes are produced for
+%   scaled:  It indicates how to compute the envelopes. Scalar. 
+%               If scaled=1 the envelopes are produced for
 %               scaled Mahalanobis distances (no consistency factor is
 %               applied) else the traditional consistency factor is applies
 %               (this is the default)
@@ -50,11 +50,11 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %
 %  MMDenv=      n-m0+1 x length(prob)+1 columns containing the envelopes
 %               for the requested quantiles.
-%               1st col = fwd search index from m0 to n-1
-%               2nd col = envelope for quantile prob[1]
-%               3rd col = envelope for quantile prob[2]
-%               ...
-%               (k+1) col = envelope for quantile prob[k]
+%               1st col = fwd search index from m0 to n-1; 
+%               2nd col = envelope for quantile prob[1]; 
+%               3rd col = envelope for quantile prob[2]; 
+%               ...; 
+%               (k+1) col = envelope for quantile prob[k].
 %
 % See also FSMenvmmd.m, FSM.m
 %
