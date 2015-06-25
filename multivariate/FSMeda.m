@@ -6,15 +6,15 @@ function out = FSMeda(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           Variables. Matrix. n x v data matrix; n observations and v variables
-%               Rows of Y represent observations, and columns represent
+% Y :           Variables. Matrix. n x v data matrix; n observations and v
+%               variables. Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
 %               Data Types - single | double
-% bsb :         Units forming subset. Vector. List of units forming the initial subset. If bsb=0
-%               (default) then the procedure starts with v units randomly
+% bsb :         Units forming subset. Vector. List of units forming the initial subset. 
+%               If bsb=0 (default) then the procedure starts with v units randomly
 %               chosen else if bsb is not 0 the search will start with
 %               m0=length(bsb).
 %               Data Types - single | double
@@ -65,45 +65,50 @@ function out = FSMeda(Y,bsb,varargin)
 %
 %   The output consists of a structure 'out' containing the following fields:
 %   out.MAL=        n x (n-init+1) = matrix containing the monitoring of
-%               Mahalanobis distances
-%               1st row = distance for first unit ......
+%               Mahalanobis distances. 
+%               1st row = distance for first unit; 
+%               ...; 
 %               nth row = distance for nth unit.
 %    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
 %               to the subset at each step of the forward search.
-%               1st col = indexes of the units forming subset in the initial step
-%               ...
-%               last column = units forming subset in the final step (all units)
+%               1st col = indexes of the units forming subset in the
+%               initial step; 
+%               ...; 
+%               last column = units forming subset in the final step (all
+%               units).
 %   out.mmd=        n-init x 3 matrix which contains the monitoring of minimum
 %               MD or (m+1)th ordered MD  at each step of
 %               the forward search.
-%               1st col = fwd search index (from init to n-1)
-%               2nd col = minimum MD
-%               3rd col = (m+1)th-ordered MD
+%               1st col = fwd search index (from init to n-1); 
+%               2nd col = minimum MD; 
+%               3rd col = (m+1)th-ordered MD.
 %   out.msr=        n-init+1 x 3 = matrix which contains the monitoring of
-%               maximum MD or mth ordered MD
-%               1st col = fwd search index (from init to n)
-%               2nd col = maximum MD
-%               3rd col = mth-ordered MD
+%               maximum MD or mth ordered MD. 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = maximum MD; 
+%               3rd col = mth-ordered MD.
 %    out.gap=       n-init+1 x 3 = matrix which contains the monitoring of
-%               the gap (difference between minMD outside subset and max. inside)
-%               1st col = fwd search index (from init to n)
-%               2nd col = min MD - max MD
-%               3rd col = (m+1)th ordered MD - mth ordered distance
+%               the gap (difference between minMD outside subset and max.
+%               inside). 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = min MD - max MD; 
+%               3rd col = (m+1)th ordered MD - mth ordered distance.
 %   out.loc=        (n-init+1) x (v+1) matrix containing the monitoring of
-%               estimated of the means for each variable in each step of the forward search
+%               estimated of the means for each variable in each step of
+%               the forward search.
 %  out.S2cov=       (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
 %               of the elements of the covariance matrix in each step
-%               of the forward search
-%               1st col = fwd search index (from init to n)
-%               2nd col = monitoring of S(1,1)
-%               3rd col = monitoring of S(1,2)
-%               ....
-%               end col = monitoring of S(v,v)
+%               of the forward search. 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = monitoring of S(1,1); 
+%               3rd col = monitoring of S(1,2); 
+%               ...; 
+%               end col = monitoring of S(v,v).
 %  out.detS=        (n-init+1) x (2) matrix containing the monitoring of
 %               the determinant of the covariance matrix
-%               in each step of the forward search
+%               in each step of the forward search.
 %    out.Un=        (n-init) x 11 Matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search
+%               included in the subset at each step of the fwd search. 
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
