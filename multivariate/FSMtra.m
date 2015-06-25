@@ -199,9 +199,21 @@ function out = FSMtra(Y,varargin)
 % Last modified 06-Feb-2015
 
 % Examples:
+%{
+    % FSMtra with all default options.
+    % Baby food data.
+    load('baby.mat');
+    Y=baby.data(:,6:end);
+    % FS based on untrasnformed data H_0:\lambda=1 for all variables
+    % Plot of mle of transformation parameters with all default options
+    % Compare the output with Figure 4.7 p. 167 of ARC (2004)
+    [out]=FSMtra(Y);
+%}
 
 %{
-    % Baby food data ignoring the regression structure.
+    %% FSMtra with optional arguments.
+    % Plot the maximum likelihood estimates of the transformation parameters. 
+    % Baby food data.
     load('baby.mat');
     Y=baby.data(:,6:end);
     % FS based on untrasnformed data H_0:\lambda=1 for all variables
@@ -212,7 +224,8 @@ function out = FSMtra(Y,varargin)
 
 
 %{
-    % Baby food data ignoring the regression structure.
+    %% Personalized options for plotsmle. 
+    % Baby food data.
     load('baby.mat');
     Y=baby.data(:,6:end);
     % Personalized options for plotsmle
@@ -225,7 +238,8 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Baby food data ignoring the regression structure.
+    % FS based on log trasnformed data.
+    % Baby food data.
     load('baby.mat');
     Y=baby.data(:,6:end);
     % FS based on log trasnformed data H_0:\lambda=0 for all variables
@@ -237,6 +251,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
+    %% Monitoring the profile log likelihood of the transformation parameters.
     % Baby food data ignoring the regression structure.
     load('baby.mat');
     Y=baby.data(:,6:end);
@@ -252,7 +267,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Swiss heads data.
+    % Swiss heads data, Example 1.
     % FS based on untransformed data H_0:\lambda=1 for all variables
     load('head.mat');
     Y=head.data;
@@ -260,7 +275,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Swiss heads data.
+    % Swiss heads data, Example 2.
     % FS based on untransformed data H_0:\lambda=1 for all variables
     load('head.mat');
     Y=head.data;
@@ -272,7 +287,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Swiss heads data.
+    % Swiss heads data, Example 3.
     % FS based on untransformed data H_0:\lambda=1 for all variables
     load('head.mat');
     Y=head.data;
@@ -282,7 +297,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Swiss heads data.
+    % Swiss heads data, Example 4.
     load('head.mat');
     Y=head.data;
     % FS based on untransformed data H_0:\lambda=1 for variable 4
@@ -292,7 +307,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Mussels data.
+    % Mussels data, Example 1.
     % FS based on untransformed data H_0:\lambda=1 for all variables
     load('mussels.mat');
     Y=mussels.data;
@@ -302,7 +317,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Mussels data.
+    % Mussels data, Example 2.
     load('mussels.mat');
     Y=mussels.data;
     % FS based on with H_0:\lambda=[1 0.5 1 0 1/3]
@@ -313,7 +328,7 @@ function out = FSMtra(Y,varargin)
 
 
 %{
-    % Swiss bank notes.
+    % Swiss bank notes data, Example 1.
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     n=size(Y,1);
@@ -325,7 +340,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Swiss bank notes.
+    % Swiss bank notes data, Example 2.
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     n=size(Y,1);
@@ -338,7 +353,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Genuine Swiss bank notes.
+    % Swiss bank notes data, Example 3.
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     Y=Y(1:100,:);
@@ -356,7 +371,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Swiss bank notes.
+    % Swiss bank notes data, Example 4.
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     n=size(Y,1);
@@ -370,7 +385,7 @@ function out = FSMtra(Y,varargin)
 
 %{
 
-    %% Track records.
+    %% Track records data.
     load('recordfg');
     Y=recordfg.data;
     n=size(Y,1);
@@ -391,7 +406,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Emilia Romagna data
+    % Emilia Romagna data, Example 1
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -408,7 +423,8 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Emilia Romagna data, Yeo and Johnson family of transformations is
+    % Emilia Romagna data, Example 2.
+    % Yeo and Johnson family of transformations is
     % used. In this case there is no need to correct 0 values
     load('emilia2001')
     Y=emilia2001.data;
@@ -424,7 +440,8 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Emilia Romagna data: demographic data
+    % Emilia Romagna data, Example 3.
+    % Demographic data
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -449,7 +466,8 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Emilia Romagna data (modified wealth variables)
+    % Emilia Romagna data, Example 4.
+    % Modified wealth variables.
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -470,7 +488,8 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Emilia Romagna data (modified wealth variables)
+    % Emilia Romagna data, Example 5.
+    % Modified wealth variables.
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -491,7 +510,8 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Emilia Romagna data (work variables)
+    % Emilia Romagna data, Example 6.
+    % Work variables.
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -509,7 +529,8 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Emilia Romagna data (modified work variables)
+    % Emilia Romagna data, Example 7.
+    % Modified work variables.
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
