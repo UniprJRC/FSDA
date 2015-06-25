@@ -5,19 +5,21 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %
 % Required input arguments:
 %
-% Y :           Y = n x p data matrix; n observations
-%               and p variables
-%               Rows of Y represent observations, and columns represent
+% Y :           Variables. Matrix. Y = n x p data matrix; n observations
+%               and p variables. Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
-% bsb :         list of units forming the initial subset, if bsb=0
-%               (default) then the procedure starts with p units randomly
+%                Data Types - single|double
+% bsb :         Units forming subset. Vector. List of units forming the initial subset.
+%               If bsb=0 (default) then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
 %               m0=length(bsb)
-% msel :        vector which specifies for which steps of the search the
-%               units forming subset must be saved
+%                Data Types - single|double
+% msel :        Steps to save. Vector. Vector which specifies for which steps of the search the
+%               of the search the units forming subset must be saved
+%                Data Types - single|double
 %
 %
 % Optional input arguments:
@@ -60,15 +62,15 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %
 % BBmsel  =     Matrix of size n-times-length(msel) containing units
 %               belonging to subset in the steps of
-%               the search defined by input vector msel
-%               More precisely
-%               BBmsel(:,1) contains the units forming subset in step mmsel(1)
-%               ....
-%               BBmsel(:,end) contains the units forming subset in step mmsel(end)
-%               Row 1 of matrix BBmsel is referred to unit 1
-%               ......
-%               Row n of matrix BBmsel is referred to unit n
-%               Units not belonging to subset are denoted with NaN
+%               the search defined by input vector msel.
+%               More precisely: 
+%               BBmsel(:,1) contains the units forming subset in step mmsel(1); 
+%               ....; 
+%               BBmsel(:,end) contains the units forming subset in step  mmsel(end); 
+%               Row 1 of matrix BBmsel is referred to unit 1; 
+%               ......; 
+%               Row n of matrix BBmsel is referred to unit n; 
+%               Units not belonging to subset are denoted with NaN.
 %
 % See also FSMeda, FSM.m, FSMmmd
 %
@@ -88,7 +90,7 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 % Examples:
 
 %{
-    % Run this code to see the output shown in the help file
+    %% FSMbbm with all default options.
     n=200;
     v=3;
     randn('state',123456);
@@ -102,6 +104,27 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
     % Analyse the units forming subset in step msel=195
     msel=195;
     mmsel=FSMbbm(Ycont,0,msel);
+    seq=1:n;
+    disp(['Units outside subset at step m=' num2str(msel)])
+    disp(setdiff(seq,mmsel))
+%}
+
+%{
+    % FSMbbm with optional arguments.
+    % Specifying the point where to start monitoring required diagnostics.
+    n=200;
+    v=3;
+    randn('state',123456);
+    Y=randn(n,v);
+    %Contaminated data
+    Ycont=Y;
+    seqcont=11:10:51;
+    disp('Contaminated units')
+    disp(seqcont)
+    Ycont(seqcont,:)=Ycont(seqcont,:)+2.5;
+    % Analyse the units forming subset in step msel=195
+    msel=195;
+    mmsel=FSMbbm(Ycont,0,msel,'init',100);
     seq=1:n;
     disp(['Units outside subset at step m=' num2str(msel)])
     disp(setdiff(seq,mmsel))
