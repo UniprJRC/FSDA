@@ -19,27 +19,26 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %               it is set equal to mmd(end,1)+1.
 %                 Example - 'n',5
 %                 Data Types - double
-%   plots :     Plot on the screen. Scalar or
-%               structure.
+%   plots :     Plot on the screen. Scalar or structure.
 %               If plots = 1, a plot which shows the
 %               confidence level of mmd in each step is shown on the
-%               screen.
-%               Remark. three horizontal lines associated respectively with
-%               values  0.01 0.5 and 0.99  are added to the plot
-%               If plots is a structure the user can specify the following options
-%                   conflev = vector containing horizontal lines associated
-%                       with confidence levels
-%                   conflevlab = scalar if it is equal 1 labels associated with
-%                       horizontal lines are shown on the screen
-%                   xlim = minimum and maximum on the x axis
-%                   ylim = minimum and maximum on the y axis
-%                   LineWidth = Line width of the trajectory of mmd in
-%                   normal coordinates
-%                   LineStyle = Line style of the
-%                   trajectory of mle of transformation parameters
-%                   LineWidthEnv = Line width of the horizontal lines
-%                   Tag = tag of the plot (default is pl_mmdinv)
-%                   FontSize = font size of the text labels which identify
+%               screen. Three horizontal lines associated respectively with
+%               values 0.01, 0.5 and 0.99  are added to the plot. 
+%               If plots is a structure the user can specify the following
+%               options: 
+%                   -conflev = vector containing horizontal lines associated
+%                       with confidence levels; 
+%                   -conflevlab = scalar if it is equal 1 labels associated with
+%                       horizontal lines are shown on the screen; 
+%                   -xlim = minimum and maximum on the x axis; 
+%                   -ylim = minimum and maximum on the y axis; 
+%                   -LineWidth = Line width of the trajectory of mmd in
+%                   normal coordinates; 
+%                   -LineStyle = Line style of the
+%                   trajectory of mle of transformation parameters; 
+%                   -LineWidthEnv = Line width of the horizontal lines; 
+%                   -Tag = tag of the plot (default is pl_mmdinv); 
+%                   -FontSize = font size of the text labels which identify
 %                   the trajectories
 %                 Example - 'plots',1
 %                 Data Types - double
@@ -49,11 +48,11 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %   mmdinv:     (n-m0) x 3 matrix (same rows of input matrix mmd)
 %               which contains information about requested
 %               confidence levels plotted in normal coordinates.
-%               1st col = fwd search index from m0 to n-1
-%               2nd col = confidence level of each value of mmd
-%               3rd col = confidence level in normal coordinates 
-%                    50 per cent conf level becomes norminv(0.50)=0
-%                    99 per cent conf level becomes norminv(0.99)=2.33 
+%               1st col = fwd search index from m0 to n-1; 
+%               2nd col = confidence level of each value of mmd; 
+%               3rd col = confidence level in normal coordinates. 
+%                    50 per cent conf level becomes norminv(0.50)=0; 
+%                    99 per cent conf level becomes norminv(0.99)=2.33.
 %
 %
 % See also FSMenvmmd, FSM.m, FSMeda.m
