@@ -8,7 +8,7 @@ function out = FSMtra(Y,varargin)
 %
 % Required input arguments:
 %
-% Y :           Data matrix. n x v numeric matrix.
+% Y :           Variables. Data matrix. n x v numeric matrix.
 %               Input data for which to compute the transformation
 %               parameters, specified as an n-by-v matrix
 %               Rows of Y represent observations, and columns represent
@@ -16,21 +16,22 @@ function out = FSMtra(Y,varargin)
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
+%               Data Types - single | double
 %
 %
 % Optional input arguments:
 %
 %    family :   string which identifies the family of transformations which
 %               must be used. Character. Possible values are 'BoxCox' (deafult) or
-%               'YJ'
+%               'YJ'. 
 %               The Box-Cox family of power transformations equals
 %               $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero, and
-%               $\log(y)$ if $\lambda = 0$.
+%               $\log(y)$ if $\lambda = 0$. 
 %               The Yeo-Johnson (YJ) transformation is the Box-Cox
 %               transformation of y+1 for nonnegative values, and of |y|+1 with
-%               parameter 2-lambda for y negative.
+%               parameter 2-lambda for y negative. 
 %               The basic power transformation returns $y^{\lambda}$ if
-%               $\lambda$ is not zero, and $\log(\lambda)$  otherwise.
+%               $\lambda$ is not zero, and $\log(\lambda)$  otherwise. 
 %               Remark. BoxCox and the basic power family can be used just
 %               if input y is positive. YeoJohnson family of
 %               transformations does not have this limitation.
@@ -89,58 +90,57 @@ function out = FSMtra(Y,varargin)
 %               parameters at selected steps of the search. Scalar or
 %               structure.
 %               If prolik is a scalar, the plot of the profile loglikelihoods
-%               is produced at step m=n with all default parameters
-%               Structure prolik may contain the following fields:
-%                   steps = vector containing the steps of the fwd search
+%               is produced at step m=n with all default parameters. 
+%               Structure prolik may contain the following fields: 
+%                   -steps = vector containing the steps of the fwd search
 %                   for which profile logliks have to be plotted. The
-%                   default value of steps is n
-%                   clev = scalar between 0 and 1 determining confidence
+%                   default value of steps is n; 
+%                   -clev = scalar between 0 and 1 determining confidence
 %                   level for each element of lambda based on the
 %                   asymptotic chi1^2 of twice the loglikelihood ratio. The
-%                   default confidence level is 0.95.
-%                   xlim = vector with two elements determining minimum
+%                   default confidence level is 0.95; 
+%                   -xlim = vector with two elements determining minimum
 %                   and maximum values of lambda in the plots of profile
-%                   loglikelihoods. The default value of xlim is [-2 2].
-%                   LineWidth = line width of the vertical lines defining
+%                   loglikelihoods. The default value of xlim is [-2 2]; 
+%                   -LineWidth = line width of the vertical lines defining
 %                   confidence levels of the transformation parameters.
 %                 Example -'prolik',7
 %                 Data Types - double
 %   plotsmle:   It specifies whether it is necessary to
 %               plot the maximum likelihood estimates of the transformation
-%               parameters. Scalar or structure.
-%               Remark. three horizontal lines associated respectively with
-%               values -1, 0 and 1 are added to the plot
-%               Structure plotsmle may contain the following fields:
-%                   xlim = minimum and maximum on the x axis
-%                   ylim = minimum and maximum on the y axis
-%                   LineWidth = Line width of the trajectories of mle of
-%                   transformation parameters
-%                   LineStyle = cell containing Line styles of the
-%                   trajectories of mle of transformation parameters
-%                   LineWidthEnv = Line width of the horizontal lines
-%                   Tag = tag of the plot (default is pl_mle)
-%                   FontSize = font size of the text labels which identify
+%               parameters. Scalar or structure. Three horizontal lines associated respectively with
+%               values -1, 0 and 1 are added to the plot. 
+%               Structure plotsmle may contain the following fields: 
+%                   -xlim = minimum and maximum on the x axis; 
+%                   -ylim = minimum and maximum on the y axis; 
+%                   -LineWidth = Line width of the trajectories of mle of
+%                   transformation parameters; 
+%                   -LineStyle = cell containing Line styles of the
+%                   trajectories of mle of transformation parameters; 
+%                   -LineWidthEnv = Line width of the horizontal lines; 
+%                   -Tag = tag of the plot (default is pl_mle); 
+%                   -FontSize = font size of the text labels which identify
 %                   the trajectories.
 %                 Example -'plotsmle',1
 %                 Data Types - double
 %   plotslrt:   It specifies whether it is necessary to
 %               plot the likelihood ratio test. Scalar or structure.
-%               Structure plotslrt may contain the following fields:
-%                   xlim = minimum and maximum on the x axis
-%                   ylim = minimum and maximum on the y axis
-%                   LineWidth = Line width of the trajectory of lrt of
-%                   transformation parameters
-%                   conflev = vector which defines the confidence levels of
+%               Structure plotslrt may contain the following fields: 
+%                   -xlim = minimum and maximum on the x axis; 
+%                   -ylim = minimum and maximum on the y axis; 
+%                   -LineWidth = Line width of the trajectory of lrt of
+%                   transformation parameters; 
+%                   -conflev = vector which defines the confidence levels of
 %                   the horizontal line for the likelihood ratio test
-%                   (default is conflev=[0.95 0.99])
-%                   LineWidthEnv = Line width of the horizontal lines
-%                   Tag = tag of the plot (default is pl_lrt)
+%                   (default is conflev=[0.95 0.99]); 
+%                   -LineWidthEnv = Line width of the horizontal lines; 
+%                   -Tag = tag of the plot (default is pl_lrt). 
 %                 Example -'plotslrt',1
 %                 Data Types - double
 %  msg  :      It controls whether to display or not messages
 %               about great interchange on the screen.  Scalar.
 %               If msg==1 (default) messages are displayed on the screen
-%               else no message is displayed on the screen
+%               else no message is displayed on the screen.
 %                 Example -'msg',1
 %                 Data Types - double
 %
@@ -158,26 +158,26 @@ function out = FSMtra(Y,varargin)
 % Output:
 %
 %   The output consists of a structure 'out' containing the following fields:
-%   out.MLEtra= n-init+1 x v = matrix which contains the monitoring of
-%               MLE of transformation parameters
-%               1st col = fwd search index (from init to n)
-%               2nd col = MLE of variable 1
-%               3rd col = MLE of variable 2
-%               ...
-%               (v+1)th col = MLE of variable v
+%   out.MLEtra= n-init+1 x v matrix which contains the monitoring of
+%               MLE of transformation parameters: 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = MLE of variable 1; 
+%               3rd col = MLE of variable 2; 
+%               ...; 
+%               (v+1)th col = MLE of variable v.
 %   out.LIKrat= n-init+1 x 2 = matrix which contains the monitoring of
-%               likelihood ratio for testing H0:\lambda=la0
-%               1st col = fwd search index (from init to n)
-%               2nd col = value of the likelihood ratio
+%               likelihood ratio for testing H0:\lambda=la0:
+%               1st col = fwd search index (from init to n); 
+%               2nd col = value of the likelihood ratio.
 %   out.Exflag= n-init+1 x 2 = matrix which contains the monitoring of
 %               the integer identifying the reason why the maximization
 %               algorithm terminated. See help page fminunc of the
 %               optimization toolbox  for the list of values of exitflag
-%               and the corresponding reasons the algorithm terminated.
-%               1st col = fwd search index (from init to n)
+%               and the corresponding reasons the algorithm terminated: 
+%               1st col = fwd search index (from init to n); 
 %               2nd col = the value that describes the exit condition
 %   out.Un =    (n-init) x 11 Matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search
+%               included in the subset at each step of the fwd search. 
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
