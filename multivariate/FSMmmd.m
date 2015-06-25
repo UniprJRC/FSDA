@@ -61,7 +61,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %
 % mmd :         (n-init) x 2 matrix which contains the monitoring of minimum
 %               Mahalanobis distance each step of the forward search.
-%               1st col = fwd search index (from init to n-1).
+%               1st col = fwd search index (from init to n-1); 
 %               2nd col = minimum Mahalanobis distance.
 % Un :          (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
