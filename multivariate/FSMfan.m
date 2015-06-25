@@ -87,21 +87,21 @@ function out = FSMfan(Y,la0,varargin)
 %                 Data Types - double
 %   plotslrt:  It indicates if plot the (signed) likelihood ratio test. Scalar or structure.
 %               Structure plotslrt may contain the following fields:
-%                   xlim = minimum and maximum on the x axis
-%                   ylim = minimum and maximum on the y axis
-%                   LineWidth = Line width of the trajectory of lrt of
-%                   tranformation paramters
-%                   conflev = vector which defines the confidence levels of
+%                   -xlim = minimum and maximum on the x axis; 
+%                   -ylim = minimum and maximum on the y axis; 
+%                   -LineWidth = Line width of the trajectory of lrt of
+%                   tranformation paramters; 
+%                   -conflev = vector which defines the confidence levels of
 %                   the horizontal line for the likelihood ratio test
-%                   (default is conflev=[0.95 0.99])
-%                   LineWidthEnv = Line width of the horizontal lines
-%                   Tag = tag of the plot (default is pl_lrt)
+%                   (default is conflev=[0.95 0.99]); 
+%                   -LineWidthEnv = Line width of the horizontal lines; 
+%                   -Tag = tag of the plot (default is pl_lrt); 
 %                 Example - 'plotslrt',struct
 %                 Data Types - double
 %  msg  :       It controls whether to display or not messages
 %               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
-%               else no message is displayed on the screen
+%               else no message is displayed on the screen.
 %                 Example - 'msg',0
 %                 Data Types - double
 %
@@ -139,19 +139,19 @@ function out = FSMfan(Y,la0,varargin)
 %               and the corresponding reasons the algorithm terminated.
 %               More precisely each
 %               matrix of size n-init+1 x length(laAround)+1 presents the
-%               following structure
-%               1st col = fwd search index (from init to n)
+%               following structure: 
+%               1st col = fwd search index (from init to n); 
 %               2nd col = integer identifying the reason the algorithm terminated
-%               when testing laj=laAround(1)
-%               ...
+%               when testing laj=laAround(1); 
+%               ...; 
 %               length(laAround)+1 col = integer identifying the reason the algorithm terminated
-%               when testing laj=laAround(end)
+%               when testing laj=laAround(end).
 %    out.Un=    Cell of length ColtoComp. Each element of the cell contains the
 %               a (sub)cell of size length(laAround). Each element of the (sub)cell
 %               contains a  n-init+1 x 11 which informs the order of entry of the units
 %               For example Unj=Un{i}{j} refers to ColtoComp(i) and laAround(j)
 %               Unj is a (n-init) x 11 matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search
+%               included in the subset at each step of the fwd search. 
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Unj(1,2) for example contains
