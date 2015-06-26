@@ -41,9 +41,9 @@ function out = FSMfan(Y,la0,varargin)
 %               0.9.
 %                 Example - 'rf',0.99 
 %                 Data Types - double
-%      init :   point where to start monitoring
-%               required diagnostics. Scalar. Note that if init is not specified it will
-%               be set equal to floor(n*0.6).
+%       init    : Point where to start monitoring required diagnostics. Scalar. 
+%                 Note that if bsb is suppliedinit>=length(bsb). If init is not
+%                 specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
 % ColToComp :  variables for which likelihood ratio tests have to be produced. Vector. It is a k x 1 integer vector. For
