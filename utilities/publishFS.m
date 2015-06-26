@@ -657,6 +657,16 @@ for i=1:length(ini)
 end
 listOptArgs=listOptArgs(1:ij-1,:);
 
+% Check if the last row, column 4 of list listOptArgs contains the sentence
+%' Remark:      The user should only give .....'
+% Given that this sentence is very generic and not applied to the last
+% optional input argument, if it is present it is deleted
+Checklastremark=listOptArgs{end,4};
+DelTheUser=regexp(Checklastremark,'Remark\s*:\s*The user','once','match','ignorecase'); 
+if ~isempty(DelTheUser);
+    listOptArgs{end,4}=Checklastremark(1:DelTheUser-1);
+end
+
 if strcmp(Display,'iter-detailed')
     disp('Detailed information about Optional arguments')
     disp(listOptArgs)
@@ -2417,9 +2427,9 @@ end
 % time a full stop, colon or semicolo symbol followed by a series of space
 % and then a carriage return.
 function descrlongHTML=formatHTML(descrlong)
-% newlinewithFullStop=regexp(descrlong,'\.\s*\r');
-% newlinewithColon=regexp(descrlong,'\:\s*\r');
-% newlinewithSemiColon=regexp(descrlong,'\;\s*r');
+newlinewithFullStop=regexp(descrlong,'\.\s*\r');
+newlinewithColon=regexp(descrlong,'\:\s*\r');
+newlinewithSemiColon=regexp(descrlong,'\;\s*\r');
 newl=sort([newlinewithColon newlinewithSemiColon newlinewithFullStop]);
 if ~isempty(newl)
     descrlongHTML=['<p>' descrlong(1:newl(1))];
@@ -2429,7 +2439,7 @@ if ~isempty(newl)
         for j=1:(length(newl)-1)
             descrlongHTML=[descrlongHTML '</p> <p>' descrlong(newl(j)+1:newl(j+1))];
         end
-        descrlongHTML=[descrlongHTML descrlong(newl(j+1):end)];
+        descrlongHTML=[descrlongHTML '</p><p>' descrlong(newl(j+1)+1:end)];
     end
     descrlongHTML=[descrlongHTML '</p>'];
 else
