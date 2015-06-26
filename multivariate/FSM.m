@@ -57,10 +57,9 @@ function [out]=FSM(Y,varargin)
 %                 0.95. This option is useful only if crit='biv'.
 %                 Example - 'rf',0.9 
 %                 Data Types - double
-%       init    : Initial subset size to start monitoring exceedances of
-%                   minimum Mahalanobis distance. Scalar. If
-%                 init is not specified it will be set equal to
-%                 floor(n*0.6).
+%       init    : Point where to start monitoring required diagnostics. Scalar. 
+%                 Note that if bsb is suppliedinit>=length(bsb). If init is not
+%                 specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
 %       plots   :It specify whether it is necessary to produce the plots of minimum Mahalanobis
