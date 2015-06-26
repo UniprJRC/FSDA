@@ -41,9 +41,10 @@ function out = FSMfan(Y,la0,varargin)
 %               0.9.
 %                 Example - 'rf',0.99 
 %                 Data Types - double
-%       init    : Point where to start monitoring required diagnostics. Scalar. 
-%                 Note that if bsb is suppliedinit>=length(bsb). If init is not
-%                 specified it will be set equal to floor(n*0.6).
+%       init    : Point where to start monitoring required diagnostics.
+%                 Scalar. Note that if bsb is supplied init>=length(bsb). If
+%                 init is not specified it will be set equal to
+%                 floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
 % ColToComp :  variables for which likelihood ratio tests have to be produced. Vector. It is a k x 1 integer vector. For
@@ -123,13 +124,13 @@ function out = FSMfan(Y,la0,varargin)
 %               variables are transformed as specified in vector la0.
 %               More precisely each
 %               matrix of size n-init+1 x length(laAround)+1 presents the
-%               following structure
-%               1st col = fwd search index (from init to n)
+%               following structure:
+%               1st col = fwd search index (from init to n);
 %               2nd col = value of the (signed sqrt) likelihood ratio for
-%               testing laj=laAround(1)
+%               testing laj=laAround(1);
 %               ...
 %               length(laAround)+1 col = value of the (signed sqrt) likelihood ratio for
-%               testing laj=laAround(end)
+%               testing laj=laAround(end).
 %   out.Exflag= Cell of length ColtoComp. Each element of the cell contains the
 %               a matrix of size n-init+1 x length(laAround)+1 which
 %               contains the monitoring of the
@@ -143,7 +144,7 @@ function out = FSMfan(Y,la0,varargin)
 %               1st col = fwd search index (from init to n); 
 %               2nd col = integer identifying the reason the algorithm terminated
 %               when testing laj=laAround(1); 
-%               ...; 
+%               ...
 %               length(laAround)+1 col = integer identifying the reason the algorithm terminated
 %               when testing laj=laAround(end).
 %    out.Un=    Cell of length ColtoComp. Each element of the cell contains the
