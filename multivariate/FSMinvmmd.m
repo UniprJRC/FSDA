@@ -45,8 +45,9 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %
 %  Output:
 %
-%   mmdinv:     (n-m0) x 3 matrix (same rows of input matrix mmd)
-%               which contains information about requested
+%   mmdinv:     confidence levels plotted in normal coordinates. 
+%               (n-m0) x 3 matrix (same rows of input matrix mmd).
+%               It contains information about requested
 %               confidence levels plotted in normal coordinates.
 %               1st col = fwd search index from m0 to n-1; 
 %               2nd col = confidence level of each value of mmd; 

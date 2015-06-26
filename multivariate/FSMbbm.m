@@ -60,7 +60,7 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 % Output:
 %
 %
-% BBmsel  =     Matrix of size n-times-length(msel) containing units
+% BBmsel  :     Matrix of size n-times-length(msel) containing units
 %               belonging to subset in the steps of
 %               the search defined by input vector msel.
 %               More precisely: 

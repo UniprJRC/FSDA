@@ -370,7 +370,7 @@ function publishFS(file,varargin)
 % -----------------------------------------------------
 % REMARK 7: strings are HTML formatted as follows. Every time there is
 % symbol ". one_or_more_space symbol_of carriage_return" or
-% ". one_or_more_space symbol_of carriage_return" the parser adds HTML
+% ": one_or_more_space symbol_of carriage_return" the parser adds HTML
 % string '</p>/<p>' after just symbol "."  or symbol ":".
 % This is done using subfunction named formatHTML at the end of this file.
 % subfunction formatHTMLwithMATHJAX is even more general because it applies
@@ -1105,7 +1105,7 @@ for j=1:length(sintax)
         end
     end
     
-    description=[outstring '=' name '(' inpstring ')'];
+    description=[outstring '=' name '(' strtrim(inpstring) ')'];
     %     description=sprintf(['<a class="intrnllnk" href="#outputarg_idx"><code>idx</code></a>\r'...
     %         '	= kmeans(<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>\r'...
     %         '	,\r'...
@@ -1988,7 +1988,7 @@ for i=1:nargout
             '<span class="argument_name"><code>' outi '</code> &#8212;']) descroutputtitl   sprintf(['</span></a>\r'...
             '<span class="example_desc">']) preamble sprintf(['</span></span></h3>\r'...
             '<div class="collapse">\r'...
-            '<p>']) descrioutput sprintf(['</p>\r'...
+            '<p>']) formatHTMLwithMATHJAX(descrioutput) sprintf(['</p>\r'...
             '</div>\r'...
             '</div>'])];
         
@@ -2413,12 +2413,13 @@ fclose('all');
 
 end
 
-% This inner function  has the purpose of add symbols </p> <p> every time
+% This inner function  has the purpose of adding symbols </p> <p> every time
 % a full stop is followed by a series of space and then a carriage return.
 function descrlongHTML=formatHTML(descrlong)
 newlinewithFullStop=regexp(descrlong,'[\.\s1-50]\r');
 newlinewithColon=regexp(descrlong,'[\:\s1-50]\r');
-newl=sort([newlinewithColon newlinewithFullStop]);
+newlinewithSemiColon=regexp(descrlong,'[\;\s1-50]\r');
+newl=sort([newlinewithColon newlinewithSemiColon newlinewithFullStop]);
 if ~isempty(newl)
     descrlongHTML=['<p>' descrlong(1:newl(1))];
     if length(newl)==1
