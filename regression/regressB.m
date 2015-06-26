@@ -108,9 +108,11 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               compute HPDI. Vector.
 %               This input option is used just if input
 %               stats=1. The default value of conflev is [0.95 0.99] that
-%               is 95% and 99% HPDI confidence intervals are computed
+%               is 95 per cent and 99 per cent HPDI confidence intervals
+%               are computed
 %               Example - 'conflev',[0.99 0.999]
 %               Data Types - double
+%
 % Output:
 %
 %  The output consists of a structure 'out' containing the following fields:

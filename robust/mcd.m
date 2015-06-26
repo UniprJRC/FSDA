@@ -76,11 +76,11 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               used.
 %               (2) a scatter plot matrix with the outliers highlighted
 %               If plots is a structure it may contain the following fields
-%                   labeladd = if this option is '1', the outliers in the
+%                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added.
-%                   nameY = cell array of strings containing the labels of
+%                   plots.nameY = cell array of strings containing the labels of
 %                       the variables. As default value, the labels which
 %                       are added are Y1, ...Yv.
 %               Example - 'plots',1

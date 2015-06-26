@@ -12,12 +12,12 @@ function w = HAwei(u, ctuning)
 %               length 4 which specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
-%                and the prefixed values of paramters a, b, c
+%                and the prefixed values of paramters a, b, c:
 %                ctuning(1) = tuning constant which will multiply
-%                parameters a, b and c of Hampel rho (psi) function
-%                ctuning(2) = paramter a of Hampel rho (psi) function
-%                ctuning(3) = paramter b of Hampel rho (psi) function
-%                ctuning(4) = paramter c of Hampel rho (psi) function
+%                parameters a, b and c of Hampel rho (psi) function;
+%                ctuning(2) = paramter a of Hampel rho (psi) function;
+%                ctuning(3) = paramter b of Hampel rho (psi) function;
+%                ctuning(4) = paramter c of Hampel rho (psi) function.
 %                Remark: if length(ctuning)==1 values of a, b and c will be
 %                set to a=2*ctuning b=4*ctuning c=4*ctuning 
 %                With these choices, if ctuning=1  the

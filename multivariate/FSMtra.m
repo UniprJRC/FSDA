@@ -22,8 +22,8 @@ function out = FSMtra(Y,varargin)
 % Optional input arguments:
 %
 %    family :   string which identifies the family of transformations which
-%               must be used. Character. Possible values are 'BoxCox' (deafult) or
-%               'YJ'. 
+%               must be used. Character. Possible values are 'BoxCox'
+%               (default) or 'YJ'.
 %               The Box-Cox family of power transformations equals
 %               $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero, and
 %               $\log(y)$ if $\lambda = 0$. 
@@ -91,50 +91,64 @@ function out = FSMtra(Y,varargin)
 %               structure.
 %               If prolik is a scalar, the plot of the profile loglikelihoods
 %               is produced at step m=n with all default parameters. 
-%               Structure prolik may contain the following fields: 
-%                   -steps = vector containing the steps of the fwd search
-%                   for which profile logliks have to be plotted. The
-%                   default value of steps is n; 
-%                   -clev = scalar between 0 and 1 determining confidence
-%                   level for each element of lambda based on the
-%                   asymptotic chi1^2 of twice the loglikelihood ratio. The
-%                   default confidence level is 0.95; 
-%                   -xlim = vector with two elements determining minimum
-%                   and maximum values of lambda in the plots of profile
-%                   loglikelihoods. The default value of xlim is [-2 2]; 
-%                   -LineWidth = line width of the vertical lines defining
-%                   confidence levels of the transformation parameters.
+%               If prolik is a structure it may contain the following fields: 
+%                   prolik.steps = vector containing the steps of the fwd
+%                                  search for which profile logliks have to
+%                                  be plotted. The default value of steps
+%                                  is n;
+%                   prolik.clev = scalar between 0 and 1 determining
+%                                 confidence level for each element of
+%                                 lambda based on the asymptotic chi1^2 of
+%                                 twice the loglikelihood ratio.
+%                                 The default confidence level is 0.95;
+%                   prolik.xlim = vector with two elements determining
+%                                 minimum and maximum values of lambda in
+%                                 the plots of profile loglikelihoods. The
+%                                 default value of xlim is [-2 2];
+%                   prolik.LineWidth = line width of the vertical lines
+%                                 defining confidence levels of the transformation
+%                                 parameters.
 %                 Example -'prolik',7
 %                 Data Types - double
 %   plotsmle:   It specifies whether it is necessary to
 %               plot the maximum likelihood estimates of the transformation
-%               parameters. Scalar or structure. Three horizontal lines associated respectively with
-%               values -1, 0 and 1 are added to the plot. 
-%               Structure plotsmle may contain the following fields: 
-%                   -xlim = minimum and maximum on the x axis; 
-%                   -ylim = minimum and maximum on the y axis; 
-%                   -LineWidth = Line width of the trajectories of mle of
-%                   transformation parameters; 
-%                   -LineStyle = cell containing Line styles of the
-%                   trajectories of mle of transformation parameters; 
-%                   -LineWidthEnv = Line width of the horizontal lines; 
-%                   -Tag = tag of the plot (default is pl_mle); 
-%                   -FontSize = font size of the text labels which identify
-%                   the trajectories.
+%               parameters. Scalar or structure. Three horizontal lines
+%               associated respectively with values -1, 0 and 1 are added
+%               to the plot.
+%               If prolik is a scalar, the plot of the monitoring of
+%               maximum likelihood estimates of transformation parameters
+%               is produced on the screen with all the default options.
+%               If plotsmle is a structure, it may contain the following fields: 
+%                 plotsmle.xlim = minimum and maximum on the x axis;
+%                 plotsmle.ylim = minimum and maximum on the y axis;
+%                 plotsmle.LineWidth = Line width of the trajectories of
+%                                      mle of transformation parameters;
+%                 plotsmle.LineStyle = cell containing Line styles of
+%                                      the trajectories of mle of
+%                                      transformation parameters;
+%                 plotsmle.LineWidthEnv=Line width of the horizontal
+%                                      lines;
+%                 plotsmle.Tag       = tag of the plot (default is pl_mle); 
+%                 plotsmle.FontSize  = font size of the text labels which
+%                                      identify the trajectories.
 %                 Example -'plotsmle',1
 %                 Data Types - double
 %   plotslrt:   It specifies whether it is necessary to
 %               plot the likelihood ratio test. Scalar or structure.
-%               Structure plotslrt may contain the following fields: 
-%                   -xlim = minimum and maximum on the x axis; 
-%                   -ylim = minimum and maximum on the y axis; 
-%                   -LineWidth = Line width of the trajectory of lrt of
-%                   transformation parameters; 
-%                   -conflev = vector which defines the confidence levels of
-%                   the horizontal line for the likelihood ratio test
-%                   (default is conflev=[0.95 0.99]); 
-%                   -LineWidthEnv = Line width of the horizontal lines; 
-%                   -Tag = tag of the plot (default is pl_lrt). 
+%               If plotslrt is a scalar, the plot of the monitoring of
+%               likelihood ratio test is produced on the screen with all
+%               default options.
+%               If plotslrt is a strucure, it may contain the following fields: 
+%                   plotslrt.xlim     = minimum and maximum on the x axis; 
+%                   plotslrt.ylim     = minimum and maximum on the y axis; 
+%                   plotslrt.LineWidth= Line width of the trajectory of lrt of
+%                                       transformation parameters; 
+%                   plotslrt.conflev  = vector which defines the confidence
+%                                       levels of the horizontal line for
+%                                       the likelihood ratio test (default
+%                                       is conflev=[0.95 0.99]);
+%                   plotslrt.LineWidthEnv= Line width of the horizontal lines; 
+%                   plotslrt.Tag      = tag of the plot (default is pl_lrt). 
 %                 Example -'plotslrt',1
 %                 Data Types - double
 %  msg  :      It controls whether to display or not messages
@@ -157,7 +171,8 @@ function out = FSMtra(Y,varargin)
 %
 % Output:
 %
-%   The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %   out.MLEtra= n-init+1 x v matrix which contains the monitoring of
 %               MLE of transformation parameters: 
 %               1st col = fwd search index (from init to n); 

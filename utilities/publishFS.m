@@ -550,9 +550,24 @@ fstringselOpt=fstringselOpt(1:endpoint-2);
 % however we want to exclude the lines where symbol : is followed by a
 % series of white spaces and then by a carriage return because these are
 % input arguments but simply are the beginning of a list
-[~,fint]=regexp(fstringselOpt,'%\s{0,15}\w*\s{0,10}:');
-[ini,~]=regexp(fstringselOpt,'%\s{0,15}\w*\s{0,10}:\s{0,10}\w');
-fin=fint(1:length(ini));
+[iniA,finA]=regexp(fstringselOpt,'%\s*\w*\s*:'); % '%\s{0,15}\w*\s{0,10}:'
+[inichk,~]=regexp(fstringselOpt,'%\s*\w*\s*:\s*\w'); %'%\s{0,15}\w*\s{0,10}:\s{0,10}\w'
+% Select all rows of iniA and finA in which the elements of iniA are equal
+% to those of inichk
+if length(iniA)>length(inichk)
+    [~,ia]=intersect(iniA,inichk);
+    ini=iniA(ia);
+    fin=finA(ia);
+else
+ini=iniA;
+fin=finA;
+end
+
+% fin=fint(1:length(ini));
+% [ini,fin]=regexp(fstringselOpt,'%\s*\w*\s*:\s*\w');
+% 
+% [iniCR,finCR]=regexp(fstringselOpt,'%\s*\w*\s*:\s*\r');
+
 
 % listOptArgs = list which contains all optional arguments
 % The first column will contain the names (just one word)
@@ -661,12 +676,13 @@ listOptArgs=listOptArgs(1:ij-1,:);
 %' Remark:      The user should only give .....'
 % Given that this sentence is very generic and not applied to the last
 % optional input argument, if it is present it is deleted
+if ~isempty(listOptArgs)
 Checklastremark=listOptArgs{end,4};
-DelTheUser=regexp(Checklastremark,'Remark\s*:\s*The user','once','match','ignorecase'); 
+DelTheUser=regexp(Checklastremark,'Remark\s*:\s*The user','once','match','ignorecase');
 if ~isempty(DelTheUser);
     listOptArgs{end,4}=Checklastremark(1:DelTheUser-1);
 end
-
+end
 if strcmp(Display,'iter-detailed')
     disp('Detailed information about Optional arguments')
     disp(listOptArgs)
@@ -679,17 +695,17 @@ end
 % Define iniTable and cloTable which are respectively the beginning and the
 % end of the table which will contains the fields of the structure argument
 % if present in the input or output parameters of the procedure
-iniTable=[sprintf(['<table border="2" cellpadding="4" cellspacing="0" class="body">\r'...
-    '<colgroup>\r']) ...
-    '<col width="50%"><col width="50%">'...
-    sprintf(['\r</colgroup>\r'...
-    '<thead>\r'...
-    '<tr valign="top">\r'...
-    '<th valign="top">Value</th>\r'...
-    '<th valign="top">Description</th>\r'...
-    '</tr>\r'...
-    '</thead>'])];
-cloTable='</table>';
+% iniTable=[sprintf(['<table border="2" cellpadding="4" cellspacing="0" class="body">\r'...
+%     '<colgroup>\r']) ...
+%     '<col width="50%"><col width="50%">'...
+%     sprintf(['\r</colgroup>\r'...
+%     '<thead>\r'...
+%     '<tr valign="top">\r'...
+%     '<th valign="top">Value</th>\r'...
+%     '<th valign="top">Description</th>\r'...
+%     '</tr>\r'...
+%     '</thead>'])];
+% cloTable='</table>';
 
 
 %% Add title
@@ -1472,11 +1488,11 @@ for i=1:nTOTargin
             listInpArgs{i,6}=descrlong(Datatypes+13:end);
             
             descrlong=descrlong(1:Datatypes-1);
-            descrlongHTML=formatHTML(descrlong);
+            descrlongHTML=formatHTMLwithMATHJAX(descrlong);
             listInpArgs{i,4}=descrlongHTML;
         else
             
-            descrlongHTML=formatHTML(descrlong);
+            descrlongHTML=formatHTMLwithMATHJAX(descrlong);
             
             listInpArgs{i,4}=descrlongHTML;
             warning('FSDA:publishFS:MissingDataType',['Input argument ''' inpi ''' does not contain DataType line, by default string  ''single| double'' has been added'])
@@ -1611,66 +1627,16 @@ else
         nameoptarg=listOptArgs{i,1};
         titloptarg=listOptArgs{i,2};
         shortdesc=listOptArgs{i,3};
-        if strcmp(shortdesc,'Structure') && ~isempty(strfind(listOptArgs{i,4},'field'))
+        % just tructure and not structure or Structure because the search
+        % is case sensitive
+        if ~isempty(strfind(shortdesc,'tructure')) && ~isempty(strfind(listOptArgs{i,4},'field'))
             longdesc=listOptArgs{i,4};
             
-            [inistructfield,finstructfield]=regexp(longdesc,'\s{8,18}\w*\s{0,8}=');
-            posREMARK=regexp(longdesc,'REMARK','once');
-            % If there is the string REMARK it means that all that which is after
-            % remark is a general statement which does not have to be contained in the
-            % table with the associated fields
-            if ~isempty(posREMARK)
-                boo=inistructfield<posREMARK;
-                inistructfield=inistructfield(boo);
-                finstructfield=finstructfield(boo);
-            end
-            % Insert all fields of inside listStruArgs
-            listOutArgs=cell(length(inistructfield),2);
-            for k=1:length(inistructfield)
-                % fin(i)-1 because character ':' does not have to be extracted
-                StructFieldName=longdesc(inistructfield(k):finstructfield(k)-1);
-                % Remove from string opti leading and trailing white spaces
-                StructFieldName=strtrim(StructFieldName);
-                
-                % Store name in the first column
-                listOutArgs{k,1}=StructFieldName;
-                % Store short description in the 3nd col of listOptArgs
-                if k<length(inistructfield)
-                    StructFieldCont=longdesc(finstructfield(k)+1:inistructfield(k+1));
-                else
-                    if ~isempty(posREMARK)
-                        StructFieldCont=longdesc(finstructfield(k)+1:posREMARK-1);
-                    else
-                        StructFieldCont=longdesc(finstructfield(k)+1:end);
-                    end
-                end
-                % Store name in the first column
-                listOutArgs{k,2}=StructFieldCont;
-            end
+            %    [inistructfield,finstructfield]=regexp(longdesc,'\s{8,18}\w*\s{0,8}=');
+            longdescription=formatHTMLstructure(longdesc,nameoptarg);
             
-            
-            
-            Tablehtml='';
-            for k=1:length(inistructfield)
-                Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
-                    '<td><code>' listOutArgs{k,1} '</code></td>\r'...
-                    '<td>\r'...
-                    '<p>']) listOutArgs{k,2} sprintf(['</p>\r'...
-                    '</td>\r'...
-                    '</tr>'])];
-            end
-            
-            % Add the Remark after the table, if it is present
-            if ~isempty(posREMARK)
-                descrREMARK=longdesc(posREMARK:end);
-                descrREMARKHTML=formatHTML(descrREMARK);
-                
-                longdescription=[iniTable Tablehtml cloTable '<p>' descrREMARKHTML '</p>'];
-            else
-                longdescription=[iniTable Tablehtml cloTable];
-            end
         else
-            longdescriptionHTML=formatHTML(listOptArgs{i,4});
+            longdescriptionHTML=formatHTMLwithMATHJAX(listOptArgs{i,4});
             
             longdescription=longdescriptionHTML;
         end
@@ -1717,7 +1683,7 @@ inioutargs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<p class="switch">\r'...
     '<a class="expandAllLink" href="javascript:void(0);">expand all</a></p>']);
 
-% outargs = strings which contains output arguements (includeing [])
+% outargs = strings which contains output arguments (including [])
 % nargout = number of output arguments
 outargshtml='';
 
@@ -1828,75 +1794,11 @@ for i=1:nargout
     
     
     if ~isempty(checkifstructure)
-        [ini,fin]=regexp(descrioutput,['\s{0,8}' outi '\.\w*\s{0,8}=']);
-        if isempty(ini)
-            disp('Probably ":" symbols  must be replaced with "=" symbols in out description')
-            error('FSDA:MissingArg',['Parser cannot find string \n''' outi '.xxxx'' = \n for output structure ' outi])
-        else
-        end
         
-        listOutArgs=cell(length(ini),2);
+        descrioutput=formatHTMLstructure(descrioutput,outi);
         
-        for k=1:length(ini)
-            % fin(i)-1 because character ':' does not have to be extracted
-            StructFieldName=descrioutput(ini(k):fin(k)-1);
-            % Remove from string opti leading and trailing white spaces
-            StructFieldName=strtrim(StructFieldName);
-            StructFieldName=StructFieldName(length(outi)+2:end);
-            
-            % Store name in the first column
-            listOutArgs{k,1}=StructFieldName;
-            % Store short description in the 3nd col of listOptArgs
-            if k<length(ini)
-                StructFieldCont=descrioutput(fin(k)+1:ini(k+1)-1);
-            else
-                StructFieldCont=descrioutput(fin(k)+1:end);
-            end
-            
-            % Store name in the first column
-            listOutArgs{k,2}=StructFieldCont;
-        end
-        
-        % rowtodel = vector which contains the duplicate rows of
-        % listStruArgs which have to be deleted
-        inisel=1:size(listOutArgs,1);
-        
-        % Check if cell listStruArgs contains duplicates in the first column
-        for j=2:size(listOutArgs,1)
-            if strcmp(listOutArgs{j,1},listOutArgs{j-1,1})
-                listOutArgs{j-1,2}=[listOutArgs{j-1,2} listOutArgs{j,1} listOutArgs{j,2}];
-                inisel(j)=999;
-            end
-        end
-        
-        if strcmp(Display,'iter-detailed')
-            disp('Detailed information about Output arguments')
-            disp(listOutArgs)
-        end
-        
-        % remove from inisel the rows equal to 999 (that is the rows which
-        % correspond to duplicated arguments)
-        inisel(inisel==999)=[];
-        
-        Tablehtml='';
-        for k=inisel % length(ini)
-            
-            descrlong=listOutArgs{k,2};
-            
-            descrlongHTML=formatHTML(descrlong);
-            
-            % listOutArgs{k,2}
-            Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
-                '<td><code>' listOutArgs{k,1} '</code></td>\r'...
-                '<td>\r'...
-                '<p>']) descrlongHTML  sprintf(['</p>\r'...
-                '</td>\r'...
-                '</tr>'])];
-        end
-        
-        descrioutput=[iniTable Tablehtml cloTable];
-        
-        preamble='A structure containing the following fields:';
+        % preamble='A structure containing the following fields:';
+        preamble='Structure';
         
         outargshtml=[outargshtml sprintf(['<div class="expandableContent">\r'...
             '<div id="outputarg_' outi '" class="clearfix">\r'...
@@ -2475,3 +2377,122 @@ end
 
 end
 
+function descrioutput=formatHTMLstructure(descriinput,StructureName)
+iniTable=[sprintf(['<table border="2" cellpadding="4" cellspacing="0" class="body">\r'...
+    '<colgroup>\r']) ...
+    '<col width="50%"><col width="50%">'...
+    sprintf(['\r</colgroup>\r'...
+    '<thead>\r'...
+    '<tr valign="top">\r'...
+    '<th valign="top">Value</th>\r'...
+    '<th valign="top">Description</th>\r'...
+    '</tr>\r'...
+    '</thead>'])];
+cloTable='</table>';
+
+[ini,fin]=regexp(descriinput,['\s{0,8}' StructureName '\.\w*\s*=']);
+if isempty(ini)
+    disp('Probably ":" symbols  must be replaced with "=" symbols in out description')
+    error('FSDA:MissingArg',['Parser cannot find string \n''' StructureName '.xxxx'' = \n for output structure ' StructureName])
+else
+end
+
+
+
+posREMARK=regexp(descriinput,'\r\s*\r\s*remark','once','ignorecase');
+% If there is the string REMARK it means that all that which is after
+% remark is a general statement which does not have to be contained in the
+% table with the associated fields
+if ~isempty(posREMARK)
+    boo=ini<posREMARK;
+    ini=ini(boo);
+    fin=fin(boo);
+end
+
+
+% listStructureArgs = cells which will contains the name/values
+% pairs of the strcture
+% fieldnames will go into the first column of the table
+% the content of the field names will fo into the second column of
+% the table
+listStructureArgs=cell(length(ini),2);
+
+for k=1:length(ini)
+    % fin(i)-1 because character '=' does not have to be extracted
+    StructFieldName=descriinput(ini(k):fin(k)-1);
+    % Remove from string opti leading and trailing white spaces
+    StructFieldName=strtrim(StructFieldName);
+    StructFieldName=StructFieldName(length(StructureName)+2:end);
+    
+    % Store name in the first column
+    listStructureArgs{k,1}=StructFieldName;
+    % Store field content in the 2nd col of listStructureArgs
+    if k<length(ini)
+        StructFieldCont=descriinput(fin(k)+1:ini(k+1)-1);
+    else
+        
+        if ~isempty(posREMARK)
+            StructFieldCont=descriinput(fin(k)+1:posREMARK-1);
+        else
+            StructFieldCont=descriinput(fin(k)+1:end);
+        end
+    end
+    
+    % Store name in the first column
+    listStructureArgs{k,2}=StructFieldCont;
+end
+
+% rowtodel = vector which contains the duplicate rows of
+% listStruArgs which have to be deleted
+inisel=1:size(listStructureArgs,1);
+
+% Check if cell listStruArgs contains duplicates in the first column
+for j=2:size(listStructureArgs,1)
+    if strcmp(listStructureArgs{j,1},listStructureArgs{j-1,1})
+        listStructureArgs{j-1,2}=[listStructureArgs{j-1,2} listStructureArgs{j,1} listStructureArgs{j,2}];
+        inisel(j)=999;
+    end
+end
+
+%         if strcmp(Display,'iter-detailed')
+%             disp('Detailed information about Output arguments')
+%             disp(listOutArgs)
+%         end
+
+% remove from inisel the rows equal to 999 (that is the rows which
+% correspond to duplicated arguments)
+inisel(inisel==999)=[];
+
+Tablehtml='';
+for k=inisel % length(ini)
+    
+    descrlong=listStructureArgs{k,2};
+    
+    descrlongHTML=formatHTMLwithMATHJAX(descrlong);
+    
+    % listOutArgs{k,2}
+    Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
+        '<td><code>' listStructureArgs{k,1} '</code></td>\r'...
+        '<td>\r'...
+        '<p>']) descrlongHTML  sprintf(['</p>\r'...
+        '</td>\r'...
+        '</tr>'])];
+end
+
+preamble=descriinput(1:ini(1)-1);
+preambleHTML=formatHTMLwithMATHJAX(preamble);
+
+% Add the Remark after the table, if it is present
+if ~isempty(posREMARK)
+    descrREMARK=descriinput(posREMARK:end);
+    descrREMARKHTML=formatHTMLwithMATHJAX(descrREMARK);
+    
+    descrioutput=[preambleHTML iniTable Tablehtml cloTable '<p>' descrREMARKHTML '</p>'];
+else
+    descrioutput=[preambleHTML iniTable Tablehtml cloTable];
+end
+
+% use capital letter for the first word.
+descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
+
+end
