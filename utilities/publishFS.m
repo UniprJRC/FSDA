@@ -2413,12 +2413,13 @@ fclose('all');
 
 end
 
-% This inner function  has the purpose of adding symbols </p> <p> every time
-% a full stop is followed by a series of space and then a carriage return.
+% This inner function  has the purpose of adding symbols </p> <p> every
+% time a full stop, colon or semicolo symbol followed by a series of space
+% and then a carriage return.
 function descrlongHTML=formatHTML(descrlong)
-newlinewithFullStop=regexp(descrlong,'[\.\s1-50]\r');
-newlinewithColon=regexp(descrlong,'[\:\s1-50]\r');
-newlinewithSemiColon=regexp(descrlong,'[\;\s1-50]\r');
+% newlinewithFullStop=regexp(descrlong,'\.\s*\r');
+% newlinewithColon=regexp(descrlong,'\:\s*\r');
+% newlinewithSemiColon=regexp(descrlong,'\;\s*r');
 newl=sort([newlinewithColon newlinewithSemiColon newlinewithFullStop]);
 if ~isempty(newl)
     descrlongHTML=['<p>' descrlong(1:newl(1))];

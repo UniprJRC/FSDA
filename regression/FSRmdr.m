@@ -76,8 +76,8 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 % bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
 %               non singular X. Scalar. 
 %               This options controls what to do when rank(X(bsbm,:)) is
-%               smaller then number of explanatory variables. If
-%               bsbmfullrank = 1 (default is 1) these units (whose number
+%               smaller then number of explanatory variables. 
+%               If bsbmfullrank = 1 (default is 1) these units (whose number
 %               is say mnofullrank) are constrained to enter the search in
 %               the final n-mnofullrank steps else the search continues
 %               using as estimate of beta at step m the estimate of beta
