@@ -21,10 +21,9 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
-% init :       It specifies the point where to start monitoring
-%               required diagnostics. Scalar. Note that if bsb is supplied
-%               init>=length(bsb). If init is not specified it will
-%               be set equal to floor(n*0.6).
+% init :       Point where to start monitoring required diagnostics. Scalar. 
+%              Note that if bsb is suppliedinit>=length(bsb). If init is not
+%              specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
 % plots :     It specify whether it is necessary to produce the plots of minimum Mahalanobis
