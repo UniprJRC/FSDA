@@ -113,7 +113,7 @@ function [out]=addt(y,X,w,varargin)
 %}
 
 %{
-    % Excluding more than one observation from the sample. 
+    %% Excluding more than one observation from the sample. 
     % Compare the added variable plot based on all units with that which excludes units 
     % 9,21,30,31,38 and 47.
     [out]=addt(y,X(:,2:3),X(:,1),'plots',1,'units',[9 21 30 31 38 47]','textlab','y');

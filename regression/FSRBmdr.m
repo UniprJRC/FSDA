@@ -159,7 +159,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 % Examples:
 
 %{
-    % FSRBmdr with all default options.
+    %% FSRBmdr with all default options.
     % Common part to all examples: load Houses Price Dataset.
     load hprice.txt;
     
