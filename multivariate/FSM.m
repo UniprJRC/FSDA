@@ -45,14 +45,14 @@ function [out]=FSM(Y,varargin)
 %                  the set of those which never fell outside
 %                  univariate boxplots then among those which fell only once
 %                  outside univariate boxplots... up to reach m0.
+%               Example - 'crit','md' 
+%               Data Types - char
 %                 Remark: as the user can see the starting point of the
 %                 search is not going to affect at all the results of the
 %                 analysis. The user can explore this point with his own datasets
 %                 Remark: if crit='biv' the user can also supply in scalar rf
 %                 (see below) the confidence level of the bivariate
 %                 ellipses.
-%               Example - 'crit','md' 
-%               Data Types - char
 %        rf     : confidence level for bivariate ellipses. Scalar. The default is
 %                 0.95. This option is useful only if crit='biv'.
 %                 Example - 'rf',0.9 

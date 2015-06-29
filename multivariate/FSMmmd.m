@@ -46,7 +46,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %                 Example - 'nocheck',0 
 %                 Data Types - double
 %
-% Remark       The user should only give the input arguments that have to
+% Remark :      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
 %               their value. The order of the input arguments is of no

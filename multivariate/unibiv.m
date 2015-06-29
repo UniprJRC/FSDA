@@ -35,7 +35,7 @@ function [fre]=unibiv(Y,varargin)
 %                   variable; 
 %                   robscale=4: tetracoric correlation coefficient is used and the MAD
 %                   as estimate of the dispersion of each variable; 
-%                   otherwise: the correlation and the dispersion of the variables are
+%                   otherwise the correlation and the dispersion of the variables are
 %                   computed using the traditional (non robust) formulae
 %                   around the univariate medians.
 %                 Example - 'robscale',2 
