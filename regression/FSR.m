@@ -92,10 +92,10 @@ function [out]=FSR(y,X,varargin)
 %                 functions invcdff and invcdft.
 %                 The solution has a tolerance of 1e-8 (change variable tol
 %                 in files invcdff.m and invcdft.m if required
-%                 Remark: the use of functions tinv and finv is more precise
-%                 but requires more time.
 %               Example - 'exact',1 
 %               Data Types - double
+%                 Remark: the use of functions tinv and finv is more precise
+%                 but requires more time.
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones

@@ -559,13 +559,13 @@ if length(iniA)>length(inichk)
     ini=iniA(ia);
     fin=finA(ia);
 else
-ini=iniA;
-fin=finA;
+    ini=iniA;
+    fin=finA;
 end
 
 % fin=fint(1:length(ini));
 % [ini,fin]=regexp(fstringselOpt,'%\s*\w*\s*:\s*\w');
-% 
+%
 % [iniCR,finCR]=regexp(fstringselOpt,'%\s*\w*\s*:\s*\r');
 
 
@@ -677,11 +677,11 @@ listOptArgs=listOptArgs(1:ij-1,:);
 % Given that this sentence is very generic and not applied to the last
 % optional input argument, if it is present it is deleted
 if ~isempty(listOptArgs)
-Checklastremark=listOptArgs{end,4};
-DelTheUser=regexp(Checklastremark,'Remark\s*:\s*The user','once','match','ignorecase');
-if ~isempty(DelTheUser);
-    listOptArgs{end,4}=Checklastremark(1:DelTheUser-1);
-end
+    Checklastremark=listOptArgs{end,4};
+    DelTheUser=regexp(Checklastremark,'Remark\s*:\s*The user','once','match','ignorecase');
+    if ~isempty(DelTheUser);
+        listOptArgs{end,4}=Checklastremark(1:DelTheUser-1);
+    end
 end
 if strcmp(Display,'iter-detailed')
     disp('Detailed information about Optional arguments')
@@ -1452,7 +1452,7 @@ for i=1:nTOTargin
     
     [inifullstops]=regexp(DescrInputToSplit,'\.[\s1-3]');
     if isempty(inifullstops)
-        warning('FSDA:publishFS:WrongInp',['Input option: ''' inpi '''\n Sentence''' DescrInputToSplit '''must contain at least two full stops'])
+        error('FSDA:publishFS:WrongInp',['Input option: ''' inpi '''\n Sentence\n''' DescrInputToSplit '''\nmust contain at least two full stops'])
         % error('Wrong input')
     end
     shortdesc=strtrim(DescrInputToSplit(1:inifullstops(1)-1));
@@ -2241,13 +2241,12 @@ if evalCode==true
         for i=1:length(sel)
             % Process string listEx{i,1}
             listExi=listEx{sel(i),1};
-            % If there are signs $ ^ [ ] replace them with \$ and \^ \[ \]
-            listExi=strrep(listExi,'$','\$');
-            listExi=strrep(listExi,'^','\^');
-            listExi=strrep(listExi,'[','\[');
-            listExi=strrep(listExi,']','\]');
-            listExi=strrep(listExi,'(','\(');
-            listExi=strrep(listExi,')','\)');
+            
+            % Add symbol \ in before special characters in string listExi
+            % otherwise regexp will not  find listExi inside
+            % outstring
+            listExi=SpecialCharacters(listExi);
+            
             
             iniout=regexp(outstring,listExi);
             if length(iniout)<2
@@ -2275,14 +2274,11 @@ if evalCode==true
             for i=1:length(sel)
                 % Process string listEx{i,1}
                 listExi=listExtraEx{sel(i),1};
-                % If there are signs $ ^ [ ] replace them with \$ and \^ \[ \]
-                listExi=strrep(listExi,'$','\$');
-                listExi=strrep(listExi,'^','\^');
-                listExi=strrep(listExi,'[','\[');
-                listExi=strrep(listExi,']','\]');
-                listExi=strrep(listExi,'(','\(');
-                listExi=strrep(listExi,')','\)');
-                listExi=strrep(listExi,'.','\.');
+                
+                % Add symbol \ in before special characters in string listExi
+                % otherwise regexp will not  find listExi inside
+                % outstring
+                listExi=SpecialCharacters(listExi);
                 
                 iniout=regexp(outstring,listExi);
                 if length(iniout)>2
@@ -2495,4 +2491,20 @@ end
 % use capital letter for the first word.
 descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
 
+end
+
+
+function StringwithSpecialCharacters=SpecialCharacters(StringwithSpecialCharacters)
+% Add symbol \ in before special characters in string StringwithSpecialCharacters
+% otherwise regexp will not find this string in
+% outstring
+
+% If there are signs $ ^ [ ] replace them with \$ and \^ \[ \]
+StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,'$','\$');
+StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,'^','\^');
+StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,'[','\[');
+StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,']','\]');
+StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,'(','\(');
+StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,')','\)');
+StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,'.','\.');
 end

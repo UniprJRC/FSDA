@@ -14,7 +14,8 @@ function [out]=addt(y,X,w,varargin)
 %           Missing values (NaN's) and infinite values (Inf's) are allowed,
 %           since observations (rows) with missing or infinite values will
 %           automatically be excluded from the computations.
-%       w:  additional explanatory variable whose t test must be computed.
+%       w:  added variable. Vector. n-x-1 vector containing the additional
+%           explanatory variable whose t test must be computed.
 %
 % Optional input arguments:
 %
@@ -24,7 +25,7 @@ function [out]=addt(y,X,w,varargin)
 %               term will be included.
 %               Example - 'intercept',1 
 %               Data Types - double
-%   la:         Transformation parameter. Scalar or ''. 
+%   la:         Transformation parameter. Scalar | '' (empty value). 
 %               It specifies for which Box Cox
 %               transformation parameter it is necessary to compute the t
 %               statistic for the additional variable. If la is an empty
@@ -63,7 +64,7 @@ function [out]=addt(y,X,w,varargin)
 %  The output consists of a structure 'out' containing the following fields:
 %       out.b=          estimate of the slope for additional explanatory
 %                       variable
-%       out.S2add=  estimate of s^2 of the model which contains the
+%       out.S2add=  estimate of $s^2$ of the model which contains the
 %                       additional explanatory variable
 %       out.Tadd=         t statistic for additional explanatory variable
 %

@@ -19,30 +19,32 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               or infinite values will automatically be excluded from the
 %               computations.
 %
-%               PRIOR INFORMATION
-%               beta is assumed to have a normal distribution with
-%               mean beta0 and (conditional on tau0) covariance
-%               (1/tau0) (X0'X0)^{-1}
-%               beta~N(    beta0, (1/tau0) (X0'X0)^{-1}    )
 %
-%   beta0 :     p-times-1 vector containing prior mean of beta. It
-%               contains a priori estimates of regression coefficients.
-%    R    :     p-times-p positive definite matrix
-%               which can be interepreted as X0'X0 where X0 is a n0 x p
+%               PRIOR INFORMATION
+%               $\beta$ is assumed to have a normal distribution with
+%               mean $\beta_0$ and (conditional on $\tau_0$) covariance
+%               $(1/\tau_0) (X_0'X_0)^{-1}$.
+%               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$
+%
+%   beta0 :     Prior mean of $\beta$. p-times-1 vector. 
+%    R    :     Matrix associated with covariance matrix of $\beta$. p-times-p
+%               positive definite matrix.
+%               It can be interpreted as X0'X0 where X0 is a n0 x p
 %               matrix coming from previous experiments (assuming that the
 %               intercept is included in the model)
 %
-%               The prior distribution of tau0 is a gamma distribution with
-%               parameters a and b, that is
-%                     p(tau0) propto tau^{a0-1} exp (-b0 tau)
-%                         E(tau0)= a0/b0
+%               The prior distribution of $\tau_0$ is a gamma distribution with
+%               parameters $a_0$ and $b_0$, that is
+%               
+%                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
+%                       \qquad   E(\tau_0)= a_0/b_0               \]
 %
-%
-%    tau0 :     scalar. Prior estimate of tau=1/ sigma^2 =a0/b0
-%      n0 :     scalar. Sometimes it helps to think of the prior
-%               information as coming from n0 previous experiments.
-%               Therefore we assume that matrix X0 (which defines R), was
-%               made up of n0 observations.
+%    tau0 :     Prior estimate of tau. Scalar. Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.
+%      n0 :     Number of previous experiments. Scalar. Sometimes it helps
+%               to think of the prior information as coming from n0
+%               previous experiments. Therefore we assume that matrix X0
+%               (which defines R), was made up of n0 observations.
+
 %
 %
 % Optional input arguments:
@@ -208,7 +210,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %}
 
 %{
-    % Monitor $\hat  beta$.
+    % Monitor $\hat  \beta$.
     [mdr,Un,BB,BBayes]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 %}
 
