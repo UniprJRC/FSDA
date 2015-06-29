@@ -88,15 +88,15 @@ function out = FSMfan(Y,la0,varargin)
 %                 Data Types - double
 %   plotslrt:  It indicates if plot the (signed) likelihood ratio test. Scalar or structure.
 %               Structure plotslrt may contain the following fields:
-%                   -xlim = minimum and maximum on the x axis; 
-%                   -ylim = minimum and maximum on the y axis; 
-%                   -LineWidth = Line width of the trajectory of lrt of
+%                   plotslrt.xlim = minimum and maximum on the x axis; 
+%                   plotslrt.ylim = minimum and maximum on the y axis; 
+%                   plotslrt.LineWidth = Line width of the trajectory of lrt of
 %                   tranformation paramters; 
-%                   -conflev = vector which defines the confidence levels of
+%                   plotslrt.conflev = vector which defines the confidence levels of
 %                   the horizontal line for the likelihood ratio test
 %                   (default is conflev=[0.95 0.99]); 
-%                   -LineWidthEnv = Line width of the horizontal lines; 
-%                   -Tag = tag of the plot (default is pl_lrt); 
+%                   plotslrt.LineWidthEnv = Line width of the horizontal lines; 
+%                   plotslrt.Tag = tag of the plot (default is pl_lrt); 
 %                 Example - 'plotslrt',struct
 %                 Data Types - double
 %  msg  :       It controls whether to display or not messages
