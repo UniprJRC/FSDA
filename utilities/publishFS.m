@@ -1360,7 +1360,7 @@ closeallex=sprintf(['</div>\r'... % div class="examples"
 examples=[iniexamples exampleshtml closeexamples iniRelatedExamples...
     RelatedExamples closeallex];
 
-%% CREATE REQUIRED NPUT ARGUMENTS SECTION OF HTML file
+%% CREATE REQUIRED INPUT ARGUMENTS SECTION OF HTML file
 iniReqInputArgs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<h2 id="inputs">Input Arguments</h2>\r'...
     '<div class="expandableContent">\r'...
@@ -1625,8 +1625,19 @@ else
     OptArgsNameValue='';
     for i=1:size(listOptArgs,1);
         nameoptarg=listOptArgs{i,1};
+        
         titloptarg=listOptArgs{i,2};
+        
         shortdesc=listOptArgs{i,3};
+        % Remove carriage return if they are present in string shortdesc
+        shortdesc=(regexprep(shortdesc,'\r\n|\n|\r',''));
+        % replace string ' or ' with ' |'
+        shortdesc=strrep(shortdesc,' or ',' | ');
+        % Write in lower case first letter of shortdesc
+        if length(shortdesc)>1
+            shortdesc=[lower(shortdesc(1)) shortdesc(2:end)];
+        end
+        
         % just tructure and not structure or Structure because the search
         % is case sensitive
         if ~isempty(strfind(shortdesc,'tructure')) && ~isempty(strfind(listOptArgs{i,4},'field'))
