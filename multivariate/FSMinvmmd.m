@@ -24,21 +24,20 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %               confidence level of mmd in each step is shown on the
 %               screen. Three horizontal lines associated respectively with
 %               values 0.01, 0.5 and 0.99  are added to the plot. 
-%               If plots is a structure the user can specify the following
-%               options: 
-%                   -conflev = vector containing horizontal lines associated
+%               If plots is a structure, it may contain the following fields: 
+%                   plots.conflev = vector containing horizontal lines associated
 %                       with confidence levels; 
-%                   -conflevlab = scalar if it is equal 1 labels associated with
+%                   plots.conflevlab = scalar if it is equal 1 labels associated with
 %                       horizontal lines are shown on the screen; 
-%                   -xlim = minimum and maximum on the x axis; 
-%                   -ylim = minimum and maximum on the y axis; 
-%                   -LineWidth = Line width of the trajectory of mmd in
+%                   plots.xlim = minimum and maximum on the x axis; 
+%                   plots.ylim = minimum and maximum on the y axis; 
+%                   plots.LineWidth = Line width of the trajectory of mmd in
 %                   normal coordinates; 
-%                   -LineStyle = Line style of the
+%                   plots.LineStyle = Line style of the
 %                   trajectory of mle of transformation parameters; 
-%                   -LineWidthEnv = Line width of the horizontal lines; 
-%                   -Tag = tag of the plot (default is pl_mmdinv); 
-%                   -FontSize = font size of the text labels which identify
+%                   plots.LineWidthEnv = Line width of the horizontal lines; 
+%                   plots.Tag = tag of the plot (default is pl_mmdinv); 
+%                   plots.FontSize = font size of the text labels which identify
 %                   the trajectories
 %                 Example - 'plots',1
 %                 Data Types - double
