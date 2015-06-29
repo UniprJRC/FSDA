@@ -479,12 +479,7 @@ ini0=length(bsb);
 
 % check init
 init=options.init;
-if  init <p;
-    mess=sprintf(['Attention : init should be larger than p+1. \n',...
-        'It is set to p.']);
-    disp(mess);
-    init=p;
-elseif init<ini0;
+if init<ini0;
     mess=sprintf(['Attention : init should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
     disp(mess);
