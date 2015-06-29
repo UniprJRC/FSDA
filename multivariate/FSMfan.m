@@ -86,17 +86,24 @@ function out = FSMfan(Y,la0,varargin)
 %               produced.
 %                 Example - 'signlr',0
 %                 Data Types - double
-%   plotslrt:  It indicates if plot the (signed) likelihood ratio test. Scalar or structure.
-%               Structure plotslrt may contain the following fields:
-%                   plotslrt.xlim = minimum and maximum on the x axis; 
-%                   plotslrt.ylim = minimum and maximum on the y axis; 
-%                   plotslrt.LineWidth = Line width of the trajectory of lrt of
-%                   tranformation paramters; 
-%                   plotslrt.conflev = vector which defines the confidence levels of
-%                   the horizontal line for the likelihood ratio test
-%                   (default is conflev=[0.95 0.99]); 
-%                   plotslrt.LineWidthEnv = Line width of the horizontal lines; 
-%                   plotslrt.Tag = tag of the plot (default is pl_lrt); 
+%   plotslrt:   It specifies whether it is necessary to
+%               plot the (signed square root) likelihood ratio test. Scalar or structure.
+%               If plotslrt is a scalar, the plot of the monitoring of
+%               likelihood ratio test is produced on the screen with all
+%               default options.
+%               If plotslrt is a strucure, it may contain the following fields: 
+%                   plotslrt.xlim     = minimum and maximum on the x axis; 
+%                   plotslrt.ylim     = minimum and maximum on the y axis; 
+%                   plotslrt.LineWidth= Line width of the trajectory of lrt of
+%                                       transformation parameters; 
+%                   plotslrt.conflev  = vector which defines the confidence
+%                                       levels of the horizontal line for
+%                                       the likelihood ratio test (default
+%                                       is conflev=[0.95 0.99]);
+%                   plotslrt.LineWidthEnv= Line width of the horizontal lines; 
+%                   plotslrt.Tag      = tag of the plot (default is pl_lrt). 
+%                 Example -'plotslrt',1
+%                 Data Types - double
 %                 Example - 'plotslrt',struct
 %                 Data Types - double
 %  msg  :       It controls whether to display or not messages
