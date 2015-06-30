@@ -5,19 +5,20 @@ function mdrplot(out,varargin)
 %
 % Required input arguments:
 %
-%  out :  structure containing the following fields
-%        mdr =  a matrix containing the monitoring of minimum deletion
+%  out :  Structure containing monitoring of mdr. Structure. 
+%               Structure containing the following fields.
+%    out.mdr =  minimum deletion residual. A matrix containing the monitoring of minimum deletion
 %               residual in each step of the forward search. The first
 %               column of mdr must contain the fwd search index
 %               This matrix can be created using function FSReda
 %               (compulsory argument)
-%       Un  =   matrix containing the order of entry of each unit
+%       out.Un  =   order of entry of each unit. Matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not empty)
-%       y   =   a vector containing the response (necessary only if
+%       out.y   =   response. Vector containing the response (necessary only if
 %               option databrush is not empty)
-%       X   =   a matrix containing the explanatory variables
+%       out.X   =   Regressors. A matrix containing the explanatory variables
 %               (necessary only if option databrush is not empty)
-%     Bols  =   (n-init+1) x (p+1) matrix containing the monitoring of
+%     out.Bols  =   Monitoring of beta coefficients. (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward search
 %               (necessary only if option databrush is not empty and
 %               suboption multivarfit is not empty)
@@ -25,60 +26,83 @@ function mdrplot(out,varargin)
 %
 % Optional input arguments:
 %
-%       quant   :   vector containing quantiles for which envelopes have
-%                   to be computed. The default is to produce 1%, 50% and
+%       quant   :   Quantiles for which envelopes have
+%                   to be computed. Vector. The default is to produce 1%, 50% and
 %                   99% envelopes. In other words the default is
 %                   quant=[0.01;0.5;0.99];
-%       exact:      scalar, if it is equal to 1 the calculation of the
+%                   Example - 'quant',[0.05;0.5;0.95]
+%                   Data Types - double
+%       exact:      Exact of approximate cdf for envelope calculation. Scalar. If it is equal to 1 the calculation of the
 %                   quantiles of the T and F distribution is based on
 %                   functions finv and tinv from the Matlab statistics
 %                   toolbox, otherwise the calculations of the former
 %                   quantiles is based on functions invcdff and invcdft.
 %                   The solution has a tolerance of 1e-8 (change variable
 %                   tol in files invcdff.m and invcdft.m if required.
+%                   Example - 'exact',1
+%                   Data Types - double
 %                   Remark: the use of functions tinv and finv is more
 %                   precise but requires more time. The default value of
 %                   exact is 0 (approximate solution).
-%       sign    :   Scalar. If it is equal 1 (default) we distinguish steps
+%       sign    :   mdr with sign. Scalar. If it is equal 1 (default) we distinguish steps
 %                   for which minimum deletion residual was associated with
 %                   positive or negative value of the residual. Steps
 %                   associated with positive values of mdr are plotted in
 %                   black, while other steps are plotted in red
-%       mplus1  :   Scalar, which specifies if it is necessary to plot the
+%                   Example - 'sign',1
+%                   Data Types - double
+%       mplus1  :   plot of (m+1)th order statistic. Scalar. Scalar, which specifies if it is necessary to plot the
 %                   curve associated with (m+1)th order statistic
-%       envm    :   Scalar which specifies the size of the sample which is
+%                   Example - 'mplus1',1
+%                   Data Types - double
+%       envm    :   sample size for drawing enevlopes. Scalar. Scalar which specifies the size of the sample which is
 %                   used to superimpose the envelope. The default is to add
 %                   an envelope based on all the observations (size n
-%                   envelope)
-%       xlimx   :   vector with two elements controlling minimum and
+%                   envelope).
+%                   Example - 'envm',100
+%                   Data Types - double
+%       xlimx   :   min and max for x axis. Vector. vector with two elements controlling minimum and
 %                   maximum on the x axis. Default value is mdr(1,1)-3 and
 %                   mdr(end,1)*1.3
-%       ylimy   :   vector with two elements controlling minimum and
+%                   Example - 'xlimx',[20 100]
+%                   Data Types - double
+%       ylimy   :   min and max for x axis. Vector. Vector with two elements controlling minimum and
 %                   maximum on the y axis. Default value is min(mdr(:,2))
 %                   and max(mdr(:,2));
-%       lwdenv  :   Scalar which controls the width of the lines associated
+%                   Example - 'ylimy',[2 6]
+%                   Data Types - double
+%       lwdenv  :   Line width. Scalar. Scalar which controls the width of the lines associated
 %                   with the envelopes. Default is lwdenv=1
-%       tag     :   string which identifies the handle of the plot which
+%                   Example - 'lwdenv',2
+%                   Data Types - double
+%       tag     :   plot handle. String. String which identifies the handle of the plot which
 %                   is about to be created. The default is to use tag
 %                   'pl_mdr'. Notice that if the program finds a plot which
 %                   has a tag equal to the one specified by the user, then
 %                   the output of the new plot overwrites the existing one
 %                   in the same window else a new window is created
-%   datatooltip :   empty value or structure. The default is datatooltip=''
+%                   Example - 'tag','mymdr'
+%                   Data Types - char 
+%   datatooltip :   interactive clicking. Empty value (default) or structure. The default is datatooltip=''
 %                   If datatooltip is not empty the user can use the mouse
-%                   in order to have information about the unit seected,
+%                   in order to have information about the unit selected,
 %                   the step in which the unit enters the search and the
 %                   associated label. If datatooltip is a structure, it is
 %                   possible to control the aspect of the data cursor (see
 %                   function datacursormode for more details or the
 %                   examples below). The default options of the structure
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'
-%       label   :   cell containing the labels of the units (optional
+%                   Example - 'datatooltip',''
+%                   Data Types - char 
+%       label   :   row labels. Cell of strings. Cell containing the labels of the units (optional
 %                   argument used when datatooltip=1. If this field is not
 %                   present labels row1, ..., rown will be automatically
 %                   created and included in the pop up datatooltip window)
-%    databrush :    empty value, scalar or structure.
-%                   DATABRUSH IS AN EMPTY VALUE If databrush is an empty
+%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
+%                   Data Types - cell 
+%    databrush :    interactive mouse brushing. Empty value (default), scalar or structure.
+%                   DATABRUSH IS AN EMPTY VALUE 
+%                   If databrush is an empty
 %                   value (default), no brushing is done. The activation of
 %                   this option (databrush is a scalar or a structure) enables
 %                   the user  to select a set of trajectories in the
@@ -86,7 +110,7 @@ function mdrplot(out,varargin)
 %                   plot (notice that if the plot y|X does not exist it is
 %                   automatically created). In addition, brushed units can
 %                   be highlighted in the monitoring residual plot
-%                   Remark: the window style of the
+%                   Remark. the window style of the
 %                   other figures is set equal to that which contains the
 %                   monitoring residual plot. In other words, if the
 %                   monitoring residual plot is docked all the other
@@ -139,28 +163,49 @@ function mdrplot(out,varargin)
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
-%       Fontsize:   Scalar which controls the fontsize of the labels of the
-%                   axes. Default value is 12
-%    SizeAxesNum:   Scalar which controls the fontsize of the numbers of
+%                   Example - 'databrush',1
+%                   Data Types - single | double | struct 
+%                   Remark: if databrush is a cell, it is possible to
+%                   specify all optional arguments of function selectdataFS
+%                   and LXS inside the curly brackets of option databrush.
+%       Fontsize:   Size of axes labels. Scalar. Scalar which controls the
+%                   fontsize of the labels of the axes. Default value is 12
+%                   Example - 'Fontsize',14
+%                   Data Types - single | double
+%    SizeAxesNum:   Size of axes numbers. Scalar which controls the fontsize of the numbers of
 %                   the axes. Default value is 10
-%       nameX   :   cell array of strings of length p containing the labels
+%                   Example - 'SizeAxesNum',14
+%                   Data Types - single | double
+%       nameX   :   Regressors names. Cell array of strings. Cell array of strings of length p containing the labels
 %                   of the varibles of the regression dataset. If it is empty
 %                 	(default) the sequence X1, ..., Xp will be created
 %                   automatically
-%       namey   :   character containing the label of the response
-%       lwd     :   Scalar which controls linewidth of the curve which
+%                   Example - 'nameX',{'Age','Income','Married','Profession'}
+%                   Data Types - cell 
+%       namey   :   response label. Character. Character containing the label of the response
+%                   Example - 'namey','reponse label'
+%                   Data Types - char 
+%       lwd     :   Curves line width. Scalar. Scalar which controls linewidth of the curve which
 %                   contains the monitoring of minimum deletion residual.
 %                   Default line width=2
-%       titl    :   a label for the title (default: '')
-%       labx    :   a label for the x-axis (default: 'Subset size m')
-%       laby    :   a label for the y-axis (default: 'Minimum deletion residual')
+%                   Example - 'lwd',3
+%                   Data Types - single | double 
+%       titl    :   main title. Character. A label for the title (default: '')
+%                   Example - 'namey','Plot title'
+%                   Data Types - char 
+%       labx    :   x axis title. Character. A label for the x-axis (default: 'Subset size m')
+%                   Example - 'labx','Subset size m'
+%                   Data Types - char 
+%       laby    :   y axis title. Character. A label for the y-axis (default: 'Minimum deletion residual')
+%                   Example - 'laby','mdr'
+%                   Data Types - char 
 %
 %
-%  Remark: if databrush is a cell, it is possible to specify all optional
-%  arguments of function selectdataFS and LXS inside the curly brackets of
-%  option databrush.
 %
-% See also:
+%
+% Output: 
+%
+% See also: resfwdplot
 %
 % References:
 %

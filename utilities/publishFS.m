@@ -606,7 +606,7 @@ for i=1:length(ini)
         % Remove from string descradd all '% signs
         posPercentageSigns=regexp(descradd,'%');
         descradd(posPercentageSigns)=[];
-        descradd=strtrim(descradd);
+        % descradd=strtrim(descradd);
         listOptArgs{ij-1,4}=[listOptArgs{ij-1,4} descradd];
         % listOptArgs{i-1,2}=[listOptArgs{i-1,2}
     else
@@ -859,25 +859,31 @@ sitecont=[insnav inisitecont htmlsitecont finsitecont];
 %outargs= [out1, out2, out3]
 [startIndexEq] = regexp(fstring,'=');
 
-[startIndex] = regexp(fstring(1:startIndexEq(1)),'[');
-[endIndex] = regexp(fstring(1:startIndexEq(1)),']');
-% if startindex is empty it means there is a single output which is not
-% enclosed in square brackets
-if isempty(startIndex)
-    outargs=['[' strtrim(fstring(9:startIndexEq(1)-1)) ']'];
+if startIndexEq(1)<regexp(fstring,'%','once')
+    [startIndex] = regexp(fstring(1:startIndexEq(1)),'[');
+    [endIndex] = regexp(fstring(1:startIndexEq(1)),']');
+    % if startindex is empty it means there is a single output which is not
+    % enclosed in square brackets
+    if isempty(startIndex)
+        outargs=['[' strtrim(fstring(9:startIndexEq(1)-1)) ']'];
+    else
+        outargs=fstring(startIndex(1):endIndex(1));
+    end
+    
+    
+    % Find number of output arguments
+    % nargout = number of commas in string  outargs= [out1, out2, out3] +1
+    [commasOut] = regexp(outargs,',');
+    
+    nargout=length(commasOut)+1;
+    if isempty(commasOut)
+        commasOut=length(outargs);
+    end
 else
-    outargs=fstring(startIndex(1):endIndex(1));
+    outargs='';
+    nargout=0;
 end
 
-
-% Find number of output arguments
-% nargout = number of commas in string  outargs= [out1, out2, out3] +1
-[commasOut] = regexp(outargs,',');
-
-nargout=length(commasOut)+1;
-if isempty(commasOut)
-    commasOut=length(outargs);
-end
 
 % Required input arguments
 % Find number of compulasory input arguments
@@ -957,10 +963,13 @@ else
     
     %sintax{1}=[outargs(2:commasOut(1)-1) '=' name strtrim(inputargs(1:optargs1-2)) ')'];
     %sintax{2}=[outargs(2:commasOut(1)-1) '=' name strtrim(inputargs(1:optargs1-2)) ',Name,Value)'];
-    
-    sintax{j}=[outargs(2:commasOut(1)-1) '=' name strinputarg ')'];
-    sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg ',Name,Value)'];
-    
+    if ~isempty(outargs)
+        sintax{j}=[outargs(2:commasOut(1)-1) '=' name strinputarg ')'];
+        sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg ',Name,Value)'];
+    else
+        sintax{j}=[name strinputarg ')'];
+        sintax{j+1}=[name strinputarg ',Name,Value)'];
+    end
     j=j+2;
 end
 if j>1
@@ -1037,52 +1046,57 @@ for j=1:length(sintax)
     % Locate in expression [out1,out2,...]=namefunc(inp1,inp2,...) the
     % position of equal sign
     [startIndex] = regexp(sintaxj,'=');
+    
     outs=sintaxj(1:startIndex-1);
     
-    
-    commaspos=regexp(outs,',');
-    if isempty(commaspos);
-        noutel=1;
-    else
-        noutel=length(commaspos)+1;
-    end
-    if j==length(sintax)
-        % Write in cell listargouts the list of output arguments
-        listargouts=cell(noutel,1);
-    end
-    outstring='';
-    if noutel>1
-        for i=1:noutel
-            if i==1
-                outi=['[' outs(2:commaspos(i))];
-                outstring=[outstring sprintf(['[' '<a class="intrnllnk" href="#outputarg_' strtrim(outi(2:end-1)) '"><code>' outi(2:end-1) '</code></a>,\r'])];
-                if j==length(sintax)
-                    listargouts{i}=strtrim(outi(2:end-1));
-                end
-            elseif i==noutel
-                outi=outs(commaspos(i-1)+1:end);
-                outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' strtrim(outi(1:end-1)) '"><code>' outi(1:end-1) '</code></a>]\r'])];
-                if j==length(sintax)
-                    listargouts{i}=strtrim(outi(1:end-1));
-                end
-            else
-                outi=outs(commaspos(i-1)+1:commaspos(i));
-                outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' strtrim(outi(1:end-1)) '"><code>' outi(1:end-1) '</code></a>,\r'])];
-                if j==length(sintax)
-                    listargouts{i}=strtrim(outi(1:end-1));
-                end
-            end
-            
+    if ~isempty(outs)
+        commaspos=regexp(outs,',');
+        if isempty(commaspos);
+            noutel=1;
+        else
+            noutel=length(commaspos)+1;
         end
-    else
-        outi=strtrim(outs);
-        outstring=sprintf(['<a class="intrnllnk" href="#outputarg_' outi '"><code>' outi '</code></a>\r']);
         if j==length(sintax)
-            % TOCHECK
-            % listargouts{j}=outi;
-            listargouts=cell(1,1);
-            listargouts{1}=outi;
+            % Write in cell listargouts the list of output arguments
+            listargouts=cell(noutel,1);
         end
+        outstring='';
+        if noutel>1
+            for i=1:noutel
+                if i==1
+                    outi=['[' outs(2:commaspos(i))];
+                    outstring=[outstring sprintf(['[' '<a class="intrnllnk" href="#outputarg_' strtrim(outi(2:end-1)) '"><code>' outi(2:end-1) '</code></a>,\r'])];
+                    if j==length(sintax)
+                        listargouts{i}=strtrim(outi(2:end-1));
+                    end
+                elseif i==noutel
+                    outi=outs(commaspos(i-1)+1:end);
+                    outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' strtrim(outi(1:end-1)) '"><code>' outi(1:end-1) '</code></a>]\r'])];
+                    if j==length(sintax)
+                        listargouts{i}=strtrim(outi(1:end-1));
+                    end
+                else
+                    outi=outs(commaspos(i-1)+1:commaspos(i));
+                    outstring=[outstring sprintf(['<a class="intrnllnk" href="#outputarg_' strtrim(outi(1:end-1)) '"><code>' outi(1:end-1) '</code></a>,\r'])];
+                    if j==length(sintax)
+                        listargouts{i}=strtrim(outi(1:end-1));
+                    end
+                end
+                
+            end
+        else
+            outi=strtrim(outs);
+            outstring=sprintf(['<a class="intrnllnk" href="#outputarg_' outi '"><code>' outi '</code></a>\r']);
+            if j==length(sintax)
+                % TOCHECK
+                % listargouts{j}=outi;
+                listargouts=cell(1,1);
+                listargouts{1}=outi;
+            end
+        end
+    else
+        listargouts='';
+        outstring='';
     end
     
     % Locate in  expression [out1,out2,...]=namefunc(inp1,inp2,...) the
@@ -1131,13 +1145,12 @@ for j=1:length(sintax)
         end
     end
     
-    description=[outstring '=' name '(' strtrim(inpstring) ')'];
-    %     description=sprintf(['<a class="intrnllnk" href="#outputarg_idx"><code>idx</code></a>\r'...
-    %         '	= kmeans(<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>\r'...
-    %         '	,\r'...
-    %         '   <a class="intrnllnk" href="#inputarg_k"><code>k</code></a>)\r']);
+    if ~isempty(outs)
+        description=[outstring '=' name '(' strtrim(inpstring) ')'];
+    else
+        description=[name '(' strtrim(inpstring) ')'];
+    end
     
-    %---------
     try
         stri=fstring(startIndexEx(j)+2:endIndexEx(j)-1);
     catch
@@ -1479,89 +1492,97 @@ for i=1:nTOTargin
         error('FSDA:publishFS:WrongInp',['Sentence''' DescrInputToSplit '''must contain at least two full stops'])
     end
     
+    % Check if the input is a structure with fields. In this case it is
+    % necessary to create a table
     
-    
-    if i<=nREQargin
+    if ~isempty(strfind(listInpArgs{i,3},'tructure')) && ~isempty(strfind(descrlong,'field'))
         
         Datatypes=regexp(descrlong,'Data Types -','once');
         if ~isempty(Datatypes)
             listInpArgs{i,6}=descrlong(Datatypes+13:end);
             
             descrlong=descrlong(1:Datatypes-1);
-            descrlongHTML=formatHTMLwithMATHJAX(descrlong);
-            listInpArgs{i,4}=descrlongHTML;
         else
-            
-            descrlongHTML=formatHTMLwithMATHJAX(descrlong);
-            
-            listInpArgs{i,4}=descrlongHTML;
             warning('FSDA:publishFS:MissingDataType',['Input argument ''' inpi ''' does not contain DataType line, by default string  ''single| double'' has been added'])
-            
             listInpArgs{i,6}='single| double';
         end
         
         
-        reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
-            ' <div id="inputarg_' inpi '" class="clearfix">\r'...
-            ' </div>\r'...
-            ' <h3 id="input_argument_' inpi '" class="expand">\r'...
-            ' <span>\r'...
-            ' <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-            ' <span class="argument_name"><code>' inpi '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
-            ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
-            ' <div class="collapse">\r'...
-            ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
-            ' <p class="datatypelist"><strong>\r'...
-            ' Data Types: </strong><code>' listInpArgs{i,6}  '</code></p>\r'...
-            ' </div>\r'...
-            ' </div>\r'])];
+        descrlongHTML=formatHTMLstructure(descrlong,inpi);
+        listInpArgs{i,4}=descrlongHTML;
+        listInpArgs{i,5}='TODO5';
+        
+        jins=6;
     else
         
         
-        % Check if descrlong contains
-        % Example - and Data types -
-        
-        CheckExample=regexp(descrlong,'Example -','once');
-        if ~isempty(CheckExample)
+        if i<=nREQargin
+            
             Datatypes=regexp(descrlong,'Data Types -','once');
-            descrlonginp=descrlong(1:CheckExample-1);
-            descrlongHTML=formatHTML(descrlonginp);
-            listInpArgs{i,4}=descrlongHTML;
-            
-            % The first word of example code must be embedded around tags <code> </code>
-            examplecode=descrlong(CheckExample+10:Datatypes-1);
-            posspace=regexp(examplecode,'      ');
-            examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
-            listInpArgs{i,5}=strtrim(examplecode);
-            listInpArgs{i,6}=descrlong(Datatypes+13:end);
-            
-            
+            if ~isempty(Datatypes)
+                listInpArgs{i,6}=descrlong(Datatypes+13:end);
+                
+                descrlong=descrlong(1:Datatypes-1);
+                
+                
+                descrlongHTML=formatHTMLwithMATHJAX(descrlong);
+                listInpArgs{i,4}=descrlongHTML;
+            else
+                
+                descrlongHTML=formatHTMLwithMATHJAX(descrlong);
+                
+                listInpArgs{i,4}=descrlongHTML;
+                warning('FSDA:publishFS:MissingDataType',['Input argument ''' inpi ''' does not contain DataType line, by default string  ''single| double'' has been added'])
+                
+                listInpArgs{i,6}='single| double';
+            end
+            jins=6;
         else
-            listInpArgs{i,4}=descrlong;
-            warning('FSDA:publishFS:MissingExample',['Optional input argument ''' inpi ''' does not contain an Example'])
             
+            % Check if descrlong contains
+            % Example - and Data types -
+            
+            CheckExample=regexp(descrlong,'Example -','once');
+            if ~isempty(CheckExample)
+                Datatypes=regexp(descrlong,'Data Types -','once');
+                descrlonginp=descrlong(1:CheckExample-1);
+                descrlongHTML=formatHTML(descrlonginp);
+                listInpArgs{i,4}=descrlongHTML;
+                
+                % The first word of example code must be embedded around tags <code> </code>
+                examplecode=descrlong(CheckExample+10:Datatypes-1);
+                posspace=regexp(examplecode,'      ');
+                examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
+                listInpArgs{i,5}=strtrim(examplecode);
+                listInpArgs{i,6}=descrlong(Datatypes+13:end);
+                
+                
+            else
+                listInpArgs{i,4}=descrlong;
+                warning('FSDA:publishFS:MissingExample',['Optional input argument ''' inpi ''' does not contain an Example'])
+                
+            end
+            
+            jins=5;
         end
-        
-        
-        reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
-            ' <div id="inputarg_' inpi '" class="clearfix">\r'...
-            ' </div>\r'...
-            ' <h3 id="input_argument_' inpi '" class="expand">\r'...
-            ' <span>\r'...
-            ' <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-            ' <span class="argument_name"><code>' inpi '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
-            ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
-            ' <div class="collapse">\r'...
-            ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
-            '	<p class="description_valueexample">\r'...
-            '       <strong>Example: </strong>' listInpArgs{i,6} '</p>\r'...
-            ' <p class="datatypelist"><strong>\r'...
-            ' Data Types: </strong><code>' listInpArgs{i,5}  '</code></p>\r'...
-            ' </div>\r'...
-            ' </div>\r'])];
-        
-        
     end
+    reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
+        ' <div id="inputarg_' inpi '" class="clearfix">\r'...
+        ' </div>\r'...
+        ' <h3 id="input_argument_' inpi '" class="expand">\r'...
+        ' <span>\r'...
+        ' <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+        ' <span class="argument_name"><code>' inpi '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
+        ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
+        ' <div class="collapse">\r'...
+        ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
+        '	<p class="description_valueexample">\r'...
+        '       <strong>Example: </strong>' listInpArgs{i,6} '</p>\r'...
+        ' <p class="datatypelist"><strong>\r'...
+        ' Data Types: </strong><code>' listInpArgs{i,jins}  '</code></p>\r'...
+        ' </div>\r'...
+        ' </div>\r'])];
+    
     if i==nREQargin && i<nTOTargin
         reqargs = [reqargs sprintf(['<div id="optionalarguments" class="clearfix">\r'...
             '</div>\r' ...
@@ -1596,8 +1617,8 @@ else
             error('FSDA:missingex',['Optional input argument  ' listOptArgs{i,1} ...
                 ' does not seem to contain an example (or alternatively string remark has not been put at the end)'])
         end
-        % Add as example only those which do finish with </code>, that is just
-        % those which do not contain exaplanations
+        % Add as example only those which do finish with </code>, that is
+        % just those which do not contain explanations
         if strcmp('</code>',NamVali(end-6:end))
             if i<size(listOptArgs,1)
                 codewithexample=[codewithexample NamVali ',' ];
@@ -1638,6 +1659,7 @@ else
             shortdesc=[lower(shortdesc(1)) shortdesc(2:end)];
         end
         
+        % Check if optionasl input argument is a structure
         % just tructure and not structure or Structure because the search
         % is case sensitive
         if ~isempty(strfind(shortdesc,'tructure')) && ~isempty(strfind(listOptArgs{i,4},'field'))
@@ -1702,219 +1724,240 @@ outargshtml='';
 % listargouts
 %  Optional Output:
 
-
-for i=1:nargout
-    
-    % listargouts is a cell which contains the list of output arguments
-    outi=listargouts{i};
-    
-    outsel=regexp(fstring,'Output:');
-    if isempty(outsel)
-        disp('Please check HTML input file')
-        error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
-    end
-    
-    % substring to search starting from Output:
-    fstringsel=fstring(outsel(1):end);
-    
-    % The initial point of the string is 'listargouts{i}' is there is just
-    % one output else is string 'listargouts{i} :' is there is more than
-    % one output and this is not varargout
-    % else if there is varargour the initialpoint is the string
-    % "Optional Output:"
-    if length(listargouts)==1
-        inipoint=regexp(fstringsel,listargouts{i});
-    elseif  i<length(listargouts)
-        inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
-    else
-        if strcmp(listargouts{end},'varargout') ==0
+if nargout>0
+    for i=1:nargout
+        
+        % listargouts is a cell which contains the list of output arguments
+        outi=listargouts{i};
+        
+        outsel=regexp(fstring,'Output:');
+        if isempty(outsel)
+            disp('Please check HTML input file')
+            error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
+        end
+        
+        % substring to search starting from Output:
+        fstringsel=fstring(outsel(1):end);
+        
+        % The initial point of the string is 'listargouts{i}' is there is just
+        % one output else is string 'listargouts{i} :' is there is more than
+        % one output and this is not varargout
+        % else if there is varargour the initialpoint is the string
+        % "Optional Output:"
+        if length(listargouts)==1
+            inipoint=regexp(fstringsel,listargouts{i});
+        elseif  i<length(listargouts)
             inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
         else
-            inipoint=regexp(fstringsel,'Optional Output:')+8;
+            if strcmp(listargouts{end},'varargout') ==0
+                inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
+            else
+                inipoint=regexp(fstringsel,'Optional Output:')+8;
+            end
         end
-    end
-    
-    if isempty(inipoint)
-        error('FSDA:missingOuts',['Output argument ' listargouts{i} ' has not been found'])
-    end
-    
-    % The endpoint of the substring is 'more About'. or sSee also or the next output argument
-    if i <nargout-1
-        endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
-    elseif i==nargout-1
         
-        if strcmp(listargouts{end},'varargout') ==0
+        if isempty(inipoint)
+            error('FSDA:missingOuts',['Output argument ' listargouts{i} ' has not been found'])
+        end
+        
+        % The endpoint of the substring is 'more About'. or sSee also or the next output argument
+        if i <nargout-1
             endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
+        elseif i==nargout-1
+            
+            if strcmp(listargouts{end},'varargout') ==0
+                endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
+            else
+                % In this case there are also optional arguments
+                endpoint=regexp(fstringsel,'Optional Output:');
+            end
+            
         else
-            % In this case there are also optional arguments
-            endpoint=regexp(fstringsel,'Optional Output:');
+            
+            inipointSeeAlso=regexp(fstringsel,'See also','once');
+            
+            if isempty(inipointSeeAlso)
+                disp('Please check .m input file')
+                error('FSDA:missOuts','Input .m file does not contain ''See also:'' string')
+            end
+            
+            inipointMoreAbout=regexp(fstringsel,'More About:','once');
+            if ~isempty(inipointMoreAbout);
+                MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
+                posPercentageSigns=regexp(MoreAbout,'%');
+                MoreAbout(posPercentageSigns)=[];
+                MoreAboutHTML=formatHTMLwithMATHJAX(MoreAbout);
+            else
+                MoreAboutHTML='';
+                inipointMoreAbout=Inf;
+            end
+            
+            endpoint=min(inipointSeeAlso,inipointMoreAbout);
+            
         end
         
-    else
-        
-        inipointSeeAlso=regexp(fstringsel,'See also','once');
-        
-        if isempty(inipointSeeAlso)
-            disp('Please check .m input file')
-            error('FSDA:missOuts','Input .m file does not contain ''See also:'' string')
-        end
-        
-        inipointMoreAbout=regexp(fstringsel,'More About:','once');
-        if ~isempty(inipointMoreAbout);
-            MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
-            posPercentageSigns=regexp(MoreAbout,'%');
-            MoreAbout(posPercentageSigns)=[];
-            MoreAboutHTML=formatHTMLwithMATHJAX(MoreAbout);
-        else
-            MoreAboutHTML='';
-            inipointMoreAbout=Inf;
-        end
-        
-        endpoint=min(inipointSeeAlso,inipointMoreAbout);
-        
-    end
-    
-    % descri = string which contains the description of i-th output
-    % argument
-    try
-        descrioutput=fstringsel((inipoint(1)+length(listargouts{i})+2):endpoint(1)-1);
-        if isempty(descrioutput)
-            initmp=inipoint(1);
-            disp('Starting point of the description')
-            disp([fstringsel(initmp:initmp+50) '.....'])
-            disp('Final point of the description')
-            endtmp=endpoint(1);
-            disp(['....' fstringsel(endtmp-50:endtmp)]);
+        % descri = string which contains the description of i-th output
+        % argument
+        try
+            descrioutput=fstringsel((inipoint(1)+length(listargouts{i})+2):endpoint(1)-1);
+            if isempty(descrioutput)
+                initmp=inipoint(1);
+                disp('Starting point of the description')
+                disp([fstringsel(initmp:initmp+50) '.....'])
+                disp('Final point of the description')
+                endtmp=endpoint(1);
+                disp(['....' fstringsel(endtmp-50:endtmp)]);
+                disp(['FSDA:WrongOut','Could not process correctly output argument ' listargouts{i}])
+            end
+        catch
             disp(['FSDA:WrongOut','Could not process correctly output argument ' listargouts{i}])
         end
-    catch
-        disp(['FSDA:WrongOut','Could not process correctly output argument ' listargouts{i}])
-    end
-    
-    % Remove from string descri all '% signs
-    posPercentageSigns=regexp(descrioutput,'%');
-    descrioutput(posPercentageSigns)=[];
-    % Remove from string descri leading and trailing white spaces
-    descrioutput=strtrim(descrioutput);
-    if strcmp(descrioutput(1),':')
-        descrioutput=strtrim(descrioutput(2:end));
-    end
-    
-    % Check if the output is a structure. If this is the case
-    checkifstructure=regexp(descrioutput,[outi '\.\w'],'once');
-    
-    
-    if ~isempty(checkifstructure)
         
-        descrioutput=formatHTMLstructure(descrioutput,outi);
+        % Remove from string descri all '% signs
+        posPercentageSigns=regexp(descrioutput,'%');
+        descrioutput(posPercentageSigns)=[];
+        % Remove from string descri leading and trailing white spaces
+        descrioutput=strtrim(descrioutput);
+        if strcmp(descrioutput(1),':')
+            descrioutput=strtrim(descrioutput(2:end));
+        end
         
-        % preamble='A structure containing the following fields:';
-        preamble='Structure';
+        % Check if the output is a structure. If this is the case
+        checkifstructure=regexp(descrioutput,[outi '\.\w'],'once');
         
-        outargshtml=[outargshtml sprintf(['<div class="expandableContent">\r'...
-            '<div id="outputarg_' outi '" class="clearfix">\r'...
-            '</div>\r'...
-            '<h3 id="output_argument_' outi '" class="expand">\r'...
-            '<span>\r'...
-            '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-            '<span class="argument_name"><code>' outi '</code> &#8212; description</span></a>\r'...
-            '<span class="example_desc">' preamble '</span></span></h3>\r'...
-            '<div class="collapse">\r'...
-            '<p>']) descrioutput sprintf(['</p>\r'...
-            '</div>\r'...
-            '</div>'])];
         
-    else
-        % Check if string descrioutput contains the words 'which contains' or
-        % 'containing'; in the first 'numcharcontains'
-        poswhichcontains=regexp(descrioutput,'which contains');
-        poscontaining=regexp(descrioutput,'containing');
-        numcharcontains=50;
-        
-        if ~isempty(poswhichcontains) && poswhichcontains(1)<numcharcontains
-            preamble=descrioutput(1:poswhichcontains(1)-1);
-            descrioutput=descrioutput(poswhichcontains(1)+14:end);
-            % Remove word the at the beginning of the sentence and starts with
-            % uppercase
-            StartsWithThe=regexp(descrioutput,'the');
-            if ~isempty(StartsWithThe)
+        if ~isempty(checkifstructure)
+            
+            descrioutput=formatHTMLstructure(descrioutput,outi);
+            
+            % preamble='A structure containing the following fields:';
+            preamble='Structure';
+            
+            outargshtml=[outargshtml sprintf(['<div class="expandableContent">\r'...
+                '<div id="outputarg_' outi '" class="clearfix">\r'...
+                '</div>\r'...
+                '<h3 id="output_argument_' outi '" class="expand">\r'...
+                '<span>\r'...
+                '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+                '<span class="argument_name"><code>' outi '</code> &#8212; description</span></a>\r'...
+                '<span class="example_desc">' preamble '</span></span></h3>\r'...
+                '<div class="collapse">\r'...
+                '<p>']) descrioutput sprintf(['</p>\r'...
+                '</div>\r'...
+                '</div>'])];
+            
+        else
+            % Check if string descrioutput contains the words 'which contains' or
+            % 'containing'; in the first 'numcharcontains'
+            poswhichcontains=regexp(descrioutput,'which contains');
+            poscontaining=regexp(descrioutput,'containing');
+            numcharcontains=50;
+            
+            if ~isempty(poswhichcontains) && poswhichcontains(1)<numcharcontains
+                preamble=descrioutput(1:poswhichcontains(1)-1);
+                descrioutput=descrioutput(poswhichcontains(1)+14:end);
+                % Remove word the at the beginning of the sentence and starts with
+                % uppercase
+                StartsWithThe=regexp(descrioutput,'the');
+                if ~isempty(StartsWithThe)
+                    if StartsWithThe(1)<4
+                        descrioutput=descrioutput(StartsWithThe(1)+4:end);
+                    end
+                end
+                descrioutput=strtrim(descrioutput);
+                descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
+            elseif ~isempty(poscontaining) && poscontaining(1)<numcharcontains
+                preamble=descrioutput(1:poscontaining(1)-1);
+                descrioutput=descrioutput(poscontaining(1)+10:end);
+                % Remove word the at the beginning of the sentence and starts with
+                % uppercase
+                StartsWithThe=regexp(descrioutput,'the');
                 if StartsWithThe(1)<4
                     descrioutput=descrioutput(StartsWithThe(1)+4:end);
                 end
+                descrioutput=strtrim(descrioutput);
+                descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
+            else
+                posfullstops=regexp(descrioutput,'\.[1-3\s]');
+                if length(posfullstops)<2
+                    warn1=[' Wrong format for ouptut argument ' outi '\n'];
+                    error('FSDA:publishFS:WrongOut',[ warn1 'Sentence ''' descrioutput ''' must contain at least two full stops'])
+                    
+                else
+                    preamble=descrioutput(posfullstops(1)+1:posfullstops(2)-1);
+                    descrioutput=[descrioutput(1:posfullstops(1)) descrioutput(posfullstops(2)+1:end)];
+                end
             end
-            descrioutput=strtrim(descrioutput);
-            descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
-        elseif ~isempty(poscontaining) && poscontaining(1)<numcharcontains
-            preamble=descrioutput(1:poscontaining(1)-1);
-            descrioutput=descrioutput(poscontaining(1)+10:end);
-            % Remove word the at the beginning of the sentence and starts with
-            % uppercase
-            StartsWithThe=regexp(descrioutput,'the');
-            if StartsWithThe(1)<4
-                descrioutput=descrioutput(StartsWithThe(1)+4:end);
+            
+            % From
+            posfullstop=regexp(descrioutput,'\.', 'once');
+            if ~isempty(posfullstop)
+                descroutputtitl=descrioutput(1:posfullstop);
+                if length(descrioutput)> posfullstop
+                    descrioutput=descrioutput(posfullstop+1:end);
+                else
+                    descrioutput='';
+                end
+            else
+                descroutputtitl='FULL STOP MISSING IN THE OUTPUT DESCRIPTION';
             end
-            descrioutput=strtrim(descrioutput);
-            descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
-        else
-            posfullstops=regexp(descrioutput,'\.[1-3\s]');
-            if length(posfullstops)<2
-                warn1=[' Wrong format for ouptut argument ' outi '\n'];
-                error('FSDA:publishFS:WrongOut',[ warn1 'Sentence ''' descrioutput ''' must contain at least two full stops'])
+            
+            % transform x with by and write in italic the dimensions of the
+            % matrices
+            if ~strcmp(preamble,'TOWRITE')
                 
-            else
-                preamble=descrioutput(posfullstops(1)+1:posfullstops(2)-1);
-                descrioutput=[descrioutput(1:posfullstops(1)) descrioutput(posfullstops(2)+1:end)];
-            end
-        end
-        
-        % From
-        posfullstop=regexp(descrioutput,'\.', 'once');
-        if ~isempty(posfullstop)
-            descroutputtitl=descrioutput(1:posfullstop);
-            if length(descrioutput)> posfullstop
-                descrioutput=descrioutput(posfullstop+1:end);
-            else
-                descrioutput='';
-            end
-        else
-            descroutputtitl='FULL STOP MISSING IN THE OUTPUT DESCRIPTION';
-        end
-        
-        % transform x with by and write in italic the dimensions of the
-        % matrices
-        if ~strcmp(preamble,'TOWRITE')
-            
-            outvect=regexp(preamble,'\wector', 'once');
-            if ~isempty(outvect)
-                beforepreamble=preamble(1:outvect-1);
-                beforepreamble=strrep(beforepreamble, 'x', '-by-');
-                preamble=['<code>' beforepreamble  '</code>' preamble(outvect:end)];
+                outvect=regexp(preamble,'\wector', 'once');
+                if ~isempty(outvect)
+                    beforepreamble=preamble(1:outvect-1);
+                    beforepreamble=strrep(beforepreamble, 'x', '-by-');
+                    preamble=['<code>' beforepreamble  '</code>' preamble(outvect:end)];
+                end
+                
+                
+                outmat=regexp(preamble,'\watrix', 'once');
+                if ~isempty(outmat)
+                    beforepreamble=preamble(1:outmat-1);
+                    beforepreamble=strrep(beforepreamble, 'x', '-by-');
+                    preamble=['<code>' beforepreamble '</code>' preamble(outmat:end)];
+                end
             end
             
+            preamble=strtrim(preamble);
             
-            outmat=regexp(preamble,'\watrix', 'once');
-            if ~isempty(outmat)
-                beforepreamble=preamble(1:outmat-1);
-                beforepreamble=strrep(beforepreamble, 'x', '-by-');
-                preamble=['<code>' beforepreamble '</code>' preamble(outmat:end)];
-            end
+            outargshtml=[outargshtml sprintf(['<div class="expandableContent">\r'...
+                '<div id="outputarg_' outi '" class="clearfix">\r'...
+                '</div>\r'...
+                '<h3 id="output_argument_' outi '" class="expand">\r'...
+                '<span>\r'...
+                '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
+                '<span class="argument_name"><code>' outi '</code> &#8212;']) descroutputtitl   sprintf(['</span></a>\r'...
+                '<span class="example_desc">']) preamble sprintf(['</span></span></h3>\r'...
+                '<div class="collapse">\r'...
+                '<p>']) formatHTMLwithMATHJAX(descrioutput) sprintf(['</p>\r'...
+                '</div>\r'...
+                '</div>'])];
+            
         end
         
-        preamble=strtrim(preamble);
-        
-        outargshtml=[outargshtml sprintf(['<div class="expandableContent">\r'...
-            '<div id="outputarg_' outi '" class="clearfix">\r'...
-            '</div>\r'...
-            '<h3 id="output_argument_' outi '" class="expand">\r'...
-            '<span>\r'...
-            '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-            '<span class="argument_name"><code>' outi '</code> &#8212;']) descroutputtitl   sprintf(['</span></a>\r'...
-            '<span class="example_desc">']) preamble sprintf(['</span></span></h3>\r'...
-            '<div class="collapse">\r'...
-            '<p>']) formatHTMLwithMATHJAX(descrioutput) sprintf(['</p>\r'...
-            '</div>\r'...
-            '</div>'])];
-        
+    end
+else
+    outargshtml='';
+    
+    inipointSeeAlso=regexp(fstringsel,'See also','once');
+    
+    if isempty(inipointSeeAlso)
+        disp('Please check .m input file')
+        error('FSDA:missOuts','Input .m file does not contain ''See also:'' string')
+    end
+    
+    inipointMoreAbout=regexp(fstringsel,'More About:','once');
+    if ~isempty(inipointMoreAbout);
+        MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
+        posPercentageSigns=regexp(MoreAbout,'%');
+        MoreAbout(posPercentageSigns)=[];
+        MoreAboutHTML=formatHTMLwithMATHJAX(MoreAbout);
+    else
+        MoreAboutHTML='';
     end
     
 end

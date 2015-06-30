@@ -13,9 +13,10 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%  X :          Predictor variables. Matrix of explanatory variables (also called
-%               'regressors') of dimension n x (p-1) where p denotes the
-%               number of explanatory variables including the intercept.
+%  X :          Predictor variables. Matrix. Matrix of explanatory
+%               variables (also called 'regressors') of dimension n x (p-1)
+%               where p denotes the number of explanatory variables
+%               including the intercept.
 %               Rows of X represent observations, and columns represent
 %               variables. By default, there is a constant term in the
 %               model, unless you explicitly remove it using input option
