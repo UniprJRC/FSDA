@@ -71,7 +71,7 @@ function [fre]=unibiv(Y,varargin)
 %                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1. 
 %                 Example - 'madcoef',2 
 %                 Data Types - double
-%                   REMARK. if mad =median(y-median(y))=0 then the interquartile
+%                   Remark: if mad =median(y-median(y))=0 then the interquartile
 %                   range is used. If also the interquartile range is 0
 %                   than the MD (mean absolute deviation) is used.  In
 %                   other words MD=mean(abs(y-mean(Y))
