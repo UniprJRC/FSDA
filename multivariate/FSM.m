@@ -30,14 +30,14 @@ function [out]=FSM(Y,varargin)
 %                 if crit='md' the units which form initial subset are
 %                  those which have the smallest m0 pseudo Mahalanobis
 %                  distances computed using procedure unibiv (bivariate
-%                  robust ellipses)
+%                  robust ellipses).
 %                 if crit='biv' sorting is done first in
 %                  terms of times units fell outside robust bivariate
 %                  ellipses and then in terms of pseudoMD. In other words,
 %                  the units forming initial subset are chosen first among
 %                  the set of those which never fell outside robust
 %                  bivariate ellipses then among those which fell only once
-%                  outside bivariate ellipses ... up to reach m0
+%                  outside bivariate ellipses ... up to reach m0.
 %                 if crit='uni' sorting is done first in
 %                  terms of times units fell outside univariate boxplots
 %                  and then in terms of pseudoMD. In other words,
@@ -50,7 +50,7 @@ function [out]=FSM(Y,varargin)
 %                 Remark: as the user can see the starting point of the
 %                 search is not going to affect at all the results of the
 %                 analysis. The user can explore this point with his own
-%                 datasets; 
+%                 datasets.
 %                 Remark: if crit='biv' the user can also supply in scalar rf
 %                 (see below) the confidence level of the bivariate
 %                 ellipses. 
