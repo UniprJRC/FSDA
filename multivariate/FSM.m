@@ -49,10 +49,11 @@ function [out]=FSM(Y,varargin)
 %               Data Types - char
 %                 Remark: as the user can see the starting point of the
 %                 search is not going to affect at all the results of the
-%                 analysis. The user can explore this point with his own datasets
+%                 analysis. The user can explore this point with his own
+%                 datasets; 
 %                 Remark: if crit='biv' the user can also supply in scalar rf
 %                 (see below) the confidence level of the bivariate
-%                 ellipses.
+%                 ellipses. 
 %        rf     : confidence level for bivariate ellipses. Scalar. The default is
 %                 0.95. This option is useful only if crit='biv'.
 %                 Example - 'rf',0.9 
@@ -72,34 +73,33 @@ function [out]=FSM(Y,varargin)
 %                 If plots is a scalar equal to 2 the additional plots of
 %                 envelope resuperimposition are
 %                 produced.
-%                 If plots is a structure it is possible to specify the
-%                 following options below: 
-%                   - ylim    : vector with two elements controlling minimum and maximum
+%                 If plots is a structure it may contain the following fields: 
+%                   plots.ylim = vector with two elements controlling minimum and maximum
 %                       on the y axis. Default value is '' (automatic
 %                       scale); 
-%                   - xlim    : vector with two elements controlling minimum and maximum
+%                   plots.xlim = vector with two elements controlling minimum and maximum
 %                       on the x axis. Default value is '' (automatic
 %                       scale); 
-%                   - resuper : vector which specifies for which steps it is
+%                   plots.resuper = vector which specifies for which steps it is
 %                       necessary to show the plots of resuperimposed envelopes
 %                       if resuper is not supplied a plot of each step in which the
 %                       envelope is resuperimposed is shown. Example if resuper =[85 87]
 %                       plots of resuperimposedenvelopes are shown at steps
 %                       m=85 and m=87; 
-%                   - ncoord : scalar. If ncoord=1 plots are shown in normal
+%                   plots.ncoord = scalar. If ncoord=1 plots are shown in normal
 %                       coordinates else (default) plots are shown in
 %                       traditional mmd coordinates; 
-%                   - labeladd : If this option is '1', the outliers in the
+%                   plots.labeladd = If this option is '1', the outliers in the
 %                       spm are labelled with the unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added; 
-%                   - nameY : cell array of strings containing the labels of
+%                   plots.nameY = cell array of strings containing the labels of
 %                       the variables. As default value, the labels which are
 %                       added are Y1, ...Yv; 
-%                    - lwd  :   Scalar which controls line width of the curve which
+%                   plots.lwd =  Scalar which controls line width of the curve which
 %                       contains the monitoring of minimum Mahalanobis
 %                       distance. Default line of lwd=2.
-%                 - lwdenv  :   Scalar which controls linewidth of the
+%                   plots.lwdenv = Scalar which controls linewidth of the
 %                       envelopes. Default value of lwdenv=2. 
 %               Example - 'plots',2
 %               Data Types - double
