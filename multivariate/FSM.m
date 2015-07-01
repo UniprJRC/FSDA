@@ -63,8 +63,8 @@ function [out]=FSM(Y,varargin)
 %                 specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
-%       plots   :It specify whether it is necessary to produce the plots of minimum Mahalanobis
-%                 distance. Scalar or structure. If plots is a missing value or is a scalar equal to 0 no
+%       plots   : plot of minimum Mahalanobis distance.
+%                  Scalar or structure. If plots is a missing value or is a scalar equal to 0 no
 %                 plot is produced.
 %                 If plots is a scalar equal to 1 (default) the plot
 %                 of minimum MD with envelopes based on n observations and
@@ -138,7 +138,8 @@ function [out]=FSM(Y,varargin)
 %
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %out.outliers=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
 % out.mmd    =  (n-init) x 2 matrix. 
@@ -154,7 +155,7 @@ function [out]=FSM(Y,varargin)
 %               contains the units included in the final step of the search.
 % out.nout    = 2 x 5 matrix containing the number of times mmd went out
 %               of particular quantiles.
-%               First row contains quantiles 1 99 99.9 99.99 99.999; 
+%               First row contains quantiles 1 99 99.9 99.99 99.999 per cent; 
 %               Second row contains the frequency distribution.
 % out.loc     = 1 x v  vector containing location of the data.
 % out.cov     = v x v robust estimate of covariance matrix.
@@ -169,11 +170,11 @@ function [out]=FSM(Y,varargin)
 %
 %       Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
 %       number of multivariate outliers. Journal of the Royal Statistical
-%       Society Series B, Vol. 71, pp. 201–221.
+%       Society Series B, Vol. 71, pp. 201-221.
 %       Cerioli A., Farcomeni A. Riani M., (2014). Strong consistency and
 %       robustness of the Forward Search estimator of multivariate location
 %       and scatter, Journal of Multivariate Analysis, Vol. 126 pp.
-%       167–183.  http://dx.doi.org/10.1016/j.jmva.2013.12.010.%
+%       167-183. http://dx.doi.org/10.1016/j.jmva.2013.12.010.
 % 
 % Copyright 2008-2015.
 % Written by FSDA team

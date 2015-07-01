@@ -1747,10 +1747,10 @@ if nargout>0
         if length(listargouts)==1
             inipoint=regexp(fstringsel,listargouts{i});
         elseif  i<length(listargouts)
-            inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
+            inipoint=regexp(fstringsel,[listargouts{i} '\s{0,11}:']);
         else
             if strcmp(listargouts{end},'varargout') ==0
-                inipoint=regexp(fstringsel,[listargouts{i} '\s{0,7}:']);
+                inipoint=regexp(fstringsel,[listargouts{i} '\s{0,11}:']);
             else
                 inipoint=regexp(fstringsel,'Optional Output:')+8;
             end
@@ -1881,7 +1881,7 @@ if nargout>0
                 posfullstops=regexp(descrioutput,'\.[1-3\s]');
                 if length(posfullstops)<2
                     warn1=[' Wrong format for ouptut argument ' outi '\n'];
-                    error('FSDA:publishFS:WrongOut',[ warn1 'Sentence ''' descrioutput ''' must contain at least two full stops'])
+                    error('FSDA:publishFS:WrongOut',[ warn1 'Sentence ''' descrioutput ''' must contain at least \n two full stops each followed by (at least) one space'])
                     
                 else
                     preamble=descrioutput(posfullstops(1)+1:posfullstops(2)-1);
@@ -2440,13 +2440,36 @@ iniTable=[sprintf(['<table border="2" cellpadding="4" cellspacing="0" class="bod
     '</thead>'])];
 cloTable='</table>';
 
-[ini,fin]=regexp(descriinput,['\s{0,8}' StructureName '\.\w*\s*=']);
+[iniA,finA]=regexp(descriinput,['\s{0,8}' StructureName '\.\w*\s*=']);
+
+% Sometimes field names are repeated and therefore it is necessary to find
+% just the first instance. THe following lines do that
+FieldNamesStruct=cell(length(iniA),1);
+for k=1:length(iniA)
+    FieldNamesStruct{k}=strtrim(descriinput(iniA(k):finA(k)-1));
+end
+
+[~,seluni]=unique(FieldNamesStruct,'stable');
+ini=iniA(seluni);
+fin=finA(seluni);
+
+%[~,finchk]=regexp(descriinput,['\n\s*' StructureName '\.\w*\s*=']);
+% Select all rows of iniA and finA in which the elements of finA are equal
+% to those of finchk
+% if length(finA)>length(finchk)
+%     [~,ia]=intersect(finA,finchk);
+%     ini=iniA(ia);
+%     fin=finA(ia);
+% else
+%     ini=iniA;
+%     fin=finA;
+% end
+
 if isempty(ini)
     disp('Probably ":" symbols  must be replaced with "=" symbols in out description')
     error('FSDA:MissingArg',['Parser cannot find string \n''' StructureName '.xxxx'' = \n for output structure ' StructureName])
 else
 end
-
 
 
 posREMARK=regexp(descriinput,'\r\s*\r\s*remark','once','ignorecase');
@@ -2461,10 +2484,11 @@ end
 
 
 % listStructureArgs = cells which will contains the name/values
-% pairs of the strcture
+% pairs of the structure
 % fieldnames will go into the first column of the table
 % the content of the field names will fo into the second column of
 % the table
+if ~isempty(ini)
 listStructureArgs=cell(length(ini),2);
 
 for k=1:length(ini)
@@ -2544,6 +2568,9 @@ end
 
 % use capital letter for the first word.
 descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
+else
+     descrioutput=formatHTMLwithMATHJAX(descriinput);
+end
 
 end
 

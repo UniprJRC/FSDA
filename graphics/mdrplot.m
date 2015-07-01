@@ -83,7 +83,8 @@ function mdrplot(out,varargin)
 %                   in the same window else a new window is created
 %                   Example - 'tag','mymdr'
 %                   Data Types - char 
-%   datatooltip :   interactive clicking. Empty value (default) or structure. The default is datatooltip=''
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure. The default is datatooltip=''.
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
 %                   the step in which the unit enters the search and the
@@ -94,13 +95,15 @@ function mdrplot(out,varargin)
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'
 %                   Example - 'datatooltip',''
 %                   Data Types - char 
-%       label   :   row labels. Cell of strings. Cell containing the labels of the units (optional
-%                   argument used when datatooltip=1. If this field is not
-%                   present labels row1, ..., rown will be automatically
-%                   created and included in the pop up datatooltip window)
+%       label   :   row labels. Cell of strings. Cell containing the labels
+%                   of the units (optional argument used when
+%                   datatooltip=1. If this field is not present labels
+%                   row1, ..., rown will be automatically created and
+%                   included in the pop up datatooltip window)
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
 %                   Data Types - cell 
-%    databrush :    interactive mouse brushing. Empty value (default), scalar or structure.
+%    databrush :    interactive mouse brushing. Empty value (default),
+%                   scalar or structure.
 %                   DATABRUSH IS AN EMPTY VALUE 
 %                   If databrush is an empty
 %                   value (default), no brushing is done. The activation of
@@ -183,7 +186,7 @@ function mdrplot(out,varargin)
 %                   Example - 'nameX',{'Age','Income','Married','Profession'}
 %                   Data Types - cell 
 %       namey   :   response label. Character. Character containing the label of the response
-%                   Example - 'namey','reponse label'
+%                   Example - 'namey','response label'
 %                   Data Types - char 
 %       lwd     :   Curves line width. Scalar. Scalar which controls linewidth of the curve which
 %                   contains the monitoring of minimum deletion residual.

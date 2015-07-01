@@ -6,22 +6,23 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %  Required input arguments:
 %
 %     Y : data matrix (2D array) containing n observations on v variables
-%         or a structure 'out' coming from function FSMeda
+%         or a structure 'out' coming from function FSMeda. Matrix or
+%         structure.
 %
 %  Optional input arguments if Y is a 2D array:
 %
 %     If Y is a 2D array, varargin can be either a sequence of name/value
 %     pairs, detailed below, or one of the following explicit assignments:
 %
-%       spmplot(Y,group)
+%       spmplot(Y,group);
 %
-%       spmplot(Y,group,plo)
+%       spmplot(Y,group,plo);
 %
-%       spmplot(Y,group,plo,dispopt)
+%       spmplot(Y,group,plo,dispopt);
 %
 %     where group, plo and dispopt have the meaning described below.
 %
-%     Remark: if varargin{1} is a n-elements vector, then it is interpreted
+%     If varargin{1} is a n-elements vector, then it is interpreted
 %     as a grouping variable vector 'group'. In this case, it can only be
 %     followed by 'plo' and 'dispopt'. Otherwise, the program expects a
 %     sequence of name/value pairs.
@@ -30,11 +31,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %  group: vector with n elements. It is a grouping variable that determines
 %         the marker and color assigned to each point. It can be a categorical
-%         variable, vector, string matrix, or cell array of strings. 
+%         variable, vector, string matrix, or cell array of strings.
 %         Remark: if 'group' is used to distinguish a set of outliers from
 %         a set of good units, the id number for the outliers should be the
 %         larger (see optional field 'labeladd' of option 'plo' for details).
-%         
+%
 %
 %    plo: empty value, scalar of structure which controls the names which
 %         are displayed in the margins of the scatter-plot matrix and the
@@ -83,11 +84,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %  Y is a structure.
 %
 %  If first input Y is a structure (generally created by function FSMeda),
-%  then this structure must have the following field
+%  then this structure must have the following fields:
 %
-%       REQUIRED FIELD IN INPUT STRUCTURE Y
+%       REQUIRED FIELD IN INPUT STRUCTURE Y.
 %
-%       Y.Y   = a data matrix of size n-by-v
+%       Y.Y   = a data matrix of size n-by-v.
 %
 %               If the input structure Y contains just the data matrix, a
 %               standard static scatter plot matrix will be created.
@@ -99,18 +100,18 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               precisely, with option databrush it is possible to create
 %               an automatic interaction with the other plots, while with
 %               option datatooltip it is possible to retrieve information
-%               about a particular unit once selected with the mouse)
+%               about a particular unit once selected with the mouse).
 %
-%       OPTIONAL FIELDS IN INPUT STRUCTURE Y
+%       OPTIONAL FIELDS IN INPUT STRUCTURE Y.
 %
 %       Y.MAL = matrix containing the Mahalanobis distances monitored in each
 %               step of the forward search. Every row is associated with a
 %               unit (this is a necessary field if the user wants to brush
-%               the scatter plot matrix)
+%               the scatter plot matrix).
 %       Y.Un  = matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not
-%               empty)
-%       label = cell of length n containing the labels of the units
+%               empty).
+%       Y.label = cell of length n containing the labels of the units
 %               (optional argument used when datatooltip=1. If this
 %               field is not present labels row1, ..., rown will be
 %               automatically created and included in the pop up
@@ -120,7 +121,12 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       of spmplot is a structure containing information about the fwd
 %       search (i.e. the fields MAL, Un and eventually label)
 %
-%   datatooltip :   empty value or structure. The default is datatooltip=''
+%   Optional input arguments: (if the first argument of spmplot is a
+%                               structure)
+%
+%
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure.
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
 %                   the step in which the unit enters the search and the
@@ -130,7 +136,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   datacursormode for more details or the examples below).
 %                   The default options of the structure are
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
-%     databrush :   empty value, scalar or cell.
+%                   Example - 'datatooltip',''
+%                   Data Types - char
+%    databrush :    interactive mouse brushing. Empty value (default),
+%                   scalar or structure.
 %                   DATABRUSH IS AN EMPTY VALUE
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
@@ -144,7 +153,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   In addition, brushed units can be highlighted in the
 %                   other following plots (only if they are already open):
 %                   - minimum Mahalanobis distance plot;
-%                   Remark: the window style of the other figures is set
+%                   Remark. the window style of the other figures is set
 %                   equal to that which contains the spmplot. In other
 %                   words, if the scatterplot matrix plot is docked all the
 %                   other figures will be docked too
@@ -172,24 +181,40 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
+%                   Example - 'databrush',1
+%                   Data Types - single | double | struct
 %
 %       The options which follow work in connection with previous option
 %       databrush and produce their effect on the monitoring MD plot
 %       (malfwdplot)
 %
-%       subsize :   numeric vector containing the subset size with length
+%       subsize :   control x axis in malfwdplot. Vector. numeric vector containing the subset size with length
 %                   equal to the number of columns of matrix Y.MAL.
 %                   If it is not specified it will be set equal to
 %                   size(Y.MAL,1)-size(Y.MAL,2)+1:size(Y.MAL,1)
-%       selstep :   numeric vector which specifies for which steps of the
+%                   Example - 'subsize',10:100
+%                   Data Types - single | double
+%       selstep :   add text labels of brushed units in malfwdplot. Vector. Numeric vector
+%                   which specifies for which steps of the
 %                   forward search textlabels are added in the monitoring
 %                   MD plot after a brushing action in the spmplot.
 %                   The default is to write the labels at the initial and
 %                   final step. The default is selstep=[m0 n] where m0 and
 %                   n are respectively the first and final step of the
 %                   search.
+%                   Example - 'selstep',100
+%                   Data Types - single | double
 %
 %  Output:
+%
+%        H      :   array of handles H to the plotted points. 3D array. See
+%                   gplotmatrix for further details
+%        AX     :   handles to the individual subaxes. Matrix. See
+%                   gplotmatrix for further details
+%      BigAx    :   handle to big (invisible) axes framing the subaxes.
+%                   Scalar. See gplotmatrix for further details
+%
+% More About:
 %
 %   spmplot has the same output of gplotmatrix in the statistics toolbox:
 %   [H,AX,BigAx] = spmplot(...) returns an array of handles H to the
@@ -201,6 +226,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %   will be centered with respect to the matrix of axes.
 %
 %
+% See also: gplotmatrix
+%
 % Copyright 2008-2015.
 % Written by FSDA team
 %
@@ -210,8 +237,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % Examples:
 
 %{
+    % Call of spmplot without name/value pairs.
     % Iris data: scatter plot matrix with univariate boxplots on the main
-    % diagonal (call of spmplot without name/value pairs)
+    % diagonal
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'};
@@ -219,8 +247,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
+    %% Call of spmplot with name/value pairs.
     % Iris data: scatter plot matrix with univariate boxplots on the main
-    % diagonal (call of spmplot with name/value pairs)
+    % diagonal
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'};
@@ -277,7 +306,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo.labeladd='1'; % option plo.labeladd is used to label the outliers
 
     % By default, the legend identifies the groups with the identifiers
-    % given in vector 'group'. 
+    % given in vector 'group'.
     spmplot(Ycont,group,plo,'box');
 
 %}
@@ -349,6 +378,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % the fields Y and Un
 
 %{
+    %% First input argument is a structure.
     % Example of use of option datatooltip
     n=100;
     v=3;
@@ -371,6 +401,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
+    % First input argument is a structure.
     % Interactive_example
     % Example of use of option databrush
     close all
@@ -1234,12 +1265,15 @@ if ~isempty(databrush) || iscell(databrush)
                         XLabel = get(get(ax,'XLabel'),'String');
                         YLabel = get(get(ax,'YLabel'),'String');
                         
-                        [~, ~] = histFS(Y(:,i),10,groupv,'',ax,clr(unigroup)); %'br'
+                        [countfreq, ~] = histFS(Y(:,i),10,groupv,'',ax,clr(unigroup)); %'br'
                         % Prevent from changing the limits when the figure is resized:
                         % 1.Freeze the current limits
                         set(ax,'XLimMode','manual','YLimMode','manual');
                         set(ax,'xlim',Xlim)
                         set(ax,'ylim',Ylim)
+                        
+                        set(ax,'ylim',[0 max(sum(countfreq,2))])
+                        
                         % 2.Freeze the current tick values
                         set(ax,'XTickMode','manual','YTickMode','manual');
                         %Now restore the labels of the gplotmatrix
