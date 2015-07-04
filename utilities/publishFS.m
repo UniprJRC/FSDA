@@ -649,13 +649,16 @@ for i=1:length(ini)
         % Check if descr long contains
         % Example - and Data types -
         
-        CheckExample=regexp(descrlong,'Example -','once');
+        CheckExample=regexp(descrlong,'Example -');
+        
         if ~isempty(CheckExample)
+            % Just in case take only the very last example
+            CheckExample=CheckExample(end);
             Datatypes=regexp(descrlong,'Data Types -','once');
             listOptArgs{ij,4}=descrlong(1:CheckExample-1);
             
             % The first word of example code must be embedded around tags <code> </code>
-            examplecode=descrlong(CheckExample+10:Datatypes-1);
+            examplecode=descrlong(CheckExample+9:Datatypes-1);
             posspace=regexp(examplecode,'      ');
             examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
             listOptArgs{ij,5}=strtrim(examplecode);
@@ -688,24 +691,6 @@ if strcmp(Display,'iter-detailed')
     disp(listOptArgs)
 end
 
-
-
-%------------------
-
-% Define iniTable and cloTable which are respectively the beginning and the
-% end of the table which will contains the fields of the structure argument
-% if present in the input or output parameters of the procedure
-% iniTable=[sprintf(['<table border="2" cellpadding="4" cellspacing="0" class="body">\r'...
-%     '<colgroup>\r']) ...
-%     '<col width="50%"><col width="50%">'...
-%     sprintf(['\r</colgroup>\r'...
-%     '<thead>\r'...
-%     '<tr valign="top">\r'...
-%     '<th valign="top">Value</th>\r'...
-%     '<th valign="top">Description</th>\r'...
-%     '</tr>\r'...
-%     '</thead>'])];
-% cloTable='</table>';
 
 
 %% Add title
@@ -1418,11 +1403,18 @@ for i=1:nTOTargin
     % substring to search start from Required input arguments:
     fstringsel=fstring(insel(1):end);
     
-    inipoint=regexp(fstringsel,['%\s{0,10}' listargins{i} '\s{0,10}:']);
+    % OLD WAY OF FINDING inipoint
+    % inipoint=regexp(fstringsel,['%\s{0,10}' listargins{i} '\s{0,10}:']);
+    inipoint=regexp(fstringsel,['%\s*' listargins{i} '\s*:']);
+    if isempty(inipoint)
+        error('FSDA:missInpDescr',['No description has been found for compulsory input argument '  listargins{i} ])
+        
+    else
+    end
     
     % The endpoint of the substring is See also or the next optional input argument
     if i <nREQargin
-        endpoint=regexp(fstringsel,['%\s{0,10}' listargins{i+1} '\s{0,10}:']);
+        endpoint=regexp(fstringsel,['%\s*' listargins{i+1} '\s*:']);
     elseif i==nREQargin
         endpoint=regexp(fstringsel,'Optional input arguments:');
         if isempty(endpoint)
@@ -1430,7 +1422,7 @@ for i=1:nTOTargin
             error('FSDA:missOuts','.m file does not contain ''Optional input arguments:'' string')
         end
     elseif i<nTOTargin
-        endpoint=regexp(fstringsel,['%\s{0,10}' listargins{i+1} '\s{0,10}:']);
+        endpoint=regexp(fstringsel,['%\s*' listargins{i+1} '\s*:']);
     else
         endpoint=regexp(fstringsel,'Output:');
         if isempty(endpoint)
@@ -1566,6 +1558,15 @@ for i=1:nTOTargin
             jins=5;
         end
     end
+    
+    % Add the row Example: ... just if it is present
+    if ~isempty(listInpArgs{i,5})
+        example=['	<p class="description_valueexample">\r'...
+            '       <strong>Example: </strong>' listInpArgs{i,5} '</p>\r'];
+    else
+        example='';
+    end
+    
     reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
         ' <div id="inputarg_' inpi '" class="clearfix">\r'...
         ' </div>\r'...
@@ -1576,8 +1577,7 @@ for i=1:nTOTargin
         ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
         ' <div class="collapse">\r'...
         ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
-        '	<p class="description_valueexample">\r'...
-        '       <strong>Example: </strong>' listInpArgs{i,6} '</p>\r'...
+        example ...
         ' <p class="datatypelist"><strong>\r'...
         ' Data Types: </strong><code>' listInpArgs{i,jins}  '</code></p>\r'...
         ' </div>\r'...
@@ -2378,7 +2378,7 @@ end
 % This inner function  has the purpose of adding symbols </p> <p> every
 % time a full stop, colon or semicolo symbol followed by a series of space
 % and then a carriage return.
-function descrlongHTML=formatHTML(descrlong)
+function descrlongHTMLwithref=formatHTML(descrlong)
 newlinewithFullStop=regexp(descrlong,'\.\s*\r');
 newlinewithColon=regexp(descrlong,'\:\s*\r');
 newlinewithSemiColon=regexp(descrlong,'\;\s*\r');
@@ -2397,6 +2397,35 @@ if ~isempty(newl)
 else
     descrlongHTML=descrlong;
 end
+% put a hypertext link to all words which end with .m
+[IniRefFilem,FinRefFilem]=regexp(descrlongHTML,'\w*\.m');
+if ~isempty(IniRefFilem)
+    descrlongHTMLwithref='';
+    for i=1:length(IniRefFilem)
+        namewithoutHTML=descrlongHTML(IniRefFilem(i):FinRefFilem(i)-2);
+        namewithHTML=[namewithoutHTML '.html'];
+        
+        if i==1 && length(IniRefFilem)==1
+            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
+                '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
+                descrlongHTML(FinRefFilem(i)+1:end)];
+        elseif i==1
+            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
+                '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
+            
+        elseif i==length(IniRefFilem)
+            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
+                '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
+                descrlongHTML(FinRefFilem(i)+1:end)];
+        else
+            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
+                '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
+        end
+    end
+else
+    descrlongHTMLwithref=descrlongHTML;
+end
+
 end
 
 function StringHTML=formatHTMLwithMATHJAX(inputSring)
@@ -2489,87 +2518,91 @@ end
 % the content of the field names will fo into the second column of
 % the table
 if ~isempty(ini)
-listStructureArgs=cell(length(ini),2);
-
-for k=1:length(ini)
-    % fin(i)-1 because character '=' does not have to be extracted
-    StructFieldName=descriinput(ini(k):fin(k)-1);
-    % Remove from string opti leading and trailing white spaces
-    StructFieldName=strtrim(StructFieldName);
-    StructFieldName=StructFieldName(length(StructureName)+2:end);
+    listStructureArgs=cell(length(ini),2);
     
-    % Store name in the first column
-    listStructureArgs{k,1}=StructFieldName;
-    % Store field content in the 2nd col of listStructureArgs
-    if k<length(ini)
-        StructFieldCont=descriinput(fin(k)+1:ini(k+1)-1);
-    else
+    for k=1:length(ini)
+        % fin(i)-1 because character '=' does not have to be extracted
+        StructFieldName=descriinput(ini(k):fin(k)-1);
+        % Remove from string opti leading and trailing white spaces
+        StructFieldName=strtrim(StructFieldName);
+        StructFieldName=StructFieldName(length(StructureName)+2:end);
         
-        if ~isempty(posREMARK)
-            StructFieldCont=descriinput(fin(k)+1:posREMARK-1);
+        % Store name in the first column
+        listStructureArgs{k,1}=StructFieldName;
+        % Store field content in the 2nd col of listStructureArgs
+        if k<length(ini)
+            StructFieldCont=descriinput(fin(k)+1:ini(k+1)-1);
         else
-            StructFieldCont=descriinput(fin(k)+1:end);
+            
+            if ~isempty(posREMARK)
+                StructFieldCont=descriinput(fin(k)+1:posREMARK-1);
+            else
+                StructFieldCont=descriinput(fin(k)+1:end);
+            end
+        end
+        
+        % Store content in the second column
+        StructFieldCont=strtrim(StructFieldCont);
+        if strcmp(StructFieldCont(end),'-')
+            StructFieldCont=StructFieldCont(1:end-1);
+        end
+        listStructureArgs{k,2}=StructFieldCont;
+    end
+    
+    % rowtodel = vector which contains the duplicate rows of
+    % listStruArgs which have to be deleted
+    inisel=1:size(listStructureArgs,1);
+    
+    % Check if cell listStruArgs contains duplicates in the first column
+    for j=2:size(listStructureArgs,1)
+        if strcmp(listStructureArgs{j,1},listStructureArgs{j-1,1})
+            listStructureArgs{j-1,2}=[listStructureArgs{j-1,2} listStructureArgs{j,1} listStructureArgs{j,2}];
+            inisel(j)=999;
         end
     end
     
-    % Store name in the first column
-    listStructureArgs{k,2}=StructFieldCont;
-end
-
-% rowtodel = vector which contains the duplicate rows of
-% listStruArgs which have to be deleted
-inisel=1:size(listStructureArgs,1);
-
-% Check if cell listStruArgs contains duplicates in the first column
-for j=2:size(listStructureArgs,1)
-    if strcmp(listStructureArgs{j,1},listStructureArgs{j-1,1})
-        listStructureArgs{j-1,2}=[listStructureArgs{j-1,2} listStructureArgs{j,1} listStructureArgs{j,2}];
-        inisel(j)=999;
+    %         if strcmp(Display,'iter-detailed')
+    %             disp('Detailed information about Output arguments')
+    %             disp(listOutArgs)
+    %         end
+    
+    % remove from inisel the rows equal to 999 (that is the rows which
+    % correspond to duplicated arguments)
+    inisel(inisel==999)=[];
+    
+    Tablehtml='';
+    for k=inisel % length(ini)
+        
+        descrlong=listStructureArgs{k,2};
+        
+        descrlongHTML=formatHTMLwithMATHJAX(descrlong);
+        
+        % listOutArgs{k,2}
+        Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
+            '<td><code>' listStructureArgs{k,1} '</code></td>\r'...
+            '<td>\r'...
+            '<p>']) descrlongHTML  sprintf(['</p>\r'...
+            '</td>\r'...
+            '</tr>'])];
     end
-end
-
-%         if strcmp(Display,'iter-detailed')
-%             disp('Detailed information about Output arguments')
-%             disp(listOutArgs)
-%         end
-
-% remove from inisel the rows equal to 999 (that is the rows which
-% correspond to duplicated arguments)
-inisel(inisel==999)=[];
-
-Tablehtml='';
-for k=inisel % length(ini)
     
-    descrlong=listStructureArgs{k,2};
+    preamble=descriinput(1:ini(1)-1);
+    preambleHTML=formatHTMLwithMATHJAX(preamble);
     
-    descrlongHTML=formatHTMLwithMATHJAX(descrlong);
+    % Add the Remark after the table, if it is present
+    if ~isempty(posREMARK)
+        descrREMARK=descriinput(posREMARK:end);
+        descrREMARKHTML=formatHTMLwithMATHJAX(descrREMARK);
+        
+        descrioutput=[preambleHTML iniTable Tablehtml cloTable '<p>' descrREMARKHTML '</p>'];
+    else
+        descrioutput=[preambleHTML iniTable Tablehtml cloTable];
+    end
     
-    % listOutArgs{k,2}
-    Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
-        '<td><code>' listStructureArgs{k,1} '</code></td>\r'...
-        '<td>\r'...
-        '<p>']) descrlongHTML  sprintf(['</p>\r'...
-        '</td>\r'...
-        '</tr>'])];
-end
-
-preamble=descriinput(1:ini(1)-1);
-preambleHTML=formatHTMLwithMATHJAX(preamble);
-
-% Add the Remark after the table, if it is present
-if ~isempty(posREMARK)
-    descrREMARK=descriinput(posREMARK:end);
-    descrREMARKHTML=formatHTMLwithMATHJAX(descrREMARK);
-    
-    descrioutput=[preambleHTML iniTable Tablehtml cloTable '<p>' descrREMARKHTML '</p>'];
+    % use capital letter for the first word.
+    descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
 else
-    descrioutput=[preambleHTML iniTable Tablehtml cloTable];
-end
-
-% use capital letter for the first word.
-descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
-else
-     descrioutput=formatHTMLwithMATHJAX(descriinput);
+    descrioutput=formatHTMLwithMATHJAX(descriinput);
 end
 
 end

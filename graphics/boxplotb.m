@@ -1,15 +1,16 @@
 function out = boxplotb(Y,varargin)
 %boxplotb computes a bivariate boxplot
 %
+%<a href="matlab: docsearchFS('boxplotb')">Link to the help function</a>
 %
 % Required input arguments:
 %
-%             Y = n x 2 data matrix; n observations
-%               and 2 variables
+%             Y : n x 2 data matrix. Numeric matrix. n observations
+%               and 2 variables.
 %               Rows of Y represent observations, and columns represent
 %               variables
 %
-%<a href="matlab: docsearchFS('boxplotb')">Link to the help function</a>
+% Optional input arguments:
 %
 %           coeff : scalar, coefficient which enables us to pass from
 %                 a contour which contains 50% of the data (hinge) to a contour
@@ -19,17 +20,17 @@ function out = boxplotb(Y,varargin)
 %                 a theoretical threshold of 75%, 90%, 95% or 99% in
 %                 presence of normally distributed data
 %
-%                   confidence level     coefficient
-%                   0.75                        0.43
-%                   0.90                        0.83
-%                   0.95                        1.13
-%                   0.99                        1.68
+%                   confidence level     coefficient;
+%                   0.75                        0.43;
+%                   0.90                        0.83;
+%                   0.95                        1.13;
+%                   0.99                        1.68.
 %
-%                 Remark: if conflev=0 which contains 75%, 90%, 95% or 99%
-%                 values.
-%                 The default value of coeff is 1.68, that is 99%
+%                   Example - 'coeff',1.68
+%                   Data Types - double
+%                 Remark: The default value of coeff is 1.68, that is 99%
 %                 confidence level contours are produced.
-% strictlyinside: scalar. If strictlyinside=1 an additional convex hull is
+% strictlyinside: additional peeling. Scalar. If strictlyinside=1 an additional convex hull is
 %                 done on the 50% hull in order to increase the robustness
 %                 properties of the method. In fact there may
 %                 in general be some loss of robustness in small samples
@@ -37,36 +38,43 @@ function out = boxplotb(Y,varargin)
 %                 in presence of a considerable propotion of outliers it
 %                 may be necessary to do an additional peeling. The default
 %                 value of strictlyinside is 0.
-%       plots   : missing value scalar or structure specifying whether it
+%                   Example - 'strictlyinside',1
+%                   Data Types - double
+%       plots   : graphical output. missing value | scalar | structure. 
+%                 This options specifies whether it
 %                 is necessary to produce the bivariate boxplot on the
 %                 screen.
 %                 If plots is a missing value or is a scalar equal to 0 no
 %                 plot is produced
 %                 If plots is a scalar equal to 1 (default) the bivariate
 %                 boxplot with the outliers labelled is produced.
-%                 If plots is a structure it is possible to specify the
-%                 following options below
-%                   ylim    : vector with two elements controlling minimum and maximum
+%                 If plots is a structure it may contain
+%                 the following fields:
+%                   plots.ylim   = vector with two elements controlling minimum and maximum
 %                       on the y axis. Default value is '' (automatic scale)
-%                   xlim    : vector with two elements controlling minimum and maximum
+%                    plots.xlim    : vector with two elements controlling minimum and maximum
 %                       on the x axis. Default value is '' (automatic scale)
-%                   labeladd : If this option is '1', the outliers in the
+%                    plots.labeladd : If this option is '1', the outliers in the
 %                       spm are labelled with the unit row index. The
 %                       default value is labeladd='1', i.e. the row numbers are
 %                       added.
-%                   InnerColor: a three element vector which specifies the
+%                    plots.InnerColor: a three element vector which specifies the
 %                       color in RGB format to fill the inner contour
 %                       (hinge). The default value of InnerColor is
 %                       InnerColor=[168/255 150/255 255/255]
-%                   OuterColor: a three element vector which specifies the
+%                    plots.OuterColor: a three element vector which specifies the
 %                       color in RGB format to fill the outer contour
 %                       (fence). The default value of OuterColor is
 %                       OuterColor=[210/255 203/255 255/255];
-%        resolution = scalar, associated witht the resolution which must be
+%                   Example - 'plots',1
+%                   Data Types - double
+%        resolution : resolution to use. Scalar. Resolution which must be
 %                     used to produce the inner and outer spline.
 %                     The default value of resolution is 1000, that is the
 %                     splines are plotted on the screen using
 %                     1000-by-(number of vertices of the inner hull) points 
+%                   Example - 'resolution',5000
+%                   Data Types - double
 %
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
@@ -78,15 +86,15 @@ function out = boxplotb(Y,varargin)
 %   The output consists of a structure 'out' containing the following fields:
 %
 %
-%  outliers = vector containing the list of the units which lie outside the
+%  out.outliers = vector containing the list of the units which lie outside the
 %             outer contour.
 %             REMARK: if no unit lies outside the outer spline outliers is a
 %             Empty matrix: 0-by-1
-%         cent = 2 x 1 vector containing the coordinates
+%         out.cent = 2 x 1 vector containing the coordinates
 %                of the robust centroid
 %                cent[1] = x coordinate
 %                cent[2] = y coordinate
-%          Spl = r-by-4 matrix containing the coordinates
+%          out.Spl = r-by-4 matrix containing the coordinates
 %                of the inner and outer spline. r (rows of matrix Spl) is
 %                approximately equal to the number of vertices of the inner hull
 %                multiplied by the resolution which is used

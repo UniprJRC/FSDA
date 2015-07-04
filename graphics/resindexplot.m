@@ -1,12 +1,21 @@
 function resindexplot(residuals,varargin)
-%resindexplot plots the residuals from a regression analysis versus index
-%number or any other variable
+%resindexplot plots the residuals from a regression analysis versus index number or any other variable
+%
 %
 %<a href="matlab: docsearchFS('resindexplot')">Link to the help function</a>
 %
 % Required input arguments:
 %
-%  residuals :  vector of residuals or a structure containing fields residuals, y and X
+%  residuals :  residuals to plot. Numeric vector or structure. If
+%               residuals is a vector it contains the n residuals.
+%               If residuals is a structure it contains the following fields
+%               residuals.residuals = vector of residuals (compulsory
+%               field)
+%               residuals.y = response (compulsory field if interactive
+%               brushing is used)
+%               residuals.X = n-by-p matrix containing explanatory
+%               variables(compulsory field if interactive
+%               brushing is used)
 %
 % Optional input arguments:
 %               h : the axis handle of a figure where to send the resindexplot.
@@ -15,40 +24,73 @@ function resindexplot(residuals,varargin)
 %                   with residuals from a classical ols estimator and another
 %                   with residuals from a robust regression: see example
 %                   below).
-%              x :  the vector to be plotted on the x-axis. As default the
-%                   sequence 1:length(residuals) will be used
-%           labx :  a label for the x-axis (default: '')
-%           laby :  a label for the y-axis (default: '')
-%          title :  a label containing the title of the plot. Default value is
+%                   Example -'h',h1 where h1=subplot(2,1,1)
+%                   Data Types - Axes object (supplied as a scalar) 
+%              x :  the vector to be plotted on the x-axis. Numeric vector.
+%                   As default the sequence 1:length(residuals) will be
+%                   used
+%                   Example -'x',1:100
+%                   Data Types - double
+%           labx :  a label for the x-axis. Character.  (default: '')
+%                   Example -'labx','row index'
+%                   Data Types - char
+%           laby :  a label for the y-axis.  Character.  (default: '')
+%                   Example -'laby','scaled residuals'
+%                   Data Types - char
+%          title :  a label containing the title of the plot.  Character. Default value is
 %                   'Index plot of residuals'
-%          numlab:  number of points to be identified in plots.
-%                   If numlab is equal a cell containing scalar k, the units
+%                   Example -'title','scaled residuals'
+%                   Data Types - char
+%          numlab:  number of points to be identified in plots. 
+%                   [] | cell ({5} default) | numeric vector.
+%                   If numlab is a cell containing scalar k, the units
 %                   with the k largest residuals are labelled in the plots.
 %                   If numlab is a vector, the units inside vector numlab are
 %                   labelled in the plots.
-%                   The default value of numlab is {5} that is units with the 5
-%                   largest residuals are labelled
+%                   The default value of numlab is {5}. that is units with the 5
+%                   largest residuals are labelled.
 %                   For no labelling leave it empty
-%        conflev :  confidence interval for the horizontal bands.
+%                   Example -'numlab',[3,10,35]
+%                   Data Types - double
+%        conflev :  confidence interval for the horizontal bands. Numeric
+%                   vector.
 %                   It can be a vector of different confidence level values,
-%                   e.g. [0.95,0.99,0.999].
+%                   Example -'conflev',[0.95,0.99,0.999]
+%                   Data Types - double
 %                   Remark: confidence interval is based on the chi^2 distribution
 %        Fontsize:  Scalar which controls the fontsize of the labels of the
-%                   axes. Default value is 12
+%                   axes. Default value is 12.
+%                   Example -'Fontsize',10
+%                   Data Types - double
 %     SizeAxesNum:  Scalar which controls the fontsize of the numbers of
-%                   the axes. Default value is 10
+%                   the axes. Default value is 10.
+%                   Example -'SizeAxesNum',10
+%                   Data Types - double
 %           ylimy:  Vector with two elements which controla minimum and maximum
-%                   value of the y axis. Default is '', automatic scale
+%                   value of the y axis. Default is '', automatic scale.
+%                   Example -'SizeAxesNum',10
+%                   Data Types - double
 %           xlimx:  Vector with two elements controlling minimum and maximum
-%                   on the x axis. Default value is '' (automatic scale)
-%          lwdenv:  Scalar which controls the width of the lines associated
-%                   with the envelopes. Default is lwdenv=1
-%      MarkerSize:  A scalar specifying the size of the marker in points.
-%                   The default value for MarkerSize is 6 points (1 point = 1/72 inch).
-% MarkerFaceColor:  The fill color for markers that are closed shapes
+%                   on the x axis. Default value is '' (automatic scale).
+%                   Example -'SizeAxesNum',10
+%                   Data Types - double
+%          lwdenv:  width of the lines associated
+%                   with the envelopes. Scalar. Default is lwdenv=1.
+%                   Example -'SizeAxesNum',10
+%                   Data Types - double
+%      MarkerSize:  size of the marker in points. Scalar.
+%                   The default value for MarkerSize is 6 points (1 point =
+%                   1/72 inch).
+%                   Example -'SizeAxesNum',10
+%                   Data Types - double
+% MarkerFaceColor:  Marker fill color.
+%                   'none' | 'auto' | RGB triplet | color string. 
+%                   Fill color for markers that are closed shapes
 %                   (circle, square, diamond, pentagram, hexagram, and the
 %                   four triangles).
-%    databrush  :   empty value, scalar or structure.
+%                   Example -'MarkerFaceColor','b'
+%                   Data Types - char
+%    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
 %                   The activation of this option (databrush is a scalar or
@@ -57,20 +99,20 @@ function resindexplot(residuals,varargin)
 %                   highlighted in the y|X plot, i.e. a matrix of scatter
 %                   plots of y against each column of X, grouped according
 %                   to the selection(s) done by brushing. If the plot y|X
-%                   does not exist it is automatically created.
-%                   Remark: the window style of the other figures is set
+%                   does not exist, it is automatically created.
+%                   Please, note that the window style of the other figures is set
 %                   equal to that which contains the monitoring residual
 %                   plot. In other words, if the monitoring residual plot
 %                   is docked all the other figures will be docked too
-%                   DATABRUSH IS A SCALAR
+%                   DATABRUSH IS A SCALAR.
 %                   If databrush is a scalar the default selection tool is
 %                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='')
-%                   DATABRUSH IS A STRUCTURE
+%                   once (that is persist='').
+%                   DATABRUSH IS A STRUCTURE.
 %                   If databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
-%                   following optional argument:
-%                   - persist. Persist is an empty value or a scalar
+%                   following fields
+%                   - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
 %                     is allowed only once.
@@ -82,7 +124,13 @@ function resindexplot(residuals,varargin)
 %                     different color for the brushed units.
 %                     If persist='off' every time a new brush is performed
 %                     units previously brushed are removed.
-%                   - bivarfit. This option adds one or more least
+%                   - databrush.labeladd = add labels of brushed units.
+%                     Character. [] (default) | '1'. 
+%                     If databrush.labeladd='1', we label the units
+%                     of the last selected group with the unit row index in
+%                     matrices X and y. The default value is labeladd='',
+%                     i.e. no label is added.
+%                   - databrush.bivarfit = this option adds one or more least
 %                     square lines based on SIMPLE REGRESSION to the plots
 %                     of y|X, depending on the selected groups.
 %                     bivarfit = ''
@@ -102,7 +150,7 @@ function resindexplot(residuals,varargin)
 %                     bivarfit = 'i1' or 'i2' or 'i3' etc.
 %                       fits a ols line to a specific group, the one with
 %                       index 'i' equal to 1, 2, 3 etc.
-%                   - multivarfit: This option adds one or more least square
+%                   - databrush. multivarfit = this option adds one or more least square
 %                       lines, based on MULTIVARIATE REGRESSION of y on X,
 %                       to the plots of y|Xi.
 %                     multivarfit = ''
@@ -120,16 +168,25 @@ function resindexplot(residuals,varargin)
 %                       exactly equal to multivarfit ='1' but this time we
 %                       add the line based on the group of unselected
 %                       observations.
-%                   - labeladd. If this option is '1', we label the units
+%                   - databrush.labeladd = if this option is '1', we label the units
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
-%       nameX   :   cell array of strings of length p containing the labels
-%                   of the varibles of the regression dataset. If it is
-%                   empty
-%                 	(default) the sequence X1, ..., Xp will be created
+%                   Example - 'databrush',1
+%                   Data Types - single | double | struct 
+%       nameX   :   regressor labels. Cell array of strings of length p containing the labels
+%                   of the variables of the regression dataset. If it is
+%                   empty (default) the sequence X1, ..., Xp will be created
 %                   automatically
-%       namey   :   character containing the label of the response
+%                   Example - 'nameX',{'Age','Income','Married','Profession'}
+%                   Data Types - cell 
+%       namey   :   response label. Character. Character containing the
+%                   label of the response. If it is
+%                   empty (default) label 'y' will be used.
+%                   Example - 'namey','response'
+%                   Data Types - char
+%
+% Output: 
 %
 %
 % See also resfwdplot.m

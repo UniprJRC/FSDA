@@ -5,32 +5,26 @@ function add2spm(H,AX,BigAx,varargin)
 %<a href="matlab: docsearchFS('add2spm')">Link to the help function</a>
 %
 %
-% As default add2spm makes legends in the existing scatter plot matrix
-% clickable or creates a clickable multilegend if the legend does not
-% exist.
-%
-% Using varargin it is possible to
-%
-% 1. Personalize the legend of groups in the scatterplot matrix. See option
-%    'userleg'.
-% 2. Add labels of the units belonging to the last data group (or to the
-%   group with the largest value in the grouping variable) of each scatter
-%   (panel). See option 'labeladd'.
 %
 %  Required input arguments:
 %
-%  H, AX and BigAx : output handles of a gplotmatrix. See gplotmatrix help.
-%                   More specifically, H is an array of handles to the
+%            H   : handles to the lines on the graphs. 2D or 3D array. H is an array of handles to the
 %                   lines on the graphs. The array's third dimension
-%                   corresponds to groups in the grouping variable. AX is a
+%                   corresponds to groups in the grouping variable. 
+%                   For more details see the output arguments of gplotmatrix. 
+%           AX   : handles to the axes of the individual plots. Matrix.  AX is a
 %                   matrix of handles to the axes of the individual plots.
-%                   BigAx is a handle to big (invisible) axes framing the
-%                   entire plot matrix.
+%                   For more details see the output arguments of gplotmatrix. 
+%          BigAx :  handle to big (invisible) axes framing the
+%                   entire plot matrix. Scalar. 
+%                   For more details see the output arguments of gplotmatrix. 
 %
 %  Optional input arguments:
 %
-%  labeladd :   Default is '', i.e. no labels are added to the symbols
-%               inside each scatter.
+%  labeladd :   add labels for a group of units.
+%               [] (default) | '1'. 
+%               Default is '', i.e. no
+%               labels are added to the symbols inside each scatter.
 %               If set to '1', add labels to the units of the last data
 %               group (or the group with the largest value of the grouping
 %               variable) in each panel of the scatter matrix. The labels
@@ -39,7 +33,11 @@ function add2spm(H,AX,BigAx,varargin)
 %               instruction set(H(:,:,end), 'UserData' , unit_labels),
 %               where unit_labels is a column vector of numbers or strings.
 %               See last example below for a concrete case.
-%  userleg  :   It is used to control the legend of the plot.
+%               Example - 'labeladd','1'
+%               Data Types - char
+%  userleg  :   user legend. 
+%               [] (default) | '1' | cell of strings. 
+%               It is used to control the legend of the plot.
 %               - Default is ''. In this case, existing legends are left as 
 %                 they are and simply made clickable; however, if there is
 %                 no legend, a default one is created using the syntax
@@ -55,15 +53,34 @@ function add2spm(H,AX,BigAx,varargin)
 %                 ''         i.e. the Tag of the figure is not defined; 
 %                            in this case the legend takes the values in    
 %                            the DisplayName property of the scatter
-%                            matrix: this is determined by the 'group'     
+%                            matrix. This is determined by the 'group'     
 %                            option of the spmplot or gplotmatrix functions. 
 %               - If it is a cell of strings, e.g. {'FIAT' ; 'BMW' ; 'VOLVO'},
 %                 then such strings are used for the legend.
+%               Example - 'userleg','1'
+%               Data Types - char
 %
+% Output:
+%
+% More About:
 %
 %   add2spm is essentially used within FSDA function spmplot.m. However its
-%   logic can be also demonstrated with MATLAB function gplotmatrix, as in
+%   logic can be also demonstrated with MATLAB function gplotmatrix.m, as in
 %   the examples below.
+%
+% As default add2spm makes legends in the existing scatter plot matrix
+% clickable or creates a clickable multilegend if the legend does not
+% exist.
+%
+% Using varargin it is possible to:
+% 1. Personalize the legend of groups in the scatterplot matrix. See option
+%    'userleg'.
+% 2. Add labels of the units belonging to the last data group (or to the
+%   group with the largest value in the grouping variable) of each scatter
+%   (panel). See option 'labeladd'.
+%
+% See also spmplot
+%
 %
 % Copyright 2008-2015.
 % Written by FSDA team

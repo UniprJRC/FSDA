@@ -4,6 +4,7 @@ function plotopt=malfwdplot(out,varargin)
 %<a href="matlab: docsearchFS('malfwdplot')">Link to the help function</a>
 %
 %  Required input arguments:
+%
 %  out :  Structure containing monitoring of Mahalanobis distance. Structure. 
 %               Structure containing the following fields.
 %       out.MAL =   matrix containing the Mahalanobis distances monitored in each
@@ -65,26 +66,26 @@ function plotopt=malfwdplot(out,varargin)
 %                   Data Types - struct 
 %         fground : trajectories in foregroud.
 %                   Structure. Structure which controls which trajectories
-%                   are highlighted and how they are plot to be
+%                   are highlighted and how they are plotted to be
 %                   distinguishable from the others.
 %                   It is possible to control the label, the width, the
 %                   color, the line type and the marker of the highlighted
 %                   units. 
 %                   Structure fground contains the following fields:
-%                   fground.fthresh = (alternative to funit) numeric vector of
-%                       length 1 or 2 which specifies the highlighted
-%                       trajectories.
+%                   fground.fthresh = (alternative to funit) numeric vector
+%                       of length 1 or 2 which specifies the criterion to
+%                       select the trajectories to highlight.
 %                       If length(fthresh)=1 the highlighted trajectories
-%                       are those of units that throughtout the search had
+%                       are those units that throughtout the search had
 %                       at leat once a MD greater (in absolute value)
-%                       than thresh. The default value of fthresh is 2.5.
+%                       than fthresh. The default value of fthresh is 2.5.
 %                       If length(fthresh)=2 the highlighted trajectories
 %                       are those of units that throughtout the search had
 %                       a MD at least once bigger than fthresh(2) or
 %                       smaller than fthresh(1).
-%                   fground.funit = (alternative to fthresh) vector containing the
-%                       list of the units to be highlighted. If funit is
-%                       supplied, fthresh is ignored.
+%                   fground.funit = (alternative to fthresh) vector
+%                       containing the list of the units to be highlighted.
+%                       If funit is supplied, fthresh is ignored.
 %                   fground.flabstep = numeric vector which specifies the steps of
 %                       the search whre to put labels for the highlighted
 %                       trajectories (units). The default is to put the
@@ -94,18 +95,18 @@ function plotopt=malfwdplot(out,varargin)
 %                       highlighted trajectories (units). Default is 1.
 %                   fground.Color = cell array of strings containing the colors to
 %                       be used for the highlighted trajectories (units).
-%                       If length(scolor)==1 the same color will be used for
+%                       If length(Color)==1 the same color will be used for
 %                       all highlighted units Remark: if for example
-%                       length(scolor)=2 and there are 6 highlighted units,
+%                       length(Color)=2 and there are 6 highlighted units,
 %                       3 highlighted trajectories appear with
-%                       selunitcolor{1} and 3 highlighted trajectories with
-%                       selunitcolor{2}
-%                   fground.LineStyle = cell containing the line type of the highlighted
-%                       trajectories.
-%                   fground.fmark  = scalar controlling whether to plot highlighted
-%                       trajectories as markers.
-%                       if 1 each line is plotted using a different marker
-%                       else no marker is used (default).
+%                       Color{1} and 3 highlighted trajectories with
+%                       Color{2}.
+%                   fground.LineStyle = cell containing the line type of
+%                       the highlighted trajectories.
+%                   fground.fmark  = scalar controlling whether to plot
+%                       highlighted trajectories as markers. if 1 each line
+%                       is plotted using a different marker else no marker
+%                       is used (default).
 %                   fground.FontSize  = scalar controlling font size of the
 %                       labels of the trajectories in foreground
 %
@@ -132,7 +133,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       specifies how to define the unimmportant trajectories.
 %                       Unimmportant trajectories will be plotted using a
 %                       colormap, in greysh or will be hidden.
-%                       - If length(thresh)=1 the irrelevant units are
+%                       - If length(bthresh)=1 the irrelevant units are
 %                         those which always had a MD smaller
 %                         (in absolute value) than thresh.
 %                       - If length(bthresh)=2 the irrelevant units
@@ -161,11 +162,11 @@ function plotopt=malfwdplot(out,varargin)
 %
 %       tag     :   Personalized tag. String. String which identifies the
 %                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_mal'. Note that if the
-%                   program finds a plot which has a tag equal to the one
-%                   specified by the user, then the output of the new plot
-%                   overwrites the existing one in the same window else a
-%                   new window is created.
+%                   default is to use tag 'pl_mal'. 
+%                   Note that if the program finds a plot which has a tag
+%                   equal to the one specified by the user, then the output
+%                   of the new plot overwrites the existing one in the same
+%                   window else a new window is created.
 %                   Example - 'tag','myplot'
 %                   Data Types - char 
 %   datatooltip :   interactive clicking. Empty value (default) or
@@ -174,7 +175,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   mouse an individual MD trajectory in order to
 %                   have information about the corresponding unit, the
 %                   associated label and the step of the search in which
-%                   the unit enters in the subset.
+%                   the unit enters the subset.
 %                   If datatooltip is a structure it may contain the
 %                   following the fields 
 %                   datatooltip.DisplayStyle = Determines how the data
@@ -186,10 +187,12 @@ function plotopt=malfwdplot(out,varargin)
 %                       - window displays data cursor information for the
 %                       data point you interactively select in a floating
 %                       window within the figure.
-%                   datatooltip.SnapToDataVertex=  control the data cursor
-%                       features.  on | off.
-%                       - on snaps to the nearest data value or is located
-%                         at the actual pointer position.
+%                   datatooltip.SnapToDataVertex=  Specifies whether the
+%                       data cursor snaps to the nearest data value or is
+%                       located at the actual pointer position.  on | off.
+%                       - on data cursor snaps to the nearest data value  
+%                       - off data cursor is located at the actual pointer
+%                       position.
 %                   (see the MATLAB function datacursormode or the examples
 %                   below). Default values are datatooltip.DisplayStyle =
 %                   'Window' and datatooltip.SnapToDataVertex = 'on'.
@@ -197,21 +200,37 @@ function plotopt=malfwdplot(out,varargin)
 %                       selected trajectory. Vector with three elements
 %                       specifying RGB color.
 %                       By default, the MD trajectory selected with the
-%                       mouse is highlighted in red. (a RGB vector can be conveniently chosen
-%                   with our MATLAB class FSColor, see documentation).
-%                   datatooltip.SubsetLinesColor = highlights the trajectories of units
-%                       that are in the subset at a given step of the search.
-%                       This can be done (repeatedly) with a left mouse click
-%                       in proximity of the step of interest. A right mouse
-%                       click will terminate the selection by marking with a
-%                       up-arrow the step corresponding to the highlighted
-%                       lines. The highlighted lines by default are in blue,
-%                   but different colors can be specified as RGB vectors in
-%                   the field SubsetLinesColor. By default SubsetLinesColor
-%                   = '', i.e. the modality is not active. Any
-%                   initialization for SubsetLinesColor which cannot be
-%                   interpreted as RGB vector will be converted to blue,
-%                   i.e. SubsetLinesColor will be forced to be [0 0 1].
+%                       mouse is highlighted in red. (a RGB vector can be
+%                       conveniently chosen with our MATLAB class FSColor,
+%                       see documentation).
+%                       Example -
+%                       datatooltip.LineColor=[155/255,190/255,61/255]; 
+%                       or using class FScolors:
+%                       datatooltip.LineColor='greenish'
+%                   datatooltip.SubsetLinesColor = highlights the
+%                       trajectories of the units
+%                       that are in the subset at a given step of the
+%                       search. Vector with three elements
+%                       specifying RGB color.
+%                       Example - datatooltip.SubsetLinesColor=[0 0 0]; 
+%                       or using class FScolors:
+%                       datatooltip.SubsetLinesColor='black'; highlights in
+%                       black the trajectories of the units which are
+%                       inside subset in correpondence of the selected
+%                       steps.
+%                   Remark. This can be done (repeatedly) with a left mouse click
+%                       on the x axis ('subset size m') in proximity of the
+%                       step of interest. A right mouse click will
+%                       terminate the selection by marking with a up-arrow
+%                       the step corresponding to the highlighted lines.
+%                       The highlighted lines by default are in blue, but
+%                       different colors can be specified as RGB vectors in
+%                       the field SubsetLinesColor. By default
+%                       SubsetLinesColor = '', i.e. the modality is not
+%                       active. Any initialization for SubsetLinesColor
+%                       which cannot be interpreted as RGB vector will be
+%                       converted to blue, i.e. SubsetLinesColor will be
+%                       forced to be [0 0 1].
 %                   Example - 'datatooltip',''
 %                   Data Types - char 
 %       label   :   row labels. Cell of strings. Cell containing the labels
@@ -231,8 +250,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   If spm does not exist it is automatically created.
 %                   In addition, brushed units are automatically highlighted in the
 %                   minimum MD plot if it is already open.
-%                   The extension to the following plots will be available
-%                   Remark. the window style of the other figures is set
+%                   Please, note that the window style of the other figures is set
 %                   equal to that which contains the monitoring MD
 %                   plot. In other words, if the MD plot
 %                   is docked all the other figures will be docked too.
@@ -256,7 +274,9 @@ function plotopt=malfwdplot(out,varargin)
 %                     different color for the brushed units.
 %                     If persist='off' every time a new brush is performed
 %                     units previously brushed are removed.
-%                   - databrush.labeladd = add labels of brushed units. If this option is '1', we label the units
+%                   - databrush.labeladd = add labels of brushed units.
+%                     Character. [] (default) | '1'. 
+%                     If databrush.labeladd='1', we label the units
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
@@ -267,7 +287,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   is empty (default) the sequence Y1, ..., Yv will be used
 %                   automatically
 %                   Example - 'nameY',{'var1', var2, 'var3'}
-%                   Data Types - char 
+%                   Data Types - cell of strings 
 %       msg     :   display or save used options. Scalar. Scalar which
 %                   controls whether to display or to save
 %                   as output the options inside structures standard,
@@ -291,7 +311,7 @@ function plotopt=malfwdplot(out,varargin)
 %               generate the plot inside cell plotopt.
 %
 %
-% See also
+% See also resfwdplot
 %
 % References:
 %
