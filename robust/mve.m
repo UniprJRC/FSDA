@@ -13,128 +13,165 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %
 %  Optional input arguments:
 %
-%      bdp    : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%               The default value is 0.5
-%      nsamp  : scalar defining number of subsamples of size v which have
-%               to be extracted (if not given, default = 500)
-%     conflev : Scalar between 0 and 1 containing confidence level which is
+%      bdp    : scalar. Breakdown point. (Number between 0
+%               and 0.5). The default value is 0.5.
+%               Example - 'bdp',1/4 
+%               Data Types - double
+%      nsamp  : scalar. Number of subsamples of size v which have
+%               to be extracted (if not given, default = 500).
+%               Example - 'nsamp',10000 
+%               Data Types - double
+%     conflev : Scalar. Number between 0 and 1 containing confidence level which is
 %               used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
+%               Example - 'conflev',0.99
+%               Data Types - double
 %      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
+%               Example - 'nocheck',1
+%               Data Types - double
 %       plots : Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates
-%               (1) a plot of Mahalanobis distances against index number.
-%               The confidence level used to draw the confidence bands for
-%               the MD is given by the input option conflev. If conflev is
+%               (1) a plot of robust Mahalanobis distances (raw and
+%               reweighted) against index number. The confidence level used
+%               to draw the confidence bands for the MD is given by the
+%               input option conflev. If conflev is
 %               not specified a nominal 0.975 confidence interval will be
 %               used.
 %               (2) a scatter plot matrix with the outliers highlighted
 %               If plots is a structure it may contain the following fields
-%                   labeladd : if this option is '1', the outliers in the
+%                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added.
-%                   nameY : cell array of strings containing the labels of
-%                       the variables. As default value, the labels which are
-%                       added are Y1, ...Yv.
-%        msg  : scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displyed
-%               on the screen about estimated time to compute the final estimator
-%               else no message is displayed on the screen
+%                   plots.nameY = cell array of strings containing the labels of
+%                       the variables. As default value, the labels which
+%                       are added are Y1, ...Yv.
+%               Example - 'plots',1
+%               Data Types - double or structure
+%        msg  : scalar. Display or not messages
+%               on the screen. If msg==1 (default) messages are displayed
+%               on the screen about estimated time to compute the final
+%               estimator else no message is displayed on the screen.
+%               Example - 'msg',1
+%               Data Types - double
+
 %    ysaveRAW : scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure RAW. This feature is
-%               meant at simplifying the use of function malindeplot.
+%               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
+%               Example - 'ysaveRAW',1
+%               Data Types - double
 %    ysaveREW : scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure REW. This feature is
-%               meant at simplifying the use of function malindeplot.
+%               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
-%
+%               Example - 'ysaveREW',1
+%               Data Types - double
 %  Output:
 %
-%  The output consists of two structures RAW and REW. RAW refers ti raw MCD, on the other hand, REW refers to reweighted MCD
+%  The output consists of two structures RAW and REW. RAW refers to raw
+%  mve, on the other hand, REW refers to reweighted mve
 %
-%                   RAW contains the following fields:
-%
-%         RAW.loc  : 1 x v  vector containing raw MCD location of the data
-%         RAW.cov  : robust MCD estimate of
+%         RAW:   structure which contains the following fields
+%         RAW.loc  = 1 x v  vector containing raw MCD location of the data
+%         RAW.cov  = robust MCD estimate of
 %                    covariance matrix. It is the raw MCD covariance matrix
 %                    (multiplied by a finite sample correction factor and
 %                    an asymptotic consistency factor).
-%         RAW.cor  : The raw MVE correlation matrix
-%           RAW.obj: The value of the objective function which has been minimized.
-%           RAW.bs : (v+1) x 1 vector containing the units forming best subset
+%         RAW.cor  = The raw MVE correlation matrix
+%           RAW.obj= The value of the objective function which has been minimized.
+%           RAW.bs = (v+1) x 1 vector containing the units forming best subset
 %                    associated with MVE estimate of location.
-%          RAW.md  : n x 1 vector containing the estimates of the robust
+%          RAW.md  = n x 1 vector containing the estimates of the robust
 %                    Mahalanobis distances (in squared units). This vector
 %                    contains the distances of each observation from the
 %                    raw MCD location of the data, relative to the raw MCD
 %                    scatter matrix RAW.cov
-%     RAW.outliers : A vector containing the list of the units declared as
+%     RAW.outliers = A vector containing the list of the units declared as
 %                    outliers using confidence level specified in input
 %                    scalar conflev
-%      RAW.conflev : Confidence level that was used to declare outliers
-%      RAW.singsub : Number of subsets without full rank. Notice that
+%      RAW.conflev = Confidence level that was used to declare outliers
+%      RAW.singsub = Number of subsets without full rank. Notice that
 %                    out.singsub > 0.1*(number of subsamples) produces a
 %                    warning
-%      RAW.weights : n x 1 vector containing the estimates of the weights.
+%      RAW.weights = n x 1 vector containing the estimates of the weights.
 %                    These weights determine which are the h observations are used to
 %                    compute the final MVE estimates.
-%            RAW.Y : Data matrix Y. The field is present if option
+%            RAW.Y = Data matrix Y. The field is present if option
 %                    ysaveRAW is set to 1.
-%        RAW.class : 'mve'
+%        RAW.class = 'mve'
 %
 %
-%                   REW contains the following fields:
-%
-%      REW.loc     : The robust location of the data, obtained after reweighting, if
+%         REW : structure which contains the following fields:
+%      REW.loc     = The robust location of the data, obtained after reweighting, if
 %                    the RAW.cov  is not singular.  Otherwise the raw MVE center is
 %                    given here.
-%       REW.cov    : The robust covariance matrix, obtained after reweighting and
+%       REW.cov    = The robust covariance matrix, obtained after reweighting and
 %                    multiplying with a finite sample correction factor and an asymptotic
 %                    consistency factor, if the raw MVE is not singular.  Otherwise the
 %                    raw MVE covariance matrix is given here.
-%       REW.cor    : The robust correlation matrix, obtained after reweighting
-%       REW.md:      The distance of each observation to the final,
+%       REW.cor    = The robust correlation matrix, obtained after reweighting
+%       REW.md     = The distance of each observation to the final,
 %                    reweighted MVE center of the data, relative to the
 %                    reweighted MVE scatter of the data.  These distances allow
 %                    us to easily identify the outliers. If the reweighted MVE
 %                    is singular, RAW.md is given here.
-%            REW.Y : Data matrix Y. The field is present if option
+%            REW.Y = Data matrix Y. The field is present if option
 %                    ysaveRAW is set to 1.
 %
 %  Optional Output:
 %
-%            C     : matrix of the indices of the samples extracted for
-%                    computing the estimate
+%            C     : matrix of size nsamp-by-v which contains the indices
+%                    of the subsamples extracted for
+%                    computing the estimate.
 %
-%   REMARK: to RAW.cov a consistency factor has been applied which is based
-%   on chi2inv(1-bdp,v). On the other hand to REW.cov the usual asymptotic consistency
-%   factor is applied. In this case we have used the empirical percentage
-%   of trimming that is the ratio hemp/n where hemp is the number of units which
-%   had a MD smaller than the cutoff level determined by thresh=chi2inv(conflev,v);
-%   MD are computed using RAW.loc and RAW.cov
+% More About:
+%
+% For each subset $J$ of $v+1$ observations
+% $\mu_J$ and $C_J$ are the centroid and the covariance matrix based on
+% subset $J$.
+% 
+%
+% Rousseeuw and Leroy (RL) (eq. 1.25 chapter 7) write the objective function for subset $J$ as
+% \[
+% RL_J=\left( med_{i=1, ..., n} \sqrt{ (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) } \right)^v \sqrt|C_J|
+% \]
+%
+% Maronna Martin and Yohai (MMY), eq. (6.57), define $\Sigma_J = C_j /
+% |C_j|^{1/v}$ and write the objective function for subset $J$ as
+% \[
+% MMY_J =  \hat \sigma ( (y_i -\mu_J)' \Sigma_J^{-1} (y_i -\mu_J) ) |C_J|^{1/v}
+%       =  \hat \sigma ( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) ) |C_J|^{1/v}
+% \]
+% where $\hat \sigma = med$
+% Note that $MMY_J= (RL)^{2/v}$.
+%
+%   To RAW.cov a consistency factor has been applied which is based on
+%   chi2inv(1-bdp,v). On the other hand to REW.cov the usual asymptotic
+%   consistency factor is applied. In this case we have used the empirical
+%   percentage of trimming that is the ratio hemp/n where hemp is the
+%   number of units which had a MD smaller than the cutoff level determined
+%   by thresh=chi2inv(conflev,v); MD are computed using RAW.loc and RAW.cov
 %
 %
 % The mve method is intended for continuous variables, and assumes that
-% the number of observations n is at least 5 times the number of variables p.
+% the number of observations n is at least 5 times the number of variables v.%
 %
+% See also: mcd.m
 %
 % References:
 %
-% The MVE method was introduced in:
 %   Rousseeuw, P.J. (1984), "Least Median of Squares Regression", Journal
 %   of the American Statistical Association, Vol. 79, pp. 871-881.
-%
-% See also:
-%
 %   Rousseeuw, P.J. and Leroy A.M. (1987), Robust regression and outlier
 %   detection,  Wiley New York.
 %
-% Acknowledgements
+%  
+%
+% Acknowledgements:
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.
@@ -144,18 +181,6 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 % been completely redesigned, with considerable increase of the
 % computational performance.
 %
-% Remark: In this routine for each subset J of v+1 observations
-% \mu_J C_J are the centroid and the covariance matrix based on subset J
-% \Sigma_J = C_j / |C_j|^{1/v}
-%
-% Rousseeuw and Leroy (eq. 1.25 chapter 7) write the objective function for subset J as
-% RL_J=( med( sqrt( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) ) )^v \sqrt|C_J|
-%
-% Maronna et al. eq. (6.57) write the objective function for subset J as
-% MMY_J =  \hat \sigma ( (y_i -\mu_J)' \Sigma_J^{-1} (y_i -\mu_J) ) |C_J|^(1/v)
-%       =  \hat \sigma ( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) ) |C_J|^(1/v)
-% where \hat \sigma = med
-% Note that MMY_J= (RL)^{2/v}
 %
 %
 % Copyright 2008-2015.
@@ -164,7 +189,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %
 %<a href="matlab: docsearchFS('mve')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
-
+%
 % Examples:
 
 %{

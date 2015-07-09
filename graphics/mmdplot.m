@@ -6,15 +6,15 @@ function mmdplot(out,varargin)
 % Required input arguments:
 %
 %  out :  structure containing the following fields
-%        mmd =  a matrix containing the monitoring of minimum Mahalanobis 
+%        out.mmd =  a matrix containing the monitoring of minimum Mahalanobis 
 %               distance in each step of the forward search. The first
 %               column of mdr must contain the fwd search index This matrix
 %               can be created using function FSMeda (compulsory argument).
 %               If this matrix has three columns in the third colum there
 %               is the monitoring of the (m+1)-th Mahalanobis distance
-%       Un  =   matrix containing the order of entry of each unit
+%       out.Un  =   matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not empty)
-%       Y   =   the original n x v data matrix (necessary only if
+%       out.Y   =   the original n x v data matrix (necessary only if
 %               option databrush is not empty)
 %
 %

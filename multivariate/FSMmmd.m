@@ -158,7 +158,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %{
     % Checking the units belonging to subset in each step of the search.
     % Personalized initial subset (large n). Each row of BB matrix 
-    % is associated to a unitwhile each colum is associated to a step of the fwd search.
+    % is associated to a unit while each colum is associated to a step of the fwd search.
     n=20000;
     v=3;
     m0=10;

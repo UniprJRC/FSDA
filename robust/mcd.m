@@ -86,7 +86,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Example - 'plots',1
 %               Data Types - double or structure
 %        msg  : scalar. Display or not messages
-%               on the screen. If msg==1 (default) messages are displyed
+%               on the screen. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final
 %               estimator else no message is displayed on the screen.
 %               Example - 'msg',1
@@ -97,7 +97,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Data Types - double
 %    ysaveRAW : scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure RAW. This feature is
-%               meant at simplifying the use of function malindeplot.
+%               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'ysaveRAW',1
 %               Data Types - double

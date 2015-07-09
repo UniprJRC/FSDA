@@ -5,8 +5,11 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %
 %  Required input arguments:
 %
-%    n : scalar, number of obseravtions
-%    p : scalar, number of explanatory variables (including the intercept if present)
+%    n : number of observations. Scalar. Number of observations on which
+%       the envelopes are based.
+%    p : number of explanatory variables (including the intercept if
+%    present). Scalar. Number of expl. variables on which
+%       the envelopes are based.
 %
 %  Optional input arguments:
 %
@@ -40,12 +43,13 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %
 %  Output:
 %
-%  MDRenv:      matrix with n-m0+1 rows and length(prob)+1 columns
-%               1st col = fwd search index from m0 to n-1
-%               2nd col = envelope for quantile prob(1)
+%  MDRenv:      forward envelopes of mdr. Matrix. Matrix with n-m0+1 rows
+%               and length(prob)+1 columns.
+%               1st col = fwd search index from m0 to n-1;
+%               2nd col = envelope for quantile prob(1);
 %               3rd col = envelope for quantile prob(2)
 %               ...
-%               (k+1) col = envelope for quantile prob(k)
+%               (k+1) col = envelope for quantile prob(k).
 %
 % Subfunctions: tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS
 %
@@ -57,10 +61,10 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %
 %   Atkinson, A.C. and Riani, M. (2006). Distribution theory and
 %   simulations for tests of outliers in regression. Journal of
-%   Computational and Graphical Statistics, Vol. 15, pp. 460–476
+%   Computational and Graphical Statistics, Vol. 15, pp. 460-476
 %   Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward
 %   search for testing multiple outliers in regression, Advances in Data
-%   Analysis and Classification, Vol. 1, pp. 123–141.
+%   Analysis and Classification, Vol. 1, pp. 123-141.
 %
 % Copyright 2008-2015
 % Written by FSDA team
@@ -72,16 +76,16 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 % Examples:
 
 %{  
-    % FSRenvmdr with all default options.
+    %% FSRenvmdr with all default options.
     % Example of creation of 1 per cent, 50 per cent and 99 per cent 
-    % envelopes based on 1000observations and 5 explanatory variables using 
+    % envelopes based on 1000 observations and 5 explanatory variables using 
     % exact method.
     MDRenv=FSRenvmdr(10000,5);
 %}
 
 %{  
     % FSRenvmdr with optional argument.
-    % Example of creation of 1 per cent, 50 per cent and 99 per cent 
+    % Example of creation of 1%, 50% and 99% 
     % envelopes based on 1000 observations and 5 explanatory variables 
     % using approximate method.
     MDRenv1=FSRenvmdr(10000,5,'exact',0);
@@ -89,8 +93,8 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 
 %{
     % Example with plot of the envelopes.
-    % Example of creation of 1 per cent, 50 per cent and 99 per cent
-    % envelopes based on 100observations and 5 explanatory variables using 
+    % Example of creation of 1%, 50% and 99%
+    % envelopes based on 100 observations and 5 explanatory variables using 
     % exact method.
     Menv=FSRenvmdr(100,5,'exact',1);
     plot(Menv(:,1),Menv(:,2:4));

@@ -604,8 +604,12 @@ for i=1:length(ini)
         end
         
         % Remove from string descradd all '% signs
-        posPercentageSigns=regexp(descradd,'%');
-        descradd(posPercentageSigns)=[];
+        % OLD 
+        % posPercentageSigns=regexp(descradd,'%');
+        % descradd(posPercentageSigns)=[];
+        
+        posPercentageSigns=regexp(descradd,'\n%');
+        descradd(posPercentageSigns+1)=[];
         % descradd=strtrim(descradd);
         listOptArgs{ij-1,4}=[listOptArgs{ij-1,4} descradd];
         % listOptArgs{i-1,2}=[listOptArgs{i-1,2}
@@ -620,9 +624,14 @@ for i=1:length(ini)
         end
         
         % Remove from string descrtosplit all '% signs
-        posPercentageSigns=regexp(descrtosplit,'%');
-        descrtosplit(posPercentageSigns)=[];
+        % OLD
+        % posPercentageSigns=regexp(descrtosplit,'%');
+        % descrtosplit(posPercentageSigns)=[];
         
+        
+                posPercentageSigns=regexp(descrtosplit,'\n%');
+        descrtosplit(posPercentageSigns+1)=[];
+
         [inifullstops]=regexp(descrtosplit,'\.');
         if isempty(inifullstops)
             error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
@@ -1179,9 +1188,13 @@ for j=1:length(sintax)
     findescriptionEx=inicr(jj);
     strdescrEx=stri(endtitle+1:findescriptionEx);
     % remove % signs from strdescrEx
-    posPercentageSigns=regexp(strdescrEx,'%');
-    strdescrEx(posPercentageSigns)=[];
+    % OLD
+    %posPercentageSigns=regexp(strdescrEx,'%');
+    % strdescrEx(posPercentageSigns)=[];
     
+                     posPercentageSigns=regexp(strdescrEx,'\D%');
+         strdescrEx(posPercentageSigns+1)=[];
+
     listEx{j,2}=strdescrEx;
     % listEx{j,3}=stri(findescriptionEx+1:end);
     
@@ -1297,8 +1310,13 @@ if length(startIndexEx)>length(sintax)
         findescriptionEx=inicr(jj);
         strdescrEx=stri(endtitle+1:findescriptionEx);
         % remove % signs from strdescrEx
-        posPercentageSigns=regexp(strdescrEx,'%');
-        strdescrEx(posPercentageSigns)=[];
+        % OLD
+        %posPercentageSigns=regexp(strdescrEx,'%');
+        %strdescrEx(posPercentageSigns)=[];
+        
+                             posPercentageSigns=regexp(strdescrEx,'\D%');
+         strdescrEx(posPercentageSigns+1)=[];
+
         
         listExtraEx{j,2}=strdescrEx;
         % Replace symbols < and > with &lt; and  &gt;
