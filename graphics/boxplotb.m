@@ -12,12 +12,13 @@ function out = boxplotb(Y,varargin)
 %
 % Optional input arguments:
 %
-%           coeff : scalar, coefficient which enables us to pass from
+%           coeff : expansion factor. Scalar. 
+%                  Coefficient which enables us to pass from
 %                 a contour which contains 50% of the data (hinge) to a contour
 %                 which contains a prespecified portion of the data.
 %                 Table below (taken from Zani, Riani and Corbellini, 1998,
 %                 CSDA) shows the coefficients which must be used to obtain
-%                 a theoretical threshold of 75%, 90%, 95% or 99% in
+%                 a theoretical threshold of 75, 90, 95 or 99 per cent in
 %                 presence of normally distributed data
 %
 %                   confidence level     coefficient;

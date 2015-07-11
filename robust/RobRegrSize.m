@@ -1,44 +1,51 @@
 function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
-%RobRegrSize provides proper threshold for robust estimators to obtain an empirical size = 1% nominal size
+%RobRegrSize provides proper threshold for robust estimators to obtain an empirical size = 1 per cent nominal size
 %
 %<a href="matlab: docsearchFS('robregrsize')">Link to the help function</a>
 %
 %
 %  Required input arguments:
 %
-%           n : scalar intger, number of units of the regression dataset. 
-%               REMARK: simulations have been done for
+%           n : sample size. Scalar integer.
+%               Number of units of the regression dataset. 
+%               REMARK - simulations have been done for
 %               n=50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500.
 %               For other values of n the threhold are found by
 %               interpolation using the two closest values smaller or
 %               greater than the one which has been considered
-%           p : scalar integer, number of explanatory variables.
-%               REMARK: simulations have been done for p=2, 3, ..., 10. If
+%               Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+%           p : number of variables. Scalar integer. Number of explanatory variables.
+%               REMARK - simulations have been done for p=2, 3, ..., 10. If
 %               the user supplies a value of p greater than 10 the
 %               correction factors are extrapolated by fitting a simple
 %               quadratic model in p.
-%       robest: string which identifies the robust estimator which is used
-%               Possibile values are
-%                 'S'    S estimators
-%                 'MM'   MM estimators
-%                 'LTS'  Least trimmed squares estimator
-%                 'LTSr' Least trimmed squares estimator reweighted
+%               Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+%       robest: robust estimator. String. String which identifies the robust estimator which is used
+%               Possibile values are:
+%                 'S'    S estimators;
+%                 'MM'   MM estimators;
+%                 'LTS'  Least trimmed squares estimator;
+%                 'LTSr' Least trimmed squares estimator reweighted.
 %               If robest is missing MM estimator is used
-%      rhofunc: string which identifies the weight function which has been
-%               used for S or MM
+%               Data Types -char
+%      rhofunc: Weight function. String.
+%               String which identifies the weight function which has been
+%               used for S or MM.
 %               Possibile values are
-%                'TB', for Tukey biweight rho function
-%                'HA', for Hampel rho function
-%                'HY', for hyperbolic rho function
-%                'OP', for optimal rho function
+%                'TB', for Tukey biweight rho function;
+%                'HA', for Hampel rho function;
+%                'HY', for hyperbolic rho function;
+%                'OP', for optimal rho function;
 %                'ST'  Soft trimming estimator (in this case an average
 %                        threshold based on the TB,HY,HA and OP is used)
-%                REMARK: this value is ignored if robest is LTS or LTSr
+%                REMARK - this value is ignored if robest is LTS or LTSr
 %               If rhofunc is missing and robest is 'S' or 'MM', the
-%               default value of rhofunc is 'ST'
-%         bdp : scalar between 0 and 0.5. If robest is S, LTS or LTSr
+%               default value of rhofunc is 'ST'.
+%               Data Types -char
+%         bdp :  breakdown point. Scalar.
+%               Scalar between 0 and 0.5. If robest is S, LTS or LTSr
 %               and bdp is missing a value of 0.5 is used as default.
-%               REMARK: simulations have been done for bdp=0.25 and 0.50
+%               REMARK - simulations have been done for bdp=0.25 and 0.50
 %               If the user supplies a value of bdp smaller than 0.25, the
 %               threhold found for bdp=0.25 is used.  In this case a
 %               warning is produced which alerts the user that the test is
@@ -46,16 +53,19 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               value in the interval (0.25 0.5) an average
 %               between bdp=0.25 and bdp=0.5 is used (for a more refined
 %               correction please see input option Tallis)
-%         eff : scalar between between 0.5 and 1-epsilon (if robest is 'MM')
-%               REMARK: simulations have been done for eff = 0.85, 0.90 and
+%         eff : nominal efficiency. Scalar.
+%               Scalar between between 0.5 and 1-epsilon (if robest is 'MM')
+%               REMARK - simulations have been done for eff = 0.85, 0.90 and
 %               0.95 If the user supplies a value of eff smaller than 0.85
 %               (greater than 0.95), the threshold found for eff=0.85
 %               (eff=0.95) is used.  In all the other cases an average
 %               is taken using the two closest values of eff
-%     sizesim : scalar which specifies whether simultaneous (sizesim=1) or
+%     sizesim : simultaneous or individual size. Scalar.
+%               Scalar which specifies whether simultaneous (sizesim=1) or
 %               individual size is used. If sizesim is missing or equal to
 %               1 a simultaneous size is used.
-%     Tallis  : scalar which has an effect just if bdp is not equal to 0.25
+%     Tallis  : need to intermpolate. Scalar.
+%               Scalar which has an effect just if bdp is not equal to 0.25
 %               or 0.5. If Tallis=1 the program computes the ratio between
 %               the asymptotic consitency factor using the breakdown point
 %               supplied by the user and the closest consistency factor
@@ -71,7 +81,20 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               closest breakdown points for which simulations exist. The
 %               default value of Tallis is 0.
 %
-%             REMARK: in this file we assume that the two input MAT files
+% Optional input arguments:
+%
+%
+%  Output:
+%
+%    thresh :    Empirical threshold. Scalar.
+%                Emprirical threshold which can be used in order
+%                to have a test with en empirical size close to the nominal
+%                size (1% individual or simultaneous)
+%
+%
+%  More About:
+%
+%               We assume that the two input MAT files
 %               Ind_ThreshSm.mat and Sim_ThreshSm.mat are in the same
 %               folder or in the MATLAB path.
 %               Ind_ThreshSm.mat contains a 3D array with the thresholds in
@@ -84,24 +107,36 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               been considered namely n=50, 60, 70, 80, 90, 100, 150, 200,
 %               250, 300, 400, 500.
 %               The 9 colums are referred to the number of variables which
-%               have been considered namely p=2, 3, ..., 10
+%               have been considered namely p=2, 3, ..., 10.
 %               The third dimension is associated with the 24 estimators
-%               which have been used. The order of the estimators is
-%                   {'LTSbdp050','LTSbdp025', 'LTSrbdp050', 'LTSrbdp025',
-%                   'Sbdp025TB','Sbdp050TB', 'MMeff085TB', 'MMeff090TB',
-%                   'MMeff095TB', 'Sbdp025OP', 'Sbdp050OP', 'MMeff085OP',
-%                   'MMeff090OP', 'MMeff095OP', 'Sbdp025HY',
-%                   'Sbdp050HY','MMeff085HY', 'MMeff090HY',
-%                   'MMeff095HY', 'Sbdp025HA', 'Sbdp050HA',
-%                   'MMeff085HA','MMeff090HA','MMeff095HA'};
+%               which have been used. The order of the estimators is:
+%                 ' 1'    'LTSbdp050' ;
+%                 ' 2'    'LTSbdp025' ;
+%                 ' 3'    'LTSrbdp050';
+%                 ' 4'    'LTSrbdp025';
+%                 ' 5'    'Sbdp025TB' ;
+%                 ' 6'    'Sbdp050TB' ;
+%                 ' 7'    'MMeff085TB';
+%                 ' 8'    'MMeff090TB';
+%                 ' 9'    'MMeff095TB';
+%                 '10'    'Sbdp025OP' ;
+%                 '11'    'Sbdp050OP' ;
+%                 '12'    'MMeff085OP';
+%                 '13'    'MMeff090OP';
+%                 '14'    'MMeff095OP';
+%                 '15'    'Sbdp025HY' ;
+%                 '16'    'Sbdp050HY' ;
+%                 '17'    'MMeff085HY';
+%                 '18'    'MMeff090HY';
+%                 '19'    'MMeff095HY';
+%                 '20'    'Sbdp025HA' ;
+%                 '21'    'Sbdp050HA' ;
+%                 '22'    'MMeff085HA';
+%                 '23'    'MMeff090HA';
+%                 '24'    'MMeff095HA'.
 %
 %
-%  Output:
-%
-%    thresh :    scalar, emprirical threshold which can be used in order
-%                to have a test with en empirical size close to the nominal
-%                size (1% individual or simultaneous)
-%
+% See also: Sreg , MMreg, LXS
 %
 % References:
 %

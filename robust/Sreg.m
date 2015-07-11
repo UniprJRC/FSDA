@@ -5,137 +5,184 @@ function [out , varargout] = Sreg(y,X,varargin)
 %
 %  Required input arguments:
 %
-%    y:      A vector with n elements that contains the response variable.
-%            It can be both a row or a column vector.
-%    X :     Data matrix of explanatory variables (also called 'regressors')
-%            of dimension (n x p-1). Rows of X represent observations, and
-%            columns represent variables.
-%
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations.
+%    y: Response variable. Vector. A vector with n elements that contains
+%       the response variable. y can be either a row or a column vector.
+%    X: Data matrix of explanatory variables (also called 'regressors') of
+%       dimension (n x p-1). Rows of X represent observations, and columns
+%       represent variables.
+%       Missing values (NaN's) and infinite values (Inf's) are allowed,
+%       since observations (rows) with missing or infinite values will
+%       automatically be excluded from the computations.
 %
 %  Optional input arguments:
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%      bdp    : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%               The default value is 0.5. Note that given bdp nominal
+%  intercept :  Indicator for constant term. Scalar. If 1, a model with
+%               constant term will be fitted (default), if 0, no constant
+%               term will be included.
+%               Example - 'intercept',1 
+%               Data Types - double
+%         bdp :  breakdown point. Scalar.
+%               It measures the fraction of outliers
+%               the algorithm should resist. In this case any value greater
+%               than 0 but smaller or equal than 0.5 will do fine.
+%               Note that given bdp nominal
 %               efficiency is automatically determined.
-%     rhofunc : String which specifies the rho function which must be used to
+%                 Example - 'bdp',0.4
+%                 Data Types - double
+%     rhofunc : rho function. String. String which specifies the rho function which must be used to
 %               weight the residuals. Possible values are
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
 %               'hampel'
-%               'bisquare' uses Tukey's \rho and \psi functions.
+%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho and TBpsi
-%               'optimal' uses optimal \rho and \psi functions.
+%               'optimal' uses optimal $\rho$ and $\psi$ functions.
 %               See OPTrho and OPTpsi
-%               'hyperbolic' uses hyperbolic \rho and \psi functions.
+%               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
 %               See HYPrho and HYPpsi
-%               'hampel' uses Hampel \rho and \psi functions.
+%               'hampel' uses Hampel $\rho$ and $\psi$ functions.
 %               See HArho and HApsi
 %               The default is bisquare
-% rhofuncparam: scalar or vector which contains the additional parameters
-%               for the specified rho function.
+%                 Example - 'rhofunc','optimal' 
+%                 Data Types - char
+% rhofuncparam: Additional parameters for the specified rho function.
+%               Scalar or vector.
 %               For hyperbolic rho function it is possible to set up the
-%               value of k = sup CVC (the default value of k is 4.5)
+%               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
 %               a, b and c (the default values are a=2, b=4, c=8)
-%      nsamp  : scalar defining number of subsamples of size p which have
-%               to be extracted (if not given, default = 1000)
-%    refsteps : scalar defining number of refining iterations in each
+%                 Example - 'rhofuncparam',5 
+%                 Data Types - single | double
+%       nsamp   : Number of subsamples which will be extracted to find the
+%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
+%                 They will be (n choose p).
+%                 If the number of all possible subset is <1000 the
+%                 default is to extract all subsets otherwise just 1000.
+%                 Example - 'nsamp',1000 
+%                 Data Types - single | double
+%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%     reftol  : scalar. Default value of tolerance for the refining steps
+%                 Example - 'nsamp',1000 
+%                 Data Types - single | double
+%     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
-%refstepsbestr: scalar defining number of refining iterations for each
+%                 Example - 'nsamp',1000 
+%                 Data Types - single | double
+%refstepsbestr: number of refining iterations for each best subset. Scalar.
+%               Scalar defining number of refining iterations for each
 %               best subset (default = 50).
-% reftolbestr : scalar. Default value of tolerance for the refining steps
+%                 Example - 'refstepsbestr',10 
+%                 Data Types - single | double
+% reftolbestr : Tolerance for the refining steps. Scalar. 
+%               Tolerance for the refining steps
 %               for each of the best subsets
 %               The default value is 1e-8;
-%     minsctol: scalar. Default value of tolerance for the iterative
+%                 Example - 'reftolbestr',1e-10 
+%                 Data Types - single | double
+%     minsctol: tolerance for the iterative
+%               procedure for finding the minimum value of the scale. Scalar. 
+%               Value of tolerance for the iterative
 %               procedure for finding the minimum value of the scale
 %               for each subset and each of the best subsets
 %               (It is used by subroutine minscale.m)
 %               The default value is 1e-7;
-%      bestr  : scalar defining number of "best betas" to remember from the
+%                 Example - 'minsctol',1e-7 
+%                 Data Types - single | double
+%      bestr  : number of "best betas" to remember. Scalar. Scalar defining number of "best betas" to remember from the
 %               subsamples. These will be later iterated until convergence
 %               (default=5)
-%     conflev : Scalar between 0 and 1 containing confidence level which is
-%               used to declare units as outliers.
+%                 Example - 'bestr',10 
+%                 Data Types - single | double
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
-%        msg  : scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displayed
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%        msg  : Level of output to display. Scalar. It controls whether
+%                 to display or not messages on the screen.
+%               If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
 %               'MATLAB:nearlySingularMatrix' are set to off
 %               else no message is displayed on the screen
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%       plots : Scalar or structure.
+%                 Example - 'msg',0 
+%                 Data Types - single | double
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
+%                 matrix y and matrix X. Notice that y and X are left
+%                 unchanged. In other words the additional column of ones
+%                 for the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1 
+%               Data Types - double
+%       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
 %               confidence bands for the residuals is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
-%       yxsave : scalar that is set to 1 to request that the response
-%                vector y and data matrix X are saved into the output
-%                structure out. Default is 0, i.e. no saving is done.
+%                 Example - 'plots',0 
+%                 Data Types - single | double
+%       yxsave : the response vector y and data matrix X are saved into the output
+%                structure out. Scalar.
+%               Default is 0, i.e. no saving is done.
+%               Example - 'yxsave',1 
+%               Data Types - double
+%
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%  out :     A structure containing the following fields
 %
-%            out.beta : vector containing the S estimator of regression
+%            out.beta = vector containing the S estimator of regression
 %                       coefficients
-%            out.scale: scalar containing the estimate of the scale
+%            out.scale= scalar containing the estimate of the scale
 %                       (sigma). This is the value of the objective function
-%              out.bs : p x 1 vector containing the units forming best subset
+%              out.bs = p x 1 vector containing the units forming best subset
 %                       associated with S estimate of regression coefficient.
-%        out.residuals: n x 1 vector containing the estimates of the robust
+%        out.residuals= n x 1 vector containing the estimates of the robust
 %                       scaled residuals
-%        out.outliers : this output is present only if conflev has been
+%        out.outliers = this output is present only if conflev has been
 %                       specified. It is a vector containing the list of
 %                       the units declared as outliers using confidence
 %                       level specified in input scalar conflev
-%         out.conflev : confidence level which is used to declare outliers.
+%         out.conflev = confidence level which is used to declare outliers.
 %                       Remark: scalar out.conflev will be used to draw the
 %                       horizontal line (confidence band) in the plot.
-%         out.singsub : Number of subsets wihtout full rank. Notice that
+%         out.singsub = Number of subsets wihtout full rank. Notice that
 %                       out.singsub > 0.1*(number of subsamples) produces a
 %                       warning
-%         out.weights : n x 1 vector containing the estimates of the weights
-%           out.class : 'S'
-%         out.rhofunc : string identifying the rho function which has been
+%         out.weights = n x 1 vector containing the estimates of the weights
+%           out.class = 'S'
+%         out.rhofunc = string identifying the rho function which has been
 %                       used
-%    out.rhofuncparam : vector which contains the additional parameters
+%    out.rhofuncparam = vector which contains the additional parameters
 %                       for the specified rho function which have been
 %                       used. For hyperbolic rho function the value of
 %                       k =sup CVC. For Hampel rho function the parameters
 %                       a, b and c
-%            out.y    : response vector Y. The field is present if option
+%            out.y    = response vector Y. The field is present if option
 %                       yxsave is set to 1.
-%            out.X    : data matrix X. The field is present if option
+%            out.X    = data matrix X. The field is present if option
 %                       yxsave is set to 1.
 %
 %  Optional Output:
 %
-%            C     : matrix of the indices of the samples extracted for
-%                    computing the estimate
+%            C        : matrix containing the indices of the subsamples 
+%                       extracted for computing the estimate (the so called
+%                       elemental sets).
+%
+%
+% See also: MMreg, Taureg
 %
 % References:
 %
-% ``Robust Statistics, Theory and Methods'' by Maronna, Martin and Yohai;
-% Wiley 2006.
+% Maronna, Martin and Yohai (2006) ``Robust Statistics, Theory and Methods'',
+% Wiley.
 %
-% Acknowledgements
+% Acknowledgements: 
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.

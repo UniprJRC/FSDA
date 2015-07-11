@@ -3,6 +3,31 @@ function y=Sn(X,dim)
 %
 %<a href="matlab: docsearchFS('sn')">Link to the help function</a>
 %
+% Required input arguments:
+% 
+%    X  :   Input array. Vector | matrix | 3D array.
+%           Input array, specified as a vector, matrix, or 3D  array.
+%           For vectors, Qn(X) is the scale estimator of the elements in X. For
+%           matrices, Qn(X) is a row vector containing the scale estimator
+%           value of each column.  For 3D arrays, Qn(X) is the robust scale
+%           estimator of the elements along the first non-singleton dimension
+%           of X.
+%           Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+%  dim  :   Dimension to operate along. Positive integer scalar. 
+%           Dimension to operate along, specified as a positive integer
+%           scalar. If no value is specified, then the default is the first
+%           array dimension whose size does not equal 1.
+%           Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+% 
+% Optional input arguments:
+%
+% Output:
+%
+%    y  :    robust estimator of scale. Scalar | Vector or 3D array. 
+%            Qn(X,dim) takes the robust estimator of scale along the
+%            dimension dim of X.
+%
+% More About:
 %
 %   For vectors, Sn(X) is the scale estimator of the elements in X. For
 %   matrices, Sn(X) is a row vector containing the scale estimator value of
@@ -11,18 +36,21 @@ function y=Sn(X,dim)
 %
 %   Sn(X,dim) takes the robust estimator along the dimension dim of X.
 %
-%   Sn= cn c med_i { med_j |x_i-x_j|} i=1,2, ...n, j=1, 2, ..., n
-%   For each i we compute the median of |x_i-x_j| j=1, 2, ..., n
-%   This yields n numbers, the median of which gives the final estimate of
-%   Sn. This estimator is the robust version of Gini's average difference,
+%   $Sn= cn \times c \times med_i { med_j |x_i-x_j|}$, $i=1,2, ...n$, $j=1, 2, ..., n$.
+%   For each $i$ we compute the median of $|x_i-x_j|$, $j=1, 2, ..., n$.
+%   This yields $n$ numbers, the median of which gives the final estimate of
+%   $S_n$. This estimator is the robust version of Gini's average difference,
 %   which one would obtain when replacing medians by averages
-%   More in detail Sn = cn c lomed_i { highmed_j |x_i-x_j|} i=1,2, ...n, j=1, 2, ..., n
-%   where lomed (low median) is [(n+1)/2]-th order statistic out of
-%   n numbers) and himed (high median) is the ([n/2]+1)-th order statistic
-%   out of the n numbers. c is the so called asymptotic consistency factor
-%   and is equal to 1.1926 while cn is a finite sample correction factor to
-%   make the estimator unbiased.
-%   
+%   More in detail $Sn = cn \times c \times lomed_i { highmed_j
+%   |x_i-x_j|}$, $i=1,2, ...n$, $j=1, 2, ..., n$, where $lomed$ (low
+%   median) is $[(n+1)/2]$-th order statistic out of $n$ numbers) and
+%   $himed$ (high median) is the $([n/2]+1)$-th order statistic out of the
+%   $n$ numbers. $c$ is the so called asymptotic consistency factor and is
+%   equal to 1.1926 while $cn$ is a finite sample correction factor to make
+%   the estimator unbiased.
+% 
+% See also: Qn
+%
 % References:
 %
 % Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute deviation,

@@ -2116,7 +2116,7 @@ if ~isempty(Acknowledgements)
         '<div class="bibliography">\r'...
         '<h2 id="references">Acknowledgements</h2> \r']);
     
-    Acknowledgementshtml=sprintf(['<div><p>' Acknowledgements '</p></div>\r']);
+    Acknowledgementshtml=sprintf(['<div><p>' formatHTMLwithMATHJAX(Acknowledgements) '</p></div>\r']);
     
     Ack=[iniAcknowledgements Acknowledgementshtml Referencesclose];
 else
@@ -2396,7 +2396,9 @@ end
 % This inner function  has the purpose of adding symbols </p> <p> every
 % time a full stop, colon or semicolo symbol followed by a series of space
 % and then a carriage return.
-function descrlongHTMLwithref=formatHTML(descrlong)
+% descrlongHTMLwithref
+
+function descrHTTPwithref=formatHTML(descrlong)
 newlinewithFullStop=regexp(descrlong,'\.\s*\r');
 newlinewithColon=regexp(descrlong,'\:\s*\r');
 newlinewithSemiColon=regexp(descrlong,'\;\s*\r');
@@ -2416,8 +2418,9 @@ else
     descrlongHTML=descrlong;
 end
 % put a hypertext link to all words which end with .m
-[IniRefFilem,FinRefFilem]=regexp(descrlongHTML,'\w*\.m');
+[IniRefFilem,FinRefFilem]=regexp(descrlongHTML,'\w*\.m[\s\.,]');
 if ~isempty(IniRefFilem)
+    FinRefFilem=FinRefFilem-1;
     descrlongHTMLwithref='';
     for i=1:length(IniRefFilem)
         namewithoutHTML=descrlongHTML(IniRefFilem(i):FinRefFilem(i)-2);
@@ -2444,6 +2447,45 @@ else
     descrlongHTMLwithref=descrlongHTML;
 end
 
+% put a hypertext link to all words which start with http
+descrHTTP=descrlongHTMLwithref;
+[IniRefhttp]=regexp(descrHTTP,'http');
+
+if ~isempty(IniRefhttp)
+FinRefhttp=zeros(length(IniRefhttp),1);
+descrHTTPwithref='';
+    for i=1:length(IniRefhttp)
+        
+        descrHTTPsel=descrHTTP(IniRefhttp(i):end);
+        FinRefhttp(i)=IniRefhttp(i)+regexp(descrHTTPsel,'\s','once');
+
+        namehttp=strtrim(descrHTTP(IniRefhttp(i):FinRefhttp(i)-1));
+        if strcmp(namehttp(end),'.') || strcmp(namehttp(end),',')
+         namehttp=namehttp(1:end-1);
+        end
+        
+        FinRefhttp(i)=IniRefhttp(i)+length(namehttp);
+        
+        if i==1 && length(IniRefhttp)==1
+            descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
+                '<a href="' namehttp '">' namehttp '</a>'...
+                descrHTTP(FinRefhttp(i)+1:end)];
+        elseif i==1
+            descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
+                '<a href="' namehttp '">' namehttp '</a>'];
+            
+        elseif i==length(IniRefhttp)
+            descrHTTPwithref=[descrHTTPwithref descrHTTP(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
+                '<a href="' namehttp '">' namehttp '</a>'...
+                descrHTTP(FinRefhttp(i)+1:end)];
+        else
+            descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
+                '<a href="' namehttp '">' namehttp '</a>'];
+        end
+    end
+else
+    descrHTTPwithref=descrHTTP;
+end
 end
 
 function StringHTML=formatHTMLwithMATHJAX(inputSring)
@@ -2462,7 +2504,7 @@ if ~isempty(iniMathJax)
         if k==length(iniMathJax)
             MoreA=[MoreA formatHTML(inputSring(finMathJax(k)+2:end))];
         else
-            MoreA=[MoreA formatHTML(inputSring(finMathJax(k)+2:iniMathJax(k+1)))];
+            MoreA=[MoreA formatHTML(inputSring(finMathJax(k)+2:iniMathJax(k+1)-1))];
         end
     end
     StringHTML=MoreA;

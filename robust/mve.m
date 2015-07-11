@@ -135,7 +135,8 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 % subset $J$.
 % 
 %
-% Rousseeuw and Leroy (RL) (eq. 1.25 chapter 7) write the objective function for subset $J$ as
+% Rousseeuw and Leroy (RL) (eq. 1.25 chapter 7, p. 259) write the objective
+% function for subset $J$ as
 % \[
 % RL_J=\left( med_{i=1, ..., n} \sqrt{ (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) } \right)^v \sqrt|C_J|
 % \]
@@ -143,10 +144,10 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 % Maronna Martin and Yohai (MMY), eq. (6.57), define $\Sigma_J = C_j /
 % |C_j|^{1/v}$ and write the objective function for subset $J$ as
 % \[
-% MMY_J =  \hat \sigma ( (y_i -\mu_J)' \Sigma_J^{-1} (y_i -\mu_J) ) |C_J|^{1/v}
-%       =  \hat \sigma ( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) ) |C_J|^{1/v}
+% MMY_J =  \hat \sigma \left( (y_i -\mu_J)' \Sigma_J^{-1} (y_i -\mu_J) \right) |C_J|^{1/v}
+%       =  \hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) |C_J|^{1/v}
 % \]
-% where $\hat \sigma = med$
+% where $\hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) = med_{i=1, ..., n}(y_i -\mu_J)' C_J^{-1} (y_i -\mu_J)$. 
 % Note that $MMY_J= (RL)^{2/v}$.
 %
 %   To RAW.cov a consistency factor has been applied which is based on
@@ -154,7 +155,8 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %   consistency factor is applied. In this case we have used the empirical
 %   percentage of trimming that is the ratio hemp/n where hemp is the
 %   number of units which had a MD smaller than the cutoff level determined
-%   by thresh=chi2inv(conflev,v); MD are computed using RAW.loc and RAW.cov
+%   by thresh=chi2inv(conflev,v); MD are computed using RAW.loc and
+%   RAW.cov.
 %
 %
 % The mve method is intended for continuous variables, and assumes that

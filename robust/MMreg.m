@@ -5,114 +5,143 @@ function [out , varargout] = MMreg(y,X,varargin)
 %
 %  Required input arguments:
 %
-%    y:         A vector with n elements that contains the response variable.
-%               It can be both a row of column vector.
-%    X :        Data matrix of explanatory variables (also called 'regressors')
-%               of dimension (n x p-1). Rows of X represent observations,
-%               and columns represent variables. 
-%
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations.
+%    y: Response variable. Vector. A vector with n elements that contains
+%       the response variable. y can be either a row or a column vector.
+%    X: Data matrix of explanatory variables (also called 'regressors') of
+%       dimension (n x p-1). Rows of X represent observations, and columns
+%       represent variables.
+%       Missing values (NaN's) and infinite values (Inf's) are allowed,
+%       since observations (rows) with missing or infinite values will
+%       automatically be excluded from the computations.
 %
 %  Optional input arguments:
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%  InitialEst : a structure containing starting values of the MM-estimator.
-%               The structure must contain
-%               - loc =  v x 1 vector (estimate of the centroid)
-%               - scale = scalar (estimate of the scale parameter).
+%  intercept :  Indicator for constant term. Scalar. If 1, a model with
+%               constant term will be fitted (default), if 0, no constant
+%               term will be included.
+%               Example - 'intercept',1 
+%               Data Types - double
+%  InitialEst : starting values of the MM-estimator. [] (default) or structure.
+%               InitialEst must contain the following fields
+%               InitialEst.loc =  v x 1 vector (estimate of the centroid)
+%               InitialEst.scale = scalar (estimate of the scale parameter).
 %               If InitialEst is empty (default)
 %               program uses S estimators. In this last case it is
 %               possible to specify the options given in function Sreg.
-%
-%               Soptions (if InitialEst is empty): see function Sreg.
-%               Remark: it is necessary to add to the S options the letter
+%               Example - 'InitialEst',[] 
+%               Data Types - struct
+%  Soptions  :  options if initial estimator is S and InitialEst is empty.
+%               See function Sreg for more details.
+%               It is necessary to add to the S options the letter
 %               S at the beginning. For example, if you want to use the
 %               optimal rho function the supplied option is
 %               'Srhofunc','optimal'. For example, if you want to use 3000
 %               subsets, the supplied option is 'Snsamp',3000
+%               Example - 'Snsamp',1000 
+%               Data Types - single | double
 %                   
 %
 %               MM options
 %
-%      eff     : scalar defining nominal efficiency (i.e. a number between
+%      eff     : nominal efficiency. Scalar.
+%                Scalar defining nominal efficiency (i.e. a number between
 %                 0.5 and 0.99). The default value is 0.95
 %                 Asymptotic nominal efficiency is:
-%                 (\int \psi' d\Phi)^2 / (\psi^2 d\Phi)
-%     effshape : dummy scalar. If effshape=1 efficiency refers to shape 
+%                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
+%                 Example - 'eff',0.99
+%                 Data Types - double
+%     effshape : locacation or scale effiicency. dummy scalar. 
+%                If effshape=1 efficiency refers to shape 
 %                efficiency else (default) efficiency refers to location
-%     refsteps  : scalar defining maximum number of iterations in the MM
+%                 Example - 'effshape',1
+%                 Data Types - double
+%     refsteps  : Maximum iterations. Scalar.
+%                 Scalar defining maximum number of iterations in the MM
 %                 loop. Default value is 100.
-%       tol    : scalar controlling tolerance in the MM loop.
+%                 Example - 'refsteps',10
+%                 Data Types - double
+%       tol    : Tolerance. Scalar.
+%                 Scalar controlling tolerance in the MM loop.
 %                 Default value is 1e-7
-%     conflev:  Scalar between 0 and 1 containing the confidence level
-%               used to declare units as outliers. Usually conflev = 0.95,
-%               0.975, 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n,
-%               1-0.01/n (simultaneous alpha). Default value is 0.975.
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0. 
-%       plots : Scalar or structure.
-%               If plots = 1, generates a plot of scaled residuals against
-%               index number. The confidence level used to draw the
-%               confidence bands for the scaled residuals is given by the
-%               input option conflev. If conflev is not specified a nominal
-%               0.975 confidence interval will be used.%
-%       yxsave : scalar that is set to 1 to request that the response 
-%                vector y and data matrix X are saved into the output
-%                structure out. Default is 0, i.e. no saving is done.
+%                 Example - 'tol',1e-10
+%                 Data Types - double
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar.
+%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+%               Default value is 0.975
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
+%                 matrix y and matrix X. Notice that y and X are left
+%                 unchanged. In other words the additional column of ones
+%                 for the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1 
+%               Data Types - double
+%       plots : Plot on the screen. Scalar or structure.
+%               If plots = 1, generates a plot with the robust residuals
+%               against index number. The confidence level used to draw the
+%               confidence bands for the residuals is given by the input
+%               option conflev. If conflev is not specified a nominal 0.975
+%               confidence interval will be used.
+%                 Example - 'plots',0 
+%                 Data Types - single | double
+%       yxsave : the response vector y and data matrix X are saved into the output
+%                structure out. Scalar.
+%               Default is 0, i.e. no saving is done.
+%               Example - 'yxsave',1 
+%               Data Types - double
 %
 %  Output:
 %
 %
-%  The output consists of a structure 'out' containing the following fields:
-%       out.beta        :   p x 1 vector containing MM estimate of 
+%  out :     A structure containing the following fields
+%       out.beta        =   p x 1 vector containing MM estimate of 
 %                           regression coefficients
-%       out.auxscale    :   scalar, S estimate of the scale (or supplied
+%       out.auxscale    =   scalar, S estimate of the scale (or supplied
 %                           external estimate of scale, if option InitialEst  
 %                           is not empty)
-%       out.residuals	:   n x 1 vector containing standardized MM
+%       out.residuals	=   n x 1 vector containing standardized MM
 %                           residuals
 %                           out.residuals=(y-X*out.beta)/out.auxscale
-%       out.weights     :   n x 1 vector. Weights assigned to each observation
+%       out.weights     =   n x 1 vector. Weights assigned to each observation
 %       out.Sbeta       :   p x 1 vector containing S estimate of regression
 %                           coefficients (or supplied initial external
 %                           estimate of regression coefficients, if option
 %                           InitialEst is not empty)
-%       out.Ssingsub    :   Number of subsets without full rank in the S 
+%       out.Ssingsub    =   Number of subsets without full rank in the S 
 %                           preliminary part. Notice that 
 %                           out.singsub > 0.1*(number of subsamples) 
 %                           produces a warning
 %       out.outliers    :   1 x k vectors containing the outliers which
 %                           have been found
-%       out.conflev     :   Confidence level that was used to declare outliers
-%       out.class       :   'MM'
-%           out.rhofunc :   string identifying the rho function which has been
+%       out.conflev     =   Confidence level that was used to declare outliers
+%       out.class       =   'MM'
+%           out.rhofunc =   string identifying the rho function which has been
 %                           used
-%      out.rhofuncparam :   vector which contains the additional parameters
+%      out.rhofuncparam =   vector which contains the additional parameters
 %                           for the specified rho function which have been
 %                           used. For hyperbolic rho function the value of
 %                           k =sup CVC. For Hampel rho function the parameters
 %                           a, b and c
-%            out.y      :   response vector Y. The field is present if option 
+%            out.y      =   response vector Y. The field is present if option 
 %                           yxsave is set to 1.
-%            out.X      :   data matrix X. The field is present if option 
+%            out.X      =   data matrix X. The field is present if option 
 %                           yxsave is set to 1.
 %  Optional Output:
 %
-%            C     : matrix of the indices of the samples extracted for
-%                    computing the estimate
+%            C        : matrix containing the indices of the subsamples 
+%                       extracted for computing the estimate (the so called
+%                       elemental sets).
+%
+% See also: Sreg
 %
 % References:
 %
-% ``Robust Statistics, Theory and Methods'' by Maronna, Martin and Yohai;
-% Wiley 2006.
+% Maronna, Martin and Yohai (2006) ``Robust Statistics, Theory and Methods'',
+% Wiley.
 %
-% Acknowledgements
+% Acknowledgements:
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.

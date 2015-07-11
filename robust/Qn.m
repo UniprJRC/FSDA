@@ -1,27 +1,52 @@
 function y=Qn(X,dim)
-%Qn robust estimator of scale (first quartile of interpoint distances |x_i-x_j|)
+%Qn robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)
 %
 %<a href="matlab: docsearchFS('qn')">Link to the help function</a>
 %
 %
-%   For vectors, Qn(X) is the scale estimator of the elements in X. For
-%   matrices, Qn(X) is a row vector containing the scale estimator value of
-%   each column.  For 3D arrays, Qn(X) is the robust scale estimator of the
-%   elements along the first non-singleton dimension of X.
+% Required input arguments:
+% 
+%    X  :   Input array. Vector | matrix | 3D array.
+%           Input array, specified as a vector, matrix, or 3D  array.
+%           For vectors, Qn(X) is the scale estimator of the elements in X. For
+%           matrices, Qn(X) is a row vector containing the scale estimator
+%           value of each column.  For 3D arrays, Qn(X) is the robust scale
+%           estimator of the elements along the first non-singleton dimension
+%           of X.
+%           Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+%  dim  :   Dimension to operate along. Positive integer scalar. 
+%           Dimension to operate along, specified as a positive integer
+%           scalar. If no value is specified, then the default is the first
+%           array dimension whose size does not equal 1.
+%           Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+% 
+% Optional input arguments:
 %
-%   Qn(X,dim) takes the robust estimator of scale along the dimension dim of X.
+% Output:
 %
-%   Qn= is the first quartile of the distances { |x_i-x_j|; i <j} Note that
-%   Qn does not need any location estimate. More in detail, let d_{(1)}
-%   \leq d_{(2)} \leq ... \leq d_{(m)} the ordered values of the m
-%   differences |x_i-x_j| with i>j and m = (n choose 2). Qn=d_{(k)} where
-%   k= ([n/2]+1 choose 2). Since k is approximately m/4, Qn is approximately
-%   the first quartile of the ordered distances d_{(1)} \leq d_{(2)} \leq
-%   ... \leq d_{(m)}. Qn is multiplyed by c and cn. c is the so called
-%   asymptotic consistency factor and is equal to 2.2219 while cn is a
+%    y  :    robust estimator of scale. Scalar | Vector or 3D array. 
+%            Qn(X,dim) takes the robust estimator of scale along the
+%            dimension dim of X.
+%
+% More About:
+%
+%   $Q_n$ is the first quartile of the distances { $|x_i-x_j|$; $i <j$} Note that
+%   $Q_n$ does not need any location estimate. More in detail, let 
+%   $d_{(1)} \leq d_{(2)} \leq ... \leq d_{(m)}$ the ordered values of the
+%   $m$
+%   differences $|x_i-x_j|$ with $i>j$ and $m = {n \choose 2}$. $Q_n=d_{(k)}$ where
+%   $k= {[n/2]+1 \choose 2}$. Since $k$ is approximately $m/4$, $Q_n$ is approximately
+%   the first quartile of the ordered distances $d_{(1)} \leq d_{(2)} \leq
+%   ... \leq d_{(m)}$. $Q_n$ is multiplyed by $c$ and $c_n$. 
+%   $c$ is the so called
+%   asymptotic consistency factor and is equal to 2.2219 while $c_n$ is a
 %   finite sample correction factor to make the estimator unbiased.
 %
-% Reference:
+%
+% See also: Sn
+%
+% References:
+%
 % Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute deviation,
 % Journal of American Statistical Association 88, 1273-1283
 % Croux C. and Rousseeuw P.J.(1992)  Time-efficient algorithms for two

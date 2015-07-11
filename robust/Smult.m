@@ -7,44 +7,78 @@ function [out , varargout] = Smult(Y,varargin)
 %
 %  Required input arguments:
 %
-%    Y: Data matrix containing n observations on v variables.
-%       Rows of Y represent observations, and columns represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       be excluded from the computations.
+% Y :           Variables. Matrix. n x v data matrix; n observations and v
+%               variables. Rows of Y represent observations, and columns represent
+%               variables. Missing values (NaN's) and infinite values
+%               (Inf's) are allowed, since observations (rows) with missing
+%               or infinite values will automatically be excluded from the
+%               computations.
+%               Data Types - single | double
 %
 %  Optional input arguments:
 %
-%      bdp    : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%               The default value is 0.5
-%      nsamp  : scalar defining number of subsamples of size v which have
-%               to be extracted (if not given, default = 1000)
-%    refsteps : scalar defining number of refining iterations in each
+%         bdp :  breakdown point. Scalar (default=0.5).
+%               It measures the fraction of outliers
+%               the algorithm should resist. In this case any value greater
+%               than 0 but smaller or equal than 0.5 will do fine.
+%               Note that given bdp nominal
+%               efficiency is automatically determined.
+%                 Example - 'bdp',0.4
+%                 Data Types - double
+%       nsamp   : Number of subsamples which will be extracted to find the
+%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
+%                 They will be (n choose p).
+%                 If the number of all possible subset is <1000 the
+%                 default is to extract all subsets otherwise just 1000.
+%                 Example - 'nsamp',1000 
+%                 Data Types - single | double
+%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%     reftol  : scalar. Default value of tolerance for the refining steps
+%                 Example - 'nsamp',1000 
+%                 Data Types - single | double
+%     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
-%refstepsbestr: scalar defining number of refining iterations for each
+%                 Example - 'nsamp',1000 
+%                 Data Types - single | double
+%refstepsbestr: number of refining iterations for each best subset. Scalar.
+%               Scalar defining number of refining iterations for each
 %               best subset (default = 50).
-% reftolbestr : scalar. Default value of tolerance for the refining steps
+%                 Example - 'refstepsbestr',10 
+%                 Data Types - single | double
+% reftolbestr : Tolerance for the refining steps. Scalar. 
+%               Tolerance for the refining steps
 %               for each of the best subsets
 %               The default value is 1e-8;
-%     minsctol: scalar. Default value of tolerance for the iterative
+%                 Example - 'reftolbestr',1e-10 
+%                 Data Types - single | double
+%     minsctol: tolerance for the iterative
+%               procedure for finding the minimum value of the scale. Scalar. 
+%               Value of tolerance for the iterative
 %               procedure for finding the minimum value of the scale
 %               for each subset and each of the best subsets
 %               (It is used by subroutine minscale.m)
 %               The default value is 1e-7;
-%      bestr  : scalar defining number of "best locations" to remember from
-%               the subsamples. These will be later iterated until
-%               convergence (default=5)
-%     conflev : Scalar between 0 and 1 containing confidence level which is
-%               used to declare units as outliers.
+%                 Example - 'minsctol',1e-7 
+%                 Data Types - single | double
+%      bestr  : number of "best betas" to remember. Scalar. Scalar defining number of "best betas" to remember from the
+%               subsamples. These will be later iterated until convergence
+%               (default=5)
+%                 Example - 'bestr',10 
+%                 Data Types - single | double
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%      nocheck : Check input arguments. Scalar. 
+%               If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
-%       plots : Scalar or structure.
+%               Example - 'nocheck',1 
+%               Data Types - double
+%       plots : Plot on the screen. Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates
 %               (1) a plot of Mahalanobis distances against index number.
 %               The confidence level used to draw the confidence bands for
@@ -53,60 +87,70 @@ function [out , varargout] = Smult(Y,varargin)
 %               used.
 %               (2) a scatter plot matrix with the outliers highlighted
 %               If plots is a structure it may contain the following fields
-%                   labeladd : if this option is '1', the outliers in the
+%                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added.
-%                   nameY : cell array of strings containing the labels of
+%                   plots.nameY = cell array of strings containing the labels of
 %                       the variables. As default value, the labels which are
 %                       added are Y1, ...Yv.
-%        msg  : scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displyed
+%                 Example - 'plots',0 
+%                 Data Types - single | double
+%        msg  : Level of output to display. Scalar. 
+%               If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final estimator
 %               else no message is displayed on the screen
-%       ysave : scalar that is set to 1 to request that the data matrix Y
+%                 Example - 'msg',0 
+%                 Data Types - single | double
+%       ysave : save input matrix Y. Scalar. 
+%               Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
-%               meant at simplifying the use of function malindeplot.
+%               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done. 
+%               Example - 'ysave',1 
+%               Data Types - double
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%  out :     A structure containing the following fields
 %
-%         out.loc  : 1 x v  vector containing S estimate of location
-%         out.shape: v x v matrix containing robust estimate of the shape
+%         out.loc  = 1 x v  vector containing S estimate of location
+%         out.shape= v x v matrix containing robust estimate of the shape
 %                   matrix. Remark det|shape|=1
-%         out.scale: scalar, robust estimate of the scale
-%         out.cov  : out.scale^2 * out.shape = robust estimate of
+%         out.scale= scalar, robust estimate of the scale
+%         out.cov  = out.scale^2 * out.shape = robust estimate of
 %                   covariance matrix
-%           out.bs : (v+1) x 1 vector containing the units forming best subset
+%           out.bs = (v+1) x 1 vector containing the units forming best subset
 %                    associated with S estimate of location.
-%          out.md  : n x 1 vector containing the estimates of the robust
+%          out.md  = n x 1 vector containing the estimates of the robust
 %                    Mahalanobis distances (in squared units)
-%     out.outliers : A vector containing the list of the units declared as
+%     out.outliers = A vector containing the list of the units declared as
 %                   outliers using confidence level specified in input
 %                   scalar conflev
-%      out.conflev : Confidence level that was used to declare outliers
-%      out.singsub : Number of subsets without full rank. Notice that
+%      out.conflev = Confidence level that was used to declare outliers
+%      out.singsub = Number of subsets without full rank. Notice that
 %                    out.singsub > 0.1*(number of subsamples) produces a
 %                    warning
-%      out.weights : n x 1 vector containing the estimates of the weights
-%            out.Y : Data matrix Y. The field is present if option ysave
+%      out.weights = n x 1 vector containing the estimates of the weights
+%            out.Y = Data matrix Y. The field is present if option ysave
 %                    is set to 1.
-%        out.class : 'S'
+%        out.class = 'S'
 %
 %  Optional Output:
 %
-%            C     : matrix of the indices of the samples extracted for
-%                    computing the estimate
+%            C        : matrix containing the indices of the subsamples 
+%                       extracted for computing the estimate (the so called
+%                       elemental sets).
 %
+%
+% See also: MMmult
 %
 % References:
 %
-% ``Robust Statistics, Theory and Methods'' by Maronna, Martin and Yohai;
-% Wiley 2006.
+% Maronna, Martin and Yohai (2006) ``Robust Statistics, Theory and Methods'',
+% Wiley.
 %
-% Acknowledgements
+% Acknowledgements: 
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.

@@ -7,98 +7,135 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %
 %  Required input arguments:
 %
-%    y :        A vector with n elements that contains the response variable.
-%    X :        Data matrix of explanatory variables (also called 'regressors')
-%               of dimension (n x p). Rows of X represent observations, and
-%               columns represent variables. 
-%    b0:        Vector containing initial estimate of beta (generally an S
-%               estimate with high breakdown point (eg .5)
-% auxscale:     scalar containing estimate of the scale (generally an S
-%               estimate with high breakdown point (eg .5)
+%    y: Response variable. Vector. A vector with n elements that contains
+%       the response variable. y can be either a row or a column vector.
+%    X: Data matrix of explanatory variables (also called 'regressors') of
+%       dimension (n x p-1). Rows of X represent observations, and columns
+%       represent variables.
+%       Missing values (NaN's) and infinite values (Inf's) are allowed,
+%       since observations (rows) with missing or infinite values will
+%       automatically be excluded from the computations.
+%    b0:        Initial estimate of beta. Vector. Vector containing initial
+%               estimate of beta (generally an S estimate with high
+%               breakdown point (e.g. 0.5)
+% auxscale:     scale estimate. Scalar.
+%               Scalar containing estimate of the scale (generally an S
+%               estimate with high breakdown point (e.g. .5)
 %
 %  Optional input arguments:
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%       eff  :  scalar. Nominal efficiency. Default is set to 0.95.
-%               Default efficiency is set to 0.95 (which
-%               corresponds to c=4.68 in case of location efficiency or to
-%               5.49 in case of shape efficiency)
-%    effshape:  dummy scalar. If effshape=1 efficiency refers to shape
-%               efficiency else (default) efficiency refers to location
-%    refsteps:  scalar defining maximum number of (refining steps) 
-%               literations in the MM loop (default value is 100)
-%      reftol:  scalar controlling tolerance in the MM loop.
-%               Default is 1e-7.
-%     conflev:  Scalar between 0 and 1 containing the confidence level
-%               used to declare units as outliers. Usually conflev = 0.95,
-%               0.975, 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n,
-%               1-0.01/n (simultaneous alpha). Default value is 0.975.
-%     rhofunc : String which specifies the rho function which must be used to
+%  intercept :  Indicator for constant term. Scalar. If 1, a model with
+%               constant term will be fitted (default), if 0, no constant
+%               term will be included.
+%               Example - 'intercept',1 
+%               Data Types - double
+%      eff     : nominal efficiency. Scalar.
+%                Scalar defining nominal efficiency (i.e. a number between
+%                 0.5 and 0.99). The default value is 0.95
+%                 Asymptotic nominal efficiency is:
+%                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
+%                 Example - 'eff',0.99
+%                 Data Types - double
+%     effshape : locacation or scale effiicency. dummy scalar. 
+%                If effshape=1 efficiency refers to shape 
+%                efficiency else (default) efficiency refers to location
+%                 Example - 'effshape',1
+%                 Data Types - double
+%     refsteps  : Maximum iterations. Scalar.
+%                 Scalar defining maximum number of iterations in the MM
+%                 loop. Default value is 100.
+%                 Example - 'refsteps',10
+%                 Data Types - double
+%      reftol: Tolerance. Scalar.
+%                 Scalar controlling tolerance in the MM loop.
+%                 Default value is 1e-7
+%                 Example - 'tol',1e-10
+%                 Data Types - double
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar.
+%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+%               Default value is 0.975
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%     rhofunc : rho function. String. String which specifies the rho function which must be used to
 %               weight the residuals. Possible values are
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
 %               'hampel'
-%               'bisquare' uses Tukey's \rho and \psi functions.
+%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho and TBpsi
-%               'optimal' uses optimal \rho and \psi functions.
+%               'optimal' uses optimal $\rho$ and $\psi$ functions.
 %               See OPTrho and OPTpsi
-%               'hyperbolic' uses hyperbolic \rho and \psi functions.
+%               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
 %               See HYPrho and HYPpsi
-%               'hampel' uses Hampel \rho and \psi functions.
+%               'hampel' uses Hampel $\rho$ and $\psi$ functions.
 %               See HArho and HApsi
 %               The default is bisquare
-% rhofuncparam: scalar or vector which contains the additional parameters
-%               for the specified rho function.
+%                 Example - 'rhofunc','optimal' 
+%                 Data Types - char
+% rhofuncparam: Additional parameters for the specified rho function.
+%               Scalar or vector.
 %               For hyperbolic rho function it is possible to set up the
-%               value of k = sup CVC (the default value of k is 4.5)
+%               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8)%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%       plots : Scalar or structure.
-%               If plots = 1, generates a plot of scaled residuals against
-%               index number. The confidence level used to draw the
-%               confidence bands for the scaled residuals is given by the
-%               input option conflev. If conflev is not specified a nominal
-%               0.975 confidence interval will be used.
-%       yxsave : scalar that is set to 1 to request that the response 
-%                vector y and data matrix X are saved into the output
-%                structure out. Default is 0, i.e. no saving is done.
+%               a, b and c (the default values are a=2, b=4, c=8)
+%                 Example - 'rhofuncparam',5 
+%                 Data Types - single | double
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
+%                 matrix y and matrix X. Notice that y and X are left
+%                 unchanged. In other words the additional column of ones
+%                 for the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1 
+%               Data Types - double
+%       plots : Plot on the screen. Scalar or structure.
+%               If plots = 1, generates a plot with the robust residuals
+%               against index number. The confidence level used to draw the
+%               confidence bands for the residuals is given by the input
+%               option conflev. If conflev is not specified a nominal 0.975
+%               confidence interval will be used.
+%                 Example - 'plots',0 
+%                 Data Types - single | double
+%       yxsave : the response vector y and data matrix X are saved into the output
+%                structure out. Scalar.
+%               Default is 0, i.e. no saving is done.
+%               Example - 'yxsave',1 
+%               Data Types - double
 %
 %  Output:
 %
-%  The output is a structure 'out' containing the following fields:
+%  %  out :     A structure containing the following fields
 %
-%     out.beta  : p x 1 vector. Estimate of beta coefficients after 
+%     out.beta  = p x 1 vector. Estimate of beta coefficients after 
 %                 refsteps refining steps
-%  out.residuals: n x 1 vector containing the estimates of the robust
+%  out.residuals= n x 1 vector containing the estimates of the robust
 %                 scaled residuals
-%   out.outliers: A vector containing the list of the units declared as
+%   out.outliers= A vector containing the list of the units declared as
 %                 outliers using confidence level specified in input
 %                 scalar conflev
-%   out.conflev:  Confidence level that was used to declare outliers
-%   out.weights:  n x 1 vector. Weights assigned to each observation
-%     out.class:  'MM'
-%     out.y    : response vector y. The field is present if option 
+%   out.conflev=  Confidence level that was used to declare outliers
+%   out.weights=  n x 1 vector. Weights assigned to each observation
+%     out.class=  'MM'
+%     out.y    = response vector y. The field is present if option 
 %                yxsave is set to 1.
-%     out.X    : data matrix X. The field is present if option 
+%     out.X    = data matrix X. The field is present if option 
 %                yxsave is set to 1.
 %
+%
+% See also: Sreg
 %
 % References:
 %
-% ``Robust Statistics, Theory and Methods'' by Maronna, Martin and Yohai;
-% Wiley 2006.
+% Maronna, Martin and Yohai (2006) ``Robust Statistics, Theory and Methods'',
+% Wiley.
 %
-% Acknowledgements
+% Acknowledgements:
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.
 % For more details see http://www.econ.kuleuven.be/public/NDBAE06/programs/
-% and the R library robustbase http://robustbase.r-forge.r-project.org/
+% and the R library robustbase http://robustbase.r-forge.r-project.org/.
 % The core of these routines, e.g. the resampling approach, however, has
 % been completely redesigned, with considerable increase of the
 % computational performance.
