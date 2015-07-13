@@ -7,13 +7,14 @@ function out = FSMfan(Y,la0,varargin)
 %
 % Required input arguments:
 %
-% Y :           Variables. Matrix. n x v data matrix. n observations
-%               and v variables. Rows of Y represent observations, and columns represent
-%               variables. Missing values (NaN's) and infinite values
-%               (Inf's) are allowed, since observations (rows) with missing
-%               or infinite values will automatically be excluded from the
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
 %               computations.
-%               Data Types - single | double
+%                Data Types - single|double
 % la0:          Transformation parameters. Vector. Vector of length v=size(Y,2) specifying a reasonable set
 %               of transformations for the columns of the multivariate data set.
 %               Data Types - single | double

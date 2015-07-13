@@ -8,16 +8,14 @@ function out = FSMtra(Y,varargin)
 %
 % Required input arguments:
 %
-% Y :           Variables. Data matrix. n x v numeric matrix.
-%               Input data for which to compute the transformation
-%               parameters, specified as an n-by-v matrix
-%               Rows of Y represent observations, and columns represent
-%               variables. Missing values (NaN's) and infinite values
-%               (Inf's) are allowed, since observations (rows) with missing
-%               or infinite values will automatically be excluded from the
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
 %               computations.
-%               Data Types - single | double
-%
+%                Data Types - single|double%
 %
 % Optional input arguments:
 %

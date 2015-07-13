@@ -1,7 +1,5 @@
 function out=MMregcore(y,X,b0,auxscale,varargin)
 %MMregcore computes MM regression estimators for a selected fixed scale.
-% It does iterative reweighted least squares (IRWLS) steps from "initial
-% beta" (b0) keeping the estimate of the scale (auxscale) fixed.
 %
 %<a href="matlab: docsearchFS('MMregcore')">Link to the help function</a>
 %
@@ -123,12 +121,17 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %                yxsave is set to 1.
 %
 %
+% More About:
+%
+% It does iterative reweighted least squares (IRWLS) steps from "initial
+% beta" (b0) keeping the estimate of the scale (auxscale) fixed.
+%
 % See also: Sreg
 %
 % References:
 %
-% Maronna, Martin and Yohai (2006) ``Robust Statistics, Theory and Methods'',
-% Wiley.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory
+% and Methods, Wiley, New York.
 %
 % Acknowledgements:
 %

@@ -186,8 +186,8 @@ function [out , varargout] = Taureg(y, X, varargin)
 %
 % References:
 %
-% Maronna, Martin and Yohai (2006), ``Robust Statistics, Theory and Methods'',
-%   Wiley, New Yotk.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
 % Salibian-Barrera, M., Willems, G. and Zamar, R.H. (2008). The fast-tau
 %   estimator for regression. Journal of Computational and Graphical
 %   Statistics, 17, 659-682. (Referred below as SBWZ08)

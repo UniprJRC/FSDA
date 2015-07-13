@@ -604,7 +604,7 @@ for i=1:length(ini)
         end
         
         % Remove from string descradd all '% signs
-        % OLD 
+        % OLD
         % posPercentageSigns=regexp(descradd,'%');
         % descradd(posPercentageSigns)=[];
         
@@ -629,9 +629,9 @@ for i=1:length(ini)
         % descrtosplit(posPercentageSigns)=[];
         
         
-                posPercentageSigns=regexp(descrtosplit,'\n%');
+        posPercentageSigns=regexp(descrtosplit,'\n%');
         descrtosplit(posPercentageSigns+1)=[];
-
+        
         [inifullstops]=regexp(descrtosplit,'\.');
         if isempty(inifullstops)
             error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
@@ -1192,9 +1192,9 @@ for j=1:length(sintax)
     %posPercentageSigns=regexp(strdescrEx,'%');
     % strdescrEx(posPercentageSigns)=[];
     
-                     posPercentageSigns=regexp(strdescrEx,'\D%');
-         strdescrEx(posPercentageSigns+1)=[];
-
+    posPercentageSigns=regexp(strdescrEx,'\D%');
+    strdescrEx(posPercentageSigns+1)=[];
+    
     listEx{j,2}=strdescrEx;
     % listEx{j,3}=stri(findescriptionEx+1:end);
     
@@ -1314,9 +1314,9 @@ if length(startIndexEx)>length(sintax)
         %posPercentageSigns=regexp(strdescrEx,'%');
         %strdescrEx(posPercentageSigns)=[];
         
-                             posPercentageSigns=regexp(strdescrEx,'\D%');
-         strdescrEx(posPercentageSigns+1)=[];
-
+        posPercentageSigns=regexp(strdescrEx,'\D%');
+        strdescrEx(posPercentageSigns+1)=[];
+        
         
         listExtraEx{j,2}=strdescrEx;
         % Replace symbols < and > with &lt; and  &gt;
@@ -1517,10 +1517,16 @@ for i=1:nTOTargin
             listInpArgs{i,6}='single| double';
         end
         
+        Examplesini=regexp(descrlong,'Example -','once');
+        if ~isempty(Examplesini)
+            listInpArgs{i,5}=descrlong(Examplesini:end);
+            descrlong=descrlong(1:Examplesini-1);
+        else
+            listInpArgs{i,5}='TODO5';
+        end
         
         descrlongHTML=formatHTMLstructure(descrlong,inpi);
         listInpArgs{i,4}=descrlongHTML;
-        listInpArgs{i,5}='TODO5';
         
         jins=6;
     else
@@ -2452,16 +2458,16 @@ descrHTTP=descrlongHTMLwithref;
 [IniRefhttp]=regexp(descrHTTP,'http');
 
 if ~isempty(IniRefhttp)
-FinRefhttp=zeros(length(IniRefhttp),1);
-descrHTTPwithref='';
+    FinRefhttp=zeros(length(IniRefhttp),1);
+    descrHTTPwithref='';
     for i=1:length(IniRefhttp)
         
         descrHTTPsel=descrHTTP(IniRefhttp(i):end);
         FinRefhttp(i)=IniRefhttp(i)+regexp(descrHTTPsel,'\s','once');
-
+        
         namehttp=strtrim(descrHTTP(IniRefhttp(i):FinRefhttp(i)-1));
         if strcmp(namehttp(end),'.') || strcmp(namehttp(end),',')
-         namehttp=namehttp(1:end-1);
+            namehttp=namehttp(1:end-1);
         end
         
         FinRefhttp(i)=IniRefhttp(i)+length(namehttp);
@@ -2530,6 +2536,7 @@ iniTable=[sprintf(['<table border="2" cellpadding="4" cellspacing="0" class="bod
 cloTable='</table>';
 
 [iniA,finA]=regexp(descriinput,['\s{0,8}' StructureName '\.\w*\s*=']);
+%[iniA,finA]=regexp(descriinput,['\s{0,8}' StructureName '\.\w*\(\w*\)\s*=']);
 
 % Sometimes field names are repeated and therefore it is necessary to find
 % just the first instance. THe following lines do that

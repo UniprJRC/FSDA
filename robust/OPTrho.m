@@ -39,8 +39,8 @@ function rhoOPT=OPTrho(x, c)
 %
 % References:
 %
-% MARONNA R., MARTIN D. AND YOHAI V.J. (2006) ``Robust Statistics, Theory and
-% Methods'', Wiley, New York, 
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
 % RIANI M., CERIOLI A., TORTI F. (2014). On consistency factors and
 % efficiency of robust S-estimators TEST, Volume 23, Issue 2, pp. 356-387.
 % DOI: 10.1007/s11749-014-0357-7

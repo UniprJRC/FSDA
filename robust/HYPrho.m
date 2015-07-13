@@ -5,44 +5,53 @@ function rhoHYP = HYPrho(u, cktuning)
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    cktuning :  vector of length 2 or of length 5 which specifies the value of the tuning
+%    cktuning :  tuning parameters. Vector of length 2 or of length 5.
+%                cktuning specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed value k (sup of the
 %                change-of-variance sensitivity) and the values of
-%                parameters A, B and d
-%                cktuning(1) = c
-%                cktuning(2) = k = supCVC(psi,x) x \in R
+%                parameters A, B and d.
+%                cktuning(1) = c;
+%                cktuning(2) = k = supCVC(psi,x) x \in R;
 %                cktuning(3)=A;
 %                cktuning(4)=B;
 %                cktuning(5)=d;
-%                Remark: if length(cktuning)==2 values of A, B and d will be
+%                Remark - if length(cktuning)==2 values of A, B and d will be
 %                computed automatically
+%
+%  Optional input arguments:
 %
 %  Output:
 %
 %
 %   rhoHYP :     n x 1 vector which contains the hyperbolic rho
 %                associated to the residuals or Mahalanobis distances for
-%                the n units of the sample
+%                the n units of the sample.
 %
 %
-% Remark: 
+% More About:
+%
 %
 % Function HYPrho transforms vector u as follows
 %
-% HYPrho(u) = 	{ u^2/2,	        |u| <= d,
-%               {  
-%               {  d^2/2 -2*(A/B) * log(cosh(0.5*sqrt((k - 1) * B^2/A) *(c - |u|)))
-%               {          +2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d)))		        	                 
-%               {                                   d <= |u| <  c,
-%               {
-%		        {  d^2/2 +2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d)))	
-%               {                                          |u| >= c.
-%
-%	It is necessary to have 0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1
+% \[
+%  HYPrho(u) =
+%  \left\{
+%  \begin{array}{cc}
+%   	 u^2/2 &	        |u| \leq d, \\
+%   d^2/2 -2(A/B) \log( \cosh(0.5 \sqrt{(k - 1)  B^2/A} *(c - |u|))) & \\
+%                          +2(A/B)\log( \cosh(0.5\sqrt{(k - 1)  B^2/A}(c -d))) &  \\		        	
+%                &                               d \leq |u| <  c, \\
+%                 d^2/2 +2(A/B)\log( \cosh(0.5*\sqrt{(k - 1)  B^2/A}(c -d)))	 &
+%                                                        |u| \geq c. \\
+%   \end{array}
+%   \right.
+% \]
+% 	It is necessary to have $0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1$
 %
 % See also TBrho, HArho, OPTrho
 %

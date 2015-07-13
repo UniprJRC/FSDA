@@ -118,7 +118,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                 for the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1 
 %               Data Types - double
-%       plots : Plot on the screen. Scalar or structure.
+%       plots : Plot on the screen. Scalar.
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
 %               confidence bands for the residuals is given by the input
@@ -179,8 +179,8 @@ function [out , varargout] = Sreg(y,X,varargin)
 %
 % References:
 %
-% Maronna, Martin and Yohai (2006) ``Robust Statistics, Theory and Methods'',
-% Wiley.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
 %
 % Acknowledgements: 
 %

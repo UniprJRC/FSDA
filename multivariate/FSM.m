@@ -5,12 +5,14 @@ function [out]=FSM(Y,varargin)
 %
 % Required input arguments:
 %
-%    Y: Variables. Matrix. Data matrix containining n observations on v variables
-%       Rows of Y represent observations, and columns
-%       represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       automatically be excluded from the computations.
-%       Data Types - single | double
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
 %
 % Optional input arguments:
 %

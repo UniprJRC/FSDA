@@ -5,40 +5,69 @@ function [out , varargout] = MMmult(Y,varargin)
 %
 %  Required input arguments:
 %
-%    Y: Data matrix containing n observations on v variables.
-%       Rows of Y represent observations, and columns represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       be excluded from the computations.
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
 %
 %  Optional input arguments:
 %
-%      InitialEst: a structure containing starting values of the MM-estimator.
-%                  The structure must contain
-%                   loc0 =  1 x v vector (estimate of the centroid)
-%                   shape0 = v x v matrix (estimate of the shape matrix)
-%                   auxscale = scalar (estimate of the scale parameter).
+%      InitialEst : starting values of the MM-estimator. [] (default) or structure.
+%                  InitialEst must contain the following fields:
+%                   InitialEst.loc0 =  1 x v vector (estimate of the centroid)
+%                   InitialEst.shape0 = v x v matrix (estimate of the shape matrix)
+%                   InitialEst.auxscale = scalar (estimate of the scale parameter).
 %                  If InitialEst is empty (default)
 %                  program uses S estimators. In this last case it is
-%                  possible to specify the following options below.
+%                   possible to specify the options given in function Smult.
+%               Example - 'InitialEst',[] 
+%               Data Types - struct
+%  Soptions  :  options if initial estimator is S and InitialEst is empty.
+%               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
+%               Sreftolbestr, Sminsctol, Sbestr.
+%               See function Smult.m for more details on these options.
+%               It is necessary to add to the S options the letter
+%               S at the beginning. For example, if you want to use the
+%               optimal rho function the supplied option is
+%               'Srhofunc','optimal'. For example, if you want to use 3000
+%               subsets, the supplied option is 'Snsamp',3000
+%               Example - 'Snsamp',1000 
+%               Data Types - single | double
 %
-%                 Soptions (if InitialEst is empty): see function Smult
-%
-%                 MM options:
-%
-%      eff      : scalar defining nominal efficiency (i.e. a number between
+%      eff     : nominal efficiency. Scalar.
+%                Scalar defining nominal efficiency (i.e. a number between
 %                 0.5 and 0.99). The default value is 0.95
-%      effshape : dummy scalar. If effshape=1 efficiency refers to shape 
-%                 efficiency, else (default) efficiency refers to location
-%      refsteps : scalar defining maximum number of iterations in the MM
+%                 Asymptotic nominal efficiency is:
+%                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
+%                 Example - 'eff',0.99
+%                 Data Types - double
+%     effshape : locacation or scale effiicency. dummy scalar. 
+%                If effshape=1 efficiency refers to shape 
+%                efficiency else (default) efficiency refers to location
+%                 Example - 'effshape',1
+%                 Data Types - double
+%     refsteps  : Maximum iterations. Scalar.
+%                 Scalar defining maximum number of iterations in the MM
 %                 loop. Default value is 100.
-%       tol     : scalar controlling tolerance in the MM loop.
+%                 Example - 'refsteps',10
+%                 Data Types - double
+%       tol    : Tolerance. Scalar.
+%                 Scalar controlling tolerance in the MM loop.
 %                 Default value is 1e-7
-%     conflev:  Scalar between 0 and 1 containing the confidence level
-%               used to declare units as outliers. Usually conflev = 0.95,
-%               0.975, 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n,
-%               1-0.01/n (simultaneous alpha). Default value is 0.975.
-%       plots : Scalar or structure.
+%                 Example - 'tol',1e-10
+%                 Data Types - double
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar.
+%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+%               Default value is 0.975
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%       plots : Plot on the screen. Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates
 %               (1) a plot of Mahalanobis distances against index number.
 %               The confidence level used to draw the confidence bands for
@@ -47,51 +76,62 @@ function [out , varargout] = MMmult(Y,varargin)
 %               used.
 %               (2) a scatter plot matrix with the outliers highlighted
 %               If plots is a structure it may contain the following fields
-%                   labeladd : if this option is '1', the outliers in the
+%                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added.
-%                   nameY : cell array of strings containing the labels of
+%                   plots.nameY : cell array of strings containing the labels of
 %                       the variables. As default value, the labels which 
 %                       are added are Y1, ...Yv.
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix Y. As default nocheck=0.
-%       ysave : scalar that is set to 1 to request that the data matrix Y
+%                 Example - 'plots',0 
+%                 Data Types - single | double
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
+%                 no check is performed on
+%                 matrix Y. As default nocheck=0.
+%               Example - 'nocheck',1 
+%               Data Types - double
+%       ysave : input data matrix Y is saved into the output
+%                structure out. Scalar. 
+%               Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
-%               meant at simplifying the use of function malindeplot.
-%               Default is 0, i.e. no saving is done. 
+%               meant at simplifying the use of function malindexplot.
+%               Default is 0, i.e. no saving is done.
+%               Example - 'ysave',1 
 %
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
-%     out.loc      :  1 x v vector with MM estimate of location
-%     out.shape    :  v x v matrix with MM estimate of the shape matrix
-%     out.cov      :  v x v matrix with MM estimate of the covariance matrix
+%  out :     A structure containing the following fields
+%     out.loc      =  1 x v vector with MM estimate of location
+%     out.shape    =  v x v matrix with MM estimate of the shape matrix
+%     out.cov      =  v x v matrix with MM estimate of the covariance matrix
 %                     Remark: covariance = auxscale^2 * shape
-%     out.weights  :  n x 1 vector. Weights assigned to each observation
-%     out.outliers :  1 x k vectors containing the outliers which
+%     out.weights  =  n x 1 vector. Weights assigned to each observation
+%     out.outliers =  1 x k vectors containing the outliers which
 %                           have been found
-%     out.Sloc     :  1 x v vector with S estimate of location
-%     out.Sshape   :  v x v matrix with S estimate of the shape matrix
-%     out.Scov     :  v x v matrix with S estimate of the covariance matrix
-%     out.auxscale :  scalar, S estimate of the scale
-%            out.Y : Data matrix Y. The field is present if option ysave
+%     out.Sloc     =  1 x v vector with S estimate of location
+%     out.Sshape   =  v x v matrix with S estimate of the shape matrix
+%     out.Scov     =  v x v matrix with S estimate of the covariance matrix
+%     out.auxscale =  scalar, S estimate of the scale
+%            out.Y = Data matrix Y. The field is present if option ysave
 %                    is set to 1.
-%      out.conflev : scalar, confidence level which has been used
-%           out.md : n x 1 vector containing robust Mahalanobis distances
-%     out.class    :  'MM'
+%      out.conflev = scalar, confidence level which has been used
+%           out.md = n x 1 vector containing robust Mahalanobis distances
+%     out.class    =  'MM'
 %
 %  Optional Output:
 %
-%            C     : matrix of the indices of the samples extracted for
-%                    computing the estimate
+%            C        : matrix containing the indices of the subsamples 
+%                       extracted for computing the estimate (the so called
+%                       elemental sets).
+%
+% See also: Smult
 %
 % References:
 %
-% ``Robust Statistics, Theory and Methods'' by Maronna, Martin and Yohai;
-% Wiley 2006.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory
+% and Methods, Wiley,New York.
 %
-% Acknowledgements
+% Acknowledgements:
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.

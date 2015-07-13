@@ -5,13 +5,14 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           Variables. Matrix. n x p data matrix; n observations
-%               and p variables. Rows of Y represent observations, and columns represent
-%               variables. Missing values (NaN's) and infinite values
-%               (Inf's) are allowed, since observations (rows) with missing
-%               or infinite values will automatically be excluded from the
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
 %               computations.
-%               Data Types - single | double
+%                Data Types - single|double
 % bsb :         Units forming subset. Vector. List of units forming the initial subset.
 %               If bsb=0 (default) then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with

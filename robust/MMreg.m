@@ -31,7 +31,9 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               Example - 'InitialEst',[] 
 %               Data Types - struct
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
-%               See function Sreg for more details.
+%               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
+%               Sreftolbestr, Sminsctol, Sbestr.
+%               See function Sreg.m for more details on these options.               It is necessary to add to the S options the letter
 %               It is necessary to add to the S options the letter
 %               S at the beginning. For example, if you want to use the
 %               optimal rho function the supplied option is
@@ -50,7 +52,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',0.99
 %                 Data Types - double
-%     effshape : locacation or scale effiicency. dummy scalar. 
+%     effshape : location or scale effiicency. dummy scalar. 
 %                If effshape=1 efficiency refers to shape 
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
@@ -134,12 +136,15 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                       extracted for computing the estimate (the so called
 %                       elemental sets).
 %
+% More About:
+%
+
 % See also: Sreg
 %
 % References:
 %
-% Maronna, Martin and Yohai (2006) ``Robust Statistics, Theory and Methods'',
-% Wiley.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory
+% and Methods, Wiley,New York.
 %
 % Acknowledgements:
 %

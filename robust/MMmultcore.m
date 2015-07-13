@@ -1,83 +1,124 @@
 function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %MMmultcore computes multivariate MM estimators for a selected fixed scale
-% It does iterative reweighted least squares (IRWLS) steps from "initial
-% location" (loc0) and shape matrix (shape0) keeping the estimate of the
-% scale (auxscale) fixed.
+%
 %
 %<a href="matlab: docsearchFS('MMmultcore')">Link to the help function</a>
 %
 %
 %  Required input arguments:
 %
-%          Y :  Data matrix containining n observations on v variables
-%               Rows of Y represent observations, and columns represent
-%               variables.
-%        loc0 :  Vector containing initial estimate of location (generally
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
+%        loc0 :  initial estimate of location. Vector.
+%               Vector containing initial estimate of location (generally
 %               an S estimate with high breakdown point (eg 0.5)
-%     shape0 :  v x v matrix containing initial estimate of shape
+%     shape0 :  initial estimate of shape. Matrix. 
+%               v x v matrix containing initial estimate of shape
 %               (generally an S estimate with high breakdown point (eg 0.5)
-%   auxscale :  scalar containing estimate of the scale (generally an S
-%               estimate with high breakdown point
+%   auxscale :  initial estimate of scale. Scalar.
+%               Scalar containing estimate of the scale (generally an S
+%               estimate with high breakdown point).
 %
 %  Optional input arguments:
 %
-%       eff  :  scalar. Nominal efficiency. Default is set to 0.95.
-%               For example if eff=0.95 and v=3, c=5.49 in case of location
-%               efficiency or c=6.096 in case of shape efficiency
-%    effshape:  dummy scalar. If effshape=1 efficiency refers to shape
-%               efficiency else (default) efficiency refers to location
-%    refsteps:  scalar defining maximum number of (refining steps) 
-%               iterations in the MM loop (default value is 100)
-%      reftol:  scalar controlling tolerance in the MM loop.
-%               Default is 1e-7.
-%     conflev:  Scalar between 0 and 1 containing the confidence level
-%               used to declare units as outliers. Usually conflev = 0.95,
-%               0.975, 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n,
-%               1-0.01/n (simultaneous alpha). Default value is 0.975.
-%       plots : Scalar or structure.
+%      eff     : nominal efficiency. Scalar.
+%                Scalar defining nominal efficiency (i.e. a number between
+%                 0.5 and 0.99). The default value is 0.95
+%                 Asymptotic nominal efficiency is:
+%                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
+%                 For example if eff=0.95 and v=3, c=5.49 in case of location
+%                 efficiency or c=6.096 in case of shape efficiency
+%                 Example - 'eff',0.99
+%                 Data Types - double
+%     effshape : locacation or scale effiicency. dummy scalar. 
+%                If effshape=1 efficiency refers to shape 
+%                efficiency else (default) efficiency refers to location
+%                 Example - 'effshape',1
+%                 Data Types - double
+%     refsteps  : Maximum iterations. Scalar.
+%                 Scalar defining maximum number of iterations in the MM
+%                 loop. Default value is 100.
+%                 Example - 'refsteps',10
+%                 Data Types - double
+%      reftol: Tolerance. Scalar.
+%                 Scalar controlling tolerance in the MM loop.
+%                 Default value is 1e-7
+%                 Example - 'tol',1e-10
+%                 Data Types - double
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar.
+%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+%               Default value is 0.975
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot of Mahalanobis distances
 %               against index number. The confidence level used to draw the
 %               confidence bands for the MD is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix Y. As default nocheck=0.
-%       ysave : scalar that is set to 1 to request that the data matrix Y
+%                 Example - 'plots',0 
+%                 Data Types - single | double
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
+%                 no check is performed on
+%                 matrix Y. As default nocheck=0.
+%               Example - 'nocheck',1 
+%               Data Types - double
+%       ysave : input data matrix Y is saved into the output
+%                structure out. Scalar. 
+%               Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
-%               meant at simplifying the use of function malindeplot.
-%               Default is 0, i.e. no saving is done. 
+%               meant at simplifying the use of function malindexplot.
+%               Default is 0, i.e. no saving is done.
+%               Example - 'ysave',1 
 %
 %  Output:
 %
-%  The output is a structure 'out' containing the following fields:
-%     out.loc :  v x 1 vector. Estimate of location after refsteps
+%  out :     A structure containing the following fields
+%     out.loc =  v x 1 vector. Estimate of location after refsteps
 %                  refining steps
-%    out.shape:  v x v matrix. Estimate of the shape matrix after refsteps
+%    out.shape=  v x v matrix. Estimate of the shape matrix after refsteps
 %                  refining steps
-%      out.cov:  v x v matrix. Estimate of the covariance matrix after
+%      out.cov=  v x v matrix. Estimate of the covariance matrix after
 %                  refsteps refining steps
-%       out.md:  n x 1 vector containing the estimates of the robust
+%       out.md=  n x 1 vector containing the estimates of the robust
 %                  Mahalanobis distances (in squared units)
-% out.outliers:  A vector containing the list of the units declared as
+% out.outliers=  A vector containing the list of the units declared as
 %                  outliers using confidence level specified in input
 %                  scalar conflev
-%  out.conflev: Confidence level that was used to declare outliers
-%  out.weights:  n x 1 vector. Weights assigned to each observation
-%    out.class: 'MM'
+%  out.conflev= Confidence level that was used to declare outliers
+%  out.weights=  n x 1 vector. Weights assigned to each observation
+%    out.class= 'MM'
 %       out.Y : Data matrix Y. The field is present if option ysave
 %               is set to 1.
 %
+%
+% More About:
+%
+% This routine does iterative reweighted least squares (IRWLS) steps from
+% "initial location" (loc0) and shape matrix (shape0) keeping the estimate
+% of the scale (auxscale) fixed.
+%
+% See also: Smult, MMmult
+%
 % References:
 %
-% ``Robust Statistics, Theory and Methods'' by Maronna, Martin and Yohai;
-% Wiley 2006.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory
+% and Methods, Wiley,New York.
 %
-% Acknowledgements
+% Acknowledgements:
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.
 % For more details see http://www.econ.kuleuven.be/public/NDBAE06/programs/
-% and the R library robustbase http://robustbase.r-forge.r-project.org/
+% and the R library robustbase http://robustbase.r-forge.r-project.org/.
 % The core of these routines, e.g. the resampling approach, however, has
 % been completely redesigned, with considerable increase of the
 % computational performance.

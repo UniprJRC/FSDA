@@ -1,55 +1,73 @@
 function sc = Mscale1(u, psifunc, initialsc, tol, maxiter)
 %Mscale1 finds the M estimator of the scale
 %
-% REMARK: Mscale1 has the same structure of Mscale but a different (less efficient)
-% algorithm is used to find the solution
-%
-% u = residuals or Mahalanobis distances
-% (note that u is kept fixed in each iteration)
-% Remark: the M estimator of scale must satisfy the following equation
-% (1/n) \sum_{i=1}^n \rho((u_i/c)/s) = kc
-% This routine computes the value of s which satisfies the above
-% equation
-%
 % Required input arguments:
 %
-%    u:       : n x 1 vector which contains the residuals
-%     psifunc : a structure specifying the class of rho function to use, the
+%    u:       : residuals or Mahalanobis distances. Vector.
+%               n x 1 vector which contains the scaled residuals or
+%               Mahalanobis distances
+%               Data Types - single | double
+%     psifunc : rho function. Structure.
+%               A structure specifying the class of rho (psi) function to use, the
 %               consistency factor, and the value associated with the Exp
-%               of rho in correspondence of the consistency factor
-%               psifunc must contain the following fields
-%               c1(1) = consistency factor associated to required
+%               of rho in correspondence of the consistency factor.
+%               psifunc must contain the following fields:
+%               psifunc.c1(1) = consistency factor associated to required
 %                     breakdown point of nominal efficiency
-%               c1(2:end) = other paramters associated with the rho (psi)
-%                     function. For example if psifunc.class='hampel'
+%               psifunc.c1(2:end) = other parameters associated with the rho (psi)
+%                     function. For example if class='hampel'
 %                     c1(2:4) must contain parameters (a, b and c) of
 %                     Hampel rho function
-%               kc1= Expectation of rho associated with c1 to get a consistent
+%               psifunc.kc1= Expectation of rho associated with c1 to get a consistent
 %                    estimator at the model distribution kc1=E(rho)
-%               class = string identyfing the rho (psi) function to use.
+%               psifunc.class = string identyfing the rho (psi) function to use.
 %                    Admissible values for class are 'bisquare' (TB),
 %                    'optimal', (OPT) 'hyperbolic' (HYP) and 'hampel' (HA)
+%               Data Types - struct
 %
 %  Optional input arguments:
 %
 %    initialsc: scalar. The initial estimate of the scale.
 %               If not defined, scaled MAD of vector |u| is used.
-%     maxiter : scalar. The maximum number of iterations to find the scale.
-%               If not defined, maxiter is fixed to 200.
+%               Example - 'initialsc',0.34 
+%               Data Types - double
 %     tol     : scalar. The tolerance for controlling convergence.
 %               If not defined, tol is fixed to 1e-7.
+%               Example - 'tol',1e-10 
+%               Data Types - double
+%     maxiter : scalar. Maximum number of iterations to find the scale.
+%               If not defined, maxiter is fixed to 200.
+%               Example - 'maxiter',100 
+%               Data Types - double
 %
 %  Output:
 %
-%  sc : scalar, M-estimate of the scale
+%  sc : M-estimate of the scale. Scalar.
+%       Robust M estimate of scale. 
+%       This routine is never called
+%       because the more efficient function Mscale.m is used
 %
-% Remark: this routine in the regression context is never called
-% because the more efficient function Mscale is used
+% More About:
 %
-% References
-% Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley 
+% u = residuals or Mahalanobis distances
+% (note that u is kept fixed in each iteration).
+% Remark: the M estimator of scale must satisfy the following equation
+% \[
+%  (1/n) \sum_{i=1}^n \rho((u_i/c)/s) = kc
+% \]
 %
-% See also Mscale, minscale
+% This routine computes the value of $s$ which satisfies the above
+% equation.
+%       This routine is never called
+%       because the more efficient function Mscale.m is used
+%
+% See also: Mscale, minscale
+%
+% References:
+%
+% Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119,  p.
+% 176).
+%
 %
 % Copyright 2008-2015.
 % Written by FSDA team
