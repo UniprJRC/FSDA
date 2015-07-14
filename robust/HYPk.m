@@ -1,6 +1,6 @@
 function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
-%HYPk computes breakdown point and efficiency associated with constant k=sup CVC for
-%hyperbolic tangent estimator (for a given value of c)
+%HYPk computes breakdown point and efficiency associated with constant k=sup CVC for hyperbolic tangent estimator (for a given value of c)
+%
 %
 %<a href="matlab: docsearchFS('hypk')">Link to the help function</a>
 %
@@ -8,39 +8,68 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 %
 %  Required input arguments:
 %
-%    k :        supremum of the change of variance curve
-%               supCVC(psi,x) x \in R
-%    p :        number of response variables of the dataset (for regression p=1)
+%   k        : supremum of the change of variance curve. Scalar.
+%              $supCVC(psi,x) x \in R$.
+%              Default value is k=4.5
+%               Data Types - double
+%    p :        number of response variables. Scalar. Number of variables of
+%               the  dataset (for regression p=1)
 %               UP TO NOW p=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE
 %               ANALYSIS
 %
 %  Optional input arguments:
 %
-%    c :       scalar greater than 0 which controls the robustness/efficiency of the estimator
+%    c :     tuning constant c. Scalar. Scalar greater than 0 which
+%               controls the robustness/efficiency of the estimator
 %              Default value is c=4
-%   shapeeff : If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location
-%TODO:HYPk:shapeeff 
+%               Example - 'c',3
+%               Data Types - double
+%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency is referred to the shape else (default)
+%              is referred to the location. TODO:Hac:shapeeff  
+%               Example - 'shapeeff',1 
+%               Data Types - double
 %
 % Output:
 %
-%     bdp      :  scalar, breakdown point associated to the supplied
+%     bdp      :  bdp. Scalar. Breakdown point associated to the supplied
 %                 value of c
-%     eff      :  scalar, efficiency associated to the supplied
+%     eff      :  eff. Scalar. Efficiency associated to the supplied
 %                 value of c
-%       A      :  scalar. Value of parameter A of \psi (rho) function
-%       B      :  scalar. Value of parameter B of \psi (rho) function
-%       d      :  scalar. Value of parameter d of \psi (rho) function
+%   A   : parameter A of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%   B   : parameter B of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%   d   : parameter d of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%
+% More About:
+%
+%  \[
+%   HYPpsi(u) =
+% \left\{
+%   \begin{array}{cc}
+%  	 u &        |u| \leq  d \\
+%                  \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &
+% 		         	                 d \leq |u| <  c, \\
+%                 0 &                      |u| \geq c.
+% \end{array}
+%    \right.
+%  \]
+%  	It is necessary to have $0 < A < B < 2 normcdf(c)-1- 2 c \times normpdf(c) <1$
 %
 %
-% Function HYPpsi transforms vector u as follows
+% See also HYPck,
 %
-% HYPpsi(u) = 	{ u,			                               |u| <= d,
-%               {
-%		        { \sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)*(c -|u|)/2) .* sign(u)
-%		        { 	                 d <= |u| <  c,
-%               {
-%		        { 0,			                         |u| >= c.
+% References:
+%
+%
+% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
+% The Change-of-Variance Curve and Optimal Redescending M-Estimators,
+% Journal of the American Statistical Association , Vol. 76, No. 375,
+% pp. 643-648 (HRR)
 %
 %
 % Copyright 2008-2015.

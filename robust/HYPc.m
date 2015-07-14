@@ -1,6 +1,7 @@
-function [bdp,eff,A,B,d] = HYPc(c,p,varargin)
-%HYPc computes breakdown point and efficiency associated with constant c for
-%hyperbolic tangent estimator (for a given value of k=sup CVC)
+function [bdp,eff,A,B,d] = HYPc(c,v,varargin)
+%HYPc computes breakdown point and efficiency associated with constant chyperbolic tangent estimator (for a given value of k=sup CVC)
+%
+%
 %
 %<a href="matlab: docsearchFS('hypc')">Link to the help function</a>
 %
@@ -8,46 +9,76 @@ function [bdp,eff,A,B,d] = HYPc(c,p,varargin)
 %
 %  Required input arguments:
 %
-%    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator
-%    p :        number of response variables of the dataset (for regression p=1)
-%               UP TO NOW p=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE
+%    c :     tuning constant c. Scalar. Scalar greater than 0 which
+%               controls the robustness/efficiency of the estimator
+%    v :        number of response variables. Scalar. Number of variables of
+%               the  dataset (for regression p=1)
+%               UP TO NOW v=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE
 %               ANALYSIS
 %
 %  Optional input arguments:
 %
 %   k        : supremum of the change of variance curve
-%              supCVC(psi,x) x \in R
+%              $supCVC(psi,x) x \in R$.
 %              Default value is k=4.5
-%   shapeeff : If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location 
-%TODO:HYPc:shapeeff 
-%      param : vector of length 3 specifying the parameters A, B and d of the
+%               Example - 'k',4 
+%               Data Types - double
+%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency is referred to the shape else (default)
+%              is referred to the location. TODO:Hac:shapeeff  
+%               Example - 'shapeeff',1 
+%               Data Types - double
+%      param : parameters A, B and d. Vector with 3 elements.
+%              Vector of length 3 specifying the parameters A, B and d of the
 %              weight function of the hyperbolic tangent estimator.
 %              param(1)=A param(2)=B param(3)=d
 %              If these values are not supplied they will be automatically
 %              calculated calling routine HYPck
+%               Example - 'param',[0.0035;0.0317;0.0827] 
+%               Data Types - double
 %
 % Output:
 %
-%     bdp      :  scalar, breakdown point associated to the supplied
+%     bdp      :  bdp. Scalar. Breakdown point associated to the supplied
 %                 value of c
-%     eff      :  scalar, efficiency associated to the supplied
+%     eff      :  eff. Scalar. Efficiency associated to the supplied
 %                 value of c
-%       A      :  scalar. Value of parameter A of \psi (rho) function
-%       B      :  scalar. Value of parameter B of \psi (rho) function
-%       d      :  scalar. Value of parameter d of \psi (rho) function
+%   A   : parameter A of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%   B   : parameter B of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%   d   : parameter d of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
 %
 %
-% Function HYPpsi transforms vector u as follows
+% More About:
 %
-% HYPpsi(u) = 	{ u,			                               |u| <= d,
-%               {
-%		        { \sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)*(c -|u|)/2) .* sign(u)
-%		        { 	                 d <= |u| <  c,
-%               {
-%		        { 0,			                         |u| >= c.
+%  \[
+%   HYPpsi(u) =
+% \left\{
+%   \begin{array}{cc}
+%  	 u &        |u| \leq  d \\
+%                  \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &
+% 		         	                 d \leq |u| <  c, \\
+%                 0 &                      |u| \geq c.
+% \end{array}
+%    \right.
+%  \]
+%  	It is necessary to have $0 < A < B < 2 normcdf(c)-1- 2 c \times normpdf(c) <1$
 %
 %
+% See also TBc, HAc, OPTc
+%
+% References:
+%
+%
+% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
+% The Change-of-Variance Curve and Optimal Redescending M-Estimators,
+% Journal of the American Statistical Association , Vol. 76, No. 375,
+% pp. 643-648 (HRR)
+
 % Copyright 2008-2015.
 % Written by FSDA team
 %
@@ -149,7 +180,7 @@ end
 % Now compute the expectation of the rho function
 
 c2=c.^2/2;
-Erhoa= p*gammainc(d.^2/2,0.5*(p+2))/2;
+Erhoa= v*gammainc(d.^2/2,0.5*(v+2))/2;
 
 % Erhoa is also equal to
 % tmpu=@(u) (u.^2) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
@@ -160,10 +191,10 @@ rhodc = @(u,c,A,B,k) -2*(A/B) * log(cosh(0.5*sqrt((k - 1) * B^2/A)...
     *(c - u))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
 
 Erhob= 2*integral(@(u)rhodc(u,c,A,B,k),d,c)...
-    +(d^2/2 + 2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d))))*(gammainc(c2,0.5*p)-gammainc(d.^2/2,0.5*p));
+    +(d^2/2 + 2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d))))*(gammainc(c2,0.5*v)-gammainc(d.^2/2,0.5*v));
 
 rhoc=d^2/2 +2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d)));
-Erhoc=rhoc*(1-gammainc(c2,0.5*p));
+Erhoc=rhoc*(1-gammainc(c2,0.5*v));
 
 % Eho = E [ rho]
 Erho= Erhoa+Erhob+Erhoc;

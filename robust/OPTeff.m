@@ -1,38 +1,59 @@
-function ceff = OPTeff(eff,p,varargin)
+function ceff = OPTeff(eff,v)
 %OPTeff finds the constant c which is associated to the requested efficiency
 %
 %  Required input arguments:
 %
-%    eff:       scalar which contains the required efficiency (of location
-%               of scale estimator)
+%    eff:       required efficienty. Scalar.
+%               Scalar which contains the required efficiency (of location
+%               or scale estimator).
 %               Generally eff=0.85, 0.9 or 0.95
-%    p :        scalar, number of response variables
+%               Data Types - single|double
+%    v :        Number of response variables. Scalar. e.g. in regression p=1
+%               Data Types - single|double|int32|int64
+%               
 %
-%TODO:OPTeff_INPUT_OPTIONS
+%  Optional input arguments: TODO_OPTeff_INPUT_OPTIONS
+%  
+%
 %
 % Output:
 %
-%  c = scalar of Optimal rho associated to the nominal (location or
-%  shape) efficiency
+%  ceff : Requested tuning constant. Scalar. Tuning constatnt of optimal rho
+%         function associated to requested value of efficiency
 %
-% Copyright 2008-2015.
-% Written by FSDA team
-% Last modified 06-Feb-2015
+% More About:
 %
 %
-%    REMARK: \rho (\psi) function which is considered is standardized 
-%    using intervals 0---(2/3)c , (2/3)c---c, >c   
-%    Rho function is
+%    $\rho$ ($\psi$) function which is considered is standardized 
+%    using intervals 0---(2/3)c , (2/3)c---c, >c.   
+%    $\rho$ function is
 %
-%               |   1.3846 |r/c|^2                                                         |t/c|<=2/3
-%               |   
-%     \rho(r) = |   0.5514-2.6917|r/c|^2+10.7668|r/c|^4-11.6640|r/c|^6+4.0375|r/c|^8     2/3<=|t/c|<=1
-%               |
-%               |   1                                                                          |t/c|>1                              
+% \[
+% TBrho(u)= \left\{
+%    \begin{array}{lr}
+%     1.3846 \left(\frac{u}{c}\right)^2                      &                                      |\frac{u}{c}| \leq  \frac{2}{3} \\
+%    0.5514-2.6917 \left(\frac{u}{c}\right)^2 +10.7668\left(\frac{u}{c}\right)^4-11.6640\left(\frac{u}{c}\right)^6+4.0375\left(\frac{u}{c}\right)^8   & \qquad \frac{2}{3} \leq  |\frac{u}{c}|\leq  1 \\
+%    1                                                    &                      |\frac{u}{c}|>1 \\
+% \end{array}
+%    \right.
+%  \]
+%                                                                      |t/c|>1                              
 %
 %   Therefore, to obtain the value of c for the (rho) psi function defined in the
 %   interval 0---2c, 2c---3c, >3c it is necessary to divide the output of
 %   function OPTeff by 3.
+%
+% See also: TBeff, HYPeff, HAeff
+%
+% References:
+% 
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
+%
+%
+% Copyright 2008-2015.
+% Written by FSDA team
+%
 %
 %<a href="matlab: docsearchFS('OPTeff')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
@@ -104,28 +125,28 @@ eps=1e-12;
         b=c.^2/2;
         a=2*c.^2/9;
         
-        Epsisq=(p0^2/(c^4))*p*gammainc(a,(p+2)/2)+(p1^2/(c^4))*p*(gammainc(b,(p+2)/2)-gammainc(a,(p+2)/2))...
-            + (p2^2/(c^8))*(p+4)*(p+2)*p*(gammainc(b,(p+6)/2)-gammainc(a,(p+6)/2))... 
-            + ((p3^2+2*p2*p4)/(c^12))*(p+8)*(p+6)*(p+4)*(p+2)*p*(gammainc(b,(p+10)/2)-gammainc(a,(p+10)/2))... 
-            + (p4^2/(c^16))*(p+12)*(p+10)*(p+8)*(p+6)*(p+4)*(p+2)*p*(gammainc(b,(p+14)/2)-gammainc(a,(p+14)/2))... 
-            + (2*p1*p2/(c^6))*(p+2)*p*(gammainc(b,(p+4)/2)-gammainc(a,(p+4)/2))...
-            + (2*p1*p3/(c^8))*(p+4)*(p+2)*p*(gammainc(b,(p+6)/2)-gammainc(a,(p+6)/2))...
-            + (2*(p1*p4+p2*p3)/(c^10))*(p+6)*(p+4)*(p+2)*p*(gammainc(b,(p+8)/2)-gammainc(a,(p+8)/2))...
-            + (2*p3*p4/(c^14))*(p+10)*(p+8)*(p+6)*(p+4)*(p+2)*p*(gammainc(b,(p+12)/2)-gammainc(a,(p+12)/2));
+        Epsisq=(p0^2/(c^4))*v*gammainc(a,(v+2)/2)+(p1^2/(c^4))*v*(gammainc(b,(v+2)/2)-gammainc(a,(v+2)/2))...
+            + (p2^2/(c^8))*(v+4)*(v+2)*v*(gammainc(b,(v+6)/2)-gammainc(a,(v+6)/2))... 
+            + ((p3^2+2*p2*p4)/(c^12))*(v+8)*(v+6)*(v+4)*(v+2)*v*(gammainc(b,(v+10)/2)-gammainc(a,(v+10)/2))... 
+            + (p4^2/(c^16))*(v+12)*(v+10)*(v+8)*(v+6)*(v+4)*(v+2)*v*(gammainc(b,(v+14)/2)-gammainc(a,(v+14)/2))... 
+            + (2*p1*p2/(c^6))*(v+2)*v*(gammainc(b,(v+4)/2)-gammainc(a,(v+4)/2))...
+            + (2*p1*p3/(c^8))*(v+4)*(v+2)*v*(gammainc(b,(v+6)/2)-gammainc(a,(v+6)/2))...
+            + (2*(p1*p4+p2*p3)/(c^10))*(v+6)*(v+4)*(v+2)*v*(gammainc(b,(v+8)/2)-gammainc(a,(v+8)/2))...
+            + (2*p3*p4/(c^14))*(v+10)*(v+8)*(v+6)*(v+4)*(v+2)*v*(gammainc(b,(v+12)/2)-gammainc(a,(v+12)/2));
            
-        Epsidivx=(p0/(c^2))*gammainc(a,p/2)+(p1/(c^2))*(gammainc(b,p/2)-gammainc(a,p/2))...
-            + (p2/(c^4))*p*(gammainc(b,(p+2)/2)-gammainc(a,(p+2)/2))... 
-            + (p3/(c^6))*(p+2)*p*(gammainc(b,(p+4)/2)-gammainc(a,(p+4)/2))... 
-            + (p4/(c^8))*(p+4)*(p+2)*p*(gammainc(b,(p+6)/2)-gammainc(a,(p+6)/2)); 
+        Epsidivx=(p0/(c^2))*gammainc(a,v/2)+(p1/(c^2))*(gammainc(b,v/2)-gammainc(a,v/2))...
+            + (p2/(c^4))*v*(gammainc(b,(v+2)/2)-gammainc(a,(v+2)/2))... 
+            + (p3/(c^6))*(v+2)*v*(gammainc(b,(v+4)/2)-gammainc(a,(v+4)/2))... 
+            + (p4/(c^8))*(v+4)*(v+2)*v*(gammainc(b,(v+6)/2)-gammainc(a,(v+6)/2)); 
 
-        Epsider=(p0/(c^2))*gammainc(a,p/2)+(p1/(c^2))*(gammainc(b,p/2)-gammainc(a,p/2))...
-            + (3*p2/(c^4))*p*(gammainc(b,(p+2)/2)-gammainc(a,(p+2)/2))... 
-            + (5*p3/(c^6))*(p+2)*p*(gammainc(b,(p+4)/2)-gammainc(a,(p+4)/2))... 
-            + (7*p4/(c^8))*(p+4)*(p+2)*p*(gammainc(b,(p+6)/2)-gammainc(a,(p+6)/2)); 
+        Epsider=(p0/(c^2))*gammainc(a,v/2)+(p1/(c^2))*(gammainc(b,v/2)-gammainc(a,v/2))...
+            + (3*p2/(c^4))*v*(gammainc(b,(v+2)/2)-gammainc(a,(v+2)/2))... 
+            + (5*p3/(c^6))*(v+2)*v*(gammainc(b,(v+4)/2)-gammainc(a,(v+4)/2))... 
+            + (7*p4/(c^8))*(v+4)*(v+2)*v*(gammainc(b,(v+6)/2)-gammainc(a,(v+6)/2)); 
         
-        bet=(1-1/p)*Epsidivx+(1/p)*Epsider;   
+        bet=(1-1/v)*Epsidivx+(1/v)*Epsider;   
         
-        empeff=(bet^2)/(Epsisq/p);
+        empeff=(bet^2)/(Epsisq/v);
         
         step=step*0.5;
          % disp([step c empeff])

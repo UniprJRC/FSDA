@@ -7,37 +7,63 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 %
 %  Required input arguments:
 %
-%    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator
-%    k :        scalar, = supCVC(psi,x) x \in R
+%    c :     tuning constant c. Scalar. Scalar greater than 0 which
+%               controls the robustness/efficiency of the estimator
+%    k :     sup of change of variance curve (CVC). Scalar. $k= supCVC(psi,x) x \in R$
 %
 %  Optional input arguments:
 %
-%         A   : scalar. Starting value for parameter A
-%         B   : scalar. Starting value for parameter B
-%         d   : scalar. Starting value for parameter d
+%         A   : A parameter. Scalar. Starting value for parameter A
+%         B   : B parameter. Scalar. Starting value for parameter B
+%         d   : d parameter. scalar. Starting value for parameter d
 %
 %
 % Output:
 %
-%  Anew = scalar. Value of parameter A
-%  Bnew = scalar. Value of parameter B
-%  d = scalar. Value of parameter d
+%  Anew : Value of parameter A.  Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%  Bnew : Value of parameter B. Scalar. 
+%         For more details see the  methodological details inside "More
+%         About" below
+%  d    : Value of parameter d.  Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
 %
-% Copyright 2008-2015.
-% Written by FSDA team
+%
+% More About:
+%
+%  \[
+%   HYPpsi(u) =
+% \left\{
+%   \begin{array}{cc}
+%  	 u &        |u| \leq  d \\
+%                  \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &
+% 		         	                 d \leq |u| <  c, \\
+%                 0 &                      |u| \geq c.
+% \end{array}
+%    \right.
+%  \]
+%  	It is necessary to have $0 < A < B < 2 normcdf(c)-1- 2 c \times normpdf(c) <1$
+%
+%
+% See also HYPc
 %
 % References:
 %
 %
-% Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),
+% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
+%
 %
 %<a href="matlab: docsearchFS('hypck')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 %
+% Copyright 2008-2015.
+% Written by FSDA team
 %
 % Examples:
 %

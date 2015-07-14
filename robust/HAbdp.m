@@ -9,7 +9,9 @@ function ctun = HAbdp(bdp,p,abc)
 %
 %      bdp    : breakdown point. Scalar. Scalar defining breakdown point
 %               (i.e a number between 0 and 0.5)
+%               Data Types - single|double
 %        p    : number of response variables. Scalar. e.g. in regression p=1
+%               Data Types - single|double|int32|int64
 %
 %  Optional input arguments:
 %
@@ -26,6 +28,7 @@ function ctun = HAbdp(bdp,p,abc)
 %
 %
 % More About:
+%
 % Function HApsi transforms vector u as follows.
 %  \[
 %  HApsi(u)  = \left\{   

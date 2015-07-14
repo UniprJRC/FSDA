@@ -535,7 +535,7 @@ fstringselOpt=fstring(inselOpt(1):end);
 endpoint=regexp(fstringselOpt,'Output:');
 if isempty(endpoint)
     disp('Please check HTML input file')
-    error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
+    error('FSDA:missOuts','Input .m file does not contain ''Output:'' string')
 end
 fstringselOpt=fstringselOpt(1:endpoint-2);
 
@@ -1389,7 +1389,7 @@ iniReqInputArgs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
 
 reqargs='';
 %% Create listInptArgs and related HTML code
-% listInpArgs = list which contains all required input arguments
+% listInpArgs = list which contains all input arguments (required or not)
 % The first column will contain the names (just one word)
 % The second column will contain the title of the input argument (the first
 % sentence which finishes with a full stop sign)
@@ -1403,14 +1403,13 @@ reqargs='';
 % The sixth column will contain the example what starts just after
 % string  Data Types -
 
-listInpArgs=cell(length(nTOTargin),6);
+listInpArgs=cell(nTOTargin,6);
 
 for i=1:nTOTargin
     
     % Name of the input argument (just one word)
     inpi=listargins{i};
     listInpArgs{i,1}=inpi;
-    
     
     insel=regexp(fstring,'Required input arguments:');
     if isempty(insel)
@@ -1433,6 +1432,12 @@ for i=1:nTOTargin
     % The endpoint of the substring is See also or the next optional input argument
     if i <nREQargin
         endpoint=regexp(fstringsel,['%\s*' listargins{i+1} '\s*:']);
+        if isempty(endpoint)
+            disp('Please check .m input file')
+            error('FSDA:missInps',['Input .m file does not contain the description' ...
+                ' for input argument '''  listargins{i+1} ''''])
+        end
+        
     elseif i==nREQargin
         endpoint=regexp(fstringsel,'Optional input arguments:');
         if isempty(endpoint)
@@ -1441,6 +1446,12 @@ for i=1:nTOTargin
         end
     elseif i<nTOTargin
         endpoint=regexp(fstringsel,['%\s*' listargins{i+1} '\s*:']);
+        if isempty(endpoint)
+            disp('Please check .m input file')
+            error('FSDA:missInps',['Input .m file does not contain the description' ...
+                ' for input argument '''  listargins{i+1} ''''])
+        end
+        
     else
         endpoint=regexp(fstringsel,'Output:');
         if isempty(endpoint)
@@ -1571,15 +1582,15 @@ for i=1:nTOTargin
                 examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
                 listInpArgs{i,5}=strtrim(examplecode);
                 listInpArgs{i,6}=descrlong(Datatypes+13:end);
-                
+                jins=6;
                 
             else
                 listInpArgs{i,4}=descrlong;
                 warning('FSDA:publishFS:MissingExample',['Optional input argument ''' inpi ''' does not contain an Example'])
+                jins=5;
                 
             end
             
-            jins=5;
         end
     end
     
@@ -2048,6 +2059,11 @@ else
     
     endref=min(inipointAcknowledgements,inipointCopyright);
     
+   if isempty(endref)
+        disp('Please check .m input file')
+        error('FSDA:missOuts','Input .m file does not contain ''Copyright'' string')
+    end
+
     % stringsel = block of test which contains the references
     fstringsel=fstring(iniref(1)+1:endref(1)-1);
     

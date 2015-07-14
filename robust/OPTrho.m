@@ -1,4 +1,4 @@
-function rhoOPT=OPTrho(x, c)
+function rhoOPT=OPTrho(u, c)
 %OPTrho computes rho function for optimal weight function
 %
 %<a href="matlab: docsearchFS('optrho')">Link to the help function</a>
@@ -26,7 +26,7 @@ function rhoOPT=OPTrho(x, c)
 %               |
 %               |   1                                                                      |x|>3c                              
 %
-% References:
+% 
 %
 %  Remark: Yohai and Zamar (1997)  showed that the \rho function given above
 %  is optimal in the following highly desirable sense: the final M estimate
@@ -69,16 +69,16 @@ ylabel('$\rho (x)$','Interpreter','Latex')
 %% Beginning of code
 
 
-rhoOPT = ones(length(x),1);
-absx=abs(x);
+rhoOPT = ones(length(u),1);
+absx=abs(u);
 
 % x^2/2 /(3.25c^2) if x <=2*c
 inds1 = absx <= 2*c;
-rhoOPT(inds1) = x(inds1).^2 / 2 / (3.25*c^2);
+rhoOPT(inds1) = u(inds1).^2 / 2 / (3.25*c^2);
 
 % 1/(3.25) * ( 1.792 .... +0.002 (r/c)^8 )    if    2c< |x| <3c
 inds1 = (absx > 2*c)&(absx <= 3*c);
-x1 = x(inds1);
+x1 = u(inds1);
 rhoOPT(inds1) = (1.792 - 0.972 * x1.^2 / c^2 + 0.432 * x1.^4 / c^4 - 0.052 * x1.^6 / c^6 + 0.002 * x1.^8 / c^8) / 3.25;
 
 % 1 if r >3*c

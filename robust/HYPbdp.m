@@ -1,4 +1,4 @@
-function [c,A,B,d] = HYPbdp(bdp, ~,k,traceiter)
+function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 %HYPbdp finds constant c which is associated to the requested breakdown
 %point for hyperbolic estimator
 %
@@ -6,42 +6,67 @@ function [c,A,B,d] = HYPbdp(bdp, ~,k,traceiter)
 %
 %  Required input arguments:
 %
-%      bdp    : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%        p    : scalar, number of response variables (e.g. in regression p=1)  
+%      bdp    : requested breakdown point. Scalar.
+%               Scalar defining breakdown point (i.e a number between 0 and
+%               0.5)
+%               Data Types - single|double
+%        v    : number of response variables. Scalar.
+%               (e.g. in regression p=1) 
+%               Data Types - single|double|int32|int64
 %
-%TODO:HYPbdp:pgreat1
+%
 %
 %  Optional input arguments:
 %
-%   k        : supremum of the change of variance curve
-%              supCVC(psi,x) x \in R
-%              Default value is k=4.5
-%  traceiter : scalar. If traceiter = 1 it is possible to monitor
+%   k        : supremum of the change of variance curve. Scalar.
+%              $\sup CVC(psi,x) x \in R$.
+%              Default value is k=4.5.
+%                 Example - 'k',5
+%                 Data Types - double
+%  traceiter : Level of display. Scalar.
+%               If traceiter = 1 it is possible to monitor
 %              how the value of the objective function E(rho)/\rho(\infty)
 %              gets closer to the target (bdp) during the iterations
-%
+%               Example - 'traceiter',0
+%               Data Types - single|double|int32|int64
 % Output:
 %
-%  c,A,B,d = scalars associated to the nominal requested breakdown point to be
-%  inserted in the hyperbolic tangent estimator
-%  For example, inside function psi (derivative of rho)  we have
+%  c    : parameter c of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%   A   : parameter A of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%   B   : parameter B of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
+%   d   : parameter d of hyperbolic tangent estimator. Scalar.
+%         For more details see the  methodological details inside "More
+%         About" below
 %
-% HYPpsi(u) = 	{ u,			                               |u| <= d,
-%               {
-%		        { \sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)*(c -|u|)/2) .* sign(u)
-%		        { 	                 d <= |u| <  c,
-%               {
-%		        { 0,			                         |u| >= c.
+% More About:
 %
-%	It is necessary to have 0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1
+%  \[
+%   HYPpsi(u) =
+% \left\{
+%   \begin{array}{cc}
+%  	 u &        |u| \leq  d \\
+%                  \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &
+% 		         	                 d \leq |u| <  c, \\
+%                 0 &                      |u| \geq c.
+% \end{array}
+%    \right.
+%  \]
+%  	It is necessary to have $0 < A < B < 2 normcdf(c)-1- 2 c \times normpdf(c) <1$
 %
 %
+% See also TBbdp, HAbdp, OPTbdp
 %
 %
 % References:
 %
 %
-% Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),
+% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
@@ -133,59 +158,61 @@ c=2.3;
 step=3;
 
 % Convergence condition is E(\rho) = \rho(c) bdp
-%  where \rho(c) for TBW is c^2/6
+%  where \rho(c) 
 Erho1=10;
 
-p=1;
-
-eps=1e-7;
-iter=0;
-while abs(Erho1-1)>eps
-    % Find value of A, B and d given c and k
-    [A,B,d]=HYPck(c,k);
-    
-    iter=iter+1;
-    
-    if iter==80
-        disp(['Effective tolerance in routine HYPbdp=' num2str(abs(Erho1-1))])
-        break
+if v==1
+    eps=1e-7;
+    iter=0;
+    while abs(Erho1-1)>eps
+        % Find value of A, B and d given c and k
+        [A,B,d]=HYPck(c,k);
+        
+        iter=iter+1;
+        
+        if iter==80
+            disp(['Effective tolerance in routine HYPbdp=' num2str(abs(Erho1-1))])
+            break
+        end
+        
+        c2=c.^2/2;
+        Erhoa= v*gammainc(d.^2/2,0.5*(v+2))/2;
+        
+        % Erhoa is also equal to
+        % tmpu=@(u) (u.^2) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
+        % integral(@(u)tmpu(u),-d,d)/2
+        
+        % Rho function inside interval d----c
+        rhodc = @(u,c,A,B,k) -2*(A/B) * log(cosh(0.5*sqrt((k - 1) * B^2/A)...
+            *(c - u))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
+        
+        Erhob= 2*integral(@(u)rhodc(u,c,A,B,k),d,c)...
+            +(d^2/2 + 2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d))))*(gammainc(c2,0.5*v)-gammainc(d.^2/2,0.5*v));
+        
+        rhoc=d^2/2 +2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d)));
+        Erhoc=rhoc*(1-gammainc(c2,0.5*v));
+        
+        % Eho = E [ rho]
+        Erho= Erhoa+Erhob+Erhoc;
+        
+        Erho1=Erho/(rhoc*bdp);
+        
+        if traceiter==1
+            disp([iter c Erho/rhoc])
+        end
+        
+        step=step/2;
+        if Erho1>1
+            c=c+step;
+        else
+            % 1.7 is the value which usually guarantes a breakdown point greater
+            % than 0.5
+            c=max(c-step,1.7);
+        end
+        % disp([step c Erho1 iter])
     end
-    
-    c2=c.^2/2;
-    Erhoa= p*gammainc(d.^2/2,0.5*(p+2))/2;
-    
-    % Erhoa is also equal to
-    % tmpu=@(u) (u.^2) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
-    % integral(@(u)tmpu(u),-d,d)/2
-    
-    % Rho function inside interval d----c
-    rhodc = @(u,c,A,B,k) -2*(A/B) * log(cosh(0.5*sqrt((k - 1) * B^2/A)...
-        *(c - u))) .*(1/sqrt(2*pi)).*exp(-0.5*u.^2);
-    
-    Erhob= 2*integral(@(u)rhodc(u,c,A,B,k),d,c)...
-        +(d^2/2 + 2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d))))*(gammainc(c2,0.5*p)-gammainc(d.^2/2,0.5*p));
-    
-    rhoc=d^2/2 +2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d)));
-    Erhoc=rhoc*(1-gammainc(c2,0.5*p));
-    
-    % Eho = E [ rho]
-    Erho= Erhoa+Erhob+Erhoc;
-    
-    Erho1=Erho/(rhoc*bdp);
-    
-    if traceiter==1
-        disp([iter c Erho/rhoc])
-    end
-    
-    step=step/2;
-    if Erho1>1
-        c=c+step;
-    else
-        % 1.7 is the value which usually guarantes a breakdown point greater
-        % than 0.5
-        c=max(c-step,1.7);
-    end
-    % disp([step c Erho1 iter])
+else
+    error('FSDA:HYPeff:Wrongv','Not yet implemented for v>1')
 end
 
 end

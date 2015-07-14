@@ -3,9 +3,9 @@ function ceff = HAeff(eff,v,abc)
 %
 %  Required input arguments:
 %
-%    eff:       efficiency. Scalar.  Scalar which contains the required efficiency (of location
-%               or scale estimator).
-%               Generally eff=0.85, 0.9 or 0.95
+%    eff:       efficiency. Scalar.  Scalar which contains the required
+%               efficiency (of location or scale estimator).
+%               Generally eff=0.85, 0.9 or 0.95.
 %    v :        number of response variables. Scalar. Number of variables of
 %               the  dataset (for regression v=1)
 %               UP TO NOW v=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE

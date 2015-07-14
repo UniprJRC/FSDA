@@ -4,35 +4,52 @@ function w = TBwei(u,c)
 %<a href="matlab: docsearchFS('tbwei')">Link to the help function</a>
 %
 %
+% Required input arguments:
 %
-%  Required input arguments:
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
+%               for the n units of the sample
+%    c :        tuning parameters. Scalar. Scalar greater than 0 which
+%               controls the robustness/efficiency of the estimator
+%               (beta in regression or mu in the location case ...) 
 %
-%    u :         n x 1 vector containing residuals or Mahalanobis distances
-%                for the n units of the sample
-%    c :         scalar greater than 0 which controls the robustness/efficiency of the estimator 
-%                (beta in regression or mu in the location case ...) 
+%  Optional input arguments:
 %
 %  Output:
 %
-%    w :         n x 1 vector contains the Tukey's biweight weights associated to the residuals or
-%                Mahalanobis distances for the n units of the sample
+%    w :         n x 1 vector which contains the Tukey's biweight weights
+%                associated to the scaled residuals or Mahalanobis
+%                distances for the n units of the sample.
+%
+% More About:
 %
 % Function TBwei transforms vector u as follows 
-% TBwei(u)=
-% (c^2/6) psi(u)/u = (c^2/6) [ 1-(u/c)]^2 if |u/k|<=1 0 otherwise
+% \[
+% TBwei(u)= \left\{
+%    \begin{array}{cc}
+%  (c^2/6) psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 if |u/c| \leq 1 \\
+%  0                     &  |u/c|>1   \\
+% \end{array}
+%    \right.
+%  \]
+%
 % See p. 30 of Maronna et al. (2006)
 %
 %
 % Remark: Tukey's biweight  psi-function is almost linear around u = 0 in accordance with
 % Winsor's principle that all distributions are normal in the middle.
-% This means that  \psi (u)/u is approximately constant over the linear region of \psi,
+% This means that  $\psi (u)/u$ is approximately constant over the linear region of \psi,
 % so the points in that region tend to get equal weight.
 %
+% See also HYPwei, HAwei, OPTwei
 %
 % References:
 %
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
 % and Methods, Wiley, New York.
+% Riani M., Cerioli A., Torti F. (2014). On consistency factors and
+% efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
+% DOI: 10.1007/s11749-014-0357-7
 %
 %
 % Copyright 2008-2015.

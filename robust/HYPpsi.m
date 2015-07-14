@@ -5,21 +5,26 @@ function psiHYP = HYPpsi(u, cktuning)
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    cktuning :  vector of length 2 or of length 5 which specifies the value of the tuning
+%    cktuning :  tuning parameters. Vector of length 2 or of length 5.
+%                cktuning specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed value k (sup of the
 %                change-of-variance sensitivity) and the values of
-%                parameters A, B and d
-%                cktuning(1) = c
-%                cktuning(2) = k = supCVC(psi,x) x \in R
+%                parameters A, B and d.
+%                cktuning(1) = c;
+%                cktuning(2) = k = supCVC(psi,x) x \in R;
 %                cktuning(3)=A;
 %                cktuning(4)=B;
 %                cktuning(5)=d;
-%                Remark: if length(cktuning)==2 values of A, B and d will be
+%                Remark - if length(cktuning)==2 values of A, B and d will be
 %                computed automatically
+%
+%  Optional input arguments:
+%
 %
 %
 %  Output:
@@ -29,27 +34,34 @@ function psiHYP = HYPpsi(u, cktuning)
 %                function associated to the residuals or Mahalanobis
 %                distances for the n units of the sample
 %
-% Remark: function HYPpsi transforms vector u as follows
+% More About:
 %
-% HYPpsi(u) = 	{ u,			                               |u| <= d,
-%               {
-%		        { \sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)*(c -|u|)/2) .* sign(u)
-%		        { 	                 d <= |u| <  c,
-%               {
-%		        { 0,			                         |u| >= c.
+% Function HYPpsi transforms vector u as follows
 %
-%	It is necessary to have 0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1
+%  \[
+%   HYPpsi(u) = 
+% \left\{
+%   \begin{array}{cc}
+%  	 u &        |u| \leq  d \\
+%                  \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &
+% 		         	                 d \leq |u| <  c, \\
+%                 0 &                      |u| \geq c.
+% \end{array}
+%    \right.
+%  \]
+%  	It is necessary to have $0 < A < B < 2 normcdf(c)-1- 2 c \times normpdf(c) <1$
 %
-%
+% See also TBpsi, HApsi, OPTpsi
 %
 %
 % References:
 %
-%
-% Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),
+% Hampel F.R., Rousseeuw P.J. and Ronchetti E. (1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
+% Riani M., Cerioli A., Atkinson A.C., Perrotta D.  (2014). Monitoring
+% Robust Regression. Electronic Journal of Statistics, Vol. 8 pp.  646-677
 %
 % Copyright 2008-2015.
 % Written by FSDA team

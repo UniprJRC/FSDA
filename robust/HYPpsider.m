@@ -1,45 +1,65 @@
 function psiHYPder = HYPpsider(u, cktuning)
 %HYPpsider computes derivative of psi function for hyperbolic tangent estimator
 %
-%<a href="matlab: docsearchFS('hyppsider')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HYPpsider')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%  Required input arguments:
+%
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    cktuning :  vector of length 2 or of length 5 which specifies the value of the tuning
+%    cktuning :  tuning parameters. Vector of length 2 or of length 5.
+%                cktuning specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed value k (sup of the
 %                change-of-variance sensitivity) and the values of
-%                parameters A, B and d
-%                cktuning(1) = c
-%                cktuning(2) = k = supCVC(psi,x) x \in R
+%                parameters A, B and d.
+%                cktuning(1) = c;
+%                cktuning(2) = k = supCVC(psi,x) x \in R;
 %                cktuning(3)=A;
 %                cktuning(4)=B;
 %                cktuning(5)=d;
-%                Remark: if length(cktuning)==2 values of A, B and d will be
+%                Remark - if length(cktuning)==2 values of A, B and d will be
 %                computed automatically
+%
+%  Optional input arguments:
+%
+%  Output:
+%
+%
+%   psiHYPder :  n x 1 vector which contains the values of hyperbolic
+%                psi'(u) function associated to the residuals or Mahalanobis
+%                distances for the n units of the sample.
+%
+%
+% More About:
 %
 %
 % Function HYPpsi transforms vector u as follows
 %
-% HYPpsider(u)= { 1			                               |u| <= d,
-%               {
-%		        { 0.5*B*(1-k) * ( 1/cosh(sqrt((k - 1) * B^2/A)*(c -|u|)/2)  )^2
-%		        { 	                 d <= |u| <  c,
-%               {
-%		        { 0,			                         |u| >= c.
+%  \[
+%   HYPpsider(u)=
+%   \left\{
+%    \begin{array}{cc}
+%    1		&	                               |u| \leq  d, \\
+%     0.5 B (1-k)  \left( 1/\cosh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right)^2 \right) &     d \leq |u| <  c, \\
+%                 0 &                       |u| \geq c.
+% \end{array}
+%    \right.
+%  \]
+%  	It is necessary to have $0 < A < B < 2 normcdf(c)-1- 2 c normpdf(c) <1$
 %
-%	It is necessary to have 0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1
 %
 %
-%
+% See also TBpsider, HApsider, OPTpsider
 %
 % References:
 %
 %
-% Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),
+% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)

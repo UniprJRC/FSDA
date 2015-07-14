@@ -5,26 +5,39 @@ function rhoTB = TBrho(u,c)
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator 
+%    c :        tuning parameters. Scalar. Scalar greater than 0 which
+%               controls the robustness/efficiency of the estimator
 %               (beta in regression or mu in the location case ...) 
+%
+%  Optional input arguments:
+%
 %
 %  Output:
 %
 %
 %   rhoTB :      n x 1 vector which contains the Tukey's biweight rho
 %                associated to the residuals or Mahalanobis distances for
-%                the n units of the sample
+%                the n units of the sample.
+%
+% More About:
 %
 %
-% Remark: function TBrho transforms vector u as follows 
-% TBrho(u)=
-% (c^2/6)*{ 1-[1-(u/c)^2]^3 }   if |u/c|<=1 
-% (c^2/6)                       if |u/c|>1
-% See equation (2.37) p. 29 of Maronna et al. (2006)
+% function TBrho transforms vector u as follows 
+% \[
+% TBrho(u)= \left\{
+%    \begin{array}{cc}
+%  (c^2/6)*\left\{ 1-[1-(u/c)^2]^3 \right\}  &  |u/c| \leq 1  \\
+%  (c^2/6)                      &  |u/c| >1   \\
+% \end{array}
+%    \right.
+%  \]
+%  
+% See equation (2.37) p. 29 of Maronna et al. (2006).
 % Remark: equation (2.37) is written in standardized terms in such a way
-% that \rho(c)=1, so it is the previous expression divided by (c^2/6)
+% that $\rho(c)=1$, so it is the previous expression divided by $(c^2/6)$
 %
 % See also HYPrho, HArho, OPTrho
 %
@@ -33,7 +46,7 @@ function rhoTB = TBrho(u,c)
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
 % and Methods, Wiley, New York.
 % Riani M., Cerioli A., Torti F. (2014). On consistency factors and
-% efficiency of robust S-estimators TEST, Volume 23, Issue 2, pp 356-387.
+% efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
 % DOI: 10.1007/s11749-014-0357-7
 %
 % Copyright 2008-2015.

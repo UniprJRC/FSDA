@@ -1,4 +1,4 @@
-function [bdp,eff] = HAc(ctun,p,varargin)
+function [bdp,eff] = HAc(ctun,v,varargin)
 %HAc computes breakdown point and efficiency associated with constant c 
 %
 %<a href="matlab: docsearchFS('HAc')">Link to the help function</a>
@@ -9,9 +9,9 @@ function [bdp,eff] = HAc(ctun,p,varargin)
 %
 %    ctun :     tuning constant c. Scalar. Scalar greater than 0 which
 %               controls the robustness/efficiency of the estimator
-%    p :        number of response variables. Scalar. Number of variables of
-%               the  dataset (for regression p=1)
-%               UP TO NOW p=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE
+%    v :        number of response variables. Scalar. Number of variables of
+%               the  dataset (for regression v=1)
+%               UP TO NOW v=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE
 %               ANALYSIS
 %
 %  Optional input arguments:
@@ -36,6 +36,7 @@ function [bdp,eff] = HAc(ctun,p,varargin)
 %                 value of c for Hampel rho function 
 %
 % More About:
+%
 % Function HApsi transforms vector u as follows.
 %  \[
 %  HApsi(u)  = \left\{   
@@ -58,7 +59,7 @@ function [bdp,eff] = HAc(ctun,p,varargin)
 %
 %	It is necessary to have 0 <= a <= b <= c
 %
-% See also: HYPc, TB, OPTc
+% See also: HYPc, TBc, OPTc
 %
 % References:
 %
@@ -153,7 +154,7 @@ phic=a*b-0.5*a^2+0.5*(c-b)*a;
 
 % |u| <a
 % Erhoa=  \int_-a^a u^2/2
-Erhoa=0.5*p*gammainc(a2,(p+2)/2);
+Erhoa=0.5*v*gammainc(a2,(v+2)/2);
 % rhoa = @(u,a,b,c)(0.5*u.^2.*(1/sqrt(2*pi)).*exp(-0.5*u.^2));
 % Erhoack=integral(@(u)rhoa(u,a,b,c),-a,a);
 
@@ -166,14 +167,14 @@ Erhoab=2*a*(normpdf(a)-normpdf(b))-a^2*(normcdf(b)-normcdf(a));
 % b< |u| <c
 % Erhobc = \int_b^c \rho(x) \Phi(x)
 Erhobc1=2*(a*b-0.5*a^2+0.5*(c-b)*a*(1 -c^2/((c-b)^2)))*(normcdf(c)-normcdf(b));
-Erhobc2=0.5*a*p*(gammainc(b2,(p+2)/2) -gammainc(c2,(p+2)/2)) /(c-b);
+Erhobc2=0.5*a*v*(gammainc(b2,(v+2)/2) -gammainc(c2,(v+2)/2)) /(c-b);
 Erhobc3=2*a*c*(normpdf(b)-normpdf(c))/(c-b);
 Erhobc=Erhobc1+Erhobc2+Erhobc3;
 
 
 
 % |u| >c
-Erhoc=phic*( 1-gammainc(c2,p/2) );
+Erhoc=phic*( 1-gammainc(c2,v/2) );
 
 
 Erho= Erhoa+Erhoab+Erhobc+Erhoc;
@@ -184,14 +185,14 @@ bdp=Erho/phic;
 
 % bet  = \int  \psi'(x) d \Phi(x)
 % bet = \int_-a^a d \Phi(x) +2* \int_b^c -a/(c-b)
-bet= gammainc(a2,p/2)+(gammainc(b2,p/2)-gammainc(c2,p/2))*a/(c-b);
+bet= gammainc(a2,v/2)+(gammainc(b2,v/2)-gammainc(c2,v/2))*a/(c-b);
 
 % alph = \int \psi^2(x) d \Phi(x)
-alph= p*gammainc(a2,(p+2)/2)...                                        % 2* \int_0^a x^2 f(x) dx
-    +a.^2 .*(gammainc(b2,p/2)-gammainc(a2,p/2))...                     % 2* a^2 \int_a^b f(x) dx
-    +(a./(c-b)).^2 .*(c.^2.*(gammainc(c2,p/2)-gammainc(b2,p/2)) ...    %(a./(c-b)).^2 (2 c^2 \int_b^c f(x) dx
-    + p*(gammainc(c2,(p+2)/2)-gammainc(b2,(p+2)/2)) ...                %   + 2*  \int_b^c x^2 f(x) dx
-    -2*c*p*sqrt(2/pi)*(gammainc(c2,(p+1)/2)-gammainc(b2,(p+1)/2)));        % +2 *2* \int_b^c |x| f(x)
+alph= v*gammainc(a2,(v+2)/2)...                                        % 2* \int_0^a x^2 f(x) dx
+    +a.^2 .*(gammainc(b2,v/2)-gammainc(a2,v/2))...                     % 2* a^2 \int_a^b f(x) dx
+    +(a./(c-b)).^2 .*(c.^2.*(gammainc(c2,v/2)-gammainc(b2,v/2)) ...    %(a./(c-b)).^2 (2 c^2 \int_b^c f(x) dx
+    + v*(gammainc(c2,(v+2)/2)-gammainc(b2,(v+2)/2)) ...                %   + 2*  \int_b^c x^2 f(x) dx
+    -2*c*v*sqrt(2/pi)*(gammainc(c2,(v+1)/2)-gammainc(b2,(v+1)/2)));        % +2 *2* \int_b^c |x| f(x)
 
 
 % Remark: if v=1

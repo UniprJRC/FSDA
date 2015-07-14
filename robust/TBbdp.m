@@ -1,4 +1,4 @@
-function c = TBbdp(bdp,p)
+function c = TBbdp(bdp,v)
 %TBbdp finds the constant c associated to the supplied breakdown point for Tukey's biweight
 % The constant is found through a dichotomic search
 %
@@ -7,12 +7,26 @@ function c = TBbdp(bdp,p)
 %
 %  Required input arguments:
 %
-%      bdp    : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%        p    : number of response variables (e.g. in regression p=1) 
+%      bdp    : breakdown point. Scalar. Scalar defining breakdown point
+%               (i.e a number between 0 and 0.5)
+%               Data Types - single|double
+%        v    : number of response variables. Scalar. e.g. in regression p=1
+%               Data Types - single|double|int32|int64
+%
+%  Optional input arguments:
 %
 % Output:
 %
-%  c = scalar of Tukey Biweight associated to that particular breakdown point
+%  c : Requested tuning constant. Scalar. Tuning constatnt of Tukey Biweight
+%         function associated to requested breakdown point
+%
+%
+% See also: OPTbdp, HYPbdp, HAbdp
+%
+% References:
+% 
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -48,8 +62,8 @@ eps=1e-11;
 while abs(Erho1-1)>eps
     
     c2=c.^2/2;
-    Erho= (p*gammainc(c2,0.5*(p+2))/2-(p^2+2*p)*gammainc(c2,0.5*(p+4))./(4*c2)+...
-        +(p^3+6*p^2+8*p)*gammainc(c2,0.5*(p+6))./(6*(c.^4))+ ((c.^2)/6).*(1-gammainc(c2,p/2))  );
+    Erho= (v*gammainc(c2,0.5*(v+2))/2-(v^2+2*v)*gammainc(c2,0.5*(v+4))./(4*c2)+...
+        +(v^3+6*v^2+8*v)*gammainc(c2,0.5*(v+6))./(6*(c.^4))+ ((c.^2)/6).*(1-gammainc(c2,v/2))  );
     Erho1=(Erho./(c.^2))*(6/bdp);
     
     step=step/2;

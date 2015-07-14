@@ -1,4 +1,4 @@
-function ceff = TBeff(eff,p,varargin)
+function ceff = TBeff(eff,v,varargin)
 %Tbeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
 %
 %
@@ -8,24 +8,40 @@ function ceff = TBeff(eff,p,varargin)
 %
 %  Required input arguments:
 %
-%    eff:       scalar which contains the required efficiency (of location
-%               of scale estimator)
+%    eff:       required efficienty. Scalar.
+%               Scalar which contains the required efficiency (of location
+%               or scale estimator).
+%               Data Types - single|double
 %               Generally eff=0.85, 0.9 or 0.95
-%    p :        scalar, number of response variables
+%    v :        Number of response variables. Scalar. e.g. in regression p=1
+%               Data Types - single|double|int32|int64
 %
 %  Optional input arguments:
 %
-%   shapeeff : If 1, the efficiency is referred to shape else (default)
+%   shapeeff : Location or shape efficiency. Scalar.
+%              If 1, the efficiency is referred to shape else (default)
 %              is referred to location
-% approxsheff: If 1, when p > 1 the approximate formula for scale
+%               Example - 'shapeeff',1
+%               Data Types - double
+% approxsheff: approximate or exact calculations. Dummy scalar.
+%              If 1, when p > 1 the approximate formula for scale
 %              efficiency is used else (default) the exact formula of the
 %              variance of the robust estimator of the scale is used
+%               Example - 'approxsheff',1
+%               Data Types - double
 %
 %
 % Output:
 %
-%  c = scalar of Tukey Biweight associated to the nominal (location or
-%  shape) efficiency
+%  ceff : Requested tuning constant. Scalar. Tuning constatnt of Tukey Biweigh rho
+%         function associated to requested value of efficiency
+%
+% See also: OPTeff, HYPeff, HAeff
+%
+% References:
+% 
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -99,9 +115,9 @@ if nargin<=2 || varargin{1} ~=1
     % Convergence condition is 
     %  .......
     empeff=10;
-    p4=(p+4)*(p+2);
-    p6=(p+6)*p4;
-    p8=(p+8)*p6;
+    p4=(v+4)*(v+2);
+    p6=(v+6)*p4;
+    p8=(v+8)*p6;
     
     
     % bet  = \int_{-c}^c  \psi'(x) d \Phi(x)
@@ -111,13 +127,13 @@ if nargin<=2 || varargin{1} ~=1
         
         cs=c.^2/2;
         
-        bet= p4*gammainc(cs,(p+4)/2)./((c.^4)) ...
-            -2*(p+2)*gammainc(cs,(p+2)/2)./(c.^2)+...
-            + gammainc(cs,p/2)  ;
+        bet= p4*gammainc(cs,(v+4)/2)./((c.^4)) ...
+            -2*(v+2)*gammainc(cs,(v+2)/2)./(c.^2)+...
+            + gammainc(cs,v/2)  ;
         
-        alph= p8*gammainc(cs,(p+10)/2)./(c.^8)-4*p6*gammainc(cs,(p+8)/2)./(c.^6)+...
-            6*p4*gammainc(cs,(p+6)/2)./(c.^4)-2*(p+2)*gammainc(cs,(p+4)/2)./cs+...
-            gammainc(cs,(p+2)/2);
+        alph= p8*gammainc(cs,(v+10)/2)./(c.^8)-4*p6*gammainc(cs,(v+8)/2)./(c.^6)+...
+            6*p4*gammainc(cs,(v+6)/2)./(c.^4)-2*(v+2)*gammainc(cs,(v+4)/2)./cs+...
+            gammainc(cs,(v+2)/2);
         empeff=(bet^2)/alph;
         
         step=step/2;
@@ -140,7 +156,7 @@ else
     end
     % constant for second Tukey Biweight rho-function for MM, for fixed shape-efficiency
     % c = starting point of the iteration
-    c=sqrt(chi2inv(eff,p))+7;
+    c=sqrt(chi2inv(eff,v))+7;
     % step = width of the dichotomic search (it decreases by half at each
     % iteration).
     if eff<0.92 && approxsheff==0;
@@ -149,39 +165,39 @@ else
         step=15;
     end
     varrobestsc=10;
-    p4=(p+4);
-    p6=p4*(p+6);
-    p8=p6*(p+8);
-    p10=p8*(p+10);
+    p4=(v+4);
+    p6=p4*(v+6);
+    p8=p6*(v+8);
+    p10=p8*(v+10);
     % alphsc = E[ \psi^2(x) x^2] /{(v(v+2)]^2}
     % betsc =  E [ \psi'(x) x^2+(v+1)  \psi^2(x) x ]/[v(v+2)]
     % res = [var (robust estimator of scale)] = alphsc/(betsc^2)
     while abs(1-eff*varrobestsc)> eps;
         cs=c.^2/2;
-        alphsc = gammainc(cs,(p+4)/2) ...
-            -4*p4*gammainc(cs,(p+6)/2)./(c.^2)+...
-            +6*p6*gammainc(cs,(p+8)/2)./(c.^4)+...
-            -4*p8*gammainc(cs,(p+10)/2)./(c.^6)...
-            +p10*gammainc(cs,(p+12)/2)./(c.^8);
+        alphsc = gammainc(cs,(v+4)/2) ...
+            -4*p4*gammainc(cs,(v+6)/2)./(c.^2)+...
+            +6*p6*gammainc(cs,(v+8)/2)./(c.^4)+...
+            -4*p8*gammainc(cs,(v+10)/2)./(c.^6)...
+            +p10*gammainc(cs,(v+12)/2)./(c.^8);
         
-        betsc= gammainc(cs,(p+2)/2) ...
-            -2*p4*gammainc(cs,(p+4)/2)./(c.^2)+...
-            +p6*gammainc(cs,(p+6)/2)./(c.^4);
+        betsc= gammainc(cs,(v+2)/2) ...
+            -2*p4*gammainc(cs,(v+4)/2)./(c.^2)+...
+            +p6*gammainc(cs,(v+6)/2)./(c.^4);
         
         varrobestsc=alphsc./(betsc.^2);
         
-        if p>1 && approxsheff==0
+        if v>1 && approxsheff==0
             
-            Erho2=p*(p+2)*gammainc(cs,0.5*(p+4))./4-0.5*p*(p+2)*p4*gammainc(cs,0.5*(p+6))./(c.^2)...
-                +(5/12)*p*(p+2)*p6*gammainc(cs,0.5*(p+8))./(c^4)-...
-                -(1/6)*p*(p+2)*p8*gammainc(cs,0.5*(p+10))./(c^6)-...
-                +(1/36)*p*(p+2)*p10*gammainc(cs,0.5*(p+12))./(c^8);
-            Erho= p*gammainc(cs,0.5*(p+2))/2-(p*(p+2))*0.5*gammainc(cs,0.5*(p+4))./(c^2)+...
-                +p*(p+2)*(p+4)*gammainc(cs,0.5*(p+6))./(6*(c.^4))+ (cs.*(1-gammainc(cs,p/2))  );
-            Epsixx= p*gammainc(cs,0.5*(p+2))-2*(p*(p+2))*gammainc(cs,0.5*(p+4))./(c^2)+...
-                +p*(p+2)*(p+4)*gammainc(cs,0.5*(p+6))./(c.^4);
+            Erho2=v*(v+2)*gammainc(cs,0.5*(v+4))./4-0.5*v*(v+2)*p4*gammainc(cs,0.5*(v+6))./(c.^2)...
+                +(5/12)*v*(v+2)*p6*gammainc(cs,0.5*(v+8))./(c^4)-...
+                -(1/6)*v*(v+2)*p8*gammainc(cs,0.5*(v+10))./(c^6)-...
+                +(1/36)*v*(v+2)*p10*gammainc(cs,0.5*(v+12))./(c^8);
+            Erho= v*gammainc(cs,0.5*(v+2))/2-(v*(v+2))*0.5*gammainc(cs,0.5*(v+4))./(c^2)+...
+                +v*(v+2)*(v+4)*gammainc(cs,0.5*(v+6))./(6*(c.^4))+ (cs.*(1-gammainc(cs,v/2))  );
+            Epsixx= v*gammainc(cs,0.5*(v+2))-2*(v*(v+2))*gammainc(cs,0.5*(v+4))./(c^2)+...
+                +v*(v+2)*(v+4)*gammainc(cs,0.5*(v+6))./(c.^4);
             k3=(Erho2-Erho^2)/(Epsixx^2);
-            varrobestsc=((p-1)/p)*varrobestsc+2*k3;
+            varrobestsc=((v-1)/v)*varrobestsc+2*k3;
         end
         
         % disp(1-eff*varrobestsc)
