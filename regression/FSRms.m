@@ -285,6 +285,22 @@ function outms = FSRms(y,X,varargin)
 %}
 
 %{
+%% In order to reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010):
+
+n=length(y);
+fin_step=floor([n*0.1 n*0.02]);
+FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7])
+
+%The figure has slightly changed and certainly there can be some random
+%fluctuations due to the number of subset which have been used to initialize
+%the search for each model. However, The indication of the previous two
+%Figures does not change at all: the values of smallp of 4 or 5 should yield
+%a satisfactory model. For smallp = 4 the best model has the trend, x3 and
+%x7, although the plot shows the values of Cp(m) increasing towards the end
+%of the search. By far the most stable model for smallp= 5 adds x2 to these
+%variables.
+%}
+%{
     % Considering all submodels.
     % Perform robust model selection and show the generalized candlestick
     % plot considering all submodels for each smallp from 2 to size(X).

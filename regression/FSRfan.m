@@ -190,8 +190,11 @@ function [out]=FSRfan(y,X,varargin)
     XX=load('wool.txt');
     y=XX(:,end);
     X=XX(:,1:end-1);
+% Function FSRfan stores the score test statistic. 
+% In this case we use the five most common values of lambda are considered
     [out]=FSRfan(y,X);
     fanplot(out);
+%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.
 %}
 
 %{
@@ -241,8 +244,18 @@ function [out]=FSRfan(y,X,varargin)
     y=XX(:,end);
     nameX={'Number of visits', 'Age', 'Number of persons in the family'};
     X=XX(:,1:end-1);
+    % la = vector contanining the most common values of the transformation
+    % parameter
     la=[0 1/3 0.4 0.5];
+    % Store the score test statistics for the specified values of lambda
+    % and automatically produce the fan plot
     [out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'plots',1,'lwd',3);
+   %The fan plot shows the even if the third root is the best value of the
+   %transformation parameter at the end of the search in earlier steps it
+    %lies very close to the upper rejection region. The best value of the
+    %transformation parameter seems to be the one associated with l=0.4
+    %which is always the confidence bands but at the end of search, due to 
+  %the presence of particular observations it goes below the lower rejection line.
 %}
 
 
