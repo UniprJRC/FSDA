@@ -1282,9 +1282,10 @@ if ~isempty(databrush) || iscell(databrush)
                         set(get(ax,'YLabel'),'String',YLabel);
                         
                     else
-                        % Modify the boxplots generalised to groups Note that instead of using
-                        % ax = AX(i,i); we use AX(end,i); because the last row of AX
-                        % contains the handles to the invisible axes in which the
+                        % Modify the boxplots generalised to groups Note
+                        % that instead of using ax = AX(i,i); we use
+                        % AX(end,i); because the last row of AX contains
+                        % the handles to the invisible axes in which the
                         % histograms or boxplots are plotted
                         ax=AX(end,i);
                         
