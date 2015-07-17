@@ -376,6 +376,24 @@ function publishFS(file,varargin)
 % subfunction formatHTMLwithMATHJAX is even more general because it applies
 % function formatHTML just to the parts of the input string which are not
 % enclosed inside symbols '\[ \]'.
+% -----------------------------------------------------
+% REMARK 8: parser automatically puts an hyperlink every time in the text
+% thre is something which starts with "http:" or every time there is a
+% reference to a .m file. For example the sentence: "More details can be
+% found in routine ncx2mixtcdf.m" is converted as follows.
+% "More details can be found in routine
+% <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>".
+% Similarly, a sentence such as:
+% "The full paper can be donwloaded from http://www.mysite.org"
+% is converted as follows
+% "The full paper can be donwloaded from
+% <a href="http://www.mysite.org">http://www.mysite.org</a>".
+% -----------------------------------------------------
+% REMARK 9: parser ADD comment about
+%
+%
+%
+%
 %
 %
 % Optional input arguments:
@@ -459,8 +477,14 @@ Display='none';
 % Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
 FileWithFullPath=which('docsearchFS.m');
 [pathstr]=fileparts(FileWithFullPath);
-outputDir=[pathstr '\helpfiles\FSDA'];
-imagesDir=[pathstr '\helpfiles\FSDA\images'];
+
+% % Use fileseparator of current operating system
+% % \ = Windows
+% % / = Unix
+% fsep=filesep;
+
+outputDir=[pathstr fsep 'helpfiles' fsep 'FSDA'];
+imagesDir=[pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
 
 if nargin>1
     options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir);
@@ -2059,11 +2083,11 @@ else
     
     endref=min(inipointAcknowledgements,inipointCopyright);
     
-   if isempty(endref)
+    if isempty(endref)
         disp('Please check .m input file')
         error('FSDA:missOuts','Input .m file does not contain ''Copyright'' string')
     end
-
+    
     % stringsel = block of test which contains the references
     fstringsel=fstring(iniref(1)+1:endref(1)-1);
     
@@ -2223,7 +2247,8 @@ fclose(fileID);
 outstring=([titl metacontent sitecont sintaxhtml sintaxclose description  ....
     examples InputArgs outargs Moreabout References Ack Seealso clos insnav insbarra closbody]);
 
-file1ID=fopen([outputDir '\' name 'tmp.html'],'w');
+
+file1ID=fopen([outputDir fsep name 'tmp.html'],'w');
 
 if file1ID==-1
     outputDir=strrep(outputDir,'\','\\');
@@ -2259,10 +2284,12 @@ if evalCode==true
         % created in subfolder tmp of helpfiles and then automatically removed.
         % This subfolder will be added to put for this session
         nametmp=[name 'tmp.m'];
-        fullPathToScript=[pathstr '\helpfiles\FSDA\tmp\' nametmp];
+        fullPathToScript=[pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp' fsep nametmp];
         filetmp=fopen(fullPathToScript,'w');
-        addpath([pathstr '\helpfiles\FSDA\tmp'])
-        addpath([pathstr '\utilities\privateFS'])
+        addpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
+        addpath([pathstr fsep 'utilities' fsep 'privateFS'])
+        %        addpath([pathstr fileseparator '\helpfiles\FSDA\tmp'])
+        %        addpath([pathstr '\utilities\privateFS'])
         
         % Replace < and > HTML symbols with < and >
         ExToExec=strrep(ExToExec,'&lt;','<');
@@ -2401,9 +2428,12 @@ if evalCode==true
         
         close all
         
-        % Remove folder which ahve temporarily added to path
-        rmpath([pathstr '\helpfiles\FSDA\tmp'])
-        rmpath([pathstr '\utilities\privateFS'])
+        % Remove folder which had temporarily added to path
+        %         rmpath([pathstr '\helpfiles\FSDA\tmp'])
+        %         rmpath([pathstr '\utilities\privateFS'])
+        rmpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
+        rmpath([pathstr fsep 'utilities' fsep 'privateFS'])
+        
     end
 end
 
@@ -2479,7 +2509,12 @@ if ~isempty(IniRefhttp)
     for i=1:length(IniRefhttp)
         
         descrHTTPsel=descrHTTP(IniRefhttp(i):end);
-        FinRefhttp(i)=IniRefhttp(i)+regexp(descrHTTPsel,'\s','once');
+        findfirstspace=regexp(descrHTTPsel,'\s','once');
+        if isempty(findfirstspace)
+            FinRefhttp(i)=IniRefhttp(i)+length(descrHTTPsel);
+        else
+            FinRefhttp(i)=IniRefhttp(i)+findfirstspace;
+        end
         
         namehttp=strtrim(descrHTTP(IniRefhttp(i):FinRefhttp(i)-1));
         if strcmp(namehttp(end),'.') || strcmp(namehttp(end),',')
