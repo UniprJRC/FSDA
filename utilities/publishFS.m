@@ -478,10 +478,10 @@ Display='none';
 FileWithFullPath=which('docsearchFS.m');
 [pathstr]=fileparts(FileWithFullPath);
 
-% % Use fileseparator of current operating system
+% % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix
-% fsep=filesep;
+fsep=filesep;
 
 outputDir=[pathstr fsep 'helpfiles' fsep 'FSDA'];
 imagesDir=[pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
@@ -519,7 +519,7 @@ if nargin>1
     end
 end
 
-%% Open input .m file put it in astring a do preliminary operations
+%% Open input .m file, put it in a string and do a series of preliminary operations
 FileWithFullPath=which(file);
 [pathstrcf,name,ext]=fileparts(FileWithFullPath);
 
@@ -723,6 +723,8 @@ if strcmp(Display,'iter-detailed')
     disp('Detailed information about Optional arguments')
     disp(listOptArgs)
 end
+
+%% Add comment about the category of classification of the file
 
 
 
