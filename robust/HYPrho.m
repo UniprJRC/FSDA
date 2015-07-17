@@ -35,23 +35,35 @@ function rhoHYP = HYPrho(u, cktuning)
 %
 % More About:
 %
-%
-% Function HYPrho transforms vector u as follows
+% Hampel et al. (1981) have introduced a rho function which
+% minimizes the asymptotic variance of the regression M-estimate, subject
+% to a bound on the supremum of the Change of Variance Curve of the
+% estimate. This lead to the Hyperbolic Tangent $\rho$
+% function, which, for suitable constants $c$, $k$, $A$, $B$ and
+% $d$, is defined as
+% 
 %
 % \[
 %  HYPrho(u) =
 %  \left\{
 %  \begin{array}{cc}
 %   	 u^2/2 &	        |u| \leq d, \\
-%   d^2/2 -2(A/B) \log( \cosh(0.5 \sqrt{(k - 1)  B^2/A} *(c - |u|))) & \\
-%                          +2(A/B)\log( \cosh(0.5\sqrt{(k - 1)  B^2/A}(c -d))) &  \\		        	
+%   d^2/2 -2 \frac{A}{B} \log  \left\{ \cosh \left[ 0.5 \sqrt{ \frac{(k - 1)  B^2}{A} } (c - |u|) \right] \right\} & \\
+%                          +2 \frac{A}{B}\log \left\{  \cosh \left[ 0.5\sqrt{\frac{(k - 1)  B^2}{A}}(c -d)\right] \right\} &  \\		        	
 %                &                               d \leq |u| <  c, \\
-%                 d^2/2 +2(A/B)\log( \cosh(0.5*\sqrt{(k - 1)  B^2/A}(c -d)))	 &
+%                 d^2/2 +2 \frac{A}{B} \log \left\{ \cosh \left[ 0.5 \sqrt{ \frac{(k - 1)  B^2}{A} }(c -d) \right] \right\}	 &
 %                                                        |u| \geq c. \\
 %   \end{array}
 %   \right.
 % \]
-% 	It is necessary to have $0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1$
+% where $0 < d < c$ is such that
+% \[
+% d = \sqrt{[A(k-1)]}\tanh [\frac{1}{2}\sqrt{\frac{(k-1)B^2}{A}}(c - d)],
+% \]
+% $A$ and $B$ satisfy suitable conditions, and $k$ is related to the bound
+% in the Change of Variance Curve.
+%
+% More precisely, it is necessary to have $0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1$
 %
 % See also TBrho, HArho, OPTrho
 %
@@ -62,7 +74,7 @@ function rhoHYP = HYPrho(u, cktuning)
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
 % Riani M., Cerioli A., Atkinson A.C., Perrotta D.  (2014). Monitoring
-% Robust Regression. Electronic Journal of Statistics, Vol. 8 pp.  646–677
+% Robust Regression. Electronic Journal of Statistics, Vol. 8 pp.  646-677
 %
 % Copyright 2008-2015.
 % Written by FSDA team

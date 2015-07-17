@@ -41,10 +41,10 @@ function rhoHA = HArho(u, ctuning)
 %  \[
 %  HArho(u)  = \left\{   
 %  \begin{array}{cc}
-%    \frac{u^2}{2} & |u| <= a                                       \\
-%    a \times |u| -0.5 a^2 & a <= |u| < b                    \\
-%    ab-0.5a^2+0.5*(c-b)*a(1- \left( \frac{c-|u|}{c-b}\right)^2 )  & b <= |u| <  c \\
-%    ab-0.5a^2+0.5*(c-b)*a & |u| >= c 
+%    \frac{u^2}{2} & |u| \leq a                                       \\
+%    a \times |u| -0.5 a^2 & a \leq |u| < b                    \\
+%    ab-0.5a^2+0.5(c-b)a \left[ 1- \left( \frac{c-|u|}{c-b}\right)^2 \right]  & b \leq |u| <  c \\
+%    ab-0.5a^2+0.5(c-b)a & |u| \geq c 
 %  \end{array} \right.
 % \]
 %

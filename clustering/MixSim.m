@@ -3,66 +3,62 @@ function [out]  = MixSim(k,v,varargin)
 %
 %<a href="matlab: docsearchFS('mixsim')">Link to the help function</a>
 %
-%   MixSim(k,v) generates k groups in v dimensions. It is possible to
-%   control the average and maximum or standard deviation of overlapping.
-%
-%  Background: Given two generic clusters i and j with i ne j =1, ..., k,
-%  indexed by \phi(x; \mu_i,\Sigma_i) and \phi(x; \mu_j,\Sigma_j) with
-%  probabilities of occurrence \pi_i and \pi_j, the misclassification
-%  probability with respect to cluster i (that is conditionally on x
-%  belonging to cluster i,  which is called  w_j|i) is defined as
-%  Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) < \pi_j \phi(x;\mu_j,\Sigma_j)].
-%  The matrix containing the misclassification probabilities w_j|i is
-%  called OmegaMap
-%  The probability of overlapping between groups i and j is given by
-%            w_j|i + w_i|j          i,j=1,2, ..., k
-%  The diagonal elements of OmegaMap are equal to 1.
-%  The average overlap (which in the code is called below BarOmega) is
-%  defined as the sum of the off diagonal elements of OmegaMap (matrix of
-%  misclassification probabilities) divided by 0.5*k*(k-1)
-%  The maximum overlap (which in the code is called MaxOmega) is defined as
-%  max(w_j|i + w_i|j)  i \ne j=1,2, ..., k
-%  The probability of overlapping w_j|i is nothing but the cdf of a linear
-%  combination of non central chi^2 distributions with 1 degree of freedom
-%  + a linear combination of N(0,1) evaluated in a
-%  point c.  The coefficients of the linear combinations of non central
-%  chi^2 and N(0,1) depend on the eigenvalues and eigenvectors of matrix
-%  \Sigma_j|i = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i.
-%  Point c depends on the same eigenvalues and eigenvectors
-%  of matrix \Sigma_j|i, the mixing proportions \pi_i and \pi_j and the
-%  determinants |\Sigma_i| and |\Sigma_j|
-%  This probability is computed using routine ncx2mixtcdf
 %
 %  Required input arguments:
 %
-%            k: scalar, number of groups (components)
-%            v: scalar, number of dimensions (variables).
+%            k: number of groups (components). Scalar.
+%               Desired number of groups.
+%               Data Types - int16|int32|int64|single|double
+%            v: number of dimensions (variables). Scalar.
+%               Desired number of variables.
+%               Data Types - int16|int32|int64|single|double
 %
 %  Optional input arguments:
 %
-%    BarOmega : scalar, value of desired average overlap. The default value is ''
-%    MaxOmega : scalar, value of desired maximum overlap. If BarOmega is empty
-%               the default value of MaxOmega is 0.15
-%    StdOmega : scalar, value of desired standard deviation of overlap.
-%               Remark1: The probability of overlapping between two
-%               clusters i and j (i ne j =1, 2, ..., k), called pij, is defined as the
-%               sum of the two misclassification probabilities
-%               pij=w_{j|i} + w_{i|j}
-%               Remark2: it is possible to specify up to two values among
+%    BarOmega : Requested average overlap. Scalar. Value of desired average
+%               overlap. The default value is ''
+%               Example - 'BarOmega',0.05 
+%               Data Types - double
+%    MaxOmega : Requested maximum overlap. Scalar. Value of desired maximum
+%               overlap. If BarOmega is empty the default value of MaxOmega
+%               is 0.15.
+%               Example - 'MaxOmega',0.05 
+%               Data Types - double
+%    StdOmega : Requested std of overlap. Scalar. Value of desired standard
+%               deviation of overlap.
+%               Remark1 - The probability of overlapping between two
+%               clusters $i$ and $j$, ($i \ne j =1, 2, ..., k$), called
+%               p_{ij}, is defined as the sum of the two misclassification
+%               probabilities
+%               $p_ij=w_{j|i} + w_{i|j}
+%               Remark2- it is possible to specify up to two values among
 %               BarOmega MaxOmega and StdOmega.
-%         sph : scalar boolean which specifies covariance matrix structure
-%               sph=false (default) ==> non-spherical,
-%               sph=true            ==> spherical = const*I
-%         hom : scalar boolean which specifies heterogeneous or homogeneous
-%               clusters
-%               hom=false (default) ==> heterogeneous,
-%               hom=true            ==> homogeneous \Sigma_1 = ... = \Sigma_k
-%         ecc : scalar in the interval (0, 1] which defines maximum eccentricity.
+%               Example - 'StdOmega',0.05 
+%               Data Types - double
+%         sph : Spherical covariances. Scalar boolean. 
+%               Scalar boolean which specifies covariance matrix structure:
+%               sph=false (default) ==> non-spherical;
+%               sph=true            ==> spherical = const*I.
+%               Example - 'sph',false 
+%               Data Types - boolean
+%         hom : Equal Sigmas. Scalar boolean. 
+%               Scalar boolean which specifies heterogeneous or homogeneous
+%               clusters.
+%               hom=false (default) ==> heterogeneous;
+%               hom=true            ==> homogeneous $\Sigma_1 = ... =
+%               \Sigma_k$
+%               Example - 'hom',false 
+%               Data Types - boolean
+%         ecc : maximum eccentricity. Scalar.
+%               Scalar in the interval (0, 1] which defines maximum eccentricity.
 %               For example, if ecc=0.9 (default value), we require for
 %               each group that sqrt(1 - minL / maxL) <= 0.9 where minL and
 %               maxL are respectively the min and max eigenvalue of the cov
 %               matrix of a particular group
-%  restrfactor: scalar in the interval [1 \infty] which specifies the
+%               Example - 'ecc',0.8 
+%               Data Types - double
+%  restrfactor: eigenvalue restriction factor. Scalar. 
+%               Scalar in the interval [1 \infty] which specifies the
 %               maximum ratio to allow between the largest eigenvalue and
 %               the smallest eigenvalue of the k covariance matrices which
 %               are generated. The default value is ''. More in details if for example
@@ -75,44 +71,65 @@ function [out]  = MixSim(k,v,varargin)
 %               and the smallest eigenvalue of the k cov matrices is not
 %               larger than restrfactor. In order to apply this restriction
 %               (which is typical of tclust.m) we call routine restreigen.m
-%       PiLow : scalar, value of the smallest mixing proportion (if 'PiLow'
+%               Example - 'restrfactor',8 
+%               Data Types - double
+%       PiLow : Smallest miximg proportion. Scalar.
+%               Value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
 %               taken; PiLow = 1.0 implies equal proportions by default).
 %               PiLow must be a number in the interval (0 1]. Default value
 %               0.
-%         int : mean vectors are simulated uniformly on a hypercube with
+%               Example - 'PiLow',0.1 
+%               Data Types - double
+%         int : Simulation interval of mean vectors. vector of length 2. 
+%               Mean vectors are simulated uniformly on a hypercube with
 %               sides specified by int = [lower.bound, upper.bound].
-%               The default value of int is [0 1]
-%        resN : maximum number of mixture resimulations to find a
+%               The default value of int is [0 1].
+%               Example - 'int',[0 2] 
+%               Data Types - double
+%        resN : number of simulations. Scalar. 
+%               Maximum number of mixture resimulations to find a
 %               similation setting with prespecified level of overlapping.
 %               The default value of resN is 100
-%         tol : vector of length 2.
+%               Example - 'resN',20 
+%               Data Types - double
+%         tol : Tolerances. Vector of length 2.
 %               tol(1) (which will be called tolmap) specifies
 %               the tolerance between the requested and empirical
 %               misclassification probabilities (default is 1e-06)
 %               tol(2) (which will be called tolnxc2) specifies the
-%               tolerance to use in routine ncx2mixtcdf (which computes cdf
+%               tolerance to use in routine ncx2mixtcdf.m (which computes cdf
 %               of linear combinations of non central chi2 distributions).
-%               The default value of tol(2) 1e-06
-%         lim : maximum number of integration terms to use inside routine
-%               ncx2mixtcdf. Default is 1e06.
-%               REMARK: Optional parameters tolncx2=tol(2) and lim will be
+%               The default value of tol(2) 1e-06.
+%               Example - 'tol',[1e-06 1e-08] 
+%               Data Types - double
+%         lim : Precision in the calculation of probabilities of overlapping.
+%               Scalar. Maximum number of integration terms to use inside routine
+%               ncx2mixtcdf.m. Default is 1e06.
+%               REMARK - Optional parameters tolncx2=tol(2) and lim will be
 %               used by function ncx2mixtcdf.m which computes the cdf of a
 %               linear combination of non central chi2 r.v.. This is the
 %               probability of misclassification
-%     Display : Level of display.
+%               Example - 'lim',1e6 
+%               Data Types - double
+%     Display : Level of display. Character.
 %               'off' displays no output;
 %               'notify' (default) displays output if requested
 %               overlap cannot be reached in a particular simulation
 %               'iter' displays output at each iteration of each
 %               simulation
-%      R_seed : scalar > 0 for the seed to be used to generate random numbers
+%               Example - 'Display','off' 
+%               Data Types - character
+%      R_seed : use random numbers from R. scalar.
+%               If scalar > 0 for the seed to be used to generate random numbers
 %               in a R instance. This is used to check consistency of the
 %               results obtained with the R package MixSim. See file
 %               Connect_Matlab_with_R_HELP.m to know how to connect MATLAB
 %               with R.  This option requires the installation of the
 %               R-(D)COM Interface. Default is 0, i.e. random numbers are
 %               generated by matlab.
+%               Example - 'R_seed',0 
+%               Data Types - double
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -129,65 +146,100 @@ function [out]  = MixSim(k,v,varargin)
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
 %
-%            out.Pi  : vector of length k containing mixing proportions.
+%            out.Pi  = vector of length k containing mixing proportions.
 %                       sum(out.Pi)=1
-%            out.Mu  : k-by-v matrix consisting of components' mean vectors
+%            out.Mu  = k-by-v matrix consisting of components' mean vectors
 %                      Each row of this matrix is a centroid of a group
-%             out.S  : v-by-v-by-k array containing covariances for the k
+%             out.S  = v-by-v-by-k array containing covariances for the k
 %                      groups
-%       out.OmegaMap : matrix of misclassification probabilities (k-by-k);
+%       out.OmegaMap = matrix of misclassification probabilities (k-by-k);
 %                      OmegaMap(i,j) = w_{j|i} is the probability that X
 %                      coming from the i-th component (group) is classified
 %                      to the j-th component.
-%       out.BarOmega : scalar. Value of average overlap.
+%       out.BarOmega = scalar. Value of average overlap.
 %                      BarOmega is computed as
 %                      (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
-%       out.MaxOmega : scalar. Value of maximum overlap. MaxOmega is the
+%       out.MaxOmega = scalar. Value of maximum overlap. MaxOmega is the
 %                       maximum of OmegaMap(i,j)+OmegaMap(j,i)
 %                       (i ~= j)=1, 2, ..., k. In other words MaxOmega=
 %                      OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))
-%       out.StdOmega : scalar. Value of standard deviation (std) of overlap.
+%       out.StdOmega = scalar. Value of standard deviation (std) of overlap.
 %                      StdOmega is the standard deviation of k*(k-1)/2
 %                      probabilities of overlapping
-%         out.rcMax  : vector of length 2. It containes the row and column
+%         out.rcMax  = vector of length 2. It containes the row and column
 %                      numbers associated with  the pair of components
 %                      producing maximum overlap 'MaxOmega'
-%              fail  : scalar, flag value. 0 represents successful mixture
+%          out.fail  = scalar, flag value. 0 represents successful mixture
 %                      generation, 1 represents failure.
 %
-% See also tkmeans, tclust, tclustreg, lga, rlga, ncx2mixtcdf, restreigen
+%  More About:
+%
+%  MixSim(k,v) generates k groups in v dimensions. It is possible to
+%  control the average and maximum or standard deviation of overlapping.
+%
+%  Given two generic clusters $i$ and $j$ with $i \ne j =1, ..., k$,
+%  indexed by $\phi(x; \mu_i,\Sigma_i)$ and $\phi(x; \mu_j,\Sigma_j)$ with
+%  probabilities of occurrence $\pi_i$ and $\pi_j$, the misclassification
+%  probability with respect to cluster $i$ (that is conditionally on $x$
+%  belonging to cluster $i$,  which is called  $w_{j|i}$) is defined as
+%  $Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) < \pi_j \phi(x;\mu_j,\Sigma_j)]$.
+%  The matrix containing the misclassification probabilities $w_{j|i}$ is
+%  called OmegaMap
+%  The probability of overlapping between groups $i$ and $j$ is given by:
+%  \[
+%            w_{j|i} + w_{i|j}    \qquad      i,j=1,2, ..., k
+%  \]
+%  The diagonal elements of OmegaMap are equal to 1.
+%  The average overlap (which in the code is called below BarOmega) is
+%  defined as the sum of the off diagonal elements of OmegaMap (matrix of
+%  misclassification probabilities) divided by 0.5*k*(k-1)
+%  The maximum overlap (which in the code is called MaxOmega) is defined as
+%  $\max(w_{j|i} + w_{i|j}$),  $i \ne j=1,2, ..., k$.
+%  The probability of overlapping $w_{j|i}$ is nothing but the cdf of a linear
+%  combination of non central $\chi^2$ distributions with 1 degree of freedom
+%  + a linear combination of $N(0,1)$ evaluated in a
+%  point c.  The coefficients of the linear combinations of non central
+%  $\chi^2$ and $N(0,1)$ depend on the eigenvalues and eigenvectors of matrix
+%  $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.
+%  Point $c$ depends on the same eigenvalues and eigenvectors
+%  of matrix $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the
+%  determinants $|\Sigma_i|$ and $|\Sigma_j|$.
+%  This probability is computed using routine ncx2mixtcdf.m
+%
+%
+% See also: tkmeans, tclust, tclustreg, lga, rlga, ncx2mixtcdf, restreigen
 %
 % References:
 %
-%   Maitra, R. and Melnykov, V. (2010) Simulating data to study performance
+%   Maitra, R. and Melnykov, V. (2010). Simulating data to study performance
 %   of finite mixture modeling and clustering algorithms, The Journal of
 %   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
 %   this publication we will use "MM2010 JCGS")
 %
-%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012) MixSim: An R Package
+%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package
 %   for Simulating Data to Study Performance of Clustering Algorithms,
 %   Journal of Statistical Software, 51:12, 1-25.
 %
 %   Davies, R. (1980) The distribution of a linear combination of
 %   chi-square random variables, Applied Statistics, 29, 323-333.
 %
-%   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
-%   (2008), A General Trimming Approach to Robust Cluster Analysis. Annals
+%   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008),
+%   A General Trimming Approach to Robust Cluster Analysis. Annals
 %   of Statistics, Vol.36, 1324-1345. Technical Report available at
-%   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+%   http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf .
 %
-%   Reference below documents the problem of the ill-conditioning of the
+%   References below document the problem of the ill-conditioning of the
 %   eigenvalue-eigenvector computation.
 %
-%   Numerische Mathematik, 19. August 1969, Volume 13, Issue 4, pp 293-304
-%   Balancing a matrix for calculation of eigenvalues and eigenvectors
-%   Dr. B. N. Parlett, Dr. C. Reinsch
+%   B. N. Parlett,  C. Reinsch (1969). Balancing a matrix for calculation
+%   of eigenvalues and eigenvectors. Numerische Mathematik, 19.  Volume 13,
+%   Issue 4, pp 293-304
 %
-%  Parlett, B. N. and C. Reinsch, Balancing a Matrix for Calculation of
+%  Parlett, B. N. and C. Reinsch (1971). Balancing a Matrix for Calculation of
 %  Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear
-%  Algebra, 1971,pp. 315-326.
+%  Algebra, pp. 315-326.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
