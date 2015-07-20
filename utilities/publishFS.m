@@ -726,7 +726,28 @@ end
 
 %% Add comment about the category of classification of the file
 
-
+findfsep=strfind(pathstrcf,fsep);
+inifolder=findfsep(end)+1;
+categ=pathstrcf(inifolder:end);
+if strcmp(categ,'combinatorial')
+    FScat='<!--FScategory:Combinatorial-->';
+elseif strcmp(categ,'graphics')
+    FScat='<!--FScategory:Dynamic Statistical Visualization-->';
+elseif strcmp(categ,'multivariate')
+    FScat='<!--FScategory:Robust multivariate analysis and transformations-->';
+elseif strcmp(categ,'utilities')
+    FScat='<!--FScategory:Utilities-->';
+elseif strcmp(categ,'examples')
+    FScat='<!--FScategory:GUIs-->';
+elseif strcmp(categ,'clustering')
+    FScat='<!--FScategory:Clustering-->';
+elseif strcmp(categ,'regression')
+    FScat='<!--FScategory:Robust Regression Analysis and transformations-->';
+elseif strcmp(categ,'modelselection')
+    FScat='<!--FScategory:Robust Model Selection-->';
+else
+    error('Category not found')
+end
 
 %% Add title
 beforetitl=['<!DOCTYPE HTML> \r'  ...
@@ -2518,7 +2539,14 @@ if ~isempty(IniRefhttp)
             FinRefhttp(i)=IniRefhttp(i)+findfirstspace;
         end
         
+        
         namehttp=strtrim(descrHTTP(IniRefhttp(i):FinRefhttp(i)-1));
+        % Make sure you do not select string </p> at the end
+        if strcmp(namehttp(end-3:end),'</p>')
+            namehttp=namehttp(1:end-4);
+        end
+        
+        
         if strcmp(namehttp(end),'.') || strcmp(namehttp(end),',')
             namehttp=namehttp(1:end-1);
         end
@@ -2528,7 +2556,7 @@ if ~isempty(IniRefhttp)
         if i==1 && length(IniRefhttp)==1
             descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
                 '<a href="' namehttp '">' namehttp '</a>'...
-                descrHTTP(FinRefhttp(i)+1:end)];
+                descrHTTP(FinRefhttp(i):end)];
         elseif i==1
             descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
                 '<a href="' namehttp '">' namehttp '</a>'];
@@ -2536,7 +2564,7 @@ if ~isempty(IniRefhttp)
         elseif i==length(IniRefhttp)
             descrHTTPwithref=[descrHTTPwithref descrHTTP(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
                 '<a href="' namehttp '">' namehttp '</a>'...
-                descrHTTP(FinRefhttp(i)+1:end)];
+                descrHTTP(FinRefhttp(i):end)];
         else
             descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
                 '<a href="' namehttp '">' namehttp '</a>'];

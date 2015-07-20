@@ -47,7 +47,7 @@ function rhoTB = TBrho(u,c)
 % and Methods, Wiley, New York.
 % Riani M., Cerioli A., Torti F. (2014). On consistency factors and
 % efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
-% DOI: 10.1007/s11749-014-0357-7
+% http://dx.doi.org/10.1007/s11749-014-0357-7
 %
 % Copyright 2008-2015.
 % Written by FSDA team
