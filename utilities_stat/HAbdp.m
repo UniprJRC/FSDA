@@ -18,7 +18,7 @@ function ctun = HAbdp(bdp,p,abc)
 %     abc     : parameters of Hampel estimator. Vector. Vector of length 3
 %               which contains the parameters of Hampel estimator. If
 %               vector abc is not specified it is set equal to [2, 4, 8]
-%               Example - 'abc',[1.5,3.5,8]
+%               Example - [1.5,3.5,8]
 %               Data Types - double
 %
 % Output:

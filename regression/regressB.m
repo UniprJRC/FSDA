@@ -36,7 +36,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               $(1/\tau_0) (X_0'X_0)^{-1}$.
 %               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$
 %
-%   beta0 :     Prior mean of $\beta$. p-times-1 vector. 
+%   beta0 :     Prior mean of $\beta$. p-times-1 vector.
 %    R    :     Matrix associated with covariance matrix of $\beta$. p-times-p
 %               positive definite matrix.
 %               It can be interpreted as X0'X0 where X0 is a n0 x p
@@ -45,7 +45,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %               The prior distribution of $\tau_0$ is a gamma distribution with
 %               parameters $a_0$ and $b_0$, that is
-%               
+%
 %                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
 %                       \qquad   E(\tau_0)= a_0/b_0               \]
 %
@@ -57,10 +57,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %  Optional input arguments:
 %
-%   intercept : Indicator for constant term. Scalar. 
+%   intercept : Indicator for constant term. Scalar.
 %               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 %      bsb :   units forming subset. Vector.
 %                m x 1 vector.
@@ -158,7 +158,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %    out.Bpval =   p-by-1 vector containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
-%    out.Bhpd  =   p-by-2*length(conflev) matrix. 
+%    out.Bhpd  =   p-by-2*length(conflev) matrix.
 %               1st column =lower bound of HPDI associated with conflev(1).
 %               2st column =upper bound of HPDI associated with conflev(1).
 %               ...
@@ -172,13 +172,15 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               which contains all expl variables except the one associated
 %               with beta0) divided by p(y| model which contains all expl
 %               variables).
+%               Warning: postodds can be computed just if n1>=p
 % out.modelprob =   p-by-1 vector which contains  posterior model probability
-%               of the model which excludes variable j. 
+%               of the model which excludes variable j.
 %               For example if modelprob(j)= 0.28, that is if the
 %               probability of the model which does not contain variable j
 %               is equal to 0.28, it means that there is a 28 per cent
 %               chance that beta_j=0 and a 72 per cent chance that it is
 %               not.
+%               Warning: modelprob can be computed just if n1>=p
 %
 % See also regress.m,
 %
@@ -197,7 +199,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 % Examples:
 
-%{  
+%{
     %% regressB with all default options.
     % Common part to all examples: definition of the prior information.
     rng('default')
@@ -279,7 +281,7 @@ end
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n1,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n1,p] = chkinputRB(y,X,nnargin,vvarargin);
 
 % default arguments values
 bsbini=1:n1;
@@ -421,43 +423,48 @@ if stats==1 && nbsb>0
     % lmarglik = log (y|full model which contains all expl variables)
     lmarglik=logcj + .5*log(det(cRXX1inv)/det(Rinv)) - .5*n0nbsb*log(v1s12);
     
-    
-    % postodds = vector which contains posterior odds for betaj=0
-    % For example the posteriorodd of beta0=0 is p(y| model which contains
-    % all expl variables except the one associated with beta0) divided by
-    % p(y| model which contains all expl variables)
-    postodds=zeros(k,1);
-    seq1k=1:k;
-    for j=seq1k
-        selj=setdiff(seq1k,j);
-        Rj=R(selj,selj);
-        Xbsbj=Xbsb(:,selj);
-        Rinvj=inv(Rj);
-        cRXX1inv=inv(c*Rj+Xbsbj'*Xbsbj);
-        beta0j=beta0(selj);
-        bolsj=Xbsbj\ybsb;
-        resolsj=ybsb-Xbsbj*bolsj;
-        s2j = resolsj'*resolsj/(nbsb-(k-1));
-        v1s12 = n0*s02 + (df+1)*s2j + (bolsj-beta0j)'* ((Rinvj + inv(Xbsbj'*Xbsbj))\(bolsj-beta0j));
-        % v1s12 = v0*s02 + v*s2 + (bols-beta0)'*inv(capv0 + inv(X'*X))*(bols-beta0);
-        logcj=gammaln(.5*n0nbsb) + .5*n0*log(n0*s02)- gammaln(.5*n0) -.5*nbsb*log(pi);
-        % lmarglikj = log of the marginal likelihood for the model
-        % which does not contain variable j
-        % lmarglik = log (y|model which does not contain variable j)
-        lmarglikj=logcj + .5*log(det(cRXX1inv)/det(Rinvj)) - .5*n0nbsb*log(v1s12);
-        postodds(j)=exp(lmarglikj-lmarglik);
-        % Remark: The noninformative choice, p(M_1)=p(M_2)=0.5 is commonly made
-        % where  p(M_1) is the model without variable j and p(M_2) is the
-        % full model with all the explanatory variables
+    if n1>=p
+        % postodds = vector which contains posterior odds for betaj=0
+        % For example the posteriorodd of beta0=0 is p(y| model which contains
+        % all expl variables except the one associated with beta0) divided by
+        % p(y| model which contains all expl variables)
+        postodds=zeros(k,1);
+        seq1k=1:k;
+        for j=seq1k
+            selj=setdiff(seq1k,j);
+            Rj=R(selj,selj);
+            Xbsbj=Xbsb(:,selj);
+            Rinvj=inv(Rj);
+            cRXX1inv=inv(c*Rj+Xbsbj'*Xbsbj);
+            beta0j=beta0(selj);
+            bolsj=Xbsbj\ybsb;
+            resolsj=ybsb-Xbsbj*bolsj;
+            s2j = resolsj'*resolsj/(nbsb-(k-1));
+            v1s12 = n0*s02 + (df+1)*s2j + (bolsj-beta0j)'* ((Rinvj + inv(Xbsbj'*Xbsbj))\(bolsj-beta0j));
+            % v1s12 = v0*s02 + v*s2 + (bols-beta0)'*inv(capv0 + inv(X'*X))*(bols-beta0);
+            logcj=gammaln(.5*n0nbsb) + .5*n0*log(n0*s02)- gammaln(.5*n0) -.5*nbsb*log(pi);
+            % lmarglikj = log of the marginal likelihood for the model
+            % which does not contain variable j
+            % lmarglik = log (y|model which does not contain variable j)
+            lmarglikj=logcj + .5*log(det(cRXX1inv)/det(Rinvj)) - .5*n0nbsb*log(v1s12);
+            postodds(j)=exp(lmarglikj-lmarglik);
+            % Remark: The noninformative choice, p(M_1)=p(M_2)=0.5 is commonly made
+            % where  p(M_1) is the model without variable j and p(M_2) is the
+            % full model with all the explanatory variables
+        end
+        
+        % Remark: in order to obtain the posterior model probabilities for each
+        % restricted model it is enough to do the following calculation
+        % For example if modelprob(j)= 0.28, that is if the probability of the
+        % model which does not contain variable j is equal to 0.28, it means
+        % that there is a 28% chance that beta_j=0 and a 72% chance that it is
+        % not.
+        modelprob = postodds./(1+postodds);
+    else
+        warning('FSDA:regressB:Wrongn1','n1 must not be smaller than p to compute modelprob and postodds.');
+        postodds=NaN(k,1);
+        modelprob=postodds;
     end
-    
-    % Remark: in order to obtain the posterior model probabilities for each
-    % restricted model it is enough to do the following calculation
-    % For example if modelprob(j)= 0.28, that is if the probability of the
-    % model which does not contain variable j is equal to 0.28, it means
-    % that there is a 28% chance that beta_j=0 and a 72% chance that it is
-    % not.
-    modelprob = postodds./(1+postodds);
     
     out=struct;
     out.beta1=beta1;

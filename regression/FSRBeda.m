@@ -33,8 +33,8 @@ function [out] = FSRBeda(y, X, varargin)
 %    bayes    : It specifies prior information. Structure.
 %               A structure which specifies prior information
 %               Strucure bayes contains the following fields
-%               beta0 ( p-times-1 vector containing prior mean of \beta)
-%               R    (p-times-p positive definite matrix which can be
+%               bayes.beta0= ( p-times-1 vector containing prior mean of \beta)
+%               bayes.R  =  (p-times-p positive definite matrix which can be
 %                       interepreted as X0'X0 where X0 is a n0 x p matrix
 %                       coming from previous experiments (assuming that the
 %                       intercept is included in the model)
@@ -78,8 +78,8 @@ function [out] = FSRBeda(y, X, varargin)
 %               Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0. The
-%               controls on h, alpha and nsamp still remain
+%               the intercept is not added. As default nocheck=0. See
+%               routine chkinputRB.m for the details of the operations.
 %               Example - 'nocheck',1 
 %               Data Types - double
 %  conflev:   confidence levels to be used to compute HPDI. Vector.

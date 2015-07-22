@@ -1,13 +1,43 @@
-function addFSDA2path(FSDApath)
+function addFSDA2path(FSroot)
 %Add FSDA toolbox to path
 %
 %  Required input arguments:
 %
-%    FSDA:      A string containing the path which contains the root folder of FSDA toolbox
+%  Optional input arguments:
 %
+%    FSroot:    path of the folder which contains FSDA toolbox. String.
+%               A string containing the path which contains the root folder
+%               of FSDA toolbox.
+%               Example - 'D:\MATLAB\FSDA'   
+%               Data Types - char
+%               
+%  Output:  
+%           
+%   Add a series of folders to the MATLAB search path
 %
-%    REMARK: Remember to save the added folders to path in the MATLAB window
-%    set path, to be able to use FSDA in future sessions
+% More About:
+%
+% Function addFSDA2path adds to path the following subfolders of the main
+% root of FSDA:
+% \regression;
+% \multivariate;
+% \regression;
+% \clustering;
+% \graphics; 
+% \datasets\regression;
+% \datasets\multivariate;
+% \datasets\multivariate_regression;
+% \datasets\clustering
+% \combinatorial;
+% \utilities;
+% \utilities_stat;
+% \examples;
+% \FSDAdemos
+%
+% In order to check that the previous folders have been added to path click
+% on Home|Set Path
+%
+% See also path
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -35,23 +65,21 @@ function addFSDA2path(FSDApath)
 %% Beginning of code
 
 if nargin<1
-    FSDApath= fileparts(which('docsearchFS.m'));
+    FSroot= fileparts(which('docsearchFS.m'));
 end
 
-if ispc ==1
-    addp=[FSDApath ';' FSDApath '\multivariate;'  FSDApath '\regression;',...
-        FSDApath '\datasets\regression;' FSDApath '\datasets\multivariate;', ...
-        FSDApath '\datasets\multivariate_regression;' FSDApath '\graphics;' FSDApath '\utilities;',...
-        FSDApath '\examples;' FSDApath '\robust;' FSDApath '\combinatorial;', ...
-        FSDApath '\clustering;' FSDApath '\datasets\clustering;' FSDApath '\FSDAdemos'];
-else
-    addp=[FSDApath ';' FSDApath '/multivariate;'  FSDApath '/regression;',...
-        FSDApath '/datasets/regression;' FSDApath '/datasets/multivariate;', ...
-        FSDApath '/datasets/multivariate_regression;' FSDApath '/graphics;' FSDApath '/utilities;',...
-        FSDApath '/examples;' FSDApath '/robust;' FSDApath '/combinatorial;', ...
-        FSDApath '/clustering;' FSDApath '/datasets/clustering;' FSDApath '/FSDAdemos'];
-end
-path(addp,path);
+f=filesep;
+
+
+    addp=[FSroot ';' FSroot f 'multivariate;'  FSroot f 'regression;',...
+        FSroot f 'clustering;' FSroot f 'graphics;',... 
+        FSroot f 'datasets' f 'regression;' FSroot f 'datasets' f 'multivariate;', ...
+        FSroot f 'datasets' f 'multivariate_regression;' FSroot f 'datasets' f 'clustering;'
+        FSroot f 'combinatorial;', ...
+        FSroot f 'utilities;' FSroot f 'utilities_stat;' ...
+        FSroot f 'examples;' FSroot f 'FSDAdemos'];
+
+    path(addp,path);
 
 % disp('REMARK: Remember to save the added folders to path in the MATLAB window')
 % disp(['In the menu ' '''Home|Set path''' ' click on the button '  '''Save'''])

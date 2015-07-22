@@ -3,28 +3,54 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
 %
 % Required input arguments:
 %
-% y:            A vector with n elements that contains the response
+% y:            Response variable. Vector.
+%               A vector with n elements that contains the response
 %               variables, possibly with missing values (NaN's) and
 %               infinite values (Inf's).
-% X :           Data matrix of explanatory variables (also called
+% X :           Predictor variables. Matrix.
+%               Data matrix of explanatory variables (also called
 %               'regressors') of dimension (n x p-1), possibly with missing
 %               values (NaN's) and infinite values (Inf's). Rows of X
 %               represent observations, and columns represent variables.
-% nnargin:      The number of input arguments specified for the caller
+% nnargin:      nargin. Scalar. The number of input arguments specified for the caller
 %               function.
-% vvarargin:    The variable length input argument list specified for the
+% vvarargin:    nvarargin. Scalar. The variable length input argument list
+%               specified for the
 %               caller function.
+%
+%
+%  Optional input arguments:
 %
 % Output:
 %
-% y:            The new response variable, with observations (rows) with
+% y:            response without missing and infs. Vector. The new response variable, with observations (rows) with
 %               missing or infinite values excluded.
-% X:            The new matrix of explanatory variables, with missing or
+% X:            Predictor variables without infs and missings. Matrix.
+%               The new matrix of explanatory variables, with missing or
 %               infinite values excluded.
-% n:            Number of rows of X (observations).
-% p:            Number of parameters to be estimated.
+% n:            Number of rows of X (observations). Scalar.  Number of
+%               rows after listwise exclusion.
+% p:            Number of columns of X (variables). Scalar.
+%               Number of parameters to be estimated.
 %
-% See also
+%
+% More About:
+%
+% This routines preforms the following operations:
+% 1) If y is a row vector it is transformed in a column vector;
+% 2) Checks that X is a 2-dimensional array;
+% 3) Checks dimension consistency of X and y;
+% 4) Removes observations with missing or infinite values from X or y
+% (listwise exclusion);
+% 5) Adds to matrix X a column of ones if option intercept is 1;
+% 6) Checks if there are constant columns in matrix X. In other words, if
+% Xj is a generic column of X (excluding the column which contains the
+% intercept) it removes it if max(Xj)=min(Xj) and produces a warning.
+% 7) Computes final values of n and p after previous operations;
+% 8) Makes sure than n>=p;
+% 9) Makes sure that new X is full rank
+%
+% See also chkinputRB
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -58,7 +84,7 @@ if nnargin > stdargin
     
     % chkint is the position of the option intercept in vector chklist
     % chkint = strmatch('intercept',chklist,'exact');
-    chkint = find(strcmpi('intercept',chklist)); 
+    chkint = find(strcmpi('intercept',chklist));
 else
     
     %chkchk and chkint are empty if not specified by the user
@@ -73,7 +99,7 @@ else
     
     % The first argument which is passed is y
     if nnargin<1 || isempty(y)==1
-                error('FSDA:chkinputR:missingInputs','Input vector y not specified.');
+        error('FSDA:chkinputR:missingInputs','Input vector y not specified.');
     end
     
     [m,q]=size(y);
@@ -85,11 +111,12 @@ else
         y=y';
     end
     
+    
     % The second argument which is passed is X
     if nnargin<2  || isempty(X)
-      error('FSDA:chkinputR:missingInputs','Input matrix X not specified.');
+        error('FSDA:chkinputR:missingInputs','Input matrix X not specified.');
         
-    % X must be a 2-dimensional array
+        % X must be a 2-dimensional array
     elseif ~ismatrix(X)
         error('FSDA:chkinputR:WrongX','Invalid data set X.');
     end
@@ -110,7 +137,6 @@ else
     n=length(y);
     
     
-    
     % Now add to matrix X a column of ones for the intercept.
     if nnargin <= stdargin
         
@@ -128,6 +154,7 @@ else
             X = cat(2,ones(n,1),X);
         end
     end;
+    
     
     % constcols = scalar vector of the indices of possible constant columns.
     constcols = find(max(X,[],1)-min(X,[],1) == 0);
@@ -152,3 +179,4 @@ else
 end
 
 end
+

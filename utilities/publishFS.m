@@ -13,10 +13,10 @@ function publishFS(file,varargin)
 %
 % 1) The row below the row which starts with function .... must contain the
 % description of the purpose of the .m file. Remark: generally the row
-% which starts with function .... is the first row of an .m file
+% which starts with function .... is the first row of an .m file.
 % 2) String 'Required input arguments:' must be present. The lines below
 % this string must contain the description of the compulsory input
-% arguments. Each argument must have  the name (a series of spaces from 0
+% arguments. Each argument must have the name (a series of spaces from 0
 % to 10) symbol ':' and then the description. The format of the description
 % is as follows:
 % The first sentence after symbol ':' is the title of the input argument
@@ -735,6 +735,8 @@ elseif strcmp(categ,'graphics')
     FScat='<!--FScategory:Dynamic Statistical Visualization-->';
 elseif strcmp(categ,'multivariate')
     FScat='<!--FScategory:Robust multivariate analysis and transformations-->';
+elseif strcmp(categ,'utilities_stat')
+    FScat='<!--FScategory:Utilities-->';
 elseif strcmp(categ,'utilities')
     FScat='<!--FScategory:Utilities-->';
 elseif strcmp(categ,'examples')
@@ -746,7 +748,7 @@ elseif strcmp(categ,'regression')
 elseif strcmp(categ,'modelselection')
     FScat='<!--FScategory:Robust Model Selection-->';
 else
-    error('Category not found')
+    FScat='<!--FScategory:Utilities-->';
 end
 
 %% Add title
@@ -933,10 +935,15 @@ end
 [endIndexInp] = regexp(fstring,')');
 % inputargs =  (inp1,inp2,inp3, ...)
 InputArgs=fstring(startIndexInp(1):endIndexInp(1));
-% Check if inputargs contains the string varargin
+% Check if inputargs contains the string varargin but not the string
+% vvargin
 [OptArgsVarargin]=regexp(InputArgs,'varargin');
 
-
+[OptArgsvvarargin]=regexp(InputArgs,'vvarargin');
+if ~isempty(OptArgsvvarargin)
+    OptArgsVarargin=[];
+end
+    
 [commasIn] = regexp(InputArgs,',');
 j=1;
 
@@ -984,7 +991,16 @@ sintax=cell(nargout+1+nOPTargin,1);
 
 if nOPTargin>0
     for j=1:nOPTargin;
-        sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs(1:commasIn(PosOpt-1)-1) ')'];
+        if ~isempty(outargs)
+            sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs(1:commasIn(PosOpt-1)-1) ')'];
+        else
+            if ~isempty(commasIn)
+                sintax{j}=[name InputArgs(1:commasIn(PosOpt-1)-1) ')'];
+            else
+                sintax{j}=name;
+            end
+        end
+        
     end
     j=j+1;
 else
@@ -993,7 +1009,11 @@ end
 
 
 if isempty(OptArgsVarargin)
-    sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs];
+    if ~isempty(outargs)
+        sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs];
+    else
+        sintax{j}=[name InputArgs];
+    end
     j=j+1;
 else
     % In this case there is also Name Value line
@@ -1643,8 +1663,8 @@ for i=1:nTOTargin
     
     % Add the row Example: ... just if it is present
     if ~isempty(listInpArgs{i,5})
-        example=['	<p class="description_valueexample">\r'...
-            '       <strong>Example: </strong>' listInpArgs{i,5} '</p>\r'];
+        example=[sprintf(['	<p class="description_valueexample">\r'...
+            '       <strong>Example: </strong>']) listInpArgs{i,5} sprintf('</p>\r')];
     else
         example='';
     end
@@ -1658,9 +1678,9 @@ for i=1:nTOTargin
         ' <span class="argument_name"><code>' inpi '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
         ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
         ' <div class="collapse">\r'...
-        ' <p>']) listInpArgs{i,4} sprintf(['</p>\r'...
+        ' <p>']) listInpArgs{i,4} sprintf('</p>\r') ...
         example ...
-        ' <p class="datatypelist"><strong>\r'...
+        sprintf([' <p class="datatypelist"><strong>\r'...
         ' Data Types: </strong><code>' listInpArgs{i,jins}  '</code></p>\r'...
         ' </div>\r'...
         ' </div>\r'])];
@@ -1805,6 +1825,13 @@ outargshtml='';
 % check if the last element of listargouts is varargout
 % listargouts
 %  Optional Output:
+outsel=regexp(fstring,'Output:');
+if isempty(outsel)
+    disp('Please check HTML input file')
+    error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
+end
+% substring to search starting from Output:
+fstringsel=fstring(outsel(1):end);
 
 if nargout>0
     for i=1:nargout
@@ -1812,14 +1839,6 @@ if nargout>0
         % listargouts is a cell which contains the list of output arguments
         outi=listargouts{i};
         
-        outsel=regexp(fstring,'Output:');
-        if isempty(outsel)
-            disp('Please check HTML input file')
-            error('FSDA:missOuts','HTML file does not contain ''Output:'' string')
-        end
-        
-        % substring to search starting from Output:
-        fstringsel=fstring(outsel(1):end);
         
         % The initial point of the string is 'listargouts{i}' is there is just
         % one output else is string 'listargouts{i} :' is there is more than
@@ -1842,7 +1861,7 @@ if nargout>0
             error('FSDA:missingOuts',['Output argument ' listargouts{i} ' has not been found'])
         end
         
-        % The endpoint of the substring is 'more About'. or sSee also or the next output argument
+        % The endpoint of the substring is 'more About'. or See also or the next output argument
         if i <nargout-1
             endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
         elseif i==nargout-1
@@ -1963,7 +1982,7 @@ if nargout>0
                 posfullstops=regexp(descrioutput,'\.[1-3\s]');
                 if length(posfullstops)<2
                     warn1=[' Wrong format for ouptut argument ' outi '\n'];
-                    error('FSDA:publishFS:WrongOut',[ warn1 'Sentence ''' descrioutput ''' must contain at least \n two full stops each followed by (at least) one space'])
+                    error('FSDA:publishFS:WrongOut',[ warn1 'Sentence ''' descrioutput ''' must contain at least \n two full stops each followed by a description'])
                     
                 else
                     preamble=descrioutput(posfullstops(1)+1:posfullstops(2)-1);
@@ -2023,7 +2042,6 @@ if nargout>0
         
     end
 else
-    outargshtml='';
     
     inipointSeeAlso=regexp(fstringsel,'See also','once');
     
@@ -2032,15 +2050,27 @@ else
         error('FSDA:missOuts','Input .m file does not contain ''See also:'' string')
     end
     
+    
+    
     inipointMoreAbout=regexp(fstringsel,'More About:','once');
     if ~isempty(inipointMoreAbout);
         MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
         posPercentageSigns=regexp(MoreAbout,'%');
         MoreAbout(posPercentageSigns)=[];
         MoreAboutHTML=formatHTMLwithMATHJAX(MoreAbout);
+        descrioutput=fstringsel(9:inipointMoreAbout-1);
+        
     else
         MoreAboutHTML='';
+        descrioutput=fstringsel(9:inipointSeeAlso-1);
+        
     end
+    posPercentageSigns=regexp(descrioutput,'%');
+    descrioutput(posPercentageSigns)=[];
+    % Remove from string descri leading and trailing white spaces
+    descrioutput=strtrim(descrioutput);
+    
+    outargshtml=formatHTMLwithMATHJAX(descrioutput);
     
 end
 
@@ -2064,7 +2094,7 @@ if ~isempty(MoreAboutHTML)
         '<div class="expandableContent" itemprop="content">\r'...
         '<h3 class="expand"><span>\r'...
         '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
-        '<span>Methodological Details </span></a></span></h3>\r'...
+        '<span>Additional Details </span></a></span></h3>\r'...
         '<div class="collapse">\r'...
         '<p>']) MoreAboutHTML sprintf(['</p>\r'...
         '</div>\r'...

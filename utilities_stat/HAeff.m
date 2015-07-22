@@ -1,5 +1,5 @@
 function ceff = HAeff(eff,v,abc)
-%HAeff finds the tuning constant guarrantes a requested asymptotic efficiency
+%HAeff finds the tuning constant guarrantees a requested asymptotic efficiency
 %
 %  Required input arguments:
 %
@@ -17,7 +17,7 @@ function ceff = HAeff(eff,v,abc)
 %     abc     : parameters of Hampel estimator. Vector. Vector of length 3
 %               which contains the parameters of Hampel estimator. If
 %               vector abc is not specified it is set equal to [2, 4, 8]
-%               Example - 'abc',[1.5,3.5,8]
+%               Example - [1.5,3.5,8]
 %               Data Types - double
 %
 %
