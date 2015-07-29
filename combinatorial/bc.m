@@ -6,8 +6,9 @@ function c = bc(n,k)
 % Required input arguments:
 %
 %       n:  Number of elements. Non negative integer. 
-%       k:  Items to choose from the set of n elements. Non negative
-%           integer. 
+%           Data Types - single|double
+%       k:  Items to choose from the set of n elements. Non negative integer.
+%           Data Types - single|double
 %
 % Optional input arguments:
 %
@@ -27,7 +28,7 @@ function c = bc(n,k)
 % References:
 %
 %    Knuth, Donald E. (1997). The Art of Computer Programming, Volume 1:
-%    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52–74. ISBN
+%    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52--74. ISBN
 %    0-201-89683-4.
 %
 % Copyright 2008-2015.

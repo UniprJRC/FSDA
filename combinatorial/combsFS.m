@@ -3,17 +3,32 @@ function P = combsFS(v,m)
 % It generates m-combinations without repetition taken in lexicographic
 % order from the vector v.
 % 
-%
 %<a href="matlab: docsearchFS('combsFS')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%
-%    v:         A vector with n elements that contains the response variable.
+%    v:         A vector with n elements. It contains the response variable.
 %               It can be both a row of column vector.
-%    m :        scalar which specifies the size of the combinations
+%               Data Types - single|double
+%    m :        Scalar. It specifies the size of the combinations.
+%               Data Types - single|double
 %
+% Optional input arguments:
 %
+% Output:    
+%
+%     P:        m-combinations without repetition taken in lexicographic
+%               order from the vector v. Matrix containing the
+%               m-combinations in the rows.
+%               Data Types - single|double
+%
+% See also: nchoosek
+%
+% References:
+%
+%    Knuth, Donald E. (1997). The Art of Computer Programming, Volume 1:
+%    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52--74. ISBN
+%    0-201-89683-4.
 %
 % REMARK: the MATLAB function combs.m uses recursive calls and it is
 % therefore very inefficient. Our iterative counterpart also makes better
