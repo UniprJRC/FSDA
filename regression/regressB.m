@@ -74,17 +74,20 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               about beta. Scalar.
 %               Scalar between 0 (excluded) and 1 (included).
 %               The covariance matrix of the prior distribution
-%               of \beta is (1/tau0)* (c X0'X0)^{-1} = (1/tau0)* (c*R)^{-1}
-%               therefore multiplication of R by c (with c<1) increases the
-%               variance of \beta.
-%               The default value of c is 1. Note also that if we adjust
-%               the information for \beta multiplying its covariance matrix
-%               by c we need to make a similar adjustment to the variance
-%               of \tau. Simple mathematical calculations show that the new
-%               variance of \tau is equal to the old variance of \tau
-%               divided by c. So, once again, given that c < 1, the new
-%               variance of \tau increases.
-%               The value of c will usually be the default, i,e., 1.
+%               of $\beta$ is 
+%               \[
+%               (1/tau0)* (c X0'X0)^{-1} = (1/tau0)* (c*R)^{-1}
+%               \]
+%               therefore multiplication of $R$ by $c$ (with $c<1$) increases the
+%               variance of $\beta$.
+%               The default value of $c$ is 1. Note also that if we adjust
+%               the information for $\beta$ multiplying its covariance matrix
+%               by $c$ we need to make a similar adjustment to the variance
+%               of $\tau$. Simple mathematical calculations show that the new
+%               variance of $\tau$ is equal to the old variance of $\tau$
+%               divided by $c$. So, once again, given that $c < 1$, the new
+%               variance of $\tau$ increases.
+%               The value of $c$ will usually be the default, i,e., 1.
 %               It was included to clarify the difference from Zellner's
 %               procedure and has the effect of changing n0. For we can write
 %               n0' = cn0 and use n0' in the calculations. However, it may
@@ -117,21 +120,26 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %  The output consists of a structure 'out' containing the following fields:
 %   out.beta1=    p x 1 vector containing posterior mean (conditional on
-%               tau0) of \beta (regression coefficents)
+%               $\tau_0$) of $\beta$ (regression coefficents)
 %               $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$
 %  out.covbeta1=    p x p matrix containing posterior covariance matrix
-%               (conditional on tau1) of \beta
-%               covbeta1 = (1/tau1) * (c*R + X'X)^{-1}
-%               where tau1 is defined as a1/b1 (that is through the gamma
-%               parameters of the posterior distribution of \tau)
+%               (conditional on $\tau_1$) of $\beta$
+%               $covbeta1 = (1/tau1) * (c*R + X'X)^{-1}$
+%               where $\tau_1$ is defined as $a_1/b_1$ (that is through the gamma
+%               parameters of the posterior distribution of $\tau$)
 %
-%               The posterior distribution of \tau is a gamma distribution
-%               with parameters a1 and b1
-%   out.a1    =   scalar parameter of the posterior gamma distribution of tau
-%               a1 = 0.5 (c*n0 + n1)
-%   out.b1    =   scalar parameter of the posterior gamma distribution of tau
-%               b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )
-%
+%   out.a1    =   scalar parameter of the posterior gamma distribution of
+%               $\tau$. 
+%               $a1 = 0.5 (c*n_0 + n_1)$
+%               The posterior distribution of $\tau$ is a gamma distribution
+%               with parameters $a_1$ and $b_1$.
+%   out.b1    =   scalar parameter of the posterior gamma distribution of
+%               $\tau$
+%               \[
+%                   b1 = 0.5 * ( n_0 / \tau_0 + (y-X*\beta_1)'y +(\beta_0-\beta_1)'*c*R*\beta_0 )
+%               \]
+%               The posterior distribution of $\tau$ is a gamma distribution
+%               with parameters $a_1$ and $b_1$.
 %               Remark: note that if bsb is supplied X'X and X'y and n1 are
 %               transformed respectively into Xm'Xm and Xm'ym and m where
 %               Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the
@@ -142,8 +150,8 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               res(i,1) is computed as y(i) - X(i,:)*beta1 where beta1 is
 %               computed using the units forming subset.
 %               In the Bayesian approach they are the posterior means of
-%               the \epsilon_i and can be interpreted as point estimates of
-%               the \epsilon_i.
+%               the $\epsilon_i$ and can be interpreted as point estimates of
+%               the $\epsilon_i$.
 %               2nd col = deletion residuals (just computed for the units
 %               which do not form the subset).
 %               res(i,2) with i \not \in  subset
