@@ -1,58 +1,73 @@
 function x = shuffling(x)
-%shuffling does a random permutation of the elements of input vector  
+%shuffling does a random permutation of the elements of input vector
 %
 %<a href="matlab: docsearchFS('shuffling')">Link to the help function</a>
 %
 %  Required input arguments:
-%  x :  vector of length t
 %
-% If x has t elements, the objective is to obtain each of the t!
-% pemutations with equal probability, especially when t is large. To
+%  x :  A set of elements. Vector of length t. 
+%       Data Types - single|double
+%
+%  Optional input arguments:
+%
+%  Output: 
+%
+%  x :  A permutation of the set of elements in x. Vector of length t. 
+%       Data Types - single|double
+%
+% More About:
+%
+% If set $x$ has $t$ elements, the objective is to obtain each of the $t!$
+% pemutations with equal probability, especially when $t$ is large. To
 % achieve this goal, we use backward Knuth's shuffling, which is actually
 % based on the Fisher-Yates shuffle. Once compiled, Knuth solution is more
 % efficient than the natural MATLAB solution x(randperm(numel(x)).
 %
-% References: 
+% See also: randperm.
 %
-% Knuth, Donald E. (1969). The Art of Computer Programming volume 2:
-% Seminumerical algorithms. Reading, MA: Addison–Wesley. pp. 124–125.
+% References:
+%
+% Knuth, Donald E. (1969). The Art of Computer Programming volume 2,
+% Seminumerical algorithms, Reading, MA: Addison-Wesley, pp. 124-125.
 %
 % Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables for biological,
-% agricultural and medical research (3rd ed.). London: Oliver & Boyd. pp.
-% 26–27.
+% agricultural and medical research (3rd ed.). London, Oliver & Boyd. pp
+% 26-27.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('shuffling')">Link to the help function</a>
+%
 % Last modified 06-Feb-2015
 
 % Examples:
 %{
+    %% shuffling applied to a set of 20 elements.
     shuffling(1:20)
+%}
 
-    % if the vector is big, it might be convenient to use parsimonious data
-    % type, e.g.
-
+%{
+    % shuffling applied to a set of 20 elements, but using a parsimonious
+    data % type; this is convenient if the vector is big.
     shuffling(int8(1:20))
 %}
 
 %{
-    % check the permutation
+    % check of the permutation produced by shuffling
     x = 1:200000;
     numel(unique(shuffling(x)))
 %}
 
 %{
-    % profile against randperm, which uses sort.
-    for i=1:500
+    % To profile against randperm, which uses sort.
+    for i=1:5000
         x = randi(100000,10000,1);
         nn=numel(x);
         shuffling(x);
         x(randperm(nn));
     end
-
 %}
 
 %% Beginning of code

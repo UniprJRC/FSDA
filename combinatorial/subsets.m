@@ -5,36 +5,47 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %
 %  Required input arguments:
 %
-%       nsamp : Number of subsamples which have to be extracted
-%               Remark: if nsamp=0 all subsets will be extracted.
-%               They will be (n choose p).
-%         n   : scalar, number of observations of the dataset
-%         p   : size of the subsets. In regression with p explanatory
+%       nsamp : Number of subsamples which have to be extracted. Scalar
+%               (if nsamp=0 all subsets will be extracted; they will be (n
+%               choose p).
+%               Data Types - single|double
+%         n   : Sumber of observations of the dataset. Scalar.
+%               Data Types - single|double
+%         p   : Size of the subsets. Scalar. In regression with p explanatory
 %               variable the size of the elmental subsets is p. In
 %               multivariate analysis in presente of v variables, the size
 %               of the elemental subsets is v+1.
+%               Data Types - single|double
 %
 %  Optional input arguments:
 %
 %       ncomb : scalar (n choose p). If the user has already computed this
 %               value it can supply it directly, otherwise the program will
-%               calculate it automatically
+%               calculate it automatically.
+%               Example - C=subsets(20,10,3,120)
+%               Data Types - single|double
+%
 %        msg  : scalar which controls whether to display or not messages
 %               on the screen. If msg=1 (default), messages are displayed
-%               on the screen about estimated time
+%               on the screen about estimated time.
+%               Example - C=subsets(20,10,3,120,0)
+%               Data Types - boolean
 %
 %  Output:
 %
 %
-%           C = matrix with nselected rows and p columns (stored in int16 format)
-%               which contains the index of the subsets which
-%               need to be extracted.
-%   nselected = scalar, number of rows of matrix C.
+%           C : The indeces of the subsets which need to be extracted.
+%               Matrix with nselected rows and p columns (stored in int16 format). 
+%               Data Types - single|double
+%
+%   nselected : Number of rows of matrix C. Scalar.
+%               Data Types - single|double
 %
 %
 % See also randsampleFS.m, lexunrank.m, bc.m
 %
-% References: see references in randsampleFS.m, lexunrank.m and bc.m
+% References: 
+%       see references in randsampleFS.m, lexunrank.m and bc.m
 %
 %
 % Copyright 2008-2015.
@@ -42,16 +53,14 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %
 %
 %<a href="matlab: docsearchFS('subsets')">Link to the help function</a>
+%
 % Last modified 06-Feb-2015
 
 % Examples:
 %
-%
 %{
        % Create a matrix which contains the indexes of 20 subsets
        % when n=100, p=3
-       n=100;
-       p=3;
        C=subsets(20,100,3)
 %}
 
