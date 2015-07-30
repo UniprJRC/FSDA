@@ -237,10 +237,10 @@ function publishFS(file,varargin)
 %contains" or "containing" inside the subtitle (second row) of the each
 %ouptut argument in the HTML file. For example, the example above in the
 %HTML file will be processed as follows:
-%                mdr —Monitoring of minimum deletion residual at each step of the forward search.
+%                mdr ?Monitoring of minimum deletion residual at each step of the forward search.
 %                n -init -by- 2 matrix
 % If, in the HTML file, the user clicks on the first line,
-%               "mdr —Monitoring..."
+%               "mdr ?Monitoring..."
 %the expanded description will automatically appear
 %
 % 5) A line which starts with string 'See also:' must be present. Linked m
@@ -822,7 +822,7 @@ insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="10
     '</table>'])];
 
 %% CONTAINER + SINTAX SECTION
-% Di seguito qullo che c'è in doc_center.css
+% Di seguito qullo che c'? in doc_center.css
 %{
 /* TOC styles */
 .site_container { padding-right:30px; }
@@ -2368,7 +2368,7 @@ if evalCode==true
         delete(fullPathToScript)
         
         % load html output in a string and extract the parts which are required
-        fileHTML = fopen(xResultURI(7:end), 'r+');
+        fileHTML = fopen(xResultURI(6:end), 'r+');
         % Insert the file into fstring
         fstringHTML=fscanf(fileHTML,'%c');
         
