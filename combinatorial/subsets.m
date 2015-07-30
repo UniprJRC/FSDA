@@ -55,17 +55,38 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %<a href="matlab: docsearchFS('subsets')">Link to the help function</a>
 %
 % Last modified 06-Feb-2015
-
-% Examples:
+%
+% Examples: 
 %
 %{
-       % Create a matrix which contains the indexes of 20 subsets
-       % when n=100, p=3
-       C=subsets(20,100,3)
+       % Create a matrix wuth the indexes of 5 subsets when n=100, p=3.
+       % Only default arguments used.
+       C = subsets(5,100,3)
 %}
 
 %{
-        % Extract 80000 unique subsets
+       %% Create a matrix with the indexes of 5 subsets when n=100, p=3. 
+       % Use information on the number of combinations.
+        ncomb = bc(100,3);
+        C = subsets(5,100,3,ncomb)
+%}
+
+%{
+       %% Create a matrix with the indexes of 5 subsets when n=100, p=3.
+       % Also inform about the time taken for the operation.
+       ncomb = bc(100,3);
+       C = subsets(500000,1000,5,ncomb,1)
+%}
+
+%{
+       % Create a matrix with the indexes of 5 subsets when n=100, p=3.
+       % A the previous example, but in addition count how man they are.
+       ncomb = bc(1000,5);
+       [C , nselected] = subsets(500000,1000,5,ncomb,1);
+%}
+
+%{
+        % Extract 80000 subsets and check they are unique.
         C=subsets(80000,100,5);
         size(unique(C,'rows'))
 %}
