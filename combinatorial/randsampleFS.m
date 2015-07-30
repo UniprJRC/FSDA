@@ -5,72 +5,85 @@ function y = randsampleFS(n,k,method)
 %
 %  Required input arguments:
 %
-%       n : scalar, a positive integer. 
-%           a vector of numbers will be selected from the integers 1 to n.
-%      k  : the number of elements to be selected.
+%       n : A vector of numbers will be selected from the integers 1 to n.
+%           Scalar, a positive integer.            
+%           Data Types - single|double
+%      k  : The number of elements to be selected. Non negative integer.
+%           Data Types - single|double
 %
 %  Optional input arguments:
 %
-%   method = scalar which determines the method used to extract the numbers. Default
-%           is method = 1.
-% 
-%   if method=1 (default option) the program proceeds as follows:
-%           if 4*k > n the programs does a random permutation of the
-%              population and returns the first nsel elements
-%           else if 4*k<=n (that is if the desired sample is small
-%              compared to all combinations, the program repeatedly samples
-%              with replacement until there are nsel unique values.
-%   if method=2 Systematic sampling is used where the starting point
-%           is random and the step is also random
-%   if method=3 random sampling based on the old but well known Linear
-%           Congruential Generator (LCG) method is used. In this case there
-%           is no guarantee to get unique numbers. 
+%   method : The method used to extract the numbers (default is method = 1). 
+%            Scalar, from 1 to 3 determining the method to be used.
+%            Example - randsampleFS(100,10,2)
+%            Data Types - single|double
 %
 %   Output: 
 %
-%   y = randsampleFS(n,k) returns y as a column vector of k
-%   values sampled at random from the integers 1:n. 
-%   For method 1 and 2, the elements  extracted are unique. 
-%   For method 3, there is no guarantee that the elements extracted are
-%   unique.
+%   y :     A column vector of k values sampled at random from the integers 1:n. 
+%           For method 1 and 2, the elements  extracted are unique; For
+%           method 3, there is no guarantee that the elements extracted are
+%           unique.
+%           Data Types - single|double.
 %   
-% See also: randsample (of statistics toolbox) and shuffling (FSDA)
+% More About:
 %
-% References (one for each method, in order):
+%   if method=1 (default option) the program proceeds as follows: if $4*k >
+%   n$ the programs does a random permutation of the population and returns
+%   the first nsel elements else if $4*k<=n$ (that is if the desired sample
+%   is small compared to all combinations, the program repeatedly samples
+%   with replacement until there are nsel unique values.
 %
-%   Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables for biological,
-%   agricultural and medical research (3rd ed.). London: Oliver & Boyd. pp.
-%   26–27.
+%   if method=2 Systematic sampling is used where the starting point is
+%   random and the step is also random.
 %
-%   Cochran, William G. (1977). Sampling techniques (Third ed.). Wiley.
+%   if method=3 random sampling based on the old but well known Linear
+%   Congruential Generator (LCG) method is used. In this case there is no
+%   guarantee to get unique numbers.
 %
-%   D. E. Knuth. The Art of Computer Programming, Volume 2: Seminumerical
+%
+% See also: randsample, shuffling.
+%
+% References:
+%
+%   For Method 1. Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables
+%   for biological, agricultural and medical research (3rd ed.). London,
+%   Oliver & Boyd, pp. 26-27.
+%
+%   For Method 2. Cochran, William G. (1977). Sampling techniques (Third ed.). Wiley.
+%
+%   For Method 3. D. E. Knuth. The Art of Computer Programming, Volume 2: Seminumerical
 %   Algorithms, Third Edition. Addison-Wesley, 1997. Section 3.2.1: The
-%   Linear Congruential Method, pp. 10–26.
-%
+%   Linear Congruential Method, pp. 10-26.
 %
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-%
-%
 %<a href="matlab: docsearchFS('randsampleFS')">Link to the help function</a>
+%
 % Last modified 06-Feb-2015
-
+%
 % Examples:
 
 %{
-
-  randsampleFS(100,10) % default method (1) is used
-
-  randsampleFS(100,10,2) % default method (1) is used
-
-  randsampleFS(100,10,3) % default method (1) is used. Here, being nsel so
-                         % biG wrt nsamp, it is likely to obtain repetitions
-
+    %% randsampleFS with default options.
+    % default method (1) is used.
+    randsampleFS(100,10) 
 %}
-%
+
+%{ 
+    %% randsampleFS with optional argument set to method (2).
+    method = 2;
+    randsampleFS(100,10,method) 
+%}
+
+%{
+    % randsampleFS with optional arguments set to method (3).
+    method = 3;
+    % Here, being nsel so big wrt nsamp, it is likely to obtain repetitions.
+    randsampleFS(100,10,method)
+%}
 
 %% Beginning of code
 if nargin<3;
@@ -116,7 +129,7 @@ switch method
         terna = 5;
         switch terna
             case 1
-                % Triple of Leormonth – Lewis
+                % Triple of Leormonth ? Lewis
             case 2
                 m = 2^31;
                 a = 2^16;
@@ -127,7 +140,7 @@ switch method
                 a = floor(pi * 10^8);
                 c = 45380624;
             case 4
-                % Triple of Goodman – Miller
+                % Triple of Goodman ? Miller
                 m = 2^31-1;
                 a = 7^5;
                 c = 0;

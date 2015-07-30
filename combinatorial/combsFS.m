@@ -43,11 +43,10 @@ function P = combsFS(v,m)
 %    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52--74. ISBN
 %    0-201-89683-4.
 %
-%<a href="matlab: docsearchFS('combsFS')">Link to the help function</a>
-%
 % Copyright 2008-2015.
 % Written by FSDA team
 %
+%<a href="matlab: docsearchFS('combsFS')">Link to the help function</a>
 %
 % Last modified 06-Feb-2015
 %

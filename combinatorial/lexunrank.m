@@ -38,28 +38,38 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
 %
 % More About:
 %
-%   REMARK ON INPUT ARGUMENTS: 
+%   REMARKS ON THE INPUT ARGUMENTS.
 %
-%   input checks are intentionally avoided, as lexunrank is supposed to be
+%   Input checks are intentionally avoided, as lexunrank is supposed to be
 %   called many times, for sampling subsets. Thus, please ensure that:
-%   k < n
-%   N is an integer between 0 and bc(n,p)-1 
+%   - k < n;
+%   - N is an integer between 0 and bc(n,p)-1.
+%   It is possible to enable checks, by changing an internal "if" statement to 1.
 %
-%   To enable checks change the if statement to 1.
+%   REMARKS ON THE OUTPUT ARGUMENTS.
 %
+%   As $n$ increases, 'calls' becomes much smaller than 'ncomb'. This means
+%   that lexunrank(n,k,N) is extremely convenient if you are interested in
+%   one or several, but not all, $k$-combinations at given generation
+%   order(s) N.
 %
-%   REMARK ON THE LEXICOGRAPHIC ORDERING: 
+%   To generate all combinations in lexicographic order, it is more 
+%   convenient using the FSDA function combsFS. The MATLAB function
+%   with the same purpose, nchoosek(1:4,3), is much less efficient.
 %
-%   lexunrank(n,k,N) gives the $k$-combination of n elements of position N in
-%   the reverse co-lexicographic order of such combinations or, equivalently, 
-%   of position bc(n,k)-N in the lexicographic order of the same combinations.
+%   ON THE LEXICOGRAPHIC ORDERING.
+%
+%   lexunrank(n,k,N) gives the $k$-combination of n elements of position N
+%   in the reverse co-lexicographic order of such combinations or,
+%   equivalently, of position bc(n,k)-N in the lexicographic order of the
+%   same combinations.
 %   
-%   Note that, by convention and in this implementation of the lexicographic
-%   unrank, N ranges over the integers between 0 and bc(n,k)-1. For details
-%   see the "combinatorial number system" discussed by Knuth (2005), pp. 5-6.
+%   Note that, in this implementation of the lexicographic unrank, N ranges
+%   over the integers between 0 and bc(n,k)-1. For details see the
+%   "combinatorial number system" discussed by Knuth (2005), pp. 5-6.
 %
-%   To clarify with an example the meaning of the different orders, while the
-%   lexicographic order of the 2-combinations of 3 elements are:
+%   To clarify with an example the meaning of the different orders, while
+%   the lexicographic order of the 2-combinations of 3 elements are:
 %   
 %   \[ 
 %     \left( 
@@ -98,68 +108,63 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
 %      \right)
 %   \] 
 %
-%   The reasons for choosing a co-lexicographic unrank is that right-to-left
-%   array filling is much faster and elegant. The reverse is due to a similar
+%   The reasons for choosing a co-lexicographic unrank is that right-to-left 
+%   array filling is much faster and elegant. The reverse is due to a similar 
 %   motivation.
 %
-%   REMARK ON THE OUTPUT PARAMETERS
-%
-%   Remark: as $n$ increases, 'calls' becomes much smaller than 'ncomb'. This
-%   means that lexunrank(n,k,N) is extremely convenient if you are interested
-%   in one or several, but not all, $k$-combinations at given generation
-%   order(s) N. 
-%
-%   To generate all combinations in lexicographic order, it is
-%   convenient using the FSDA function combsFS(1:4,3). The MATLAB function
-%   with the same purpose, nchoosek(1:4,3), is much less efficient.
 %
 %   ALGORITMIC DETAILS.
 %
-% Given the totally ordered set $S=\{1,2,\ldots,n\}$, a $k$-combination is a
-% subset $\{x_1, \ldots, x_k\}$ of $S$. Consider the $n$-lists of elements of
-% the set $\{0,1\}$, i.e. the vertices of the hypercube $V_n$. Each
-% $k$-combination $\{x_1,\ldots,x_k\}$ can be associated to the $n$-list having a
-% 1 at position $x_1$, \ldots, $x_k$, and a 0 elsewhere. Example:
+% Given the totally ordered set $S=\{1,2,\ldots,n\}$, a $k$-combination is
+% a subset $\{x_1, \ldots, x_k\}$ of $S$. Consider the $n$-lists of
+% elements of the set $\{0,1\}$, i.e. the vertices of the hypercube $V_n$.
+% Each $k$-combination $\{x_1,\ldots,x_k\}$ can be associated to the
+% $n$-list having a 1 at position $x_1$, \ldots, $x_k$, and a 0 elsewhere.
+%
+% Example:
 %   2-combinations of $\{1,2,3,4\}$: $\{1,2\}$, $\{1,3\}$, $\{1,4\}$,
 %   $\{2,3\}$, $\{2,4\}$, $\{3,4\}$. Corresponding 4-lists of $\{0,1\}$:
 %   $1100$,  $1010$,  $1001$,  $0110$, $0101$,  $0011$.
-% The $n$-lists of $\{0,1\}$ containing $k$ times 1, and therefore equivalently
-% the $k$-combinations of $n$-elements of $S$, can be generated in lexicographic
-% order with an algorithm that builds the $k$-list of position $t+1$ using only
-% the $k$-list of position $t$, and which stops without counting the
-% combinations generated. For example, the MATLAB function NCHOOSEK(S,k),
-% where $S$ is the row vector of length $n$ of the elements of $S$, creates in
-% lexicographic order a $k$ columns matrix whose rows consist of all possible
-% combinations of the $n$ elements of $S$ taken $k$ at a time. The number of such
-% combinations, given by the binomial coefficient $n!/((n-k)! k!)$, can be
-% also computed with the function NCHOOSEK by replacing the first argument,
-% the row vector $S$, with the scalar $n$.
+%
+% The $n$-lists of $\{0,1\}$ containing $k$ times 1, and therefore
+% equivalently the $k$-combinations of $n$-elements of $S$, can be
+% generated in lexicographic order with an algorithm that builds the
+% $k$-list of position $t+1$ using only the $k$-list of position $t$, and
+% which stops without counting the combinations generated. For example, the
+% MATLAB function NCHOOSEK(S,k), where $S$ is the row vector of length $n$
+% of the elements of $S$, creates in lexicographic order a $k$ columns
+% matrix whose rows consist of all possible combinations of the $n$
+% elements of $S$ taken $k$ at a time. The number of such combinations,
+% given by the binomial coefficient $n!/((n-k)! k!)$, can be also computed
+% with the function NCHOOSEK by replacing the first argument, the row
+% vector $S$, with the scalar $n$.
+%
 % Unfortunately the binomial coefficient increases rapidly with $n$, which
 % makes the generation of all $k$-combinations computationally hard: with
 % NCHOOSEK the task is impractical even for values just above 15. However,
 % a lexicographic algorithm implements a one-to-one correspondence between
-% the $k$-combinations and the generation order, i.e. the set of numbers $s =
-% 1,\ldots,(n!/((n-k)!k!))$. This fact is used in our function to determine
-% the $n$-list corresponding to the $k$-combination $\{x_1, \ldots, x_k\}$ which
-% would be generated by the lexicographic algorithm at a given desired
-% position $N$. This is useful in a number of applications which require one
-% or several, but not all, $k$-combinations at given generation order(s).
+% the $k$-combinations and the generation order, i.e. the set of numbers $s
+% = 1,\ldots,(n!/((n-k)!k!))$. This fact is used in our function to
+% determine the $n$-list corresponding to the $k$-combination $\{x_1,
+% \ldots, x_k\}$ which would be generated by the lexicographic algorithm at
+% a given desired position $N$. This is useful in a number of applications
+% which require one or several, but not all, $k$-combinations at given
+% generation order(s).
 %
 % See also: combsFS, nchoosek, bc
 %
 % References:
 %
 %   Lehmer, D. H. (1964). The machine tools of combinatorics. In E. F.
-%   Beckenbach (Ed.), Applied Combinatorial Mathematics, pp. 5--31. New York:
-%   Wiley.
+%   Beckenbach (Ed.), Applied Combinatorial Mathematics, pp. 5--31. New York, Wiley.
 %
 %   Knuth, D. (2005). Generating All Combinations and Partitions. The Art of
-%   Computer Programming, Vol. 4, Fascicle 3. Reading, Mass.: Addison-Wesley.
-%
-%<a href="matlab: docsearchFS('lexunrank')">Link to the help function</a>
+%   Computer Programming, Vol. 4, Fascicle 3. Reading, Mass., Addison-Wesley.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
+%
+%<a href="matlab: docsearchFS('lexunrank')">Link to the help function</a>
 %
 % Last modified 06-Feb-2015
 %
@@ -169,7 +174,7 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
         %% 7th 2 combination chosen among 5 element.
         n = 5; 
         k = 2; 
-        $N$ = 7;
+        N = 7;
         kcomb=lexunrank(n,k,N)
 %}
 
@@ -183,20 +188,16 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
         [kcomb,calls]=lexunrank(n,k,N,pascal(n))
 %}
 
-
 %{
-    % lexunrank: examples of use with required input arguments
+    % Additional example on the use of lexunrank.
+    % Standard use.
     n = 4; p = 3;
-
     % number of p-combinations out of n
     n_bc = bc(n,p);
-
     % Pascal matrix
     pascalM=pascal(n);
-
     % n_bc is the Pascal cell in position (n-p+1,p+1)
     n_bc==pascalM(n-p+1,p+1)
-
     % all p-combinations in reverse-colex order generated by lexunrank
     % using a loop with rank integers ranging from 0 to bc(n,p)-1
     all_recolex = nan(n_bc,p);
@@ -204,8 +205,11 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
         all_recolex(N_lex+1,:) = lexunrank(n,p,N_lex);
     end
     all_recolex
+%}
 
-    % to change from reverse-colex to colex, it is sufficient this
+%{
+    % Additional example on the use of lexunrank.
+    % To change from reverse-colex to colex.
     all_colex = flipud(all_recolex)
     % and to change from colex to lex, it is sufficient this
     all_lex = fliplr(all_colex)
@@ -216,10 +220,13 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
     % the combination at Lexi position N_lex=3 is generated by lexiunrank
     % in Colex position
     N_lex = 3; N_colex = n_bc - N_lex ;
-     
-    % use lexunrank with pascal matrix
-    kcomb    = lexunrank(n,p,N_colex,pascal(n))
-    % and without
+%}
+
+%{
+    % Additional example on the use of lexunrank.
+    % Use of lexunrank with pascal matrix
+    kcomb = lexunrank(n,p,N_colex,pascal(n))
+    % This is without Pascal matrix
     kcomb2 = lexunrank(n,p,N_colex)
     % Just as confirmation, the combination in the lexi order is
     all_lex_combs(N_lex,:)
