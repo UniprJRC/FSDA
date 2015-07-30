@@ -40,7 +40,7 @@ function c = bc(n,k)
 %
 % Examples:
 %{
-    %Number of pairs chosen among 6 elements (returns 15)
+    %% Number of pairs chosen among 6 elements.
     bc(6,2)
 %}
 

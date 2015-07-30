@@ -1,8 +1,21 @@
 function P = combsFS(v,m)
-%combsFS is an iterative algorithm equivalent to the MATLAB combs.m.
+%combsFS is an iterative algorithm equivalent to the MATLAB combs.m
+%
 % It generates m-combinations without repetition taken in lexicographic
 % order from the vector v.
-% 
+%
+% REMARK: the MATLAB function combs.m uses recursive calls and it is
+% therefore very inefficient. Our iterative counterpart also makes better
+% use of memory, first because it works iteratively, and then because we
+% force computations in the lowest possible precision. This is not a
+% limitation, because the algotithm first builds the matrix P of all
+% m-combinations starting from the first n natural numbers, for which
+% double precision is not at all needed. Then, if the input vector b is
+% different from vector 1:v, then the desired P is simply obtained as P =
+% v(P). Note also that we build the matrix P by going over colums rather
+% than over lines. This is faster, as MATLAB indexes the elements of a
+% matrix by column first.
+%
 %<a href="matlab: docsearchFS('combsFS')">Link to the help function</a>
 %
 %  Required input arguments:
@@ -10,7 +23,7 @@ function P = combsFS(v,m)
 %    v:         A vector with n elements. It contains the response variable.
 %               It can be both a row of column vector.
 %               Data Types - single|double
-%    m :        Scalar. It specifies the size of the combinations.
+%    m:         Scalar. It specifies the size of the combinations.
 %               Data Types - single|double
 %
 % Optional input arguments:
@@ -30,20 +43,7 @@ function P = combsFS(v,m)
 %    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52--74. ISBN
 %    0-201-89683-4.
 %
-% REMARK: the MATLAB function combs.m uses recursive calls and it is
-% therefore very inefficient. Our iterative counterpart also makes better
-% use of memory, first because it works iteratively, and then because we
-% force computations in the lowest possible precision. This is not a
-% limitation, because the algotithm first builds the matrix P of all
-% m-combinations starting from the first n natural numbers, for which
-% double precision is not at all needed. Then, if the input vector b is
-% different from vector 1:v, then the desired P is simply obtained as P =
-% v(P). Note also that we build the matrix P by going over colums rather
-% than over lines. This is faster, as MATLAB indexes the elements of a
-% matrix by column first.
-%
-%<a href="matlab: docsearchFS('combsFS')">Link to the help page for this function</a>
-%
+%<a href="matlab: docsearchFS('combsFS')">Link to the help function</a>
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -54,12 +54,10 @@ function P = combsFS(v,m)
 %
 % Examples:
 
-%
 %{
-%      Compute all possible combinations of size 3 of elements 5, 8, 9, 10, 11
-       combsFS([5 8:11],3)
+    %% combsFS used to generate all possible combinations of size 3 of elements 5, 8, 9, 10, 11.
+    combsFS([5 8:11],3)
 %}
- 
  
 
 %% Beginning of code
