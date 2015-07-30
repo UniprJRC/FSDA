@@ -2368,7 +2368,15 @@ if evalCode==true
         delete(fullPathToScript)
         
         % load html output in a string and extract the parts which are required
-        fileHTML = fopen(xResultURI(6:end), 'r+');
+        if ismac || isunix
+             fileHTML = fopen(xResultURI(6:end), 'r+'); 
+        elseif ispc
+             fileHTML = fopen(xResultURI(7:end), 'r+'); 
+        else
+             fileHTML = fopen(xResultURI(6:end), 'r+');
+             disp('Cannot recognize platform: I use unix as default')
+        end
+        
         % Insert the file into fstring
         fstringHTML=fscanf(fileHTML,'%c');
         
