@@ -5,16 +5,16 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %
 %  Required input arguments:
 %
-%       nsamp : Number of subsamples which have to be extracted. Scalar
-%               (if nsamp=0 all subsets will be extracted; they will be (n
+%       nsamp : Number of subsamples which have to be extracted. Scalar;
+%               if nsamp=0 all subsets will be extracted; they will be (n
 %               choose p).
 %               Data Types - single|double
-%         n   : Sumber of observations of the dataset. Scalar.
+%         n   : Number of observations of the dataset. Scalar.
 %               Data Types - single|double
-%         p   : Size of the subsets. Scalar. In regression with p explanatory
-%               variable the size of the elmental subsets is p. In
-%               multivariate analysis in presente of v variables, the size
-%               of the elemental subsets is v+1.
+%         p   : Size of the subsets. Scalar. In regression with p 
+%               explanatory variable the size of the elmental subsets is p; 
+%               in multivariate analysis, in presente of v variables, 
+%               the size of the elemental subsets is v+1.
 %               Data Types - single|double
 %
 %  Optional input arguments:
@@ -59,7 +59,7 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 % Examples: 
 %
 %{
-       % Create a matrix wuth the indexes of 5 subsets when n=100, p=3.
+       %% Create a matrix wuth the indexes of 5 subsets when n=100, p=3.
        % Only default arguments used.
        C = subsets(5,100,3)
 %}
@@ -74,13 +74,14 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %{
        %% Create a matrix with the indexes of 5 subsets when n=100, p=3.
        % Also inform about the time taken for the operation.
-       ncomb = bc(100,3);
-       C = subsets(500000,1000,5,ncomb,1)
+       ncomb = bc(1000,5);
+       C = subsets(500000,1000,5,ncomb,1);
 %}
 
 %{
        % Create a matrix with the indexes of 5 subsets when n=100, p=3.
-       % A the previous example, but in addition count how man they are.
+       % As the previous example, but in addition returns in nselected the
+       % number of combinations.
        ncomb = bc(1000,5);
        [C , nselected] = subsets(500000,1000,5,ncomb,1);
 %}
