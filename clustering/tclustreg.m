@@ -38,7 +38,7 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('rlga')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tclustreg')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 %
@@ -57,11 +57,15 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
     % in tclustreg: this needs to be addressed
     X=X+0.000001*randn(677,2);
     out=lga(X,3);
+    out=rlga(X,3,0.5);
     out=tclustreg(X,3,5,0.01,0.01,'intercept',0);
 %}
 %
 
 %% Beginning of code
+
+%
+clrdef='bkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrc';
 
 % Check if optimization toolbox is installed in current computer
 typemin=exist('fminunc','file');
@@ -105,6 +109,10 @@ if ~isempty(UserOptions)
     end
 end
 
+% A graph summarizing the results will be given if dimension is equal p = 2
+plots = options.plots;
+
+% Intercept yes/no
 intercept=options.intercept;
 
 if intercept==1
@@ -115,7 +123,6 @@ end
 
 y=X(:,end);
 X=X(:,1:end-1);
-
 
 Ksteps=options.Ksteps;
 niter=options.niter;
@@ -138,7 +145,8 @@ numopt = 1:k;
 vopt = -1e+20;
 
 
-%  Randon restarts
+%%  Random starts
+
 for iter=1:niter
     
     if options.output==true
@@ -155,7 +163,7 @@ for iter=1:niter
     % bini is the matrix which will contains the estimate of \hat beta for
     % each group. Column 1 refers to first group, ... , Column k refers to
     % kth group
-    bini =zeros(p,k);
+    nameYY =zeros(p,k);
     
     % Search for k*p random points avoiding group degeneracies for the x's
     
@@ -170,7 +178,7 @@ for iter=1:niter
     while degen == 100
         degen=1;
         for j=1:k
-            if  abs(det(  Xb((1+(j-1)*p):(j*p),1:p)  )) < 1e-50
+            if  abs(det(  Xb((1+(j-1)*p):(j*p),1:p) )) < 1e-50
                 degen = 100;
             end
         end
@@ -183,7 +191,7 @@ for iter=1:niter
     for j=1:k
         Xbj=Xb((1+(j-1)*p):(j*p),:);
         ybj=yb((1+(j-1)*p):(j*p));
-        bini(:,j) =Xbj\ybj;
+        nameYY(:,j) =Xbj\ybj;
     end
     
     % Concentration steps
@@ -193,7 +201,7 @@ for iter=1:niter
         
         % Discriminant functions for the assignments
         for jk=1:k
-            ll(:,jk) = (niini(jk)/n)*normpdf(y-X*bini(:,jk),0,sqrt(sigmaini(jk)));
+            ll(:,jk) = (niini(jk)/n)*normpdf(y-X*nameYY(:,jk),0,sqrt(sigmaini(jk)));
         end
         
         
@@ -268,7 +276,7 @@ for iter=1:niter
                 yyy = xmodj(qqs,p+1);
                 ni(jk) = length(yyy);
                 breg = xxx\yyy;
-                bini(:,jk) = breg;
+                nameYY(:,jk) = breg;
                 
                 % now find residuals
                 residuals=yyy-xxx*breg;
@@ -306,7 +314,7 @@ for iter=1:niter
         if control==0,
             yj=xmod(xmod(:,end)==jk,end-1);
             Xj=xmod(xmod(:,end)==jk,1:end-2);
-            obj=obj+ niini(jk)*log(niini(jk)/trimm2)+sum(log(normpdf(yj-Xj*bini(:,jk),0,sqrt(sigmaini(jk)))));
+            obj=obj+ niini(jk)*log(niini(jk)/trimm2)+sum(log(normpdf(yj-Xj*nameYY(:,jk),0,sqrt(sigmaini(jk)))));
         else
             obj=obj-10^10;
         end
@@ -315,48 +323,51 @@ for iter=1:niter
     % Change the 'optimal' target value and 'optimal' parameters if a increase in the target value is achieved
     if (obj >= vopt)
         vopt = obj;
-        bopt = bini;
+        bopt = nameYY;
         numopt = niini;
         sigmaopt = sigmaini;
     end
     disp(['iter ' num2str(iter)]);
 end
 
-%Last part of the program prepares some graphs and numerical outputs for the program
-% Assignment vectors: asig.1 are the clusters after the first trimming and asig.2 after the second
-asig1 =zeros(n,1);
-asig2 =asig1;
+%% Prepares the output structure and some variables for the plots
 
+% Assignment vectors:
+% - asig.1 will contain the clusters after the first trimming
+% - asig.2 will contain the clusters after after the second trimming
+asig1 = zeros(n,1);
+asig2 = asig1;
 
+% log-likelihoods for each unit and group
 for jk=1:k
     ll(:,jk) = (numopt(jk)/n)*normpdf(y-X*bopt(:,jk),0,sqrt(sigmaopt(jk)));
 end
 
-[dist,indll]= max(ll,[],2);
+% indll: for each unit, group with best log-likelihood
+[dist,indll] = max(ll,[],2);
 
-% Sort the n likelihood contributions
-% qq contains the largest n*(1-alpha) (weighted) likelihood contributions
-[val,qq]=sort(dist,'descend');
-val=val(n-trimm);
+% Sort the n likelihood contributions;
+[val,qq] = sort(dist,'descend');
 
+% qq is updated to be a vector of size h which contains the indexes
+% associated with the largest n(1-alpha) (weighted) likelihood
+% contributions
+qq  = qq(1:n-trimm);
 
+% boolean vectors indicating the good and outlying units
+val = val(n-trimm);
+b_good = (dist>=val);
+b_outl = (dist <val);
 
+% asig1: grouping variable for good units
 for jk=1:k
-    asig1((indll==jk) & (dist>=val)) = jk;
+    asig1((indll==jk) & b_good) = jk;
 end
 
-plots=options.plots;
+xmod = [X(qq,:) y(qq) indll(qq)];
 
-% A graph summarizing the results is given if dimension is equal p = 2
-if (p<=2 && plots)
-    plot(X(dist<val,end),y(dist<val),'o','color','r')
-    hold('on')
-end
-
-% qq = vector of size h which contains the indexes associated with the largest n(1-alpha)
-% (weighted) likelihood contributions
-qq=qq(1:n-trimm);
-xmod=[X(qq,:) y(qq) indll(qq)];
+xxx0_all = [];
+yyy0_all = [];
 
 for jk=1:k
     
@@ -364,7 +375,6 @@ for jk=1:k
     qqk = qq(booljk);
     ni(jk) = sum(booljk);
     xmodjk = xmod(booljk,:);
-    
     
     if alpha2==0
         qqs = 1:ni(jk);
@@ -377,62 +387,144 @@ for jk=1:k
         end
         [~,indmdsor]=sort(RAW.md);
         qqs=indmdsor(1:floor(ni(jk)*(1-alpha2)));
+        
     end
+    
+    % good units of the current group
     xxx = xmodjk(qqs,1:end-2);
     yyy = xmodjk(qqs,end-1);
     
+    % second level trimming units of the current group
     qqsn=setdiff(1:ni(jk),qqs);
     xxx0 = xmodjk(qqsn,1:end-2);
     yyy0 = xmodjk(qqsn,end-1);
     
+    % collect all second level trimming units in a same group, for plotting
+    xxx0_all = [xxx0_all ; xxx0(:,end)]; %#ok<AGROW>
+    yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
     
+    % plot good units allocated to the current group
     if (p<=2 && plots)
-        plot(xxx(:,end),yyy,'.w');
-        % points of each component (pch=k+2)
-        text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)) , ...
+        
+        % initialize figure
+        if jk == 1
+            fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
+            ah=gca(fh);
+            hold on;
+            xlabel('X');
+            ylabel('y');
+            title('TclustReg clustering','Fontsize',14);
+            %print(fh,[graphs 'PCvariance.png'],'-dpng');
+            %close(fh);
+        end
+        
+        group_label = ['Group ' num2str(jk)];
+        plot(xxx(:,end),yyy,'.w','DisplayName',group_label);
+        % units of each component (pch=k+2)
+        text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)),...
+            'DisplayName',group_label , ...
             'HorizontalAlignment','center',...
-            'VerticalAlignment','middle');
-        % second level trimming points
-        plot(xxx0(:,end),yyy0,'*','color','c')
+            'VerticalAlignment','middle',...
+            'Color',clrdef(jk));
+        % % second level trimming points
+        % % non worth having them by group
+        % plot(xxx0(:,end),yyy0,'*','color','c',...
+        % 'DisplayName','Level-2 trim');
     end
     
     qqf = qqk(qqs);
     asig2(qqf) = jk;
     
+    % plot regression lines
     if (p<=2 && plots)
         reg=xxx\yyy;
-        %         v=axis';
-        %         plot(v(1:2),reg(1)+reg(2)*v(1:2))
         v = [min(X(:,end)) max(X(:,end))];
         if intercept==1
-            plot(v,reg(1)+reg(2)*v)
+            plot(v,reg(1)+reg(2)*v,...
+                'DisplayName',['fit of group '  num2str(jk)],...
+                'Color',clrdef(jk));
         elseif intercept==0
-            plot(v,reg*v)
+            plot(v,reg*v,...
+                'DisplayName',['fit of group '  num2str(jk)],...
+                'Color',clrdef(jk));
         end
     end
 end
 
+if (p<=2 && plots)
+    
+    % Plot the group of outliers
+    plot(X(b_outl,end),y(b_outl),'o','color','r',...
+        'DisplayName','Trimmed units');
+    
+    % second level trimming points
+    plot(xxx0_all,yyy0_all,'*','color','c',...
+        'DisplayName','L2 trimmed units');
+    
+    % position the legends and make them clickable
+    lh=legend('show');
+    %set(lh,'FontSize',14);
+    axis('manual');
+    legstr = get(lh,'String');
+    clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
+    %[hleg, hobj, hout, mout] = clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
+    %Unfortunately custom markers for line objects are not possible in MATLAB
+    %set(hobj(10),'Marker','1','Color','k');
+end
 
-%   Return the values for the function
-%   bopt are the regression parameters
-%   sigmaopt are the estimated group variances
-%   numopt are the number of observations in each cluster after the second trimming
-%   vopt is the value of the target function
-%   asig1 is the cluster assigments after first trimming ('0' means a trimmed observation...)
-%   asig2 is the (-final-) cluster assigments after second trimming ('0' means a trimmed observation...)
-out=struct;
-out.bopt=bopt;
-out.sigmaopt=sigmaopt;
-out.numopt=numopt;
-out.vopt=vopt;
-out.asig1=asig1;
-out.asig2=asig2;
+if (p>2 && plots)
+    if intercept
+        YY = [X(:,2:end),y];
+    else
+        YY = [X,y];
+    end
+    
+    % axis labels
+    nameYY = cellstr([repmat('X',size(YY,2)-1,1) , num2str((1:size(YY,2)-1)')]);
+    nameYY = [nameYY ; 'y'];
+    nameYY = nameYY';
+    plo=struct;
+    plo.nameY=nameYY;
+    
+    % group names in the legend
+    group = cell(size(asig2,1),1);
+    group(asig2==0) = {'Trimmed units'};
+    for iii = 1:k
+        group(asig2==iii) = {['Group ' num2str(iii)]};
+    end
+    
+    % scatterplot
+    out = spmplot(YY,group,plo,'hist');
+    
+    %group_l = cellstr([repmat('Group',k,1) , num2str((1:k)')]);
+    %group_l = ['Trimmed units' ; group];
+    %[hleg, hobj, hout, mout] =legend((out(1,end,:)));
+end
 
+%%  Set the output structure
 
+out             = struct;
+out.bopt        = bopt;
+out.sigmaopt    = sigmaopt;
+out.numopt      = numopt;
+out.vopt        = vopt;
+out.asig1       = asig1;
+out.asig2       = asig2;
 
-% quadi is the subfunction which prepares the quantities to call the matlab quadratic
-% programming routine quadprog,
-    function   gnew=quadi(gg,factor)
+%   bopt        are the regression parameters
+%   sigmaopt    are the estimated group variances
+%   numopt      are the number of observations in each cluster after the
+%               second trimming
+%   vopt        is the value of the target function
+%   asig1       is the cluster assigments after first trimming ('0' means a
+%               trimmed observation)
+%   asig2       is the (-final-) cluster assigments after second trimming
+%               ('0' means a trimmed observation)
+
+%% subfunction quadi
+%  prepares the quantities to call the matlab quadratic programming routine
+%  quadprog
+    function gnew = quadi(gg,factor)
         if size(gg,1)>1
             gg=gg';
         end
@@ -487,8 +579,6 @@ out.asig2=asig2;
             option = optimset('OutputFcn','quadprog','algorithm','interior-point-convex','Display','off');
             
             a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],option);
-            
-            
             %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','interior-point-convex','Display','iter');
             %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','active-set');
             
