@@ -1,38 +1,99 @@
-function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
+function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %tclustreg performs robust linear grouping analysis
-%
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%TODO:tclustreg:inputyX
+%         y : Response variable. Vector. 
+%             A vector with n elements that contains the response variable.
+%             y can be either a row or a column vector.
+%             Data Types - single|double
 %
-%       X   : a matrix of size n-by-(p+1) (last column is the response)
-%       k   : scalar number of clusters
-%     factor: scalar. This is the constant c controlling the scatter constrain
+%         X : Explanatory variables (also called 'regressors'). Matrix.
+%             Data matrix of dimension $(n \times p-1)$. Rows of X represent
+%             observations, and columns represent variables. Missing values
+%             (NaN's) and infinite values (Inf's) are allowed, since
+%             observations (rows) with missing or infinite values will
+%             automatically be excluded from the computations.
+%             Data Types - single|double
+%
+%         k : Number of clusters. Scalar. 
+%             This is a guess on the number of data groups.
+%             Data Types - single|double
+%
+%   alpha1 : Trimming level. Scalar. 
+%            alpha1 is a value between 0 and 0.5 or an  integer specifying
+%            the number of observations which have to be trimmed. If
+%            alpha=0 there is no trimming. More in detail, if 0<alpha1<1
+%            clustering is based on h=fix(n*(1-alpha1)) observations.
+%            Else if alpha1 is an integer greater than 1 clustering is
+%            based on h=n-floor(alpha1).
+%            Data Types - single|double
+%
+%   alpha2 : Second-level trimming. Scalar. 
+%            alpha2 is a value between 0 and 0.5, usually smaller than
+%            alpha1. If alpha2=0 there is no second-level trimming.
+%            Data Types - single|double
+%
+%restrfact : Scatter constraint. Scalar. 
+%            This is a constant c controlling the differences among
+%            group scatters. The value 1 is the strongest restriction.
+%            Data Types - single|double
 %
 %  Optional input arguments:
 %
+%intercept : Indicator for constant term. Scalar. If 1, a model with
+%            constant term will be fitted (default), if 0, no constant
+%            term will be included.
+%            Example - 'intercept',1 
+%            Data Types - double
 %
-%   intercept : If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%      niter  : an integer for the number of iterations to attempt for convergence
-%      Kiter  : integer. Number of concentrarion steps
-%      plots  : scalar. If plots=1 a plot is showed on the screen with the
-%               final allocation (and if size(X,2)==2 with the lines
-%               associated to the groups)
+%    niter : Number of random starts. Scalar. An integer for the number 
+%            of iterations to attempt for convergence.
+%            Example - niter = 20 
+%            Data Types - double
+%
+%    Kiter : Number of concentrarion steps. Scalar. An integer for the 
+%            number of concentration steps. 
+%            Example - niter = 10 
+%            Data Types - double
+%
+%    plots : Plot on the screen. Scalar. A flag to control the
+%            generation of the plots.
+%            If plots=1 a plot is showed on the screen with the
+%            final allocation (and if size(X,2)==2 with the lines
+%            associated to the groups)
+%            Example - 'plots',1 
+%            Data Types - double
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%  out :  structure containing the following fields
 %
-%   bopt =  regression parameters
-%   sigmaopt are the estimated group variances
-%   numopt are the number of observations in each cluster after the second trimming
-%   vopt is the value of the target function
-%   asig1 is the cluster assigments after first trimming ('0' means a trimmed observation...)
-%   asig2 is the (-final-) cluster assigments after second trimming ('0' means a trimmed observation...)
+%   out.bopt        = $p-1 \times k$ matrix containing the regression
+%                     parameters.
+%   out.sigmaopt    = $k$ row vector containing the estimated group
+%                     variances.
+%   out.numopt      = $k$ column vector containing the number of
+%                     observations in each cluster after the second
+%                     trimming.
+%   out.vopt        = Scalar. The value of the target function.
+%   out.asig1       = $n$ vector containing the cluster assigments after 
+%                     first trimming ('0' means a trimmed observation).
+%   out.asig2       = $n$ vector containing the final cluster assigments 
+%                     after second trimming ('0' means a trimmed
+%                     observation).
+%
+%
+% See also: tclust, tkmeans, estepFS
+%
+% References:
+%
+% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
+% (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
+% of Statistics, Vol.36, 1324-1345. Technical Report available at
+% www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
 % Copyright 2008-2015.
@@ -48,7 +109,11 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
 %{
     X=load('X.txt');
     out=lga(X,3);
-    out=tclustreg(X,3,5,0.1,0.1);
+
+    y1=X(:,end);
+    X1=X(:,1:end-1);
+
+    out=tclustreg(y1,X1,3,5,0.1,0.1);
 %}
 %{
     load fishery;
@@ -58,13 +123,46 @@ function out = tclustreg(X,k,factor,alpha1,alpha2,varargin)
     X=X+0.000001*randn(677,2);
     out=lga(X,3);
     out=rlga(X,3,0.5);
-    out=tclustreg(X,3,5,0.01,0.01,'intercept',0);
+
+    y1=X(:,end);
+    X1=X(:,1:end-1);
+
+    out=tclustreg(y1,X1,3,5,0.01,0.01,'intercept',0);
 %}
-%
 
-%% Beginning of code
+%{
+    % Generate mixture of regression using MixSimReg, with an average
+    % overlapping at centroids =0.01. Use all default options.
+    p=3;
+    k=2;
+    Q=MixSimreg(k,p,'BarOmega',0.001);
+    n=400;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    spmplot([y X(:,2:end)],id);
+    out=tclustreg(y,X,2,50,0.01,0.01,'intercept',1);
 
-%
+%}
+
+
+%% Input parameters checking
+
+nnargin=nargin;
+vvarargin=varargin;
+[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+
+%% Few internal parameters and basic checks
+
+% default number of random starts
+niterdef = 20;
+
+% default number of concentration starts
+Ksteps  = 10;
+
+%Initialize the objective function (optimized during the random starts)
+%through a very small value
+vopt = -1e+20;
+
+% this is just for rotating colors in the plots
 clrdef='bkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrc';
 
 % Check if optimization toolbox is installed in current computer
@@ -74,11 +172,9 @@ if typemin ~=2
     error('FSDA:tclustreg:MissingOptToolbox','This function requires the optimization toolbox')
 end
 
-[n,p]=size(X);
+%% User options
 
-niterdef=20;
-
-options=struct('intercept',1,'niter',niterdef,'Ksteps',10,...
+options=struct('intercept',1,'niter',niterdef,'Ksteps',Ksteps,...
     'plots',1,'output',false);
 
 % Write in structure 'options' the options chosen by the user
@@ -86,21 +182,15 @@ for i=1:2:length(varargin);
     options.(varargin{i})=varargin{i+1};
 end
 
-% Default value of p
-
 UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    
-    
+if ~isempty(UserOptions)  
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:tclustreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    
-    % Check if all the specified optional arguments were present
-    % in structure options
-    % Remark: the nocheck option has already been dealt by routine
-    % chkinputR
+    % Check if all the specified optional arguments were present in
+    % structure options. Remark: the nocheck option has already been dealt
+    % by routine chkinputR.
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
@@ -109,41 +199,51 @@ if ~isempty(UserOptions)
     end
 end
 
-% A graph summarizing the results will be given if dimension is equal p = 2
-plots = options.plots;
+% Graph summarizing the results, yes/no; For p=2 the plot is specific for
+% tclustreg. Otherwise spmplot is used
+plots       = options.plots;
 
-% Intercept yes/no
-intercept=options.intercept;
+% Intercept, yes/no
+intercept   = options.intercept;
 
-if intercept==1
-    X=[ones(n,1) X];
+% Number of variables without considering the constant term. It is used for
+% deciding the type of plot.
+if intercept == 1 
+    v = p-1;
 else
-    p=p-1;
+    v = p;
 end
 
-y=X(:,end);
-X=X(:,1:end-1);
+% lines below are obsolete: replaced by chkinputR
+% if intercept==1
+%     X=[ones(n,1) X];
+% else
+%     p=p-1;
+% end
+% 
+% y=X(:,end);
+% X=X(:,1:end-1);
 
-Ksteps=options.Ksteps;
-niter=options.niter;
+% Concentration steps
+Ksteps      = options.Ksteps;
 
-notrim = floor(n*(1-alpha1));
-trimm = n-notrim;
+% Random starts
+niter       = options.niter;
+
+% First level trimming
+notrim      = floor(n*(1-alpha1));
+trimm       = n-notrim;
 
 % Total trimming after second trimming
 trimm2 = floor(n*(1-alpha1)*(1-alpha2));
 
-% Initialize vector and matrices
-ll = zeros(n,k);
+%% Initialize vector and matrices
 
-ni =ones(1,k);
-sigmaopt =ni;
-bopt = zeros(k,p);
-numopt = 1:k;
-
-%Initialize the objective function through a very small value
-vopt = -1e+20;
-
+ll          = zeros(n,k);
+ni          = ones(1,k);
+sigmaopt    = ni;
+bopt        = zeros(k,p);
+numopt      = 1:k;
 
 %%  Random starts
 
@@ -174,11 +274,12 @@ for iter=1:niter
     yb = y(subs);
     
     % Check that all submatrices of the groups are full rank
+    
     degen = 100;
     while degen == 100
         degen=1;
         for j=1:k
-            if  abs(det(  Xb((1+(j-1)*p):(j*p),1:p) )) < 1e-50
+            if  abs(det(  Xb((1+(j-1)*p):(j*p),1:p) )) < eps
                 degen = 100;
             end
         end
@@ -194,7 +295,7 @@ for iter=1:niter
         nameYY(:,j) =Xbj\ybj;
     end
     
-    % Concentration steps
+    %% Concentration steps
     
     indold = zeros(n,1)-1;
     for t=1:Ksteps
@@ -205,17 +306,16 @@ for iter=1:niter
         end
         
         
-        % In this part we select the untrimmed units
-        % They are those which have the n(1-alpha) largest values among the
-        % maxima of each row of matrix ll
+        % In this part we select the untrimmed units. They are those which
+        % have the n(1-alpha) largest values among the maxima of each row
+        % of matrix ll.
         % vector disc of length(n) contains the (weighted) contribution of
-        % each unit to the log likelihood
+        % each unit to the log likelihood.
         [disc,indll]= max(ll,[],2);
         
         % Sort the n likelihood contributions
         % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
         [~,qq]=sort(disc,'descend');
-        
         
         % qq = vector of size h which contains the indexes associated with the largest n(1-alpha)
         % (weighted) likelihood contributions
@@ -226,42 +326,42 @@ for iter=1:niter
         Xtri=X(qq,:);
         ytri=y(qq,:);
         indtri=indll(qq);
-        % xmod = matrix with length(qq) rows which contains
-        % 1st-pth column  explanatory vairiables
-        % (p+1)-th column response
-        % final column is
-        xmod=[Xtri ytri indtri];
         
-        %         xmod = as.matrix(cbind(X[qq,],ind[qq]))
-        %
+        % xmod = matrix with length(qq) rows which contains
+        % 1st-pth column  explanatory variables
+        % (p+1)-th column response
+        xmod=[Xtri , ytri , indtri];
+        
         % If any cluster is void or with fewer than p+1 elements we stop the concentration steps (control != 0)...
         for jj=1:k
             ni(jj) = sum(indtri==jj);
         end
         
-        
-        control = sum( ni <= p+2 );  % Domenico : it was p+1
+        control = sum( ni <= p+2 );  % Domenico : was p+1
         
         if control==0
-            %Calculus of the new k regression parameters and the new sigmas
-            xmodtemp =zeros(n,p+2);
-            indxmodtemp=0;
+            
+            % new k regression parameters and new sigmas
+            xmodtemp    = zeros(n,p+2);
+            indxmodtemp = 0;
             
             for jk=1:k
                 % xmodj Data points in each group
                 xmodj = xmod(xmod(:,end)==jk,:);
                 
                 % Perform the second trimming
-                % disp(num2str(length(xmodj)))
                 
                 % qqs contains contains the indexes of untrimmed units for
                 % group j
                 if alpha2==0
                     qqs = 1:ni(jk);
                 else
-                    % Find the units with the smallest h distances
+                    % Find the units with the smallest h distances.
                     % Apply mcd on the x space (without the intercept if
-                    % present)
+                    % present).
+                    % REMARK: This is by far the computationally most 
+                    % expensive instruction of tclustreg. More precisely,
+                    % the dominant expensive function inside mcd is IRWLSmcd.
                     if intercept
                         RAW = mcd(xmodj(:,2:p),'bdp',alpha2,'msg',0);
                     else
@@ -294,12 +394,10 @@ for iter=1:niter
             
             % If the scatters do not satisfy the restriction then a
             % quadratic programming problem is solved
-            sigmaini = (quadi(sigmaini.^(-1), factor)).^(-1);
+            sigmaini = (quadi(sigmaini.^(-1), restrfact)).^(-1);
         end
-        
-        
-        
-        % This criterium serves to stop if two consecutive concentration steps has the same result
+           
+        % Stop if two consecutive concentration steps have the same result
         if indll == indold
             break
         else
@@ -307,20 +405,23 @@ for iter=1:niter
         end
     end
     
+    %% Concentration steps concluded
     
-    % After the concentration steps, we compute the value of the target function
+    % Now compute the value of the target function
     obj =0;
     for jk=1:k
         if control==0,
             yj=xmod(xmod(:,end)==jk,end-1);
             Xj=xmod(xmod(:,end)==jk,1:end-2);
-            obj=obj+ niini(jk)*log(niini(jk)/trimm2)+sum(log(normpdf(yj-Xj*nameYY(:,jk),0,sqrt(sigmaini(jk)))));
+            obj = obj + niini(jk)*log(niini(jk)/trimm2) +...
+                  sum(log(normpdf(yj-Xj*nameYY(:,jk),0,sqrt(sigmaini(jk)))));
         else
             obj=obj-10^10;
         end
     end
     
-    % Change the 'optimal' target value and 'optimal' parameters if a increase in the target value is achieved
+    % Change the 'optimal' target value and 'optimal' parameters if an
+    % increase in the target value is achieved
     if (obj >= vopt)
         vopt = obj;
         bopt = nameYY;
@@ -369,6 +470,7 @@ xmod = [X(qq,:) y(qq) indll(qq)];
 xxx0_all = [];
 yyy0_all = [];
 
+% go over the groups
 for jk=1:k
     
     booljk=xmod(:,end)==jk;
@@ -379,15 +481,13 @@ for jk=1:k
     if alpha2==0
         qqs = 1:ni(jk);
     else
-        
         if intercept
             RAW = mcd(xmodjk(:,2:p),'bdp',alpha2,'msg',0);
         else
             RAW = mcd(xmodjk(:,1:p),'bdp',alpha2,'msg',0);
         end
-        [~,indmdsor]=sort(RAW.md);
-        qqs=indmdsor(1:floor(ni(jk)*(1-alpha2)));
-        
+        [~,indmdsor] = sort(RAW.md);
+        qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
     end
     
     % good units of the current group
@@ -404,7 +504,7 @@ for jk=1:k
     yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
     
     % plot good units allocated to the current group
-    if (p<=2 && plots)
+    if (plots && v < 2) 
         
         % initialize figure
         if jk == 1
@@ -436,7 +536,7 @@ for jk=1:k
     asig2(qqf) = jk;
     
     % plot regression lines
-    if (p<=2 && plots)
+    if (plots && v < 2)
         reg=xxx\yyy;
         v = [min(X(:,end)) max(X(:,end))];
         if intercept==1
@@ -449,10 +549,12 @@ for jk=1:k
                 'Color',clrdef(jk));
         end
     end
+    
 end
 
-if (p<=2 && plots)
+if plots
     
+    if v < 2
     % Plot the group of outliers
     plot(X(b_outl,end),y(b_outl),'o','color','r',...
         'DisplayName','Trimmed units');
@@ -470,9 +572,11 @@ if (p<=2 && plots)
     %[hleg, hobj, hout, mout] = clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
     %Unfortunately custom markers for line objects are not possible in MATLAB
     %set(hobj(10),'Marker','1','Color','k');
-end
+    end
 
-if (p>2 && plots)
+else
+    % in this case p > 2 and a standard spmplot is used
+    
     if intercept
         YY = [X(:,2:end),y];
     else
