@@ -223,6 +223,8 @@ function [out , varargout] = MMreg(y,X,varargin)
     %of 1%, no unit is declared as outlier and just half of them using the 99%
     %band.
 %}
+
+
 %% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;

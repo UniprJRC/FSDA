@@ -34,15 +34,15 @@ function [out , varargout] = Sreg(y,X,varargin)
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
-%               'hampel'
+%               'hampel'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
-%               See TBrho and TBpsi
+%               See TBrho.m and TBpsi.m.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
-%               See OPTrho and OPTpsi
+%               See OPTrho.m and OPTpsi.m.
 %               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
-%               See HYPrho and HYPpsi
+%               See HYPrho.m and HYPpsi.m.
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions.
-%               See HArho and HApsi
+%               See HArho.m and HApsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
 %                 Data Types - char
