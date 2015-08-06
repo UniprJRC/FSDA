@@ -148,6 +148,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %}
 
 %{
+    % Interactive_example
     % Checking the units belonging to subset in each step of the search.
     % Personalized initial subset (large n). Each row of BB matrix 
     % is associated to a unitwhile each colum is associated to a step of the fwd search.
