@@ -148,18 +148,17 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %}
 
 %{
-    % Interactive_example
     % Checking the units belonging to subset in each step of the search.
     % Personalized initial subset (large n). Each row of BB matrix 
-    % is associated to a unitwhile each colum is associated to a step of the fwd search.
-    n=20000;
+    % is associated to a unit while each colum is associated to a step of the fwd search.
+    n=500;
     v=3;
     m0=10;
     randn('state',123456);
     Y=randn(n,v);
     % 25 per cent of Contaminated data
     Ycont=Y;
-    Ycont(1:5000,:)=Ycont(1:5000,:)+3;
+    Ycont(1:50,:)=Ycont(1:50,:)+3;
     [fre]=unibiv(Y);
     fre=sortrows(fre,[3 4]);
     bs=fre(1:m0,1);
@@ -273,7 +272,6 @@ if (rank(Y(bsb,:))<v)
 else
     
     for mm = ini0:n
-        
         % select subset
         Yb=Y(bsb,:);
         

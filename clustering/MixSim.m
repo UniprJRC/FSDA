@@ -28,9 +28,9 @@ function [out]  = MixSim(k,v,varargin)
 %               deviation of overlap.
 %               Remark1 - The probability of overlapping between two
 %               clusters $i$ and $j$, ($i \ne j =1, 2, ..., k$), called
-%               p_{ij}, is defined as the sum of the two misclassification
+%               $p_{ij}$, is defined as the sum of the two misclassification
 %               probabilities
-%               $p_ij=w_{j|i} + w_{i|j}
+%               $p_ij=w_{j|i} + w_{i|j}$
 %               Remark2- it is possible to specify up to two values among
 %               BarOmega MaxOmega and StdOmega.
 %               Example - 'StdOmega',0.05 
