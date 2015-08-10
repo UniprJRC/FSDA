@@ -50,7 +50,7 @@ function x = shuffling(x)
 
 %{
     % shuffling applied to a set of 20 elements, but using a parsimonious
-    data % type; this is convenient if the vector is big.
+    %data  type; this is convenient if the vector is big.
     shuffling(int8(1:20))
 %}
 

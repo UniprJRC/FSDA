@@ -197,8 +197,8 @@ function [out] = FSReda(y,X,bsb,varargin)
     % Forward Search
     [out]=FSReda(y,X,outLXS.bs);
     %The monitoring residuals plot shows a set of positive residuals which
-    starting from the central part of the search tend to have a residual much
-    larger than that of the other units.
+    %starting from the central part of the search tend to have a residual much
+    %larger than that of the other units.
     resfwdplot(out);
     %The minimum deletion residual from m=90 starts going above the 99% threshold.
     mdrplot(out);
