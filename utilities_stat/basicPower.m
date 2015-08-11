@@ -37,7 +37,7 @@ function Ytra=basicPower(Y,ColtoTra,la,Jacobian)
 % Examples:
 
 %{
-    % Mussels data.
+    %% Mussels data.
     load('mussels.mat');
     Y=mussels.data;
     la=[0.5 0 0.5 0 0];

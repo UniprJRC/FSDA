@@ -12,11 +12,14 @@ function kE = quickselectFS(A,k,kiniindex)
 %
 % Optional input arguments:
 %
-%  kiniindex: the index of an element in A that is supposed to be "close"
+%  kiniindex: Index of an element in A. Scalar.
+%      The index of an element in A that is supposed to be "close"
 %      to the desired k-th order statistic. This information is used to
 %      choose the pivot so that the chance to fall into the worst case
 %      performance (O(n^2)) is minimized and the average case performance
 %      is maximized.
+%      Example - 'kiniindex',1 
+%      Data Types - double
 %
 % Output:
 %
@@ -37,7 +40,7 @@ function kE = quickselectFS(A,k,kiniindex)
 % Examples:
 %
 %{
-    % quickselectFS with all default options
+    %% quickselectFS with all default options
     n=200;
     Y=randn(n,1);
     k=10;

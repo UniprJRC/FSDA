@@ -23,7 +23,7 @@ function chkoptions(options,UserOptions)
 % Examples:
 %
 %{
-% example_producing_error
+%% example_producing_error
     %To examplify the behaviour of chkoptions, we call function FSR with a
     %non existing optional parameter ('namez').
     n=200;

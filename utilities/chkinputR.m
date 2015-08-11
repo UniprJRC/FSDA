@@ -60,7 +60,7 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
 %
 % Example:
 %{
-% example_producing_error
+%% example_producing_error
     %To examplify the behaviour of chkinputR, we call function FSR without a
     %compulsory parameter ('y').
     n=200;

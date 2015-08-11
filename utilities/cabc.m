@@ -14,7 +14,7 @@ function cabc
 % Examples:
 
 %{
-    % Plot sin, cos and atan in the interval 0 2pi
+    %% Plot sin, cos and atan in the interval 0 2pi
     x = 0:pi/1000:2*pi;
     plot(x,sin(x));
     figure

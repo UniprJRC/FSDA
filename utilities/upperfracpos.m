@@ -17,6 +17,7 @@ function upperfracpos(hfigl , hfigr , fraction)
 %
 % Examples
 %{
+%% Example of use of upperfracpos
 close all;
 
 % create two figures, rescale and position them

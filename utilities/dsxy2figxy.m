@@ -48,7 +48,7 @@ function varargout = dsxy2figxy(varargin)
 % Last modified 06-Feb-2015
 
 %{
-    % Plot of sin between -pi and pi 
+    %% Plot of sin between -pi and pi 
     % Add an arrow from (0,0) to say (pi,1):
     x = -pi:pi/10:pi;
     plot(x,sin(x));
