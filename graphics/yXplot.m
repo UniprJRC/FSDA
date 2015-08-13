@@ -869,7 +869,10 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                 yselect_all=yselect;
             end
             %coi= list of row identifiers of selected units.
-            coi=NaN(1,length(xselect_all));
+            % Initialize coi assuming n rows (just in case there are
+            % duplicate units)
+            coi=NaN(n,1);
+            jk=1;
             
             for k=1:length(xselect_all)
                 %uno=vector of zeros and ones of the same length of X and
@@ -884,12 +887,17 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                 %conditions uno and due, i.e. observations with both X and
                 %y equal to the X and y selected.
                 tre=uno + due;
-                %coi=list of selected units
-                coi(k)=find(tre==2);
-                if k==1
-                    coi=coi(k);
-                end
+                %coi=list of selected units with that particular
+                %combination of X and y. Note that in presence of
+                %duplicate units listbra can have have more than one row
+                listbra=find(tre==2);
+                % allocate inside vector coi brushed units
+                coi(jk:jk+length(listbra)-1)=listbra;
+                jk=jk+length(listbra);
             end
+            % Resize coi with the number of selected units. 
+            % jk-1 = number of selected units
+            coi=coi(1:jk-1);
             
             %pl=vector with n rows. Ones represent observations selected at
             %the current iteration, zeros all the others.

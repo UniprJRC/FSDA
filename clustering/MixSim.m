@@ -197,7 +197,7 @@ function [out]  = MixSim(k,v,varargin)
 %  misclassification probabilities) divided by 0.5*k*(k-1)
 %  The maximum overlap (which in the code is called MaxOmega) is defined as
 %  $\max(w_{j|i} + w_{i|j}$),  $i \ne j=1,2, ..., k$.
-%  The probability of overlapping $w_{j|i}$ is nothing but the cdf of a linear
+%  The probability of misclassification $w_{j|i}$ is nothing but the cdf of a linear
 %  combination of non central $\chi^2$ distributions with 1 degree of freedom
 %  + a linear combination of $N(0,1)$ evaluated in a
 %  point c.  The coefficients of the linear combinations of non central
