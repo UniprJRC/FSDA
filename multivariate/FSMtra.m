@@ -8,14 +8,13 @@ function out = FSMtra(Y,varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations.
-%                Data Types - single|double%
+%               values are automatically excluded from the computations.
+%               Data Types - single|double
 %
 % Optional input arguments:
 %
@@ -23,73 +22,75 @@ function out = FSMtra(Y,varargin)
 %               must be used. Character. Possible values are 'BoxCox'
 %               (default) or 'YJ'.
 %               The Box-Cox family of power transformations equals
-%               $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero, and
-%               $\log(y)$ if $\lambda = 0$. 
+%               $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero,
+%               and $\log(y)$ if $\lambda = 0$.
 %               The Yeo-Johnson (YJ) transformation is the Box-Cox
-%               transformation of y+1 for nonnegative values, and of |y|+1 with
-%               parameter 2-lambda for y negative. 
+%               transformation of $y+1$ for nonnegative values, and of
+%               $|y|+1$ with parameter 2-lambda for y negative.
 %               The basic power transformation returns $y^{\lambda}$ if
-%               $\lambda$ is not zero, and $\log(\lambda)$  otherwise. 
+%               $\lambda$ is not zero, and $\log(\lambda)$  otherwise.
 %               Remark. BoxCox and the basic power family can be used just
-%               if input y is positive. YeoJohnson family of
+%               if input y is positive. Yeo-Johnson family of
 %               transformations does not have this limitation.
-%               Example - 'family','YJ' 
+%               Example - 'family','YJ'
 %               Data Types - char
-%   init    :   Point where to start monitoring required diagnostics. Scalar. 
-%               Note that if bsb is suppliedinit>=length(bsb). If init is not
-%               specified it will be set equal to floor(n*0.6).
-%               Example - 'init',50 
+%   init    :   Point where to start monitoring required diagnostics. Scalar.
+%               Note that if bsb is suppliedinit>=length(bsb). If init is
+%               not specified it will be set equal to floor(n*0.6).
+%               Example - 'init',50
 %               Data Types - double
 %       bsb :   It contains the units forming initial subset. Vector. The
 %               default value of bsb is '' that is the initial subset is
 %               found through the intersection of robust bivariate ellipses
 %               This option is useful if a forced start is required.
-%                 Example - 'bsb',[4 6 9] 
-%                 Data Types - double
+%               Example - 'bsb',[4 6 9]
+%               Data Types - double
 %        rf :   confidence level for bivariate ellipses. Scalar. Default is
 %               0.9. If bsb is not empty this argument is ignored.
-%                 Example - 'rf',0.99 
-%                 Data Types - double
+%               Example - 'rf',0.99
+%               Data Types - double
 %   ColToTra:   It specifies the variables which must be
 %               transformed. Vector. It is a k x 1 integer vector.
-%                 Example - 'ColToTra',[1 3]
-%                 Data Types - double
+%               Example - 'ColToTra',[1 3]
+%               Data Types - double
 %        la0:   It contains set of transformation
-%               parameters for the k ColtoTra. Vector. It is a k x 1 vector.  The ordering of Mahalanobis
-%               distances at each step of the forward search uses variables
-%               transformed with la0. la0 empty is equivalent to its
-%               default value la0=ones(length(ColToTra),1).
-%                 Example - 'la0',[-1 0]
-%                 Data Types - double
+%               parameters for the k ColtoTra. Vector. It is a k x 1
+%               vector.  The ordering of Mahalanobis distances at each step
+%               of the forward search uses variables transformed with la0.
+%               la0 empty is equivalent to its default value
+%               la0=ones(length(ColToTra),1).
+%               Example - 'la0',[-1 0]
+%               Data Types - double
 %  onelambda:   If onelambda=1, a common value lambda is estimated
 %               for all variables specified in ColToTra. Scalar.
-%                 Example - 'onelambda',0
-%                 Data Types - double
+%               Example - 'onelambda',0
+%               Data Types - double
 %   optmin  :  It contains the options dealing with the
-%               maximization algorithm. Structure. Use optimset to set these options.
-%               Notice that the maximization algorithm which is used is
-%               fminunc is the optimization toolbox is present else is
-%               fminsearch.
-%                 Example -'optmin.Display','off' 
-%                 Data Types - double 
+%               maximization algorithm. Structure. Use optimset to set
+%               these options. Notice that the maximization algorithm which
+%               is used is fminunc is the optimization toolbox is present
+%               else is fminsearch.
+%               Example -'optmin.Display','off'
+%               Data Types - double
 %     speed :   If speed=1 the initial value at step m of
 %               the maximization procedure is the
 %               final value at step m-1 else it is la0. Scalar. Default
 %               value 1. The maximization procedure is fminunc or fminsearch.
-%                 Example -'speed',0 
-%                 Data Types - double
+%               Example -'speed',0
+%               Data Types - double
 %   colnames:   It contains the names of
-%               the variables of the dataset. Cell array of strings. Cell array of strings of length v. If colnames is empty then the
+%               the variables of the dataset. Cell array of strings. Cell
+%               array of strings of length v. If colnames is empty then the
 %               sequence 1:v is created to label the variables.
-%                 Example -'colnames', {'1' '2' '3' '4' '5' '10' '11' '12' '13'};
-%                 Data Types - cell array of strings
+%               Example -'colnames', {'1' '2' '3' '4' '5' '10' '11' '12' '13'};
+%               Data Types - cell array of strings
 %   prolik  :   It specifies whether it is necessary to
 %               monitor the profile log likelihood of the transformation
 %               parameters at selected steps of the search. Scalar or
 %               structure.
 %               If prolik is a scalar, the plot of the profile loglikelihoods
-%               is produced at step m=n with all default parameters. 
-%               If prolik is a structure it may contain the following fields: 
+%               is produced at step m=n with all default parameters.
+%               If prolik is a structure it may contain the following fields:
 %                   prolik.steps = vector containing the steps of the fwd
 %                                  search for which profile logliks have to
 %                                  be plotted. The default value of steps
@@ -104,8 +105,8 @@ function out = FSMtra(Y,varargin)
 %                                 the plots of profile loglikelihoods. The
 %                                 default value of xlim is [-2 2];
 %                   prolik.LineWidth = line width of the vertical lines
-%                                 defining confidence levels of the transformation
-%                                 parameters.
+%                                 defining confidence levels of the
+%                                 transformation parameters.
 %                 Example -'prolik',7
 %                 Data Types - double
 %   plotsmle:   It specifies whether it is necessary to
@@ -116,7 +117,7 @@ function out = FSMtra(Y,varargin)
 %               If prolik is a scalar, the plot of the monitoring of
 %               maximum likelihood estimates of transformation parameters
 %               is produced on the screen with all the default options.
-%               If plotsmle is a structure, it may contain the following fields: 
+%               If plotsmle is a structure, it may contain the following fields:
 %                 plotsmle.xlim = minimum and maximum on the x axis;
 %                 plotsmle.ylim = minimum and maximum on the y axis;
 %                 plotsmle.LineWidth = Line width of the trajectories of
@@ -126,7 +127,7 @@ function out = FSMtra(Y,varargin)
 %                                      transformation parameters;
 %                 plotsmle.LineWidthEnv=Line width of the horizontal
 %                                      lines;
-%                 plotsmle.Tag       = tag of the plot (default is pl_mle); 
+%                 plotsmle.Tag       = tag of the plot (default is pl_mle);
 %                 plotsmle.FontSize  = font size of the text labels which
 %                                      identify the trajectories.
 %                 Example -'plotsmle',1
@@ -136,17 +137,17 @@ function out = FSMtra(Y,varargin)
 %               If plotslrt is a scalar, the plot of the monitoring of
 %               likelihood ratio test is produced on the screen with all
 %               default options.
-%               If plotslrt is a strucure, it may contain the following fields: 
-%                   plotslrt.xlim     = minimum and maximum on the x axis; 
-%                   plotslrt.ylim     = minimum and maximum on the y axis; 
+%               If plotslrt is a strucure, it may contain the following fields:
+%                   plotslrt.xlim     = minimum and maximum on the x axis;
+%                   plotslrt.ylim     = minimum and maximum on the y axis;
 %                   plotslrt.LineWidth= Line width of the trajectory of lrt of
-%                                       transformation parameters; 
+%                                       transformation parameters;
 %                   plotslrt.conflev  = vector which defines the confidence
 %                                       levels of the horizontal line for
 %                                       the likelihood ratio test (default
 %                                       is conflev=[0.95 0.99]);
-%                   plotslrt.LineWidthEnv= Line width of the horizontal lines; 
-%                   plotslrt.Tag      = tag of the plot (default is pl_lrt). 
+%                   plotslrt.LineWidthEnv= Line width of the horizontal lines;
+%                   plotslrt.Tag      = tag of the plot (default is pl_lrt).
 %                 Example -'plotslrt',1
 %                 Data Types - double
 %  msg  :      It controls whether to display or not messages
@@ -172,25 +173,25 @@ function out = FSMtra(Y,varargin)
 %         out:   structure which contains the following fields
 %
 %   out.MLEtra= n-init+1 x v matrix which contains the monitoring of
-%               MLE of transformation parameters: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = MLE of variable 1; 
-%               3rd col = MLE of variable 2; 
-%               ...; 
+%               MLE of transformation parameters:
+%               1st col = fwd search index (from init to n);
+%               2nd col = MLE of variable 1;
+%               3rd col = MLE of variable 2;
+%               ...;
 %               (v+1)th col = MLE of variable v.
 %   out.LIKrat= n-init+1 x 2 = matrix which contains the monitoring of
 %               likelihood ratio for testing H0:\lambda=la0:
-%               1st col = fwd search index (from init to n); 
+%               1st col = fwd search index (from init to n);
 %               2nd col = value of the likelihood ratio.
 %   out.Exflag= n-init+1 x 2 = matrix which contains the monitoring of
 %               the integer identifying the reason why the maximization
 %               algorithm terminated. See help page fminunc of the
 %               optimization toolbox  for the list of values of exitflag
-%               and the corresponding reasons the algorithm terminated: 
-%               1st col = fwd search index (from init to n); 
+%               and the corresponding reasons the algorithm terminated:
+%               1st col = fwd search index (from init to n);
 %               2nd col = the value that describes the exit condition
 %   out.Un =    (n-init) x 11 Matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search. 
+%               included in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
@@ -225,7 +226,7 @@ function out = FSMtra(Y,varargin)
 
 %{
     %% FSMtra with optional arguments.
-    % Plot the maximum likelihood estimates of the transformation parameters. 
+    % Plot the maximum likelihood estimates of the transformation parameters.
     % Baby food data.
     load('baby.mat');
     Y=baby.data(:,6:end);
@@ -237,7 +238,7 @@ function out = FSMtra(Y,varargin)
 
 
 %{
-    %% Personalized options for plotsmle. 
+    %% Personalized options for plotsmle.
     % Baby food data.
     load('baby.mat');
     Y=baby.data(:,6:end);
@@ -444,7 +445,7 @@ function out = FSMtra(Y,varargin)
 
     % Extract demographic variables
     Y1=Y(:,[1 2 3 4 5 10 11 12 13]);
-    colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'}; 
+    colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'};
     plotslrt=struct;
     plotslrt.ylim=[-8.2 8.2];
     ColToComp=[1 3 5 9];
