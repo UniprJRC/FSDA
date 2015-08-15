@@ -7,7 +7,8 @@ function addFSDA2path(FSroot)
 %
 %    FSroot:    path of the folder which contains FSDA toolbox. String.
 %               A string containing the path which contains the root folder
-%               of FSDA toolbox.
+%               of FSDA toolbox. The function works in both Windows and
+%               Unix file systems.
 %               Example - 'D:\MATLAB\FSDA'   
 %               Data Types - char
 %               
@@ -50,10 +51,15 @@ function addFSDA2path(FSroot)
 
 %
 %{
-%      If FSDA has been installed in D:\matlab\FSDA
-%      in order to include the required subfolders of FSDA use the following sintax
- 
+%      If FSDA has been installed in D:\matlab\FSDA, or in /matlab/FSDA on
+%      unix platforms, in order to include the required subfolders of FSDA
+%      use the following syntax:
+%
        addFSDA2path('D:\matlab\FSDA')
+%
+%      or 
+%
+       addFSDA2path('/matlab/FSDA')
 %}
 
 %{
