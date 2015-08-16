@@ -523,13 +523,14 @@ end
 FileWithFullPath=which(file);
 [pathstrcf,name,ext]=fileparts(FileWithFullPath);
 
+if isempty(pathstrcf)
+    error('FSDA:publishFS:WrongFile','SourceNotFound');
+end
+
 if ~strcmp('.m',ext)
     error('FSDA:publishFS:WrongFileExt','Input file must have m extension')
 end
 
-if isempty(pathstrcf)
-    error('FSDA:publishFS:WrongFile','SourceNotFound');
-end
 
 filename=FileWithFullPath;
 % f = fopen(filename);
@@ -2304,9 +2305,19 @@ outstring=([titl metacontent sitecont sintaxhtml sintaxclose description  ....
 file1ID=fopen([outputDir fsep name 'tmp.html'],'w');
 
 if file1ID==-1
-    outputDir=strrep(outputDir,'\','\\');
-    errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
+        
+    if ismac || isunix
+        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+    elseif ispc
+        outputDir=strrep(outputDir,'\','\\');
+        errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
+    else
+         errmsg= [' Path ' outputDir '//' name '.html does not exist or output file '  name '.html is not writable'];
+         disp('Cannot recognize platform: I use unix as default')
+    end
+    
     error('FSDA:publishFS:WrngOutFolder',errmsg)
+    
 end
 
 if evalCode==true
