@@ -730,26 +730,50 @@ end
 findfsep=strfind(pathstrcf,fsep);
 inifolder=findfsep(end)+1;
 categ=pathstrcf(inifolder:end);
-if strcmp(categ,'combinatorial')
-    FScat='<!--FScategory:Combinatorial-->';
-elseif strcmp(categ,'graphics')
-    FScat='<!--FScategory:Dynamic Statistical Visualization-->';
-elseif strcmp(categ,'multivariate')
-    FScat='<!--FScategory:Robust multivariate analysis and transformations-->';
-elseif strcmp(categ,'utilities_stat')
-    FScat='<!--FScategory:Utilities-->';
-elseif strcmp(categ,'utilities')
-    FScat='<!--FScategory:Utilities-->';
-elseif strcmp(categ,'examples')
-    FScat='<!--FScategory:GUIs-->';
-elseif strcmp(categ,'clustering')
-    FScat='<!--FScategory:Clustering-->';
-elseif strcmp(categ,'regression')
-    FScat='<!--FScategory:Robust Regression Analysis and transformations-->';
-elseif strcmp(categ,'modelselection')
-    FScat='<!--FScategory:Robust Model Selection-->';
-else
-    FScat='<!--FScategory:Utilities-->';
+
+% if strcmp(categ,'combinatorial')
+%     FScat='<!--FScategory:Combinatorial-->';
+% elseif strcmp(categ,'graphics')
+%     FScat='<!--FScategory:Dynamic Statistical Visualization-->';
+% elseif strcmp(categ,'multivariate')
+%     FScat='<!--FScategory:Robust multivariate analysis and transformations-->';
+% elseif strcmp(categ,'utilities_stat')
+%     FScat='<!--FScategory:Utilities-->';
+% elseif strcmp(categ,'utilities')
+%     FScat='<!--FScategory:Utilities-->';
+% elseif strcmp(categ,'examples')
+%     FScat='<!--FScategory:GUIs-->';
+% elseif strcmp(categ,'clustering')
+%     FScat='<!--FScategory:Clustering-->';
+% elseif strcmp(categ,'regression')
+%     FScat='<!--FScategory:Robust Regression Analysis and transformations-->';
+% elseif strcmp(categ,'modelselection')
+%     FScat='<!--FScategory:Robust Model Selection-->';
+% else
+%     FScat='<!--FScategory:Utilities-->';
+% end
+
+switch categ
+    case 'combinatorial'
+        FScat='<!--FScategory:Combinatorial-->';
+    case 'graphics'
+        FScat='<!--FScategory:Dynamic Statistical Visualization-->'; %#ok<*NASGU>
+    case 'multivariate'
+        FScat='<!--FScategory:Robust multivariate analysis and transformations-->';
+    case 'utilities_stat'
+        FScat='<!--FScategory:Utilities-->';
+    case 'utilities'
+        FScat='<!--FScategory:Utilities-->';
+    case 'examples'
+        FScat='<!--FScategory:GUIs-->';
+    case 'clustering'
+        FScat='<!--FScategory:Clustering-->';
+    case 'regression'
+        FScat='<!--FScategory:Robust Regression Analysis and transformations-->';
+    case 'modelselection'
+        FScat='<!--FScategory:Robust Model Selection-->';
+    otherwise
+        FScat='<!--FScategory:Utilities-->';
 end
 
 %% Add title
@@ -2312,11 +2336,10 @@ if file1ID==-1
         outputDir=strrep(outputDir,'\','\\');
         errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
     else
-         errmsg= [' Path ' outputDir '//' name '.html does not exist or output file '  name '.html is not writable'];
-         disp('Cannot recognize platform: I use unix as default')
+        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
     end
     
-    error('FSDA:publishFS:WrngOutFolder',errmsg)
+    error('FSDA:publishFS:WrngOutFolder',errmsg);
     
 end
 
