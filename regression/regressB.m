@@ -166,7 +166,15 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %    out.Bpval =   p-by-1 vector containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
-%    out.Bhpd  =   p-by-2*length(conflev) matrix.
+%    out.Bhpd  =   p-by-2*length(conflev) matrix HPDI of \hat \beta.
+%               1st column =lower bound of HPDI associated with conflev(1).
+%               2st column =upper bound of HPDI associated with conflev(1).
+%               ...
+%               2*length(conflev)-1 column = lower bound of HPDI associated
+%               with conflev(end).
+%               2*length(conflev) column (last column) = upper bound of
+%               HPDI associated with conflev(end).
+%    out.Tauhpd  =   p-by-2*length(conflev) matrix HPDI of \hat \tau.
 %               1st column =lower bound of HPDI associated with conflev(1).
 %               2st column =upper bound of HPDI associated with conflev(1).
 %               ...
@@ -398,12 +406,15 @@ if stats==1 && nbsb>0
     conflev=options.conflev;
     conflev=1-(1-conflev)/2;
     invcdf=tinv(conflev,n0nbsb);
+    invcdfg=gaminv(conflev,a1,1/b1);
     Bhpd=zeros(k,2*length(conflev));
+    Tauhpd=zeros(k,2*length(conflev));
     
     % The first two columns of matrix Bhpd refer to conflev(1)
     % Columns three and four of matrix Bhpd refer to conflev(2) ...
     for j=1:length(conflev)
         Bhpd(:,j*2-1:j*2)=[ beta1-invcdf(j)*ci  beta1+invcdf(j)*ci];
+        Tauhpd(:,j*2-1:j*2)=[ s12-invcdfg(j)*ci  s12+invcdfg(j)*ci];
     end
     
     
@@ -483,6 +494,7 @@ if stats==1 && nbsb>0
     out.res=res;
     out.Bpval=Bpval;
     out.Bhpd=Bhpd;
+    out.Tauhpd=Tauhpd;
     out.postodds=postodds;
     out.modelprob=modelprob;
 else
