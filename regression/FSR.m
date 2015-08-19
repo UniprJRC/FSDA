@@ -451,7 +451,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg);
+    [mdr,Un,bb,Bols] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2;
@@ -489,7 +489,7 @@ else % initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
+        [mdr,Un,bb,Bols] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
         
         % If FSRmdr run without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -545,7 +545,7 @@ if iter >=5
 end
 
 %% Call core function which computes exceedances to thresholds of mdr
-[out]=FSRcore(y,X,n,p,mdr,init,Un,bb,options);
+[out]=FSRcore(y,X,n,p,mdr,init,Un,bb,Bols,options);
 
 end
 

@@ -402,8 +402,8 @@ r=[seq zeros(n,1)];
 % seq500 is linked to printing
 seq500=500*(1:1:ceil(n/500));
 
-% Matrix BB will contain the beta coefficients in each step of the fwd
-% search. The first row will contain the units forming initial subset
+% Matrix Bols will contain the beta coefficients in each step of the fwd
+% search. The first column of Bols contains the fwd search index
 Bols=[(init1:n)' NaN(n-init1+1,p)];     %initial value of beta coefficients is set to NaN
 
 % S2 = (n-init1+1) x 3 matrix which will contain:
@@ -416,9 +416,9 @@ S2=[(init1:n)' NaN(n-init1+1,2)];        %initial value of S2 (R2) is set to NaN
 % among nobsb r_i^*
 mdr=[(init1:n-1)'  NaN(n-init1,1)];      %initial value of mdr is set to NaN
 
-% Matrix BB will contain the units forming subset in each step of the
-% forward search. The first column contains information about units forming subset at
-% step init1.
+% Matrix BB will contain the units forming subset in each step (or in
+% selected steps) of the forward search. The first column contains
+% information about units forming subset at step init1.
 if bsbsteps == 0
     bsbsteps=init1:n;
     BB = NaN(n,n-init1+1);

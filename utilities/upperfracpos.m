@@ -17,19 +17,19 @@ function upperfracpos(hfigl , hfigr , fraction)
 %
 % Examples
 %{
-%% Example of use of upperfracpos
-close all;
+    %% Example of use of upperfracpos
+    close all;
 
-% create two figures, rescale and position them
-hfigl = figure; plot(sin(rand(10,1)),'r'); title('goes on left');
-hfigr = figure; plot(cos(rand(10,1)),'b'); title('goes on right');
-upperfracpos(hfigl , hfigr , 0.5);
+    % create two figures, rescale and position them
+    hfigl = figure; plot(sin(rand(10,1)),'r'); title('goes on left');
+    hfigr = figure; plot(cos(rand(10,1)),'b'); title('goes on right');
+    upperfracpos(hfigl , hfigr , 0.5);
 
-% now rescale the figures to a smaller proportion
-upperfracpos(hfigl , hfigr , 0.2);
+    % now rescale the figures to a smaller proportion
+    upperfracpos(hfigl , hfigr , 0.2);
 
-% this is just to bring the rescaled figures in the screen foreground
-figure(hfigl); figure(hfigr);
+    % this is just to bring the rescaled figures in the screen foreground
+    figure(hfigl); figure(hfigr);
 %}
 
 %% Beginning of code

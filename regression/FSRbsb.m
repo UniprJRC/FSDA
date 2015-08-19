@@ -1,7 +1,7 @@
 function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %FSRbsb returns the units belonging to the subset in each step of the forward search
 %
-%<a href="matlab: docsearchFS('fsrbsb')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRbsb')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -24,11 +24,8 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %
 %       init  :     Search initialization. Scalar. 
 %                   It specifies the initial subset size to start
-%                   monitoring exceedances of minimum deletion residual, if
-%                   init is not specified it will be set equal to:
-%                   p+1, if the sample size is smaller than 40;
-%                   min(3*p+1,floor(0.5*(n+p+1))) otherwise.
-%                   Example - 'init',100 starts monitoring from step m=100 
+%                   monitoring units forming subset
+%                   Example - 'init',100 starts the search from step m=100 
 %                   Data Types - double
 %   intercept :    Indicator for constant term. Scalar. 
 %                       If 1, a model with constant term will be fitted (default),
@@ -55,17 +52,20 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 % Output: 
 %
 %   Un:         (n-init) x 11 Matrix which contains the unit(s) included
-%               in the subset at each step of the fwd search REMARK: in
-%               every step the new subset is compared with the old subset.
-%               Un contains the unit(s) present in the new subset but not
-%               in the old one. Un(1,2) for example contains the unit
-%               included in step init+1. Un(end,2) contains the units
-%               included in the final step of the search. Remark: we store
-%               up to 10 units simultaneously in each step. 
+%               in the subset at each step of the fwd search.
+%               REMARK: in every step the new subset is compared with the
+%               old subset. Un contains the unit(s) present in the new
+%               subset but not in the old one. Un(1,2) for example contains
+%               the unit included in step init+1. Un(end,2) contains the
+%               units included in the final step of the search. 
+%               Un has 11 columns because we store up to 10 units
+%               simultaneously in each step.
 %   BB:         n x (n-init+1) matrix which the units belonging
-%               to the subset at each step of the forward search. 1st col =
-%               index forming subset in the initial step ... last column =
-%               units forming subset in the final step (all units)
+%               to the subset at each step of the forward search. 
+%               1st col = index forming subset in the initial step 
+%               ... 
+%               last column = units forming subset in the final step (all
+%               units)
 %
 % See also: FSReda 
 %

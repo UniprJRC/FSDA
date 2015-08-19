@@ -1,4 +1,4 @@
-function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
+function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %FSRHmdr computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search
 %
 %<a href="matlab: docsearch('fsrhmdr')">Link to the help function</a>
@@ -51,14 +51,14 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               The minimum value of init is 0. In this case in the first
 %               step we just use prior information
-%               Example - 'init',100 starts monitoring from step m=100 
+%               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %  intercept :   Indicator for constant term. Scalar.
 %               If 1, a model with constant term will be fitted (default),
 %               if 0, no constant term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
-%  plots :    Plot on the screen. Scalar. 
+%  plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of Bayesian minimum deletion residual
 %               appears  on the screen with 1 per cent, 50 per cent and 99 per cent confidence
 %               bands else (default) no plot is shown.
@@ -66,33 +66,33 @@ function [mdr,Un,BB,Bols,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is necessary to use
 %               function mdrplot
-%                 Example - 'plots',1 
+%                 Example - 'plots',1
 %                 Data Types - double
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
 %               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
 %               about great interchange on the screen
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
-%               Example - 'msg',1 
+%               Example - 'msg',1
 %               Data Types - double
 % gridsearch:   Algorithm to be used. Scalar.
 %               If gridsearch ==1 grid search will be used else the
-%               scoring algorith will be used. 
-%               Example - 'gridsearch',0 
+%               scoring algorith will be used.
+%               Example - 'gridsearch',0
 %               Data Types - double
 %               REMARK: the grid search has only been implemented when
 %               there is just one explantory variable which controls
 %               heteroskedasticity
 %  constr :    units which are forced to join the search in the last r steps. Vector.
 %               r x 1 vector. The default is constr=''.  No constraint is imposed
-%               Example - 'constr',[1 6 3] 
+%               Example - 'constr',[1 6 3]
 %               Data Types - double
 % bsbmfullrank :It tells how to behave in case subset at step m
 %               (say bsbm) produces a non singular X. Scalar.
@@ -251,8 +251,17 @@ if n<40
 else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
+
+% Default for vector bsbsteps which indicates for which steps of the fwd
+% search units forming subset have to be saved
+if n<=5000
+    bsbstepdef = initdef:n;
+else
+    bsbstepdef = [initdef 100:100:100*floor(n/100)];
+end
+
 options=struct('intercept',1,'init',init,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','bsbmfullrank',1,'modeltype','art','gridsearch',0);
+    'constr','','bsbmfullrank',1,'modeltype','art','gridsearch',0,'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -263,7 +272,6 @@ if ~isempty(UserOptions)
     % Check if user options are valid options
     chkoptions(options,UserOptions)
 end
-
 
 
 if nargin<4
@@ -369,9 +377,9 @@ r=[seq zeros(n,1)];
 % seq100 is linked to printing
 seq100=100*(1:1:ceil(n/100));
 
-% Matrix BB will contain the beta coefficients in each step of the fwd
-% search. The first row will contain the units forming initial subset
-Bols=[(init1:n)' NaN(n-init1+1,p)];     %initial value of beta coefficients is set to NaN
+% Matrix Bgls will contain the GLS beta coefficients in each step of the fwd
+% search. The first column of Bgls contains the fwd search index
+Bgls=[(init1:n)' NaN(n-init1+1,p)];     %initial value of beta coefficients is set to NaN
 
 % S2 = (n-init1+1) x 3 matrix which will contain:
 % 1st col = fwd search index
@@ -383,10 +391,20 @@ S2=[(init1:n)' NaN(n-init1+1,2)];        %initial value of S2 (R2) is set to NaN
 % among nobsb r_i^*
 mdr=[(init1:n-1)'  NaN(n-init1,1)];      %initial value of mdr is set to NaN
 
-% Matrix BB will contain the units forming subset in each step of the
-% forward search. The first column contains the units forming subset at
-% step init1
-BB = NaN(n,n-init1+1);
+% Matrix BB will contain the units forming subset in each step (or in
+% selected steps) of the forward search. The first column contains
+% information about units forming subset at step init1.
+if bsbsteps == 0
+    bsbsteps=init1:n;
+    BB = NaN(n,n-init1+1);
+else
+    BB = NaN(n,length(bsbsteps));
+end
+
+% ij = index which is linked with the columns of matrix BB. During the
+% search every time a subset is stored inside matrix BB ij icreases by one
+ij=1;
+
 
 % Hetero = (n-init1+1) x 3 matrix which will contain:
 % 1st col = fwd search index
@@ -489,12 +507,17 @@ else
         r(:,2)=e.^2;
         
         if (mm>=init1);
+            
             % Store units belonging to the subset
-            BB(bsb,mm-init1+1)=bsb;
+            if intersect(mm,bsbsteps)==mm
+                BB(bsb,ij)=bsb;
+                ij=ij+1;
+            end
+            
             
             if NoRankProblem
                 % Store beta coefficients if there is no rank problem
-                Bols(mm-init1+1,2:p+1)=b';
+                Bgls(mm-init1+1,2:p+1)=b';
                 % Store parameters of the scedastic equation
                 Hetero(mm-init1+1,2:end)=HET.Gamma(:,1)';
                 

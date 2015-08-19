@@ -336,8 +336,8 @@ ncl=setdiff(seq,bsb);
 r=[seq zeros(n,1)];
 
 
-% Matrix BB will contain the beta coefficients in each step of the fwd
-% search. The first row will contain the units forming initial subset
+% Matrix BBayes will contain the (Bayesian) beta coefficients in each step of
+% the fwd search. The first column of BBayes contains the fwd search index
 BBayes=[(init1:n)' NaN(n-init1+1,p)];     %initial value of beta coefficients is set to NaN
 
 % initialize the space on the SE array with NaNs
@@ -356,6 +356,7 @@ mdrB=[(init1:n-1)'  NaN(n-init1,1)];      %initial value of mdr is set to NaN
 % step init1.
 if bsbsteps == 0
     BB = NaN(n,n-init1+1);
+     bsbsteps=init1:n;
 else
     BB = NaN(n,length(bsbsteps));
 end

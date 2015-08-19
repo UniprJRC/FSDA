@@ -28,7 +28,7 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 %
 % Example:
 %{
-%% example_producing_error
+    %% example_producing_error
     %To examplify the behaviour of chkinputM, we call function FSM with a
     %X with more columns then rows.
     n=3;

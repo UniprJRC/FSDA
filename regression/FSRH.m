@@ -425,7 +425,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,~,~,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
+    [mdr,Un,bb,Bgls,~,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2;
@@ -463,7 +463,7 @@ else % initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,~,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,...
+        [mdr,Un,bb,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,...
             'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'modeltype',modeltype,'gridsearch',gridsearch);
         
         % If FSRmdr run without problems mdr has two columns. In the second
@@ -525,7 +525,7 @@ bool=Hetero(:,1)>=init;
 Hetero=Hetero(bool,:);
 
 %% Call core function which computes exceedances to thresholds of mdr
-[out]=FSRcore(y,X,n,p,mdr,init,Un,bb,options);
+[out]=FSRcore(y,X,n,p,mdr,init,Un,bb,jhyBgls,options);
 
 out.mdr=mdr;
 out.Un=Un;

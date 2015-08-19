@@ -1,8 +1,8 @@
-function [out]=FSRcore(y,X,n,p,mdr,init,Un,bb,options)
+function [out]=FSRcore(y,X,n,p,mdr,init,Un,bb,Bcoeff,options)
 %FSRcore scans mdr to check for exceedances
 %
 %
-% This function is called by 
+% This function is called by
 % FSR  = outlier detection procedure for linear regression
 % FSRB = outlier detection procedure in Bayesian linear regression
 % FSRH = outlier detection procedure for heteroskedastic models
@@ -947,8 +947,33 @@ if ndecl>0;
     % Now find the list of the units declared as outliers
     % bsel=~isnan(bb(:,tr-init+1));
     % ListOut=setdiff(1:n,bsel,1);
-    ListOut=seq(isnan(bb(:,end-ndecl)));
-    
+  % If the units forming subset have not been stored for all steps of the
+  % fwd search then it is necessary to call procedure FSRbsb to find unit
+  % forming subset in step n-decl
+    if size(bb,2)<n-init+1
+        % then it is necessary to understand what are the units belonging to
+        % subset in step n-ndecl.
+        % colbb is the column number of bb which contains the units forming
+        % subset in the largest step which has been stored among those
+        % which are smaller or equal than n-decl.
+        % The units in column colbb of matrix bb will form the initial
+        % subset in the call of routine FSRbsb
+        colbb=find(sum(isnan(bb),1)>=ndecl,1,'last');
+        
+        %  if sum(~isnan(bb(:,colbb)))<n-ndecl then it is necessary to call
+        %  procedure FSRbsb
+        if sum(~isnan(bb(:,colbb)))<n-ndecl
+            % Call procedure FSRbsb
+            [Un,BB] = FSRbsb(y,X,seq(~isnan(bb(:,colbb))),'intercept',0,'init',n-ndecl);
+            % The first column of BB contains the units forming subset in
+            % step n-ndecl
+            ListOut=setdiff(seq,BB(:,1));
+        else
+            ListOut=seq(isnan(bb(:,colbb)));
+        end
+    else
+        ListOut=seq(isnan(bb(:,end-ndecl)));
+    end
     % Add to ListOut all the units which have equal values in terms of X
     % and to y to those declared as outliers
     add=zeros(round(n*5),1);
@@ -968,16 +993,15 @@ if ndecl>0;
         add=add(1:ij);
         add=unique(add);
         ListOut=[ListOut,add'];
-        good=setdiff(seq,ListOut);
     end
-    % Compute beta just using the units not declared as outliers
-    beta = X(good,:)\y(good);
+    % Store the values of beta coefficients in step n-ndecl
     ndecl=length(ListOut);
+    beta = Bcoeff(end-ndecl,2:end);
     group(ListOut)=2;
 else
     % No outlier is found.
-    % Compute beta using all the units
-    beta = X\y;
+    % Store the values of beta coefficients in final step of the fwd search
+    beta = Bcoeff(end,2:end);
     ListOut=NaN;
 end
 
