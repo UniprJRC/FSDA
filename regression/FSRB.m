@@ -580,10 +580,27 @@ n0=bayes.n0;
 
 
 %% Start of the forward search
-[mdrB,Un,bb,BBayes,~] = FSRBmdr(y, X, beta0, R, tau0, n0,'nocheck',1);
+[mdr,Un,bb,BBayes,~] = FSRBmdr(y, X, beta0, R, tau0, n0,'nocheck',1);
+
 
 %% Call core function which computes exceedances to thresholds of mdr
-[out]=FSRcore(y,X,n,p,mdrB,init,Un,bb,BBayes,options);
+INP=struct;
+INP.y=y;
+INP.X=X;
+INP.n=n;
+INP.p=p;
+INP.mdr=mdr;
+INP.init=init;
+INP.Un=Un;
+INP.bb=bb;
+INP.Bcoeff=BBayes;
+INP.beta0=beta0;
+                INP.R=R;
+                INP.tau0=tau0;
+                INP.n0=n0;
+
+[out]=FSRcore(INP,'B',options);
+
 
 end
 

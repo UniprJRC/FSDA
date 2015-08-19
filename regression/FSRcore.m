@@ -1,11 +1,78 @@
-function [out]=FSRcore(y,X,n,p,mdr,init,Un,bb,Bcoeff,options)
+function [out]=FSRcore(INP,model,options)
 %FSRcore scans mdr to check for exceedances
 %
+%<a href="matlab: docsearch('FSRcore')">Link to the help function</a>
 %
-% This function is called by
-% FSR  = outlier detection procedure for linear regression
-% FSRB = outlier detection procedure in Bayesian linear regression
-% FSRH = outlier detection procedure for heteroskedastic models
+% Required input arguments:
+%
+%    INP    =   Structure.
+%   INP.y   =   Response variable. Vector. Response variable, specified as
+%               a vector of length n, where n is the number of
+%               observations. Each entry in y is the response for the
+%               corresponding row of X.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%  INP.X =      Predictor variables. Matrix. Matrix of explanatory
+%               variables (also called 'regressors') of dimension n x p
+%               where p denotes the number of explanatory variables
+%               including the intercept.
+%  INP.n =      Number of observations. Scalar. Number of rows of matrix X.
+%  INP.p =      Number of predictor variables. Scalar. Number of columns of
+%               matrix X.
+%  INP.mdr =    Minimum deletion residual. Matrix.  n -init x 2 matrix
+%               which contains the monitoring of minimum deletion residual
+%               at each step of the forward search.
+%               1st col = fwd search index (from init to n-1).
+%               2nd col = minimum deletion residual.
+%               Depending on the string 'model', mdr refers to OLS
+%               mdr, GLS mdr or Bayes regression mdr.
+%  INP.init =   Search initialization. Scalar.
+%               It specifies the point where the user has started
+%               monitoring mdr.
+%  INP.Un  =    Units included in each step. Matrix.
+%               (n-init) x 11 matrix which contains the unit(s) included
+%               in the subset at each step of the fwd search.
+%               REMARK: in every step the new subset is compared with the
+%               old subset. Un contains the unit(s) present in the new
+%               subset but not in the old one. Un(1,2) for example contains
+%               the unit included in step init+1. Un(end,2) contains the
+%               units included in the final step of the search.
+%               Un has 11 columns because we store up to 10 units
+%               simultaneously in each step.
+%   INP.bb:     Units included in each step. Matrix.
+%               n-by-(n-init+1) or matrix n-by-r matrix which the units
+%               belonging to the subset at each step of the forward search
+%               or at selected steps.
+%  INP.Bcoeff:  Estimated regression coefficients. Matrix.
+%               (n-init+1) x (p+1) matrix containing the monitoring of
+%               estimated beta coefficients in each step of the forward
+%               search. The first column contains the fwd search index.
+%               Depending on the string 'model', Bcoeff refers to OLS
+%               coefficents, GLS coefficients or Bayes regression
+%               coefficients.
+%  model :      type of regression model. String.
+%               Possible values are '' (default) | 'H' | 'B'.
+%               '' stands for linear regression;
+%               'H' stands for heteroskedastic regression;
+%               'B' stands for Bayesian regression.
+%               This input is used to reconstruct the units belonging to
+%               subset at step n-decl where decl is the number of units
+%               declared as outliers. More precisely, if n>5000 matrix BB
+%               just contains the units belonging to subset in selected
+%               steps therefore in order to find the units inside subset at
+%               step n-decl it is necessary to call:
+%               routine FSRbsb in presence of linear regression;
+%               routine FSRHbsb in presence of heteroskedastic regression;
+%               routine FSRBbsb in presence of Bayesian regression;
+%
+% This function is called by:
+% FSR  = outlier detection procedure for linear regression;
+% FSRB = outlier detection procedure in Bayesian linear regression;
+% FSRH = outlier detection procedure for heteroskedastic models;
+%
+%
 % Copyright 2008-2015.
 % Written by FSDA team
 %
@@ -13,6 +80,16 @@ function [out]=FSRcore(y,X,n,p,mdr,init,Un,bb,Bcoeff,options)
 % Last modified 06-Feb-2015
 
 %% Beginning of code
+
+y=INP.y;
+X=INP.X;
+n=INP.n;
+p=INP.p;
+mdr=INP.mdr;
+init=INP.init;
+Un=INP.Un;
+bb=INP.bb;
+Bcoeff=INP.Bcoeff;
 
 % intcolumn = the index of the first constant column found in X, or empty.
 % Used here to check if X includes the constant term for the intercept.
@@ -147,7 +224,7 @@ for i=3:nmdr;
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.999\%$'];
                     mdrsel=mdr(i-1:i+1,1:2);
-                end;
+                end
                 
                 if (mdr(i,2)>gmin(end,c99));
                     if msg
@@ -156,7 +233,7 @@ for i=3:nmdr;
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
                     mdrsel=mdr(i,1:2);
                     NoFalseSig=1; % i.e., no need of further validation
-                end;
+                end
                 
                 '------------------------------------------------';
                 
@@ -231,7 +308,7 @@ for i=3:nmdr;
                     disp(['rmin(' int2str(mdr(i,1)) ',' int2str(n) ')>99.9%']);
                 end
                 strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.9\%$'];
-            end;
+            end
             
             if (mdr(i,2)>gmin(end,c99));
                 if msg
@@ -278,10 +355,10 @@ for i=3:nmdr;
                     end
                     NoFalseSig=1;
                     extram3='Extreme signal';
-                end;
+                end
             else
                 NoFalseSig=1;
-            end;
+            end
             
             % if the following statement is true, observed curve of r_min is
             % above 99.99% and later is below 1%: peak followed by dip
@@ -289,13 +366,13 @@ for i=3:nmdr;
                 if sum(mdr(i+1:i+31,2)<gmin(i+1:i+31,c001))>=2;
                     NoFalseSig=1;  % Peak followed by dip
                     extram2='Peak followed by dip (d_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope';
-                end;
+                end
             else
                 if sum(mdr(i+1:end,2) < gmin(i+1:end,c001))>=2;
                     NoFalseSig=1;  %Peak followed by dip in the final part of the search';
                     extram2='Peak followed by dip (r_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope)';
-                end;
-            end;
+                end
+            end
             
             % if at this point NoFalseSig==0 it means that:
             % 1) n9999<10
@@ -947,9 +1024,9 @@ if ndecl>0;
     % Now find the list of the units declared as outliers
     % bsel=~isnan(bb(:,tr-init+1));
     % ListOut=setdiff(1:n,bsel,1);
-  % If the units forming subset have not been stored for all steps of the
-  % fwd search then it is necessary to call procedure FSRbsb to find unit
-  % forming subset in step n-decl
+    % If the units forming subset have not been stored for all steps of the
+    % fwd search then it is necessary to call procedure FSRbsb to find unit
+    % forming subset in step n-decl
     if size(bb,2)<n-init+1
         % then it is necessary to understand what are the units belonging to
         % subset in step n-ndecl.
@@ -961,10 +1038,30 @@ if ndecl>0;
         colbb=find(sum(isnan(bb),1)>=ndecl,1,'last');
         
         %  if sum(~isnan(bb(:,colbb)))<n-ndecl then it is necessary to call
-        %  procedure FSRbsb
+        %  procedure FSRbsb or FSRHbsb or FSRBbsb
         if sum(~isnan(bb(:,colbb)))<n-ndecl
-            % Call procedure FSRbsb
-            [Un,BB] = FSRbsb(y,X,seq(~isnan(bb(:,colbb))),'intercept',0,'init',n-ndecl);
+            bsb=seq(~isnan(bb(:,colbb)));
+            if isempty(model)
+                % Call procedure FSRbsb
+                [Un,BB] = FSRbsb(y,X,bsb,'intercept',intercept,'init',n-ndecl,'nocheck',1);
+            elseif strcmp(model,'H')
+                % Call procedure FSRHbsb
+                Z=INP.Z;
+                gridsearch=options.gridsearch;
+                modeltype=options.modeltype;
+                [Un,BB] = FSRHbsb(y,X,Z,bsb,'intercept',intercept,'init',n-ndecl,...
+                    'gridsearch',gridsearch,'modeltype',modeltype,'nocheck',1);
+            elseif strcmp(model,'B')
+                % Call procedure FSRBbsb
+                beta0=INP.beta0;
+                R=INP.R;
+                tau0=INP.tau0;
+                n0=INP.n0;
+                [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0,'bsb',bsb,'intercept',intercept,...
+                 'init',n-ndecl,'nocheck',1);
+            else
+                error('noooo')
+            end
             % The first column of BB contains the units forming subset in
             % step n-ndecl
             ListOut=setdiff(seq,BB(:,1));

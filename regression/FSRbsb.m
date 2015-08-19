@@ -5,51 +5,51 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %
 % Required input arguments:
 %
-%  y:          A vector with n elements that contains the response variables.
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations. 
-%  X :         Data matrix of explanatory variables (also called
-%               'regressors') of dimension (n x p-1). Rows of X represent
-%               observations, and columns represent variables. Missing
+%    y    :     Response variable. Vector. A vector with n elements that contains
+%               the response variable. y can be either a row or a column vector.
+%  X :          Predictor variables. Matrix.
+%               Matrix of explanatory variables (also called 'regressors')
+%               of dimension n x (p-1) where p denotes the number of
+%               explanatory variables including the intercept.
+%               Rows of X represent observations, and columns represent
+%               variables. By default, there is a constant term in the
+%               model, unless you explicitly remove it using input option
+%               intercept, so do not include a column of 1s in X. Missing
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
-%               will automatically be excluded from the computations.
+%               will automatically be excluded from the computations..
 %  bsb :        list of units forming the initial subset. Vector | 0. If
 %               bsb=0 then the procedure starts with p units randomly
-%               chosen
+%               chosen else if bsb is not 0 the search will start with
+%               m0=length(bsb)
 %
-% Optional input arguments: 
+% Optional input arguments:
 %
-%       init  :     Search initialization. Scalar. 
+%       init  :     Search initialization. Scalar.
 %                   It specifies the initial subset size to start
 %                   monitoring units forming subset
-%                   Example - 'init',100 starts the search from step m=100 
+%                   Example - 'init',100 starts the search from step m=100
 %                   Data Types - double
-%   intercept :    Indicator for constant term. Scalar. 
-%                       If 1, a model with constant term will be fitted (default),
-%                        if 0, no constant term will be included.
-%                       Example - 'intercept',1 
-%                       Data Types - double
-%    nocheck  : Check input arguments. Scalar.
-%                       If nocheck is equal to 1 no check is performed on
-%                       matrix y and matrix X. Notice that y and X are left
-%                       unchanged. In other words the additioanl column of ones for
-%                       the intercept is not added. As default nocheck=0.
-%                       Example - 'nocheck',1 
-%                       Data Types - double
-% Remark:       The user should only give the input arguments that have to
-%               change their default value. The name of the input arguments
-%               needs to be followed by their value. The order of the input
-%               arguments is of no importance.
+%   intercept :    Indicator for constant term. Scalar.
+%                  If 1, a model with constant term will be fitted (default),
+%                  if 0, no constant term will be included.
+%                  Example - 'intercept',1
+%                  Data Types - double
+%    nocheck  :    Check input arguments. Scalar.
+%                  If nocheck is equal to 1 no check is performed on
+%                  matrix y and matrix X. Notice that y and X are left
+%                  unchanged. In other words the additioanl column of ones for
+%                  the intercept is not added. As default nocheck=0.
+%                  Example - 'nocheck',1
+%                  Data Types - double
+%       plots   : Plot on the screen. Scalar. 
+%                 If plots=1 the monitoring units plot is displayed on the
+%                 screen. The default value of plots is 0 (that is no plot
+%                 is produced on the screen).
+%                 Example - 'plots',1
+%                 Data Types - double
 %
-%        Missing values (NaN's) and infinite values (Inf's) are allowed,
-%        since observations (rows) with missing or infinite values will
-%        automatically be excluded from the computations. y can be both a
-%        row of column vector.
-%
-% Output: 
+% Output:
 %
 %   Un:         (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search.
@@ -57,17 +57,17 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one. Un(1,2) for example contains
 %               the unit included in step init+1. Un(end,2) contains the
-%               units included in the final step of the search. 
+%               units included in the final step of the search.
 %               Un has 11 columns because we store up to 10 units
 %               simultaneously in each step.
 %   BB:         n x (n-init+1) matrix which the units belonging
-%               to the subset at each step of the forward search. 
-%               1st col = index forming subset in the initial step 
-%               ... 
+%               to the subset at each step of the forward search.
+%               1st col = index forming subset in the initial step
+%               ...
 %               last column = units forming subset in the final step (all
 %               units)
 %
-% See also: FSReda 
+% See also: FSReda
 %
 % References:
 %
@@ -102,7 +102,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
     plot(seqr,BB','bx');
     xlabel('Subset size m');
     ylabel('Monitoring units plot');
-    %The plot, which monitors the units belonging to subset in each step of
+    % The plot, which monitors the units belonging to subset in each step of
     % the forward search shows that apart from unit 11 which enters the
     % search in step m=78 all the other contaminated units enter the search
     % in the last 19 steps.
@@ -126,13 +126,12 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
     ylabel('Monitoring units plot');
 %}
 %{
-    % FSRbsb with all default options.
-    % Common part to all examples: load fishery dataset.
+    % Monitoring units plot for fishery dataset
     load('fishery');
     y=fishery.data(:,1);
     X=fishery.data(:,2);
     [out]=LXS(y,X,'nsamp',10000);
-    Un = FSRbsb(y,X,out.bs);
+    Un = FSRbsb(y,X,out.bs,'plots',1);
 %}
 
 %{
@@ -169,9 +168,13 @@ vvarargin=varargin;
 if n<40
     init=p+1;
 else
-    init=min(3*p+1,floor(0.5*(n+p+1)));  
+    init=min(3*p+1,floor(0.5*(n+p+1)));
 end
-options=struct('intercept',1,'init',init,'nocheck',0);
+
+if init<length(bsb)
+    init=length(bsb);
+end
+options=struct('intercept',1,'init',init,'nocheck',0,'plots',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -206,7 +209,7 @@ if bsb==0;
     end
     if nwhile==100
         warning('FSDA:FSRbsb:NoFullRank','Unable to randomly sample full rank matrix');
-    end    
+    end
     yb=y(bsb);
 else
     Xb=X(bsb,:);
@@ -218,10 +221,10 @@ ini0=length(bsb);
 % check init
 init=options.init;
 if init <p;
-   mess=sprintf(['Attention : init should be larger than p-1. \n',...
-       'It is set to p.']);
-   disp(mess);
-   init=p;
+    mess=sprintf(['Attention : init should be larger than p-1. \n',...
+        'It is set to p.']);
+    disp(mess);
+    init=p;
 elseif init<ini0;
     mess=sprintf(['Attention : init should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
@@ -253,7 +256,7 @@ seq100 = 100*(1:1:ceil(n/100));
 BB = NaN(n,n-init+1);
 
 %  UN is a Matrix whose 2nd column:11th col contains the unit(s) just
-%  included. 
+%  included.
 Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 % The last correctly computed beta oefficients
@@ -261,64 +264,74 @@ blast=NaN(p,1);
 
 
 %% Forward search loop
-if (rank(Xb)~=p) 
+if (rank(Xb)~=p)
     warning('FSDA:FSRbsb:NoFullRank','The provided initial subset does not form a full rank matrix');
-     % FS loop will not be performed
+    % FS loop will not be performed
 else
-for mm = ini0:n;
-    % if n>200 show every 100 steps the fwd search index
-    if n>200
-        if length(intersect(mm,seq100))==1;
-            disp(['m=' int2str(mm)]);
+    for mm = ini0:n;
+        % if n>200 show every 100 steps the fwd search index
+        if n>200
+            if length(intersect(mm,seq100))==1;
+                disp(['m=' int2str(mm)]);
+            end
+        end
+        
+        % Store units belonging to the subset
+        if (mm>=init);
+            BB(bsb,mm-init+1)=bsb;
+        end
+        
+        % Compute beta coefficients using subset
+        
+        if rank(Xb)==p  % full rank matrix Xb
+            b = Xb\yb;
+            blast=b;
+        else
+            b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
+            warning('FSR:FSRbsb','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+        end
+        
+        % e= vector of residual for all units using b estimated using subset
+        e=y-X*b;
+        
+        r(:,2)=e.^2;
+        
+        if mm<n;
+            
+            % store units forming old subset in vector oldbsb
+            oldbsb=bsb;
+            
+            % order the r_i and include the smallest among the units forming
+            % the group of potential outliers
+            ord=sortrows(r,2);
+            
+            % bsb= units forming the new subset
+            bsb=ord(1:(mm+1),1);
+            
+            Xb=X(bsb,:);  % subset of X
+            yb=y(bsb);    % subset of y
+            
+            if mm>=init;
+                unit=setdiff(bsb,oldbsb);
+                % If the interchange involves more than 10 units, store only the
+                % first 10.
+                if (size(unit,2)<=10)
+                    Un(mm-init+1,2:(size(unit,1)+1)) = unit;
+                else
+                    disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+                    Un(mm-init+1,2:end) = unit(1:10)';
+                end
+            end
         end
     end
-
-    % Store units belonging to the subset
-    if (mm>=init);
-        BB(bsb,mm-init+1)=bsb;
-    end
-    
-    % Compute beta coefficients using subset
-    
-    if rank(Xb)==p  % full rank matrix Xb
-        b = Xb\yb;
-        blast=b;
-    else 
-        b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
-        warning('FSR:FSRbsb','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
-    end
-    
-    % e= vector of residual for all units using b estimated using subset
-    e=y-X*b;
-
-    r(:,2)=e.^2;
-
-    if mm<n;
-        
-        % store units forming old subset in vector oldbsb
-        oldbsb=bsb;
-
-        % order the r_i and include the smallest among the units forming
-        % the group of potential outliers
-        ord=sortrows(r,2);
-        
-        % bsb= units forming the new subset
-        bsb=ord(1:(mm+1),1);
-
-        Xb=X(bsb,:);  % subset of X
-        yb=y(bsb);    % subset of y
-
-        if mm>=init;
-            unit=setdiff(bsb,oldbsb);
-            % If the interchange involves more than 10 units, store only the
-            % first 10.
-            if (size(unit,2)<=10)
-               Un(mm-init+1,2:(size(unit,1)+1)) = unit;
-            else
-               disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
-               Un(mm-init+1,2:end) = unit(1:10)';
-            end;
-        end
-    end
-end
 end  % no rank
+plots=options.plots;
+if plots==1
+    % Create the 'monitoring units plot'
+    figure;
+    seqr=[Un(1,1)-1; Un(:,1)];
+    plot(seqr,BB','bx');
+    xlabel('Subset size m');
+    ylabel('Monitoring units plot');
+end
+end

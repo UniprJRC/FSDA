@@ -5,14 +5,25 @@ function [out]=FSR(y,X,varargin)
 %
 % Required input arguments:
 %
-%    y: Response variable. Vector. A vector with n elements that contains
-%       the response variable. y can be either a row or a column vector.
-%    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension (n x p-1). Rows of X represent observations, and columns
-%       represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       automatically be excluded from the computations.
+%    y:         Response variable. Vector. Response variable, specified as
+%               a vector of length n, where n is the number of
+%               observations. Each entry in y is the response for the
+%               corresponding row of X.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%  X :          Predictor variables. Matrix. Matrix of explanatory
+%               variables (also called 'regressors') of dimension n x (p-1)
+%               where p denotes the number of explanatory variables
+%               including the intercept.
+%               Rows of X represent observations, and columns represent
+%               variables. By default, there is a constant term in the
+%               model, unless you explicitly remove it using input option
+%               intercept, so do not include a column of 1s in X. Missing
+%               values (NaN's) and infinite values (Inf's) are allowed,
+%               since observations (rows) with missing or infinite values
+%               will automatically be excluded from the computations.
 %
 % Optional input arguments:
 %
@@ -544,8 +555,18 @@ if iter >=5
          error('FSDA:FSR:NoConv','No convergence')
 end
 
+INP=struct;
+INP.y=y;
+INP.X=X;
+INP.n=n;
+INP.p=p;
+INP.mdr=mdr;
+INP.init=init;
+INP.Un=Un;
+INP.bb=bb;
+INP.Bcoeff=Bols;
 %% Call core function which computes exceedances to thresholds of mdr
-[out]=FSRcore(y,X,n,p,mdr,init,Un,bb,Bols,options);
+[out]=FSRcore(INP,'',options);
 
 end
 

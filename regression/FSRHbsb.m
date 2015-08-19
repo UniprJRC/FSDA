@@ -1,7 +1,8 @@
-function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
-%FSRHmdr computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search
+function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
+%FSRHbsb returns the units belonging to the subset in each step of the heteroskedastic forward search
 %
-%<a href="matlab: docsearch('fsrhmdr')">Link to the help function</a>
+%<a href="matlab: docsearch('FSRHbsb')">Link to the help function</a>
+%
 %
 % Required input arguments:
 %
@@ -38,13 +39,12 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
 %               \]
-%
 %               Therefore, if for example the explanatory variables
 %               responsible for heteroscedasticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax
-%                    FSRHmdr(y,X,X(:,[3 5]),0)
-%               or the sintax
-%                    FSRHmdr(y,X,[3 5],0)
+%               of matrix X, it is possible to use both the sintax:
+%                    FSRHbsb(y,X,X(:,[3 5]),0)
+%               or the sintax:
+%                    FSRHbsb(y,X,[3 5],0)
 %  bsb :        list of units forming the initial subset. Vector | 0. If
 %               bsb=0 then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
@@ -84,16 +84,6 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               \]
 %               Example - 'modeltype','har' 
 %               Data Types - string
-%  plots :    Plot on the screen. Scalar.
-%               If equal to one a plot of Bayesian minimum deletion residual
-%               appears  on the screen with 1 per cent, 50 per cent and 99 per cent confidence
-%               bands else (default) no plot is shown.
-%               Remark. the plot which is produced is very simple. In order
-%               to control a series of options in this plot and in order to
-%               connect it dynamically to the other forward plots it is necessary to use
-%               function mdrplot
-%                 Example - 'plots',1
-%                 Data Types - double
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -104,7 +94,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
 %               about great interchange on the screen
-%               If msg==1 (default) messages are displyed on the screen
+%               If msg==1 (default) messages are displayed on the screen
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
@@ -116,72 +106,36 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               REMARK: the grid search has only been implemented when
 %               there is just one explantory variable which controls
 %               heteroskedasticity
-%  constr :    units which are forced to join the search in the last r steps. Vector.
+%  constr   :   units which are forced to join the search in the last r steps. Vector.
 %               r x 1 vector. The default is constr=''.  No constraint is imposed
 %               Example - 'constr',[1 6 3]
 %               Data Types - double
-% bsbmfullrank :It tells how to behave in case subset at step m
-%               (say bsbm) produces a non singular X. Scalar.
-%               In other words, this options controls what to do when rank(X(bsbm,:)) is
-%               smaller then number of explanatory variables. If
-%               bsbmfullrank = 1 (default is 1) these units (whose number is
-%               say mnofullrank) are constrained to enter the search in
-%               the final n-mnofullrank steps else the search continues
-%               using as estimate of beta at step m the estimate of beta
-%               found in the previous step.
-%               Example - 'bsbmfullrank',0
+%   plots   :   Plot on the screen. Scalar. 
+%               If plots=1 the monitoring units plot is displayed on the
+%               screen. The default value of plots is 0 (that is no plot
+%               is produced on the screen).
+%               Example - 'plots',1
 %               Data Types - double
-%  Remark:      The user should only give the input arguments that have to
-%               change their default value.
-%               The name of the input arguments needs to be followed by
-%               their value. The order of the input arguments is of no
-%               importance.
-%
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations. y can be both a row of column vector.
 %
 % Output:
 %
-%  mdr:          n -init x 2 matrix which contains the monitoring of minimum
-%               deletion residual at each step of the forward search.
-%               1st col = fwd search index (from init to n-1).
-%               2nd col = minimum deletion residual.
-%               REMARK: if in a certain step of the search matrix is
-%               singular, this procedure checks ohw many observations
-%               produce a singular matrix. In this case mdr is a column
-%               vector which contains the list of units for which matrix X
-%               is non singular.
-%  Un:           (n-init) x 11 Matrix which contains the unit(s) included
-%               in the subset at each step of the search.
+%   Un:         (n-init) x 11 Matrix which contains the unit(s) included
+%               in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
-%               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
-%               init+1.
-%               Un(end,2) contains the units included in the final step
-%               of the search.
-%  BB:           n x (n-init+1) matrix which the units belonging to the
-%               subset at each step of the forward search.
-%               1st col = index forming subset in the initial step
-%               ...
-%               last column = units forming subset in the final step (i.e.
-%               all units).
-%  Bgls:         (n-init+1) x (p+1) matrix containing the monitoring of
-%               estimated beta (GLS) coefficients in each step of the forward
-%               search.
-%  S2:           (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
-%               column)and R2 (third column) in each step of the forward
-%               search.
-%  Hetero :     (n-init1+1) x 3 matrix containing
-%                  1st col = fwd search index
-%                  2nd col = estimate of alpha in the scedastic equation
-%                  3rd col = estimate of gamma in the scedastic equation.
-%   WEI:     n x (n-init1+1) matrix containing estimates of the weights
-%               during the FS
+%               subset but not in the old one. Un(1,2) for example contains
+%               the unit included in step init+1. Un(end,2) contains the
+%               units included in the final step of the search. 
+%               Un has 11 columns because we store up to 10 units
+%               simultaneously in each step.
+%   BB:         n x (n-init+1) matrix which the units belonging
+%               to the subset at each step of the forward search. 
+%               1st col = index forming subset in the initial step 
+%               ... 
+%               last column = units forming subset in the final step (all
+%               units)
 %
-% See also:   FSRmdr
+% See also:   FSRbsb, FSRBbsb
 %
 %
 % References:
@@ -194,76 +148,38 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRHmdr')">Link to the help function</a>
+%<a href="matlab: docsearch('FSRHbsb')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:
 
 %{
-    %% FSRHmdr with all default options.
+    % FSRHbsb with all default options.
     % Common part to all examples: load tradeH dataset (used in the paper ART).
     XX=load('tradeH.txt');
     y=XX(:,2);
     X=XX(:,1);
     X=X./max(X);
     Z=log(X);
-    mdr=FSRHmdr(y,X,Z,0);
+    [~,Un,BB]=FSRHmdr(y,X,Z,[1:10]);
+    [Unchk,BBchk]=FSRHbsb(y,X,Z,[1:10]);
+    % Test for equality BB and BBchk
+    disp(isequaln(BB,BBchk))
+    % Test for equality Un and Unchk
+    disp(isequaln(Un,Unchk))
+
 %}
 
 %{
-    % FSRHmdr with optional arguments.
-    % Specifying the search initialization.
-    mdr=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+    %% Display the monitoring units plot.
+    % Suppress all messages about interchange with option msg 
+    [Unchk,BBchk]=FSRHbsb(y,X,Z,[1:10],'plots',1,'msg',0);
 %}
 
-%{
-    % Analyze units entering the search in the final steps.
-    % Compute minimum deletion residual and analyze the units entering
-    % subset in each step of the fwd search (matrix Un).  As is well known,
-    % the FS provides an ordering of the data from those most in agreement
-    % with a suggested model (which enter the first steps) to those least in
-    % agreement with it (which are included in the final steps).
-    [mdr,Un]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-%}
-
-%{
-    % Units forming subset in each step.
-    % Obtain detailed information about the units forming subset in each
-    % step of the forward search (matrix BB).
-    [mdr,Un,BB]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-%}
-
-%{
-    % Monitor $\hat  \beta$.
-    % Monitor how the estimates of beta coefficients changes as the subset
-    % size increases (matrix Bols).
-    [mdr,Un,BB,Bols]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-%}
-
-%{
-    % Monitor $s^2$.
-    % Monitor the estimate of sigma^2 in each step of the fwd search
-    % (matrix S2).
-    [mdr,Un,BB,Bols,S2]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-%}
-
-%{
-    %% Monitoring the estimates of the scedastic equation.
-    % With plot of the \alpha parameter.
-    [mdr,Un,BB,Bols,S2,Hetero]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-    plot(Hetero(:,1),Hetero(:,2))
-%}
-
-%{
-    % Monitoring the estimates of the weights.
-    [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-%}
 
 %{
 
 %}
-
-
 %% Input parameters checking
 
 nnargin=nargin;
@@ -278,16 +194,12 @@ else
     initdef=min(3*p+1,floor(0.5*(n+p+1)));
 end
 
-% Default for vector bsbsteps which indicates for which steps of the fwd
-% search units forming subset have to be saved
-if n<=5000
-    bsbstepdef = 0;
-else
-    bsbstepdef = [initdef 100:100:100*floor(n/100)];
+if initdef<length(bsb)
+    initdef=length(bsb);
 end
 
 options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','bsbmfullrank',1,'modeltype','art','gridsearch',0,'bsbsteps',bsbstepdef);
+    'constr','','modeltype','art','gridsearch',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -376,7 +288,7 @@ elseif init<ini0;
     disp(mess);
     init=ini0;
 elseif init>=n;
-    mess=sprintf(['Attention : init1 should be smaller than n. \n',...
+    mess=sprintf(['Attention : init should be smaller than n. \n',...
         'It is set to n-1.']);
     disp(mess);
     init=n-1;
@@ -392,9 +304,6 @@ intercept=options.intercept;
 % sequence from 1 to n.
 seq=(1:n)';
 
-% the set complementary to bsb.
-ncl=setdiff(seq,bsb);
-
 % The second column of matrix R will contain the OLS residuals at each step
 % of the search
 r=[seq zeros(n,1)];
@@ -403,44 +312,11 @@ r=[seq zeros(n,1)];
 % seq100 is linked to printing
 seq100=100*(1:1:ceil(n/100));
 
-% Matrix Bgls will contain the GLS beta coefficients in each step of the fwd
-% search. The first column of Bgls contains the fwd search index
-Bgls=[(init:n)' NaN(n-init+1,p)];     %initial value of beta coefficients is set to NaN
-
-% S2 = (n-init1+1) x 3 matrix which will contain:
-% 1st col = fwd search index
-% 2nd col = S2= \sum e_i^2 / (m-p)
-% 3rd col = R^2
-S2=[(init:n)' NaN(n-init+1,2)];        %initial value of S2 (R2) is set to NaN
-
-% mdr = (n-init1-1) x 2 matrix which will contain min deletion residual
-% among nobsb r_i^*
-mdr=[(init:n-1)'  NaN(n-init,1)];      %initial value of mdr is set to NaN
-
-bsbsteps=options.bsbsteps;
-% Matrix BB will contain the units forming subset in each step (or in
-% selected steps) of the forward search. The first column contains
-% information about units forming subset at step init1.
-if bsbsteps == 0
-    bsbsteps=init:n;
+% Matrix BB will contain the units forming subset in each step of the
+% forward search. The first column contains the units forming subset at
+% step init
     BB = NaN(n,n-init+1);
-else
-    BB = NaN(n,length(bsbsteps));
-end
 
-% ij = index which is linked with the columns of matrix BB. During the
-% search every time a subset is stored inside matrix BB ij icreases by one
-ij=1;
-
-
-% Hetero = (n-init1+1) x 3 matrix which will contain:
-% 1st col = fwd search index
-% 2nd col = estimate of alpha in the scedastic equation
-% 3rd col = estimate of gamma in the scedastic equation
-Hetero=[(init:n)' NaN(n-init+1,size(Z,2)+1)];
-
-% Matrix which contains in each column the estimate of the weights
-WEI = NaN(n,n-init+1);
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just
 %  included.
@@ -451,7 +327,6 @@ hhh=1;
 if (rank(Xb)~=p)
     warning('FSDA:FSRHmdr:message','Supplied initial subset does not produce full rank matrix');
     warning('FSDA:FSRHmdr:message','FS loop will not be performed');
-    mdr=NaN;
     % FS loop will not be performed
 else
     for mm=ini0:n;
@@ -508,21 +383,12 @@ else
             % at step m
             % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
             Xw = bsxfun(@times, X, sqweights);
-            if (mm>=init);
-                % Store weights
-                WEI(:,mm-init+1)=sqweights;
-            end
             yw = y .* sqweights;
             Xb=Xw(bsb,:);
             yb=yw(bsb);
-            % The instruction below should not be necessary
-            % Zb=Z(bsb,:);
-            
-            % b=Xb\yb;   % HHH
             b=HET.Beta(:,1);
-            resBSB=yb-Xb*b;
         else   % number of independent columns is smaller than number of parameters
-            error('FSDA:FSRHmdr:NoFullRank','Not full rank stop')
+            error('FSDA:FSRHbsb:NoFullRank','Not full rank stop')
         end
         % HHH
         if hhh==1
@@ -534,61 +400,9 @@ else
         r(:,2)=e.^2;
         
         if (mm>=init);
-            
             % Store units belonging to the subset
-            if intersect(mm,bsbsteps)==mm
-                BB(bsb,ij)=bsb;
-                ij=ij+1;
-            end
-            
-            
-            if NoRankProblem
-                % Store beta coefficients if there is no rank problem
-                Bgls(mm-init+1,2:p+1)=b';
-                % Store parameters of the scedastic equation
-                Hetero(mm-init+1,2:end)=HET.Gamma(:,1)';
-                
-                % Compute and store estimate of sigma^2
-                % using y and X transformed
-                Sb=(resBSB)'*(resBSB)/(mm-p);
-                S2(mm-init+1,2)=Sb;
-                % Store R2
-                S2(mm-init+1,3)=1-var(resBSB)/var(yb);
-                
-                if mm<n
-                    mAm=Xb'*Xb; % HHH
-                    
-                    % Take minimum deletion residual among noBSB
-                    % hi (the leverage for the units not belonging to the
-                    % subset) is defined as follows
-                    % hi=diag(X(ncl,:)*inv(Xb'*Xb)*(X(ncl,:))');
-                    
-                    % Take units not belonging to bsb
-                    if hhh==1
-                        Xncl = Xw(ncl, :);
-                    else
-                        Xncl = X(ncl,:); % HHH
-                    end
-                    % mmX=inv(mAm);
-                    % hi = sum((Xncl*mmX).*Xncl,2);
-                    hi=sum((Xncl/mAm).*Xncl,2);
-                    
-                    if hhh==1
-                        ord = [(r(ncl,2)./(1+hi)) e(ncl)];
-                    else
-                        ord = [(r(ncl,2)./(omegahat(ncl)+hi)) e(ncl)];
-                    end
-                    
-                    % Store minimum deletion residual in matrix mdr
-                    selmdr=sortrows(ord,1);
-                    if S2(mm-init+1,2)==0
-                        warning('FSDA:FSRHmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init+1);
-                    else
-                        mdr(mm-init+1,2)=sqrt(selmdr(1,1)/HET.sigma2);
-                    end
-                end  %if mm<n
-            end   %~RankProblem
-        end     %mm>=init1
+                        BB(bsb,mm-init+1)=bsb;
+        end    
         
         if mm<n;
             
@@ -609,8 +423,8 @@ else
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);
             
-            Xb=X(bsb,:);  % subset of X     HHH  OK
-            yb=y(bsb);    % subset of y     HHH   OK
+            Xb=X(bsb,:);  % subset of X     
+            yb=y(bsb);    % subset of y     
             Zb=Z(bsb,:);  % subset of Z
             
             if mm>=init;
@@ -628,40 +442,19 @@ else
                     end
                 end
             end
-            
-            if mm < n-1;
-                if ~isempty(constr) && mm<n-length(constr)-1
-                    % disp(mm)
-                    ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
-                    ncl=setdiff(ncl,constr);
-                else
-                    ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
-                end
-                
-            end
         end   % if mm<n
     end  % for mm=ini0:n loop
     
-    % Plot minimum deletion residual with 1%, 50% and 99% envelopes
-    if options.plots==1
-        quant=[0.01;0.5;0.99];
-        % Compute theoretical envelops for minimum deletion residual based on all
-        % the observations for the above quantiles.
-        [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init,'exact',1);
-        plot(mdr(:,1),mdr(:,2));
-        
-        % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
-        lwdenv=2;
-        % Superimpose 50% envelope
-        line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
-        % Superimpose 1% and 99% envelope
-        line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        
-        xlabel('Subset size m');
-        ylabel('Monitoring of minimum deletion residual');
-    end
-    
 end % rank check
+
+plots=options.plots;
+if plots==1
+    % Create the 'monitoring units plot'
+    figure;
+    seqr=[Un(1,1)-1; Un(:,1)];
+    plot(seqr,BB','bx');
+    xlabel('Subset size m');
+    ylabel('Monitoring units plot');
+end
 
 end

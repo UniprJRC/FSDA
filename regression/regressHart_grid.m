@@ -18,7 +18,7 @@ alpha=0.1:0.1:4;
 theta=[0.001 0.01 0.1 1 1.71 10:120 500 1000 5000 10000 50000];
 
 options=struct('intercept',1,'msgiter',0,'const',1,...
-    'alpha',alpha,'theta',theta);
+    'alpha',alpha,'theta',theta,'plots',0);
 
 if nargin > 3
     % Write in structure 'options' the options chosen by the user
@@ -58,7 +58,7 @@ Xw=X;
 ij=1;
 omegahatall=zeros(n,lthetalalpha);
 
-logLtmp=zeros(ltheta*lalpha,3);
+% logLtmp=zeros(ltheta*lalpha,3);
 
 for i_alpha=1:lalpha
     Zialpha=real(Z.^alpha(i_alpha));
@@ -89,9 +89,9 @@ for i_alpha=1:lalpha
         sigma2=sum(res2)/n;
         sigma2all(ij)=sigma2;
         betaall(:,ij)=beta;
-        
-                 logliktmp=sum(log(omegahat(:,j_theta)))+n*log(sigma2);
-                 logLtmp(ij,:)=[alpha(i_alpha) theta(j_theta) logliktmp];
+                
+               %  logliktmp=sum(log(omegahat(:,j_theta)))+n*log(sigma2);
+               %  logLtmp(ij,:)=[alpha(i_alpha) theta(j_theta) logliktmp];
         
         ij=ij+1;
     end
@@ -99,7 +99,7 @@ end
 loglik=sum(log(omegahatall),1)+n*log(sigma2all);
 [~,indmin]=min(loglik);
 
-[~,indmintmp]=min(logLtmp(:,3));
+% [~,indmintmp]=min(logLtmp(:,3));
 
 
 out=struct;
@@ -120,8 +120,10 @@ out.alphaOLD=aa(indmin);
 
 %Store value of maximized log likelihood
 out.logL=loglik(indmin);
-plots=10;
-if plots==10
+
+plots=options.plots;
+
+if plots==1
     aa=reshape(loglik,length(theta),length(alpha));
     mina=min(min(aa));
     maxa=max(max(aa));

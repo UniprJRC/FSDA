@@ -968,7 +968,7 @@ InputArgs=fstring(startIndexInp(1):endIndexInp(1));
 if ~isempty(OptArgsvvarargin)
     OptArgsVarargin=[];
 end
-    
+
 [commasIn] = regexp(InputArgs,',');
 j=1;
 
@@ -2329,7 +2329,7 @@ outstring=([titl metacontent sitecont sintaxhtml sintaxclose description  ....
 file1ID=fopen([outputDir fsep name 'tmp.html'],'w');
 
 if file1ID==-1
-        
+    
     if ismac || isunix
         errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
     elseif ispc
@@ -2403,12 +2403,12 @@ if evalCode==true
         
         % load html output in a string and extract the parts which are required
         if ismac || isunix
-             fileHTML = fopen(xResultURI(6:end), 'r+'); 
+            fileHTML = fopen(xResultURI(6:end), 'r+');
         elseif ispc
-             fileHTML = fopen(xResultURI(7:end), 'r+'); 
+            fileHTML = fopen(xResultURI(7:end), 'r+');
         else
-             fileHTML = fopen(xResultURI(6:end), 'r+');
-             disp('Cannot recognize platform: I use unix as default')
+            fileHTML = fopen(xResultURI(6:end), 'r+');
+            disp('Cannot recognize platform: I use unix as default')
         end
         
         % Insert the file into fstring
@@ -2647,30 +2647,41 @@ else
 end
 end
 
-function StringHTML=formatHTMLwithMATHJAX(inputSring)
+function StringHTML=formatHTMLwithMATHJAX(inputString)
 
 % Check if symbols \[ \] are present
 % If this is the case it is necessary to split inputSring into
 % the text_part and the Mathjax_part and apply HTML format just
 % to the complementary of the MathJax part
-iniMathJax=regexp(inputSring,'\\\[');
-finMathJax=regexp(inputSring,'\\\]');
+iniMathJax=regexp(inputString,'\\\[');
+finMathJax=regexp(inputString,'\\\]');
 
-if ~isempty(iniMathJax)
-    MoreA=formatHTML(inputSring(1:iniMathJax-1));
+
+
+if ~isempty(iniMathJax) || ~isempty(finMathJax)
+    
+    if length(iniMathJax) ~= length(finMathJax)
+        disp('Latex error in string:')
+        disp('---------')
+        disp(inputString)
+        disp('---------')
+        error('FSDA:wrongLatex','There is a non matching math symbol in the LaTeX equation')
+    end
+    
+    MoreA=formatHTML(inputString(1:iniMathJax-1));
     for k=1:length(iniMathJax)
-        MoreA=[MoreA inputSring(iniMathJax(k):finMathJax(k)+1)];
+            MoreA=[MoreA inputString(iniMathJax(k):finMathJax(k)+1)];
         if k==length(iniMathJax)
-            MoreA=[MoreA formatHTML(inputSring(finMathJax(k)+2:end))];
+            MoreA=[MoreA formatHTML(inputString(finMathJax(k)+2:end))];
         else
-            MoreA=[MoreA formatHTML(inputSring(finMathJax(k)+2:iniMathJax(k+1)-1))];
+            MoreA=[MoreA formatHTML(inputString(finMathJax(k)+2:iniMathJax(k+1)-1))];
         end
     end
     StringHTML=MoreA;
 else
     % In this case there are not latex formulae so just apply
     % routine formatHTML
-    StringHTML=formatHTML(inputSring);
+    StringHTML=formatHTML(inputString);
 end
 
 end

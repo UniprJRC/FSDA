@@ -6,32 +6,44 @@ function [out]=FSRH(y,X,Z,varargin)
 %
 % Required input arguments:
 %
-%    y: A vector with n elements that contains the response variable. y can
-%       be both a row of column vector.
-%    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension (n x p-1). Rows of X represent observations, and columns
-%       represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       automatically be excluded from the computations.
-%     Z :       n x r matrix or vector of length r.
+%    y:         Response variable. Vector. Response variable, specified as
+%               a vector of length n, where n is the number of
+%               observations. Each entry in y is the response for the
+%               corresponding row of X.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%  X :          Predictor variables in the regression equation. Matrix.
+%               Matrix of explanatory variables (also called 'regressors')
+%               of dimension n x (p-1) where p denotes the number of
+%               explanatory variables including the intercept.
+%               Rows of X represent observations, and columns represent
+%               variables. By default, there is a constant term in the
+%               model, unless you explicitly remove it using input option
+%               intercept, so do not include a column of 1s in X. Missing
+%               values (NaN's) and infinite values (Inf's) are allowed,
+%               since observations (rows) with missing or infinite values
+%               will automatically be excluded from the computations.
+%     Z :       Predictor variables in the regression equation. Matrix. 
+%               n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)
-%
+%               \[
 %               \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
-%
+%               \]
 %               If Z is a vector of length r it contains the indexes of the
 %               columns of matrix X which form the scedastic function as
 %               follows
-%
+%               \[
 %               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
-%
+%               \]
 %               Therefore, if for example the explanatory variables
-%               responsible for heteroscedisticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax
+%               responsible for heteroscedasticity are columns 3 and 5
+%               of matrix X, it is possible to use both the sintax:
 %                    FSRH(y,X,X(:,[3 5]))
-%               or the sintax
+%               or the sintax:
 %                    FSRH(y,X,[3 5])
 %
 %
@@ -42,6 +54,23 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   if 0, no constant term will be included.
 %                   Example - 'intercept',1 
 %                   Data Types - double
+% modeltype:    Parametric function to be used in the skedastic equation.
+%               String.
+%               If modeltype is 'arc' (default) than the skedastic function is
+%               modelled as follows
+%               \[
+%               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
+%                           \cdots + \gamma_{r} Z(i,r)))
+%               \]
+%               on the other hand, if modeltype is 'har' then traditional
+%               formulation due to Harvey is used as follows
+%               \[
+%               \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
+%                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
+%                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
+%               \]
+%               Example - 'modeltype','har' 
+%               Data Types - string
 %           h   : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar.
 %                   h is an integer greater or
@@ -55,10 +84,10 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 robust estimator. Scalar.
 %                 If nsamp=0 all subsets will be extracted.
 %                 They will be (n choose p).
-%                 Remark: if the number of all possible subset is <1000 the
-%                 default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000 
 %                 Data Types - double
+%                 Remark: if the number of all possible subset is <1000 the
+%                 default is to extract all subsets otherwise just 1000.
 %       lms     :  Criterion to use to find the initlal
 %                 subset to initialize the search. Scalar,  vector or structure.
 %                 lms specifies the criterion to use to find the initlal
@@ -294,7 +323,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %{
     % FSRH with optional arguments.
     % Specifying the search initialization and controlling the y scale in
-    % plot. In the example, also figure 3 of ART (see References)is created.
+    % plot. In the example, also figure 3 of ART (see References) is created.
     
     out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);
     figure
@@ -525,7 +554,20 @@ bool=Hetero(:,1)>=init;
 Hetero=Hetero(bool,:);
 
 %% Call core function which computes exceedances to thresholds of mdr
-[out]=FSRcore(y,X,n,p,mdr,init,Un,bb,jhyBgls,options);
+INP=struct;
+INP.y=y;
+INP.X=X;
+INP.n=n;
+INP.p=p;
+INP.mdr=mdr;
+INP.init=init;
+INP.Un=Un;
+INP.bb=bb;
+INP.Z=Z;
+INP.Bcoeff=Bgls;
+INP.beta0=beta0;
+
+[out]=FSRcore(INP,'H',options);
 
 out.mdr=mdr;
 out.Un=Un;
