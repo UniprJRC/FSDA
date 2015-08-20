@@ -591,9 +591,9 @@ for mm=ini0:n;
     %b=Xb\yb;
     % call bayesian procedure
     if mm>=init
-        [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'stats',1,'conflev',conflev);
+        [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'stats',1,'conflev',conflev, 'nocheck',1);
     else
-        [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'stats',0);
+        [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'stats',0, 'nocheck',1);
     end
     
     % why not bayes.res?
