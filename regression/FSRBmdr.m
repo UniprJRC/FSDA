@@ -249,7 +249,7 @@ end
 
 % Default for vector bsbsteps which indicates for which steps of the fwd
 % search units forming subset have to be saved
-if n<=500
+if n<=5000
     bsbstepdef = initdef:n;
 else
     bsbstepdef = [initdef 100:100:100*floor(n/100)];

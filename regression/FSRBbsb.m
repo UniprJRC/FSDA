@@ -94,7 +94,8 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %
 % Output:
 %
-%  Un:           (n-init) x 11 Matrix which contains the unit(s) included
+%  Un:          Units included in each step. Matrix.
+%               (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -103,14 +104,15 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:           n x (n-init+1) matrix which contains the units belonging to the
+%  BB:          Units included in each step. Matrix.
+%               n x (n-init+1) matrix which contains the units belonging to the
 %               subset at each step of the forward search.
 %               1st col = index forming subset in the initial step
 %               ...
 %               last column = units forming subset in the final step (i.e.
 %               all units).
 %
-% See also
+% See also FSRbsb, FSRHbsb
 %
 % References:
 % Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and

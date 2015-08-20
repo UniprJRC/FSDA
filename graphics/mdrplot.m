@@ -625,7 +625,7 @@ if sign==1;
     mdrsor=mdrsor(length(mdrsor):-1:1,:);
     
     % Add with blue color the line associated with positive values of mdr
-    line(mdrsor(:,1),mdrsor(:,2),'LineWidth',2,'Color','black','tag','env');
+    line(mdrsor(:,1),mdrsor(:,2),'LineWidth',2,'Color','red','tag','env');
 end
 
 hold('off');

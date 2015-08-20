@@ -1,11 +1,12 @@
 function [out]=FSRcore(INP,model,options)
-%FSRcore scans mdr to check for exceedances
+%FSRcore scans the trajectory of mdr to check for exceedances
 %
 %<a href="matlab: docsearch('FSRcore')">Link to the help function</a>
 %
 % Required input arguments:
 %
-%    INP    =   Structure.
+%    INP    :   Structure containing monitoring of mdr and other quantities. Structure.
+%               Structure containing the following fields.
 %   INP.y   =   Response variable. Vector. Response variable, specified as
 %               a vector of length n, where n is the number of
 %               observations. Each entry in y is the response for the
@@ -52,6 +53,45 @@ function [out]=FSRcore(INP,model,options)
 %               Depending on the string 'model', Bcoeff refers to OLS
 %               coefficents, GLS coefficients or Bayes regression
 %               coefficients.
+%   INP.Z =     Predictor variables in the regression equation (necessary
+%               input just if model='H'). Matrix.
+%               n x r matrix or vector of length r.
+%               If Z is a n x r matrix it contains the r variables which
+%               form the scedastic function as follows (if input option art==1)
+%               \[
+%               \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+%               \]
+%               If Z is a vector of length r it contains the indexes of the
+%               columns of matrix X which form the scedastic function as
+%               follows
+%               \[
+%               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
+%               \gamma_{r} X(i,Z(r)))
+%               \]
+%
+%   INP.beta0 = Prior mean of $\beta$ (necessary
+%               input just if model='B'). p-times-1 vector.
+%   INP.R     = Matrix associated with covariance matrix of $\beta$ (necessary
+%               input just if model='B'). p-times-p
+%               positive definite matrix.
+%               It can be interpreted as X0'X0 where X0 is a n0 x p
+%               matrix coming from previous experiments (assuming that the
+%               intercept is included in the model)
+%
+%               The prior distribution of $\tau_0$ is a gamma distribution with
+%               parameters $a_0$ and $b_0$, that is
+%
+%                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
+%                       \qquad   E(\tau_0)= a_0/b_0               \]
+%
+%   INP.tau0 =  Prior estimate of tau (necessary
+%               input just if model='B'). Scalar. Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.
+%     INP.n0 =  Number of previous experiments (necessary
+%               input just if model='B'). Scalar. Sometimes it helps
+%               to think of the prior information as coming from n0
+%               previous experiments. Therefore we assume that matrix X0
+%               (which defines R), was made up of n0 observations.
+%                 Data Types - struct
 %  model :      type of regression model. String.
 %               Possible values are '' (default) | 'H' | 'B'.
 %               '' stands for linear regression;
@@ -61,17 +101,64 @@ function [out]=FSRcore(INP,model,options)
 %               subset at step n-decl where decl is the number of units
 %               declared as outliers. More precisely, if n>5000 matrix BB
 %               just contains the units belonging to subset in selected
-%               steps therefore in order to find the units inside subset at
-%               step n-decl it is necessary to call:
-%               routine FSRbsb in presence of linear regression;
-%               routine FSRHbsb in presence of heteroskedastic regression;
-%               routine FSRBbsb in presence of Bayesian regression;
+%               steps, therefore in order to find the units inside subset at
+%               step n-decl, FSRcore calls:
+%               routine FSRbsb.m in presence of linear regression;
+%               routine FSRHbsb.m in presence of heteroskedastic regression;
+%               routine FSRBbsb.m in presence of Bayesian regression;
+%                 Data Types - string
+%    options:   Additional options. Stucture. Structure containing optional parameters which are passed to
+%               directly through functions FSR.m, FSRH.m or FSRB.m.
+%                 Data Types - struct
 %
-% This function is called by:
-% FSR  = outlier detection procedure for linear regression;
-% FSRB = outlier detection procedure in Bayesian linear regression;
-% FSRH = outlier detection procedure for heteroskedastic models;
+% Optional input arguments:
 %
+% Output:
+%
+%  out :     A structure containing the following fields
+% out.ListOut=  k x 1 vector containing the list of the units declared as
+%               outliers or NaN if the sample is homogeneous
+% out.beta   =  p-by-1 vector containing the estimated regression
+%               parameter in step n-k. Depending on the string 'model',
+%               beta refers to OLS coefficents, GLS coefficients or Bayes
+%               regression coefficients.
+% out.mdr    =  (n-init) x 2 matrix
+%               1st col = fwd search index
+%               2nd col = value of minimum deletion residual in each step
+%               of the fwd search. Depending on the string 'model',
+%               mdr is found using linear regression, heteroskedastic
+%               regression or Bayes regression.
+% out.Un     =  (n-init) x 11 matrix which contains the unit(s) included
+%               in the subset at each step of the fwd search.
+%               REMARK: in every step the new subset is compared with the
+%               old subset. Un contains the unit(s) present in the new
+%               subset but not in the old one.
+%               Un(1,2) for example contains the unit included in step
+%               init+1.
+%               Un(end,2) contains the units included in the final step
+%               of the search.
+% out.nout    = 2 x 5 matrix containing the number of times mdr went out
+%               of particular quantiles.
+%               First row contains quantiles 1 99 99.9 99.99 99.999.
+%               Second row contains the frequency distribution.
+%
+% More About:
+% 
+% The rules for declaring units as outliers are the same for standard
+% regression, heteroskedastic regression and Bayesian regression. Therefore
+% this function is called by:
+% FSR.m  = outlier detection procedure for linear regression;
+% FSRB.m = outlier detection procedure in Bayesian linear regression;
+% FSRH.m = outlier detection procedure for heteroskedastic models;
+% If ndecl units are declared as outliers, it is necessary to find the
+% units forming subset at step n-decl. If n<=5000 input matrix INP.bb
+% contains the storing of the units belonging to subset in all steps, else
+% if INP.bb does not contain the units in step n-decl procedure calls
+% routine FSRbsb.m or FSRHbsb.m or FSRBbsb.m.
+%
+% See also: FSR.m, FSRH.m, FSRB.m
+%
+% References:
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -1050,7 +1137,7 @@ if ndecl>0;
                 gridsearch=options.gridsearch;
                 modeltype=options.modeltype;
                 [Un,BB] = FSRHbsb(y,X,Z,bsb,'intercept',intercept,'init',n-ndecl,...
-                    'gridsearch',gridsearch,'modeltype',modeltype,'nocheck',1);
+                    'gridsearch',gridsearch,'modeltype',modeltype,'nocheck',1,'msg',0);
             elseif strcmp(model,'B')
                 % Call procedure FSRBbsb
                 beta0=INP.beta0;
@@ -1058,9 +1145,9 @@ if ndecl>0;
                 tau0=INP.tau0;
                 n0=INP.n0;
                 [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0,'bsb',bsb,'intercept',intercept,...
-                 'init',n-ndecl,'nocheck',1);
+                    'init',n-ndecl,'nocheck',1,'msg',0);
             else
-                error('noooo')
+                error('FSDA:FSRcore:WrongModel','Specified model is not supported: possible values are ''H'' (heteroskedastic model) , '''' empty value for linear regression,  ''B'' (Bayesian linear regression)')
             end
             % The first column of BB contains the units forming subset in
             % step n-ndecl

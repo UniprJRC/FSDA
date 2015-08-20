@@ -45,7 +45,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %               See HArho.m and HApsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
-%                 Data Types - char
+%                 Data Types - double
 % rhofuncparam: Additional parameters for the specified rho function.
 %               Scalar or vector.
 %               For hyperbolic rho function it is possible to set up the
