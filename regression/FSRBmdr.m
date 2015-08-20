@@ -222,8 +222,8 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 
 %{
     % Additional example.
-    % We change n0 from 5 to 250 and impose FSRmdr monitoring from step 300.
-    n0=250
+    % We change n0 from 5 to 250 and impose FSRBmdr monitoring from step 300.
+    n0=250;
     mdrB=FSRBmdr(y,X,beta0, R, tau0, n0,'init',300,'plots',1);
 %}
 
@@ -319,8 +319,6 @@ end
 ini0=numel(bsb);
 
 msg=options.msg;
-intercept=options.intercept;
-
 bsbsteps=options.bsbsteps;
 
 
@@ -383,8 +381,8 @@ for mm=ini0:n;
     end
     
     % call bayesian procedure
-    [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept);
-    
+    [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb, 'nocheck',1);
+
     % bayesian beta
     b=bayes.beta1;
     

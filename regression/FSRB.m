@@ -30,10 +30,10 @@ function [out]=FSRB(y,X,varargin)
 %
 % Optional input arguments:
 %
-%   intercept   :  Indicator for constant term. Scalar. 
+%   intercept   :  Indicator for constant term. Scalar.
 %                       If 1, a model with constant term will be fitted
 %                       (default), if 0, no constant term will be included.
-%                        Example - 'intercept',1 
+%                        Example - 'intercept',1
 %                       Data Types - double
 %    bayes      : Prior information. Structure.
 %
@@ -50,7 +50,7 @@ function [out]=FSRB(y,X,varargin)
 %                     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
 %                       \qquad E(\tau_0) = a_0/b_0
 %               \]
-%               bayes.tau0 = scalar. Prior estimate of 
+%               bayes.tau0 = scalar. Prior estimate of
 %                       \[ \tau=1/ \sigma^2 =a_0/b_0 \]
 %               bayes.n0   = scalar. Sometimes it helps to think of the prior
 %                      information as coming from n0 previous experiments.
@@ -80,22 +80,22 @@ function [out]=FSRB(y,X,varargin)
 %                 If plots=2 the user can also monitor the intermediate
 %                 plots based on envelope superimposition.
 %                 else no plot is produced.
-%                 Example - 'plots',1 
+%                 Example - 'plots',1
 %                 Data Types - double
-%       init    :  Search initialization. Scalar. 
+%       init    :  Search initialization. Scalar.
 %                   scalar which specifies the initial subset size to start
 %                   monitoring exceedances of minimum deletion residual, if
 %                   init is not specified it set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                   Example - 'init',100 starts monitoring from step m=100 
+%                   Example - 'init',100 starts monitoring from step m=100
 %                   Data Types - double
 %   nocheck : Check input arguments. Scalar.
 %                    If nocheck is equal to 1 no check is performed on
 %                    matrix y and matrix X. Notice that y and X are left
 %                    unchanged. In other words the additional column of ones
 %                     for the intercept is not added. As default nocheck=0.
-%                   Example - 'nocheck',1 
+%                   Example - 'nocheck',1
 %                   Data Types - double
 %    bivarfit :  Superimpose bivariate least square lines. Character.
 %                   This option adds one or more least square lines, based on
@@ -116,7 +116,7 @@ function [out]=FSRB(y,X,varargin)
 %                   fits an ols line to a specific group, the one with
 %                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
 %                   of mixtures.
-%                 Example - 'bivarfit',2 
+%                 Example - 'bivarfit',2
 %                 Data Types - char
 %       multivarfit : Superimpose multivariate least square lines. Character.
 %                   This option adds one or more least square lines, based on
@@ -135,24 +135,24 @@ function [out]=FSRB(y,X,varargin)
 %                   equal to multivarfit ='1' but this time we also add the
 %                   line based on the group of unselected observations
 %                   (i.e. the normal units).
-%                 Example - 'multivarfit','1' 
+%                 Example - 'multivarfit','1'
 %                 Data Types - char
 %      labeladd : Add outlier labels in plot. Character.
 %                 If this option is '1',  we label the outliers with the
 %                 unit row index in matrices X and y. The default value is
 %                 labeladd='', i.e. no label is added.
-%                 Example - 'labeladd','1' 
+%                 Example - 'labeladd','1'
 %                 Data Types - char
-%       nameX  :  Add variable labels in plot. Cell array of strings. 
+%       nameX  :  Add variable labels in plot. Cell array of strings.
 %                 cell array of strings of length p containing the labels of
 %                 the variables of the regression dataset. If it is empty
 %                 (default) the sequence X1, ..., Xp will be created
 %                 automatically
-%                 Example - 'nameX',{'NameVar1','NameVar2'} 
+%                 Example - 'nameX',{'NameVar1','NameVar2'}
 %                 Data Types - cell
-%       namey  :  Add response label. Character. 
+%       namey  :  Add response label. Character.
 %               character containing the label of the response
-%               Example - 'namey','NameOfResponse' 
+%               Example - 'namey','NameOfResponse'
 %               Data Types - char
 %       ylim   :   Control y scale in plot. Vector.
 %                   vector with two elements controlling minimum and maximum
@@ -160,13 +160,13 @@ function [out]=FSRB(y,X,varargin)
 %               Example - 'ylim','[0,10]' sets the minim value to 0 and the
 %               max to 10 on the y axis
 %               Data Types - double
-%       xlim   :   Control x scale in plot. Vector. 
+%       xlim   :   Control x scale in plot. Vector.
 %                  vector with two elements controlling minimum and maximum
 %                 on the x axis. Default value is '' (automatic scale)
 %               Example - 'xlim','[0,10]' sets the minim value to 0 and the
 %               max to 10 on the x axis
 %               Data Types - double
-%      bonflev  : Signal to use to identify outliers. Scalar. 
+%      bonflev  : Signal to use to identify outliers. Scalar.
 %                   option to be used if the distribution of the data is
 %                 strongly non normal and, thus, the general signal
 %                 detection rule based on consecutive exceedances cannot be
@@ -184,13 +184,13 @@ function [out]=FSRB(y,X,varargin)
 %                 based on consecutive exceedances.
 %               Example - 'bonflev',0.99
 %               Data Types - double
-%       msg    :  Level of output to display. Scalar. 
+%       msg    :  Level of output to display. Scalar.
 %               scalar which controls whether to display or not messages
 %                 on the screen
 %                 If msg==1 (default) messages are displayed on the screen about
 %                   step in which signal took place and ....
 %                 else no message is displayed on the screen
-%               Example - 'msg',1 
+%               Example - 'msg',1
 %               Data Types - double
 %
 % Output:
@@ -243,7 +243,7 @@ function [out]=FSRB(y,X,varargin)
 
 % Examples:
 
-%{  
+%{
     % FSRB with all default options.
     % Common part to all examples: load Houses Price Dataset.
     
@@ -293,10 +293,10 @@ function [out]=FSRB(y,X,varargin)
 %}
 
 %{
-    %% Example on Fishery dataset.
+    %% Example on Fishery dataset (analysis with intercept).
     % nsamp is the number of subsamples to use in the frequentist analysis of first
     % year, in order to find initial subset using LMS.
-    close all    
+    close all
     nsamp=3000;
     % threshold to be used to increase susbet of good units
     threshold=300;
@@ -333,7 +333,7 @@ function [out]=FSRB(y,X,varargin)
     % res02 = squared raw residuals for all units using b02g
     res02=(y02-[ones(length(X02),1) X02]*b02g).^2;
     res02o=res02(out02.ListOut);
-    % sel= boolean vector which is true for the intermediate units 
+    % sel= boolean vector which is true for the intermediate units
     % (units whose squared residual is below the threshold)
     sel=res02o<threshold^2;
     % u02i = vector containing intermediate units (that is outliers whose
@@ -378,12 +378,12 @@ function [out]=FSRB(y,X,varargin)
     bayes=struct;
     bayes.beta0=b02g; % beta prior is beta based on g units
     tau0=1/S202gi; % tau0 is based on g + i units
-    bayes.tau0=tau0;  
+    bayes.tau0=tau0;
     R=X02g'*X02g; % R is based on g units
     bayes.n0=n02gi; % n0 is based on g + i units
     bayes.R=R;
 
-    % 2003 
+    % 2003
     % Load 2003 Fishery dataset
     Fishery2003=load('Fishery2003.txt');
     y03=Fishery2003(:,3);
@@ -452,7 +452,7 @@ function [out]=FSRB(y,X,varargin)
 
     X02giX03gi=[X02gi; X03gi];
     y02giy03gi=[y02gi; y03gi];
-    % n02gin03gi = number of g+i units in 2002 and 2003 
+    % n02gin03gi = number of g+i units in 2002 and 2003
     n02gin03gi=n02gi+n03gi;
 
     % res = residuals for g+i units using b0203g
@@ -484,7 +484,7 @@ function [out]=FSRB(y,X,varargin)
     res04=(y04-[ones(length(X04),1) X04]*b04g).^2;
     % res04o squared residuals for the tentative outliers
     res04o=res04(out04.ListOut);
-    % we keep statistical units below the treshold
+    % we keep statistical units below the threshold
     sel=res04o<threshold^2;
     % u04i = units to add to the good units subset (intermediate units)
     u04i=out04.ListOut(sel);
@@ -520,6 +520,85 @@ function [out]=FSRB(y,X,varargin)
 
 %}
 
+%{
+    %% Example on Fishery dataset (analysis without the intercept).
+    close all
+    % nsamp is the number of subsamples to use in the frequentist analysis of first
+    % year, in order to find initial subset using LMS.
+    nsamp=3000;
+    % threshold to be used to increase susbet of good units
+    threshold=300;
+    bonflev=0.99; % Bonferroni confidence level
+
+    % Load 2002 Fishery dataset
+    Fishery2002=load('Fishery2002.txt');
+    y02=Fishery2002(:,3);
+    X02=Fishery2002(:,2);
+
+    n02=length(y02);
+    seq02=1:n02;
+
+    % frequentist Forward Search, 1st year (regression without intercept)
+    [out02]=FSR(y02,X02,'intercept',0,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);
+
+    % In what follows
+    % g stands for good units
+    % i stand for intermediate units (i.e. units whose raw residual is smaller
+    % than threshold)
+    % o stands for outliers
+    % gi stands for good +intermediate units
+
+    % u02g = good units
+    % n02g = number of good units
+    u02g=setdiff(seq02,out02.ListOut);
+
+    X02g=X02(u02g,:);
+    y02g=y02(u02g);
+    % b02g = regression coefficients just using g units
+    % Note that b02g is a scalar because the intercept has not been added
+    b02g=X02g\y02g;
+    % res02 = squared raw residuals for all units using b02g
+    res02=(y02-X02*b02g).^2;
+    res02o=res02(out02.ListOut);
+    % sel= boolean vector which is true for the intermediate units
+    % (units whose squared residual is below the threshold)
+    sel=res02o<threshold^2;
+    % u02i = vector containing intermediate units (that is outliers whose
+    % residual is smaller than threshold)
+    u02i=out02.ListOut(sel);
+    % u02gi = g + i units
+    if ~isempty(u02i)
+        u02gi=[u02g u02i];
+    else
+        u02gi=u02g;
+    end
+    % n02gi = number of good + intermediate units
+    n02gi=length(u02gi);
+ 
+    % S202gi = estimated of sigma^2 using g+i units
+    S202gi=sum(res02(u02gi))/(n02gi-1);
+
+    % bayes = structure which contains prior information to be used in year
+    % 2003
+    bayes=struct;
+    bayes.beta0=b02g; % beta prior is beta based on g units
+    tau0=1/S202gi; % tau0 is based on g + i units
+    bayes.tau0=tau0;
+    R=X02g'*X02g; % R is based on g units
+    bayes.n0=n02gi; % n0 is based on g + i units
+    bayes.R=R;
+
+    % 2003
+    % Load 2003 Fishery dataset
+    Fishery2003=load('Fishery2003.txt');
+    y03=Fishery2003(:,3);
+    X03=Fishery2003(:,2);
+    n03=length(y03);
+
+    % Run Bayesian Forward Search for the 2nd year using the prior based on
+    % the first year.
+    out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);
+%}
 
 %% Input parameters checking
 
@@ -580,7 +659,7 @@ n0=bayes.n0;
 
 
 %% Start of the forward search
-[mdr,Un,bb,BBayes,~] = FSRBmdr(y, X, beta0, R, tau0, n0,'nocheck',1);
+[mdrB,Un,bb,BBayes,~] = FSRBmdr(y, X, beta0, R, tau0, n0, 'nocheck',1);
 
 
 %% Call core function which computes exceedances to thresholds of mdr
@@ -589,15 +668,15 @@ INP.y=y;
 INP.X=X;
 INP.n=n;
 INP.p=p;
-INP.mdr=mdr;
+INP.mdr=mdrB;
 INP.init=init;
 INP.Un=Un;
 INP.bb=bb;
 INP.Bcoeff=BBayes;
 INP.beta0=beta0;
-                INP.R=R;
-                INP.tau0=tau0;
-                INP.n0=n0;
+INP.R=R;
+INP.tau0=tau0;
+INP.n0=n0;
 
 [out]=FSRcore(INP,'B',options);
 
