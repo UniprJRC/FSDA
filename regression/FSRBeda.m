@@ -570,6 +570,8 @@ Un=[(init+1:n)' Un];
 Bpval=Bols;
 % Bhpd will contain (n-init+1)-by-2-by-p 3D array.
 Bhpd=NaN(n-init+1,2*length(conflev),p);
+Tauhpd=NaN(n-init+1,2*length(conflev),1);
+
 % postodds will contain (n-init+1)-by-(p+1) matrix which contains posterior
 % odds for betaj=0
 postodds=Bols;
@@ -631,6 +633,7 @@ for mm=ini0:n;
         % Store p-values
         Bpval(mm-init+1,:)=[mm bayes.Bpval'];
         Bhpd(mm-init+1,:,:)=bayes.Bhpd';
+        Tauhpd(mm-init+1,:,:)=bayes.Tauhpd';
         
         %
         postodds(mm-init+1,:)=[mm bayes.postodds'];
@@ -743,6 +746,7 @@ out.S2=S2;
 out.coo=coo;
 out.Bpval=Bpval;
 out.Bhpd=Bhpd;
+out.Tauhpd=Tauhpd;
 out.postodds=postodds;
 out.modelprob=modelprob;
 out.Un=Un;
