@@ -67,7 +67,7 @@ function y = inversegampdf(x,a,b,nocheck)
 % statistics, where the distribution arises as the marginal posterior
 % distribution for the unknown variance of a normal distribution if an
 % uninformative prior is used; and as an analytically tractable conjugate
-% prior if an informative prior is required.
+% prior if an informative prior is required. See the last example below. 
 %
 % Relation with the Gamma distribution.
 % If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution
@@ -121,7 +121,7 @@ function y = inversegampdf(x,a,b,nocheck)
 %{
     %% Interpretation in Bayesian statistics
     %  for estimating the posterior distribution of the unknown variance 
-    %  $\sigma^2$ of a normal $N(0,\sigma^2)$ (being Gamma is a conjugate
+    %  $\sigma^2$ of a normal $N(0,\sigma^2)$ (being Gamma a conjugate
     %  prior for $\sigma^2$).
     
     % a set of values for $\sigma^2$
