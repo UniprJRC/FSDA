@@ -45,7 +45,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Optional input arguments:
 %
-%   noiseunits : missing value, scalar or structure, specifyin the number
+%   noiseunits : missing value, scalar or structure, specifying the number
 %                and type of outlying observations. The default value of
 %                noiseunits is 0.
 %                - If noiseunits is a scalar t different from 0, then t
@@ -53,10 +53,10 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                  min(X) max(X) are generated in such a way that their
 %                  squared Mahalanobis distance from the centroids of each
 %                  existing group is larger then the quantile 1-0.999 of
-%                  the chi^2 distribution with p degrees of freedom. In
-%                  order to generate these these units the maximum number
+%                  the Chi^2 distribution with p degrees of freedom. In
+%                  order to generate these units the maximum number
 %                  of attempts is equal to 10000.
-%                - If noiseunits is a strcture it may contain the following
+%                - If noiseunits is a structure it may contain the following
 %                  fields:
 %                  number : scalar, or vector of length f. The sum of the
 %                       elements of vector 'number' is equal to the total
@@ -66,6 +66,19 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                       of alpha is 0.001.
 %                  maxiter : maximum number of trials to simulate outliers.
 %                       The default value of maxiter is 10000.
+%                  interval: missing value or vector of length 2 or matrix
+%                         of size 2-by-v which controls the min and max of
+%                         the generated outliers for each dimension.
+%                         If interval is empty (default), the outliers
+%                         are simulated in the interval min(X) max(X).
+%                         If interval is a vector of length(2), outliers for
+%                         each variables are simulated in the range
+%                         interval(1) and interval(2).
+%                         If interval is a 2-by-v matrix outliers are
+%                         simulated in:
+%                         interval(1,1) interval (2,1) for variable 1
+%                         ...
+%                         interval(1,v) interval (2,v) for variable v
 %                  typeout : list of length f containing the type of
 %                       outliers which must be simulated. Possible values
 %                       for typeout are:
@@ -83,8 +96,18 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         particular point;
 %                       * componentwise, if the outliers must have the same
 %                         coordinates of the existing rows of matrix X apart
-%                         from a single coordinate (which will be to the min
-%                         or max in that particular dimension).
+%                         from a single coordinate (which will be to the
+%                         min or max in that particular dimension or to the
+%                         min or max specified in interval).
+%                For example, the code:
+%                   noiseunits=struct;
+%                   noiseunits.number=[100 100];
+%                   noiseunits.typeout={'uniform' 'componentwise'};
+%                   noiseunits.interval=[-2 2];
+%                adds 200 outliers, the first 100 generated using
+%                a uniform distribution and the last 100 using
+%                componentwise scheme. Outliers are generated in the
+%                interval [-2 2] for each variable.
 %    noisevars : empty value, scalar or structure.
 %                - If noisevars is not specified or is an empty value
 %                  (default) no noise variable is added to the matrix of
@@ -93,7 +116,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                  variables are added to the matrix of simulated data
 %                  using the uniform distribution in the range [min(X)
 %                  max(X)].
-%                - If noisevars is a strcture it may contain the following
+%                - If noisevars is a structure it may contain the following
 %                  fields:
 %                  number: a scalar or a vector of length f. The sum of
 %                       elements of vector 'number' is equal to the total
@@ -116,10 +139,14 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         degreess of freedom. For example, chisquare8
 %                         specifies to generate the data according to a Chi
 %                         square distribution with 8 degrees of freedom.
-%                  interval: string or vector of length 2 or matrix of length
-%                         2-by-f which controls for each element of vector
+%                  interval: string or vector of length 2 or matrix of size
+%                         2-by-f (where f is the number of noise variables)
+%                         which controls for each element of vector
 %                         'number' or each element of cell 'distribution',
-%                         the min and max of the generated data.
+%                         the min and max of the noise variables. For
+%                         example, interval(1,3) and interval(2,3) are
+%                         respectively the minimum and maximum values of
+%                         simulated the data for the third noise variable
 %                         If interval is empty (default), the noise variables
 %                         are simulated uniformly between the smallest and
 %                         the largest coordinates of mean vectors.
@@ -131,7 +158,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                   noisevars.number=[3 2];
 %                   noisevars.distribution={'Chisquare5' 'T3'};
 %                   noisevars.interval='minmax';
-%                adds 5 noise varibles, the first 3 generated using
+%                adds 5 noise variables, the first 3 generated using
 %                the Chi2 with 5 degrees of freedom and the last two
 %                using the Student t with 3 degrees of freedom. Noise
 %                variables are generated in the interval min(X) max(X).
@@ -310,6 +337,37 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
+    %% Example of the use of personalized interval to generate outliers
+    noiseunits=struct;
+    noiseunits.number=1000;
+    noiseunits.typeout={'uniform'};
+    % Generate outliers in the interval [-1 1] for the first variable and
+    % interval [1 2] for the second variable
+    noiseunits.interval=[-1 1;
+                         1 2];
+    % Finally add a noise variable
+    noisevars=struct;
+    noisevars.number=1;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')
+%}
+
+%{
+    % Example of the use of personalized interval to generate outliers.
+    % Generate 1000 outliers from uniform in the interval [-2 3] and
+    % 1000 units using componentwise contamination in the interval [-2 3]
+    noiseunits=struct;
+    noiseunits.number=[1000 1000];
+    noiseunits.typeout={'uniform' 'componentwise'};
+    noiseunits.interval=[-2 3];
+
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers componentwise and from uniform in interval [-2 3]','Interpreter','Latex')
+%}
+
+%{
     %% Add 5 noise variables
     n=300;
     noisevars=struct;
@@ -434,12 +492,12 @@ noiseunits = options.noiseunits;
 lambda     = options.lambda;
 
 if isscalar(n)
-   [k,v]=size(Mu);
-
+    [k,v]=size(Mu);
+    
     if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
         error('FSDA:simdataset:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
     end
-
+    
     if (n < 1)
         error('FSDA:simdataset:Wrongn','Wrong sample size n...')
     end
@@ -514,7 +572,7 @@ else
     
     if v~=vcheck
         disp(['Number of columns of matrix X (' num2str(v) ') is differrent'])
-        disp(['from number of columns of matrix of means (' num2str(vcheck) ')']) 
+        disp(['from number of columns of matrix of means (' num2str(vcheck) ')'])
         error('FSDA:simdataset:Wrongv','Wrong dimension supplied')
     else
     end
@@ -540,6 +598,11 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
     fnoiseunitsdef.typeout={'uniform'};
     fnoiseunitsdef.alpha=0.001;
     fnoiseunitsdef.maxiter=10000;
+    % interval to simulate outliers (if it is empty than min(X) and max(X)
+    % will be used
+    fnoiseunitsdef.interval='';
+    
+    
     
     if isstruct(noiseunits)
         
@@ -558,6 +621,21 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
         else
             number=fnoiseunitsdef.number;
         end
+        
+        % labeladd option
+        d=find(strcmp('interval',fnoiseunits));
+        if d>0
+            intervalout=noiseunits.interval;
+            if (isvector(intervalout) && (length(intervalout)~=2))...
+                    || (numel(intervalout)>2 && numel(intervalout)~=2*v)
+                error('FSDA:simdataset:Wrongintervalout',...
+                    ['Wrong input interval to generate outliers '...
+                    '(it can be or a vector of length 2 or a matrix of size 2-by-v)'])
+            end
+        else
+            intervalout='';
+        end
+        
         
         
         d=find(strcmp('typeout',fnoiseunits));
@@ -602,12 +680,13 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
         % nout = total number of outliers  which has to be
         % simulated
         noiseunits=sum(number);
-    else % in this case noisevars is a scalar different from missing
+    else % in this case noiseunits is a scalar different from missing
         number=noiseunits;
         noiseunits=number;
         typeout=fnoiseunitsdef.typeout;
         alpha=fnoiseunitsdef.alpha;
         maxiter=fnoiseunitsdef.maxiter;
+        intervalout='';
     end
     
     Xout=zeros(noiseunits, v);
@@ -616,7 +695,7 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
     for ii=1:length(number);
         typeouti=typeout{ii};
         
-        [Xouti, ~] = getOutliers(number(ii), Mu, S, alpha(ii), maxiter, typeouti);
+        [Xouti, ~] = getOutliers(number(ii), Mu, S, alpha(ii), maxiter, typeouti, intervalout);
         Xout(ni+1:ni+size(Xouti,1),:)=Xouti;
         idtmp(ni+1:ni+size(Xouti,1))=-ii;
         ni=ni+size(Xouti,1);
@@ -761,14 +840,28 @@ end
 % fail = scalar. If fail =1 than it was not possible to generate the
 % outliers in maxiter trials, using confidence interval based on alpha
 % else fail =0
-    function [Xout,fail] = getOutliers(nout, Mu, S, alpha, maxiter, typeout)
+    function [Xout,fail] = getOutliers(nout, Mu, S, alpha, maxiter, typeout, intervalout)
         fail = 0;
         % maxiter = maximum number of iterations to generate outliers
         critval =chi2inv(1-alpha,v);
         
         Xout = zeros(nout,v);
-        L = min(X);
-        U = max(X);
+        % If intervalout is not specified, just simulate outliers in the
+        % interval min(X) and max(X) else use L and U supplied by the ser
+        if isempty(intervalout)
+            Lout = min(X);
+            Uout = max(X);
+        else
+            % Just in case a two elements vector is supplies instead of a
+            % matrix of size 2-by-v
+            if isvector(intervalout)
+                Lout=intervalout(1)*ones(1,v);
+                Uout=intervalout(2)*ones(1,v);
+            else
+                Lout=intervalout(1,:);
+                Uout=intervalout(2,:);
+            end
+        end
         
         i = 1;
         
@@ -805,12 +898,13 @@ end
             if strcmp(typeout,'componentwise')
                 % extract one unit among those already extracted and
                 % contaminate just a single random coordinate
+    
                 Xout(i,:)=X(randsample(1:n,1),:);
                 contj=randsample(1:v,1);
                 if rand(1,1)>0.5
-                    Xout(i,contj)=U(contj);
+                    Xout(i,contj)=Uout(contj);
                 else
-                    Xout(i,contj)=L(contj);
+                    Xout(i,contj)=Lout(contj);
                 end
             else
                 
@@ -822,8 +916,8 @@ end
                     rindex=randsample(maxiter1,1);
                     rr=rrall(rindex,:);
                 end
-                
-                Xout(i,:) = (U-L).*rr+L;
+                % Rescale the outliers in the interval Lout and Uout
+                Xout(i,:) = (Uout-Lout).*rr+Lout;
             end
             
             
@@ -854,8 +948,8 @@ end
         % outliers in maxiter simulations.
         if iter== maxiter
             disp(['Warning: it was not possible to generate ' num2str(nout) ' outliers'])
-            disp(['in ' num2str(maxiter) ' replicates in the interval [' num2str(L(1)) ...
-                '--' num2str(U(1)) ']'])
+            disp(['in ' num2str(maxiter) ' replicates in the interval [' num2str(Lout(1)) ...
+                '--' num2str(Uout(1)) ']'])
             disp(['Number of values which was possible to generate is equal to ' num2str(i)])
             disp('Please modify the type of outliers using option ''typeout'' ')
             disp('or increase input option ''alpha''')
