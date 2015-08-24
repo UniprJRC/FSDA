@@ -77,7 +77,12 @@ function y = inversegampdf(x,a,b,nocheck)
 %
 % References:
 %
-% https://en.wikipedia.org/wiki/Inverse-gamma_distribution
+% Arnold Zellner (1971). An introduction to Bayesian Inference in
+% Econometrics, Wiley. See the appendix for a detailed description of the
+% inverse Gamma distribution.
+%
+% https://en.wikipedia.org/wiki/Inverse-gamma_distribution.
+%
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -119,10 +124,10 @@ function y = inversegampdf(x,a,b,nocheck)
 %}
 
 %{
-    %% Interpretation in Bayesian statistics
-    %  for estimating the posterior distribution of the unknown variance 
-    %  $\sigma^2$ of a normal $N(0,\sigma^2)$ (being Gamma a conjugate
-    %  prior for $\sigma^2$).
+    %% Interpretation in Bayesian statistics.
+    %  Interpretation of a inverse Gamma (conjugate) prior, used for 
+    %  estimating the posterior distribution of the unknown variance 
+    %  $\sigma{^2}$ of a normal $N(0,\sigma{^2})$.
     
     % a set of values for $\sigma^2$
     x=(0:0.001:3)';
@@ -131,10 +136,10 @@ function y = inversegampdf(x,a,b,nocheck)
     % settings.
 
     % Left panel:  fixed shape (1), increasing scale (1,2,4);
-    % As the scale parameter increases, the distribution becomes skewed
-    % to the right and the mean increases. This suggests that an inverse
-    % Gamma prior with a larger scale parameter incorporates a prior
-    % belief of a larger value for $\sigma^2$.
+    % As the scale parameter increases, the mean of the distribution (more 
+    % and more skewed to the right) also increases. This suggests that an 
+    % inverse Gamma prior with a larger scale parameter incorporates a prior
+    % belief in favour of a larger value for $\sigma^2$.
     a = [1, 1, 1]; 
     b = [1, 2, 4];
     subplot(1,2,1);
@@ -146,8 +151,8 @@ function y = inversegampdf(x,a,b,nocheck)
     title('PDF with a=[1, 1, 1] and b=[1, 2, 4]');
 
     % Right panel: fixed scale (1), increasing shape (1,2,4);
-    % As the shape parameter increases, the distribution becomes more
-    % centered around the mean, which implies a tighter set of prior beliefs.   
+    % As the shape parameter increases, the distribution becomes more and
+    % more centered around the mean, producing a tighter set of prior beliefs.   
     b = [1, 1, 1]; 
     a = [1, 2, 4];
     subplot(1,2,2);
