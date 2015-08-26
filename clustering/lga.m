@@ -25,17 +25,17 @@ function out = lga(X,k,varargin)
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
 %
-%             out.cluster : vector containing the cluster memberships.
-%                out.ROSS : the Residual Orthogonal Sum of Squares for the solution.
-%           out.converged : logical. True if at least one solution has converged.
-%            out.nconverg : the number of converged solutions (out of biter starts).
-%                   out.x : the (scaled if selected) dataset.
-%              out.scaled : logical. Is the data scaled?
-%                   out.k : the number of clusters to be found.
-%               out.biter : the biter setting used.
-%               out.niter : the niter setting used.
+%             out.cluster = vector containing the cluster memberships.
+%                out.ROSS = the Residual Orthogonal Sum of Squares for the solution.
+%           out.converged = logical. True if at least one solution has converged.
+%            out.nconverg = the number of converged solutions (out of biter starts).
+%                   out.x = the (scaled if selected) dataset.
+%              out.scaled = logical. Is the data scaled?
+%                   out.k = the number of clusters to be found.
+%               out.biter = the biter setting used.
+%               out.niter = the niter setting used.
 %
 % Copyright 2008-2015.
 % Written by FSDA team

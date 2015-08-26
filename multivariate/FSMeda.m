@@ -62,7 +62,8 @@ function out = FSMeda(Y,bsb,varargin)
 %
 % Output:
 %
-%   The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %   out.MAL=        n x (n-init+1) = matrix containing the monitoring of
 %               Mahalanobis distances. 
 %               1st row = distance for first unit; 

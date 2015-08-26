@@ -1238,7 +1238,6 @@ end
 %% Structure returned by function FSR
 out=struct;
 out.ListOut=ListOut;
-out.beta=beta;
 
 % If you wish that the output also contains the list of units not declared
 % as outliers, please uncomment the two following lines.
@@ -1248,6 +1247,7 @@ out.beta=beta;
 out.mdr=mdr;
 out.Un=Un;
 out.nout=nout;
+out.beta=beta;
 
 
 %% Callback functions used to "pin" quantile labels and vertical line to axes.

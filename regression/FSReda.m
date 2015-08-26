@@ -68,16 +68,17 @@ function [out] = FSReda(y,X,bsb,varargin)
 %
 % Output:
 %
-%   The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %   out.RES=        n x (n-init+1) = matrix containing the monitoring of
 %               scaled residuals
 %               1st row = residual for first unit ......
 %               nth row = residual for nth unit.
-%   outLEV=        (n+1) x (n-init+1) = matrix containing the monitoring of
+%   out.LEV=        (n+1) x (n-init+1) = matrix containing the monitoring of
 %               leverage
 %               1st row = leverage for first unit ......
 %               nth row = leverage for nth unit.
-%    outBB=        n x (n-init+1) matrix containing the information about the units belonging
+%    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
 %               to the subset at each step of the forward search.
 %               1st col = indexes of the units forming subset in the initial step
 %               ...

@@ -114,7 +114,8 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Data Types - double
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %
 %  out.Tdel=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               deletion t stat in each step of the forward search
@@ -147,7 +148,7 @@ function [out]=FSRaddt(y,X,varargin)
 %
 %   Atkinson, A.C. and Riani, M. (2002b). Forward search added variable t
 %   tests and the effect of masked outliers on model selection. Biometrika,
-%   Vol. 89, pp. 939–946.
+%   Vol. 89, pp. 939-946.
 %
 % Copyright 2008-2015
 % Written by FSDA team

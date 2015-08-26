@@ -61,7 +61,8 @@ function [out]=addt(y,X,w,varargin)
 %
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %       out.b=          estimate of the slope for additional explanatory
 %                       variable
 %       out.S2add=  estimate of $s^2$ of the model which contains the

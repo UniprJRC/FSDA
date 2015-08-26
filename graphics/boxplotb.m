@@ -84,7 +84,7 @@ function out = boxplotb(Y,varargin)
 %               importance.
 % Output:
 %
-%   The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
 %
 %
 %  out.outliers = vector containing the list of the units which lie outside the

@@ -222,7 +222,8 @@ function [out]=FSR(y,X,varargin)
 %
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
 % out.beta   =  p-by-1 vector containing the estimated regression parameter.

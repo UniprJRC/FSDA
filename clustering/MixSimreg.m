@@ -236,7 +236,7 @@ function [out]  = MixSimreg(k,p,varargin)
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
 %
 %       out.OmegaMap : matrix of misclassification probabilities (k-by-k);
 %                      OmegaMap(i,j) = w_{j|i} is the probability that X,

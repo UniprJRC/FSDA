@@ -74,7 +74,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               about beta. Scalar.
 %               Scalar between 0 (excluded) and 1 (included).
 %               The covariance matrix of the prior distribution
-%               of $\beta$ is 
+%               of $\beta$ is
 %               \[
 %               (1/tau0)* (c X0'X0)^{-1} = (1/tau0)* (c*R)^{-1}
 %               \]
@@ -118,33 +118,43 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %   out.beta1=    p x 1 vector containing posterior mean (conditional on
 %               $\tau_0$) of $\beta$ (regression coefficents)
 %               $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$
-%  out.covbeta1=    p x p matrix containing posterior covariance matrix
-%               (conditional on $\tau_1$) of $\beta$
-%               $covbeta1 = (1/tau1) * (c*R + X'X)^{-1}$
-%               where $\tau_1$ is defined as $a_1/b_1$ (that is through the gamma
-%               parameters of the posterior distribution of $\tau$)
-%
-%   out.a1    =   scalar parameter of the posterior gamma distribution of
-%               $\tau$. 
+%   out.a1    = shape parameter of the posterior gamma distribution of
+%               $\tau$ ($\sigma^2$). Scalar.
 %               $a1 = 0.5 (c*n_0 + n_1)$
 %               The posterior distribution of $\tau$ is a gamma distribution
 %               with parameters $a_1$ and $b_1$.
-%   out.b1    =   scalar parameter of the posterior gamma distribution of
-%               $\tau$
+%               The posterior distribution of $\sigma^2$ is an inverse-gamma distribution
+%               with parameters $a_1$ and $b_1$.
+%   out.b1    = scale parameter of the posterior gamma distribution of
+%               $\tau$ ($\sigma^2$). Scalar.
 %               \[
 %                   b1 = 0.5 * ( n_0 / \tau_0 + (y-X*\beta_1)'y +(\beta_0-\beta_1)'*c*R*\beta_0 )
 %               \]
 %               The posterior distribution of $\tau$ is a gamma distribution
+%               with parameters $a_1$ and $b_1$.
+%               The posterior distribution of $\sigma^2$ is an inverse-gamma distribution
 %               with parameters $a_1$ and $b_1$.
 %               Remark: note that if bsb is supplied X'X and X'y and n1 are
 %               transformed respectively into Xm'Xm and Xm'ym and m where
 %               Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the
 %               previous quantities are estimated just using the units
 %               forming subset
+%   out.tau1  = posterior estimate of $\tau$. Scalar.
+%               $\tau_1$ is obtained as $a_1/b_1$
+%  out.covbeta1=    p x p matrix containing covariance matrix
+%               (conditional on $\tau_1$) of $\beta_1$
+%               $covbeta1 = cov(\beta_1)= (1/\tau_1) * (c*R + X'X)^{-1}$
+%               where $\tau_1$ is obtained as $a_1/b_1$ (that is through the gamma
+%               parameters of the posterior distribution of $\tau$)
+% out.sigma21  = posterior estimate of $\sigma^2$. Scalar. $\sigma^2_1$ is
+%               obtained as $b_1/(a_1-1)$ (that is through the inverse gamma
+%               parameters of the posterior distribution of $\sigma^2$).
+%               Remember that if $X\sim IG(a,b)$, then  $E(X)=b/(a-1)$.
 %    out.res =   n1-times-2 matrix.
 %               1st column = raw residuals
 %               res(i,1) is computed as y(i) - X(i,:)*beta1 where beta1 is
@@ -163,30 +173,41 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %       The additional output which follows is produced just if input
 %       scalar stats is equal 1
 %
+%  out.beta1HPD =   p-by-2*length(conflev) matrix HPDI of \hat \beta.
+%               (HPDI stands for Highest Posterior Density Interval)
+%               1st column =lower bound of HPDI associated with conflev(1).
+%               2st column =upper bound of HPDI associated with conflev(1).
+%               ...
+%               2*length(conflev)-1 column = lower bound of HPDI associated
+%               with conflev(end).
+%               2*length(conflev) column (last column) = upper bound of
+%               HPDI associated with conflev(end).
+%  out.tau1HPD  =   1-by-2*length(conflev) matrix HPDI of $\hat \tau_1$.
+%               1st element =lower bound of HPDI associated with conflev(1).
+%               2st element =upper bound of HPDI associated with conflev(1).
+%               ...
+%               2*length(conflev)-1 element = lower bound of HPDI associated
+%               with conflev(end).
+%               2*length(conflev) element (last element) = upper bound of
+%               HPDI associated with conflev(end).
+%               Remark: confidence levels are based on the Gamma distribution
+% out.sigma21HPD =   1-by-2*length(conflev) matrix HPDI of $\hat \sigma^_1$.
+%               1st element =lower bound of HPDI associated with conflev(1).
+%               2st element =upper bound of HPDI associated with conflev(1).
+%               ...
+%               2*length(conflev)-1 element = lower bound of HPDI associated
+%               with conflev(end).
+%               2*length(conflev) element (last element) = upper bound of
+%               HPDI associated with conflev(end).
+%               Remark: confidence levels are based on the inverse-gamma distribution
 %    out.Bpval =   p-by-1 vector containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
-%    out.Bhpd  =   p-by-2*length(conflev) matrix HPDI of \hat \beta.
-%               1st column =lower bound of HPDI associated with conflev(1).
-%               2st column =upper bound of HPDI associated with conflev(1).
-%               ...
-%               2*length(conflev)-1 column = lower bound of HPDI associated
-%               with conflev(end).
-%               2*length(conflev) column (last column) = upper bound of
-%               HPDI associated with conflev(end).
-%    out.Tauhpd  =   p-by-2*length(conflev) matrix HPDI of \hat \tau.
-%               1st column =lower bound of HPDI associated with conflev(1).
-%               2st column =upper bound of HPDI associated with conflev(1).
-%               ...
-%               2*length(conflev)-1 column = lower bound of HPDI associated
-%               with conflev(end).
-%               2*length(conflev) column (last column) = upper bound of
-%               HPDI associated with conflev(end).
 %  out.postodds = p-by-1 vector which contains posterior odds for
 %               betaj=0.
-%               For example the posterior odd of beta0=0 is p(y| model
+%               For example the posterior odd of betaj=0 is p(y| model
 %               which contains all expl variables except the one associated
-%               with beta0) divided by p(y| model which contains all expl
+%               with betaj) divided by p(y| model which contains all expl
 %               variables).
 %               Warning: postodds can be computed just if n1>=p
 % out.modelprob =   p-by-1 vector which contains  posterior model probability
@@ -197,6 +218,56 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               chance that beta_j=0 and a 72 per cent chance that it is
 %               not.
 %               Warning: modelprob can be computed just if n1>=p
+%
+%
+%  More About:
+%  The density of the gamma distribution (which we denote with $G(a,b)$) with parameters $a$ and $b$ is
+%     \[
+%     f_G(x,a,b)=  \frac{b^a}{\Gamma(a)}
+%      x^{a-1} \exp(-b x)
+%     \]
+%     With this parametrization $G(a,b)$ has mean $a/b$ and variance $a/b^2$.
+%
+%     The density of the inverse gamma distribution defined over the support $x>0$ with shape parameter $a$ and scale parameter $b$, which we denote with $IG(a, b)$ is
+%     \[
+%     f_{IG}(x, a, b) = \frac{b^a}{\Gamma(a)}  (1/x)^{a +1} \exp (-b/x)
+%     \]
+%     The mean  (for $a>1$) is $b/(a-1)$ and the variance (for $a>2$) is $\frac{b^2}{(a-1)^2(a-2)}$.
+%
+%     With the above parameterizations if $X\sim G(a,b)$, then $Y=1/X$  has
+%     an $IG(a, b)$.
+%
+%     The posterior distribution of
+%     $\beta$ conditional on $\tau$ is
+%     $N(\hat \beta_1, (1/\tau) (R+ X^TX)^{-1})$
+%     where
+%     \begin{eqnarray*}
+%       \hat \beta_1 &=& (R+ X^TX)^{-1} (R \beta_0+X^T y) \\
+%          &=&   (R+ X^TX)^{-1} (R \beta_0 + X^TX \hat \beta) \\
+%          &=&   (I-A) \beta_0 + A \hat \beta,
+%     \end{eqnarray*}
+%     with $A= (R+ X^TX)^{-1} X^TX$. This last expression shows that the posterior estimate $\hat \beta_1$ is a matrix weighted average of the prior mean $\beta_0$ and the classical OLS estimate  $\hat \beta$, with weights $I-A$ and $A$. If prior information is strong elements of $R$ will be large, and $A$ will be small, so that the posterior mean gives most weight to the prior mean. In the classical approach these weights are fixed, while with the forward search technique as the subset size grows, the weight assigned to A becomes stronger and stronger, so we can dynamically see how the estimate changes as the effect of the prior becomes less important.
+%
+%     The posterior distribution of $\tau$ is $G(a_1, b_1)$ where
+%     \begin{equation}\label{a1}
+%     a_1=a+\frac{n}{2}= \frac{1}{2} (n_0 + n -p)
+%     \end{equation}
+%      and
+%
+%     \begin{equation}\label{b1}
+%                        b_1 = 0.5 \left( \frac{n_0-p}{\tau_0} + (y-X \beta_1)'y +(\beta_0-\beta_1)'R\beta_0 \right)
+%     \end{equation}
+%     and, analogously, the posterior distribution of $\sigma^2$ is $IG(a_1, b_1)$.
+%     The posterior estimates of $\tau$ and $\sigma^2$ are respectively:
+%     \[
+%     \hat \tau_1 = a_1/b_1, \qquad    \hat \sigma^2_1 = b_1 /(a_1-1)
+%     \]
+%
+%     The posterior marginal distribution of $\beta$ is multivariate $T$ with parameters
+%     \[
+%     \hat \beta_1, (1/\tau_1)
+%      \{R + X^T X \}^{-1}, n_0 +n - p
+%     \]
 %
 % See also regress.m,
 %
@@ -209,7 +280,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('regressb')">Link to the help function</a>
+%<a href="matlab: docsearch('regressB')">Link to the help function</a>
 %
 % Last modified 06-Feb-2015
 %
@@ -248,7 +319,6 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %{
     % Example of the use of input option stats.
     bsb=1:20;
-    c=1.2;
     stats=true;
     out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'stats',stats);
 %}
@@ -363,11 +433,21 @@ a1 = 0.5 *(c*n0 + nbsb -p);
 
 b1 = 0.5 * ( c*(n0-p) / tau0 + ((ybsb-Xbsb*beta1)'*ybsb -beta1'*R*beta0) +beta0'*R*beta0 );
 
-% tau1 = posterior mean of \tau
-tau1=a1/b1;
+% Notation is as follows:
+% tau1 = posterior estimate of $\tau$ (mean of the posterior distribution of
+%        $\tau$). Post distrib of $\tau$ is  $\tau_1 \sim G(a_1, b_1)$
+% sigma21 = posterior estimate of $\sigma^2$ (mean of the posterior distribution of
+%        $\sigma^2$) Post distrib of $\tau$ is  $\tau_1 \sim IG(a_1, b_1)$
+
+% tau1 = E[G(a_1, b_1)]
+tau1=a1/b1;  % posterior estimate of $\tau$
+% sigma21 = E[IG(a_1, b_1)]
+sigma21=b1/(a1-1);   % posterior estimate of $\sigma^2$
 
 % covbeta1 = (1/tau1) * inv(c*R + Xbsb'*Xbsb);
 covbeta1 = (1/tau1)*cRXXinv; %#ok<MINV>
+
+
 
 res=NaN(n1,2);
 
@@ -387,17 +467,18 @@ if nbsb<n1
     res(ncl,2) = sqrt(tau1)*(res(ncl,1)./sqrt(1+hi))/corr;
 end
 
+
+
 if stats==1 && nbsb>0
     %posterior probability that each element of beta is positive
     %as well as 95 and 99 HPDIs for each element of beta
     k=length(beta1);
-    s12=1/abs(tau1);
     n0nbsb=n0+nbsb-p;
     
     % Bpval = Bayesian p-values
     % p-value = P(|t| > | \hat \beta se(beta) |)
     % = prob. of beta different from 0
-    ci=sqrt(s12*diag(cRXX1inv));
+    ci=sqrt((1/abs(tau1))*diag(cRXX1inv));
     tstat = -abs(beta1)./ci;
     Bpval = 2*tcdf(tstat,n0nbsb);
     
@@ -406,16 +487,25 @@ if stats==1 && nbsb>0
     % vector conflev
     conflev=options.conflev;
     conflev=1-(1-conflev)/2;
-    invcdf=tinv(conflev,n0nbsb);
-    invcdfg=gaminv(conflev,a1,1/b1);
-    Bhpd=zeros(k,2*length(conflev));
-    Tauhpd=zeros(1,2*length(conflev));
+    % Tinvcdf = required quantiles of T distribution
+    % consider just upper quantiles due to simmetry
+    Tinvcdf=tinv(conflev,n0nbsb);
+    % IGinvcdf = required quantiles of Inverse Gamma distribution
+    IGinvcdf=inversegaminv([1-conflev conflev],a1,b1);
+    % Ginvcdf = required quantiles of Gamma distribution
+    Ginvcdf=gaminv([1-conflev conflev],a1,1/b1);
     
-    % The first two columns of matrix Bhpd refer to conflev(1)
-    % Columns three and four of matrix Bhpd refer to conflev(2) ...
-    for j=1:length(conflev)
-        Bhpd(:,j*2-1:j*2)=[ beta1-invcdf(j)*ci  beta1+invcdf(j)*ci];
-        Tauhpd(:,j*2-1:j*2)=[ s12-invcdfg(j)  s12+invcdfg(j)];
+    beta1HPD=zeros(k,2*length(conflev));
+    tau1HPD=zeros(1,2*length(conflev));
+    sigma2HPD=tau1HPD;
+    
+    % The first two columns of matrix beta1HPD refer to conflev(1)
+    % Columns three and four of matrix beta1HPD refer to conflev(2) ...
+    lconflev=length(conflev);
+    for j=1:lconflev
+        beta1HPD(:,j*2-1:j*2)=[ beta1-Tinvcdf(j)*ci  beta1+Tinvcdf(j)*ci];
+        tau1HPD(:,j*2-1:j*2)=[Ginvcdf(j) Ginvcdf(j+lconflev)];
+        sigma2HPD(:,j*2-1:j*2)=[IGinvcdf(j) IGinvcdf(j+lconflev)];
     end
     
     
@@ -488,24 +578,28 @@ if stats==1 && nbsb>0
     
     out=struct;
     out.beta1=beta1;
-    out.tau1=tau1;
-    out.covbeta1=covbeta1;
     out.a1=a1;
     out.b1=b1;
+    out.tau1=tau1; % Posterior estimate of tau
+    out.covbeta1=covbeta1; % cov matrix of beta1 |tau1
+    out.sigma21=sigma21;   % posterior estimate of $\sigma^2$
     out.res=res;
+    out.beta1HPD=beta1HPD;  % HPDI for beta
+    out.tau1HPD=tau1HPD;   % HPDI for tau
+    out.sigma21HPD=sigma2HPD;  % HPDI for Sigma2
+    
     out.Bpval=Bpval;
-    out.Bhpd=Bhpd;
-    out.Tauhpd=Tauhpd;
     out.postodds=postodds;
     out.modelprob=modelprob;
 else
     % ordinary output structure
     out=struct;
-    out.beta1=beta1;
-    out.tau1=tau1;
-    out.covbeta1=covbeta1;
-    out.a1=a1;
-    out.b1=b1;
+    out.beta1=beta1; % posterior estimates of beta
+    out.a1=a1;       % shape parameter of Gamma (InverseGamma) distribution
+    out.b1=b1;      % scale parameter of Gamma (InverseGamma) distribution
+    out.tau1=tau1;   % posterior estimate of $\tau$
+    out.covbeta1=covbeta1; % cov matrix of $\beta_1 |\tau_1$
+    out.sigma21=sigma21;   % posterior estimate of $\sigma^2$
     out.res=res;
-    
+end
 end

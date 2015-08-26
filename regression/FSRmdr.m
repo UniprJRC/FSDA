@@ -120,7 +120,8 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               produce a singular matrix. In this case mdr is a column
 %               vector which contains the list of units for which matrix X
 %               is non singular.
-%  Un:           (n-init) x 11 Matrix which contains the unit(s) included
+%  Un:          Units included in each step. Matrix.
+%               (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -129,7 +130,8 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:          n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input
+%  BB:          Units belonging to subset in each step. Matrix.
+%               n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input
 %               option bsbsteps) which contains information about the units
 %               belonging to the subset at each step of the forward search.
 %               BB has the following structure
@@ -145,10 +147,12 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %                   value for the other steps
 %               The size of matrix BB is n x (n-init+1) if option input
 %               bsbsteps is 0 else the size is n-by-length(bsbsteps).
-%  Bols:         (n-init+1) x (p+1) matrix containing the monitoring of
+%  Bols:        OLS coefficents. Matrix.
+%               (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
-%  S2:           (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
+%  S2:          S2 and R2. Matrix.
+%               (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
 %               column)and R2 (third column) in each step of the forward
 %               search.
 %

@@ -124,7 +124,8 @@ function out = FSMfan(Y,la0,varargin)
 %
 % Output:
 %
-%   The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %    out.LRT=   Cell of length ColtoComp. Each element of the cell contains the
 %               a matrix of size n-init+1 x length(laAround)+1 which
 %               contains the monitoring of (signed square root) likelihood

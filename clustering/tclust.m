@@ -155,7 +155,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
 %
 %            out.idx  : n-by-1 vector containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer

@@ -134,7 +134,8 @@ function [out]=FSRfan(y,X,varargin)
 %                   Data Types - char
 %  Output:
 %
-%    The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 %  out.Score  = (n-init) x length(la)+1 matrix containing the values of the
 %               score test for each value of the transformation parameter
 %               1st col = fwd search index

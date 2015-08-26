@@ -144,16 +144,18 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %
 % Output:
 %
-%  mdr:          n -init x 2 matrix which contains the monitoring of minimum
+%  mdr:         Minimum deletion residual. Matrix.
+%               n -init x 2 matrix which contains the monitoring of minimum
 %               deletion residual at each step of the forward search.
 %               1st col = fwd search index (from init to n-1).
 %               2nd col = minimum deletion residual.
 %               REMARK: if in a certain step of the search matrix is
-%               singular, this procedure checks ohw many observations
+%               singular, this procedure checks how many observations
 %               produce a singular matrix. In this case mdr is a column
 %               vector which contains the list of units for which matrix X
 %               is non singular.
-%  Un:           (n-init) x 11 Matrix which contains the unit(s) included
+%  Un:          Units included in each step. Matrix.
+%               (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -162,24 +164,41 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:           n x (n-init+1) matrix which the units belonging to the
-%               subset at each step of the forward search.
-%               1st col = index forming subset in the initial step
-%               ...
-%               last column = units forming subset in the final step (i.e.
-%               all units).
-%  Bgls:         (n-init+1) x (p+1) matrix containing the monitoring of
-%               estimated beta (GLS) coefficients in each step of the forward
+%  BB:          Units belonging to subset in each step. Matrix.
+%               n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input
+%               option bsbsteps) which contains information about the units
+%               belonging to the subset at each step of the forward search.
+%               BB has the following structure
+%               1-st row has number 1 in correspondence of the steps in
+%                   which unit 1 is included inside subset and a missing
+%                   value for the other steps
+%               ......
+%               (n-1)-th row has number n-1 in correspondence of the steps in
+%                   which unit n-1 is included inside subset and a missing
+%                   value for the other steps
+%               n-th row has number n in correspondence of the steps in
+%                   which unit n is included inside subset and a missing
+%                   value for the other steps
+%               The size of matrix BB is n x (n-init+1) if option input
+%               bsbsteps is 0 else the size is n-by-length(bsbsteps).
+%  Bgls:        GLS beta coefficents. Matrix.
+%               (n-init+1) x (p+1) matrix containing the monitoring of
+%               estimated beta coefficients in each step of the forward
 %               search.
-%  S2:           (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
+%  S2:          S2 and R2. Matrix.
+%               (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
 %               column)and R2 (third column) in each step of the forward
 %               search.
-%  Hetero :     (n-init1+1) x 3 matrix containing
-%                  1st col = fwd search index
-%                  2nd col = estimate of alpha in the scedastic equation
-%                  3rd col = estimate of gamma in the scedastic equation.
-%   WEI:     n x (n-init1+1) matrix containing estimates of the weights
-%               during the FS
+%  Hetero :     Coefficients in the heteroskedastic equation. Matrix.
+%               (n-init1+1) x (r+1) matrix containing:
+%                  1st col = fwd search index;
+%                  2nd col = estimate of first coeff in the scedastic
+%                  equation;
+%                  ... 
+%                  (r+1)-th col = estimate of last coeff in the scedastic equation.
+%   WEI:     Weights. Matrix. 
+%            n x (n-init1+1) matrix containing estimates of the weights
+%            during the FS.
 %
 % See also:   FSRmdr
 %
@@ -433,10 +452,11 @@ end
 ij=1;
 
 
-% Hetero = (n-init1+1) x 3 matrix which will contain:
+% Hetero = (n-init1+1) x (r+1) matrix which will contain:
 % 1st col = fwd search index
-% 2nd col = estimate of alpha in the scedastic equation
-% 3rd col = estimate of gamma in the scedastic equation
+% 2nd col = estimate of first coeff of scedastic equation
+%...
+% (r+1) col = estimate of last coeff of scedastic equation
 Hetero=[(init:n)' NaN(n-init+1,size(Z,2)+1)];
 
 % Matrix which contains in each column the estimate of the weights
