@@ -1,467 +1,326 @@
-<html>
-<head>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-  <title>FSR :: Functions (Flexible Statistics Data Analysis Toolbox™)</title>
-  <link href="docstyle.css" rel="stylesheet" type="text/css">
-  <meta content="refpage" name="chunktype">
-  <meta content="function:FSR" name="refentity">
-  <meta content="text/javascript" http-equiv="Content-Script-Type">
-  <meta content="fcn" name="toctype">
-  <script type="text/javascript" language="javaScript" src="bottom.js">
-  </script>
-</head>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSR</title><meta content="refpage" name="chunktype"><meta content="function:FSR" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSR gives an automatic outlier detection procedure in linear regression." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script src="includesFS/jquery-latest.js" type="text/javascript"></script><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/docscripts.js" type="text/javascript"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/bottom.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/site5.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();"><table border="0" cellpadding="0" cellspacing="0" class="nav" width="100%"><tr valign="top"><td align="left" width="20"><a href=" "><img align="bottom" alt="" border="0" src="images_help/b_prev.gif"></a></td><td align="left">left</td><td>&nbsp;</td><td align="right"> right</td><td align="right" width="20"><a href=" "><img align="bottom" alt="score" border="0" src="images_help/b_next.gif"></a></td></tr></table><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSR</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSR gives an automatic outlier detection procedure in linear regression</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSR(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="FSR.html#ex1">example</a></span></li><li><code class="synopsis">out=FSR(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSR.html#ex2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSR.html#ex1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSR(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>)</code></span>FSR with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSR.html#ex2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSR(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSR with optional arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="ex1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">FSR with all default options.</span></a></span></h3><div class="collapse"><p>
+     Run this code to see the output shown in the help file.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    [out]=FSR(ycont,X,'plots',2);
+</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="ex2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSR with optional arguments.</span></a></span></h3><div class="collapse"><p>
+     Run this code to see the output shown in the help file.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    state=100;
+    randn('state', state);
+    n=100;
+    X=randn(n,3);
+    bet=[3;4;5];
+    y=3*randn(n,1)+X*bet;
+    y(1:20)=y(1:20)+13;
+    [outFS]=FSR(y,X,'plots',2);
+    %The envelopes based on all the observations show that in the central part of the search the observed curve is well beyond the extreme thresholds. More precisely, the message inside the graph informs that the signal took place in step 81 because the value of minimum deletion residual in this step was greater than 99.999% threshold.
+    %Once a signal takes place the envelopes are resuperimposed until a stopping rule is fulfilled
+    %The procedure of resuperimposing envelopes in this case stops when n = 85, the first time in which we have a value of rmin(m) for n&gt;=m�-1 greater than the 99% threshold. The group can therefore be considered as homogeneous up to when we include 84 units.
+</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=81 because
+rmin(81,100)&gt;99.999%
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=80
+Superimposition stopped because r_{min}(82,85)&gt;99% envelope
+$r_{min}(82,85)&gt;99$\% envelope
+Subsample of 84 units is homogeneous
+----------------------------
+Final output
+Number of units declared as outliers=16
+Summary of the exceedances
+           1          99         999        9999       99999
+           0          17          10           9           6
 
-<body>
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
-<!--FScategory:Robust Regression Analysis and transformations-->
-<a name="top_of_page"></a> 
+</pre><img vspace="5" hspace="5" src="images\FSRtmp_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRtmp_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRtmp_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRtmp_04.png" alt=""> </p></div></div></div><p> </p><h3 class="bottom_ruled">Related Examples</h3><div id="example_1" class="example_module expandableContent"><div id="ex1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">FSR with optional arguments.</span></a></span></h3><div class="collapse"><p>
+     Monitor the exceedances from m=60 without showing plots.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n=200;
+    p=3;
+    X=rand(n,p);
+    y=rand(n,1);
+    [out]=FSR(y,X,'init',60,'plots',0);
+</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="ex2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">Initialize the search with the subsample which produces the smallest
+     [h/n] quantile of squared residuals.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n=200;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=FSR(y,X,'h',120);
+</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="ex3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">Extract all possible subsamples in order to find susbet to initialize
+     the search.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n=200;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=FSR(y,X,'nsamp',0);
+</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="ex4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example for various combinations of the labeladd, bivarfit
+     and multivarfit options.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n=200;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');
+</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
+-------------------------
+Signal detection loop
+Sample seems homgeneous, no outlier has been found
+Summary of the exceedances
+           1          99         999        9999       99999
+           0           0           0           0           0
 
-<p style="font-size: 1px;"> </p>
-
-<table border="0" cellpadding="0" cellspacing="0" class="nav"
-summary="Navigation aid" width="100%">
-  <tbody>
-    <tr>
-      <td valign="baseline"><b>Flexible Statistics Data Analysis
-      Toolbox™</b></td>
-      <td align="right" valign="baseline"><a href="fsmtra.html"><img
-        align="bottom" alt="fsmtra" border="0"
-        src="images_help/b_prev.gif"></a>   <a href="fsraddt.html"><img
-        align="bottom" alt="FSRaddt" border="0"
-        src="images_help/b_next.gif"></a></td>
-    </tr>
-  </tbody>
-</table>
-
-<a name="bq24of9-1"></a><a class="indexterm" name="zmw57dd0e69698"></a> 
-
-<h1 class="reftitle">FSR</h1>
-
-<p class="purpose">Automatic Outlier Detection Procedure based on Forward
-Search Estimator </p>
-
-<h2>Syntax </h2>
-
-<p class="synopsis"><tt>[out] = FSR(y,X)<br>
-[out] =
-FSR(y,X,</tt><tt><i>param1</i></tt><tt>,</tt><tt><i>val1</i><tt>,</tt><i>param2</i><tt>,</tt><i>val2</i><tt>,...)<br>
-</tt> </tt></p>
-<a name="f4811966"></a> 
-
-<h2>Description </h2>
-
-<p><tt>FSR(y,X)</tt> gives in structure out a set of units which can be
-considered atypical. To detect outliers all methods compare selected residuals
-with a threshold. We examine the minimum deletion residual
-(<em>r</em><sub>min</sub>) among observations that are not in the subset (say
-of size <em>m</em>). If this ordered observation [m+1] is an outlier relative
-to the other m observations, this residual will be "large" compared with the
-maximum residual of observations in the subset. In uncalibrated use of the
-minimum deletion residual to detect outliers the decision whether a difference
-in distances is "large" is subjective, without reference to any null
-distribution. To calibrate the forward search and so to provide an objective
-basis for decisions about the number of outliers in a sample we have found the
-distribution of the minimum deletion residual in the forward search. The output
-is a series of theoretical simultaneous confidence bands (envelopes) associated
-to the quantiles of the distribution of the minimum deletion residual. Finally
-we have tried to calibrate the complete search in order to provide an outlier
-test of ascertainable properties. </p>
-
-<p>To use the envelopes in the forward search for outlier detection we
-accordingly propose a two-stage process. In the first stage we run a search on
-the data, monitoring the bounds for all n observations until we obtain a
-"signal" indicating that observation m<sup>†</sup> therefore succeeding
-observations, may be outliers, because the value of the statistic lies beyond
-our threshold. In the second part we superimpose envelopes for values of n from
-this point until the first time that we introduce an observation we recognize
-as an outlier. The envelopes of minimum deletion residual outside subset
-consist roughly of two parts; a flat "central" part and a steeply curving
-"final" part. Our procedure FSR for the detection of a signal takes account of
-these two parts. </p>
-
-<h4>Detection of a Signal </h4>
-
-<p>Because we potentially make many comparisons, one for each value of m, the
-form of our threshold needs to allow for simultaneity, so that we have a test
-with size α for the presence of at least one outlier. In order to keep into
-account simultaneity we envisage four conditions, the fulfillment of any one of
-which leads to the detection of a signal. </p>
-
-<p>In the central part of the search we require 3 consecutive values of (m,n)
-above the 99.99% envelope or 1 above 99.999%; <br>
-In the final part of the search we need two consecutive values of
-<em>r</em><sub>min</sub>(m,n) above 99.9% and 1 above 99%; <br>
-<em>r</em><sub>min</sub>(n-2,n)&gt;99.9% envelope; <br>
-<em>r</em><sub>min</sub>(n-1,n)&gt;99% envelope. In this last case a single
-outlier is detected and the procedure terminates. </p>
-
-<p>The final part of the search is defined as: m &gt;= n-[
-13,(n/200)<sup>0.5</sup>], </p>
-
-<p></p>
-
-<h4>Identification of Outliers</h4>
-
-<p>Once a signal has been found we start superimposing 99% envelopes taking
-n*=m<sup>†</sup>-1, m<sup>†</sup>, m<sup>†</sup>+1, ... until the final,
-penultimate or antepenultimate value are above the 99% threshold or,
-alternatively, we have a value of <em>r</em><sub>min</sub>(m,n*) for any
-m&gt;m<sup>†</sup> which is greater than the 99.9% threshold. </p>
-
-<p><tt>y</tt> is a vector of length n containing the response values, while
-<tt>X</tt> is the <i>n</i>-by-<i>p-1</i> matrix which contains (in the columns)
-the values of <i>p-1</i> predictive terms</p>
-
-<p><tt>[out] = FSR(y,X)</tt> returns the following information </p>
-<ul type="disc">
-  <li><tt>out</tt> − A structure of additional statistics with the following
-    fields. 
-    <ul type="circle">
-      <li><p><tt>ListOut</tt> − <tt>k</tt>-by-1 vector containing the list of
-        the units declared as outliers or NaN if the sample is considered
-        homogeneous </p>
-      </li>
-      <li>beta − p-by-1 vector containing the estimated regression
-      parameter.</li>
-      <li><p><tt>mdr</tt> − <tt>n-init</tt>-by-2 matrix. <br>
-        1st col = fwd search index<br>
-        2nd col = value of minimum deletion residual in each step of the fwd
-        search</p>
-      </li>
-      <li><p><tt>Un</tt> − <tt>(n-init)</tt>-by-11 matrix which contains the
-        unit(s) included in the subset at each step of the fwd search. <br>
-        REMARK: in every step the new subset is compared with the old subset.
-        Un contains the unit(s) present in the new subset but not in the old
-        one.<br>
-        Un(1,2) for example contains the unit included in step init+1.<br>
-        Un(end,2) contains the units included in the final step of the
-        search.</p>
-      </li>
-      <li><p><tt>nout</tt> − 2 x 5 matrix containing the number of times
-        observed minimum deletion residual went out of particular quantiles.<br>
-        First row contains quantiles 1%, 99%, 99.9%, 99.99% and 99.999%. <br>
-        Second row contains the counts of the exceedances </p>
-      </li>
-      <li><tt>constr</tt> − r x 1 vector. this output is produced only if the
-        search found at a certain step a non singular matrix X. In this case
-        the search run in a constrained mode, that is including the units which
-        produced a singular matrix in the last n-constr steps. out.constr is a
-        vector which contains the list of units which produced a singular X
-        matrix </li>
-    </ul>
-    <ul>
-      <a name="zmw57dd0e69798"></a> 
-
-      <table border="1" cellpadding="5" cellspacing="0" class="note"
-      summary="Note">
-        <tbody>
-          <tr>
-            <td><p><b>Note</b>   <tt>FSR</tt> automatically includes a
-              constant term in all models. Do not enter a column of 1s directly
-              into <tt>X</tt>.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ul>
-  </li>
-</ul>
-
-<p></p>
-
-<p><tt>[out] =
-FSR(y,X,</tt><tt><i>param1</i></tt><tt>,</tt><tt><i>val1</i><tt>,</tt><i>param2</i><tt>,</tt><i>val2</i><tt>,...)</tt></tt>
-specifies one or more of the name/value pairs described in the following
-table.</p>
-
-<table border="2" cellpadding="4" cellspacing="0" class="body">
-  <colgroup><col width="21%">
-    <col width="79%">
-  </colgroup>
-  <thead>
-    <tr valign="top">
-      <th bgcolor="#B2B2B2">Parameter</th>
-      <th bgcolor="#B2B2B2">Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>'intercept'</tt></td>
-      <td bgcolor="#F2F2F2"><p>If 1, a model with constant term will be fitted
-        (default) else no constant term will be included. </p>
-      </td>
-    </tr>
-    <tr valign="top">
-      <td bgcolor="#F2F2F2" style="height: 54px"><tt>'h'</tt></td>
-      <td bgcolor="#F2F2F2" style="height: 54px"><p>The number of observations
-        that have determined the least trimmed squares estimator. <tt>h</tt>
-        generally is an integer greater or equal than
-        <tt>[(n+size(X,2)+1)/2]</tt> but smaller then n.</p>
-      </td>
-    </tr>
-    <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>'nsamp'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Number of subsamples which will be extracted to
-        find the robust estimator. If <tt>nsamp=0</tt> all subsets will be
-        extracted. They will be <tt>(n choose p)</tt>. Remark: if the number of
-        all possible subset is smaller than 1000 the default is to extract all
-        subsets otherwise just 1000.</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'lms'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar or structure. If <tt>lms</tt> is a scalar
-        = 1 (default) Least Median of Squares is computed,<br>
-        else if <tt>lms</tt> is a scalar = 2 fast lts with the all default
-        options is used <br>
-        else if <tt>lms</tt> is a scalar different from 1 and 2 standard lts is
-        used (without concentration steps) <br>
-        If <tt>lms</tt> is a struct fast lts (with concentration steps) is
-        used. In this case the user can control the following options<br>
-        <tt>lms.refsteps</tt> : scalar defining number of refining iterations
-        in each subsample (default = 3). refsteps = 0 means "raw-subsampling"
-        without iterations.<br>
-        <tt>lms.reftol</tt> : scalar. Default value of tolerance for the
-        refining steps The default value is 1e-6; <br>
-        <tt>lms.bestr</tt> : scalar defining number of "best betas" to remember
-        from the subsamples. These will be later iterated until convergence
-        (default=5) <br>
-        <tt>lms.refstepsbestr</tt>: scalar defining number of refining
-        iterations for each best subset (default = 50). <br>
-        <tt>lms.reftolbestr</tt> : scalar. Default value of tolerance for the
-        refining steps for each of the best subsets The default value is 1e-8;
-        <br>
-        </p>
-      </td>
-    </tr>
-    <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>'plots'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar. If plots=1 (default) the plot of minimum
-        deletion residual with envelopes based on n observations and the
-        scatterplot matrix with the outliers highlighted is produced.<br>
-        If plots=2 the user can also monitor the intermediate plots based on
-        envelope superimposition. <br>
-        else no plot is produced. </p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'init'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar which specifies the initial subset size
-        to start monitoring exceedances, if init is not specified it will be
-        set equal to <br>
-        <tt>p+1</tt>, if the sample size is smaller than 40; <br>
-        <tt>min(3*p+1,floor(0.5*(n+p+1)))</tt>, otherwise.</p>
-      </td>
-    </tr>
-    <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>'exact'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar, if it is equal to 1 the calculation of
-        the quantiles of the T and F distribution is based on functions
-        <tt>finv</tt> and <tt>tinv</tt> from the Matlab statistics toolbox,
-        else the calculations of the former quantiles is based on functions
-        <tt>invcdff</tt> and <tt>invcdft</tt>. The solution has a tolerance of
-        1e-8 (change variable tol in files invcdff.m and invcdft.m if
-        required).<br>
-        Remark: the use of functions tinv and finv is more precise but requires
-        more time.</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2" style="height: 32px"><tt>'nocheck'</tt></td>
-      <td bgcolor="#F2F2F2" style="height: 32px"><p>Scalar. If nocheck is equal
-        to 1 no check is performed on matrix <em>y</em> and matrix <em>X</em>.
-        Notice that <em>y</em> and <em>X</em> are left unchanged. In other
-        words the additional column of ones for the intercept is not added. As
-        default <tt>nocheck=0</tt>.</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'bivarfit'</tt></td>
-      <td bgcolor="#F2F2F2"><p>This option adds one or more least square lines,
-        based on SIMPLE REGRESSION of y on Xi, to the plots of y|Xi. </p>
-
-        <p><tt>bivarfit= ''</tt> is the default: no line is fitted. <br>
-        <tt>bivarfit = '1'</tt> fits a single ols line to all points of each
-        bivariate plot in the scatter matrix y|X. <br>
-        <tt>bivarfit= '2'</tt> fits two ols lines: one to all points and
-        another to the group of the genuine observations. The group of the
-        potential outliers is not fitted. <br>
-        <tt>bivarfit= '0'</tt> fits one ols line to each group. This is useful
-        for the purpose of fitting mixtures of regression lines. <br>
-        <tt>bivarfit= 'i1' or 'i2' or 'i3'</tt> etc. fits an ols line to a
-        specific group, the one with index 'i' equal to 1, 2, 3 etc. Again,
-        useful in case of mixtures.</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'multivarfit'</tt></td>
-      <td bgcolor="#F2F2F2"><p>This option adds one or more least square lines,
-        based on MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi. </p>
-
-        <p><tt>multivarfit= ''</tt> is the default: no line is fitted. <tt><br>
-        multivarfit = '1'</tt> fits a single ols line to all points of each
-        bivariate plot in the scatter matrix y|X. The line added to the scatter
-        plot y|Xi is avconst + Ci*Xi, where Ci is the coefficient of Xi in the
-        multivariate regression and avconst is the effect of all the other
-        explanatory variables different from Xi evaluated at their centroid
-        (that is overline{y}'C)) <tt><br>
-        multivarfit = '2'</tt> equal to <tt>multivarfit='1'</tt> but this time
-        we also add the line based on the group of unselected observations
-        (i.e. the normal units). </p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'labeladd'</tt></td>
-      <td bgcolor="#F2F2F2"><p>If this option is '1', we label the outliers
-        with the unit row index in matrices <em>X</em> and <em>y</em>. The
-        default value is <tt>labeladd=''</tt>, i.e. no label is added.</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'nameX'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Cell array of strings of length p containing the
-        labels of the variables of the regression dataset. If it is empty
-        (default) the sequence X1, ..., Xp will be created automatically</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2" style="height: 32px"><tt>'namey'</tt></td>
-      <td bgcolor="#F2F2F2" style="height: 32px"><p>Character containing the
-        label of the response.</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'ylim'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Vector with two elements controlling minimum and
-        maximum on the y axis. Default value is '' (automatic scale)</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2" style="height: 32px"><tt>'xlim'</tt></td>
-      <td bgcolor="#F2F2F2" style="height: 32px"><p>Vector with two elements
-        controlling minimum and maximum on the x axis. Default value is ''
-        (automatic scale)</p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'bonflev'</tt></td>
-      <td bgcolor="#F2F2F2"><p>option to be used if the distribution of the
-        data is strongly non normal and, thus, the general signal detection
-        rule based on consecutive exceedances cannot be used. In this case
-        bonflev can be: <br>
-        - a scalar smaller than 1 which specifies the confidence level for a
-        signal and a stopping rule based on the comparison of the minimum
-        deletion residual with a Bonferroni bound. For example if bonflev=0.99
-        the procedure stops when the trajectory exceeds for the first time the
-        99% bonferroni bound. <br>
-        - A scalar value greater than 1.. In this case the procedure stops when
-        the residual trajectory exceeds for the first time this value. <br>
-        Default value is '', which means to rely on general rules based on
-        consecutive exceedances. </p>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#F2F2F2"><tt>'msg'</tt></td>
-      <td bgcolor="#F2F2F2"><p>Scalar which controls whether to display or not
-        messages on the screen If msg=1 (default) messages are displayed on the
-        screen about step in which signal took place and .... else no message
-        is displayed on the screen </p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<p></p>
-<a name="bq9x7hn"></a><a name="bq5gf2y"></a> 
-
-<h3>Examples</h3>
-
-<h3>Example 1</h3>
-Let us consider some simulated data consisting of 100 observations and 3
-explanatory variables. In order to replicate the results let us consider a
-fixed seed. 
-<pre class="programlisting">state=100;
-randn('state', state);
-n=100;
-X=randn(n,3);
-bet=[3;4;5];
-y=3*randn(n,1)+X*bet;
-y(1:20)=y(1:20)+13;
-[outFS]=FSR(y,X,'plots',2);</pre>
-The envelopes based on all the observations show that in the central part of
-the search the observed curve is well beyond the extreme thresholds. More
-precisely, the message inside the graph informs that the signal took place in
-step 81 because the value of minimum deletion residual in this step was greater
-than 99.999% threshold.
-
-<p><img alt="" src="plots/fsr.ht1.gif"> </p>
-
-<p> </p>
-
-<p>Once a signal takes place the envelopes are resuperimposed until a stopping
-rule is fulfilled.</p>
-
-<p><img alt="" src="plots/fsr.ht2.gif"></p>
-<img src="plots/fsr.ht3.gif"> 
-
-<p>The procedure of resuperimposing envelopes in this case stops when n = 85,
-the first time in which we have a value of <em>r</em><sub>min</sub>(m) for
-n&gt;=m†-1 greater than the 99% threshold. The group can therefore be
-considered as homogeneous up to when we include 84 units. </p>
-
-<p>The below shows the final classification obtained by the forward search. The
-units identified as outliers are shown in red circles. <img alt=""
-src="plots/fsr.ht4.gif"></p>
-
-<p>Figure below shows that among the 16 units declared as outliers belong to
-the 20 units which had been previously contaminated.</p>
-
-<p><img alt="" src="plots/fsr.ht5.gif"> </p>
-
-<h3>Example 2</h3>
-
-<p>If in the previous code we change the seed to 543 (state=543) we obtain the
-following results:</p>
-
-<p><img alt="" src="plots/fsr.ht6.gif"> <img alt="" src="plots/fsr.jpg"></p>
-
-<p><img alt="" src="plots/fsr.ht8.gif"></p>
-
-<p>In this second example 15 of the 20 units previously contaminated are
-declared as outliers.</p>
-
-<p><img alt="" src="plots/fsr.ht9.gif"> </p>
-
-<p>If you wish to compare the output which comes out from the application of
-the forward search estimator with that which comes from the application of
-traditional robust estimators, please see page <a
-href="lxs.html">lxs.html</a>.</p>
-
-<h3>See Also</h3>
-
-<p><a href="fsreda.html"><tt>FSReda</tt></a>, <a
-href="lxs.html"><tt>LXS</tt></a></p>
-
-
-<p></p>
-
-<table border="0" cellpadding="0" cellspacing="0" class="nav"
-summary="Navigation aid" width="100%">
-  <tbody>
-    <tr valign="top">
-      <td align="left" width="20"><a href="fsmtra.html"><img align="bottom"
-        alt="fsmtra" border="0" src="images_help/b_prev.gif"></a> </td>
-      <td align="left">fsmtra.html</td>
-      <td> </td>
-      <td align="right">fsraddt.html</td>
-      <td align="right" width="20"><a href="fsraddt.html"><img align="bottom"
-        alt="FSRaddt" border="0" src="images_help/b_next.gif"></a></td>
-    </tr>
-  </tbody>
-</table>
-<script type="text/javascript" language="javaScript">
-document.write(barra);</script>
-<!-- Last updated: Fri Jan 23 17:00:05 EST 2009-->
-</body>
-</html>
+</pre><img vspace="5" hspace="5" src="images\FSRtmp_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRtmp_06.png" alt=""> </p></div></div><div id="example_5" class="example_module expandableContent"><div id="ex5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">Example of use of options xlim and ylim (Hawkins data).</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    load('hawkins.txt','hawkins');
+    y=hawkins(:,9);
+    X=hawkins(:,1:8);
+    % Use of FSR starting with 1000 subsamples
+    [out]=FSR(y,X,'nsamp',1000);
+    % Use of FSR starting with 1000 subsamples
+    % focusing in the output plots to the interval 1-6 on the y axis and
+    % to steps 30-90.
+    [out]=FSR(y,X,'nsamp',1000,'ylim',[1 6],'xlim',[30 90]);
+</pre></div></div></p></div></div><div id="example_6" class="example_module expandableContent"><div id="ex6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">Example of use of options nameX and nameY with contaminated data.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n=200;
+    p=3;
+    state1=123498;
+    randn('state', state1);
+    X=randn(n,p);
+    y=randn(n,1);
+    kk=33;
+    % shift contamination of the first 6 units of the response
+    y(1:kk)=y(1:kk)+6;
+    nameX={'age', 'salary', 'position'};
+    namey='salary';
+    [out]=FSR(y,X,'nameX',nameX,'namey',namey);
+</pre></div></div></p></div></div><div id="example_7" class="example_module expandableContent"><div id="ex7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">Example of point mass contamination.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n=130;
+    p=5;
+    state1=123498;
+    randn('state', state1);
+    X=randn(n,p);
+    y=randn(n,1);
+    kk=30;
+    % point mass contamination of the first kk units
+    X(1:kk,:)=1;
+    y(1:kk)=3;
+    [out]=FSR(y,X);
+</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable </span>  </a><span class="example_desc">Vector</span></span></h3> <div class="collapse"> <p>A vector with n elements that contains
+       the response variable. y can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors') of
+       dimension (n x p-1) </span>  </a><span class="example_desc">Rows of X represent observations, and columns
+       represent variables</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
+       since observations (rows) with missing or infinite values will
+       automatically be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1 
+</code>,<code> 'h',round(n*0,75) 
+</code>,<code> 'nsamp',1000 
+</code>,<code> 'lms',1 
+</code>,<code> 'plots',1 
+</code>,<code> 'init',100 starts monitoring from step m=100 
+</code>,<code> 'exact',1 
+</code>,<code> 'nocheck',1 
+</code>,<code> 'bivarfit',2 
+</code>,<code> 'multivarfit','1' 
+</code>,<code> 'labeladd','1' 
+</code>,<code> 'nameX',{'NameVar1','NameVar2'} 
+</code>,<code> 'namey','NameOfResponse' 
+</code>,<code> 'bonflev',0.99
+</code>,<code> 'msg',1 
+</code>,<code> 'bsbmfullrank',1 
+</code></code></span></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If 1, a model with
+               constant term will be fitted (default), if 0, no constant
+               term will be included.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that have determined the least
+                 trimmed squares estimator</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>h is an integer greater or
+                 equal than p but smaller then n. Generally if the purpose
+                 is outlier detection h=[0.5*(n+p+1)] (default value). h
+                 can be smaller than this threshold if the purpose is to find
+                 subgroups of homogeneous observations.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0,75) 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find the
+                 robust estimator</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be extracted.</p> <p>
+                 They will be (n choose p).</p> <p>
+                 If the number of all possible subset is &lt;1000 the
+                 default is to extract all subsets otherwise just 1000.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initlal
+                 subset to initialize the search</span></a><span class="example_desc">scalar,  vector | structure</span></span></h3><div class="collapse">	<p><p>lms specifies the criterion to use to find the initlal
+                 subset to initialize the search (LMS, LTS with
+                 concentration steps, LTS without concentration steps
+                 or subset supplied directly by the user).</p> <p>
+                 The default value is 1 (Least Median of Squares
+                 is computed to initialize the search). On the other hand,
+                 if the user wants to initialze the search with LTS with
+                 all the default options for concentration steps then
+                 lms=2. If the user wants to use LTS without
+                 concentration steps, lms can be a scalar different from 1
+                 or 2. If lms is a struct it is possible to control a
+                 series of options for concentration steps (for more
+                 details see option lms inside LXS.m)
+                 <a href="LXS.html">LXS</a>.</p> <p>
+                 If, on the other hand, the user wants to initialize the
+                 search with a prespecified set of units there are two
+                 possibilities
+                 1) lms can be a vector with length greater than 1 which
+                 contains the list of units forming the initial subset.</p> <p>
+                 For example, if the user wants to initialize the search
+                 with units 4, 6 and 10 then lms=[4 6 10];</p><p>
+                 2) lms is a struct which contains a field named bsb which
+                 contains the list of units to initialize the search. For
+                 example, in the case of simple regression through the
+                 origin with just one explanatory variable, if the user
+                 wants to initialize the search with unit 3 then
+                 lms=struct;</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bsb</code></td><td><p>3;</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If plots=1 (default) the plot of minimum deletion
+                 residual with envelopes based on n observations and the
+                 scatterplot matrix with the outliers highlighted is
+                 produced.</p> <p>
+                 If plots=2 the user can also monitor the intermediate
+                 plots based on envelope superimposition.</p> <p>
+                 else no plot is produced.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>It specifies the initial subset size to start
+                 monitoring exceedances of minimum deletion residual, if
+                 init is not specified it set equal to:</p> <p>
+                   p+1, if the sample size is smaller than 40;</p> <p>
+                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>exact</code> &#8212;quantiles of the T and F distribution</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If it is equal to 1 the calculation of the quantiles
+                 of the T and F distribution is based on functions finv
+                 and tinv from the Matlab statistics toolbox, else the
+                 calculations of the former quantiles is based on
+                 functions invcdff and invcdft.</p> <p>
+                 The solution has a tolerance of 1e-8 (change variable tol
+                 in files <a href="invcdff.html">invcdff</a> and <a href="invcdft.html">invcdft</a> if required
+               %                 Remark: the use of functions tinv and finv is more precise
+                 but requires more time.</p><p>
+</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'exact',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+                 matrix y and matrix X. Notice that y and X are left
+                 unchanged. In other words the additional column of ones
+                 for the intercept is not added. As default nocheck=0.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>This option adds
+                 one or more least squares lines, based on
+                 SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.</p> <p>
+                 bivarfit = ''
+                   is the default: no line is fitted.</p> <p>
+                 bivarfit = '1'
+                   fits a single ols line to all points of each bivariate
+                   plot in the scatter matrix y|X.</p> <p>
+                 bivarfit = '2'
+                   fits two ols lines: one to all points and another to
+                   the group of the genuine observations. The group of the
+                   potential outliers is not fitted.</p> <p>
+                 bivarfit = '0'
+                   fits one ols line to each group. This is useful for the
+                   purpose of fitting mixtures of regression lines.</p> <p>
+                 bivarfit = 'i1' or 'i2' or 'i3' etc. fits 
+                   an ols line to a specific group, the one with
+                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
+                   of mixtures.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bivarfit',2 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>multivarfit</code> &#8212;Superimpose multivariate least square lines</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on
+                 MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.</p> <p>
+                 multivarfit = ''
+                   is the default: no line is fitted.</p> <p>
+                 multivarfit = '1'
+                   fits a single ols line to all points of each bivariate
+                   plot in the scatter matrix y|X. The line added to the
+                   scatter plot y|Xi is avconst + Ci*Xi, where Ci is the
+                   coefficient of Xi in the multivariate regression and
+                   avconst is the effect of all the other explanatory
+                   variables different from Xi evaluated at their centroid
+                   (that is overline{y}'C))
+                 multivarfit = '2'
+                   equal to multivarfit ='1' but this time we also add the
+                   line based on the group of unselected observations
+                   (i.e. the normal units).</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'multivarfit','1' 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labeladd</code> &#8212;Add outlier labels in plot</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>If this option is
+                 '1',  we label the outliers with the
+                 unit row index in matrices X and y. The default value is
+                 labeladd='', i.e. no label is added.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labeladd','1' 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Add variable labels in plot</span></a><span class="example_desc">cell array of strings</span></span></h3><div class="collapse">	<p>Cell
+                 array of strings of length p containing the labels of
+                 the variables of the regression dataset. If it is empty
+                 (default) the sequence X1, ..., Xp will be created
+                 automatically
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'NameVar1','NameVar2'} 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;Add response label</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p>String containing the
+                 label of the response
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','NameOfResponse' 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p>Vector with two elements controlling minimum and maximum
+                 on the y axis. Default value is '' (automatic scale)
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim','[0,10]' sets the minim value to 0 and the
+</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p>Vector with two elements
+               minimum and maximum on the x axis. Default value is ''
+               (automatic scale)
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlim','[0,10]' sets the minim value to 0 and the
+</code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Option to be
+                used if the distribution of the data is
+                 strongly non normal and, thus, the general signal
+                 detection rule based on consecutive exceedances cannot be
+                 used. In this case bonflev can be:</p> <p>
+                 - a scalar smaller than 1 which specifies the confidence
+                   level for a signal and a stopping rule based on the
+                   comparison of the minimum MD with a
+                   Bonferroni bound. For example if bonflev=0.99 the
+                   procedure stops when the trajectory exceeds for the
+                   first time the 99% bonferroni bound.</p> <p>
+                 - A scalar value greater than 1. In this case the
+                   procedure stops when the residual trajectory exceeds
+                   for the first time this value.</p> <p>
+                 Default value is '', which means to rely on general rules
+                 based on consecutive exceedances.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bonflev',0.99
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>It controls whether
+                 to display or not messages on the screen
+                 If msg==1 (default) messages are displayed on the screen about
+                   step in which signal took place
+                 else no message is displayed on the screen.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;Dealing with singluar X matrix</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>This option tells
+                 how to behave in case subset at step m
+                 (say bsbm) produces a non singular X. In other words,
+                 this options controls what to do when rank(X(bsbm,:)) is
+                 smaller then number of explanatory variables. If
+                 bsbmfullrank =1 (default) these units (whose number is
+                 say mnofullrank) are constrained to enter the search in
+                 the final n-mnofullrank steps else the search continues
+                 using as estimate of beta at step m the estimate of beta
+                 found in the previous step.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbmfullrank',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2>Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>T consists of a structure 'out' containing the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ListOut</code></td><td><p>k x 1 vector containing the list of the units declared as
+               outliers or NaN if the sample is homogeneous</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the estimated regression parameter.</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p>(n-init) x 2 matrix
+               1st col = fwd search index
+               2nd col = value of minimum deletion residual in each step
+               of the fwd search</p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 matrix which contains the unit(s) included
+               in the subset at each step of the fwd search.</p> <p>
+               REMARK: in every step the new subset is compared with the
+               old subset. Un contains the unit(s) present in the new
+               subset but not in the old one.</p> <p>
+               Un(1,2) for example contains the unit included in step
+               init+1.</p><p>
+               Un(end,2) contains the units included in the final step
+               of the search.</p></p></td></tr><tr valign="top"><td><code>nout</code></td><td><p><p>2 x 5 matrix containing the number of times mdr went out
+               of particular quantiles.</p> <p>
+               First row contains quantiles 1 99 99.9 99.99 99.999.</p><p>
+               Second row contains the frequency distribution.</p></p></td></tr><tr valign="top"><td><code>constr</code></td><td><p>This output is produced only if the search found at a
+               certain step a non singular matrix X. In this case the
+               search run in a constrained mode, that is including the
+               units which produced a singular matrix in the last n-constr
+               steps. out.constr is a vector which contains the list of
+               units which produced a singular X matrix</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="references">References</h2> <div><p>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
+       number of multivariate outliers. Journal of the Royal Statistical
+       Society Series B, Vol. 71, pp. 201-221.</p></div></div></div><div class="ref_sect"><h2>See Also</h2><p><span itemprop="seealso"><a href="FSReda.html" itemprop="url"><span itemprop="name"><code>FSReda</code></span></a></span> | <span itemprop="seealso"><a href=" LXS.html" itemprop="url"><span itemprop="name"><code> LXS</code></span></a></span></div><h1>Automatically generated by routine publishFS</h1></div></section></div></div></div></div><table border="0" cellpadding="0" cellspacing="0" class="nav" width="100%"><tr valign="top"><td align="left" width="20"><a href=" "><img align="bottom" alt="" border="0" src="images_help/b_prev.gif"></a></td><td align="left">left</td><td>&nbsp;</td><td align="right"> right</td><td align="right" width="20"><a href=" "><img align="bottom" alt="score" border="0" src="images_help/b_next.gif"></a></td></tr></table><script type ="text/javascript" language="javaScript">document.write(barra);</script></body></html>
