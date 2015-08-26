@@ -5,19 +5,21 @@ function x = inversegaminv(p,a,b,nocheck)
 %
 %  Required input arguments:
 %
-%    p:         Probability at which the inverse of the cdf must be
-%               evaluated $0 \leq p \leq 1$.
+%    p:         Probability at which the inverse of the cdf must be evaluated
+%               $0 \leq p \leq 1$.
 %               Scalar, vector or matrix 3D array of the same size of x and b.
 %               A scalar input functions as a constant matrix of the same
 %               size as the other input.
 %               See the section called "More About:" for more details about
 %               the inverse gamma distribution.
+%               Data Types - single | double
 %    a :        shape parameter of the inverse-gamma distribution.
 %               Scalar, vector or matrix 3D array of the same size of x and b.
 %               A scalar input functions as a constant matrix of the same
 %               size as the other input.
 %               See the section called "More About:" for more details about
 %               the inverse gamma distribution.
+%               Data Types - single | double
 %    b :        scale parameter b of the inverse-gamma distribution.
 %               Scalar, vector or matrix 3D array of the same size of x and a.
 %               A scalar input functions as a constant matrix of the same
@@ -30,13 +32,14 @@ function x = inversegaminv(p,a,b,nocheck)
 %               \]
 %               See the section called "More About:" for more details about
 %               the inverse gamma distribution.
+%               Data Types - single | double
 %
 %  Optional input arguments:
 %
 %      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no
 %               check is performed and input and the inverse cdf is evaluated
 %               directly through MATLAB buit in function gammaincinv
-%               else we use MATLAB function gaminv
+%               else we use MATLAB function gaminv.
 %               Example - 'nocheck',1
 %               Data Types - double
 %
@@ -47,7 +50,7 @@ function x = inversegaminv(p,a,b,nocheck)
 %               of input arguments p, a and b. $p=\int_0^x f_{IG}(t | a,b) dt$ is the
 %               inverse of the inverse-gamma cdf with shape parameters in a
 %               and scale parameters in b for the corresponding
-%               probabilities in p
+%               probabilities in p.
 %
 % More About:
 %
@@ -58,7 +61,6 @@ function x = inversegaminv(p,a,b,nocheck)
 %  F_{IG}(x, a, b)  =\int_0^x t^{-a -1} \exp (-b/t)
 %  \frac{b^a}{\Gamma(a)} dt
 %  \]
-%
 %
 % inversegaminv computes the inverse of the inverse-gamma cdf with shape
 % parameters in a and scale parameters in b for the corresponding
@@ -82,7 +84,7 @@ function x = inversegaminv(p,a,b,nocheck)
 % prior if an informative prior is required.
 % Relation with the Gamma distribution.
 % If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution
-% with paramters $a$ and $1/b$
+% with paramters $a$ and $1/b$.
 %
 % See also: gampdf, inversegampdf, inversegamcdf
 %
@@ -112,8 +114,8 @@ function x = inversegaminv(p,a,b,nocheck)
         Y(i,:)=inversegaminv(x(i),a,b);
         Ychk(i,:)=inversegaminv(x(i),a,b,1);
     end
-    disp('Maximum absolute difference is:')
-    disp(max(max(abs(Y-Ychk))))
+    disp('Maximum absolute difference is:');
+    disp(max(max(abs(Y-Ychk))));
 %}
 
 %{
@@ -129,10 +131,10 @@ function x = inversegaminv(p,a,b,nocheck)
         Y(i,:)=x(i)-inversegamcdf(inversegaminv(x(i),a,b),a,b);
         Ychk(i,:)=x(i)-inversegamcdf(inversegaminv(x(i),a,b,1),a,b,1);
     end
-    disp('Maximum deviation from 0 passing through routine gaminv:')
-    disp(max(max(abs(Y))))
-    disp('Maximum deviation from 0 using fast routine:')
-    disp(max(max(abs(Ychk))))
+    disp('Maximum deviation from 0 passing through routine gaminv:');
+    disp(max(max(abs(Y))));
+    disp('Maximum deviation from 0 using fast routine:');
+    disp(max(max(abs(Ychk))));
 %}
 
 %{
@@ -148,18 +150,18 @@ function x = inversegaminv(p,a,b,nocheck)
         examp=which('Connect_Matlab_with_R_HELP.m');
         examp1=strrep(examp,'\','\\');
         stri=['See file <a href="matlab: opentoline(' examp1 ',27)">Connect_Matlab_with_R_HELP.m</a>  for more information'];
-        disp(stri)
+        disp(stri);
     else
         openR
         evalR('library(actuar)');
-        evalR('x=seq(0,0.9999,0.0001)')
-        evalR('a=2')
-        evalR('b=3')
+        evalR('x=seq(0,0.9999,0.0001)');
+        evalR('a=2');
+        evalR('b=3');
         yfromR=evalR('qinvgamma(x,a,scale=b)');
         x=(0:0.0001:0.9999);
         yfromMatlab=inversegaminv(x,2,3);
-        disp(max(abs(yfromR-yfromMatlab)))
-        closeR
+        disp(max(abs(yfromR-yfromMatlab)));
+        closeR;
     end
 %}
 

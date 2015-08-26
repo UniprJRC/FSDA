@@ -11,12 +11,14 @@ function y = inversegamcdf(x,a,b,nocheck)
 %               size as the other input.
 %               See the section called "More About:" for more details about
 %               the inverse gamma distribution.
+%               Data Types - single | double
 %    a :        shape parameter of the inverse-gamma distribution.
 %               Scalar, vector or matrix 3D array of the same size of x and b.
 %               A scalar input functions as a constant matrix of the same
 %               size as the other input.
 %               See the section called "More About:" for more details about
 %               the inverse gamma distribution.
+%               Data Types - single | double
 %    b :        scale parameter b of the inverse-gamma distribution.
 %               Scalar, vector or matrix 3D array of the same size of x and a.
 %               A scalar input functions as a constant matrix of the same
@@ -29,6 +31,7 @@ function y = inversegamcdf(x,a,b,nocheck)
 %               \]
 %               See the section called "More About:" for more details about
 %               the inverse gamma distribution.
+%               Data Types - single | double
 %
 %  Optional input arguments:
 %
@@ -38,7 +41,6 @@ function y = inversegamcdf(x,a,b,nocheck)
 %               else we use MATLAB function gamcdf
 %               Example - 'nocheck',1
 %               Data Types - double
-%
 %
 %  Output:
 %
@@ -71,7 +73,6 @@ function y = inversegamcdf(x,a,b,nocheck)
 % function, i.e. MATLAB function gammainc) of course  keeping into account
 % that we need the upper tail.
 %
-%
 % The chief use of the inverse gamma distribution is in Bayesian
 % statistics, where the distribution arises as the marginal posterior
 % distribution for the unknown variance of a normal distribution if an
@@ -79,7 +80,7 @@ function y = inversegamcdf(x,a,b,nocheck)
 % prior if an informative prior is required.
 % Relation with the Gamma distribution.
 % If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution
-% with paramters $a$ and $1/b$
+% with paramters $a$ and $1/b$.
 %
 % See also: gampdf,inversegampdf
 %
@@ -126,8 +127,8 @@ function y = inversegamcdf(x,a,b,nocheck)
         Y(i,:)=inversegamcdf(x(i),a,b);
         Ychk(i,:)=inversegamcdf(x(i),a,b,1);
     end
-    disp('Maximum absolute difference is:')
-    disp(max(max(abs(Y-Ychk))))
+    disp('Maximum absolute difference is:');
+    disp(max(max(abs(Y-Ychk))));
 %}
 
 

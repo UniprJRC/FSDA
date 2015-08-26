@@ -11,7 +11,6 @@ function y = inversegampdf(x,a,b,nocheck)
 %               same size as the other input.
 %               See "More About:" for details about the inverse gamma
 %               distribution.
-%               Example - 'x',(0:0.001:3)' 
 %               Data Types - single | double
 %    a :        shape parameter of the inverse-gamma distribution.
 %               Scalar, vector or matrix 3D array of the same size of x and b.
@@ -19,7 +18,6 @@ function y = inversegampdf(x,a,b,nocheck)
 %               size as the other input.
 %               See "More About:" for details about the inverse gamma
 %               distribution.
-%               Example - 'a',3 
 %               Data Types - single | double
 %    b :        scale parameter b of the inverse-gamma distribution.
 %               Scalar, vector or matrix 3D array of the same size of x and a.
@@ -27,7 +25,6 @@ function y = inversegampdf(x,a,b,nocheck)
 %               size as the other input.
 %               See "More About:" for details about the inverse gamma
 %               distribution.
-%               Example - 'b',1 
 %               Data Types - single | double
 %
 %  Optional input arguments:
