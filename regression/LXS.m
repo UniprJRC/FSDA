@@ -264,6 +264,8 @@ function [out , varargout] = LXS(y,X,varargin)
     %% We compare the output of different procedures:  only the reweighted
     % LTS seems to detect half of the outlier with a Bonferroni
     %significance level.
+    clear all;
+    close all;
     state=100;
     randn('state', state);
     n=100;

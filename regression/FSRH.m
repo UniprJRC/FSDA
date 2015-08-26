@@ -565,7 +565,7 @@ INP.Un=Un;
 INP.bb=bb;
 INP.Z=Z;
 INP.Bcoeff=Bgls;
-INP.beta0=beta0;
+%INP.beta0=beta0;
 
 [out]=FSRcore(INP,'H',options);
 
