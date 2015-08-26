@@ -218,7 +218,7 @@ if isempty(userleg) || (~isempty(userleg) && iscell(userleg))
     % the new legends
     nleg = numel(legnew);
     % modify the DisplayName field so that to hide/show the groups 
-    if ishandle(H(1,1,1)) && ~verLessThan('matlab','8.4.0')
+    if ishandle(H(1,1,1)) && ~verLessThan('matlab','8.5.0')
         histstyle= get(H(1,1,1),'DisplayStyle');
     else
         histstyle='histogram';
