@@ -9,9 +9,9 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %   parameters 'Pi' (mixing proportions), 'Mu' (mean vectors), and 'S'
 %   (covariance matrices). Mixture component sample sizes are produced as a
 %   realization from a multinomial distribution with probabilities given by
-%   the mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,
-%   0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integers
-%   (whose sum is n-k) from the multinominal distribution with parameters
+%   the mixing proportions. For example, if n=200, k=4 and Pi=[0.25, 0.25,
+%   0.25, 0.25] function Nk1=mnrnd( n-k, Pi) is used to generate k integers
+%   (whose sum is n-k) from the multinomial distribution with parameters
 %   n-k and Pi. The size of the groups is given by Nk1+1. The first
 %   Nk1(1)+1  observations are generated using centroid Mu(1,:) and
 %   covariance S(:,:,1), ..., the last Nk1(k)+1 observations are generated
