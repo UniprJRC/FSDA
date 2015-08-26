@@ -4,7 +4,7 @@ The following folders are added to MATLAB path :
 {FSDA toolbox}\regression
 {FSDA toolbox}\clustering
 {FSDA toolbox}\multivariate
-{FSDA toolbox}\robust
+{FSDA toolbox}\utilities_stat
 {FSDA toolbox}\FSDAdemos
 {FSDA toolbox}\graphics
 {FSDA toolbox}\utilities

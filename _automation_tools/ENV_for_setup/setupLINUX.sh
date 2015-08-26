@@ -84,7 +84,7 @@ fi
 
 echo "Setting MATLAB environment ..."	
 
-matlab -nodesktop -nojvm -r "addpath '$where/examples' ; addpath '$where/utilities' ; addpath '$where/combinatorial' ; addpath '$where/FSDAdemos' ; addpath '$where/graphics' ; addpath '$where/robust' ; addpath '$where/datasets/multivariate' ; addpath '$where/datasets/regression' ; addpath '$where/datasets/multivariate_regression' ; addpath '$where/datasets/clustering' ; addpath '$where/clustering' ; addpath '$where/regression' ; addpath '$where/multivariate' ; addpath '$where' ; savepath ; exit "
+matlab -nodesktop -nojvm -r "addpath '$where/examples' ; addpath '$where/utilities' ; addpath '$where/combinatorial' ; addpath '$where/FSDAdemos' ; addpath '$where/graphics' ; addpath '$where/utilities_stat' ; addpath '$where/datasets/multivariate' ; addpath '$where/datasets/regression' ; addpath '$where/datasets/multivariate_regression' ; addpath '$where/datasets/clustering' ; addpath '$where/clustering' ; addpath '$where/regression' ; addpath '$where/multivariate' ; addpath '$where' ; savepath ; exit "
 
 
 if [ $REL == 8 ]
@@ -100,7 +100,7 @@ echo "{FSDA toolbox}"
 echo "{FSDA toolbox}/clustering"
 echo "{FSDA toolbox}/regression"
 echo "{FSDA toolbox}/multivariate"
-echo "{FSDA toolbox}/robust"
+echo "{FSDA toolbox}/utilities_stat"
 echo "{FSDA toolbox}/FSDAdemos"
 echo "{FSDA toolbox}/graphics"
 echo "{FSDA toolbox}/utilities"
