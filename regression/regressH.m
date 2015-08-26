@@ -105,7 +105,7 @@ function out=regressH(y,X,Z,varargin)
 %               Data Types - double               
 %  Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
 %
 %           out.Beta  = p-by-3 matrix containing
 %                       1st col = Estimates of regression coefficients

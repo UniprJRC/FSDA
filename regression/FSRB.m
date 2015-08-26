@@ -195,10 +195,11 @@ function [out]=FSRB(y,X,varargin)
 %
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
+%         out:   structure which contains the following fields
+%
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
-% out.mdrB    =  (n-init) x 2 matrix
+% out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of Bayesian minimum deletion residual in
 %               each step of the fwd search
@@ -215,6 +216,10 @@ function [out]=FSRB(y,X,varargin)
 %               of particular quantiles.
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
+%  out.beta   = p x 1 vector containing posterior mean (conditional on
+%               $\tau_0$) of $\beta$ (regression coefficents)
+%               $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$
+%               computed in step n- (number of units declared as outliers)
 % out.constr  = This output is produced only if the search found at a
 %               certain step a non singular matrix X. In this case the
 %               search run in a constrained mode, that is including the
@@ -245,7 +250,7 @@ function [out]=FSRB(y,X,varargin)
 
 %{
     % FSRB with all default options.
-    % Common part to all examples: load Houses Price Dataset.
+    % Common part to the first examples: load Houses Price Dataset.
     
     load hprice.txt;
     n=size(hprice,1);
@@ -598,6 +603,78 @@ function [out]=FSRB(y,X,varargin)
     % Run Bayesian Forward Search for the 2nd year using the prior based on
     % the first year.
     out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);
+%}
+
+%{
+    %% Outlier detection for Bank-Profit data
+    XX=load('BankProfit.txt');
+    R=load('BankProfitR.txt');
+
+    X=XX(:,1:end-1);
+    y=XX(:,end);
+    % Load prior information
+    beta0=zeros(10,1);
+    beta0(1,1)=-0.5;
+    beta0(2,1)=9.1;         % Number of products (NUMPRO)
+    beta0(3,1)=0.001;       % direct revenues  (DIRREV)
+    beta0(4,1)=0.0002;      % indirect revenues   (INDREV)
+    beta0(5,1)=0.002;       %  savings accounts   SAVACC
+    beta0(6,1)=0.12;        %  number of operations   NUMOPE
+    beta0(7,1)=0.0004;      %  total amount of operations  TOTOPE
+    beta0(8,1)=-0.0004;     %  Bancomat POS
+    beta0(9,1)=1.3;         %  Number of cards   NUMCAR
+    beta0(10,1)=0.00004;    %  Amount in cards   TOTCAR
+
+    % \tau
+    s02=10000;
+    tau0=1/s02;
+
+
+    % number of obs in which prior was based
+    n0=1500;
+
+    bayes=struct;
+    bayes.R=R;
+    bayes.n0=n0;
+    bayes.beta0=beta0;
+    bayes.tau0=tau0;
+    intercept=1;
+    n=length(y);
+
+    outBA=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...
+    'init',round(n/2),'xlim',[1700 1905],'ylim',[2 4]);
+
+    %% Plot the outliers with a different symbol using a 3x3 layout
+    selout=outBA.ListOut;
+    selin=setdiff(1:n,selout);
+
+    close all
+    % just in case user has additional function subtightplot
+    % http://www.mathworks.com/matlabcentral/fileexchange/39664-subtightplot
+    make_it_tight = true;
+    if make_it_tight == true && exist('subtightplot','file') ==2
+        subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);
+    else
+        clear subplot;
+    end
+    % sel = panels in which yticks do not have to be removed
+    sel=[1 4 7];
+    miny=min(y);
+    maxy=max(y);
+    for j=1:9
+        subplot(3,3,j)
+        hold('on')
+        plot(X(selin,j),y(selin),'+')
+        plot(X(selout,j),y(selout),'ro')
+
+        ylim([miny maxy])
+        xlim([min(X(:,j)) max(X(:,j))])
+        if isempty(intersect(j,sel))
+            set(gca,'YTickLabel','')
+        end
+        % Add on the plot the variable name
+        text(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)
+    end
 %}
 
 %% Input parameters checking

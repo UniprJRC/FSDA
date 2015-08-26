@@ -136,12 +136,17 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               ...
 %               last column = units forming subset in the final step (i.e.
 %               all units).
-%  BBayes:      (n-init+1) x (p+1) matrix containing the monitoring of
-%               estimated beta coefficients in each step of the forward
-%               search.
-%  S2Bayes:     (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
-%               column)and R2 (third column) in each step of the forward
-%               search.
+%  beta1:       posterior estimates of beta. Matrix.
+%               (n-init+1) x (p+1) matrix containing the monitoring o
+%               posterior mean of \beta (regression coefficents)
+%               beta1 = (c*R + X'X)^{-1} (c*R*beta0 + X'y)
+%     S21 :    (n-init+1) x 3 matrix containing the monitoring of
+%               posterior estimate of $\sigma^2$ and $\tau$  
+%               in each step of the forward search
+%               1st col = fwd search index (from init to n)
+%               2nd col = monitoring of $\sigma^2_1$ (posterior estimate of
+%               $\sigma^2$)
+%               3rd col = monitoring $\tau_1$ (posterior estimate of $\tau$)
 %
 % See also
 %

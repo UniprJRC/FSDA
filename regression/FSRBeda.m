@@ -102,20 +102,22 @@ function [out] = FSRBeda(y, X, varargin)
 %
 %   The output consists of a structure 'out' containing the following
 %   fields:
-%   out.RES=        n x (n-init+1) = matrix containing the monitoring of
+%   out.RES=    Scaled residuals. Matrix.
+%               n x (n-init+1) matrix containing the monitoring of
 %               scaled residuals
 %               1st row = residual for first unit ......
 %               nth row = residual for nth unit.
-%   out.LEV=        (n+1) x (n-init+1) = matrix containing the monitoring of
+%   out.LEV=    Leverage. Matrix.
+%               (n+1) x (n-init+1) = matrix containing the monitoring of
 %               leverage
 %               1st row = leverage for first unit ......
 %               nth row = leverage for nth unit.
-%    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
+%    out.BB=    n x (n-init+1) matrix containing the information about the units belonging
 %               to the subset at each step of the forward search.
 %               1st col = indexes of the units forming subset in the initial step
 %               ...
 %               last column = units forming subset in the final step (all units)
-%   out.mdr=        n-init x 3 matrix which contains the monitoring of Bayesian
+%   out.mdrB=     n-init x 3 matrix which contains the monitoring of Bayesian
 %               minimum deletion residual or (m+1)ordered residual  at each
 %               step of the forward search.
 %               1st col = fwd search index (from init to n-1)
@@ -124,37 +126,37 @@ function [out] = FSRBeda(y, X, varargin)
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
 %               it corresponds to a negative residual
-%   out.msr=       n-init+1 x 3 = matrix which contains the monitoring of
+%   out.msrB=       n-init+1 x 3 = matrix which contains the monitoring of
 %               maximum studentized residual or m-th ordered residual
 %               1st col = fwd search index (from init to n)
 %               2nd col = maximum studentized residual
 %               3rd col = (m)-ordered studentized residual
-%  out.Bols:=        (n-init+1) x (p+1) matrix containing the monitoring of
-%               posterior mean (conditional on
-%               tau0) of \beta (regression coefficents)
+%   out.Coo=        (n-init+1) x 2 matrix containing the monitoring of Cook or
+%               modified Cook distance in each step of the forward search
+%               1st col = fwd search index (from init to n)
+%               2nd col = monitoring of Cook distance
+%  out.beta1 =  (n-init+1) x (p+1) matrix containing the monitoring of
+%               posterior mean of \beta (regression coefficents)
 %               beta1 = (c*R + X'X)^{-1} (c*R*beta0 + X'y)
-%  out.covbeta1=    p x p x (n-init+1) 3D array containing posterior covariance matrix
+%    out.Gam    =  (n-init+1) x 3 matrix containing
+%               1st col = fwd search index (from init to n)
+%               2nd col = shape parameter a1 of the posterior gamma distribution of tau
+%               3rd col = scale parameter b1 of the posterior gamma distribution of tau
+%               Remark: a1 = 0.5 (c*n0 + m) where m is subset size
+%                       b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )%  out.covbeta1=    p x p x (n-init+1) 3D array containing posterior covariance matrix
 %               (conditional on tau1) of \beta
 %               covbeta1 = (1/tau1) * (c*R + X'X)^{-1}
 %               where tau1 is defined as a1/b1 (that is through the gamma
 %               parameters of the posterior distribution of \tau)
 %               The posterior distribution of \tau is a gamma distribution
 %               with parameters a1 and b1
-%    out.Gam    =  (n-init+1) x 3 matrix containing
-%               1st col = fwd search index (from init to n)
-%               2nd col = parameter a1 of the posterior gamma distribution of tau
-%               3rd col = parameter b1 of the posterior gamma distribution of tau
-%               Remark: a1 = 0.5 (c*n0 + m) where m is subset size
-%                       b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )
-%    out.S2=       (n-init+1) x 3 matrix containing the monitoring of S2 or R2
+%    out.S21=   (n-init+1) x 3 matrix containing the monitoring of
+%               posterior estimate of $\sigma^2$ and $\tau$  
 %               in each step of the forward search
 %               1st col = fwd search index (from init to n)
-%               2nd col = monitoring of S2 (S2 is nothing but 1/tau1)
-%               3rd col = monitoring of R2
-%   out.Coo=        (n-init+1) x 2 matrix containing the monitoring of Cook or
-%               modified Cook distance in each step of the forward search
-%               1st col = fwd search index (from init to n)
-%               2nd col = monitoring of Cook distance
+%               2nd col = monitoring of $\sigma^2_1$ (posterior estimate of
+%               $\sigma^2$)
+%               3rd col = monitoring $\tau_1$ (posterior estimate of $\tau$)
 %     out.Bpval =   (n-init+1) x (p+1) containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta se(beta) |)
 %               = prob. of beta different from 0
@@ -162,10 +164,20 @@ function [out] = FSRBeda(y, X, varargin)
 %               2nd col = p-value for first variable
 %               ...
 %               (p+1) col = p-value for p-th variable
-%    out.Bhpd   =  (n-init+1)-by-2-by-p 3D array.
-%               Bhpd(:,:,1) = lower and upper HPDI conflev for first variable
+%out.beta1HPD   =  (n-init+1)-by-2-by-p 3D array.
+%               Bhpd(:,:,1) = lower and upper HPDI of first element of
+%               $\beta_1$ (posterior estimate of $\beta$)
 %               ...
-%               Bhpd(:,:,p) = lower and upper HPDI conflev for p-th variable
+%               Bhpd(:,:,p) = lower and upper HPDI of  last element
+%               of $\beta_1$  (posterior estimate of $\beta$)
+%   out.tau1HPD =  (n-init+1) x 3 containing HPDI for $\tau_1$
+%               1st col = fwd search index (from init to n)
+%               2nd col = lower value of HPDI 
+%               3rd col = upper value of HPDI 
+% out.sigma21HPD =  (n-init+1) x 3 containing HPDI for $\sigma^2_1$
+%               1st col = fwd search index (from init to n)
+%               2nd col = lower value of HPDI 
+%               3rd col = upper value of HPDI 
 %  out.postodds =   (n-init+1)-by-(p+1) matrix which contains posterior odds for betaj=0
 %               For example the posterior odd of beta0=0 is p(y| model which contains
 %               all expl variables except the one associated with beta0) divided by
@@ -174,7 +186,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               2nd col = posterior odd for beta1
 %               ...
 %               (p+1) col = posterior odd for betap
-% out.modelprob =   (n-init+1)-by-(p+1) matrix which contains which contains
+% out.modelprob =  (n-init+1)-by-(p+1) matrix which contains
 %               posterior model probability of the model which excludes
 %               variable j. For example if modelprob(j)= 0.28, that is if
 %               the probability of the model which does not contain
@@ -197,7 +209,7 @@ function [out] = FSRBeda(y, X, varargin)
 %     out.X=       Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1)
-%out.class =        string FSRBeda.
+%out.class =    string FSRBeda.
 %
 %
 % See also FSRB, regressB, FSRBmdr
@@ -261,99 +273,323 @@ function [out] = FSRBeda(y, X, varargin)
 %}
 
 %{
-    %% Monitoring the forward plots.
+    %% Plot posterior estimates of beta and sigma^2 in the interval (subset size) [20 125]
     % In this example for the house price data we monitor the forward plots
-    % in the second half of the search of HPD regions for the parameters of
-    % the linear model and, bottom right-hand panel, the estimate of ?2.
-    % The horizontal lines correspond to prior values
-    load hprice.txt;
-    close all;
-    n=size(hprice,1);
-    y=hprice(:,1);
-    X=hprice(:,2:5);
-    n0=5;
-    p=5;
-
-    % Hyperparameters for natural conjugate prior
-    b0=zeros(p,1);
-    b0(2,1)=10;
-    b0(3,1)=5000;
-    b0(4,1)=10000;
-    b0(5,1)=10000;
-    % s02=1/4.0e-1;
-    s02=1/4.0e-8;
-    capv0=2.4*eye(p);
-    capv0(2,2)=6e-7;
-    capv0(3,3)=.15;
-    capv0(4,4)=.6;
-    capv0(5,5)=.6;
-    capv0inv=inv(capv0);
-    R=capv0inv;
-    tau0=1/s02;
-
-
-    bayes=struct;
-    bayes.R=capv0inv;
-    bayes.n0=n0;
-    bayes.beta0=b0;
-    bayes.tau0=tau0;
-
+    % of the parameters of the linear model adding 95% and 99% HPD
+    % regions. The first 8 panels refer to the elements of $\beta_1$
+    % and the bottom right-hand panel refer to the estimate of sigma2.
+    % The horizontal lines correspond to prior values    
+    % The vertical lines refer to the step prior to the introduction of the first outlier
     % init = point to start monitoring diagnostics along the FS
-    init=250;
+    % run routine FSRB in order to find the outliers automatically
+    outBA=FSRB(y,X,'bayes',bayes', 'plots',0);
+    dout=n-length(outBA.ListOut);
+    
+    % init = initial point to start monitoring
+    init=20;
+    xlimL=init; % lower value of xlim
+    xlimU=125;  % upper value of xlim 
 
-    outBA=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
+    outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
 
     % Set font size, line width and line style
     figure;
-    lwd=3;
-    FontSize=18;
+    lwd=2.5;
+    FontSize=14;
     linst={'-','--',':','-.','--',':'};
 
-    for ij=1:5
-        my_subplot=subplot(3,2,ij);
+    for j=1:5
+        my_subplot=subplot(3,2,j);
         hold('on')
         % plot 95% and 99% HPD  trajectories
-        plot(outBA.Bols(:,1),outBA.Bhpd(:,1:2,ij),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
-        plot(outBA.Bols(:,1),outBA.Bhpd(:,3:4,ij),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
 
-        % plot posterior estimate
-        plot(outBA.Bols(:,1),outBA.Bols(:,ij+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+        % plot posterior estimate of beta1_j
+        plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
 
         % Add the horizontal line which corresponds to prior values
         xL = get(my_subplot,'XLim');
-        db0=b0(ij,1);
-        line(xL,[db0 db0],'Color','r','LineWidth',lwd);
+        line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);
 
         % Set ylim
-        limU=max([outBA.Bhpd(:,4,ij); b0(ij)]);
-        limL=min([outBA.Bhpd(:,3,ij); b0(ij)]);
-        ylim([limL limU])
+        ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);
+        ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);
+        ylim([ylimL ylimU])
+
+        % Add vertical line in correspondence of the step prior to the
+        % entry of the first outlier
+        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
 
         % Set xlim
-        xlim([init n]);
+        xlim([xlimL xlimU]);
 
-        ylabel(['$\hat{\beta_' num2str(ij-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
+
+        ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
         set(gca,'FontSize',FontSize);
-        if ij>4
+        if j>4
             xlabel('Subset size m','FontSize',FontSize);
         end
     end
 
-    % Subplot associatied with the monitoring of sigma^2
+    % Subplot associated with the monitoring of sigma^2
     subplot(3,2,6);
-    plot(outBA.S2(:,1),outBA.S2(:,2),'LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+    %figure()
+    hold('on')
+    % 99%
+    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+    % 95%
+    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
+    % Plot 1\/tau1
+    plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')
+    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);
     set(gca,'FontSize',FontSize);
+
+    % Set ylim
+    ylimU=max([outBAeda.sigma21HPD(:,5); s02]);
+    ylimL=min([outBAeda.sigma21HPD(:,4); s02]);
+    ylim([ylimL ylimU])
+
+    % Set xlim
+    xlim([xlimL xlimU]);
+    xL = get(my_subplot,'XLim');
+
+    % Add the horizontal line which corresponds to prior value of $\sigma^2$
+    line(xL,[s02 s02],'Color','r','LineWidth',lwd);
+
+    % Add vertical line in correspondence of the step prior to the
+    % entry of the first outlier
+    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
     xlabel('Subset size m','FontSize',FontSize);
-    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20);
+
+    % Add multiple title
+    suplabel(['Housing data; forward plots in the interval ['...
+        num2str(xlimL) ',' num2str(xlimU) ...
+        ']  of HPD regions for \beta and \sigma^2'],'t')
+%}
+
+%{
+    %% Plot posterior estimates of beta and sigma^2 in the interval (subset size) [250 n+1]
+    % In this example for the house price data we monitor the forward plots
+    % of the parameters of the linear model adding 95% and 99% HPD
+    % regions. The first 8 panels refer to the elements of $\beta_1$
+    % and the bottom right-hand panel refer to the estimate of sigma2.
+    % The horizontal lines correspond to prior values    
+    % The vertical lines refer to the step prior to the introduction of the first outlier
+    % init = point to start monitoring diagnostics along the FS
+    % run routine FSRB in order to find the outliers automatically
+    outBA=FSRB(y,X,'bayes',bayes', 'plots',0);
+    dout=n-length(outBA.ListOut);
+    
+    % init = initial point to start monitoring
+    init=250;
+    xlimL=init; % lower value fo xlim
+    xlimU=n+1;  % upper value of xlim 
+
+    outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
+
+    % Set font size, line width and line style
+    figure;
+    lwd=2.5;
+    FontSize=14;
+    linst={'-','--',':','-.','--',':'};
+
+    for j=1:5
+        my_subplot=subplot(3,2,j);
+        hold('on')
+        % plot 95% and 99% HPD  trajectories
+        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+
+        % plot posterior estimate of beta1_j
+        plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+
+        % Add the horizontal line which corresponds to prior values
+        xL = get(my_subplot,'XLim');
+        line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);
+
+        % Add vertical line in correspondence of the step prior to the
+        % entry of the first outlier
+        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
+
+        % Set ylim
+        ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);
+        ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);
+        ylim([ylimL ylimU])
+
+        % Set xlim
+        xlim([xlimL xlimU]);
+
+
+        ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
+        set(gca,'FontSize',FontSize);
+        if j>4
+            xlabel('Subset size m','FontSize',FontSize);
+        end
+    end
+
+    % Subplot associated with the monitoring of sigma^2
+    subplot(3,2,6);
+    %figure()
+    hold('on')
+    % 99%
+    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+    % 95%
+    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
+    % Plot 1\/tau1
+    plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')
+    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);
+    set(gca,'FontSize',FontSize);
+
+    % Set ylim
+    ylimU=max([outBAeda.sigma21HPD(:,5); s02]);
+    ylimL=min([outBAeda.sigma21HPD(:,4); s02]);
+    ylim([ylimL ylimU])
+
+    % Set xlim
+    xlim([xlimL xlimU]);
+    xL = get(my_subplot,'XLim');
+
+    % Add the horizontal line which corresponds to prior value of $\sigma^2$
+    line(xL,[s02 s02],'Color','r','LineWidth',lwd);
+
+    % Add vertical line in correspondence of the step prior to the
+    % entry of the first outlier
+    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
+    xlabel('Subset size m','FontSize',FontSize);
+
+    % Add multiple title
+    suplabel(['Housing data; forward plots in the interval ['...
+        num2str(xlimL) ',' num2str(xlimU) ...
+        ']  of HPD regions for \beta and \sigma^2'],'t')
+%}
+
+%{
+    % Plot of HPDI for BankProfit data
+    XX=load('BankProfit.txt');
+    R=load('BankProfitR.txt');
+
+    X=XX(:,1:end-1);
+    y=XX(:,end);
+    % Load prior information
+    beta0=zeros(10,1);
+    beta0(1,1)=-0.5;        % 
+    beta0(2,1)=9.1;         % Number of products (NUMPRO)
+    beta0(3,1)=0.001;       % direct revenues  (DIRREV)
+    beta0(4,1)=0.0002;      % indirect revenues   (INDREV)
+    beta0(5,1)=0.002;       %  savings accounts   SAVACC
+    beta0(6,1)=0.12;        %  number of operations   NUMOPE
+    beta0(7,1)=0.0004;      %  total amount of operations  TOTOPE
+    beta0(8,1)=-0.0004;     %  Bancomat POS
+    beta0(9,1)=1.3;         %  Number of cards   NUMCAR
+    beta0(10,1)=0.00004;    %  Amount in cards   TOTCAR
+
+    % \tau
+    s02=10000;
+    tau0=1/s02;
+
+
+    % number of obs in which prior was based
+    n0=1500;
+
+    bayes=struct;
+    bayes.R=R;
+    bayes.n0=n0;
+    bayes.beta0=beta0;
+    bayes.tau0=tau0;
+    n=length(y);
+
+    % run routine FSRB in order to find the outliers automatically
+    outBA=FSRB(y,X,'bayes',bayes', 'plots',0);
+    dout=n-length(outBA.ListOut);
+
+    % init = point to start monitoring diagnostics along the FS
+    init=1700;
+    xlimL=init;
+    xlimU=n+1;
+
+    outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
+    % Set font size, line width and line style
+    figure;
+    lwd=2.5;
+    FontSize=14;
+    linst={'-','--',':','-.','--',':'};
+    nr=4;
+    nc=3;
+    for j=1:length(beta0)
+        my_subplot=subplot(nr,nc,j);
+        hold('on')
+        % plot 95% and 99% HPD  trajectories
+        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+
+        % plot posterior estimate of beta1_j
+        plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+
+        % Add the horizontal line which corresponds to prior values
+        xL = get(my_subplot,'XLim');
+        line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);
+
+
+        % Set ylim
+        ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);
+        ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);
+        ylim([ylimL ylimU])
+
+        % Set xlim
+        xlim([xlimL xlimU]);
+
+            % Add vertical line in correspondence of the step prior to the
+        % entry of the first outlier
+        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
+
+        ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
+        set(gca,'FontSize',FontSize);
+        if j>nr*(nc-1)
+            xlabel('Subset size m','FontSize',FontSize);
+        end
+    end
+
+    % Subplot associated with the monitoring of sigma^2
+    subplot(4,3,11);
+    %figure()
+    hold('on')
+    % 99%
+    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+    % 95%
+    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
+    % Plot 1\/tau1
+    plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')
+    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);
+    set(gca,'FontSize',FontSize);
+
+    % Set ylim
+    ylimU=max([outBAeda.sigma21HPD(:,5); s02]);
+    ylimL=min([outBAeda.sigma21HPD(:,4); s02]);
+    ylim([ylimL ylimU])
+
+    ylimL=8000;
+    ylimU=14000;
+    ylim([ylimL ylimU])
+
+    % Set xlim
+    xlim([xlimL xlimU]);
+    xL = get(my_subplot,'XLim');
+
+    % Add the horizontal line which corresponds to prior value of $\sigma^2$
+    line(xL,[s02 s02],'Color','r','LineWidth',lwd);
+
+    % Add vertical line in correspondence of the step prior to the
+    % entry of the first outlier
+    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
+    xlabel('Subset size m','FontSize',FontSize);
 
 
     % Add multiple title
-    suplabel('Housing data; forward plots in the second half of the search of HPD regions for beta','t')
-
+    suplabel(['Bank profit data; forward plots in the interval ['...
+        num2str(xlimL) ',' num2str(xlimU) ...
+        ']  of HPD regions for \beta and \sigma^2'],'t')
 %}
-
-
-
 %% Input parameters checking
 
 if nargin>6
@@ -433,8 +669,6 @@ conflevdef=[0.95 0.99];
 options=struct('intercept',1,'init',init,'bayes',bayesdef,'bsb',bsb,...
     'nocheck',0,'conflev',conflevdef);
 
-%beta0, R, tau0, n0,
-
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
@@ -454,9 +688,7 @@ if nargin > 3
         options.(varargin{i})=varargin{i+1};
     end
 end
-intercept=options.intercept;
 conflev=options.conflev;
-
 bayes=options.bayes;
 
 beta0=bayes.beta0;
@@ -468,10 +700,8 @@ bsb=options.bsb;
 if bsb==0
     bsb=randsample(n,p);
     Xb=X(bsb,:);
-    yb=y(bsb);
 else
     Xb=X(bsb,:);
-    yb=y(bsb);
 end
 
 % is bsb is empty ini0 =0
@@ -510,11 +740,11 @@ seq100=100*(1:1:ceil(n/100));
 zer=NaN(n-init,2);
 zer1=NaN(n-init+1,2);
 
-% Matrix Bols will contain the beta coeff. in each step of the fwd search
-% The first row will contain the units forming initial subset
-Bols=[(init:n)' NaN(n-init+1,p)];
+% Matrix beta1 will contain posterior beta coeff. in each step of the fwd search
+% The first column will contain the fwd search index
+beta1=[(init:n)' NaN(n-init+1,p)];
 
-% covbeta1 3D array will contain posterior covariance matrix
+% covbeta1 3D array will contain covariance matrix of beta1
 covbeta1=NaN(p,p,n-init+1);
 
 %    Gam    :   (n-init+1) x 3 matrix containing
@@ -523,14 +753,14 @@ covbeta1=NaN(p,p,n-init+1);
 %               3rd col = parameter b1 of the posterior gamma distribution of tau
 %               Remark: a1 = 0.5 (c*n0 + m) where m is subset size
 %                       b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )
-Gam=Bols(:,1:3);
+Gam=beta1(:,1:3);
 
 
-% S2=(n-init+1) x 3  matrix which will contain
+% S21=(n-init+1) x 3  matrix which will contain
 % 1st col = fwd search index
-% 2nd col = S2= \sum e_i^2 / (m-p)
-% 3rd col = R^2
-S2=[(init:n)' zer1];
+% 2nd col = posterior estimate of $\sigma^2$
+% 3rd col = posterior estimate of $\tau$
+S21=[(init:n)' zer1];
 
 % mdr= (n-init) x 3 matrix
 % 1st column = fwd search index
@@ -567,17 +797,18 @@ Un=NaN(n-init,10);
 Un=[(init+1:n)' Un];
 
 % Bpval will contain (n-init+1) x (p+1) containing Bayesian p-values.
-Bpval=Bols;
+Bpval=beta1;
 % Bhpd will contain (n-init+1)-by-2-by-p 3D array.
-Bhpd=NaN(n-init+1,2*length(conflev),p);
-Tauhpd=NaN(n-init+1,2*length(conflev),1);
+beta1HPD=NaN(n-init+1,2*length(conflev),p);
+tau1HPD=[(init:n)' zeros(n-init+1,2*length(conflev))];
+sigma21HPD=tau1HPD;
 
 % postodds will contain (n-init+1)-by-(p+1) matrix which contains posterior
 % odds for betaj=0
-postodds=Bols;
+postodds=beta1;
 % modelprob will contain (n-init+1)-by-(p+1) matrix which contains which
 % contains posterior model probability of the model which excludes variable j.
-modelprob=Bols;
+modelprob=beta1;
 
 %% Start of the forward search
 for mm=ini0:n;
@@ -608,7 +839,7 @@ for mm=ini0:n;
         
         
         % Store posterior beta coefficients
-        Bols(mm-init+1,2:p+1)=b';
+        beta1(mm-init+1,2:p+1)=b';
         
         
         % Store leverage for the units belonging to subset
@@ -632,8 +863,11 @@ for mm=ini0:n;
         
         % Store p-values
         Bpval(mm-init+1,:)=[mm bayes.Bpval'];
-        Bhpd(mm-init+1,:,:)=bayes.Bhpd';
-        Tauhpd(mm-init+1,:,:)=bayes.Tauhpd';
+        
+        % Store HPD for $\beta_1$, $\tau_1$ and $\sigma^2_1$ 
+        beta1HPD(mm-init+1,:,:)=bayes.beta1HPD';
+        tau1HPD(mm-init+1,2:end)=bayes.tau1HPD;
+        sigma21HPD(mm-init+1,2:end)=bayes.sigma21HPD;
         
         %
         postodds(mm-init+1,:)=[mm bayes.postodds'];
@@ -654,20 +888,15 @@ for mm=ini0:n;
         % Store all residuals
         RES(:,mm-init+1)=e;
         
-        % Store S2 for the units belonging to subset
-        
-        %S2(mm-init+1,2)=Sb;
-        S2(mm-init+1,2)=Sb;
+        % Store posterior estimates of sigma2 an tau just using the units
+        % belonging to subset
+        S21(mm-init+1,2:3)=[bayes.sigma21 bayes.tau1];
         resBSB=bayes.res(bsb,1);
         
         % Store maximum studentized residual
         % among the units belonging to the subset
         msrsel=sort(abs(resBSB)./sqrt(Sb*(1-hi)));
         msr(mm-init+1,2)=msrsel(mm);
-        
-        
-        % Store R2
-        S2(mm-init+1,3)=1-var(resBSB)/var(yb);
         
     end
     
@@ -676,11 +905,10 @@ for mm=ini0:n;
     if mm>init;
         % Store in the second column of matrix coo the Cook
         % distance
-        bib=Bols(mm-init+1,2:p+1)-Bols(mm-init,2:p+1);
+        bib=beta1(mm-init+1,2:p+1)-beta1(mm-init,2:p+1);
         
         coo(mm-init,2)=bib*(mAm\(bib'))/p;
         % bib*inv(bayes.covbeta1)*(bib')/(p)
-        
         
         if length(unit)>5;
             unit=unit(1:5);
@@ -711,7 +939,6 @@ for mm=ini0:n;
         bsb=ord(1:(mm+1),1);
         
         Xb=X(bsb,:);  % subset of X
-        yb=y(bsb);    % subset of y
         
         if mm>=init;
             unit=setdiff(bsb,oldbsb);
@@ -734,19 +961,21 @@ end
 
 %% Structure returned by function FSReda
 out=struct;
-out.RES=RES/sqrt(S2(end,2));
+% Scale residuals multiplying by the final posterior estimate of $\tau$
+out.RES=RES*sqrt(S21(end,3));
 out.LEV=LEV;
 out.BB=BB;
 out.mdr=mdr;
 out.msr=msr;
-out.Bols=Bols;
+out.beta1=beta1;
 out.covbeta1=covbeta1;
 out.Gam=Gam;
-out.S2=S2;
+out.S21=S21;
 out.coo=coo;
 out.Bpval=Bpval;
-out.Bhpd=Bhpd;
-out.Tauhpd=Tauhpd;
+out.beta1HPD=beta1HPD;
+out.tau1HPD=tau1HPD;
+out.sigma21HPD=sigma21HPD;
 out.postodds=postodds;
 out.modelprob=modelprob;
 out.Un=Un;
