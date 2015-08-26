@@ -3,6 +3,7 @@
 % Files :
 % add2spm                      - add2spm adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix
 % add2yX                       - add2yX adds objects to the yXplot.
+% boxplotb                     - boxplotb computes a bivariate boxplot
 % cdsplot                      - cdsplot produces the candlestick plot for robust model selection in linear regression
 % covplot                      - covplot plots the trajectories of the elements of the covariance (correlation) matrix monitored
 % fanplot                      - fanplot plots the fan plot for transformation in linear regression
@@ -14,7 +15,7 @@
 % mmdplot                      - mmdplot plots the trajectory of minimum mhalanobis distance (mmd)
 % olsline                      - olsline adds least-squares fit line(s) to scatter plot(s).
 % resfwdplot                   - resfwdplot plots the trajectories of the scaled (squared) residuals monitored
-% resindexplot                 - resindexplot plots the residuals from a regression analysis versus index
+% resindexplot                 - resindexplot plots the residuals from a regression analysis versus index number or any other variable
 % spmplot                      - spmplot produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal
 % suplabel                     - suplabel places text as a title, xlabel, or ylabel on a group of subplots.
 % yXplot                       - yXplot produces an interactive scatterplot of y against each variable of X in the input dataset.

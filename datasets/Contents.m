@@ -3,11 +3,13 @@
 
 clustering/cluster3.txt
 clustering/geyser.txt
+clustering/geyser2.txt
 clustering/M5data.txt
 clustering/mixture100.txt
 clustering/structurednoise.txt
 clustering/X.txt
 multivariate/biochemical.txt
+multivariate/bodybrain.txt
 multivariate/bus.txt
 multivariate/clus2over.txt
 multivariate/databri.txt
@@ -29,6 +31,7 @@ multivariate/sixty_eighty.txt
 multivariate/swiss_banknotes.txt
 multivariate/three_clust_2outl.txt
 multivariate/wine.txt
+multivariate/writingdata.txt
 multivariate_regression/aircraft.txt
 multivariate_regression/baby.txt
 multivariate_regression/dyestuff.txt
@@ -58,4 +61,5 @@ regression/stars.txt
 regression/TableF61_Greene.txt
 regression/TableF91_Greene.txt
 regression/toxicity.txt
+regression/tradeH.txt
 regression/wool.txt

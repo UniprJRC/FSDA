@@ -10,4 +10,12 @@
 % FSMmmd                       - FSMmmd monitors minMD
 % FSMmmdeasy                   - FSMmmdeasy is exactly equal to minMD but much less efficient
 % FSMtra                       - FSMtra computes MLE of transformation parameters.
+% mcd                          - mcd computes Minimum Covariance Determinant
+% MMmult                       - MMmult computes MM estimators in multivariate analysis with auxiliary S-scale
+% MMmultcore                   - MMmultcore computes multivariate MM estimators for a selected fixed scale
+% mve                          - mve computes Minimum volume ellipsoid
+% Qn                           - Qn robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)
+% SDest                        - SDest computes Stahel-Donoho robust estimator of dispersion/location
+% Smult                        - Smult computes S estimators in multivariate analysis
+% Sn                           - Sn robust estimator of scale (robust version of Gini's average difference)
 % unibiv                       - unibiv has the purpose of detecting univariate and bivariate outliers
