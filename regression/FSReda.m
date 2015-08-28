@@ -16,10 +16,10 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               infinite values (Inf's) are allowed, since observations
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations.
-%   bsb :       vector containing the list of units forming the initial
-%               subset, if bsb=0 (default) then the procedure starts with p
+%   bsb :       list of units forming the initial
+%               subset. Vector or scalar. If bsb=0 (default) then the procedure starts with p
 %               units randomly chosen else if bsb is not 0 the search will
-%               start with m0=length(bsb)
+%               start with m0=length(bsb).
 %
 % Optional input arguments:
 %
@@ -220,7 +220,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %}
 
 %{
-    %% Example with artificial dataset
+    %% Example with artificial dataset.
     n=100;
     p=8;
     state=1;
@@ -267,7 +267,9 @@ function [out] = FSReda(y,X,bsb,varargin)
 %}
 
 %{
-    %% Monitoring of 95% and 99% confidence intervals of $\beta$ and $\sigma^2$
+    %% Monitoring of 95 per cent and 99 per cent confidence intervals of
+    % beta and sigma2.
+    % House price data 
     load hprice.txt;
     n=size(hprice,1);
     y=hprice(:,1);

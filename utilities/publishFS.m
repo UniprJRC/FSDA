@@ -237,10 +237,10 @@ function publishFS(file,varargin)
 %contains" or "containing" inside the subtitle (second row) of the each
 %ouptut argument in the HTML file. For example, the example above in the
 %HTML file will be processed as follows:
-%                mdr ?Monitoring of minimum deletion residual at each step of the forward search.
+%                mdr -Monitoring of minimum deletion residual at each step of the forward search.
 %                n -init -by- 2 matrix
 % If, in the HTML file, the user clicks on the first line,
-%               "mdr ?Monitoring..."
+%               "mdr -Monitoring..."
 %the expanded description will automatically appear
 %
 % 5) A line which starts with string 'See also:' must be present. Linked m
@@ -378,7 +378,7 @@ function publishFS(file,varargin)
 % enclosed inside symbols '\[ \]'.
 % -----------------------------------------------------
 % REMARK 8: parser automatically puts an hyperlink every time in the text
-% thre is something which starts with "http:" or every time there is a
+% there is something which starts with "http:" or every time there is a
 % reference to a .m file. For example the sentence: "More details can be
 % found in routine ncx2mixtcdf.m" is converted as follows.
 % "More details can be found in routine
@@ -571,7 +571,7 @@ fstringselOpt=fstringselOpt(1:endpoint-2);
 % a series of white spaces which can go from 0 to 10 then
 % character : then
 % a seris of white spaces
-% The inipoint of the following two regular xpessions is the same but
+% The inipoint of the following two regular expressions is the same but
 % however we want to exclude the lines where symbol : is followed by a
 % series of white spaces and then by a carriage return because these are
 % input arguments but simply are the beginning of a list
@@ -704,8 +704,6 @@ for i=1:length(ini)
         ij=ij+1;
     end
     
-    %     if strcmp(opti,'
-    %     listOptArgs{i}=opti;
 end
 listOptArgs=listOptArgs(1:ij-1,:);
 
@@ -856,8 +854,7 @@ insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="10
 %}
 
 %{
-doc_center_installed.css nella parte che segue controlla il margine
-verticale
+doc_center_installed.css in what follows vertical margin is controlled
 /* TOC */
 .site_container.site_toc_closed { margin-left:600px; } QUIQUI
 .toc_pane { padding-top:0px; }
@@ -867,7 +864,7 @@ verticale
 /* Fixed Search Box and Breadcrumbs */
 #search_crumb_container { padding:15px 0px 10px; background:#fff; float:left; position:fixed; top:0px; z-index:1001; }
 .content_container {
-	padding-top: 10px;      QUIQUI
+	padding-top: 10px;     
 }
 %}
 
@@ -1005,7 +1002,7 @@ for i=1:nTOTargin
 end
 
 % Check if among the input arguments there are explicitly declared inputs
-% which are optionals. That is check if the intersection between the first
+% which are optionals. That is, check if the intersection between the first
 % columns of cell listOptArgs and vector listargins is empty
 [OptArgsWithoutNameValue,PosOpt]=intersect(listargins(:,1),listOptArgs(:,1));
 nOPTargin=length(OptArgsWithoutNameValue);
@@ -1320,11 +1317,11 @@ end
 
 %% CREATE EXAMPLES SECTION OF HTML FILE
 
-% imgtemplate = iamge to include for the examples which can be executed
+% imgtemplate = image to include for the examples which can be executed
 imgtemplate='<img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ';
 
 % the examples which are inside %{   %} are put here.
-% The first sentence which end with a full stop is the title of the example
+% The first sentence which ends with a full stop is the title of the example
 iniexamples=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<div class="examples">\r'...
     '<h2 id="examples">Examples</h2>\r'... % start of expandable examples
@@ -1521,7 +1518,7 @@ for i=1:nTOTargin
     else
     end
     
-    % The endpoint of the substring is See also or the next optional input argument
+    % The endpoint of the substring is "See also" or the next optional input argument
     if i <nREQargin
         endpoint=regexp(fstringsel,['%\s*' listargins{i+1} '\s*:']);
         if isempty(endpoint)
@@ -1721,7 +1718,6 @@ end
 
 %% CREATE Optional Arguments SECTION OF HTML FILE (excluding Name-Value pair)
 
-
 if strcmp(Display,'iter-detailed')
     disp('Detailed information about Input arguments')
     disp(listInpArgs)
@@ -1786,9 +1782,9 @@ else
             shortdesc=[lower(shortdesc(1)) shortdesc(2:end)];
         end
         
-        % Check if optionasl input argument is a structure
-        % just tructure and not structure or Structure because the search
-        % is case sensitive
+        % Check if optional input argument is a structure
+        % find just "tructure" and not "structure" or "Structure" because
+        % the search is case sensitive
         if ~isempty(strfind(shortdesc,'tructure')) && ~isempty(strfind(listOptArgs{i,4},'field'))
             longdesc=listOptArgs{i,4};
             
