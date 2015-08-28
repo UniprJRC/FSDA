@@ -26,7 +26,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %   intercept : Indicator for constant term. Scalar.
 %                     If 1, a model with constant term will be fitted (default),
 %                     if 0, no constant term will be included.
-%                       Example - 'intercept',1 
+%                       Example - 'intercept',1
 %                       Data Types - double
 %        init :      Search initialization. Scalar.
 %                      It specifies the point where to initialize the search
@@ -34,15 +34,15 @@ function [out] = FSReda(y,X,bsb,varargin)
 %                       specified it will be set equal to :
 %                       p+1, if the sample size is smaller than 40;
 %                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                       Example - 'init',100 starts monitoring from step m=100 
+%                       Example - 'init',100 starts monitoring from step m=100
 %                       Data Types - double
-%      nocheck:  Check input arguments. Scalar. 
+%      nocheck:  Check input arguments. Scalar.
 %                       If nocheck is equal to 1 no check is performed on
 %                       matrix y and matrix X. Notice that y and X are left
 %                       unchanged. In other words the additional column of ones for
 %                       the intercept is not added. As default nocheck=0. The
 %                       controls on h, alpha and nsamp still remain
-%                       Example - 'nocheck',1 
+%                       Example - 'nocheck',1
 %                       Data Types - double
 %        tstat:      the kind of t-statistics which have to be monitored.
 %               Character.
@@ -56,6 +56,12 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               normal distribution.
 %               Example - 'tstat','trad'
 %               Data Types - char
+%  conflev:   confidence levels to be used to compute confidence interval
+%               for the elements of $\beta$ and for $\sigma^2$. Vector.
+%               The default value of conflev is [0.95 0.99] that
+%               is 95% and 99% confidence intervals are computed.
+%               Example - 'conflev',[0.90 0.93] 
+%               Data Types - double
 % Remark:       The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
@@ -105,11 +111,15 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               4th col = Normality test
 %  out.Bols=        (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward search
-%    out.S2=       (n-init+1) x 3 matrix containing the monitoring of S2 or R2
+%    out.S2=       (n-init+1) x 4 matrix containing the monitoring of S2 or R2
 %               in each step of the forward search
 %               1st col = fwd search index (from init to n)
 %               2nd col = monitoring of S2
 %               3rd col = monitoring of R2
+%               4th col = monitoring of rescaled S2. In this case the
+%               estimated of $\sigma^2$ at step m is divided by the
+%               consistency factor (to make the estimate asymptotically
+%               unbiased)
 %   out.Coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search
 %               1st col = fwd search index (from init to n)
@@ -125,6 +135,32 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
+%  out.betaint = Confidence intervals for the elements of $\beta$.
+%                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.
+%                 Each third dimension refers to an element of beta
+%                 betaINT(:,:,1) is associated with first element of beta
+%                 .....
+%                 betaINT(:,:,p) is associated with last element of beta
+%                 The first two columns contain the lower
+%                 and upper confidence limits associated with conflev(1).
+%                 Columns three and four contain the lower
+%                 and upper confidence limits associated with conflev(2)
+%                 ....
+%                 The last two columns contain the lower
+%                 and upper confidence limits associated with conflev(end)
+%                 For example betaint(:,3:4,5) contain the lower and upper
+%                 confidence limits for the fifth element of beta using
+%                 confidence level specified in the second element of input
+%                 option conflev.
+%out.sigma2INT = confidence interval for $\sigma^2$.
+%                1st col = fwd search index;
+%                2nd col = lower confidence limit based on conflev(1);
+%                3rd col = upper confidence limit based on conflev(1);
+%                4th col = lower confidence limit based on conflev(2);
+%                5th col = upper confidence limit based on conflev(2);
+%                ... 
+%                penultimate col = lower confidence limit based on conflev(end);
+%                last col = upper confidence limit based on conflev(end);
 %     out.y=     A vector with n elements that contains the response
 %               variable which has been used
 %     out.X=    Data matrix of explanatory variables
@@ -230,6 +266,91 @@ function [out] = FSReda(y,X,bsb,varargin)
     xlabel('Subset size m');
 %}
 
+%{
+    %% Monitoring of 95% and 99% confidence intervals of $\beta$ and $\sigma^2$
+    load hprice.txt;
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+
+    out=FSR(y,X,'plots',0,'msg',0);
+    dout=n-length(out.ListOut);
+    % init = point to start monitoring diagnostics along the FS
+    init=20;
+    [outLXS]=LXS(y,X,'nsamp',10000);
+    outEDA=FSReda(y,X,outLXS.bs,'conflev',[0.95 0.99],'init',init);
+    p=size(X,2)+1;
+    % Set font size, line width and line style
+    figure;
+    lwd=2.5;
+    FontSize=14;
+    linst={'-','--',':','-.','--',':'};
+    nr=3;
+    nc=2;
+    xlimL=init; % lower value fo xlim
+    xlimU=n+1;  % upper value of xlim
+    close all
+    for j=1:p
+        subplot(nr,nc,j);
+        hold('on')
+        % plot 95% and 99% HPD  trajectories
+        plot(outEDA.Bols(:,1),outEDA.betaINT(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+        plot(outEDA.Bols(:,1),outEDA.betaINT(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+
+        % plot estimate of beta1_j
+        plot(outEDA.Bols(:,1),outEDA.Bols(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+
+
+        % Set ylim
+        ylimU=max(outEDA.betaINT(:,4,j));
+        ylimL=min(outEDA.betaINT(:,3,j));
+        ylim([ylimL ylimU])
+
+        % Set xlim
+        xlim([xlimL xlimU]);
+
+        % Add vertical line in correspondence of the step prior to the
+        % entry of the first outlier
+        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
+
+        ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
+        set(gca,'FontSize',FontSize);
+        if j>(nr-1)*nc
+            xlabel('Subset size m','FontSize',FontSize);
+        end
+    end
+
+    % Subplot associated with the monitoring of sigma^2
+    subplot(nr,nc,6);
+    hold('on')
+    % 99%
+    plot(outEDA.sigma2INT(:,1),outEDA.sigma2INT(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+    % 95%
+    plot(outEDA.sigma2INT(:,1),outEDA.sigma2INT(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
+    % Plot rescaled S2
+    plot(outEDA.S2(:,1),outEDA.S2(:,4),'LineWidth',lwd,'Color','k')
+    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);
+    set(gca,'FontSize',FontSize);
+
+    % Set ylim
+    ylimU=max(outEDA.sigma2INT(:,5));
+    ylimL=min(outEDA.sigma2INT(:,4));
+    ylim([ylimL ylimU])
+    % Set xlim
+    xlim([xlimL xlimU]);
+
+    % Add vertical line in correspondence of the step prior to the
+    % entry of the first outlier
+    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
+    xlabel('Subset size m','FontSize',FontSize);
+
+    % Add multiple title
+    suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
+        num2str(xlimL) ',' num2str(xlimU) ...
+        ']'],'t');
+    disp(['The vertical lines are located in the' ...
+        ' step prior to the inclusion of the first outlier'])
+%}
 
 %% Input parameters checking
 if nargin<1
@@ -242,24 +363,24 @@ if nargin<1
     [out1]=FSReda(y,X,out.bs,'init',5);
     % Create scaled squared residuals
     out1.RES=out1.RES.^2;
-    % Specify the characteristics of the highlighted trajectories 
+    % Specify the characteristics of the highlighted trajectories
     fground=struct;
     fground.LineStyle={'-';'--';':';'-.'};
     fground.LineWidth=3;
     fground.Color={'r'};
-    % Plot of monitoring of scaled squared residuals 
+    % Plot of monitoring of scaled squared residuals
     resfwdplot(out1,'fground',fground)
     title('Monitoring squared scaled residuals for Stack loss dataset')
     
     noargmsg = sprintf(['To use FSReda with your own data y (response vector) and X (design matrix), type:\n\n' ...
-                     '    [out]=LXS(y,X) \n' ...
-                     '    [out]=FSReda(y,X,out.bs)\n' ...
-                     '    resfwdplot(out) \n\n' ...
-                     'Type "help FSReda" for more information\n\n' ...
-                     'Click OK to view the monitoring residual plot for the stack loss data.']);
-                 titl='Example of the use of the Forward search with EDA purposes';
-     [cdata, colormap] = imread('logo.png','BackgroundColor',(240/255)*[1 1 1]); 
-     msgbox(noargmsg,titl,'custom',cdata,colormap,'modal');
+        '    [out]=LXS(y,X) \n' ...
+        '    [out]=FSReda(y,X,out.bs)\n' ...
+        '    resfwdplot(out) \n\n' ...
+        'Type "help FSReda" for more information\n\n' ...
+        'Click OK to view the monitoring residual plot for the stack loss data.']);
+    titl='Example of the use of the Forward search with EDA purposes';
+    [cdata, colormap] = imread('logo.png','BackgroundColor',(240/255)*[1 1 1]);
+    msgbox(noargmsg,titl,'custom',cdata,colormap,'modal');
     return
 end
 
@@ -349,7 +470,7 @@ else
         % If the user has not specified a value for the intercept than the
         % column of ones is automatically attached
         X=cat(2,ones(n,1),X); % add column of ones
-    end;
+    end
     
     % p is the number of parameters to be estimated
     p=size(X,2);
@@ -370,7 +491,10 @@ if n<40
 else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
-options=struct('intercept',1,'init',init,'tstat','scal','nocheck',0);
+
+conflevdef=[0.95 0.99];
+options=struct('intercept',1,'init',init,'tstat','scal',...
+    'nocheck',0,'conflev',conflevdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -461,7 +585,9 @@ blast=NaN(p,1);
 % 1st col = fwd search index
 % 2nd col = S2= \sum e_i^2 / (m-p)
 % 3rd col = R^2
-S2=[(init:n)' zer1];
+% 4th col = (\sum e_i^2 / (m-p)) / (consistency factor) to make the
+% estimate asymptotically unbiased
+S2=[(init:n)' NaN(n-init+1,3);];
 
 % mdr= (n-init) x 3 matrix
 % 1st column = fwd search index
@@ -507,6 +633,29 @@ Un=[(init+1:n)' Un];
 %  tstat
 Tols=Bols;
 
+
+
+% vector conflev
+conflev=options.conflev;
+conflev=1-(1-conflev)/2;
+lconflev=length(conflev);
+
+% betaINT will contain the confidence intervals for the elements of $\beta$
+% betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.
+% Each third dimension refers to an element of beta
+% betaINT(:,:,1) is associated with first element of beta
+% .....
+% betaINT(:,:,p) is associated with last element of beta
+% The first two columns contain the lower
+% and upper confidence limits associated with conflev(1).
+% Columns three and four contain the lower
+% and upper confidence limits associated with conflev(2)
+% ....
+% The last two columns contain the lower
+% and upper confidence limits associated with conflev(end)
+betaINT=NaN(n-init+1,2*lconflev,p);
+% sigma2INT confidence interval for $\sigma^2$
+sigma2INT=[(init:n)' zeros(n-init+1,2*lconflev)];
 
 %% Start of the forward search
 if (rank(Xb)~=p)
@@ -566,11 +715,11 @@ else
                 
                 mmX=inv(mAm);
                 dmmX=diag(mmX);
-                % Notice that we could replace the lowwing line with 
+                % Notice that we could replace the lowwing line with
                 % hi=sum((X/mAm).*X,2); but there is no gain since we need
                 % to compute dmmX=diag(mmX);
                 hi=sum((X*mmX).*X,2); %#ok<MINV>
-                 
+                
                 LEV(bsb,mm-init+1)=hi(bsb);
             end % no rank problem
         end
@@ -581,7 +730,7 @@ else
             % Store estimate of \sigma^2 using units forming subset
             if NoRankProblem
                 Sb=(resBSB)'*(resBSB)/(mm-p);
-            end;
+            end
             
         else
             Sb=0;
@@ -597,6 +746,17 @@ else
             if NoRankProblem
                 % Store S2 for the units belonging to subset
                 S2(mm-init+1,2)=Sb;
+                
+                % Store rescaled version of S2 in the fourth column
+                % Compute the variance of the truncated normal distribution
+                if mm<n
+                    a=norminv(0.5*(1+mm/n));
+                    corr=1-2*(n./mm).*a.*normpdf(a);
+                else
+                    corr=1;
+                end
+                Sbrescaled=Sb/corr;
+                S2(mm-init+1,4)=Sbrescaled;
                 
                 % Store maximum studentized residual
                 % among the units belonging to the subset
@@ -669,7 +829,7 @@ else
                 else
                     disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                     Un(mm-init+1,2:end)=unit(1:10);
-                end;
+                end
             end
             
             
@@ -678,23 +838,34 @@ else
                 % ncl= units forming the new noclean
                 ncl=ord(mm+2:n,1);
                 
-            end;
+            end
         end
         
         if mm >= init;
             if NoRankProblem
                 if strcmp(options.tstat,'scal')
-                    % Compute the variance of the truncated normal distribution
-                    if mm<n
-                        a=norminv(0.5*(1+mm/n));
-                        corr=1-2*(n./mm).*a.*normpdf(a);
-                    else
-                        corr=1;
-                    end
+                    
                     Tols(mm-init+1,2:end)=sqrt(corr)*Bols(mm-init+1,2:end)./sqrt(Sb*dmmX');
+                    
                 elseif strcmp(options.tstat,'trad')
                     Tols(mm-init+1,2:end)=Bols(mm-init+1,2:end)./sqrt(Sb*dmmX');
                 end
+                
+                
+                
+                % Compute highest posterior density interval for each value of
+                % Tinvcdf = required quantiles of T distribution
+                % consider just upper quantiles due to simmetry
+                Tinvcdf=tinv(conflev,mm-p);
+                % IGinvcdf = required quantiles of Inverse Gamma distribution
+                Chi2invcdf=chi2inv([conflev 1-conflev],mm-p);
+                
+                    c=sqrt(Sbrescaled*dmmX);
+                for j=1:lconflev
+                    betaINT(mm-init+1,j*2-1:j*2,:)=[ b-Tinvcdf(j)*c  b+Tinvcdf(j)*c]';
+                    sigma2INT(mm-init+1,(j*2):(j*2+1))=[Sbrescaled*(mm-p)/Chi2invcdf(j) Sbrescaled*(mm-p)/Chi2invcdf(j+lconflev)];
+                end
+                
             end % NoRankProblem
         end
     end
@@ -713,6 +884,8 @@ out.S2=S2;
 out.coo=coo;
 out.Tols=Tols;
 out.Un=Un;
+out.betaINT=betaINT;
+out.sigma2INT=sigma2INT;
 out.y=y;
 out.X=X;
 out.class='FSReda';
