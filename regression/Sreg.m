@@ -64,11 +64,11 @@ function [out , varargout] = Sreg(y,X,varargin)
 %    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'nsamp',1000 
+%                 Example - 'refsteps',10 
 %                 Data Types - single | double
-%     reftol  : scalar. Default value of tolerance for the refining steps.
+%     reftol  : tolerance for the refining steps. Scalar. 
 %               The default value is 1e-6;
-%                 Example - 'nsamp',1000 
+%                 Example - 'reftol',1e-05 
 %                 Data Types - single | double
 %refstepsbestr: number of refining iterations for each best subset. Scalar.
 %               Scalar defining number of refining iterations for each
@@ -126,9 +126,9 @@ function [out , varargout] = Sreg(y,X,varargin)
 %               confidence interval will be used.
 %                 Example - 'plots',0 
 %                 Data Types - single | double
-%       yxsave : the response vector y and data matrix X are saved into the output
-%                structure out. Scalar.
-%               Default is 0, i.e. no saving is done.
+%       yxsave : save option. Scalar. if yxsave is equal to 1, the response
+%               vector y and data matrix X are saved into the output
+%               structure out. Default is 0, i.e. no saving is done.
 %               Example - 'yxsave',1 
 %               Data Types - double
 %

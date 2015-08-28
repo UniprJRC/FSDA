@@ -3,7 +3,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
 %
-%   tclust(Y, k, alpha) partitions the points in the n-by-v data matrix Y
+%   tclust partitions the points in the n-by-v data matrix Y
 %   into k clusters.  This partition minimizes the trimmed sum, over all
 %   clusters, of the within-cluster sums of point-to-cluster-centroid
 %   distances.  Rows of Y correspond to points, columns correspond to
@@ -20,7 +20,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               Missing values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values will
 %               automatically be excluded from the computations.
-%            k: scalar which specifies the number of groups
+%            k: Number of groups. Scalar.
+%               Scalar which specifies the number of groups
 %        alpha: global trimming level. alpha is a scalar between 0 and 0.5
 %               or an integer specifying the number of observations which have to
 %               be trimmed. If alpha=0 tclust reduces to traditional model
@@ -30,18 +31,19 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                h=fix(n*(1-alpha)) observations
 %               Else if alpha is an integer greater than 1 clustering is
 %               based on h=n-floor(alpha);
-%    restrfact: positive scalar which constrains the allowed differences
+%  restrfactor: positive scalar which constrains the allowed differences
 %               among group scatters. Larger values imply larger differences of
 %               group scatters. On the other hand a value of 1 specifies the
 %               strongest restriction.
 %
 %  Optional input arguments:
 %
-%       nsamp : scalar or matrix.
+%       nsamp : umber of subsamples to extract.
+%               Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
 %               which will be extracted. If nsamp=0
 %               all subsets will be extracted.
-%               Remark: if the number of all possible subset is <300 the
+%               Remark - if the number of all possible subset is <300 the
 %               default is to extract all subsets, otherwise just 300
 %               If nsamp is a matrix it contains in the rows the indexes of
 %               the subsets which have to be extracted. nsamp in this case
@@ -60,18 +62,35 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               ...
 %               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
 %               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
-%               REMARK: if nsamp is not a scalar option option below
+%               REMARK - if nsamp is not a scalar option option below
 %               startv1 is ignored. More precisely if nsamp has k columns
 %               startv1=0 elseif nsamp has k*(v+1) columns option startv1
 %               =1.
-%    refsteps : scalar defining number of refining iterations in each
-%               subsample (default = 15).
-%     reftol  : scalar. Default value of tolerance for the refining steps
+%                 Example - 'nsamp',1000
+%                 Data Types - double
+%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
+%               subsample  Default is 15.
+%               refsteps = 0 means "raw-subsampling" without iterations.
+%                 Example - 'refsteps',10 
+%                 Data Types - single | double
+%     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-14;
-%equalweights : a logical value specifying whether cluster weights
-%               shall be considered in the concentration,
-%               assignment steps and computation of the likelihood.
-%               if equalweights = true we are (ideally) assuming equally sized groups by maximizing
+%                 Example - 'reftol',1e-05 
+%                 Data Types - single | double
+%    refsteps : number of refining iterations in each
+%               subsample. Scalar. Default is 15.
+%                 Example - 'refsteps',10 
+%                 Data Types - single | double
+%     reftol  : tolerance for the refining steps. Scalar.  
+%               The default value is 1e-14;
+%                 Example - 'reftol',1e-05 
+%                 Data Types - single | double
+%equalweights : cluster weights in the concentration and assignment steps.
+%               Logical. A logical value specifying whether cluster weights
+%               shall be considered in the concentration, assignment steps
+%               and computation of the likelihood.
+%               if equalweights = true we are (ideally) assuming equally
+%               sized groups by maximizing
 %
 %
 %                 \[
@@ -89,7 +108,10 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %               Remark: \sum_{j=1}^k n_j \log n_j/n is the so called entropy
 %               term
-%       mixt  : scalar, which specifies whether mixture modelling or crisp
+%                 Example - 'equalweights',true 
+%                 Data Types - Logical
+%       mixt  : mixture modelling or crisp assignmen. Scalar. 
+%               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
 %               controls which is the criterior to find the untrimmed units
@@ -106,45 +128,64 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               \end{equation}
 %               where $R_j$ contains the indexes of the observations which
 %               are assigned to group $j$,
-%               Remark: if mixt>=1 previous parameter equalweights is
+%               Remark - if mixt>=1 previous parameter equalweights is
 %               automatically set to 1
 %               Parameter mixt also controls the criterion to select the units to trim
 %               if mixt == 2 the h units are those which give the largest
 %               contribution to the likelihood that is the h largest
 %               values of
-%                   \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)
+%               \[
+%                   \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)   \qquad
 %                    i=1, 2, ..., n
+%               \]
 %               elseif mixt==1 the criterion to select the h units is
 %               exactly the same as the one which is used in crisp
-%               assignment. That is: the n units are allocated to a cluster
-%               cluster according to criterior
+%               assignment. That is: the n units are allocated to a 
+%               cluster according to criterion
+%               \[
 %                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i; \; \hat \theta_j)
+%               \]
 %               and then these n numbers are ordered and the units
 %               associated with the largest h numbers are untrimmed.
-%       plots : Scalar
+%               Example - 'mixt',1
+%               Data Types - single | double
+%       plots : Plot on the screen. Scalar. 
 %               If plots = 1, a plot with the classification is
 %               shown on the screen.
-%        msg  : scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displayed
+%                 Example - 'plots',1 
+%                 Data Types - single | double
+%        msg  : Level of output to display. Scalar.
+%               Scalar which controls whether to display or not messages
+%               on the screen. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               or the number of subsets in which there was no convergence
 %               else no message is displayed on the screen
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
+%                 Example - 'msg',1 
+%                 Data Types - single | double
+%      nocheck: Check input arguments. Scalar. 
+%               If nocheck is equal to 1 no check is performed on
 %               matrix Y.
 %               As default nocheck=0.
-%      startv1: scalar. If startv is 1 then initial
+%                 Example - 'nocheck',10 
+%                 Data Types - single | double
+%      startv1: how to initialize centroids and cov matrices. Scalar. 
+%               If startv1 is 1 then initial
 %               centroids and and covariance matrices are based on (v+1)
 %               observations randomly chosen, else each centroid is
 %               initialized taking a random row of input data matrix and
 %               covariance matrices are initialized with identity matrices.
-%               Remark: in order to start with a routine which is in the
+%               Remark 1- in order to start with a routine which is in the
 %               required parameter space, eigenvalue restrictions are
 %               immediately applied. The default value of startv1 is 1.
-%               REMARK: option startv1 is used just if nsamp is a scalar
+%               Remark 2 - option startv1 is used just if nsamp is a scalar
 %               (see for more details the help associated with nsamp)
+%                 Example - 'startv1',1 
+%                 Data Types - single | double
 %       Ysave : Scalar that is set to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 0, i.e.
 %               no saving is done.
+%                 Example - 'Ysave',1 
+%                 Data Types - single | double
 %
 %
 %       Remark: The user should only give the input arguments that have to
@@ -157,32 +198,32 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %         out:   structure which contains the following fields
 %
-%            out.idx  : n-by-1 vector containing assignment of each unit to
+%            out.idx  = n-by-1 vector containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k. 0 indicates trimmed
 %                       observations.
-%            out.muopt: k-by-v matrix containing cluster centroid locations.
+%            out.muopt= k-by-v matrix containing cluster centroid locations.
 %                       Robust estimate of final centroids of the groups.
-%         out.sigmaopt: v-by-v-by-k array containing estimated constrained
+%         out.sigmaopt= v-by-v-by-k array containing estimated constrained
 %                       covariance for the k groups.
-%              out.bs : k-by-1 vector containing the units forming initial
+%              out.bs = k-by-1 vector containing the units forming initial
 %                       subset associated with muopt.
-%            out.post : n-by-k matrix containing posterior probabilities
+%            out.post = n-by-k matrix containing posterior probabilities
 %                       out.post(i,j) contains posterior probabilitiy of unit
 %                       i from component (cluster) j. For the trimmed units
 %                       posterior probabilities are 0
-%            out.siz  : matrix of size k-by-3
+%            out.siz  = matrix of size k-by-3
 %                       1st col = sequence from 0 to k
 %                       2nd col = number of observations in each cluster
 %                       3rd col = percentage of observations in each cluster
 %                       Remark: 0 denotes unassigned units
-%   out.equalweights  : logical. It is true if in the clustering procedure
+%   out.equalweights  = logical. It is true if in the clustering procedure
 %                       we (ideally) assumed equal cluster weights
 %                       else it is false if we allowed for different
 %                       cluster sizes
-%               out.h : scalar. Number of observations that have determined the
+%               out.h = scalar. Number of observations that have determined the
 %                       centroids (number of untrimmed units).
-%             out.obj : scalar. Value of the objective function which is minimized
+%             out.obj = scalar. Value of the objective function which is minimized
 %                       (value of the best returned solution).
 %                       If input option mixt >1 the likelihood which is
 %                       maximized is a mixture likelihood as follows
@@ -193,35 +234,26 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       with the constraint that $\# \bigcup_{j=1}^k
 %                       R_j=h$. In the classification likelihood is input
 %                       option equalweights=0 then \pi_j'=1 j=1, ..., k
-%       out.notconver : scalar. Number of subsets without convergence
-%              out.Y  : original data matrix Y. The field is present if option
+%       out.notconver = scalar. Number of subsets without convergence
+%              out.Y  = original data matrix Y. The field is present if option
 %                       Ysave is set to 1.
-%            out.AIC  : AIC
-%            out.BIC  : BIC
-%          out.fullsol: column vector of size nsamp which contains the
+%            out.AIC  = AIC. Scalar. Akaike information criterion
+%            out.BIC  = BIC. Scalar. Bayesian information criterion
+%          out.fullsol= column vector of size nsamp which contains the
 %                       value of the objective function for each
 %                       subsample.
 %
 %  Optional Output:
 %
-%            C     : matrix of size nsamp-by-(v+1)*k containing (in the
+%            C     : Indexes of extracted subsamples. Matrix.
+%                    Matrix of size nsamp-by-(v+1)*k containing (in the
 %                    rows) the indices of the subsamples extracted for
-%                    computing the estimate
+%                    computing the estimate.
 %
-% See also tkmeans, estepFS.m
-%
-% References:
-%
-% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
-% (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
-% of Statistics, Vol.36, 1324-1345. Technical Report available at
-% www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+% More About:
 %
 %
-% Copyright 2008-2015.
-% Written by FSDA team
-%
-% DETAILS. This iterative algorithm initializes k clusters randomly and
+% This iterative algorithm initializes k clusters randomly and
 % performs "concentration steps" in order to improve the current cluster
 % assignment. The number of maximum concentration steps to be performed is
 % given by input parameter refsteps. For approximately obtaining the global
@@ -229,8 +261,22 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % are performed until convergence or refsteps is reached. When processing
 % more complex data sets higher values of nsamp and refsteps have to be
 % specified (obviously implying extra computation time). However, if more
-% then 10% of the iterations do not converge, a warning message is issued,
-% indicating that nsamp has to be increased.
+% then 10 per cent of the iterations do not converge, a warning message is
+% issued, indicating that nsamp has to be increased.
+%
+% See also tkmeans, estepFS.m
+%
+% References:
+%
+% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008), 
+% "A General Trimming Approach to Robust Cluster Analysis". Annals
+% of Statistics, Vol.36, 1324-1345. Technical Report available at
+% http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+%
+%
+% Copyright 2008-2015.
+% Written by FSDA team
+%
 %
 %
 %<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
@@ -543,7 +589,7 @@ msg=options.msg;            % Scalar which controls the messages displayed on th
 
 mixt=options.mixt;         % if options.mixt==1 mixture model is assumed
 
-if mixt>=1 && equalweights == 1
+if mixt>=1 && equalweights == true
     warning('FSDA:tclust:WrongEqualWeights','option equalweights must be different from 1 if mixture model approach is assumed')
     warning('FSDA:tclust:WrongEqualWeights','options equalweights is reset to 0')
 end
@@ -1161,8 +1207,8 @@ out.siz=siz;
 % 0.5*v*(v+1) estimates for each of the k covariance matrices
 npar=v*k;
 
-% if equalweights = 0 the k-1 mixture proportions parameters must be added
-if equalweights==0
+% if equalweights = false the k-1 mixture proportions parameters must be added
+if equalweights==false
     npar=npar +(k-1);
 end
 
