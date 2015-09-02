@@ -355,6 +355,8 @@ function [out] = FSReda(y,X,bsb,varargin)
 %}
 
 %% Input parameters checking
+%this example is run as a demonstration in case the user runs FSReda
+%without input parameters.
 if nargin<1
     stack_loss=load('stack_loss.txt');
     y=stack_loss(:,4);
