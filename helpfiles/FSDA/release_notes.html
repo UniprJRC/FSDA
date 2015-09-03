@@ -1,200 +1,246 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
-
-
+<html>
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-<title>Flexible Statistics Data Analysis Toolbox&trade; Release Notes (Forward Search Data Analysis Toolbox&trade;)</title>
-<link href="docstyle.css" rel="stylesheet" type="text/css">
-<meta content="refpage" name="chunktype">
-
-<meta content="DocBook XSL Stylesheets V1.52.2" name="generator">
-<meta content="text/javascript" http-equiv="Content-Script-Type">
-<script  type="text/javascript" language="javaScript" src="bottom.js"></script>
-
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <title>Flexible Statistics Data Analysis Toolbox™ Release Notes (Forward
+  Search Data Analysis Toolbox™)</title>
+  <link href="docstyle.css" rel="stylesheet" type="text/css">
+  <meta content="refpage" name="chunktype">
+  <meta content="text/javascript" http-equiv="Content-Script-Type">
+  <script type="text/javascript" language="javaScript" src="bottom.js">
+ </script>
 </head>
 
-
 <body>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<a name="top_of_page"></a> 
 
-<a name="top_of_page"></a>
-<p style="font-size: 1px;">&nbsp;</p>
-<table border="0" cellpadding="0" cellspacing="0" class="nav" summary="Navigation aid" width="100%">
-	<tr>
-		<td valign="baseline"><b>FSDA Toolbox Release Notes</b></td>
-		<td align="right" valign="baseline">&nbsp;&nbsp;
-		<a href="function_reference.html">
-		<img align="bottom" alt="FSDA" border="0" src="images_help/b_next.gif"></a></td>
-	</tr>
+<p style="font-size: 1px;"> </p>
+
+<table border="0" cellpadding="0" cellspacing="0" class="nav"
+summary="Navigation aid" width="100%">
+  <tbody>
+    <tr>
+      <td valign="baseline"><b>FSDA Toolbox Release Notes</b></td>
+      <td align="right" valign="baseline">   <a
+        href="function_reference.html"><img align="bottom" alt="FSDA"
+        border="0" src="images_help/b_next.gif"></a></td>
+    </tr>
+  </tbody>
 </table>
-<a name="bqolq3d-1"></a>
+<a name="bqolq3d-1"></a> 
+
 <h2 id="bqolq3d-1" class="title">Summary by Version</h2>
-<p>This table provides quick access to what&#39;s new in each version.</p>
-<table border="2" cellpadding="4" cellspacing="0" class="body" width="100%">
-	<colgroup>
-		<col><col width="20%"><col width="20%"><col width="20%">
-		<col width="20%">
-	</colgroup>
-	<thead>
-		<tr valign="top">
-			<th bgcolor="#B2B2B2" valign="top">Version (Release)</th>
-			<th bgcolor="#B2B2B2" valign="top" style="width: 32%">New Features and Changes</th>
-			<th bgcolor="#B2B2B2" valign="top">Version Compatibility Considerations</th>
-			<th bgcolor="#B2B2B2" valign="top">Fixed Bugs and Known Problems</th>
-			<th bgcolor="#B2B2B2" valign="top">Release dates</th>
-		</tr>
-	</thead>
-	<tr>
-		<td bgcolor="#F2F2F2">
-		<p><b>V3.0 (R2015a)</b></p>
-		</td> 
-		<td bgcolor="#F2F2F2" style="width: 32%">
-		Major release. Added robust regression (tau) and multivariate estimators (Stahel-Donoho).
-		Functions taureg.m and SDest.m.
-        New weight functions (hyperbolic, Hampel and optimal).<br>
-		New routines for robust Bayesian regression (i.e. <a href="fsrbmdr.html">
-		FSRBmdr</a>).<br>New routines for robust heteroskedastic regression (i.e.
-		<a href="fsrhmdr.html">FSRHmdr</a>).<br>Added cluster analysis routines (<a href="tclust.html">tclust</a>,
-		<a href="tkmeans.html">tkmeans</a>, <a href="mixsim.html">MixSim</a>), 
-		with related example datasets. New exploratory tools for fininding the 
-		number of groups based on random start monitoring of minimum deletion 
-		residual (fsrmdrRS.m, first FSDA function which exploits the parallel 
-		processing toolbox, if present).<br>New routines for connecting MATLAB 
-		with R.<br>New function&nbsp;to obtain proper threshold for robust 
-		estimators in order to have an empirical size equal to the nominal 
-		(function RobRegrSize.m).<br>Added univariate robust scale estimators Qn 
-		and Sn (functions Qn.m and Sn.m).<br>New utilities to extract elements 
-		above diagonal in a vector (function triu2vec.m) and to position figures 
-		(function upperfracpos.m).<br>New function to compute the cdf of the 
-		linear combination of non central chi-squared random variables (<a href="ncx2mixtcdf.html">ncx2mixtcdf</a>).</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		Documentation made compatible with the new help system introduced with 
-		MATLAB R2015a</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		<br>In function spmplot, the multiple histograms (boxplots) on the main 
-		diagonal of the scatter plot matrix do not work with R2015a because of 
-		recent changes in gplotmatrix. </p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>February 2015</p>
-		<p>
-		&nbsp;</p>
-		</td>
-	</tr>
-	<tr>
-		<td bgcolor="#F2F2F2">
-		<p><b>V2.1 (R2013a)</b></p>
-		</td> 
-		<td bgcolor="#F2F2F2" style="width: 32%">
-		<p>New very fast implementation of the Forward Search for multivariate analysis 
-		(<a href="fsmmmd.html">FSMmmd</a>). Forward Search in regression modified to deal with
-		 the cases in which in a particular step of the search subset is not full rank 
-		(<a href="fsr.html">FSR</a> and <a href="fsrmdr.html">FSRmdr</a>). 
-		 New scatter plot matrix with multiple groups and multiple boxplots on the main diagonal (<a href="spmplot.html">spmplot</a>).<br></p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		Structure modified for compatibility with MATLAB R2012b to R2013a releases. Three APPs introduced in release R2013a.		</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		<br>-</p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>May 2013</p>
-		<p>
-		&nbsp;</p>
-		</td>
-	</tr>
-	<tr valign="top">
-		<td bgcolor="#F2F2F2">
-		<p><b>V2.0 (R2011b)</b></p>
-		</td> 
-		<td bgcolor="#F2F2F2" style="width: 32%">
-		<p>Major release. Traditional robust estimators added including S, MM, MCD, MVE, 
-		(<a href="sreg.html">Sreg</a>, <a href="smult.html">Smult</a>,
-		<a href="mmreg.html">MMreg</a>, <a href="mmmult.html">MMmult</a>,
-		<a href="mcd.html">mcd</a>, <a href="mve.html">mve</a>) and univariate and bivariate analysis (<a href="unibiv.html">unibiv</a>). New interactive plots
-			and interactive graphics features.<br></p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		Redesigned the definition of many optional input parameters in terms of structures </p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		<br>-</p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>September 2011</p>
-		<p>
-		&nbsp;</p>
-		</td>
-	</tr>
-	<tr valign="top">
-		<td bgcolor="#F2F2F2">
-		<p><b>V1.1 (R2010b)</b></p>
-		</td> 
-		<td bgcolor="#F2F2F2" style="width: 32%">
-		<p>Multivariate data analysis routines have been added. 
-		Function <a href="resfwdplot.html">resfwdplot</a> considerably improved. <br></p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		<br>-</p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		<br>-</p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>September 2010</p>
-		<p>
-		&nbsp;</p>
-		</td>
-	</tr>
-	<tr>
-		<td bgcolor="#F2F2F2">
-		<p><b>V1.0 (R2010a)</b></p>
-		</td> 
-		<td bgcolor="#F2F2F2" style="width: 32%">
-		<p>-<br></p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>A few functions use ~ to denote unused output parameters as from 
-		release 2009b</p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>
-		<br>-</p>
-		</td>
-		<td bgcolor="#F2F2F2">
-		<p>February 2010</p>
-		<p>
-		&nbsp;</p>
-		</td>
-	</tr>
 
+<p>This table provides quick access to what's new in each version.</p>
+
+<table border="2" cellpadding="4" cellspacing="0" class="body" width="100%">
+  <colgroup><col>
+    <col width="20%">
+    <col width="20%">
+    <col width="20%">
+    <col width="20%">
+  </colgroup>
+  <thead>
+    <tr valign="top">
+      <th bgcolor="#B2B2B2" valign="top">Version (Release)</th>
+      <th bgcolor="#B2B2B2" valign="top" style="width: 32%">New Features and
+        Changes</th>
+      <th bgcolor="#B2B2B2" valign="top">Version Compatibility
+      Considerations</th>
+      <th bgcolor="#B2B2B2" valign="top">Fixed Bugs and Known Problems</th>
+      <th bgcolor="#B2B2B2" valign="top">Release dates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td bgcolor="#F2F2F2"><p><b>V3.1 (R2015b)</b></p>
+      </td>
+      <td>Major release. 
+
+        <p>Function simdataset.m modified to allow the user to simulate
+        outliers from different distributions and contamination schemes and/or
+        contaminate existing datasets. </p>
+
+        <p>New Bayesian regression analysis routines: FSRB.m, FSRBeda.m,
+        FSRBmdr.m, regressB.m. </p>
+
+        <p>In FSReda.m: monitoring of confidence intervals of beta and
+        sigma^2.</p>
+
+        <p>In FSRBeda.m: monitoring of postirior density estimates of bata and
+        sigma^2.</p>
+
+        <p>New functions for inverse gamma computation: inversegampdf.m,
+        inversegamcdf.m, inversegaminv.m.</p>
+
+        <p>Added functions to monitor units forming subset in heterosckedastic
+        and Bayesian regression: FSRHbsb.m, FSRBbsb.m.</p>
+
+        <p>Added new datasets for Bayesian exemples.</p>
+
+        <p>FSMtra.m: added option for the robust transformation in the
+        Yeo-Johnson family. </p>
+
+        <p>addFSDA2path.m: modified for compatibility with unix platforms and
+        to address changes in the folder organization of FSDA functions. </p>
+
+        <p></p>
+      </td>
+      <td></td>
+      <td>In function spmplot, the multiple histograms (boxplots) on the main
+        diagonal of the scatter plot matrix is now working also with R2015a and
+        R2015b.</td>
+      <td>September 2015</td>
+    </tr>
+    <tr>
+      <td bgcolor="#F2F2F2"><p><b>V3.0 (R2015a)</b></p>
+      </td>
+      <td bgcolor="#F2F2F2" style="width: 32%">Major release. 
+
+        <p>Added robust regression (tau) and multivariate estimators
+        (Stahel-Donoho). Functions taureg.m and SDest.m. New weight functions
+        (hyperbolic, Hampel and optimal).<br>
+        New routine for robust Bayesian regression (i.e. <a
+        href="fsrbmdr.html">FSRBmdr</a>).<br>
+        New routine for robust heteroskedastic regression (i.e. <a
+        href="fsrhmdr.html">FSRHmdr</a>).<br>
+        Added cluster analysis routines (<a href="tclust.html">tclust</a>, <a
+        href="tkmeans.html">tkmeans</a>, <a href="mixsim.html">MixSim</a>),
+        with related example datasets. New exploratory tools for fininding the
+        number of groups based on random start monitoring of minimum deletion
+        residual (fsrmdrRS.m, first FSDA function which exploits the parallel
+        processing toolbox, if present).<br>
+        New routines for connecting MATLAB with R.<br>
+        New function to obtain proper threshold for robust estimators in order
+        to have an empirical size equal to the nominal (function
+        RobRegrSize.m).<br>
+        Added univariate robust scale estimators Qn and Sn (functions Qn.m and
+        Sn.m).<br>
+        New utilities to extract elements above diagonal in a vector (function
+        triu2vec.m) and to position figures (function upperfracpos.m).<br>
+        New function to compute the cdf of the linear combination of non
+        central chi-squared random variables (<a
+        href="ncx2mixtcdf.html">ncx2mixtcdf</a>).</p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>Documentation made compatible with the new help
+        system introduced with MATLAB R2015a</p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>In function spmplot, the multiple histograms
+        (boxplots) on the main diagonal of the scatter plot matrix do not work
+        with R2015a because of recent changes in gplotmatrix. </p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>February 2015</p>
+
+        <p> </p>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#F2F2F2"><p><b>V2.1 (R2013a)</b></p>
+      </td>
+      <td bgcolor="#F2F2F2" style="width: 32%"><p>New very fast implementation
+        of the Forward Search for multivariate analysis (<a
+        href="fsmmmd.html">FSMmmd</a>). Forward Search in regression modified
+        to deal with the cases in which in a particular step of the search
+        subset is not full rank (<a href="fsr.html">FSR</a> and <a
+        href="fsrmdr.html">FSRmdr</a>). New scatter plot matrix with multiple
+        groups and multiple boxplots on the main diagonal (<a
+        href="spmplot.html">spmplot</a>).<br>
+        </p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>Structure modified for compatibility with MATLAB
+        R2012b to R2013a releases. Three APPs introduced in release R2013a. </p>
+      </td>
+      <td bgcolor="#F2F2F2"><p><br>
+        -</p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>May 2013</p>
+
+        <p> </p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td bgcolor="#F2F2F2"><p><b>V2.0 (R2011b)</b></p>
+      </td>
+      <td bgcolor="#F2F2F2" style="width: 32%"><p>Major release. Traditional
+        robust estimators added including S, MM, MCD, MVE, (<a
+        href="sreg.html">Sreg</a>, <a href="smult.html">Smult</a>, <a
+        href="mmreg.html">MMreg</a>, <a href="mmmult.html">MMmult</a>, <a
+        href="mcd.html">mcd</a>, <a href="mve.html">mve</a>) and univariate and
+        bivariate analysis (<a href="unibiv.html">unibiv</a>). New interactive
+        plots and interactive graphics features.<br>
+        </p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>Redesigned the definition of many optional input
+        parameters in terms of structures </p>
+      </td>
+      <td bgcolor="#F2F2F2"><p><br>
+        -</p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>September 2011</p>
+
+        <p> </p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td bgcolor="#F2F2F2"><p><b>V1.1 (R2010b)</b></p>
+      </td>
+      <td bgcolor="#F2F2F2" style="width: 32%"><p>Multivariate data analysis
+        routines have been added. Function <a
+        href="resfwdplot.html">resfwdplot</a> considerably improved. <br>
+        </p>
+      </td>
+      <td bgcolor="#F2F2F2"><p><br>
+        -</p>
+      </td>
+      <td bgcolor="#F2F2F2"><p><br>
+        -</p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>September 2010</p>
+
+        <p> </p>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#F2F2F2"><p><b>V1.0 (R2010a)</b></p>
+      </td>
+      <td bgcolor="#F2F2F2" style="width: 32%"><p>-<br>
+        </p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>A few functions use ~ to denote unused output
+        parameters as from release 2009b</p>
+      </td>
+      <td bgcolor="#F2F2F2"><p><br>
+        -</p>
+      </td>
+      <td bgcolor="#F2F2F2"><p>February 2010</p>
+
+        <p> </p>
+      </td>
+    </tr>
+  </tbody>
 </table>
+
 <p></p>
+
 <p></p>
-<table border="0" cellpadding="0" cellspacing="0" class="nav" summary="Navigation aid" width="100%">
-	<tr valign="top">
-		<td align="left" width="20">&nbsp;</td>
-		<td align="left">&nbsp;</td>
-		<td>&nbsp;</td>
-		<td align="right">Version 3.0 FSDA Toolbox&trade; Software</td>
-		<td align="right" width="20"><a href="function_reference.html">
-		<img align="bottom" alt="FSDA" border="0" src="images_help/b_next.gif"></a></td>
-	</tr>
+
+<table border="0" cellpadding="0" cellspacing="0" class="nav"
+summary="Navigation aid" width="100%">
+  <tbody>
+    <tr valign="top">
+      <td align="left" width="20"> </td>
+      <td align="left"> </td>
+      <td> </td>
+      <td align="right">Version 3.0 FSDA Toolbox™ Software</td>
+      <td align="right" width="20"><a href="function_reference.html"><img
+        align="bottom" alt="FSDA" border="0"
+      src="images_help/b_next.gif"></a></td>
+    </tr>
+  </tbody>
 </table>
 <br>
-
-<script type ="text/javascript" language="javaScript">
-document.write(barra);
-</script>
-
+<script type="text/javascript" language="javaScript">
+document.write(barra);</script>
 </body>
-
 </html>
