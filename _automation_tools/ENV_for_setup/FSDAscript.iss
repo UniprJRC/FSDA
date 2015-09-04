@@ -132,7 +132,8 @@ MatlabExe: String;
 doc_command: String;
 adobe_comm: String;
 command: String;
-Rel8: Boolean;
+Rel8: Boolean; 
+Rel2015 : Boolean;
 MatlabIsInstalled: Boolean;
 
 function MyMatlabVersion(param: String): String;
@@ -218,6 +219,10 @@ var
 if (CompareVersion (LevMatlab, '8') >= 0) then
  begin
     Rel8 := True;
+    if (CompareVersion (LevMatlab, '8.5') >= 0) then
+     begin
+          Rel2015 := True;
+     end;
  end;
 
   MatlabIsInstalled := True;
@@ -330,7 +335,10 @@ end;
 function doc_func(param: String): String;
 begin
   if (Rel8) then
-    doc_command := ExpandConstant('doc -classic ')
+    if (Rel2015) then
+        doc_command := ExpandConstant('doc ')
+    else
+        doc_command := ExpandConstant('doc -classic ')
   else
     doc_command := ExpandConstant('doc ');
   Result := doc_command;
@@ -390,6 +398,7 @@ begin
   if (CurStep=ssInstall) then
   begin
      Rel8 := False;
+     Rel2015 := False;
      MatlabIsInstalled := False;
      MyMatlabVersion('');
      doc_func('');
