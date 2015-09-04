@@ -36,6 +36,8 @@ multivariate_regression/aircraft.txt
 multivariate_regression/baby.txt
 multivariate_regression/dyestuff.txt
 regression/algae.txt
+regression/BankProfit.txt
+regression/BankProfitR.txt
 regression/credit_card.txt
 regression/fishery.txt
 regression/Fishery2002.txt
