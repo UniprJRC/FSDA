@@ -351,7 +351,7 @@ set(h,'FontSize',14);
 clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
-FSM(Y)
+FSM(Y,'plots',2)
 
 
 %% TR: analysis using S and MM estimators
@@ -519,14 +519,14 @@ clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
-FSM(Y,'init',40)
+FSM(Y,'init',40,'plots',2)
 
 %% TR transformed: automatic outlier detection procedure (part II)
 clearvars;close all;
 load('recordfg');
 Y=recordfg.data;
 Y=Y.^-3;
-FSM(Y)
+FSM(Y,'plots',2)
 
 
 %% TR transformed: random starts
@@ -857,7 +857,7 @@ clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=Y(1:100,:);
-[out]=FSM(Y);
+[out]=FSM(Y,'plots',2);
 
 %% SB (genuine notes): brushing from mmdplot
 % Interactive_example

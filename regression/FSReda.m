@@ -135,7 +135,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
-%  out.betaint = Confidence intervals for the elements of $\beta$.
+%  out.betaINT = Confidence intervals for the elements of $\beta$.
 %                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.
 %                 Each third dimension refers to an element of beta
 %                 betaINT(:,:,1) is associated with first element of beta
@@ -388,106 +388,112 @@ if nargin<1
     return
 end
 
-if nargin>3
-    
-    % chklist = vector containing the names of optional arguments
-    chklist=varargin(1:2:length(varargin));
-    
-    % chkint gives the position of the option nocheck in vector chklist
-    % It is empty if the option nocheck is not specified by the user
-    chkint=find(strcmp('nocheck',chklist));
-else
-    chkint='';
-end
+% if nargin>3
+%     
+%     % chklist = vector containing the names of optional arguments
+%     chklist=varargin(1:2:length(varargin));
+%     
+%     % chkint gives the position of the option nocheck in vector chklist
+%     % It is empty if the option nocheck is not specified by the user
+%     chkint=find(strcmp('nocheck',chklist));
+% else
+%     chkint='';
+% end
+% 
+% % If nocheck=1 skip checks on y and X
+% if ~isempty(chkint) && cell2mat(varargin(2*chkint))==1;
+%     [n,p]=size(X);
+% else
+%     
+%     % The first argument which is passed is y
+%     if nargin<1 || isempty(y)==1
+%         error('FSDA:FSReda:missingInputs','vector y is missing');
+%     end
+%     
+%     [m,q]=size(y);
+%     
+%     % If y is a row vector it is transformed in a column vector
+%     if q~=1
+%         if m==1
+%             y=y';
+%         else
+%             error('FSDA:FSReda:Wrongy','y is not one-dimensional.');
+%         end
+%     end
+%     
+%     
+%     % The second argument which is passed is X
+%     if nargin<2 || isempty(X)==1
+%         error('FSDA:FSReda:missingInputs','Input matrix X not specified.');
+%     else
+%         % X must be a 2-dimensional array
+%         % (line below correspods to if ndims(X)>2)
+%         if ~ismatrix(X)
+%             error('FSDA:FSReda:WrongX','X must be a matrix (2D array)');
+%         end
+%     end
+%     
+%     % Missing values are removed from X and y
+%     na.X=~isfinite(X*ones(size(X,2),1)); % na.X is a logical vector
+%     na.y=~isfinite(y);
+%     if size(na.X,1)~=size(na.y,1)
+%         error('FSDA:FSReda:WrongInputs','Number of observations in X and y not equal.');
+%     end
+%     
+%     % Observations with missing or infinite values are ommitted.
+%     ok=~(na.X|na.y); % | = Element-wise logical OR
+%     X=X(ok,:);
+%     y=y(ok,:);
+%     
+%     % Now n is the new number of non missing observations
+%     n=length(y);
+%     
+%     if nargin<3
+%         error('FSDA:FSReda:missingInputs','Initial subset is missing');
+%     end
+%     
+%     % Now check if the intercept has to be added
+%     if nargin > 3
+%         
+%         % chklist = vector containing the names of optional arguments
+%         chklist=varargin(1:2:length(varargin));
+%         
+%         % chkint is non empty if the user has specified the option intercept
+%         % chkint gives the position of the option intercept in vector chklist
+%         % It is empty if the option intercept is not specified by the user
+%         chkint=find(strcmp('intercept',chklist));
+%         
+%         
+%         % if a value for the intercept has been specified
+%         % and this value is equal to 1
+%         % then add the colum of ones to matrix X
+%         if isempty(chkint) || cell2mat(varargin(2*chkint))==1
+%             X=cat(2,ones(n,1),X); % add column of ones
+%         end
+%     else
+%         % If the user has not specified a value for the intercept than the
+%         % column of ones is automatically attached
+%         X=cat(2,ones(n,1),X); % add column of ones
+%     end
+%     
+%     % p is the number of parameters to be estimated
+%     p=size(X,2);
+%     
+%     if n < p
+%         error('FSDA:FSReda:NsmallerP',['Need more observations than variables: n=' int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
+%     end
+%     
+%     rk=rank(X);
+%     if rk < p
+%         error('FSDA:FSReda:NoFullRank','Matrix X is singular');
+%     end
+% end
 
-% If nocheck=1 skip checks on y and X
-if ~isempty(chkint) && cell2mat(varargin(2*chkint))==1;
-    [n,p]=size(X);
-else
-    
-    % The first argument which is passed is y
-    if nargin<1 || isempty(y)==1
-        error('FSDA:FSReda:missingInputs','vector y is missing');
-    end
-    
-    [m,q]=size(y);
-    
-    % If y is a row vector it is transformed in a column vector
-    if q~=1
-        if m==1
-            y=y';
-        else
-            error('FSDA:FSReda:Wrongy','y is not one-dimensional.');
-        end
-    end
-    
-    
-    % The second argument which is passed is X
-    if nargin<2 || isempty(X)==1
-        error('FSDA:FSReda:missingInputs','Input matrix X not specified.');
-    else
-        % X must be a 2-dimensional array
-        % (line below correspods to if ndims(X)>2)
-        if ~ismatrix(X)
-            error('FSDA:FSReda:WrongX','X must be a matrix (2D array)');
-        end
-    end
-    
-    % Missing values are removed from X and y
-    na.X=~isfinite(X*ones(size(X,2),1)); % na.X is a logical vector
-    na.y=~isfinite(y);
-    if size(na.X,1)~=size(na.y,1)
-        error('FSDA:FSReda:WrongInputs','Number of observations in X and y not equal.');
-    end
-    
-    % Observations with missing or infinite values are ommitted.
-    ok=~(na.X|na.y); % | = Element-wise logical OR
-    X=X(ok,:);
-    y=y(ok,:);
-    
-    % Now n is the new number of non missing observations
-    n=length(y);
-    
-    if nargin<3
-        error('FSDA:FSReda:missingInputs','Initial subset is missing');
-    end
-    
-    % Now check if the intercept has to be added
-    if nargin > 3
-        
-        % chklist = vector containing the names of optional arguments
-        chklist=varargin(1:2:length(varargin));
-        
-        % chkint is non empty if the user has specified the option intercept
-        % chkint gives the position of the option intercept in vector chklist
-        % It is empty if the option intercept is not specified by the user
-        chkint=find(strcmp('intercept',chklist));
-        
-        
-        % if a value for the intercept has been specified
-        % and this value is equal to 1
-        % then add the colum of ones to matrix X
-        if isempty(chkint) || cell2mat(varargin(2*chkint))==1
-            X=cat(2,ones(n,1),X); % add column of ones
-        end
-    else
-        % If the user has not specified a value for the intercept than the
-        % column of ones is automatically attached
-        X=cat(2,ones(n,1),X); % add column of ones
-    end
-    
-    % p is the number of parameters to be estimated
-    p=size(X,2);
-    
-    if n < p
-        error('FSDA:FSReda:NsmallerP',['Need more observations than variables: n=' int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
-    end
-    
-    rk=rank(X);
-    if rk < p
-        error('FSDA:FSReda:NoFullRank','Matrix X is singular');
-    end
-end
+%% Input parameters checking
+
+nnargin=nargin;
+vvarargin=varargin;
+[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
 %% User options
 if n<40

@@ -359,11 +359,6 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %}
 
 %% Beginning of code
-% nargin number of input arguments
-if nargin<5
-    error('FSDA:regressB:missingInputs','A required input argument is missing.')
-end
-
 
 nnargin=nargin;
 vvarargin=varargin;
@@ -431,6 +426,9 @@ beta1=cRXXinv*(c*R*beta0+Xbsb'*ybsb); %#ok<MINV>
 % a1 and b1
 a1 = 0.5 *(c*n0 + nbsb -p);
 
+% Remark: notice that if bsb is empty 
+% beta1=beta0, that is posterior beta is equal to prior beta
+% and -beta1'*R*beta0 +beta0'*R*beta0=0 
 b1 = 0.5 * ( c*(n0-p) / tau0 + ((ybsb-Xbsb*beta1)'*ybsb -beta1'*R*beta0) +beta0'*R*beta0 );
 
 % Notation is as follows:

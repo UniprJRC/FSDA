@@ -101,23 +101,6 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %}
 
 %{
-    %% Checking the accurary of the envelopes.
-    n=100;
-    p=5;
-    state=1000;
-    randn('state', 1000);
-    X=randn(n,5);
-
-    nsimul=1000;
-    for j=1:nsimul
-        y=randn(n,1);
-        [out]=LXS(y,X);
-        mdr = FSRmdr(y,X,out.bs,'init',10);
-        mdrStore(:,j)=mdr(:,2);
-    end
-%}
-
-%{
     %%Comparing the accuracy of the envelopes computed with order statistics with the simulated ones.
     % Fix a seed 
     state=1000;

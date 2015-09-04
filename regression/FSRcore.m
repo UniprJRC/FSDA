@@ -720,7 +720,7 @@ if plo==1 || plo ==2
 end
 
 %% Part 2: envelope resuperimposition
-% if a validated signal tool place, superimposition of the envelopes starts
+% if a validated signal took place, superimposition of the envelopes starts
 % from m^\dagger-1
 
 if signal==1 || signal==2;
