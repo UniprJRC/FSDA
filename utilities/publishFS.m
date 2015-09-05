@@ -75,7 +75,27 @@ function publishFS(file,varargin)
 %               n0   = scalar. Sometimes it helps to think of the prior
 %                      information as coming from n0 previous experiments.
 %
-% 2) String 'Optional input arguments:' must be present even if there are
+% 3) If the input .m file between the row which starts with
+%  <a href="matlab: docsearchFS(.....
+%  and the row with the string
+%  "Required input arguments:"
+%  contains a series of sentences, they will be automatically included in
+%  the HTML output just below the description.
+%
+%  An example is given below
+%         function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
+%         tclust computes trimmed clustering with restricitons on the eigevalues
+%
+%         <a href="matlab: docsearchFS('tclust')">Link to the help function</a>
+%
+%           tclust partitions the points in the n-by-v data matrix Y into k
+%           clusters.  This partition minimizes the trimmed sum, over all
+%           clusters, of the within-cluster sums of
+%           point-to-cluster-centroid distances....
+%
+%          Required input arguments:
+%
+% 4) String 'Optional input arguments:' must be present even if there are
 % no optional arguments. publishFS, in order to understand what are the names
 % of the optional input arguments scans the rows below the string 'Optional
 % input arguments:' and identifies the lines which contain the optional
@@ -122,7 +142,7 @@ function publishFS(file,varargin)
 %  the optional input argument. At the very end means after the rows
 %   Example and Data Types
 %
-% 4) String 'Output:' must be present. The lines after string 'Output:'
+% 5) String 'Output:' must be present. The lines after string 'Output:'
 % must contain the list of the output arguments using the same rules
 % described above for the optional arguments. In this case, however, the
 % identification of the ouptut arguments is easier because they are
@@ -243,7 +263,7 @@ function publishFS(file,varargin)
 %               "mdr -Monitoring..."
 %the expanded description will automatically appear
 %
-% 5) A line which starts with string 'See also:' must be present. Linked m
+% 6) A line which starts with string 'See also:' must be present. Linked m
 % files must be separated by symbol ",". For example, suppose that files
 % FSRBmdr.m and FSR.m have connections with the current file, then an
 % accepted format is
@@ -251,7 +271,7 @@ function publishFS(file,varargin)
 %                   See also: FSRBmdr, FSR.m
 %
 %
-% 6) A line which starts with string 'References:' must be present.
+% 7) A line which starts with string 'References:' must be present.
 % The year of each reference must be enclosed in round parenthesis.
 % PublishFS decides that a new reference starts if a new line contains
 % symbol "(" + "a sequence of 4 or 5 characthers identifying the year
@@ -265,8 +285,8 @@ function publishFS(file,varargin)
 %                 Riani M., Corbellini A., Atkinson A.C. (2015), Very
 %                 Robust Bayesian Regression for Fraud Detection, submitted
 %
-% 7) All the examples associated with the file which has to be processed
-% must be enclosed inside Percent-braces (comments blocks, i.e. smbols %{
+% 8) All the examples associated with the file which has to be processed
+% must be enclosed inside Percent-braces (comments blocks, i.e. symbols %{
 % and %} ). The first sentence identifies the title of the comment which
 % will appear in the HTML file.
 % IMPORTANT NOTICE: if the comment has to be executed, the first line
@@ -315,7 +335,18 @@ function publishFS(file,varargin)
 %                     [mdr] = FSRmdr(y,X,out.bs,'init',60);
 %                 %}
 %
-% 8) If a procedure contains varargout then a section string
+%  In order to understand where the example finish and the MATLAB code
+%  starts publishFS checks if one of the following strings
+% is present
+% 'Input parameters checking'
+% 'Beginning of code'
+% 'nargin'
+% If this is the case the search of "comments blocks signs" (i.e. symbols %{
+% and %}) is limited to the first character prior to the detection of one
+% of the previous strings. This modification has been added in order to
+% make sure that there are no additional block signs within matlab code
+%
+% 9) If a procedure contains varargout then a section string
 %               Optional Output:
 % must be present. For example suppose there is a function called mcd which
 % has the following sintax:
@@ -330,10 +361,10 @@ function publishFS(file,varargin)
 %                                         subsamples extracted for
 %                                         computing the estimate
 %
-% 9) If the .m file contains string  "More About:" a particular section
+% 10) If the .m file contains string  "More About:" a particular section
 % called "More about" in the HTML file will be created (just before See
 % Also).
-% 10) If the .m file contains string 'Acknowledgements:' then a particular
+% 11) If the .m file contains string 'Acknowledgements:' then a particular
 % section named "Acknowledgements" will be created just above the
 % references.
 %
@@ -389,10 +420,6 @@ function publishFS(file,varargin)
 % "The full paper can be donwloaded from
 % <a href="http://www.mysite.org">http://www.mysite.org</a>".
 % -----------------------------------------------------
-% REMARK 9: parser ADD comment about
-%
-%
-%
 %
 %
 %
@@ -864,7 +891,7 @@ doc_center_installed.css in what follows vertical margin is controlled
 /* Fixed Search Box and Breadcrumbs */
 #search_crumb_container { padding:15px 0px 10px; background:#fff; float:left; position:fixed; top:0px; z-index:1001; }
 .content_container {
-	padding-top: 10px;     
+	padding-top: 10px;
 }
 %}
 
@@ -890,9 +917,9 @@ inisitecont=sprintf(['<div class="site_container site_toc_closed">\r'...
     '</div>\r'...
     '<div class="ref_sect">\r']);
 
-[gendescini]=regexp(fstring,'</a>','once');
+[gendescini]=regexp(fstring,'/a','once');
 [gendescfin]=regexp(fstring,'Required input arguments','once');
-gendesc=fstring(gendescini+4:gendescfin-1);
+gendesc=fstring(gendescini+6:gendescfin-1);
 posPercentageSigns=regexp(gendesc,'%');
 gendesc(posPercentageSigns)=[];
 % Remove from string descri leading and trailing white spaces
@@ -904,14 +931,12 @@ else
     htmlsitecont=['<p>' gendesc '</p>'];
 end
 
-
-
 finsitecont=sprintf(['<h2 id="syntax">Syntax</h2>\r'...
     '<div class="syntax_signature">\r'...
     '<div class="syntax_signature_module">\r'...
     '<ul>\r']);
 
-sitecont=[insnav inisitecont htmlsitecont finsitecont];
+sitecont=[insnav inisitecont finsitecont];
 
 %% Create Sintax section of HTML file (referred to the loop of input arguments)
 % Find point where first input argument starts
@@ -1099,6 +1124,8 @@ inidescription=sprintf(['	<div class="ref_sect" itemprop="content">\r'...
     '								<div class="description_module">\r']);
 
 descriptionhtml='';
+descriptionhtml=1111;
+descriptionhtml=htmlsitecont;
 if strcmp(Display,'iter-detailed')
     disp('Examples')
     disp(sintax)
@@ -1108,6 +1135,16 @@ end
 % start of example j
 [startIndexEx] = regexp(fstring,'%\{');
 [endIndexEx] = regexp(fstring,'%\}');
+
+% Try to understand where preamble finishes and MATLAB code starts
+EndOfExtry1=regexp(fstring,'Input parameters checking');
+EndOfExtry2=regexp(fstring,'Beginning of code');
+EndOfExtry3=regexp(fstring,'nargin');
+EndOfExtry=min([EndOfExtry3 EndOfExtry1 EndOfExtry2]);
+if ~isempty(EndOfExtry)
+    startIndexEx=startIndexEx(startIndexEx<EndOfExtry);
+    endIndexEx=endIndexEx(endIndexEx<EndOfExtry);
+end
 
 %listEx = list which contains the examples (associated to sintax)
 % First column= title, second column detailed description. Third column
@@ -2666,7 +2703,7 @@ if ~isempty(iniMathJax) || ~isempty(finMathJax)
     
     MoreA=formatHTML(inputString(1:iniMathJax-1));
     for k=1:length(iniMathJax)
-            MoreA=[MoreA inputString(iniMathJax(k):finMathJax(k)+1)];
+        MoreA=[MoreA inputString(iniMathJax(k):finMathJax(k)+1)];
         if k==length(iniMathJax)
             MoreA=[MoreA formatHTML(inputString(finMathJax(k)+2:end))];
         else

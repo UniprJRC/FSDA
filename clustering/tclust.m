@@ -38,7 +38,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %  Optional input arguments:
 %
-%       nsamp : umber of subsamples to extract.
+%       nsamp : number of subsamples to extract.
 %               Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
 %               which will be extracted. If nsamp=0
@@ -106,7 +106,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                   = \sum_{j=1}^k n_j \log n_j/n + \sum_{j=1}^k \sum_{ x_i \in group_j} \log f(x_i; m_j , S_j)
 %                 \]
 %
-%               Remark: \sum_{j=1}^k n_j \log n_j/n is the so called entropy
+%               Remark: $\sum_{j=1}^k n_j \log n_j/n$ is the so called entropy
 %               term
 %                 Example - 'equalweights',true 
 %                 Data Types - Logical
@@ -285,25 +285,58 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % Examples:
 
 %{
-    % tclust using geyser data
+    % tclust of geyser data using k=3, alpha=0.1 and  restrfactor=1000.
     Y=load('geyser2.txt');
-    out=tclust(Y,3,0.1,10000,'plots',1)
-    out=tclust(Y,3,0.1,10,'nsamp',100,'refsteps',10,'plots',1)
-    % trimmed k-means solution restrfactor=1
-    out=tclust(Y,3,0.1,1,'nsamp',100,'refsteps',20,'plots',1)
+    out=tclust(Y,3,0.1,10000)
 %}
 
 %{
-    % M5data
+    % tclust of geyser with classification plot.
+    Y=load('geyser2.txt');
+    out=tclust(Y,3,0.1,10000,'plots',1)
+%}
+
+%{
+    % tclust of geyser with varargout.
+    Y=load('geyser2.txt');
+    nsamp=20;
+    [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
+    % MatrixContSubsets is a matrix containing in the rows the indexes of
+    % the nsamp subsets which have been extracted
+%}
+
+%{
+    %% tclust of geyser data (output comparison).
+    % We compare the output using three different values of
+    % restriction factor.
+    close all
+    Y=load('geyser2.txt');
+    restrfactor=10000;
+    % nsamp = number of subsamples which will be extracted
+    nsamp=500;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'plots',1)
+    title(['Restriction factor =' num2str(restrfactor)])
+    restrfactor=10;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1)
+    title(['Restriction factor =' num2str(restrfactor)])
+    % trimmed k-means solution restrfactor=1
+    restrfactor=1;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1)
+    title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])
+    cascade
+%}
+
+%{
+    %  tclust applied to the M5data.
     %  A bivariate data set obtained from three normal bivariate distributions
     %  with different scales and proportions 1:2:2. One of the components is very
-    %  overlapped with another one. A 10% background noise is added uniformly
+    %  overlapped with another one. A 10 per cent background noise is added uniformly
     %  distributed in a rectangle containing the three normal components and not
     %  very overlapped with the three mixture components. A precise description
     %  of the M5 data set can be found in Garcia-Escudero et al. (2008).
     Y=load('M5data.txt');
-    plot(Y(:,1),Y(:,2),'o')
-
+    % plot(Y(:,1),Y(:,2),'o')
+    % Scatter plot matrix with univariate boxplot on the main diagonal
     spmplot(Y(:,1:2),Y(:,3),[],'box')
 
     out=tclust(Y(:,1:2),3,0,1000,'nsamp',100,'plots',1)
@@ -314,7 +347,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    % Trimmed k-means using structured noise
+    % tclust in presence of structured noise.
     % The data have been generated using the following R instructions
     %    set.seed (0)
     %    v <- runif (100, -2 * pi, 2 * pi)
@@ -331,7 +364,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    % Trimmed k-means using mixture100 data
+    % tclust applied to mixture100 data.
     % The data have been generated using the following R instructions
     %     set.seed (100)
     %     mixt <- rbind (rmvnorm (360, c (  0,  0), matrix (c (1,  0,  0,  1), ncol = 2)),
@@ -344,11 +377,11 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    % Compare different algorithms
+    % tclust applied to mixture100 data, comparison of different options.
     Y=load('mixture100.txt');
-    % Traditional Tclust
+    % Traditional tclust
     out1=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)
-    % Tclust with mixture models (selection of untrimmed units according to
+    % tclust with mixture models (selection of untrimmed units according to
     % likelihood contributions
     out2=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',1)
     % Tclust with mixture models (selection of untrimmed units according to
@@ -357,6 +390,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
+    % tclust using simulated data.
+    % 5 groups and 5 variables
     n1=100;
     n2=80;
     n3=50;
@@ -387,7 +422,7 @@ vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
 
-%% User options
+% User options
 % startv1def = default value of startv1 =1, initialization using covariance
 % matrices based on v+1 units
 startv1def=1;

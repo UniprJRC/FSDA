@@ -590,6 +590,7 @@ function [out] = FSRBeda(y, X, varargin)
         num2str(xlimL) ',' num2str(xlimU) ...
         ']  of HPD regions for \beta and \sigma^2'],'t')
 %}
+
 %% Input parameters checking
 
 if nargin>6
