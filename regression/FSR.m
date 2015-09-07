@@ -65,11 +65,11 @@ function [out]=FSR(y,X,varargin)
 %                 LXS.m.
 %                 If, on the other hand, the user wants to initialize the
 %                 search with a prespecified set of units there are two
-%                 possibilities
+%                 possibilities: 
 %                 1) lms can be a vector with length greater than 1 which
-%                 contains the list of units forming the initial subset.
-%                 For example, if the user wants to initialize the search
-%                 with units 4, 6 and 10 then lms=[4 6 10];
+%                 contains the list of units forming the initial subset. For 
+%                 example, if the user wants to initialize the search
+%                 with units 4, 6 and 10 then lms=[4 6 10]; 
 %                 2) lms is a struct which contains a field named bsb which
 %                 contains the list of units to initialize the search. For
 %                 example, in the case of simple regression through the
@@ -85,7 +85,7 @@ function [out]=FSR(y,X,varargin)
 %                 produced.
 %                 If plots=2 the user can also monitor the intermediate
 %                 plots based on envelope superimposition.
-%                 else no plot is produced.
+%                 Else no plot is produced.
 %                 Example - 'plots',1 
 %                 Data Types - double
 %       init    : Search initialization. Scalar. It specifies the initial subset size to start
@@ -102,7 +102,7 @@ function [out]=FSR(y,X,varargin)
 %                 calculations of the former quantiles is based on
 %                 functions invcdff and invcdft.
 %                 The solution has a tolerance of 1e-8 (change variable tol
-%                 in files invcdff.m and invcdft.m if required
+%                 in files invcdff.m and invcdft.m if required).
 %               Example - 'exact',1 
 %               Data Types - double
 %                 Remark: the use of functions tinv and finv is more precise

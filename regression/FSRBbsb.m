@@ -109,8 +109,8 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %               subset at each step of the forward search.
 %               1st col = index forming subset in the initial step
 %               ...
-%               last column = units forming subset in the final step (i.e.
-%               all units).
+%               last column = units forming subset in the final step 
+%               (i.e. all units).
 %
 % See also FSRbsb, FSRHbsb
 %

@@ -38,12 +38,12 @@ function [out]=FSRaddt(y,X,varargin)
 %       lms     :    Criterion to use to find the initlal subset to
 %                       initialize the search. Scalar,  vector or structure.
 %                       If lms=1 (default) Least Median of Squares is
-%                       computed, else Least trimmed of Squares is computed. else
+%                       computed, else Least Trimmed of Squares is computed. else
 %                       (default) no plot is produced
 %                       Example - 'lms',1 
 %                       Data Types - double
 %       init    :       Search initialization. Scalar. 
-%                       scalar which specifies the initial subset size to start
+%                       Scalar which specifies the initial subset size to start
 %                       monitoring exceedances of minimum deletion residual, if
 %                       init is not specified it will be set equal to:
 %                       p+1, if the sample size is smaller than 40;
@@ -56,7 +56,7 @@ function [out]=FSRaddt(y,X,varargin)
 %                        Example - 'plots',1 
 %                        Data Types - double
 %        nameX  : Add variable labels in plot. Cell array of strings.
-%                       cell array of strings of length p containing the labels of
+%                       Cell array of strings of length p containing the labels of
 %                       the varibles of the regression dataset. If it is empty
 %                       (default) the sequence X1, ..., Xp will be created
 %                       automatically
@@ -135,7 +135,7 @@ function [out]=FSRaddt(y,X,varargin)
 %    out.Una=   cell of size p.
 %               out.Una{i} (i=1, ..., p) is a (n-init) x 11 matrix which
 %               contains the unit(s) included in the subset at each step in
-%               the search which excludes the ith explanatory variable
+%               the search which excludes the ith explanatory variable. 
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,:) for example contains

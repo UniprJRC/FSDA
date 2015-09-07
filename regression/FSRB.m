@@ -58,12 +58,12 @@ function [out]=FSRB(y,X,varargin)
 %                      R), was made up of n0 observations.
 %              REMARK if structure bayes is not supplied the default
 %                      values which are used are.
-%                      beta0= zeros(p,1)  % Vector of zeros.
-%                      R=eye(p)           % Identity matrix.
-%                      tau0=1/1e+6        % Very large value for the
-%                                           prior variance, that is a very
-%                                           small value for tau0.
-%                      n0=1               % just one prior observation.
+%                      beta0= zeros(p,1):  Vector of zeros.
+%                      R=eye(p):           Identity matrix.
+%                      tau0=1/1e+6:        Very large value for the
+%                                          prior variance, that is a very
+%                                          small value for tau0.
+%                      n0=1:               just one prior observation.
 %
 %               $\beta$ is assumed to have a normal distribution with
 %               mean $\beta_0$ and (conditional on $\tau_0$) covariance
@@ -79,7 +79,7 @@ function [out]=FSRB(y,X,varargin)
 %                 produced.
 %                 If plots=2 the user can also monitor the intermediate
 %                 plots based on envelope superimposition.
-%                 else no plot is produced.
+%                 Else no plot is produced.
 %                 Example - 'plots',1
 %                 Data Types - double
 %       init    :  Search initialization. Scalar.

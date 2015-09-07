@@ -129,7 +129,9 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
     xlabel('Subset size m');
     ylabel('Monitoring units plot');
 %}
+
 %{
+    % FSRbsb with optional arguments.
     % Monitoring units plot for fishery dataset
     load('fishery');
     y=fishery.data(:,1);
@@ -139,7 +141,6 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %}
 
 %{
-    % FSRbsb with optional arguments.
     % Example with monitoring from step 60.
     Un = FSRbsb(y,X,out.bs,'init',60);
 %}

@@ -96,12 +96,13 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               Example - 'msg',1
 %               Data Types - double
 %   bsbsteps :  steps of the fwd search where to save the units forming subset. Vector.
-%               If bsbsteps is 0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, if
-%               n=753 and init=6, units forming subset are stored for
-%               m=init, 100, 200, 300, 400, 500 and 600.
+%               If bsbsteps is 0 we store the units forming 
+%               subset in all steps. The default is store the units forming
+%               subset in all steps if n<=5000, else to store the units
+%               forming subset at steps init and steps which are multiple
+%               of 100. For example, if n=753 and init=6, units forming
+%               subset are stored for m=init, 100, 200, 300, 400, 500 and
+%               600. 
 %               Example - 'bsbsteps',[10,20,30]
 %               Data Types - double
 %  Remark:      The user should only give the input arguments that have to
@@ -117,7 +118,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 % Output:
 %
-%   mdrB:        n x 2 matrix which contains the monitoring of minimum
+%   mdrB:       n x 2 matrix which contains the monitoring of minimum
 %               deletion residual at each step of the forward search.
 %               1st col = fwd search index (from 0 to n-1).
 %               2nd col = minimum deletion residual.
@@ -134,19 +135,21 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               subset at each step of the forward search.
 %               1st col = index forming subset in the initial step
 %               ...
-%               last column = units forming subset in the final step (i.e.
-%               all units).
-%  beta1:       posterior estimates of beta. Matrix.
+%               last column = units forming subset in the final step
+%               (i.e. all units).
+%  BBayes:       posterior estimates of $\beta$. Matrix.
 %               (n-init+1) x (p+1) matrix containing the monitoring o
-%               posterior mean of \beta (regression coefficents)
+%               posterior mean of $\beta$ (regression coefficents)
 %               beta1 = (c*R + X'X)^{-1} (c*R*beta0 + X'y)
-%     S21 :    (n-init+1) x 3 matrix containing the monitoring of
+%  S2Bayes :    posterior estimate of $\sigma^2$ and $\tau$. Matrix. 
+%               (n-init+1) x 3 matrix containing the monitoring of
 %               posterior estimate of $\sigma^2$ and $\tau$  
-%               in each step of the forward search
-%               1st col = fwd search index (from init to n)
+%               in each step of the forward search. 
+%               1st col = fwd search index (from init to n). 
 %               2nd col = monitoring of $\sigma^2_1$ (posterior estimate of
-%               $\sigma^2$)
-%               3rd col = monitoring $\tau_1$ (posterior estimate of $\tau$)
+%               $\sigma^2$). 
+%               3rd col = monitoring $\tau_1$ (posterior estimate of
+%               $\tau$). 
 %
 % See also
 %
@@ -167,7 +170,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 % Examples:
 
 %{
-    %% FSRBmdr with all default options.
+    % FSRBmdr with all default options.
     % Common part to all examples: load Houses Price Dataset.
     load hprice.txt;
     
@@ -199,9 +202,33 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %}
 
 %{
-    % FSRBmdr with optional arguments.
-    % The trajectory of Bayesian mdr shows that the curve starts exceeding
-    % the upper 99% threshold from steps m=480.
+    %% FSRBmdr with optional arguments.
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
     mdrB=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 %}
 
