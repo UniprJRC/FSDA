@@ -54,12 +54,12 @@ if str2double(a.Version)>7.14
     if isempty(namehtmlhelpfile)
         % if namehtmlhelpfile is not specified main page of FSDA
         % documentation is opened
-        rname = ['' mname(1:end-11) 'helpfiles\FSDA\fsda_product_page.html' ''];
+        rname = ['' mname(1:end-11) 'helpfiles' filesep 'FSDA' filesep 'fsda_product_page.html' ''];
         web(rname,'-new')
     else
         
         % rnames contains full path of associated html file
-        rname = ['' mname(1:end-11) 'helpfiles\FSDA\' namehtmlhelpfile '.html' ''];
+        rname = ['' mname(1:end-11) 'helpfiles' filesep 'FSDA' filesep namehtmlhelpfile '.html' ''];
         % Open html help file
         web(rname,'-new')
     end
