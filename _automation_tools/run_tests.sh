@@ -9,6 +9,28 @@ pth_fsda=`cygpath -a -w ${WORKSPACE}/FSDA`
 
 # cat flist 
 
+# MATLAB R2015a
+
+rm -f test_runner2015a.m
+rm -f execution_log2015a.txt
+
+echo -e "\n" >>test_runner2015a.m
+
+cat flist | while read func_file
+do 
+
+    x=`cygpath -w $func_file`
+
+    #    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp('Execution of $x completed successfully'); diary('off'); exit(0); catch error; diary('execution_log.txt'); disp(['Execution of $x FAILED: ' error.message]); diary('off'); exit(0); end;" 
+    # NO_EXITS    
+    # clearvars 
+    y="try; run('$x'); diary('execution_log2015a.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2015a.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+	
+    echo $y >>test_runner2015a.m
+	  echo -e "\n" >>test_runner2015a.m
+done
+echo -e "exit(0);\n" >>test_runner2015a.m
+
 # MATLAB R2012a
 
 rm -f test_runner2012a.m
@@ -30,7 +52,6 @@ do
     echo $y >>test_runner2012a.m
 	  echo -e "\n" >>test_runner2012a.m
 done
-
 echo -e "exit(0);\n" >>test_runner2012a.m
 
 # MATLAB R2014b
@@ -54,31 +75,8 @@ do
     echo $y >>test_runner2014b.m
 	  echo -e "\n" >>test_runner2014b.m
 done
-
 echo -e "exit(0);\n" >>test_runner2014b.m
 
-# MATLAB R2015a
-
-rm -f test_runner2015a.m
-rm -f execution_log2015a.txt
-
-echo -e "\n" >>test_runner2015a.m
-
-cat flist | while read func_file
-do 
-
-    x=`cygpath -w $func_file`
-
-    #    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp('Execution of $x completed successfully'); diary('off'); exit(0); catch error; diary('execution_log.txt'); disp(['Execution of $x FAILED: ' error.message]); diary('off'); exit(0); end;" 
-    # NO_EXITS    
-    # clearvars 
-    y="try; run('$x'); diary('execution_log2015a.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2015a.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
-	
-    echo $y >>test_runner2015a.m
-	  echo -e "\n" >>test_runner2015a.m
-done
-
-echo -e "exit(0);\n" >>test_runner2015a.m
 
 
 # '/cygdrive/C/Program Files/MATLAB/R2015a/bin/matlab'
