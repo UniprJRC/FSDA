@@ -338,7 +338,7 @@ begin
     if (Rel2015) then
         doc_command := ExpandConstant('docsearchFS fsda_product_page %')
     else
-        doc_command := ExpandConstant('doc -classic ');
+        doc_command := ExpandConstant('doc -classic ')
   else
     doc_command := ExpandConstant('doc ');
   Result := doc_command;
