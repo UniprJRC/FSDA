@@ -61,7 +61,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:          Units included in each step. Matrix.
+%  BB:          Units belonging to subset in each step. Matrix.
 %               n x (n-init+1) matrix which contains the units belonging to the
 %               subset at each step of the forward search.
 %               1st col = index forming subset in the initial step
@@ -88,7 +88,26 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 % Examples:
 
 %{
-    %% FSRbsb with all default options.
+    % FSRbsb with all default options.
+    load('fishery');
+    y=fishery.data(:,1);
+    X=fishery.data(:,2);
+    [out]=LXS(y,X,'nsamp',10000);
+    Un = FSRbsb(y,X,out.bs);
+%}
+
+%{
+    %% FSRbsb with optional arguments.
+    % Monitoring units plot for fishery dataset
+    load('fishery');
+    y=fishery.data(:,1);
+    X=fishery.data(:,2);
+    [out]=LXS(y,X,'nsamp',10000);
+    Un = FSRbsb(y,X,out.bs,'plots',1);
+%}
+
+%{
+    %% Monitoring the units belonging to subset.
     state=1000;
     randn('state', state);
     n=100;
@@ -131,27 +150,19 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %}
 
 %{
-    % FSRbsb with optional arguments.
-    % Monitoring units plot for fishery dataset
+    % Example with monitoring from step 60.
     load('fishery');
     y=fishery.data(:,1);
     X=fishery.data(:,2);
     [out]=LXS(y,X,'nsamp',10000);
-    Un = FSRbsb(y,X,out.bs,'plots',1);
-%}
-
-%{
-    % Example with monitoring from step 60.
     Un = FSRbsb(y,X,out.bs,'init',60);
 %}
 
 %{
-    % FSRbsb analyzing units entering the search in the final steps.
-    [Un,BB] = FSRbsb(y,X,out.bs,'init',60);
-%}
-
-%{
-    %% FSR using a regression model without intercept.
+    % FSR using a regression model without intercept.
+    load('fishery');
+    y=fishery.data(:,1);
+    X=fishery.data(:,2);
     [out]=LXS(y,X);
     bsb=out.bs;
     [Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');
@@ -159,6 +170,10 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 
 %{
     %FSR applied without doing any checks on y and X variables.
+    load('fishery');
+    y=fishery.data(:,1);
+    X=fishery.data(:,2);
+    [out]=LXS(y,X,'nsamp',10000);
     [Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');
 %}
 

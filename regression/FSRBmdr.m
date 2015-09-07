@@ -98,7 +98,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %   bsbsteps :  steps of the fwd search where to save the units forming subset. Vector.
 %               If bsbsteps is 0 we store the units forming 
 %               subset in all steps. The default is store the units forming
-%               subset in all steps if n<=5000, else to store the units
+%               subset in all steps if n<5000, else to store the units
 %               forming subset at steps init and steps which are multiple
 %               of 100. For example, if n=753 and init=6, units forming
 %               subset are stored for m=init, 100, 200, 300, 400, 500 and

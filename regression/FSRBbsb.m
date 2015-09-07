@@ -104,7 +104,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:          Units included in each step. Matrix.
+%  BB:          Units belonging to subset in each step. Matrix.
 %               n x (n-init+1) matrix which contains the units belonging to the
 %               subset at each step of the forward search.
 %               1st col = index forming subset in the initial step
