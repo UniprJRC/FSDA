@@ -105,6 +105,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               600. 
 %               Example - 'bsbsteps',[10,20,30]
 %               Data Types - double
+%
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by

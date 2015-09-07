@@ -740,9 +740,14 @@ listOptArgs=listOptArgs(1:ij-1,:);
 % optional input argument, if it is present it is deleted
 if ~isempty(listOptArgs)
     Checklastremark=listOptArgs{end,4};
-    DelTheUser=regexp(Checklastremark,'Remark\s*:\s*The user','once','match','ignorecase');
+    DelTheUser=regexp(Checklastremark,'Remark\s*:\s*The user','once','start','ignorecase');
     if ~isempty(DelTheUser);
-        listOptArgs{end,4}=Checklastremark(1:DelTheUser-1);
+        
+        listOptArgsIns=Checklastremark(1:DelTheUser-1);
+        % Remove extra % signs if present in the string
+        posPercentageSigns=regexp(listOptArgsIns,'\s%\s*');
+        listOptArgsIns(posPercentageSigns+1)=[];
+        listOptArgs{end,4}=listOptArgsIns;
     end
 end
 if strcmp(Display,'iter-detailed')
