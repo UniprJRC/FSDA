@@ -79,14 +79,14 @@ echo -e "exit(0);\n" >>test_runner2012a.m
 # '/cygdrive/C/Program Files/MATLAB/R2015a/bin/matlab'
 # '/cygdrive/c/Program Files/MATLAB/R2013b/bin/matlab'
 
-if [ $TEST_2012a == "YES" ]; then
-'/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
-fi 
+if [ $TEST_2015a == "YES" ]; then
+'/cygdrive/C/Program Files/MATLAB/R2015a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2015a"
+fi
 
 if [ $TEST_2014b == "YES" ]; then
 '/cygdrive/c/Program Files/MATLAB/R2014b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2014b"
 fi
 
-if [ $TEST_2015a == "YES" ]; then
-'/cygdrive/C/Program Files/MATLAB/R2015a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2015a"
-fi
+if [ $TEST_2012a == "YES" ]; then
+'/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
+fi 
