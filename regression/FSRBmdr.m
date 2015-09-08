@@ -235,28 +235,157 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 
 %{
     % Analyze units entering the search in the final steps.
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
     [mdr,Un]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 %}
 
 %{
     % Units forming subset in each step.
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
     [mdr,Un,BB]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 %}
 
 %{
     % Monitor $\hat  \beta$.
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
     [mdr,Un,BB,BBayes]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 %}
 
 %{
     %% Monitor $s^2$.
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    n0=5;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
     [mdr,Un,BB,BBayes,S2Bayes]=FSRBmdr(y,X,beta0, R, tau0, n0,'plots',1);
 %}
 
 %{
     % Additional example.
     % We change n0 from 5 to 250 and impose FSRBmdr monitoring from step 300.
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
     n0=250;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
     mdrB=FSRBmdr(y,X,beta0, R, tau0, n0,'init',300,'plots',1);
 %}
 

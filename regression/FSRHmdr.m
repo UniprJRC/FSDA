@@ -232,6 +232,11 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %{
     % FSRHmdr with optional arguments.
     % Specifying the search initialization.
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     mdr=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
 %}
 
@@ -242,6 +247,11 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
     % the FS provides an ordering of the data from those most in agreement
     % with a suggested model (which enter the first steps) to those least in
     % agreement with it (which are included in the final steps).
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     [mdr,Un]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
 %}
 
@@ -249,6 +259,11 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
     % Units forming subset in each step.
     % Obtain detailed information about the units forming subset in each
     % step of the forward search (matrix BB).
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     [mdr,Un,BB]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
 %}
 
@@ -256,6 +271,11 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
     % Monitor $\hat  \beta$.
     % Monitor how the estimates of beta coefficients changes as the subset
     % size increases (matrix Bols).
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     [mdr,Un,BB,Bols]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
 %}
 
@@ -263,24 +283,36 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
     % Monitor $s^2$.
     % Monitor the estimate of sigma^2 in each step of the fwd search
     % (matrix S2).
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     [mdr,Un,BB,Bols,S2]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
 %}
 
 %{
     %% Monitoring the estimates of the scedastic equation.
     % With plot of the \alpha parameter.
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     [mdr,Un,BB,Bols,S2,Hetero]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
     plot(Hetero(:,1),Hetero(:,2))
 %}
 
 %{
     % Monitoring the estimates of the weights.
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
 %}
 
-%{
-
-%}
 
 
 %% Input parameters checking

@@ -47,12 +47,12 @@ function [out] = FSReda(y,X,bsb,varargin)
 %        tstat:      the kind of t-statistics which have to be monitored.
 %               Character.
 %               tstat = 'trad' implies  monitoring of traditional t
-%               statistics (out.Tols). In this case the estimate of \sigma^2 at step m
-%               is based on s^2_m (notice that s^2_m<<\sigma^2 when m/n is
+%               statistics (out.Tols). In this case the estimate of $\sigma^2$ at step m
+%               is based on $s^2_m$ (notice that $s^2_m<<\sigma^2$ when m/n is
 %               small) tstat = 'resc' (default) implies monitoring of
 %               rescaled t statistics In this scale the estimate of
-%               \sigma^2 at step m is based on s^_m / var_truncnorm(m/n)
-%               where var_truncnorm(m/n) is the variance of the truncated
+%               $\sigma^2$ at step m is based on $s^2_m / var_{truncnorm(m/n)}$
+%               where $var_{truncnorm(m/n)}$ is the variance of the truncated
 %               normal distribution.
 %               Example - 'tstat','trad'
 %               Data Types - char
@@ -207,6 +207,15 @@ function [out] = FSReda(y,X,bsb,varargin)
     % FSReda with optional argument.
     % Example of use of function FSReda using a random start and traditional
     % t-stat monitoring.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
     out=FSReda(y,X,0,'tstat','trad');
 %}
 

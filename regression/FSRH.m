@@ -106,17 +106,17 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 LXS.m. 
 %                 If, on the other hand, the user wants to initialize the
 %                 search with a prespecified set of units there are two
-%                 possibilities
+%                 possibilities: 
 %                 1) lms can be a vector with length greater than 1 which 
-%                 contains the list of units forming the initial subset.
-%                 For example, if the user wants to initialize the search
-%                 with units 4, 6 and 10 then lms=[4 6 10];
+%                 contains the list of units forming the initial subset. For
+%                 example, if the user wants to initialize the search
+%                 with units 4, 6 and 10 then lms=[4 6 10]. 
 %                 2) lms is a struct which contains a field named bsb which
 %                 contains the list of units to initialize the search. For
 %                 example, in the case of simple regression through the
 %                 origin with just one explanatory variable, if the user
 %                 wants to initialize the search with unit 3 then
-%                 lms=struct; lms.bsb=3;
+%                 lms=struct; lms.bsb=3. 
 %                 Example - 'lms',1 
 %                 Data Types - double
 %       plots   : Plot on the screen. Scalar.

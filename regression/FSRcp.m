@@ -48,10 +48,11 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       Example - 'h',3 
 %                       Data Types - double
 %           lms :    Criterion to use to find the initlal  subset to
-%           initialize the search. Scalar.
-%                       If lms=1 (default) Least Median of Squares is
+%                       initialize the search. Scalar. If lms=1 (default) Least Median of Squares is
 %                       computed, else Least Trimmed of Squares is computed.
-%                        nomes: Scalar. If nomes is equal to 1 (default) no message about
+%                       Example - 'lms',1 
+%                       Data Types - double
+%          nomes:       Displaying time message. Scalar. If nomes is equal to 1 (default) no message about
 %                       estimated time to compute LMS (LTS) for each considered
 %                       model is displayed, else a message about estimated time
 %                       is displayed.
@@ -61,10 +62,10 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       robust estimator. Scalar.
 %                       If nsamp=0 all subsets will be extracted.
 %                       They will be (n choose smallp).
-%                       Remark: if the number of all possible subset is <1000 the
-%                       default is to extract all subsets otherwise just 1000.
 %                       Example - 'nsamp',1000 
 %                       Data Types - double
+%                       Remark: if the number of all possible subset is <1000 the
+%                       default is to extract all subsets otherwise just 1000.
 %          init :       Search initialization. Scalar. 
 %                       It specifies the initial subset size to start
 %                       monitoring the required quantities, if init is not
@@ -95,15 +96,15 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 interval (0 0.5] than the program considers the last
 %                 round(n*alpha) steps. As default fin_step=round(n*0.2)
 %                 that is the last 20% of the steps are considered.
+%                       Example - 'fin_step',1 
+%                       Data Types - double
 %                 Remark1: the number of best models to consider is
-%                 controlled by scalar first_k (see below)
+%                 controlled by scalar first_k (see below). 
 %                 Remark2: if fin_step is an empty value, no selection is
 %                 done and all trajectories of Cp are displayed (in this
 %                 case the value of first_k below is ignored, all models are
 %                 considered of interest and output matrix outCp.Ajout is
-%                 equal to an empty value)
-%                       Example - 'fin_step',1 
-%                       Data Types - double
+%                 equal to an empty value). 
 %       first_k :  number of best models to
 %                      consider in each of the last fin_step. Scalar.
 %                       For example if first_k=5 in each of the last fin_step, the models which had
@@ -115,11 +116,8 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 to be considered. Matrix.
 %                   As default Excl=''
 %                   For example if smallp=3, bigP=6 and
-%                   Excl = [ 2 3;
-%                             2 4;
-%                             2 7];
-%                 the three models 23, 24, and 27 are skipped
-%                       Example - 'Excl',[2 3; 2 4]
+%                   Excl = [23; 24; 27]; the three models 23, 24, and 27 are skipped
+%                       Example - 'Excl',[23; 24]
 %                       Data Types - double
 %    ExclThresh : Exclusion threshold. Scalar.
 %                 Exclusion threshold associated to the upper
@@ -144,11 +142,11 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 Example - 'plots',1 
 %                 Data Types - double
 %        labout :If labout=1 the output LABOUT contains the list of models 
-%                     whose Cp values are inacceptable. Scalar.
-%                    Default: no model is created.
+%                 whose Cp values are inacceptable. Scalar. Default: no
+%                 model is created.
 %                 Example - 'labout',1 
 %                 Data Types - double
-%                 Remark: the options below only work if plots is equal 1
+%                 Remark: the options below only work if plots is equal 1.
 %
 %         quant : It specifies the quantiles which are used to
 %                 produce Cp envelopes. Vector.
@@ -160,8 +158,8 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %         steps : It specifies in which steps of the plot which
 %                 monitors Cp it is necessary to include the labels of the
 %                 models which have been previously chosen. Vector.
-%                 The default is to write the labels of the models in steps round([n*0.6
-%                 n*0.8 n]);
+%                 The default is to write the labels of the models in steps
+%                 round([n*0.6  n*0.8  n]);
 %                 Example - 'steps',[4 8]
 %                 Data Types - double
 %       titl    : a label for the title. Character.
@@ -253,15 +251,13 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                   possible to skip the computation of the submodels of
 %                   the rows of matrix Ajout.
 %                   For example if smallp=3, bigP=6 and
-%                   Ajout = [ 2 3;
-%                             2 4;
-%                             2 7];
+%                   Ajout = [ 23; 24; 27 ];     
 %                   the three models 23, 24, and 27 always have Cp values
 %                   much greater than the threshold (that is variables
 %                   2,3,4,7 are considered unimportant)
 %    outCp.LABout  =   it is created only if option labout=1. LABout
 %                   is a cell array of strings which which contains as
-%                   strings the list of models which are inacceptable
+%                   strings the list of models which are inacceptable.
 %
 % See also: FSR, FSReda
 %
@@ -281,7 +277,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 % Examples:
 
 %{
-    %% FSRcp with all default options.
+    % FSRcp with all default options.
     % Extract the best models of size 4, also store AIC. 
     % Common part to all examples: load Ozone dataset.
     X=load('ozone.txt');
@@ -298,9 +294,18 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %}
 
 %{
-    % FSRcp with optional arguments.
+    %% FSRcp with optional arguments.
     % Extract the best models of size 4, store AIC and show the plots
     % of Cp and AIC.
+    X=load('ozone.txt');
+    % Transform the response using logs
+    X(:,end)=log(X(:,end));
+    % Add a time trend
+    X=[(-40:39)' X];
+    % Define y
+    y=X(:,end);
+    % Define X
+    X=X(:,1:end-1);   
     smallp=4;
     [Cpmon]=FSRcp(y,X,smallp,'plots',1);
 %}
@@ -311,6 +316,15 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % default options are used, apart from labels, therefore the plot of Cp
     % and the output matrix Cpmon.MAL only contains the searches associated
     % with the smallest 3 values of Cp in the last 16 steps of the search.
+    X=load('ozone.txt');
+    % Transform the response using logs
+    X(:,end)=log(X(:,end));
+    % Add a time trend
+    X=[(-40:39)' X];
+    % Define y
+    y=X(:,end);
+    % Define X
+    X=X(:,1:end-1);   
     smallp=4;
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels);
@@ -321,6 +335,15 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Extract and show the trajectories of all models of size 4 of Cp.
     % Notice that in this last case the forward plot becomes
     % unreadable.
+    X=load('ozone.txt');
+    % Transform the response using logs
+    X(:,end)=log(X(:,end));
+    % Add a time trend
+    X=[(-40:39)' X];
+    % Define y
+    y=X(:,end);
+    % Define X
+    X=X(:,1:end-1);   
     smallp=4;
     [Cpmon]=FSRcp(y,X,smallp,'plots',1,'fin_step','');
 %}
@@ -329,6 +352,15 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Extract the best models of size 5 and plot monitoring of Cp.
     % Extract 1000 subsets to initialize the search and use labels defined 
     % by the user.
+    X=load('ozone.txt');
+    % Transform the response using logs
+    X(:,end)=log(X(:,end));
+    % Add a time trend
+    X=[(-40:39)' X];
+    % Define y
+    y=X(:,end);
+    % Define X
+    X=X(:,1:end-1);   
     smallp=5;
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpmon]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);
@@ -339,6 +371,15 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Extract 1000 subsets to initialize the search andse labels defined by
     % the user. Exclude the searches of the models which were unacceptable 
     % for smallp=5.
+    X=load('ozone.txt');
+    % Transform the response using logs
+    X(:,end)=log(X(:,end));
+    % Add a time trend
+    X=[(-40:39)' X];
+    % Define y
+    y=X(:,end);
+    % Define X
+    X=X(:,1:end-1);   
     smallp=6;
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpmon6]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);
@@ -349,6 +390,16 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %{
     % Graphical options.
     % In the following example we play with the graphical options
+    X=load('ozone.txt');
+    % Transform the response using logs
+    X(:,end)=log(X(:,end));
+    % Add a time trend
+    X=[(-40:39)' X];
+    % Define y
+    y=X(:,end);
+    % Define X
+    X=X(:,1:end-1);   
+    labels={'Time','1','2','3','4','5','6','7','8'};
    [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);
 %}
 
