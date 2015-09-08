@@ -243,6 +243,12 @@ function [out] = FSRBeda(y, X, varargin)
 
 %{
     % FSRBeda with optional arguments.
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
     
     bayes=struct;
     n0=5;
@@ -273,7 +279,8 @@ function [out] = FSRBeda(y, X, varargin)
 %}
 
 %{
-    %% Plot posterior estimates of beta and sigma^2 in the interval (subset size) [20 125]
+    %% Plot posterior estimates of beta and sigma2.
+    % Plot posterior estimates of beta and sigma2 in the interval (subset size) [20 125].
     % In this example for the house price data we monitor the forward plots
     % of the parameters of the linear model adding 95% and 99% HPD
     % regions. The first 8 panels refer to the elements of $\beta_1$
@@ -282,6 +289,38 @@ function [out] = FSRBeda(y, X, varargin)
     % The vertical lines refer to the step prior to the introduction of the first outlier
     % init = point to start monitoring diagnostics along the FS
     % run routine FSRB in order to find the outliers automatically
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    
+    bayes=struct;
+    n0=5;
+    bayes.n0=n0;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+    bayes.beta0=beta0;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+    bayes.tau0=tau0;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
+    bayes.R=R;       
     outBA=FSRB(y,X,'bayes',bayes', 'plots',0);
     dout=n-length(outBA.ListOut);
     
@@ -369,7 +408,8 @@ function [out] = FSRBeda(y, X, varargin)
 %}
 
 %{
-    %% Plot posterior estimates of beta and sigma^2 in the interval (subset size) [250 n+1]
+    %% Plot posterior estimates of beta and sigma2 in the last steps.
+    % Plot posterior estimates of beta and sigma2 in the interval (subset size) [250 n+1].
     % In this example for the house price data we monitor the forward plots
     % of the parameters of the linear model adding 95% and 99% HPD
     % regions. The first 8 panels refer to the elements of $\beta_1$
@@ -378,6 +418,38 @@ function [out] = FSRBeda(y, X, varargin)
     % The vertical lines refer to the step prior to the introduction of the first outlier
     % init = point to start monitoring diagnostics along the FS
     % run routine FSRB in order to find the outliers automatically
+    load hprice.txt;
+    
+    % setup parameters
+    n=size(hprice,1);
+    y=hprice(:,1);
+    X=hprice(:,2:5);
+    
+    bayes=struct;
+    n0=5;
+    bayes.n0=n0;
+
+    % set \beta components
+    beta0=0*ones(5,1);
+    beta0(2,1)=10;
+    beta0(3,1)=5000;
+    beta0(4,1)=10000;
+    beta0(5,1)=10000;
+    bayes.beta0=beta0;
+
+    % \tau
+    s02=1/4.0e-8;
+    tau0=1/s02;
+    bayes.tau0=tau0;
+
+    % R prior settings
+    R=2.4*eye(5);
+    R(2,2)=6e-7;
+    R(3,3)=.15;
+    R(4,4)=.6;
+    R(5,5)=.6;
+    R=inv(R);
+    bayes.R=R;
     outBA=FSRB(y,X,'bayes',bayes', 'plots',0);
     dout=n-length(outBA.ListOut);
     
@@ -465,7 +537,7 @@ function [out] = FSRBeda(y, X, varargin)
 %}
 
 %{
-    % Plot of HPDI for BankProfit data
+    % Plot of HPDI for BankProfit data.
     XX=load('BankProfit.txt');
     R=load('BankProfitR.txt');
 
