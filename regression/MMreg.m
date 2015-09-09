@@ -165,7 +165,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 % Examples:
 
 %{
-    % MMreg with all default options
+    % MMreg with all default options.
     % Run this code to see the output shown in the help file
     n=200;
     p=3;
@@ -180,6 +180,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %}
 
 %{
+    % MMreg with optional input arguments.
     % MMreg using the hyperbolic rho function 
     % Run this code to see the output shown in the help file
     n=200;
@@ -195,7 +196,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %}
 
 %{
-    %% We compare the output of different MMreg runs.
+    %% Comparing the output of different MMreg runs.
     state=100;
     randn('state', state);
     n=100;

@@ -192,9 +192,9 @@ function outms = FSRms(y,X,varargin)
 %
 % Output:
 %
-%  The output consists of a structure 'outCp' containing the following fields:
+%         outms:   structure which contains the following fields
 %
-%        stor = k x 9 matrix containing statistics which can be used to create the candles
+%        outms.stor = k x 9 matrix containing statistics which can be used to create the candles
 %               1st col: max Cp values
 %               2nd col: min Cp values
 %               3rd col: average Cp values
@@ -208,7 +208,7 @@ function outms = FSRms(y,X,varargin)
 %               9th col: maximum Cp value during the (central and final
 %               part of the) search (This information is used to print the
 %               labels on top of each model)
-%        outl = r x 4 matrix containing information about 'influential
+%        outms.outl = r x 4 matrix containing information about 'influential
 %               units' or empty matrix
 %               Influential units in this context are defined as the units
 %               which enter the subset in the final part of the search and
@@ -219,11 +219,11 @@ function outms = FSRms(y,X,varargin)
 %               3rd col: step of entry into subset
 %               4nd col: unit number
 %               If matrix outl contains more columns they are ignored
-%        siz  = vector of length 2 containing information about n (number of
+%        outms.siz  = vector of length 2 containing information about n (number of
 %               units of the sample and bigP, number of explanatory
 %               variables, including the constant, in the full model). This
 %               information is necessary to compute the envelopes
-%         MAL = (n-init+1) x (k+1) matrix
+%         outms.MAL = (n-init+1) x (k+1) matrix
 %                 Mallows Cp monitored along the search for the selected
 %                 models
 %                   1st col is fwd search index
@@ -233,7 +233,7 @@ function outms = FSRms(y,X,varargin)
 %                   (k+1)th col is associated with k-th selected model
 %                   Notice that k<=(n choose smallp) and that all
 %                   models contain the constant
-%       LAB   =    cell array of strings of length k containing the labels
+%       outms.LAB   =    cell array of strings of length k containing the labels
 %                   of the models which have been extracted. First element
 %                   of LAB is associated with second column of matrix
 %                   MAL ... last element of LAB is associated with last
@@ -249,9 +249,9 @@ function outms = FSRms(y,X,varargin)
 %
 % References:
 %
-%   Riani and Atkinson (2010), Robust Model Selection with Flexible Trimming,
+%   Riani and Atkinson (2010). Robust Model Selection with Flexible Trimming,
 %   Computational Statistics and Data Analysis, special issue on robust
-%   model selection
+%   model selection.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -285,7 +285,8 @@ function outms = FSRms(y,X,varargin)
 %}
 
 %{
-    %% In order to reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010):
+    %% In order to reproduce the candlestick plot given in Figure 5 of
+    Riani and Atkinson (2010).
 
     n=length(y);
     fin_step=floor([n*0.1 n*0.02]);

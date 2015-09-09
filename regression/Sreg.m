@@ -202,7 +202,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 % Examples:
 
 %{
-    %% Sreg with all default options
+    %% Sreg with all default options.
     % Run this code to see the output shown in the help file
     n=200;
     p=3;
@@ -220,8 +220,8 @@ function [out , varargout] = Sreg(y,X,varargin)
 %}
 
 %{
-    % Sreg with optimal rho function
-    % Run this code to see the output shown in the help file
+    % Sreg with optional input arguments.
+    % Sreg with optimal rho function. Run this code to see the output shown in the help file
     n=200;
     p=3;
     randn('state', 123456);
@@ -236,7 +236,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 
 
 %{
-    % Sreg with hyperbolic rho function
+    % Sreg with hyperbolic rho function.
     % Run this code to see the output shown in the help file
     n=200;
     p=3;

@@ -151,7 +151,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 % Last modified 06-Feb-2015
 
 %{
-    % Example 1
+    % RobRgerSize with all defalut options.
     % Find the threshold for MM estimator, Tukey biweight rho function with
     % efficiency 0.87 (simultaneous size)
     n=232;
@@ -165,7 +165,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %}
 
 %{
-    % Example 2
+    % Additional Example 1.
     % Find the threshold for MM estimator, take an average threhold for all
     % rho functions, and use efficiency 0.85 (simultaneous size)
     n=93;
@@ -179,7 +179,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %}
 
 %{
-    % Example 3
+    % Additional Example 2.
     % Find the threshold for LTS estimator, use Tallis correction to infer
     % a threshold for bdp equal to 0.27 (simultaneous size)
     n=72;
@@ -194,7 +194,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %}
 
 %{
-    % Example 4
+    % Additional Example 3.
     % Find the threshold for S estimator and hyperbolic rho function, 
     % use Tallis correction to infer
     % a threshold for bdp equal to 0.3 (simultaneous size)

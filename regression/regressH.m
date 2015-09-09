@@ -24,7 +24,7 @@ function out=regressH(y,X,Z,varargin)
 %               infinite values (Inf's) are allowed, since observations
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations.
-%     Z :       Predictor variables in the skedastic equation. n x r matrix or vector of length r.
+%     Z :       Predictor variables in the skedastic equation. Matrix. n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function .
 %               If Z is a vector of length r it contains the indexes of the
@@ -164,6 +164,15 @@ function out=regressH(y,X,Z,varargin)
     % formulation for the skedastic function, we replicate in 
     % structure "out.Beta" the same results contained in table 9.2, 
     % page 282, 7th edition of Greene (2007) (lines "Iterated").
+    load('TableF61_Greene');
+    Y=TableF61_Greene.data;
+
+    Q=log(Y(:,4));
+    Pfuel=log(Y(:,5));
+    Loadfactor=Y(:,6);
+    n=size(Y,1);
+    X=[Q Q.^2 Pfuel];
+    y=log(Y(:,3));
     out=regressH(y,X,Loadfactor,'type','har');
 %}
 

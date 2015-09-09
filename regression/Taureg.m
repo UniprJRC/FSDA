@@ -22,10 +22,10 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               term will be included.
 %               Example - 'intercept',1 
 %               Data Types - double
-%         bdp :  breakdown point. Scalar (default=0.5).
+%         bdp :  breakdown point. Scalar. 
 %               It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine.
+%               than 0 but smaller or equal than 0.5 will do fine (default=0.5).
 %               Note that given bdp nominal
 %               efficiency is automatically determined.
 %                 Example - 'bdp',0.4
@@ -213,7 +213,21 @@ function [out , varargout] = Taureg(y, X, varargin)
 % Examples:
 
 %{
-    % Taureg with all default options
+    % Taureg with all default options.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    [out]=Taureg(ycont,X);
+%}
+
+%{
+    %% Taureg with optional arguments.
     n=200;
     p=3;
     randn('state', 123456);

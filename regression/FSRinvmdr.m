@@ -5,10 +5,10 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %
 %  Required input arguments:
 %
-%    mdr : matrix, n-m0 x 2
-%          1st col = fwd search index
-%          2nd col = minimum deletion residual  
-%    p : scalar, number of explanatory variables of the underlying dataset
+%    mdr : Minimum deletion residuals. Matrix. n-m0 x 2 matrix containing: 
+%          1st col = fwd search index; 
+%          2nd col = minimum deletion residual . 
+%    p : Number of explanatory variables. Scalar. Number of explanatory variables of the underlying dataset
 %           (including the intercept if present)
 %
 %  Optional input arguments:
@@ -45,12 +45,12 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %                 Data Types - double
 %  Output:
 %
-%   MDRinv:     Matrix with n-m0 rows (same rows of input matrix mdr) and 3 columns
-%               1st col = fwd search index from m0 to n-1
-%               2nd col = confidence level of each value of mdr
-%               3rd col = confidence level in normal coordinates 
-%                    50% conf level becomes norminv(0.50)=0
-%                    99% conf level becomes norminv(0.99)=2.33 
+%   MDRinv:     Confidence levels. Matrix. Matrix with n-m0 rows (same rows
+%               of input matrix mdr) and 3 columns: 
+%               1st col = fwd search index from m0 to n-1. 
+%               2nd col = confidence level of each value of mdr. 
+%               3rd col = confidence level in normal coordinates: 50% conf
+%               level becomes norminv(0.50)=0; 99% conf level becomes norminv(0.99)=2.33. 
 %
 %
 % See also FSRenvmdr, LXS.m, FSREDA.m
@@ -134,7 +134,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %}
 
 %{
-    % Example with Hosital Data.
+    % Example with Hospital Data.
     % Comparison of resuperimposing envelopes using mdr coordinates and normal
     % coordinates at particular steps.
     load('hospital.txt');

@@ -3,6 +3,136 @@ function [out]=regressHhar(y,X,Z,varargin)
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
 %
+%
+%  Required input arguments:
+%
+%    y:         Response variable. Vector. A vector with n elements that contains the response variable.
+%               It can be either a row or column vector.
+%    X :        Predictor variables in the regression equation. Matrix. Data matrix of explanatory variables (also called 'regressors')
+%               of dimension (n x p-1). Rows of X represent observations, and
+%               columns represent variables.
+%               By default, there is a constant term in the model, unless
+%               you explicitly remove it using option intercept, so do not
+%               include a column of 1s in X.
+%     Z :       Predictor variables in the skedastic equation. Matrix. n x r matrix or vector of length r.
+%               If Z is a n x r matrix it contains the r variables which
+%               form the scedastic function as follows: 
+%               \[
+%               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z_{i1} + ...+
+%               \gamma_{r} Z_{ir}). 
+%               \]
+%               If Z is a vector of length r it contains the indexes of the
+%               columns of matrix X which form the scedastic function as
+%               follows
+%               \[
+%               \sigma^2_i = exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
+%               \gamma_{r} X(i,Z(r)))
+%               \]
+%               Therefore, if for example the explanatory variables
+%               responsible for heteroscedisticity are columns 3 and 5
+%               of matrix X, it is possible to use both the sintax
+%                    regressH(y,X,X(:,[3 5]))
+%               or the sintax
+%                    regressH(y,X,[3 5]). 
+%
+%               Remark: Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%
+%  Optional input arguments:
+%
+%   intercept : Indicator for constant term. Scalar.
+%               If 1, a model with constant term will be fitted (default),
+%               if 0, no constant term will be included.
+%               Example - 'intercept',1
+%               Data Types - double
+% initialbeta : initial estimate of beta. Vector.
+%               p x 1 vector. If initialbeta is not supplied (default) standard least
+%               squares is used to find initial estimate of beta
+%               Example - 'initialbeta',[3.6 8.1]
+%               Data Types - double
+% initialgamma: initial estimate of gamma. Vector.
+%                vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
+%               of gamma is nothing but the OLS estimate in a regression
+%               where the response is given by squared residuals and the
+%               regressors are specified in input object Z (this regression
+%               also contains a constant term).
+%               Example - 'initialgamma',[0.6 2.8]
+%               Data Types - double
+%     maxiter : Maximum number of iterations to find model paramters. Scalar.
+%               If not defined, maxiter is fixed to 200. Remark: in order
+%               to obtain the FGLS estimator (two step estimator) it is
+%               enough to put maxiter=1.
+%               Example - 'maxiter',8
+%               Data Types - double
+%     tol     : The tolerance for controlling convergence. Scalar.
+%               If not defined, tol is fixed to 1e-8. Convergence is
+%               obtained if $||d_{old}-d_{new}||/||d_{new}||<1e-8$ where d is the
+%               vector of length p+r+1 which contains regression and scedastic
+%               coefficients $d=(\beta' \gamma')'$; while $d_{old}$ and $d_{new}$ are
+%               the values of d in iterations t and t+1 t=1,2, ..., maxiter
+%               Example - 'tol',0.0001
+%               Data Types - double
+%    msgiter : Level of output to display. Scalar.
+%               If msgiter=1 it is possible to see the estimates of
+%               the regression and scedastic parameters together with their
+%               standard errors and the values of Wald, LM and
+%               Likelihood ratio test, and the value of the maximized
+%               loglikelihood. If msgiter>1 it is also possible to see
+%               monitor the estimates of the coefficients in each step of
+%               the iteration. If msgiter<1 nothing is displayed on the
+%               screen
+%               Example - 'msgiter',0
+%               Data Types - double
+%
+%  Output:
+%
+%  The output consists of a structure 'out' containing the following fields
+%
+%           out.Beta  = p-by-3 matrix containing
+%                       1st col = Estimates of regression coefficients
+%                       2nd col = Standard errors of the estimates of regr coeff
+%                       3rd col = t-tests of the estimates of regr coeff
+%           out.Gamma = (r+1)-by-3 matrix containing
+%                       1st col = Estimates of scedastic coefficients
+%                       2nd col = Standard errors of the estimates of scedastic coeff
+%                       3rd col = t tests of the estimates of scedastic coeff
+%                       Remark: the first row of matrix out.Gamma is
+%                       referred to the estimate of \( \sigma^2 \). In
+%                       other words 
+%                       \[ 
+%                       \hat \sigma^2= \exp(\gamma_1) 
+%                       \]
+%              out.WA = scalar. Wald test
+%              out.LR = scalar. Likelihood ratio test
+%              out.LM = scalar. Lagrange multiplier test
+%            out.LogL = scalar. Complete maximized log likelihood
+%
+%  More About:
+%
+%   This routine implements Harvey’s (1976) model of
+%   multiplicative heteroscedasticity which is a very flexible, general
+%   model that includes most of the useful formulations as special cases.
+%   The general formulation is: 
+%   
+%       $\sigma^2_i =\sigma^2 \exp(z_i \alpha)$
+%   
+%   Let $z_i$ include a constant term so that \( z_i'=(1 \; q_i) \)where \( q_i \) is the
+%   original set of variables which are supposed to explain
+%   heteroscedasticity. This routine automatically adds a column of 1 to
+%   input matrix Z (therefore Z does not have to include a constant term).
+%   Now let 
+%   \[  
+%   \gamma'=[\log \sigma^2 \alpha'] = [ \gamma_0, \ldots, \gamma_r]. 
+%   \] 
+%   Then the model is simply
+%   \[
+%   \sigma^2_i = \exp(\gamma' z_i)
+%   \]
+%   Once the full parameter vector is estimated \( \exp( \gamma_0)\) provides the
+%   estimator for \( \sigma^2 \)
+%
 %  THE MODEL IS 
 %               \[
 %                 y=X \times\beta+ \epsilon,  \qquad 
@@ -59,132 +189,6 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               $\sigma^2$ while the second element of vector $\gamma$
 %               (namely gamma(2)) is the estimate of $\alpha$
 %
-%  Required input arguments:
-%
-%    y:         A vector with n elements that contains the response variable.
-%               It can be either a row or column vector.
-%    X :        Data matrix of explanatory variables (also called 'regressors')
-%               of dimension (n x p-1). Rows of X represent observations, and
-%               columns represent variables.
-%               By default, there is a constant term in the model, unless
-%               you explicitly remove it using option intercept, so do not
-%               include a column of 1s in X.
-%     Z :       n x r matrix or vector of length r.
-%               If Z is a n x r matrix it contains the r variables which
-%               form the scedastic function as follows
-%               \[
-%               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
-%               \]
-%               If Z is a vector of length r it contains the indexes of the
-%               columns of matrix X which form the scedastic function as
-%               follows
-%               \[
-%               \sigma^2_i = exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
-%               \gamma_{r} X(i,Z(r)))
-%               \]
-%               Therefore, if for example the explanatory variables
-%               responsible for heteroscedisticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax
-%                    regressH(y,X,X(:,[3 5]))
-%               or the sintax
-%                    regressH(y,X,[3 5])
-%
-%               Remark: Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations.
-%
-%  Optional input arguments:
-%
-%   intercept : Indicator for constant term. Scalar.
-%               If 1, a model with constant term will be fitted (default),
-%               if 0, no constant term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
-% initialbeta : initial estimate of beta. Vector.
-%               p x 1 vector. If initialbeta is not supplied (default) standard least
-%               squares is used to find initial estimate of beta
-%               Example - 'initialbeta',[3.6 8.1]
-%               Data Types - double
-% initialgamma: initial estimate of gamma. Vector.
-%                vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
-%               of gamma is nothing but the OLS estimate in a regression
-%               where the response is given by squared residuals and the
-%               regressors are specified in input object Z (this regression
-%               also contains a constant term).
-%               Example - 'initialgamma',[0.6 2.8]
-%               Data Types - double
-%     maxiter : Maximum number of iterations to find model paramters. Scalar.
-%               If not defined, maxiter is fixed to 200. Remark: in order
-%               to obtain the FGLS estimator (two step estimator) it is
-%               enough to put maxiter=1.
-%               Example - 'maxiter',8
-%               Data Types - double
-%     tol     : The tolerance for controlling convergence. Scalar.
-%               If not defined, tol is fixed to 1e-8. Convergence is
-%               obtained if ||d_old-d_new||/||d_new||<1e-8 where d is the
-%               vector of length p+r+1 which contains regression and scedastic
-%               coefficients d=(\beta' \gamma')'; while d_old and d_new are
-%               the values of d in iterations t and t+1 t=1,2, ..., maxiter
-%               Example - 'tol',0.0001
-%               Data Types - double
-%    msgiter : Level of output to display. Scalar.
-%               If msgiter=1 it is possible to see the estimates of
-%               the regression and scedastic parameters together with their
-%               standard errors and the values of Wald, LM and
-%               Likelihood ratio test, and the value of the maximized
-%               loglikelihood. If msgiter>1 it is also possible to see
-%               monitor the estimates of the coefficients in each step of
-%               the iteration. If msgiter<1 nothing is displayed on the
-%               screen
-%               Example - 'msgiter',0
-%               Data Types - double
-%
-%  Output:
-%
-%  The output consists of a structure 'out' containing the following fields
-%
-%           out.Beta  = p-by-3 matrix containing
-%                       1st col = Estimates of regression coefficients
-%                       2nd col = Standard errors of the estimates of regr coeff
-%                       3rd col = t-tests of the estimates of regr coeff
-%           out.Gamma = (r+1)-by-3 matrix containing
-%                       1st col = Estimates of scedastic coefficients
-%                       2nd col = Standard errors of the estimates of scedastic coeff
-%                       3rd col = t tests of the estimates of scedastic coeff
-%                       Remark: the first row of matrix out.Gamma is
-%                       referred to the estimate of \( \sigma^2 \). In
-%                       other words 
-%                       \[ 
-%                       \hat \sigma^2= \exp(Gamma(1,1)) 
-%                       \]
-%              out.WA = scalar. Wald test
-%              out.LR = scalar. Likelihood ratio test
-%              out.LM = scalar. Lagrange multiplier test
-%            out.LogL = scalar. Complete maximized log likelihood
-%
-%
-%   DETAILS. This routine implements Harvey’s (1976) model of
-%   multiplicative heteroscedasticity which is a very flexible, general
-%   model that includes most of the useful formulations as special cases.
-%   The general formulation is
-%   \[
-%       \sigma^2_i =\sigma^2 \exp(z_i \alpha)
-%   \]
-%   Let z_i include a constant term so that \( z_i'=(1 \; q_i) \)where \( q_i \) is the
-%   original set of variables which are supposed to explain
-%   heteroscedasticity. This routine automatically adds a column of 1 to
-%   input matrix Z (therefore Z does not have to include a constant term).
-%   Now let 
-%   \[  
-%   \gamma'=[\log \sigma^2 \alpha'] = [ \gamma_0, \ldots, \gamma_r]. 
-%   \] 
-%   Then the model is simply
-%   \[
-%   \sigma^2_i = \exp(\gamma' z_i)
-%   \]
-%   Once the full parameter vector is estimated \( \exp( \gamma_0)\) provides the
-%   estimator for \( \sigma^2 \)
 %
 % See also regressHart
 %

@@ -69,7 +69,7 @@ function [outSC]=Score(y,X,varargin)
 % Examples
 
 %{
-    %% Score with all default options.
+    % Score with all default options.
     % Wool data.
     XX=load('wool.txt');
     y=XX(:,end);
@@ -79,7 +79,7 @@ function [outSC]=Score(y,X,varargin)
 %}
 
 %{
-    %% Score with optional arguments.
+    % Score with optional arguments.
     % Loyalty cards data.
     load('loyalty.txt');
     y=loyalty(:,4);

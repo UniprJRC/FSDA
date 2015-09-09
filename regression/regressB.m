@@ -191,7 +191,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               2*length(conflev) element (last element) = upper bound of
 %               HPDI associated with conflev(end).
 %               Remark: confidence levels are based on the Gamma distribution
-% out.sigma21HPD =   1-by-2*length(conflev) matrix HPDI of $\hat \sigma^_1$.
+% out.sigma21HPD =   1-by-2*length(conflev) matrix HPDI of $\hat \sigma^2_1$.
 %               1st element =lower bound of HPDI associated with conflev(1).
 %               2st element =upper bound of HPDI associated with conflev(1).
 %               ...
@@ -305,12 +305,26 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 
     % Run regressB using all n1 data and use the default value of c=1
     out=regressB(y, X, beta0, R, tau0, n0);
+    disp(out)
 %}
 
 %{
     % regressB with optional arguments.
     % Run regressB and compute new estimate of beta using just the first 20
     % observations and use a value of c equal to 1.2.
+    rng('default')
+    rng(100) % set seed for replicability
+    p=3;
+    n0=30;
+    X0=[ones(n0,1) randn(n0,p-1)];
+    R=X0'*X0;
+    beta0=zeros(p,1);
+    tau0=1;
+
+    % SAMPLE INFORMATION
+    n1=100;
+    X=randn(n1,p-1);
+    y=randn(n1,1);
     bsb=1:20;
     c=1.2;
     out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'c',c);
@@ -318,6 +332,19 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 
 %{
     % Example of the use of input option stats.
+    rng('default')
+    rng(100) % set seed for replicability
+    p=3;
+    n0=30;
+    X0=[ones(n0,1) randn(n0,p-1)];
+    R=X0'*X0;
+    beta0=zeros(p,1);
+    tau0=1;
+
+    % SAMPLE INFORMATION
+    n1=100;
+    X=randn(n1,p-1);
+    y=randn(n1,1);
     bsb=1:20;
     stats=true;
     out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'stats',stats);

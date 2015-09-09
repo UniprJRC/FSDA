@@ -3,58 +3,38 @@ function [out]=regressHart(y,X,Z,varargin)
 %
 %<a href="matlab: docsearchFS('regresshart')">Link to the help function</a>
 %
-%  THE MODEL IS y=X*\beta+ \epsilon,
-%               \epsilon ~ N(0 \Sigma) = N(0 \sigma^2*\Omega)
-%                   \Omega=diag(\omega_1, ..., \omega_n)
-%                   \omega_i=1+exp(z_i^T*\gamma)
-%                   \Sigma=diag(\sigma_1^2, ..., \sigma_n^2)
-%                         =diag(\sigma^2*\omega_1, ..., \sigma^2*\omega_n)
-%                   var(\epsilon_i)=\sigma^2_i = \sigma^2 \omega_i i=1, ..., n
-%               \beta = vector which contains regression parameters
-%               \gamma= vector which contains skedastic parameters
-%               REMARK2: if Z=log(X) then 1+exp(z_i(1:end)^T*\gamma(1:end)) =
-%                         1+exp(\gamma(1))* \prod x_{ij}^\gamma_j j=1, ..., p-1
-%               REMARK3: if there is just one explanatory variable (say x)
-%               which is responsible for heteroskedasticity and the model is
-%               \sigma_i=\sigma_2(1+ \theta*x_i^\alpha)
-%               then it is necessary to to supply Z as Z=log(x). In this
-%               case, given that the program automatically adds a column of
-%               ones to Z
-%                  exp(Z(i,1)*\gamma(1) +Z(i,2)*\gamma(2))=
-%                  exp(\gamma(1))*x_i^\gamma(2)
-%               therefore exp(gamma(1)) is the estimate of \theta while
-%               \gamma(2) is the estimate of alpha
 %
 %
 %  Required input arguments:
 %
-%    y:         A vector with n elements that contains the response variable.
+%    y:         Response variable. Vector. A vector with n elements that contains the response variable.
 %               It can be either a row or column vector.
-%    X :        Data matrix of explanatory variables (also called 'regressors')
+%    X :        Predictor variables in the regression equation. Matrix. Data matrix of explanatory variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
 %               columns represent variables.
 %               By default, there is a constant term in the model, unless
 %               you explicitly remove it using option intercept, so do not
 %               include a column of 1s in X.
-%     Z :       n x r matrix or vector of length r.
+%     Z :       Predictor variables in the skedastic equation. Matrix. n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
-%               form the scedastic function as follows
+%               form the scedastic function as follows: 
 %
-%               \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+%               $\omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+
+%               \gamma_{r} Z(i,r))$. 
 %
 %               If Z is a vector of length r it contains the indexes of the
 %               columns of matrix X which form the scedastic function as
-%               follows
+%               follows: 
 %
-%               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
-%               \gamma_{r} X(i,Z(r)))
+%               $\omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
+%               \gamma_{r} X(i,Z(r)))$. 
 %
 %               Therefore, if for example the explanatory variables
 %               responsible for heteroscedisticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax
+%               of matrix X, it is possible to use both the sintax 
 %                    regressHart(y,X,X(:,[3 5]))
-%               or the sintax
-%                    regressHart(y,X,[3 5])
+%               or the sintax 
+%                    regressHart(y,X,[3 5]). 
 %
 %               Remark: Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
@@ -129,7 +109,41 @@ function [out]=regressHart(y,X,Z,varargin)
 %
 %   DETAILS. This routine implements art heteroscedasticity
 %
+%
+%  More About:
+%   The model is: 
+%               $y=X*\beta+ \epsilon,
+%               \epsilon ~ N(0, \Sigma) = N(0, \sigma^2*\Omega)$; 
+%
+%                   $\Omega=diag(\omega_1, ..., \omega_n)$; 
+%
+%                   $\omega_i=1+exp(z_i^T*\gamma)$; 
+%
+%                   $\Sigma=diag(\sigma_1^2, ...,
+%                   \sigma_n^2)=diag(\sigma^2*\omega_1, ...,
+%                   \sigma^2*\omega_n)$; 
+%
+%                   $var(\epsilon_i)=\sigma^2_i = \sigma^2 \omega_i \;\;\; i=1,
+%                   ..., n$. 
+%
+%               $\beta$ = vector which contains regression parameters; 
+%               $\gamma$= vector which contains skedastic parameters. 
+%               REMARK 1: if $Z=log(X)$ then $1+exp(z_i^T*\gamma) =
+%                         1+exp(\gamma_1)* \prod x_{ij}^{\gamma_j} \;\; j=1,
+%                         ..., p-1$. 
+%               REMARK2: if there is just one explanatory variable (say x)
+%               which is responsible for heteroskedasticity and the model is
+%               $\sigma_i=\sigma_2(1+ \theta*x_i^\alpha)$
+%               then it is necessary to to supply Z as $Z=log(x)$. In this
+%               case, given that the program automatically adds a column of
+%               ones to Z: 
+%                  $exp(Z_{1i}*\gamma_1 +Z_{2i}*\gamma_2)=
+%                  exp(\gamma_1)*x_{1i}^{\gamma_2}$
+%               therefore $exp(\gamma_1)$ is the estimate of $\theta$ while
+%               $\gamma_2$ is the estimate of $\alpha$
+%
 % See also regress, regstats
+%
 %
 % References:
 %
@@ -175,6 +189,15 @@ function [out]=regressHart(y,X,Z,varargin)
     % Estimate a multiplicative heteroscedastic model and print the
     % estimates of regression and scedastic parameters together with LM, LR
     % and Wald test
+    load('TableF61_Greene');
+    Y=TableF61_Greene.data;
+
+    Q=log(Y(:,4));
+    Pfuel=log(Y(:,5));
+    Loadfactor=Y(:,6);
+    n=size(Y,1);
+    X=[Q Q.^2 Pfuel];
+    y=log(Y(:,3));
     out=regressHart(y,X,Loadfactor,'msgiter',1,'test',1);
 %}
 

@@ -48,8 +48,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Data Types - double
 %       nsamp : Number of subsamples which will be extracted to find the
 %               robust estimator. Scalar.
-%               If nsamp=0 all subsets will be extracted.
-%               They will be (n choose p).
+%               If nsamp=0 all subsets will be extracted. They will be (n choose p).         
 %                 Example - 'nsamp',0
 %                 Data Types - double
 %               Remark: if the number of all possible subset is <1000 the
@@ -66,8 +65,8 @@ function [out , varargout] = LXS(y,X,varargin)
 %               else if lms is a struct fast lts (with concentration steps) is used.
 %                  In this case the user can control the following options:
 %                  lms.refsteps : scalar defining number of refining iterations in each
-%                               subsample (default = 3).
-%                               refsteps = 0 means "raw-subsampling" without iterations.
+%                               subsample (default = 3). refsteps = 0 means
+%                               "raw-subsampling" without iterations. 
 %                   lms.reftol  : scalar. Default value of tolerance for the refining steps
 %                               The default value is 1e-6.
 %                   lms.bestr   : scalar defining number of "best betas" to remember from the
