@@ -1,94 +1,56 @@
-function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
-%FSRmdrrs performs random start monitoring of minimum deletion residual
+function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
+%FSRmdrrs performs random start monitoring of minimum Mahalanobis distance
+%
+%<a href="matlab: docsearchFS('FSMmmdrs')">Link to the help function</a>
 %
 % The trajectories originate from many different random initial subsets and
-% provide information on the presence of groups in the data. Linear
-% regression structures are investigated by monitoring the minimum deletion
-% residual outside the FS subset.
-%
-%<a href="matlab: docsearchFS('fsrmdrrs')">Link to the help function</a>
+% provide information on the presence of groups in the data. Groups
+% are investigated by monitoring the minimum Mahalanobis
+% distance outside the FS subset.
 %
 % Required input arguments:
 %
-%    y:         Response variable. Vector. Response variable, specified as
-%               a vector of length n, where n is the number of
-%               observations. Each entry in y is the response for the
-%               corresponding row of X.
+% Y :           Input data. Matrix.
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%  X :          Predictor variables. Matrix. Matrix of explanatory
-%               variables (also called 'regressors') of dimension n x (p-1)
-%               where p denotes the number of explanatory variables
-%               including the intercept.
-%               Rows of X represent observations, and columns represent
-%               variables. By default, there is a constant term in the
-%               model, unless you explicitly remove it using input option
-%               intercept, so do not include a column of 1s in X. Missing
-%               values (NaN's) and infinite values (Inf's) are allowed,
-%               since observations (rows) with missing or infinite values
-%               will automatically be excluded from the computations.%
+%                Data Types - single|double
+%
 %
 % Optional input arguments:
 %
-%  init :       Search initialization. Scalar. 
-%               It specifies the point where to initialize the search and
-%               start monitoring required diagnostics. If it is not
-%               specified it is set equal to:
-%                   p+1, if the sample size is smaller than 40;
-%                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               Example - 'init',100 starts monitoring from step m=100 
-%               Data Types - double
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), if 0, no constant
-%               term will be included.
-%               Example - 'intercept',1 
-%               Data Types - double
-%   bsbsteps :  Save the units forming subsets. Vector. It specifies for
-%               which steps of the fwd search it
-%               is necessary to save the units forming subsets. If bsbsteps
-%               is 0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
-%               default, if n=753 and init=6,
-%               units forming subset are stored for
-%               m=init, 100, 200, 300, 400, 500 and 600.
-%               Example - 'bsbsteps',[100 200] stores the unis forming
-%               subset in steps 100 and 200.
-%               Data Types - double
+%       init :  scalar, specifies the point where to initialize the search
+%               and start monitoring the required diagnostics. If not
+%               specified, it is set equal to p+1.
+%   bsbsteps :  vector which specifies for which steps of the fwd search it
+%               is necessary to save the units forming subset for each
+%               random start. If bsbsteps is 0 for each random start we
+%               store the units forming subset in all steps. The default is
+%               store the units forming subset in all steps if n<=500 else
+%               to store the units forming subset at step init and steps
+%               which are multiple of 100. For example, if n=753 and
+%               init=6, units forming subset are stored for m=init, 100,
+%               200, 300, 400, 500 and 600.
 %               REMARK: vector bsbsteps must contain numbers from init to
 %               n. if min(bsbsteps)<init a warning message will appear on
-%               the screen.  
-%     nsimul :  number of random starts. Scalar. The default value is200.
-%               Example - 'nsimul',300
-%               Data Types - double
-%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additioanl column of ones for
-%               the intercept is not added. As default nocheck=0. The
-%               controls on h, alpha and nsamp still remain
-%               Example - 'nocheck',1 
-%               Data Types - double
-%  constr :     Constrained search. Vector. r x 1 vector which contains the list of units which are
-%               forced to join the search in the last r steps. The default
-%               is constr=''.  No constraint is imposed
-%               Example - 'constr',[1:10] forces the first 10 units to join
-%               the subset in the last 10 steps
-%               Data Types - double
-%  plots :      Plot on the screen. Scalar. If equal to one a plot of
-%               random starts minimum deletion residual appears  on the
-%               screen with 1%, 50% and 99% confidence bands else (default)
-%               no plot is shown.
-%               Example - 'plots',1 
-%               Data Types - double
+%               the screen.
+%     nsimul :  scalar, number of random starts. Default value=200.
+%   nocheck  : It controls whether to perform checks on matrix Y. Scalar.
+%                 If nocheck is equal to 1 no check is performed.
+%                 As default nocheck=0.
+%                 Example - 'nocheck',1
+%                 Data Types - double
+%      plots :  scalar. If equal to one a plot of random starts minimum
+%               Mahalanobis residual appears  on the screen with 1%, 50% and
+%               99% confidence bands else (default) no plot is shown.
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrrsplot.
-%   numpool :  use parallel computing and parfor. Scalar. 
-%               If numpool > 1, the routine automatically checks
+%   numpool :  scalar. If numpool > 1, the routine automatically checks
 %               if the Parallel Computing Toolbox is installed and
 %               distributes the random starts over numpool parallel
 %               processes. If numpool <= 1, the random starts are run
@@ -118,24 +80,18 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               - setting the NumWorkers option in the local cluster profile
 %                 settings to the number of logical cores (Remark 2).
 %               - setting numpool to the desired number of workers;
-%               Example - 'numpool',8 
-%               Data Types - double
-%  cleanpool :  clean pool after execution. Scalar.
-%               cleanpool is 1 if the parallel pool has to be cleaned after
+%  cleanpool :  cleanpool is 1 if the parallel pool has to be cleaned after
 %               the execution of the random starts. Otherwise it is 0.
 %               The default value of cleanpool is 1.
 %               Clearly this option has an effect just if previous option
 %               numpool is > 1.
-%               Example - 'clarnpool',false 
-%               Data Types - boolean
-%  msg  :       Level of output to display. Scalar. 
-%               Scalar which controls whether to display or not messages
+%       msg  :  scalar which controls whether to display or not messages
 %               about random start progress. More precisely, if previous
 %               option numpool>1, then a progress bar is displayed, on
 %               the other hand a message will be displayed on the screen
 %               when 10%, 25%, 50%, 75% and 90% of the random starts have
 %               been accomplished
-%               In order to create the progress bar when nparpool>1
+%               REMARK: in order to create the progress bar when nparpool>1
 %               the program writes on a temporary .txt file in the folder
 %               where the user is working. Therefore it is necessary to
 %               work in a folder where the user has write permission. If this
@@ -144,8 +100,6 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               message will appear on the screen:
 %                   Error using ProgressBar (line 57)
 %                   Do you have write permissions for C:\Program Files\MATLAB?
-%               Example - 'msg',1 
-%               Data Types - double
 %
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -159,26 +113,27 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %
 % Output:
 %
-%       mdrrs:  random start minimum deletion residual. Matrix.
+%       mmdrs:  Minimum Mahalanobis distance. Matrix.
 %               (n-init)-by-(nsimul+1) matrix which contains the monitoring
-%               of minimum deletion residual at each step of the forward
+%               of minimum Mahalanobis distance at each step of the forward
 %               search for each random start.
 %               1st col = fwd search index (from init to n-1).
-%               2nd col = minimum deletion residual for random start 1.
+%               2nd col = minimum Mahalanobis distance for random start 1.
 %               ...
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
-%       BBrs :  units belonging to subset. 3D array.
-%               3D array which contains the units belonging to the subset 
-%               at the steps specified by input option bsbsteps. 
-%               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul. 
-%               In this case BBrs(:,:,j) with j=1, 2, ..., nsimul 
+%
+%       BBrs    units belonging to the subset. 3D array.
+%               Units belonging to the subset
+%               at the steps specified by input option bsbsteps.
+%               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
+%               In this case BBrs(:,:,j) with j=1, 2, ..., nsimul
 %               has the following structure:
 %               1-st row has number 1 in correspondence of the steps in
 %                   which unit 1 is included inside subset and a missing
 %                   value for the other steps;
 %               ......
-%               (n-1)-th row has number n-1 in correspondence of the steps 
-%                   in which unit n-1 is included inside subset and a 
+%               (n-1)-th row has number n-1 in correspondence of the steps
+%                   in which unit n-1 is included inside subset and a
 %                   missing value for the other steps;
 %               n-th row has the number n in correspondence of the steps in
 %                   which unit n is included inside subset and a missing
@@ -188,10 +143,10 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               subset, BBrs has size n-by-length(bsbsteps)-by-nsimul.
 %               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
 %               the same structure as before, but now contains just
-%               length(bsbsteps) columns.  
+%               length(bsbsteps) columns.
 %
 %
-% See also:     FSRmdr, FSMmmdrs, FSMmmd
+% See also:     FSRmdr, FSMmdrrs, FSMmmd
 %
 % References:
 %
@@ -214,129 +169,105 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('fsrmdrrs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fsmmmdrs')">Link to the help function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:
 %
 
 %{
-    % We start with an example with simulated data with regression lines
+    % We start with an example with simulated data with two groups
     % with roughly the same number of observations
     close all
     rng('default')
-    rng(2);
-    b1=[1 1];
-    b2=[1 2.6];
-    n1=40;
-    n2=50;
-    s1=0.1;
-    s2=0.1;
-    X1=rand(n1,1);
-    X2=rand(n2,1);
-    y1=randn(n1,1)*s1+b1(1)+b1(2)*X1;
-    y2=randn(n2,1)*s2+b2(1)+b2(2)*X2;
-    hold('on')
-    plot(X1,y1,'o');
-    plot(X2,y2,'o');
-    title('Two simulated regression lines')
-    y=[y1;y2];
-    X=[X1;X2];
-    figure
+    rng(10);
+    n1=100;
+    n2=100;
+    v=3;
+    Y1=rand(n1,v);
+    Y2=rand(n2,v)+1;
+    Y=[Y1;Y2];
+    group=[ones(n1,1);2*ones(n2,1)];
+    spmplot(Y,group);
+    title('Two simulated groups')
+    Y=[Y1;Y2];
+    close all
     % parfor of Parallel Computing Toolbox is used (if present in current computer)
     % and pool is not cleaned after % the execution of the random starts
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);
-    disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
+    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
-    disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')
+    disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
 %}
 
 %{
-    % Same example as before but now the values of n1 and n2 (size of the
-    % two groups) have been increased. In this case it is possible to see
-    % that there are two trajectories of minimum deletion residual which go
-    % outside the envelopes in the central part of the search.
-    % In this case the two groups have roughly the same size (n1=140 and n2=150)
+    % We start with an example with simulated data with two groups
+    % with roughly the same number of observations
     close all
-    rng(2);
-    b1=[1 1];
-    b2=[1 2.6];
-    n1=140;
-    n2=150;
-    s1=0.1;
-    s2=0.1;
-    X1=rand(n1,1);
-    X2=rand(n2,1);
-    y1=randn(n1,1)*s1+b1(1)+b1(2)*X1;
-    y2=randn(n2,1)*s2+b2(1)+b2(2)*X2;
-    hold('on')
-    plot(X1,y1,'o');
-    plot(X2,y2,'o');
-    title('Two simulated regression lines')
-    y=[y1;y2];
-    X=[X1;X2];
-    figure
+    rng('default')
+    rng(10);
+    n1=200;
+    n2=170;
+    v=3;
+    Y1=rand(n1,v);
+    Y2=rand(n2,v)+1;
+    Y=[Y1;Y2];
+    group=[ones(n1,1);2*ones(n2,1)];
+    spmplot(Y,group);
+    title('Two simulated groups')
+    Y=[Y1;Y2];
+    close all
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer) and pool is not cleaned after
     % the execution of the random starts
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);
-    disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
+    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
-    disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')
+    disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
 %}
 
 %{
     % Same example as before but now there is one group which has a size
     % much greater than the other (n1=60 and n2=150). In this case it is
-    % possible to see that there is a trajectory of minimum deletion
-    % residual which goes outside the envelope in steps 60-110. This
+    % possible to see that there is a trajectory of minimum Mahalanobis
+    % residual which goes outside the envelope in steps 60-80. This
     % corresponds to the searches initialized using the units coming from
     % the smaller group. Note that due to the partial overlapping after the
-    % peak in steps 60-110 there is a gradual decrease. When m is around
-    % 160, most of the units from this group tend to get out of the subset.
-    % Therefore the value of mdr becomes much smaller than it should be.
-    % Please note the dip around step m=165, which is due to entrance of the
+    % peak in steps 80-100 there is a gradual decrease. When m is around
+    % 140, most of the units from this group tend to get out of the subset.
+    % Therefore the value of mmd becomes much smaller than it should be.
+    % Please note the dip around step m=140, which is due to entrance of the
     % units of the second larger group. This trajectory just after the dip
     % collapses into the trajectory which starts from the second group.
-    % Around steps 90-110 it is also possible to see two trajectories
-    % inside the bands which collaps into one around m=120. Please use
+    % Please use
     % mdrrsplot with option databrush in order to explore the units
     % belonging to subset. Here we limit ourselves to notice that around m
     % =180 all the units from second group are included into subset (plus
     % some of group 1 given that the two groups partially overlap). Also
     % notice once again the decrease in the unique trajectory of minimum
-    % deletion residual after m around 180 which is due to the entry of the
+    % Mahalanobis residual after m around 180 which is due to the entry of the
     % units of the first smaller group.
     close all
-    rng(2);
-    b1=[1 1];
-    b2=[1 2.6];
+    rng('default')
+    rng(10);
     n1=60;
     n2=150;
-    s1=0.1;
-    s2=0.1;
-    X1=rand(n1,1);
-    X2=rand(n2,1);
-    y1=randn(n1,1)*s1+b1(1)+b1(2)*X1;
-    y2=randn(n2,1)*s2+b2(1)+b2(2)*X2;
-    hold('on')
-    plot(X1,y1,'o');
-    plot(X2,y2,'o');
-    title('Two simulated regression lines')
-    y=[y1;y2];
-    X=[X1;X2];
+    v=3;
+    Y1=randn(n1,v);
+    Y2=randn(n2,v)+3;
+    Y=[Y1;Y2];
+    group=[ones(n1,1);2*ones(n2,1)];
+    spmplot(Y,group);
+    title('Two simulated groups')
+    Y=[Y1;Y2];
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer). Parallel pool is closed after the execution of the random starts
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1);
+    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
 %}
 
 %{
-    % Random start for fishery dataset: two regression structures,
-    % difficult to identify because of a dense area.
-    load('fishery.txt');
-    y=fishery(:,2);
-    X=fishery(:,1);
+    % Random start for Swiss banknotes
     % parfor of Parallel Computing Toolbox is used (if installed)
     figure
     [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1);
@@ -346,12 +277,9 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     % Random start for fishery dataset: just store information about the
     % units forming subset for each random start at specified steps
     load('fishery.txt');
-    y=fishery(:,2);
-    X=fishery(:,1);
-    % parfor of Parallel Computing Toolbox is used (if present in current
-    % computer)
+    Y=fishery(:,1:2);
     figure
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'bsbsteps',[10 300 600]);
+    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'bsbsteps',[10 300 600]);
     % sum(~isnan(BBrs(:,1,1)))
     %
     % ans =
@@ -371,20 +299,13 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     %    600
 %}
 
-%{
-    % Random start for fishery dataset: two regression structures,
-    % difficult to identify because of a dense area.
-    load('fishery.txt');
-    y=fishery(:,2);
-    X=fishery(:,1);
-    % traditional for loop is used
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'numpool',0);
-%}
+
 %% Input parameters checking
 
 nnargin   = nargin;
 vvarargin = varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+Y = chkinputM(Y,nnargin,vvarargin);
+[n,v]=size(Y);
 
 %% User options
 
@@ -396,7 +317,7 @@ numpool = feature('numCores');
 
 % Default for vector bsbsteps which indicates for which steps of the fwd
 % search units forming subset have to be saved
-initdef   = p+1;
+initdef   = v+1;
 if n<=500
     bsbstepdef = initdef:n;
 else
@@ -416,17 +337,17 @@ if ~isempty(UserOptions)
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-end
 
-% Write in structure 'options' the options chosen by the user
-for i=1:2:length(varargin);
-    options.(varargin{i})=varargin{i+1};
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin);
+        options.(varargin{i})=varargin{i+1};
+    end
+    chkbsbsteps = strcmp(UserOptions,'bsbsteps');
+    
 end
 
 init        = options.init;
-intercept   = options.intercept;
 msg         = options.msg;
-constr      = options.constr;
 plots       = options.plots;
 nsimul      = options.nsimul;
 cleanpool   = options.cleanpool;
@@ -443,15 +364,17 @@ if bsbsteps == 0
 else
     
     if ~isempty(bsbsteps(bsbsteps<init))
-     warning('FSDA:FSRmdrrs:Wronginit','It is not possible to store subset for values of m smaller than init')
-       bsbsteps=bsbsteps(bsbsteps>=init);
-    end 
-  
-        
+        % The following warning is shown just if the user has supplied vector
+        % bsbsteps
+        if sum(chkbsbsteps)
+            warning('FSDA:FSRmdrrs:Wronginit','It is not possible to store subset for values of m smaller than init')
+        end
+        bsbsteps=bsbsteps(bsbsteps>=init);
+    end
     BBrs=zeros(n,length(bsbsteps),nsimul);
 end
 
-mdrrs = [(init:n-1)' zeros(n-init,nsimul)];
+mmdrs = [(init:n-1)' zeros(n-init,nsimul)];
 
 %% Check MATLAB environment
 
@@ -507,7 +430,7 @@ if usePCT==1 % In this case Parallel Computing Toolbox Exists
     
 end
 
-%% Monitoring minimum deletion residual with random starts
+%% Monitoring minimum Mahalanobis distance with random starts
 
 % monitor execution time, without counting the opening/close of the parpool
 tstart = tic;
@@ -531,14 +454,16 @@ if numpool == 1
 end
 
 parfor (j = 1:nsimul , numpool)
-    [mdr,~,BB] = FSRmdr(y,X,0,'init',init,'intercept',intercept,...
-        'nocheck',1,'msg',0,'constr',constr,'bsbsteps',bsbsteps);
+    %for j=1:nsimul;
+    [mmd,~,BB] = FSMmmd(Y,0,'init',init,...
+        'nocheck',1,'msg',0,'bsbsteps',bsbsteps);
     
-    % Store units forming subset at each step
-    BBrs(:,:,j) = BB;
-    
-    % Store minimum deletion residual
-    mdrrs(:,j+1) = mdr(:,2);
+    % Store minimum Mahalnobis distance
+    if ~isnan(mmd)
+        % Store units forming subset at each step
+        BBrs(:,:,j) = BB;
+        mmdrs(:,j+1) = real(mmd(:,2));
+    end
     
     if msg==1
         if usePCT == 1
@@ -577,19 +502,18 @@ end
 
 if plots==1
     
-    tagfig  = 'pl_mdrrs';
-    ylab    = 'Minimum Deletion Residual';
+    tagfig  = 'pl_mmdrs';
+    ylab    = 'Minimum Mahalanobis distance';
     xlab    = 'Subset size m';
-    p       = size(X,2);
     
-    hold('on');
     
     % Plot lines of empirical quantiles
-    plot(mdrrs(:,1), mdrrs(:,2:end), 'tag',tagfig);
+    plot(mmdrs(:,1), mmdrs(:,2:end), 'tag',tagfig);
+    hold('on');
     
     % Compute teoretical quantiles for minimum deletion residual using
     % order statistics
-    quantilesT = FSRenvmdr(n,p,'exact',1,'init',init);
+    quantilesT = FSMenvmmd(n,v,'exact',1,'init',init);
     
     % Plots lines of theoretical quantiles
     line(quantilesT(:,1),quantilesT(:,2:4), ...
@@ -597,7 +521,7 @@ if plots==1
     
     ax = get(gca,'YLim');
     if ax(2)>20
-        mdrrstmp = mdrrs(:,2:end);
+        mdrrstmp = mmdrs(:,2:end);
         mdrrstmp(mdrrstmp>20) = NaN;
         maxylim  = max(max(mdrrstmp));
         minylim  = min(min(mdrrstmp));

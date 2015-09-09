@@ -5,7 +5,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -26,25 +26,25 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %               required diagnostics. Scalar. Note that if bsb is supplied
 %               init>=length(bsb). If init is not specified it will
 %               be set equal to floor(n*0.6).
-%                 Example - 'init',50 
+%                 Example - 'init',50
 %                 Data Types - double
 % plots :     It specify whether it is necessary to produce the plots of minimum Mahalanobis
 %                 distance. Scalar. If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
 %               screen with 1% 50% and 99% confidence bands
 %               else (default) no plot is produced.
-%                 Example - 'plots',0 
+%                 Example - 'plots',0
 %                 Data Types - double
 %  msg  :     It controls whether to display or not messages
 %               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen.
-%                 Example - 'msg',0 
+%                 Example - 'msg',0
 %                 Data Types - double
 % nocheck :   It controls wether to perform checks on
 %               matrix Y. Scalar. If nocheck is equal to 1 no check is
 %               performed on matrix Y. As default nocheck=0.
-%                 Example - 'nocheck',0 
+%                 Example - 'nocheck',0
 %                 Data Types - double
 %
 % Remark :      The user should only give the input arguments that have to
@@ -62,7 +62,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %
 % mmd :         (n-init) x 2 matrix which contains the monitoring of minimum
 %               Mahalanobis distance each step of the forward search.
-%               1st col = fwd search index (from init to n-1); 
+%               1st col = fwd search index (from init to n-1);
 %               2nd col = minimum Mahalanobis distance.
 % Un :          (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
@@ -158,7 +158,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 
 %{
     % Checking the units belonging to subset in each step of the search.
-    % Personalized initial subset (large n). Each row of BB matrix 
+    % Personalized initial subset (large n). Each row of BB matrix
     % is associated to a unit while each colum is associated to a step of the fwd search.
     n=20000;
     v=3;
@@ -188,9 +188,17 @@ Y = chkinputM(Y,nnargin,vvarargin);
 
 % Input parameters checking
 
-hdef=floor(n*0.6);
+initdef=floor(n*0.6);
 
-options=struct('init',hdef,'plots',0,'msg',1,'nocheck',0);
+% Default for vector bsbsteps which indicates for which steps of the fwd
+% search units forming subset have to be saved
+if n<=5000
+    bsbstepdef = 0;
+else
+    bsbstepdef = [initdef 100:100:100*floor(n/100)];
+end
+
+options=struct('init',initdef,'plots',0,'msg',1,'nocheck',0,'bsbsteps',bsbstepdef);
 
 if nargin<2
     error('FSDA:FSMmmd:missingInputs','Initial subset is missing')
@@ -303,9 +311,16 @@ end
 
 
 if nargout==3
-    % Initialize matrix which will contain the units forming subset in each
-    % step of the fwd search
-    BB=NaN(n,n-init1+1,'single');
+   bsbsteps=options.bsbsteps; 
+    % Matrix BB will contain the units forming subset in each step (or in
+    % selected steps) of the forward search. The first column contains
+    % information about units forming subset at step init1.
+    if bsbsteps == 0
+        bsbsteps=init1:n;
+        BB = NaN(n,n-init1+1,'single');
+    else
+        BB = NaN(n,length(bsbsteps),'single');
+    end
 end
 
 
@@ -333,7 +348,10 @@ if (rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0
     Un=NaN;
     varargout={NaN};
 else
-    
+    % ij = index which is linked with the columns of matrix BB. During the
+% search every time a subset is stored inside matrix BB ij icreases by one
+ij=1;
+
     for mm = ini0:n
         
         % Extract units forming subset
@@ -345,11 +363,15 @@ else
         
         % If required, store units forming subset at each step
         if (mm>=init1) && nargout==3;
+            
+                        if intersect(mm,bsbsteps)==mm
             if mm<=percn;
-                BB(bsb,mm-init1+1)=bsb;
+                BB(bsb,ij)=bsb;
             else
-                BB(bsbT,mm-init1+1)=seq(bsbT);
+                BB(bsbT,ij)=seq(bsbT);
             end
+             ij=ij+1;
+                        end
         end
         
         % Find vector of means inside subset

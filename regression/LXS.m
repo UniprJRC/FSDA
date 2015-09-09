@@ -179,9 +179,12 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  Optional Output:
 %
-%            C        : matrix containing the indices of the subsamples 
+%            C        : Indexes of the extracted subsamples. Matrix.
+%                       Matrix containing the indexes of the subsamples 
 %                       extracted for computing the estimate (the so called
-%                       elemental sets).
+%                       elemental sets). For example, if C(3,:)=[2 5 20],
+%                       implies that the third extracted subsample is
+%                       formed by units 2, 5 and 20.
 %
 %
 % See also FSReda, Sreg, MMreg
