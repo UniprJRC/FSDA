@@ -79,15 +79,16 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %               the multiple start monitoring by:
 %               - setting the NumWorkers option in the local cluster profile
 %                 settings to the number of logical cores (Remark 2). To do
-%                 so Home|Parallel|Manage Cluster Profile and set "Number
-%                 of workers to start on your local machine"
+%                 so go on the menu "Home|Parallel|Manage Cluster Profile"
+%                 and set the desired "Number of workers to start on your
+%                 local machine".
 %               - setting numpool to the desired number of workers;
-%               Therefore, if a parallel pool is not open,  UserOption
-%               numpool (if set) overwrites the number of workers set in
-%               the local/current profile. Similarly, the number of workers
-%               in the local/current profile overwrites default value of
-%               'numpool' obtained as feature('numCores') (i.e. the number
-%               of phisical cores)
+%               Therefore, *if a parallel pool is not already open*,
+%               UserOption numpool (if set) overwrites the number of
+%               workers set in the local/current profile. Similarly, the
+%               number of workers in the local/current profile overwrites
+%               default value of 'numpool' obtained as feature('numCores')
+%               (i.e. the number of physical cores).
 %  cleanpool :  cleanpool is 1 if the parallel pool has to be cleaned after
 %               the execution of the random starts. Otherwise it is 0.
 %               The default value of cleanpool is 1.
