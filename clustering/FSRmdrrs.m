@@ -32,18 +32,18 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %
 % Optional input arguments:
 %
-%  init :       Search initialization. Scalar. 
+%  init :       Search initialization. Scalar.
 %               It specifies the point where to initialize the search and
 %               start monitoring required diagnostics. If it is not
 %               specified it is set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               Example - 'init',100 starts monitoring from step m=100 
+%               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), if 0, no constant
 %               term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
@@ -60,7 +60,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               Data Types - double
 %               REMARK: vector bsbsteps must contain numbers from init to
 %               n. if min(bsbsteps)<init a warning message will appear on
-%               the screen.  
+%               the screen.
 %     nsimul :  number of random starts. Scalar. The default value is200.
 %               Example - 'nsimul',300
 %               Data Types - double
@@ -69,7 +69,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               unchanged. In other words the additioanl column of ones for
 %               the intercept is not added. As default nocheck=0. The
 %               controls on h, alpha and nsamp still remain
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %  constr :     Constrained search. Vector. r x 1 vector which contains the list of units which are
 %               forced to join the search in the last r steps. The default
@@ -81,13 +81,13 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               random starts minimum deletion residual appears  on the
 %               screen with 1%, 50% and 99% confidence bands else (default)
 %               no plot is shown.
-%               Example - 'plots',1 
+%               Example - 'plots',1
 %               Data Types - double
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrrsplot.
-%   numpool :  use parallel computing and parfor. Scalar. 
+%   numpool :  use parallel computing and parfor. Scalar.
 %               If numpool > 1, the routine automatically checks
 %               if the Parallel Computing Toolbox is installed and
 %               distributes the random starts over numpool parallel
@@ -116,9 +116,18 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               increase the number of parallel pool workers allocated to
 %               the multiple start monitoring by:
 %               - setting the NumWorkers option in the local cluster profile
-%                 settings to the number of logical cores (Remark 2).
+%                 settings to the number of logical cores (Remark 2). To do
+%                 so go on the menu "Home|Parallel|Manage Cluster Profile"
+%                 and set the desired "Number of workers to start on your
+%                 local machine".
 %               - setting numpool to the desired number of workers;
-%               Example - 'numpool',8 
+%               Therefore, *if a parallel pool is not already open*,
+%               UserOption numpool (if set) overwrites the number of
+%               workers set in the local/current profile. Similarly, the
+%               number of workers in the local/current profile overwrites
+%               default value of 'numpool' obtained as feature('numCores')
+%               (i.e. the number of physical cores).
+%               Example - 'numpool',8
 %               Data Types - double
 %  cleanpool :  clean pool after execution. Scalar.
 %               cleanpool is 1 if the parallel pool has to be cleaned after
@@ -126,9 +135,9 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               The default value of cleanpool is 1.
 %               Clearly this option has an effect just if previous option
 %               numpool is > 1.
-%               Example - 'clarnpool',false 
+%               Example - 'clarnpool',false
 %               Data Types - boolean
-%  msg  :       Level of output to display. Scalar. 
+%  msg  :       Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               about random start progress. More precisely, if previous
 %               option numpool>1, then a progress bar is displayed, on
@@ -144,7 +153,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               message will appear on the screen:
 %                   Error using ProgressBar (line 57)
 %                   Do you have write permissions for C:\Program Files\MATLAB?
-%               Example - 'msg',1 
+%               Example - 'msg',1
 %               Data Types - double
 %
 %  Remark:      The user should only give the input arguments that have to
@@ -168,17 +177,17 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               ...
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
 %       BBrs :  units belonging to subset. 3D array.
-%               3D array which contains the units belonging to the subset 
-%               at the steps specified by input option bsbsteps. 
-%               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul. 
-%               In this case BBrs(:,:,j) with j=1, 2, ..., nsimul 
+%               3D array which contains the units belonging to the subset
+%               at the steps specified by input option bsbsteps.
+%               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
+%               In this case BBrs(:,:,j) with j=1, 2, ..., nsimul
 %               has the following structure:
 %               1-st row has number 1 in correspondence of the steps in
 %                   which unit 1 is included inside subset and a missing
 %                   value for the other steps;
 %               ......
-%               (n-1)-th row has number n-1 in correspondence of the steps 
-%                   in which unit n-1 is included inside subset and a 
+%               (n-1)-th row has number n-1 in correspondence of the steps
+%                   in which unit n-1 is included inside subset and a
 %                   missing value for the other steps;
 %               n-th row has the number n in correspondence of the steps in
 %                   which unit n is included inside subset and a missing
@@ -188,7 +197,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               subset, BBrs has size n-by-length(bsbsteps)-by-nsimul.
 %               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
 %               the same structure as before, but now contains just
-%               length(bsbsteps) columns.  
+%               length(bsbsteps) columns.
 %
 %
 % See also:     FSRmdr, FSMmmdrs, FSMmmd
@@ -279,6 +288,8 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer) and pool is not cleaned after
     % the execution of the random starts
+    % The number of workers which is used is the one specified
+    % in the local/current profile
     [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);
     disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
     disp('clearly show the presence of two groups.')
@@ -416,11 +427,15 @@ if ~isempty(UserOptions)
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-end
-
-% Write in structure 'options' the options chosen by the user
-for i=1:2:length(varargin);
-    options.(varargin{i})=varargin{i+1};
+    
+    
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin);
+        options.(varargin{i})=varargin{i+1};
+    end
+    chkbsbsteps = strcmp(UserOptions,'bsbsteps');
+else
+    UserOptions=0;
 end
 
 init        = options.init;
@@ -443,11 +458,14 @@ if bsbsteps == 0
 else
     
     if ~isempty(bsbsteps(bsbsteps<init))
-     warning('FSDA:FSRmdrrs:Wronginit','It is not possible to store subset for values of m smaller than init')
-       bsbsteps=bsbsteps(bsbsteps>=init);
-    end 
-  
-        
+        % The following warning is shown just if the user has supplied vector
+        % bsbsteps
+        if sum(chkbsbsteps)
+            warning('FSDA:FSRmdrrs:Wronginit','It is not possible to store subset for values of m smaller than init')
+        end
+        bsbsteps=bsbsteps(bsbsteps>=init);
+    end
+    
     BBrs=zeros(n,length(bsbsteps),nsimul);
 end
 
@@ -487,6 +505,19 @@ if usePCT==1 % In this case Parallel Computing Toolbox Exists
         ppool = gcp('nocreate');
         if isempty(ppool)
             pworkers = 0;
+            % If the user has not specified numpool, then the number of
+            % workers which will be used is the one set in the current
+            % profile
+            if max(strcmp(UserOptions,'numpool')) ~= 1
+                pworkersLocProfile=parcluster();
+                numpool=pworkersLocProfile.NumWorkers;
+            end
+            
+            % Therefore if a parallel pool is not open,  UserOption numpool
+            % (if set) overwrites the number of workers set in the
+            % local/current profile. Similarly, the number of workers in
+            % the local/current profile overwrites default value of 'numpool' obtained as
+            % feature('numCores') (i.e. the number of phisical cores)
         else
             pworkers = ppool.Cluster.NumWorkers;
         end

@@ -203,7 +203,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     close all
     % parfor of Parallel Computing Toolbox is used (if present in current computer)
     % and pool is not cleaned after the execution of the random starts
-    % The number of number of workers which are used is the one specified
+    % The number of workers which is used is the one specified
     % in the local/current profile
     [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
@@ -212,8 +212,8 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %}
 
 %{
-    % We start with an example with simulated data with two groups
-    % with roughly the same number of observations
+    % Same example as before but now the values of n1 and n2 (size of the
+    % two groups) have been increased.    
     close all
     rng('default')
     rng(10);
@@ -275,13 +275,6 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer). Parallel pool is closed after the execution of the random starts
     [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
-%}
-
-%{
-    % Random start for Swiss banknotes
-    % parfor of Parallel Computing Toolbox is used (if installed)
-    figure
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1);
 %}
 
 %{
@@ -354,7 +347,8 @@ if ~isempty(UserOptions)
         options.(varargin{i})=varargin{i+1};
     end
     chkbsbsteps = strcmp(UserOptions,'bsbsteps');
-    
+else
+   UserOptions=0;
 end
 
 init        = options.init;
@@ -426,7 +420,7 @@ if usePCT==1 % In this case Parallel Computing Toolbox Exists
             % If the user has not specified numpool, then the number of
             % workers which will be used is the one set in the current
             % profile
-            if max(strcmp(UserOptions,'numpool'))==0
+            if max(strcmp(UserOptions,'numpool')) ~= 1
                 pworkersLocProfile=parcluster();
                 numpool=pworkersLocProfile.NumWorkers;
             end
