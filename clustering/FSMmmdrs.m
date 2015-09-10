@@ -78,8 +78,16 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %               increase the number of parallel pool workers allocated to
 %               the multiple start monitoring by:
 %               - setting the NumWorkers option in the local cluster profile
-%                 settings to the number of logical cores (Remark 2).
+%                 settings to the number of logical cores (Remark 2). To do
+%                 so Home|Parallel|Manage Cluster Profile and set "Number
+%                 of workers to start on your local machine"
 %               - setting numpool to the desired number of workers;
+%               Therefore, if a parallel pool is not open,  UserOption
+%               numpool (if set) overwrites the number of workers set in
+%               the local/current profile. Similarly, the number of workers
+%               in the local/current profile overwrites default value of
+%               'numpool' obtained as feature('numCores') (i.e. the number
+%               of phisical cores)
 %  cleanpool :  cleanpool is 1 if the parallel pool has to be cleaned after
 %               the execution of the random starts. Otherwise it is 0.
 %               The default value of cleanpool is 1.
@@ -193,7 +201,9 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     Y=[Y1;Y2];
     close all
     % parfor of Parallel Computing Toolbox is used (if present in current computer)
-    % and pool is not cleaned after % the execution of the random starts
+    % and pool is not cleaned after the execution of the random starts
+    % The number of number of workers which are used is the one specified
+    % in the local/current profile
     [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
@@ -337,7 +347,7 @@ if ~isempty(UserOptions)
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-
+    
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin);
         options.(varargin{i})=varargin{i+1};
@@ -408,8 +418,23 @@ if usePCT==1 % In this case Parallel Computing Toolbox Exists
         pworkers = matlabpool('size'); %#ok<DPOOL>
     else
         ppool = gcp('nocreate');
+        
         if isempty(ppool)
             pworkers = 0;
+            
+            % If the user has not specified numpool, then the number of
+            % workers which will be used is the one set in the current
+            % profile
+            if max(strcmp(UserOptions,'numpool'))==0
+                pworkersLocProfile=parcluster();
+                numpool=pworkersLocProfile.NumWorkers;
+            end
+            
+            % Therefore if a parallel pool is not open,  UserOption numpool
+            % (if set) overwrites the number of workers set in the
+            % local/current profile. Similarly, the number of workers in
+            % the local/current profile overwrites default value of 'numpool' obtained as
+            % feature('numCores') (i.e. the number of phisical cores)
         else
             pworkers = ppool.Cluster.NumWorkers;
         end
@@ -420,6 +445,7 @@ if usePCT==1 % In this case Parallel Computing Toolbox Exists
         % larger than the number of workers allocated to the parallel pool.
         numpool = min(numpool,pworkers);
     else
+        
         % If there is no parallel pool open, create one with numpool workers.
         if usematlabpool
             matlabpool('open',numpool); %#ok<DPOOL>
