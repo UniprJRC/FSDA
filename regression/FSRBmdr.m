@@ -411,11 +411,7 @@ end
 
 % Default for vector bsbsteps which indicates for which steps of the fwd
 % search units forming subset have to be saved
-if n<=5000
-    bsbstepdef = initdef:n;
-else
-    bsbstepdef = [initdef 100:100:100*floor(n/100)];
-end
+bsbstepdef='';
 
 % If n is very large (>500), the step of the search is printed every 500 step
 % seq500 is linked to printing
@@ -459,22 +455,22 @@ end
 
 
 % check init
-init1=options.init;
-if  init1 <0;
-    mess=sprintf(['Attention : init1 should be greater or equal than 0. \n',...
+init=options.init;
+if  init <0;
+    mess=sprintf(['Attention : init should be greater or equal than 0. \n',...
         'It is set to 0.']);
     disp(mess);
-    init1=0;
-elseif init1<length(bsb);
+    init=0;
+elseif init<length(bsb);
     mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
     disp(mess);
-    init1=length(bsb);
-elseif init1>=n;
+    init=length(bsb);
+elseif init>=n;
     mess=sprintf(['Attention : init1 should be smaller than n. \n',...
         'It is set to n-1.']);
     disp(mess);
-    init1=n-1;
+    init=n-1;
 end
 
 
@@ -499,27 +495,42 @@ r=[seq zeros(n,1)];
 
 % Matrix BBayes will contain the (Bayesian) beta coefficients in each step of
 % the fwd search. The first column of BBayes contains the fwd search index
-BBayes=[(init1:n)' NaN(n-init1+1,p)];     %initial value of beta coefficients is set to NaN
+BBayes=[(init:n)' NaN(n-init+1,p)];     %initial value of beta coefficients is set to NaN
 
 % initialize the space on the SE array with NaNs
 % S2 = (n-init1+1) x 3 matrix which will contain:
 % 1st col = fwd search index
 % 2nd col = S2= \sum e_i^2 / (m-p)
 % 3rd col = R^2
-S2Bayes=[(init1:n)' NaN(n-init1+1,2)];        %initial value of S2 (R2) is set to NaN
+S2Bayes=[(init:n)' NaN(n-init+1,2)];        %initial value of S2 (R2) is set to NaN
 
 % mdr = (n-init1-1) x 2 matrix which will contain min deletion residual
 % among nobsb r_i^*
-mdrB=[(init1:n-1)'  NaN(n-init1,1)];      %initial value of mdr is set to NaN
+mdrB=[(init:n-1)'  NaN(n-init,1)];      %initial value of mdr is set to NaN
 
-% Matrix BB will contain the units forming subset in each step of the
-% forward search. The first column contains information about units forming subset at
-% step init1.
-if bsbsteps == 0
-    BB = NaN(n,n-init1+1);
-     bsbsteps=init1:n;
+
+% Matrix BB will contain the units forming subset in each step (or in
+% selected steps) of the forward search. The first column contains
+% information about units forming subset at step init1.
+if isempty(bsbsteps)
+    % Default for vector bsbsteps which indicates for which steps of the fwd
+    % search units forming subset have to be saved
+    if n<=5000
+        bsbsteps = init:1:n;
+    else
+        bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)];
+    end
+    BB = NaN(n,length(bsbsteps),'single');
+elseif bsbsteps==0
+    bsbsteps=init:n;
+    BB = NaN(n,n-init+1,'single');
 else
-    BB = NaN(n,length(bsbsteps));
+    if min(bsbsteps)<init
+        warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+    end
+    bsbsteps=bsbsteps(bsbsteps>=init);
+    
+    BB = NaN(n,length(bsbsteps),'single');
 end
 
 % ij = index which is linked with the columns of matrix BB. During the
@@ -528,7 +539,7 @@ ij=1;
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just
 %  included.
-Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
+Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 %% Start of the forward search
 
@@ -559,7 +570,7 @@ for mm=ini0:n;
     
     r(:,2)=e.^2;
     
-    if (mm>=init1);
+    if (mm>=init);
         % Store units belonging to the subset
         if intersect(mm,bsbsteps)==mm
             BB(bsb,ij)=bsb;
@@ -567,18 +578,18 @@ for mm=ini0:n;
         end
         
         % Stores beta coefficients if there is no rank problem
-        BBayes(mm-init1+1,2:p+1)=b';
+        BBayes(mm-init+1,2:p+1)=b';
         
         % Sb = posterior estimate of sigma2
         Sb=1/bayes.tau1;
-        S2Bayes(mm-init1+1,2)=Sb;
+        S2Bayes(mm-init+1,2)=Sb;
         
         % Store R2
-        S2Bayes(mm-init1+1,3)=1-var(resBSB)/var(yb);
+        S2Bayes(mm-init+1,3)=1-var(resBSB)/var(yb);
         
         if mm<n
             % Store Bayesian mdr
-            mdrB(mm-init1+1,2)= min(abs(bayes.res(ncl,2)));
+            mdrB(mm-init+1,2)= min(abs(bayes.res(ncl,2)));
         end
     end
     
@@ -596,18 +607,18 @@ for mm=ini0:n;
         Xb=X(bsb,:);  % subset of X
         yb=y(bsb);    % subset of y
         
-        if mm>=init1;
+        if mm>=init;
             unit=setdiff(bsb,oldbsb);
             
             % If the interchange involves more than 10 units, store only the
             % first 10.
             if length(unit)<=10
-                Un(mm-init1+1,2:(length(unit)+1))=unit;
+                Un(mm-init+1,2:(length(unit)+1))=unit;
             else
                 if msg==1
                     disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                     disp(['Number of units which entered=' int2str(length(unit))]);
-                    Un(mm-init1+1,2:end)=unit(1:10);
+                    Un(mm-init+1,2:end)=unit(1:10);
                 end
             end
         end
@@ -625,7 +636,7 @@ if options.plots==1
     quant=[0.01;0.5;0.99];
     % Compute theoretical envelops for minimum deletion residual based on all
     % the observations for the above quantiles.
-    [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init1,'exact',1);
+    [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init,'exact',1);
     plot(mdrB(:,1),mdrB(:,2));
     
     % Superimpose 1%, 99%, 99.9% envelopes based on all the observations

@@ -42,7 +42,20 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                  the intercept is not added. As default nocheck=0.
 %                  Example - 'nocheck',1
 %                  Data Types - double
-%       plots   : Plot on the screen. Scalar. 
+%   bsbsteps :  Save the units forming subsets in selected steps. Vector.
+%               It specifies for which steps of the fwd search it is
+%               necessary to save the units forming subset. If bsbsteps is
+%               0 we store the units forming subset in all steps. The
+%               default is store the units forming subset in all steps if
+%               n<=5000, else to store the units forming subset at steps
+%               init and steps which are multiple of 100. For example, as
+%               default, if n=7530 and init=6, units forming subset are
+%               stored for
+%               m=init, 100, 200, ..., 7500.
+%               Example - 'bsbsteps',[100 200] stores the unis forming
+%               subset in steps 100 and 200.
+%               Data Types - double
+%       plots   : Plot on the screen. Scalar.
 %                 If plots=1 the monitoring units plot is displayed on the
 %                 screen. The default value of plots is 0 (that is no plot
 %                 is produced on the screen).
@@ -61,13 +74,19 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
-%  BB:          Units belonging to subset in each step. Matrix.
-%               n x (n-init+1) matrix which contains the units belonging to the
-%               subset at each step of the forward search.
-%               1st col = index forming subset in the initial step
-%               ...
-%               last column = units forming subset in the final step (i.e.
-%               all units).
+%  BB:          Units belonging to subset in each step or selected steps. Matrix.
+%               n-by-(n-init+1) or n-by-length(bsbsteps) matrix which
+%               contains the units belonging to the subset at each step (or
+%               in selected steps as specified by optional vector bsbsteps)
+%               of the forward search.
+%               More precisely:
+%               BB(:,1) contains the units forming subset in step bsbsteps(1);
+%               ....;
+%               BB(:,end) contains the units forming subset in step  bsbsteps(end);
+%               Row 1 of matrix BB is referred to unit 1;
+%               ......;
+%               Row n of matrix BB is referred to unit n;
+%               Units not belonging to subset are denoted with NaN.
 %
 % See also FSRBbsb, FSRHbsb
 %
@@ -194,7 +213,10 @@ end
 if init<length(bsb)
     init=length(bsb);
 end
-options=struct('intercept',1,'init',init,'nocheck',0,'plots',0);
+
+bsbstepdef='';
+
+options=struct('intercept',1,'init',init,'nocheck',0,'plots',0,'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -221,15 +243,15 @@ end
 
 if bsb==0;
     Ra=1; nwhile=1;
-    while or(Ra,nwhile<100)
+    while and(Ra,nwhile<100)
         bsb=randsample(n,p);
         Xb=X(bsb,:);
-        Ra=(rank(Xb)==p);
+        Ra=(rank(Xb)<p);
         nwhile=nwhile+1;
     end
-    if nwhile==100
-        warning('FSDA:FSRbsb:NoFullRank','Unable to randomly sample full rank matrix');
-    end
+        if nwhile==100
+            warning('FSDA:FSRbsb:NoFullRank','Unable to randomly sample full rank matrix');
+        end
     yb=y(bsb);
 else
     Xb=X(bsb,:);
@@ -270,10 +292,30 @@ r = [seq zeros(n,1)];
 % seq100 is linked to printing
 seq100 = 100*(1:1:ceil(n/100));
 
-% Matrix BB will contain the units forming subset in each step of the
-% forward search. The first column contains the units forming subset at
-% step init
-BB = NaN(n,n-init+1);
+bsbsteps=options.bsbsteps;
+% Matrix BB will contain the units forming subset in each step (or in
+% selected steps) of the forward search. The first column contains
+% information about units forming subset at step init1.
+if isempty(bsbsteps)
+    % Default for vector bsbsteps which indicates for which steps of the fwd
+    % search units forming subset have to be saved
+    if n<=5000
+        bsbsteps = init:1:n;
+    else
+        bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)];
+    end
+    BB = NaN(n,length(bsbsteps),'single');
+elseif bsbsteps==0
+    bsbsteps=init:n;
+    BB = NaN(n,n-init+1,'single');
+else
+    if min(bsbsteps)<init
+        warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+    end
+    bsbsteps=bsbsteps(bsbsteps>=init);
+    
+    BB = NaN(n,length(bsbsteps),'single');
+end
 
 %  UN is a Matrix whose 2nd column:11th col contains the unit(s) just
 %  included.
@@ -288,6 +330,10 @@ if (rank(Xb)~=p)
     warning('FSDA:FSRbsb:NoFullRank','The provided initial subset does not form a full rank matrix');
     % FS loop will not be performed
 else
+    % ij = index which is linked with the columns of matrix BB. During the
+    % search every time a subset is stored inside matrix BB ij icreases by one
+    ij=1;
+    
     for mm = ini0:n;
         % if n>200 show every 100 steps the fwd search index
         if n>200
@@ -298,7 +344,10 @@ else
         
         % Store units belonging to the subset
         if (mm>=init);
-            BB(bsb,mm-init+1)=bsb;
+            if intersect(mm,bsbsteps)==mm
+                BB(bsb,ij)=bsb;
+                ij=ij+1;
+            end
         end
         
         % Compute beta coefficients using subset
@@ -349,8 +398,7 @@ plots=options.plots;
 if plots==1
     % Create the 'monitoring units plot'
     figure;
-    seqr=[Un(1,1)-1; Un(:,1)];
-    plot(seqr,BB','bx');
+    plot(bsbsteps,BB','bx')
     xlabel('Subset size m');
     ylabel('Monitoring units plot');
 end

@@ -77,6 +77,16 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %               is produced on the screen).
 %               Example - 'plots',1
 %               Data Types - double
+%   bsbsteps :  steps of the fwd search where to save the units forming subset. Vector.
+%               If bsbsteps is 0 we store the units forming 
+%               subset in all steps. The default is store the units forming
+%               subset in all steps if n<5000, else to store the units
+%               forming subset at steps init and steps which are multiple
+%               of 100. For example, if n=753 and init=6, units forming
+%               subset are stored for m=init, 100, 200, 300, 400, 500 and
+%               600. 
+%               Example - 'bsbsteps',[10,20,30]
+%               Data Types - double
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -196,12 +206,10 @@ end
 % seq500 is linked to printing
 seq500=500*(1:1:ceil(n/500));
 
-
+bsbstepdef='';
 bsb='';
 options=struct('bsb',bsb,'init',initdef,'intercept',1,...
-    'plots',0,'nocheck',0,'msg',1);
-
-
+    'plots',0,'nocheck',0,'msg',1,'bsbsteps',bsbstepdef);
 
 if nargin > 7
     UserOptions=varargin(1:2:length(varargin));
@@ -263,10 +271,30 @@ seq=(1:n)';
 r=[seq zeros(n,1)];
 
 
-% Matrix BB will contain the units forming subset in each step of the
-% forward search. The first column contains information about units forming subset at
-% step init1.
-    BB = NaN(n,n-init+1);
+bsbsteps=options.bsbsteps;
+% Matrix BB will contain the units forming subset in each step (or in
+% selected steps) of the forward search. The first column contains
+% information about units forming subset at step init1.
+if isempty(bsbsteps)
+    % Default for vector bsbsteps which indicates for which steps of the fwd
+    % search units forming subset have to be saved
+    if n<=5000
+        bsbsteps = init:1:n;
+    else
+        bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)];
+    end
+    BB = NaN(n,length(bsbsteps),'single');
+elseif bsbsteps==0
+    bsbsteps=init:n;
+    BB = NaN(n,n-init+1,'single');
+else
+    if min(bsbsteps)<init
+        warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+    end
+    bsbsteps=bsbsteps(bsbsteps>=init);
+    
+    BB = NaN(n,length(bsbsteps),'single');
+end
 
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just
@@ -274,6 +302,10 @@ r=[seq zeros(n,1)];
 Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 %% Start of the forward search
+
+    % ij = index which is linked with the columns of matrix BB. During the
+    % search every time a subset is stored inside matrix BB ij icreases by one
+    ij=1;
 
 for mm=ini0:n;
     
@@ -295,8 +327,10 @@ for mm=ini0:n;
     r(:,2)=e.^2;
     
     if (mm>=init);
-        % Store units belonging to the subset
-                          BB(bsb,mm-init+1)=bsb;
+        if intersect(mm,bsbsteps)==mm
+            BB(bsb,ij)=bsb;
+            ij=ij+1;
+        end
     end
     
     if mm<n;
@@ -335,8 +369,7 @@ plots=options.plots;
 if plots==1
     % Create the 'monitoring units plot'
     figure;
-    seqr=[Un(1,1)-1; Un(:,1)];
-    plot(seqr,BB','bx');
+    plot(bsbsteps,BB','bx')
     xlabel('Subset size m');
     ylabel('Monitoring units plot');
 end

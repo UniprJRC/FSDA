@@ -1278,7 +1278,7 @@ if ndecl>0;
     if n<5000
         outliers=seq(isnan(bb(:,end-ndecl)));
     else
-        bb = FSMbbm(Y,bs,n-ndecl,'init',init,'nocheck',1);
+        [~,bb] = FSMbsb(Y,bs,'bsbsteps',n-ndecl,'init',n-ndecl,'nocheck',1);
         outliers=seq(isnan(bb));
     end
     group(outliers)=2;

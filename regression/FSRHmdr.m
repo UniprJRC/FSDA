@@ -131,6 +131,20 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               found in the previous step.
 %               Example - 'bsbmfullrank',0
 %               Data Types - double
+%   bsbsteps :  Save the units forming subsets in selected steps. Vector.
+%               It specifies for which steps of the fwd search it is
+%               necessary to save the units forming subset. If bsbsteps is
+%               0 we store the units forming subset in all steps. The
+%               default is store the units forming subset in all steps if
+%               n<=5000, else to store the units forming subset at steps
+%               init and steps which are multiple of 100. For example, as
+%               default, if n=7530 and init=6, units forming subset are
+%               stored for
+%               m=init, 100, 200, ..., 7500.
+%               Example - 'bsbsteps',[100 200] stores the unis forming
+%               subset in steps 100 and 200.
+%               Data Types - double
+%
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
@@ -329,13 +343,7 @@ else
     initdef=min(3*p+1,floor(0.5*(n+p+1)));
 end
 
-% Default for vector bsbsteps which indicates for which steps of the fwd
-% search units forming subset have to be saved
-if n<=5000
-    bsbstepdef = 0;
-else
-    bsbstepdef = [initdef 100:100:100*floor(n/100)];
-end
+bsbstepdef='';
 
 options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
     'constr','','bsbmfullrank',1,'modeltype','art','gridsearch',0,'bsbsteps',bsbstepdef);
@@ -468,15 +476,30 @@ S2=[(init:n)' NaN(n-init+1,2)];        %initial value of S2 (R2) is set to NaN
 % among nobsb r_i^*
 mdr=[(init:n-1)'  NaN(n-init,1)];      %initial value of mdr is set to NaN
 
+
 bsbsteps=options.bsbsteps;
 % Matrix BB will contain the units forming subset in each step (or in
 % selected steps) of the forward search. The first column contains
 % information about units forming subset at step init1.
-if bsbsteps == 0
+if isempty(bsbsteps)
+    % Default for vector bsbsteps which indicates for which steps of the fwd
+    % search units forming subset have to be saved
+    if n<=5000
+        bsbsteps = init:1:n;
+    else
+        bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)];
+    end
+    BB = NaN(n,length(bsbsteps),'single');
+elseif bsbsteps==0
     bsbsteps=init:n;
-    BB = NaN(n,n-init+1);
+    BB = NaN(n,n-init+1,'single');
 else
-    BB = NaN(n,length(bsbsteps));
+    if min(bsbsteps)<init
+        warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+    end
+    bsbsteps=bsbsteps(bsbsteps>=init);
+    
+    BB = NaN(n,length(bsbsteps),'single');
 end
 
 % ij = index which is linked with the columns of matrix BB. During the

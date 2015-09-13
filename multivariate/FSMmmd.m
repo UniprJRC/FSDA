@@ -46,6 +46,19 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %               performed on matrix Y. As default nocheck=0.
 %                 Example - 'nocheck',0
 %                 Data Types - double
+%   bsbsteps :  Save the units forming subsets. Vector. It specifies for
+%               which steps of the fwd search it
+%               is necessary to save the units forming subsets. If bsbsteps
+%               is 0 we store the units forming subset in all steps. The
+%               default is store the units forming subset in all steps if
+%               n<=5000, else to store the units forming subset at steps
+%               init and steps which are multiple of 100. For example, as
+%               default, if n=7530 and init=6,
+%               units forming subset are stored for
+%               m=init, 100, 200, ..., 7500.
+%               Example - 'bsbsteps',[100 200] stores the unis forming
+%               subset in steps 100 and 200.
+%               Data Types - double
 %
 % Remark :      The user should only give the input arguments that have to
 %               change their default value.
@@ -190,13 +203,7 @@ Y = chkinputM(Y,nnargin,vvarargin);
 
 initdef=floor(n*0.6);
 
-% Default for vector bsbsteps which indicates for which steps of the fwd
-% search units forming subset have to be saved
-if n<=5000
-    bsbstepdef = 0;
-else
-    bsbstepdef = [initdef 100:100:100*floor(n/100)];
-end
+bsbstepdef='';
 
 options=struct('init',initdef,'plots',0,'msg',1,'nocheck',0,'bsbsteps',bsbstepdef);
 
@@ -311,14 +318,28 @@ end
 
 
 if nargout==3
-   bsbsteps=options.bsbsteps; 
+    bsbsteps=options.bsbsteps;
     % Matrix BB will contain the units forming subset in each step (or in
     % selected steps) of the forward search. The first column contains
     % information about units forming subset at step init1.
-    if bsbsteps == 0
+    if isempty(bsbsteps)
+        % Default for vector bsbsteps which indicates for which steps of the fwd
+        % search units forming subset have to be saved
+        if n<=5000
+            bsbsteps = init1:1:n;
+        else
+            bsbsteps = [init1 init1+100-mod(init1,100):100:100*floor(n/100)];
+        end
+        BB = NaN(n,length(bsbsteps),'single');
+    elseif bsbsteps==0
         bsbsteps=init1:n;
         BB = NaN(n,n-init1+1,'single');
     else
+        if min(bsbsteps)<init1
+            warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+        end
+        bsbsteps=bsbsteps(bsbsteps>=init1);
+        
         BB = NaN(n,length(bsbsteps),'single');
     end
 end
@@ -349,9 +370,9 @@ if (rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0
     varargout={NaN};
 else
     % ij = index which is linked with the columns of matrix BB. During the
-% search every time a subset is stored inside matrix BB ij icreases by one
-ij=1;
-
+    % search every time a subset is stored inside matrix BB ij icreases by one
+    ij=1;
+    
     for mm = ini0:n
         
         % Extract units forming subset
@@ -364,14 +385,14 @@ ij=1;
         % If required, store units forming subset at each step
         if (mm>=init1) && nargout==3;
             
-                        if intersect(mm,bsbsteps)==mm
-            if mm<=percn;
-                BB(bsb,ij)=bsb;
-            else
-                BB(bsbT,ij)=seq(bsbT);
+            if intersect(mm,bsbsteps)==mm
+                if mm<=percn;
+                    BB(bsb,ij)=bsb;
+                else
+                    BB(bsbT,ij)=seq(bsbT);
+                end
+                ij=ij+1;
             end
-             ij=ij+1;
-                        end
         end
         
         % Find vector of means inside subset

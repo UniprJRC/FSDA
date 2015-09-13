@@ -25,7 +25,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations.
-%     Z :       Predictor variables in the regression equation. Matrix. 
+%     Z :       Predictor variables in the regression equation. Matrix.
 %               n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)
@@ -82,7 +82,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
 %                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
 %               \]
-%               Example - 'modeltype','har' 
+%               Example - 'modeltype','har'
 %               Data Types - string
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
@@ -110,7 +110,20 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               r x 1 vector. The default is constr=''.  No constraint is imposed
 %               Example - 'constr',[1 6 3]
 %               Data Types - double
-%   plots   :   Plot on the screen. Scalar. 
+%   bsbsteps :  Save the units forming subsets in selected steps. Vector.
+%               It specifies for which steps of the fwd search it is
+%               necessary to save the units forming subset. If bsbsteps is
+%               0 we store the units forming subset in all steps. The
+%               default is store the units forming subset in all steps if
+%               n<=5000, else to store the units forming subset at steps
+%               init and steps which are multiple of 100. For example, as
+%               default, if n=7530 and init=6, units forming subset are
+%               stored for
+%               m=init, 100, 200, ..., 7500.
+%               Example - 'bsbsteps',[100 200] stores the unis forming
+%               subset in steps 100 and 200.
+%               Data Types - double
+%   plots   :   Plot on the screen. Scalar.
 %               If plots=1 the monitoring units plot is displayed on the
 %               screen. The default value of plots is 0 (that is no plot
 %               is produced on the screen).
@@ -175,7 +188,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 
 %{
     %% Display the monitoring units plot.
-    % Suppress all messages about interchange with option msg 
+    % Suppress all messages about interchange with option msg
     [Unchk,BBchk]=FSRHbsb(y,X,Z,[1:10],'plots',1,'msg',0);
 %}
 
@@ -201,8 +214,10 @@ if initdef<length(bsb)
     initdef=length(bsb);
 end
 
+bsbstepdef='';
+
 options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','modeltype','art','gridsearch',0);
+    'constr','','modeltype','art','gridsearch',0,'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -315,11 +330,30 @@ r=[seq zeros(n,1)];
 % seq100 is linked to printing
 seq100=100*(1:1:ceil(n/100));
 
-% Matrix BB will contain the units forming subset in each step of the
-% forward search. The first column contains the units forming subset at
-% step init
-    BB = NaN(n,n-init+1);
-
+bsbsteps=options.bsbsteps;
+% Matrix BB will contain the units forming subset in each step (or in
+% selected steps) of the forward search. The first column contains
+% information about units forming subset at step init1.
+if isempty(bsbsteps)
+    % Default for vector bsbsteps which indicates for which steps of the fwd
+    % search units forming subset have to be saved
+    if n<=5000
+        bsbsteps = init:1:n;
+    else
+        bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)];
+    end
+    BB = NaN(n,length(bsbsteps),'single');
+elseif bsbsteps==0
+    bsbsteps=init:n;
+    BB = NaN(n,n-init+1,'single');
+else
+    if min(bsbsteps)<init
+        warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+    end
+    bsbsteps=bsbsteps(bsbsteps>=init);
+    
+    BB = NaN(n,length(bsbsteps),'single');
+end
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just
 %  included.
@@ -332,6 +366,10 @@ if (rank(Xb)~=p)
     warning('FSDA:FSRHmdr:message','FS loop will not be performed');
     % FS loop will not be performed
 else
+    % ij = index which is linked with the columns of matrix BB. During the
+    % search every time a subset is stored inside matrix BB ij icreases by one
+    ij=1;
+    
     for mm=ini0:n;
         
         % if n>200 show every 100 steps the fwd search index
@@ -350,7 +388,7 @@ else
                 else
                     if size(Zb,2)==1
                         % Use grid search algorithm if Z has just one column
-                        HET=regressHart_grid(yb,Xb(:,end),exp(Zb),'intercept',intercept);
+                        HET=regressHart_grid(yb,Xb(:,2:end),exp(Zb),'intercept',intercept);
                     else
                         HET=regressHart(yb,Xb(:,2:end),Zb,'intercept',intercept);
                     end
@@ -402,10 +440,15 @@ else
         
         r(:,2)=e.^2;
         
+        % Store units belonging to the subset
         if (mm>=init);
-            % Store units belonging to the subset
-                        BB(bsb,mm-init+1)=bsb;
-        end    
+            if intersect(mm,bsbsteps)==mm
+                BB(bsb,ij)=bsb;
+                ij=ij+1;
+            end
+        end
+        
+        
         
         if mm<n;
             
@@ -426,8 +469,8 @@ else
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);
             
-            Xb=X(bsb,:);  % subset of X     
-            yb=y(bsb);    % subset of y     
+            Xb=X(bsb,:);  % subset of X
+            yb=y(bsb);    % subset of y
             Zb=Z(bsb,:);  % subset of Z
             
             if mm>=init;
@@ -454,8 +497,7 @@ plots=options.plots;
 if plots==1
     % Create the 'monitoring units plot'
     figure;
-    seqr=[Un(1,1)-1; Un(:,1)];
-    plot(seqr,BB','bx');
+    plot(bsbsteps,BB','bx')
     xlabel('Subset size m');
     ylabel('Monitoring units plot');
 end
