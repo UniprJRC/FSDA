@@ -252,7 +252,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % FS based on log trasnformed data.
+    % FSMtra based on log trasnformed data.
     % Baby food data.
     load('baby.mat');
     Y=baby.data(:,6:end);
@@ -282,7 +282,7 @@ function out = FSMtra(Y,varargin)
 
 %{
     % Swiss heads data, Example 1.
-    % FS based on untransformed data H_0:\lambda=1 for all variables
+    % FSMtra based on untransformed data $H_0:\lambda=1$ for all variables
     load('head.mat');
     Y=head.data;
     [out]=FSMtra(Y,'plotsmle',1);
@@ -290,7 +290,7 @@ function out = FSMtra(Y,varargin)
 
 %{
     % Swiss heads data, Example 2.
-    % FS based on untransformed data H_0:\lambda=1 for all variables
+    % FSMtra based on untransformed data $H_0:\lambda=1$ for all variables
     load('head.mat');
     Y=head.data;
     % Analysis of profile loglikelihoods at step m=198
@@ -302,7 +302,7 @@ function out = FSMtra(Y,varargin)
 
 %{
     % Swiss heads data, Example 3.
-    % FS based on untransformed data H_0:\lambda=1 for all variables
+    % FSMtra based on untransformed data $H_0:\lambda=1$ for all variables
     load('head.mat');
     Y=head.data;
     % Monitoring of likelihood ratio test
@@ -322,7 +322,7 @@ function out = FSMtra(Y,varargin)
 
 %{
     % Mussels data, Example 1.
-    % FS based on untransformed data H_0:\lambda=1 for all variables
+    % FSMtra based on untransformed data $H_0:\lambda=1$ for all variables
     load('mussels.mat');
     Y=mussels.data;
     % Compare plot of mle with Figure 4.19 p. 178 of ARC (2004)
@@ -334,7 +334,7 @@ function out = FSMtra(Y,varargin)
     % Mussels data, Example 2.
     load('mussels.mat');
     Y=mussels.data;
-    % FS based on with H_0:\lambda=[1 0.5 1 0 1/3]
+    % FSMtra based on with H_0:\lambda=[1 0.5 1 0 1/3]
     % Compare plot of mle with Figure 4.21 p. 178 of ARC (2004)
     % Compare plot of lrt with Figure 4.20 p. 178 of ARC (2004)
     [out]=FSMtra(Y,'la0',[1 0.5 1 0 1/3],'plotsmle',1,'plotslrt',1);
@@ -420,7 +420,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % Emilia Romagna data, Example 1
+    % Emilia Romagna data, Example 1.
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel

@@ -25,14 +25,13 @@ function out = FSMfan(Y,la0,varargin)
 %               must be used. Character. Possible values are 'BoxCox' (default) or
 %               'YJ'.
 %               The Box-Cox family of power transformations equals
-%               (y^{\lambda}-1)/\lambda for \lambda not equal to zero, and
-%               log(y)
-%               if \lambda = 0.
+%               $(y^{\lambda}-1)/\lambda$ for $\lambda \neq 0$, and
+%               $log(y)$ if $\lambda = 0$.
 %               The Yeo-Johnson (YJ) transformation is the Box-Cox
 %               transformation of y+1 for nonnegative values, and of |y|+1 with
-%               parameter 2-\lambda for y negative.
-%               The basic power transformation returns y^{\lambda} if \lambda is not
-%               zero, and log(\lambda) otherwise.
+%               parameter $2-\lambda$ for y negative.
+%               The basic power transformation returns $y^{\lambda}$ if
+%               $\lambda \neq 0$ and $log(\lambda)$ otherwise.
 %               Remark. BoxCox and the basic power family can be used just
 %               if input y is positive. YeoJohnson family of
 %               transformations does not have this limitation.
@@ -274,7 +273,7 @@ function out = FSMfan(Y,la0,varargin)
 %}
 
 %{
-    % Emilia Romagna data with Yeo and Johnson parametric family
+    % Emilia Romagna data with Yeo and Johnson parametric family.
     load('emilia2001')
     Y=emilia2001.data;
 
