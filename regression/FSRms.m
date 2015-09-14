@@ -285,9 +285,7 @@ function outms = FSRms(y,X,varargin)
 %}
 
 %{
-    %% In order to reproduce the candlestick plot given in Figure 5 of
-    Riani and Atkinson (2010).
-
+    %% Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).
     n=length(y);
     fin_step=floor([n*0.1 n*0.02]);
     FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7])
