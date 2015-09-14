@@ -270,7 +270,31 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % Examples:
 
 %{
-    % mcd with all default options
+    % mcd with all default options.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    RAW=mcd(Ycont);
+%}
+
+%{
+    %% mcd with optional arguments.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    RAW=mcd(Ycont,'plots',1);
+%}
+
+%{
+    % mcd with reweighted estimates.
     n=200;
     v=3;
     randn('state', 123456);
@@ -281,18 +305,29 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
     [RAW,REW]=mcd(Ycont);
 %}
 
+%{
+    % mcd with exctracted subsamples.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [RAW,REW,C]=mcd(Ycont);
+%}
 
 %{
-    % mcd applied to the aircraft data (see Pison et al. 2002, Metrika)
-    % Default plots
+    %% mcd applied to the aircraft data (default plots). 
+    % See Pison et al. 2002, Metrika.
     X = load('aircraft.txt');
     Y = X(:,1:end-1);
     [RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);
 %}
 
 %{
-    % mcd applied to the aircraft data (see Pison et al. 2002, Metrika)
-    % plots using the scale of Pison et al.
+    %% mcd applied to the aircraft data (plots using the scale of Pison et al)
+    % See Pison et al. 2002, Metrika. 
     X = load('aircraft.txt');
     Y = X(:,1:end-1);
     [RAW,REW] = mcd(Y,'bdp',0.25,'ysaveRAW',1);
