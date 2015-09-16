@@ -74,13 +74,13 @@ function [out , varargout] = MMmult(Y,varargin)
 %               the MD is given by the input option conflev. If conflev is
 %               not specified a nominal 0.975 confidence interval will be
 %               used.
-%               (2) a scatter plot matrix with the outliers highlighted
+%               (2) a scatter plot matrix with the outliers highlighted. 
 %               If plots is a structure it may contain the following fields
 %                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added.
-%                   plots.nameY : cell array of strings containing the labels of
+%                   plots.nameY = cell array of strings containing the labels of
 %                       the variables. As default value, the labels which 
 %                       are added are Y1, ...Yv.
 %                 Example - 'plots',0 
@@ -152,16 +152,31 @@ function [out , varargout] = MMmult(Y,varargin)
 % Examples:
 
 %{
+    %% MMmult with all default options.
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
     Y=Y(1:100,:);
     [n,v]=size(Y);
-
     conflev=[0.95 0.99 1-0.01/n];
-
     [outMM]=MMmult(Y);
     malindexplot(outMM,v,'conflev',conflev);
     ylabel('MM estimator') 
+%}
+
+%{
+    %% MMmult with optional arguments.
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    Y=Y(1:100,:);
+    [outMM]=MMmult(Y,'plots',1);
+%}
+
+%{
+    % MMmult with exctracted subsamples.
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    Y=Y(1:100,:);
+    [outMM,C]=MMmult(Y);
 %}
 
 %% Beginning of code
