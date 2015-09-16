@@ -5,9 +5,9 @@ function [out, varargout] = SDest(Y,varargin)
 %
 % Required input arguments:
 %
-%    Y: Data matrix containing n observations on v variables
-%       Y=(y_1^T, ..., y_i^T, ..., y_n^T)^T
-%       y_i^T of size 1-by-v is the ith row of matrix Y
+%    Y: Input data. Matrix. Data matrix containing n observations on v variables
+%       $Y=(y_1^T, ..., y_i^T, ..., y_n^T)^T$. 
+%       $y_i^T$ of size 1-by-v is the ith row of matrix Y.
 %       Rows of Y represent observations, and columns
 %       represent variables.
 %       Missing values (NaN's) and infinite values (Inf's) are allowed,
@@ -16,35 +16,49 @@ function [out, varargout] = SDest(Y,varargin)
 %
 % Optional input arguments:
 %
-%      nsamp   : scalar defining number of random directions which have
+%      nsamp   : Number of random directions. Scalar. 
+%                Scalar defining number of random directions which have
 %                to be extracted (if not given, default = 1000)
-%      jpcorr  : integer value greater or equal 0.
+%                 Example - 'nsamp',1000 
+%                 Data Types - single | double
+%      jpcorr  : Subsamples additional size. Scalar. 
+%                Integer value greater or equal 0. 
 %                If jpcorr=0 subsamples of size v are extracted. Each
-%                subsample gives rise to only 1 direction (called dir)
-%                elseif jpcorr=1 subsamples of size v+1 are extracted and
-%                they give rise to (v+1) directions
+%                subsample gives rise to only 1 direction (called dir). 
+%                If jpcorr=1 subsamples of size v+1 are extracted and
+%                they give rise to (v+1) directions. 
 %                If jpcorr = 2, 3, 4, ... subsamples of size v+jpcorr are
 %                extracted. We remove the jpcorr-1 units from the subset
 %                which have the largest jpcorr-1 Mahalanobis distances so
 %                we obtain a subsample of v+1 units which, as before, gives
-%                rise to (v+1) directions. In the particular case when
+%                rise to (v+1) directions. 
+%                In the particular case when
 %                jpcorr=2 we end up with Juan and Prieto suggestion, that
-%                is the unit which has the largest MD is removed from each subsample
-%               The default value of jpcorr is 0
-%     conflev : Scalar between 0 and 1 containing confidence level which is
-%               used to declare units as outliers.
+%                is the unit which has the largest MD is removed from each
+%                subsample. The default value of jpcorr is 0.
+%                 Example - 'jpcorr',1 
+%                 Data Types - single | double
+%     conflev : Confidence level which is
+%               used to declare units as outliers. Scalar. 
+%               Scalar between 0 and 1. 
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
-%      margin : Scalar which specifies if it is necessary to consider
+%               Default value is 0.975. 
+%                 Example - 'conflev',0.95 
+%                 Data Types - single | double
+%      margin : Marginal projections. Scalar. 
+%               Scalar which specifies if it is necessary to consider
 %               marginal projections. Scalar margin specifies up to which
 %               order marginal projections must be considered. For example
 %               margin = 2 implies that all possible univariate and
 %               bivariate marginal projections are considered. Default
 %               value is 0 (marginal projections are not considered).
+%                 Example - 'margin',2 
+%                 Data Types - single | double
 %               Remark: note that if margin>0, data are
-%               preliminary standardized using medians and MADs
-%      weight : string. Value to use in the weight function to transform
+%               preliminary standardized using medians and MADs.
+%      weight : Value to use in the weight function. String. 
+%               Value to use in the weight function to transform
 %               the outlyingness measure of each observation into a weight.
 %               Possible values are 'huber', 'tukey', 'zch', and 'mcd'.
 %               Default is 'mcd'.
@@ -53,11 +67,13 @@ function [out, varargout] = SDest(Y,varargin)
 %               applied to the estimated covariance matrix.
 %               If weight = huber, the weights are determined according to
 %               the following formula
-%               w(r) = min(1, (r/c)^{-q}), with:
-%               c= min(sqrt \chi^2_{v,0.5},4)  in Van Aelst, Vandervieren and
+%               $w_r = \min(1, (r/c)^{-q})$ 
+%               with: 
+%               $c=\min{\sqrt{\chi^2_{v,0.5}},4}$ 
+%               in Van Aelst, Vandervieren and
 %               Willems, "Stahel-Donoho Estimators with Cellwise Weights",
-%               (J STAT COMPUT SIM, 2011) (option c='hdim', see below);
-%               c= sqrt \chi^2_{v,0.95} in Todorov and Filzmoser, "An Object
+%               (J STAT COMPUT SIM, 2011) (option c='hdim', see below); 
+%               $c=\sqrt{\chi^2_{v,0.95}}$ in Todorov and Filzmoser, "An Object
 %               Oriented Framework for Robust Multivariate Analysis", (J OF
 %               STAT SOFTWARE, 2009) (option c='sdim', see below);
 %               q = scalar see below.
@@ -76,61 +92,87 @@ function [out, varargout] = SDest(Y,varargin)
 %               (r=outlyingness measure);
 %               - C=Median(PD);
 %               - K is a positive tuning parameter.
-%            q: Scalar. Constant to be used in the Huber weight function.
+%                 Example - 'weight','zch' 
+%                 Data Types - char
+%            q: Constant to be used in the Huber weight function. Scalar. 
 %               The default value of q is 2 (see Maronna and Yohai, 1995).
-%            c: String. If c='hdim' (high dimensions) the scale parameter c in the
+%                 Example - 'q',2
+%                 Data Types - single | double
+%            c: Scale parameter. String. If c='hdim' (high dimensions) the scale parameter c in the
 %               Huber weight function is given by:
 %               c= min(sqrt\chi^2_{v,0.5},4). If c='sdim' (small
 %               dimensions), parameter c is given by:
 %               c= sqrt\chi^2_{v,0.95}. The default is 'hdim'.
-%          nbp: Scalar (0<nbp<1). Nominal breakdown point to be fixed in the Tukey
-%               biweight function to obtain the thresold value c. The default
+%                 Example - 'c','hdim' 
+%                 Data Types - char
+%          nbp: Nominal breakdown point. Scalar. Nominal breakdown point to be fixed in the Tukey
+%               biweight function to obtain the thresold value c (0<nbp<1). The default
 %               value of npb is 0.5.
-%            K: Scalar. Constant to be used in Zuo, Cui and He's family of weights.
+%                 Example - 'nbp',0.6
+%                 Data Types - single | double
+%            K: Constant to be used in Zuo, Cui and He's family of weights. Scalar. 
 %               The default of K is 3.
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
+%                 Example - 'K',3
+%                 Data Types - single | double
+%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
-%       plots : Scalar or structure.
-%               If plots is a structure or scalar equal to 1, generates
-%               (1) a plot of robust Mahalanobis distances against index number.
-%               The confidence level used to draw the confidence bands for
+%                 Example - 'nocheck',1
+%                 Data Types - single | double
+%       plots : Plot on the screen. Scalar or structure.
+%               If plots is a structure or scalar equal to 1, generates: 
+%               (1) a plot of robust Mahalanobis distances against index number. The 
+%               confidence level used to draw the confidence bands for
 %               the MD is given by the input option conflev. If conflev is
 %               not specified a nominal 0.975 confidence interval will be
-%               used.
-%               (2) a scatter plot matrix with the outliers highlighted
+%               used. 
+%               (2) a scatter plot matrix with the outliers highlighted. 
 %               (3) a scatter plot of robust Mahalanobis distances against observation weights (i.e. the
 %               outlyingness measure transformed according to the weight
-%               function).
-%               If plots is a structure it may contain the following fields
-%                   labeladd : if this option is '1', the outliers in the
+%               function). 
+%               If plots is a structure it may contain the following
+%               fields: 
+%                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added.
-%                   nameY : cell array of strings containing the labels of
+%                   plots.nameY = cell array of strings containing the labels of
 %                       the variables. As default value, the labels which are
 %                       added are Y1, ...Yv.
-%        msg  : scalar which controls whether to display or not messages
+%                 Example - 'plots',1
+%                 Data Types - single | double
+%        msg  : Level of output to display. Scalar. scalar which controls whether to display or not messages
 %               on the screen If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final estimator
 %               else no message is displayed on the screen
-%       ysave : scalar that is set to 1 to request that the data matrix Y
+%                 Example - 'msg',1
+%                 Data Types - single | double
+%       ysave : save input matrix Y. Scalar. Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
-%      dirsave: scalar that is set to 1 to request that the all directions
+%                 Example - 'ysave',1
+%                 Data Types - single | double
+%      dirsave: save directions. Scalar. scalar that is set to 1 to request that the all directions
 %               for all extracted subsets are saved. If dirsave=1 out
 %               structure will contain a field named Dir
-%  rstprojsave: scalar that is set to 1 to request that the robust
+%                 Example - 'dirsave',1
+%                 Data Types - single | double
+%  rstprojsave: save robust standardized projection scores. Scalar. 
+%               Scalar that is set to 1 to request that the robust
 %               standardized projection scores associated to each direction
 %               are saved for each subset. If projsave=1 out structure will
 %               contain a field named RstProj
-%      projloc: string with possible values 'median' (default) and 'mean'
+%                 Example - 'rstprojsave',1
+%                 Data Types - single | double
+%      projloc: Type of location. String. String with possible values 'median' (default) and 'mean'
 %               This option controls the type of location  (robust
 %               estimator of scale) to use for the projections for
-%               each subset. The projections are defined as d^T *y_i
+%               each subset. The projections are defined as $d^T *y_i$
 %               where d is a v-by-1 vector containing a particular direction
-%              (d^T is its transpose) (to make estimator location invariant).
-%    projscale: string with possible values
+%              ($d^T$ is its transpose) (to make estimator location invariant).
+%                 Example - 'projloc',1
+%                 Data Types - single | double
+%    projscale: Type of standardization. String. string with possible values
 %               'mad' (default), 'sn', 'qn' and 'std'.
 %               This option controls the type of standardization  (robust
 %               estimator of scale) to use for the centered projections for
@@ -139,60 +181,64 @@ function [out, varargout] = SDest(Y,varargin)
 %               file mad.m of statistics toolbox for further details)
 %               'sn' uses a robust version of Gini's average difference
 %               (see file Sn.m of FSDA toolbox for further details)
-%               'qn' uses first quartile of interpoint distances |x_i-x_j|
+%               'qn' uses first quartile of interpoint distances
+%               $|x_i-x_j|$
 %               (see file Qn.m of FSDA toolbox for further details)
 %               'std' uses non robust standard deviations
 %               (see file std.m of statistics toolbox for further details)
 %               The two estimators 'sn' and 'qn' have been introduced by
 %               Rousseeuw and Croux (1993), JASA, as alternatives to MAD.
+%                 Example - 'projscale',1
+%                 Data Types - single | double
 %
 % Output:
 %
-%  The output consists of a structure 'out' containing the following fields:
-%     out.maxdir   : n x v matrix which contains the direction maximizing
+%  out :     A structure containing the following fields
+%
+%     out.maxdir   = n x v matrix which contains the direction maximizing
 %                    the robust standardized projection scores for each
 %                    unit of the sample (that is the direction which
 %                    produces the outlyingness measure for each
 %                    observation)
-%         out.loc  : 1 x v  vector containing SD estimate of location
-%         out.cov  : v x v matrix containing robust estimate of the
+%         out.loc  = 1 x v  vector containing SD estimate of location
+%         out.cov  = v x v matrix containing robust estimate of the
 %                    covariance matrix
-%          out.md  : n x 1 vector containing the estimates of the robust
+%          out.md  = n x 1 vector containing the estimates of the robust
 %                    Mahalanobis distances (in squared units)
-%     out.outliers : A vector containing the list of the units declared as
+%     out.outliers = A vector containing the list of the units declared as
 %                    outliers using confidence level specified in input
 %                    scalar conflev
-%      out.conflev : scalar, confidence level that was used to declare outliers
-%      out.weights : n x 1 vector containing the estimates of the weights
+%      out.conflev = scalar, confidence level that was used to declare outliers
+%      out.weights = n x 1 vector containing the estimates of the weights
 %                    Weights assume values between 0 and 1.
 %                    If input string weight is 'mcd' the weights are 0 or
 %                    1. More precisely the [n/2] associated with the
 %                    smallest [n/2] measure of outlyingness get weight 1
-%            out.Y : Data matrix Y. The field is present if option ysave
+%            out.Y = Data matrix Y. The field is present if option ysave
 %                    is set to 1.
-%          out.Dir : nsamp-by-v matrix or nsamp-by-v-by-(v+1) array which
+%          out.Dir = nsamp-by-v matrix or nsamp-by-v-by-(v+1) array which
 %                    contains for each subset the direction vectors. More in
 %                    details, if jpcorr=0 Dirsave is a nsamp-by-v matrix else
 %                    Dirsave is a 3D array of dimension nsamp-by-v-by-(v+1).
 %                    Remember that in this last case v+1 directions are
 %                    considered for each subset. The field is present only
 %                    if option dirsave is set to 1.
-%      out.RstProj : n-by-nsamp matrix or n-by-nsamp-by-(v+1) 3D array
+%      out.RstProj = n-by-nsamp matrix or n-by-nsamp-by-(v+1) 3D array
 %                    which contains the robust standardized projection
 %                    scores for each unit of the sample for the nsamp
 %                    projections (or for the nsamp*(v+1) projections if
 %                    jpcorr>0). The field is present only if option
 %                    rstprojsave is set to 1.
-%        out.class : 'SD'
+%        out.class = 'SD'
 %
 %  Optional Output:
-%
 %
 %      C     : nsamp-by-v+jpcorr matrix containing the indices of the
 %             subsamples extracted for computing the SD estimate.
 %             jpcorr=0,2, 3, ... (see input option jpcorr)
 %
-%               BACKGROUND
+%
+% More About:
 %               A "robust standardized" projection
 %               score along direction vector d is defined as follows
 %
