@@ -66,15 +66,14 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
-%       plots : Scalar or structure.
-%               If plots is a structure or scalar equal to 1, generates
-%               (1) a plot of robust Mahalanobis distances (raw and
-%               reweighted) against index number. The confidence level used
-%               to draw the confidence bands for the MD is given by the
-%               input option conflev. If conflev is
+%       plots : Plot on the screen. Scalar or structure.
+%               If plots is a structure or scalar equal to 1, generates: 
+%               (1) a plot of Mahalanobis distances against index number. The
+%               confidence level used to draw the confidence bands for
+%               the MD is given by the input option conflev. If conflev is
 %               not specified a nominal 0.975 confidence interval will be
 %               used.
-%               (2) a scatter plot matrix with the outliers highlighted
+%               (2) a scatter plot matrix with the outliers highlighted. 
 %               If plots is a structure it may contain the following fields
 %                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The

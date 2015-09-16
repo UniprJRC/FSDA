@@ -62,20 +62,17 @@ function y=Qn(X,dim)
 %
 
 % Examples:
-%{
-               X = [1 2 4 4  7; 
-                    3 4 6 6  8 ; 
-                    5 6 8 8  10; 
-                    5 7 10 12 1500];
+
+%{ 
+    %% Qn with all default otpions.
+    X = [1 2 4 4  7;
+         3 4 6 6  8;
+         5 6 8 8  10;
+         5 7 10 12 1500];
+    y1=Qn(X)
+    y2=Qn(X,2)
 %}
-%   then Qn(X) is 2.2752    2.2752    2.2752    4.5505    3.4128
-%   and Qn(X,2) 
-%   is 
-%    3.7506
-%    3.7506
-%    3.7506
-%    5.6259].'
-%
+
 
 %% Beginning of code
 

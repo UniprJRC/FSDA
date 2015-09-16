@@ -24,7 +24,7 @@ function y=Sn(X,dim)
 % Output:
 %
 %    y  :    robust estimator of scale. Scalar | Vector or 3D array. 
-%            Qn(X,dim) takes the robust estimator of scale along the
+%            Sn(X,dim) takes the robust estimator of scale along the
 %            dimension dim of X.
 %
 % More About:
@@ -68,20 +68,17 @@ function y=Sn(X,dim)
 %
 
 % Examples:
-%{
-               X = [1 2 4 4  7; 
-                    3 4 6 6  8 ; 
-                    5 6 8 8  10; 
-                    5 7 10 12 1500];
+
+%{ 
+    %% Sn with all default otpions.
+    X = [1 2 4 4  7;
+         3 4 6 6  8;
+         5 6 8 8  10;
+         5 7 10 12 1500];
+    y1=Sn(X)
+    y2=Sn(X,2)
 %}
-%   then Sn(X) is 2.2752    2.2752    2.2752    4.5505    3.4128
-%   and Sn(X,2) 
-%   is 
-%    3.7506
-%    3.7506
-%    3.7506
-%    5.6259].'
-%
+
 
 %% Beginning of code
 

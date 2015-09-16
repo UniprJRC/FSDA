@@ -32,15 +32,14 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %               matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
-%       plots : Scalar or structure.
-%               If plots is a structure or scalar equal to 1, generates
-%               (1) a plot of robust Mahalanobis distances (raw and
-%               reweighted) against index number. The confidence level used
-%               to draw the confidence bands for the MD is given by the
-%               input option conflev. If conflev is
+%       plots : Plot on the screen. Scalar or structure.
+%               If plots is a structure or scalar equal to 1, generates: 
+%               (1) a plot of Mahalanobis distances against index number. The
+%               confidence level used to draw the confidence bands for
+%               the MD is given by the input option conflev. If conflev is
 %               not specified a nominal 0.975 confidence interval will be
 %               used.
-%               (2) a scatter plot matrix with the outliers highlighted
+%               (2) a scatter plot matrix with the outliers highlighted. 
 %               If plots is a structure it may contain the following fields
 %                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
@@ -195,7 +194,31 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 % Examples:
 
 %{
-    % mve with all default options
+    % mve with all default options.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    RAW=mve(Ycont);
+%}
+
+%{
+    %% mve with optional arguments.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    RAW=mve(Ycont,'plots',1);
+%}
+
+%{
+    % mve with reweighted estimates.
     n=200;
     v=3;
     randn('state', 123456);
@@ -204,6 +227,18 @@ function [RAW,REW,varargout] = mve(Y,varargin)
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
     [RAW,REW]=mve(Ycont);
+%}
+
+%{
+    % mve with exctracted subsamples.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [RAW,REW,C]=mve(Ycont);
 %}
 
 %% Beginning of code

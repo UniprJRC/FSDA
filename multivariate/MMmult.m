@@ -68,9 +68,9 @@ function [out , varargout] = MMmult(Y,varargin)
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %       plots : Plot on the screen. Scalar or structure.
-%               If plots is a structure or scalar equal to 1, generates
-%               (1) a plot of Mahalanobis distances against index number.
-%               The confidence level used to draw the confidence bands for
+%               If plots is a structure or scalar equal to 1, generates: 
+%               (1) a plot of Mahalanobis distances against index number. The
+%               confidence level used to draw the confidence bands for
 %               the MD is given by the input option conflev. If conflev is
 %               not specified a nominal 0.975 confidence interval will be
 %               used.

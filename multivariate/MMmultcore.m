@@ -133,8 +133,24 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 % Examples:
 %
 %{
+    % MMmultcore with all default options.
     % Determine, e.g., an S estimate and extract the required arguments for
     %  the MM estimate.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [out]=Smult(Ycont);
+    outMM=MMmultcore(Ycont,out.loc,out.shape,out.scale)
+%}
+
+%{
+    %% MMmultcore with optional arguments.
+    % Determine, e.g., an S estimate and extract the required arguments for
+    % the MM estimate.
     n=200;
     v=3;
     randn('state', 123456);

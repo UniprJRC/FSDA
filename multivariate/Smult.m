@@ -18,10 +18,10 @@ function [out , varargout] = Smult(Y,varargin)
 %
 %  Optional input arguments:
 %
-%         bdp :  breakdown point. Scalar (default=0.5).
+%         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine.
+%               than 0 but smaller or equal than 0.5 will do fine (default=0.5).
 %               Note that given bdp nominal
 %               efficiency is automatically determined.
 %                 Example - 'bdp',0.4
@@ -68,7 +68,7 @@ function [out , varargout] = Smult(Y,varargin)
 %                 Example - 'bestr',10 
 %                 Data Types - single | double
 %     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar
+%               used to declare units as outliers. Scalar. 
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
@@ -80,13 +80,13 @@ function [out , varargout] = Smult(Y,varargin)
 %               Example - 'nocheck',1 
 %               Data Types - double
 %       plots : Plot on the screen. Scalar or structure.
-%               If plots is a structure or scalar equal to 1, generates
-%               (1) a plot of Mahalanobis distances against index number.
-%               The confidence level used to draw the confidence bands for
+%               If plots is a structure or scalar equal to 1, generates: 
+%               (1) a plot of Mahalanobis distances against index number. The
+%               confidence level used to draw the confidence bands for
 %               the MD is given by the input option conflev. If conflev is
 %               not specified a nominal 0.975 confidence interval will be
 %               used.
-%               (2) a scatter plot matrix with the outliers highlighted
+%               (2) a scatter plot matrix with the outliers highlighted. 
 %               If plots is a structure it may contain the following fields
 %                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
@@ -171,7 +171,7 @@ function [out , varargout] = Smult(Y,varargin)
 % Examples:
 
 %{
-    % Smult with all default options
+    % Smult with all default options.
     n=200;
     v=3;
     randn('state', 123456);
@@ -180,6 +180,30 @@ function [out , varargout] = Smult(Y,varargin)
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
     [out]=Smult(Ycont);
+%}
+
+%{
+    %% Smult with optional arguments.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [out]=Smult(Ycont,'plots',1);
+%}
+
+%{
+    % Smult with exctracted subsamples.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [out,C]=Smult(Ycont);
 %}
 
 %% Beginning of code
