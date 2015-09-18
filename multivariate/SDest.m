@@ -79,19 +79,36 @@ function [out, varargout] = SDest(Y,varargin)
 %               q = scalar see below.
 %               If weight = 'tukey' the Tukey Biweight function is applied,
 %               where weights are given by:
-%               $w(r) = [1-(r/c)^2]^2$ if $|r| \leq c$, $w(r)=0$ otherwise,
-%               with constant c computed to obtain a prefixed nominal
-%               breakdown point (nbp). 
+%               \[
+%                   w(r)= 
+%                   \left\{
+%                   \begin{array}{c}
+%                    [1-(r/c)^2]^2 if |r| \leq c \\
+%                     0 \qquad \mbox{otherwise} 
+%                   \end{array}
+%                  \right.
+%                 \]
+%               with constant $c$ computed to obtain a prefixed nominal
+%               breakdown point (bdp). 
 %               If weight = 'zch', weights are computed according to Zuo,
 %               Cui and He's formula (Zuo, Cui and He, "ON THE STAHEL-DONOHO ESTIMATOR AND DEPTH-WEIGHTED
 %               MEANS OF MULTIVARIATE DATA", Annals of Statistics (2004)):
-%               $W(PD) = (\exp{-K*(1-PD/C)^2} - \exp{-K})/(1-\exp{-K})$ if PD <
-%               C; W(PD) = 1 otherwise,
+%               
+%                 \[
+%                   w(PD)= 
+%                   \left\{
+%                   \begin{array}{c}
+%                     (\exp\{-K(1-PD/C)^2\} - \exp\{-K\})/(1-\exp\{-K\}) \qquad if PD < c \\
+%                     1 \qquad \mbox{otherwise} 
+%                   \end{array}
+%                  \right.
+%                 \]
+%
 %               where:
-%               - PD is the Projection Depth: PD = 1/(1+r)
-%               (r=outlyingness measure);
-%               - C=Median(PD);
-%               - K is a positive tuning parameter.
+%               - $PD$ is the Projection Depth: $PD = 1/(1+r)$
+%               ($r$=outlyingness measure);
+%               - $C=Median(PD)$;
+%               - $K$ is a positive tuning parameter.
 %                 Example - 'weight','zch' 
 %                 Data Types - char
 %            q: Constant to be used in the Huber weight function. Scalar. 
@@ -282,7 +299,7 @@ function [out, varargout] = SDest(Y,varargin)
 %         and Methods, Wiley,New York.
 %
 %
-% Acknowledgements
+% Acknowledgements: 
 %
 % This function follows the lines of MATLAB code developed during the
 % years by many authors.

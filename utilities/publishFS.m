@@ -571,6 +571,9 @@ fstring=fscanf(fileID,'%c');
 %fstring=regexprep(fstring,'[^%]<','&lt;');
 fstring=regexprep(fstring,'<','&lt;');
 fstring=regexprep(fstring,'>','&gt;');
+% replace if present symbol ü with its HTML code 
+fstring=regexprep(fstring,'ü','&uuml;');
+
 
 
 %-----------------
