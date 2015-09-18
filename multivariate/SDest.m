@@ -67,9 +67,9 @@ function [out, varargout] = SDest(Y,varargin)
 %               applied to the estimated covariance matrix.
 %               If weight = huber, the weights are determined according to
 %               the following formula
-%               $w_r = \min(1, (r/c)^{-q})$ 
+%               $w(r) = \min(1, (r/c)^{-q})$ 
 %               with: 
-%               $c=\min{\sqrt{\chi^2_{v,0.5}},4}$ 
+%               $c=\min(\sqrt{\chi^2_{v,0.5}},4)$ 
 %               in Van Aelst, Vandervieren and
 %               Willems, "Stahel-Donoho Estimators with Cellwise Weights",
 %               (J STAT COMPUT SIM, 2011) (option c='hdim', see below); 
@@ -79,13 +79,13 @@ function [out, varargout] = SDest(Y,varargin)
 %               q = scalar see below.
 %               If weight = 'tukey' the Tukey Biweight function is applied,
 %               where weights are given by:
-%               w(r) = [1-(r/c)^2]^2 if abs(r)<=c, w(r)=0 otherwise,
+%               $w(r) = [1-(r/c)^2]^2$ if $|r| \leq c$, $w(r)=0$ otherwise,
 %               with constant c computed to obtain a prefixed nominal
-%               breakdown point (nbp).
+%               breakdown point (nbp). 
 %               If weight = 'zch', weights are computed according to Zuo,
-%               Cui and He's formula (Zuo, Cui and He, "ON THE STAHEL–DONOHO ESTIMATOR AND DEPTH-WEIGHTED
+%               Cui and He's formula (Zuo, Cui and He, "ON THE STAHEL-DONOHO ESTIMATOR AND DEPTH-WEIGHTED
 %               MEANS OF MULTIVARIATE DATA", Annals of Statistics (2004)):
-%               W(PD) = {exp[-K*(1-PD/C)^2] - exp(-K)}/(1-exp(-K)) if PD <
+%               $W(PD) = (\exp{-K*(1-PD/C)^2} - \exp{-K})/(1-\exp{-K})$ if PD <
 %               C; W(PD) = 1 otherwise,
 %               where:
 %               - PD is the Projection Depth: PD = 1/(1+r)
@@ -100,9 +100,9 @@ function [out, varargout] = SDest(Y,varargin)
 %                 Data Types - single | double
 %            c: Scale parameter. String. If c='hdim' (high dimensions) the scale parameter c in the
 %               Huber weight function is given by:
-%               c= min(sqrt\chi^2_{v,0.5},4). If c='sdim' (small
+%               $c= min(\sqrt{\chi^2_{v,0.5}},4)$. If c='sdim' (small
 %               dimensions), parameter c is given by:
-%               c= sqrt\chi^2_{v,0.95}. The default is 'hdim'.
+%               $c=\sqrt{\chi^2_{v,0.95}}$. The default is 'hdim'.
 %                 Example - 'c','hdim' 
 %                 Data Types - char
 %          nbp: Nominal breakdown point. Scalar. Nominal breakdown point to be fixed in the Tukey
@@ -240,32 +240,32 @@ function [out, varargout] = SDest(Y,varargin)
 %
 % More About:
 %               A "robust standardized" projection
-%               score along direction vector d is defined as follows
+%               score along direction vector d is defined as follows: 
 %
-%                                 d^T *y_i -med_j(d^T *y_j)
-%                   Rstproj_i =   -------------------------   i=1, ..., n
-%                                       MAD_j(d^T *y_j)
+%               $Rstproj_i = \frac{d^T *y_i -med_j(d^T*y_j)}{MAD_j(d^T*y_j)} \;\;\; i=1,\cdots,n$; 
 %
-%              where med_j(d^T *y_j) and MAD_j(d^T *y_j) are respectively
-%              the median and the modified MAD  j=1, 2, ..., n.
+%              where $med_j(d^T *y_j)$ and $MAD_j(d^T *y_j)$ are respectively
+%              the median and the modified MAD  $j=1,2,\cdots,n$.
 %              With our two input options  projloc and projscale it is
 %              possible to use alternative estimators of location and scale
-%              to standardize d^T *y_i
+%              to standardize $d^T *y_i$: 
 %
-%                                 d^T *y_i -projloc(d^T *y_j)
-%                   Rstproj_i =   -------------------------   i=1, ..., n
-%                                       projscale(d^T *y_j)
+%               $Rstproj_i = \frac{d^T *y_i -projloc(d^T*y_j)}{projscale(d^T *y_j)} \;\;\; i=1,\cdots,n$; 
 %
-%              The outlying measure for unit i (outl_i) is defined as
+%              The outlying measure for unit i ($outl_i$) is defined as: 
 %
-%              outl_i = sup_{d \in R^v} Rstproj_i       i=1, ..., n
+%              $outl_i = sup_{d \in R^v} (Rstproj_i) \;\;\; i=1, \cdots, n$; 
 %
 %              This outlyingness measure is based on the idea that for any
 %              multivariate outlier, one can always find a one-dimensional
 %              projection for which the observation is a univariate
-%              outlier. Remark: note that outl_i(d) = outl_i(c*d) where c
+%              outlier. 
+%              Remark: note that outl_i(d) = outl_i(c*d) where c
 %              is a positive scalar therefore it is not necessary to
-%              rescale d to unit norm
+%              rescale d to unit norm.
+%
+% See also: MCD, Smult, MMmult, FSM
+%
 %
 % References:
 %
@@ -288,7 +288,6 @@ function [out, varargout] = SDest(Y,varargin)
 % years by many authors.
 %
 %
-% See also MCD, Smult, MMmult, FSM
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -301,7 +300,7 @@ function [out, varargout] = SDest(Y,varargin)
 % Examples
 
 %{
-    % SDest with all default options
+    % SDest with all default options.
     n=200;
     v=3;
     randn('state', 123456);
@@ -313,6 +312,7 @@ function [out, varargout] = SDest(Y,varargin)
 %}
 
 %{
+    %% SDest with optional arguments.
     % SDest with v+1 directions for each subsample (jpcorr=1).
     % Produce plot of robust Mahalanobis distances
     n=50;
@@ -325,10 +325,21 @@ function [out, varargout] = SDest(Y,varargin)
     [out]=SDest(Ycont,'jpcorr',1,'plots',1);
 %}
 
+%{
+    % SDest with exctracted subsamples.
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [out,C]=SDest(Ycont);
+%}
 
 %{
-    % SDest with v+1 directions for each subsample (jpcorr=1).
-    % Produce plot of robust Mahalanobis distances
+    %% SDest jpcorr equal to 1.
+    % v+1 directions for each subsample. Produce plot of robust Mahalanobis distances.
     n=50;
     v=5;
     randn('state', 1256);
@@ -340,12 +351,12 @@ function [out, varargout] = SDest(Y,varargin)
 %}
 
 %{
-    % SDest with with Juan and Prieto adjustment (jpcorr>1)
-    % Subsamples of size equal to v+5 are initially drawn (jpcorr=5).
+    % SDest with with Juan and Prieto adjustment.
+    % jpcorr>1. Subsamples of size equal to v+5 are initially drawn (jpcorr=5).
     % In each of them, the 4 units (=jpcorr-1) having the four
     % largest MDs are then discarded from the subsample.
     % For each subsample v+1 directions are computed.
-    % Produce plot of robust Mahalanobis distances
+    % Produce plot of robust Mahalanobis distances.
     n=50;
     v=5;
     randn('state', 1256);
