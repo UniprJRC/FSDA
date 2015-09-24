@@ -51,7 +51,7 @@ Name: "{commondesktop}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersio
 
 [Run]
 Filename: "{code:MyMatlabVersion}"; Parameters: " -wait -automation -nodesktop -r "" addpath '{app}\FSDA\examples' ; addpath '{app}\FSDA\utilities' ; addpath '{app}\FSDA\combinatorial' ; addpath '{app}\FSDA\FSDAdemos' ; addpath '{app}\FSDA\graphics' ; addpath '{app}\FSDA\utilities_stat' ; addpath '{app}\FSDA\datasets\multivariate' ; addpath '{app}\FSDA\datasets\regression' ; addpath '{app}\FSDA\datasets\multivariate_regression' ; addpath '{app}\FSDA\datasets\clustering' ; addpath '{app}\FSDA\clustering' ;addpath '{app}\FSDA\regression' ; addpath '{app}\FSDA\multivariate' ; addpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Setting MATLAB environment ..." ; Flags: shellexec waituntilterminated
-Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; {code:doc_func} FSDA "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
+Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; builddocsearchdb '{app}\FSDA\helpfiles\FSDA' ; {code:doc_func} FSDA "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
 Filename: "{code:adobe_name}"; Parameters: " /n ""{app}\FSDA\InstallationNotes.pdf"" " ; Description: "{cm:OpenProgram, Installation Notes ( Acrobat Reader is required )}"; Flags: shellexec postinstall skipifsilent unchecked
 
 [UninstallRun]
@@ -195,7 +195,7 @@ var
            begin
             RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SOFTWARE\MathWorks\MATLAB\'+ LevMatlab ,  'MATLABROOT', MatlabPath);
            end;
-          if MsgBox('FSDA Toolbox will be installed in MATLAB version '+ MatlabPath +' Are you sure?', mbConfirmation, MB_YESNO or MB_DEFBUTTON1) = IDYES then
+          if MsgBox('FSDA Toolbox will be installed in MATLAB version '+ #13 + MatlabPath + #13 +' Are you sure?', mbConfirmation, MB_YESNO or MB_DEFBUTTON1) = IDYES then
            begin
     // user clicked Yes
              I_Iteratore := I
@@ -229,7 +229,7 @@ if (CompareVersion (LevMatlab, '8') >= 0) then
     
   if MatlabExe = '' then
   begin
-    MsgBox('FSDA will run on this MATLAB release:' + MatlabPath, mbInformation, MB_OK);
+    MsgBox('FSDA will run on this MATLAB release:' + #13 + MatlabPath, mbInformation, MB_OK);
   end;
 
   MatlabExe := ExpandConstant ( MatlabPath + '\bin\matlab.exe');
