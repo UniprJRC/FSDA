@@ -4,7 +4,7 @@ function cascade
 %
 % See e.g. brushRES.m and example_regression.m in folder examples
 %
-% Code, comments and authorship follows.
+%
 %
 %CASCADE Cascade existing figures so that they don't directly overlap
 %   CASCADE takes and returns no arguments.  This function will cascade as
@@ -44,12 +44,12 @@ function cascade
 
 % Existing Figures
 figs = findobj(0,'Type','figure');
-figs = sort(figs);
 
 % Demos are not subject to repositioning and are removed from figure list
-demo=((findobj('type','figure','Tag','demo')));
-if ~isempty(demo)
-    figs(intersect(figs,demo))=[];
+finddemo=strcmp(get(figs,'Tag'),'demo');
+
+if sum(finddemo)>0
+    figs(finddemo)=[];
 end
 
 % Size of Entire Screen
@@ -58,21 +58,21 @@ ss = get(0,'ScreenSize');
 units = get(figs,'Units');
 set(figs,'Units','pixels')
 
-for n = 1:length(figs)
-    pos = get(figs(n),'Position');
-    if n == 1
+for j = 1:length(figs)
+    pos = get(figs(j),'Position');
+    if j == 1
         bot = ss(4) - pos(4) - 140;
-        set(figs(n),'Position',[0 bot pos(3:4)]);
+        set(figs(j),'Position',[0 bot pos(3:4)]);
     else
-        pPos = get(figs(n-1),'Position');
+        pPos = get(figs(j-1),'Position');
         left = pPos(1) + 150;
         bot = pPos(2) - 70;
         if ((left + pos(3)) > ss(3)) || (bot < 0)
             break
         end
-        set(figs(n),'Position',[left bot  pos(3:4)]);
+        set(figs(j),'Position',[left bot  pos(3:4)]);
     end
-    figure(figs(n));
+    figure(figs(j));
 end
 if length(figs)>1
     set(figs,{'Units'},units);

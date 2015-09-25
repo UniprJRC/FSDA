@@ -203,7 +203,7 @@ axis('off')
             out1=out;
             out1.RES=out.RES;
             selcolor={'b'};
-            seltyp={'--' '-.' '.'};
+            seltyp={'--' '-.' ':'};
             
             standard=struct;
             standard.SizeAxesNum=SizeAxesNum;
