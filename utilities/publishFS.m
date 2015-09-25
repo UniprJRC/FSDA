@@ -571,7 +571,7 @@ fstring=fscanf(fileID,'%c');
 %fstring=regexprep(fstring,'[^%]<','&lt;');
 fstring=regexprep(fstring,'<','&lt;');
 fstring=regexprep(fstring,'>','&gt;');
-% replace if present symbol ü with its HTML code 
+% replace if present symbol ü with its HTML code
 fstring=regexprep(fstring,'ü','&uuml;');
 
 
@@ -2327,10 +2327,41 @@ for i=1:nseealso
     if ~isempty(Seealsoitem) &&  strcmp(Seealsoitem(end-1:end),'.m')
         Seealsoitem=Seealsoitem(1:end-2);
     end
-    
-    Seealsohtml=[Seealsohtml sprintf(['<span itemprop="seealso">\r'...
-        '<a href="' Seealsoitem '.html" itemprop="url">\r'...
-        '<span itemprop="name"><code>' Seealsoitem '</code></span></a></span>\r'])];
+    if ~isempty(Seealsoitem)
+        Seealsoitem=strtrim(Seealsoitem);
+        str=which(Seealsoitem);
+        
+        if isempty(str)
+            error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
+        else
+            % Check if the reference is towards a file present in the FSDA toolbox
+            FSDAtoolboxfile=regexp(str,'FSDA', 'once');
+            
+            % Create the string which contains the 'destination' of the hyperlink
+            % DestHyperLink is the 'destination' of the hyperlink
+            if ~isempty(FSDAtoolboxfile) % reference is towards a function of the FSDA toolbox
+                DestHyperLink=[Seealsoitem '.html'];
+            else % reference is towards a MATLAB function or a function of another toolbox
+                pathdocroot=docroot;
+                % Find path of .html documentation file
+                pathExtHelpFile=searchfile(pathdocroot,[Seealsoitem '.html']);
+                if isempty(pathExtHelpFile)
+                    error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                end
+                pathExtHelpFile=char(pathExtHelpFile{1});
+                addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
+                
+                % replace '\' with '/'
+                addSubPath=strrep(addSubPath,'\','/') ;
+                % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
+                DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
+            end
+        end
+        
+        Seealsohtml=[Seealsohtml sprintf(['<span itemprop="seealso">\r'...
+            '<a href="' DestHyperLink '" itemprop="url">\r'...
+            '<span itemprop="name"><code>' Seealsoitem '</code></span></a></span>\r'])];
+    end
     
     if i < nseealso
         Seealsohtml=[Seealsohtml ' | '];
