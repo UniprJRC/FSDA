@@ -1,4 +1,4 @@
-function publishFS(file,varargin)
+function out=publishFS(file,varargin)
 %Enables to create automatic HELP FILES from structured .m function files
 %
 % Required input arguments:
@@ -758,6 +758,7 @@ if strcmp(Display,'iter-detailed')
     disp(listOptArgs)
 end
 
+
 %% Add comment about the category of classification of the file
 
 findfsep=strfind(pathstrcf,fsep);
@@ -816,6 +817,8 @@ beforetitl=['<!DOCTYPE HTML> \r'  ...
     '<title>\r'];
 aftertitle='</title>';
 titl=sprintf([beforetitl    name  aftertitle]);
+
+
 
 %% Add purpose of the file (extract what is in the second row of .m file)
 beforemetacontent=['<meta content="refpage" name="chunktype">\r' ...
@@ -879,29 +882,10 @@ insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="10
     '</tr>\r'...
     '</table>'])];
 
+
+
 %% CONTAINER + SINTAX SECTION
-% Di seguito qullo che c'? in doc_center.css
-%{
-/* TOC styles */
-.site_container { padding-right:30px; }
-.site_container.site_toc_closed { margin-left:175px; }
-.site_container.site_toc_opened { margin-left:300px; }
-%}
 
-%{
-doc_center_installed.css in what follows vertical margin is controlled
-/* TOC */
-.site_container.site_toc_closed { margin-left:600px; } QUIQUI
-.toc_pane { padding-top:0px; }
-
-.toc_container_wrapper { position:fixed; top:15px; }
-
-/* Fixed Search Box and Breadcrumbs */
-#search_crumb_container { padding:15px 0px 10px; background:#fff; float:left; position:fixed; top:0px; z-index:1001; }
-.content_container {
-	padding-top: 10px;
-}
-%}
 
 % inisitecont=sprintf(['<div class="site_container site_toc_opened">\r'...
 inisitecont=sprintf(['<div class="site_container site_toc_closed">\r'...
@@ -935,6 +919,7 @@ gendesc=strtrim(gendesc);
 
 if length(gendesc)<3
     htmlsitecont='';
+    gendesc='';
 else
     htmlsitecont=['<p>' gendesc '</p>'];
 end
@@ -981,6 +966,8 @@ else
     outargs='';
     nargout=0;
 end
+
+
 
 
 % Required input arguments
@@ -1063,6 +1050,8 @@ else
 end
 
 
+
+
 if isempty(OptArgsVarargin)
     if ~isempty(outargs)
         sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs];
@@ -1131,8 +1120,7 @@ inidescription=sprintf(['	<div class="ref_sect" itemprop="content">\r'...
     '							<div class="descriptions">\r'...
     '								<div class="description_module">\r']);
 
-descriptionhtml='';
-descriptionhtml=1111;
+
 descriptionhtml=htmlsitecont;
 if strcmp(Display,'iter-detailed')
     disp('Examples')
@@ -1216,8 +1204,6 @@ for j=1:length(sintax)
             outi=strtrim(outs);
             outstring=sprintf(['<a class="intrnllnk" href="#outputarg_' outi '"><code>' outi '</code></a>\r']);
             if j==length(sintax)
-                % TOCHECK
-                % listargouts{j}=outi;
                 listargouts=cell(1,1);
                 listargouts{1}=outi;
             end
@@ -1359,6 +1345,7 @@ if strcmp(Display,'iter-detailed')
     disp('Detailed information about all the examples')
     disp(listEx)
 end
+
 
 %% CREATE EXAMPLES SECTION OF HTML FILE
 
@@ -1536,8 +1523,9 @@ reqargs='';
 % optional)
 % The sixth column will contain the example what starts just after
 % string  Data Types -
-
-listInpArgs=cell(nTOTargin,6);
+% The seventh col will contain '1' or '0' according to the fact that the
+% associated argument is required or optional
+listInpArgs=cell(nTOTargin,7);
 
 for i=1:nTOTargin
     
@@ -1672,6 +1660,7 @@ for i=1:nTOTargin
         
         descrlongHTML=formatHTMLstructure(descrlong,inpi);
         listInpArgs{i,4}=descrlongHTML;
+        listInpArgs{i,7}=descrlong;
         
         jins=6;
     else
@@ -1688,11 +1677,13 @@ for i=1:nTOTargin
                 
                 descrlongHTML=formatHTMLwithMATHJAX(descrlong);
                 listInpArgs{i,4}=descrlongHTML;
+                listInpArgs{i,7}=descrlong;
             else
                 
                 descrlongHTML=formatHTMLwithMATHJAX(descrlong);
                 
                 listInpArgs{i,4}=descrlongHTML;
+                listInpArgs{i,7}=descrlong;
                 warning('FSDA:publishFS:MissingDataType',['Input argument ''' inpi ''' does not contain DataType line, by default string  ''single| double'' has been added'])
                 
                 listInpArgs{i,6}='single| double';
@@ -1709,7 +1700,8 @@ for i=1:nTOTargin
                 descrlonginp=descrlong(1:CheckExample-1);
                 descrlongHTML=formatHTML(descrlonginp);
                 listInpArgs{i,4}=descrlongHTML;
-                
+                  listInpArgs{i,7}=descrlonginp;
+                  
                 % The first word of example code must be embedded around tags <code> </code>
                 examplecode=descrlong(CheckExample+10:Datatypes-1);
                 posspace=regexp(examplecode,'      ');
@@ -1720,6 +1712,7 @@ for i=1:nTOTargin
                 
             else
                 listInpArgs{i,4}=descrlong;
+                listInpArgs{i,7}=descrlong;
                 warning('FSDA:publishFS:MissingExample',['Optional input argument ''' inpi ''' does not contain an Example'])
                 jins=5;
                 
@@ -1775,7 +1768,7 @@ end
 if isempty(OptArgsVarargin)
     OptArgsNameValueHeading='';
     OptArgsNameValue='';
-    
+    listOptArgs='';
 else
     codewithexample='';
     for i=1:size(listOptArgs,1)
@@ -1899,6 +1892,10 @@ end
 % substring to search starting from Output:
 fstringsel=fstring(outsel(1):end);
 
+% cell which will contain the details of output arguments
+listOutArgs=cell(length(listargouts),4);
+listOutArgs(:,1)=listargouts;
+
 if nargout>0
     for i=1:nargout
         
@@ -1992,6 +1989,7 @@ if nargout>0
         % Check if the output is a structure. If this is the case
         checkifstructure=regexp(descrioutput,[outi '\.\w'],'once');
         
+        listOutArgs{i,4}=descrioutput;
         
         if ~isempty(checkifstructure)
             
@@ -2069,6 +2067,10 @@ if nargout>0
                 descroutputtitl='FULL STOP MISSING IN THE OUTPUT DESCRIPTION';
             end
             
+             listOutArgs{i,2}=preamble; 
+             listOutArgs{i,3}=descroutputtitl; 
+             listOutArgs{i,4}=descrioutput;
+             
             % transform x with by and write in italic the dimensions of the
             % matrices
             if ~strcmp(preamble,'TOWRITE')
@@ -2103,7 +2105,7 @@ if nargout>0
                 '<p>']) formatHTMLwithMATHJAX(descrioutput) sprintf(['</p>\r'...
                 '</div>\r'...
                 '</div>'])];
-            
+           
         end
         
     end
@@ -2127,9 +2129,9 @@ else
         descrioutput=fstringsel(9:inipointMoreAbout-1);
         
     else
+        MoreAbout='';
         MoreAboutHTML='';
         descrioutput=fstringsel(9:inipointSeeAlso-1);
-        
     end
     posPercentageSigns=regexp(descrioutput,'%');
     descrioutput(posPercentageSigns)=[];
@@ -2148,10 +2150,11 @@ closeoutargs=sprintf(['</div>\r'...
 
 outargs=[inioutargs outargshtml closeoutargs];
 
+
 %% CREATE MORE ABOUT SECTION
 
 if ~isempty(MoreAboutHTML)
-    Moreabout=[sprintf(['<div class="moreabout ref_sect">\r'...
+    MoreaboutHTMLwithdiv=[sprintf(['<div class="moreabout ref_sect">\r'...
         '<h2 id="moreabout">More About</h2>\r'...
         '<div class="expandableContent">\r'...
         '<p class="switch">\r'...
@@ -2168,7 +2171,8 @@ if ~isempty(MoreAboutHTML)
         '</div>\r'...
         '</div>'])];
 else
-    Moreabout='';
+    MoreAbout='';
+    MoreaboutHTMLwithdiv='';
 end
 
 %% REFERENCES
@@ -2275,6 +2279,7 @@ else
 end
 
 
+
 %% ACKNOWLEDGEMENTS
 if ~isempty(Acknowledgements)
     iniAcknowledgements=sprintf(['<div class="ref_sect" itemprop="content">\r'...
@@ -2311,6 +2316,9 @@ poscommas=regexp(seealsostr,',');
 nseealso=length(poscommas)+1;
 
 Seealsohtml='';
+% Store in cell listSeeAlso, See also items
+listSeeAlso=cell(nseealso,1);
+
 for i=1:nseealso
     if nseealso==1;
         Seealsoitem= seealsostr(1:end);
@@ -2330,6 +2338,9 @@ for i=1:nseealso
     if ~isempty(Seealsoitem)
         Seealsoitem=strtrim(Seealsoitem);
         str=which(Seealsoitem);
+        
+        % Store See also item
+        listSeeAlso{i}=Seealsoitem;
         
         if isempty(str)
             error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
@@ -2395,7 +2406,7 @@ closbody=sprintf(['</body>\r'...
 fclose(fileID);
 
 outstring=([titl metacontent sitecont sintaxhtml sintaxclose description  ....
-    examples InputArgs outargs Moreabout References Ack Seealso clos insnav insbarra closbody]);
+    examples InputArgs outargs MoreaboutHTMLwithdiv References Ack Seealso clos insnav insbarra closbody]);
 
 
 file1ID=fopen([outputDir fsep name 'tmp.html'],'w');
@@ -2414,6 +2425,33 @@ if file1ID==-1
     error('FSDA:publishFS:WrngOutFolder',errmsg);
     
 end
+
+% Create output structure
+out=struct;
+% save title
+out.titl=name;
+% save purpose
+out.purpose=purpose;
+% Save description
+out.description=gendesc;
+% Save input arguments (required +optional)
+listInpArgs(:,4)=listInpArgs(:,7);
+listInpArgs(:,7)={'0'};
+listInpArgs(1:nREQargin,7)={'1'};
+out.InpArgs=listInpArgs;
+
+% Save optional input arguments of the kind name/pairs
+out.OptArgs=listOptArgs;
+% Save output arguments
+out.OutArgs=listOutArgs;
+% Save more about
+out.MoreAbout=MoreAbout;
+% Save Acknowledgements
+out.Acknowledgements=Acknowledgements;
+% Store references
+out.References=refsargs;
+% listSeeAlso
+out.SeeAlso=listSeeAlso;
 
 if evalCode==true
     %% EXECUTE THE EXAMPLES WHICH START WITH SYMBOLS %%

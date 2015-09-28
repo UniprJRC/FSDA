@@ -543,13 +543,13 @@ else
             if art==1
                 if  mm > 5  && gridsearch ~=1
                     % Use scoring
-                    HET=regressHart(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                    HET=regressHart(yb,Xb,Zb,'nocheck',1,'intercept',intercept);
                 else
                     if size(Zb,2)==1
                         % Use grid search algorithm if Z has just one column
-                        HET=regressHart_grid(yb,Xb(:,end),exp(Zb),'intercept',intercept);
+                        HET=regressHart_grid(yb,Xb,exp(Zb),'nocheck',1,'intercept',intercept);
                     else
-                        HET=regressHart(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                        HET=regressHart(yb,Xb,Zb,'nocheck',1,'intercept',intercept);
                     end
                 end
                 
@@ -561,13 +561,13 @@ else
             else
                 if  mm > 5  && gridsearch ~=1
                     % Use scoring
-                    HET=regressHhar(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                    HET=regressHhar(yb,Xb,Zb,'intercept',intercept);
                 else
                     if size(Zb,2)==1
                         % Use grid search algorithm if Z has just one column
-                        HET=regressHhar_grid(yb,Xb(:,end),exp(Zb),'intercept',intercept);
+                        HET=regressHhar_grid(yb,Xb,exp(Zb),'intercept',intercept);
                     else
-                        HET=regressHhar(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                        HET=regressHhar(yb,Xb,Zb,'intercept',intercept);
                     end
                 end
                 

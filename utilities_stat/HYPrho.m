@@ -38,7 +38,7 @@ function rhoHYP = HYPrho(u, cktuning)
 % Hampel et al. (1981) have introduced a rho function which
 % minimizes the asymptotic variance of the regression M-estimate, subject
 % to a bound on the supremum of the Change of Variance Curve of the
-% estimate. This lead to the Hyperbolic Tangent $\rho$
+% estimate. This leads to the Hyperbolic Tangent $\rho$
 % function, which, for suitable constants $c$, $k$, $A$, $B$ and
 % $d$, is defined as
 % 
