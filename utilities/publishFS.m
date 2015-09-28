@@ -1,428 +1,19 @@
 function out=publishFS(file,varargin)
 %Enables to create automatic HELP FILES from structured .m function files
 %
+%<a href="matlab: docsearchFS('publishFS')">Link to the help function</a>
+%
+%   publishFS creates HTML files from structured .m file. To understand the
+%   characteristics the .m file must have, please see the "More About" section
+%
 % Required input arguments:
 %
 %    file:         MATLAB File. String. Full or partial
 %                  path of the MATLAB file for which Structured Matlab
 %                  HTML help has to be created
 %                  Example-'myfile.m'
-% The .m file (which must be located on the MATLAB path or on the currect
-% folder) must satisfy the following characteristics to be correctly
-% processed.
 %
-% 1) The row below the row which starts with function .... must contain the
-% description of the purpose of the .m file. Remark: generally the row
-% which starts with function .... is the first row of an .m file.
-% 2) String 'Required input arguments:' must be present. The lines below
-% this string must contain the description of the compulsory input
-% arguments. Each argument must have the name (a series of spaces from 0
-% to 10) symbol ':' and then the description. The format of the description
-% is as follows:
-% The first sentence after symbol ':' is the title of the input argument
-% and in the HTML file it will appear in bold face in the same line of the
-% input argument. (this is the short description of the optional input
-% argument). The second sentence after symbol ':' describes the objects
-% (for example, scalar, vector, 3D array) and in the HTML file will appear
-% in the second row. These first two rows will always be visible. What
-% starts with the third sentence after symbol ':' is the detailed
-% description of that particular input argument and in the HTML file it
-% will be visible just if the user clicks on any point in the first two
-% lines or the user clicks on the option expand all. The last line may
-% start with the words "Data Types:" and contains the specification of a
-% particular input argument (e.g. Data Types: single | double). For
-% example, suppose that the .m routine which has to be processed has two
-% required input arguments which are respectively called y and X, then the
-% accepted format is as follows.
-%
-%               Required input arguments:
-%
-%                y:         Response variable. Vector. Response variable,
-%                           specified as a vector of length n, where n is
-%                           the number of observations. Each entry in y is
-%                           the response for the corresponding row of X.
-%                           Data Types: single | double
-%              X :          Predictor variables. Matrix of explanatory
-%                           variables (also called 'regressors') of
-%                           dimension n x (p-1) where p denotes the number
-%                           of explanatory variables including the
-%                           intercept. Rows of X represent observations,
-%                           and columns represent variables. By default,
-%                           there is a constant term in the model, unless
-%                           you explicitly remove it using input option
-%                           intercept, so do not include a column of 1s in
-%                           X.
-%                           Data Types: single | double
-%
-% IMPORTANT NOTICE: if an input argument is a structure (publishFS
-% automatically checks if the input argument contains the word "structure"
-% then the fields of the structure will be automatically included into a
-% HTML table). In this case the fields of the structure are identified as
-% the lines which contain "a series of spaces" "a_word" "a series
-% of spaces followed by symbol '='". For example suppose the an input
-% option is called bayes and object bayes is a structure with field names
-% beta0, R, tau0 and n0, the accepted format is as follows.
-%
-%    bayes      : prior information. Structure.
-%                       It contains the following fields
-%               beta0=  p-times-1 vector containing prior mean of \beta
-%               R    =  p-times-p positive definite matrix which can be
-%                       interpreted as X0'X0 where X0 is a n0 x p matrix
-%                       coming from previous experiments (assuming that the
-%                       intercept is included in the model
-%               tau0 = scalar. Prior estimate of
-%                       \[ \tau=1/ \sigma^2 =a_0/b_0 \]
-%               n0   = scalar. Sometimes it helps to think of the prior
-%                      information as coming from n0 previous experiments.
-%
-% 3) If the input .m file between the row which starts with
-%  <a href="matlab: docsearchFS(.....
-%  and the row with the string
-%  "Required input arguments:"
-%  contains a series of sentences, they will be automatically included in
-%  the HTML output just below the description.
-%
-%  An example is given below
-%         function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
-%         tclust computes trimmed clustering with restricitons on the eigevalues
-%
-%         <a href="matlab: docsearchFS('tclust')">Link to the help function</a>
-%
-%           tclust partitions the points in the n-by-v data matrix Y into k
-%           clusters.  This partition minimizes the trimmed sum, over all
-%           clusters, of the within-cluster sums of
-%           point-to-cluster-centroid distances....
-%
-%          Required input arguments:
-%
-% 4) String 'Optional input arguments:' must be present even if there are
-% no optional arguments. publishFS, in order to understand what are the names
-% of the optional input arguments scans the rows below the string 'Optional
-% input arguments:' and identifies the lines which contain the optional
-% arguments as those which contain "a series of spaces" "a_word" "a series
-% of spaces followed by symbol ':'". The first sentence after symbol ':' is
-% the title of the optional input argument and in the HTML file it will
-% appear in the same row of the name of the optional input argument (this
-% is the short description of the optional input argument). The second
-% sentence after symbol ':' describes the objects (for example, scalar,
-% vector, 3D array) and in the HTML file will appear
-% in the second row. These first two rows will always be visible. What
-% starts with the third sentence after symbol ':' is the detailed
-% description of that particular optional input argument and in the HTML
-% file it will be visible just if the user clicks on any point in the first
-% two lines or the user clicks on the option expand all.
-% The last two lines of each optional input argument MUST start with the
-% words 'Example -' and 'Data Types -' followed by a string without spaces
-% which specifies a possible use of the option and the type of data. For
-% example, suppose that the first two optional arguments are called
-% respecively 'intercept' and 'h', then the
-% accepted format is as follows
-%
-%               Optional input arguments:
-%
-%               intercept :  Indicator for constant term. Scalar.
-%                           If 1, a model with constant term will be fitted
-%                           (default),
-%                           if 0, no constant term will be included.
-%                           Example - 'intercept',1
-%                           Data Types - double
-%                       h : The number of observations that have determined the least
-%                             trimmed squares estimator. Scalar.
-%                             Example - 'h',round(n*0,75)
-%                             Data Types - double
-%
-%
-%  IMPORTANT NOTICE: given that options are identified as those which have
-%  symbol "%" followed by "a series of spaces" then "a word" then "a series
-%  of spaces" then symbol ":", each line inside the description does not
-%  have to start as follows "%   ANYWORD   :" because the parser will
-%  wrongly identify "ANYWORD" as an additional optional input argument. The
-%  only once exception to this rule is the word "%  REMARK :". However, if
-%  there is a remark, it must be put at the very end of the description of
-%  the optional input argument. At the very end means after the rows
-%   Example and Data Types
-%
-% 5) String 'Output:' must be present. The lines after string 'Output:'
-% must contain the list of the output arguments using the same rules
-% described above for the optional arguments. In this case, however, the
-% identification of the ouptut arguments is easier because they are
-% extracted directly from the first line of the file (e.g. if the first
-% line is as follows
-% function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
-% output arguments are immediately known to the parser).
-% In the case of output argument publishFS checks if the first 50
-% characters contain the words "which contains" or "containing" e.g.:
-%
-%              mdr:         n -init x 2
-%                           matrix containing the
-%                           monitoring of minimum deletion residual.
-%                           1st col = fwd search
-%                           ........
-%                Un:        (n-init) x 11 Matrix
-%                           which contains the unit(s) included in the
-%                           subset at each step of the search.
-%                           ...........
-%
-% In this case what is after the strings "which contains" or "containing"
-% will appear in bold face as the title of the output argument. What is
-% before the strings "which contains" or "containing" will appear in the
-% second row.
-%
-% For example, the above lines will be processed as follows:
-%
-%      mdr   -  Monitoring of minimum deletion residual
-%      n -init x 2 matrix
-%
-%      Un    - unit(s) included in the subset at each step of the search.
-%      (n-init) x 11 Matrix
-%
-% If in the HTML file the user clicks on them the expdanded description
-% (that is what starts after the second full stop will appear).
-%
-% Alternatively, if the first 50 characters of each output argument do not
-% contain the strings "which contains" or "containing" the following
-% convention is used. The first sentence after symbol ":" is assumed
-% to be the title of the output argument and in the HTML file it will
-% appear in bold face in the same line of the name of output
-% argument. The second sentence (words between first and second full stop)
-% will appear in the second row. The third sentence is the full description
-% of the output argument. For example, suppose that the output of a
-% procedure contains the objects mdr and Un, the accepted format
-% is as follows.
-%
-%              %  Output:
-%              mdr:         Minimum deletion residual. Matrix.  n -init x 2
-%                           matrix which contains the
-%                           monitoring of minimum deletion residual.
-%                           1st col = ...
-%              Un:          Units included. Matrix. (n-init) x 11 Matrix
-%                           which contains the unit(s) included in the
-%                           subset at each step of the search.
-%                           REMARK: in every step ....
-%
-% The above lines will be processed as follows:
-%
-%      mdr   -  Minimum deletion residual
-%      Matrix
-%
-%      Un    - Units included.
-%      Matrix
-%
-% If in the HTML file the user clicks on them the expdanded description
-% (that is what starts after the second full stop will appear).
-%
-% IMPORTANT NOTICE: Similarly to what happend for each input argument, if
-% an output argument is a structure, publishFS automatically checks if it
-% contains the words "structure" and "field". In this case, the fields of
-% the structure will be automatically included into a HTML table. The
-% fields of the structure are identified as the lines which contain "a
-% series of spaces" "name_of_output_structure.a_word" "a series of spaces
-% followed by symbol '='". For example suppose that the output of a
-% procedure is an object called out which is a structure with two fields
-% out.rew and out.beta, an accepted format is as follows
-%
-%                          %  Output:
-%
-%                          out :     A structure containing the following fields
-%
-%                                    out.rew  = Scalar if out.rew=1 all
-%                                               subsequent output refers to
-%                                               reweighted else no
-%                                               reweighting is done.
-%                                    out.beta = Vector of beta LTS (LMS)
-%                                               coefficient estimates,
-%                                               including the intercept
-%                                               when options.intercept=1.
-%                                               out.beta=[intercept
-%                                               slopes].
-%
-%
-% PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE
-% "=" SIGN AND NOT THE ":" SIGN
-%
-% REMARK: If there is the string REMARK after the description of the last
-% field of the structure, all the words after REMARK are put outside and
-% below the HTML table
-%
-% If the description of a particular output has the string "which contains"
-% or "containing",  as follows
-%
-%              mdr:          n -init x 2 matrix which contains the
-%                           monitoring of minimum deletion residual at each
-%                           step of the forward search.
-%                           1st col = fwd search index (from init to n-1).
-%                           2nd col = minimum deletion residual.
-%
-%publishFS will try to put what comes before the string "which
-%contains" or "containing" inside the subtitle (second row) of the each
-%ouptut argument in the HTML file. For example, the example above in the
-%HTML file will be processed as follows:
-%                mdr -Monitoring of minimum deletion residual at each step of the forward search.
-%                n -init -by- 2 matrix
-% If, in the HTML file, the user clicks on the first line,
-%               "mdr -Monitoring..."
-%the expanded description will automatically appear
-%
-% 6) A line which starts with string 'See also:' must be present. Linked m
-% files must be separated by symbol ",". For example, suppose that files
-% FSRBmdr.m and FSR.m have connections with the current file, then an
-% accepted format is
-%
-%                   See also: FSRBmdr, FSR.m
-%
-%
-% 7) A line which starts with string 'References:' must be present.
-% The year of each reference must be enclosed in round parenthesis.
-% PublishFS decides that a new reference starts if a new line contains
-% symbol "(" + "a sequence of 4 or 5 characthers identifying the year
-% because the reference can be for example 2003 or 2003a" + symbol ")"
-% For example, an acceptable format for the two references below is
-%
-%
-%                 Chaloner and Brant (1988). A Bayesian Approach to Outlier
-%                 Detection and Residual Analysis, Biometrika, Vol 75 pp.
-%                 651-659.
-%                 Riani M., Corbellini A., Atkinson A.C. (2015), Very
-%                 Robust Bayesian Regression for Fraud Detection, submitted
-%
-% 8) All the examples associated with the file which has to be processed
-% must be enclosed inside Percent-braces (comments blocks, i.e. symbols %{
-% and %} ). The first sentence identifies the title of the comment which
-% will appear in the HTML file.
-% IMPORTANT NOTICE: if the comment has to be executed, the first line
-% associated with the title must start with two "%%" symbols instead of just
-% one "%" symbol. The examples in the first positions will appear in
-% the HTML file under the caption "Examples" while the latest will appear
-% under the caption "Related Examples". More precisely, if the output of a
-% procedure contains k outputs and some optional input arguments the first
-% k+1 comment blocks will appear in the HTML file under "Examples".
-% First comment block is associated with the call of the procedure with
-% just one output and all default input arguments
-% Second comment block is associated with the call of the procedure with
-% just one output and with some optional input arguments
-% Third comment block is associated with the call of the procedure with
-% two output arguments
-% ...
-% k+1 comment block is associated with the call of the procedure with
-% k output arguments
-% k+2 comment block is the first which in the HTML file will appear under
-% the heading "Related Examples
-% For example, suppose that the first example of procedure FSRmdr has to be
-% executed and its output must be included into the HTML file, then the accepted
-% format is as follows ("please notice the two symbols %% in the first row")
-%
-%
-%                 %{
-%                     %% FSRmdr with all default options.
-%                     % Compute minimum deletion residual.
-%                     % Monitor minimum deletion residual in each step of the forward search.
-%                     % Common part to all examples: load fishery dataset.
-%                      load('fishery');
-%                      y=fishery.data(:,2);
-%                      X=fishery.data(:,1);
-%                      % Find starting subset
-%                      [out]=LXS(y,X,'nsamp',10000);
-%                      [mdr] = FSRmdr(y,X,out.bs);
-%                      plot(mdr(:,1),mdr(:,2))
-%                      title('Monitoring of minimum deletion residual')
-%                 %}
-%
-%                 %{
-%                     % FSRmdr with optional arguments.
-%                     % Choose step to start monitoring.
-%                     % Compute minimum deletion residual and start monitoring it from step
-%                     % 60.
-%                     [mdr] = FSRmdr(y,X,out.bs,'init',60);
-%                 %}
-%
-%  In order to understand where the example finish and the MATLAB code
-%  starts publishFS checks if one of the following strings
-% is present
-% 'Input parameters checking'
-% 'Beginning of code'
-% 'nargin'
-% If this is the case the search of "comments blocks signs" (i.e. symbols %{
-% and %}) is limited to the first character prior to the detection of one
-% of the previous strings. This modification has been added in order to
-% make sure that there are no additional block signs within matlab code
-%
-% 9) If a procedure contains varargout then a section string
-%               Optional Output:
-% must be present. For example suppose there is a function called mcd which
-% has the following sintax:
-%
-%                 function [RAW,REW,varargout] = mcd(Y,varargin)
-%
-% then at the end of the output argument the format must be as follows
-%
-%                       Optional Output:
-%
-%                                 C     : matrix of the indices of the
-%                                         subsamples extracted for
-%                                         computing the estimate
-%
-% 10) If the .m file contains string  "More About:" a particular section
-% called "More about" in the HTML file will be created (just before See
-% Also).
-% 11) If the .m file contains string 'Acknowledgements:' then a particular
-% section named "Acknowledgements" will be created just above the
-% references.
-%
-% GENERAL REMARKS:
-%
-% ------------------------------------------------------------------------
-% REMARK1: if symbol % is wanted and it is not a simple comment delimiter, it
-% must be replaced by words "per cent". For example, string "50% envelope"
-% must become "50 per cent" envelope.
-% ---------------------------------------------------
-% REMARK2:
-% If there is just one output argument it can be without square brackets.
-% Among the input elements of a procedure the number of spaces between
-% them is not important. For example
-% "y,X,varargin" or "y, X   ,  varargin"   are both fine
-% --------------------------------------------------
-% REMARK 3: publishFS uses javascript matlab-highlighter.min.js in order to
-% automatically color the examples in the HTML file
-% --------------------------------------------------
-% REMARK 4: publishFS uses MathJax javascript in order to interpret the
-% equations inside the .m file written in Latex style. For in line
-% equations both symbols $ $ and \( \) are accepted.
-% For single line equations symbols \[ \] must be used
-% ---------------------------------------------------
-% REMARK 5: if there are not enough examples in the .m file the procedure
-% still runs but a warning will be automatically produced
-% -----------------------------------------------------
-% REMARK 6: the output file to be correctly viewed must be located in a
-% folder which contains a subfolder named includesFS containing the files
-% present inside (home FSDA)\helpfiles\FSDA\includesFS. Therefore if the
-% the directory which contains the output file is not located inside (home
-% FSDA)\helpfiles\FSDA subfolder includesFS must be copied into the current
-% folder
-% -----------------------------------------------------
-% REMARK 7: strings are HTML formatted as follows. Every time there is
-% symbol ". one_or_more_space symbol_of carriage_return" or
-% ": one_or_more_space symbol_of carriage_return" the parser adds HTML
-% string '</p>/<p>' after just symbol "."  or symbol ":".
-% This is done using subfunction named formatHTML at the end of this file.
-% subfunction formatHTMLwithMATHJAX is even more general because it applies
-% function formatHTML just to the parts of the input string which are not
-% enclosed inside symbols '\[ \]'.
-% -----------------------------------------------------
-% REMARK 8: parser automatically puts an hyperlink every time in the text
-% there is something which starts with "http:" or every time there is a
-% reference to a .m file. For example the sentence: "More details can be
-% found in routine ncx2mixtcdf.m" is converted as follows.
-% "More details can be found in routine
-% <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>".
-% Similarly, a sentence such as:
-% "The full paper can be donwloaded from http://www.mysite.org"
-% is converted as follows
-% "The full paper can be donwloaded from
-% <a href="http://www.mysite.org">http://www.mysite.org</a>".
-% -----------------------------------------------------
-%
-%
-%
+%  
 % Optional input arguments:
 %
 %   Display : Level of display. String.
@@ -439,36 +30,515 @@ function out=publishFS(file,varargin)
 %             Output folder to which the HTML document is saved, specified
 %             as the comma-separated pair consisting of 'outputDir' and the
 %             full path. You must specify the full path as a string, for
-%             example 'C:\myPublishedOutput'.
+%             example 'C:\PublishedOutput'.
 %             The default value, '', specifies the (FSDA root)\helpfiles\FSDA
 %             path.
 %             Remark - outputDir must be a valid path.
-%             Example - 'outputDir','C:\myPublishedOutput'
+%             Example - 'outputDir','C:'
 %             Data Types - string
 % imagesDir : Output folder of png images. String.
 %             Output folder to which the images attached to the HTML
 %             document are saved, specified as the comma-separated pair
 %             consisting of 'outputDir' and the full path. You must specify
 %             the full path as a string, for example
-%             'C:\myPublishedOutput'.
+%             'C:\PublishedOutput'.
 %             The default value, '', specifies the
 %             "(FSDA root)\helpfiles\FSDA\images" path.
-%             Remark: if imageDir is not specified but outputDir is
+%             Remark - if imageDir is not specified but outputDir is
 %             specified images will be save into the same folder of the
 %             HTML output file
 %             Remark - imagesDir must be a valid path.
-%             Example - 'outputDir','C:\myPublishedOutput'
+%             Example - 'outputDir','C:'
 %             Data Types - string
 % evalCode :  Option to run code. Logical. Option to evaluate code of the
-%             examples in the input .m files enclosed in tags %{ %} whise
-%             first line starts with symbols %% and include the MATLAB
-%             output in the HTML file. The iamges will be save in subfolder
-%             iamges_help of the outputDir. The default value of evalCode
-%             is true.
+%             examples in the input .m files enclosed in tags "%{" "%}" whose
+%             first line starts with symbols "%%". 
+%             If evalcode is true the code associated with the examples
+%             which start with symbols '%%' will be run and the output will
+%             be automatically included into the HTML output file. The
+%             images will be save in subfolder images_help of the
+%             outputDir. The default value of evalCode is true.
 %             Example - 'evalCode','false'
 %             Data Types - Boolean
 %
+% Output:
 %
+%  The output consists of a structure 'out' containing the following fields:
+% out.title     = title of HTML file. String.
+%                   String to be included in HTML tag title
+% out.purpose   = purpose of the routine. String.
+%                 String forming second row of output HTML file
+%                 String forming second row of output HTML file
+%out.description= short description of the file. String
+%                 If this field is not empty it is included in the HTML file
+%                 at the beginning of the section "Description"
+% out.InpArgs   = Required and Optional input arguments. Cell.
+%                 Cell of size k-by-7 containing information about required
+%                 and optional input argument.
+%                 1st column = name
+%                 2nd column = short description
+%                 3rd column = type indication (Scalar, matrix, ...)
+%                 4th column = string containing long description. If the
+%                 input argument is a struct, columns 2 and 3 will be empty and all
+%                 information about the fields of the structure will be
+%                 included in the 4th column.
+%                 5th column = example (if present)
+%                 6th column = Data type
+%                 7th column = string contaning '1' if the argument is
+%                 required and '0' if it is optional
+% out.OptArgs   = Optional input arguments specified as name/values pairs. Cell.
+%                 Cell of size r-by-6 containing information about 
+%                 and optional input argument specified as name/values pairs.
+%                 1st column = name.
+%                 2nd column = short description.
+%                 3rd column = type indication (Scalar, matrix, ...).
+%                 4th column = string containing long description. If the
+%                 optional input argument is a struct, columns 2 and 3 will be empty and all
+%                 information about the fields of the structure will be
+%                 included in the 4th column.
+%                 5th column = example (if present).
+%                 6th column = Data type (ex. Single |Double).
+% out.OutArgs   = Required and Optional input arguments. Cell.
+%                 Cell of size k-by-7 containing information about required
+%                 and optional input argument.
+%                 1st column = name.
+%                 2nd column = short description.
+%                 3rd column = type indication (Scalar, matrix, ...).
+%                 4th column = string containing long description. If an
+%                 output argument is a struct, columns 2 and 3 will be
+%                 empty and all information about the fields of the
+%                 structure will be included in the 4th column.
+% out.MoreAbout = More About. String. String containing what in the HTML
+%                 file will appear under the section "More About".
+%out.Acknowledgements = Acknowledgements. String. String containing what in the HTML
+%                 file will appear under the section "Acknowledgements".
+%out.References = References. cell. Cell of length r containing the r
+%                 references.
+%   out.SeeAlso = References. cell. Cell of length s containing the s
+%                 references to linked files.
+% 
+%
+% More About:
+%
+%         The .m file (which must be located on the MATLAB path or on the currect
+%         folder) must satisfy the following characteristics to be correctly
+%         processed.
+%         
+%         1) The row below the row which starts with function .... must contain the
+%         description of the purpose of the .m file. 
+%         Remark: generally the row which starts with function .... is the first
+%         row of an .m file.
+%         2) String 'Required input arguments:' must be present. The lines below
+%         this string must contain the description of the compulsory input
+%         arguments. Each argument must have the name (a series of spaces from 0
+%         to 10) symbol ':' and then the description. The format of the description
+%         is as follows:
+%         The first sentence after symbol ':' is the title of the input argument
+%         and in the HTML file it will appear in bold face in the same line of the
+%         input argument (this is the short description of the optional input
+%         argument). 
+%         The second sentence after symbol ':' describes the objects
+%         (for example, scalar, vector, 3D array) and in the HTML file will appear
+%         in the second row. 
+%         These first two rows will always be visible. 
+%         What starts with the third sentence after symbol ':' is the detailed
+%         description of that particular input argument and in the HTML file it
+%         will be visible just if the user clicks on any point in the first two
+%         lines or the user clicks on the option expand all. 
+%         The last line may start with the words "Data Types:" and contains the
+%         specification of a particular input argument (e.g. Data Types: single |
+%         double). For example, suppose that the .m routine which has to be
+%         processed has two required input arguments which are respectively called
+%         y and X, then the accepted format is as follows.
+%         
+%                       Required input arguments:
+%         
+%                        y:         Response variable. Vector. Response variable,
+%                                   specified as a vector of length n, where n is
+%                                   the number of observations. Each entry in y is
+%                                   the response for the corresponding row of X.
+%                                   Data Types: single | double.
+%                      X :          Predictor variables. Matrix of explanatory
+%                                   variables (also called 'regressors') of
+%                                   dimension n x (p-1) where p denotes the number
+%                                   of explanatory variables including the
+%                                   intercept. Rows of X represent observations,
+%                                   and columns represent variables. By default,
+%                                   there is a constant term in the model, unless
+%                                   you explicitly remove it using input option
+%                                   intercept, so do not include a column of 1s in
+%                                   X.
+%                                   Data Types: single | double.
+%         
+%         IMPORTANT NOTICE: if an input argument is a structure (publishFS
+%         automatically checks if the input argument contains the word "structure"
+%         then the fields of the structure will be automatically included into a
+%         HTML table). In this case the fields of the structure are identified as
+%         the lines which contain "a series of spaces" "a_word" "a series
+%         of spaces followed by symbol '='". For example suppose the an input
+%         option is called bayes and object bayes is a structure with field names
+%         beta0, R, tau0 and n0, the accepted format is as follows.
+%          
+%            bayes      : prior information. Structure.
+%                               It contains the following fields.
+%                   out.beta0=  p-times-1 vector containing prior mean of \beta.
+%                   out.R    =  p-times-p positive definite matrix which can be
+%                               interpreted as X0'X0 where X0 is a n0 x p matrix
+%                               coming from previous experiments (assuming that the
+%                               intercept is included in the model.
+%                     out.tau0 = scalar. Prior estimate of tau.
+%                     out.n0   = scalar. Sometimes it helps to think of the prior
+%                              information as coming from n0 previous experiments.
+%          
+%         
+%         
+%         3) If the input .m file between the row which starts with
+%          <a href="matlab: docsearchFS(.....
+%          and the row with the string
+%          "Required input arguments:"
+%          contains a series of sentences, they will be automatically included in
+%          the HTML output just below the description.
+%         
+%          An example is given below
+%                 function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
+%                 tclust computes trimmed clustering with restricitons on the eigevalues
+%         
+%                 <a href="matlab: docsearchFS('tclust')">Link to the help function</a>
+%         
+%                   tclust partitions the points in the n-by-v data matrix Y into k
+%                   clusters.  This partition minimizes the trimmed sum, over all
+%                   clusters, of the within-cluster sums of
+%                   point-to-cluster-centroid distances....
+%         
+%                  Required input arguments:
+%         
+%         4) String 'Optional input arguments:' must be present even if there are
+%         no optional arguments. 
+%         publishFS, in order to understand what are the names of the optional
+%         input arguments scans the rows below the string "Optional input
+%         arguments:" and identifies the lines which contain the optional arguments
+%         as those which contain "a series of spaces" "a_word" "a series of spaces
+%         followed by symbol ':'".
+%         The first sentence after symbol ':' is the title of the optional input
+%         argument and in the HTML file it will appear in the same row of the name
+%         of the optional input argument (this is the short description of the
+%         optional input argument). 
+%         The second sentence after symbol ':' describes the objects (for example,
+%         scalar, vector, 3D array) and in the HTML file will appear in the second
+%         row. These first two rows will always be visible. 
+%         What starts with the third sentence after symbol ':' is the detailed
+%         description of that particular optional input argument and in the HTML
+%         file it will be visible just if the user clicks on any point in the first
+%         two lines or the user clicks on the option expand all.
+%         The last two lines of each optional input argument MUST start with the
+%         words 'Example -' and 'Data Types -' followed by a string without spaces
+%         which specifies a possible use of the option and the type of data. For
+%         example, suppose that the first two optional arguments are called
+%         respecively 'intercept' and 'h', then the
+%         accepted format is as follows:
+%         
+%                       Optional input arguments:
+%         
+%                       intercept :  Indicator for constant term. Scalar.
+%                                   If 1, a model with constant term will be fitted
+%                                   (default),
+%                                   if 0, no constant term will be included.
+%                                   Example - 'intercept',1.
+%                                   Data Types - double.
+%                               h : The number of observations that have determined the least
+%                                     trimmed squares estimator. Scalar.
+%                                     Example - 'h',round(n*0,75).
+%                                     Data Types - double.
+%         
+%         
+%          IMPORTANT NOTICE: given that options are identified as those which have
+%          symbol "%" followed by "a series of spaces" then "a word" then "a series
+%          of spaces" then symbol ":", each line inside the description does not
+%          have to start as follows "%   ANYWORD   :" because the parser will
+%          wrongly identify "ANYWORD" as an additional optional input argument. The
+%          only once exception to this rule is the word "%  REMARK :". However, if
+%          there is a remark, it must be put at the very end of the description of
+%          the optional input argument. At the very end means after the rows
+%           Example and Data Types.
+%         
+%         5) String 'Output:' must be present. 
+%         The lines after string 'Output:'
+%         must contain the list of the output arguments using the same rules
+%         described above for the optional arguments. In this case, however, the
+%         identification of the ouptut arguments is easier because they are
+%         extracted directly from the first line of the file (e.g. if the first
+%         line is as follows
+%         function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
+%         output arguments are immediately known to the parser).
+%         In the case of output argument publishFS checks if the first 50
+%         characters contain the words "which contains" or "containing" e.g.:
+%         
+%                      mdr:         n -init x 2
+%                                   matrix containing the
+%                                   monitoring of minimum deletion residual.
+%                                   1st col = fwd search
+%                                   ........
+%                        Un:        (n-init) x 11 Matrix
+%                                   which contains the unit(s) included in the
+%                                   subset at each step of the search.
+%                                   ...........
+%         
+%         In this case what is after the strings "which contains" or "containing"
+%         will appear in bold face as the title of the output argument. What is
+%         before the strings "which contains" or "containing" will appear in the
+%         second row.
+%         
+%         For example, the above lines will be processed as follows:
+%         
+%              mdr   -  Monitoring of minimum deletion residual
+%              n -init x 2 matrix
+%         
+%              Un    - unit(s) included in the subset at each step of the search.
+%              (n-init) x 11 Matrix
+%         
+%         If in the HTML file the user clicks on them the expdanded description
+%         (that is what starts after the second full stop will appear).
+%         
+%         Alternatively, if the first 50 characters of each output argument do not
+%         contain the strings "which contains" or "containing" the following
+%         convention is used. The first sentence after symbol ":" is assumed
+%         to be the title of the output argument and in the HTML file it will
+%         appear in bold face in the same line of the name of output
+%         argument. The second sentence (words between first and second full stop)
+%         will appear in the second row. The third sentence is the full description
+%         of the output argument. For example, suppose that the output of a
+%         procedure contains the objects mdr and Un, the accepted format
+%         is as follows.    Output:
+%                      
+%                      mdr:         Minimum deletion residual. Matrix.  n -init x 2
+%                                   matrix which contains the
+%                                   monitoring of minimum deletion residual.
+%                                   1st col = ...
+%                      Un:          Units included. Matrix. (n-init) x 11 Matrix
+%                                   which contains the unit(s) included in the
+%                                   subset at each step of the search.
+%                                   REMARK: in every step ....
+%         
+%         The above lines will be processed as follows:
+%         
+%              mdr   -  Minimum deletion residual
+%              Matrix
+%         
+%              Un    - Units included.
+%              Matrix
+%         
+%         If in the HTML file the user clicks on them the expdanded description
+%         (that is what starts after the second full stop will appear).
+%         
+%         IMPORTANT NOTICE: Similarly to what happend for each input argument, if
+%         an output argument is a structure, publishFS automatically checks if it
+%         contains the words "structure" and "field". In this case, the fields of
+%         the structure will be automatically included into a HTML table. The
+%         fields of the structure are identified as the lines which contain "a
+%         series of spaces" "name_of_output_structure.a_word" "a series of spaces
+%         followed by symbol '='". For example suppose that the output of a
+%         procedure is an object called out which is a structure with two fields
+%         out.rew and out.beta, an accepted format is as follows
+%         
+%                                  %  Output:
+%         
+%                                  out :     A structure containing the following fields:
+%                                            out.rew  = Scalar if out.rew=1 all
+%                                                       subsequent output refers to
+%                                                       reweighted else no
+%                                                       reweighting is done.
+%                                            out.beta = Vector of beta LTS (LMS)
+%                                                       coefficient estimates,
+%                                                       including the intercept
+%                                                       when options.intercept=1.
+%                                                       out.beta=[intercept
+%                                                       slopes].
+%         
+%         
+%         PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE
+%         "=" SIGN AND NOT THE ":" SIGN.
+%         
+%         REMARK: If there is the string REMARK after the description of the last
+%         field of the structure, all the words after REMARK are put outside and
+%         below the HTML table.
+%         
+%         If the description of a particular output has the string "which contains"
+%         or "containing",  as follows
+%         
+%                      mdr:          n -init x 2 matrix which contains the
+%                                   monitoring of minimum deletion residual at each
+%                                   step of the forward search.
+%                                   1st col = fwd search index (from init to n-1).
+%                                   2nd col = minimum deletion residual.
+%         
+%         publishFS will try to put what comes before the string "which
+%         contains" or "containing" inside the subtitle (second row) of the each
+%         ouptut argument in the HTML file. For example, the example above in the
+%         HTML file will be processed as follows:
+%                        mdr -Monitoring of minimum deletion residual at each step of the forward search.
+%                        n -init -by- 2 matrix
+%         If, in the HTML file, the user clicks on the first line,
+%                       "mdr -Monitoring..."
+%         the expanded description will automatically appear.
+%         
+%         6) A line which starts with string "See also:" must be present. 
+%         Linked m files must be separated by symbol ",". For example, suppose that
+%         files FSRBmdr.m and FSR.m have connections with the current file, then an
+%         accepted format is         See also: FSRBmdr.m, FSR.m.
+%         
+%         7) A line which starts with string "References:" must be present.
+%         The year of each reference must be enclosed in round parenthesis.
+%         PublishFS decides that a new reference starts if a new line contains
+%         symbol "(" + "a sequence of 4 or 5 characthers identifying the year
+%         because the reference can be for example 2003 or 2003a" + symbol ")"
+%         For example, an acceptable format for the two references below is:
+%         
+%         
+%                         Chaloner and Brant (1988). A Bayesian Approach to Outlier
+%                         Detection and Residual Analysis, Biometrika, Vol 75 
+%                         pp. 651-659.
+%                         Riani M., Corbellini A., Atkinson A.C. (2015), Very
+%                         Robust Bayesian Regression for Fraud Detection,
+%                         submitted.
+%         
+%         8) All the examples associated with the file which has to be processed
+%         must be enclosed inside Percent-braces (comments blocks, i.e. symbols %{
+%         and %} ). 
+%         The first sentence identifies the title of the comment which
+%         will appear in the HTML file.
+%         IMPORTANT NOTICE: if the comment has to be executed, the first line
+%         associated with the title must start with two "%%" symbols instead of just
+%         one "%" symbol. The examples in the first positions will appear in
+%         the HTML file under the caption "Examples" while the latest will appear
+%         under the caption "Related Examples". More precisely, if the output of a
+%         procedure contains k outputs and some optional input arguments the first
+%         k+1 comment blocks will appear in the HTML file under "Examples".
+%         First comment block is associated with the call of the procedure with
+%         just one output and all default input arguments
+%         Second comment block is associated with the call of the procedure with
+%         just one output and with some optional input arguments
+%         Third comment block is associated with the call of the procedure with
+%         two output arguments
+%         ...
+%         k+1 comment block is associated with the call of the procedure with
+%         k output arguments
+%         k+2 comment block is the first which in the HTML file will appear under
+%         the heading "Related Examples
+%         For example, suppose that the first example of procedure FSRmdr has to be
+%         executed and its output must be included into the HTML file, then the accepted
+%         format is as follows ("please notice the two symbols "%%" in the first row")
+%         
+%         
+%                         "%{
+%                             %% FSRmdr with all default options.
+%                             % Compute minimum deletion residual.
+%                             % Monitor minimum deletion residual in each step of the forward search.
+%                             % Common part to all examples: load fishery dataset.
+%                              load('fishery');
+%                              y=fishery.data(:,2);
+%                              X=fishery.data(:,1);
+%                              % Find starting subset
+%                              [out]=LXS(y,X,'nsamp',10000);
+%                              [mdr] = FSRmdr(y,X,out.bs);
+%                              plot(mdr(:,1),mdr(:,2))
+%                              title('Monitoring of minimum deletion residual')
+%                         %}"
+%         
+%                         "%{
+%                             % FSRmdr with optional arguments.
+%                             % Choose step to start monitoring.
+%                             % Compute minimum deletion residual and start monitoring it from step
+%                             % 60.
+%                             [mdr] = FSRmdr(y,X,out.bs,'init',60);
+%                         %}"
+%         
+%          In order to understand where the example finish and the MATLAB code
+%          starts publishFS checks if one of the following strings
+%         is present
+%         "Input parameters checking"
+%         "Beginning of code"
+%         "nargin"
+%         If this is the case the search of "comments blocks signs" (i.e. symbols %{
+%         and %}) is limited to the first character prior to the detection of one
+%         of the previous strings. This modification has been added in order to
+%         make sure that there are no additional block signs within matlab code.
+%         
+%         9) If a procedure contains varargout, then a section string:
+%                       "Optional Output:"
+%         must be present. For example suppose there is a function called mcd which
+%         has the following sintax:
+%         
+%                         function [RAW,REW,varargout] = mcd(Y,varargin).
+%         
+%         Then at the end of the output argument the format must be as follows:
+%         
+%                               Optional Output:
+%         
+%                                         C     : matrix of the indices of the
+%                                                 subsamples extracted for
+%                                                 computing the estimate.
+%         
+%         10) If the .m file contains string  "More About:" a particular section
+%         called "More about" in the HTML file will be created 
+%         (just before See Also).
+%         11) If the .m file contains string "Acknowledgements:" then a particular
+%         section named "Acknowledgements" will be created just above the
+%         references.
+%         
+%         GENERAL REMARKS:
+%         
+%         -----------------------------------------------------------------------:.
+%         REMARK1: if symbol % is wanted and it is not a simple comment delimiter, it
+%         must be replaced by words "per cent". For example, string "50% envelope"
+%         must become "50 per cent" envelope.
+%         -----------------------------------------------------------------------:.
+%         REMARK2: If there is just one output argument it can be without square
+%         brackets. Among the input elements of a procedure the number of spaces
+%         between them is not important. For example
+%         "y,X,varargin" or "y, X   ,  varargin"   are both fine.
+%         -----------------------------------------------------------------------:.
+%         REMARK 3: publishFS uses javascript matlab-highlighter.min.js in order to
+%         automatically color the examples in the HTML file.
+%         -----------------------------------------------------------------------:.
+%         REMARK 4: publishFS uses MathJax javascript in order to interpret the
+%         equations inside the .m file written in Latex style. For in line
+%         equations both symbols dollar dollar  and backslash(  backslash) are accepted.
+%         For single line equations symbols backslash[ backslash] must be used.
+%         -----------------------------------------------------------------------:.
+%         REMARK 5: if there are not enough examples in the .m file the procedure
+%         still runs but a warning will be automatically produced.
+%         -----------------------------------------------------------------------:.
+%         REMARK 6: the output file to be correctly viewed must be located in a
+%         folder which contains a subfolder named includesFS containing the files
+%         present inside 
+%         (home FSDA) filesep helpfiles filesep FSDA filesep includesFS. 
+%         Therefore if the
+%         the directory which contains the output file is not located inside 
+%         (home FSDA) filesep helpfiles filesep FSDA subfolder 
+%         includesFS must be copied into the current folder.
+%         -----------------------------------------------------------------------:.
+%         REMARK 7: strings are HTML formatted as follows. Every time there is
+%         symbol ". one_or_more_space symbol_of carriage_return" or
+%         ": one_or_more_space symbol_of carriage_return" the parser adds HTML
+%         string '</p>/<p>' after just symbol "."  or symbol ":".
+%         This is done using subfunction named formatHTML at the end of this file.
+%         subfunction formatHTMLwithMATHJAX is even more general because it applies
+%         function formatHTML just to the parts of the input string which are not
+%         enclosed inside symbols 'backslash[ backslash]'.
+%         -----------------------------------------------------------------------:.
+%         REMARK 8: parser automatically puts an hyperlink every time in the text
+%         there is something which starts with "http": or every time there is a
+%         reference to a .m file. For example the sentence: "More details can be
+%         found in routine ncx2mixtcdf.m" is converted as follows.
+%         "More details can be found in routine
+%         <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>".
+%         Similarly, a sentence such as:
+%         The full paper can be downloaded from "http://www.mysite.org".
+%         is converted as follows:
+%         "The full paper can be donwloaded from
+%         <a href="http://www.mysite.org"> http://www.mysite.org </a>".
+%         -----------------------------------------------------------------------:.
+%         
 % See also: publish
 %
 %
@@ -477,19 +547,27 @@ function out=publishFS(file,varargin)
 %
 %
 %<a href="matlab: docsearchFS('publishFS')">Link to the help function</a>
+%
 % Last modified 06-Feb-2015
 
 % Examples:
 
+
 %{
   % Create file FSRmdr.html starting from file FSRmdr.
-  % Display detailed information about the Input, Output and Optional arguments
-  publishFS('FSRmdr','evalCode',false,'Display','iter-detailed')
+  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed')
+%}
+
+%{
+  % Create file FSRmdr.html starting from file FSRmdr and
+  % display detailed information about the Input, Output and Optional
+  % arguments.
+  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed')
 %}
 
 %{
   % Create HTML file with embedded images in folder C:\tmp
-    publishFS('FSRmdr','evalCode',true,'outputDir','C:\tmp')
+  out=publishFS('FSRmdr','evalCode',true,'outputDir','C:\tmp')
 %}
 
 %% Beginning of code
@@ -636,7 +714,7 @@ end
 % string  Example -
 % The sixth column will contain the example what starts just after
 % string  Data Types -
-listOptArgs=cell(length(ini),6);
+listOptArgs=cell(length(ini),7);
 
 ij=1;
 for i=1:length(ini)
@@ -723,6 +801,10 @@ for i=1:length(ini)
             
             % The first word of example code must be embedded around tags <code> </code>
             examplecode=descrlong(CheckExample+9:Datatypes-1);
+            % Store string containing the examples before adding 
+            % HTML strings '<code>'  '</code> 
+                        listOptArgs{ij,7}=examplecode;
+
             posspace=regexp(examplecode,'      ');
             examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
             listOptArgs{ij,5}=strtrim(examplecode);
@@ -886,7 +968,6 @@ insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="10
 
 %% CONTAINER + SINTAX SECTION
 
-
 % inisitecont=sprintf(['<div class="site_container site_toc_opened">\r'...
 inisitecont=sprintf(['<div class="site_container site_toc_closed">\r'...
     '<div class="page_container">\r'...
@@ -966,8 +1047,6 @@ else
     outargs='';
     nargout=0;
 end
-
-
 
 
 % Required input arguments
@@ -1129,13 +1208,13 @@ if strcmp(Display,'iter-detailed')
 end
 
 % start of example j
-[startIndexEx] = regexp(fstring,'%\{');
-[endIndexEx] = regexp(fstring,'%\}');
+[startIndexEx] = regexp(fstring,'\n%\{[\s1-20]');
+[endIndexEx] = regexp(fstring,'\n%\}[\s1-20]');
 
 % Try to understand where preamble finishes and MATLAB code starts
-EndOfExtry1=regexp(fstring,'Input parameters checking');
-EndOfExtry2=regexp(fstring,'Beginning of code');
-EndOfExtry3=regexp(fstring,'nargin');
+EndOfExtry1=regexp(fstring,'[^"]Input parameters checking');
+EndOfExtry2=regexp(fstring,'[^"]Beginning of code');
+EndOfExtry3=regexp(fstring,'[^"]nargin');
 EndOfExtry=min([EndOfExtry3 EndOfExtry1 EndOfExtry2]);
 if ~isempty(EndOfExtry)
     startIndexEx=startIndexEx(startIndexEx<EndOfExtry);
@@ -1266,7 +1345,7 @@ for j=1:length(sintax)
     end
     
     try
-        stri=fstring(startIndexEx(j)+2:endIndexEx(j)-1);
+        stri=fstring(startIndexEx(j)+3:endIndexEx(j)-1);
     catch
         %disp(stri)
         warning('FSDA:wrongEx','This file does not contain enough examples, please add them!')
@@ -1937,9 +2016,11 @@ if nargout>0
             end
             
         else
-            
-            inipointSeeAlso=regexp(fstringsel,'See also','once');
-            
+            inipointSeeAlso=regexp(fstringsel,'%\s*See also','once');
+            % fstringsel1=fstringsel(iniref+1:end);
+
+            % inipointSeeAlso=regexp(fstringsel1,'See also','once');
+
             if isempty(inipointSeeAlso)
                 disp('Please check .m input file')
                 error('FSDA:missOuts','Input .m file does not contain ''See also:'' string')
@@ -2176,20 +2257,18 @@ else
 end
 
 %% REFERENCES
-inipointAcknowledgements=regexp(fstring,'Acknowledgements:');
+inipointAcknowledgements=regexp(fstring,'%\s*Acknowledgements:');
 if isempty(inipointAcknowledgements);
     Acknowledgements='';
 end
 
-iniref=regexp(fstring,'References:');
+iniref=regexp(fstring,'%\s*References:');
 if isempty(iniref)
     warning('FSDA:missInp',['File ' name '.m does not contain string ''References:'''])
     % refsargs={''};
     References='';
-    
+    refsargs='';
 else
-    
-    
     
     inipointCopyright=regexp(fstring,'Copyright');
     
@@ -2204,7 +2283,7 @@ else
         inipointAcknowledgements=Inf;
     end
     
-    endref=min(inipointAcknowledgements,inipointCopyright);
+    endref=min([inipointAcknowledgements(:);inipointCopyright(:)]);
     
     if isempty(endref)
         disp('Please check .m input file')
@@ -2300,7 +2379,11 @@ iniSeealso=sprintf(['<div class="ref_sect">\r'...
     '<h2>See Also</h2>\r'...
     '<p>\r']);
 
+% See also:'\:\s*\r
+iniref=regexp(fstring,'%\s*See also','once');
+fstring=fstring(iniref+1:end);
 iniref=regexp(fstring,'See also','once');
+
 endref=regexp(fstring(iniref:end),'%','once');
 seealsostr=fstring(iniref+8:iniref+endref-2);
 
@@ -2441,6 +2524,10 @@ listInpArgs(1:nREQargin,7)={'1'};
 out.InpArgs=listInpArgs;
 
 % Save optional input arguments of the kind name/pairs
+if size(listOptArgs,2)==7
+    listOptArgs(:,5)=listOptArgs(:,7);
+    listOptArgs=listOptArgs(:,1:6);
+end
 out.OptArgs=listOptArgs;
 % Save output arguments
 out.OutArgs=listOutArgs;
@@ -2706,17 +2793,17 @@ end
 
 % put a hypertext link to all words which start with http
 descrHTTP=descrlongHTMLwithref;
-[IniRefhttp]=regexp(descrHTTP,'http');
+[IniRefhttp]=regexp(descrHTTP,'[^"]http');
 
 if ~isempty(IniRefhttp)
     FinRefhttp=zeros(length(IniRefhttp),1);
     descrHTTPwithref='';
     for i=1:length(IniRefhttp)
         
-        descrHTTPsel=descrHTTP(IniRefhttp(i):end);
+        descrHTTPsel=descrHTTP(IniRefhttp(i)+1:end);
         findfirstspace=regexp(descrHTTPsel,'\s','once');
         if isempty(findfirstspace)
-            FinRefhttp(i)=IniRefhttp(i)+length(descrHTTPsel);
+            FinRefhttp(i)=IniRefhttp(i)+length(descrHTTPsel)+1;
         else
             FinRefhttp(i)=IniRefhttp(i)+findfirstspace;
         end
@@ -2738,7 +2825,7 @@ if ~isempty(IniRefhttp)
         if i==1 && length(IniRefhttp)==1
             descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
                 '<a href="' namehttp '">' namehttp '</a>'...
-                descrHTTP(FinRefhttp(i):end)];
+                descrHTTP(FinRefhttp(i)+1:end)];
         elseif i==1
             descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
                 '<a href="' namehttp '">' namehttp '</a>'];
@@ -2748,8 +2835,12 @@ if ~isempty(IniRefhttp)
                 '<a href="' namehttp '">' namehttp '</a>'...
                 descrHTTP(FinRefhttp(i):end)];
         else
+            try
             descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
                 '<a href="' namehttp '">' namehttp '</a>'];
+            catch
+               ddd=1;
+            end
         end
     end
 else
