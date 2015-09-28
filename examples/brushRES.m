@@ -1,5 +1,5 @@
 function brushRES(eventdata)
-%brushRES displays a GUI which enables brushing
+%brushRES displays a GUI which enables brushing in resfwdplot
 %
 %<a href="matlab: docsearchFS('brushRES')">Link to the help page for this function</a>
 %
@@ -11,13 +11,13 @@ function brushRES(eventdata)
 %
 % Optional input arguments:
 %
-% eventdata  : scalar integer. Automatic code execution without user interaction.
-%                      This option enables to perform in an automatic way
-%                      the code associated with a particular radiobutton in
-%                      the GUI
-%                   Example - 2 (the example associated with the second
-%                   radiobutton will be automatically executed)
-%                   Data Types - integer
+% eventdata  : scalar integer (from 1 to 6). Automatic code execution
+%              without user interaction. This option enables to perform in
+%              an automatic way the code associated with a particular
+%              radiobutton in the GUI 
+%              Example - 2 (the example associated
+%              with the second radiobutton will be automatically executed)
+%              Data Types - integer
 %
 % Examples:
 
