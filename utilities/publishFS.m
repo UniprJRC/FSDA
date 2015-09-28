@@ -124,11 +124,11 @@ function out=publishFS(file,varargin)
 %         folder) must satisfy the following characteristics to be correctly
 %         processed.
 %         
-%         1) The row below the row which starts with function .... must contain the
+%         [1] The row below the row which starts with function .... must contain the
 %         description of the purpose of the .m file. 
 %         Remark: generally the row which starts with function .... is the first
 %         row of an .m file.
-%         2) String 'Required input arguments:' must be present. The lines below
+%         [2] String 'Required input arguments:' must be present. The lines below
 %         this string must contain the description of the compulsory input
 %         arguments. Each argument must have the name (a series of spaces from 0
 %         to 10) symbol ':' and then the description. The format of the description
@@ -192,7 +192,7 @@ function out=publishFS(file,varargin)
 %          
 %         
 %         
-%         3) If the input .m file between the row which starts with
+%         [3] If the input .m file between the row which starts with
 %          <a href="matlab: docsearchFS(.....
 %          and the row with the string
 %          "Required input arguments:"
@@ -212,7 +212,7 @@ function out=publishFS(file,varargin)
 %         
 %                  Required input arguments:
 %         
-%         4) String 'Optional input arguments:' must be present even if there are
+%         [4] String 'Optional input arguments:' must be present even if there are
 %         no optional arguments. 
 %         publishFS, in order to understand what are the names of the optional
 %         input arguments scans the rows below the string "Optional input
@@ -261,7 +261,7 @@ function out=publishFS(file,varargin)
 %          the optional input argument. At the very end means after the rows
 %           Example and Data Types.
 %         
-%         5) String 'Output:' must be present. 
+%         [5] String 'Output:' must be present. 
 %         The lines after string 'Output:'
 %         must contain the list of the output arguments using the same rules
 %         described above for the optional arguments. In this case, however, the
@@ -381,12 +381,12 @@ function out=publishFS(file,varargin)
 %                       "mdr -Monitoring..."
 %         the expanded description will automatically appear.
 %         
-%         6) A line which starts with string "See also:" must be present. 
+%         [6] A line which starts with string "See also:" must be present. 
 %         Linked m files must be separated by symbol ",". For example, suppose that
 %         files FSRBmdr.m and FSR.m have connections with the current file, then an
 %         accepted format is         See also: FSRBmdr.m, FSR.m.
 %         
-%         7) A line which starts with string "References:" must be present.
+%         [7] A line which starts with string "References:" must be present.
 %         The year of each reference must be enclosed in round parenthesis.
 %         PublishFS decides that a new reference starts if a new line contains
 %         symbol "(" + "a sequence of 4 or 5 characthers identifying the year
@@ -401,9 +401,9 @@ function out=publishFS(file,varargin)
 %                         Robust Bayesian Regression for Fraud Detection,
 %                         submitted.
 %         
-%         8) All the examples associated with the file which has to be processed
-%         must be enclosed inside Percent-braces (comments blocks, i.e. symbols %{
-%         and %} ). 
+%         [8] All the examples associated with the file which has to be processed
+%         must be enclosed inside Percent-braces (comments blocks, i.e.
+%         symbols "%{" and "%}" ). 
 %         The first sentence identifies the title of the comment which
 %         will appear in the HTML file.
 %         IMPORTANT NOTICE: if the comment has to be executed, the first line
@@ -414,56 +414,58 @@ function out=publishFS(file,varargin)
 %         procedure contains k outputs and some optional input arguments the first
 %         k+1 comment blocks will appear in the HTML file under "Examples".
 %         First comment block is associated with the call of the procedure with
-%         just one output and all default input arguments
+%         just one output and all default input arguments.
 %         Second comment block is associated with the call of the procedure with
-%         just one output and with some optional input arguments
+%         just one output and with some optional input arguments.
 %         Third comment block is associated with the call of the procedure with
-%         two output arguments
+%         two output arguments.
 %         ...
 %         k+1 comment block is associated with the call of the procedure with
-%         k output arguments
+%         k output arguments.
 %         k+2 comment block is the first which in the HTML file will appear under
-%         the heading "Related Examples
+%         the heading "Related Examples".
 %         For example, suppose that the first example of procedure FSRmdr has to be
 %         executed and its output must be included into the HTML file, then the accepted
-%         format is as follows ("please notice the two symbols "%%" in the first row")
+%         format is as follows ("please notice the two symbols "%%" in the
+%         first row").
 %         
 %         
-%                         "%{
-%                             %% FSRmdr with all default options.
-%                             % Compute minimum deletion residual.
-%                             % Monitor minimum deletion residual in each step of the forward search.
-%                             % Common part to all examples: load fishery dataset.
+%                         "%{".
+%                             "%% FSRmdr with all default options".
+%                             "% Compute minimum deletion residual".
+%                             "% Monitor minimum deletion residual in each step of the forward search".  
+%                             "% Common part to all examples: load fishery dataset".
 %                              load('fishery');
 %                              y=fishery.data(:,2);
 %                              X=fishery.data(:,1);
-%                              % Find starting subset
+%                              "% Find starting subset"
 %                              [out]=LXS(y,X,'nsamp',10000);
 %                              [mdr] = FSRmdr(y,X,out.bs);
 %                              plot(mdr(:,1),mdr(:,2))
 %                              title('Monitoring of minimum deletion residual')
-%                         %}"
+%                         "%}".
 %         
-%                         "%{
-%                             % FSRmdr with optional arguments.
-%                             % Choose step to start monitoring.
-%                             % Compute minimum deletion residual and start monitoring it from step
-%                             % 60.
-%                             [mdr] = FSRmdr(y,X,out.bs,'init',60);
-%                         %}"
+%                         "%{".
+%                             "% FSRmdr with optional arguments".
+%                             "% Choose step to start monitoring".
+%                             "% Compute minimum deletion residual and
+%                              start monitoring it from step 60".
+%                             [mdr] = FSRmdr(y,X,out.bs,'init',60).
+%                         "%}".
 %         
 %          In order to understand where the example finish and the MATLAB code
 %          starts publishFS checks if one of the following strings
 %         is present
-%         "Input parameters checking"
-%         "Beginning of code"
-%         "nargin"
-%         If this is the case the search of "comments blocks signs" (i.e. symbols %{
-%         and %}) is limited to the first character prior to the detection of one
-%         of the previous strings. This modification has been added in order to
-%         make sure that there are no additional block signs within matlab code.
+%         "Input parameters checking",
+%         "Beginning of code",
+%         "nargin".
+%         If this is the case the search of "comments blocks signs"  
+%         (i.e. symbols  "%{" and "%}") is limited to the first character prior
+%         to the detection of one of the previous strings. This
+%         modification has been added in order to make sure that there are
+%         no additional block signs within matlab code.
 %         
-%         9) If a procedure contains varargout, then a section string:
+%         [9] If a procedure contains varargout, then a section string:
 %                       "Optional Output:"
 %         must be present. For example suppose there is a function called mcd which
 %         has the following sintax:
@@ -478,17 +480,17 @@ function out=publishFS(file,varargin)
 %                                                 subsamples extracted for
 %                                                 computing the estimate.
 %         
-%         10) If the .m file contains string  "More About:" a particular section
+%         [10] If the .m file contains string  "More About:" a particular section
 %         called "More about" in the HTML file will be created 
 %         (just before See Also).
-%         11) If the .m file contains string "Acknowledgements:" then a particular
+%         [11] If the .m file contains string "Acknowledgements:" then a particular
 %         section named "Acknowledgements" will be created just above the
 %         references.
 %         
 %         GENERAL REMARKS:
 %         
 %         -----------------------------------------------------------------------:.
-%         REMARK1: if symbol % is wanted and it is not a simple comment delimiter, it
+%         REMARK1: if symbol "%" is wanted and it is not a simple comment delimiter, it
 %         must be replaced by words "per cent". For example, string "50% envelope"
 %         must become "50 per cent" envelope.
 %         -----------------------------------------------------------------------:.
@@ -2029,9 +2031,12 @@ if nargout>0
             inipointMoreAbout=regexp(fstringsel,'More About:','once');
             if ~isempty(inipointMoreAbout);
                 MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
-                posPercentageSigns=regexp(MoreAbout,'%');
+                posPercentageSigns=regexp(MoreAbout,'[^"^%]%')+1;
+                
                 MoreAbout(posPercentageSigns)=[];
                 MoreAboutHTML=formatHTMLwithMATHJAX(MoreAbout);
+                MoreAboutHTML=formatHTMLwithList(MoreAboutHTML);
+
             else
                 MoreAboutHTML='';
                 inipointMoreAbout=Inf;
@@ -3053,4 +3058,23 @@ StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,']','\]');
 StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,'(','\(');
 StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,')','\)');
 StringwithSpecialCharacters=strrep(StringwithSpecialCharacters,'.','\.');
+end
+
+
+function descrlongHTML=formatHTMLwithList(descrlong)
+newl=regexp(descrlong,'\[\d*\]');
+if ~isempty(newl)
+    descrlongHTML=[descrlong(1:newl(1)-3) '<ol><li>'];
+    if length(newl)==1
+        descrlongHTML=[descrlongHTML descrlong(newl(1)+3:end)];
+    else
+        for j=1:(length(newl)-1)
+            descrlongHTML=[descrlongHTML descrlong(newl(j)+4:newl(j+1)-3) '</li><li>'];
+        end
+        descrlongHTML=[descrlongHTML descrlong(newl(j+1)+4:end)];
+    end
+    descrlongHTML=[descrlongHTML '</li></ol>'];
+else
+    descrlongHTML=descrlong;
+end
 end
