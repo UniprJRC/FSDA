@@ -85,6 +85,13 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               screen
 %               Example - 'msgiter',0
 %               Data Types - double
+%  nocheck:   Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
+%               matrix y and matrix X. Notice that y and X are left
+%               unchanged. In other words the additional column of ones for
+%               the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1
+%               Data Types - double
 %
 %  Output:
 %
@@ -334,7 +341,7 @@ toldef=1e-08;
 test=0;
 
 options=struct('intercept',1,'maxiter',maxiterdef,...
-    'initialbeta','','initialgamma','','tol',toldef,'msgiter',0,'test',test,'type','har');
+    'initialbeta','','initialgamma','','tol',toldef,'msgiter',0,'test',test,'type','har','nocheck',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

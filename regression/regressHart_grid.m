@@ -1,5 +1,61 @@
 function [out] = regressHart_grid(y,X,Z,varargin)
-% grid search to find minimum for ART model
+%grid search to find minimum for ART model
+%
+%<a href="matlab: docsearch('regressHart_grid')">Link to the help function</a>
+%
+% Required input arguments:
+%
+%    y:         Response variable. Vector. A vector with n elements that contains the response variable.
+%               It can be either a row or column vector.
+%    X :        Predictor variables in the regression equation. Matrix. Data matrix of explanatory variables (also called 'regressors')
+%               of dimension (n x p-1). Rows of X represent observations, and
+%               columns represent variables.
+%               By default, there is a constant term in the model, unless
+%               you explicitly remove it using option intercept, so do not
+%               include a column of 1s in X.
+%     Z :       Predictor variable in the skedastic equation. Vector. 
+%               n x 1 vector of length containing the unique predictor in the skedastic equation
+%
+%               $\omega_i = 1 + Z^\alpha \theta $. 
+%
+% Optional input arguments:
+%
+%  intercept :   Indicator for constant term. Scalar.
+%               If 1, a model with constant term will be fitted (default),
+%               if 0, no constant term will be included.
+%               Example - 'intercept',1
+%               Data Types - double
+%  plots :    Plot on the screen. Scalar.
+%               If equal to one a plot of profile loglikelihood
+%               appears  on the screen 
+%               else (default) no plot is shown.
+%                 Example - 'plots',1
+%                 Data Types - double
+%   alpha  :   coefficient in the skedastic equation. Vector. Vector of
+%               length r containing the values of coefficient alpha to
+%               consider in the grid search. The default value for alpha is
+%               alpha=0.1:0.1:4;
+%               Example - 'alpha',0.1:0.1:5
+%               Data Types - double
+%   theta  :   coefficient in the skedastic equation. Vector. Vector of
+%               length r containing the values of coefficient theta to
+%               consider in the grid search. The default value for theta is
+%               theta=[0.001 0.01 0.1 1 1.71 10:120 500 1000 5000 10000 50000];
+%               Example - 'theta',0.1:0.1:5
+%               Data Types - double
+%  plots :    Plot on the screen. Scalar.
+%               If equal to one a plot of profile loglikelihood
+%               appears  on the screen 
+%               else (default) no plot is shown.
+%                 Example - 'plots',1
+%                 Data Types - double
+%  nocheck:   Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
+%               matrix y and matrix X. Notice that y and X are left
+%               unchanged. In other words the additional column of ones for
+%               the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1
+%               Data Types - double
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -17,8 +73,9 @@ vvarargin = varargin;
 alpha=0.1:0.1:4;
 theta=[0.001 0.01 0.1 1 1.71 10:120 500 1000 5000 10000 50000];
 
-options=struct('intercept',1,'msgiter',0,'const',1,...
-    'alpha',alpha,'theta',theta,'plots',0);
+options=struct('intercept',1,...
+    'alpha',alpha,'theta',theta,'plots',0,'nocheck',0);
+
 
 if nargin > 3
     % Write in structure 'options' the options chosen by the user
@@ -26,25 +83,14 @@ if nargin > 3
         options.(varargin{i})=varargin{i+1};
     end
 end
-% intercept = (boolean scalar) specifying it is necessary to have the
-% intercept in the linear regression model
-intercept=options.intercept;
 
 % alpha and theta if supplied by the user provide the grid of values of alpha
 % and gamma for which the likelihood must be evaluated
 alpha=options.alpha;
 theta=options.theta;
 
-% Z = n-by-r matrix which contains the explanatory variables for
-% heteroskedasticity
-if size(Z,1)~=n
-    % Check if interecept was true
-    if intercept==1
-        Z=(X(:,Z+1));
-    else
-        Z=(X(:,Z));
-    end
-end
+% Z = n-by-1 vector which contains the explanatory variables for
+
 lalpha=length(alpha);
 ltheta=length(theta);
 lthetalalpha=ltheta*lalpha;

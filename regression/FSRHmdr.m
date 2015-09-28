@@ -561,13 +561,13 @@ else
             else
                 if  mm > 5  && gridsearch ~=1
                     % Use scoring
-                    HET=regressHhar(yb,Xb,Zb,'intercept',intercept);
+                    HET=regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
                 else
                     if size(Zb,2)==1
                         % Use grid search algorithm if Z has just one column
-                        HET=regressHhar_grid(yb,Xb,exp(Zb),'intercept',intercept);
+                        HET=regressHhar_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',1);
                     else
-                        HET=regressHhar(yb,Xb,Zb,'intercept',intercept);
+                        HET=regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
                     end
                 end
                 
