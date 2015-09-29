@@ -38,8 +38,18 @@ function brushFAN(eventdata)
 %}
 %
 %{
+    %% Run the example associated with radiobutton 1
+    brushFAN(1);
+%}
+%
+%{
+    %% Run the example associated with radiobutton 2
+    brushFAN(2);
+%}
+%
+%{
     %% Run the example associated with radiobutton 3
-    brushRES(3);
+    brushFAN(3);
 %}
 %
 

@@ -30,8 +30,33 @@ function brushRES(eventdata)
 %}
 %
 %{
+    %% Run the example associated with radiobutton 1
+    brushRES(1);
+%}
+%
+%{
+    %% Run the example associated with radiobutton 2
+    brushRES(2);
+%}
+%
+%{
     %% Run the example associated with radiobutton 3
     brushRES(3);
+%}
+%
+%{
+    %% Run the example associated with radiobutton 4
+    brushRES(4);
+%}
+%
+%{
+    %% Run the example associated with radiobutton 5
+    brushRES(5);
+%}
+%
+%{
+    %% Run the example associated with radiobutton 6
+    brushRES(6);
 %}
 %
 %
