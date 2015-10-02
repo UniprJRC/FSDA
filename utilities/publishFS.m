@@ -13,7 +13,7 @@ function out=publishFS(file,varargin)
 %                  HTML help has to be created
 %                  Example-'myfile.m'
 %
-%  
+%
 % Optional input arguments:
 %
 %   Display : Level of display. String.
@@ -52,7 +52,7 @@ function out=publishFS(file,varargin)
 %             Data Types - string
 % evalCode :  Option to run code. Logical. Option to evaluate code of the
 %             examples in the input .m files enclosed in tags "%{" "%}" whose
-%             first line starts with symbols "%%". 
+%             first line starts with symbols "%%".
 %             If evalcode is true the code associated with the examples
 %             which start with symbols '%%' will be run and the output will
 %             be automatically included into the HTML output file. The
@@ -87,7 +87,7 @@ function out=publishFS(file,varargin)
 %                 7th column = string contaning '1' if the argument is
 %                 required and '0' if it is optional
 % out.OptArgs   = Optional input arguments specified as name/values pairs. Cell.
-%                 Cell of size r-by-6 containing information about 
+%                 Cell of size r-by-6 containing information about
 %                 and optional input argument specified as name/values pairs.
 %                 1st column = name.
 %                 2nd column = short description.
@@ -116,16 +116,16 @@ function out=publishFS(file,varargin)
 %                 references.
 %   out.SeeAlso = References. cell. Cell of length s containing the s
 %                 references to linked files.
-% 
+%
 %
 % More About:
 %
 %         The .m file (which must be located on the MATLAB path or on the currect
 %         folder) must satisfy the following characteristics to be correctly
 %         processed.
-%         
+%
 %         [1] The row below the row which starts with function .... must contain the
-%         description of the purpose of the .m file. 
+%         description of the purpose of the .m file.
 %         Remark: generally the row which starts with function .... is the first
 %         row of an .m file.
 %         [2] String 'Required input arguments:' must be present. The lines below
@@ -136,23 +136,23 @@ function out=publishFS(file,varargin)
 %         The first sentence after symbol ':' is the title of the input argument
 %         and in the HTML file it will appear in bold face in the same line of the
 %         input argument (this is the short description of the optional input
-%         argument). 
+%         argument).
 %         The second sentence after symbol ':' describes the objects
 %         (for example, scalar, vector, 3D array) and in the HTML file will appear
-%         in the second row. 
-%         These first two rows will always be visible. 
+%         in the second row.
+%         These first two rows will always be visible.
 %         What starts with the third sentence after symbol ':' is the detailed
 %         description of that particular input argument and in the HTML file it
 %         will be visible just if the user clicks on any point in the first two
-%         lines or the user clicks on the option expand all. 
+%         lines or the user clicks on the option expand all.
 %         The last line may start with the words "Data Types:" and contains the
 %         specification of a particular input argument (e.g. Data Types: single |
 %         double). For example, suppose that the .m routine which has to be
 %         processed has two required input arguments which are respectively called
 %         y and X, then the accepted format is as follows.
-%         
+%
 %                       Required input arguments:
-%         
+%
 %                        y:         Response variable. Vector. Response variable,
 %                                   specified as a vector of length n, where n is
 %                                   the number of observations. Each entry in y is
@@ -169,7 +169,7 @@ function out=publishFS(file,varargin)
 %                                   intercept, so do not include a column of 1s in
 %                                   X.
 %                                   Data Types: single | double.
-%         
+%
 %         IMPORTANT NOTICE: if an input argument is a structure (publishFS
 %         automatically checks if the input argument contains the word "structure"
 %         then the fields of the structure will be automatically included into a
@@ -178,7 +178,7 @@ function out=publishFS(file,varargin)
 %         of spaces followed by symbol '='". For example suppose the an input
 %         option is called bayes and object bayes is a structure with field names
 %         beta0, R, tau0 and n0, the accepted format is as follows.
-%          
+%
 %            bayes      : prior information. Structure.
 %                               It contains the following fields.
 %                   out.beta0=  p-times-1 vector containing prior mean of \beta.
@@ -189,31 +189,31 @@ function out=publishFS(file,varargin)
 %                     out.tau0 = scalar. Prior estimate of tau.
 %                     out.n0   = scalar. Sometimes it helps to think of the prior
 %                              information as coming from n0 previous experiments.
-%          
-%         
-%         
+%
+%
+%
 %         [3] If the input .m file between the row which starts with
 %          <a href="matlab: docsearchFS(.....
 %          and the row with the string
 %          "Required input arguments:"
 %          contains a series of sentences, they will be automatically included in
 %          the HTML output just below the description.
-%         
+%
 %          An example is given below
 %                 function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 tclust computes trimmed clustering with restricitons on the eigevalues
-%         
+%
 %                 <a href="matlab: docsearchFS('tclust')">Link to the help function</a>
-%         
+%
 %                   tclust partitions the points in the n-by-v data matrix Y into k
 %                   clusters.  This partition minimizes the trimmed sum, over all
 %                   clusters, of the within-cluster sums of
 %                   point-to-cluster-centroid distances....
-%         
+%
 %                  Required input arguments:
-%         
+%
 %         [4] String 'Optional input arguments:' must be present even if there are
-%         no optional arguments. 
+%         no optional arguments.
 %         publishFS, in order to understand what are the names of the optional
 %         input arguments scans the rows below the string "Optional input
 %         arguments:" and identifies the lines which contain the optional arguments
@@ -222,10 +222,10 @@ function out=publishFS(file,varargin)
 %         The first sentence after symbol ':' is the title of the optional input
 %         argument and in the HTML file it will appear in the same row of the name
 %         of the optional input argument (this is the short description of the
-%         optional input argument). 
+%         optional input argument).
 %         The second sentence after symbol ':' describes the objects (for example,
 %         scalar, vector, 3D array) and in the HTML file will appear in the second
-%         row. These first two rows will always be visible. 
+%         row. These first two rows will always be visible.
 %         What starts with the third sentence after symbol ':' is the detailed
 %         description of that particular optional input argument and in the HTML
 %         file it will be visible just if the user clicks on any point in the first
@@ -236,9 +236,10 @@ function out=publishFS(file,varargin)
 %         example, suppose that the first two optional arguments are called
 %         respecively 'intercept' and 'h', then the
 %         accepted format is as follows:
-%         
+%
+%
 %                       Optional input arguments:
-%         
+%
 %                       intercept :  Indicator for constant term. Scalar.
 %                                   If 1, a model with constant term will be fitted
 %                                   (default),
@@ -249,8 +250,10 @@ function out=publishFS(file,varargin)
 %                                     trimmed squares estimator. Scalar.
 %                                     Example - 'h',round(n*0,75).
 %                                     Data Types - double.
-%         
-%         
+%
+%
+%
+%
 %          IMPORTANT NOTICE: given that options are identified as those which have
 %          symbol "%" followed by "a series of spaces" then "a word" then "a series
 %          of spaces" then symbol ":", each line inside the description does not
@@ -260,8 +263,8 @@ function out=publishFS(file,varargin)
 %          there is a remark, it must be put at the very end of the description of
 %          the optional input argument. At the very end means after the rows
 %           Example and Data Types.
-%         
-%         [5] String 'Output:' must be present. 
+%
+%         [5] String 'Output:' must be present.
 %         The lines after string 'Output:'
 %         must contain the list of the output arguments using the same rules
 %         described above for the optional arguments. In this case, however, the
@@ -272,7 +275,7 @@ function out=publishFS(file,varargin)
 %         output arguments are immediately known to the parser).
 %         In the case of output argument publishFS checks if the first 50
 %         characters contain the words "which contains" or "containing" e.g.:
-%         
+%
 %                      mdr:         n -init x 2
 %                                   matrix containing the
 %                                   monitoring of minimum deletion residual.
@@ -282,23 +285,23 @@ function out=publishFS(file,varargin)
 %                                   which contains the unit(s) included in the
 %                                   subset at each step of the search.
 %                                   ...........
-%         
+%
 %         In this case what is after the strings "which contains" or "containing"
 %         will appear in bold face as the title of the output argument. What is
 %         before the strings "which contains" or "containing" will appear in the
 %         second row.
-%         
+%
 %         For example, the above lines will be processed as follows:
-%         
+%
 %              mdr   -  Monitoring of minimum deletion residual
 %              n -init x 2 matrix
-%         
+%
 %              Un    - unit(s) included in the subset at each step of the search.
 %              (n-init) x 11 Matrix
-%         
+%
 %         If in the HTML file the user clicks on them the expdanded description
 %         (that is what starts after the second full stop will appear).
-%         
+%
 %         Alternatively, if the first 50 characters of each output argument do not
 %         contain the strings "which contains" or "containing" the following
 %         convention is used. The first sentence after symbol ":" is assumed
@@ -309,7 +312,7 @@ function out=publishFS(file,varargin)
 %         of the output argument. For example, suppose that the output of a
 %         procedure contains the objects mdr and Un, the accepted format
 %         is as follows.    Output:
-%                      
+%
 %                      mdr:         Minimum deletion residual. Matrix.  n -init x 2
 %                                   matrix which contains the
 %                                   monitoring of minimum deletion residual.
@@ -318,18 +321,18 @@ function out=publishFS(file,varargin)
 %                                   which contains the unit(s) included in the
 %                                   subset at each step of the search.
 %                                   REMARK: in every step ....
-%         
+%
 %         The above lines will be processed as follows:
-%         
+%
 %              mdr   -  Minimum deletion residual
 %              Matrix
-%         
+%
 %              Un    - Units included.
 %              Matrix
-%         
+%
 %         If in the HTML file the user clicks on them the expdanded description
 %         (that is what starts after the second full stop will appear).
-%         
+%
 %         IMPORTANT NOTICE: Similarly to what happend for each input argument, if
 %         an output argument is a structure, publishFS automatically checks if it
 %         contains the words "structure" and "field". In this case, the fields of
@@ -339,9 +342,9 @@ function out=publishFS(file,varargin)
 %         followed by symbol '='". For example suppose that the output of a
 %         procedure is an object called out which is a structure with two fields
 %         out.rew and out.beta, an accepted format is as follows
-%         
+%
 %                                  %  Output:
-%         
+%
 %                                  out :     A structure containing the following fields:
 %                                            out.rew  = Scalar if out.rew=1 all
 %                                                       subsequent output refers to
@@ -353,24 +356,24 @@ function out=publishFS(file,varargin)
 %                                                       when options.intercept=1.
 %                                                       out.beta=[intercept
 %                                                       slopes].
-%         
-%         
+%
+%
 %         PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE
 %         "=" SIGN AND NOT THE ":" SIGN.
-%         
+%
 %         REMARK: If there is the string REMARK after the description of the last
 %         field of the structure, all the words after REMARK are put outside and
 %         below the HTML table.
-%         
+%
 %         If the description of a particular output has the string "which contains"
 %         or "containing",  as follows
-%         
+%
 %                      mdr:          n -init x 2 matrix which contains the
 %                                   monitoring of minimum deletion residual at each
 %                                   step of the forward search.
 %                                   1st col = fwd search index (from init to n-1).
 %                                   2nd col = minimum deletion residual.
-%         
+%
 %         publishFS will try to put what comes before the string "which
 %         contains" or "containing" inside the subtitle (second row) of the each
 %         ouptut argument in the HTML file. For example, the example above in the
@@ -380,30 +383,30 @@ function out=publishFS(file,varargin)
 %         If, in the HTML file, the user clicks on the first line,
 %                       "mdr -Monitoring..."
 %         the expanded description will automatically appear.
-%         
-%         [6] A line which starts with string "See also:" must be present. 
+%
+%         [6] A line which starts with string "See also:" must be present.
 %         Linked m files must be separated by symbol ",". For example, suppose that
 %         files FSRBmdr.m and FSR.m have connections with the current file, then an
 %         accepted format is         See also: FSRBmdr.m, FSR.m.
-%         
+%
 %         [7] A line which starts with string "References:" must be present.
 %         The year of each reference must be enclosed in round parenthesis.
 %         PublishFS decides that a new reference starts if a new line contains
 %         symbol "(" + "a sequence of 4 or 5 characthers identifying the year
 %         because the reference can be for example 2003 or 2003a" + symbol ")"
 %         For example, an acceptable format for the two references below is:
-%         
-%         
+%
+%
 %                         Chaloner and Brant (1988). A Bayesian Approach to Outlier
-%                         Detection and Residual Analysis, Biometrika, Vol 75 
+%                         Detection and Residual Analysis, Biometrika, Vol 75
 %                         pp. 651-659.
 %                         Riani M., Corbellini A., Atkinson A.C. (2015), Very
 %                         Robust Bayesian Regression for Fraud Detection,
 %                         submitted.
-%         
+%
 %         [8] All the examples associated with the file which has to be processed
 %         must be enclosed inside Percent-braces (comments blocks, i.e.
-%         symbols "%{" and "%}" ). 
+%         symbols "%{" and "%}" ).
 %         The first sentence identifies the title of the comment which
 %         will appear in the HTML file.
 %         IMPORTANT NOTICE: if the comment has to be executed, the first line
@@ -428,12 +431,12 @@ function out=publishFS(file,varargin)
 %         executed and its output must be included into the HTML file, then the accepted
 %         format is as follows ("please notice the two symbols "%%" in the
 %         first row").
-%         
-%         
+%
+%
 %                         "%{".
 %                             "%% FSRmdr with all default options".
 %                             "% Compute minimum deletion residual".
-%                             "% Monitor minimum deletion residual in each step of the forward search".  
+%                             "% Monitor minimum deletion residual in each step of the forward search".
 %                             "% Common part to all examples: load fishery dataset".
 %                              load('fishery');
 %                              y=fishery.data(:,2);
@@ -444,7 +447,7 @@ function out=publishFS(file,varargin)
 %                              plot(mdr(:,1),mdr(:,2))
 %                              title('Monitoring of minimum deletion residual')
 %                         "%}".
-%         
+%
 %                         "%{".
 %                             "% FSRmdr with optional arguments".
 %                             "% Choose step to start monitoring".
@@ -452,43 +455,43 @@ function out=publishFS(file,varargin)
 %                              start monitoring it from step 60".
 %                             [mdr] = FSRmdr(y,X,out.bs,'init',60).
 %                         "%}".
-%         
+%
 %          In order to understand where the example finish and the MATLAB code
 %          starts publishFS checks if one of the following strings
 %         is present
 %         "Input parameters checking",
 %         "Beginning of code",
 %         "nargin".
-%         If this is the case the search of "comments blocks signs"  
+%         If this is the case the search of "comments blocks signs"
 %         (i.e. symbols  "%{" and "%}") is limited to the first character prior
 %         to the detection of one of the previous strings. This
 %         modification has been added in order to make sure that there are
 %         no additional block signs within matlab code.
-%         
+%
 %         [9] If a procedure contains varargout, then a section string:
 %                       "Optional Output:"
 %         must be present. For example suppose there is a function called mcd which
 %         has the following sintax:
-%         
+%
 %                         function [RAW,REW,varargout] = mcd(Y,varargin).
-%         
+%
 %         Then at the end of the output argument the format must be as follows:
-%         
+%
 %                               Optional Output:
-%         
+%
 %                                         C     : matrix of the indices of the
 %                                                 subsamples extracted for
 %                                                 computing the estimate.
-%         
+%
 %         [10] If the .m file contains string  "More About:" a particular section
-%         called "More about" in the HTML file will be created 
+%         called "More about" in the HTML file will be created
 %         (just before See Also).
 %         [11] If the .m file contains string "Acknowledgements:" then a particular
 %         section named "Acknowledgements" will be created just above the
 %         references.
-%         
+%
 %         GENERAL REMARKS:
-%         
+%
 %         -----------------------------------------------------------------------:.
 %         REMARK1: if symbol "%" is wanted and it is not a simple comment delimiter, it
 %         must be replaced by words "per cent". For example, string "50% envelope"
@@ -512,11 +515,11 @@ function out=publishFS(file,varargin)
 %         -----------------------------------------------------------------------:.
 %         REMARK 6: the output file to be correctly viewed must be located in a
 %         folder which contains a subfolder named includesFS containing the files
-%         present inside 
-%         (home FSDA) filesep helpfiles filesep FSDA filesep includesFS. 
+%         present inside
+%         (home FSDA) filesep helpfiles filesep FSDA filesep includesFS.
 %         Therefore if the
-%         the directory which contains the output file is not located inside 
-%         (home FSDA) filesep helpfiles filesep FSDA subfolder 
+%         the directory which contains the output file is not located inside
+%         (home FSDA) filesep helpfiles filesep FSDA subfolder
 %         includesFS must be copied into the current folder.
 %         -----------------------------------------------------------------------:.
 %         REMARK 7: strings are HTML formatted as follows. Every time there is
@@ -540,7 +543,7 @@ function out=publishFS(file,varargin)
 %         "The full paper can be donwloaded from
 %         <a href="http://www.mysite.org"> http://www.mysite.org </a>".
 %         -----------------------------------------------------------------------:.
-%         
+%
 % See also: publish
 %
 %
@@ -803,10 +806,10 @@ for i=1:length(ini)
             
             % The first word of example code must be embedded around tags <code> </code>
             examplecode=descrlong(CheckExample+9:Datatypes-1);
-            % Store string containing the examples before adding 
-            % HTML strings '<code>'  '</code> 
-                        listOptArgs{ij,7}=examplecode;
-
+            % Store string containing the examples before adding
+            % HTML strings '<code>'  '</code>
+            listOptArgs{ij,7}=examplecode;
+            
             posspace=regexp(examplecode,'      ');
             examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
             listOptArgs{ij,5}=strtrim(examplecode);
@@ -907,13 +910,16 @@ titl=sprintf([beforetitl    name  aftertitle]);
 %% Add purpose of the file (extract what is in the second row of .m file)
 beforemetacontent=['<meta content="refpage" name="chunktype">\r' ...
     '<meta content="function:' name '" itemprop="refentity" name="refentity">\r'...
+    '<link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css">'...
     '<meta content="text/javascript" http-equiv="Content-Script-Type">\r'...
     '<meta content="fcn" itemprop="pagetype" name="toctype">\r'...
     '<meta content="ref/function" itemprop="infotype" name="infotype" />\r'...
     '<meta content="'];
+
 [startIndex] = regexp(fstring,'%');
 % startIndex(2)-3 because there is also the carriage return
 purpose=fstring(startIndex(1)+1:startIndex(2)-3);
+
 aftermetacontent=['." itemprop="description" name="description" />\r'...
     '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\r'...
     '<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />\r'...
@@ -935,22 +941,36 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
     '<script src="includesFS/matlab-highlighter.min.js"></script>\r'...
     '<link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css">\r'...
     '<script src="includesFS/jquery-latest.js" type="text/javascript"></script>\r'...
+    '<link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css">\r'...
+    '<link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet">\r'...
+    '<link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet">\r'...
+    '<link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet">\r'...
+    '<link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet">\r'...
+    '<link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet">\r'...
+    '<link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css">\r'...
     '<script src="includesFS/l10n.js" type="text/javascript"></script>\r'...
-    '<script src="includesFS/docscripts.js" type="text/javascript"></script>\r'...
+    '<script src="includesFS/SHAREDdocscripts.js"></script>\r'...
+    '<script src="includesFS/PRODUCTdocscripts.js"></script>\r'...
     '<script src="includesFS/mw.toc.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/mw.imagescaling.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/mw.imageanimation.js" type="text/javascript"></script>\r'...
+    '<script src="includesFS/jquery.highlight.js"></script>\r'...
+    '<script src="includesFS/bootstrap.min.js" type="text/javascript"></script>\r'...
+    '<script src="includesFS/global.js"></script>\r'...
     '<script src="includesFS/bottom.js" type="text/javascript"></script>\r'...
     '<link href="includesFS/reset.css" rel="stylesheet" type="text/css">\r'...
     '<link href="includesFS/960.css" rel="stylesheet" type="text/css">\r'...
-    '<link href="includesFS/site5.css" rel="stylesheet" type="text/css">\r'...
+    '<link href="includesFS/doc_center.css" rel="stylesheet" type="text/css">\r'...
+    '<link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css">\r'...
     '<link href="includesFS/doc_center.css" rel="stylesheet" type="text/css">\r'...
     '<link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css">\r'...
     '<link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css">\r'...
     '</head>\r'...
-    '<body  onload="highlightMATLABCode();">\r'];
+    '<body  onload="highlightMATLABCode();" id="responsive_offcanvas">\r'];
 
 metacontent=sprintf([beforemetacontent purpose aftermetacontent]);
+
+
 % Insert navigation bar on top of the page
 % necessary to insert sprintf later because there is symbol % in 100%
 insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="100%">'...
@@ -1197,7 +1217,7 @@ sintaxclose=sprintf(['</ul>\r'...
 
 %% CREATE DESCRIPTION SECTION OF HTML FILE
 inidescription=sprintf(['	<div class="ref_sect" itemprop="content">\r'...
-    '							<h2 id="description">Description</h2>\r'...
+    '							<h2 id="Description">Description</h2>\r'...
     '							<div class="descriptions">\r'...
     '								<div class="description_module">\r']);
 
@@ -1437,7 +1457,7 @@ imgtemplate='<img alt="" src="images_help/M.gif" style="width: 12px; height: 12p
 % The first sentence which ends with a full stop is the title of the example
 iniexamples=sprintf(['<div class="ref_sect" itemprop="content">\r'...
     '<div class="examples">\r'...
-    '<h2 id="examples">Examples</h2>\r'... % start of expandable examples
+    '<h2 id="Examples">Examples</h2>\r'... % start of expandable examples
     '<div id="expandableExamples" class="expandableContent">\r'...
     '<p class="switch"><a class="expandAllLink"' ...
     'href="javascript:void(0);">expand all</a>' ...
@@ -1453,7 +1473,7 @@ for j=1:length(sintax)
     end
     
     exampleshtml=[exampleshtml  sprintf(['<div id="example_' num2str(j) '" class="example_module expandableContent">\r'...
-        '<div id="ex' num2str(j) '">\r'...
+        '<div id="Example_' num2str(j) '">\r'...
         '</div>\r'...
         '<h3 class="expand"><span>\r'...
         '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
@@ -1477,7 +1497,7 @@ if length(startIndexEx)>length(sintax)
     
     
     for j=1:size(listExtraEx,1)
-        stri=fstring(startIndexEx(j+lsintax)+2:endIndexEx(j+lsintax)-1);
+        stri=fstring(startIndexEx(j+lsintax)+3:endIndexEx(j+lsintax)-1);
         % What is before the first full stop is the title.
         % What is after the second full stop is the description
         % The first line which does not contain symbol % is the beginning of the
@@ -1544,7 +1564,7 @@ closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
 iniRelatedExamples='';
 RelatedExamples='';
 if length(startIndexEx)>length(sintax)
-    iniRelatedExamples=sprintf('<h3 class="bottom_ruled">Related Examples</h3>\r');
+    iniRelatedExamples=sprintf('<h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3>\r');
     
     for j=1:size(listExtraEx,1)
         
@@ -1554,8 +1574,8 @@ if length(startIndexEx)>length(sintax)
             addimg='';
         end
         
-        RelatedExamples=[RelatedExamples  sprintf(['<div id="example_' num2str(j) '" class="example_module expandableContent">\r'...
-            '<div id="ex' num2str(j) '">\r'...
+        RelatedExamples=[RelatedExamples  sprintf(['<div id="ExtraExample_' num2str(j) '" class="example_module expandableContent">\r'...
+            '<div id="ExtraExample_' num2str(j) '">\r'...
             '</div>\r'...
             '<h3 class="expand"><span>\r'...
             '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
@@ -1580,7 +1600,7 @@ examples=[iniexamples exampleshtml closeexamples iniRelatedExamples...
 
 %% CREATE REQUIRED INPUT ARGUMENTS SECTION OF HTML file
 iniReqInputArgs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
-    '<h2 id="inputs">Input Arguments</h2>\r'...
+    '<h2 id="Inputs">Input Arguments</h2>\r'...
     '<div class="expandableContent">\r'...
     '<div class="arguments">\r'...
     '<div class="input_argument_container">\r'...
@@ -1781,8 +1801,8 @@ for i=1:nTOTargin
                 descrlonginp=descrlong(1:CheckExample-1);
                 descrlongHTML=formatHTML(descrlonginp);
                 listInpArgs{i,4}=descrlongHTML;
-                  listInpArgs{i,7}=descrlonginp;
-                  
+                listInpArgs{i,7}=descrlonginp;
+                
                 % The first word of example code must be embedded around tags <code> </code>
                 examplecode=descrlong(CheckExample+10:Datatypes-1);
                 posspace=regexp(examplecode,'      ');
@@ -1871,7 +1891,7 @@ else
     end
     OptArgsNameValueHeading=sprintf(['<div id="namevaluepairarguments" class="clearfix">\r'...
         '</div>\r' ...
-        '<h3 id="namevaluepairs" class="bottom_ruled">\r'...
+        '<h3 id="NameValuePairs" class="bottom_ruled">\r'...
         'Name-Value Pair Arguments</h3>\r'...
         '<div class="namevaluecontainer">\r'...
         '<p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments.\r'...
@@ -1923,9 +1943,9 @@ else
         datatype=listOptArgs{i,6};
         
         OptArgsNameValue=[OptArgsNameValue sprintf(['<div class="expandableContent">\r'...
-            '<div id="inputarg_Display" class="clearfix">\r'...
+            '<div id="inputarg_' listOptArgs{i,1} '" class="clearfix">\r'...
             '</div>\r'...
-            '<h3 id="input_argument_namevalue_display" class="expand">\r'...
+            '<h3 id="input_argument_namevalue_' listOptArgs{i,1} '" class="expand">\r'...
             '<span>\r'...
             '<a href="javascript:void(0);" style="display: block;" title="Expand/Collapse">\r'...
             '<span class="argument_name"><code>' nameoptarg  '</code> \r'...
@@ -1951,7 +1971,7 @@ InputArgs=[iniReqInputArgs reqargs  OptArgsNameValueHeading OptArgsNameValue clo
 %% CREATE OUTPUT ARGUMENTS SECTION OF HTML FILE
 
 inioutargs=sprintf(['<div class="ref_sect" itemprop="content">\r'...
-    '<h2>Output Arguments</h2>\r'...
+    '<h2 id="OutputArgs" >Output Arguments</h2>\r'...
     '<div class="expandableContent">\r'...
     '<div class="arguments">\r'...
     '<div class="output_argument_container">\r'...
@@ -2020,9 +2040,9 @@ if nargout>0
         else
             inipointSeeAlso=regexp(fstringsel,'%\s*See also','once');
             % fstringsel1=fstringsel(iniref+1:end);
-
+            
             % inipointSeeAlso=regexp(fstringsel1,'See also','once');
-
+            
             if isempty(inipointSeeAlso)
                 disp('Please check .m input file')
                 error('FSDA:missOuts','Input .m file does not contain ''See also:'' string')
@@ -2036,7 +2056,7 @@ if nargout>0
                 MoreAbout(posPercentageSigns)=[];
                 MoreAboutHTML=formatHTMLwithMATHJAX(MoreAbout);
                 MoreAboutHTML=formatHTMLwithList(MoreAboutHTML);
-
+                
             else
                 MoreAboutHTML='';
                 inipointMoreAbout=Inf;
@@ -2153,10 +2173,10 @@ if nargout>0
                 descroutputtitl='FULL STOP MISSING IN THE OUTPUT DESCRIPTION';
             end
             
-             listOutArgs{i,2}=preamble; 
-             listOutArgs{i,3}=descroutputtitl; 
-             listOutArgs{i,4}=descrioutput;
-             
+            listOutArgs{i,2}=preamble;
+            listOutArgs{i,3}=descroutputtitl;
+            listOutArgs{i,4}=descrioutput;
+            
             % transform x with by and write in italic the dimensions of the
             % matrices
             if ~strcmp(preamble,'TOWRITE')
@@ -2191,7 +2211,7 @@ if nargout>0
                 '<p>']) formatHTMLwithMATHJAX(descrioutput) sprintf(['</p>\r'...
                 '</div>\r'...
                 '</div>'])];
-           
+            
         end
         
     end
@@ -2241,7 +2261,7 @@ outargs=[inioutargs outargshtml closeoutargs];
 
 if ~isempty(MoreAboutHTML)
     MoreaboutHTMLwithdiv=[sprintf(['<div class="moreabout ref_sect">\r'...
-        '<h2 id="moreabout">More About</h2>\r'...
+        '<h2 id="MoreAbout">More About</h2>\r'...
         '<div class="expandableContent">\r'...
         '<p class="switch">\r'...
         '<a class="expandAllLink" href="javascript:void(0);">\r'...
@@ -2352,7 +2372,7 @@ else
     Referenceshtml='';
     iniReferences=sprintf(['<div class="ref_sect" itemprop="content">\r'...
         '<div class="bibliography">\r'...
-        '<h2 id="references">References</h2> \r']);
+        '<h2 id="References">References</h2> \r']);
     
     for i=1:length(refsargs)
         Referenceshtml=sprintf([Referenceshtml  '<div><p>' formatHTMLwithMATHJAX(refsargs{i}) '</p></div>\r']);
@@ -2368,7 +2388,7 @@ end
 if ~isempty(Acknowledgements)
     iniAcknowledgements=sprintf(['<div class="ref_sect" itemprop="content">\r'...
         '<div class="bibliography">\r'...
-        '<h2 id="references">Acknowledgements</h2> \r']);
+        '<h2 id="Acknowledgements">Acknowledgements</h2> \r']);
     
     Acknowledgementshtml=sprintf(['<div><p>' formatHTMLwithMATHJAX(Acknowledgements) '</p></div>\r']);
     
@@ -2381,7 +2401,7 @@ end
 %% SEE ALSO
 
 iniSeealso=sprintf(['<div class="ref_sect">\r'...
-    '<h2>See Also</h2>\r'...
+    '<h2 id="SeeAlso">See Also</h2>\r'...
     '<p>\r']);
 
 % See also:'\:\s*\r
@@ -2493,28 +2513,12 @@ closbody=sprintf(['</body>\r'...
 
 fclose(fileID);
 
-outstring=([titl metacontent sitecont sintaxhtml sintaxclose description  ....
-    examples InputArgs outargs MoreaboutHTMLwithdiv References Ack Seealso clos insnav insbarra closbody]);
+
+% site5 is not present anymore in 2015b
+%     '<link href="includesFS/site5.css" rel="stylesheet" type="text/css">\r'...
 
 
-file1ID=fopen([outputDir fsep name 'tmp.html'],'w');
-
-if file1ID==-1
-    
-    if ismac || isunix
-        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
-    elseif ispc
-        outputDir=strrep(outputDir,'\','\\');
-        errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
-    else
-        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
-    end
-    
-    error('FSDA:publishFS:WrngOutFolder',errmsg);
-    
-end
-
-% Create output structure
+%% Create output structure
 out=struct;
 % save title
 out.titl=name;
@@ -2545,8 +2549,205 @@ out.References=refsargs;
 % listSeeAlso
 out.SeeAlso=listSeeAlso;
 
+%% CREATE ON THIS PAGE SECTION WHICH WILL APPEAR IN THE LEFT PANEL
+OnThisPageini=['<!--START.CLASS sticky_header_container-->\r'...
+    '<div class="sticky_header_container includes_subnav">\r'...
+    '<div class="horizontal_nav_container">\r'...
+    '<div id="nav_toggle" class="offcanvas_actuator" data-target="#sidebar" data-toggle="offcanvas">\r'...
+    '<button class="btn" type="button"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_32"></span>\r'...
+    '</button><span class="offcanvas_actuator_label"></span>\r'...
+    '<span class="offcanvas_actuator_close"></span></div>\r'...
+    '<div class="offcanvas_horizontal_nav">\r'...
+    '<div class="container-fluid">\r'...
+    '<div class="row">\r'...
+    '</div>\r'...
+    '</div>\r'...
+    '</div>\r'...
+    '</div>\r'...
+    '</div>\r'...
+    '<div class="row-offcanvas row-offcanvas-left">\r'...
+    '<div id="sidebar" class="sidebar-offcanvas" role="navigation">\r'...
+    '<nav class="offcanvas_nav" role="navigation">\r'...
+    '<ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict">\r'...
+    '<li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb">\r'...
+    '<a href="../documentation-center.html" itemprop="url">\r'...
+    '<span itemprop="title">All Products</span></a></li>\r'...
+    '</ul>\r'...
+    '<ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict">\r'...
+    '<li class="product"><a href="index.html">Flexible Statistics and \r'...
+    'Data Analysis (FSDA)</a>\r'...
+    '<div class="dropdown">\r'...
+    '<span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown">\r'...
+    '</span>\r'...
+    '<ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu">\r'...
+    '<li role="presentation">\r'...
+    '<a href="getting-started.html" role="menuitem" tabindex="-1">\r'...
+    'Getting Started</a></li>\r'...
+    '<li role="presentation">\r'...
+    '<a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li>\r'...
+    '<li role="presentation">\r'...
+    '<a href="functionlist.html" role="menuitem" tabindex="-1">\r'...
+    'Functions and Other Reference</a></li>\r'...
+    '<li role="presentation">\r'...
+    '<a href="release-notes.html" role="menuitem" tabindex="-1">\r'...
+    'Release Notes</a></li>\r'...
+    '</ul>\r'...
+    '</div>\r'...
+    '</li>\r'...
+    '</ul>\r'...
+    '<!-- -->\r'...
+    '<ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">\r'...
+    '<li class="nav_scrollspy_function">\r'...
+    '<a href="#responsive_offcanvas">' name '</a></li>\r'...
+    '<li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li>\r'...
+    '<li><a class="intrnllnk" href="#syntax">Syntax</a></li>\r'...
+    '<li><a class="intrnllnk" href="#Description">Description</a></li>'];
+
+
+if ~isempty(listEx)
+    Ini=['<li><a class="intrnllnk" href="#Examples">Examples</a>\r'...
+        '<ul>\r'];
+    Core='';
+    for i=1:size(listEx,1)
+        Core=[Core '<li><a class="intrnllnk" href="#Example_' num2str(i) '">' listEx{i,1} '</a></li>\r'];
+    end
+    Fin=['</ul>\r'...
+        '</li>'];
+    Core=strrep(Core,'\h','\\h');
+    Core=strrep(Core,'\(','\\(');
+    Core=strrep(Core,'\)','\\)');
+    Core=strrep(Core,'\b','\\b');
+    
+    OnThisPageExamples=([Ini Core Fin]);
+else
+    OnThisPageExamples='';
+end
+
+if ~isempty(listExtraEx)
+    Ini=['<li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a>\r'...
+        '<ul>\r'];
+    Core='';
+    for i=1:size(listExtraEx,1)
+        Core=[Core '<li><a class="intrnllnk" href="#ExtraExample_' num2str(i) '">' listExtraEx{i,1} '</a></li>\r'];
+    end
+    Fin=['</ul>\r'...
+        '</li>'];
+    Core=strrep(Core,'\h','\\h');
+    Core=strrep(Core,'\(','\\(');
+    Core=strrep(Core,'\)','\\)');
+    Core=strrep(Core,'\b','\\b');
+    
+    OnThisPageExtraExamples=([Ini Core Fin]);
+else
+    OnThisPageExtraExamples='';
+end
+
+if ~isempty(listInpArgs)
+Ini=['<li><a class="intrnllnk" href="#Inputs">Input Arguments</a>\r'...
+    '<ul>\r'];
+Core='';
+for i=1:size(listInpArgs,1)
+    Core=[Core '<li><a class="intrnllnk" href="#input_argument_' listInpArgs{i,1} '">' listInpArgs{i,1} '</a></li>\r'];
+end
+Fin=['</ul>\r'...
+    '</li>'];
+
+OnThisPageInputArguments=([Ini Core Fin]);
+else
+    OnThisPageInputArguments='';
+end
+
+if ~isempty(listOptArgs)
+Ini=['<li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a>\r'...
+    '<ul>\r'];
+Core='';
+for i=1:size(listOptArgs,1)
+    Core=[Core '<li><a class="intrnllnk" href="#input_argument_namevalue_' listOptArgs{i,1} '">' listOptArgs{i,1} '</a></li>\r'];
+end
+Fin=['</ul>\r'...
+    '</li>'];
+
+OnThisPageNameValuePairs=([Ini Core Fin]);
+else
+    OnThisPageNameValuePairs='';
+end
+
+
+if ~isempty(listOutArgs)
+Ini=['<li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a>\r'...
+    '<ul>\r'];
+Core='';
+for i=1:size(listOutArgs,1)
+    Core=[Core '<li><a class="intrnllnk" href="#output_argument_' listOutArgs{i,1} '">' listOutArgs{i,1} '</a></li>\r'];
+end
+Fin=['</ul>\r'...
+    '</li>'];
+OnThisPageOutputArgs=([Ini Core Fin]);
+else
+    OnThisPageOutputArgs='';
+end
+
+if ~isempty(MoreAbout)
+OnThisPageMoreAbout=['<li><a class="intrnllnk" href="#MoreAbout">More About</a>\r'...
+    '</li>'];
+else
+    OnThisPageMoreAbout='';
+end
+
+
+if ~isempty(References)
+OnThisPageReferences=['<li><a class="intrnllnk" href="#References">References</a>\r'...
+    '</li>'];
+else
+    OnThisPageReferences='';
+end
+
+if ~isempty(Acknowledgements)
+OnThisPageAcknowledgements=['<li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a>\r'...
+    '</li>'];
+else
+    OnThisPageAcknowledgements='';
+end
+
+
+OnThisPageSeeAlso=['<li><a class="intrnllnk" href="#SeeAlso">See Also</a>\r'...
+    '</li>'];
+
+
+OnThisPagefin=['</ul>\r'...
+    '</nav>\r'...
+    '<script src="includesFS/offcanvas.js"></script>\r'...
+    '</div>'];
+% <!--END.CLASS sidebar-offcanvas-->
+new2015b=[OnThisPageini OnThisPageExamples OnThisPageExtraExamples OnThisPageInputArguments ...
+    OnThisPageNameValuePairs OnThisPageOutputArgs OnThisPageMoreAbout  ...
+    OnThisPageAcknowledgements OnThisPageReferences OnThisPageSeeAlso OnThisPagefin];
+metacontent2015b=[metacontent sprintf(new2015b)];
+
+%% Write all pieces in a HTML file
+outstring=([titl metacontent2015b sitecont sintaxhtml sintaxclose description  ....
+    examples InputArgs outargs MoreaboutHTMLwithdiv References Ack Seealso clos insnav insbarra closbody]);
+
+
+file1ID=fopen([outputDir fsep name 'tmp.html'],'w');
+
+if file1ID==-1
+    
+    if ismac || isunix
+        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+    elseif ispc
+        outputDir=strrep(outputDir,'\','\\');
+        errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
+    else
+        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+    end
+    
+    error('FSDA:publishFS:WrngOutFolder',errmsg);
+    
+end
+
+%% EXECUTE THE EXAMPLES WHICH START WITH SYMBOLS %%
 if evalCode==true
-    %% EXECUTE THE EXAMPLES WHICH START WITH SYMBOLS %%
     % Create a temporary file with all the examples which must be executed
     % ExToExec= string which contains the examples which must be executed
     ExToExec='';
@@ -2841,10 +3042,10 @@ if ~isempty(IniRefhttp)
                 descrHTTP(FinRefhttp(i):end)];
         else
             try
-            descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
-                '<a href="' namehttp '">' namehttp '</a>'];
+                descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
+                    '<a href="' namehttp '">' namehttp '</a>'];
             catch
-               ddd=1;
+                ddd=1;
             end
         end
     end
