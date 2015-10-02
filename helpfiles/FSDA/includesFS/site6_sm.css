@@ -1,0 +1,185 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+*/
+
+
+
+
+/* ------------------------------------
+$ Bootstrap Overrides
+------------------------------------ */
+
+/* ---- Enable Mobile Menus on Tablet -- [ Media Query Required by IE8/respond.js ] ---- */
+@media (min-width:768px) and (max-width:991px) {
+
+.navbar > .container .navbar-brand,
+.navbar > .container-fluid .navbar-brand { margin-left: 0; }
+
+.navbar-nav .open .dropdown-menu { width: auto; margin-top: 0; border: 0; background-color: transparent; box-shadow: none; float: none; position: static; }
+
+#responsive_b #topnav { border-right: 1px solid #ccc; border-left: 1px solid #ccc; }
+
+  /* Per Coderwall: https://coderwall.com/p/wpjw4w/change-the-bootstrap-navbar-breakpoint */
+  .navbar-header { float: none; }
+
+  .navbar-left,
+  .navbar-right { float: none !important; }
+
+  .navbar-toggle { display: block; }
+
+  .navbar-fixed-top { top: 0; }
+
+  .navbar-collapse.collapse { display: none !important; }
+
+  .navbar-nav { float: none !important; }
+
+  .navbar-nav > li { float: none; }
+
+  .collapse.in { display: block !important; }
+
+  /* MW Overrides for Coderwall */
+  #subnav .navbar-collapse.collapse { display: block !important; }
+  #subnav .navbar-nav { float: left !important; }
+  #subnav .navbar-nav > li { float: left; }
+
+
+.navbar-nav { margin: 0 -15px; }
+
+#mobile_search form { margin-bottom: 0; }
+
+}
+
+
+/* ------------------------------------
+Page Globals
+------------------------------------ */
+h1 { margin-bottom: 29px; font-size: 27px; line-height: 30px; }
+h2 { margin-bottom: 15px; font-size: 23px; line-height: 25px; }
+h3 { margin-bottom: 13px; font-size: 18px; line-height: 22px; }
+h4 { margin-bottom: 12px; font-size: 17px; line-height: 21px; }
+h5 { margin-bottom: 10px; font-size: 15px; line-height: 21px; }
+h6 { margin-bottom: 10px; font-size: 15px; line-height: 21px; }
+
+  /* Hierarchy Classes */
+  .h1 { margin-bottom: 29px; font-size: 27px; line-height: 30px; }
+  .h2 { margin-bottom: 15px; font-size: 23px; line-height: 25px; }
+  .h3 { margin-bottom: 13px; font-size: 18px; line-height: 22px; }
+  .h4 { margin-bottom: 12px; font-size: 17px; line-height: 21px; }
+  .h5 { margin-bottom: 10px; font-size: 15px; line-height: 21px; }
+  .h6 { margin-bottom: 10px; font-size: 15px; line-height: 21px; }
+
+
+
+/* ------------------------------------
+Structure
+------------------------------------ */
+
+/* ---- Footer ---- */
+
+  /* Footer: Standard */
+
+    /* Footer Nav  -- [ Additional Styles: XS ] */
+    .kr_footernav { margin-bottom: 0; }
+    .kr_footernav li { padding: 0; margin-bottom: 5px; float: none; }
+    .kr_footernav li + li  { border: none; }
+
+    /* Social Media */
+    .footer .social_media_icons li + li { margin-left: 16px; }
+    .footer .social_media_icons object { width: 32px; height: 32px; }
+    .footer .social_media_icons .ico_sm { width: 32px; height: 32px; }
+
+      /* Social Media: Icons */
+      .ico_sm.ico_google { background-position: -40px 0; }
+      .ico_sm.ico_facebook { background-position: -40px -32px; }
+      .ico_sm.ico_linkedin { background-position: -40px -64px; }	
+      .ico_sm.ico_rss { background-position: -40px -96px; }
+      .ico_sm.ico_twitter { background-position: -40px -128px; }
+      .ico_sm.ico_weibo { background-position: -40px -160px; }
+
+
+
+/* ------------------------------------
+$ Override CSS
+------------------------------------ */
+
+/* ---- Additive / Reductive CSS ---- */
+
+  /* Add: Margin-Bottom */
+  .add_margin_0 { margin-bottom: 0 !important; }
+  .add_margin_5 { margin-bottom: 5px !important; }
+  .add_margin_10 { margin-bottom: 10px !important; }
+  .add_margin_15 { margin-bottom: 15px !important; }
+  .add_margin_20 { margin-bottom: 20px !important; }
+  .add_margin_25 { margin-bottom: 20px !important; }
+  .add_margin_30 { margin-bottom: 25px !important; }
+  .add_margin_35 { margin-bottom: 29px !important; }
+  .add_margin_40 { margin-bottom: 33px !important; }
+  .add_margin_45 { margin-bottom: 38px !important; }
+  .add_margin_50 { margin-bottom: 42px !important; }
+  .add_margin_60 { margin-bottom: 50px !important; }
+  .add_margin_70 { margin-bottom: 58px !important; }
+  .add_margin_80 { margin-bottom: 67px !important; }
+  .add_margin_90 { margin-bottom: 75px !important; }
+  .add_margin_100 { margin-bottom: 83px !important; }
+
+  /* Add: Margin-Bottom - XS only */
+  .add_margin_0_sm { margin-bottom: 0 !important; }
+  .add_margin_5_sm { margin-bottom: 5px !important; }
+  .add_margin_10_sm { margin-bottom: 10px !important; }
+  .add_margin_15_sm { margin-bottom: 15px !important; }
+  .add_margin_20_sm { margin-bottom: 20px !important; }
+  .add_margin_25_sm { margin-bottom: 25px !important; }
+  .add_margin_30_sm { margin-bottom: 30px !important; }
+  .add_margin_35_sm { margin-bottom: 35px !important; }
+  .add_margin_40_sm { margin-bottom: 40px !important; }
+  .add_margin_45_sm { margin-bottom: 45px !important; }
+  .add_margin_50_sm { margin-bottom: 50px !important; }
+  .add_margin_60_sm { margin-bottom: 60px !important; }
+  .add_margin_70_sm { margin-bottom: 70px !important; }
+  .add_margin_80_sm { margin-bottom: 80px !important; }
+  .add_margin_90_sm { margin-bottom: 90px !important; }
+  .add_margin_100_sm { margin-bottom: 100px !important; }
+
+
+
+
+
+
+
+/* ---- To be code reviewed ---- */
+/* From Laurel*/
+.content_container h1 { color:#2c2c2c; font-size: 32px; line-height:38px; }
+h2 {color:#2c2c2c; font-size:25px; line-height:32px; }
+h3 {font-size:22px; color:#343434; line-height:26px; }
+h4 {color:#343434;font-size:18px; line-height:22px; margin-bottom:18px; }
+h5 {color:#343434;font-size:16px; line-height:19px;}
+
+.panel.panel_image_right { background-image:none !important; }
+
+/*Fix height of carousel in full banner page component */
+.full_banner .carousel-inner > .item { min-height: 250px; }
+
+/* Custom Pull Right Classes */
+.pull_right_sm { float: right; }
+
+/* Custom Center Class */
+.text_center_sm { text-align: center; }

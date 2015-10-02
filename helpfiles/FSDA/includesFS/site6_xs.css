@@ -1,0 +1,299 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements   
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+*/
+
+
+
+/* ------------------------------------
+Page Globals
+------------------------------------ */
+h1 { margin-bottom: 29px; font-size: 27px; line-height: 30px; }
+h2 { margin-bottom: 15px; font-size: 23px; line-height: 25px; }
+h3 { margin-bottom: 13px; font-size: 18px; line-height: 22px; }
+h4 { margin-bottom: 12px; font-size: 17px; line-height: 21px; }
+h5 { margin-bottom: 10px; font-size: 15px; line-height: 21px; }
+h6 { margin-bottom: 10px; font-size: 15px; line-height: 21px; }
+
+  /* Hierarchy Classes */
+  .h1 { margin-bottom: 29px; font-size: 27px; line-height: 30px; }
+  .h2 { margin-bottom: 15px; font-size: 23px; line-height: 25px; }
+  .h3 { margin-bottom: 13px; font-size: 18px; line-height: 22px; }
+  .h4 { margin-bottom: 12px; font-size: 17px; line-height: 21px; }
+  .h5 { margin-bottom: 10px; font-size: 15px; line-height: 21px; }
+  .h6 { margin-bottom: 10px; font-size: 15px; line-height: 21px; }
+
+
+/* ---- Tabs ---- */
+
+  /* Tab Controls */
+  .nav-tabs li { font-size:12px; line-height:12px; }	
+  .nav>li>a { padding:10px 10px; }
+
+
+/* ---- CTA ---- */
+
+  /* CTA: CTA Box */
+  .cta_box { padding: 0; background-color: transparent; box-shadow: none; }
+  .cta_box ul>li { margin-bottom: 5px; }
+
+  .cta_item a { padding: 8px 40px; border-radius: 3px; display: block; font-size: 16px; line-height: 16px; }
+  .cta_item a:hover { text-decoration:none; }
+
+    /* CTA Box: Button Types */
+    .cta_item_general a,
+    .cta_item_general a:visited { border-color: #e5e5e5; background: #e5e5e5; color:#005fce; }
+    .cta_item_general a:active,
+    .cta_item_general a:focus,
+    .cta_item_general a:hover { border-color: #d8d8d8; background: #d8d8d8; color:#005fce; }
+
+    .cta_item_primary a,
+    .cta_item_primary a:visited { border-color: #808080; background: #808080; color: #fff; }
+    .cta_item_primary a:active,
+    .cta_item_primary a:focus,
+    .cta_item_primary a:hover { border-color: #999; background: #999; color: #fff; }
+
+    .cta_item_secondary a,
+    .cta_item_secondary a:visited { border-color: #0067b3; background: #0067b3; color: #fff; }
+    .cta_item_secondary a:active,
+    .cta_item_secondary a:focus,
+    .cta_item_secondary a:hover { border-color: #2f7abf; background: #2f7abf; color: #fff; }
+
+    .cta_item_tertiary a,
+    .cta_item_tertiary a:visited { border-color: #3ab551; background: #3ab551; color: #fff; }
+    .cta_item_tertiary a:active,
+    .cta_item_tertiary a:focus,
+    .cta_item_tertiary a:hover { border-color: #5fd362; background: #5fd362; color: #fff; }	
+
+    .cta_item_quaternary a,
+    .cta_item_quaternary a:visited { border-color: #eea600; background: #eea600; color: #fff; }
+    .cta_item_quaternary a:active,
+    .cta_item_quaternary a:focus,
+    .cta_item_quaternary a:hover { border-color: #f1b51c; background: #f1b51c; color: #fff; }
+
+    .cta_item_quinary a,
+    .cta_item_quinary a:visited { border-color: #00ace8; background: #00ace8; color: #fff; }
+    .cta_item_quinary a:active,
+    .cta_item_quinary a:focus,
+    .cta_item_quinary a:hover { border-color: #0184b2; background: #0184b2; color: #fff; }
+
+    .cta_item_senary a,
+    .cta_item_senary a:visited { border-color: #79dafc; background: #79dafc; color: #fff; }
+    .cta_item_senary a:active,
+    .cta_item_senary a:focus,
+    .cta_item_senary a:hover { border-color: #68b9d6; background: #68b9d6; color: #fff; }
+
+    .cta_item_septenary a,
+    .cta_item_septenary a:visited { border-color: #07b38c; background: #07b38c; color: #fff; }
+    .cta_item_septenary a:active,
+    .cta_item_septenary a:focus,
+    .cta_item_septenary a:hover { border-color: #038064; background: #038064; color: #fff; }		
+
+    .cta_item_emphasize a,
+    .cta_item_emphasize a:visited { border-color: #db5f23; background: #db5f23; color: #fff; }
+    .cta_item_emphasize a:active,
+    .cta_item_emphasize a:focus,
+    .cta_item_emphasize a:hover { border-color: #ee6f32; background: #ee6f32; color: #fff; }
+
+    /* CTA Box: Inline */
+    .cta_box ul.list-inline>li { margin-bottom: 5px; display: block; }
+
+
+
+/* ------------------------------------
+Structure
+------------------------------------ */
+
+/* ---- Header ---- */
+/* [ Additional Styles: SM + XS ] */
+
+
+  /* Header: Mobile Subnav */
+  /* [ Additional Styles: SM + XS ] */
+
+
+/* ---- Section Header ---- */
+/* [ Additional Styles: SM + XS ] */
+
+
+  /* Section Header: Sizes */ 
+  .section_header.level_3,
+  .sticky_header_container.affix-top .section_header.level_3 { min-height: 48px; height: auto; }
+  
+  .section_header.level_3 .section_header_content,
+  .sticky_header_container.affix-top .section_header.level_3 .section_header_content { height: 48px; padding-bottom: 7px; }
+  
+  .section_header.level_3 .section_header_content * { float: left; }
+
+  .section_header.level_3 h1,
+  .section_header.level_3 p.h1,
+  .sticky_header_container.affix-top .section_header.level_3 h1,
+  .sticky_header_container.affix-top .section_header.level_3 p.h1 { padding-top: 3px; padding-bottom: 4px; font-size: 27px; }  
+  
+
+  /* Section Header: Affix on Scroll */
+
+    /* Affix: Level 3 */
+    .sticky_header_container.affix { top: 0; }
+
+    .sticky_header_container.affix .section_header.level_3 .section_header_content { height: 48px; padding-bottom: 7px; }
+
+    .sticky_header_container.affix .section_header.level_3 h1,
+    .sticky_header_container.affix .section_header.level_3 p.h1 { padding-top: 3px; padding-bottom: 4px; font-size: 27px; } 
+
+
+/* ---- Mobile Subnav ---- */
+/* [ Additional Styles: SM + XS ] */
+
+ 
+/* ---- Footer ---- */
+.footer { padding-bottom: 0; }
+.footer p { margin-bottom: 30px; }
+
+  /* Footer Nav */
+  .countrynav { margin-bottom:  display: block; }
+  .countrynav li { display: block; float: left; }
+  .countrynav li.footernav_country { float: none; }
+  .countrynav li.lang_title { padding-left: 4px; }
+
+  .footernav { margin-bottom: 0; margin-left: 0; }
+  .footernav li { margin-bottom: 12px; float: none; }
+  .footernav li + li { border: none; }
+  .footernav a { padding: 0; display: inline-block; }
+
+  .kr_footernav { margin-bottom: 0; }
+  .kr_footernav li { padding: 0; margin-bottom: 5px; }
+
+
+  /* Social Media */
+  .footer .social_media { margin-bottom: 0; float: left; text-align: left; }
+  .footer .social_media_icons { margin-left: 0; }
+  .footer .social_media_icons li + li { margin-left: 16px; }
+  .footer .social_media_icons object { width: 32px; height: 32px; }
+  .footer .social_media_icons .ico_sm { width: 32px; height: 32px; }
+
+    /* Social Media: Icons */
+    .ico_sm.ico_google { background-position: -40px 0; }
+    .ico_sm.ico_facebook { background-position: -40px -32px; }
+    .ico_sm.ico_linkedin { background-position: -40px -64px; }	
+    .ico_sm.ico_rss { background-position: -40px -96px; }
+    .ico_sm.ico_twitter { background-position: -40px -128px; }
+    .ico_sm.ico_weibo { background-position: -40px -160px; }			
+
+
+
+/* ------------------------------------
+$ Override CSS
+------------------------------------ */
+
+/* ---- Additive / Reductive CSS ---- */
+
+  /* Add: Margin-Bottom */
+  .add_margin_0 { margin-bottom: 0 !important; }
+  .add_margin_5 { margin-bottom: 5px !important; }
+  .add_margin_10 { margin-bottom: 10px !important; }
+  .add_margin_15 { margin-bottom: 15px !important; }
+  .add_margin_20 { margin-bottom: 20px !important; }
+  .add_margin_25 { margin-bottom: 20px !important; }
+  .add_margin_30 { margin-bottom: 25px !important; }
+  .add_margin_35 { margin-bottom: 29px !important; }
+  .add_margin_40 { margin-bottom: 33px !important; }
+  .add_margin_45 { margin-bottom: 38px !important; }
+  .add_margin_50 { margin-bottom: 42px !important; }
+  .add_margin_60 { margin-bottom: 50px !important; }
+  .add_margin_70 { margin-bottom: 58px !important; }
+  .add_margin_80 { margin-bottom: 67px !important; }
+  .add_margin_90 { margin-bottom: 75px !important; }
+  .add_margin_100 { margin-bottom: 83px !important; }
+
+  /* Add: Margin-Bottom - XS only */
+  .add_margin_0_xs { margin-bottom: 0 !important; }
+  .add_margin_5_xs { margin-bottom: 5px !important; }
+  .add_margin_10_xs { margin-bottom: 10px !important; }
+  .add_margin_15_xs { margin-bottom: 15px !important; }
+  .add_margin_20_xs { margin-bottom: 20px !important; }
+  .add_margin_25_xs { margin-bottom: 25px !important; }
+  .add_margin_30_xs { margin-bottom: 30px !important; }
+  .add_margin_35_xs { margin-bottom: 35px !important; }
+  .add_margin_40_xs { margin-bottom: 40px !important; }
+  .add_margin_45_xs { margin-bottom: 45px !important; }
+  .add_margin_50_xs { margin-bottom: 50px !important; }
+  .add_margin_60_xs { margin-bottom: 60px !important; }
+  .add_margin_70_xs { margin-bottom: 70px !important; }
+  .add_margin_80_xs { margin-bottom: 80px !important; }
+  .add_margin_90_xs { margin-bottom: 90px !important; }
+  .add_margin_100_xs { margin-bottom: 100px !important; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* To be code reviewed */
+
+#go-top {	display: none !important; }
+
+/* Column Divider */
+.add_border_left:before, .add_border_right:after { border: none; }
+.add_border_right_xs, .add_border_left_xs { position: relative; }
+.add_border_left_xs:before, .add_border_right_xs:after { content:''; width: 0; height: auto; border-right: 1px solid #cbcbcb; position: absolute; bottom: 20px; top: 0; }
+.add_border_left_xs:before { left: 0; }
+.add_border_right_xs:after { right: 0; }
+
+/* From Laurel*/
+                .content_container h1 {
+                                color:#2c2c2c;
+                                font-size: 32px;
+                                line-height:38px;
+                }
+                h2 {color:#2c2c2c; font-size:28px; line-height:34px; }
+                h3 {font-size:22px; color:#343434; line-height:26px; }
+                h4 {color:#343434;font-size:18px; line-height:22px; margin-bottom:18px; }
+                h5 {color:#343434;font-size:16px; line-height:19px;}
+
+.panel.panel_image_right { background-image:none !important; }
+
+/*Fix height of carousel in full banner page component */
+.full_banner .carousel-inner > .item { min-height: 200px; }
+.carousel-caption h1 + h2 { font-size: 20px; line-height: 23px; }
+
+/* Opacity Containers */
+.opacity_container_xs { padding: 10px 15px; margin-left: -20px; margin-right: -20px; background-color: rgba(228, 228, 228, 0.8); }
+.opacity_container_xs.opacity_light { background-color: rgba(255, 255, 255, 0.8); }
+.opacity_container_xs.opacity_dark { background-color: rgba(0, 0, 0, 0.8); }
+.full_banner .opacity_container_xs { margin-left: -15px; margin-right: -15px; }
+
+	/* Custom Pull Right Classes */
+.pull_right_xs { float: right; }
+
+/* Custom Center Class */
+.text_center_xs { text-align: center; }
+
+/* Layout - Reorder elements */
+.row.reorder_xs { transform: rotate(180deg); direction: rtl; /* Fix the horizontal alignment */ }
+.row.reorder_xs > [class*="col-"] { transform: rotate(-180deg); direction: ltr; /* Fix the horizontal alignment */}

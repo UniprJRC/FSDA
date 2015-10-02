@@ -1,0 +1,86 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+*/
+
+
+
+/* ------------------------------------
+$ Page Globals
+------------------------------------ */
+
+html body { overflow-y: scroll; }
+
+/* ---- Tabs ---- */
+
+  /* Tab Controls */
+  .nav-tabs li { font-size: 16px; line-height: 16px; }
+
+
+
+/* ------------------------------------
+$ Structure
+------------------------------------ */
+
+/* ---- Footer ---- */
+
+	/* Footer: Standard */
+
+		/* Footer Nav  -- [ Additional Styles: XS ] */
+    .kr_footernav { margin-bottom: 0; }
+    .kr_footernav li { padding: 0; margin-bottom: 5px; float: none; }
+    .kr_footernav li + li  { border: none; }
+
+
+
+/* ------------------------------------
+$ Override CSS
+------------------------------------ */
+
+/* ---- Additive / Reductive CSS ---- */
+
+/* Add: Margin-Bottom - MD only */
+	.add_margin_0_md { margin-bottom: 0 !important; }
+	.add_margin_5_md { margin-bottom: 5px !important; }
+	.add_margin_10_md { margin-bottom: 10px !important; }
+	.add_margin_15_md { margin-bottom: 15px !important; }
+	.add_margin_20_md { margin-bottom: 20px !important; }
+	.add_margin_25_md { margin-bottom: 25px !important; }
+	.add_margin_30_md { margin-bottom: 30px !important; }
+	.add_margin_35_md { margin-bottom: 35px !important; }
+	.add_margin_40_md { margin-bottom: 40px !important; }
+	.add_margin_45_md { margin-bottom: 45px !important; }
+	.add_margin_50_md { margin-bottom: 50px !important; }
+	.add_margin_60_md { margin-bottom: 60px !important; }
+	.add_margin_70_md { margin-bottom: 70px !important; }
+	.add_margin_80_md { margin-bottom: 80px !important; }
+	.add_margin_90_md { margin-bottom: 90px !important; }
+	.add_margin_100_md { margin-bottom: 100px !important; }
+	
+/* CODE REVIEW */	
+	/* Custom Pull Right Classes */
+.pull_right_md { float: right; }
+
+/* Custom Center Class */
+.text_center_md { text-align: center; }
+
+/*Fix height of carousel in full banner page component */
+.full_banner .carousel-inner > .item { min-height: 350px; }

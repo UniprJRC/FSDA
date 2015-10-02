@@ -1,0 +1,364 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Globals:..................Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+Browser Hacks:............Functionality Fixes for Older Browsers
+
+*/
+
+
+
+/*-----------------------------------
+   Bootstrap Overrides
+-----------------------------------*/
+
+
+
+
+/*-----------------------------------
+   Globals
+-----------------------------------*/
+/* ---- HTML/Body: Enable ScrollSpy w/ postion:relative ---- */
+html body { background: #f1f1f1; overflow-x: hidden; overflow-y: auto !important; position: relative; }
+html body.responsive_offcanvas_fixed { background: #31373d; }
+html,
+body { overflow-x: hidden; }
+
+
+
+/*-----------------------------------
+   Structure
+-----------------------------------*/
+
+/* ---- Off-Canvas Template ---- */
+.row-offcanvas { position: relative; }
+
+  /* Off-Canvas Template: Navigation */
+  .sidebar-offcanvas { width: 270px; height: 100%; padding: 0; margin-left: -270px; border-right: 1px solid #d4d4d4; background-color: #fff; bottom: 0; float: left; font-size: 12px; line-height: 1.166; position: absolute; }
+  .sidebar-offcanvas .offcanvas_nav { width: 269px; min-height: 280px; padding: 0 0 20px; border: none; background: #fff; overflow-y: auto !important; }
+
+  /* Off-Canvas Template: Content */
+  .row-offcanvas.active { margin-left: 270px; }
+
+
+  /* Off-Canvas Template: Content Configuration  */
+
+  @media only screen and (min-width:768px) {
+    
+    /* Content Configuration: Desktop Scrolled */   
+    .sticky_header_container.affix ~ .row-offcanvas .content_container { padding-top: 90px; }
+
+      /* Desktop Scrolled: Off-Canvas Not Active */
+      .sticky_header_container.affix ~ .row-offcanvas .sidebar-offcanvas { margin-left: 0; left: -270px; position: fixed; top: 92px; }
+      .sticky_header_container.affix ~ .row-offcanvas .sidebar-offcanvas .offcanvas_nav { bottom: 0; left: -270px; position: fixed; top: 92px; }
+
+      /* Desktop Scrolled: Off-Canvas Active */
+      .sticky_header_container.affix ~ .row-offcanvas.active .sidebar-offcanvas { left: 0; z-index: 10; }
+      .sticky_header_container.affix ~ .row-offcanvas.active .sidebar-offcanvas .offcanvas_nav { left: 0; }
+ 
+  }
+
+  @media only screen and (min-width:992px) {  
+
+      /* Desktop Not Scrolled: Off-Canvas Not Active */
+      /*
+      .sticky_header_container.affix-top ~ .row-offcanvas .sidebar-offcanvas { margin-left: 0; bottom: 0; left: -270px; position: fixed; top: 174px; }
+      .sticky_header_container.affix-top ~ .row-offcanvas .sidebar-offcanvas .offcanvas_nav { bottom: 0; left: -270px; position: fixed; top: 174px; }
+      */
+
+      /* Desktop Not Scrolled: Off-Canvas Active */
+      /*
+      .sticky_header_container.affix-top ~ .row-offcanvas.active .sidebar-offcanvas { left: 0; z-index: 10; }
+      .sticky_header_container.affix-top ~ .row-offcanvas.active .sidebar-offcanvas .offcanvas_nav { left: 0; }
+      */
+
+      .responsive_offcanvas_fixed .row-offcanvas.active { margin-left: 0; }
+      .responsive_offcanvas_fixed .row-offcanvas.active .sidebar-offcanvas { display: none; }
+
+  }
+
+  /* Affix: Level 3: Shrink Banner to Scrolled Height */
+  @media (min-width:992px) {
+  .sticky_header_container .section_header.level_3 { height: 46px; }      
+  .sticky_header_container .section_header.level_3 .section_header_content { height: 46px; padding-bottom: 6px; }
+
+  .sticky_header_container .section_header.level_3 form { padding-top: 8px; }
+
+  .sticky_header_container .section_header.level_3 h1,
+  .sticky_header_container .section_header.level_3 p.h1 { padding-top: 3px; padding-bottom: 4px; font-size: 27px; } 
+
+
+  .sticky_header_container.affix-top .section_header.level_3 { height: 46px; }      
+  .sticky_header_container.affix-top .section_header.level_3 .section_header_content { height: 46px; padding-bottom: 6px; }
+
+  .sticky_header_container.affix-top .section_header.level_3 form { padding-top: 8px; }
+
+  .sticky_header_container.affix-top .section_header.level_3 h1,
+  .sticky_header_container.affix-top .section_header.level_3 p.h1 { padding-top: 3px; padding-bottom: 4px; font-size: 27px; } 
+      
+  }
+
+
+  /* Off-Canvas Template: Animation */
+
+    /* ---- Non-Mobile Adjustments ---- */
+    @media only screen and (min-width:768px) {
+
+      .row-offcanvas { 
+        -moz-transition: margin-left .5s ease-in;
+        -webkit-transition: margin-left .5s ease-in;
+        transition: margin-left .5s ease-in;
+      }
+
+      .sidebar-offcanvas,
+      .offcanvas_nav { 
+        -webkit-transition: left .5s ease-in;
+        -moz-transition: left .5s ease-in;
+        transition: left .5s ease-in;	
+      }
+
+    }
+
+  .no_animate .row-offcanvas,
+  .no_animate .row-offcanvas *, 
+  .no_animate .horizontal_nav_container * {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    transition: none !important;
+  }
+
+
+/* ---- Horizontal Nav ---- */
+.offcanvas_horizontal_nav { display: table-cell; vertical-align: top; }
+
+.offcanvas_horizontal_nav .cta_box { text-align: right; }
+.offcanvas_horizontal_nav .cta_box .cta_item { float: none; }
+
+
+/* ---- Off-Canvas Actuator  ---- */
+
+  /* Off-Canvas Actuator: Container */
+
+    /* Actuator Container: Inactive */   
+    .offcanvas_actuator { width:270px; background: url(/images/responsive/global/bg-offcanvas-actuator.png) repeat-y -270px top; color: #428bca; cursor: pointer; display: table-cell; vertical-align: top; 
+      -webkit-transition: all .5s ease-in;
+      -moz-transition: all .5s ease-in;
+      transition: all .5s ease-in;
+    }
+
+    /* Actuator Container: Active */ 
+   .offcanvas_actuator.active { background: url(/images/responsive/global/bg-offcanvas-actuator.png) repeat-y 0 top; color: #9e9e9e;
+      -webkit-transition: all .5s ease-in;
+      -moz-transition: all .5s ease-in;
+      transition: all .5s ease-in;
+    }
+
+    /* Actuator Container: Fixed */ 
+    .offcanvas_actuator_fixed { display: none; }
+
+
+  /* Off-Canvas Actuator: Button */
+
+    /* Actuator Button: Inactive */  
+    .offcanvas_actuator .btn { padding: 4px; margin-left: 2px; background-color: transparent; float: left; }
+
+    .offcanvas_actuator .btn,
+    .offcanvas_actuator .btn:active { box-shadow: none; outline: none; }
+
+    .offcanvas_actuator .btn:hover,
+    .offcanvas_actuator .btn:focus,
+    .offcanvas_actuator .btn:active { color: #428bca; }
+
+    /* Actuator Button: Active */
+    .offcanvas_actuator.active .btn:hover,
+    .offcanvas_actuator.active .btn:focus,
+    .offcanvas_actuator.active .btn:active { color: #9e9e9e; } 
+
+    /* Actuator Button: Icon */
+    .offcanvas_actuator .btn [class^="icon-"] { margin-top: 4px; }
+    .offcanvas_actuator .btn .icon-menu { margin-top: 0; font-size: 32px; line-height: 1; }
+
+
+  /* Off-Canvas Actuator: Labels */
+
+    /* Actuator Labels: Inctive */  
+    .offcanvas_actuator .offcanvas_actuator_label { margin-top: 12px; display: block; float: left; }
+    .offcanvas_actuator .offcanvas_actuator_close:before { content: "Close"; }
+    .offcanvas_actuator .offcanvas_actuator_close { margin: 12px 15px 0 0; color: #428bca; display: block; float: right; opacity: 0;
+      -webkit-transition: all .5s ease-in;
+      -moz-transition: all .25s ease-in;
+      transition: all .25s ease-in;
+    }
+
+    /* Actuator Labels: Active */
+    .offcanvas_actuator.active .offcanvas_actuator_close { opacity: 1;
+      -webkit-transition: all .5s ease-in;
+      -moz-transition: all .25s ease-in;
+      transition: all .25s ease-in;
+    }
+
+
+/* ---- Footer ---- */
+
+  /* Footer Nav */
+  .footernav { float: none; }	
+  .footernav * {
+    -webkit-transition: all .5s ease-in;
+    -moz-transition: all .5s ease-in;
+    transition: all .5s ease-in;
+  }
+
+
+
+/*-----------------------------------
+   Responsive
+-----------------------------------*/
+/* ---- Non-Mobile Adjustments ---- */
+@media only screen and (min-width:768px) {
+
+}	
+
+
+/* ---- Large Desktop (lg) ---- */
+@media (min-width:1200px) {
+
+}
+
+
+/* ---- Small Desktop (md) ---- */
+@media (min-width:992px) and (max-width:1199px) {
+
+}
+
+
+/* ---- Tablet (sm) ---- */
+@media (min-width:768px) and (max-width:991px) {
+
+/* ---- Header ---- */
+
+  /* ---- Horizontal Nav ---- */
+  .responsive_offcanvas_fixed .container { width: 100%; }
+  .responsive_offcanvas_fixed .content_container > .container { width: 750px; }
+
+}
+
+/* ---- Non-Desktop Adjustments ---- */
+@media (max-width:991px) {
+
+  /* Off-Canvas Actuator: Container */
+
+    /* Actuator Container: Fixed */
+    .offcanvas_actuator_fixed { display: table-cell; }
+
+}
+
+
+/* ---- Mobile (xs) ---- */
+@media (max-width:767px) {
+
+  /* ---- Off-Canvas Template ---- */
+
+    /* Off-Canvas Template: Animation */
+    .row-offcanvas { margin-left: 0; left: 0;
+      -webkit-transition: all .5s ease-in;
+      -moz-transition: all .5s ease-in;
+      transition: all .5s ease-in;
+    }
+
+    .sidebar-offcanvas,
+    .offcanvas_nav { 
+      -webkit-transition: left .5s ease-in;
+      -moz-transition: left .5s ease-in;
+      transition: left .5s ease-in;
+      -ms-transition: left 0s ease-in;
+    }
+
+
+    /* Off-Canvas Template: Content */
+    .row-offcanvas.active { margin-left: 270px; left: 0; }
+    .row-offcanvas.active { margin-left: calc(0px + 0px); left: calc(270px + 0px); }
+
+
+    /* Off-Canvas Template: Content Configuration  */
+
+      /* Content Configuration: Mobile Not-Scrolled */
+      .section_header.level_3.affix ~ .sticky_header_container.affix { top: 0; }
+
+      .sticky_header_container.affix-top .content_container { margin-top: 0; }
+
+      /* Content Configuration: Mobile Scrolled */
+      .sticky_header_container.affix ~ .row-offcanvas .content_container { padding-top: 92px; }
+
+        /* Mobile Scrolled: Off-Canvas Not Active */
+        .sticky_header_container.affix ~ .row-offcanvas .sidebar-offcanvas { margin-left: 0; left: -270px; position: fixed; top: 92px; }
+        .sticky_header_container.affix ~ .row-offcanvas .sidebar-offcanvas .offcanvas_nav {  bottom: 0; left: -270px; position: fixed; top: 92px; }
+    
+        /* Mobile Scrolled: Off-Canvas Active */    
+        .sticky_header_container.affix ~ .row-offcanvas.active .sidebar-offcanvas { left: 0; z-index: 10; }
+        .sticky_header_container.affix ~ .row-offcanvas.active .sidebar-offcanvas .offcanvas_nav { left: 0; }
+
+        /* Mobile Scrolled: CTAs */  
+        .sticky_header_container.affix ~ .row-offcanvas .cta_container_mobile { margin-top: 0; padding-bottom: 20px; }
+
+}
+
+
+
+/*-----------------------------------
+   Browser Hacks
+-----------------------------------*/
+
+/* ---- Safari 5.1-6 ---- */
+_::-moz-svg-foreign-content, :root .row-offcanvas,
+.sidebar-offcanvas,
+.offcanvas_nav { 
+  -webkit-transition: none !important;
+}
+
+
+/* ---- Safari 6.1+ ---- */
+@media screen and (min-color-index:0) and(-webkit-min-device-pixel-ratio:0) { @media
+{
+  .sidebar-offcanvas,
+  .offcanvas_nav { 
+    -webkit-transition: none !important;
+  }
+
+}}
+
+
+/* ---- Safari 6.1 - 7.0 ---- */
+@media screen and (-webkit-min-device-pixel-ratio:0) and (min-color-index:0)
+{  
+  .sidebar-offcanvas,
+  .offcanvas_nav {(;
+    -webkit-transition: none !important;
+  );}
+}
+
+
+/* ---- Safari 7.1+ (8.0 is the latest version of Safari at this time) ---- */
+_::-webkit-full-page-media, _:future, :root .sidebar-offcanvas {
+  -webkit-transition: none !important;
+}
+
+_::-webkit-full-page-media, _:future, :root .offcanvas_nav {
+  -webkit-transition: none !important;
+}

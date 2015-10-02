@@ -1,0 +1,124 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements   
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+*/
+
+
+
+/* ------------------------------------
+Structure
+------------------------------------ */
+
+/* ---- Header ---- */
+
+  /* Header: Global Navbars */
+  .navbar-header { padding-right: 9px; padding-left: 5px; margin-right: -15px; margin-left: -15px; background: #fff; }
+
+  .navbar-brand { height:44px; padding:0px; }
+  .navbar-brand .mw_logo { width:157px; height:32px; margin:6px 0px 0px 5px; }
+  .navbar-brand .mlc_logo { width:245px; height:32px; margin:6px 0px 0px 5px; }
+
+  .navbar-toggle { padding:0px; margin-top:2px; margin-right:4px; margin-bottom:2px; border:none; }
+  .navbar-toggle { margin-right: 0; } /* Fix for 3 icons*/
+
+  .navbar-default .navbar-toggle:hover,
+  .navbar-default .navbar-toggle:focus { background-color: #fff; border-radius: 0; }
+
+  .navbar-toggle .icon-cog,
+  .navbar-toggle .icon-contactus-menu,
+  .navbar-toggle .icon-menu { font-size:44px; color: #428bca; line-height:38px; display:block; }
+  .navbar-toggle .icon-cog:hover,
+  .navbar-toggle .icon-contactus-menu:hover,
+  .navbar-toggle .icon-menu:hover { color: #428bca; }
+
+  .navbar-collapse li { font-size:14px; line-height:14px; }
+
+  .navbar-nav { margin-top: 0; margin-bottom: 0; }
+
+  .navbar-default #topnav { border-top: 1px solid #ccc; }
+
+  .navbar-default #topnav.navbar-nav > li > a { padding: 11px 15px; font-weight: normal; }
+  .navbar-default #topnav.navbar-nav > li > a,
+  .navbar-default #topnav.navbar-nav > li > a:focus,
+  .navbar-default #topnav.navbar-nav > li > a:visited { color: #3c3c3c; }
+  .navbar-default #topnav.navbar-nav > li > a:hover { color: #3c3c3c; background: #e6ebef; }
+  
+  .navbar-default #topnav.navbar-nav > li.active > a,
+  .navbar-default #topnav.navbar-nav > li.active > a:hover { border-radius: 0; color: #3c3c3c; background: #e6ebef; }
+
+  .navbar-default .navbar-nav > .open > a,
+  .navbar-default .navbar-nav > .open > a:hover,
+  .navbar-default .navbar-nav > .open > a:focus { color: #3c3c3c; background: #e6ebef; }
+
+  .navbar-default .navbar-nav > .open .dropdown-menu { padding: 0; border-top: 1px solid #ccc; }
+  .navbar-default .navbar-nav > .open .dropdown-menu > li > a { padding: 11px 15px 11px 25px; color: #3c3c3c; }
+  .navbar-default .navbar-nav > .open .dropdown-menu > li > a:hover,
+  .navbar-default .navbar-nav > .open .dropdown-menu > li > a:focus { color: #3c3c3c; background: #e6ebef; }
+
+  #topnav_collapse { max-height: none; margin-right: -15px; margin-left: -15px; background: #fff; border-top: none; }
+  #topnav_collapse li + li { border-top: 1px solid #ccc; }
+
+
+  /* Header: Mobile Subnav */
+  #mobile_subnav { background: #2f7eb2; }
+
+  #mobile_subnav .navbar-collapse { max-height: none; border-top: 1px solid #fff; border-top: 1px solid rgba(255,255,255,0.5); }
+  #mobile_subnav .navbar-collapse .subnav { margin-bottom: 0; }
+  #mobile_subnav .navbar-collapse .subnav > li { color: #fff; }
+  #mobile_subnav .navbar-collapse .subnav > li + li { border-top: 1px solid #fff; border-top: 1px solid rgba(255,255,255,0.5); }
+  #mobile_subnav .navbar-collapse .subnav > li .caret { margin: 0 0 0 5px; }
+  #mobile_subnav .navbar-collapse .subnav > li > a { padding: 11px 18px 11px 8px; }
+
+  #mobile_subnav .navbar-collapse .subnav > li > a { color: #fff; }
+  #mobile_subnav .navbar-collapse .subnav > li > a:hover,
+  #mobile_subnav .navbar-collapse .subnav > li > a:focus,  
+  #mobile_subnav .navbar-collapse .subnav > li > a:active { background: #235e85; background: rgba(0,0,0,0.5); color: #fff; }
+
+  #mobile_subnav .navbar-collapse .open > a,
+  #mobile_subnav .navbar-collapse .open > a:hover,
+  #mobile_subnav .navbar-collapse .open > a:focus,
+  #mobile_subnav .navbar-collapse .open > a:active { background: #235e85; background: rgba(0,0,0,0.5); color: #fff; }
+
+  #mobile_subnav .navbar-collapse .dropdown-menu { padding-top: 0; padding-bottom: 0; border-top: 1px solid #fff; border-top: 1px solid rgba(255,255,255,0.5); background: #2f7eb2; }
+  #mobile_subnav .navbar-collapse .dropdown-menu > li > a { padding: 11px 18px; white-space: normal;  }
+
+  #mobile_subnav .navbar-collapse .dropdown-menu > li > a { color: #fff; }
+  #mobile_subnav .navbar-collapse .dropdown-menu > li > a:hover,
+  #mobile_subnav .navbar-collapse .dropdown-menu > li > a:focus,  
+  #mobile_subnav .navbar-collapse .dropdown-menu > li > a:active { background: #235e85; background: rgba(0,0,0,0.5); color: #fff; }
+
+  #mobile_subnav .navbar-collapse .dropdown-menu > .active > a,
+  #mobile_subnav .navbar-collapse .dropdown-menu > .active > a:hover,
+  #mobile_subnav .navbar-collapse .dropdown-menu > .active > a:focus { background: #235e85; background: rgba(0,0,0,0.5); color: #fff; }
+
+
+/* ---- Section Header ---- */
+.section_header .navbar-toggle { height: 30px; margin: 0; padding-left: 0; border: none; color: #fff; display: block; }
+.section_header .section_header_content .navbar-toggle { height: 26px; }
+.section_header .section_header_content .icon-arrow-down { margin-top: 6px; }
+
+
+/* ---- Horizontal Nav ---- */
+.horizontal_nav { background: #fff none; }
+.horizontal_nav_container { height: 44px; border: none; }
+
+
+
