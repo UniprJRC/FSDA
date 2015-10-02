@@ -50,6 +50,9 @@ function add2yX(varargin)
 % user options
 options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','');
 
+% FontSizelabeladd= height of text labels
+FontSizelabeladd=12;
+
 %get optional user options
 if nargin>0
     UserOptions=varargin(1:2:length(varargin));
@@ -264,7 +267,7 @@ for i = 1:length(AX)
         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
         %       text(Xi(nbrush,i)+dx,y(nbrush)+dy,numtext(nbrush),'HorizontalAlignment', 'Left');
-        text(Xilast(:,i) + dx,ylast + dy,cellstr(num2str(nbrush,'%d')),'HorizontalAlignment', 'Left');
+        text(Xilast(:,i) + dx,ylast + dy,cellstr(num2str(nbrush,'%d')),'HorizontalAlignment', 'Left','FontSize',FontSizelabeladd);
     end
     
     % Add to each plot AX(i) the line(s) based on the hyperplane fit to y|X
