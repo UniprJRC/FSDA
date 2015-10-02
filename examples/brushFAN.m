@@ -38,8 +38,10 @@ function brushFAN(eventdata)
 %}
 %
 %{
-    %% Run the example associated with radiobutton 1
-    brushFAN(1);
+    %% Run examples associated with radiobuttons 1 to 4
+    for j=1:4
+        brushFAN(j);
+    end
 %}
 %
 %{

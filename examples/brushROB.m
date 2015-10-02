@@ -37,33 +37,10 @@ function brushROB(eventdata)
 %}
 %
 %{
-    %% Run the example associated with radiobutton 1
-    brushROB(1);
-%}
-%
-%{
-    %% Run the example associated with radiobutton 2
-    brushROB(2);
-%}
-%
-%{
-    %% Run the example associated with radiobutton 3
-    brushROB(3);
-%}
-%
-%{
-    %% Run the example associated with radiobutton 4
-    brushROB(4);
-%}
-%
-%{
-    %% Run the example associated with radiobutton 5
-    brushROB(5);
-%}
-%
-%{
-    %% Run the example associated with radiobutton 6
-    brushROB(6);
+    %% Run examples associated with radiobuttons 1 to 6
+    for j=1:6
+        brushROB(j);
+    end
 %}
 %
 
