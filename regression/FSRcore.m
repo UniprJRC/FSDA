@@ -232,7 +232,7 @@ lowexceed=0;
 
 bool=mdr(:,1)>=init;
 mdr=mdr(bool,:);
-gmin=gmin(gmin(:,1)>=init,:);
+gmin=gmin(gmin(:,1)>=mdr(1,1),:);
 
 
 % Store in nout the number of times the observed mdr (d_min) lies above:
