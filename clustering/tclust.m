@@ -119,17 +119,17 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               If mixt >=1 mixture modelling is assumed else crisp
 %               assignment.
 %                In mixture modelling the likelihood is given by
-%                \begin{equation}\label{mixlik}
+%                \[
 %                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j).
-%                \end{equation}
+%                \]
 %               while in crisp assignment the likelihood is given by
-%               \begin{equation}\label{clalik}
+%               \[
 %               \prod_{j=1}^k   \prod _{i\in R_j} \phi (y_i; \; \theta_j),
-%               \end{equation}
+%               \]
 %               where $R_j$ contains the indexes of the observations which
 %               are assigned to group $j$,
 %               Remark - if mixt>=1 previous parameter equalweights is
-%               automatically set to 1
+%               automatically set to 1.
 %               Parameter mixt also controls the criterion to select the units to trim
 %               if mixt == 2 the h units are those which give the largest
 %               contribution to the likelihood that is the h largest
@@ -227,13 +227,18 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       (value of the best returned solution).
 %                       If input option mixt >1 the likelihood which is
 %                       maximized is a mixture likelihood as follows
+%                       \[
 %                       \prod_{i=1}^h  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j).
+%                       \]
 %                       else the likelihood which is maximized is a classification likelihood of the the form
+%                       \[
 %                       \prod_{j=1}^k   \prod _{i\in R_j} \pi_j' \phi (y_i; \; \theta_j),
+%                       \]
 %                       where $R_j$ contains the indexes of the observations which are assigned to group $j$
 %                       with the constraint that $\# \bigcup_{j=1}^k
 %                       R_j=h$. In the classification likelihood is input
-%                       option equalweights=0 then \pi_j'=1 j=1, ..., k
+%                       option equalweights=0 then $\pi_j'=1$, $j=1, ...,
+%                       k$
 %       out.notconver = scalar. Number of subsets without convergence
 %              out.Y  = original data matrix Y. The field is present if option
 %                       Ysave is set to 1.
