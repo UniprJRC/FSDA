@@ -25,7 +25,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations.
-%     Z :       Predictor variables in the regression equation. Matrix.
+%     Z :       Predictor variables in the scedastic equation. Matrix.
 %               n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)
@@ -177,25 +177,39 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
     X=XX(:,1);
     X=X./max(X);
     Z=log(X);
+    Un=FSRHbsb(y,X,Z,[1:10]);
+%}
+
+%{
+    %% FSRHbsb with optional arguments.
+    % Suppress all messages about interchange with option msg.
+    % Common part to all examples: load tradeH dataset (used in the paper ART).
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
+    Un=FSRHbsb(y,X,Z,[1:10],'plots',1,'msg',0);
+%}
+
+
+%{
+    % Monitoring the units belonging to subset in each step.
+    % Common part to all examples: load tradeH dataset (used in the paper ART).
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     [~,Un,BB]=FSRHmdr(y,X,Z,[1:10]);
     [Unchk,BBchk]=FSRHbsb(y,X,Z,[1:10]);
     % Test for equality BB and BBchk
     disp(isequaln(BB,BBchk))
     % Test for equality Un and Unchk
     disp(isequaln(Un,Unchk))
-
-%}
-
-%{
-    %% Display the monitoring units plot.
-    % Suppress all messages about interchange with option msg
-    [Unchk,BBchk]=FSRHbsb(y,X,Z,[1:10],'plots',1,'msg',0);
 %}
 
 
-%{
-
-%}
 %% Input parameters checking
 
 nnargin=nargin;

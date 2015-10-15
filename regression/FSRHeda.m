@@ -16,7 +16,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               infinite values (Inf's) are allowed, since observations
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations.
-%     Z :       Predictor variables in the regression equation. Matrix. 
+%     Z :       Predictor variables in the scedastic equation. Matrix. 
 %               n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)
@@ -128,103 +128,112 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %         out:   structure which contains the following fields
 %
 %   out.RES=        n x (n-init+1) = matrix containing the monitoring of
-%               scaled residuals
-%               1st row = residual for first unit ......
+%               scaled residuals: 
+%               1st row = residual for first unit; 
+%               ...; 
 %               nth row = residual for nth unit.
 %   out.LEV=        (n+1) x (n-init+1) = matrix containing the monitoring of
-%               leverage
-%               1st row = leverage for first unit ......
+%               leverage: 
+%               1st row = leverage for first unit;
+%               ...; 
 %               nth row = leverage for nth unit.
 %    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
-%               to the subset at each step of the forward search.
-%               1st col = indexes of the units forming subset in the initial step
-%               ...
-%               last column = units forming subset in the final step (all units)
+%               to the subset at each step of the forward search: 
+%               1st col = indexes of the units forming subset in the
+%               initial step; 
+%               ...; 
+%               last column = units forming subset in the final step (all
+%               units).
 %   out.mdr=        n-init x 3 matrix which contains the monitoring of minimum
 %               deletion residual or (m+1)ordered residual  at each step of
-%               the forward search.
-%               1st col = fwd search index (from init to n-1)
-%               2nd col = minimum deletion residual
-%               3rd col = (m+1)-ordered residual
+%               the forward search: 
+%               1st col = fwd search index (from init to n-1); 
+%               2nd col = minimum deletion residual; 
+%               3rd col = (m+1)-ordered residual. 
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
-%               it corresponds to a negative residual
+%               it corresponds to a negative residual.
 %   out.msr=        n-init+1 x 3 = matrix which contains the monitoring of
-%               maximum studentized residual or m-th ordered residual
-%               1st col = fwd search index (from init to n)
-%               2nd col = maximum studentized residual
-%               3rd col = (m)-ordered studentized residual
+%               maximum studentized residual or m-th ordered residual: 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = maximum studentized residual; 
+%               3rd col = (m)-ordered studentized residual.
 %   out.nor=        (n-init+1) x 4 matrix containing the monitoring of
-%               normality test in each step of the forward search
-%               1st col = fwd search index (from init to n)
-%               2nd col = Asymmetry test
-%               3rd col = Kurtosis test
-%               4th col = Normality test
+%               normality test in each step of the forward search: 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = Asymmetry test; 
+%               3rd col = Kurtosis test; 
+%               4th col = Normality test.
 %  out.Bgls=        (n-init+1) x (p+1) matrix containing the monitoring of
-%               estimated beta coefficients in each step of the forward search
+%               estimated beta coefficients in each step of the forward
+%               search.
 %    out.S2=       (n-init+1) x 4 matrix containing the monitoring of S2 or R2
-%               in each step of the forward search
-%               1st col = fwd search index (from init to n)
-%               2nd col = monitoring of S2
-%               3rd col = monitoring of R2
+%               in each step of the forward search: 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = monitoring of S2; 
+%               3rd col = monitoring of R2; 
 %               4th col = monitoring of rescaled S2. In this case the
 %               estimated of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
-%               unbiased)
+%               unbiased).
 %   out.Coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
-%               modified Cook distance in each step of the forward search
-%               1st col = fwd search index (from init to n)
-%               2nd col = monitoring of Cook distance
-%               3rd col = monitoring of modified Cook distance
+%               modified Cook distance in each step of the forward search: 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = monitoring of Cook distance; 
+%               3rd col = monitoring of modified Cook distance.
 %  out.Tgls=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated t-statistics (as specified in option input 'tstat'
-%               in each step of the forward search
+%               in each step of the forward search.
 %   out.Un=        (n-init) x 11 Matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search
+%               included in the subset at each step of the fwd search. 
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
 %  out.betaint = Confidence intervals for the elements of $\beta$.
-%                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.
-%                 Each third dimension refers to an element of beta
-%                 betaINT(:,:,1) is associated with first element of beta
-%                 .....
-%                 betaINT(:,:,p) is associated with last element of beta
+%                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D
+%                 array. 
+%                 Each third dimension refers to an element of beta: 
+%                 betaINT(:,:,1) is associated with first element of beta; 
+%                 ...; 
+%                 betaINT(:,:,p) is associated with last element of beta. 
 %                 The first two columns contain the lower
-%                 and upper confidence limits associated with conflev(1).
+%                 and upper confidence limits associated with conflev(1); 
 %                 Columns three and four contain the lower
-%                 and upper confidence limits associated with conflev(2)
-%                 ....
+%                 and upper confidence limits associated with conflev(2); 
+%                 ...; 
 %                 The last two columns contain the lower
-%                 and upper confidence limits associated with conflev(end)
+%                 and upper confidence limits associated with conflev(end).
+%                 
 %                 For example betaint(:,3:4,5) contain the lower and upper
 %                 confidence limits for the fifth element of beta using
 %                 confidence level specified in the second element of input
 %                 option conflev.
 %out.sigma2INT = confidence interval for $\sigma^2$.
-%                1st col = fwd search index;
-%                2nd col = lower confidence limit based on conflev(1);
-%                3rd col = upper confidence limit based on conflev(1);
-%                4th col = lower confidence limit based on conflev(2);
-%                5th col = upper confidence limit based on conflev(2);
-%                ... 
-%                penultimate col = lower confidence limit based on conflev(end);
-%                last col = upper confidence limit based on conflev(end);
-%out.Hetero =  estimate of coefficients of scedastic equation
-%                    1st col = fwd search index
-%                    2nd col = estimate of first coeff of scedastic equation
-%                     ...
+%                1st col = fwd search index; 
+%                2nd col = lower confidence limit based on conflev(1); 
+%                3rd col = upper confidence limit based on conflev(1); 
+%                4th col = lower confidence limit based on conflev(2); 
+%                5th col = upper confidence limit based on conflev(2); 
+%                ...; 
+%                penultimate col = lower confidence limit based on
+%                conflev(end); 
+%                last col = upper confidence limit based on conflev(end).
+%out.Hetero =  estimate of coefficients of scedastic equation: 
+%                    1st col = fwd search index; 
+%                    2nd col = estimate of first coeff of scedastic
+%                    equation; 
+%                    ...; 
 %                   (r+1) col = estimate of last coeff of scedastic
 %                   equation.
 %out.WEI =   Matrix which contains in each column the estimate of the
 %                   weights.
 %     out.y=     A vector with n elements that contains the response
-%               variable which has been used
+%               variable which has been used.
 %     out.X=    Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
-%               input option intercept was missing or equal to 1)
+%               input option intercept was missing or equal to 1).
 %  out.class =  string FSRHeda.
 %
 %

@@ -24,7 +24,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations.
-%     Z :       Predictor variables in the regression equation. Matrix. 
+%     Z :       Predictor variables in the scedastic equation. Matrix. 
 %               n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)

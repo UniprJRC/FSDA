@@ -280,12 +280,22 @@ function outms = FSRms(y,X,varargin)
     % Perform robust model selection and show the generalized candlestick
     % plot.
 
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpms]=FSRms(y,X,'labels',labels,'plots',1);
 %}
 
 %{
     %% Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     n=length(y);
     fin_step=floor([n*0.1 n*0.02]);
     FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7])
@@ -304,6 +314,11 @@ function outms = FSRms(y,X,varargin)
     % Perform robust model selection and show the generalized candlestick
     % plot considering all submodels for each smallp from 2 to size(X).
 
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     [Cpms]=FSRms(y,X,'labels',labels,'ignore',0,'plots',1);
 %}
 
@@ -314,6 +329,11 @@ function outms = FSRms(y,X,varargin)
     % Compare the results using ignore=1 with those with ignore=0
     % default option ignore=1.
 
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1);
     % ignore=0
     [Cpms]=FSRms(y,X,'ignore',0,'smallpint',4:6,'labels',labels,'plots',1);
@@ -325,14 +345,24 @@ function outms = FSRms(y,X,varargin)
     % Changing confidence bands.
     % Same options as before but using different confidence bands.
 
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'quant',[0.01 0.5 0.99])
 %}
 
 %{
     % Personalized LineWidth and CandleWidth.
+
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     LineWidth=2;
     CandleWidth=0.03;
-
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'LineWidth',LineWidth,'CandleWidth',CandleWidth)
 %}
 
@@ -341,7 +371,12 @@ function outms = FSRms(y,X,varargin)
     % For example when fin_step=[0.3 0.1] the central part of the search
     % goes from m=round(n*0.7)=56 to m=round(n*0.9)=72 and the final part
     % of the search goes from m=73 to m=80.
-
+    
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.3 0.1])
 %}
 
@@ -351,6 +386,11 @@ function outms = FSRms(y,X,varargin)
     % goes from m=round(n*0.64)=51 to m=round(n*0.94)=75 and the final part of the search goes from
     % m=76 to m=80.
 
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.36 0.06])
 %}
 
@@ -366,6 +406,11 @@ function outms = FSRms(y,X,varargin)
     % while two reasonable models with 6 variables are (Time,2,4,5,6) and
     % (Time,2,3,4,5).
 
+    X=load('ozone.txt');
+    X(:,end)=log(X(:,end));
+    X=[(-40:39)' X];
+    y=X(:,end);
+    X=X(:,1:end-1);
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5],'CandleWidth',0.01)
 %}
 

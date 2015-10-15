@@ -17,10 +17,10 @@ function [out] = FSRBeda(y, X, varargin)
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations.
 %               PRIOR INFORMATION
-%               \beta is assumed to have a normal distribution with
-%               mean \beta0 and (conditional on tau0) covariance
-%               (1/tau0) (X0'X0)^{-1}
-%               \beta~N(    beta0, (1/tau0) (X0'X0)^{-1}    )
+%               $\beta$ is assumed to have a normal distribution with
+%               mean $\beta_0$ and (conditional on $\tau_0$) covariance
+%               $(1/\tau_0) (X_0'X_0)^{-1}$.
+%               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$
 %
 %
 % Optional input arguments:
@@ -31,34 +31,30 @@ function [out] = FSRBeda(y, X, varargin)
 %               Example - 'intercept',1 
 %               Data Types - double
 %    bayes    : It specifies prior information. Structure.
-%               A structure which specifies prior information
-%               Strucure bayes contains the following fields
-%               bayes.beta0= ( p-times-1 vector containing prior mean of \beta)
-%               bayes.R  =  (p-times-p positive definite matrix which can be
-%                       interepreted as X0'X0 where X0 is a n0 x p matrix
-%                       coming from previous experiments (assuming that the
-%                       intercept is included in the model)
-%
-%               The prior distribution of tau0 is a gamma distribution with
-%               parameters a and b, that is
-%                     p(tau0) \propto \tau^{a0-1} \exp (-b0 \tau)
-%                         E(tau0)= a0/b0
-%
-%               tau0 (scalar. Prior estimate of tau=1/ \sigma^2 =a0/b0)
-%               n0   ( scalar. Sometimes it helps to think of the prior
+%               A structure which specifies prior information.
+%               If structure bayes is not supplied the default values which
+%               are used are: beta0= zeros(p,1) (vector of zeros); R=eye(p) 
+%               (Identity matrix); tau0=1/1e+6 (very large value for the
+%               prior variance, that is a very small value for tau0); n0=1 
+%               (just one prior observation). 
+%               Strucure bayes contains the following fields:
+%               bayes.beta0 =  p-times-1 vector containing prior mean of $\beta$
+%               bayes.R  =     p-times-p positive definite matrix which can be
+%                              interepreted as $X_0'X_0$ where $X_0$ is a n0 x p matrix
+%                              coming from previous experiments (assuming that the
+%                              intercept is included in the model)
+%               bayes.tau0 =   scalar. Prior estimate of $\tau=1/ \sigma^2=a_0/b_0$. 
+%                              The prior distribution of tau0 is a gamma distribution with
+%                              parameters a and b, that is
+%                              $p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0
+%                              \tau)$; 
+%                              $E(\tau_0)= a_0/b_0$.
+%               bayes.n0 = scalar. Sometimes it helps to think of the prior
 %                      information as coming from n0 previous experiments.
-%                      Therefore we assume that matrix X0 (which defines
+%                      Therefore we assume that matrix $X_0$ (which defines
 %                      R), was made up of n0 observations)
 %                  Example - bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
 %                  Data Types - double
-%              REMARK: if structure bayes is not supplied the default
-%                      values which are used are
-%                      beta0= zeros(p,1)  % vector of zeros
-%                      R=eye(p);          % Identity matrix
-%                      tau0=1/1e+6;       % Very large value for the
-%                                         % prior variance, that is a very
-%                                         % small value for tau0
-%                      n0=1;              % just one prior observation
 %       bsb   : list of units forming the initial subset. Vector.
 %                if bsb=0 then the procedure starts with p
 %               units randomly chosen else if bsb is not 0 the search will
@@ -104,111 +100,120 @@ function [out] = FSRBeda(y, X, varargin)
 %   fields:
 %   out.RES=    Scaled residuals. Matrix.
 %               n x (n-init+1) matrix containing the monitoring of
-%               scaled residuals
-%               1st row = residual for first unit ......
+%               scaled residuals. 
+%               1st row = residual for first unit; 
+%               ...; 
 %               nth row = residual for nth unit.
 %   out.LEV=    Leverage. Matrix.
 %               (n+1) x (n-init+1) = matrix containing the monitoring of
-%               leverage
-%               1st row = leverage for first unit ......
+%               leverage. 
+%               1st row = leverage for first unit;
+%               ...; 
 %               nth row = leverage for nth unit.
 %    out.BB=    n x (n-init+1) matrix containing the information about the units belonging
-%               to the subset at each step of the forward search.
-%               1st col = indexes of the units forming subset in the initial step
-%               ...
-%               last column = units forming subset in the final step (all units)
+%               to the subset at each step of the forward search. 
+%               1st col = indexes of the units forming subset in the
+%               initial step; 
+%               ...; 
+%               last column = units forming subset in the final step (all
+%               units).
 %   out.mdrB=     n-init x 3 matrix which contains the monitoring of Bayesian
 %               minimum deletion residual or (m+1)ordered residual  at each
-%               step of the forward search.
-%               1st col = fwd search index (from init to n-1)
-%               2nd col = minimum deletion residual
-%               3rd col = (m+1)-ordered residual
+%               step of the forward search. 
+%               1st col = fwd search index (from init to n-1); 
+%               2nd col = minimum deletion residual; 
+%               3rd col = (m+1)-ordered residual. 
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
-%               it corresponds to a negative residual
+%               it corresponds to a negative residual.
 %   out.msrB=       n-init+1 x 3 = matrix which contains the monitoring of
-%               maximum studentized residual or m-th ordered residual
-%               1st col = fwd search index (from init to n)
-%               2nd col = maximum studentized residual
-%               3rd col = (m)-ordered studentized residual
+%               maximum studentized residual or m-th ordered residual. 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = maximum studentized residual; 
+%               3rd col = (m)-ordered studentized residual. 
 %   out.Coo=        (n-init+1) x 2 matrix containing the monitoring of Cook or
-%               modified Cook distance in each step of the forward search
-%               1st col = fwd search index (from init to n)
-%               2nd col = monitoring of Cook distance
+%               modified Cook distance in each step of the forward search. 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = monitoring of Cook distance. 
 %  out.beta1 =  (n-init+1) x (p+1) matrix containing the monitoring of
-%               posterior mean of \beta (regression coefficents)
-%               beta1 = (c*R + X'X)^{-1} (c*R*beta0 + X'y)
-%    out.Gam    =  (n-init+1) x 3 matrix containing
-%               1st col = fwd search index (from init to n)
-%               2nd col = shape parameter a1 of the posterior gamma distribution of tau
-%               3rd col = scale parameter b1 of the posterior gamma distribution of tau
-%               Remark: a1 = 0.5 (c*n0 + m) where m is subset size
-%                       b1 = 0.5 * ( n0 / tau0 + (y-X*beta1)'y +(beta0-beta1)'*c*R*beta0 )%  out.covbeta1=    p x p x (n-init+1) 3D array containing posterior covariance matrix
-%               (conditional on tau1) of \beta
-%               covbeta1 = (1/tau1) * (c*R + X'X)^{-1}
-%               where tau1 is defined as a1/b1 (that is through the gamma
-%               parameters of the posterior distribution of \tau)
-%               The posterior distribution of \tau is a gamma distribution
-%               with parameters a1 and b1
+%               posterior mean of $\beta$ (regression coefficents)
+%               $\beta_1 = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$
+%    out.Gam    =  (n-init+1) x 3 matrix containing: 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = shape parameter $a_1$ of the posterior gamma
+%               distribution of tau; 
+%               3rd col = scale parameter $b_1$ of the posterior gamma
+%               distribution of tau. 
+%               Remark: $a_1 = 0.5 (c*n0 + m)$ where m is subset size; 
+%                       $b_1 = 0.5 * ( n0 / \tau_0 + (y-X*\beta_1)'y +(\beta_0-\beta_1)'*c*R*\beta_0 )$
+%  out.covbeta1=    p x p x (n-init+1) 3D array containing posterior covariance matrix
+%               (conditional on $tau_1$) of $\beta$. 
+%               $cov(\beta_1) = (1/tau_1) * (c*R + X'X)^{-1}$; 
+%               where $tau_1$ is defined as $a_1/b_1$ (that is through the gamma
+%               parameters of the posterior distribution of $\tau$).
+%               The posterior distribution of $\tau$ is a gamma distribution
+%               with parameters $a_1$ and $b_1$.
 %    out.S21=   (n-init+1) x 3 matrix containing the monitoring of
 %               posterior estimate of $\sigma^2$ and $\tau$  
-%               in each step of the forward search
-%               1st col = fwd search index (from init to n)
+%               in each step of the forward search. 
+%               1st col = fwd search index (from init to n); 
 %               2nd col = monitoring of $\sigma^2_1$ (posterior estimate of
-%               $\sigma^2$)
-%               3rd col = monitoring $\tau_1$ (posterior estimate of $\tau$)
+%               $\sigma^2$); 
+%               3rd col = monitoring $\tau_1$ (posterior estimate of
+%               $\tau$).
 %     out.Bpval =   (n-init+1) x (p+1) containing Bayesian p-values.
-%               p-value = P(|t| > | \hat \beta se(beta) |)
-%               = prob. of beta different from 0
-%               1st col = fwd search index (from init to n)
-%               2nd col = p-value for first variable
-%               ...
-%               (p+1) col = p-value for p-th variable
+%               p-value = $P(|t| > | \hat{\beta} se(beta) |)$
+%               = prob. of beta different from 0. 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = p-value for first variable; 
+%               ...; 
+%               (p+1) col = p-value for p-th variable.
 %out.beta1HPD   =  (n-init+1)-by-2-by-p 3D array.
 %               Bhpd(:,:,1) = lower and upper HPDI of first element of
-%               $\beta_1$ (posterior estimate of $\beta$)
-%               ...
+%               $\beta_1$ (posterior estimate of $\beta$); 
+%               ...; 
 %               Bhpd(:,:,p) = lower and upper HPDI of  last element
-%               of $\beta_1$  (posterior estimate of $\beta$)
-%   out.tau1HPD =  (n-init+1) x 3 containing HPDI for $\tau_1$
-%               1st col = fwd search index (from init to n)
-%               2nd col = lower value of HPDI 
-%               3rd col = upper value of HPDI 
-% out.sigma21HPD =  (n-init+1) x 3 containing HPDI for $\sigma^2_1$
-%               1st col = fwd search index (from init to n)
-%               2nd col = lower value of HPDI 
-%               3rd col = upper value of HPDI 
-%  out.postodds =   (n-init+1)-by-(p+1) matrix which contains posterior odds for betaj=0
-%               For example the posterior odd of beta0=0 is p(y| model which contains
+%               of $\beta_1$  (posterior estimate of $\beta$). 
+%   out.tau1HPD =  (n-init+1) x 3 containing HPDI for $\tau_1$. 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = lower value of HPDI; 
+%               3rd col = upper value of HPDI;  
+% out.sigma21HPD =  (n-init+1) x 3 containing HPDI for $\sigma^2_1$. 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = lower value of HPDI; 
+%               3rd col = upper value of HPDI. 
+%  out.postodds =   (n-init+1)-by-(p+1) matrix which contains posterior odds for $\beta_j=0$. 
+%               For example the posterior odd of $\beta_0=0$ is p(y| model which contains
 %               all expl variables except the one associated with beta0) divided by
-%               p(y| model which contains all expl variables)
-%               1st col = fwd search index (from init to n)
-%               2nd col = posterior odd for beta1
-%               ...
-%               (p+1) col = posterior odd for betap
+%               p(y| model which contains all expl variables). 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = posterior odd for beta1; 
+%               ...; 
+%               (p+1) col = posterior odd for betap. 
 % out.modelprob =  (n-init+1)-by-(p+1) matrix which contains
 %               posterior model probability of the model which excludes
 %               variable j. For example if modelprob(j)= 0.28, that is if
 %               the probability of the model which does not contain
 %               variable j is equal to 0.28, it means that there is a 28%
-%               chance that beta_j=0 and a 72% chance that it is not.
-%               1st col = fwd search index (from init to n)
-%               2nd col = posterior model prob of the model which excludes beta1
-%               ...
+%               chance that beta_j=0 and a 72% chance that it is not. 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = posterior model prob of the model which excludes
+%               $\beta_1$; 
+%               ...; 
 %               (p+1) col = posterior model prob of the model which
-%               excludes betap
+%               excludes betap. 
 %    out.Un=        (n-init) x 11 matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search
+%               included in the subset at each step of the fwd search. 
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
-%               units included in the final step of the search
+%               units included in the final step of the search.
 %     out.y=        A vector with n elements that contains the response
-%               variable which has been used
+%               variable which has been used.
 %     out.X=       Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
-%               input option intercept was missing or equal to 1)
+%               input option intercept was missing or equal to 1).
 %out.class =    string FSRBeda.
 %
 %
