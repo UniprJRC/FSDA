@@ -378,8 +378,9 @@ if ~isempty(h)
     hfigh = get(h,'Parent');
     
     set(hfigh,'Name','Residual plots','NumberTitle','off');
-    set(h,'Tag','res_subplot');
-    copyobj(allchild(afig),h);
+    set(h,'Tag','res_subplot'); 
+    copyobj(allchild(afig),h); 
+    pause(0.0000001); 
     delete(hfig);
     hline2 = findobj(h, 'Tag','conflevline');
     hlineh = flipud(hline2);
@@ -387,7 +388,6 @@ if ~isempty(h)
         clickableMultiLegend(hlineh(1:numconflev),legendstring2);
     else
         legend_h = legend(hlineh(1:numconflev),legendstring2);
-        
         %         verMatlab=verLessThan('matlab','8.4.0');
         %         if verMatlab
         %             legend(legend_h,'hide');
@@ -405,8 +405,7 @@ if ~isempty(h)
     ylabel(gca,laby,'Fontsize',FontSize);
     % Set the font size for the axes numbers
     set(gca,'FontSize',SizeAxesNum);
-    
-    
+
 else
     % If the resindexplot has not to be sent in a different figure/subplot
     % add the figure title and axis labels, and set their FontSize
@@ -424,8 +423,6 @@ if ~isempty(options.xlimx)
 else
     xlim([0 n+1])
 end
-
-
 
 % The options labeladd, bivarfit, persist and multivarfit, must be removed
 % from cell options.databrush, because they are not valid options for
