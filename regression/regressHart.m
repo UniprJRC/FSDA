@@ -69,10 +69,10 @@ function [out]=regressHart(y,X,Z,varargin)
 %               Data Types - double
 %     tol     : The tolerance for controlling convergence. Scalar.
 %               If not defined, tol is fixed to 1e-8. Convergence is
-%               obtained if ||d_old-d_new||/||d_new||<1e-8 where d is the
+%               obtained if $||d_{old}-d_{new}||/||d_{new}||<1e-8$ where d is the
 %               vector of length p+r+1 which contains regression and scedastic
-%               coefficients d=(\beta' \gamma')'; while d_old and d_new are
-%               the values of d in iterations t and t+1 t=1,2, ..., maxiter
+%               coefficients $d=(\beta' \gamma')'$; while $d_{old}$ and $d_{new}$ are
+%               the values of d in iterations t and t+1 t=1,2,...,maxiter.
 %               Example - 'tol',0.0001
 %               Data Types - double
 %    msgiter : Level of output to display. Scalar.
@@ -98,15 +98,18 @@ function [out]=regressHart(y,X,Z,varargin)
 %
 %  The output consists of a structure 'out' containing the following fields
 %
-%           out.Beta  = p-by-3 matrix containing
-%                       1st col = Estimates of regression coefficients
-%                       2nd col = Standard errors of the estimates of regr coeff
-%                       3rd col = t-tests of the estimates of regr coeff
-%           out.Gamma = (r+1)-by-3 matrix containing
-%                       1st col = Estimates of scedastic coefficients
-%                       2nd col = Standard errors of the estimates of scedastic coeff
-%                       3rd col = t tests of the estimates of scedastic coeff
-%          out.sigma2 = scalar. Estimate of \sigma^2 (sum of squares of
+%           out.Beta  = p-by-3 matrix containing: 
+%                       1st col = Estimates of regression coefficients; 
+%                       2nd col = Standard errors of the estimates of regr
+%                       coeff; 
+%                       3rd col = t-tests of the estimates of regr coeff. 
+%           out.Gamma = (r+1)-by-3 matrix containing: 
+%                       1st col = Estimates of scedastic coefficients; 
+%                       2nd col = Standard errors of the estimates of
+%                       scedastic coeff; 
+%                       3rd col = t tests of the estimates of scedastic
+%                       coeff. 
+%          out.sigma2 = scalar. Estimate of $\sigma^2$ (sum of squares of
 %                       residuals divided by n in the transformed scale)
 %              out.WA = scalar. Wald test
 %              out.LR = scalar. Likelihood ratio test

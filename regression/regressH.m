@@ -88,7 +88,7 @@ function out=regressH(y,X,Z,varargin)
 %               obtained if \( ||d_{old}-d_{new}||/||d_{new}||<1e-8 \)
 %               where \( d \) is the vector of length p+r+1 which contains
 %               regression and scedastic coefficients \( d=(\beta' \;
-%               \gamma')' \) ; while \( d_{old} \) and \(d_{new} \) are the
+%               \gamma')' \); while \( d_{old} \) and \(d_{new} \) are the
 %               values of d in iterations t and t+1 t=1,2, ..., maxiter
 %               Example - 'tol',0.0001 
 %               Data Types - double
@@ -107,14 +107,17 @@ function out=regressH(y,X,Z,varargin)
 %
 %         out:   structure which contains the following fields
 %
-%           out.Beta  = p-by-3 matrix containing
-%                       1st col = Estimates of regression coefficients
-%                       2nd col = Standard errors of the estimates of regr coeff
-%                       3rd col = t-tests of the estimates of regr coeff
-%           out.Gamma = (r+1)-by-3 matrix containing
-%                       1st col = Estimates of scedastic coefficients
-%                       2nd col = Standard errors of the estimates of scedastic coeff
-%                       3rd col = t tests of the estimates of scedastic coeff
+%           out.Beta  = p-by-3 matrix containing: 
+%                       1st col = Estimates of regression coefficients; 
+%                       2nd col = Standard errors of the estimates of regr
+%                       coeff; 
+%                       3rd col = t-tests of the estimates of regr coeff. 
+%           out.Gamma = (r+1)-by-3 matrix containing: 
+%                       1st col = Estimates of scedastic coefficients; 
+%                       2nd col = Standard errors of the estimates of
+%                       scedastic coeff; 
+%                       3rd col = t tests of the estimates of scedastic
+%                       coeff.
 %              out.WA = scalar. Wald test
 %              out.LR = scalar. Likelihood ratio test
 %              out.LM = scalar. Lagrange multiplier test

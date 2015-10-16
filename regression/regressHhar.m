@@ -97,14 +97,17 @@ function [out]=regressHhar(y,X,Z,varargin)
 %
 %  The output consists of a structure 'out' containing the following fields
 %
-%           out.Beta  = p-by-3 matrix containing
-%                       1st col = Estimates of regression coefficients
-%                       2nd col = Standard errors of the estimates of regr coeff
-%                       3rd col = t-tests of the estimates of regr coeff
-%           out.Gamma = (r+1)-by-3 matrix containing
-%                       1st col = Estimates of scedastic coefficients
-%                       2nd col = Standard errors of the estimates of scedastic coeff
-%                       3rd col = t tests of the estimates of scedastic coeff
+%           out.Beta  = p-by-3 matrix containing: 
+%                       1st col = Estimates of regression coefficients; 
+%                       2nd col = Standard errors of the estimates of regr
+%                       coeff; 
+%                       3rd col = t-tests of the estimates of regr coeff.
+%           out.Gamma = (r+1)-by-3 matrix containing: 
+%                       1st col = Estimates of scedastic coefficients; 
+%                       2nd col = Standard errors of the estimates of
+%                       scedastic coeff; 
+%                       3rd col = t tests of the estimates of scedastic
+%                       coeff. 
 %                       Remark: the first row of matrix out.Gamma is
 %                       referred to the estimate of \( \sigma^2 \). In
 %                       other words 

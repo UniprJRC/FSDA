@@ -37,19 +37,16 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                 Example - 'eff',0.99
 %                 Data Types - double
 %     rhofunc : rho function. String. String which specifies the rho function which must be used to
-%               weight the residuals. Possible values are
-%               'bisquare'
-%               'optimal'
-%               'hyperbolic'
-%               'hampel'. 
-%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
-%               See TBrho and TBpsi
-%               'optimal' uses optimal $\rho$ and $\psi$ functions.
-%               See OPTrho and OPTpsi
-%               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
-%               See HYPrho and HYPpsi
-%               'hampel' uses Hampel $\rho$ and $\psi$ functions.
-%               See HArho and HApsi
+%               weight the residuals. Possible values are 'bisquare',
+%               'optimal', 'hyperbolic', 'hampel'. 
+%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions, see
+%               TBrho and TBpsi.
+%               'optimal' uses optimal $\rho$ and $\psi$ functions, see
+%               OPTrho and OPTpsi.
+%               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions,
+%               see HYPrho and HYPpsi.
+%               'hampel' uses Hampel $\rho$ and $\psi$ functions, see HArho
+%               and HApsi. 
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
 %                 Data Types - char
@@ -103,7 +100,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                 Example - 'bestr',10 
 %                 Data Types - single | double
 %     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar
+%               used to declare units as outliers. Scalar. 
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
@@ -173,7 +170,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                       a, b and c
 %            out.y    = Response vector y. The field is present if option
 %                       yxsave is set to 1.
-%            out.X    : Data matrix X. The field is present if option
+%            out.X    = Data matrix X. The field is present if option
 %                       yxsave is set to 1.
 %
 %  Optional Output:
@@ -241,7 +238,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %}
 
 %{
-    % Taureg with optimal rho function
+    % Taureg with optimal rho function.
     n=200;
     p=3;
     randn('state', 123456);
@@ -255,7 +252,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %}
 
 %{
-    % Taureg with hyperbolic rho function
+    % Taureg with hyperbolic rho function.
     n=200;
     p=3;
     randn('state', 123456);
@@ -269,7 +266,8 @@ function [out , varargout] = Taureg(y, X, varargin)
 %}
 
 %{
-    % Taureg with Hampel rho function with parameters a=1.5 b=3.5 c=8
+    % Taureg with Hampel rho function.
+    % With parameters a=1.5 b=3.5 c=8. 
     n=200;
     p=3;
     randn('state', 123456);

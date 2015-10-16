@@ -220,6 +220,12 @@ function [out , varargout] = LXS(y,X,varargin)
 %{
     % LXS with optional arguments.
     % Compute LMS estimator, reweight and plot the residuals.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    y(1:5)=y(1:5)+6;
     [out]=LXS(y,X,'rew',1,'plots',1);
 %}
 
@@ -227,6 +233,12 @@ function [out , varargout] = LXS(y,X,varargin)
     % LXS with optional output.
     % Generating the C matrix containing the indices of the subsamples 
     % extracted for computing the estimate (the so called elemental sets).                  
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    y(1:5)=y(1:5)+6;
     [out,C]=LXS(y,X);
 %}
 
@@ -234,12 +246,24 @@ function [out , varargout] = LXS(y,X,varargin)
     % Reweighted LTS estimator.
     % Compute reweighted LTS estimator and produce the plot of
     % residuals.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    y(1:5)=y(1:5)+6;
     [out]=LXS(y,X,'rew',1,'lms',0,'plots',1);
 %}
 
 %{
     % Specifying the number of subsamples.
     % Compute LMS estimator, without plots using 20000 subsamples.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    y(1:5)=y(1:5)+6;
     [out]=LXS(y,X,'nsamp',20000);
 %}
 
@@ -247,6 +271,12 @@ function [out , varargout] = LXS(y,X,varargin)
     % Specifying a confidence level.
     % Compute reweighted LMS and use a confidence level for outlier
     % detection equal to 0.999.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    y(1:5)=y(1:5)+6;
     [out]=LXS(y,X,'rew',1,'conflev',0.999);
 %}
 
@@ -259,6 +289,12 @@ function [out , varargout] = LXS(y,X,varargin)
     lms.refsteps=5;
     % Store the best 10 subsets
     lms.bestr=10;
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    y(1:5)=y(1:5)+6;
     [out]=LXS(y,X,'lms',lms,'plots',1);
 %}
 
