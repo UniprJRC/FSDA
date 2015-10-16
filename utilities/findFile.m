@@ -67,15 +67,21 @@ function list = findFile(root,varargin)
 %
 %{
     %% findFile with all default options.
+    %find the location of findFile.m
     FullPath=which('findFile');
+    %extract the directory containing findFile.m
     root=FullPath(1:end-length('findFile.m')-1);
+    %list the content of the directory containing findFile.m
     list = findFile(root)
 %}   
 %
 %{
     % findFile with otpional arguments.
+    %find the location of findFile.m
     FullPath=which('findFile');
-    root=FullPath(1:end-length('findFile.m')-1);
+    %extract the root directory of FSDA
+    root=FullPath(1:strfind(FullPath,'FSDA')+3);
+    %list the content of the directory under FSDA named 'graphics'
     list = findFile(root,'InclDir','graphics')
 %}   
 
