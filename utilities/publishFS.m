@@ -2463,7 +2463,8 @@ for i=1:nseealso
             else % reference is towards a MATLAB function or a function of another toolbox
                 pathdocroot=docroot;
                 % Find path of .html documentation file
-                pathExtHelpFile=searchfile(pathdocroot,[Seealsoitem '.html']);
+                pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);
+                
                 if isempty(pathExtHelpFile)
                     error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
                 end
