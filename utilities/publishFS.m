@@ -2617,7 +2617,8 @@ if ~isempty(listEx)
     Core=strrep(Core,'\(','\\(');
     Core=strrep(Core,'\)','\\)');
     Core=strrep(Core,'\b','\\b');
-    
+    Core=strrep(Core,'\lam','\\lam');
+   
     OnThisPageExamples=([Ini Core Fin]);
 else
     OnThisPageExamples='';
@@ -2636,6 +2637,8 @@ if ~isempty(listExtraEx)
     Core=strrep(Core,'\(','\\(');
     Core=strrep(Core,'\)','\\)');
     Core=strrep(Core,'\b','\\b');
+    Core=strrep(Core,'\lam','\\lam');
+    
     
     OnThisPageExtraExamples=([Ini Core Fin]);
 else

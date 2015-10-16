@@ -171,7 +171,7 @@ function [out]=FSRfan(y,X,varargin)
 %   Springer Verlag, New York.
 %   Atkinson, A.C. and Riani, M. (2002a). Tests in the fan plot for robust,
 %   diagnostic transformations in regression, Chemometrics and Intelligent
-%   Laboratory Systems, Vol. 60, pp. 87–100.
+%   Laboratory Systems, Vol. 60, pp. 87-100.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -185,17 +185,17 @@ function [out]=FSRfan(y,X,varargin)
 %{
     %% FSRfan with all default options.
     % Store values of the score test statistic
-    % for the five most common values of lambda.
+    % for the five most common values of $\lambda$.
     % Produce also a fan plot and display it on the screen.
     % Common part to all examples: load wool dataset.
     XX=load('wool.txt');
     y=XX(:,end);
     X=XX(:,1:end-1);
-% Function FSRfan stores the score test statistic. 
-% In this case we use the five most common values of lambda are considered
+    % Function FSRfan stores the score test statistic. 
+    % In this case we use the five most common values of lambda are considered
     [out]=FSRfan(y,X);
     fanplot(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.
+    %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.
 %}
 
 %{
@@ -206,8 +206,8 @@ function [out]=FSRfan(y,X,varargin)
 %}
 
 %{
-    % Example specifying \lambda.
-    % Produce a fan plot for each value of \lambda inside vector la. 
+    % Example specifying $\lambda$.
+    % Produce a fan plot for each value of $\lambda$ inside vector la. 
     % Extract in matrix Un the units which entered the search in each step
     la=[-1 -0.5 0 0.5];
     [out]=FSRfan(y,X,'la',la,'plots',1);
