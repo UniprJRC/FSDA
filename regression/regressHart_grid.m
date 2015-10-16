@@ -57,12 +57,40 @@ function [out] = regressHart_grid(y,X,Z,varargin)
 %               Example - 'nocheck',1
 %               Data Types - double
 %
+%         out:   structure which contains the following fields
+%
+%out.Beta =  estimate of coefficients of regression equation. 
+%            px1 vector. 
+%out.Gamma= vector of length 2 containing estimates of skedastic
+%           coefficients
+%           1st elements = log (sigma2)
+%           2nd element = estimate of alpha
+%           The skedastic equation is 
+%           omegahat=1+exp(out.Gamma(1,1))*exp(Z*out.Gamma(2,1))
+%out.LogLmin= value of minimized  negative log lik. Scalar.
+%out.sigma2= estimate of sigma2
+%
+%
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%
+%<a href="matlab: docsearchFS('regressHart_grid')">Link to the help function</a>
 % Last modified 06-Feb-2015
+
+% Examples:
+
+%
+%{
+    % Random grid search (using simulated homoskedastic data).
+    n=50;
+    p=3;
+    y=randn(n,1);
+    X=randn(n,p);
+    Z=exp(randn(n,1));
+    HET = regressHart_grid(y,X,exp(Z))
+
+%}
 
 %% Beginning of code
 
@@ -165,7 +193,7 @@ out.GammaOLD=gg(indmin);
 out.alphaOLD=aa(indmin);
 
 %Store value of maximized log likelihood
-out.logL=loglik(indmin);
+out.LogLmin=loglik(indmin);
 
 plots=options.plots;
 

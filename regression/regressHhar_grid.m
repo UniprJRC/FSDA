@@ -40,23 +40,60 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
 %               the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
-%  nocheck:   Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
+%  plots :    Plot on the screen. Scalar.
+%               If equal to one a plot of profile loglikelihood
+%               appears  on the screen 
+%               else (default) no plot is shown.
+%                 Example - 'plots',1
+%                 Data Types - double
+%   alpha  :   coefficient in the skedastic equation. Vector. Vector of
+%               length r containing the values of coefficient alpha to
+%               consider in the grid search. The default value for alpha is
+%               alpha=0.1:0.1:4;
+%               Example - 'alpha',0.1:0.1:5
 %               Data Types - double
+%
+% Output:
+%
+%         out:   structure which contains the following fields
+%
+%out.Beta =  estimate of coefficients of regression equation. 
+%            px1 vector. 
+%out.Gamma= vector of length 2 containing estimates of skedastic
+%           coefficients
+%           1st elements = log (sigma2)
+%           2nd element = estimate of alpha
+%           The skedastic equation is 
+%            omegahat=exp(Z*HET.Gamma(2:end,1))
+%out.LogLmin= value of minimized negative log lik. Scalar.
+% out. LogL= Value of Log lik for each value of alpha.
+%            1st col = values of alpha
+%            2nd col = values of log lik
+%out.sigma2= estimate of sigma2
 %
 %
 % Copyright 2008-2015.
-%
 % Written by FSDA team
 %
 %
+%<a href="matlab: docsearchFS('regressHhar_grid')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
+% Examples:
 
+%
+%{
+    % Random grid search (using simulated homoskedastic data).
+    n=50;
+    p=3;
+    y=randn(n,1);
+    X=randn(n,p);
+    Z=exp(randn(n,1));
+    HET = regressHhar_grid(y,X,exp(Z))
+
+%}
+
+%% Beginning of code
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
@@ -120,3 +157,5 @@ out.LogLmin=LogLmin;
 out.LogL=LogL;
 out.sigma2=sigma2all(indmin);
 end
+
+
