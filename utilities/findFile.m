@@ -1,6 +1,6 @@
 function list = findFile(root,varargin)
-% findFile finds recursively all files in root. 
-% 
+% findFile finds recursively all files in root.
+%
 % <a href="matlab: docsearchFS('findFile')">Link to the help function</a>
 %
 %
@@ -9,13 +9,13 @@ function list = findFile(root,varargin)
 %   root:       Root directory. String. Case sensitive string that can indicate
 %               relative or absolute path. Use '.' for current directory.
 %               Data Types - string
-%           
+%
 %
 % Optional input arguments:
 %
 %   InclDir:    Include directory pattern(s). String or cell arrays of
 %               strings. User can use wildcards. Do not use regular expression,
-%               for examples 'abc' and 'ab*de*'. File separator (i.e. '\' in 
+%               for examples 'abc' and 'ab*de*'. File separator (i.e. '\' in
 %               Windows or '/' in Unix) is not allowed. Case-sensitive.
 %               This filter is skipped if InclDir='', InclDir={},
 %               InclDir='*' or if one of the element of the cell array
@@ -25,21 +25,21 @@ function list = findFile(root,varargin)
 %   ExclDir:    Exclude directory pattern(s). String or cell arrays of
 %               strings. User can use wildcards. Do not
 %               use regular expression. Examples: 'abc' and 'ab*de*'. Use ''
-%               or {} to skip this stage. File separator (i.e. '\' in 
+%               or {} to skip this stage. File separator (i.e. '\' in
 %               Windows or '/' in Unix) is not allowed. Case-sensitive. Default: ExclDir={''}.
 %               Example - 'ExclDir','dirname'
 %               Data Types - (cell array of) string
 %   InclFiles:  Include file pattern(s). String or cell arrays of
 %               strings. User can use wildcards. Do not use regular expression.
-%               Use '*' to include all files. Note that '*' and '*.*' give 
-%               the same behaviour and return all files. File separator 
+%               Use '*' to include all files. Note that '*' and '*.*' give
+%               the same behaviour and return all files. File separator
 %               (i.e. '\' in Windows or '/' in Unix) is not allowed.
 %               Case-sensitive. Default: InclFile={'*'}.
 %               Example - 'InclFiles','filename'
 %               Data Types - (cell array of) string
 %   ExclFiles:  Exclude file pattern(s). String or cell arrays of
 %               strings. User can use wildcards. Do not use regular expression.
-%               Use '' or {} to skip this check. File separator (i.e. '\' 
+%               Use '' or {} to skip this check. File separator (i.e. '\'
 %               in Windows or '/' in Unix) is not allowed.
 %               Case-sensitive. Default: ExclFiles={''}.
 %               Example - 'ExclFiles','filename'
@@ -47,9 +47,9 @@ function list = findFile(root,varargin)
 %
 % Output:
 %
-%   list:       All files. Cell array of strings. List of all 
+%   list:       All files. Cell array of strings. List of all
 %               files matched under root directory, sorted in alphabetical
-%               and ascending order. Always return absolute path. 
+%               and ascending order. Always return absolute path.
 %
 %
 % See also: findDir
@@ -73,7 +73,7 @@ function list = findFile(root,varargin)
     root=FullPath(1:end-length('findFile.m')-1);
     %list the content of the directory containing findFile.m
     list = findFile(root)
-%}   
+%}
 %
 %{
     % findFile with otpional arguments.
@@ -83,8 +83,25 @@ function list = findFile(root,varargin)
     root=FullPath(1:strfind(FullPath,'FSDA')+3);
     %list the content of the directory under FSDA named 'graphics'
     list = findFile(root,'InclDir','graphics')
-%}   
+%}
 
+%{
+    %list the content of the directory under FSDA named 'graphics'
+    % and exclude all those which start with res
+    %find the location of findFile.m
+    FullPath=which('findFile');
+    %extract the root directory of FSDA
+    root=FullPath(1:strfind(FullPath,'FSDA')+3);
+    list = findFile(root,'InclDir','graphics','ExclFiles','res*')
+%}
+
+%{
+    % find the location of help file gplotmatrix.html.
+    pathdocroot=docroot;
+    pathExtHelpFile=findFile(pathdocroot,'InclFiles','gplotmatrix.html');
+%}
+
+%% Beginning of code
 
 % Assign input arguments.
 options=struct('InclDir',{''},'ExclDir',{''},'InclFiles',{'*'},'ExclFiles',{''});
@@ -113,7 +130,11 @@ ExclFiles=options.ExclFiles;
 
 % Check root.
 if ~ischar(root)
-    error('root is not a string.');
+    error('FSDA:findFile:WrongInputOpt','root is not a string.');
+end
+
+if isempty(root)
+    error('FSDA:findFile:WrongInputOpt','root is empty.');
 end
 
 % Force InclFiles and ExclFiles to be a cell array of string.
@@ -136,12 +157,12 @@ end
 c = strfind(InclFiles, filesep);
 c = [c{:}];
 if ~isempty(c)
-    error('One of the InclFiles file patterns contains file separator.');
+    error('FSDA:findFile:WrongInputOpt','One of the InclFiles file patterns contains file separator.');
 end
 c = strfind(ExclFiles, filesep);
 c = [c{:}];
 if ~isempty(c)
-    error('One of the ExclFiles patterns contains file separator.');
+    error('FSDA:findFile:WrongInputOpt','One of the ExclFiles patterns contains file separator.');
 end
 
 
@@ -150,31 +171,40 @@ alldirs = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir);
 
 
 % Find all files that match.
-list = {};
+list=cell(10000,1);
+ij=1;
 for m = 1:length(alldirs)
-    for n = 1:length(InclFiles)
-        filelist = dir(fullfile(alldirs{m}, InclFiles{n}));
+    for i = 1:length(InclFiles)
+        filelist = dir(fullfile(alldirs{m}, InclFiles{i}));
         filelist = filelist(~[filelist.isdir]);
         for k = 1:length(filelist)
-            list{end+1} = fullfile(alldirs{m}, filelist(k).name);
+            list{ij}=fullfile(alldirs{m}, filelist(k).name);
+            ij=ij+1;
         end
     end
 end
-            
+if ij>1
+    list=list(1:ij-1);
+end
+
+
 % Remove files from match according to excludefile.
 if ~isempty(ExclFiles)
-    midx = [];
-    for n = 1:length(list)
-        [~, name, ext] = fileparts(list{n});
+    % booToDelete = Boolean vector which contains a true in
+    % correspondence of the elements of list which have to be removed
+    booToDelete = false(length(list),1);
+    for i = 1:length(list)
+        [~, name, ext] = fileparts(list{i});
         filename = [name, ext];
         c = regexp(filename, regexptranslate('wildcard', ExclFiles), 'match');
         c = [c{:}];
         if any(strcmp(filename, c))
-            midx = [midx, n];
+            booToDelete(i)=true;
         end
     end
-    list(midx) = [];
+    list(booToDelete) = [];
 end
 
 % Sort files.
 list = sort(list);
+end
