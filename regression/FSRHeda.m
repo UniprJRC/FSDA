@@ -33,9 +33,9 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               Therefore, if for example the explanatory variables
 %               responsible for heteroscedasticity are columns 3 and 5
 %               of matrix X, it is possible to use both the sintax:
-%                    FSRH(y,X,X(:,[3 5]))
+%                    FSRHeda(y,X,X(:,[3 5]))
 %               or the sintax:
-%                    FSRH(y,X,[3 5])
+%                    FSRHeda(y,X,[3 5])
 %   bsb :       list of units forming the initial
 %               subset. Vector or scalar. If bsb=0 (default) then the procedure starts with p
 %               units randomly chosen else if bsb is not 0 the search will
@@ -255,20 +255,15 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 % Examples:
 
 %{
-    % FSRHeda with all default options.
-    % Example of use of FSRHeda based on a starting point coming
-    % from LMS.
-    n=200;
-    p=1;
-    randn('state', 123456);
-    X=randn(n,p);
-    % Uncontaminated data
-    y=randn(n,1);
-    % Contaminated data
-    ycont=y;
-    ycont(1:5)=ycont(1:5)+6;
+    %% FSRHeda with all default options.
+    % Common part to all examples: load tradeH dataset (used in the paper ART).
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     [out]=LXS(y,X,'nsamp',1000);
-    out=FSRHeda(y,X,log(X),out.bs);
+    out1=FSRHeda(y,X,Z,out.bs);
 %}
 
 %{
@@ -422,38 +417,6 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %}
 
 %% Input parameters checking
-%this example is run as a demonstration in case the user runs FSRHeda
-%without input parameters.
-if nargin < 1
-    stack_loss = load('stack_loss.txt');
-    y = stack_loss(:,4);
-    X = stack_loss(:,1);
-    Z = stack_loss(:,1);
-    % LMS using all subsets
-    [out] = LXS(y,X,'nsamp',0);
-    % Forward search with EDA purposes
-    [out1] = FSRHeda(y,X,Z,out.bs,'init',5);
-    % Create scaled squared residuals
-    out1.RES = out1.RES.^2;
-    % Specify the characteristics of the highlighted trajectories
-    fground=struct;
-    fground.LineStyle={'-';'--';':';'-.'};
-    fground.LineWidth=3;
-    fground.Color={'r'};
-    % Plot of monitoring of scaled squared residuals
-    resfwdplot(out1,'fground',fground)
-    title('Monitoring squared scaled residuals for Stack loss dataset')
-    noargmsg = sprintf(['To use FSRHeda with your own data y (response vector) and X (design matrix), type:\n\n' ...
-        '    [out]=LXS(y,X) \n' ...
-        '    [out]=FSRHeda(y,X,out.bs)\n' ...
-        '    resfwdplot(out) \n\n' ...
-        'Type "help FSRHeda" for more information\n\n' ...
-        'Click OK to view the monitoring residual plot for the stack loss data.']);
-    titl = 'Example of the use of the Forward search with EDA purposes';
-    [cdata, colormap] = imread('logo.png','BackgroundColor',(240/255)*[1 1 1]);
-    msgbox(noargmsg,titl,'custom',cdata,colormap,'modal');
-    return
-end
 
 nnargin = nargin;
 vvarargin = varargin;
@@ -667,6 +630,9 @@ else
     art = 0;
 end
 
+% complementary of bsb
+ncl=setdiff(seq,bsb);
+
 hhh = 1;
 %% Start of the forward search
 if (rank(Xb) ~= p)
@@ -691,7 +657,7 @@ else
                 else
                     if size(Zb,2) == 1
                         % Use grid search algorithm if Z has just one column
-                        HET = regressHart_grid(yb,Xb(:,end),exp(Zb),'intercept',options.intercept);
+                        HET = regressHart_grid(yb,Xb(:,2:end),exp(Zb),'intercept',options.intercept);
                     else
                         HET = regressHart(yb,Xb(:,2:end),Zb,'intercept',options.intercept);
                     end
@@ -738,11 +704,7 @@ else
             b = HET.Beta(:,1);
             resBSB = yb-Xb*b;
             blast = b; 
-            %{
-            b=Xb\yb;
-            resBSB=yb-Xb*b;
-            blast=b;   % Store correctly computed b for the case of rank problem
-            %}
+  
         else   % number of independent columns is smaller than number of parameters
             warning('FSDA:FSRHeda','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
             b = blast;
@@ -766,20 +728,13 @@ else
                 % Store parameters of the scedastic equation
                 Hetero(mm-init+1,2:end) = HET.Gamma(:,1)';
                 
-                % Compute and store estimate of sigma^2
-                % using y and X transformed
-                Sb = (resBSB)'*(resBSB)/(mm-p);
-                S2(mm-init+1,2) = Sb;
-                % Store R2
-                S2(mm-init+1,3) = 1-var(resBSB)/var(yb);
-
                 % Store beta coefficients
                 Bgls(mm-init+1,2:p+1) = b';
                 
                 % Measure of asymmetry
                 sqb1 = (sum(resBSB.^3)/mm) / (sum(resBSB.^2)/mm)^(3/2);
                 
-                % Measure of Kurtosis  */
+                % Measure of Kurtosis  
                 b2 = (sum(resBSB.^4)/mm) / (sum(resBSB.^2)/mm)^2;
                 
                 % Asymmetry test
@@ -893,18 +848,21 @@ else
                     end
                     
                     % Store minimum deletion residual in 2nd col of matrix mdr
-                     selmdr = sortrows(ord,1);
+                      selmdr=sortrows(ord(ncl,:),1);
+                     
                     if S2(mm-init+1,2) == 0
-                        warning('FSDA:FSRHmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init+1);
+                        warning('FSDA:FSRHeda:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init+1);
                     else
-                        %mdr(mm-init+1,2)=sqrt(selmdr(1,1)/HET.sigma2);
-                        mdr(mm-init+1,2) = sign(selmdr(1,2))*sqrt(selmdr(1,1)/S2(mm-init+1,2));
+                        mdr(mm-init+1,2)=sqrt(selmdr(1,1)/HET.sigma2);
+                        % mdr(mm-init+1,2) = sign(selmdr(1,2))*sqrt(selmdr(1,1)/S2(mm-init+1,2));
                     end
        
                     % Store (m+1) ordered pseudodeletion residual in 3rd col of matrix
                     % mdr
                     selmdr = sortrows(ord,1);
-                    mdr(mm-init+1,3) = sign(selmdr(mm+1,2))*sqrt(selmdr(mm+1,1)/S2(mm-init+1,2));
+                    % mdr(mm-init+1,3) = sign(selmdr(mm+1,2))*sqrt(selmdr(mm+1,1)/S2(mm-init+1,2));
+                    mdr(mm-init+1,3) = sign(selmdr(mm+1,2))*sqrt(selmdr(mm+1,1)/HET.sigma2);
+                    
                 end % NoRankProblem
             end
             
@@ -925,6 +883,12 @@ else
             yb = y(bsb);    % subset of y
             Zb = Z(bsb,:);  % subset of Z
             
+             if mm < n-1;
+                % ncl= units forming the new noclean
+                ncl=ord(mm+2:n,1);
+                
+            end
+
             if mm >= init;
                 unit = setdiff(bsb,oldbsb);
                 if length(unit) <= 10
@@ -933,14 +897,6 @@ else
                     disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                     Un(mm-init+1,2:end) = unit(1:10);
                 end
-            end
-            
-            
-            if mm < n-1;
-                
-                % ncl= units forming the new noclean
-                %ncl = ord(mm+2:n,1);
-                
             end
         end
         
@@ -953,8 +909,6 @@ else
                 elseif strcmp(options.tstat,'trad')
                     Tgls(mm-init+1,2:end) = Bgls(mm-init+1,2:end)./sqrt(Sb*dmmX');
                 end
-                
-                
                 
                 % Compute highest posterior density interval for each value of
                 % Tinvcdf = required quantiles of T distribution
