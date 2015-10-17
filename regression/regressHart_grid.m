@@ -43,12 +43,6 @@ function [out] = regressHart_grid(y,X,Z,varargin)
 %               theta=[0.001 0.01 0.1 1 1.71 10:120 500 1000 5000 10000 50000];
 %               Example - 'theta',0.1:0.1:5
 %               Data Types - double
-%  plots :    Plot on the screen. Scalar.
-%               If equal to one a plot of profile loglikelihood
-%               appears  on the screen 
-%               else (default) no plot is shown.
-%                 Example - 'plots',1
-%                 Data Types - double
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -90,6 +84,48 @@ function [out] = regressHart_grid(y,X,Z,varargin)
     Z=exp(randn(n,1));
     HET = regressHart_grid(y,X,exp(Z))
 
+%}
+
+%{
+    %% regressHart_grid with all default options.
+    % The data in Appendix Table F6.1 were used in a study of efficiency in
+    % production of airline services in Greene (2007a). See p. 557 of Green (7th edition).
+    % Common part to all examples: load TableF61_Greene dataset.
+
+    load('TableF61_Greene');
+    Y=TableF61_Greene.data;
+
+    Q=log(Y(:,4));
+    Pfuel=log(Y(:,5));
+    Loadfactor=Y(:,6);
+    n=size(Y,1);
+    X=[Q Q.^2 Pfuel];
+    y=log(Y(:,3));
+
+    whichstats={'beta', 'r','tstat'};
+    OLS=regstats(y,X,'linear',whichstats);
+
+    disp('Ordinary Least Squares Estimates')
+    LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];
+    disp(LSest)
+    out=regressHart_grid(y,X,Loadfactor);
+%}
+
+%{
+    % regressHart with optional arguments.
+    % Estimate a multiplicative heteroscedastic model and print the
+    % estimates of regression and scedastic parameters together with LM, LR
+    % and Wald test
+    load('TableF61_Greene');
+    Y=TableF61_Greene.data;
+
+    Q=log(Y(:,4));
+    Pfuel=log(Y(:,5));
+    Loadfactor=Y(:,6);
+    n=size(Y,1);
+    X=[Q Q.^2 Pfuel];
+    y=log(Y(:,3));
+    out=regressHart_grid(y,X,Loadfactor,'msgiter',1,'test',1);
 %}
 
 %% Beginning of code

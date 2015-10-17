@@ -93,6 +93,119 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
 
 %}
 
+%{
+    %% regressHhar with all default options.
+    % Monthly credit card expenditure for 100 individuals.
+    % Results in structure "OUT" coincides with "Maximum Likelihood
+    % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
+    % Results in structure "OLS" coincide with "Ordinary Leat Squares
+    % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
+ 
+    load('TableF91_Greene');
+    data=TableF91_Greene.data;
+    n=size(data,1);
+    % Linear regression of monthly expenditure on a constant, age, income
+    % its square and a dummy variable for home ownership using the 72
+    % observations for which expenditure was nonzero produces the residuals
+    % plotted below
+
+    X=zeros(n,4);
+    X(:,1)=data(:,3);%age
+    X(:,2)=data(:,6);% Own rent (dummy variable)
+    X(:,3)=data(:,4);% Income
+    X(:,4)=(data(:,4)).^2; %Income  square
+    y=data(:,5); % Monthly expenditure
+
+    % Select the 72 observations for which expenditure was nonzero
+    sel=y>0;
+    X=X(sel,:);
+    y=y(sel);
+    whichstats={'r','tstat'};
+    OLS=regstats(y,X,'linear',whichstats);
+    r=OLS.r;
+
+    disp('Ordinary Least Squares Estimates')
+    LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];
+    disp(LSest)
+    disp('Multiplicative Heteroskedasticity Model')
+    % The variables which enter the scedastic function are Income and
+    % Income square (that is columns 3 and 4 of matrix X)
+    logX = log(X(:,1)+0.0001)
+    out=regressHhar_grid(y,X,logX);
+
+    % Plot OLS residuals against Income (This is nothing but Figure 11.1 of
+    % Green (5th edition) p. 216)
+    plot(X(:,4),r,'o')
+    xlabel('Income')
+    ylabel('OLS residuals')
+    grid on
+%}
+
+%{
+    % regressHhar with optional arguments.
+    % The data in Appendix Table F6.1 were used in a study of efficiency in
+    % production of airline services in Greene (2007a).
+    % See p. 557 of Green (7th edition).
+    % Results in structure "out.Beta" coincide with those of
+    % table 14.3 page 557, 7th edition of Greene (2007).
+    % (line of the table which starts with MLE)
+
+    load('TableF61_Greene');
+    Y=TableF61_Greene.data;
+
+    Q=log(Y(:,4));
+    Pfuel=log(Y(:,5));
+    Loadfactor=Y(:,6);
+    n=size(Y,1);
+    X=[Q Q.^2 Pfuel];
+    y=log(Y(:,3));
+
+    whichstats={'beta', 'r','tstat'};
+    OLS=regstats(y,X,'linear',whichstats);
+
+    disp('Ordinary Least Squares Estimates')
+    LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];
+    disp(LSest)
+
+    % Estimate a multiplicative heteroscedastic model and print the
+    % estimates of regression and scedastic parameters together with LM, LR
+    % and Wald test
+    out=regressHhar_grid(y,X,Loadfactor,'msgiter',1,'test',1);
+%}
+
+%{
+    %% FGLS estimator.
+    % Estimate a multiplicative heteroscedastic model using just one iteration
+    % that is find FGLS estimator (two step estimator).
+    % Data are monthly credit card expenditure for 100 individuals.
+    % Results in structure "out" coincide with estimates of row
+    % "\sigma^2*exp(z'*\alpha)" in table 11.2, page 231, 5th edition of
+    % Greene (1987).
+    
+    load('TableF91_Greene');
+    data=TableF91_Greene.data;
+  
+    n=size(data,1);
+
+    % Linear regression of monthly expenditure on a constant, age, income and
+    % its square and a dummy variable for home ownership using the 72
+    % observations for which expenditure was nonzero produces the residuals
+    % plotted plotted below
+
+    X=zeros(n,4);
+    X(:,1)=data(:,3);%age
+    X(:,2)=data(:,6);% Own rent (dummy variable)
+    X(:,3)=data(:,4);% Income
+    X(:,4)=(data(:,4)).^2; %Income  square
+    y=data(:,5); % Monthly expenditure
+
+    % Select the 72 observations for which expenditure was nonzero
+    sel=y>0;
+    X=X(sel,:);
+    y=y(sel);
+    out=regressHhar_grid(y,X,3,'msgiter',1,'maxiter',1);
+%}
+
 %% Beginning of code
 nnargin = nargin;
 vvarargin = varargin;
