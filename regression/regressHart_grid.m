@@ -82,8 +82,12 @@ function [out] = regressHart_grid(y,X,Z,varargin)
     y=randn(n,1);
     X=randn(n,p);
     Z=exp(randn(n,1));
-    HET = regressHart_grid(y,X,exp(Z))
+    HET_grid = regressHart_grid(y,X,exp(Z))
 
+    %compare the estimates obtained with the grid with the estimates obtained
+    %without the grid.
+    HET_nogrid = regressHart(y,X,exp(Z));
+    diff_Beta = HET_grid.Beta - HET_nogrid.Beta(:,1);
 %}
 
 %{
@@ -108,7 +112,12 @@ function [out] = regressHart_grid(y,X,Z,varargin)
     disp('Ordinary Least Squares Estimates')
     LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];
     disp(LSest)
-    out=regressHart_grid(y,X,Loadfactor);
+    out_grid=regressHart_grid(y,X,Loadfactor);
+
+    %compare the estimates obtained with the grid with the estimates obtained
+    %without the grid.
+    out_nogrid = regressHart(y,X,Loadfactor);
+    diff_Beta = out_grid.Beta - out_nogrid.Beta(:,1);
 %}
 
 %{
@@ -125,7 +134,12 @@ function [out] = regressHart_grid(y,X,Z,varargin)
     n=size(Y,1);
     X=[Q Q.^2 Pfuel];
     y=log(Y(:,3));
-    out=regressHart_grid(y,X,Loadfactor,'msgiter',1,'test',1);
+    out_grid=regressHart_grid(y,X,Loadfactor,'msgiter',1,'test',1);
+
+    %compare the estimates obtained with the grid with the estimates obtained
+    %without the grid.
+    out_nogrid = regressHart(y,X,Loadfactor,'msgiter',1,'test',1);
+    diff_Beta = out_grid.Beta - out_nogrid.Beta(:,1);
 %}
 
 %% Beginning of code

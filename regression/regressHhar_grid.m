@@ -89,8 +89,12 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
     y=randn(n,1);
     X=randn(n,p);
     Z=exp(randn(n,1));
-    HET = regressHhar_grid(y,X,exp(Z))
+    HETgrid = regressHhar_grid(y,X,exp(Z))
 
+    %compare the estimates obtained with the grid with the estimates obtained
+    %without the grid.
+    HETnogrid = regressHhar(y,X,exp(Z))
+    diff_Beta = HETgrid.Beta - HETnogrid.Beta(:,1);
 %}
 
 %{
@@ -131,7 +135,7 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
     % The variables which enter the scedastic function are Income and
     % Income square (that is columns 3 and 4 of matrix X)
     logX = log(X(:,1)+0.0001)
-    out=regressHhar_grid(y,X,logX);
+    out_grid=regressHhar_grid(y,X,logX);
 
     % Plot OLS residuals against Income (This is nothing but Figure 11.1 of
     % Green (5th edition) p. 216)
@@ -139,6 +143,12 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
     xlabel('Income')
     ylabel('OLS residuals')
     grid on
+
+    %compare the estimates obtained with the grid with the estimates obtained
+    %without the grid.
+    out_nogrid = regressHhar(y,X,logX);
+    diff_Beta = out_grid.Beta - out_nogrid.Beta(:,1);
+
 %}
 
 %{
@@ -170,7 +180,12 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
     % Estimate a multiplicative heteroscedastic model and print the
     % estimates of regression and scedastic parameters together with LM, LR
     % and Wald test
-    out=regressHhar_grid(y,X,Loadfactor,'msgiter',1,'test',1);
+    out_grid=regressHhar_grid(y,X,Loadfactor,'msgiter',1,'test',1);
+
+    %compare the estimates obtained with the grid with the estimates obtained
+    %without the grid.
+    out_nogrid = regressHhar(y,X,Loadfactor,'msgiter',1,'test',1);
+    diff_Beta = out_grid.Beta - out_nogrid.Beta(:,1);
 %}
 
 %{
@@ -203,7 +218,12 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
     sel=y>0;
     X=X(sel,:);
     y=y(sel);
-    out=regressHhar_grid(y,X,3,'msgiter',1,'maxiter',1);
+    out_grid=regressHhar_grid(y,X,3,'msgiter',1,'maxiter',1);
+
+    %compare the estimates obtained with the grid with the estimates obtained
+    %without the grid.
+    out_nogrid = regressHhar(y,X,3,'msgiter',1,'maxiter',1);
+    diff_Beta = out_grid.Beta - out_nogrid.Beta(:,1);
 %}
 
 %% Beginning of code
