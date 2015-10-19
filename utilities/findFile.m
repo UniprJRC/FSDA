@@ -76,7 +76,7 @@ function list = findFile(root,varargin)
 %}
 %
 %{
-    % findFile with otpional arguments.
+    % findFile with optional arguments.
     %find the location of findFile.m
     FullPath=which('findFile');
     %extract the root directory of FSDA
@@ -98,7 +98,7 @@ function list = findFile(root,varargin)
 %{
     % find the location of help file gplotmatrix.html.
     pathdocroot=docroot;
-    pathExtHelpFile=findFile(pathdocroot,'InclFiles','gplotmatrix.html');
+    pathExtHelpFile=findFile(pathdocroot,'InclFiles','gplotmatrixee.html');
 %}
 
 %% Beginning of code
@@ -205,6 +205,12 @@ if ~isempty(ExclFiles)
     list(booToDelete) = [];
 end
 
-% Sort files.
-list = sort(list);
+% Sort files is list is not empty.
+if ~isempty(cell2mat(list))
+    list = sort(list);
+else
+    disp('No file which matches the criteria has been found')
+    list=[];
+end
+
 end
