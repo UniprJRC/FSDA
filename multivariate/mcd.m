@@ -293,7 +293,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %}
 
 %{
-    % mcd with reweighted estimates.
+    % mcd monitoring the reweighted estimates.
     n=200;
     v=3;
     randn('state', 123456);
@@ -305,7 +305,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %}
 
 %{
-    % mcd with exctracted subsamples.
+    % mcd monitoring the exctracted subsamples.
     n=200;
     v=3;
     randn('state', 123456);
@@ -325,7 +325,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %}
 
 %{
-    %% mcd applied to the aircraft data (plots using the scale of Pison et al)
+    %% mcd applied to the aircraft data (plots using the scale of Pison et al).
     % See Pison et al. 2002, Metrika. 
     X = load('aircraft.txt');
     Y = X(:,1:end-1);

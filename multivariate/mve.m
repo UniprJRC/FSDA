@@ -218,7 +218,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %}
 
 %{
-    % mve with reweighted estimates.
+    % mve monitoring the reweighted estimates.
     n=200;
     v=3;
     randn('state', 123456);
@@ -230,7 +230,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %}
 
 %{
-    % mve with exctracted subsamples.
+    % mve monitoring the exctracted subsamples.
     n=200;
     v=3;
     randn('state', 123456);
