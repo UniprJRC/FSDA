@@ -2299,7 +2299,7 @@ else
     
     
     if ~isempty(inipointAcknowledgements);
-        Acknowledgements=fstring(inipointAcknowledgements+18:inipointCopyright-1);
+        Acknowledgements=fstring(inipointAcknowledgements+19:inipointCopyright-1);
         posPercentageSigns=regexp(Acknowledgements,'%');
         Acknowledgements(posPercentageSigns)=[];
         
@@ -2828,7 +2828,7 @@ if evalCode==true
         if isempty(fHTML)
             fHTML=regexp(fstringHTML,'<pre class="codeoutput">','once');
         end
-        % If fHTML is still empty it means that the ouptu only generates images
+        % If fHTML is still empty it means that the ouptut only generates images
         if isempty(fHTML)
             fHTML=regexp(fstringHTML,'<img vspace','once');
         end
@@ -2860,18 +2860,23 @@ if evalCode==true
         a=cell2mat(listEx(:,4));
         seqa=1:length(a);
         sel=seqa(a==1);
+        inclpoint=0;
+        
+        ij=1;
         
         for i=1:length(sel)
             % Process string listEx{i,1}
             listExi=listEx{sel(i),1};
             
-            % Add symbol \ in before special characters in string listExi
+            % Add symbol \ before special characters in string listExi
             % otherwise regexp will not  find listExi inside
             % outstring
             listExi=SpecialCharacters(listExi);
             
             
             iniout=regexp(outstring,listExi);
+            
+            
             if length(iniout)<2
                 errmsg= [' Title of example \n''' listExi '''\n could not be found \n'...
                     'Probably because the string contains special characters\n' ...
@@ -2880,7 +2885,14 @@ if evalCode==true
             end
             
             finout=regexp(outstring,'</pre>');
-            finout=finout(finout>iniout(2));
+            % finout=finout(finout>iniout(2));
+            
+            % Make sure that string '</pre>' which has been found is after
+            % the i-th instance of M.gif
+            posextoinclude=regexp(outstring,'M\.gif');
+            finout=finout(finout>posextoinclude(ij));
+            ij=ij+1;
+            
             % outstring(finout:finout+11)
             % inclplint = point where output of the example must be included
             inclpoint=finout(1)+18;
@@ -2907,6 +2919,7 @@ if evalCode==true
                 if length(iniout)>2
                     disp(['Duplicate name for: ' listExi ' found'])
                     warning('FSDA:WrongArg','There are examples with the same title, please use a title which is unique')
+                    warning('FSDA:WrongArg','Or alternatively there is an empty line before the start of the example')
                 elseif isempty(iniout)
                     errmsg= [' Title of example \n''' listExi '''\n could not be found \n'...
                         'Probably because the string contains special characters\n' ...
@@ -2918,7 +2931,12 @@ if evalCode==true
                 iniout=iniout(1);
                 
                 finout=regexp(outstring,'</pre>');
-                finout=finout(finout>iniout);
+                % finout=finout(finout>iniout);
+                
+                            posextoinclude=regexp(outstring,'M\.gif');
+            finout=finout(finout>posextoinclude(ij));
+            ij=ij+1;
+
                 % outstring(finout:finout+11)
                 % inclplint = point where output of the example must be included
                 inclpoint=finout(1)+18;
