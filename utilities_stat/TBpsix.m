@@ -27,9 +27,9 @@ function psix=TBpsix(u,c)
 %
 %
 % Function TBpsix transforms vector u as follows 
-% TBpsix(x)=
+% 
 %  \[
-% TBwei(u)= \left\{
+% TBpsix(u)= \left\{
 %    \begin{array}{cc}
 %   u^2[1-(u/c)^2]^2   if |u/c| \leq 1 \\
 %  0                     &  |u/c|>1   \\

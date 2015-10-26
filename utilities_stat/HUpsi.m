@@ -1,7 +1,7 @@
-function psi=TBpsi(u,c)
-%TBpsi computes psi function (derivative of rho function) for Tukey's biweight  
+function psi=HUpsi(u,c)
+%TBpsi computes psi function (derivative of rho function) for Huber
 %
-%<a href="matlab: docsearchFS('tbpsi')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HUpsi')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -18,27 +18,27 @@ function psi=TBpsi(u,c)
 %  Output:
 %
 %
-%   tbpsi :      n x 1 vector which contains the Tukey's psi
+%   HUpsi :      n x 1 vector which contains the Huber's psi
 %                associated to the residuals or Mahalanobis distances for
 %                the n units of the sample.
 %
 % More About:
 %
-% Function TBpsi transforms vector u as follows 
+% Function HUpsi transforms vector u as follows
 %
 % \[
-% TBpsi(u)= \left\{
+% HUpsi(u)= \left\{
 %    \begin{array}{cc}
-%  (c^2/6) u[1-(u/c)^2]^2    \mbox{if} |u/c| \leq 1
-%  0                     &  |u/c|>1   \\
+%  u                            &  \mbox{if  }  |u/c| \leq 1 \\
+%  c \times \mbox{sign}(u)      &  |u/c|>1   \\
 % \end{array}
 %    \right.
 %  \]
 % See equation (2.38) p. 29 of Maronna et al. (2006)
 %
-% Remark: Tukey's biweight  psi-function is almost linear around u = 0 in accordance with
+% Remark: Tukey's biweight  psi-function is linear around u = 0 in accordance with
 % Winsor's principle that all distributions are normal in the middle.
-% This means that  \psi (u)/u is approximately constant over the linear region of \psi,
+% This means that  \psi (u)/u is constant over the linear region of \psi,
 % so the points in that region tend to get equal weight.
 %
 % See also HYPpsi, HApsi, OPTpsi
@@ -56,22 +56,23 @@ function psi=TBpsi(u,c)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('tbpsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HUpsi')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
 % Examples:
 
 %{
 
-x=-6:0.01:6;
-psiTB=TBpsi(x,2);
-plot(x,psiTB)
-xlabel('x','Interpreter','Latex')
-ylabel('$\psi (x)$','Interpreter','Latex')
+    x=-6:0.01:6;
+    psiHU=HUpsi(x,2);
+    plot(x,psiHU)
+    xlabel('x','Interpreter','Latex')
+    ylabel('$\psi (x)$','Interpreter','Latex')
 
 %}
 
 %% Beginning of code
+w = (abs(u)<=c);
 
-psi = (abs(u) < c) .* u .* ( 1 - (u./c).^2 ).^2 ;
+psi=u.*w +(1-w).*(c*sign(u));
 end

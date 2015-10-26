@@ -1,5 +1,5 @@
-function psider=TBpsider(u,c)
-%TBpsider computes derivative of psi function (second derivative of rho function) for Tukey's biweight  
+function psider=HUpsider(u,c)
+%HUpsider computes derivative of psi function (second derivative of rho function) for Tukey's biweight  
 %
 %<a href="matlab: docsearchFS('HUpsider')">Link to the help function</a>
 %
@@ -11,15 +11,17 @@ function psider=TBpsider(u,c)
 %    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator 
 %               (beta in regression or mu in the location case ...) 
 %
-% Function HUpsider transforms vector x as follows 
-% HUpsider(x)=
-% 1- (x/c)^2 * [6- 5 (x/c)^2]    if |x/c|<=1 
-% 0                              if |x/c|>1
+% More About:
 %
-% Remark: Tukey's biweight  psi-function is almost linear around u = 0 in accordance with
-% Winsor's principle that all distributions are normal in the middle.
-% This means that  \psi (u)/u is approximately constant over the linear region of \psi,
-% so the points in that region tend to get equal weight.
+% \[
+% HUpsider(u)= \left\{
+%    \begin{array}{cc}
+%  1                            &  \mbox{if  }  |u/c| \leq 1 \\
+%  0                            &  |u/c|>1   \\
+% \end{array}
+%    \right.
+%  \]
+%
 %
 %
 % References:
@@ -48,5 +50,6 @@ function psider=TBpsider(u,c)
 %}
 
 %% Beginning of code
-psider = (abs(u) < c) .* (1 - 6*(u/c).^2  + 5*(u/c).^4);
+psider=zeros(length(u),1);
+psider(abs(u) < c)=1;
 end

@@ -1,7 +1,7 @@
-function psi=TBpsi(u,c)
-%TBpsi computes psi function (derivative of rho function) for Tukey's biweight  
+function psix=HUpsix(u,c)
+%HUpsix computes psi function (derivative of rho function) times x for Tukey's biweight  
 %
-%<a href="matlab: docsearchFS('tbpsi')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HUpsix')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -11,26 +11,28 @@ function psi=TBpsi(u,c)
 %               for the n units of the sample
 %    c :        tuning parameters. Scalar. Scalar greater than 0 which
 %               controls the robustness/efficiency of the estimator
-%               (beta in regression or mu in the location case ...)
+%               (beta in regression or mu in the location case ...) 
 %
 %  Optional input arguments:
 %
 %  Output:
 %
 %
-%   tbpsi :      n x 1 vector which contains the Tukey's psi
-%                associated to the residuals or Mahalanobis distances for
-%                the n units of the sample.
+%   psix :     n x 1 vector which contains the values of HU psi(u)*u
+%                function associated to the residuals or Mahalanobis
+%                distances for the n units of the sample.
+%
 %
 % More About:
 %
-% Function TBpsi transforms vector u as follows 
 %
+% Function HUpsix transforms vector u as follows 
+% 
 % \[
-% TBpsi(u)= \left\{
+% HUpsix(u)= \left\{
 %    \begin{array}{cc}
-%  (c^2/6) u[1-(u/c)^2]^2    \mbox{if} |u/c| \leq 1
-%  0                     &  |u/c|>1   \\
+%  u^2                            &  \mbox{if  }  |u/c| \leq 1 \\
+%  c \times \mbox{sign}(u) u      &  |u/c|>1   \\
 % \end{array}
 %    \right.
 %  \]
@@ -41,37 +43,37 @@ function psi=TBpsi(u,c)
 % This means that  \psi (u)/u is approximately constant over the linear region of \psi,
 % so the points in that region tend to get equal weight.
 %
-% See also HYPpsi, HApsi, OPTpsi
+%
+% See also: HApsix, HYPpsix, OPTpsix
 %
 % References:
 %
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
 % and Methods, Wiley, New York.
-% Riani M., Cerioli A., Torti F. (2014). On consistency factors and
-% efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
-% DOI: 10.1007/s11749-014-0357-7
 %
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('tbpsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HUpsix')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
 % Examples:
 
 %{
 
-x=-6:0.01:6;
-psiTB=TBpsi(x,2);
-plot(x,psiTB)
-xlabel('x','Interpreter','Latex')
-ylabel('$\psi (x)$','Interpreter','Latex')
+    x=-6:0.01:6;
+    psixHU=HUpsix(x,2);
+    plot(x,psixHU)
+    xlabel('x','Interpreter','Latex')
+    ylabel('$\psi (x)$','Interpreter','Latex')
 
 %}
 
 %% Beginning of code
 
-psi = (abs(u) < c) .* u .* ( 1 - (u./c).^2 ).^2 ;
+w = (abs(u)<=c);
+
+psix=(u.^2).*w +(1-w).*(c*sign(u).*u);
 end
