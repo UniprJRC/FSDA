@@ -21,8 +21,7 @@ function add2spm(H,AX,BigAx,varargin)
 %
 %  Optional input arguments:
 %
-%  labeladd :   add labels for a group of units.
-%               [] (default) | '1'. 
+%  labeladd :   add labels for a group of units. Char.
 %               Default is '', i.e. no
 %               labels are added to the symbols inside each scatter.
 %               If set to '1', add labels to the units of the last data
@@ -35,8 +34,7 @@ function add2spm(H,AX,BigAx,varargin)
 %               See last example below for a concrete case.
 %               Example - 'labeladd','1'
 %               Data Types - char
-%  userleg  :   user legend. 
-%               [] (default) | '1' | cell of strings. 
+%  userleg  :   user legend. Char.
 %               It is used to control the legend of the plot.
 %               - Default is ''. In this case, existing legends are left as
 %                 they are and simply made clickable; however, if there is
@@ -92,33 +90,18 @@ function add2spm(H,AX,BigAx,varargin)
 
 %
 %{
+    %% add2spm with all default options.
     % load Fisher iris  data
     load fisheriris;
     % Create scatter plot matrix with specific legends
     [H,AX,BigAx]=gplotmatrix(meas,[],species);
     % [H,AX,BigAx]=gplotmatrix(meas,[],species,[],[],[],[],'grpbars')
-    % the following are equivalent, to keep legends and make them clickable
     add2spm(H,AX,BigAx)
-    add2spm(H,AX,BigAx,'userleg','')
-    add2spm(H,AX,BigAx,'userleg',{})
 %}
 
-%{
-    % Do not close the figure and continue with the following:
-
-    % To replace the traditional histogram with a grouped histogram you
-    % have to use spmplot instead of gplotmatrix.
-    figure;
-    load fisheriris;
-    [H,AX,BigAx] = spmplot(meas,species);
-
-    % Compare now the two scatterplots and click on the legends. Color
-    % sequence of spmplot is different from that of gplotmatrix.
-    
-%}
-
-%{
-    % set some multivariate data and some groups
+%{ 
+    % add2spm with optional arguments.
+    % Use of userleg variable. Set some multivariate data and some groups.
     y = randn(100,3);
     group = ones(100,1); group(1:10,1) = 444; group(11:20,1) = 777;
 
@@ -157,8 +140,9 @@ function add2spm(H,AX,BigAx,varargin)
 %}
 
 %{
+    %% Use of labeladd.
+    
     close all;
-
     % 'labeladd' is set to '1' to add labels found in the UserData
     % property of the last group in each panel of the scatter matrix.
     % It can be retrieved from H(1,end,end) (i.e. first row, last column,
