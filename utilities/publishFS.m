@@ -124,9 +124,9 @@ function out=publishFS(file,varargin)
 %         folder) must satisfy the following characteristics to be correctly
 %         processed.
 %
-%         [1] The row below the row which starts with function .... must contain the
+%         [1] The row below the row which starts with 'function ....' must contain the
 %         description of the purpose of the .m file.
-%         Remark: generally the row which starts with function .... is the first
+%         Remark: generally the row which starts with 'function ....' is the first
 %         row of an .m file.
 %         [2] String 'Required input arguments:' must be present. The lines below
 %         this string must contain the description of the compulsory input
@@ -135,7 +135,7 @@ function out=publishFS(file,varargin)
 %         is as follows:
 %         The first sentence after symbol ':' is the title of the input argument
 %         and in the HTML file it will appear in bold face in the same line of the
-%         input argument (this is the short description of the optional input
+%         input argument (this is the short description of the required input
 %         argument).
 %         The second sentence after symbol ':' describes the objects
 %         (for example, scalar, vector, 3D array) and in the HTML file will appear
@@ -199,18 +199,19 @@ function out=publishFS(file,varargin)
 %          contains a series of sentences, they will be automatically included in
 %          the HTML output just below the description.
 %
-%          An example is given below
-%                 function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
-%                 tclust computes trimmed clustering with restricitons on the eigevalues
+%          An example is given below:
+%                 'function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin);
+%                 tclust computes trimmed clustering with restricitons on
+%                 the eigenvalues.
 %
-%                 <a href="matlab: docsearchFS('tclust')">Link to the help function</a>
+%                 <a href="matlab: docsearchFS('tclust')">Link to the help function</a>;
 %
 %                   tclust partitions the points in the n-by-v data matrix Y into k
 %                   clusters.  This partition minimizes the trimmed sum, over all
 %                   clusters, of the within-cluster sums of
 %                   point-to-cluster-centroid distances....
 %
-%                  Required input arguments:
+%                  Required input arguments:'.
 %
 %         [4] String 'Optional input arguments:' must be present even if there are
 %         no optional arguments.
@@ -293,11 +294,12 @@ function out=publishFS(file,varargin)
 %
 %         For example, the above lines will be processed as follows:
 %
-%              mdr   -  Monitoring of minimum deletion residual
-%              n -init x 2 matrix
+%              mdr   -  Monitoring of minimum deletion residual;
+%              n -init x 2 matrix.
 %
 %              Un    - unit(s) included in the subset at each step of the search.
-%              (n-init) x 11 Matrix
+%              (n-init) x 11 Matrix which contains the unit(s) included in the
+%              subset at each step of the search.
 %
 %         If in the HTML file the user clicks on them the expdanded description
 %         (that is what starts after the second full stop will appear).
@@ -311,7 +313,8 @@ function out=publishFS(file,varargin)
 %         will appear in the second row. The third sentence is the full description
 %         of the output argument. For example, suppose that the output of a
 %         procedure contains the objects mdr and Un, the accepted format
-%         is as follows.    Output:
+%         is as follows.    
+%               Output:
 %
 %                      mdr:         Minimum deletion residual. Matrix.  n -init x 2
 %                                   matrix which contains the
@@ -324,11 +327,15 @@ function out=publishFS(file,varargin)
 %
 %         The above lines will be processed as follows:
 %
-%              mdr   -  Minimum deletion residual
-%              Matrix
+%              mdr   -  Minimum deletion residual. Matrix.
+%                       n -init x 2 matrix which contains the
+%                       monitoring of minimum deletion residual.
+%                       1st col = ...
 %
-%              Un    - Units included.
-%              Matrix
+%              Un    - Units included. Matrix.
+%                       (n-init) x 11 Matrix which contains the unit(s)
+%                       included in the subset at each step of the search.
+%                       REMARK: in every step ....
 %
 %         If in the HTML file the user clicks on them the expdanded description
 %         (that is what starts after the second full stop will appear).
@@ -341,7 +348,7 @@ function out=publishFS(file,varargin)
 %         series of spaces" "name_of_output_structure.a_word" "a series of spaces
 %         followed by symbol '='". For example suppose that the output of a
 %         procedure is an object called out which is a structure with two fields
-%         out.rew and out.beta, an accepted format is as follows
+%         out.rew and out.beta, an accepted format is as follows:
 %
 %                                  %  Output:
 %
@@ -379,9 +386,9 @@ function out=publishFS(file,varargin)
 %         ouptut argument in the HTML file. For example, the example above in the
 %         HTML file will be processed as follows:
 %                        mdr -Monitoring of minimum deletion residual at each step of the forward search.
-%                        n -init -by- 2 matrix
-%         If, in the HTML file, the user clicks on the first line,
-%                       "mdr -Monitoring..."
+%                        n -init -by- 2 matrix.
+%         If, in the HTML file, the user clicks on the first line:
+%                       "mdr -Monitoring...";
 %         the expanded description will automatically appear.
 %
 %         [6] A line which starts with string "See also:" must be present.
@@ -468,7 +475,7 @@ function out=publishFS(file,varargin)
 %         modification has been added in order to make sure that there are
 %         no additional block signs within matlab code.
 %
-%         [9] If a procedure contains varargout, then a section string:
+%         [9] If a procedure contains varargout, then the string:
 %                       "Optional Output:"
 %         must be present. For example suppose there is a function called mcd which
 %         has the following sintax:
@@ -489,6 +496,8 @@ function out=publishFS(file,varargin)
 %         [11] If the .m file contains string "Acknowledgements:" then a particular
 %         section named "Acknowledgements" will be created just above the
 %         references.
+%
+%--------------------------------------------------------------------------
 %
 %         GENERAL REMARKS:
 %
@@ -1129,16 +1138,17 @@ end
 nOPTargin=length(OptArgsWithoutNameValue);
 % nREQargin = number of required input arguments
 nREQargin=nTOTargin-nOPTargin;
+PosOpt=sort(PosOpt);
 
 sintax=cell(nargout+1+nOPTargin,1);
 
 if nOPTargin>0
     for j=1:nOPTargin;
         if ~isempty(outargs)
-            sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs(1:commasIn(PosOpt-1)-1) ')'];
+            sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs(1:commasIn(PosOpt(j)-1)-1) ')'];
         else
             if ~isempty(commasIn)
-                sintax{j}=[name InputArgs(1:commasIn(PosOpt-1)-1) ')'];
+                sintax{j}=[name InputArgs(1:commasIn(PosOpt(j)-1)-1) ')'];
             else
                 sintax{j}=name;
             end
@@ -1149,8 +1159,6 @@ if nOPTargin>0
 else
     j=1;
 end
-
-
 
 
 if isempty(OptArgsVarargin)
@@ -2998,29 +3006,37 @@ else
 end
 % put a hypertext link to all words which end with .m
 [IniRefFilem,FinRefFilem]=regexp(descrlongHTML,'\w*\.m[\s\.,]');
+        % Make sure that the .m string is not standalone, that is make sure
+        % that the .m string is preceeded by some characters.
+boo=(FinRefFilem-IniRefFilem)>2;
+IniRefFilem=IniRefFilem(boo);
+FinRefFilem=FinRefFilem(boo);
+
 if ~isempty(IniRefFilem)
     FinRefFilem=FinRefFilem-1;
     descrlongHTMLwithref='';
     for i=1:length(IniRefFilem)
+        
         namewithoutHTML=descrlongHTML(IniRefFilem(i):FinRefFilem(i)-2);
         namewithHTML=[namewithoutHTML '.html'];
-        
-        if i==1 && length(IniRefFilem)==1
-            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
-                '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
-                descrlongHTML(FinRefFilem(i)+1:end)];
-        elseif i==1
-            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
-                '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
-            
-        elseif i==length(IniRefFilem)
-            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
-                '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
-                descrlongHTML(FinRefFilem(i)+1:end)];
-        else
-            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
-                '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
-        end
+            if i==1 && length(IniRefFilem)==1
+                descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
+                    '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
+                    descrlongHTML(FinRefFilem(i)+1:end)];
+            elseif i==1
+                descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
+                    '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
+                
+            elseif i==length(IniRefFilem)
+                descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
+                    '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
+                    descrlongHTML(FinRefFilem(i)+1:end)];
+            else
+                descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
+                    '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
+            end
+
+            %
     end
 else
     descrlongHTMLwithref=descrlongHTML;
@@ -3294,17 +3310,35 @@ end
 function descrlongHTML=formatHTMLwithList(descrlong)
 newl=regexp(descrlong,'\[\d*\]');
 if ~isempty(newl)
-    descrlongHTML=[descrlong(1:newl(1)-3) '<ol><li>'];
+    descrlongHTML=[descrlong(1:newl(1)-3) '<hr>[<b>1</b>] '];
     if length(newl)==1
         descrlongHTML=[descrlongHTML descrlong(newl(1)+3:end)];
     else
         for j=1:(length(newl)-1)
-            descrlongHTML=[descrlongHTML descrlong(newl(j)+4:newl(j+1)-3) '</li><li>'];
+            descrlongHTML=[descrlongHTML descrlong(newl(j)+4:newl(j+1)-3) '<hr>[<b>' num2str(j+1) '</b>] ' ];
         end
         descrlongHTML=[descrlongHTML descrlong(newl(j+1)+4:end)];
     end
-    descrlongHTML=[descrlongHTML '</li></ol>'];
+    descrlongHTML=[descrlongHTML '<hr>'];
 else
     descrlongHTML=descrlong;
 end
 end
+
+% function descrlongHTML=formatHTMLwithList(descrlong)
+% newl=regexp(descrlong,'\[\d*\]');
+% if ~isempty(newl)
+%     descrlongHTML=[descrlong(1:newl(1)-3) '<ol><li>'];
+%     if length(newl)==1
+%         descrlongHTML=[descrlongHTML descrlong(newl(1)+3:end)];
+%     else
+%         for j=1:(length(newl)-1)
+%             descrlongHTML=[descrlongHTML descrlong(newl(j)+4:newl(j+1)-3) '</li><li>'];
+%         end
+%         descrlongHTML=[descrlongHTML descrlong(newl(j+1)+4:end)];
+%     end
+%     descrlongHTML=[descrlongHTML '</li></ol>'];
+% else
+%     descrlongHTML=descrlong;
+% end
+% end

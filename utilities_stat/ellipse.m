@@ -1,4 +1,4 @@
-function Ell=ellipse(mu,Sigma,conflev,Color)
+function Ell=ellipse(mu, Sigma, conflev, Color)
 %ellipse generates an ellipse given mu (location vector) and Sigma (scatter matrix)
 %
 %
