@@ -1522,10 +1522,17 @@ if length(startIndexEx)>length(sintax)
         
         % Find point where description ends
         inicr=regexp(stri,'\r');
-        % This is the first line which does not contain symbol %
         for jj=1:length(inicr)-1
             strtest=stri(inicr(jj):inicr(jj+1));
-            if isempty(regexp(strtest,'%','once'));
+            
+            % break when you find the first line which does not contain symbol %
+            %             if isempty(regexp(strtest,'%','once'));
+            %                 break
+            %             end
+            
+            % NEW code: break when you find the first line which does not start with symbol %
+            strtest=strtrim(strtest);
+            if  ~isempty(strtest) && ~strcmp(strtest(1),'%')
                 break
             end
         end
@@ -2619,7 +2626,7 @@ if ~isempty(listEx)
     Core=strrep(Core,'\)','\\)');
     Core=strrep(Core,'\b','\\b');
     Core=strrep(Core,'\lam','\\lam');
-   
+    
     OnThisPageExamples=([Ini Core Fin]);
 else
     OnThisPageExamples='';
@@ -2647,68 +2654,68 @@ else
 end
 
 if ~isempty(listInpArgs)
-Ini=['<li><a class="intrnllnk" href="#Inputs">Input Arguments</a>\r'...
-    '<ul>\r'];
-Core='';
-for i=1:size(listInpArgs,1)
-    Core=[Core '<li><a class="intrnllnk" href="#input_argument_' listInpArgs{i,1} '">' listInpArgs{i,1} '</a></li>\r'];
-end
-Fin=['</ul>\r'...
-    '</li>'];
-
-OnThisPageInputArguments=([Ini Core Fin]);
+    Ini=['<li><a class="intrnllnk" href="#Inputs">Input Arguments</a>\r'...
+        '<ul>\r'];
+    Core='';
+    for i=1:size(listInpArgs,1)
+        Core=[Core '<li><a class="intrnllnk" href="#input_argument_' listInpArgs{i,1} '">' listInpArgs{i,1} '</a></li>\r'];
+    end
+    Fin=['</ul>\r'...
+        '</li>'];
+    
+    OnThisPageInputArguments=([Ini Core Fin]);
 else
     OnThisPageInputArguments='';
 end
 
 if ~isempty(listOptArgs)
-Ini=['<li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a>\r'...
-    '<ul>\r'];
-Core='';
-for i=1:size(listOptArgs,1)
-    Core=[Core '<li><a class="intrnllnk" href="#input_argument_namevalue_' listOptArgs{i,1} '">' listOptArgs{i,1} '</a></li>\r'];
-end
-Fin=['</ul>\r'...
-    '</li>'];
-
-OnThisPageNameValuePairs=([Ini Core Fin]);
+    Ini=['<li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a>\r'...
+        '<ul>\r'];
+    Core='';
+    for i=1:size(listOptArgs,1)
+        Core=[Core '<li><a class="intrnllnk" href="#input_argument_namevalue_' listOptArgs{i,1} '">' listOptArgs{i,1} '</a></li>\r'];
+    end
+    Fin=['</ul>\r'...
+        '</li>'];
+    
+    OnThisPageNameValuePairs=([Ini Core Fin]);
 else
     OnThisPageNameValuePairs='';
 end
 
 
 if ~isempty(listOutArgs)
-Ini=['<li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a>\r'...
-    '<ul>\r'];
-Core='';
-for i=1:size(listOutArgs,1)
-    Core=[Core '<li><a class="intrnllnk" href="#output_argument_' listOutArgs{i,1} '">' listOutArgs{i,1} '</a></li>\r'];
-end
-Fin=['</ul>\r'...
-    '</li>'];
-OnThisPageOutputArgs=([Ini Core Fin]);
+    Ini=['<li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a>\r'...
+        '<ul>\r'];
+    Core='';
+    for i=1:size(listOutArgs,1)
+        Core=[Core '<li><a class="intrnllnk" href="#output_argument_' listOutArgs{i,1} '">' listOutArgs{i,1} '</a></li>\r'];
+    end
+    Fin=['</ul>\r'...
+        '</li>'];
+    OnThisPageOutputArgs=([Ini Core Fin]);
 else
     OnThisPageOutputArgs='';
 end
 
 if ~isempty(MoreAbout)
-OnThisPageMoreAbout=['<li><a class="intrnllnk" href="#MoreAbout">More About</a>\r'...
-    '</li>'];
+    OnThisPageMoreAbout=['<li><a class="intrnllnk" href="#MoreAbout">More About</a>\r'...
+        '</li>'];
 else
     OnThisPageMoreAbout='';
 end
 
 
 if ~isempty(References)
-OnThisPageReferences=['<li><a class="intrnllnk" href="#References">References</a>\r'...
-    '</li>'];
+    OnThisPageReferences=['<li><a class="intrnllnk" href="#References">References</a>\r'...
+        '</li>'];
 else
     OnThisPageReferences='';
 end
 
 if ~isempty(Acknowledgements)
-OnThisPageAcknowledgements=['<li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a>\r'...
-    '</li>'];
+    OnThisPageAcknowledgements=['<li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a>\r'...
+        '</li>'];
 else
     OnThisPageAcknowledgements='';
 end
@@ -2767,7 +2774,7 @@ if evalCode==true
     if ~isempty(listExtraEx)
         for i=1:size(listExtraEx,1)
             if listExtraEx{i,4}==1
-                ExToExec=[ExToExec '%% Ex' num2str(i) listExtraEx{i,3}];
+                ExToExec=[ExToExec '%% ExExtra' num2str(i) listExtraEx{i,3}];
                 numextraexToExec=numextraexToExec+1;
             end
         end
@@ -2933,10 +2940,10 @@ if evalCode==true
                 finout=regexp(outstring,'</pre>');
                 % finout=finout(finout>iniout);
                 
-                            posextoinclude=regexp(outstring,'M\.gif');
-            finout=finout(finout>posextoinclude(ij));
-            ij=ij+1;
-
+                posextoinclude=regexp(outstring,'M\.gif');
+                finout=finout(finout>posextoinclude(ij));
+                ij=ij+1;
+                
                 % outstring(finout:finout+11)
                 % inclplint = point where output of the example must be included
                 inclpoint=finout(1)+18;

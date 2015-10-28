@@ -1,26 +1,56 @@
-function ellipse(mu,Sigma,conflev)
+function Ell=ellipse(mu,Sigma,conflev,Color)
 %ellipse generates an ellipse given mu (location vector) and Sigma (scatter matrix)
 %
-%   The ellipse is generated using the equation:
-%
-%    (x-mu)' \Sigma^{-1} (x-mu) = c
 %
 %<a href="matlab: docsearchFS('ellipse')">Link to the help function</a>
 %
+%   The ellipse is generated using the equation:
+%
+%    $(x-mu)' \Sigma^{-1} (x-mu) = c_{conflev}^2$
+%
+%    The length of the ith principal semiaxis $(i=1, 2)$ is $c \lambda_i$ where
+%    $\lambda_i$ is an eigenvalue of $\Sigma$.
+%
 % Required input arguments:
 %
-% mu    : vector of two elements associated with the center of the ellipse
-% Sigma : 2 x 2 symmetric matrix 
+% mu    : Center of the ellipse. Vector. 
+%         Vector with two elements associated with the center of the
+%         ellipse
+% Sigma : 2 x 2 symmetric positive definite matrix. Inverse of the matrix
+%         of the quadratic form which defines the equation of the ellipse
+%         Sigma is interpretable as the covariance matrix of the original
+%         data points.
 %
 % Optional input arguments:
 %
+%               conflev : confidence level. Scalar. 
+%                         Confidence level which control the size of the ellipse.
+%                         If conflev is not specified the value 
+%                         chi2inv(0.95,2) is used
+%                 Example - 'conflev',0.99 
+%                 Data Types - single | double
+%               Color   : LineColor of the ellipse. String or 3 elements numeric vector.
+%                        Line color, specified as an RGB triplet, a color
+%                        string, or 'none'. If you specify the Color as
+%                        'none', then the line is invisible.
+%                        An RGB triplet is a three-element row vector whose
+%                        elements specify the intensities of the red,
+%                        green, and blue components of the color. The
+%                        intensities must be in the range [0,1], for
+%                        example, [0.4 0.6 0.7]. 
+%                 Example - 'plots',1 
+%                 Data Types - [0 0 1] (default) | RGB triplet | color string | 'none'
+%                           
 %
-%               conflev : scaalar, confidence level (if c is not specified the value 
-%                   chi2inv(0.95,2) is used
-%               h : the axis handle of a figure where to send the ellipse.
-%                   This can be used to host the ellipse in a subplot of
+%  Output:
 %
-% See also ellipsoid
+%       Ell   :   x and y coordinates of the ellipse. Matrix.
+%                 630-by-2 matrix containing the x and y coordinate of the
+%                 ellipse.
+%                 1st column = x coordinates;
+%                 2nd column = y coordinates.
+%
+% See also: ellipsoid
 %
 %
 % Copyright 2008-2015.
@@ -33,11 +63,52 @@ function ellipse(mu,Sigma,conflev)
 % Examples:
 
 %{
+    % Example using all default options.
     rho=-2;
     A=[4 rho; rho 3 ];
     mu=[1.5 1];
     ellipse(mu,A);
 %}
+
+%{
+    %% Draw the ellipse using a blue color line. 
+    close all
+    rho=-2;
+    A=[4 rho; rho 3 ];
+    mu=[1.5 1];
+    Color=[0 0 1];
+    ellipse(mu,A,[],Color);
+%}
+
+%{
+    %% Draw an ellipse and fill it with yellow color.
+    close all 
+    rho=-2;
+    A=[4 rho; rho 3 ];
+    mu=[1.5 1];
+    Ell=ellipse(mu,A);
+    patch(Ell(:,1),Ell(:,2),'y'); 
+%}
+
+%{
+    %% Generate 1000 bivariate normal data and add the ellipse which
+    % contains approximately 990 of them.
+    rng(20)     % For reproducibility
+    % Define mu and Sigma
+    mu = [2,3];
+    Sigma = [1,1.5;1.5,3];
+    Y = mvnrnd(mu,Sigma,1000);
+    figure
+    hold on; 
+    plot(Y(:,1),Y(:,2),'o');
+    % add an ellipse to these points
+    Ell=ellipse(mu,Sigma,0.99);
+    axis equal
+    % Count number of points inside the ellipse
+    disp('Number of points inside the ellipse')
+    disp(sum(inpolygon(Y(:,1),Y(:,2),Ell(:,1),Ell(:,2))))
+%}
+
 
 %% Beginning of code
 % If the user has provided has input a column vector take the transpose
@@ -45,11 +116,17 @@ if ~isrow(mu)
     mu=mu';
 end
 
-if nargin<3;
+if nargin<3 || isempty(conflev);
     c = chi2inv(0.95,2);
 else
     c = chi2inv(conflev,2);
 end
+
+% Use default black color
+if nargin<4 || isempty(Color);
+    Color = [ 0 0 0];
+end
+
 
 % Compute eigenvalues and eigenvectors of matrix Sigma
 % Set to 0 elments smaller than 1e-14 to avoid numerical problems with
@@ -99,22 +176,22 @@ yy=lenax2*cos(th);
 X=[xx yy]*Gam;
 
 % Add the means
-Xori=bsxfun(@plus,X, mu);
+Ell=bsxfun(@plus,X, mu);
 
 % hold('on')
-plot(Xori(:,1),Xori(:,2),'r');
+plot(Ell(:,1),Ell(:,2),'Color',Color);
 
 % Add line associated with major axis
 ax1=[-lenax1 0; lenax1 0];
 ax1ori=ax1*Gam;
 ax1ori=bsxfun(@plus,ax1ori, mu);
-line(ax1ori(:,1),ax1ori(:,2),'Color','r');
+line(ax1ori(:,1),ax1ori(:,2),'Color',Color);
 
 % Add line associated with minor axis
 ax2=[0 -lenax2;0  lenax2];
 ax2ori=ax2*Gam;
 ax2ori=bsxfun(@plus,ax2ori, mu);
-line(ax2ori(:,1),ax2ori(:,2),'Color','r');
+line(ax2ori(:,1),ax2ori(:,2),'Color',Color);
 
 % axis equal
 
