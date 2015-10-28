@@ -3,36 +3,53 @@ function add2yX(varargin)
 %
 %<a href="matlab: docsearchFS('add2yx')">Link to the help page for this function</a>
 %
-% At the current stage the objects that can be added to yXplot using add2yX
-% are:
-% - a bivariate fit on each panel of yXplot (see olsline.m);
-% - a multivariate fit that is shown on each panel of yXplt;
-% - the labels of relevant observations, e.g. outliers or brushed groups.
 %
 % Required input arguments:
 %
 %
 % Optional input arguments:
 %
-%           bivarfit:   '0' fit a line to each group
-%                       '1' fit 1 line to all data, regardless the groups
-%                       '2' fit a line on all data and a line to relevant data
+%           bivarfit:   Add a line fit. Char.
+%                       '0' fit a line to each group; 
+%                       '1' fit 1 line to all data, regardless the groups; 
+%                       '2' fit a line on all data and a line to relevant
+%                       data; 
+%                       ''  the default, nothing is added.
+%                       Example - 'bivarfit','1'
+%                       Data Types - char
+%
+%           multivarfit: Add a multivariate fit. Char.
+%                       '1' one multivariate fit on all units
+%                       '2' one multivariate fit on all units and one on relevant data
 %                       ''  the default, nothing is added
+%                       Example - 'multivarfit','1'
+%                       Data Types - char
 %
-%           multivarfit '1' one multivariate fit on all units
-%                       '2' one multivarriate fit on all units and one on relevant data
+%           labeladd:   Add labels. Char.
+%                       '1' add labels to relevant units
 %                       ''  the default, nothing is added
+%                       Example - 'labeladd','1'
+%                       Data Types - char
 %
-%           labeladd    '1' add labels to relevant units
-%                       ''  the default, nothing is added
+%           intercept:  Indicator for constant term. Scalar. 
+%                       intercept = 1 (default) assumes the intercept for the
+%                       bivarfit and multivarfit. When intercept = 0, 
+%                       the intercept is not used for the fits.
+%                       Example - 'intercept',1 
+%                       Data Types - double
 %
-%           intercept   1   the default, assumes the intercept for the
-%                           bivarfit and multivarfit
-%                       0   to not use the intercept for the fits
+% Output:
 %
 %
-% Remark: note that the function extracts the data from the graphical
-% objects in the plot.
+% More About:
+%
+% Note that the function extracts the data from the graphical
+% objects in the plot. At the current stage the objects that can be 
+% added to yXplot using add2yX are:
+% - a bivariate fit on each panel of yXplot (see olsline.m); 
+% - a multivariate fit that is shown on each panel of yXplt; 
+% - the labels of relevant observations, e.g. outliers or brushed groups.
+%
 %
 % See also olsline
 %
