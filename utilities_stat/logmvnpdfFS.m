@@ -272,9 +272,10 @@ end
 % Take Choleski of Sigma
 [Sigma,err] = chol(Sigma);
 if err ~= 0
-    error('FSDA:logmvnpdfFS:BadMatrixSigma','Cholesky of Sigma is impossible');
-end
-
+    warning('FSDA:logmvnpdfFS:BadMatrixSigma','Cholesky of Sigma is impossible');
+    warning('FSDA:logmvnpdfFS:BadMatrixSigma','Zero output is returned');
+    y=0;
+else
 
 % Define the following value: d*log(2*pi)/2
 Fd = 0.918938533204673*d;
@@ -286,7 +287,7 @@ y = -0.5*sum((X0*(Sigma\eyed)).^2,2)- Const;
 
 % Note that the instruction above is slightly faster than
 % y = -0.5*sum((X*inv(Sigma)).^2,2)- Const; %#ok<MINV>
-
+end
 end
 
 

@@ -71,19 +71,19 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
 %               subsample  Default is 15.
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'refsteps',10 
+%                 Example - 'refsteps',10
 %                 Data Types - single | double
 %     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-14;
-%                 Example - 'reftol',1e-05 
+%                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %    refsteps : number of refining iterations in each
 %               subsample. Scalar. Default is 15.
-%                 Example - 'refsteps',10 
+%                 Example - 'refsteps',10
 %                 Data Types - single | double
-%     reftol  : tolerance for the refining steps. Scalar.  
+%     reftol  : tolerance for the refining steps. Scalar.
 %               The default value is 1e-14;
-%                 Example - 'reftol',1e-05 
+%                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %equalweights : cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
@@ -108,9 +108,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %               Remark: $\sum_{j=1}^k n_j \log n_j/n$ is the so called entropy
 %               term
-%                 Example - 'equalweights',true 
+%                 Example - 'equalweights',true
 %                 Data Types - Logical
-%       mixt  : mixture modelling or crisp assignmen. Scalar. 
+%       mixt  : mixture modelling or crisp assignmen. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
@@ -140,7 +140,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               \]
 %               elseif mixt==1 the criterion to select the h units is
 %               exactly the same as the one which is used in crisp
-%               assignment. That is: the n units are allocated to a 
+%               assignment. That is: the n units are allocated to a
 %               cluster according to criterion
 %               \[
 %                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i; \; \hat \theta_j)
@@ -149,10 +149,10 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               associated with the largest h numbers are untrimmed.
 %               Example - 'mixt',1
 %               Data Types - single | double
-%       plots : Plot on the screen. Scalar. 
+%       plots : Plot on the screen. Scalar.
 %               If plots = 1, a plot with the classification is
 %               shown on the screen.
-%                 Example - 'plots',1 
+%                 Example - 'plots',1
 %                 Data Types - single | double
 %        msg  : Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
@@ -160,15 +160,15 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               on the screen about estimated time to compute the estimator
 %               or the number of subsets in which there was no convergence
 %               else no message is displayed on the screen
-%                 Example - 'msg',1 
+%                 Example - 'msg',1
 %                 Data Types - single | double
-%      nocheck: Check input arguments. Scalar. 
+%      nocheck: Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix Y.
 %               As default nocheck=0.
-%                 Example - 'nocheck',10 
+%                 Example - 'nocheck',10
 %                 Data Types - single | double
-%      startv1: how to initialize centroids and cov matrices. Scalar. 
+%      startv1: how to initialize centroids and cov matrices. Scalar.
 %               If startv1 is 1 then initial
 %               centroids and and covariance matrices are based on (v+1)
 %               observations randomly chosen, else each centroid is
@@ -179,12 +179,12 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               immediately applied. The default value of startv1 is 1.
 %               Remark 2 - option startv1 is used just if nsamp is a scalar
 %               (see for more details the help associated with nsamp)
-%                 Example - 'startv1',1 
+%                 Example - 'startv1',1
 %                 Data Types - single | double
 %       Ysave : Scalar that is set to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 0, i.e.
 %               no saving is done.
-%                 Example - 'Ysave',1 
+%                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
 %
@@ -242,11 +242,24 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %       out.notconver = scalar. Number of subsets without convergence
 %              out.Y  = original data matrix Y. The field is present if option
 %                       Ysave is set to 1.
-%            out.AIC  = AIC. Scalar. Akaike information criterion
-%            out.BIC  = BIC. Scalar. Bayesian information criterion
+%          out.MIXMIX = BIC which uses parameters estimated using the
+%                       mixture loglikelihood and the maximized mixture
+%                       likelihood as goodness of fit measure. 
+%                       Remark: this output is present just if input option
+%                       mixt is >0
+%          out.MIXCLA = BIC which uses the classification likelihood based on
+%                       parameters estimated using the mixture likelihood
+%                       (In some books this quantity is called ICL)
+%                       Remark: this output is present just if input option
+%                       mixt is >0
+%          out.MIXCLA = BIC which uses the classification likelihood based on
+%                       parameters estimated using the mixture likelihood
+%                       (In some books this quantity is called ICL)
+%                       Remark: this output is present just if input option
+%                       mixt is =0
 %          out.fullsol= column vector of size nsamp which contains the
-%                       value of the objective function for each
-%                       subsample.
+%                       value of the objective function at the end of the
+%                       iterative process for each extracted subsample.
 %
 %  Optional Output:
 %
@@ -273,7 +286,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 % References:
 %
-% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008), 
+% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008),
 % "A General Trimming Approach to Robust Cluster Analysis". Annals
 % of Statistics, Vol.36, 1324-1345. Technical Report available at
 % http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
@@ -420,7 +433,100 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1)
 %}
 
+%{
+    %% Automatic choice of the best number of groups for geyser data.
+    Y=load('geyser2.txt');
+    maxk=6;
+    CLACLA=[(1:maxk)' zeros(maxk,1)];
+    for j=1:maxk
+        out=tclust(Y,j,0.1,5,'msg',0);
+        CLACLA(j,2)=out.CLACLA;
+    end
+ 
+    MIXCLA=[(1:maxk)' zeros(maxk,1)];
+    MIXMIX=MIXCLA;
+    for j=1:maxk
+        out=tclust(Y,j,0.1,5,'mixt',2,'msg',0);
+        MIXMIX(j,2)=out.MIXMIX;
+        MIXCLA(j,2)=out.MIXCLA;
+    end
+    
+    subplot(1,3,1)
+    plot(CLACLA(:,1),CLACLA(:,2))
+    xlim([1 maxk])
+    xlabel('Number of groups')
+    ylabel('CLACLA')
 
+    subplot(1,3,2)
+    plot(MIXMIX(:,1),MIXMIX(:,2))
+    xlabel('Number of groups')
+    ylabel('MIXMIX')
+    xlim([1 maxk])
+
+    
+    subplot(1,3,3)
+    plot(MIXCLA(:,1),MIXCLA(:,2))
+    xlabel('Number of groups')
+    ylabel('MIXCLA (ICL)')
+    xlim([1 maxk])
+%}
+
+%{
+    % Automatic choice of the best number of groups for simulated data with
+    % k=5 and v=5.
+    n1=100;     % Generate 5 groups in 5 dimensions
+    n2=80;
+    n3=50;
+    n4=80;
+    n5=70;
+    v=5;
+    Y1=randn(n1,v)+5;
+    Y2=randn(n2,v)+3;
+    Y3=rand(n3,v)-2;
+    Y4=rand(n4,v)+2;
+    Y5=rand(n5,v);
+
+    group=ones(n1+n2+n3+n4+n5,1);
+    group(n1+1:n1+n2)=2;
+    group(n1+n2+1:n1+n2+n3)=3;
+    group(n1+n2+n3+1:n1+n2+n3+n4)=4;
+    group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
+
+
+    Y=[Y1;Y2;Y3;Y4;Y5];
+    restrfactor=5;
+    maxk=7;
+    CLACLA=[(1:maxk)' zeros(maxk,1)];
+    for j=1:maxk
+        out=tclust(Y,j,0.1,restrfactor);
+        CLACLA(j,2)=out.CLACLA;
+    end
+ 
+    MIXCLA=[(1:maxk)' zeros(maxk,1)];
+    MIXMIX=MIXCLA;
+    for j=1:maxk
+        out=tclust(Y,j,0.1,restrfactor,'mixt',2);
+        MIXMIX(j,2)=out.MIXMIX;
+        MIXCLA(j,2)=out.MIXCLA;
+    end
+    
+    subplot(1,3,1)
+    plot(CLACLA(:,1),CLACLA(:,2))
+    xlabel('Number of groups')
+    ylabel('CLACLA')
+
+    subplot(1,3,2)
+    plot(MIXMIX(:,1),MIXMIX(:,2))
+    xlabel('Number of groups')
+    ylabel('MIXMIX')
+
+    
+    subplot(1,3,3)
+    plot(MIXCLA(:,1),MIXCLA(:,2))
+    xlabel('Number of groups')
+    ylabel('MIXCLA (ICL)')
+%}
+    
 %% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
@@ -801,7 +907,7 @@ for i=1:nselected
                 % Line above is faster but equivalent to
                 % ll(:,j)= (niini(j)/h)*mvnpdf(Y,cini(j,:),sigmaini(:,:,j));
             end
-              
+            
         end
         
         if mixt==2
@@ -950,7 +1056,7 @@ for i=1:nselected
                     % in correspondence to the DfM execution, you should
                     % comment the DfM line below and uncomment the bsxfun
                     % instruction above. In contexts where this is called
-                    % many times, this solution is much more performant. 
+                    % many times, this solution is much more performant.
                     DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
                     
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
@@ -1033,9 +1139,9 @@ for i=1:nselected
                         % units
                         obj=obj+ sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j)));
                     else
-                        % niini(j)*log(niini(j)/h) is the so called entropy 
+                        % niini(j)*log(niini(j)/h) is the so called entropy
                         % term which allows for different group weights
-                                               
+                        
                         niinij=niini(j);
                         obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v));
                     end
@@ -1295,48 +1401,37 @@ end
 
 %% Compute INFORMATION CRITERIA
 
-nParam=npar+(0.5*v*(v+1)*k-1)*( (1-1/restrfactor)^(k*v-1) )+1;
 nParamOld=npar+0.5*v*(v+1)*k;
+nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor)^(1-1/(v*k))) +1;
 
 logh=log(h);
 
 if mixt>0
     % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
     % and the maximized mixture likelihood as goodness of fit measure (New BIC)
-    MIXMIX      = 2*NlogLmixt +nParam*logh;
     MIXMIXold   = 2*NlogLmixt +nParamOld*logh;
+    MIXMIX  = 2*NlogLmixt +nParam*logh;
     
     % MIXCLA = BIC which uses the classification likelihood based on
     % parameters estimated using the mixture likelihood (New ICL)
-    MIXCLA      = 2*NlogL +nParam*logh;
     MIXCLAold   = 2*NlogL +nParamOld*logh;
+    MIXCLA  = 2*NlogL +nParam*logh;
     
     out.MIXMIX=MIXMIX;
     out.MIXMIXold=MIXMIXold;
     out.MIXCLA=MIXCLA;
     out.MIXCLAold=MIXCLAold;
+else
+    % CLACLA = BIC which uses parameters estimated using the classification
+    % likelihood and the maximized classification likelihood as goodness of fit
+    % measure (New New)
+    CLACLAold   = 2*NlogL + nParamOld*logh;
+    CLACLA  = 2*NlogL +nParam*logh;
+    
+    out.CLACLA=CLACLA;
+    out.CLACLAold=CLACLAold;
 end
 
-% CLACLA = BIC which uses parameters estimated using the classification
-% likelihood and the maximized classification likelihood as goodness of fit
-% measure (New New)
-CLACLA      = 2*NlogL + nParam*logh;
-CLACLAold   = 2*NlogL + nParamOld*logh;
-
-out.CLACLA=CLACLA;
-out.CLACLAold=CLACLAold;
-
-% OLD PART TO DELETE
-% % NlogL = - maximized log likelihood (for untrimmed observations)
-% BIC = 2*NlogL + nParam*log(h); % Note log(h) instead of log(n)  h=untrimmed units
-% AIC = 2*NlogL + 2*nParam;
-%
-% BICold = 2*NlogL + nParamOld*log(h); % Note log(h) instead of log(n)  h=untrimmed units
-% AICold = 2*NlogL + 2*nParamOld;
-% out.BIC=BIC;
-% out.AIC=AIC;
-% out.BICold=BICold;
-% out.AICold=AICold;
 
 % Store the fraction of subsamples without convergence.
 out.notconver=notconver;
@@ -1409,7 +1504,7 @@ if plots==1;
         end
         
         axis equal
-
+        
         hall = findobj(gca, 'type', 'line');
         hellipses = findobj(gca, 'type', 'line','Marker','none');
         hpoints = setdiff(hall,hellipses,'sorted');
@@ -1785,9 +1880,3 @@ end
         end
     end
 end
-
-
-
-
-
-
