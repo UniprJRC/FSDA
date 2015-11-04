@@ -5,10 +5,9 @@ function out = boxplotb(Y,varargin)
 %
 % Required input arguments:
 %
-%             Y : n x 2 data matrix. Numeric matrix. n observations
-%               and 2 variables.
-%               Rows of Y represent observations, and columns represent
-%               variables
+%             Y : Observations. Matrix. n x 2 data matrix: n observations
+%               and 2 variables. Rows of Y represent observations, and columns represent
+%               variables.
 %
 % Optional input arguments:
 %
@@ -19,13 +18,12 @@ function out = boxplotb(Y,varargin)
 %                 Table below (taken from Zani, Riani and Corbellini, 1998,
 %                 CSDA) shows the coefficients which must be used to obtain
 %                 a theoretical threshold of 75, 90, 95 or 99 per cent in
-%                 presence of normally distributed data
+%                 presence of normally distributed data: 
 %
-%                   confidence level     coefficient;
-%                   0.75                        0.43;
-%                   0.90                        0.83;
-%                   0.95                        1.13;
-%                   0.99                        1.68.
+%                   confidence level 0.75 -> coefficient 0.43;
+%                   confidence level 0.90 -> coefficient 0.83;
+%                   confidence level 0.95 -> coefficient 1.13;
+%                   confidence level 0.99 -> coefficient 1.68.
 %
 %                   Example - 'coeff',1.68
 %                   Data Types - double
@@ -44,36 +42,37 @@ function out = boxplotb(Y,varargin)
 %       plots   : graphical output. missing value | scalar | structure. 
 %                 This options specifies whether it
 %                 is necessary to produce the bivariate boxplot on the
-%                 screen.
+%                 screen. 
 %                 If plots is a missing value or is a scalar equal to 0 no
-%                 plot is produced
+%                 plot is produced. 
 %                 If plots is a scalar equal to 1 (default) the bivariate
-%                 boxplot with the outliers labelled is produced.
-%                 If plots is a structure it may contain
-%                 the following fields:
-%                   plots.ylim   = vector with two elements controlling minimum and maximum
-%                       on the y axis. Default value is '' (automatic scale)
-%                    plots.xlim    : vector with two elements controlling minimum and maximum
-%                       on the x axis. Default value is '' (automatic scale)
-%                    plots.labeladd : If this option is '1', the outliers in the
+%                 boxplot with the outliers labelled is produced. 
+%                 If plots is a structure it may contain the following fields:
+%                    plots.ylim = vector with two elements controlling minimum and maximum
+%                       on the y axis. Default value is '' (automatic
+%                       scale). 
+%                    plots.xlim = vector with two elements controlling minimum and maximum
+%                       on the x axis. Default value is '' (automatic
+%                       scale). 
+%                    plots.labeladd = If this option is '1', the outliers in the
 %                       spm are labelled with the unit row index. The
 %                       default value is labeladd='1', i.e. the row numbers are
 %                       added.
-%                    plots.InnerColor: a three element vector which specifies the
+%                    plots.InnerColor = a three element vector which specifies the
 %                       color in RGB format to fill the inner contour
 %                       (hinge). The default value of InnerColor is
-%                       InnerColor=[168/255 150/255 255/255]
-%                    plots.OuterColor: a three element vector which specifies the
+%                       InnerColor=[168/255 150/255 255/255].
+%                    plots.OuterColor = a three element vector which specifies the
 %                       color in RGB format to fill the outer contour
 %                       (fence). The default value of OuterColor is
-%                       OuterColor=[210/255 203/255 255/255];
+%                       OuterColor=[210/255 203/255 255/255].
 %                   Example - 'plots',1
 %                   Data Types - double
 %        resolution : resolution to use. Scalar. Resolution which must be
-%                     used to produce the inner and outer spline.
+%                     used to produce the inner and outer spline. 
 %                     The default value of resolution is 1000, that is the
 %                     splines are plotted on the screen using
-%                     1000-by-(number of vertices of the inner hull) points 
+%                     1000-by-(number of vertices of the inner hull) points. 
 %                   Example - 'resolution',5000
 %                   Data Types - double
 %
@@ -92,17 +91,17 @@ function out = boxplotb(Y,varargin)
 %             REMARK: if no unit lies outside the outer spline outliers is a
 %             Empty matrix: 0-by-1
 %         out.cent = 2 x 1 vector containing the coordinates
-%                of the robust centroid
-%                cent[1] = x coordinate
-%                cent[2] = y coordinate
+%                of the robust centroid. 
+%                cent[1] = x coordinate; 
+%                cent[2] = y coordinate. 
 %          out.Spl = r-by-4 matrix containing the coordinates
 %                of the inner and outer spline. r (rows of matrix Spl) is
 %                approximately equal to the number of vertices of the inner hull
-%                multiplied by the resolution which is used
+%                multiplied by the resolution which is used. 
 %                The first two columns refer to the (x,y) coordinates of
-%                the inner spline
+%                the inner spline. 
 %                The last  two columns refer to the (x,y) coordinates  of the
-%                outer spline
+%                outer spline. 
 %
 %
 % See also convhull.m, FSM.m
@@ -126,7 +125,8 @@ function out = boxplotb(Y,varargin)
 % Examples:
 
 %{
-    % Bivariate boxplot of the writing data at time t=5
+    %% boxplotb with all default options.
+    % Bivariate boxplot of the writing data at time t=5.
     % This example reproduces Figure 1 of Corbellini, Riani and Atkinson,
     % 2015, Statistical Methods and Applications
     close all
@@ -137,9 +137,19 @@ function out = boxplotb(Y,varargin)
     title('Bivariate boxplot of the writing data at time $t=5$','Interpreter','Latex')
 %}
 
+%{
+    %% boxplotb with optional arguments.
+    % Bivariate boxplot of the stars data
+    % This example reproduces Figure 4 of Zani Riani and Corbellini
+    close all
+    X=load('stars.txt');
+    out=boxplotb(X,'strictlyinside',1);
+    xlabel('Log effective surface temperature')
+    ylabel('Log light intensity')
+%}
 
 %{
-    % Bivariate boxplot of the brain data
+    % Bivariate boxplot of the brain data.
     % This example reproduces Figure 4 of Zani Riani and Corbellini
     close all
     X=load('bodybrain.txt');
@@ -151,17 +161,7 @@ function out = boxplotb(Y,varargin)
 %}
 
 %{
-    % Bivariate boxplot of the stars data
-    % This example reproduces Figure 4 of Zani Riani and Corbellini
-    close all
-    X=load('stars.txt');
-    out=boxplotb(X,'strictlyinside',1);
-    xlabel('Log effective surface temperature')
-    ylabel('Log light intensity')
-%}
-
-%{
-    % Bivariate boxplot of the stars data
+    % Bivariate boxplot of the stars data.
     % Now we change the colors of the inner and outer contour to white
     % In this example we explore the various graphical options
     close all
@@ -178,7 +178,7 @@ function out = boxplotb(Y,varargin)
 %}
 
 %{
-    % Bivariate boxplot of two variables of Emilia Romagna data
+    % Bivariate boxplot of two variables of Emilia Romagna data.
     % This example reproduces Figure 2 of Zani Riani and Corbellini
     close all
     load('emilia2001')
