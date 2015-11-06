@@ -10,8 +10,8 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %               Data Types - single | double
 %     psifunc : rho (psi) function. Structure.
 %               A structure specifying the class of rho (psi) function to use, the
-%               consistency factor, and the value associated with the Exp
-%               of rho in correspondence of the consistency factor.
+%               consistency factor, and the value associated with the
+%               Expectation of rho in correspondence of the consistency factor.
 %               psifunc must contain the following fields:
 %               psifunc.class = string identyfing the rho (psi) function to use.
 %                    Admissible values for class are 'bisquare' (TB),

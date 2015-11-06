@@ -29,7 +29,7 @@ function rhoTB = TBrho(u,c)
 % \[
 % TBrho(u)= \left\{
 %    \begin{array}{cc}
-%  (c^2/6)*\left\{ 1-[1-(u/c)^2]^3 \right\}  &  |u/c| \leq 1  \\
+%  (c^2/6) \left\{ 1-[1-(u/c)^2]^3 \right\}  &  |u/c| \leq 1  \\
 %  (c^2/6)                      &  |u/c| >1   \\
 % \end{array}
 %    \right.
@@ -59,14 +59,19 @@ function rhoTB = TBrho(u,c)
 % Examples:
 
 %{
+    close all
     x=-6:0.01:6;
     rhoTB=TBrho(x,2);
-    plot(x,rhoTB)
-    xlabel('x','Interpreter','Latex')
-    ylabel('$\rho (x,2)$','Interpreter','Latex')
+    plot(x,rhoTB,'LineWidth',2)
+    xlabel('$u$','Interpreter','Latex')
+    ylabel('$\rho (u,2)$','Interpreter','Latex')
     text(x(1)-0.8,rhoTB(1),'c^2/6')
     text(x(end)+0.2,rhoTB(end),'c^2/6')
-    title('$\rho (x,c)$','Interpreter','Latex')
+    title('$\rho (u,c)$','Interpreter','Latex')
+    hold('on')
+    stem(c,c^2/6,'LineStyle',':','LineWidth',1)
+    stem(-c,c^2/6,'LineStyle',':','LineWidth',1)
+
 %}
 
 %% Beginning of code

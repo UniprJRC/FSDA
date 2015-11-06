@@ -29,7 +29,7 @@ function psi=TBpsi(u,c)
 % \[
 % TBpsi(u)= \left\{
 %    \begin{array}{cc}
-%  (c^2/6) u[1-(u/c)^2]^2    \mbox{if} |u/c| \leq 1
+%  (c^2/6) u[1-(u/c)^2]^2    \mbox{if} |u/c| \leq 1 \\
 %  0                     &  |u/c|>1   \\
 % \end{array}
 %    \right.
@@ -62,13 +62,17 @@ function psi=TBpsi(u,c)
 % Examples:
 
 %{
-
-x=-6:0.01:6;
-psiTB=TBpsi(x,2);
-plot(x,psiTB)
-xlabel('x','Interpreter','Latex')
-ylabel('$\psi (x)$','Interpreter','Latex')
-
+    close all
+    x=-6:0.01:6;
+    c=2;
+    psiTB=TBpsi(x,c);
+    plot(x,psiTB,'LineWidth',2)
+    xlabel('$u$','Interpreter','Latex')
+    ylabel('$\psi(u,2)$','Interpreter','Latex','FontSize',14)
+    hold('on')
+    ax=axis;
+    line([-c;-c],[ax(3);0],'LineStyle',':','LineWidth',1)
+    line([c;c],[ax(3);0],'LineStyle',':','LineWidth',1)
 %}
 
 %% Beginning of code

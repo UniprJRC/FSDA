@@ -74,17 +74,39 @@ function psiHYP = HYPpsi(u, cktuning)
 
 %{
 
-    % Obtain Figure 2 of  p. 375 of HRR
-    %
+    % Obtain Figure 2 of  p. 645 of HRR
     x=-9:0.1:9;
     ctuning=6;
     ktuning=4.5;
     psiHYP=HYPpsi(x,[ctuning,ktuning]);
     plot(x,psiHYP)
-    xlabel('x','Interpreter','Latex')
-    ylabel(' Hyperbolic $\psi(x) $','Interpreter','Latex')
+    xlabel('$u$','Interpreter','Latex')
+    ylabel(' Hyperbolic $\psi(u,c=6,k=4.5) $','Interpreter','Latex')
+    text(ctuning,-0.1,'c','FontSize',14)
+    text(-ctuning,0.1,'-c','FontSize',14)
+%}
+
+%{
+    % Compare psi function for two values of paramter k.
+    close all
+    x=-9:0.1:9;
+    ctuning=6;
+    ktuning=5;
+    psiHYP=HYPpsi(x,[ctuning,ktuning]);
+    plot(x,psiHYP,'color','b')
+    text(6,1.5,['k=' num2str(ktuning)],'Color','b','FontSize',14)
+    xlabel('$u$','Interpreter','Latex','FontSize',14)
+    ylabel(' Hyperbolic $\psi(u,c=6,k) $','Interpreter','Latex','FontSize',14)
+    text(ctuning,-0.1,'c','FontSize',14)
+    text(-ctuning,0.1,'-c','FontSize',14)
+    hold('on')
+    ktuning=4;
+    psiHYP=HYPpsi(x,[ctuning,ktuning]);
+    plot(x,psiHYP,'color','k')
+    text(2,1.3,['k=' num2str(ktuning)],'Color','k','FontSize',14)
 
 %}
+
 
 %{
     % Parameters associated to a value of bdp=0.5

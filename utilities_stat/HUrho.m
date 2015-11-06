@@ -59,17 +59,34 @@ function rhoHU = HUrho(u,c)
 % Examples:
 
 %{
+    close all
+    x=-3:0.001:3;
+    c=1.345;
+    rhoHU=HUrho(x,c);
+    plot(x,rhoHU,'LineStyle','-','LineWidth',2)
+    xlabel('$u$','Interpreter','Latex')
+    ylabel('$\rho (u,1.345)$','Interpreter','Latex')
+    text(-c,0,'-c=-1.345')
+    text(c,0,'c=1.345')
+    hold('on')
+    plot(x,x.^2/2,'LineStyle',':','LineWidth',1.5)
+    stem(c,c^2/2)
+    stem(-c,c^2/2)
+
+%}
+
+%{
     x=-6:0.01:6;
-    c=2;
+    c=1.345;
     rhoHU=HUrho(x,c);
     plot(x,rhoHU)
-    xlabel('x','Interpreter','Latex')
-    ylabel('$\rho (x,2)$','Interpreter','Latex')
+    xlabel('u','Interpreter','Latex')
+    ylabel('$\rho (x,1.345)$','Interpreter','Latex')
     text(-c,0,'-c')
     text(c,0,'c')
-    title('$\rho (x,c)$ with $c=2$ and $c=6$','Interpreter','Latex')
+    title('$\rho (u,c)$ with $c=2$ and $c=2$','Interpreter','Latex')
     hold('on')
-    rhoHU=HUrho(x,6);
+    rhoHU=HUrho(x,2);
     plot(x,rhoHU,'-.')
 %}
 

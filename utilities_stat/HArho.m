@@ -84,9 +84,9 @@ function rhoHA = HArho(u, ctuning)
     % Hoaglin et al. (1987)
     x=-9:0.1:9;
     rhoHA=HArho(x,1);
-    plot(x,rhoHA)
-    xlabel('x','Interpreter','Latex')
-    ylabel(' Hampel $\rho(x) $','Interpreter','Latex')
+    plot(x,rhoHA,'LineWidth',2)
+    xlabel('$u$','Interpreter','Latex')
+    ylabel(' Hampel $\rho(u,[2, 4, 8]) $','Interpreter','Latex','FontSize',14)
 
 %}
 
