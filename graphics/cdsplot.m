@@ -5,90 +5,121 @@ function cdsplot(outms,varargin)
 %
 % Required input arguments:
 %
-%  outms :  structure containing the following fields
-%        stor = k x 9 matrix containing statistics which are used to create the candles
-%               1st col: max Cp values
-%               2nd col: min Cp values
-%               3rd col: averages Cp values
-%               4nd col: median Cp values
+%  outms :  plot data. Structure. Structure containing the following fields
+%        outms.stor = k x 9 matrix containing statistics which are used to create
+%               the candles. 
+%               1st col: max Cp values; 
+%               2nd col: min Cp values; 
+%               3rd col: averages Cp values; 
+%               4nd col: median Cp values; 
 %               5th col: x coordinates (or size of
-%               submodel)
-%               6th col: number of explanatory variables of the submodel
-%               7th col: y coordinate of final Cp
-%               8th col: units entering the final step of the search
+%               submodel); 
+%               6th col: number of explanatory variables of the submodel; 
+%               7th col: y coordinate of final Cp; 
+%               8th col: units entering the final step of the search; 
 %               9th col: maximum Cp value during the search (This is
 %               information is used to print the labels on top of each
-%               model)
-%        outl = r x 4 matrix containing information about 'influential
-%               units' or empty matrix
+%               model). 
+%        outms.outl = r x 4 matrix containing information about 'influential
+%               units' or empty matrix. 
 %               Influential units in this context are defined as the units
 %               which enter the subset in the final part of the search and
 %               bring the value of the Cp below the minimum or
-%               above the maximum value of the central part of the search
-%               1st col: x coordinates
-%               2nd col: y coordinates
-%               3rd col: step of entry into subset
-%               4nd col: unit number
-%               If matrix outl contains more columns they are ignored
-%         siz = vector of length 2 containing information about n (number of
+%               above the maximum value of the central part of the search. 
+%               1st col: x coordinates; 
+%               2nd col: y coordinates; 
+%               3rd col: step of entry into subset; 
+%               4nd col: unit number. 
+%               If matrix outl contains more columns they are ignored. 
+%         outms.siz = vector of length 2 containing information about n (number of
 %               units of the sample and bigP, number of explanatory variables,
 %               including the constant, in the full model). This
-%               information is necessary to compute the envelopes
+%               information is necessary to compute the envelopes.
 %
 % Optional input arguments:
 %
-% CandleWidth: Scalar defining the width of the boxes which represent central part of the
-%              candles. The default width is 0.05;
-%      color : Three elements color vector, [R G B], or a string specifying the
+% CandleWidth: width. Scalar. Scalar defining the width of the boxes which represent central part of the
+%              candles. The default width is 0.05.
+%                   Example - 'CandleWidth',0.1
+%                   Data Types - double
+%      color : Color. Vector. Three elements color vector, [R G B], or a string specifying the
 %              color name. MATLAB supplies a default color if none is specified
 %              or if it is empty. The default color differs depending on the
 %              background color of the figure window. See COLORSPEC in the
 %              MATLAB Reference Guide for color names.
-%  LineWidth : Line Width (in points) for the vertical lines outside the boxes of the
+%                   Example - 'color',[0.1 0.2 0.5]
+%                   Data Types - double
+%  LineWidth : Line Width. Scalar. Line Width (in points) for the vertical lines outside the boxes of the
 %              candles. The default LineWidth is 0.5 points.
-%    ylim    : vector with two elements controlling minimum and maximum
-%              on the y axis. Default value is [-2 50] (automatic scale)
-%    xlim    : vector with two elements controlling minimum and maximum
-%              on the x axis. Default value is '' (automatic scale)
-%   label   : string vector of length k (number of rows of matrix stat)
+%                   Example - 'LineWidth',0.3
+%                   Data Types - double
+%    ylim    : y axis scale. Vector. Vector with two elements controlling minimum and maximum
+%              on the y axis. Default value is [-2 50] (automatic scale).
+%                   Example - 'ylim',[0 100]
+%                   Data Types - double
+%    xlim    : x axis scale. Vector. Vector with two elements controlling minimum and maximum
+%              on the x axis. Default value is '' (automatic scale).
+%                   Example - 'xlim',[0 100]
+%                   Data Types - double
+%   label   : Labels of the selected models. Cell array of strings. Cell array of strings of length k (number of rows of matrix stat)
 %              containing the labels of the selected models. Default value is ''
-%              that is no label is plotted on the screen
-%    quant   : vector containing quantiles for the horizontal lines
-%              associated witht the confidence bands of Cp
+%              that is no label is plotted on the screen.
+%                   Example - 'label',{'a' 'b' 'c'}
+%                   Data Types - char
+%    quant   : Quantiles. Vector. Vector containing quantiles for the horizontal lines
+%              associated witht the confidence bands of Cp. 
 %              The default is to plot 2.5% and
 %              97.5% envelopes. In other words the default is
-%              quant=[0.025;0.975];
-%   lablast  : scalar which specifies whether to add the label of the unit
+%              quant=[0.025;0.975].
+%                   Example - 'quant',[0.01 0.025 0.975 0.99]
+%                   Data Types - double
+%   lablast  : Label for the last unit entered. Scalar. Scalar which specifies whether to add the label of the unit
 %              which enters the final step of the search close to its
 %              symbol. If lablast=1 label is added else (default) no label
-%              is added
-%   laboutl  : scalar which specifies whether to add the labels of the
+%              is added.
+%                   Example - 'lablast',0
+%                   Data Types - double
+%   laboutl  : Label for the influential units. Scalar. Scalar which specifies whether to add the labels of the
 %              'influential units'
 %              if laboutl=1 the unit number is added close to its symbol.
 %              if laboutl=2 the unit number together with the entry step is
-%              added close to its symbol else (default) no label is added
-%   labbold  : cell array of strings which specifies the models which have
+%              added close to its symbol else (default) no label is added.
+%                   Example - 'laboutl',1
+%                   Data Types - double
+%   labbold  : Models to highliht. Cell array of strings. Cell array of strings which specifies the models which have
 %              to be highlighted (the linewidth of the vertical lines
 %              outside the boxes of the models specified in labbold is
 %              considerably increased). As default labbold=''.
-%    labenv  :  If labelv=1 labels of the quantiles used to generate the
+%                   Example - 'labbold',{'a' 'b'}
+%                   Data Types - char
+%    labenv  :  Quantiles labels. Scalar. If labelv=1 labels of the quantiles used to generate the
 %               horizontal lines associated with the envelopes are added,
 %               else if labelv=0 (default) no label is added.  
-%    barend  : scalar which specifies whether to add small horizontal lines
+%                   Example - 'labenv',1
+%                   Data Types - double
+%    barend  : Adding horizontal lines. Scalar. Scalar which specifies whether to add small horizontal lines
 %              at the end of the vertical lines representing the whiskers.
 %              If barend=1 horizontal lines are added else (default) no
-%              additional line is drawn
-%    cpbrush : empty value or matrix
+%              additional line is drawn. 
+%                   Example - 'barend',1
+%                   Data Types - double
+%    cpbrush : Brushing. Empty value or matrix. 
 %              If cpbrush is an empty value (default), no brushing is done.
 %              The activation of this option (cpbrush is a scalar) enables
 %              the user  to select a set of candles in the candlestick plot
 %              and to monitor the corresponding forward searches in a new
-%              plot. Remark: if cpbrush is not an empty value the user has
+%              plot. 
+%              If cpbrush is not an empty value the user has
 %              to supply the matrix which in the first column contains the
 %              fwd search index and in the other k columns the values of Cp
 %              associated with the k models displayed in the candlestick
-%              plot
+%              plot.
+%                   Example - 'cpbrush',''
+%                   Data Types - double
 %
+% Output:
+%
+% See also:
 %
 % References:
 %
@@ -105,6 +136,7 @@ function cdsplot(outms,varargin)
 % Examples:
 
 %{
+    % cdsplot with all default options.
     % Load Ozone data (reduced data)
     X=load('ozone.txt');
     % Tranform the response using logs
@@ -124,6 +156,7 @@ function cdsplot(outms,varargin)
 
 
 %{
+    % cdsplot with optional arguments.
     % Interactive_example
     % Load Ozone data (full data)
     X=load('ozone_330_obs.txt');
