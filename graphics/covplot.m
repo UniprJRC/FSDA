@@ -5,73 +5,79 @@ function covplot(out,varargin)
 %<a href="matlab: docsearchFS('covplot')">Link to the help function</a>
 %
 %  Required input arguments:
-%  out :  structure containing the following fields
-%  S2cov:       (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
+%  out :  Data to plot. Structure. Structure containing the following fields
+%  out.S2cov=   (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
 %               of the elements of the covariance matrix in each step
-%               of the forward search
-%               1st col = fwd search index (from init to n)
-%               2nd col = monitoring of S(1,1)
-%               3rd col = monitoring of S(1,2)
-%               ...
-%               (compulsory argument)
-%       Un  =   matrix containing the order of entry of each unit
-%               (necessary if datatooltip is true)
-%       Y   =   n x v data matrix; n observations
-%               and v variables
+%               of the forward search: 
+%               1st col = fwd search index (from init to n); 
+%               2nd col = monitoring of S(1,1); 
+%               3rd col = monitoring of S(1,2); 
+%               ...; 
+%               (compulsory argument).
+%     out.Un=   matrix containing the order of entry of each unit
+%               (necessary if datatooltip is true).
+%     out.Y =   n x v data matrix; n observations
+%               and v variables. 
 %
 %
 %  Optional input arguments:
-%           corr     : scalar which specifies whether we are dealing with a
-%                    correlation or covariance matrix.
-%                    If empty the program assumes we are dealing with a
-%                    correlation matrix if the absolute value of the
-%                    maximum value of out.S2cov is smaller than 1.
-%                    If corr=1 a correlation matrix is assumed
-%           standard : structure which defines the appearance of the plot
+%           corr:   Correlation or covariance. Scalar.
+%                   Scalar which specifies whether we are dealing with a
+%                   correlation or covariance matrix.
+%                   If empty the program assumes we are dealing with a
+%                   correlation matrix if the absolute value of the
+%                   maximum value of out.S2cov is smaller than 1.
+%                   If corr=1 a correlation matrix is assumed.
+%                   Example - 'corr',1
+%                   Data Types - double
+%       standard:   Appearance of the plot. Structure. Structure which defines the appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. The structure contains
-%                   the following fields:
-%                   SizeAxesNum : scalar specifying the fontsize of the
+%                   style, color of the lines, etc. 
+%                   The structure contains the following fields:
+%                   standard.SizeAxesNum = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
-%                   xlim : two elements vector with minimum and maximum of
+%                   standard.xlim = two elements vector with minimum and maximum of
 %                       the x axis. Default value is '' (automatic scale).
-%                   ylim : two elements vector with minimum and maximum of
+%                   standard.ylim = two elements vector with minimum and maximum of
 %                       the y axis. Default value is '' (automatic scale).
-%                   titl : a label for the title (default: '').
-%                   labx : a label for the x-axis (default: 'Subset size m').
-%                   laby : a label for the y-axis (default: 'Elements of
+%                   standard.titl = a label for the title (default: '').
+%                   standard.labx = a label for the x-axis (default: 'Subset size m').
+%                   standard.laby = a label for the y-axis (default: 'Elements of
 %                       the correlation (covariance) matrix)
-%                   SizeAxesLab : Scalar specifying the fontsize of the
+%                   standard.SizeAxesLab = Scalar specifying the fontsize of the
 %                       labels of the axes. Default value is 12.
-%                   LineWidth : scalar specifying line width for the
+%                   standard.LineWidth = scalar specifying line width for the
 %                       trajectories.
-%                   Color : cell array of strings containing the colors to
+%                   standard.Color = cell array of strings containing the colors to
 %                       be used for the standard units.
 %                       If length(Color)=1 the same color will be used for
 %                       all units.
 %                       If length(Color)=2 half of the trajectories will
 %                       appear with Color{1} and the other half with
 %                       Color{2}. And so on with 3 cell elements, etc.
-%                   LineStyle : cell containing the line types.
-%         fground : structure which defines the trajectories in foregroud,
+%                   standard.LineStyle = cell containing the line types.
+%                   Example - 'standard',standard
+%                   Data Types - structure
+%         fground : Trajectories in foregroud. Structure. 
+%                   Structure which defines the trajectories in foregroud,
 %                   that is which trajectories are highlighted and how
 %                   they are plotted to be distinguishable from the others.
 %                   It is possible to control the label, the width, the
 %                   color, the line type and the marker of the highlighted
 %                   covariances. The structure fground contains the following
 %                   fields:
-%                   fthresh = (alternative to funit) numeric vector of
+%                   fground.fthresh = (alternative to funit) numeric vector of
 %                       length 1 or 2 which specifies the highlighted
-%                       trajectories.
+%                       trajectories. 
 %                       If length(fthresh)=1 the highlighted trajectories
 %                       are those of units that throughtout the search had
 %                       at leat once a covariance greater (in absolute value)
-%                       than thresh. The default value of fthresh is Inf
+%                       than thresh. The default value of fthresh is Inf. 
 %                       If length(fthresh)=2 the highlighted trajectories
 %                       are those of units that throughtout the search had
 %                       a covariance at leat once bigger than fthresh(2) or
 %                       smaller than fthresh(1).
-%                   funit : (alternative to fthresh) scalar containing the
+%                   fground.funit = (alternative to fthresh) scalar containing the
 %                       number of trajectories of the covariances to be
 %                       highlighted. For example if funit=5 the
 %                       trajectories with the 5 highest values of the
@@ -79,41 +85,37 @@ function covplot(out,varargin)
 %                       Notice that if funit is supplied,
 %                       fthresh is ignored. The default value of funit is
 %                       5.
-%                   flabstep : numeric vector which specifies the steps of
+%                   fground.flabstep = numeric vector which specifies the steps of
 %                       the search where to put labels for the highlighted
 %                       trajectories (units). The default is to put the
-%                       labels at the initial and final steps of the search.
+%                       labels at the initial and final steps of the search, that is fground.flabstep=[m0 n].
 %                       flabstep='' means no label.
-%                   LineWidth : scalar specifying line width for the
+%                   fground.LineWidth = scalar specifying line width for the
 %                       highlighted trajectories (units). Default is 1.
-%                   Color : cell array of strings containing the colors to
+%                   fground.Color = cell array of strings containing the colors to
 %                       be used for the highlighted trajectories (units).
 %                       If length(scolor)==1 the same color will be used for
-%                       all highlighted units Remark: if for example
-%                       length(scolor)=2 and there are 6 highlighted units,
-%                       3 highlighted trajectories appear with
-%                       selunitcolor{1} and 3 highlighted trajectories with
-%                       selunitcolor{2}
-%                   LineStyle : cell containing the line type of the highlighted
+%                       all highlighted units. 
+%                       If for example length(scolor)=2 and there are 6 highlighted units,
+%                       3 highlighted trajectories appear with selunitcolor{1} and 3 highlighted trajectories with
+%                       selunitcolor{2}. 
+%                   fground.LineStyle = cell containing the line type of the highlighted
 %                       trajectories.
-%                   fmark  : scalar controlling whether to plot highlighted
-%                       trajectories as markers.
-%                       if 1 each trajectory is plotted using a different marker
-%                       else no marker is used (default).
-%
-%                   The default values of structure fground are:
-%                    fground.funit=5
-%                    fground.flabstep=[m0 n]
-%                    fground.LineWidth=1
-%
-%
-%       tag     :   string which identifies the handle of the plot which
+%                   fground.fmark  = scalar controlling whether to plot highlighted
+%                       trajectories as markers. If 1 each trajectory is plotted using a different marker
+%                       else (default) no marker is used.
+%                   Example - 'fground',fground
+%                   Data Types - structure
+%       tag     :   Handle of the plot. String. String which identifies the handle of the plot which
 %                   is about to be created. The default is to use tag
 %                   'pl_cov'. Note that if the program finds a plot which
 %                   has a tag equal to the one specified by the user, then
 %                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
-%   datatooltip :   empty value or structure. The default is datatooltip=1
+%                   in the same window else a new window is created.
+%                   Example - 'tag','pl_mycov'
+%                   Data Types - string
+%   datatooltip :   Information about the unit selected. Empty value or structure. 
+%                   The default is datatooltip=1.
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
 %                   the step in which the unit enters the search and the
@@ -123,9 +125,12 @@ function covplot(out,varargin)
 %                   datacursormode for more details or the examples below).
 %                   The default options of the structure are
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
+%                   Example - 'datatooltip',''
+%                   Data Types - Empty value or structure.
 %
+% Output:
 %
-% See also
+% See also:
 %
 % References:
 %
@@ -143,6 +148,7 @@ function covplot(out,varargin)
 % Examples:
 
 %{
+    %% covplot with all default options.
     % generate input structure for malfwdplot
     n=100;
     p=4;
@@ -160,6 +166,7 @@ function covplot(out,varargin)
 %}
 %
 %{
+    % covplot with optional arguments.
     % Example of the use of some options inside structure standard.
     n=100;
     p=4;
@@ -181,7 +188,7 @@ function covplot(out,varargin)
 %}
 %
 %{
-    % Example of the use of some options inside structure fground
+    % Example of the use of some options inside structure fground.
     n=100;
     p=4;
     state1=141243498;
@@ -208,7 +215,7 @@ function covplot(out,varargin)
 %}
 %
 %{
-    % Example of the use of option tag
+    %% Example of the use of option tag.
     n=100;
     p=4;
     state1=141243498;
