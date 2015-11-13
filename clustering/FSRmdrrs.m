@@ -258,6 +258,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')
+
 %}
 
 %{
@@ -564,13 +565,16 @@ end
 parfor (j = 1:nsimul , numpool)
     [mdr,~,BB] = FSRmdr(y,X,0,'init',init,'intercept',intercept,...
         'nocheck',1,'msg',0,'constr',constr,'bsbsteps',bsbsteps);
-    
-    % Store units forming subset at each step
-    BBrs(:,:,j) = BB;
-    
-    % Store minimum deletion residual
-    mdrrs(:,j+1) = mdr(:,2);
-    
+    if size(mdr,2)>1
+        % Store units forming subset at each step
+        BBrs(:,:,j) = BB;
+        % Store minimum deletion residual
+        mdrrs(:,j+1) = mdr(:,2);
+    else
+        BBrs(:,:,j) = NaN;
+        % Store minimum deletion residual
+        mdrrs(:,j+1) = NaN;
+    end
     if msg==1
         if usePCT == 1
             progbar.progress;  %#ok<PFBNS>
@@ -642,4 +646,3 @@ if plots==1
 end
 
 end
-
