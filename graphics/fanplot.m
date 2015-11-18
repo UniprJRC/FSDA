@@ -5,37 +5,42 @@ function fanplot(out,varargin)
 %
 % Required input arguments:
 %
-%  out :  structure containing the following fields
-%     Score  =  (n-init) x length(la)+1 matrix
-%               1st col = fwd search index
+%  out :  Data to plot. Structure. Structure containing the following fields
+%     out.Score  =  (n-init) x length(la)+1 matrix: 
+%               1st col = fwd search index; 
 %               2nd col = value of the score test in each step
-%               of the fwd search for la(1)
-%               ...
+%               of the fwd search for la(1); 
+%               ...; 
 %               last col  =  value of the score test in each step
-%               of the fwd search for la(end)
-%       la   =  vector containing the values of lambda for which fan plot
-%               is constructed
-%       bs   =  matrix of size p x length(la) containing the units forming
-%               the initial subset for each value of lambda
-%       Un   =  cell of size length(la). out.Un{i} is a (n-init) x 11
-%               Matrix which contains the unit(s) included in the subset
+%               of the fwd search for la(end). 
+%       out.la   =  vector containing the values of lambda for which fan plot
+%               is constructed. 
+%       out.bs   =  matrix of size p x length(la) containing the units forming
+%               the initial subset for each value of lambda. 
+%      out. Un   =  cell of size length(la). out.Un{i} is a (n-init) x 11
+%               matrix which contains the unit(s) included in the subset
 %               at each step of the fwd search (necessary only if option
-%               datatooltip or databrush are not empty)
-%         y  = a vector containing the response (necessary only if option
-%              databrush is true)
-%         X  = a matrix containing the explanatory variables (necessary
-%              only if option databrush is not empty)
+%               datatooltip or databrush are not empty). 
+%         out.y  = a vector containing the response (necessary only if option
+%              databrush is true). 
+%         out.X  = a matrix containing the explanatory variables (necessary
+%              only if option databrush is not empty). 
 %
 % Optional input arguments:
 %
-%         label :   cell containing the labels of the units (optional
-%                   argument used when datatooltip=1. If this field is not
+%         label :   Labels. Cell array of strings. Cell containing the labels of the units (optional
+%                   argument used when datatooltip=1). If this field is not
 %                   present labels row1, ..., rown will be automatically
-%                   created and included in the pop up datatooltip window)
-%       conflev :   confidence level for the bands (default is 0.99 that is
+%                   created and included in the pop up datatooltip window.
+%                   Example - 'corr',1
+%                   Data Types - Cell array of strings
+%       conflev :   Confidence level. Scalar or vector. Confidence level for the bands (default is 0.99, that is
 %                   we plot two horizontal lines in correspondence of value
-%                   -2.58 and 2.58
-%   datatooltip :   empty value or structure. The default is datatooltip=''
+%                   -2.58 and 2.58).
+%                   Example - 'conflev',[0.9 0.95 0.99]
+%                   Data Types - double
+%   datatooltip :   Information about the unit selected. Empty value or structure. The
+%                   default is datatooltip=''.
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
 %                   the step in which the unit enters the search and the
@@ -44,8 +49,10 @@ function fanplot(out,varargin)
 %                   function datacursormode for more details or the
 %                   examples below). The default options of the structure
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'.
-%    databrush :    empty value, scalar or cell.
-%                   DATABRUSH IS AN EMPTY VALUE If databrush is an empty
+%                   Example - 'datatooltip',''
+%                   Data Types - Empty value or structure
+%    databrush :    Databrush options. Empty value, scalar or cell.
+%                   DATABRUSH IS AN EMPTY VALUE: If databrush is an empty
 %                   value (default), no brushing is done. The activation of
 %                   this option (databrush is a scalar or a cell) enables
 %                   the user  to select a set of trajectories in the
@@ -55,21 +62,20 @@ function fanplot(out,varargin)
 %                   be highlighted in the other following plots (only if
 %                   they are already open): monitoring residual plot
 %                   monitoring leverage plot maximum studentized residual
-%                   s^2 and R^2 Cook distance and modified Cook distance
-%                   deletion t statistics Remark: the window style of the
+%                   $s^2$ and $R^2$ Cook distance and modified Cook distance
+%                   deletion t statistics. 
+%                   The window style of the
 %                   other figures is set equal to that which contains the
 %                   monitoring residual plot. In other words, if the
 %                   monitoring residual plot is docked all the other
-%                   figures will be docked too.
-%                    DATABRUSH IS A SCALAR
-%                   If databrush is a scalar the default selection tool is a
+%                   figures will be docked too. 
+%                   DATABRUSH IS A SCALAR: If databrush is a scalar the default selection tool is a
 %                   rectangular brush and it is possible to brush only once
-%                   (that is persist='')
-%                   DATABRUSH IS A CELL
-%                    If databrush is a cell, it is possible to use all
-%                   optional arguments of function selectdataFS.m and the
-%                    following optional  argument:
-%                 persist. Persist is an empty value or a scalar containing
+%                   (that is persist=''). 
+%                   DATABRUSH IS A CELL: If databrush is a cell, it is possible to use all
+%                   optional arguments of function selectdataFS.m and LXS.m inside the curly brackets of
+%                   option databrush and the following optional argument:
+%                  persist = Persist is an empty value or a scalar containing
 %                   the strings 'on' or 'off'. If persist = 'on' or 'off'
 %                   brusing can be done as many time as the
 %                   user requires. In case persist='off', every time a new
@@ -81,31 +87,31 @@ function fanplot(out,varargin)
 %                   the previos brushed plots are stored in a figure in the
 %                   background. The default value of persist is '' that is
 %                   brushing is allowed only once.
-%                 bivarfit : This option adds one or more least square
+%                 bivarfit = This option adds one or more least square
 %                   lines, based on SIMPLE REGRESSION of y on Xi, to the
 %                   plots of y|Xi.
-%                 bivarfit = ''
+%                   If bivarfit = ''
 %                   is the default: no line is fitted.
-%                 bivarfit = '1'
+%                   If bivarfit = '1'
 %                   fits a single ols line to all points of each bivariate
 %                   plot in the scatter matrix y|X.
-%                 bivarfit = '2'
+%                   If bivarfit = '2'
 %                   fits two ols lines: one to all points and another to
 %                   the group of the genuine observations. The group of the
 %                   potential outliers is not fitted.
-%                 bivarfit = '0'
+%                   If bivarfit = '0'
 %                   fits one ols line to each group. This is useful for the
 %                   purpose of fitting mixtures of regression lines.
-%                 bivarfit = 'i1' or 'i2' or 'i3' etc.
+%                   If bivarfit = 'i1' or 'i2' or 'i3' etc
 %                   fits an ols line to a specific group, the one with
 %                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
 %                   of mixtures.
-%                 multivarfit : This option adds one or more least square lines,
+%                 multivarfit = This option adds one or more least square lines,
 %                   based on MULTIVARIATE REGRESSION of y on X, to the
 %                   plots of y|Xi.
-%                 multivarfit = ''
+%                   If multivarfit = ''
 %                   is the default: no line is fitted.
-%                 multivarfit = '1'
+%                   If multivarfit = '1'
 %                   fits a single ols line to all points of each bivariate
 %                   plot in the scatter matrix y|X. The line added to the
 %                   scatter plot y|Xi is avconst +Ci*Xi, where Ci is the
@@ -113,44 +119,70 @@ function fanplot(out,varargin)
 %                   avconst is the effect of all the other explanatory
 %                   variables different from Xi evaluated at their centroid
 %                   (that is overline{y}'C))
-%                 multivarfit = '2'
+%                   If multivarfit = '2'
 %                   exactly equal to multivarfit ='1' but this time we add the
 %                   line based on the group of unselected observations.
-%       titl    :   a label for the title (default: 'Fan plot')
-%       labx    :   a label for the x-axis (default: 'Subset size m')
-%       laby    :   a label for the y-axis (default:'Score test statistic')
-%       xlimx   :   vector with two elements controlling minimum and maximum
-%                   of the x axis. Default value is [init n]
-%       ylimy   :   vector with two elements controlling minimum and
+%                   Example - 'databrush',1
+%                   Data Types - Empty value, scalar or cell.
+%       titl    :   Title. String. A label for the title (default: 'Fan plot')
+%                   Example - 'titl','Fan plot'
+%                   Data Types - char
+%       labx    :   x-axis label. String. A label for the x-axis (default:
+%                   'Subset size m').
+%                   Example - 'labx','Subset size m'
+%                   Data Types - char
+%       laby    :   y-axis label. String. a label for the y-axis
+%                   (default:'Score test statistic').
+%                   Example - 'laby','Score test statistic'
+%                   Data Types - char
+%       xlimx   :   Min and Max of the x axis. Vector. Vector with two elements controlling minimum and maximum
+%                   of the x axis. Default value is [init n].
+%                   Example - 'xlimx',[init n]
+%                   Data Types - double
+%       ylimy   :   Min and Max of the y axis. Vector. Vector with two elements controlling minimum and
 %                   maximum of the y axis. Default value for
-%                   ylimy(1)=max(min(score_test),-20) Default value for
-%                   ylimy(2)=min(max(score_test),20)
-%       lwd     :   Scalar which controls linewidth of the curves which
-%                   contain the score test. Default line width=2
-%       lwdenv  :   Scalar which controls the width of the lines associated
-%                   with the envelopes. Default is lwdenv=1
-%       FontSize:   Scalar which controls the font size of the labels of
+%                   ylimy(1)=max(min(score_test),-20). Default value for
+%                   ylimy(2)=min(max(score_test),20).
+%                   Example - 'ylimy',[0 100]
+%                   Data Types - double
+%       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of the curves which
+%                   contain the score test. Default line width=2. 
+%                   Example - 'lwd',2
+%                   Data Types - double
+%       lwdenv  :   Width of the envelope lines. Scalar. Scalar which controls the width of the lines associated
+%                   with the envelopes. Default is lwdenv=1.
+%                   Example - 'lwdenv',1
+%                   Data Types - double
+%       FontSize:   Font size of the labels. Scalar. Scalar which controls the font size of the labels of
 %                   the axes and of the labels inside the plot. Default
-%                   value is 12
-%    SizeAxesNum:   Scalar which controls the size of the numbers of the
-%                   axes. Default value is 10
-%       nameX   :   cell array of strings of length p containing the labels
+%                   value is 12.
+%                   Example - 'FontSize',12
+%                   Data Types - double
+%    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which controls the size of the numbers of the
+%                   axes. Default value is 10.
+%                   Example - 'SizeAxesNum',10
+%                   Data Types - double
+%       nameX   :   Labels of the X variables. Cell array of strings. Cell array of strings of length p containing the labels
 %                   of the varibles of the regression dataset. If it is empty
 %                 	(default) the sequence X1, ..., Xp will be created
-%                   automatically
-%       namey   :   character containing the label of the response.
-%
-%       tag     :   string which identifies the handle of the plot which
+%                   automatically.
+%                   Example - 'nameX',''
+%                   Data Types - Cell array of strings
+%       namey   :   Labels of the y variable. String. String containing the label of the response variable.
+%                   Example - 'namey',''
+%                   Data Types - char
+%       tag     :   Handle of the plot. String. String which identifies the handle of the plot which
 %                   is about to be created. The default is to use tag
 %                   pl_fan. Notice that if the program finds a plot which
 %                   has a tag equal to the one specified by the user, then
 %                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
-%  Remark: if databrush is a cell, it is possible to specify all optional
-%  arguments of function selectdataFS and LXS inside the curly brackets of
-%  option databrush.
+%                   in the same window else a new window is created.
+%                   Example - 'tag','pl_mycov'
+%                   Data Types - char
 %
-% See also
+% Output:
+%
+% See also:
 %
 % References:
 %
@@ -170,6 +202,7 @@ function fanplot(out,varargin)
 % Examples:
 
 %{
+    %% fanplot with all default options.
     % load the wool data
     XX=load('wool.txt');
     y=XX(:,end);
@@ -179,16 +212,8 @@ function fanplot(out,varargin)
     fanplot(out);
 %}
 %
-%
 %{
-    %Steps common to all the subsequent examples
-    load('loyalty.txt');
-    y=loyalty(:,4);
-    X=loyalty(:,1:3);
-%}
-%
-%
-%{
+    %%fanplot with optional arguments.
     %FSRfan and fanplot with specified lambda
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -201,8 +226,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    %FSRfan and fanplot with databrush option
+    %FSRfan and fanplot with databrush option.
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -212,9 +236,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    %FSRfan and fanplot with databrush, persist, label and  RemoveLabels
-    %option options.
+    %FSRfan and fanplot with databrush, persist, label and RemoveLabels options.
     %Removelabels is a parameter of SelectdataFS function
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -225,8 +247,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    %FSRfan and fanplot with databrush, bivarfit, label and  RemoveLabels option
+    %FSRfan and fanplot with databrush, bivarfit, label and  RemoveLabels options.
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -236,8 +257,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    %FSRfan and fanplot with databrush  and selectionmode options
+    %FSRfan and fanplot with databrush  and selectionmode options.
     %Example of the use of persistent cumulative brush.
     %Every time a brushing action is performed
     %current highlightments are added to previous highlightments
@@ -253,8 +273,9 @@ function fanplot(out,varargin)
 %}
 %
 %{
-    %Example of the use of function fanplot with datatooltip passed as
-    %scalar (that is using default options for datacursor (i.e. DisplayStyle =window)
+    %fanplot with datatooltip passed as scalar.
+    %That is using default options for datacursor (i.e. DisplayStyle
+    =window).
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -264,7 +285,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
-   % Construct fan plot specifying the confidence level and the xlimits
+   % Construct fan plot specifying the confidence level and the xlimits.
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -274,8 +295,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    %Example of the use of multivarfit and xlimx
+    %Example of the use of multivarfit and xlimx.
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -285,7 +305,6 @@ function fanplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
     %Example of the use of FlagSize, namey, namex, lwd,FontSize, SizeAxesNum.
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -301,8 +320,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    % Only one brush specifying labels for y and X
+    % Only one brush specifying labels for y and X.
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
