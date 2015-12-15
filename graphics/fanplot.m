@@ -226,6 +226,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    %Interactive_example
     %FSRfan and fanplot with databrush option.
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -236,6 +237,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    %Interactive_example
     %FSRfan and fanplot with databrush, persist, label and RemoveLabels options.
     %Removelabels is a parameter of SelectdataFS function
     load('loyalty.txt');
@@ -247,6 +249,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    %Interactive_example
     %FSRfan and fanplot with databrush, bivarfit, label and  RemoveLabels options.
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -257,6 +260,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    %Interactive_example
     %FSRfan and fanplot with databrush  and selectionmode options.
     %Example of the use of persistent cumulative brush.
     %Every time a brushing action is performed
@@ -295,6 +299,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    %Interactive_example
     %Example of the use of multivarfit and xlimx.
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -320,6 +325,7 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    %Interactive_example
     % Only one brush specifying labels for y and X.
     load('loyalty.txt');
     y=loyalty(:,4);
