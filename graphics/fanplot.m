@@ -278,8 +278,7 @@ function fanplot(out,varargin)
 %
 %{
     %fanplot with datatooltip passed as scalar.
-    %That is using default options for datacursor (i.e. DisplayStyle
-    =window).
+    %That is using default options for datacursor (i.e. DisplayStyle=window).
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -310,13 +309,14 @@ function fanplot(out,varargin)
 %}
 %
 %{
+    %Interactive_example
     %Example of the use of FlagSize, namey, namex, lwd,FontSize, SizeAxesNum.
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
     la=[-1 -0.5 0 0.5 1];
     [out]=FSRfan(y,X,'la',la);
-     namey='Sales'
+     namey='Sales';
      nameX={'Number of visits', 'Age', 'Number of persons in the family'};
     %FlagSize controls how large must be the highlighted points. It is a
     %parametr of selectdataFS.
