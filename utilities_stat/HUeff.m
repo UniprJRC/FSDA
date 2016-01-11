@@ -106,7 +106,7 @@ eps=1e-12;
         
         alph= 2*(c.^2*(1-normcdf(c))+normcdf(c)-0.5-c*normpdf(c));
         empeff=(bet^2)/alph;
-        disp(empeff)
+        % disp(empeff)
         step=step/2;
         if empeff<eff
             c=c+step;

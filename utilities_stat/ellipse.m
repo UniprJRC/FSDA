@@ -93,6 +93,7 @@ function Ell=ellipse(mu, Sigma, conflev, Color)
 %{
     %% Generate 1000 bivariate normal data and add the ellipse which
     % contains approximately 990 of them.
+    rng('default')
     rng(20)     % For reproducibility
     % Define mu and Sigma
     mu = [2,3];
