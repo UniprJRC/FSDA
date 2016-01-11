@@ -293,7 +293,7 @@ clickableMultiLegend(hline(1:numconflev),legendstring2);
 axis(axis);
 
 if ~isempty(h)
-    % Eventually send the resindexplot into a different figure/subplot
+    % Eventually send the malindexplot into a different figure/subplot
     hfigh = get(h,'Parent');
     
     set(hfigh,'Name','Mahalanobis distance plot','NumberTitle','off');
@@ -317,7 +317,7 @@ if ~isempty(h)
         
     end
     % Fix the y-axis
-    set(h,'YLimMode', 'manual');
+    % set(h,'YLimMode', 'manual');
     % Add title and axis labels for the figure with subplots
     title(gca,titl);
     xlabel(gca,labx,'Fontsize',FontSize);
