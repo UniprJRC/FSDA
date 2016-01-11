@@ -69,9 +69,32 @@ function rhoTB = TBrho(u,c)
     text(x(end)+0.2,rhoTB(end),'c^2/6')
     title('$\rho (u,c)$','Interpreter','Latex')
     hold('on')
+    c=2;
     stem(c,c^2/6,'LineStyle',':','LineWidth',1)
     stem(-c,c^2/6,'LineStyle',':','LineWidth',1)
 
+%}
+
+%{
+    %% Compare two rho functions for 2 different values of c.  
+    % In the first we fix the bdp (value of efficiency is automatically given),
+    % while in the second we find the efficiency (the value of bdp is
+    % automatically given)
+    close all
+    x=-6:0.01:6;
+    lwd=2;
+    hold('on')
+    c=TBbdp(0.5,1);
+    rhoTB=TBrho(x,c);
+    rhoTB=rhoTB/max(rhoTB);
+    plot(x,rhoTB,'LineStyle','-','LineWidth',lwd)
+    c=TBeff(0.95,1);
+    rhoTB=TBrho(x,c);
+    rhoTB=rhoTB/max(rhoTB);
+    plot(x,rhoTB,'LineStyle','-.','LineWidth',lwd)
+    xlabel('$x$','Interpreter','Latex','FontSize',16)
+    ylabel('TB. Normalized $\rho_c(x)$','Interpreter','Latex','FontSize',20)
+    legend({'$c_{(bdp=0.5 \mapsto eff=0.29)}$', '$c_{(eff=0.95 \mapsto bdp=0.12)}$'},'Interpreter','Latex','Location','SouthEast','FontSize',16)
 %}
 
 %% Beginning of code
