@@ -23,6 +23,15 @@ function w = HYPwei(u, cktuning)
 %                Remark: if length(cktuning)==2 values of A, B and d will be
 %                computed automatically
 %
+%
+%  Output:
+%
+%    w :         n x 1 vector contains the hyperbolic weights associated to the residuals or
+%                Mahalanobis distances for the n units of the sample
+%
+%
+% More About:
+%
 % Function HYPwei transforms vector u as follows
 %
 % HYPwei(u) = 	{ 1,			                               |u| <= d,
@@ -34,11 +43,10 @@ function w = HYPwei(u, cktuning)
 %
 %	It is necessary to have 0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1
 %
-%  Output:
-%
-%    w :         n x 1 vector contains the Tukey's biweight weights associated to the residuals or
-%                Mahalanobis distances for the n units of the sample
-%
+% Remark: hyperbolic  psi-function is linear around u = 0 in accordance with
+% Winsor's principle that all distributions are normal in the middle.
+% This means that  \psi (u)/u is approximately constant over the linear region of \psi,
+% so the points in that region tend to get equal weight.
 %
 % References:
 %
@@ -54,23 +62,6 @@ function w = HYPwei(u, cktuning)
 %
 %<a href="matlab: docsearchFS('hypwei')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
-%
-% Examples:
-%
-% Function HYPwei transforms vector u as follows
-
-%
-%
-% Remark: Tukey's biweight  psi-function is almost linear around u = 0 in accordance with
-% Winsor's principle that all distributions are normal in the middle.
-% This means that  \psi (u)/u is approximately constant over the linear region of \psi,
-% so the points in that region tend to get equal weight.
-%
-%
-% References:
-%
-% Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory
-% and Methods, Wiley,New York.
 %
 %
 % Copyright 2008-2015.

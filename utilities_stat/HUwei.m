@@ -35,7 +35,7 @@ function wei = HUwei(u,c)
 %
 % See equation (2.32) p. 28 of Maronna et al. (2006)
 %
-% See also Tbwei, HYPwei, HAwei, OPTwei
+% See also TBwei, HYPwei, HAwei, OPTwei
 %
 % References:
 %
