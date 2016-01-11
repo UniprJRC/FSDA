@@ -39,10 +39,10 @@ function plotopt=resfwdplot(out,varargin)
 %                       or 'Scaled squared residuals').
 %                   SizeAxesLab : Scalar specifying the fontsize of the
 %                       labels of the axes. Default value is 12.
-%                   subsize : numeric vector containing the subset size
-%                       with length equal to the number of columns of
-%                       matrix residuals. The default value of subsize is
-%                       size(residuals,1)-size(residuals,2)+1:size(residuals,1)
+%                   xvalues : vector. x axis values.  
+%                       Numeric vector of length(size(out.RES,2)) controlling the x
+%                       axis coordinates. The default value of xvalues is
+%                       size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
 %                   LineWidth : scalar specifying line width for the
 %                       trajectories.
 %                   Color : cell array of strings containing the colors to
@@ -65,6 +65,7 @@ function plotopt=resfwdplot(out,varargin)
 %                   standard.LineWidth=1
 %                   standard.Color={'b'}
 %                   standard.LineStyle={'-'}
+%                   standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
 %
 %         fground : structure which defines the trajectories in foregroud,
 %                   that is which trajectories are highlighted and how
@@ -620,6 +621,21 @@ function plotopt=resfwdplot(out,varargin)
     % resfwdplot(out,plotopt{:})
 %}
 
+%{
+    % Example of us of option xvalues inside structure standard
+    XX=load('loyalty.txt');
+    namey='Sales'
+    y=XX(:,end);
+    y=y.^0.4;
+    X=XX(:,1:end-1);
+    [out]=LXS(y,X,'nsamp',10000);
+    [out]=FSReda(y,X,out.bs);
+    standard=struct;
+    % xlabels start from 400
+    standard.xvalues=400:1:(size(out.RES,2)+400-1);
+    resfwdplot(out,'standard',standard)
+%}
+
 
 %
 %   REMARK: note that at present options.databrush and options.datatooltip
@@ -681,13 +697,13 @@ styp=repmat(styp,ceil(n/13),1);
 
 % Default options for all trajectories
 standarddef = struct(...
-    'subsize',x,'xlim','','ylim','','titl','','labx',labx,'laby',laby,...
+    'xvalues',x,'xlim','','ylim','','titl','','labx',labx,'laby',laby,...
     'Color',{{'b'}},'LineStyle',{{'-'}},...
     'LineWidth',1,'SizeAxesLab',12,'SizeAxesNum',10);
 
 % Default options for the trajectories in foreground
 fgrounddef = struct(...
-    'fthresh',fthresh,'funit','','flabstep',x([1 end]),...
+    'fthresh',fthresh,'funit','','flabstep','',...
     'fmark',0,'LineWidth','','Color','','LineStyle','','FontSize',12);
 
 % Default options for the trajectories in background
@@ -862,7 +878,7 @@ end
 
 standard=standarddef;
 % extract the vector associated with the subset size (x)
-x=standard.subsize;
+x=standard.xvalues;
 
 plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
 
@@ -938,16 +954,17 @@ if ~isempty(options.fground)
     % fground.flabstep option and check if the choice of flabsteps is valid
     if ~isempty(fground.flabstep)
         steps=floor(fground.flabstep);
-        if max(steps)>n || min(steps)<x(1)
+        if max(steps)>x(end) || min(steps)<x(1)
             mess=sprintf(['Warning: steps that you have chosen outside the range [m0 ... n]\n',...
                 'are re-assigned to m0 or to n']);
             disp(mess);
             steps(steps<x(1)) = x(1);
-            steps(steps>n) = n;
+            steps(steps>x(end)) = x(end);
             steps = sort(unique(steps));
-            % before, the steps outside range were not considered
-            %steps=steps(steps>=x(1) & steps<=n);
         end
+    else
+        steps=[x(1) x(end)];
+        fground.flabstep=steps;
     end
     
     % fthresh= threshold to define units which have to be displayed in
@@ -1019,7 +1036,7 @@ if ~isempty(options.fground)
         
         % Label the units
         h=text(reshape(repmat(steps,lunits,1),lall,1),...
-            reshape(residuals(funit,steps-x(1)+1),lall,1),...
+            reshape(residuals(funit,steps-steps(1)+1),lall,1),...
             reshape(repmat(strings,1,lsteps),lall,1),...
             'FontSize',fground.FontSize);
         set(h,{'HorizontalAlignment'},HA)
