@@ -703,14 +703,14 @@ if plo==1 || plo ==2
             strmin='Exceedance based on Bonferroni threshold';
             annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
                 PrVaCell{:});
-            msg=['$r_{min}(' num2str(mdr(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
-            annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msg,PrVaCell{:});
+            msgth=['$r_{min}(' num2str(mdr(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
+            annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msgth,PrVaCell{:});
         else
             strmin='Exceedance based on user supplied threshold';
             annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
                 PrVaCell{:});
-            msg=['$r_{min}(' num2str(mdr(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
-            annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msg,PrVaCell{:});
+            msgth=['$r_{min}(' num2str(mdr(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
+            annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msgth,PrVaCell{:});
         end
     end
     if signal==1

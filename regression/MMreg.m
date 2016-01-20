@@ -33,7 +33,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
 %               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
 %               Sreftolbestr, Sminsctol, Sbestr.
-%               See function Sreg.m for more details on these options.               It is necessary to add to the S options the letter
+%               See function Sreg.m for more details on these options.     
 %               It is necessary to add to the S options the letter
 %               S at the beginning. For example, if you want to use the
 %               optimal rho function the supplied option is

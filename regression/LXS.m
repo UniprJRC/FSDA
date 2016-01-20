@@ -467,8 +467,16 @@ end
 % parameters are set inside structure 'options'
 
 h=options.h;                % Number of data points on which estimates are based
+if isempty(h)
+    h=hdef;
+end
+
 plots=options.plots;        % Plot of residuals equal to 1
 nsamp=options.nsamp;        % Number of subsets to extract
+if isempty(nsamp)
+    nsamp=nsampdef;
+end
+
 lms=options.lms;            % if options.lms==1 then LMS, else LTS
 
 if ~isstruct(lms) && lms==2;

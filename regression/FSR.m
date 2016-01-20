@@ -33,11 +33,13 @@ function [out]=FSR(y,X,varargin)
 %               Example - 'intercept',1 
 %               Data Types - double
 %           h   : The number of observations that have determined the least
-%                 trimmed squares estimator. Scalar. h is an integer greater or
-%                 equal than p but smaller then n. Generally if the purpose
-%                 is outlier detection h=[0.5*(n+p+1)] (default value). h
-%                 can be smaller than this threshold if the purpose is to find
-%                 subgroups of homogeneous observations.
+%                 trimmed squares estimator. Scalar. h is an integer
+%                 greater or equal than p but smaller then n. Generally if
+%                 the purpose is outlier detection h=[0.5*(n+p+1)] (default
+%                 value). h can be smaller than this threshold if the
+%                 purpose is to find subgroups of homogeneous observations.
+%                 In this function the LTS/LMS estimator is used just to
+%                 initialize the search.
 %                 Example - 'h',round(n*0,75) 
 %                 Data Types - double
 %       nsamp   : Number of subsamples which will be extracted to find the
