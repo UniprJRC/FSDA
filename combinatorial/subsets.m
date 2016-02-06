@@ -13,7 +13,7 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %               Data Types - single|double
 %         p   : Size of the subsets. Scalar. In regression with p 
 %               explanatory variable the size of the elmental subsets is p; 
-%               in multivariate analysis, in presente of v variables, 
+%               in multivariate analysis, in presence of v variables, 
 %               the size of the elemental subsets is v+1.
 %               Data Types - single|double
 %
