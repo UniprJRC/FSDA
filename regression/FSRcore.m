@@ -265,7 +265,7 @@ istep = n-floor(13*sqrt(n/200));
 
 %% Part 1. Signal detection and validation
 nmdr=size(mdr,1);
-if nmdr<4
+if nmdr<4  && isempty(bonflev)
     error('FSDA:FSRcore:TooSmallRationp','Ratio n/p too small; modify init (i.e. decrease initial subset size)')
 end
 signal=0;
