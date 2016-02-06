@@ -34,7 +34,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %  restrfactor: positive scalar which constrains the allowed differences
 %               among group scatters. Larger values imply larger differences of
 %               group scatters. On the other hand a value of 1 specifies the
-%               strongest restriction.
+%               strongest restriction forcing all eigenvalues/determinants
+%               to be equal and so the method looks for similarly scattered
+%               (respectively spherical) clusters
 %
 %  Optional input arguments:
 %
@@ -181,12 +183,17 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               (see for more details the help associated with nsamp)
 %                 Example - 'startv1',1
 %                 Data Types - single | double
+%    restr    : The type of restriction to be applied on the cluster
+%               scatter matrices. Valid values are 'eigen' (default), or
+%               'deter'. eigen implies restriction on the eigenvalues while
+%               deter implies restrictions on the determinant.
+%                 Example - 'restr','deter'
+%                 Data Types - char
 %       Ysave : Scalar that is set to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 0, i.e.
 %               no saving is done.
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
-%
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -244,7 +251,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       Ysave is set to 1.
 %          out.MIXMIX = BIC which uses parameters estimated using the
 %                       mixture loglikelihood and the maximized mixture
-%                       likelihood as goodness of fit measure. 
+%                       likelihood as goodness of fit measure.
 %                       Remark: this output is present just if input option
 %                       mixt is >0
 %          out.MIXCLA = BIC which uses the classification likelihood based on
@@ -526,7 +533,20 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     xlabel('Number of groups')
     ylabel('MIXCLA (ICL)')
 %}
-    
+
+%{
+    % tclust applied to Swiss banknotes imposing determinant restriciton
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    out=tclust(Y,3,0.1,10,'restr','deter','refsteps',20,'plots',1)
+%}
+
+%{
+    % tclust applied to the Geyser data imposing determinant restriciton
+    Y=load('geyser2.txt');
+    out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)
+%}
+
 %% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
@@ -639,10 +659,6 @@ else
     end
 end
 
-if nargin<4;
-    restrfactor=12;
-end
-
 % Fix alpha equal to the trimming size
 % h = number of observations which is used to compute the centroids
 
@@ -661,9 +677,12 @@ else
     h=fix(n*(1-alpha));
 end
 
+% restrnum=1 implies eigenvalue restriction
+restrnum=1;
+
 options=struct('nsamp',nsampdef,'plots',0,'nocheck',0,...
     'msg',1,'Ysave',0,'refsteps',refstepsdef,'equalweights',false,...
-    'reftol',reftoldef,'mixt',0,'startv1',startv1def);
+    'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restr','eigen');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -710,6 +729,21 @@ if nargin > 4
     else
     end
     
+    % Default restriction is the one based on the eigenvalues
+    % restrnum=1 ==> restriction on the eigenvalues
+    % restrnum=2 ==> restriction on the determinants
+    % restrnum=3 ==> restriction on both
+    
+    restr=options.restr;
+    if strcmp(restr,'eigen')
+        restrnum=1;
+    elseif strcmp(restr,'deter')==1
+        restrnum=2;
+        detthresh=1e-12;
+    else
+        error('FSDA:tclust:Wrongrestr','Wrong restriction');
+    end
+    
 end
 
 % Default values for the optional
@@ -726,9 +760,6 @@ reftol=options.reftol;
 %large  value
 vopt=-1e+30;
 
-% Initialize vector of ones which will be used in subroutine restreigen
-one1v=ones(1,v);
-onekv1=ones(k*v,1);
 resh=[1 3 2];
 
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
@@ -742,7 +773,7 @@ end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
 if NoPriorSubsets
-    if startv1
+    if startv1 && k*(v+1) < n
         [C,nselected] = subsets(nsamp,n,k*(v+1),ncomb,msg);
     else
         [C,nselected] = subsets(nsamp,n,k,ncomb,msg);
@@ -783,9 +814,23 @@ eyk=repmat(ey,[1 1 k]);
 
 onev1=ones(v,1);
 
-% Lambda_vk = matrix which will contain in column j the v (unrestricted)
-% eigevalues of covariance matrix of group j (j=1, ..., k)
-Lambda_vk=ones(v,k);
+if restrnum==1
+    % Lambda_vk = matrix which will contain in column j the v (unrestricted)
+    % eigevalues of covariance matrix of group j (j=1, ..., k)
+    Lambda_vk=ones(v,k);
+    % Initialize vector of ones which will be used in subroutine restreigen
+    one1v=ones(1,v);
+    onekv1=ones(k*v,1);
+    vinsiderestr=v;
+else
+    % Lambda_vk = row vector which will contain in column j the
+    % determinant of covariance matrix of group j (j=1, ..., k) raised to
+    % (1/v)
+    Lambda_vk=ones(1,k);
+    vinsiderestr=1;
+    one1v=1;
+    onekv1=ones(k,1);
+end
 
 % sigmaopt = 3 dimensional array which will contain the estimates of the
 % covariance matrices for the best solution
@@ -800,7 +845,7 @@ time=zeros(tsampling,1);
 % all groups. Lambda is a 3D array of size v-by-v-by-k
 % Lambda=sigmaini;
 % U will contain the eigenvectors of the cov matrices in each iteration
-% for all groups. U is a 3D array of size v-by-v-by-k
+% for all groups (or the shape matrices if restrnum=2). U is a 3D array of size v-by-v-by-k
 sigmaini=zeros(v,v,k);
 U=sigmaini;
 
@@ -830,40 +875,86 @@ for i=1:nselected
         % Initialize niini with with random numbers from uniform
         randk=rand(k,1);
         niini=floor(h*randk/sum(randk));
-        
-        cini=zeros(k,v);
-        for j=1:k
-            ilow=(j-1)*(v+1)+1;
-            iup=j*(v+1);
-            index=C(i,:);
-            selj=index(ilow:iup);
-            % cini(j,:)=mean(Y(selj,:));
-            Yselj=Y(selj,:);
-            cini(j,:)=sum(Yselj)/(v+1);
+        if restrnum==1
+            cini=zeros(k,v);
+            for j=1:k
+                ilow=(j-1)*(v+1)+1;
+                iup=j*(v+1);
+                index=C(i,:);
+                selj=index(ilow:iup);
+                % cini(j,:)=mean(Y(selj,:));
+                Yselj=Y(selj,:);
+                cini(j,:)=sum(Yselj)/(v+1);
+                
+                Yseljc = bsxfun(@minus,Yselj,cini(j,:));
+                sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
+                % lines above are a faster solution for instruction below
+                % sigmaini(:,:,j)=cov(Y(selj,:));
+                
+                % Eigenvalue eigenvector decomposition for group j
+                [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                % Store eigenvectors and eigenvalues of group j
+                U(:,:,j)=Uj;
+                Lambda_vk(:,j)=diag(Lambdaj);
+            end
             
-            Yseljc = bsxfun(@minus,Yselj,cini(j,:));
-            sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
-            % lines above are a faster solution for instruction below
-            % sigmaini(:,:,j)=cov(Y(selj,:));
+            Lambda_vk(Lambda_vk<0)=0;
             
-            % Eigenvalue eigenvector decomposition for group j
-            [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-            % Store eigenvectors and eigenvalues of group j
-            U(:,:,j)=Uj;
-            Lambda_vk(:,j)=diag(Lambdaj);
-        end
-        
-        Lambda_vk(Lambda_vk<0)=0;
-        autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
-        
-        % Covariance matrices are reconstructed keeping into account the
-        % constraints on the eigenvalues
-        for j=1:k
-            sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
             
-            % Alternative code: in principle more efficient but slower
-            % because diag is a built in function
-            % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            % Restriction on the eigenvalue
+            autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+            
+            % Covariance matrices are reconstructed keeping into account the
+            % constraints on the eigenvalues
+            for j=1:k
+                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                
+                % Alternative code: in principle more efficient but slower
+                % because diag is a built in function
+                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            end
+        elseif restrnum==2
+            % restriction on the determinants
+            cini=zeros(k,v);
+            for j=1:k
+                ilow=(j-1)*(v+1)+1;
+                iup=j*(v+1);
+                index=C(i,:);
+                selj=index(ilow:iup);
+                % cini(j,:)=mean(Y(selj,:));
+                Yselj=Y(selj,:);
+                cini(j,:)=sum(Yselj)/(v+1);
+                
+                Yseljc = bsxfun(@minus,Yselj,cini(j,:));
+                sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
+                % lines above are a faster solution for instruction below
+                % sigmaini(:,:,j)=cov(Y(selj,:));
+                
+                detj1v=det(sigmaini(:,:,j))^(1/v);
+                if detj1v<detthresh
+                    detj1v=detthresh;
+                end
+                
+                Uj=sigmaini(:,:,j)/detj1v;
+                % Store shape matrix of group j
+                U(:,:,j)=Uj;
+                Lambda_vk(:,j)=detj1v;
+            end
+            
+            Lambda_vk(Lambda_vk<0)=0;
+            
+            
+            % Restriction on the detrerminants
+            autovalues=restreigen(Lambda_vk,niini,restrfactor^(1/v),tolrestreigen,userepmat);
+            
+            % Covariance matrices are reconstructed keeping into account the
+            % constraints on the determinant
+            for j=1:k
+                sigmaini(:,:,j) = autovalues(j)*U(:,:,j);
+            end
+            
+        else
+            % restriciton on both
         end
     else
         
@@ -903,7 +994,7 @@ for i=1:nselected
             for j=1:k
                 % REMARK: we use log(niini(j)) instead of log(niini(j)/h)
                 % because h is constant
-                ll(:,j)= log(niini(j)/h) +  logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v);
+                ll(:,j)= log(niini(j)/h) +  logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0);
                 % Line above is faster but equivalent to
                 % ll(:,j)= (niini(j)/h)*mvnpdf(Y,cini(j,:),sigmaini(:,:,j));
             end
@@ -1013,12 +1104,26 @@ for i=1:nselected
                     
                     sigmaini(:,:,j) = (Ytric' * Ytric) / niini(j);
                     
-                    % Eigenvalue eigenvector decomposition for group j
-                    [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                    
-                    % Store eigenvectors and eigenvalues of group j
-                    U(:,:,j)=Uj;
-                    Lambda_vk(:,j)=diag(Lambdaj);
+                    if restrnum==1
+                        % Eigenvalue eigenvector decomposition for group j
+                        [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                        
+                        % Store eigenvectors and eigenvalues of group j
+                        U(:,:,j)=Uj;
+                        Lambda_vk(:,j)=diag(Lambdaj);
+                    elseif restrnum==2
+                        detj1v=det(sigmaini(:,:,j))^(1/v);
+                        if detj1v<detthresh
+                            detj1v=detthresh;
+                        end
+
+                        Uj=sigmaini(:,:,j)/detj1v;
+                        % Store shape matrix of group j
+                        U(:,:,j)=Uj;
+                        Lambda_vk(:,j)=detj1v;
+                        
+                    else
+                    end
                 else
                     sigmaini(:,:,j)=ey;
                     U(:,:,j)=ey;
@@ -1060,16 +1165,32 @@ for i=1:nselected
                     DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
                     
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
-                    
-                    % Eigenvalue eigenvector decomposition for group j
-                    [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                    % Store eigenvectors and eigenvalues of group j
-                    U(:,:,j)=Uj;
-                    Lambda_vk(:,j)=diag(Lambdaj);
+                    if restrnum==1
+                        % Eigenvalue eigenvector decomposition for group j
+                        [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                        % Store eigenvectors and eigenvalues of group j
+                        U(:,:,j)=Uj;
+                        Lambda_vk(:,j)=diag(Lambdaj);
+                    elseif restrnum==2
+                        detj1v=det(sigmaini(:,:,j))^(1/v);
+                        if detj1v<detthresh
+                            detj1v=detthresh;
+                        end
+                        Uj=sigmaini(:,:,j)/detj1v;
+                        % Store shape matrix of group j
+                        U(:,:,j)=Uj;
+                        Lambda_vk(j)=detj1v;
+                       
+                    else
+                    end
                 else
                     sigmaini(:,:,j)=ey;
                     U(:,:,j)=ey;
-                    Lambda_vk(:,j)=onev1;
+                    if restrnum==1
+                        Lambda_vk(:,j)=onev1;
+                    else
+                        Lambda_vk(j)=1;
+                    end
                 end
                 
             end
@@ -1080,34 +1201,45 @@ for i=1:nselected
         % unrestricted eigenvalues of cov. matrix of group j   j=1, ..., k
         % The row below is just to avoid numerical problems
         Lambda_vk(Lambda_vk<0)=0;
-        
-        autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
-        
-        % Covariance matrices are reconstructed keeping into account the
-        % constraints of the eigenvalues
-        for j=1:k
-            sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+        if restrnum==1
+            autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
             
-            % Alternative code: in principle more efficient but slower
-            % because diag is a built in function
-            % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            % Covariance matrices are reconstructed keeping into account the
+            % constraints of the eigenvalues
+            for j=1:k
+                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                
+                % Alternative code: in principle more efficient but slower
+                % because diag is a built in function
+                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            end
+            
+            % BELOW THERE IS AN ALTERNATIVE WAY OF FINDING sigmaini without the loop
+            % Note that the implementation below uses mex function mtimes
+            %         autov=(autovalues(:)');
+            %         if userepmat==1
+            %             autov1=repmat(autov,v,1,1);
+            %             ULambda=U.*reshape(autov1,v,v,k);
+            %         else
+            %             ULambda=reshape(bsxfun(@times,reshape(U,v,v*k),autov),v,v,k);
+            %         end
+            %         sigmainichk=mtimesx(ULambda,U,'T');
+            
+            
+            % Alternative code based on gpuArrary
+            % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
+        elseif restrnum==2
+            % Restriction on the determinants
+            autovalues=restreigen(Lambda_vk,niini,restrfactor^(1/v),tolrestreigen,userepmat);
+            
+            % Covariance matrices are reconstructed keeping into account the
+            % constraints on the determinant
+            for j=1:k
+                sigmaini(:,:,j) = autovalues(j)*U(:,:,j);
+            end
+            
+        else
         end
-        
-        % BELOW THERE IS AN ALTERNATIVE WAY OF FINDING sigmaini without the loop
-        % Note that the implementation below uses mex function mtimes
-        %         autov=(autovalues(:)');
-        %         if userepmat==1
-        %             autov1=repmat(autov,v,1,1);
-        %             ULambda=U.*reshape(autov1,v,v,k);
-        %         else
-        %             ULambda=reshape(bsxfun(@times,reshape(U,v,v*k),autov),v,v,k);
-        %         end
-        %         sigmainichk=mtimesx(ULambda,U,'T');
-        
-        
-        % Alternative code based on gpuArrary
-        % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
-        
         % Calculus of the objective function (E-step)
         % oldobj=obj;
         obj = 0;
@@ -1143,7 +1275,7 @@ for i=1:nselected
                         % term which allows for different group weights
                         
                         niinij=niini(j);
-                        obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v));
+                        obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v,0));
                     end
                 end
             end
@@ -1640,8 +1772,9 @@ end
         % First row of nis = size of first group repated v times
         % Second row of nis = size of second group repated v times
         % ....
-        % kth row of nis = size of kth group repated v times
+        % kth row of nis = size of kth group repeated v times
         nis=niini*one1v;
+        
         % Below is the alternative inefficient code
         % nis = repmat(niini,1,v);
         
@@ -1780,17 +1913,17 @@ end
                 % Matrix version of r(:,mp)=sum(d<edmp,2)+sum(d>edmpc,2) for mp=1, ..., dimsor
                 dltm=bsxfun(@lt,dvec,ed);
                 dgtcm=bsxfun(@gt,dvec,ed*c);
-                rr=sum(permute(reshape(dltm+dgtcm,k,v,dimsor),resh),3);
+                rr=sum(permute(reshape(dltm+dgtcm,k,vinsiderestr,dimsor),resh),3);
                 
                 
                 
                 % Matrix version of s(:,mp)=sum(d.*(d<edmp),2) for mp=1, ..., dimsor
                 ddltm=bsxfun(@times,dltm,dvec);
-                ss=sum(permute(reshape(ddltm,k,v,dimsor),resh),3);
+                ss=sum(permute(reshape(ddltm,k,vinsiderestr,dimsor),resh),3);
                 
                 % Matrix version of t(:,mp)=sum(d.*(d>edmpc),2) for mp=1, ..., dimsor
                 ddgtcm=bsxfun(@times,dgtcm,dvec);
-                tt=sum(permute(reshape(ddgtcm,k,v,dimsor),resh),3);
+                tt=sum(permute(reshape(ddgtcm,k,vinsiderestr,dimsor),resh),3);
                 
                 % Vector version of
                 % solmp=sum(niini/n.*(s(:,mp)+t(:,mp)/c))/(sum(niini/n.*(r(:,mp))))
@@ -1815,27 +1948,27 @@ end
                 % The following gets rid of the repmat, which is slow
                 % Find solmp*(d<solmp). This is expression is called sdlts which
                 % stands for "sol (d less than sol)"
-                dlts = reshape(bsxfun(@lt,dvec,solmp),k,v,dimsor);
-                dlts = reshape(dlts,k*v,dimsor);
+                dlts = reshape(bsxfun(@lt,dvec,solmp),k,vinsiderestr,dimsor);
+                dlts = reshape(dlts,k*vinsiderestr,dimsor);
                 sdlts = bsxfun(@times,dlts,solmp);
-                sdlts  = reshape(sdlts,k,v,dimsor);
+                sdlts  = reshape(sdlts,k,vinsiderestr,dimsor);
                 
                 % d.*(d>=solmp)
-                dges = reshape(bsxfun(@ge,dvec,solmp),k,v,dimsor);
+                dges = reshape(bsxfun(@ge,dvec,solmp),k,vinsiderestr,dimsor);
                 ddges = bsxfun(@times,dges,d);
                 
                 % cs is c*solmp
                 cs=solmp*c;
                 % csr is a reshaped version of cs
-                csr = reshape(onekv1 * cs,k,v,dimsor);
+                csr = reshape(onekv1 * cs,k,vinsiderestr,dimsor);
                 % less efficient code to obtain csr
                 % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
                 
                 % (d<=c*solmp)
-                dltcs = reshape(bsxfun(@le,dvec,cs),k,v,dimsor);
+                dltcs = reshape(bsxfun(@le,dvec,cs),k,vinsiderestr,dimsor);
                 
                 % (d>c*solmp)
-                dgtcs=reshape(bsxfun(@gt,dvec,cs),k,v,dimsor);
+                dgtcs=reshape(bsxfun(@gt,dvec,cs),k,vinsiderestr,dimsor);
                 
                 % Array e contains the modified eigenvalues given a particular m
                 % evaluted in correspondence of the dimsor points
