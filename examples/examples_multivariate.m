@@ -74,7 +74,11 @@ cor=(n/((n-1)^2));
 % malas= vector of scaled Mahalanobis distances (MD)
 malas=mahal(Y,Y)*cor;
 % Set the beta
-pd = ProbDistUnivParam('beta',[v/2 0.5*(n-v-1)]);
+if verLessThan('matlab','8.4')
+    pd = ProbDistUnivParam('beta',[v/2 0.5*(n-v-1)]); %#ok<PROBDISTUNIVPARAM>
+else
+    pd=makedist('Beta','a',v/2,'b',0.5*(n-v-1));
+end
 % qqplot of scaled MD against beta distribution
 h=qqplot(malas,pd);
 xplo=get(h(1),'XData')';
@@ -271,7 +275,12 @@ cor=(n/((n-1)^2));
 % malas= vector of scaled Mahalanobis distances (MD)
 malas=mahal(Y,Y)*cor;
 % Set the beta
-pd = ProbDistUnivParam('beta',[v/2 0.5*(n-v-1)]);
+if verLessThan('matlab','8.4')
+    pd = ProbDistUnivParam('beta',[v/2 0.5*(n-v-1)]); %#ok<PROBDISTUNIVPARAM>
+else
+    pd=makedist('Beta','a',v/2,'b',0.5*(n-v-1));
+end
+
 % qqplot of scaled MD against beta distribution
 h=qqplot(malas,pd);
 xplo=get(h(1),'XData')';
@@ -1093,7 +1102,7 @@ hold('on');
 LineStyle={'-';'--';':';'-.'};
 % REMARK: in the instruction below it is possible to use instruction
 % plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
-% provided mmd is not NaN (that is provided that the last value of the random 
+% provided mmd is not NaN (that is provided that the last value of the random
 % starts loop produces a no full rank subset)
 plot1=plot((init:n-1)',mmdStore,'LineWidth',2);
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);

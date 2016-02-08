@@ -1,4 +1,5 @@
-%examples_regression shows a series of analysis of regression datasets 
+%% EXAMPLES OF ROBUST REGRESSION
+% examples_regression shows a series of analysis of regression datasets 
 % Copyright 2008-2015.
 % Written by FSDA team
 
@@ -1611,7 +1612,27 @@ laby=['MM residuals eff=' num2str(eff)];
 resindexplot(outMM95,'h',h4,'title',titl,'laby',laby,'numlab','','conflev',conflev)
 
 
-%% ST: Stars dataset (analysis using FS)
+%% ST: Stars dataset (analysis using FS, exploratory data analysis)
+clearvars;close all;
+stars=load('stars.txt');
+y=stars(:,2);
+X=stars(:,1);
+plot(X,y,'o');
+xlabel('Log effective surface temperature')
+ylabel('Log light intensity')
+set(gca,'XDir','reverse');
+
+% LMS using 1000 subsamples
+[out]=LXS(y,X,'nsamp',10000);
+% Forward Search
+[out]=FSReda(y,X,out.bs);
+out1=out;
+% Create scaled squared residuals
+out1.RES=out.RES.^2;
+% resfwdplot with all default options
+resfwdplot(out1);
+
+%% ST: Stars dataset (analysis using FS, automatic outlier detection)
 clearvars;close all;
 stars=load('stars.txt');
 y=stars(:,2);
