@@ -27,7 +27,7 @@ function Ell=ellipse(mu, Sigma, conflev, Color)
 %                         Confidence level which control the size of the ellipse.
 %                         If conflev is not specified the value 
 %                         chi2inv(0.95,2) is used
-%                 Example - 'conflev',0.99 
+%                 Example - 0.99 
 %                 Data Types - single | double
 %               Color   : LineColor of the ellipse. String or 3 elements numeric vector.
 %                        Line color, specified as an RGB triplet, a color
@@ -38,7 +38,7 @@ function Ell=ellipse(mu, Sigma, conflev, Color)
 %                        green, and blue components of the color. The
 %                        intensities must be in the range [0,1], for
 %                        example, [0.4 0.6 0.7]. 
-%                 Example - 'plots',1 
+%                 Example - 'r'
 %                 Data Types - [0 0 1] (default) | RGB triplet | color string | 'none'
 %                           
 %
@@ -112,6 +112,9 @@ function Ell=ellipse(mu, Sigma, conflev, Color)
 
 
 %% Beginning of code
+% Specify line width of the ellipse and of its axes
+LineWidth=2;
+
 % If the user has provided has input a column vector take the transpose
 if ~isrow(mu)
     mu=mu';
@@ -180,19 +183,19 @@ X=[xx yy]*Gam;
 Ell=bsxfun(@plus,X, mu);
 
 % hold('on')
-plot(Ell(:,1),Ell(:,2),'Color',Color);
+plot(Ell(:,1),Ell(:,2),'Color',Color,'LineWidth',LineWidth);
 
 % Add line associated with major axis
 ax1=[-lenax1 0; lenax1 0];
 ax1ori=ax1*Gam;
 ax1ori=bsxfun(@plus,ax1ori, mu);
-line(ax1ori(:,1),ax1ori(:,2),'Color',Color);
+line(ax1ori(:,1),ax1ori(:,2),'Color',Color,'LineWidth',LineWidth);
 
 % Add line associated with minor axis
 ax2=[0 -lenax2;0  lenax2];
 ax2ori=ax2*Gam;
 ax2ori=bsxfun(@plus,ax2ori, mu);
-line(ax2ori(:,1),ax2ori(:,2),'Color',Color);
+line(ax2ori(:,1),ax2ori(:,2),'Color',Color,'LineWidth',LineWidth);
 
 % axis equal
 
