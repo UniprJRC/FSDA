@@ -375,7 +375,7 @@ end
 % Z = n-by-r matrix which contains the explanatory variables for
 % heteroskedasticity
 if size(Z,1)~=n
-    % Check if interecept was true
+    % Check if intercept was true
     intercept=options.intercept;
     if intercept==1
         Z=X(:,Z+1);
