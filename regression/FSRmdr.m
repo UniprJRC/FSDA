@@ -31,24 +31,24 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 % Optional input arguments:
 %
-%  init :       Search initialization. Scalar. 
+%  init :       Search initialization. Scalar.
 %               It specifies the point where to initialize the search and
 %               start monitoring required diagnostics. If it is not
 %               specified it is set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               Example - 'init',100 starts monitoring from step m=100 
+%               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), if 0, no constant
 %               term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 %  plots :      Plot on the screen. Scalar. If equal to one a plot of
 %               minimum deletion residual appears  on the screen with 1%,
 %               50% and 99% confidence bands else (default) no plot is
 %               shown.
-%               Example - 'plots',1 
+%               Example - 'plots',1
 %               Data Types - double
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
@@ -59,14 +59,14 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               unchanged. In other words the additioanl column of ones for
 %               the intercept is not added. As default nocheck=0. The
 %               controls on h, alpha and nsamp still remain
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %  msg  :       Level of output to display. Scalar. It controls whether to
 %               display or not messages about great interchange on the
 %               screen If msg==1 (default)
 %               messages are displayed on the screen
 %               else no message is displayed on the screen
-%               Example - 'msg',1 
+%               Example - 'msg',1
 %               Data Types - double
 %  constr :     Constrained search. Vector. r x 1 vector which contains the list of units which are
 %               forced to join the search in the last r steps. The default
@@ -75,15 +75,15 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               the subset in the last 10 steps
 %               Data Types - double
 % bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
-%               non singular X. Scalar. 
+%               non singular X. Scalar.
 %               This options controls what to do when rank(X(bsbm,:)) is
-%               smaller then number of explanatory variables. 
+%               smaller then number of explanatory variables.
 %               If bsbmfullrank = 1 (default is 1) these units (whose number
 %               is say mnofullrank) are constrained to enter the search in
 %               the final n-mnofullrank steps else the search continues
 %               using as estimate of beta at step m the estimate of beta
 %               found in the previous step.
-%               Example - 'bsbmfullrank',1 
+%               Example - 'bsbmfullrank',1
 %               Data Types - double
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
@@ -217,7 +217,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
      y=fishery.data(:,2);
      X=fishery.data(:,1);
      % Find starting subset
-     [out]=LXS(y,X,'nsamp',10000);    
+     [out]=LXS(y,X,'nsamp',10000);
     [mdr,Un] = FSRmdr(y,X,out.bs);
 %}
 
@@ -466,11 +466,15 @@ if bsbsteps == 0
     bsbsteps=init1:n;
     BB = NaN(n,n-init1+1);
 else
+    % The number of columns of matrix BB is equal to the number of steps
+    % for which bsbsteps is greater or equal than init1
+    bsbsteps=bsbsteps(bsbsteps>init1);
     BB = NaN(n,length(bsbsteps));
+    %   BB = NaN(n, sum(bsbsteps>=init1));
 end
 
 % ij = index which is linked with the columns of matrix BB. During the
-% search every time a subset is stored inside matrix BB ij icreases by one
+% search every time a subset is stored inside matrix BB ij increases by one
 ij=1;
 
 
