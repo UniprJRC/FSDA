@@ -377,7 +377,7 @@ for mm=ini0:n;
     end
     
     % call bayesian procedure
-    [bayes]=regressB(y, X(:,2:end), beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept);
+    [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept);
     
     % bayesian beta
     b=bayes.beta1;
