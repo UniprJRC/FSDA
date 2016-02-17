@@ -1,4 +1,4 @@
-function out = FSRr(y, X, varargin)
+function [out , varargout] = FSRr(y, X, varargin)
 %Forward search in linear regression reweighted
 %
 %
@@ -77,55 +77,77 @@ function out = FSRr(y, X, varargin)
 %
 %         out:   structure which contains the following fields
 %
-% out.outliers=  k x 1 vector containing the list of the units declared
-%               outliers by procedure FSR or NaN if the sample is
-%               homogeneous
-% out.beta   =  p-by-1 vector containing the estimated regression parameter
-%               by procedure FSR
-% out.outliersr=  k1 x 1 vector containing the list of the units declared
-%               outliers after the reweighting step or NaN if the sample is
-%               homogeneous
-% out.betar  =  p-by-1 vector containing the estimated regression parameter
-%               after the reweighting step
-% out.rstud =  n-by-2 matrix.
-%              First column = studentized residuals
-%              Second column = p-values (computed using as reference
-%              distribution the Student t)
-
+% out.outliers  =  k x 1 vector containing the list of the units declared
+%                  outliers by procedure FSR or NaN if the sample is
+%                  homogeneous
+% out.beta      =  p-by-1 vector containing the estimated regression parameter
+%                  by procedure FSR
+% out.outliersr =  k1 x 1 vector containing the list of the units declared
+%                  outliers after the reweighting step or NaN if the sample is
+%                  homogeneous
+% out.betar     =  p-by-1 vector containing the estimated regression parameter
+%                  after the reweighting step
+% out.rstud     =  n-by-2 matrix.
+%                   First column = studentized residuals
+%                   Second column = p-values (computed using as reference
+%                   distribution the Student t)
+%
+%Optional output arguments:
+%           xnew = vector with a number of new points where to evaluate the
+%                  prediction interval
+%          ypred = values predicted by the fitted model on xnew
+%           yci  = matrix with prediction interval values, computed on xnew
+%
 % Examples:
 %
 %{
-        n=200;
-        p=1;
-        randn('state', 123456);
-        x=randn(n,p);
-        % Uncontaminated data
-        y=randn(n,1);
-        % Contaminated data
-        ycont=y;
-        ycont(1:3)=ycont(1:3)+6;
-       [outis, outis_anomal, groupis, groupis_anomal, goodis, goodis_anomal,FS_ListOut,FS_ListIn]=outlier_detection(ycont,x,'bsb_force',0,'lms',[1 2 5],'int',0,'alpha',0.00001,'ds_name','cstr0123','plot',1,'algorithm_type','R2_relaxed','test_reg_par',[0 1],'obs_name',1:length(y),'id_group',1, 'R2th',0.999);
+        % example of outlier detection in a case of almost perfect fit
 
+        randn('state', 123456);
+        n=200; p=1;
+        X = rand(n,p);
+        y = X + 0.01*randn(n,1);
+        % contaminated data points
+        ycont = y;
+        ycont(1:5) = ycont(1:5)+0.07;
+       
+        [out1 , xnew1 , ypred1, yci1] = ...
+                FSRr(ycont,X,'alpha',0.01,...
+                    'fullreweight',true ,'plotsPI',1,'plots',0);
+
+        h1 = allchild(gca); a1 = gca; f1 = gcf;
+        
+        [out2 , xnew2 , ypred2, yci2] = ...
+                FSRr(ycont,X,'alpha',0.01,'R2th',0.9,...
+                    'fullreweight',true ,'plotsPI',1,'plots',0);
+
+        h2 = allchild(gca); a2 = gca; f2 = gcf;
+
+        % move the figure above into a single one with two panels
+        figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);
+        copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));
+        copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));
+        close(f1); close(f2);
+
+        disp(['Outliers without R2 adjustment = ' num2str(out1.outliersr)]);
+        disp(['Outliers with    R2 adjustment = ' num2str(out2.outliersr)]);
+        
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % The first four options below are specific for this function, all the others
 % refer to routine FSRB
-n=length(y);
-init       = round(n*0.5);
+n     = length(y);
+init  = round(n*0.5);
 
 
 % checks on the user options
-options     = struct('plotsPI',0,'alpha',0.05,'fullreweight',true,'R2th',1,...
-    'h','',...
-    'nsamp','','lms',1,'plots',1,...
-    'init',init,...
-    'labeladd','','bivarfit','','multivarfit','',...
+options = struct('plotsPI',0,'alpha',0.05,'fullreweight',true,'R2th',1,...
+    'h','','nsamp','','lms',1,'plots',1,...
+    'init',init,'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
-    'msg',0,'nocheck',0,'intercept',1,'bonflev','',...
-    'bsbmfullrank',1);
-
+    'msg',0,'nocheck',0,'intercept',1,'bonflev','','bsbmfullrank',1);
 
 UserOptions = varargin(1:2:length(varargin));
 
@@ -179,19 +201,17 @@ bsbmfullrank=options.bsbmfullrank;
     'bsbmfullrank',bsbmfullrank);
 
 % Initialize structure out
-out.outliers=outFSR.ListOut;
-out.beta=outFSR.beta;
+out.outliers = outFSR.ListOut;
+out.beta     = outFSR.beta;
 
-
-beta=outFSR.beta';
-seq=1:n;
+beta = outFSR.beta';
+seq  = 1:n;
 
 % Options specific for this function
 alpha=options.alpha;
 fullreweight=options.fullreweight;
 R2th=options.R2th;
 plotsPI=options.plotsPI;
-
 
 % ListOut vector containing the outliers
 if ~isnan(outFSR.ListOut)
@@ -203,12 +223,12 @@ else
 end
 nlistIn=length(ListIn);
 
-
 % Find S2 using units not declared as outliers using FSR
 %in case intercept=1:
 if intercept == 1
     X = [ones(n,1) X];
 end
+
 % p= number of explanatory variables
 p=size(X,2);
 % Xb = subset of X referred to good units
@@ -240,11 +260,11 @@ end
 dfe=nlistIn-p;
 S2b=numS2b/dfe;
 
-% studres= vector which will contain squared (appropriately studentized) residuals for all n units.
-% For the units non declared as outliers by FS they will be squared studentized
-% residuals (that is at the denominator we have (1-h)), while for the units declared
-% as outliers by FS, they are deletion residuals (that is at the denominator
-% we have (1+h)).
+% studres= vector which will contain squared (appropriately studentized)
+% residuals for all n units. For the units non declared as outliers by FS
+% they will be squared studentized residuals (that is at the denominator we
+% have (1-h)), while for the units declared as outliers by FS, they are
+% deletion residuals (that is at the denominator we have (1+h)).
 studres2=zeros(n,1);
 
 mAm=Xb'*Xb;
@@ -264,20 +284,20 @@ studres2=studres2/S2b;
 
 % The final outliers are the units declared as outiers by FSR for which
 % observations r(ncl) is greater than the confidence threshold
-    if fullreweight
-        % rncl boolean vector which contains true for the unit whose
-        % squared stud residual exceeds the F threshold
-        rncl=studres2>finv(1-alpha, 1, dfe);
-    else
-        %rncl=boolean vector which contains true for the units which had
-        %been declared as outliers by FSR and whose squared stud residual
-        %exceeds the F threshold
-        rncl=false(n,1);
-        rncl(ListOut)=studres2(ListOut)>finv(1-alpha, 1, dfe);
-    end
-    % outliersr = list of units declared as outliers after reweighting step
-    outliersr=seq(rncl);
-    out.outliersr=outliersr;
+if fullreweight
+    % rncl boolean vector which contains true for the unit whose
+    % squared stud residual exceeds the F threshold
+    rncl=studres2>finv(1-alpha, 1, dfe);
+else
+    %rncl=boolean vector which contains true for the units which had
+    %been declared as outliers by FSR and whose squared stud residual
+    %exceeds the F threshold
+    rncl=false(n,1);
+    rncl(ListOut)=studres2(ListOut)>finv(1-alpha, 1, dfe);
+end
+% outliersr = list of units declared as outliers after reweighting step
+outliersr=seq(rncl);
+out.outliersr=outliersr;
 
 if isequal(out.outliers,outliersr)
     out.betar=outFSR.beta;
@@ -294,8 +314,8 @@ end
 rstud=[sign(res).*sqrt(studres2) fcdf(studres2,1,dfe,'upper')];
 out.rstud=rstud;
 
-
-if plotsPI==1
+if nargout > 0 || plotsPI==1
+    
     minX=min(X(:,end));
     maxX=max(X(:,end));
     
@@ -307,25 +327,38 @@ if plotsPI==1
         hasintercept=false;
     end
     % Var cov matrix of regression coefficients
-    Sigma=(inv(mAm))*S2b;
+    Sigma = (inv(mAm))*S2b;
     
-    sim=false;
-    pred=true;
-    [y_ci_all, yci]=predci(xnew,beta,Sigma,S2b,dfe,alpha,sim,pred,hasintercept);
+    sim   = false;
+    pred  = true;
+    [ypred , yci] = predci(xnew,beta,Sigma,S2b,dfe,alpha,sim,pred,hasintercept);
     
-    %     PI_LOWER_BOUND = yci(:,1);
-    %     PI_UPPER_BOUND = yci(:,2);
-    close all
-    hold('on');
-    plot(X(:,end),y,'o')
-    plot(xnew(:,end),y_ci_all)
+    varargout = {xnew , ypred, yci};
     
-    plot(xnew(:,end),yci(:,1))
-    plot(xnew(:,end),yci(:,2))
-    
+    if plotsPI==1
+        
+        % PI_LOWER_BOUND = yci(:,1);
+        % PI_UPPER_BOUND = yci(:,2);
+        figure('name','Prediction Interval');
+        hold('on');
+        plot(X(:,end),y,'o');
+        plot(xnew(:,end),ypred);
+        
+        plot(xnew(:,end),yci(:,1));
+        plot(xnew(:,end),yci(:,2));
+        
+        if R2th < 1
+            if R2b > R2th
+                tit2 = ['with variance of residuals adjusted to correct R2 from ' num2str(R2b,4) ' to ' num2str(R2th,4)];
+            else
+                tit2 = ['variance of residuals not adjusted, as R2=' num2str(R2b,4) ' < R2th=' num2str(R2th,4)];
+            end
+        else
+            tit2 = '';
+        end
+        title({[num2str((1-alpha)*100,4) '% Prediction Interval '] , tit2});
+    end
 end
-
-
 
 end
 

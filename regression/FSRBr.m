@@ -1,4 +1,4 @@
-function out = FSRBr(y, X, varargin)
+function [out , varargout] = FSRBr(y, X, varargin)
 %Bayesian forward search in linear regression reweighted
 %
 %
@@ -88,25 +88,68 @@ function out = FSRBr(y, X, varargin)
 %              Second column = p-values (computed using as reference
 %              distribution the Student t)
 %
+%Optional output arguments:
+%           xnew = vector with a number of new points where to evaluate the
+%                  prediction interval
+%          ypred = values predicted by the fitted model on xnew
+%           yci  = matrix with prediction interval values, computed on xnew
+%
 % Examples:
 %
 %{
-        % TODO
-        n=200;
-        p=1;
-        randn('state', 123456);
-        x=randn(n,p);
-        % Uncontaminated data
-        y=randn(n,1);
-        % Contaminated data
-        ycont=y;
-        ycont(1:3)=ycont(1:3)+6;
-       [outis, outis_anomal, groupis, groupis_anomal, goodis, goodis_anomal,FS_ListOut,FS_ListIn]=outlier_detection(ycont,x,'bsb_force',0,'lms',[1 2 5],'int',0,'alpha',0.00001,'ds_name','cstr0123','plot',1,'algorithm_type','R2_relaxed','test_reg_par',[0 1],'obs_name',1:length(y),'id_group',1, 'R2th',0.999);
+        % Bayesian FS to fit the group of undervalued flows
+
+        load('fishery');
+        X = fishery.data(:,1);
+        y = fishery.data(:,2);
+        [n,p] = size(X);
+        X = X + 0.000001*randn(n,1);
+
+        % undervalued flows
+        id = (y./X < 9.5);
+        
+        % my prior on beta
+        mybeta = median(y(id)./X(id));
+        bmad   = mad(y(id)./X(id));
+        ListIn = find(y./X <= mybeta + bmad);
+        % gscatter(X,y,id)
+
+
+        rr          = y(ListIn)-(X(ListIn,:) * mybeta);
+        numS2cl     = rr'*rr;
+        dfe         = length(ListIn)-p;
+        S2cl        = numS2cl/dfe;
+        bayes       = struct;
+        bayes.R     = X(ListIn,:)'*X(ListIn,:);
+        bayes.tau0  = 1/S2cl;
+        bayes.n0    = length(ListIn);
+        bayes.beta0 = mybeta;
+
+        % fit based on Bayesian FS with prior on the underdeclared flows
+        [out_B, xnew1 , ypred1, yci1]   = FSRBr(y,X,'bayes',bayes,'intercept',0,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);
+         
+        h1 = allchild(gca); a1 = gca; f1 = gcf;
+
+        % fit based on traditional FS
+        [out, xnew2 , ypred2, yci2]   = FSRr(y,X,'intercept',0,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);
+
+        h2 = allchild(gca); a2 = gca; f2 = gcf;
+
+        % move the figure above into a single one with two panels
+        hh = figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);
+        copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));
+        copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));
+        figsize = get(hh, 'Position'); figsize(4)= figsize(4)*2;      
+        set(hh,'Position',figsize);
+        close(f1); close(f2);
+
+        disp(['Bayesian FS fit    = ' num2str(out_B.betar)]);
+        disp(['Traditional FS fit = ' num2str(out.betar)]);
 
 %}
 
 
-%% Beginning of code 
+%% Beginning of code
 
 % The first four options below are specific for this function, all the others
 % refer to routine FSRB
@@ -160,7 +203,7 @@ bonflev=options.bonflev;
 bayes=options.bayes;
 plots=options.plots;
 
-    [outFSRB]=FSRB(y,X,...
+[outFSRB]=FSRB(y,X,...
     'plots',plots,'init',init,...
     'labeladd',labeladd,'bivarfit',bivarfit,'multivarfit',multivarfit,...
     'xlim',xlim,'ylim',ylim,'nameX',nameX,'namey',namey,'msg',msg, ...
@@ -249,20 +292,20 @@ studres2=studres2/S2b;
 
 % The final outliers are the units declared as outiers by FSR for which
 % observations r(ncl) is greater than the confidence threshold
-    if fullreweight
-        % rncl boolean vector which contains true for the unit whose
-        % squared stud residual exceeds the F threshold
-        rncl=studres2>finv(1-alpha, 1, dfe);
-    else
-        %rncl=boolean vector which contains true for the units which had
-        %been declared as outliers by FSR and whose squared stud residual
-        %exceeds the F threshold
-        rncl=false(n,1);
-        rncl(ListOut)=studres2(ListOut)>finv(1-alpha, 1, dfe);
-    end
-    % outliersr = list of units declared as outliers after reweighting step
-    outliersr=seq(rncl);
-    out.outliersr=outliersr;
+if fullreweight
+    % rncl boolean vector which contains true for the unit whose
+    % squared stud residual exceeds the F threshold
+    rncl=studres2>finv(1-alpha, 1, dfe);
+else
+    %rncl=boolean vector which contains true for the units which had
+    %been declared as outliers by FSR and whose squared stud residual
+    %exceeds the F threshold
+    rncl=false(n,1);
+    rncl(ListOut)=studres2(ListOut)>finv(1-alpha, 1, dfe);
+end
+% outliersr = list of units declared as outliers after reweighting step
+outliersr=seq(rncl);
+out.outliersr=outliersr;
 
 if isequal(out.outliers,outliersr)
     out.betar=outFSRB.beta;
@@ -279,7 +322,8 @@ end
 rstud=[sign(res).*sqrt(studres2) fcdf(studres2,1,dfe,'upper')];
 out.rstud=rstud;
 
-if plotsPI==1
+if nargout > 0 || plotsPI==1
+    
     minX=min(X(:,end));
     maxX=max(X(:,end));
     
@@ -291,25 +335,40 @@ if plotsPI==1
         hasintercept=false;
     end
     % Var cov matrix of regression coefficients
-    Sigma=(inv(mAm))*S2b;
+    Sigma = (inv(mAm))*S2b;
     
-    sim=false;
-    pred=true;
-    [y_ci_all, yci]=predci(xnew,beta,Sigma,S2b,dfe,alpha,sim,pred,hasintercept);
+    sim   = false;
+    pred  = true;
+    [ypred, yci] = predci(xnew,beta,Sigma,S2b,dfe,alpha,sim,pred,hasintercept);
     
-    %     PI_LOWER_BOUND = yci(:,1);
-    %     PI_UPPER_BOUND = yci(:,2);
-    close all
-    hold('on');
-    plot(X(:,end),y,'o')
-    plot(xnew(:,end),y_ci_all)
+    varargout = {xnew , ypred, yci};
     
-    plot(xnew(:,end),yci(:,1))
-    plot(xnew(:,end),yci(:,2))
+    if plotsPI==1
+        
+        %     PI_LOWER_BOUND = yci(:,1);
+        %     PI_UPPER_BOUND = yci(:,2);
+        figure('name','Bayesian FS: Prediction Interval');
+        hold('on');
+        plot(X(:,end),y,'o')
+        plot(xnew(:,end),ypred)
+        
+        plot(xnew(:,end),yci(:,1))
+        plot(xnew(:,end),yci(:,2))
+        
+        if R2th < 1
+            if R2b > R2th
+                tit2 = ['with variance of residuals adjusted to correct R2 from ' num2str(R2b,4) ' to ' num2str(R2th,4)];
+            else
+                tit2 = ['variance of residuals not adjusted, as R2=' num2str(R2b,4) ' < R2th=' num2str(R2th,4)];
+            end
+        else
+            tit2 = '';
+        end
+        title({[num2str((1-alpha)*100,4) '% Prediction Interval of the Bayesian FS'] , tit2});
+        
+    end
     
 end
-
-
 
 end
 
