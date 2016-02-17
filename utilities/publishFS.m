@@ -2049,7 +2049,10 @@ if nargout>0
                 endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
             else
                 % In this case there are also optional arguments
-                endpoint=regexp(fstringsel,'Optional Output:');
+                endpoint=regexp(fstringsel,'Optional [Oo]utput:');
+                if isempty(endpoint)
+                     error('FSDA:missOuts','varagout is present but input .m file does not contain ''Optional Output:'' string')
+                end
             end
             
         else
