@@ -49,9 +49,10 @@ function [out , varargout] = FSRr(y, X, varargin)
 %              have to exceed. For example if R2 based on good observations
 %              is 0.92 and R2th is 0.90 the estimate of the variance of the
 %              residuals which is used to declare the outliers is adjusted
-%              in order to have a value of R2 which is equal to 0.90. The
-%              default value of R2th is 1 which means that there is no
-%              correction.
+%              in order to have a value of R2 which is equal to 0.90. A
+%              similar correction is applied to compute the prediction
+%              intervals. The default value of R2th is 1 which means that
+%              there is no correction.
 %                 Example - 'R2th',0.99
 %                 Data Types - double
 %fullreweight: Option to declare outliers. Boolean. If fullreweight is true
@@ -69,7 +70,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %               confidence level 1-alpha, else no plot is shown on the
 %               screen
 %                 Example - 'plotsPI',1
-%                 Data Types - double%
+%                 Data Types - double
 %
 %
 %
@@ -82,7 +83,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %                  homogeneous
 % out.beta      =  p-by-1 vector containing the estimated regression parameter
 %                  by procedure FSR
-% out.outliersr =  k1 x 1 vector containing the list of the units declared
+% out.outliersr =  k1-by-1 vector containing the list of the units declared
 %                  outliers after the reweighting step or NaN if the sample is
 %                  homogeneous
 % out.betar     =  p-by-1 vector containing the estimated regression parameter
@@ -92,17 +93,28 @@ function [out , varargout] = FSRr(y, X, varargin)
 %                   Second column = p-values (computed using as reference
 %                   distribution the Student t)
 %
-%Optional output arguments:
+%Optional Output:
+%
 %           xnew = vector with a number of new points where to evaluate the
-%                  prediction interval
-%          ypred = values predicted by the fitted model on xnew
-%           yci  = matrix with prediction interval values, computed on xnew
+%                  prediction interval. xnew is a vector.
+%          ypred = values predicted by the fitted model on xnew. Vector of
+%                  length(xnew)
+%           yci  = Confidence intervals. A two-column matrix with each row providing
+%                  one interval. 
 %
-% Examples:
+% See also: FSR
 %
-%{
-        % example of outlier detection in a case of almost perfect fit
+% Copyright 2008-2015.
+% Written by FSDA team
+%
+%
+%
+%<a href="matlab: docsearchFS('FSRr')">Link to the help page for this function</a>
+% Last modified 06-Feb-2015
 
+% Examples:
+%{
+        % Example of outlier detection in a case of almost perfect fit.
         randn('state', 123456);
         n=200; p=1;
         X = rand(n,p);

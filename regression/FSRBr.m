@@ -88,24 +88,36 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %              Second column = p-values (computed using as reference
 %              distribution the Student t)
 %
-%Optional output arguments:
+%Optional Output:
+%
 %           xnew = vector with a number of new points where to evaluate the
-%                  prediction interval
-%          ypred = values predicted by the fitted model on xnew
-%           yci  = matrix with prediction interval values, computed on xnew
+%                  prediction interval. xnew is a vector.
+%          ypred = values predicted by the fitted model on xnew. Vector of
+%                  length(xnew)
+%           yci  = Confidence intervals. A two-column matrix with each row providing
+%                  one interval. 
+%
+% See also: FSR
+%
+% Copyright 2008-2015.
+% Written by FSDA team
+%
+%
+%
+%<a href="matlab: docsearchFS('FSRBr')">Link to the help page for this function</a>
+% Last modified 06-Feb-2015
 %
 % Examples:
 %
 %{
-        % Bayesian FS to fit the group of undervalued flows
-
+        % Bayesian FS to fit the group of undervalued flows.
         load('fishery');
         X = fishery.data(:,1);
         y = fishery.data(:,2);
         [n,p] = size(X);
         X = X + 0.000001*randn(n,1);
 
-        % undervalued flows
+        % id = undervalued flows
         id = (y./X < 9.5);
         
         % my prior on beta
@@ -139,11 +151,11 @@ function [out , varargout] = FSRBr(y, X, varargin)
         hh = figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);
         copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));
         copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));
-        figsize = get(hh, 'Position'); figsize(4)= figsize(4)*2;      
+        figsize = get(hh, 'Position'); 
         set(hh,'Position',figsize);
         close(f1); close(f2);
 
-        disp(['Bayesian FS fit    = ' num2str(out_B.betar)]);
+        disp(['Bayesian FS fit    = ' num2str(out_B.betar) ' using a prior based on undervalued flows']);
         disp(['Traditional FS fit = ' num2str(out.betar)]);
 
 %}
