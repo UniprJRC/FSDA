@@ -205,31 +205,40 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %         out:   structure which contains the following fields
 %
-%            out.idx  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups. Cluster names are integer
-%                       numbers from 1 to k. 0 indicates trimmed
-%                       observations.
 %            out.muopt= k-by-v matrix containing cluster centroid locations.
 %                       Robust estimate of final centroids of the groups.
 %         out.sigmaopt= v-by-v-by-k array containing estimated constrained
 %                       covariance for the k groups.
-%              out.bs = k-by-1 vector containing the units forming initial
-%                       subset associated with muopt.
-%            out.post = n-by-k matrix containing posterior probabilities
-%                       out.post(i,j) contains posterior probabilitiy of unit
-%                       i from component (cluster) j. For the trimmed units
-%                       posterior probabilities are 0
+%            out.idx  = n-by-1 vector containing assignment of each unit to
+%                       each of the k groups. Cluster names are integer
+%                       numbers from 1 to k. 0 indicates trimmed
+%                       observations.
 %            out.siz  = matrix of size k-by-3
 %                       1st col = sequence from 0 to k
 %                       2nd col = number of observations in each cluster
 %                       3rd col = percentage of observations in each cluster
 %                       Remark: 0 denotes unassigned units
-%   out.equalweights  = logical. It is true if in the clustering procedure
-%                       we (ideally) assumed equal cluster weights
-%                       else it is false if we allowed for different
-%                       cluster sizes
-%               out.h = scalar. Number of observations that have determined the
-%                       centroids (number of untrimmed units).
+%            out.post = n-by-k matrix containing posterior probabilities
+%                       out.post(i,j) contains posterior probabilitiy of unit
+%                       i from component (cluster) j. For the trimmed units
+%                       posterior probabilities are 0
+%          out.MIXMIX = BIC which uses parameters estimated using the
+%                       mixture loglikelihood and the maximized mixture
+%                       likelihood as goodness of fit measure.
+%                       Remark: this output is present just if input option
+%                       mixt is >0
+%          out.MIXCLA = BIC which uses the classification likelihood based on
+%                       parameters estimated using the mixture likelihood
+%                       (In some books this quantity is called ICL)
+%                       Remark: this output is present just if input option
+%                       mixt is >0
+%          out.CLACLA = BIC which uses the classification likelihood based on
+%                       parameters estimated using the classification likelihood
+%                       Remark: this output is present just if input option
+%                       mixt is =0
+%       out.notconver = scalar. Number of subsets without convergence
+%              out.bs = k-by-1 vector containing the units forming initial
+%                       subset associated with muopt.
 %             out.obj = scalar. Value of the objective function which is minimized
 %                       (value of the best returned solution).
 %                       If input option mixt >1 the likelihood which is
@@ -246,27 +255,17 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       R_j=h$. In the classification likelihood is input
 %                       option equalweights=0 then $\pi_j'=1$, $j=1, ...,
 %                       k$
-%       out.notconver = scalar. Number of subsets without convergence
-%              out.Y  = original data matrix Y. The field is present if option
-%                       Ysave is set to 1.
-%          out.MIXMIX = BIC which uses parameters estimated using the
-%                       mixture loglikelihood and the maximized mixture
-%                       likelihood as goodness of fit measure.
-%                       Remark: this output is present just if input option
-%                       mixt is >0
-%          out.MIXCLA = BIC which uses the classification likelihood based on
-%                       parameters estimated using the mixture likelihood
-%                       (In some books this quantity is called ICL)
-%                       Remark: this output is present just if input option
-%                       mixt is >0
-%          out.MIXCLA = BIC which uses the classification likelihood based on
-%                       parameters estimated using the mixture likelihood
-%                       (In some books this quantity is called ICL)
-%                       Remark: this output is present just if input option
-%                       mixt is =0
+%   out.equalweights  = logical. It is true if in the clustering procedure
+%                       we (ideally) assumed equal cluster weights
+%                       else it is false if we allowed for different
+%                       cluster sizes
+%               out.h = scalar. Number of observations that have determined the
+%                       centroids (number of untrimmed units).
 %          out.fullsol= column vector of size nsamp which contains the
 %                       value of the objective function at the end of the
 %                       iterative process for each extracted subsample.
+%              out.Y  = original data matrix Y. The field is present if option
+%                       Ysave is set to 1.
 %
 %  Optional Output:
 %
@@ -1360,9 +1359,6 @@ out.muopt=muopt;
 % Store robust estimate of final covariance matrix of the groups
 out.sigmaopt=sigmaopt;
 
-% Store units forming initial subset which gave rise to the optimal
-% solution
-out.bs=bs;
 
 % With the best obtained values for the parameters, we compute the final
 % assignments and parameters
@@ -1471,6 +1467,8 @@ else
     out.idx=idx;
 end
 
+
+
 % siz = matrix of size k x 3,
 % 1st col = sequence from 0 to k
 % 2nd col = number of observations in each cluster
@@ -1479,6 +1477,10 @@ end
 % sum(out.siz(:,3))=100
 siz=tabulate(out.idx);
 out.siz=siz;
+
+% Store n x k matrix containing posterior probability
+% of each row from each component (cluster)
+out.post=postprob;
 
 % Number of estimated parameters
 % k centroids of size v
@@ -1533,7 +1535,6 @@ end
 
 %% Compute INFORMATION CRITERIA
 
-nParamOld=npar+0.5*v*(v+1)*k;
 nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor)^(1-1/(v*k))) +1;
 
 logh=log(h);
@@ -1541,27 +1542,21 @@ logh=log(h);
 if mixt>0
     % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
     % and the maximized mixture likelihood as goodness of fit measure (New BIC)
-    MIXMIXold   = 2*NlogLmixt +nParamOld*logh;
     MIXMIX  = 2*NlogLmixt +nParam*logh;
     
     % MIXCLA = BIC which uses the classification likelihood based on
     % parameters estimated using the mixture likelihood (New ICL)
-    MIXCLAold   = 2*NlogL +nParamOld*logh;
     MIXCLA  = 2*NlogL +nParam*logh;
     
     out.MIXMIX=MIXMIX;
-    out.MIXMIXold=MIXMIXold;
     out.MIXCLA=MIXCLA;
-    out.MIXCLAold=MIXCLAold;
 else
     % CLACLA = BIC which uses parameters estimated using the classification
     % likelihood and the maximized classification likelihood as goodness of fit
     % measure (New New)
-    CLACLAold   = 2*NlogL + nParamOld*logh;
     CLACLA  = 2*NlogL +nParam*logh;
     
     out.CLACLA=CLACLA;
-    out.CLACLAold=CLACLAold;
 end
 
 
@@ -1580,6 +1575,9 @@ if min(out.siz((1+alp):end,2)< n*0.02)
     warning('FSDA:tclust:TooSmallNj','Clusters with size < n * 0.02 found - try reducing k')
 end
 
+% Store units forming initial subset which gave rise to the optimal
+% solution
+out.bs=bs;
 
 % Store value of the objective function (maximized trimmed log likelihood)
 out.obj=vopt;
@@ -1594,11 +1592,6 @@ out.equalweights=equalweights;
 % Store the number of observations that have not been trimmed in the
 % computation of the centroids
 out.h=h;
-
-% Store n x k matrix containing posterior probability
-% of each row from each component (cluster)
-out.post=postprob;
-
 
 out.fullsol=fullsol;
 
