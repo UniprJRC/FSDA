@@ -205,7 +205,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     % and pool is not cleaned after the execution of the random starts
     % The number of workers which is used is the one specified
     % in the local/current profile
-    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    [mmdrs,BBrs]=FSMmmdrs1(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
@@ -231,7 +231,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer) and pool is not cleaned after
     % the execution of the random starts
-    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    [mmdrs,BBrs]=FSMmmdrs1(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
@@ -274,7 +274,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer). Parallel pool is closed after the execution of the random starts
-    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
+    [mmdrs,BBrs]=FSMmmdrs1(Y,'nsimul',100,'init',10,'plots',1);
 %}
 
 %{
@@ -283,7 +283,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     load('fishery.txt');
     Y=fishery(:,1:2);
     figure
-    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'bsbsteps',[10 300 600]);
+    [mmdrs,BBrs]=FSMmmdrs1(Y,'nsimul',100,'init',10,'plots',1,'bsbsteps',[10 300 600]);
     % sum(~isnan(BBrs(:,1,1)))
     %
     % ans =
@@ -381,99 +381,11 @@ end
 
 mmdrs = [(init:n-1)' zeros(n-init,nsimul)];
 
-%% Check MATLAB environment
+%% Preapare the pool (if required)
 
-% Use the Parallel Computing Toolbox if it is installed and if the parallel
-% pool available consists of more than one worker.
-vPCT = ver('distcomp');
-if numpool > 1 && ~isempty(vPCT)
-    usePCT = 1;
-else
-    usePCT = 0;
-end
+[numpool,tstart,progbar,usePCT, usematlabpool] = PoolPrepare(numpool, msg*nsimul, UserOptions);
 
-% Check for the MATLAB release in use. From R2013b, 'parpool' has taken the
-% place of 'matlabpool'.
-if verLessThan('matlab', '8.2.0')
-    usematlabpool = 1;
-else
-    usematlabpool = 0;
-end
-
-%% Prepare the parallel pool
-
-if usePCT==1 % In this case Parallel Computing Toolbox Exists
-    
-    % First check if there is a parallel pool open. If this is the case,
-    % then the pool will be used. To keep it open for later reuse is
-    % useful, as opening a pool takes some time. Variable 'pworkers' is 0
-    % if there is no parallel pool open; otherwise it contains the number
-    % of workers allocated for the parallel pool.
-    if usematlabpool
-        pworkers = matlabpool('size'); %#ok<DPOOL>
-    else
-        ppool = gcp('nocreate');
-        
-        if isempty(ppool)
-            pworkers = 0;
-            
-            % If the user has not specified numpool, then the number of
-            % workers which will be used is the one set in the current
-            % profile
-            if max(strcmp(UserOptions,'numpool')) ~= 1
-                pworkersLocProfile=parcluster();
-                numpool=pworkersLocProfile.NumWorkers;
-            end
-            
-            % Therefore if a parallel pool is not open,  UserOption numpool
-            % (if set) overwrites the number of workers set in the
-            % local/current profile. Similarly, the number of workers in
-            % the local/current profile overwrites default value of 'numpool' obtained as
-            % feature('numCores') (i.e. the number of phisical cores)
-        else
-            pworkers = ppool.Cluster.NumWorkers;
-        end
-    end
-    
-    if pworkers > 0
-        % If a parallel pool is already open, ensure that numpool is not
-        % larger than the number of workers allocated to the parallel pool.
-        numpool = min(numpool,pworkers);
-    else
-        
-        % If there is no parallel pool open, create one with numpool workers.
-        if usematlabpool
-            matlabpool('open',numpool); %#ok<DPOOL>
-        else
-            parpool(numpool);
-        end
-    end
-    
-end
-
-%% Monitoring minimum Mahalanobis distance with random starts
-
-% monitor execution time, without counting the opening/close of the parpool
-tstart = tic;
-
-if usePCT == 1 && msg == 1
-    progbar = ProgressBar(nsimul);
-else
-    % In the parfor, 'progbar' will not be instanciated if usePCT is 0. In
-    % this case, as a measure of precaution, the MATLAB interpreter
-    % generates an error, to force the user to treat the case. This
-    % assignment is a workaround to avoid this type of error.
-    progbar = 9999;
-end
-
-if numpool == 1
-    % the following re-assignement of numpool from 1 to 0 is necessary,
-    % because the 'parfor' statement with numpool = 1 opens a parallel
-    % pool of 1 worker instead of reducing the iteration to a simple and
-    % faster 'for' statement.
-    numpool = 0;
-end
-
+%% parfor loop
 parfor (j = 1:nsimul , numpool)
     %for j=1:nsimul;
     [mmd,~,BB] = FSMmmd(Y,0,'init',init,...
@@ -501,23 +413,8 @@ parfor (j = 1:nsimul , numpool)
     
 end
 
-tend = toc(tstart);
-
-if msg==1
-    if usePCT == 1
-        progbar.stop;
-    end
-    disp(['Total time required by the multiple start monitoring: ' num2str(tend) ' seconds']);
-end
-
-% close parallel jobs if necessary
-if usePCT == 1 && cleanpool == true
-    if usematlabpool
-        matlabpool('close'); %#ok<DPOOL>
-    else
-        delete(gcp);
-    end
-end
+%% Close pool and show messages if required
+PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool)
 
 %% Plot statistic with random starts
 
