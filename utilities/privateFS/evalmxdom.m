@@ -1,4 +1,4 @@
-function dom = evalmxdom(f,dom,cellBoundaries,imagePrefix,imageDir,outputDir,options)
+function [dom, laste] = evalmxdom(f,dom,cellBoundaries,imagePrefix,imageDir,outputDir,options)
 %EVALMXDOM   Evaluate cellscript Document Object Model, generating inline images.
 %   dom = evaldom(dom,imagePrefix,imageDir,options)
 %   imagePrefix is the prefix that will be used for the image files.

@@ -116,6 +116,9 @@ function out=publishFS(file,varargin)
 %                 references.
 %   out.SeeAlso = References. cell. Cell of length s containing the s
 %                 references to linked files.
+%   out.laste   = object of class MException which provides information
+%                 about last error in executing the examples. If all
+%                 examples run without errors laste is an empty value;
 %
 %
 % More About:
@@ -2816,9 +2819,11 @@ if evalCode==true
         options.createThumbnail=0;
         [dom,cellBoundaries] = m2mxdom(ExToExec);
         prefix=[name 'tmp'];
+        
         % file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
-        dom = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
+        [dom,laste] = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
         %
+        
         ext='html';
         AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
         [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
@@ -2971,9 +2976,12 @@ if evalCode==true
         %         rmpath([pathstr '\utilities\privateFS'])
         rmpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
         rmpath([pathstr fsep 'utilities' fsep 'privateFS'])
-        
+    else
+        laste='';
     end
 end
+
+out.laste=laste;
 
 %% WRITE string outstring into the final HTML file
 fprintf(file1ID,'%s',outstring);
