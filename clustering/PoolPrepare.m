@@ -1,31 +1,67 @@
 function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool,pariter,UserOptions)
-%PoolPrepare prepares a pool of MATLAB instances for executing code in parallel 
+%PoolPrepare prepares a pool of MATLAB instances for executing code in parallel
 %
 %<a href="matlab: docsearchFS('PoolPrepare')">Link to the help function</a>
 %
-% Additional detailed comments here .......
+% PoolPrepare and PoolClose are used respectively to open and close a
+% prespecified number of parallel MATLAB sessions, which need to be
+% distributed over the physical cores where MATLAB is running.
+%
 %
 %  Required input arguments:
 %
-%      numpool:    Function name. String. The function to be checked.
+%      numpool:     The number of parallel sessions to open. Integer. If
+%                   numpool is not defined, then it is set equal to the
+%                   number of physical cores in the computer.
 %
-%      pariter:    
+%      pariter:     Number of parfor loops that need to be monitored.
+%                   Integer. If pariter > 0, then the 'pariter' parallel
+%                   instancies executed in a parfor statement will be
+%                   monitored with a progress bar. If pariter is 0 or is
+%                   not defined, then the progression of the parallel
+%                   execution is not monitored.
 %
-%  UserOptions:
-%            
+%  UserOptions:     Structure containing the user options of the calling
+%                   function. Cell array of strings. It is used, for
+%                   example, to check if the user has specified numpool or
+%                   not, and proceed accordingly (i.e. use the number of
+%                   workers set in the current MATLAB profile, rather then
+%                   allocate the numpool MATLAB instances requested by the
+%                   user).
+%
 % Output:
 %
-%       numpool:   
+%       numpool:    The number of parallel sessions actually opened. They
+%                   may differ from the request of the user, depending on
+%                   the computer configuration.
 %
-%        tstart:    
-%                
-%       progbar:
+%        tstart:    It is given as input to PoolClose. Records the internal
+%                   computer time at the end of the execution of the
+%                   PoolPrepare function, so that to monitor the overall
+%                   execution time of the statements embedded between
+%                   PoolPrepare and PoolClose.
+%
+%       progbar:    It is given as input to PoolClose. Contains the
+%                   status of the progress bar used to monitor the
+%                   progression of the parallel execution.
 %
 % Optional Output:
 %
-%              usePCT:
+%        usePCT:    Boolean indicating if the parallel computing toolbox is
+%                   installed. Scalar {0,1}. Parpool checks for the
+%                   existence of the parallel computing toolbox. 'usePCT'
+%                   returns the result of the check to PoolClose, to avoid
+%                   additional unnecessary checks.
 %
-%       usematlabpool:
+% usematlabpool:    Boolean indicating the use of 'usematlabpool' or 'parpool'.
+%                   Scalar {0,1}. Boolean indicating if the pool of MATLAB
+%                   instances is created using 'matlabpool' or 'parpool',
+%                   depending on the MATLAB version installed. From R2013b
+%                   'parpool' is used. Earlier releases use 'usematlabpool'.
+%
+%
+% See also: matlabpool, parpool, parfor
+%
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -37,6 +73,33 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 % Examples:
 %{
 
+    n = 50000;
+    x = randn(1,n) ;
+    y = zeros(1,n);
+
+    % sequential run
+    tic
+    for i = 1 : n
+        y(i) = std(x(1:i));
+    end
+    fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);
+
+   % parallel run
+    numpool = 4;
+    pariter = n;
+    UserOptions = {};
+    [numpool, tstart, progbar, usePCT, usematlabpool] = ...
+            PoolPrepare(numpool,pariter,UserOptions);
+
+    parfor i = 1 : n
+        y(i) = std(x(1:i));
+    end
+
+    cleanpool = 1; % this closes the pool of MATLAB sessions
+    tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);
+
+    fprintf('\n\n\n      parFor: %f secs\n\n',tend);
+
 %}
 
 %% Beginning of code
@@ -45,11 +108,11 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 % a progress bar. If it is 0 or is not defined, then the progression of the
 % parallel execution is not monitored.
 if ~isempty(pariter) && isnumeric(pariter)
-   pariter = round(pariter);
+    pariter = round(pariter);
 else
     pariter = 0;
 end
-    
+
 % if numpool is not defined, check the number of physical cores in the
 % computer. This is to make this function independent of previous checks.
 if numpool==0 || isempty(numpool)
@@ -60,14 +123,6 @@ end
 % or (from R2013b) 'parpool' must exist, and 'usematlabpool' is set to 1 or
 % 0 accordingly. Otherwise (i.e. if the Parallel Computing Toolbox is not
 % installed) 'usematlabpool' is set to NaN.
-% if isfunction('parpool')
-%     usematlabpool = 0;
-% elseif isfunction('matlabpool')
-%     usematlabpool = 1;
-% else
-%     usematlabpool = nan;
-% end
-
 if exist('parpool','file')==2
     usematlabpool = 0;
 elseif exist('matlabpool','file')==2
@@ -76,30 +131,11 @@ else
     usematlabpool = nan;
 end
 
-
 if numpool > 1 && ~isnan(usematlabpool)
     usePCT = 1;
 else
     usePCT = 0;
 end
-
-% % Use the Parallel Computing Toolbox if it is installed and if the parallel
-% % pool available consists of more than one worker.
-% vPCT = ver('distcomp');
-% if numpool > 1 && ~isempty(vPCT)
-%     usePCT = 1;
-% else
-%     usePCT = 0;
-% end
-%
-% % Check for the MATLAB release in use. From R2013b, 'parpool' has taken the
-% % place of 'matlabpool'.
-% if verLessThan('matlab', '8.2.0')
-%     usematlabpool = 1;
-% else
-%     usematlabpool = 0;
-% end
-
 
 %% Prepare the parallel pool
 
@@ -174,7 +210,6 @@ end
 % (parallel and not) between the two instances, without counting the
 % opening/close of the parpool
 tstart = tic;
-
 
 end
 

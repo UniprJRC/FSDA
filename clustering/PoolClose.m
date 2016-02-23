@@ -1,4 +1,4 @@
-function PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool)
+function [tend] = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool)
 %PoolClose closes the pool of MATLAB instances opened with PoolPrepare to execute code in parallel 
 %
 %<a href="matlab: docsearchFS('PoolClose')">Link to the help function</a>
