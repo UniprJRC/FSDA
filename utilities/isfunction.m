@@ -11,13 +11,25 @@ function [check , location] = isfunction(funstr)
 %  Required input arguments:
 %
 %      funstr:    Function name. String. The function to be checked.
-%            
+%                 Data Types - String
+%           
+% Optional input arguments:
+%
 % Output:
 %
-%       check:   1 if function 'funstr' exists, 0 otherwise.
+%       check:   Flag indicating the file existance. Boolean {1,0}.
+%                1 if function 'funstr' exists, 0 otherwise.
+%                Data Types - Logical
 %
-%    location:   The location of the function, which is empty if 'funstr' 
-%                does not exist.
+%    location:   Function path. String.  The location of the function, 
+%                which is empty if 'funstr'  does not exist. 
+%                Data Types - String
+%
+% See also: exist, which
+%
+%
+% References:
+%
 % Copyright 2008-2015.
 % Written by FSDA team
 %

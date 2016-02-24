@@ -13,6 +13,7 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 %      numpool:     The number of parallel sessions to open. Integer. If
 %                   numpool is not defined, then it is set equal to the
 %                   number of physical cores in the computer.
+%                   Data Types - scalar
 %
 %      pariter:     Number of parfor loops that need to be monitored.
 %                   Integer. If pariter > 0, then the 'pariter' parallel
@@ -20,6 +21,7 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 %                   monitored with a progress bar. If pariter is 0 or is
 %                   not defined, then the progression of the parallel
 %                   execution is not monitored.
+%                   Data Types - scalar
 %
 %  UserOptions:     Structure containing the user options of the calling
 %                   function. Cell array of strings. It is used, for
@@ -28,22 +30,28 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 %                   workers set in the current MATLAB profile, rather then
 %                   allocate the numpool MATLAB instances requested by the
 %                   user).
+%                   Data Types - cell array of strings
+%
+% Optional input arguments:
 %
 % Output:
 %
-%       numpool:    The number of parallel sessions actually opened. They
-%                   may differ from the request of the user, depending on
-%                   the computer configuration.
+%       numpool:    The number of parallel sessions actually opened. Integer. 
+%                   They may differ from the request of the user, depending 
+%                   on the computer configuration.
+%                   Data Types - double
 %
-%        tstart:    It is given as input to PoolClose. Records the internal
-%                   computer time at the end of the execution of the
-%                   PoolPrepare function, so that to monitor the overall
-%                   execution time of the statements embedded between
-%                   PoolPrepare and PoolClose.
+%        tstart:    Time stamp to be given as input to PoolClose. Double.  
+%                   Records the internal computer time at the end of the
+%                   execution of the PoolPrepare function, so that to
+%                   monitor the overall execution time of the statements
+%                   embedded between PoolPrepare and PoolClose.
+%                   Data Types - double
 %
-%       progbar:    It is given as input to PoolClose. Contains the
-%                   status of the progress bar used to monitor the
-%                   progression of the parallel execution.
+%       progbar:    To be given as input to PoolClose. Structure or integer. 
+%                   Contains the status of the progress bar used to monitor
+%                   the progression of the parallel execution.
+%                   Data Types - struct | double
 %
 % Optional Output:
 %
@@ -52,16 +60,19 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 %                   existence of the parallel computing toolbox. 'usePCT'
 %                   returns the result of the check to PoolClose, to avoid
 %                   additional unnecessary checks.
+%                   Data Types - integer | logical
 %
 % usematlabpool:    Boolean indicating the use of 'usematlabpool' or 'parpool'.
 %                   Scalar {0,1}. Boolean indicating if the pool of MATLAB
 %                   instances is created using 'matlabpool' or 'parpool',
 %                   depending on the MATLAB version installed. From R2013b
 %                   'parpool' is used. Earlier releases use 'usematlabpool'.
+%                   Data Types - integer | logical
 %
 %
-% See also: matlabpool, parpool, parfor
+% See also: PoolClose, parfor
 %
+% References:
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -72,7 +83,7 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 
 % Examples:
 %{
-
+    % Sequential vs parallel run
     n = 50000;
     x = randn(1,n) ;
     y = zeros(1,n);
@@ -84,7 +95,7 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
     end
     fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);
 
-   % parallel run
+    % parallel run
     numpool = 4;
     pariter = n;
     UserOptions = {};
