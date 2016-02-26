@@ -212,7 +212,7 @@ seq=1:n;
 
 % Compute theoretical envelopes based on all observations
 quant=[0.99;0.999;0.9999;0.99999;0.01;0.5;0.00001];
-% Compute theoretical envelops for minimum deletion residual based on all
+% Compute theoretical envelopes for minimum deletion residual based on all
 % the observations for the above quantiles.
 [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init,'exact',exact);
 % gmin = the matrix which contains envelopes based on all observations.
