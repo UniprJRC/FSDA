@@ -177,28 +177,31 @@ end
 options=struct('intercept',1,'niter',niterdef,'Ksteps',Ksteps,...
     'plots',1,'output',false);
 
-% Write in structure 'options' the options chosen by the user
-for i=1:2:length(varargin);
-    options.(varargin{i})=varargin{i+1};
-end
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)  
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:tclustreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if nargin > 6
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)  
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:tclustreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if all the specified optional arguments were present in
+        % structure options. Remark: the nocheck option has already been dealt
+        % by routine chkinputR.
+        inpchk=isfield(options,UserOptions);
+        WrongOptions=UserOptions(inpchk==0);
+        if ~isempty(WrongOptions)
+            disp(strcat('Non existent user option found->', char(WrongOptions{:})))
+            error('FSDA:tclustreg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        end
     end
-    % Check if all the specified optional arguments were present in
-    % structure options. Remark: the nocheck option has already been dealt
-    % by routine chkinputR.
-    inpchk=isfield(options,UserOptions);
-    WrongOptions=UserOptions(inpchk==0);
-    if ~isempty(WrongOptions)
-        disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:tclustreg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
-    end
-end
 
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin);
+        options.(varargin{i})=varargin{i+1};
+    end
+
+end
 % Graph summarizing the results, yes/no; For p=2 the plot is specific for
 % tclustreg. Otherwise spmplot is used
 plots       = options.plots;
