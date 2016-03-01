@@ -274,12 +274,14 @@ function plotopt=malfwdplot(out,varargin)
 %                     different color for the brushed units.
 %                     If persist='off' every time a new brush is performed
 %                     units previously brushed are removed.
-%                   - databrush.labeladd = add labels of brushed units.
+%                   - databrush.Label = add labels of brushed units in the
+%                     malfwdplot.
+%                   - databrush.labeladd = add labels of brushed units in spm.
 %                     Character. [] (default) | '1'. 
-%                     If databrush.labeladd='1', we label the units
-%                     of the last selected group with the unit row index in
-%                     matrices X and y. The default value is labeladd='',
-%                     i.e. no label is added.
+%                     If databrush.labeladd='1', we label in the scatter
+%                     plot matrix the units of the last selected group with
+%                     the unit row index in matrices X and y. The default
+%                     value is labeladd='', i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct 
 %       nameY   :   cell array of strings of length v containing the labels
@@ -343,7 +345,7 @@ function plotopt=malfwdplot(out,varargin)
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'plots',1,'init',30);
     % Produce monitoring MD plot with all the default options
-    malfwdplot(out)
+    malfwdplot(out1)
 %}
 %
 %{
@@ -649,7 +651,7 @@ bgrounddef=struct('bthresh',bthresh, 'bstyle',bstyle);
 options=struct(...
     'standard',standarddef,'fground',fgrounddef,'bground',bgrounddef,...
     'tag','pl_malfwd','datatooltip',1,'label','','databrush','',...
-    'nameY','','namey','','msg','');
+    'nameY','','msg','');
 
 
 %% Preliminary checks
@@ -1183,7 +1185,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     if  isempty(d)
         nameY=cellstr(num2str(p1','y%d'));
     else
-        nameY=options.nameY;
+        nameY=out.nameY;
     end
     
     % group = vector which will contain the identifier of each group e.g.
@@ -1368,17 +1370,17 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 
                 % get the x and y coordinates of mdr
                 a=findobj(h,'tag','data_mmd');
-                xdata=get(a,'Xdata'); % x coordinates of mdr (steps)
-                ydata=get(a,'ydata'); % y coordinates of mdr (values)
+                xdata=get(a,'Xdata'); % x coordinates of mmd (steps)
+                ydata=get(a,'ydata'); % y coordinates of mmd (values)
                 
                 [~, ~, ib]=intersect(selsteps, xdata);
                 % Stack together x and y coordinates
                 xx=[xdata; ydata];
                 
-                % Just in case the first step of mdr is selected remove it
+                % Just in case the first step of mmd is selected remove it
                 % because we also consider ib-1
                 ib=ib(ib>1);
-                % For each of the brushed units extract coordinates of mdr
+                % For each of the brushed units extract coordinates of mmd
                 % referred to the step before their entry and the step
                 % before
                 xxsel=xx(:,[ib-1 ib])';
