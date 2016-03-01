@@ -1,15 +1,15 @@
 function tbl = tabulateFS(x)
-%create frequency table of unique values of x (AND EXCLUDES 0 COUNTS)
+%Create frequency table of unique values of x, excluding possible 0 counts
+%
+%<a href="matlab: docsearchFS('tabulateFS')">Link to the help function</a>
 %
 %   tbl = tabulateFS(x) takes a vector x and returns a matrix, tbl. The
 %   first column of table contains the unique values of x.  The second is
 %   the number of instances of each value.  The last column contains the
 %   percentage of each value.  This function differs from MATLAB function
-%   tabulate because it always excludes 0 counts.
+%   tabulate because it excludes 0 counts.
 %   Remark: tabualteFS with no output arguments returns a formatted table
 %   in the command window.
-%
-%<a href="matlab: docsearchFS('tabulateFS')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -25,14 +25,15 @@ function tbl = tabulateFS(x)
 %
 %    tbl :  frequency table of data in vector x.
 %           Matrix of size unique(x)-by-3.
-%     Information in tbl is arranged as follows:
-%       1st column -- The unique values of x;
-%       2nd column -- The number of instances of each value;
-%       3rd column -- The percentage of each value.
-%     If x is a categorical variable, character array, or cell array of
-%     strings, tbl is a cell array.
-%      Remark: tabulateFS with no output arguments returns a formatted table
-%      in the command window.
+%           Information in tbl is arranged as follows:
+%               1st column -- The unique values of x;
+%               2nd column -- The number of instances of each value;
+%               3rd column -- The percentage of each value.
+%           If x is a categorical variable, character array, or cell array of
+%           strings, tbl is a cell array.
+%
+%  Remark: tabulateFS with no output arguments returns a formatted table
+%          in the command window.
 %
 % See also: tabulate
 %
