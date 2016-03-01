@@ -1,5 +1,5 @@
 function tclustICplot(IC,varargin)
-%tclustICsol extracts a set of best relevant solutions
+%tclustICplot plots information criterion as a function of c and k 
 %
 %<a href="matlab: docsearchFS('tclustICplot')">Link to the help function</a>
 %
@@ -183,7 +183,7 @@ function tclustICplot(IC,varargin)
 % Examples:
 
 %{
-    %% Plot BIC, ICL and CLA for for Geyser data with all defualt options.
+    %% Plot BIC, ICL and CLA for for Geyser data with all default options.
     Y=load('geyser2.txt');
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
     tclustICplot(out)
