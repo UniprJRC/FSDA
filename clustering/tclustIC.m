@@ -283,6 +283,18 @@ function out  = tclustIC(Y,varargin)
     %% Automatic choice of k for geyser data using alpha=0.1.
     Y=load('geyser2.txt');
     out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1)
+    % Write out.MIXMIX as MATLAB table
+    VariableNames=matlab.lang.makeValidName(cellstr([repmat('c=',length(out.cc),1) num2str(out.cc')]));
+    RowNames=cellstr([repmat('k=',length(out.kk),1) num2str(out.kk')]);
+    disp('MIXMIX (BIC)')
+    disp(array2table(out.MIXMIX,'VariableNames',VariableNames','RowNames',RowNames))
+    % Find smallest value inside the table and write the corresponding
+    % values of k (number of groups) and c (restriction factor)
+    [valmin,indk]=min(out.MIXMIX);
+    [minIC,indc]=min(valmin);
+    disp(['Smallest value of IC is ' num2str(minIC) ' and takes place for'])    
+    disp(['k=' num2str(out.kk(indk(indc))) ' and  c=' num2str(out.cc(indc))]);
+
 %}
 
 %{
