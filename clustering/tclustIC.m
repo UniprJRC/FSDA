@@ -496,7 +496,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
 end
 
 %% Close pool and show messages if required
-PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool)
+PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool);
 
 out=struct;
 

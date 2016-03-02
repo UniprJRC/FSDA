@@ -151,7 +151,7 @@ function out  = tclustICsol(IC,varargin)
 %
 % References:
 %
-% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016). Finding 
+% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016). Finding
 % the Number of Groups in Model-Based Clustering via Constrained
 % Likelihoods, submitted.
 % L. Hubert and P. Arabie (1985) "Comparing Partitions" Journal of
@@ -176,9 +176,9 @@ function out  = tclustICsol(IC,varargin)
     [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',2);
     disp(outMIXMIX.MIXMIXbs)
 %}
-    
+
 %{
-    %% Simulated data: compare first 3 best solutions using MIXMIX and CLACLA. 
+    %% Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.
     % Data generation
     restrfact=5;
     rng(20000);
@@ -315,18 +315,20 @@ if typeIC==2 || typeIC==3
     out.MIXMIXbs=MIXMIXbs;
     out.MIXMIXbsari=MIXMIXbsari;
     
-    if plots==1
-        plotBestSolutions(IC.Y,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX')
-    end
+    % Store matrix which contains in the columns the details of the
+    % classification
+    MIXMIXbsIDX=plotBestSolutions(IC.Y,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX',plots);
+    out.MIXMIXbsIDX=MIXMIXbsIDX;
 end
 
 if typeIC==1 || typeIC==3
     [MIXCLAbs,MIXCLAbsari]=findBestSolutions(IC.MIXCLA,ARIMIX,IC.IDXMIX,kk,cc,NumberOfBestSolutions,ThreshRandIndex,msg);
     out.MIXCLAbs=MIXCLAbs;
     out.MIXCLAbsari=MIXCLAbsari;
-    if plots==1
-        plotBestSolutions(IC.Y,IC.IDXMIX,MIXCLAbs,kk,cc,'MIXCLA')
-    end
+    % Store matrix which contains in the columns the details of the
+    % classification
+    MIXCLAbsIDX=plotBestSolutions(IC.Y,IC.IDXMIX,MIXCLAbs,kk,cc,'MIXCLA',plots);
+    out.MIXCLAbsIDX=MIXCLAbsIDX;
     
 end
 
@@ -334,10 +336,10 @@ if typeIC==0 || typeIC==3
     [CLACLAbs,CLACLAbsari]=findBestSolutions(IC.CLACLA,ARICLA,IC.IDXCLA,kk,cc,NumberOfBestSolutions,ThreshRandIndex,msg);
     out.CLACLAbs=CLACLAbs;
     out.CLACLAbsari=CLACLAbsari;
-    if plots==1
-        plotBestSolutions(IC.Y,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA')
-    end
-    
+    % Store matrix which contains in the columns the details of the
+    % classification
+    CLACLAbsIDX=plotBestSolutions(IC.Y,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots);
+    out.CLACLAbsIDX=CLACLAbsIDX;
 end
 
 end
@@ -461,14 +463,14 @@ for z=1:NumberOfBestSolutions
                 % certain threshold, or with a different k)
                 
                 % Before getting out of the loop, check if the solution
-                % which has just been found has a Rand index greater than a
+                % which has just been found, has a Rand index greater than a
                 % certain threshold with those which have already been
                 % found
                 if z>1
                     for  j=1:z-1
                         idxpreviousz=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cc==Bestsols{j,2})};
                         idxcurrentz=IDX{seqkk(kk==Bestsols{z,1}),seqcc(cc==Bestsols{z,2})};
-                        if valid_RandIndex(idxpreviousz,idxcurrentz)>ThreshRandIndex
+                        if RandIndexFS(idxpreviousz,idxcurrentz)>ThreshRandIndex
                             Bestsols{z,5}='spurious';
                             break
                         else
@@ -487,7 +489,7 @@ for z=1:NumberOfBestSolutions
                 for  j=1:z-1
                     idxpreviousz=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cc==Bestsols{j,2})};
                     idxcurrentz=IDX{seqkk(kk==Bestsols{z,1}),seqcc(cc==Bestsols{z,2})};
-                    if valid_RandIndex(idxpreviousz,idxcurrentz)>ThreshRandIndex
+                    if RandIndexFS(idxpreviousz,idxcurrentz)>ThreshRandIndex
                         Bestsols{z,5}='spurious';
                         break
                     else
@@ -502,7 +504,9 @@ for z=1:NumberOfBestSolutions
         end
     end
     if endofloop==1
-        disp(['There are at most ' num2str(z) ' different solutions'])
+        if msg==1
+            disp(['There are at most ' num2str(z) ' different solutions'])
+        end
         break
     end
 end
@@ -519,17 +523,23 @@ end
 end
 
 
-function plotBestSolutions(Y,IDX,Bestsols,kk,cc,lab)
+function IDXout=plotBestSolutions(Y,IDX,Bestsols,kk,cc,lab,plots)
 seqkk=1:length(kk);
 seqcc=1:length(cc);
-for i=1:size(Bestsols,1)
-    figure
-    spmplot(Y,IDX{seqkk(kk==Bestsols{i,1}),seqcc(cc==Bestsols{i,2})},[],'box');
-    detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) ' c=' num2str(Bestsols{i,2})];
-    bestsol=[' Best in c ' num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
-    Bestsolc=[Bestsols{i, 3} Bestsols{i,4}];
-    stabsol=[' Stable in c ' num2str(min(Bestsolc)) '-' num2str(max(Bestsolc)) ];
-    title([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
+nbestsol=size(Bestsols,1);
+IDXout=zeros(size(Y,1),nbestsol);
+for i=1:nbestsol
+    IDXi=IDX{seqkk(kk==Bestsols{i,1}),seqcc(cc==Bestsols{i,2})};
+    IDXout(:,i)=IDXi;
+    if plots==1
+        figure
+        spmplot(Y,IDXi,[],'box');
+        detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) ' c=' num2str(Bestsols{i,2})];
+        bestsol=[' Best in c ' num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
+        Bestsolc=[Bestsols{i, 3} Bestsols{i,4}];
+        stabsol=[' Stable in c ' num2str(min(Bestsolc)) '-' num2str(max(Bestsolc)) ];
+        title([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
+    end
 end
 cascade
 
