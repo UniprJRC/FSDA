@@ -8,7 +8,7 @@ function tbl = tabulateFS(x)
 %   the number of instances of each value.  The last column contains the
 %   percentage of each value.  This function differs from MATLAB function
 %   tabulate because it excludes 0 counts.
-%   Remark: tabualteFS with no output arguments returns a formatted table
+%   Remark: tabulateFS with no output arguments returns a formatted table
 %   in the command window.
 %
 %  Required input arguments:

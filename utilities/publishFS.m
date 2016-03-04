@@ -1036,7 +1036,7 @@ if length(gendesc)<3
     htmlsitecont='';
     gendesc='';
 else
-    htmlsitecont=['<p>' gendesc '</p>'];
+    htmlsitecont=['<p>' formatHTMLwithMATHJAX(gendesc) '</p>'];
 end
 
 finsitecont=sprintf(['<h2 id="syntax">Syntax</h2>\r'...
