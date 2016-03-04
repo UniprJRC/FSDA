@@ -8,16 +8,20 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % confidence intervals. The covariance matrix of the estimated parameters
 % \[
 %   cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
-% \] consists of four parts: 1) $q$ a correction factor for the scale
-% estimate; 2) $\sigma$ the scale parameter. 3) $v$ a correction factor
-% depending on the $\psi$ function which is used; 4) $V_X$= a matrix part.
-% For OLS $V_X=X'X$. Given that in robust regression we give a weight to
-% each observation, the matrix $X'X$ should be replaced by something like
-% $X'WX$, where $W$ is a diagonal matrix containing the weights assigned to
-% each observation. The purpose of this function is to provide the user
-% with different options for the estimate of $cov(\hat \beta)$ where $\hat
-% \beta$ is  a vector of regression coefficients obtained using S or MM
-% estimation and a particular \rho function.
+% \] 
+% consists of four parts: 
+%1) $q$ a correction factor for the scale estimate;
+% 2) $\sigma$ the scale parameter. 
+% 3) $v$ a correction factor depending on the $\psi$ function which is
+% used; 
+% 4) $V_X$= a matrix part. For OLS $V_X=X'X$. Given that in robust
+% regression we give a weight to each observation, the matrix $X'X$ should
+% be replaced by something like $X'WX$, where $W$ is a diagonal matrix
+% containing the weights assigned to each observation. 
+% The purpose of this function is to provide the user with different
+% options for the estimate of $cov(\hat \beta)$ where $\hat \beta$ is  a
+% vector of regression coefficients obtained using S or MM estimation and a
+% particular $\rho$ function.
 %
 %
 %
@@ -26,10 +30,13 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %    X :     Data matrix of explanatory variables (also called 'regressors')
 %            of dimension (n x p-1). Rows of X represent observations, and
 %            columns represent variables.
+%               Data Types - single | double
 % scaledres : Scaled residuals.Vector. n-times-1 vector containing scaled
 %             residuals $r_i/\hat \sigma$.
+%               Data Types - single | double
 % scaleest  : robust estimate of the scale. Scalar. Robust estimate of
 %             sigma ($\hat \sigma$). 
+%               Data Types - single | double
 %
 %  Optional input arguments:
 %
@@ -181,12 +188,12 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 %
 %<a href="matlab: docsearch('RobCov')">Link to the help page for this function</a>
-% Last modified 15-Nov-2011
+% Last modified 06-Feb-2015
 %
 % Examples:
 %
 %{
-    % Compare t statistic using S and MM 
+    % Compare the 5 estimates of cov matrix.
     n=200;
     p=3;
     state1=123456;
@@ -199,25 +206,59 @@ function out=RobCov(X,scaledres,scaleest,varargin)
     [outS]=Sreg(ycont,X);
     rhofunc='optimal';
     bdp=0.5;
-    [covrobS,covrobS1,covrobS2,covrobS3,covrobS4]=robSEbis(X,outS.residuals,outS.scale,'rhofunc',rhofunc,'bdp',0.5);
-    % Compute robust S tstatistics 
+    out=RobCov(X,outS.residuals,outS.scale);
+    disp('Compare 5 estimates of cov(\hat beta)')
+    disp(out.covrob)
+    disp('--------')
+    disp(out.covrob1)
+    disp('--------')
+    disp(out.covrob2)
+    disp('--------')
+    disp(out.covrob3)
+    disp('--------')
+    disp(out.covrob4)
+%}
+
+%{
+    % Compare t stat from S and MM estimator
+    rhofunc='optimal';
+    bdp=0.5;
+    out=RobCov(X,outS.residuals,outS.scale,'rhofunc',rhofunc,'bdp',0.5);
+    covrobS=out.covrob;
+    covrobS1=out.covrob1;
+    covrobS2=out.covrob2;
+    covrobS3=out.covrob3;
+    covrobS4=out.covrob4;
+
+    % Compute robust S t-statistics 
     tstatS=outS.beta./sqrt(diag(covrobS));
     tstatS1=outS.beta./sqrt(diag(covrobS1));
+    tstatS2=outS.beta./sqrt(diag(covrobS2));
+    tstatS3=outS.beta./sqrt(diag(covrobS3));
+    tstatS4=outS.beta./sqrt(diag(covrobS4));
 
     eff=0.95;
     outMM=MMregcore(ycont,X,outS.beta,outS.scale);
-    [covrobMM,covrobMM1]=robSE(X,outMM.residuals,outS.scale,'rhofunc',rhofunc,'eff',eff);
+    out=RobCov(X,outMM.residuals,outS.scale,'rhofunc',rhofunc,'eff',eff);
+    covrobMM=out.covrob;
+    covrobMM1=out.covrob1;
+    covrobMM2=out.covrob2;
+    covrobMM3=out.covrob3;
+    covrobMM4=out.covrob4;
     tstatMM=outMM.beta./sqrt(diag(covrobMM));
     tstatMM1=outMM.beta./sqrt(diag(covrobMM1));
-
-%    -0.6430   -0.5656    0.0160    0.0159
-%     4.8843    4.2099    0.6079    0.6036
-%     1.0196    0.9329    0.5261    0.5211
-%     6.9764    5.3963    0.5258    0.5167
-
+    tstatMM2=outMM.beta./sqrt(diag(covrobMM2));
+    tstatMM3=outMM.beta./sqrt(diag(covrobMM3));
+    tstatMM4=outMM.beta./sqrt(diag(covrobMM4));
+    disp('tstat from S')
+    disp([tstatS tstatS1 tstatS2 tstatS3 tstatS4])
+    disp('--------')
+    disp('tstat from MM')
+    disp([tstatMM tstatMM1 tstatMM2 tstatMM3 tstatMM4])
+    qhat=out.q;
+    disp('tstat from MM after correction for sigma')
+    disp([tstatMM/qhat tstatMM1/qhat tstatMM2/qhat tstatMM3/qhat tstatMM4/qhat])
 %}
-
-
 
 %% Beginning of code
 
@@ -513,7 +554,7 @@ covrob4=(1/(n-p))*(scaleest^2)*sumpsi2*(invXWX*XX*invXWX)/K; %#ok<MINV>
 ahat=sumpsi2/n;
 bhat=sumpsider/n;
 chat=sum(psi.*scaledres)/n;
-qhat=1+(p/(2*n))*(ahat/(bhat*chat));
+q=1+(p/(2*n))*(ahat/(bhat*chat));
 
 out=struct;
 out.covrob=covrob;
@@ -521,5 +562,5 @@ out.covrob1=covrob1;
 out.covrob2=covrob2;
 out.covrob3=covrob3;
 out.covrob4=covrob4;
-out.qhat=qhat;
+out.q=q;
 end
