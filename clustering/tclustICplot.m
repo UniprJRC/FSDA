@@ -1,14 +1,14 @@
 function tclustICplot(IC,varargin)
-%tclustICplot plots information criterion as a function of c and k 
+%tclustICplot plots information criterion as a function of c and k
 %
 %<a href="matlab: docsearchFS('tclustICplot')">Link to the help function</a>
 %
 %   tclustICplot takes as input the output of function tclustIC (that is a
 %   series of matrices which contain the values of the information criteria
 %   BIC/ICL/CLA for different values of k and c) and plots them as function
-%   of c or of k. The plot enables interaction in the sense that, if
-%   option databrush has been activated, it is possible to click on a point
-%   in the plot and to see the associated classification in the scatter plot
+%   of c or of k. The plot enables interaction in the sense that, if option
+%   databrush has been activated, it is possible to click on a point in the
+%   plot and to see the associated classification in the scatter plot
 %   matrix.
 %
 %  Required input arguments:
@@ -380,7 +380,7 @@ if typeIC==0 || typeIC==3
     plot1=gcf;
     % Datatooltip mode (call to function ICplotLbl)
     if ~isempty(datatooltip)
-        PrepareDatatooltip()
+        PrepareDatatooltip(IC)
     end
 end
 
@@ -408,7 +408,7 @@ if typeIC==2 || typeIC==3
     plot1=gcf;
     % Datatooltip mode (call to function ICplotLbl)
     if ~isempty(datatooltip)
-        PrepareDatatooltip()
+        PrepareDatatooltip(IC)
     end
 end
 
@@ -436,7 +436,7 @@ if typeIC==1 || typeIC==3
     plot1=gcf;
     % Datatooltip mode (call to function ICplotLbl)
     if ~isempty(datatooltip)
-        PrepareDatatooltip()
+        PrepareDatatooltip(IC)
     end
     
 end
@@ -676,7 +676,7 @@ if ~isempty(databrush) || isstruct(databrush)
     end % close loop associated with but (loop brushing)
 end
 
-    function PrepareDatatooltip
+    function PrepareDatatooltip(IC)
         % datacursormode on;
         hdt = datacursormode;
         set(hdt,'Enable','on');
@@ -697,11 +697,11 @@ end
     end
 
     function output_txt = ICplotLbl(~,event_obj,IC,~)
-        %% malfwdplotLbl provides information about the selected fwd scaled MD
+        % ICplotLbl provides information about 
         %
         % Required input arguments:
         %
-        %   obj     =   Currently not used (empty but necessary)
+        %       obj =   Currently not used (empty but necessary)
         % event_obj =   Handle to event object
         %               (event_obj=graphics.datatipevent)
         %               Remark: the first two arguments are implicit in the

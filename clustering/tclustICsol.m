@@ -1,7 +1,7 @@
 function out  = tclustICsol(IC,varargin)
 %tclustICsol extracts a set of best relevant solutions
 %
-%<a href="matlab: docsearchFS('tclustBICsol')">Link to the help function</a>
+%<a href="matlab: docsearchFS('tclustICsol')">Link to the help function</a>
 %
 %   tclustICsol takes as input the output of function tclustIC (that is a
 %   series of matrices which contain the values of the information criteria
@@ -14,31 +14,30 @@ function out  = tclustICsol(IC,varargin)
 %
 %  Required input arguments:
 %
-%           IC : Information criterion to use. Structure.
-%                It contains the following fields.
-%                IC.CLACLA = matrix of size length(kk)-times
-%                   length(cc) containinig the values of the penalized
+%           IC : Information criterion to use. Structure. It contains
+%                the following fields.
+%                IC.CLACLA = matrix of size length(kk)-times length(cc)
+%                   containinig the values of the penalized
 %                   classification likelihood (CLA).
-%                   This field is linked with
-%                   out.IDXCLA.
-%                IC.IDXCLA = cell of size length(kk)-times
-%                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
-%                   the classification model.
+%                   This field is linked with out.IDXCLA.
+%                IC.IDXCLA = cell of size length(kk)-times length(cc).
+%                   Each element of the cell is a vector of length n
+%                   containinig the assignment of each unit using the
+%                   classification model.
 %                Remark: fields CLACLA and IDXCLA are linked together.
 %                   CLACLA and IDXCLA are compulsory just if optional input
-%                   argument 'whichIC' is 'CLACLA' or 'ALL'
+%                   argument 'whichIC' is 'CLACLA' or 'ALL'.
 %                IC.MIXMIX = matrix of size length(kk)-times
 %                   length(cc) containinig the value of the penalized
 %                   mixture likelihood (BIC). This field is linked with
 %                   out.IDXMIX.
-%                IC.MIXCLA = matrix of size length(kk)-times
-%                   length(cc) containinig the value of the ICL. This field
-%                   is linked with out.IDXMIX.
-%                IC.IDXMIX = cell of size length(kk)-times
-%                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
-%                   the mixture model.
+%                IC.MIXCLA = matrix of size length(kk)-times length(cc)
+%                   containinig the value of the ICL. This field is linked
+%                   with out.IDXMIX.
+%                IC.IDXMIX = cell of size length(kk)-times length(cc).
+%                   Each element of the cell is a vector of length n
+%                   containinig the assignment of each unit using the
+%                   mixture model.
 %                Remark 1: fields MIXMIX and IDXMIX are linked together.
 %                   MIXMIX and IDXMIX are compulsory just if optional input
 %                   argument 'whichIC' is 'CLACLA' or 'ALL'.
@@ -63,6 +62,7 @@ function out  = tclustICsol(IC,varargin)
 %                       of NumberOfBestSolutions is 5
 %                       Example - 'NumberOfBestSolutions',5
 %                       Data Types - int16 | int32 | single | double
+%
 % ThreshRandIndex     : threshold to identify spurious solutions. Positive
 %                       scalar between 0 and 1. Scalar which specifies the
 %                       threshold of the adjusted Rnd index to use to
@@ -70,37 +70,41 @@ function out  = tclustICsol(IC,varargin)
 %                       value of ThreshRandIndex is 0.7
 %                       Example - 'ThreshRandIndex',0.8
 %                       Data Types - single | double
+%
 %   whichIC  : character which specifies the information criterion to use
 %               to extract best solutions. Character.
 %               Possible values for whichIC are:
 %               'CLACLA' = in this case best solutions are referred to
 %                   the classification likelihood.
-%               'MIXMIX'  = in this case in this case best solutions are
+%               'MIXMIX' = in this case in this case best solutions are
 %                   referred to the mixture likelihood (BIC).
-%               'MIXCLA'  = in this case in this case best solutions are
+%               'MIXCLA' = in this case in this case best solutions are
 %                   referred to ICL.
-%               'ALL'  = in this case best solutions both three solutions using
-%                     classification and mixture likelihood are produced.
-%                   In output structure out all the three matrices
-%                   out.MIXMIXbs, out.CLACLAbs and out.MIXCLAbs are given.
+%                 'ALL'  = in this case best solutions both three solutions
+%                          using classification and mixture likelihood are
+%                          produced. In output structure out all the three
+%                          matrices out.MIXMIXbs, out.CLACLAbs and
+%                          out.MIXCLAbs are given.
 %               The default value of 'whichIC' is 'ALL'
 %                 Example - 'whichIC','ALL'
 %                 Data Types - character
-%       plots : plots of best solutions on the screen. Scalar. It
-%               specifies whether to plot on the screen the best solutions
-%               which have been found
+%
+%       plots : plots of best solutions on the screen. Scalar. It specifies
+%               whether to plot on the screen the best solutions which have
+%               been found.
 %                 Example - 'plots',1
 %                 Data Types - single | double
-%       msg  :  Message on the screen. Scalar.
-%               Scalar which controls whether to display or not messages
-%               about code execution. The default value of msg is 0, that
-%               is no message is displayed on the screen.
+%
+%       msg  :  Message on the screen. Scalar. Scalar which controls
+%               whether to display or not messages about code execution.
+%               The default value of msg is 0, that is no message is
+%               displayed on the screen.
 %                 Example - 'msg',1
 %                 Data Types - single | double
 %
 %  Output:
 %
-%         out:   structure which contains the following fields
+%         out:   structure which contains the following fields:
 %
 %   out.MIXMIXbs = cell of size NumberOfBestSolutions-times-5 which contains
 %                the details of the best solutions for MIXMIX (BIC).
@@ -116,44 +120,50 @@ function out  = tclustICsol(IC,varargin)
 %                   does not go below the threshold defined in input option
 %                   ThreshRandIndex).
 %                5th col = string which contains 'true' or 'spurious'. The
-%                   solution is labelled spurious if the value of
-%                   the adjusted Rand index with the previous solutions is
+%                   solution is labelled spurious if the value of the
+%                   adjusted Rand index with the previous solutions is
 %                   greater than ThreshRandIndex.
 %               Remark: field out.MIXMIXbs is present only if input option
-%               'whichIC' is 'ALL' or 'whichIC' is 'MIXMIX'
+%               'whichIC' is 'ALL' or 'whichIC' is 'MIXMIX'.
+%
 %  out.MIXMIXbsari =  matrix of adjusted Rand indexes associated with the best
 %                solutions for MIXMIX. Matrix of size
 %                NumberOfBestSolutions-times-NumberOfBestSolutions whose
 %                i,j-th entry contains the adjusted Rand index between
 %                classification produced by solution i and solution j,
 %                $i,j=1, 2, \ldots, NumberOfBestSolutions$.
-%               Remark: field out.MIXMIXbsari is present only if 'whichIC' is
-%               'ALL' or 'whichIC' is 'MIXMIX'
+%               Remark: field out.MIXMIXbsari is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'MIXMIX'.
+%
 %  out.MIXCLAbs = this output has the same structure as out.MIXMIXbs but
 %               it is referred to MIXCLA.
 %               Remark: field out.MIXCLAbs is present only if 'whichIC' is
-%               'ALL' or 'whichIC' is 'MIXCLA'
+%               'ALL' or 'whichIC' is 'MIXCLA'.
+%
 % out.MIXCLAbsari = this output has the same structure as out.MIXMIXbs but
 %               it is referred to MIXCLA.
-%               Remark: field out.MIXCLAbsari is present only if 'whichIC' is
-%               'ALL' or 'whichIC' is 'MIXCLA'
+%               Remark: field out.MIXCLAbsari is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'MIXCLA'.
+%
 %  out.CLACLAbs = this output has the same structure as out.MIXMIXbs but
 %               it is referred to CLACLA.
 %               Remark: field out.CLACLAbs is present only if 'whichIC' is
-%               'ALL' or 'whichIC' is 'CLACLA'
+%               'ALL' or 'whichIC' is 'CLACLA'.
+%
 % out.CLACLAbsari = this output has the same structure as out.MIXMIXbs but
 %               it is referred to CLACLA.
-%               Remark: field out.MIXCLAbsari is present only if 'whichIC' is
-%               'ALL' or 'whichIC' is 'CLACLA'
+%               Remark: field out.MIXCLAbsari is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'CLACLA'
 %
 %
 % See also: tclustIC, tclust
 %
 % References:
 %
-% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016). Finding
-% the Number of Groups in Model-Based Clustering via Constrained
+% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016).
+% Finding the Number of Groups in Model-Based Clustering via Constrained
 % Likelihoods, submitted.
+%
 % L. Hubert and P. Arabie (1985) "Comparing Partitions" Journal of
 % Classification 2:193-218
 %

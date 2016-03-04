@@ -1,39 +1,40 @@
 function out  = tclustIC(Y,varargin)
-%tclustBIC computes tclust for different values of k and c
+%tclustIC computes tclust for different number of groups k and restriction factors c
 %
 %<a href="matlab: docsearchFS('tclustIC')">Link to the help function</a>
 %
 %   tclustIC (where the last two letters stand for 'Information Criterion')
 %   computes the values of BIC (MIXMIX), ICL (MIXCLA) or CLA (CLACLA), for
 %   different values of k (number of groups) and difference values of c
-%   (restriction factor) for a prespecified level of trimming. If Parallel
-%   Computing toolbox is installed parfor is used to compute tclust for
+%   (restriction factor), for a prespecified level of trimming. If Parallel
+%   Computing toolbox is installed, parfor is used to compute tclust for
 %   different values of c. In order to minimize randomness, given k, the
 %   same subsets are used for each value of c.
 %
 %  Required input arguments:
 %
 %            Y: Data matrix containining n observations on v variables
-%               Rows of Y represent observations, and columns
-%               represent variables.
-%               Missing values (NaN's) and infinite values (Inf's) are allowed,
-%               since observations (rows) with missing or infinite values will
-%               automatically be excluded from the computations.
+%               Rows of Y represent observations, and columns represent
+%               variables. Observations (rows) with missing (NaN) or or
+%               infinite (Inf) values will automatically be excluded from
+%               the computations.
 %                 Data Types -  double
 %
 %  Optional input arguments:
 %
-%           kk: An integer vector specifying the number of mixture
-%               components (clusters) for which the BIC is to be calculated.
-%               Vector. The default value of kk is 1:5
+%           kk: Integer vector specifying the number of mixture components 
+%               (clusters) for which the BIC is to be calculated.
+%               Vector. The default value of kk is 1:5.
 %                 Example - 'kk',1:4
 %                 Data Types - int16 | int32 | single | double
+%
 %           cc: A vector specifying the values of the restriction factor
 %               which have to be considered. Vector.
 %               The default value of cc is [1 2 4 8 16 32 64 128]
 %                 Example - 'cc',[1 2 4 8 128]
 %                 Data Types - double
-%   whichIC  : character which specifies which information criteria must
+%
+%      whichIC: Character which specifies which information criteria must
 %               be computed for each k (number of groups) and each value of
 %               the restriction factor (c).
 %               Possible values for whichIC are:
@@ -42,81 +43,81 @@ function out  = tclustIC(Y,varargin)
 %                   likelihood is used. This option corresponds to the use of
 %                   the Bayesian Information criterion (BIC). In output
 %                   structure out just the matrix out.MIXMIX is given.
-%               'MIXCLA'  = a mixture model is fitted but to
-%                   compute the information criterion the classification
-%                   likelihood is used. This option corresponds to the use of
-%                   the Integrated Complete Likelihood (ICL)
-%                   In output structure out just the matrix out.MIXCLA is
-%                   given.
-%               'CLACLA' =  everything is based on
-%                   the classification likelihood. This information
-%                   criterion will be called CLA.
-%                   In output structure out just the matrix out.CLACLA is
-%                   given.
-%               'ALL'  = both classification and mixture
-%                   likelihood are used. In this case all the three information
-%                   criteria CLA, ICL and BIC are computed.
-%                   In output structure out all the three matrices out.MIXMIX
-%                   and out.MIXCLA and out.CLACLA are given.
+%               'MIXCLA'  = a mixture model is fitted but to compute the 
+%                   information criterion the classification likelihood is
+%                   used. This option corresponds to the use of the
+%                   Integrated Complete Likelihood (ICL). In output
+%                   structure out just the matrix out.MIXCLA is given.
+%               'CLACLA' =  everything is based on the classification 
+%                   likelihood. This information criterion will be called
+%                   CLA. In output structure out just the matrix out.CLACLA
+%                   is given.
+%               'ALL' = both classification and mixture likelihood are used. 
+%                   In this case all the three information criteria CLA,
+%                   ICL and BIC are computed. In output structure out all
+%                   the three matrices out.MIXMIX and out.MIXCLA and
+%                   out.CLACLA are given.
 %                 Example - 'whichIC','ALL'
 %                 Data Types - character
+%
 %        alpha: global trimming level. Fraction or number of observations
-%               which have to be trimmed.
-%               alpha is a scalar between 0 and 0.5 or an integer
-%               specifying the number of observations which have to be
-%               trimmed. If alpha=0 all observations are considered.
-%               More in detail, if 0< alpha <1 clustering is based on
-%                h=fix(n*(1-alpha)) observations
-%               Else if alpha is an integer greater than 1 clustering is
-%               based on h=n-floor(alpha); The default value of alpha which
-%               is used is 0.
+%               which have to be trimmed. alpha is a scalar between 0 and
+%               0.5 or an integer specifying the number of observations to
+%               be trimmed. If alpha = 0 all observations are considered.
+%               More in detail, if 0 < alpha < 1 clustering is based on 
+%               h = fix(n*(1-alpha)) observations. Else if alpha is an 
+%               integer greater than 1 clustering is based on h=n-floor(alpha). 
+%               The default value of alpha which is used is 0.
 %                 Example - 'alpha',0
 %                 Data Types - single | double
-%       nsamp : number of subsamples to extract.
-%               Scalar or matrix.
+%
+%       nsamp : number of subsamples to extract. Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
-%               which will be extracted. If nsamp=0
-%               all subsets will be extracted.
+%               which will be extracted. If nsamp=0 all subsets will be
+%               extracted.
 %               Remark - if the number of all possible subset is <300 the
-%               default is to extract all subsets, otherwise just 300
-%               If nsamp is a matrix it contains in the rows the indexes of
-%               the subsets which have to be extracted. nsamp in this case
-%               can be conveniently generated  by function subsets. nsamp can
-%               have k columns or k*(v+1) columns. If nsamp has k columns
-%               the k initial centroids each iteration i are given by
-%               X(nsamp(i,:),:) and the covariance matrices are equal to the
-%               identity.
-%               If nsamp has k*(v+1) columns the initial centroids and covariance
-%               matrices in iteration i are computed as follows
-%               X1=X(nsamp(i,:),:)
-%               mean(X1(1:v+1,:)) contains the initial centroid for group 1
-%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
-%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
-%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
-%               ...
-%               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
-%               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
+%               default is to extract all subsets, otherwise just 300.
+%               - If nsamp is a matrix it contains in the rows the indexes 
+%                 of the subsets which have to be extracted. nsamp in this
+%                 case can be conveniently generated  by function subsets.
+%                 nsamp can have k columns or k*(v+1) columns. If nsamp has
+%                 k columns the k initial centroids each iteration i are
+%                 given by X(nsamp(i,:),:) and the covariance matrices are
+%                 equal to the identity.
+%               - If nsamp has k*(v+1) columns the initial centroids and 
+%                 covariance matrices in iteration i are computed as follows
+%                 X1=X(nsamp(i,:),:)
+%                 mean(X1(1:v+1,:)) contains the initial centroid for group 1
+%                 cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
+%                 mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
+%                 cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
+%                 ...
+%                 mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
+%                 cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
 %               REMARK - if nsamp is not a scalar option option below
 %               startv1 is ignored. More precisely if nsamp has k columns
-%               startv1=0 elseif nsamp has k*(v+1) columns option startv1
-%               =1.
+%               startv1=0 elseif nsamp has k*(v+1) columns option startv1=1.
 %                 Example - 'nsamp',1000
 %                 Data Types - double
-%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
-%               subsample  Default is 15.
-%               refsteps = 0 means "raw-subsampling" without iterations.
+%
+%    refsteps : Number of refining iterations. Scalar. Number of refining  
+%               iterations in subsample.  Default is 15. refsteps = 0 means
+%               "raw-subsampling" without iterations.
 %                 Example - 'refsteps',10
 %                 Data Types - single | double
+%
 %     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-14;
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
+%
 %equalweights : cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
 %               and computation of the likelihood.
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
+%
 %      startv1: how to initialize centroids and cov matrices. Scalar.
 %               If startv1 is 1 then initial
 %               centroids and and covariance matrices are based on (v+1)
@@ -127,35 +128,37 @@ function out  = tclustIC(Y,varargin)
 %               required parameter space, eigenvalue restrictions are
 %               immediately applied. The default value of startv1 is 1.
 %               Remark 2 - option startv1 is used just if nsamp is a scalar
-%               (see for more details the help associated with nsamp)
+%               (see for more details the help associated with nsamp).
 %                 Example - 'startv1',1
 %                 Data Types - single | double
-%    restr    : The type of restriction to be applied on the cluster
-%               scatter matrices. Valid values are 'eigen' (default), or
-%               'deter'. eigen implies restriction on the eigenvalues while
-%               deter implies restrictions on the determinant.
+%
+%       restr : The type of restriction to be applied on the cluster scatter 
+%               matrices. Valid values are 'eigen' (default), or 'deter'.
+%               eigen implies restriction on the eigenvalues while deter
+%               implies restrictions on the determinant.
 %                 Example - 'restr','deter'
 %                 Data Types - char
-%       plots : Plot on the screen. Scalar.
-%               If plots = 1, a plot of the BIC (MIXMIX), ICL (MIXCLA)curve
-%               and CLACLA is shown on the screen. The plots which are
-%               shown depend on the input option 'whichIC'.
+%
+%       plots : Plot on the screen. Scalar. If plots = 1, a plot of the
+%               BIC (MIXMIX), ICL (MIXCLA)curve and CLACLA is shown on the
+%               screen. The plots which are shown depend on the input
+%               option 'whichIC'.
 %                 Example - 'plots',1
 %                 Data Types - single | double
-%   numpool :  scalar. If numpool > 1, the routine automatically checks
-%               if the Parallel Computing Toolbox is installed and
-%               distributes the random starts over numpool parallel
-%               processes. If numpool <= 1, the random starts are run
-%               sequentially. By default, numpool is set equal to the
-%               number of physical cores available in the CPU (this choice
-%               may be inconvenient if other applications are running
-%               concurrently). The same happens if the numpool value
-%               chosen by the user exceeds the available number of cores.
-%               REMARK 1: up to R2013b, there was a limitation on the
-%               maximum number of cores that could be addressed by the
-%               parallel processing toolbox (8 and, more recently, 12).
-%               From R2014a, it is possible to run a local cluster of more
-%               than 12 workers.
+%
+%     numpool : scalar. If numpool > 1, the routine automatically checks if 
+%               the Parallel Computing Toolbox is installed and distributes
+%               the random starts over numpool parallel processes. If
+%               numpool <= 1, the random starts are run sequentially. By
+%               default, numpool is set equal to the number of physical
+%               cores available in the CPU (this choice may be inconvenient
+%               if other applications are running concurrently). The same
+%               happens if the numpool value chosen by the user exceeds the
+%               available number of cores. REMARK 1: up to R2013b, there
+%               was a limitation on the maximum number of cores that could
+%               be addressed by the parallel processing toolbox (8 and,
+%               more recently, 12). From R2014a, it is possible to run a
+%               local cluster of more than 12 workers.
 %               REMARK 2: Unless you adjust the cluster profile, the
 %               default maximum number of workers is the same as the
 %               number of computational (physical) cores on the machine.
@@ -181,27 +184,27 @@ function out  = tclustIC(Y,varargin)
 %               number of workers in the local/current profile overwrites
 %               default value of 'numpool' obtained as feature('numCores')
 %               (i.e. the number of physical cores).
-%              REMARK 5: the parallelization refers to the
+%              REMARK 5: the parallelization refers to the ...
 %                 Example - 'numpool',4
 %                 Data Types - double
+%
 %  cleanpool :  cleanpool is 1 if the parallel pool has to be cleaned after
-%               the execution of the routine. Otherwise it is 0.
-%               The default value of cleanpool is 1.
-%               Clearly this option has an effect just if previous option
-%               numpool is > 1.
+%               the execution of the routine. Otherwise it is 0. The
+%               default value of cleanpool is 1. Clearly this option has an
+%               effect just if previous option numpool is > 1.
 %                 Example - 'cleanpool',1
 %                 Data Types - single | double
-%       msg  :  Message on the screen. Scalar.
-%               Scalar which controls whether to display or not messages
-%               about code execution.
+%
+%       msg  :  Message on the screen. Scalar. Scalar which controls whether 
+%               to display or not messages about code execution.
 %                 Example - 'msg',1
 %                 Data Types - single | double
-%      nocheck: Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
-%               matrix Y.
-%               As default nocheck=0.
+%
+%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 
+%               no check is performed on matrix Y. As default nocheck=0.
 %                 Example - 'nocheck',10
 %                 Data Types - single | double
+%
 %       Ysave : Scalar that is set to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 1, i.e.
 %               matrix Y is saved inside output structure out.
@@ -216,46 +219,51 @@ function out  = tclustIC(Y,varargin)
 %
 %  Output:
 %
-%         out:   structure which contains the following fields
+%         out:   structure which contains the following fields:
+%
 %                out.CLACLA = matrix of size 5-times-8 if kk and cc are not
 %                   specififed else it is a matrix of size length(kk)-times
 %                   length(cc) containinig the value of the penalized
 %                   classification likelihood. This output is present only
-%                   if 'whichIC' is 'CLACLA' or 'whichIC' is
-%                   equal to 'ALL'.
+%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
+%
 %                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
 %                   specififed else it is a cell of size length(kk)-times
 %                   length(cc). Each element of the cell is a vector of
 %                   length n containinig the assignment of each unit using
 %                   the classification model. This output is present only
-%                   if 'whichIC' is 'CLACLA' or 'whichIC' is
-%                   equal to 'ALL'.
+%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.    
+%
 %                out.MIXMIX = matrix of size 5-times-8 if kk and cc are not
 %                   specififed else it is a matrix of size length(kk)-times
 %                   length(cc) containinig the value of the penalized
 %                   mixture likelihood. This output is present only if
-%                   'whichIC' is 'MIXMIX' or 'whichIC' is equal to
-%                   'ALL'.
+%                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
+%                   
 %                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
 %                   specififed else it is a matrix of size length(kk)-times
 %                   length(cc) containinig the value of the ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA' or
-%                   'whichIC' is equal to 'ALL'.
+%                   'whichIC' is 'ALL'.
+%
 %                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
 %                   specififed else it is a cell of size length(kk)-times
 %                   length(cc). Each element of the cell is a vector of
 %                   length n containinig the assignment of each unit using
 %                   the mixture model. This output is present only if
 %                   'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.
+%
 %                out.kk = vector containing the values of k (number of
 %                   components) which have been considered. This  vector
 %                   is equal to input optional argument kk if kk had been
-%                   specified else it is equal to 1:5
+%                   specified else it is equal to 1:5.
+%
 %                out.cc = vector containing the values of c (values of the
 %                   restriction factor) which have been considered. This
 %                   vector is equal to input optional argument cc if cc had
-%                   been specified else it is equal to [1, 2, 4, 8, 16, 32, 64,
-%                   128].
+%                   been specified else it is equal to [1, 2, 4, 8, 16, 32,
+%                   64, 128].
+%
 %                out.alpha = scalar containing the trimming level which has
 %                   been used.
 %
