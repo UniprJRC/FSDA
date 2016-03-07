@@ -5,85 +5,105 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %  Required input arguments:
 %
-%       c  : scalar, inflation parameter for covariance matrices. In the
+%       c  : inflation parameter for covariance matrices. Scalar. In the
 %            case of heterogeneous clusters scalar c is used to correct
-%            li(i,j) and const1(i,j). More precisely when hom=0 and
-%            if fix(i)=0 di(i,j,:)=di(i,j,:)/c^0.5
-%                   (because di(i,j,:)=\Gamma *(c*\Sigma_i)^{-0.5}(\mu_i-\mu_j)
+%            $li(i,j)$ and $const1(i,j)$. More precisely when hom=0:
+%            if $fix(i)=0$, $di(i,j,:)=di(i,j,:)/c^{0.5}$
+%                   (because $di(i,j,:)=\Gamma (c \Sigma_i)^{-0.5}(\mu_i-\mu_j)$
 %                    where Gamma is the matrix of eigenvectors of
-%                    \Sigma_j|i)
-%           if fix(i)=0 and fix(j)=1  li(i,j,:)=c li(i,j,:), const1(i,j)=const1(i,j)+v log(c)
+%                    $\Sigma_{j|i}$).
+%           if $fix(i)=0$ and $fix(j)=1$,  $li(i,j,:)=c li(i,j,:)$, 
+%                    $const1(i,j)=const1(i,j)+v log(c)$
 %                   (because the eigenvalues of matrix
-%                   \Sigma_j|i = (c^0.5 \Sigma_i^{0.5}) \Sigma_j^-1 (c^0.5
-%                   \Sigma_i^{0.5}) are multiplied by c
-%                   Similarly log |c\Sigma_i|= c*log(v) + log |\Sigma_i|
-%           if fix(i)=0  and fix(j)=0  li and const1 are not changed because
-%                   \Sigma_j|i=(c^0.5 \Sigma_i^{0.5}) (c \Sigma_j) ^-1 (c^0.5
-%                   \Sigma_i^{0.5})
-%                   const1(i,j)=log((Pi(j)/Pi(i))^2 * c detS(i)/(c detS(j)))
-%                   remain unaltered
-%       v  : scalar, dimensionality (number of variables)
-%       k  : scalar, number of components (groups)
-%       li : 3D array of size k-by-k-by-v. li(i,j,:) is the vector which
-%            contains the eigenvalues of matrix Sji=\Sigma_j|i
-%            where \Sigma_j|i  = \Sigma_i^{0.5} \Sigma_j^{-1} \Sigma_i^{0.5}.
-%            Remark: li(i,j,:)-1 are the coefficients of the linear
-%            combinations of non central chi^2 distribution which is used
+%                   $\Sigma_{j|i} = (c^{0.5} \Sigma_i^{0.5}) \Sigma_j^-1
+%                   (c^{0.5} \Sigma_i^{0.5})$ are multiplied by $c$.
+%                   Similarly $log |c\Sigma_i|= c log(v) + log |\Sigma_i|$.
+%           if $fix(i)=0$  and $fix(j)=0$,  $li$ and $const1$ are not changed because
+%                   $\Sigma_j|i=(c^0.5 \Sigma_i^{0.5}) (c \Sigma_j) ^-1 (c^0.5
+%                   \Sigma_i^{0.5})$, 
+%                   $const1(i,j)=log((Pi(j)/Pi(i))^2  c detS(i)/(c  det S(j)))$
+%               Data Types - single | double
+%       v  : number of variables. Scalar. Dimensionality of the data
+%           matrix.
+%               Data Types - single | double
+%       k  : number of components (groups). Scalar. Scalar associated with
+%           the number of groups. 
+%               Data Types - single | double
+%       li : eigenvalues of matrix $Sji=\Sigma_{j|i}$. 3D array of size
+%            k-by-k-by-v. $li(i,j,:)$ is the vector which
+%            contains the eigenvalues of matrix $Sji=\Sigma_{j|i}$
+%            where $\Sigma_{j|i}  = \Sigma_i^{0.5} \Sigma_j^{-1} \Sigma_i^{0.5}$.
+%            Remark: $li(i,j,:)-1$ are the coefficients of the linear
+%            combinations of non central $\chi^2$ distribution which is used
 %            to compute the probability of overlapping
-%            The non centrality parameter  of the non central chi^2 distribution
-%            associated with li(i,j,l)-1 is (li(i,j,l) di(i,j,l)/(li(i,j,l)-1))^2
-%       di : 3D array of size k-by-k-by-p
-%            di(i,j,l)= \gamma_l' \Sigma_i^{-0.5}(\mu_i-\mu_j)
-%            l=1, 2, ...,v, where \gamma_l is the l-th eigenvector coming
-%            from the spectral decomposition of matrix \Sigma_j|i  . Vector
+%            The non centrality parameter  of the non central $\chi^2$ distribution
+%            associated with $li(i,j,l)-1$ is $(li(i,j,l)
+%            di(i,j,l)/(li(i,j,l)-1))^2$
+%               Data Types - single | double
+%       di : eigenvector of matrix $\Sigma_{j|i}$. 3D array of size
+%            k-by-k-by-v.
+%            $di(i,j,l)= \gamma_l' \Sigma_i^{-0.5}(\mu_i-\mu_j)$
+%            $l=1, 2, ...,v$, where $\gamma_l$ is the l-th eigenvector coming
+%            from the spectral decomposition of matrix $\Sigma_{j|i}$  . Vector
 %            di(i,j,:) contains the coefficients of N(0,1) (called W_l in
 %            equation 2.2 of Maitra and Melnikov (2010), JCGS)
-%    const1: k-by-k matrix whose element i,j with i=1,..., k and j=1, ..., k
-%            is equal to log((Pi(j)/Pi(i))^2 * detS(i)/detS(j))
-%            where detS(i) and detS(j) are, respectively, the
+%               Data Types - single | double
+%    const1: Prior and Determinants. Matrix. k-by-k matrix whose element
+%            $i,j$ with $i=1,..., k$ and $j=1, ..., k$
+%            is equal to $log((Pi(j)/Pi(i))^2 * detS(i)/detS(j))$
+%            where $detS(i)$ and $detS(j)$ are, respectively, the
 %            determinants of the covariance matrices of groups i and j. See
-%            equation (2.2) of Maitra and Melnikov (2010), JCGS
+%            equation (2.2) of Maitra and Melnikov (2010), JCGS.
 %            Note that const1(j,i)=-const1(i,j). The elements on the
 %            diagonal of matrix const1 are set to 0 (in other words they
 %            are not computed).
 %           REMARK: li, di and const1 are the parameters needed for computing
 %           overlap
-%      fix : vector of length k containing zeros or ones
+%               Data Types - single | double
+%      fix : Inflation/Deflation clusters. Vector. Vector of length k containing zeros or ones
 %          if fix(j) =1 cluster j does not participate to inflation or
 %          deflation. If fix=zeros(k,1) all clusters participate in
-%          inflation/deflation
+%          inflation/deflation.
 %          REMARK: this parameter is used just if heterogeneous clusters
-%          are used
-%      tol : scalar. Error bound for overlap computation default is 1e-06
-%      lim : maximum number of integration terms default is 1e06.
+%          are used.
+%               Data Types - single | double
+%      tol : overlap tolerance. Scalar. Error bound for overlap computation default is 1e-06
+%               Data Types - single | double
+%      lim : maximum number of integration terms. Scalar. default is 1e06.
 %               REMARK: Optional parameters tol and lim will be used by
 %               function ncx2mixtcdf.m which computes the cdf of a linear
 %               combination of non central chi2 r.v.. This is the
 %               probability of overlapping
-%   asympt : flag for regular or asymptotic overlap. If asympt ==1 formula
+%               Data Types - single | double
+%   asympt : flag for regular or asymptotic overlap. Scalar. If asympt ==1 formula
 %            of asymptotic overlap is used (see p. 359, paragraph starting
 %            with step 3 of Maitra and Melnikov, 2010, JCGS). In this case
-%            the misclassification probability \omega_j|i (that is with
+%            the misclassification probability $\omega_j|i$ (that is with
 %            respect to the centroid and covariance matrix of group i) is
 %            given by
+%            \[
 %            \sum_{l=1}^p (\lambda_l-1) U_l \leq log \pi_j^2 |\Sigma_j| / \pi_i^2 |\Sigma_i|
-%            where U_l are central chi2 with one degree of freedom.
+%            \]
+%            where $U_l$ are central chi2 with one degree of freedom.
 %            Note that parameter asympt is set to 1 in the preliminary
 %            phase just to check whether the average or the maximum overlap
 %            can be reached.
+%               Data Types - single | double
 %
 %  Optional input arguments:
 %
-%     toll : scalar, tolerance use to declare the eigenvalues of matrix
-%           \Sigma_j|i equal to 1. The default value is 1e-06
+%     toll : eigenvalues tolerance. Scalar. Tolerance use to declare the eigenvalues of matrix
+%           $\Sigma_{j|i}$ equal to 1. The default value is 1e-06
 %           Background: the probability of overlapping is the result of two
 %           sums. The first is a sum in correspondence of the eigenvalues
-%           of matrix \Sigma_j|i not equal 1. The second is a sum in
+%           of matrix $\Sigma_{j|i}$ not equal 1. The second is a sum in
 %           correspondence of the eigenvalues of matrix \Sigma_j|i equal 1.
 %           Similarly, what is on the right hand side of the probability of
 %           overlapping has two sums (for eigenvalues equal or different
 %           from 1). Toll specifies when we must consider an eigenvalue
 %           equal to 1.
+%               Example - 'toll',1e-10
+%               Data Types - double
 %
 %  Output:
 %
@@ -91,17 +111,34 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %               probabilities. More precisely, OmegaMap(i,j) is the
 %               misclassification probability with respect to cluster i,
 %               (that is conditionally on x belonging to cluster i,  which
-%               is called w_{j|i}) 
-%               (i ~= j)=1, 2, ..., k
-%    BarOmega : scalar associated with average overlap.
+%               is called $w_{j|i}$) 
+%               $(i ~= j)=1, 2, ..., k$.
+%    BarOmega : Average overlap. Scalar.
 %               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
-%    MaxOmega : scalar associated with maximum overlap. MaxOmega is the
+%    MaxOmega : Maximum overlap. Scalar. MaxOmega is the
 %               maximum of OmegaMap(i,j)+OmegaMap(j,i)
-%               (i ~= j)=1, 2, ..., k
-%       rcMax : column vector of length equal to 2 containing the indexes
+%               $(i ~= j)=1, 2, ..., k$
+%       rcMax : Components with highest overlap. Column vector of length
+%               equal to 2. It contains the indexes
 %               associated with the pair of components producing the
 %               highest overlap (largest off diagonal element of matrix
-%               OmegaMap)
+%               OmegaMap).
+%
+% See also: MixSim, ncx2mixtcdf, restreigen
+%
+% References:
+%
+%   Maitra, R. and Melnykov, V. (2010). Simulating data to study performance
+%   of finite mixture modeling and clustering algorithms, The Journal of
+%   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
+%   this publication we will use "MM2010 JCGS")
+%
+%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package
+%   for Simulating Data to Study Performance of Clustering Algorithms,
+%   Journal of Statistical Software, 51:12, 1-25.
+%
+%   Davies, R. (1980) The distribution of a linear combination of
+%   chi-square random variables, Applied Statistics, 29, 323-333.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -110,18 +147,20 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %<a href="matlab: docsearchFS('GetOmegaMap')">Link to the help function</a>
 %
 % Last modified 06-Feb-2015
+%
 %{
-    k=4; % Number of groups
-    p=5;    % Number of dimensions
-    Pi=[0.1 0.2 0.4 0.3]; % mixing proportions
+    %% Find matrix of misclassification probabilities.
+    k = 4;    % Number of groups
+    p = 5;    % Number of dimensions
+    Pi= [0.1 0.2 0.4 0.3]; % mixing proportions
     % Mu matrix of means of size k-by-p; (each row is a distinct centroid)
     Mu=randn(k,p);
-    % Groups 2 and 3  is far from the other groups
-    Mu(2:3,:)=Mu(2:3,:)+10;
-    %Mu(3,:)=Mu(3,:)+2;
-    %Mu(4,:)=Mu(4,:)+3;
-    % S= 3D array of dimension p-by-p-by-k containing covariance matrices of
-    % the groups
+    % Groups 2 and 3 are far from the other groups
+    Mu(2:3,:) = Mu(2:3,:)+10;
+    %Mu(3,:) =  Mu(3,:)+2;
+    %Mu(4,:) =  Mu(4,:)+3;
+    % S= 3D array of dimension p-by-p-by-k containing covariance matrices 
+    % of the groups
     S=zeros(p,p,k);
     for j=1:k
         S(:,:,j)=cov(randn(p+10,p));
@@ -156,7 +195,6 @@ end
 % linear combinations of non central chi2 distributions)
 tolncx2  = tol;
 
-
 % Omegamap= k-by-k matrix which will contain misclassification probabilities
 OmegaMap=eye(k);
 rcMax=zeros(2,1);
@@ -169,24 +207,18 @@ df=ones(v,1);
 ii = 1;
 jj = 2;
 
-
-% check if clusters are homogeneous
-hom = 1;
-for kk=1:v
-    
-    if li(1,2,kk) ~= li(2,1,kk)
-        hom = 0;
-        break
+while ii < k
+    % check if clusters ii and jj are homogeneous
+    hom = 1;
+    for kk=1:v
+        if abs(li(ii,jj,kk)-li(jj,ii,kk))> eps; %1e-14;            
+            hom = 0;
+            break
+        end
     end
-end
-
-
-if hom == 1   % homogeneous clusters
     
-    if asympt == 0
-        
-        while ii < k
-            
+    if hom == 1   % homogeneous clusters
+        if asympt == 0
             Di =  squeeze(di(ii,jj,:)) / sqrt(c);
             Cnst1 = sum(Di.^2);
             
@@ -252,27 +284,12 @@ if hom == 1   % homogeneous clusters
                 rcMax(1) = ii;
                 rcMax(2) = jj;
             end
+        else % asympt==1
+            % The value of asymptotic overlap for homogeneous clusters
+            % omega_{ij}^\infty = omega_{j|i}^\infty+omega_{i|j}^\infty =1 for
+            % any mixing proportions \pi_i and \pi_j
+            % See for example Melnikov, Chen and Maitra (2012) , JSS p. 4
             
-            
-            if (jj < k)
-                jj = jj + 1;
-            else
-                ii = ii + 1;
-                jj = ii + 1;
-            end
-            
-        end
-        
-    end
-    
-    
-    
-    if asympt == 1
-        % The value of asymptotic overlap for homogeneous clusters
-        % omega_{ij}^\infty = omega_{j|i}^\infty+omega_{i|j}^\infty =1 for
-        % any mixing proportions \pi_i and \pi_j
-        % See for example Melnikov, Chen and Maitra (2012) , JSS p. 4
-        while ii < k
             
             % if \pi_j > \pi_i (const1(ii,jj) > 0)
             % \omega_{j|i}= OmegaMap(ii,jj) =1
@@ -300,28 +317,11 @@ if hom == 1   % homogeneous clusters
                 rcMax(1) = ii;
                 rcMax(2) = jj;
             end
-            if (jj < k)
-                jj = jj + 1;
-            else
-                ii = ii + 1;
-                jj = ii + 1;
-            end
             
         end
-        
-    end
-end
-
-
-% hom =0 ==> non homogeneous (non equal) covariance matrices
-% that is heterogeneous clusters
-if hom == 0
-    
-    sigma = 0.0;
-    
-    if asympt == 0
-        
-        while ii < k
+    else % non homogeneous clusters
+        sigma = 0.0;
+        if asympt == 0
             
             lij=squeeze(li(ii,jj,:));
             dij=squeeze(di(ii,jj,:));
@@ -473,21 +473,7 @@ if hom == 0
                 rcMax(1) = ii;
                 rcMax(2) = jj;
             end
-            if (jj < k)
-                jj = jj + 1;
-            else
-                ii = ii + 1;
-                jj = ii + 1;
-            end
-            
-        end
-    end
-    
-    
-    if asympt == 1
-        
-        while (ii < k)
-            
+        else % asympt =1
             lij=squeeze(li(ii,jj,:));
             dij=squeeze(di(ii,jj,:));
             
@@ -564,11 +550,8 @@ if hom == 0
                     
                     t = const1(ii,jj);
                     
-                    OmegaMap(ii,jj)=ncx2mixtcdf(t, df(1:sum(lijne1)), coef, ncp,'sigma',sigma,'lim',lim,'tol',tolncx2);
-                    
-                    % OmegaMap[i][j] = qfc(coef, ncp, df, &p, &sigma, &t, &lim, &acc, trace, &ifault);
-                    
-                    
+                        OmegaMap(ii,jj)=ncx2mixtcdf(t, df(1:sum(lijne1)), coef, ncp,'sigma',sigma,'lim',lim,'tol',tolncx2);
+                                
                 end
             end
             
@@ -648,15 +631,16 @@ if hom == 0
                 rcMax(1) = ii;
                 rcMax(2) = jj;
             end
-            if (jj < k)
-                jj = jj + 1;
-            else
-                ii = ii + 1;
-                jj = ii + 1;
-            end
-            
         end
     end
+    if jj < k
+        jj = jj + 1;
+    else
+        ii = ii + 1;
+        jj = ii + 1;
+    end
+    
 end
+
 BarOmega=TotalOmega/(0.5*k*(k-1));
 end
