@@ -441,7 +441,6 @@ if typeIC==1 || typeIC==3
     
 end
 
-
 %% Interactivity
 if isstruct(databrush)
     fdatabrush=fieldnames(databrush);
@@ -647,7 +646,7 @@ if ~isempty(databrush) || isstruct(databrush)
                 set(gcf,'CloseRequestFcn',@closereqFS);
                 
                 % Lay down the plots before continuing
-                % position(plot1);
+                position(plot1);
                 disp('Highlight the IC plot then: click on it to continue brushing or press a keyboard key to stop');
                 ss=waitforbuttonpressFS;
                 disp('------------------------');
@@ -671,10 +670,16 @@ if ~isempty(databrush) || isstruct(databrush)
             else
                 but=2;
             end % close loop associated with persist 'on' or persist 'off'
-            % position(plot1)
+            position(plot1)
         end % for each brushing operation do ...
     end % close loop associated with but (loop brushing)
+else
+  
+    position(0);
+    
 end
+
+
 
     function PrepareDatatooltip(IC)
         % datacursormode on;
