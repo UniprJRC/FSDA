@@ -59,6 +59,7 @@ function tbl = tabulateFS(x)
 %{
     %% Explore the difference between tabulate and tabulateFS.
     % Run this code to see the output shown in the help file
+    rng('default') % Reinitialize the random number generator to its startup configuration
     rng(100)
     x=randi([1 10],100,1);
     x(100)=30;
