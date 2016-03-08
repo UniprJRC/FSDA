@@ -115,6 +115,13 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               are computed
 %               Example - 'conflev',[0.99 0.999]
 %               Data Types - double
+%  nocheck:   Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
+%               matrix y and matrix X. Notice that y and X are left
+%               unchanged. In other words the additional column of ones for
+%               the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1
+%               Data Types - double
 %
 % Output:
 %
