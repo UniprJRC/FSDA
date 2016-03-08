@@ -113,6 +113,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 % Last modified 06-Feb-2015
 
 % Examples:
+
 %{
         % Example of outlier detection in a case of almost perfect fit.
         randn('state', 123456);
