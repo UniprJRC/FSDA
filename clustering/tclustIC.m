@@ -308,6 +308,7 @@ function out  = tclustIC(Y,varargin)
 %{
     % Automatic choice of k in an example with 3 components and prefixed overlap.
     restrfact=5;
+    rng('default') % Reinitialize the random number generator to its startup configuration
     rng(20000);
     ktrue=3;
     % n = number of observations

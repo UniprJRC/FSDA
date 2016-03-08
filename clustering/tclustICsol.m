@@ -191,6 +191,7 @@ function out  = tclustICsol(IC,varargin)
     %% Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.
     % Data generation
     restrfact=5;
+    rng('default') % Reinitialize the random number generator to its startup configuration
     rng(20000);
     ktrue=3;
     % n = number of observations
