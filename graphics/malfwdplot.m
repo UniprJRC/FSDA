@@ -345,7 +345,7 @@ function plotopt=malfwdplot(out,varargin)
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'plots',1,'init',30);
     % Produce monitoring MD plot with all the default options
-    malfwdplot(out1)
+    malfwdplot(out)
 %}
 %
 %{
