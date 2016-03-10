@@ -115,8 +115,9 @@ end
 
 % hObject is the handle of the text of the legend
 if get(hObject, 'UserData') % It is on, turn it off
-    set(hObject, 'Color', (get(hObject, 'Color') + 1)/1.5, 'UserData', false);
     set(obj,'HitTest','off','Visible','off','handlevisibility','off');
+    pause(0.001); %artificially introduced from 2016a to leave time to refresh HG2 object.
+    set(hObject, 'Color', (get(hObject, 'Color') + 1)/1.5, 'UserData', false);
     
     similar_obj_h = findobj('DisplayName',get(obj,'DisplayName'));
     similar_obj_h(logical(similar_obj_h==obj)) = [];
