@@ -674,7 +674,7 @@ if ~isempty(databrush) || isstruct(databrush)
         end % for each brushing operation do ...
     end % close loop associated with but (loop brushing)
 else
-  
+    % Apply cascade to existing plots in case databrush is not invoked
     position(0);
     
 end
@@ -702,7 +702,7 @@ end
     end
 
     function output_txt = ICplotLbl(~,event_obj,IC,~)
-        % ICplotLbl provides information about 
+        % ICplotLbl provides information about
         %
         % Required input arguments:
         %
