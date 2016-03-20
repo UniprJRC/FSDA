@@ -306,18 +306,17 @@ if ~isempty(h)
         clickableMultiLegend(hlineh(1:numconflev),legendstring2);
     else
         legend_h = legend(hlineh(1:numconflev),legendstring2);
-        
         %         verMatlab=verLessThan('matlab','8.4.0');
         %         if verMatlab
         %             legend(legend_h,'hide');
         %         else
         %             legend_h.Visible='off';
         %         end
-        set(legend_h,'Visible','off')
-        
+        set(legend_h,'Visible','off');
     end
+    drawnow;
     % Fix the y-axis
-    % set(h,'YLimMode', 'manual');
+    set(h,'YLimMode', 'manual'); 
     % Add title and axis labels for the figure with subplots
     title(gca,titl);
     xlabel(gca,labx,'Fontsize',FontSize);
