@@ -311,13 +311,13 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %{
     % tclust of geyser data using k=3, alpha=0.1 and  restrfactor=1000.
     Y=load('geyser2.txt');
-    out=tclust(Y,3,0.1,10000)
+    out=tclust(Y,3,0.1,10000);
 %}
 
 %{
     % tclust of geyser with classification plot.
     Y=load('geyser2.txt');
-    out=tclust(Y,3,0.1,10000,'plots',1)
+    out=tclust(Y,3,0.1,10000,'plots',1);
 %}
 
 %{
@@ -338,14 +338,14 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     restrfactor=10000;
     % nsamp = number of subsamples which will be extracted
     nsamp=500;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'plots',1)
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'plots',1);
     title(['Restriction factor =' num2str(restrfactor)])
     restrfactor=10;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1)
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
     title(['Restriction factor =' num2str(restrfactor)])
     % trimmed k-means solution restrfactor=1
     restrfactor=1;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1)
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
     title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])
     cascade
 %}
@@ -1613,14 +1613,14 @@ if plots==1;
     elseif v==2
         
         idx=out.idx;
-        colors = 'brcmykgbrcmykgbrcmykg';
+        colors = 'brcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykg';
         figure
         hold('on')
         for j=1:k
             idxj=idx==j;
             if sum(idxj)>0
                 plot(Y(idxj,1),Y(idxj,2),'o','color',colors(j),'DisplayName',num2str(j));
-                ellipse(muopt(j,:),sigmaopt(:,:,j))
+                ellipse(muopt(j,:),sigmaopt(:,:,j));
             end
         end
         if alpha>0
