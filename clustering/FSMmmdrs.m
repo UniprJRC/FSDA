@@ -185,6 +185,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %
 
 %{
+    % Two groups with approximately same units.
     % We start with an example with simulated data with two groups
     % with roughly the same number of observations
     close all
@@ -205,13 +206,14 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     % and pool is not cleaned after the execution of the random starts
     % The number of workers which is used is the one specified
     % in the local/current profile
-    [mmdrs,BBrs]=FSMmmdrs1(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
 %}
 
 %{
+    % Two groups with approximately same units (larger sizes).
     % Same example as before but now the values of n1 and n2 (size of the
     % two groups) have been increased.    
     close all
@@ -231,13 +233,14 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer) and pool is not cleaned after
     % the execution of the random starts
-    [mmdrs,BBrs]=FSMmmdrs1(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
 %}
 
 %{
+    % Two groups (different sizes).
     % Same example as before but now there is one group which has a size
     % much greater than the other (n1=60 and n2=150). In this case it is
     % possible to see that there is a trajectory of minimum Mahalanobis
@@ -274,16 +277,17 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer). Parallel pool is closed after the execution of the random starts
-    [mmdrs,BBrs]=FSMmmdrs1(Y,'nsimul',100,'init',10,'plots',1);
+    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
 %}
 
 %{
+    % Fishery example.
     % Random start for fishery dataset: just store information about the
     % units forming subset for each random start at specified steps
     load('fishery.txt');
     Y=fishery(:,1:2);
     figure
-    [mmdrs,BBrs]=FSMmmdrs1(Y,'nsimul',100,'init',10,'plots',1,'bsbsteps',[10 300 600]);
+    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'bsbsteps',[10 300 600]);
     % sum(~isnan(BBrs(:,1,1)))
     %
     % ans =

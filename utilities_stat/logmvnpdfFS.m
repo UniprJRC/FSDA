@@ -87,11 +87,12 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %   Examples:
 
 %{
-     % Comparisonw with mvnpdf.
+     % Comparison with mvnpdf.
      % In this example we check the agreement of the results with MATLAB
      % function mvnpdf.
      n=20000;
-     X=randn(n,2);
+     v=2;
+     X=randn(n,v);
      mu = [1 -1]; Sigma = [.9 .4; .4 .3];
      y = logmvnpdfFS(X, mu, Sigma);
      y1=log(mvnpdf(X,mu,Sigma));
@@ -100,7 +101,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %}
 
 %{ 
-    Remark: Options X0, eyed, n, and d must be used together.
+   % Remark: Options X0, eyed, n, and d must be used together.
 %}
 
 %{ 
@@ -115,7 +116,9 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %{
     % Example of the use of option msg.
     msg=0;
-    y = logmvnpdfFS(X,Mu,Sigma,X0,eyed,n,d,msg)
+    X0=X;
+    eyed=eye(v);
+    y = logmvnpdfFS(X,mu,Sigma,X0,eyed,n,v,msg);
     %  enables to control the display of the error message on the cov matrix
 
 %}
