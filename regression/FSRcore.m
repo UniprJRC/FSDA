@@ -143,7 +143,7 @@ function [out]=FSRcore(INP,model,options)
 %               Second row contains the frequency distribution.
 %
 % More About:
-% 
+%
 % The rules for declaring units as outliers are the same for standard
 % regression, heteroskedastic regression and Bayesian regression. Therefore
 % this function is called by:
@@ -198,6 +198,8 @@ ylimy=options.ylim;
 msg=options.msg;
 
 bonflev=options.bonflev;
+seq=1:n;
+
 if ~isempty(bonflev)
     if bonflev<1;
         [gbonf] = FSRbonfbound(n,p,'prob',bonflev,'init',init);
@@ -205,63 +207,64 @@ if ~isempty(bonflev)
     else
         bonfthresh=bonflev*ones(n-init,1);
     end
-end
-
-exact=1;
-seq=1:n;
-
-% Compute theoretical envelopes based on all observations
-quant=[0.99;0.999;0.9999;0.99999;0.01;0.5;0.00001];
-% Compute theoretical envelopes for minimum deletion residual based on all
-% the observations for the above quantiles.
-[gmin] = FSRenvmdr(n,p,'prob',quant,'init',init,'exact',exact);
-% gmin = the matrix which contains envelopes based on all observations.
-% 1st col of gmin = fwd search index
-% 2nd col of gmin = 99% envelope
-% 3rd col of gmin = 99.9% envelope
-% 4th col of gmin = 99.99% envelope
-% 5th col of gmin = 99.999% envelope
-% 6th col of gmin = 1% envelope
-% 7th col of gmin = 50% envelope
-% Thus, Set the columns of gmin where the theoretical quantiles are located.
-[c99 , c999 , c9999 , c99999 , c001 , c50] = deal(2,3,4,5,6,7);
-
-% lowexceed=0 means than outlier detection is just based on upper
-% exceedances
-lowexceed=0;
-
-bool=mdr(:,1)>=init;
-mdr=mdr(bool,:);
-gmin=gmin(gmin(:,1)>=mdr(1,1),:);
-
-
-% Store in nout the number of times the observed mdr (d_min) lies above:
-[out99 , out999 , out9999 , out99999 , out001] = deal( ...
-    mdr(mdr(:,2)>gmin(:,c99),:) , ...       % the 99% envelope
-    mdr(mdr(:,2)>gmin(:,c999),:) , ...      % the 99.9% envelope
-    mdr(mdr(:,2)>gmin(:,c9999),:) , ...     % the 99.99% envelope
-    mdr(mdr(:,2)>gmin(:,c99999),:) , ...    % the 99.999% envelope
-    mdr(mdr(:,2)<gmin(:,c001),:) );         % the 1% envelope
-
-nout = [[1 99 999 9999 99999]; ...
-    [size(out001,1) size(out99,1) size(out999,1) size(out9999,1) size(out99999,1)]];
-
-% NoFalseSig = boolean linked to the fact that the signal is good or not
-NoFalseSig=0;
-
-% NoFalseSig is set to 1 if the condition for an INCONTROVERTIBLE SIGNAL is
-% fulfilled.
-n9999 = nout(2,nout(1,:)==9999);
-if (n9999>=10);
-    NoFalseSig=1;
-    if msg;
-        disp('Observed curve of r_min is at least 10 times greater than 99.99% envelope'); % exact number is int2str(n9999)
-        disp('--------------------------------------------------');
+else
+    
+    exact=1;
+    % lowexceed=0 means than outlier detection is just based on upper
+    % exceedances
+    lowexceed=0;
+    
+    % Compute theoretical envelopes based on all observations
+    quant=[0.99;0.999;0.9999;0.99999;0.01;0.5;0.00001];
+    % Compute theoretical envelopes for minimum deletion residual based on all
+    % the observations for the above quantiles.
+    [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init,'exact',exact);
+    % gmin = the matrix which contains envelopes based on all observations.
+    % 1st col of gmin = fwd search index
+    % 2nd col of gmin = 99% envelope
+    % 3rd col of gmin = 99.9% envelope
+    % 4th col of gmin = 99.99% envelope
+    % 5th col of gmin = 99.999% envelope
+    % 6th col of gmin = 1% envelope
+    % 7th col of gmin = 50% envelope
+    % Thus, Set the columns of gmin where the theoretical quantiles are located.
+    [c99 , c999 , c9999 , c99999 , c001 , c50] = deal(2,3,4,5,6,7);
+    
+    
+    bool=mdr(:,1)>=init;
+    mdr=mdr(bool,:);
+    gmin=gmin(gmin(:,1)>=mdr(1,1),:);
+    
+    
+    % Store in nout the number of times the observed mdr (d_min) lies above:
+    [out99 , out999 , out9999 , out99999 , out001] = deal( ...
+        mdr(mdr(:,2)>gmin(:,c99),:) , ...       % the 99% envelope
+        mdr(mdr(:,2)>gmin(:,c999),:) , ...      % the 99.9% envelope
+        mdr(mdr(:,2)>gmin(:,c9999),:) , ...     % the 99.99% envelope
+        mdr(mdr(:,2)>gmin(:,c99999),:) , ...    % the 99.999% envelope
+        mdr(mdr(:,2)<gmin(:,c001),:) );         % the 1% envelope
+    
+    nout = [[1 99 999 9999 99999]; ...
+        [size(out001,1) size(out99,1) size(out999,1) size(out9999,1) size(out99999,1)]];
+    
+    % NoFalseSig = boolean linked to the fact that the signal is good or not
+    NoFalseSig=0;
+    
+    % NoFalseSig is set to 1 if the condition for an INCONTROVERTIBLE SIGNAL is
+    % fulfilled.
+    n9999 = nout(2,nout(1,:)==9999);
+    if (n9999>=10);
+        NoFalseSig=1;
+        if msg;
+            disp('Observed curve of r_min is at least 10 times greater than 99.99% envelope'); % exact number is int2str(n9999)
+            disp('--------------------------------------------------');
+        end
     end
+    
+    % Divide central part from final part of the search
+    istep = n-floor(13*sqrt(n/200));
 end
 
-% Divide central part from final part of the search
-istep = n-floor(13*sqrt(n/200));
 
 %% Part 1. Signal detection and validation
 nmdr=size(mdr,1);
@@ -283,11 +286,11 @@ end
 % Signal dection is based on monitoring consecutive triplets or single
 % extreme values
 
-% Signal detection loop
-for i=3:nmdr;
-    % Check if signal must be based on consecutive exceedances of envelope
-    % of mdr or on exceedance of global Bonferroni level
-    if isempty(bonflev)
+% Check if signal must be based on consecutive exceedances of envelope
+% of mdr or on exceedance of global Bonferroni level
+if isempty(bonflev)
+    % Signal detection loop
+    for i=3:nmdr;
         
         if i<istep-init+1; % CENTRAL PART OF THE SEARCH
             % Extreme triplet or an extreme single value
@@ -498,9 +501,11 @@ for i=3:nmdr;
             end
             break
         end
-    else
+    end
+else
+    for i=1:nmdr
         % Outlier detection based on Bonferroni threshold
-        if (mdr(i,2)>bonfthresh(i,end)) && mdr(i,1)>floor(0.5*n);
+        if (mdr(i,2)>bonfthresh(i,end)) % TODO TODO && mdr(i,1)>floor(0.5*n);
             if msg
                 disp(['mdr(' int2str(mdr(i,1)) ',' int2str(n) ')>99% Bonferroni level']);
             end
@@ -511,7 +516,6 @@ for i=3:nmdr;
             break
         end
     end
-    
 end
 
 %% Create figure containing mdr + envelopes based on all the observations.
@@ -542,9 +546,13 @@ if plo==1 || plo ==2
     end
     
     if isempty(ylimy)
-        
-        yl1=min([gmin(:,c001);mdr(:,2)]);
-        yl2=max([gmin(:,c999);mdr(:,2)]);
+        if isempty(bonflev)
+            yl1=min([gmin(:,c001);mdr(:,2)]);
+            yl2=max([gmin(:,c999);mdr(:,2)]);
+        else
+            yl1=min([bonfthresh(:,2);mdr(:,2)]);
+            yl2=max([bonfthresh(:,2);mdr(:,2)]);
+        end
     else
         yl1=ylimy(1);
         yl2=ylimy(2);
@@ -685,7 +693,7 @@ if plo==1 || plo ==2
         end
     else
         % Superimpose Bonferroni line to the plot
-        line(gmin(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
+        line(bonfthresh(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
         
         % Property-value pairs which are common to the next latex annotations
         PrVaCell=cell(2,5);
@@ -1065,8 +1073,6 @@ if signal==1 || signal==2;
         end
         
         ndecl=n-tr;
-        
-        
     else
         ndecl=n-mdr(i,1);
     end
@@ -1085,7 +1091,7 @@ end
 
 
 %% End of the forward search
-if msg
+if msg && isempty(bonflev)
     disp('Summary of the exceedances');
     disp(nout);
 end
@@ -1217,18 +1223,25 @@ if plo==1 || plo==2
     end
     set(gcf,'Name','Scatter plot matrix y|X with outliers highlighted');
     
-    if ndecl>0
+    % The second condition is necessary because in the Bayesian case all
+    % units can be declared as outliers
+    if ndecl>0 && n-ndecl>0
         set(H(:,:,1),'DisplayName','Good units');
         set(H(:,:,2),'DisplayName','Outliers');
+        % save the indices of the outliers (ListOut) to the
+        % 'UserData' field of the second group of H(:,:,2)
+        set(H(:,:,2), 'UserData' , ListOut');
+    elseif ndecl>0
+        set(H(:,:,1),'DisplayName','Outliers');
     else
         set(H,'DisplayName','Units');
     end
     
     % save the indices of the outliers (ListOut) to the
     % 'UserData' field of the second group of H(:,:,2)
-    if ~isnan(ListOut)
-        set(H(:,:,2), 'UserData' , ListOut');
-    end
+    %     if ~isnan(ListOut)
+    %         set(H(:,:,2), 'UserData' , ListOut');
+    %     end
     
     % The following line adds objects to the panels of the yX
     % add2yX(H,AX,BigAx,outadd,group,ListOut,bivarfit,multivarfit,labeladd)
@@ -1246,7 +1259,9 @@ out.ListOut=ListOut;
 
 out.mdr=mdr;
 out.Un=Un;
-out.nout=nout;
+if isempty(bonflev)
+    out.nout=nout;
+end
 out.beta=beta;
 
 

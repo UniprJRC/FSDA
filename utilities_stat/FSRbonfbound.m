@@ -104,8 +104,12 @@ m =(m0:n-1)';
 lp = length(prob);
 mm = repmat(m,1,lp);
 probm = repmat(prob,length(m),1);
+% Set to 1 all m-p not greater than 0
+mmminusp=mm-p;
+mm(mmminusp<=0)=1;
+mmminusp(mmminusp<=0)=1;
 
-MinBonf = abs(tinv((1-probm)./(mm+1), mm-p));
+MinBonf = abs(tinv((1-probm)./(mm+1), mmminusp));
 
 Bbound = [m MinBonf];
 

@@ -1,7 +1,7 @@
 function [out]=FSR(y,X,varargin)
 %FSR gives an automatic outlier detection procedure in linear regression
 %
-%<a href="matlab: docsearchFS('fsr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSR')">Link to the help function</a>
 %
 % Required input arguments:
 %

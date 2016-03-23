@@ -686,9 +686,9 @@ vvarargin=varargin;
 %% User options
 
 if n<40
-    init=p+1;
+    init=0;
 else
-    init=min(3*p+1,floor(0.5*(n+p+1)));
+    init=min([3*p+1 floor(0.5*(n+p+1)) n-1]);
 end
 
 % ini0=init;

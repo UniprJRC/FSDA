@@ -404,9 +404,9 @@ vvarargin=varargin;
 %% User options
 
 if n<40
-    initdef=p+1;
+    initdef=0;
 else
-    initdef=min(3*p+1,floor(0.5*(n+p+1)));
+    initdef=min([3*p+1 floor(0.5*(n+p+1)) n]);
 end
 
 % Default for vector bsbsteps which indicates for which steps of the fwd
