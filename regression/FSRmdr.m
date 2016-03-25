@@ -468,7 +468,7 @@ if bsbsteps == 0
 else
     % The number of columns of matrix BB is equal to the number of steps
     % for which bsbsteps is greater or equal than init1
-    bsbsteps=bsbsteps(bsbsteps>init1);
+    bsbsteps=bsbsteps(bsbsteps>=init1);
     BB = NaN(n,length(bsbsteps));
     %   BB = NaN(n, sum(bsbsteps>=init1));
 end
