@@ -1,7 +1,7 @@
 function [out]=FSRB(y,X,varargin)
 %FSRB gives an automatic outlier detection procedure in Bayesian linear regression
 %
-%<a href="matlab: docsearch('frsb')">Link to the help function</a>
+%<a href="matlab: docsearch('FSRB')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -199,6 +199,12 @@ function [out]=FSRB(y,X,varargin)
 %
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
+% out.beta   =  p-by-1 vector containing the posterior mean of $\beta$
+%               (regression coefficents),
+%               $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step
+%               $n-k$
+% out.scale  =   scalar. This is the reciprocal of the square root of the
+%               posterior estimate of $\tau$ in step $n-k$
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of Bayesian minimum deletion residual in
@@ -216,10 +222,6 @@ function [out]=FSRB(y,X,varargin)
 %               of particular quantiles.
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
-%  out.beta   = p x 1 vector containing posterior mean (conditional on
-%               $\tau_0$) of $\beta$ (regression coefficents)
-%               $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$
-%               computed in step n- (number of units declared as outliers)
 % out.constr  = This output is produced only if the search found at a
 %               certain step a non singular matrix X. In this case the
 %               search run in a constrained mode, that is including the
@@ -231,18 +233,18 @@ function [out]=FSRB(y,X,varargin)
 %
 % References:
 %
-% Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and
+% Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and
 % Residual Analysis, Biometrika, Vol 75 pp. 651-659.
-% Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian
+% Riani M., Corbellini A., Atkinson A.C. (2016), Very Robust Bayesian
 % Regression for Fraud Detection, submitted
-% Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian
+% Atkinson A.C., Corbellini A., Riani M., (2016) Robust Bayesian
 % Regression, submitted
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('fsrb')">Link to the help page for this function</a>
+%<a href="matlab: docsearch('FSRB')">Link to the help page for this function</a>
 %
 % Last modified 06-Feb-2015
 
@@ -736,7 +738,7 @@ n0=bayes.n0;
 
 
 %% Start of the forward search
-[mdrB,Un,bb,BBayes,~] = FSRBmdr(y, X, beta0, R, tau0, n0, 'nocheck',1,'init',init);
+[mdrB,Un,bb,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, 'nocheck',1,'init',init);
 
 
 %% Call core function which computes exceedances to thresholds of mdr
@@ -751,6 +753,7 @@ INP.Un=Un;
 INP.bb=bb;
 INP.Bcoeff=BBayes;
 INP.beta0=beta0;
+INP.S2=S2Bayes;
 INP.R=R;
 INP.tau0=tau0;
 INP.n0=n0;

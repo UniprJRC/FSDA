@@ -228,7 +228,10 @@ function [out]=FSR(y,X,varargin)
 %
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
-% out.beta   =  p-by-1 vector containing the estimated regression parameter.
+% out.beta   =  p-by-1 vector containing the estimated regression
+%               parameters (in step n-k).
+% out.scale  = scalar containing the estimate of the scale
+%                       (sigma). 
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
@@ -465,7 +468,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,Bols] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg);
+    [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2;
@@ -488,7 +491,7 @@ else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
     [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
     
-    if out.s0==0
+    if out.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
         % Just return the outliers found by LXS
         %out.ListOut=out.outliers;
@@ -503,9 +506,9 @@ else % initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,Bols] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
+        [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
         
-        % If FSRmdr run without problems mdr has two columns. In the second
+        % If FSRmdr runs without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
         % monitored in each step of the search
         
@@ -568,6 +571,7 @@ INP.init=init;
 INP.Un=Un;
 INP.bb=bb;
 INP.Bcoeff=Bols;
+INP.S2=S2(:,1:2);
 %% Call core function which computes exceedances to thresholds of mdr
 [out]=FSRcore(INP,'',options);
 

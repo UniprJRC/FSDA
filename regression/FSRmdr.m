@@ -283,7 +283,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %}
 
 %{
-%% Monitoring of s2, and the evolution of beta coefficients for the Hawkins dataset
+    %% Monitoring of s2, and the evolution of beta coefficients for the Hawkins dataset
     load('hawkins.txt');
     y=hawkins(:,9);
     X=hawkins(:,1:8);

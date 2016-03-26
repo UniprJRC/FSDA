@@ -220,7 +220,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                penultimate col = lower confidence limit based on
 %                conflev(end); 
 %                last col = upper confidence limit based on conflev(end).
-%out.Hetero =  estimate of coefficients of scedastic equation: 
+% out.Hetero =  estimate of coefficients of scedastic equation: 
 %                    1st col = fwd search index; 
 %                    2nd col = estimate of first coeff of scedastic
 %                    equation; 

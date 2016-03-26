@@ -42,17 +42,26 @@ function [out]=FSRcore(INP,model,options)
 %               units included in the final step of the search.
 %               Un has 11 columns because we store up to 10 units
 %               simultaneously in each step.
-%   INP.bb:     Units included in each step. Matrix.
+%   INP.bb=     Units included in each step. Matrix.
 %               n-by-(n-init+1) or matrix n-by-r matrix which the units
 %               belonging to the subset at each step of the forward search
 %               or at selected steps.
-%  INP.Bcoeff:  Estimated regression coefficients. Matrix.
+%  INP.Bcoeff=  Estimated regression coefficients. Matrix.
 %               (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search. The first column contains the fwd search index.
 %               Depending on the string 'model', Bcoeff refers to OLS
 %               coefficents, GLS coefficients or Bayes regression
 %               coefficients.
+% INP.Hetero=  Estimated coefficients in the skedastic equation. Matrix.
+%               (n-init+1) x (r+1) matrix containing the monitoring of
+%               estimated skedastic coefficients in each step of the forward
+%               search. The first column contains the fwd search index.
+%               This input is used just if strcmp(model,'H')
+%  INP.S2 =   Estimate of $sigma^2.  (n-init+1) x2 matrix containing the
+%               monitoring of S2.  Depending on the string 'model', S2
+%               refers to OLS, GLS or in the Baysian case it is the
+%               posterior estimate of $\sigma^2$.
 %   INP.Z =     Predictor variables in the regression equation (necessary
 %               input just if model='H'). Matrix.
 %               n x r matrix or vector of length r.
@@ -122,6 +131,9 @@ function [out]=FSRcore(INP,model,options)
 %               parameter in step n-k. Depending on the string 'model',
 %               beta refers to OLS coefficents, GLS coefficients or Bayes
 %               regression coefficients.
+% out.scale   = estimate of the scale. Depending on the string 'model',
+%               beta refers to OLS coefficents, GLS coefficients or it is
+%               the inverse of the posterior estimate of the square root of tau.
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
@@ -177,6 +189,8 @@ init=INP.init;
 Un=INP.Un;
 bb=INP.bb;
 Bcoeff=INP.Bcoeff;
+
+S2=INP.S2;
 
 % intcolumn = the index of the first constant column found in X, or empty.
 % Used here to check if X includes the constant term for the intercept.
@@ -1187,12 +1201,23 @@ if ndecl>0;
     % Store the values of beta coefficients in step n-ndecl
     ndecl=length(ListOut);
     beta = Bcoeff(end-ndecl,2:end);
+    if strcmp(model,'H')
+        Hetero=INP.Hetero;
+        hetero=Hetero(end-ndecl,2:end);
+    end
+    
+    scale= sqrt(S2(end-ndecl,2));
     group(ListOut)=2;
 else
     % No outlier is found.
     % Store the values of beta coefficients in final step of the fwd search
     beta = Bcoeff(end,2:end);
+    scale= sqrt(S2(end,2));
     ListOut=NaN;
+    if strcmp(model,'H')
+        Hetero=INP.Hetero;
+        hetero=Hetero(end,2:end);
+    end
 end
 
 
@@ -1263,7 +1288,11 @@ if isempty(bonflev)
     out.nout=nout;
 end
 out.beta=beta;
+if strcmp(model,'H')
+    out.hetero=hetero;
+end
 
+out.scale=scale;
 
 %% Callback functions used to "pin" quantile labels and vertical line to axes.
 

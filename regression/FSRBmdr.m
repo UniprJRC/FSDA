@@ -2,7 +2,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %FSRBmdr computes minimum deletion residual and other basic linear regression quantities in each step of the Bayesian search.
 %
 %
-%<a href="matlab: docsearch('fsrbmdr')">Link to the help function</a>
+%<a href="matlab: docsearch('FSRBmdr')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -497,10 +497,9 @@ r=[seq zeros(n,1)];
 % the fwd search. The first column of BBayes contains the fwd search index
 BBayes=[(init:n)' NaN(n-init+1,p)];     %initial value of beta coefficients is set to NaN
 
-% initialize the space on the SE array with NaNs
 % S2 = (n-init1+1) x 3 matrix which will contain:
 % 1st col = fwd search index
-% 2nd col = S2= \sum e_i^2 / (m-p)
+% 2nd col = S2= posterior estimate of sigma2
 % 3rd col = R^2
 S2Bayes=[(init:n)' NaN(n-init+1,2)];        %initial value of S2 (R2) is set to NaN
 

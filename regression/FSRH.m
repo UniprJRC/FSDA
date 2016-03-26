@@ -2,7 +2,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %FSRH gives an automatic outlier detection procedure in heteroskedastic linear regression
 %
 %
-%<a href="matlab: docsearch('fsrh')">Link to the help function</a>
+%<a href="matlab: docsearch('FSRH')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -262,6 +262,12 @@ function [out]=FSRH(y,X,Z,varargin)
 %  The output consists of a structure 'out' containing the following fields:
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
+% out.beta   =  p-by-1 vector containing the estimated regression
+%               parameters (in step n-k).
+% out.hetero =  r-by-1 vector containing the estimated parameters of the
+%               scedastic parameters (in step n-k)
+% out.scale  = scalar containing the estimate of the scale
+%                       (sigma). 
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
@@ -286,7 +292,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
 %
-% See also: FSReda.m, LXS.m
+% See also: FSRHeda.m, LXS.m
 %
 % References:
 %
@@ -298,7 +304,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %
 %
 %
-%<a href="matlab: docsearch('fsrh')">Link to the help page for this function</a>
+%<a href="matlab: docsearch('FSRH')">Link to the help page for this function</a>
 %
 % Last modified 06-Feb-2015
 
@@ -454,7 +460,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,Bgls,~,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
+    [mdr,Un,bb,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2;
@@ -477,7 +483,7 @@ else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
     [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
     
-    if out.s0==0
+    if out.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
         % Just return the outliers found by LXS
         %out.ListOut=out.outliers;
@@ -565,15 +571,17 @@ INP.Un=Un;
 INP.bb=bb;
 INP.Z=Z;
 INP.Bcoeff=Bgls;
+INP.Hetero=Hetero;
+INP.S2=S2(:,1:2);
 %INP.beta0=beta0;
 
 [out]=FSRcore(INP,'H',options);
 
 out.mdr=mdr;
 out.Un=Un;
-out.Hetero=Hetero;
-out.S2=S2;
-out.WEI=WEI;
+% out.Hetero=Hetero;
+% out.S2=S2;
+% out.WEI=WEI;
 
 end
 
