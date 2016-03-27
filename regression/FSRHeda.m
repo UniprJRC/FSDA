@@ -274,6 +274,54 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %}
 
 %{
+    
+    % In this example, figure 3 of ART (see References) is created.
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
+    % Call procedure FSRH to automatically find the outliers
+    outtmp=FSRH(y,X,Z,'plots',0,'msg',0);
+    [out]=LXS(y,X,'nsamp',1000);
+    out=FSRHeda(y,X,Z,out.bs,'init',round(length(y)/2));
+    out.ListOut=outtmp.ListOut;
+
+    figure
+    subplot(2,2,1)
+    n=length(y);
+    seq=1:n;
+    sel=setdiff(seq,out.ListOut);
+    hold('on')
+    plot(X(sel),y(sel),'o')
+    plot(X(out.ListOut),y(out.ListOut),'rx','MarkerSize',12,'LineWidth',2)
+    fs=12;
+    ylabel('Value','FontSize',fs)
+    xlabel('Quantity','FontSize',fs)
+    set(gca,'FontSize',fs)
+    
+    subplot(2,2,2)
+    plot(out.Hetero(:,1),out.Hetero(:,3))
+    xlabel('Subset size m')
+    kk=20;
+    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
+    ylim([1.7 2.7])
+    title('\alpha')
+    subplot(2,2,3)
+    plot(out.Hetero(:,1),out.Hetero(:,2))
+    title('log(\theta)')
+    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
+    %ylim([5 7.5])
+    xlabel('Subset size m')
+    subplot(2,2,4)
+    plot(out.S2(:,1),out.S2(:,2))
+    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
+    ylim([0 300000])
+    title('\sigma^2')
+    xlabel('Subset size m')
+%}
+
+%{
     %Examples with real data: wool data.
     xx=load('wool.txt');
     X=xx(:,1:3);
@@ -665,7 +713,7 @@ else
                 
                 % gam=HET.GammaOLD;
                 % alp=HET.alphaOLD;
-                % omegahat=1+real(X(:,end).^alp)*gam;%equaz 6 di paper
+                % omegahat=1+real(X(:,end).^alp)*gam;
                 
                 omegahat = 1+exp(HET.Gamma(1,1))*exp(Z*HET.Gamma(2:end,1));
             else
@@ -732,10 +780,10 @@ else
                 Bgls(mm-init+1,2:p+1) = b';
                 
                 % Measure of asymmetry
-                sqb1 = (sum(resBSB.^3)/mm) / (sum(resBSB.^2)/mm)^(3/2);
+                sqb1 = real((sum(resBSB.^3)/mm) / (sum(resBSB.^2)/mm)^(3/2));
                 
                 % Measure of Kurtosis  
-                b2 = (sum(resBSB.^4)/mm) / (sum(resBSB.^2)/mm)^2;
+                b2 = real((sum(resBSB.^4)/mm) / (sum(resBSB.^2)/mm)^2);
                 
                 % Asymmetry test
                 nor(mm-init+1,2) = (mm/6)*  sqb1  ^2  ;

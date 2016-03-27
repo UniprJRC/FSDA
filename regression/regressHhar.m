@@ -212,7 +212,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('regresshhar')">Link to the help function</a>
+%<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

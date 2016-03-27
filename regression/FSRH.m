@@ -329,41 +329,9 @@ function [out]=FSRH(y,X,Z,varargin)
 %{
     % FSRH with optional arguments.
     % Specifying the search initialization and controlling the y scale in
-    % plot. In the example, also figure 3 of ART (see References) is created.
-    
+    % plot. 
     out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);
-    figure
-    subplot(2,2,1)
-    n=length(y);
-    seq=1:n;
-    sel=setdiff(seq,out.ListOut);
-    hold('on')
-    plot(X(sel),y(sel),'o')
-    plot(X(out.ListOut),y(out.ListOut),'rx','MarkerSize',12,'LineWidth',2)
-    fs=12;
-    ylabel('Value','FontSize',fs)
-    xlabel('Quantity','FontSize',fs)
-    set(gca,'FontSize',fs)
-    
-    subplot(2,2,2)
-    plot(out.Hetero(:,1),out.Hetero(:,2))
-    xlabel('Subset size m')
-    kk=20;
-    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
-    ylim([1.7 2.7])
-    title('\alpha')
-    subplot(2,2,3)
-    plot(out.Hetero(:,1),log(out.Hetero(:,3)))
-    title('log(\theta)')
-    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
-    %ylim([5 7.5])
-    xlabel('Subset size m')
-    subplot(2,2,4)
-    plot(out.S2(:,1),out.S2(:,2))
-    xlim([out.Hetero(1,1) out.Hetero(end,1)+kk])
-    ylim([0 300000])
-    title('\sigma^2')
-    xlabel('Subset size m')
+
 %}
 
 %{
@@ -501,7 +469,7 @@ else % initial subset is not supplied by the user
         [mdr,Un,bb,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,...
             'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'modeltype',modeltype,'gridsearch',gridsearch);
         
-        % If FSRmdr run without problems mdr has two columns. In the second
+        % If FSRmdr run without problems, mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
         % monitored in each step of the search
         
