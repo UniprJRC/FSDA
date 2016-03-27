@@ -24,7 +24,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations.
-%     Z :       Predictor variables in the scedastic equation. Matrix. 
+%     Z :       Predictor variables in the scedastic equation. Matrix.
 %               n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)
@@ -82,7 +82,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
 %                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
 %               \]
-%               Example - 'modeltype','har' 
+%               Example - 'modeltype','har'
 %               Data Types - string
 %  plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of Bayesian minimum deletion residual
@@ -131,7 +131,8 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               found in the previous step.
 %               Example - 'bsbmfullrank',0
 %               Data Types - double
-%   bsbsteps :  Save the units forming subsets in selected steps. Vector.
+%   bsbsteps :  Save the units forming subsets (and weights vector) in
+%               selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
 %               0 we store the units forming subset in all steps. The
@@ -208,11 +209,16 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %                  1st col = fwd search index;
 %                  2nd col = estimate of first coeff in the scedastic
 %                  equation;
-%                  ... 
+%                  ...
 %                  (r+1)-th col = estimate of last coeff in the scedastic equation.
-%   WEI:     Weights. Matrix. 
-%            n x (n-init1+1) matrix containing estimates of the weights
-%            during the FS.
+%   WEI:     Weights. Matrix.
+%               n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input
+%               option bsbsteps) which contains information about the
+%               weights assigned to each unit to make the regression equation
+%               skedastic.
+%            More precisely, if $var (\epsilon)= \sigma^2
+%            Omega=diag(omegahat)$ the weights which are stored are
+%            $omegahat.^(-0.5)$;
 %
 % See also:   FSRmdr
 %
@@ -325,8 +331,9 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
     X=X./max(X);
     Z=log(X);
     [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
+    plot(S2(:,1),WEI')
+    title('Monitoring of the weights')
 %}
-
 
 
 %% Input parameters checking
@@ -481,6 +488,7 @@ bsbsteps=options.bsbsteps;
 % Matrix BB will contain the units forming subset in each step (or in
 % selected steps) of the forward search. The first column contains
 % information about units forming subset at step init1.
+% WEI= matrix which contains in each column the estimate of the weights
 if isempty(bsbsteps)
     % Default for vector bsbsteps which indicates for which steps of the fwd
     % search units forming subset have to be saved
@@ -490,9 +498,12 @@ if isempty(bsbsteps)
         bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)];
     end
     BB = NaN(n,length(bsbsteps),'single');
+    WEI = NaN(n,length(bsbsteps));
+    
 elseif bsbsteps==0
     bsbsteps=init:n;
     BB = NaN(n,n-init+1,'single');
+    WEI = NaN(n,n-init+1);
 else
     if min(bsbsteps)<init
         warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
@@ -500,7 +511,11 @@ else
     bsbsteps=bsbsteps(bsbsteps>=init);
     
     BB = NaN(n,length(bsbsteps),'single');
+    WEI = NaN(n,length(bsbsteps));
 end
+
+
+
 
 % ij = index which is linked with the columns of matrix BB. During the
 % search every time a subset is stored inside matrix BB ij icreases by one
@@ -514,8 +529,6 @@ ij=1;
 % (r+1) col = estimate of last coeff of scedastic equation
 Hetero=[(init:n)' NaN(n-init+1,size(Z,2)+1)];
 
-% Matrix which contains in each column the estimate of the weights
-WEI = NaN(n,n-init+1);
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just
 %  included.
@@ -583,10 +596,6 @@ else
             % at step m
             % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
             Xw = bsxfun(@times, X, sqweights);
-            if (mm>=init);
-                % Store weights
-                WEI(:,mm-init+1)=sqweights;
-            end
             yw = y .* sqweights;
             Xb=Xw(bsb,:);
             yb=yw(bsb);
@@ -610,9 +619,14 @@ else
         
         if (mm>=init);
             
-            % Store units belonging to the subset
+            % Store units belonging to the subset and weights
             if intersect(mm,bsbsteps)==mm
+                % Store units belonging to subset
                 BB(bsb,ij)=bsb;
+                
+                % Store weights
+                WEI(:,ij)=sqweights;
+                
                 ij=ij+1;
             end
             

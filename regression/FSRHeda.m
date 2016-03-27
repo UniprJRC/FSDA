@@ -61,7 +61,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       tstat = 'trad' implies  monitoring of traditional t
 %                       statistics (out.Tgls). In this case the estimate of \sigma^2 at step m
 %                       is based on s^2_m (notice that s^2_m<<\sigma^2 when m/n is
-%                       small) tstat = 'resc' (default) implies monitoring of
+%                       small) tstat = 'scal' (default) implies monitoring of
 %                       rescaled t statistics In this scale the estimate of
 %                       \sigma^2 at step m is based on s^_m / var_truncnorm(m/n)
 %                       where var_truncnorm(m/n) is the variance of the truncated
@@ -153,7 +153,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
 %               it corresponds to a negative residual.
-%   out.msr=        n-init+1 x 3 = matrix which contains the monitoring of
+%   out.msr=    n-init+1 x 3 = matrix which contains the monitoring of
 %               maximum studentized residual or m-th ordered residual: 
 %               1st col = fwd search index (from init to n); 
 %               2nd col = maximum studentized residual; 
@@ -164,16 +164,16 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               2nd col = Asymmetry test; 
 %               3rd col = Kurtosis test; 
 %               4th col = Normality test.
-%  out.Bgls=        (n-init+1) x (p+1) matrix containing the monitoring of
+%  out.Bgls=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
-%    out.S2=       (n-init+1) x 4 matrix containing the monitoring of S2 or R2
+%    out.S2=    (n-init+1) x 4 matrix containing the monitoring of S2 or R2
 %               in each step of the forward search: 
 %               1st col = fwd search index (from init to n); 
 %               2nd col = monitoring of S2; 
 %               3rd col = monitoring of R2; 
 %               4th col = monitoring of rescaled S2. In this case the
-%               estimated of $\sigma^2$ at step m is divided by the
+%               estimate of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
 %               unbiased).
 %   out.Coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
@@ -229,6 +229,12 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                   equation.
 %out.WEI =   Matrix which contains in each column the estimate of the
 %                   weights.
+%               n x (n-init+1) matrix which contains information about the
+%               weights assigned to each unit to make the regression equation
+%               skedastic.
+%            More precisely, if $var (\epsilon)= \sigma^2
+%            Omega=diag(omegahat)$ the weights which are stored are
+%            $omegahat.^(-0.5)$;
 %     out.y=     A vector with n elements that contains the response
 %               variable which has been used.
 %     out.X=    Data matrix of explanatory variables
@@ -270,7 +276,20 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     % FSRHeda with optional argument.
     % Example of use of function FSRHeda using a random start and traditional
     % t-stat monitoring.
-    out=FSRHeda(y,X,log(log(X)),0,'tstat','trad');
+    out=FSRHeda(y,X,Z,0,'tstat','trad','init',800);
+    subplot(2,2,1)
+    plot(out.Tgls(:,1),out.Tgls(:,2))
+    title('Intercept')
+    subplot(2,2,2)
+    plot(out.Tgls(:,1),out.Tgls(:,3))
+    title('Slope')
+    out1=FSRHeda(y,X,Z,0,'tstat','resc','init',800);
+    subplot(2,2,3)
+    plot(out1.Tgls(:,1),out1.Tgls(:,2))
+    title('t stat for Intercept (using unbiased estiamte of sigma)')
+    subplot(2,2,4)
+    plot(out1.Tgls(:,1),out1.Tgls(:,3))
+    title('t stat for slope (using unbiased estiamte of sigma)')
 %}
 
 %{
@@ -327,7 +346,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     X=xx(:,1:3);
     y=log(xx(:,4));
     [out]=LXS(y,X,'nsamp',0);
-    [out]=FSRHeda(y,X,log(X),out.bs,'tstat','scal');
+    [out]=FSRHeda(y,X,X,out.bs,'tstat','scal');
 %}
 
 %{
@@ -385,12 +404,10 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     n=size(hprice,1);
     y=hprice(:,1);
     X=hprice(:,2:5);
-    out=FSR(y,X,'plots',0,'msg',0);
-    dout=n-length(out.ListOut);
     % init = point to start monitoring diagnostics along the FS
-    init=20;
+    init=450;
     [outLXS]=LXS(y,X,'nsamp',10000);
-    outEDA=FSRHeda(y,X,log(X),outLXS.bs,'conflev',[0.95 0.99],'init',init);
+    outEDA=FSRHeda(y,X,log(X),outLXS.bs,'conflev',[0.95 0.99],'init',init,'modeltype','har');
     p=size(X,2)+1;
     % Set font size, line width and line style
     figure;
@@ -421,10 +438,6 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
         % Set xlim
         xlim([xlimL xlimU]);
 
-        % Add vertical line in correspondence of the step prior to the
-        % entry of the first outlier
-        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
-
         ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
         set(gca,'FontSize',FontSize);
         if j>(nr-1)*nc
@@ -451,17 +464,12 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     % Set xlim
     xlim([xlimL xlimU]);
 
-    % Add vertical line in correspondence of the step prior to the
-    % entry of the first outlier
-    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
     xlabel('Subset size m','FontSize',FontSize);
 
     % Add multiple title
     suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
         ']'],'t');
-    disp(['The vertical lines are located in the' ...
-        ' step prior to the inclusion of the first outlier'])
 %}
 
 %% Input parameters checking
@@ -539,6 +547,8 @@ elseif init >= n;
     disp(mess);
     init = n-1;
 end
+
+intercept=options.intercept;
 
 %% Declare matrices to store quantities
 
@@ -656,7 +666,7 @@ sigma2INT = [(init:n)' zeros(n-init+1,2*lconflev)];
 % heteroskedasticity
 if size(Z,1) ~= n
     % Check if interecept was true
-    if options.intercept == 1
+    if intercept == 1
         Z = X(:,Z+1);
     else
         Z = X(:,Z);
@@ -701,13 +711,13 @@ else
            if art == 1
                 if  mm > 5  && gridsearch ~=1
                     % Use scoring
-                    HET = regressHart(yb,Xb(:,2:end),Zb,'intercept',options.intercept);
+                    HET = regressHart(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
                 else
                     if size(Zb,2) == 1
                         % Use grid search algorithm if Z has just one column
-                        HET = regressHart_grid(yb,Xb(:,2:end),exp(Zb),'intercept',options.intercept);
+                        HET = regressHart_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',1);
                     else
-                        HET = regressHart(yb,Xb(:,2:end),Zb,'intercept',options.intercept);
+                        HET = regressHart(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
                     end
                 end
                 
@@ -719,13 +729,13 @@ else
             else
                 if  mm > 5  && gridsearch ~= 1
                     % Use scoring
-                    HET = regressHhar(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                    HET = regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
                 else
                     if size(Zb,2) == 1
                         % Use grid search algorithm if Z has just one column
-                        HET = regressHhar_grid(yb,Xb(:,end),exp(Zb),'intercept',intercept);
+                        HET = regressHhar_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',1);
                     else
-                        HET = regressHhar(yb,Xb(:,2:end),Zb,'intercept',intercept);
+                        HET = regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
                     end
                 end
                 omegahat = exp(Z*HET.Gamma(2:end,1));
@@ -951,11 +961,12 @@ else
         if mm >= init;
             if NoRankProblem
                 if strcmp(options.tstat,'scal')
-                    
                  Tgls(mm-init+1,2:end) = sqrt(corr)*Bgls(mm-init+1,2:end)./sqrt(Sb*dmmX');
                     
                 elseif strcmp(options.tstat,'trad')
                     Tgls(mm-init+1,2:end) = Bgls(mm-init+1,2:end)./sqrt(Sb*dmmX');
+                else
+                    error('just options scal and trad are valid')
                 end
                 
                 % Compute highest posterior density interval for each value of

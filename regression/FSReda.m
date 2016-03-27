@@ -49,7 +49,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               tstat = 'trad' implies  monitoring of traditional t
 %               statistics (out.Tols). In this case the estimate of $\sigma^2$ at step m
 %               is based on $s^2_m$ (notice that $s^2_m<<\sigma^2$ when m/n is
-%               small) tstat = 'resc' (default) implies monitoring of
+%               small) tstat = 'scal' (default) implies monitoring of
 %               rescaled t statistics In this scale the estimate of
 %               $\sigma^2$ at step m is based on $s^2_m / var_{truncnorm(m/n)}$
 %               where $var_{truncnorm(m/n)}$ is the variance of the truncated
