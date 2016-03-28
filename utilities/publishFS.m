@@ -316,7 +316,7 @@ function out=publishFS(file,varargin)
 %         will appear in the second row. The third sentence is the full description
 %         of the output argument. For example, suppose that the output of a
 %         procedure contains the objects mdr and Un, the accepted format
-%         is as follows.    
+%         is as follows.
 %               Output:
 %
 %                      mdr:         Minimum deletion residual. Matrix.  n -init x 2
@@ -2054,7 +2054,7 @@ if nargout>0
                 % In this case there are also optional arguments
                 endpoint=regexp(fstringsel,'Optional [Oo]utput:');
                 if isempty(endpoint)
-                     error('FSDA:missOuts','varagout is present but input .m file does not contain ''Optional Output:'' string')
+                    error('FSDA:missOuts','varagout is present but input .m file does not contain ''Optional Output:'' string')
                 end
             end
             
@@ -2979,18 +2979,84 @@ if evalCode==true
     else
         laste='';
     end
+else
+    laste='';
 end
 
 out.laste=laste;
 
-%% WRITE string outstring into the final HTML file
+%% WRITE string outstring into final HTML file
 fprintf(file1ID,'%s',outstring);
 fclose('all');
 
+% Check that (if varagin is present all optional arguments contained in
+% "options=struct('................');" are present in the column of
+% out.OptArgs or inside the first column of listOptArgs
 
-
+if ~isempty(OptArgsVarargin)
+    posoptionsini=regexp(fstring,'options\s*=\s*struct(');
+    posoptionsini=posoptionsini(1);
+    posoptionsfin=regexp(fstring,');');
+    posoptionsfin=posoptionsfin(posoptionsfin>posoptionsini);
+    posoptionsfin=posoptionsfin(1);
+    NamePairs=fstring(posoptionsini:posoptionsfin-1);
+    findFirstRoundBracket=regexp(NamePairs,'(');
+    NamePairs=NamePairs(findFirstRoundBracket+1:end);
+    
+    % Remove (if present) "..." symbols, carriage returns and white spaces
+    % from, string NamePairs
+    posThreeFullStops=regexp(NamePairs,'\.');
+    NamePairs(posThreeFullStops)=[];
+    NamePairs=strtrim(NamePairs);
+    posCR=regexp(NamePairs,'\n');
+    NamePairs(posCR)=[];
+    posLF=regexp(NamePairs,'\r');
+    NamePairs(posLF)=[];
+    posWS=regexp(NamePairs,'\s');
+    NamePairs(posWS)=[];
+    
+    
+    % count number of commas (it must be an odd number). Check that this is the
+    % case
+    poscommas=regexp(NamePairs,',');
+    if length(poscommas)/2==floor(length(poscommas)/2)
+        error('Name pairs must be in pairs: something wrong')
+    else
+        %
+        % poscommas=[1 poscommas];
+        %NamePairs=[
+        numberOptArgs=(length(poscommas)+1)/2;
+        OptArgsUsed=cell(numberOptArgs,1);
+        ij=1;
+        for j=1:2:length(poscommas)
+            if j>1
+                OptArgsUsed{ij}=NamePairs(poscommas(j-1)+2:poscommas(j)-2);
+            else
+                % regexp(NamePairs,'\');
+                OptArgsUsed{ij}=NamePairs(2:poscommas(j)-2);
+            end
+            ij=ij+1;
+        end
+    end
+    % Now compare OptArgsUsed with listOptArgs
+    OptArgsDescribed=sort(listOptArgs(:,1));
+    OptArgsUsed=sort(OptArgsUsed);
+    if ~isequal(OptArgsDescribed,OptArgsUsed)
+        warning('Options described are different from Option effectively used')
+        lused=length(OptArgsUsed);
+        ldesc=length(OptArgsDescribed);
+        if ldesc<lused
+            OptArgsDescribed=[OptArgsDescribed; cell(lused-ldesc,1)];
+            disp([OptArgsDescribed OptArgsUsed])
+        elseif ldesc>lused
+            OptArgsUsed=[OptArgsUsed; cell(ldesc-lused,1)];
+        end
+        disp('Options described --  Options used')
+        disp([OptArgsDescribed OptArgsUsed])
+    end
+    
 end
-
+end
 % This inner function  has the purpose of adding symbols </p> <p> every
 % time a full stop, colon or semicolo symbol followed by a series of space
 % and then a carriage return.
@@ -3017,8 +3083,8 @@ else
 end
 % put a hypertext link to all words which end with .m
 [IniRefFilem,FinRefFilem]=regexp(descrlongHTML,'\w*\.m[\s\.,]');
-        % Make sure that the .m string is not standalone, that is make sure
-        % that the .m string is preceeded by some characters.
+% Make sure that the .m string is not standalone, that is make sure
+% that the .m string is preceeded by some characters.
 boo=(FinRefFilem-IniRefFilem)>2;
 IniRefFilem=IniRefFilem(boo);
 FinRefFilem=FinRefFilem(boo);
@@ -3030,24 +3096,24 @@ if ~isempty(IniRefFilem)
         
         namewithoutHTML=descrlongHTML(IniRefFilem(i):FinRefFilem(i)-2);
         namewithHTML=[namewithoutHTML '.html'];
-            if i==1 && length(IniRefFilem)==1
-                descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
-                    '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
-                    descrlongHTML(FinRefFilem(i)+1:end)];
-            elseif i==1
-                descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
-                    '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
-                
-            elseif i==length(IniRefFilem)
-                descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
-                    '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
-                    descrlongHTML(FinRefFilem(i)+1:end)];
-            else
-                descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
-                    '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
-            end
-
-            %
+        if i==1 && length(IniRefFilem)==1
+            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
+                '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
+                descrlongHTML(FinRefFilem(i)+1:end)];
+        elseif i==1
+            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
+                '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
+            
+        elseif i==length(IniRefFilem)
+            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
+                '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
+                descrlongHTML(FinRefFilem(i)+1:end)];
+        else
+            descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(FinRefFilem(i-1)+1:IniRefFilem(i)-1) ...
+                '<a href="' namewithHTML '">' namewithoutHTML '</a>'];
+        end
+        
+        %
     end
 else
     descrlongHTMLwithref=descrlongHTML;
