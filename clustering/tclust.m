@@ -70,17 +70,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               =1.
 %                 Example - 'nsamp',1000
 %                 Data Types - double
-%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
-%               subsample  Default is 15.
+%    refsteps : Number of refining iterations. Scalar. Number of refining
+%               iterations in each subsample  Default is 15.
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'refsteps',10
-%                 Data Types - single | double
-%     reftol  : scalar. Default value of tolerance for the refining steps.
-%               The default value is 1e-14;
-%                 Example - 'reftol',1e-05
-%                 Data Types - single | double
-%    refsteps : number of refining iterations in each
-%               subsample. Scalar. Default is 15.
 %                 Example - 'refsteps',10
 %                 Data Types - single | double
 %     reftol  : tolerance for the refining steps. Scalar.

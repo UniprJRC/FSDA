@@ -1,36 +1,46 @@
 function Bbound = FSRbonfbound(n,p,varargin)
 %FSRbonfbound computes Bonferroni bounds for each step of the search (in linear regression)
 %
-%<a href="matlab: docsearchFS('fsrbonfbound')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRbonfbound')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    n : scalar, number of obseravtions
-%    p : number of explanatory variables (including the intercept if present)
+%    n : number of observations. Scalar. Number of observations on which
+%       the envelopes are based.
+%    p : number of explanatory variables (including the intercept if
+%    present). Scalar. Number of expl. variables on which
+%       the envelopes are based.
 %
 %  Optional input arguments:
 %
-%       init:   scalar which specifies the initial subset size to monitor
-%               minimum deletion residual, if init is not specified it will
-%               be set equal to floor(0.5*(n+p+1))+1
-%  prob:         1 x k vector containing quantiles for which envelopes have
+%        init :      Search initialization. Scalar.
+%                      It specifies the point where to initialize the search
+%                       and start monitoring minimum deletion residual. if init is not
+%                       specified it will be set equal to :
+%                       p+1, if the sample size is smaller than 40;
+%                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                       Example - 'init',100 starts monitoring from step m=100
+%                       Data Types - double
+%  prob:    quantiles for which envelopes have
+%               to be computed. Vector.
+%               1 x k vector containing quantiles for which envelopes have
 %               to be computed. The default is to produce 1%, 50% and 99%
 %               envelopes.
+%               Example - 'prob',[0.01 0.99] 
+%               Data Types - double
 %
 %  Output:
 %
-%  Bbound:      matrix with n-m0+1 rows and length(prob)+1 columns
-%               1st col = fwd search index from m0 to n-1
-%               2nd col = bound for quantile prob[1]
-%               3rd col = bound for quantile prob[2]
-%               ...
-%               (k+1) col = bound for quantile prob[k]
+%  Bbound:      Bonferroni forward envelopes of mdr. Matrix.
+%               Matrix with n-m0+1 rows and length(prob)+1 columns:
+%               1st col = fwd search index from m0 to n-1,
+%               2nd col = bound for quantile prob[1],
+%               3rd col = bound for quantile prob[2],
+%               ...,
+%               (k+1) col = bound for quantile prob[k].
 %
-% Subfunctions: 
 %
-% Other function dependencies: none.
-%
-% See also FSRenvmdr
+% See also: FSRenvmdr
 %
 % References:
 %

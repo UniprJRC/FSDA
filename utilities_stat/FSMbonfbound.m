@@ -6,35 +6,43 @@ function Bbound = FSMbonfbound(n,p,varargin)
 %
 %  Required input arguments:
 %
-%    n : scalar, number of observations
-%    p : number of variables
+%    n : number of observations. Scalar. Number of observations on which
+%       the envelopes are based.
+%               Data Types - single | double
+%    p : number of variables. Scalar. Number of variables on which
+%       the envelopes are based.
+%               Data Types - single | double
 %
 %  Optional input arguments:
 %
-%       init:   scalar which specifies the initial subset size to compute
-%               Bonferroni bound. If init is not specified it
-%               will be set equal to floor(0.5*(n+p+1))+1
-%  prob:        1 x k vector containing quantiles for which envelopes have
-%               to be computed. The default is to produce 1%, 50% and 99%
-%               envelopes.
-% distrib:      the statistical distribution used to compute the
+% init :       Point where to start monitoring required diagnostics. Scalar. 
+%              Note that if bsb is supplied, init>=length(bsb). If init is not
+%              specified it will be set equal to floor(0.5*(n+p+1))+1.
+%                 Example - 'init',50 
+%                 Data Types - double
+% prob:        quantiles for which envelopes have
+%               to be computed. Vector. Vector containing 1 x k elements .
+%               The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.
+%                 Example - 'prob',[0.05 0.95] 
+%                 Data Types - double
+% distrib:      Reference distribution to use. Character.
+%               The statistical distribution used to compute the
 %               approximated Bonferroni bounds. Distributions implemented
 %               are 'chi2' and 'F' (default).
+%                 Example - 'distrib','chi2'
+%                 Data Types - char
 %
 %  Output:
 %
-%  MBenv:       matrix with n-m0+1 rows and length(prob)+1 columns
-%               1st col = fwd search index from m0 to n-1
-%               2nd col = bound for quantile prob[1]
-%               3rd col = bound for quantile prob[2]
-%               ...
-%               (k+1) col = bound for quantile prob[k]
+%  Bbound:      Bonferroni forward envelopes of mmd. Matrix.
+%               Matrix with n-m0+1 rows and length(prob)+1 columns:
+%               1st col = fwd search index from m0 to n-1,
+%               2nd col = bound for quantile prob[1],
+%               3rd col = bound for quantile prob[2],
+%               ...,
+%               (k+1) col = bound for quantile prob[k].
 %
-% Subfunctions: 
-%
-% Other function dependencies: none.
-%
-% See also FSMenvmdr and FSRbonfbound
+% See also: FSMenvmmd, FSRbonfbound
 %
 % References:
 %

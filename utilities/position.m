@@ -9,8 +9,6 @@ function position(plmain)
 %
 % Required input arguments:
 %
-% Optional input arguments:
-%
 %   plmain:     Figure handle. Scalar. The handle of a 'main' figure to be
 %               positioned at the top-left side of the screen, which is
 %               supposed to be the position attracting first the attention
@@ -21,6 +19,8 @@ function position(plmain)
 %                -  If plmain is set to zero (0), then function cascade is
 %                   applied.
 %
+%
+% Optional input arguments:
 %
 %  Output:
 %
@@ -34,6 +34,7 @@ function position(plmain)
 %<a href="matlab: docsearchFS('position')">Link to the help function</a>
 %
 % Last modified 06-Feb-2015
+%
 % Examples:
 
 %{

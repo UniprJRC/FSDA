@@ -1,29 +1,55 @@
 function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
-%ncx2mixtcdf cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ \sigma * N(0,1))
+%ncx2mixtcdf cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))
 %
 %<a href="matlab: docsearchFS('ncx2mixtcdf')">Link to the help function</a>
 %
+%     given random variable $Q$ defined as
+%
+%     \[  
+%     Q = \lambda_1 \chi^2_1 + \lambda_2 \chi_2 + ... + \lambda_k \chi_k +\sigma X_0
+%     \]
+%
+%     where $\chi^2_1, ..., \chi^2_k$ are $k$ non central chi squared random variables,
+%     with non centrality parameters $\delta_1, ..., \delta_k$ and degrees of
+%     freedom $df_1, ..., df_k$.
+%     and $X_0$ is a standard normal random variable, the purpose of this
+%     routine is to compute $F_Q(x | df, delta) = P(Q < x)$ , that is the
+%     cdf of $Q$ evaluated at $x$.
+%     --------------------------------
+%
 % Required input arguments:
 %
-% c   :         scalar, value at which the cdf must be evaluated
-% n   :         vector of length k containing the degrees of freedom of the
+% c   :         value for which cdf has to be computed. Scalar. Value at
+%               which the cdf must be evaluated
+% n   :         degrees of freedom. Vector. Vector of length k containing
+%               the degrees of freedom of the
 %               k non central chi2 distributions
-% lb  :         vector of length k containing the coefficients of the
+% lb  :         Coefficients of linear combination. Vector.
+%               Vector of length k containing the coefficients of the
 %               linear combinations of the k non central chi2 distributions
-% nc  :         vector of length k containing the k non centrality parameters
+% nc  :         Non centrality parameters. Vector. Vector of length k
+%               containing the k non centrality parameters
 %               of the k non central chi2 distributions
 %
 %
 % Optional input arguments:
 %
-% sigma :       coefficient associated with standard deviation of the
+% sigma :       standard deviation of N(0,1). Scalar. Coefficient
+%               associated with standard deviation of the
 %               standard normal distribution which can be added to the linear
 %               combination of non central chi2 distributions
 %               The default value of sigma is 0
-%   lim :       scalar which defines maximum number of integration terms.
+%               Example - 'sigma',1
+%               Data Types - double
+%   lim :       Number of intergration terms. Scalar. Scalar which defines maximum number of integration terms.
 %               The default value of lim is 10000
-%   tol :       scalar which controls the tolerance. The default value of
+%               Example - 'lim',100000
+%               Data Types - double
+%   tol :       Tolerance. Scalar.
+%               Scalar which controls the tolerance. The default value of
 %               tolerance is 1e-09
+%               Example - 'tol',1e-10
+%               Data Types - double
 %
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
@@ -33,7 +59,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %
 % Output:
 %
-%   p:          scalar. p=F_Q(x | df, delta, sigma) is the value of the cdf of the mixture
+%   qfval:      Value of cdf. Scalar. $qfval=F_Q(x | df, delta, sigma)$ is the value of the cdf of the mixture
 %               evaluated at x
 %
 %  Optional Output:
@@ -55,17 +81,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %                   ifault=4 unable to locate integration parameters
 %
 %
-%     r.v. Q is defined as
 %
-%     Q = \lambda_1 X_1 + \lambda_2 X_2 + ... + \lambda_k X_k +\sigma X_0
-%
-%     where X_1, ..., X_k are k non central chi squared random variables,
-%     with non centrality parameters delta_1, ..., delta_k and degrees of
-%     freedom df_1, ..., df_k
-%     and X_0 is a standard normal random variable, the purpose of this
-%     routine is to compute F_Q(x | df, delta) = P(Q < x) , that is the cdf of Q
-%     evaluated at x
-
 % See also FSMenvmmd.m, FSM.m
 %
 % References:
@@ -73,7 +89,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %   Davies (1973), Numerical inversion of a characteristic function, vol.
 %   60, Biometrika, pp. 415-417
 %
-%   Davies (1980), The distribution of a linear combination of \Chi^2
+%   Davies (1980), The distribution of a linear combination of Chi^2
 %   Random variables, Applied Statistics vol. pp. 323-333
 %
 %
@@ -90,6 +106,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 
 
 %{
+    % cdf of two chi squared rv.
     % Evaluate the cdf of the sum of two chi2 r.v. with degrees of freedom
     % 5 and 4 and coefficients of the linear combination 2 and 3 and non
     % centrality parameters 1 and 6
@@ -101,6 +118,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %}
 
 %{
+    % cdf of the sum of two non central chi2.
     % Evaluate the cdf of the sum of two chi2 r.v. with degrees of freedom
     % 5 and 4 and coefficients of the linear combination 2 and 3 and non
     % centrality parameters 1 and 6. Evaluate the cdf in a series of values
@@ -122,6 +140,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %}
 
 %{
+    % Test tolerance.
     % Example which tests the results using different tolerances and
     % a different number of integration terms
     df=[1;1];

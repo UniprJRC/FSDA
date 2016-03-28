@@ -104,7 +104,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       formulation due to Harvey is used as follows
 %                       \[
 %                       \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
-%                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
+%                           \gamma_{r} Z(i,r)) =\sigma^2 \exp(\gamma_1
 %                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
 %                       \]
 %                       Example - 'modeltype','har' 
@@ -243,7 +243,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %  out.class =  string FSRHeda.
 %
 %
-% See also FSRH.m, FSRHmdr.m, FSReda
+% See also FSRH.m, FSRHmdr.m, FSReda.m
 %
 % References:
 %
@@ -279,17 +279,17 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     out=FSRHeda(y,X,Z,0,'tstat','trad','init',800);
     subplot(2,2,1)
     plot(out.Tgls(:,1),out.Tgls(:,2))
-    title('Intercept')
+    title('t stat for Intercept (traditional)')
     subplot(2,2,2)
     plot(out.Tgls(:,1),out.Tgls(:,3))
-    title('Slope')
-    out1=FSRHeda(y,X,Z,0,'tstat','resc','init',800);
+    title('t stat for slope (traditional)')
+    out1=FSRHeda(y,X,Z,0,'tstat','scal','init',800);
     subplot(2,2,3)
     plot(out1.Tgls(:,1),out1.Tgls(:,2))
-    title('t stat for Intercept (using unbiased estiamte of sigma)')
+    title('t stat for Intercept (using unbiased estimate of sigma)')
     subplot(2,2,4)
     plot(out1.Tgls(:,1),out1.Tgls(:,3))
-    title('t stat for slope (using unbiased estiamte of sigma)')
+    title('t stat for slope (using unbiased estimate of sigma)')
 %}
 
 %{
