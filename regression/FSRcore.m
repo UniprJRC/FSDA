@@ -283,7 +283,7 @@ end
 %% Part 1. Signal detection and validation
 nmdr=size(mdr,1);
 if nmdr<4  && isempty(bonflev)
-    error('FSDA:FSRcore:TooSmallRationp','Ratio n/p too small; modify init (i.e. decrease initial subset size)')
+    error('FSDA:FSRcore:TooSmallRationp','Ratio n/p too small; modify init (i.e. decrease initial subset size) or use option bonflev (i.e. ''bonflev'', 0.99)')
 end
 signal=0;
 sto=0;
