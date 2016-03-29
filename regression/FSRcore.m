@@ -1098,7 +1098,7 @@ if signal==1 || signal==2;
     end
 else
     if msg
-        disp('Sample seems homgeneous, no outlier has been found');
+        disp('Sample seems homogeneous, no outlier has been found');
     end
     ndecl=0;
 end
