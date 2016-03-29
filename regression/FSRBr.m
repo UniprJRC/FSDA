@@ -4,7 +4,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %
 %<a href="matlab: docsearchFS('FSRBr')">Link to the help function</a>
 %
-%   FSRBr uses the units not declared by outliers by  FSRB to produce a robust fit.
+%   FSRBr uses the units not declared as outliers by  FSRB to produce a robust fit.
 %   The units whose residuals exceeds the threshold determined by option
 %   alpha are declared as outliers. Moreover, it is possible in option
 %   R2th to modify the estimate of sigma2 which is used to declare
