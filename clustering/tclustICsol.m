@@ -16,19 +16,19 @@ function out  = tclustICsol(IC,varargin)
 %
 %           IC : Information criterion to use. Structure. It contains
 %                the following fields.
-%                IC.CLACLA = matrix of size length(kk)-times length(cc)
+%                IC.CLACLA = matrix of size length(kk)-by-length(cc)
 %                   containinig the values of the penalized
 %                   classification likelihood (CLA).
 %                   This field is linked with out.IDXCLA.
-%                IC.IDXCLA = cell of size length(kk)-times length(cc).
+%                IC.IDXCLA = cell of size length(kk)-by-length(cc).
 %                   Each element of the cell is a vector of length n
 %                   containinig the assignment of each unit using the
 %                   classification model.
 %                Remark: fields CLACLA and IDXCLA are linked together.
 %                   CLACLA and IDXCLA are compulsory just if optional input
 %                   argument 'whichIC' is 'CLACLA' or 'ALL'.
-%                IC.MIXMIX = matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
+%                IC.MIXMIX = matrix of size length(kk)-by-length(cc) 
+%                   containinig the value of the penalized
 %                   mixture likelihood (BIC). This field is linked with
 %                   out.IDXMIX.
 %                IC.MIXCLA = matrix of size length(kk)-times length(cc)
@@ -367,18 +367,20 @@ function [Bestsols,ARIbest]  = findBestSolutions(PENloglik,ARI,IDX,kk,cc,NumberO
 ARI=ARI';
 ARI(2:end,1)=1;
 Xcmod=PENloglik';
-seqcc=1:length(cc);
+lcc=length(cc);
+seqcc=1:lcc;
 seqkk=1:length(kk);
 Bestsols=cell(NumberOfBestSolutions,5);
 Bestsols{1,5}='true';
 endofloop=0;
 for z=1:NumberOfBestSolutions
-    [valmin,indmin]=min(Xcmod);
     
+    [valmin,indmin]=min(Xcmod,[],1);
+   
     % indminall identifies for which k there is the optimal solution
     [~,minBICk]=min(valmin);
-    
     minBICc=indmin(minBICk);
+    
     if msg==1
         disp(['Best solution number: ' num2str(z)])
         disp(['k=' num2str(kk(minBICk))])
