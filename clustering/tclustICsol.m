@@ -399,7 +399,7 @@ for z=1:NumberOfBestSolutions
         disp('Find for which values of c best solution extends to')
     end
     for m=1:1000
-        [valmin,indmin]=min(Xcmod);
+        [valmin,indmin]=min(Xcmod,[],1);
         if min(valmin)<Inf
             % indminall identifies for which k there is the optimal solution
             [~,minBICknew]=min(valmin);
