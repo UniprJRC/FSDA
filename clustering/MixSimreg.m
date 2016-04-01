@@ -980,11 +980,14 @@ out = Q;
                 % Apply the restrictions to matrix Lambda_vk
                 autovalues=restreigen(Lambda_vk,Pigen,restrfactor);
                 
+                Sgen=zeros(1,1,k);
+                Sinv=Sgen;
+                S05=Sgen;
                 for j=1:k
                     %disp(j)
-                    Sgen = autovalues';
-                    S05 = sqrt(Sgen);
-                    Sinv(:,:,j) = Sgen.^(-1);
+                    Sgen(1,1,j) = autovalues(j);
+                    S05(1,1,j) = sqrt(Sgen(1,1,j));
+                    Sinv(1,1,j) = Sgen(1,1,j)^(-1);
                     detS(j)=autovalues(j);
                     
                 end
