@@ -305,7 +305,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % that is find FGLS estimator (two step estimator).
     % Data are monthly credit card expenditure for 100 individuals.
     % Results in structure "out" coincide with estimates of row
-    % "\sigma^2*exp(z'*\alpha)" in table 11.2, page 231, 5th edition of
+    % "$\sigma^2_i=\sigma^2 \exp(z' \alpha)$" in table 11.2, page 231, 5th edition of
     % Greene (1987).
     
     load('TableF91_Greene');
