@@ -1245,7 +1245,7 @@ for i=1:nselected
             %   log_lh(i,j) is log (Pr(point i|component j) * Prob( component j))
             
             for j=1:k
-                log_lh(:,j)=  log(niini(j)/h)+logmvnpdfFS(Ytri,cini(j,:),sigmaini(:,:,j),Y0tmp(1:h,:),eyev,h,v);
+                log_lh(:,j)=  log(niini(j)/h)+logmvnpdfFS(Ytri,cini(j,:),sigmaini(:,:,j),Y0tmp(1:h,:),eyev,h,v,0);
             end
             
             % obj contains the value of the log likelihood for mixture models
