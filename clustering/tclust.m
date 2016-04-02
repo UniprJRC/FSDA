@@ -976,7 +976,7 @@ for i=1:nselected
         if equalweights
             % In this case we are (ideally) assuming equally sized groups
             for j=1:k
-                ll(:,j)= logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v);
+                ll(:,j)= logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0);
             end
         else
             
@@ -1367,11 +1367,11 @@ out.sigmaopt=sigmaopt;
 % f(x_i|\theta_j) is multivariate normal with theta_j =(mu_j, \Sigma_j)
 if equalweights
     for j=1:k
-        ll(:,j)= logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v);
+        ll(:,j)= logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
     end
 else
     for j=1:k
-        ll(:,j)= log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v);
+        ll(:,j)= log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
     end
 end
 
