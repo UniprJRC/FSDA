@@ -331,7 +331,11 @@ end
 
 % Store studentized residuals
 % and the associated p-values
-rstud=[sign(res).*sqrt(studres2) fcdf(studres2,1,dfe,'upper')];
+if verLessThan('matlab','8.3.0')
+    rstud=[sign(res).*sqrt(studres2) 1 - fcdf(studres2,1,dfe)];  
+else
+    rstud=[sign(res).*sqrt(studres2) fcdf(studres2,1,dfe,'upper')];
+end
 out.rstud=rstud;
 
 if nargout > 0 || plotsPI==1
