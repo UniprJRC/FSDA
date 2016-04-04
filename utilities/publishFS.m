@@ -119,6 +119,43 @@ function out=publishFS(file,varargin)
 %   out.laste   = object of class MException which provides information
 %                 about last error in executing the examples. If all
 %                 examples run without errors laste is an empty value;
+%out.InpArgsMisMatch = cell of size k-by-3 which in presence of name/pairs
+%                 optional arguments enables to understand which are the
+%                 optional arguments which are described but are not used
+%                 inside the file and vicevera. More precisely, the first
+%                 column contains the list of the options for which there
+%                 is a mismatch. The second column contains 1 if the option
+%                 was described. The third column contains 1 if the option
+%                 was effectively used. Of course, the sum of columns two
+%                 and three is always 1.
+%out.OutArgsStructMisMatch = cell of size r-by-3 which in presence of output 
+%                 arguments which are structures enables to highlight
+%                 the fields of the structures which are described but
+%                 are not used inside the file and vicevera. More precisely,
+%                 the first column contains the list of the fields for
+%                 which there is a mismatch. The second column contains 1 if
+%                 the field was described. The third column contains 1 is
+%                 the field was effectively used. Of course the sum of
+%                 columns two and three is always 1. For example if
+%                 OutArgsStructMisMatch is 
+%                   []    'Fields described'    'Fields used'
+%                   'out'                    []               []
+%                   'Y'      [               1]    [          0]
+%                it means that field Y of output strucure out has been
+%                described but has not been produced by the output of the
+%                .m file
+%                 It is important to remark that this output is
+%                 present only if option evalCode is 1 because publishFS
+%                 takes the output of the examples which are run to check
+%                 if the output structure contains all fields
+%                 which are described. If the output of the function is
+%                 called out, then publishFS tries to find if the examples
+%                 which were run have produced a structure which contains
+%                 the name out. Therefore, if an example produced a
+%                 structure named outMM or Myout then publishFS checks the
+%                 fields present in outMM or Myout to detect eventual
+%                 mismatches.
+%                 
 %
 %
 % More About:
@@ -2116,12 +2153,12 @@ if nargout>0
         % Check if the output is a structure. If this is the case
         checkifstructure=regexp(descrioutput,[outi '\.\w'],'once');
         
-        listOutArgs{i,4}=descrioutput;
+        
         
         if ~isempty(checkifstructure)
             
-            descrioutput=formatHTMLstructure(descrioutput,outi);
-            
+            [descrioutput,listStructureArgs]=formatHTMLstructure(descrioutput,outi);
+            listOutArgs{i,4}=listStructureArgs;
             % preamble='A structure containing the following fields:';
             preamble='Structure';
             
@@ -2426,6 +2463,7 @@ iniSeealso=sprintf(['<div class="ref_sect">\r'...
     '<p>\r']);
 
 % See also:'\:\s*\r
+
 iniref=regexp(fstring,'%\s*See also','once');
 fstring=fstring(iniref+1:end);
 iniref=regexp(fstring,'See also','once');
@@ -2989,6 +3027,7 @@ out.laste=laste;
 fprintf(file1ID,'%s',outstring);
 fclose('all');
 
+%% Check if all name pairs arguments are commented inside the HTML
 % Check that (if varagin is present all optional arguments contained in
 % "options=struct('................');" are present in the column of
 % out.OptArgs or inside the first column of listOptArgs
@@ -3022,9 +3061,7 @@ if ~isempty(OptArgsVarargin)
     if length(poscommas)/2==floor(length(poscommas)/2)
         error('Name pairs must be in pairs: something wrong')
     else
-        %
-        % poscommas=[1 poscommas];
-        %NamePairs=[
+        
         numberOptArgs=(length(poscommas)+1)/2;
         OptArgsUsed=cell(numberOptArgs,1);
         ij=1;
@@ -3038,24 +3075,87 @@ if ~isempty(OptArgsVarargin)
             ij=ij+1;
         end
     end
-    % Now compare OptArgsUsed with listOptArgs
-    OptArgsDescribed=sort(listOptArgs(:,1));
-    OptArgsUsed=sort(OptArgsUsed);
-    if ~isequal(OptArgsDescribed,OptArgsUsed)
-        warning('Options described are different from Option effectively used')
-        lused=length(OptArgsUsed);
-        ldesc=length(OptArgsDescribed);
-        if ldesc<lused
-            OptArgsDescribed=[OptArgsDescribed; cell(lused-ldesc,1)];
-            disp([OptArgsDescribed OptArgsUsed])
-        elseif ldesc>lused
-            OptArgsUsed=[OptArgsUsed; cell(ldesc-lused,1)];
-        end
-        disp('Options described --  Options used')
-        disp([OptArgsDescribed OptArgsUsed])
-    end
+    % Now compare listOptArgs (described options) with OptArgsUsed
+    % (effectively used options)
+    disp('Check if Name/Pairs optional input arguments are documented')
+    OptMisMatch=CompareDescribedUsed(listOptArgs(:,1),OptArgsUsed);
+    
+    out.InpArgsMisMatch=OptMisMatch;
+    
+    %     if ~isequal(OptArgsDescribed,OptArgsUsed)
+    %         warning('Options described are different from Option effectively used')
+    %         lused=length(OptArgsUsed);
+    %         ldesc=length(OptArgsDescribed);
+    %         if ldesc<lused
+    %             OptArgsDescribed=[OptArgsDescribed; cell(lused-ldesc,1)];
+    %         elseif ldesc>lused
+    %             OptArgsUsed=[OptArgsUsed; cell(ldesc-lused,1)];
+    %         end
+    %         disp('Options described --  Options used')
+    %         disp([OptArgsDescribed OptArgsUsed])
+    %     end
     
 end
+
+%% Check if all fields of output arguments which are struct are commented inside the HTML file
+% In other words, suppose that one of the output arguments is called out
+% and that the following fields have been commented
+% out.a, out.b and out.c
+% the code below checks that fields out.a out.b and out.c are effectively
+% used inside the code.
+if evalCode ==1
+    disp('Check if all fields of output arguments which are structure are documented')
+    OutArgsMisMatch=cell(100,3);
+    OutArgsMisMatch{1,2}='Fields described';
+    OutArgsMisMatch{1,3}='Fields used';
+    ik=1;
+    
+    for i=1:size(listOutArgs,1)
+        % If the fourth column of listOutArgs is a cell then we are dealing
+        % with a structure
+        if iscell(listOutArgs{i,4})
+            cellOut=listOutArgs{i,4};
+            OutputDescribed=cellOut(:,1);
+            listouti=listOutArgs{i,1};
+            
+            % Check if variable listouti exist in main workspace
+            ChkExistinWS=evalin('base', ['who(''' listouti ''')']);
+            % If it is empty check if there are variables in the main workspace whose name contains string listouti
+            if isempty(ChkExistinWS)
+                ChkExistinWS=evalin('base', ['who(''*' listouti '*'')']);
+                % If there is more than 1 instance in output just take the
+                % first one
+                if ~isempty(ChkExistinWS)
+                    NameToSearchinWS=ChkExistinWS{1,1};
+                else
+                    NameToSearchinWS=listouti;
+                end
+            else
+                NameToSearchinWS=listouti;
+            end
+            
+            try
+                evalin('base', NameToSearchinWS)
+                OutputProduced = fieldnames(evalin('base', NameToSearchinWS));
+            catch
+                warning(['In the examples which were executed output argument containing string ' listouti ' which is of class struct has not been found'])
+                OutputProduced='';
+            end
+            if ~isempty(OutputProduced)
+                disp(['Output argument' listouti])
+                OutiMisMatch=CompareDescribedUsed(OutputDescribed,OutputProduced);
+                if size(OutiMisMatch,1)>1
+                    OutArgsMisMatch{ik+1,1}=listouti;
+                    OutArgsMisMatch(ik+2:ik+size(OutiMisMatch,1),:)=OutiMisMatch(2:end,:);
+                    ik=ik+size(OutiMisMatch,1);
+                end
+            end
+        end
+    end
+    out.OutArgsStructMisMatch=OutArgsMisMatch(1:ik,:);
+else
+end
+
 end
 % This inner function  has the purpose of adding symbols </p> <p> every
 % time a full stop, colon or semicolo symbol followed by a series of space
@@ -3215,7 +3315,7 @@ end
 
 end
 
-function descrioutput=formatHTMLstructure(descriinput,StructureName)
+function [descrioutput,listStructureArgs]=formatHTMLstructure(descriinput,StructureName)
 iniTable=[sprintf(['<table border="2" cellpadding="4" cellspacing="0" class="body">\r'...
     '<colgroup>\r']) ...
     '<col width="50%"><col width="50%">'...
@@ -3399,6 +3499,35 @@ if ~isempty(newl)
     descrlongHTML=[descrlongHTML '<hr>'];
 else
     descrlongHTML=descrlong;
+end
+end
+
+function OptMisMatch=CompareDescribedUsed(OptArgsDescribed,OptArgsUsed)
+
+OptArgsDescribed=sort(OptArgsDescribed);
+OptArgsUsed=sort(OptArgsUsed);
+
+
+[~,ia,ib] = setxor(OptArgsDescribed,OptArgsUsed);
+lused=length(OptArgsUsed);
+ldesc=length(OptArgsDescribed);
+OptMisMatch=cell(length(ia)+length(ib)+1,3);
+OptMisMatch{1,2}='Options described';
+OptMisMatch{1,3}='Options used';
+ij=1;
+if ~isempty(ia)
+    disp('Options described but not used')
+    % OptMisMatch{ij+1:ij+length(ia),1}=OptArgsDescribed{ia};
+    OptMisMatch(ij+1:ij+length(ia),1)=OptArgsDescribed(ia);
+    OptMisMatch(ij+1:ij+length(ia),2:3)=num2cell([true(length(ia),1),false(length(ia),1)]);
+    ij=ij+length(ia);
+    disp(OptArgsDescribed(ia))
+end
+if ~isempty(ib)
+    disp('Options used but not described')
+    OptMisMatch(ij+1:ij+length(ib),1)=OptArgsUsed(ib);
+    OptMisMatch(ij+1:ij+length(ib),2:3)=num2cell([false(length(ib),1),true(length(ib),1)]);
+    disp(OptArgsUsed(ib))
 end
 end
 

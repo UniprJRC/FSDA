@@ -230,7 +230,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %}
 
 %{
-    % mve monitoring the exctracted subsamples.
+    %% mve monitoring the extracted subsamples.
     n=200;
     v=3;
     randn('state', 123456);

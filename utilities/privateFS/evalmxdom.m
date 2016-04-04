@@ -94,7 +94,7 @@ evalstr = [ ...
 
 warnState = warning('off','backtrace');
 resetWarnStateObj = onCleanup(@()warning(warnState));
-text = evalc(evalstr);
+[text] = evalc(evalstr);
 delete(resetWarnStateObj); % To restore warning state now.
 
 % Get the latest info out of publishSnapshot.
