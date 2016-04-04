@@ -122,16 +122,23 @@ function out=publishFS(file,varargin)
 %out.InpArgsMisMatch = cell of size k-by-3 which in presence of name/pairs
 %                 optional arguments enables to understand which are the
 %                 optional arguments which are described but are not used
-%                 inside the file and vicevera. More precisely, the first
+%                 inside the file and vice versa. More precisely, the first
 %                 column contains the list of the options for which there
 %                 is a mismatch. The second column contains 1 if the option
 %                 was described. The third column contains 1 if the option
 %                 was effectively used. Of course, the sum of columns two
 %                 and three is always 1.
+%                 For example if InpArgsMisMatch is equal to
+%                         []    'Options described'    'Options used'
+%                 'nomes'       [                0]    [           1]
+%                 'refsteps'    [                0]    [           1]
+%                 'reftol'      [                0]    [           1]
+%                 it means that options 'nomes', 'refstesps' and 'reftol'
+%                 have not been described, but are used inside the .m file
 %out.OutArgsStructMisMatch = cell of size r-by-3 which in presence of output 
 %                 arguments which are structures enables to highlight
 %                 the fields of the structures which are described but
-%                 are not used inside the file and vicevera. More precisely,
+%                 are not used inside the file and vice versa. More precisely,
 %                 the first column contains the list of the fields for
 %                 which there is a mismatch. The second column contains 1 if
 %                 the field was described. The third column contains 1 is
@@ -141,7 +148,7 @@ function out=publishFS(file,varargin)
 %                   []    'Fields described'    'Fields used'
 %                   'out'                    []               []
 %                   'Y'      [               1]    [          0]
-%                it means that field Y of output strucure out has been
+%                it means that field Y of output structure out has been
 %                described but has not been produced by the output of the
 %                .m file
 %                 It is important to remark that this output is
