@@ -1,5 +1,5 @@
 function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
-%tclust computes trimmed clustering with restricitons on the eigevalues
+%tclust computes trimmed clustering with restricitons on the eigenvalues
 %
 %<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
 %
