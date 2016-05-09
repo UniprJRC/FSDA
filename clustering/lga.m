@@ -1,5 +1,5 @@
 function out = lga(X,k,varargin)
-%lga performa linear grouping analysis
+%lga performs linear grouping analysis
 %
 %
 %<a href="matlab: docsearchFS('lga')">Link to the help function</a>
