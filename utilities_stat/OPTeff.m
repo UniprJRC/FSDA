@@ -164,3 +164,4 @@ ceff=c;
 % chi2cdf(x,v) = gamcdf(x,v/2,2) = gammainc(x ./ 2, v/2);
 
 end
+%FScategory:UTISTAT

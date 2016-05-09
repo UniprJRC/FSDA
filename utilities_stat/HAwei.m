@@ -125,3 +125,4 @@ w(absu >= b) = w(absu >= b).*( c  -abs(u(absu >= b)) )/(c-b);
 w(absu > c) = 0;
 
 end
+%FScategory:UTISTAT

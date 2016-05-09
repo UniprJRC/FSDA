@@ -1062,3 +1062,4 @@ out.X=X;
 out.class='FSRBeda';
 end
 
+%FScategory:REG-Bayes

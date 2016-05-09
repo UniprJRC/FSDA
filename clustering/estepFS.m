@@ -138,3 +138,4 @@ end
 % obj = \sum_{i=1}^n logpdf_i
 obj = sum(logpdf) ;
 end
+%FScategory:CLUS-RobClaMULT

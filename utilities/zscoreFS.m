@@ -352,3 +352,4 @@ end
         z = bsxfun(@rdivide, z, scaleest);
     end
 end
+%FScategory:UTIGEN

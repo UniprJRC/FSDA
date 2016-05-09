@@ -388,3 +388,4 @@ if options.yxsave
 end
 
 end
+%FScategory:REG-Regression

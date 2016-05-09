@@ -669,3 +669,5 @@ method=char(method,[msg '.']);
 disp(method)
 
 end
+
+%FScategory:MULT-Multivariate

@@ -532,3 +532,4 @@ end
 % pointIndex=find(X==1);
 % end
 
+%FScategory:VIS-Mult

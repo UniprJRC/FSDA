@@ -762,4 +762,4 @@ INP.n0=n0;
 
 
 end
-
+%FScategory:REG-Bayes

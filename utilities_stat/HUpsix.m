@@ -77,3 +77,4 @@ w = (abs(u)<=c);
 
 psix=(u.^2).*w +(1-w).*(c*sign(u).*u);
 end
+%FScategory:UTISTAT

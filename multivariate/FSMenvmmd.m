@@ -294,11 +294,11 @@ while (converge==0 && k<=50)
     converge = max(max(abs(x0 - x1))) < tol & not(negative);
     x0 = x1;
     k = k + 1;
-end;
+end
 if not(converge);
     disp('Warning: INVCDFF has not converged, exact routine finv is used');
     x0=finv(1-p,n1,n2);
-end;
+end
 
 end
 
@@ -366,5 +366,5 @@ F = pbeta(x,a./2,b./2);
     end
 
 end
-
+%FScategory:MULT-Multivariate
 

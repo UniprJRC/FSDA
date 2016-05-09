@@ -534,4 +534,4 @@ end
 out.alphaOLD=out.Gamma(end,1);
 out.GammaOLD=exp(out.Gamma(1,1));
 end
-
+%FScategory:REG-Hetero

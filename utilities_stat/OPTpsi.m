@@ -91,3 +91,4 @@ psiOPT(inds1) = (-1.944 * x1 / c^2 + 1.728 * x1.^3 / c^4 - 0.312 * x1.^5 / c^6 +
 % 0 if r >3*c
 
 end
+%FScategory:UTISTAT

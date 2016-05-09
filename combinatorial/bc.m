@@ -55,3 +55,5 @@ dens = 1:k;
 nums = nums./dens;
 c = round(prod(nums));
 
+end
+%FScategory:UTICOMB

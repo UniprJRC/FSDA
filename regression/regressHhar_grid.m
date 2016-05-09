@@ -291,4 +291,4 @@ out.LogL=LogL;
 out.sigma2=sigma2all(indmin);
 end
 
-
+%FScategory:REG-Hetero

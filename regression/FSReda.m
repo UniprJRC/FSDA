@@ -817,4 +817,4 @@ out.y=y;
 out.X=X;
 out.class='FSReda';
 end
-
+%FScategory:REG-Regression

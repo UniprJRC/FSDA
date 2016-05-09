@@ -642,3 +642,5 @@ out.alpha=alpha;
 % Store original matrix
 out.Y=Y;
 end
+
+%FScategory:CLUS-RobClaMULT

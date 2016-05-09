@@ -121,3 +121,4 @@ psiHAder(absu>b & absu <=c) = -a/(c-b);
 % 0,			              |u| >= c.
 
 end
+%FScategory:UTISTAT

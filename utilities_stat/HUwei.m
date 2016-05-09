@@ -72,3 +72,4 @@ wei=w +(1-w).*(c*sign(u)./u);
 
 
 end
+%FScategory:UTISTAT

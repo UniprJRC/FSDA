@@ -564,3 +564,4 @@ out.covrob3=covrob3;
 out.covrob4=covrob4;
 out.q=q;
 end
+%FScategory:REG-Regression

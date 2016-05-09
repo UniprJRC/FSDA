@@ -588,3 +588,4 @@ nL=yhat(1,1);
 thresh=yhat(1,2)+ ((yhat(2,2)-yhat(1,2))/(nU-nL))*(n-nL);
 
 end
+%FScategory:REG-Regression

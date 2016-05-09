@@ -494,7 +494,7 @@ if plo==1
             line(Tdel(:,1),tinv(quant(i),Tdel(:,1)-p),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
         end
 
-        [figx figy] = dsxy2figxy(gca, xcoord,Tdelenv(Tdel(:,1)==xcoord,i));
+        [figx, figy] = dsxy2figxy(gca, xcoord,Tdelenv(Tdel(:,1)==xcoord,i));
         if isempty(figy) || figy<0;
             figy=0;
         end
@@ -530,3 +530,4 @@ if plo==1
 end
 
 end
+%FScategory:REG-ModelSelection

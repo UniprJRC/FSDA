@@ -517,3 +517,4 @@ if plots==1
 end
 
 end
+%FScategory:REG-Hetero

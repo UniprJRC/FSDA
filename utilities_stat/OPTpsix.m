@@ -90,3 +90,4 @@ psix(inds1) = (-1.944 * x1.^2 / c^2 + 1.728 * x1.^4 / c^4 - 0.312 * x1.^6 / c^6 
 % 0 if |x| >3*c
 
 end
+%FScategory:UTISTAT

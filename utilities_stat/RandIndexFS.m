@@ -243,6 +243,6 @@ MI=D/totcomp;			%Mirkin 1970	%p(disagreement)
 HI=(A-D)/totcomp;
 end
 
-
+%FScategory:UTISTAT
 
 

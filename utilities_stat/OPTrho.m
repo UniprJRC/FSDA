@@ -83,3 +83,4 @@ rhoOPT(inds1) = (1.792 - 0.972 * x1.^2 / c^2 + 0.432 * x1.^4 / c^4 - 0.052 * x1.
 
 % 1 if r >3*c
 end
+%FScategory:UTISTAT

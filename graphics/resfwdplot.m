@@ -1720,3 +1720,4 @@ if ~isempty(options.msg)
 end
 
 end
+%FScategory:VIS-Reg

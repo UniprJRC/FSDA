@@ -577,3 +577,4 @@ INP.S2=S2(:,1:2);
 
 end
 
+%FScategory:REG-Regression

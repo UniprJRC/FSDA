@@ -131,3 +131,4 @@ w(absu > d & absu <=c) = sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)...
 % 0,			              |u| >= c.
 
 end
+%FScategory:UTISTAT

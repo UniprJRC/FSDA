@@ -1181,3 +1181,4 @@ if rewcorfac <=0 || rewcorfac>50
      end
 end
 end
+%FScategory:REG-Regression

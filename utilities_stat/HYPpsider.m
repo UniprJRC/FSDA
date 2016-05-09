@@ -191,3 +191,4 @@ psiHYPder(absu > d & absu <=c) = 0.5*B* (1-k) *( cosh(sqrt((k - 1) * B^2/A)...
 % 0,			              |u| >= c.
 
 end
+%FScategory:UTISTAT

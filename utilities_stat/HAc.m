@@ -204,4 +204,4 @@ eff=(bet^2)/alph;
 
 end
 
-
+%FScategory:UTISTAT

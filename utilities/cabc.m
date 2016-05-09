@@ -42,3 +42,4 @@ current_fig = all_openfigs(1);
 % then, those to delete are:
 delete(setdiff(all_openfigs, current_fig));
 end
+%FScategory:UTIGEN

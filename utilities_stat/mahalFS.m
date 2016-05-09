@@ -41,3 +41,4 @@ Ytilde = bsxfun(@minus,Y, MU);
 d=sum((Ytilde/SIGMA).*Ytilde,2);
 
 end
+%FScategory:UTISTAT

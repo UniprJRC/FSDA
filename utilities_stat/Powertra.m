@@ -183,3 +183,4 @@ else
     error('FSDA:Powertra:WrongFamily','Supported values are BoxCox or YaoJohnson or basicpower')
 end
 end
+%FScategory:UTISTAT

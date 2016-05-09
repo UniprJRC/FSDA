@@ -75,3 +75,4 @@ function psix=TBpsix(u,c)
 
 psix = (abs(u) < c) .* (u.^2) .* ( 1 - (u./c).^2 ).^2 ;
 end
+%FScategory:UTISTAT

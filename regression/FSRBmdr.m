@@ -650,3 +650,4 @@ if options.plots==1
     ylabel('Monitoring of minimum deletion residual');
 end
 end
+%FScategory:REG-Bayes

@@ -697,3 +697,4 @@ out.asig2       = asig2;
         end
     end
 end
+%FScategory:CLUS-RobClaREG

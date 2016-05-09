@@ -152,3 +152,4 @@ w = (1 - (u/c).^2).^2;
 
 w( abs(u/c) > 1 )= 0;
 end
+%FScategory:UTISTAT

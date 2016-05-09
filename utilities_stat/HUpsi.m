@@ -82,3 +82,4 @@ w = (abs(u)<=c);
 
 psi=u.*w +(1-w).*(c*sign(u));
 end
+%FScategory:UTISTAT

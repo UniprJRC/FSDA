@@ -65,3 +65,4 @@ set(hfigl,'OuterPosition',pos1);
 set(hfigr,'OuterPosition',pos2);
 
 end
+%FScategory:UTIGEN

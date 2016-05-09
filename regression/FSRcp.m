@@ -903,3 +903,4 @@ else
     % outCp.Ajout=Excl;
 end
 end
+%FScategory:REG-ModelSelection

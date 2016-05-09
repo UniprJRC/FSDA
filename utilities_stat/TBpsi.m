@@ -79,3 +79,4 @@ function psi=TBpsi(u,c)
 
 psi = (abs(u) < c) .* u .* ( 1 - (u./c).^2 ).^2 ;
 end
+%FScategory:UTISTAT

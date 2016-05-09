@@ -1313,3 +1313,5 @@ expdiff = exp(-K*(1-u).^2) - expK;
 wzarg = expdiff./b;
 wz = (u>=1) + wzarg.*(u<1);
 end
+
+%FScategory:MULT-Multivariate

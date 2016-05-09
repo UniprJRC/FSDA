@@ -90,3 +90,4 @@ w(inds) = (-1.944  / c^2 + 1.728 * x1.^2 / c^4 - 0.312 * x1.^4 / c^6 + 0.016 * x
 
 % 0 for |x| >3c
 end
+%FScategory:UTISTAT

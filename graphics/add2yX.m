@@ -330,3 +330,4 @@ if iscell(eLegend)
     clickableMultiLegend(hLines, eLegend{:});
 end
 end
+%FScategory:VIS-Reg

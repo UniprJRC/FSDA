@@ -53,3 +53,4 @@ function psider=HUpsider(u,c)
 psider=zeros(length(u),1);
 psider(abs(u) < c)=1;
 end
+%FScategory:UTISTAT

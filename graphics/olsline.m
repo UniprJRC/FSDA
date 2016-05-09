@@ -36,7 +36,7 @@ function h = olsline(varargin)
 
 % Examples:
 
-%{   
+%{
     % A bivariate dataset with two groups of units
     load('fishery.txt','fishery.txt');
     y=fishery(:,2);
@@ -49,27 +49,27 @@ function h = olsline(varargin)
     set(gcf,'CurrentAxes',AX)
 
     % fit a line to all data
-    h=olsline; 
+    h=olsline;
     set(h,'DisplayName','fit on all units');
 
     % fit a line to one group
-    h=olsline(size(H,3)); 
+    h=olsline(size(H,3));
     set(h,'DisplayName','fit on group 1');
 
     % fit a line to another group
-    h=olsline(size(H,2)); 
+    h=olsline(size(H,2));
     set(h,'DisplayName','fit on group 2');
 
     % this just updates all legends
     hLines = findobj(gca, 'type', 'line');
     legend(hLines);
-%}    
+%}
 
 
 %% Beginning of code
 
 defaultColor = [.3 .3 .3] ; %Grey  [.75 .75 .75] == Light Gray
-                            %      [.85 .64 .85] == Violet
+%      [.85 .64 .85] == Violet
 
 if nargin == 0
     dataToFit = -1;
@@ -161,7 +161,7 @@ if numlines > 0
                     beta = xdat(ok,:)\ydat(ok,:);
                     intercept  = 0; slope = beta;
                 end
-
+                
                 %xlimits = get(gca,'Xlim');
                 xlimits = get(get(hh(k),'Parent'),'Xlim');
                 xdat2 = xlimits;
@@ -207,3 +207,6 @@ end
 if nargout == 1
     h = hlslines;
 end
+end
+
+%FScategory:VIS-Reg

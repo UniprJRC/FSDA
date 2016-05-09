@@ -159,4 +159,4 @@ rhoHYP(absu > c) = d^2/2 +2*(A/B)*log(cosh(0.5*sqrt((k - 1) * B^2/A)*(c -d)));
 
 end
 
-
+%FScategory:UTISTAT

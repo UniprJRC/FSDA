@@ -96,3 +96,4 @@ w = (abs(u)<=c);
 rhoHU = (u.^2/2).*w +(1-w).*(c*abs(u)-c^2/2);
 
 end
+%FScategory:UTISTAT

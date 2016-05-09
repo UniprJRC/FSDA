@@ -275,4 +275,4 @@ if nargin>3
 else
      out=regressHart(y,X,Z);
 end
-
+%FScategory:REG-Hetero

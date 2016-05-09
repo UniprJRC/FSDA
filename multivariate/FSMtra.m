@@ -1415,4 +1415,4 @@ end
         dZ=log(det(cov(Z)));
     end
 end
-
+%FScategory:MULT-Transformations

@@ -102,7 +102,7 @@ for i = 1:length(plothan)
         @(varargin)togglevisibility(objhan(i),plothan(i)),...
         'UserData', true);
 end
-
+end
 
 % The callback function that shows/hides legends
 
@@ -177,3 +177,5 @@ else
     end
     
 end
+end
+%FScategory:UTIGEN

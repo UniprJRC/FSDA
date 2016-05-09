@@ -791,5 +791,5 @@ outIRWLS.scalerw = scale;
 % store final estimate of the weights for each observation
 outIRWLS.weights=weights;
 end
-
+%FScategory:REG-Regression
 

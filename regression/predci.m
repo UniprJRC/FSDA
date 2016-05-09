@@ -82,3 +82,5 @@ if nargout > 1 % Calculate confidence interval
     yci = [ypred-delta ypred+delta];
 end
 end
+
+%FScategory:REG-Regression

@@ -138,3 +138,4 @@ rhoHA(absu>b & absu <=c) = a*b-0.5*a^2+0.5*(c-b)*a*(1-  ( (c-abs(u(absu>b & absu
 rhoHA(absu > c) = a*b-0.5*a^2+0.5*(c-b)*a ;
 
 end
+%FScategory:UTISTAT

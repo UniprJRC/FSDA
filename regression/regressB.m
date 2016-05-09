@@ -635,3 +635,4 @@ else
     out.res=res;
 end
 end
+%FScategory:REG-Bayes

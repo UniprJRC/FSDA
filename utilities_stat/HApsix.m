@@ -121,3 +121,4 @@ psiHAx(absu>b & absu <=c) = a*(  (c-abs(u(absu>b & absu <=c)))/(c-b)  ).*sign(u(
 
 % 0,			              |u| >= c.
 end
+%FScategory:UTISTAT

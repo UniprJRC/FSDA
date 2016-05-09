@@ -1390,3 +1390,4 @@ end
         dfhr   = dfas*exp(xb1-xb2*v-xb3*log(n));
     end
 end
+%FScategory:MULT-Multivariate

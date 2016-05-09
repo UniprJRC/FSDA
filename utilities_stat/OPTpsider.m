@@ -92,3 +92,4 @@ psider(inds1) = (-1.944/ c^2 + 5.184 * x1.^2 / c^4 - 1.56 * x1.^4 / c^6 + 0.112 
 % 0 if r >3*c
 
 end
+%FScategory:UTISTAT

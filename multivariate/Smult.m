@@ -560,4 +560,4 @@ outIRWLS.shape = newshape;
 outIRWLS.scale = scale;
 outIRWLS.weights=weights;
 end
-
+%FScategory:MULT-Multivariate

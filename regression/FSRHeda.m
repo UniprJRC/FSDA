@@ -1010,3 +1010,4 @@ out.WEI           = WEI;
 out.class          ='FSRHeda';
 end
 
+%FScategory:REG-Hetero
