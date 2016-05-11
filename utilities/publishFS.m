@@ -116,6 +116,20 @@ function out=publishFS(file,varargin)
 %                 references.
 %   out.SeeAlso = References. cell. Cell of length s containing the s
 %                 references to linked files.
+%        out.Ex = Examples. cell. Cell of length t containing the t
+%                 examples.
+%                 First column= title of the example; 
+%                 Second column = detailed description; 
+%                 Third column = MATLAB code;
+%                 Fourth column = dummy variable which indicates whether
+%                 the example must be executed or not) If 1 example is executed
+%    out.ExtraEx= Extra Examples. cell. Cell of length u containing the u
+%                 extra examples.
+%                 First column= title of the example; 
+%                 Second column = detailed description; 
+%                 Third column = MATLAB code;
+%                 Fourth column = dummy variable which indicates whether
+%                 the example must be executed or not) If 1 example is executed
 %   out.laste   = object of class MException which provides information
 %                 about last error in executing the examples. If all
 %                 examples run without errors laste is an empty value;
@@ -1260,7 +1274,14 @@ else
     %sintax{2}=[outargs(2:commasOut(1)-1) '=' name strtrim(inputargs(1:optargs1-2)) ',Name,Value)'];
     if ~isempty(outargs)
         sintax{j}=[outargs(2:commasOut(1)-1) '=' name strinputarg ')'];
+        if length(strinputarg)>1
         sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg ',Name,Value)'];
+        else
+            % just in case function has no compulsary input argument then
+            % the comma before 'Name.value' is unnecessary
+        sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg 'Name,Value)'];
+        end
+        
     else
         sintax{j}=[name strinputarg ')'];
         sintax{j+1}=[name strinputarg ',Name,Value)'];
@@ -1287,7 +1308,7 @@ sintaxhtml='';
 for j=1:length(sintax)
     sintaxhtml= [sintaxhtml '<li><code class="synopsis">'  sintax{j} '</code>' ...
         '<span class="syntax_example">'...
-        '<a class="intrnllnk" href="' name '.html#ex' num2str(j) '">' ...
+        '<a class="intrnllnk" href="' name '.html#Example_' num2str(j) '">' ...
         'example</a></span></li>\r'];
 end
 sintaxhtml=sprintf(sintaxhtml);
@@ -1343,7 +1364,7 @@ for j=1:length(sintax)
     
     descriptionini=sprintf(['<div class="description_element">\r'...
         '	<p class="syntax_example">\r'...
-        '	<a class="intrnllnk" href="' name '.html#ex'  num2str(j) '">\r'...
+        '	<a class="intrnllnk" href="' name '.html#Example_'  num2str(j) '">\r'...
         '	example</a></p>\r'...
         '	<p><span itemprop="syntax"><code>\r']);
     
@@ -1444,6 +1465,8 @@ for j=1:length(sintax)
         inpi=inps;
         if strcmp(inpi,'___') ==1
             inpstring=sprintf([inpi '\r']);
+        elseif isempty(inpi)
+            inpstring='';
         else
             inpstring=sprintf(['<a class="intrnllnk" href="#inputarg_' inpi '"><code>' inpi '</code></a>\r']);
         end
@@ -1488,6 +1511,7 @@ for j=1:length(sintax)
     
     % Find point where description ends
     inicr=regexp(stri,'\r');
+   
     % This is the first line which does not contain symbol %
     for jj=1:length(inicr)-1
         strtest=stri(inicr(jj):inicr(jj+1));
@@ -2649,6 +2673,10 @@ out.Acknowledgements=Acknowledgements;
 out.References=refsargs;
 % listSeeAlso
 out.SeeAlso=listSeeAlso;
+% Store cell containing examples
+out.Ex=listEx;
+% Store cell contaning extra examples
+out.ExtraEx=listExtraEx;
 
 %% CREATE ON THIS PAGE SECTION WHICH WILL APPEAR IN THE LEFT PANEL
 OnThisPageini=['<!--START.CLASS sticky_header_container-->\r'...
@@ -3100,7 +3128,7 @@ if ~isempty(OptArgsVarargin)
     % case
     poscommas=regexp(NamePairs,',');
     if length(poscommas)/2==floor(length(poscommas)/2)
-        error('Name pairs must be in pairs: something wrong')
+        error('FSDA:FSM:WrongInputOpt','Name pairs must be in pairs: something wrong')
     else
         
         numberOptArgs=(length(poscommas)+1)/2;
@@ -3179,7 +3207,7 @@ if evalCode ==1
                 evalin('base', NameToSearchinWS)
                 OutputProduced = fieldnames(evalin('base', NameToSearchinWS));
             catch
-                warning(['In the examples which were executed output argument containing string ' listouti ' which is of class struct has not been found'])
+                warning('FSDA:FSM:WrongOut',['In the examples which were executed output argument containing string ' listouti ' which is of class struct has not been found'])
                 OutputProduced='';
             end
             if ~isempty(OutputProduced)
