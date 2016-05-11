@@ -71,6 +71,17 @@ function list = findDir(root,varargin)
     list = findDir(root,'InclDir','datasets')
 %}
 
+%{
+    % findDir with optional arguments 'InclDir' and 'ExclDir'.
+    FileName='addFSDA2path';
+    FullPath=which(FileName);
+    root=FullPath(1:end-length(FileName)-3);
+    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
+    'examples' 'utilities' 'utilities_stat'};
+    ExclDir={'privateFS'  'datasets'};
+    list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
+%}
+
 %% Beginning of code
 
 % Assign input arguments.

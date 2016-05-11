@@ -1,5 +1,5 @@
 function brushROB(eventdata)
-% brushRES displays a GUI which enables brushing in resindexplot
+% brushROB displays a GUI which enables brushing in resindexplot
 %
 %<a href="matlab: docsearchFS('brushROB')">Link to the help page for this function</a>
 %

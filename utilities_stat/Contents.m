@@ -1,57 +1,66 @@
 % UTILITIES_STAT
 %
-% Files :
-% basicPower                   - basicPower computes the basic power transformation
-% eigs_sigma                   - eigs_sigma sets a non zero value for the optional parameter sigma of function eigs
-% ellipse                      - ellipse generates an ellipse given mu (location vector) and Sigma (scatter matrix)
-% FSMbonfbound                 - FSMbonfbound computes Bonferroni bounds for each step of the  search (in mult analysis)
-% FSRbonfbound                 - FSRbonfbound computes Bonferroni bounds for each step of the search (in linear regression)
-% HAbdp                        - HAbdp finds the constant c associated to the supplied breakdown point
-% HAc                          - HAc computes breakdown point and efficiency associated with constant c 
-% HAeff                        - HAeff finds the tuning constant guarrantees a requested asymptotic efficiency
-% HApsi                        - HApsi computes psi function  using Hampel proposal
-% HApsider                     - HApsider computes derivative of psi function  using Hampel proposal
-% HApsix                       - HApsix computes psi function  using Hampel proposal times x
-% HArho                        - HArho computes rho function  using Hampel proposal
-% HAwei                        - HAwei computes weight function psi(u)/u using Hampel proposal
-% HYPbdp                       - HYPbdp finds constant c which is associated to the requested breakdown
-% HYPc                         - HYPc computes breakdown point and efficiency associated with constant chyperbolic tangent estimator (for a given value of k=sup CVC)
-% HYPck                        - HYPck computes values of the scalars A, B, d for hyperbolic tangent estimator
-% HYPeff                       - HYPeff finds constant c which is associated to the requested efficiency for hyperbolic estimator
-% HYPk                         - HYPk computes breakdown point and efficiency associated with constant k=sup CVC for hyperbolic tangent estimator (for a given value of c)
-% HYPpsi                       - HYPpsi computes psi function for hyperbolic tangent estimator
-% HYPpsider                    - HYPpsider computes derivative of psi function for hyperbolic tangent estimator
-% HYPpsix                      - HYPpsix computes psi function for hyperbolic tangent estimator times x
-% HYPrho                       - HYPrho computes rho function  using hyperboloc tangent estimator
-% HYPwei                       - HYPwei computes weight function psi(u)/u for hyperbolic tangent estimator
-% inversegamcdf                - inversegampdf Inverse-gamma cumulative distribution function.
-% inversegaminv                - inversegampdf Inverse-gamma cumulative distribution function.
-% inversegampdf                - inversegampdf Inverse-gamma probability density function.
-% logmvnpdfFS                  - logmvnpdfFS log of Multivariate normal probability density function (pdf)
-% mahalFS                      - mahalFS computes Mahalanobis distances (in squared units) for each row of matrix Y 
-% minscale                     - minscale finds the M estimator of the scale for TB
-% Mscale                       - Mscale finds the M estimator of the scale
-% Mscale1                      - Mscale1 finds the M estimator of the scale
-% ncx2mixtcdf                  - ncx2mixtcdf cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ \sigma * N(0,1))
-% normBoxCox                   - normBoxCox computes (normalized) Box-Cox transformation
-% normYJ                       - normYJ computes (normalized) Yeo-Johnson transformation
-% OPTbdp                       - OPTbdp finds the constant c associated to the supplied breakdown point
-% OPTc                         - OPTc computes breakdown point and efficiency associated with constant c for Optimal rho function
-% OPTeff                       - OPTeff finds the constant c which is associated to the requested efficiency
-% OPTpsi                       - OPTpsi computes psi function (derivative of rho function) for optimal weight function
-% OPTpsider                    - OPTpsider computes derivative of psi function (second derivative of rho function) for optimal weight function
-% OPTpsix                      - OPTpsix computes psi function (derivative of rho function) times x
-% OPTrho                       - OPTrho computes rho function for optimal weight function
-% OPTwei                       - OPTwei computes weight function psi(u)/u for optimal weight function
-% Powertra                     - Powertra computes power transformation (Box-Cox or  Yeo-Johnson)
-% rescale                      - rescale rescales numeric array to have specified minimum (a)  and maximum (b)
-% TBbdp                        - TBbdp finds the constant c associated to the supplied breakdown point for Tukey's biweight
-% TBc                          - TBc computes breakdown point and efficiency associated with constant c for Tukey's biweight
-% TBeff                        - Tbeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
-% TBpsi                        - TBpsi computes psi function (derivative of rho function) for Tukey's biweight  
-% TBpsider                     - TBpsider computes derivative of psi function (second derivative of rho function) for Tukey's biweight  
-% TBpsix                       - TBpsix computes psi function (derivative of rho function) times x for Tukey's biweight  
-% TBrho                        - TBrho computes (rho) function for Tukey biweight
-% TBwei                        - TBwei computes weight function psi(u)/u for Tukey biweight  
-% triu2vec                     - triu2vec extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix
-% zscoreFS                     - zscoresFS computes (robust) standardized z scores
+% File names, description, category and date last modified
+%
+%   Name          - Description                                                                                                                                                         - Category- Date last modified
+%--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+%   basicPower    - Computes the basic power transformation                                                                                                                             - UTISTAT- 2016 May 09
+%   eigs_sigma    - Sets a non zero value for the optional parameter sigma of function eigs                                                                                             -        - 2016 May 09
+%   ellipse       - Generates an ellipse given mu (location vector) and Sigma (scatter matrix)                                                                                          - UTISTAT- 2016 May 09
+%   FSMbonfbound  - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                                                          - UTISTAT- 2016 May 09
+%   FSRbonfbound  - Computes Bonferroni bounds for each step of the search (in linear regression)                                                                                       - UTISTAT- 2016 May 09
+%   HAbdp         - Finds the constant c associated to the supplied breakdown point                                                                                                     - UTISTAT- 2016 May 09
+%   HAc           - Computes breakdown point and efficiency associated with constant c                                                                                                  - UTISTAT- 2016 May 09
+%   HAeff         - Finds the tuning constant guarrantees a requested asymptotic efficiency                                                                                             - UTISTAT- 2016 May 09
+%   HApsi         - Computes psi function  using Hampel proposal                                                                                                                        - UTISTAT- 2016 May 09
+%   HApsider      - Computes derivative of psi function  using Hampel proposal                                                                                                          - UTISTAT- 2016 May 09
+%   HApsix        - Computes psi function  using Hampel proposal times x                                                                                                                - UTISTAT- 2016 May 09
+%   HArho         - Computes rho function  using Hampel proposal                                                                                                                        - UTISTAT- 2016 May 09
+%   HAwei         - Computes weight function psi(u)/u using Hampel proposal                                                                                                             - UTISTAT- 2016 May 11
+%   HUeff         - Finds the constant c which is associated to the requested efficiency for Tukey biweight estimator                                                                   - UTISTAT- 2016 May 11
+%   HUpsi         - Computes psi function (derivative of rho function) for Huber                                                                                                        - UTISTAT- 2016 May 09
+%   HUpsider      - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                                                        - UTISTAT- 2016 May 09
+%   HUpsix        - Computes psi function (derivative of rho function) times x for Tukey's biweight                                                                                     - UTISTAT- 2016 May 09
+%   HUrho         - Computes (rho) function for Huber                                                                                                                                   - UTISTAT- 2016 May 09
+%   HUwei         - Computes weight function psi(u)/u for Huber                                                                                                                         - UTISTAT- 2016 May 09
+%   HYPbdp        - Finds constant c which is associated to the requested breakdown                                                                                                     - UTISTAT- 2016 May 09
+%   HYPc          - Computes breakdown point and efficiency associated with constant chyperbolic tangent estimator (for a given value of k=sup CVC)                                     - UTISTAT- 2016 May 09
+%   HYPck         - Computes values of the scalars A, B, d for hyperbolic tangent estimator                                                                                             - UTISTAT- 2016 May 09
+%   HYPeff        - Finds constant c which is associated to the requested efficiency for hyperbolic estimator                                                                           - UTISTAT- 2016 May 09
+%   HYPk          - Computes breakdown point and efficiency associated with constant k=sup CVC for hyperbolic tangent estimator (for a given value of c)                                - UTISTAT- 2016 May 09
+%   HYPpsi        - Computes psi function for hyperbolic tangent estimator                                                                                                              - UTISTAT- 2016 May 09
+%   HYPpsider     - Computes derivative of psi function for hyperbolic tangent estimator                                                                                                - UTISTAT- 2016 May 09
+%   HYPpsix       - Computes psi function for hyperbolic tangent estimator times x                                                                                                      - UTISTAT- 2016 May 09
+%   HYPrho        - Computes rho function  using hyperboloc tangent estimator                                                                                                           - UTISTAT- 2016 May 09
+%   HYPwei        - Computes weight function psi(u)/u for hyperbolic tangent estimator                                                                                                  - UTISTAT- 2016 May 09
+%   inversegamcdf - Inversegampdf Inverse-gamma cumulative distribution function                                                                                                        - UTISTAT- 2016 May 09
+%   inversegaminv - Inversegampdf Inverse-gamma cumulative distribution function                                                                                                        - UTISTAT- 2016 May 09
+%   inversegampdf - Inverse-gamma probability density function                                                                                                                          - UTISTAT- 2016 May 09
+%   logmvnpdfFS   - Produces log of Multivariate normal probability density function (pdf)                                                                                              - UTISTAT- 2016 May 09
+%   mahalFS       - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                                                          - UTISTAT- 2016 May 09
+%   minscale      - Finds the M estimator of the scale for TB                                                                                                                           - UTISTAT- 2016 May 09
+%   Mscale        - Finds the M estimator of the scale                                                                                                                                  - UTISTAT- 2016 May 09
+%   Mscale1       - Finds the M estimator of the scale                                                                                                                                  -        - 2016 May 09
+%   ncx2mixtcdf   - Cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))                                                         - UTISTAT- 2016 May 09
+%   normBoxCox    - Computes (normalized) Box-Cox transformation                                                                                                                        - UTISTAT- 2016 May 09
+%   normYJ        - Computes (normalized) Yeo-Johnson transformation                                                                                                                    - UTISTAT- 2016 May 09
+%   OPTbdp        - Finds the constant c associated to the supplied breakdown point                                                                                                     - UTISTAT- 2016 May 09
+%   OPTc          - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                                                         - UTISTAT- 2016 May 09
+%   OPTeff        - Finds the constant c which is associated to the requested efficiency                                                                                                - UTISTAT- 2016 May 09
+%   OPTpsi        - Computes psi function (derivative of rho function) for optimal weight function                                                                                      - UTISTAT- 2016 May 09
+%   OPTpsider     - Computes derivative of psi function (second derivative of rho function) for optimal weight function                                                                 - UTISTAT- 2016 May 09
+%   OPTpsix       - Computes psi function (derivative of rho function) times x                                                                                                          - UTISTAT- 2016 May 09
+%   OPTrho        - Computes rho function for optimal weight function                                                                                                                   - UTISTAT- 2016 May 09
+%   OPTwei        - Computes weight function psi(u)/u for optimal weight function                                                                                                       - UTISTAT- 2016 May 09
+%   Powertra      - Computes power transformation (Box-Cox or  Yeo-Johnson)                                                                                                             - UTISTAT- 2016 May 09
+%   Qn            - Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)                                                                                      - UTISTAT- 2016 May 09
+%   RandIndexFS   - Calculates Rand type Indices to compare two partitions                                                                                                              - UTISTAT- 2016 May 09
+%   Sn            - Robust estimator of scale (robust version of Gini's average difference)                                                                                             - UTISTAT- 2016 May 09
+%   tabulateFS    - Create frequency table of unique values of x, excluding possible 0 counts                                                                                           - UTISTAT- 2016 May 09
+%   TBbdp         - Finds the constant c associated to the supplied breakdown point for Tukey's biweight                                                                                - UTISTAT- 2016 May 09
+%   TBc           - Computes breakdown point and efficiency associated with constant c for Tukey's biweight                                                                             - UTISTAT- 2016 May 09
+%   TBeff         - Finds the constant c which is associated to the requested efficiency for Tukey biweight estimator                                                                   - UTISTAT- 2016 May 09
+%   TBpsi         - Computes psi function (derivative of rho function) for Tukey's biweight                                                                                             - UTISTAT- 2016 May 09
+%   TBpsider      - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                                                        - UTISTAT- 2016 May 09
+%   TBpsix        - Computes psi function (derivative of rho function) times x for Tukey's biweight                                                                                     - UTISTAT- 2016 May 09
+%   TBrho         - Computes (rho) function for Tukey biweight                                                                                                                          - UTISTAT- 2016 May 11

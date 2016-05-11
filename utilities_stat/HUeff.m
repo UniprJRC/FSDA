@@ -1,5 +1,5 @@
 function ceff = HUeff(eff,v,varargin)
-%Tbeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
+%HUeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
 %
 %
 %

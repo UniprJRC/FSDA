@@ -1,5 +1,5 @@
 function psi=HUpsi(u,c)
-%TBpsi computes psi function (derivative of rho function) for Huber
+%HUpsi computes psi function (derivative of rho function) for Huber
 %
 %<a href="matlab: docsearchFS('HUpsi')">Link to the help function</a>
 %

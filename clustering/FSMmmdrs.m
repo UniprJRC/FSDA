@@ -1,5 +1,5 @@
 function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
-%FSRmdrrs performs random start monitoring of minimum Mahalanobis distance
+%FSRmmdrs performs random start monitoring of minimum Mahalanobis distance
 %
 %<a href="matlab: docsearchFS('FSMmmdrs')">Link to the help function</a>
 %

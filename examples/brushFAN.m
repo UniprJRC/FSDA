@@ -1,5 +1,5 @@
 function brushFAN(eventdata)
-% brushRES displays a GUI which enables brushing in the fanplot
+% brushFAN displays a GUI which enables brushing in the fanplot
 %
 %<a href="matlab: docsearchFS('brushFAN')">Link to the help page for this function</a>
 %

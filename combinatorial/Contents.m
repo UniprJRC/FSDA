@@ -1,10 +1,13 @@
 % COMBINATORIAL
 %
-% Files :
-% bc                           - bc returns the Binomial coefficient
-% combsFS                      - combsFS is an iterative algorithm equivalent to the MATLAB combs.m
-% lexunrank                    - lexunrank gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations
-% nchoosekFS                   - nchoosekFS returns the Binomial coefficient or matrix containing all combinations
-% randsampleFS                 - randsampleFS generates a random sample of k elements from the integers 1 to n (k<=n)
-% shuffling                    - shuffling does a random permutation of the elements of input vector
-% subsets                      - subsets creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements
+% File names, description, category and date last modified
+%
+%   Name         - Description                                                                                                  - Category- Date last modified
+%--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+%   bc           - Returns the Binomial coefficient                                                                             - UTICOMB- 2016 May 09
+%   combsFS      - Is an iterative algorithm equivalent to the MATLAB combs.m                                                   - UTICOMB- 2016 May 09
+%   lexunrank    - Gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations - UTICOMB- 2016 May 09
+%   nchoosekFS   - Returns the Binomial coefficient or matrix containing all combinations                                       - UTICOMB- 2016 May 09
+%   randsampleFS - Generates a random sample of k elements from the integers 1 to n (k<=n)                                      - UTICOMB- 2016 May 09
+%   shuffling    - Does a random permutation of the elements of input vector                                                    - UTICOMB- 2016 May 09
+%   subsets      - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements             - UTICOMB- 2016 May 09

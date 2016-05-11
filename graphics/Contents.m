@@ -1,21 +1,24 @@
 % GRAPHICS
 %
-% Files :
-% add2spm                      - add2spm adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix
-% add2yX                       - add2yX adds objects to the yXplot.
-% boxplotb                     - boxplotb computes a bivariate boxplot
-% cdsplot                      - cdsplot produces the candlestick plot for robust model selection in linear regression
-% covplot                      - covplot plots the trajectories of the elements of the covariance (correlation) matrix monitored
-% fanplot                      - fanplot plots the fan plot for transformation in linear regression
-% histFS                       - histFS plots a histogram with the elements in each bin grouped according to a vector of labels. 
-% levfwdplot                   - levfwdplot plots the trajectories of leverage along the search
-% malfwdplot                   - malfwdplot plots the trajectories of scaled Mahalanobis distances along the search
-% malindexplot                 - malindexplot plots the Mahalanobis distances versus a selected variable.
-% mdrplot                      - mdrplot plots the trajectory of minimum deletion residual (mdr)
-% mmdplot                      - mmdplot plots the trajectory of minimum mhalanobis distance (mmd)
-% olsline                      - olsline adds least-squares fit line(s) to scatter plot(s).
-% resfwdplot                   - resfwdplot plots the trajectories of the scaled (squared) residuals monitored
-% resindexplot                 - resindexplot plots the residuals from a regression analysis versus index number or any other variable
-% spmplot                      - spmplot produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal
-% suplabel                     - suplabel places text as a title, xlabel, or ylabel on a group of subplots.
-% yXplot                       - yXplot produces an interactive scatterplot of y against each variable of X in the input dataset.
+% File names, description, category and date last modified
+%
+%   Name         - Description                                                                                   - Category- Date last modified
+%--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+%   add2spm      - Adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix - VIS-Mult- 2016 May 09
+%   add2yX       - Adds objects to the yXplot                                                                    - VIS-Reg - 2016 May 09
+%   boxplotb     - Computes a bivariate boxplot                                                                  - VIS-Mult- 2016 May 09
+%   cdsplot      - Produces the candlestick plot for robust model selection in linear regression                 - VIS-Reg - 2016 May 09
+%   covplot      - Plots the trajectories of the elements of the covariance (correlation) matrix monitored       - VIS-Mult- 2016 May 09
+%   fanplot      - Plots the fan plot for transformation in linear regression                                    - VIS-Reg - 2016 May 09
+%   histFS       - Plots a histogram with the elements in each bin grouped according to a vector of labels       - VIS-Reg - 2016 May 09
+%   levfwdplot   - Plots the trajectories of leverage along the search                                           - VIS-Reg - 2016 May 09
+%   malfwdplot   - Plots the trajectories of scaled Mahalanobis distances along the search                       - VIS-Mult- 2016 May 09
+%   malindexplot - Plots the Mahalanobis distances versus a selected variable                                    - VIS-Mult- 2016 May 09
+%   mdrplot      - Plots the trajectory of minimum deletion residual (mdr)                                       - VIS-Reg - 2016 May 09
+%   mmdplot      - Plots the trajectory of minimum mhalanobis distance (mmd)                                     - VIS-Mult- 2016 May 09
+%   olsline      - Adds least-squares fit line(s) to scatter plot(s)                                             - VIS-Reg - 2016 May 09
+%   resfwdplot   - Plots the trajectories of the scaled (squared) residuals monitored                            - VIS-Reg - 2016 May 09
+%   resindexplot - Plots the residuals from a regression analysis versus index number or any other variable      - VIS-Reg - 2016 May 09
+%   spmplot      - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal   - VIS-Mult- 2016 May 09
+%   tclustICplot - Plots information criterion as a function of c and k                                          - VIS-Mult- 2016 May 09
+%   yXplot       - Produces an interactive scatterplot of y against each variable of X in the input dataset      - VIS-Reg - 2016 May 09

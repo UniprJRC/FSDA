@@ -1,10 +1,9 @@
 % EXAMPLES
 %
-% Files :
-% brushFAN                     - brushFAN displays a GUI where it is possible to brush steps from the fan plot
-% brushRES                     - brushRES displays a GUI where it is possible to brush steps from the monitoring residuals plot 
-% brushROB                     - brushROB displays a GUI to brush units from the index plot of residuals
-% examples_MixSim              - examples_mixture_generation shows a series of examples about mixture generation with prespecified overlapping
-% examples_multivariate        - examples_multivariate shows a series of analysis of multivariate datasets
-% examples_regression          - examples_regression shows a series of analysis of regression datasets 
-% playbackdemoFS               - playbackdemoFS opens FSDA web site and launches playback device
+% File names, description, category and date last modified
+%
+%   Name                       - Description                                                                                                   - Category- Date last modified
+%--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+%   brushFAN                   - Displays a GUI which enables brushing in the fanplot                                                          - GUI- 2016 May 11
+%   brushRES                   - Displays a GUI which enables brushing in resfwdplot                                                           - GUI- 2016 May 09
+%   brushROB                   - Displays a GUI which enables brushing in resindexplot                                                         - GUI- 2016 May 11
