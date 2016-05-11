@@ -1,5 +1,5 @@
 function [check , location] = isfunction(funstr)
-%isfunction checks if the function 'funstr' exists. 
+%isfunction checks if a function exists. 
 %
 %<a href="matlab: docsearchFS('isfunction')">Link to the help function</a>
 %

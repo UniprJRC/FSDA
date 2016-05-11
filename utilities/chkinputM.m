@@ -1,5 +1,5 @@
 function [X,n,p] = chkinputM(X, nnargin, vvarargin)
-%chkinputM makes some input parameters and user options checking
+%chkinputM makes some input parameters and user options checking in multivariate analysis
 %
 % Required input arguments:
 %

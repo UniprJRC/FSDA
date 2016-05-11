@@ -1,5 +1,5 @@
 function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
-%zscoresFS computes (robust) standardized z scores
+%zscoreFS computes (robust) standardized z scores
 %
 %<a href="matlab: docsearchFS('zscorefs')">Link to the help function</a>
 %

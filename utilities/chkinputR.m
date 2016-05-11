@@ -1,5 +1,5 @@
 function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
-%chkinputR makes some input parameters and user options checking
+%chkinputR makes some input parameters and user options checking in regression
 %
 % Required input arguments:
 %
