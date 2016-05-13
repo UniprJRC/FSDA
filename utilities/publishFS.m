@@ -654,17 +654,23 @@ end
 evalCode=true;
 Display='none';
 
-% Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
-FileWithFullPath=which('docsearchFS.m');
-[pathstr]=fileparts(FileWithFullPath);
-
 % % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix
 fsep=filesep;
 
-outputDir=[pathstr fsep 'helpfiles' fsep 'FSDA'];
-imagesDir=[pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
+% Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
+FileWithFullPath=which('docsearchFS.m');
+[pathFSDAstr]=fileparts(FileWithFullPath);
+
+outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA'];
+imagesDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
+
+%  pathstr=docroot;
+%  outputDir=[pathstr fsep 'FSDA'];
+%  imagesDir=[pathstr fsep 'FSDA' fsep 'images'];
+
+
 
 if nargin>1
     options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir);
@@ -916,57 +922,6 @@ if strcmp(Display,'iter-detailed')
 end
 
 
-%% Add comment about the category of classification of the file
-
-findfsep=strfind(pathstrcf,fsep);
-inifolder=findfsep(end)+1;
-categ=pathstrcf(inifolder:end);
-
-% if strcmp(categ,'combinatorial')
-%     FScat='<!--FScategory:Combinatorial-->';
-% elseif strcmp(categ,'graphics')
-%     FScat='<!--FScategory:Dynamic Statistical Visualization-->';
-% elseif strcmp(categ,'multivariate')
-%     FScat='<!--FScategory:Robust multivariate analysis and transformations-->';
-% elseif strcmp(categ,'utilities_stat')
-%     FScat='<!--FScategory:Utilities-->';
-% elseif strcmp(categ,'utilities')
-%     FScat='<!--FScategory:Utilities-->';
-% elseif strcmp(categ,'examples')
-%     FScat='<!--FScategory:GUIs-->';
-% elseif strcmp(categ,'clustering')
-%     FScat='<!--FScategory:Clustering-->';
-% elseif strcmp(categ,'regression')
-%     FScat='<!--FScategory:Robust Regression Analysis and transformations-->';
-% elseif strcmp(categ,'modelselection')
-%     FScat='<!--FScategory:Robust Model Selection-->';
-% else
-%     FScat='<!--FScategory:Utilities-->';
-% end
-
-switch categ
-    case 'combinatorial'
-        FScat='<!--FScategory:Combinatorial-->';
-    case 'graphics'
-        FScat='<!--FScategory:Dynamic Statistical Visualization-->'; %#ok<*NASGU>
-    case 'multivariate'
-        FScat='<!--FScategory:Robust multivariate analysis and transformations-->';
-    case 'utilities_stat'
-        FScat='<!--FScategory:Utilities-->';
-    case 'utilities'
-        FScat='<!--FScategory:Utilities-->';
-    case 'examples'
-        FScat='<!--FScategory:GUIs-->';
-    case 'clustering'
-        FScat='<!--FScategory:Clustering-->';
-    case 'regression'
-        FScat='<!--FScategory:Robust Regression Analysis and transformations-->';
-    case 'modelselection'
-        FScat='<!--FScategory:Robust Model Selection-->';
-    otherwise
-        FScat='<!--FScategory:Utilities-->';
-end
-
 %% Add title
 beforetitl=['<!DOCTYPE HTML> \r'  ...
     '<html itemscope="" xmlns="http://www.w3.org/1999/xhtml">\r' ...
@@ -974,7 +929,6 @@ beforetitl=['<!DOCTYPE HTML> \r'  ...
     '<title>\r'];
 aftertitle='</title>';
 titl=sprintf([beforetitl    name  aftertitle]);
-
 
 
 %% Add purpose of the file (extract what is in the second row of .m file)
@@ -1026,7 +980,7 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
     '<script src="includesFS/mw.imageanimation.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/jquery.highlight.js"></script>\r'...
     '<script src="includesFS/bootstrap.min.js" type="text/javascript"></script>\r'...
- '<script src="../includes/product/scripts/global.js"></script>\r'...   ' enables scrolling
+ '<script src="includesFS/global.js"></script>\r'...   ' enables scrolling
     '<script src="includesFS/bottom.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/suggest.js" type="text/javascript"></script>\r'... % for search engine
     '<script src="includesFS/underscore-min.js"></script>\r'...                 % for search engine
@@ -1073,6 +1027,12 @@ searchenginestring=['<div class="section_header level_3">\r'...
 
 
 metacontent=sprintf([beforemetacontent purpose aftermetacontent searchenginestring]);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 % Insert navigation bar on top of the page
@@ -2710,9 +2670,6 @@ OnThisPageini=['<!--START.CLASS sticky_header_container-->\r'...
     '</span>\r'...
     '<ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu">\r'...
     '<li role="presentation">\r'...
-    '<a href="getting-started.html" role="menuitem" tabindex="-1">\r'...
-    'Getting Started</a></li>\r'...
-    '<li role="presentation">\r'...
     '<a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li>\r'...
     '<li role="presentation">\r'...
     '<a href="functionlist.html" role="menuitem" tabindex="-1">\r'...
@@ -2720,9 +2677,17 @@ OnThisPageini=['<!--START.CLASS sticky_header_container-->\r'...
     '<li role="presentation">\r'...
     '<a href="release-notes.html" role="menuitem" tabindex="-1">\r'...
     'Release Notes</a></li>\r'...
+    '<li role="presentation">\r'...
+    '<a href="tutorials.html" role="menuitem" tabindex="-1">\r'...
+    'Tutorials</a></li>\r'...
     '</ul>\r'...
     '</div>\r'...
     '</li>\r'...
+    '</ul>\r'...
+    '<ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation">\r'...
+    '<li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a>\r'...
+    '</li>\r'...
+    '<li><a href="function-cate.html" itemprop="url">Functions</a></li>\r'...
     '</ul>\r'...
     '<!-- -->\r'...
     '<ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">\r'...
@@ -2858,10 +2823,11 @@ metacontent2015b=[metacontent sprintf(new2015b)];
 
 %% Write all pieces in a HTML file
 outstring=([titl metacontent2015b sitecont sintaxhtml sintaxclose description  ....
-    examples InputArgs outargs MoreaboutHTMLwithdiv References Ack Seealso clos insnav insbarra closbody]);
+    examples InputArgs outargs MoreaboutHTMLwithdiv References Ack Seealso clos  insbarra closbody]);
+%insnav before insbarra has been deleted
+%insnav
 
-
-file1ID=fopen([outputDir fsep name 'tmp.html'],'w');
+file1ID=fopen([outputDir fsep name '.html'],'w');
 
 if file1ID==-1
     
@@ -2906,10 +2872,17 @@ if evalCode==true
         % created in subfolder tmp of helpfiles and then automatically removed.
         % This subfolder will be added to put for this session
         nametmp=[name 'tmp.m'];
-        fullPathToScript=[pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp' fsep nametmp];
+        % nametmp=[name '.m'];
+        
+        fullPathToScript=[outputDir fsep 'tmp' fsep nametmp];
+        % fullPathToScript=[pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp' fsep nametmp];
+        
+        
         filetmp=fopen(fullPathToScript,'w');
-        addpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
-        addpath([pathstr fsep 'utilities' fsep 'privateFS'])
+        addpath([outputDir fsep 'tmp'])
+        % addpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
+        addpath([pathFSDAstr fsep 'utilities' fsep 'privateFS'])
+
         %        addpath([pathstr fileseparator '\helpfiles\FSDA\tmp'])
         %        addpath([pathstr '\utilities\privateFS'])
         
@@ -2925,7 +2898,8 @@ if evalCode==true
         options.codeToEvaluate=[name 'tmp'];
         options.createThumbnail=0;
         [dom,cellBoundaries] = m2mxdom(ExToExec);
-        prefix=[name 'tmp'];
+        prefix=name;
+        
         
         % file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
         [dom,laste] = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
@@ -2990,7 +2964,6 @@ if evalCode==true
         a=cell2mat(listEx(:,4));
         seqa=1:length(a);
         sel=seqa(a==1);
-        inclpoint=0;
         
         ij=1;
         
@@ -3058,7 +3031,7 @@ if evalCode==true
                 else
                 end
                 
-                iniout=iniout(1);
+                % iniout=iniout(1);
                 
                 finout=regexp(outstring,'</pre>');
                 % finout=finout(finout>iniout);
@@ -3081,8 +3054,12 @@ if evalCode==true
         % Remove folder which had temporarily added to path
         %         rmpath([pathstr '\helpfiles\FSDA\tmp'])
         %         rmpath([pathstr '\utilities\privateFS'])
-        rmpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
-        rmpath([pathstr fsep 'utilities' fsep 'privateFS'])
+        
+        %rmpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
+        
+        
+        rmpath([outputDir fsep 'tmp'])
+        rmpath([pathFSDAstr fsep 'utilities' fsep 'privateFS'])
     else
         laste='';
     end
@@ -3332,12 +3309,8 @@ if ~isempty(IniRefhttp)
                 '<a href="' namehttp '">' namehttp '</a>'...
                 descrHTTP(FinRefhttp(i):end)];
         else
-            try
                 descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
                     '<a href="' namehttp '">' namehttp '</a>'];
-            catch
-                ddd=1;
-            end
         end
     end
 else
@@ -3578,8 +3551,8 @@ OptArgsUsed=sort(OptArgsUsed);
 
 
 [~,ia,ib] = setxor(OptArgsDescribed,OptArgsUsed);
-lused=length(OptArgsUsed);
-ldesc=length(OptArgsDescribed);
+% lused=length(OptArgsUsed);
+% ldesc=length(OptArgsDescribed);
 OptMisMatch=cell(length(ia)+length(ib)+1,3);
 OptMisMatch{1,2}='Options described';
 OptMisMatch{1,3}='Options used';

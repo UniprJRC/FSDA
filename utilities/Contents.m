@@ -19,9 +19,10 @@
 %   get_contents         - Get the contents of a specified directory                                                                    -       - 2016 May 09
 %   ginputFS             - Extends the MATLAB ginput to encounter specific FSDA interaction needs                                       -       - 2016 May 09
 %   isfunction           - Checks if the function 'funstr' exists                                                                       -       - 2016 May 11
-%   makecontentsfileFS   - Extends Matlab function makecontentsfile                                                                     - UTIGEN- 2016 May 09
+%   makecontentsfileFS   - Extends Matlab function makecontentsfile                                                                     - UTIGEN- 2016 May 11
 %   openExampleFS        - Open an example for modification and execution                                                               -       - 2016 May 09
 %   PoolClose            - Closes the pool of MATLAB instances opened with PoolPrepare to execute code in parallel                      - UTIGEN- 2016 May 09
 %   PoolPrepare          - Prepares a pool of MATLAB instances for executing code in parallel                                           - UTIGEN- 2016 May 09
 %   position             - Controls the position of the open figures                                                                    - UTIGEN- 2016 May 09
 %   ProgressBar          - Is a third party function called by FSDA functions using parallel computing                                  -       - 2016 May 09
+%   publishAlpha         - Enables to create HTML alphabetical file from inputCell created with                                         -       - 2016 May 09
