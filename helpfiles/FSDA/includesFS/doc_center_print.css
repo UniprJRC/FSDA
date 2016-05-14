@@ -1,0 +1,93 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Additive CSS:.............Additive/override CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+*/
+
+
+/*-----------------------------------
+   Page Globals
+-------------------------------------*/
+html body { background:#fff none; overflow:visible !important; }
+
+/* ---- Code ---- */
+
+	/* Code: Responsive */
+	.code_responsive { width: auto; margin-bottom: 0; border: none; overflow-y: visible; overflow-x: visible; }
+
+
+/* ---- Tables ---- */
+	
+	/* Tables: Responsive */
+	.table-responsive { width: auto; margin-bottom: 0; border: none; overflow-y: visible; overflow-x: visible; }
+	.table-responsive > .table > thead > tr > th,
+	.table-responsive > .table > tbody > tr > th,
+	.table-responsive > .table > tfoot > tr > th,
+	.table-responsive > .table > thead > tr > td,
+	.table-responsive > .table > tbody > tr > td,
+	.table-responsive > .table > tfoot > tr > td { white-space: normal; }
+
+
+/*-----------------------------------
+   Structure
+-------------------------------------*/
+
+/* ---- Template ---- */
+.row-offcanvas,
+.row-offcanvas.active { margin-left: 0 !important; left: 0 !important; position: relative !important; }
+
+.sidebar-offcanvas { display: none !important; }
+
+/* ---- Header ---- */
+.header { display: none !important; }
+
+/* ---- Section Header ---- */
+.sticky_header_container { display: none !important; }
+
+/* ---- CTAs ---- */
+.cta_box { display: none !important; }
+
+/* ---- Content ---- */
+.row-offcanvas #content_container { padding-top: 20px; font-size:12px; overflow:visible !important; }
+.row-offcanvas.active #content_container { width: 100%; font-size:14px; overflow:visible !important; }
+
+	a[href]:after { content:"" !important; }
+
+	.doc_topic_desc #expandAllPage { display:none; }
+
+	.feedbackblock { display:none; }
+
+	.doc_nda_notice { margin-bottom:30px; }
+
+	#go-top { display: none !important; }
+
+/* ---- Body Trail ---- */
+.body_trail_container { display: none; }
+
+/* ---- Footer ---- */
+#footer { display:none; }
+
+
+
+/*-----------------------------------
+   Additive CSS
+-------------------------------------*/
+
+.add_border_left:before { border: none !important; }
