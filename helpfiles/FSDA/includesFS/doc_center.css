@@ -62,11 +62,11 @@ Conflict with the "collapse" class - Begin line 287
 */
 
 	/* Hierarchy: Classes */
-	#doc_center_content h1.r2015a,
-	#doc_center_content h2.title.r2015a { padding-right: 61px; padding-bottom: 3px; background: url(../images/nextgen/doc_center/bg_h1_r2015a.png) no-repeat right bottom; font-family: Arial, Helvetica, sans-serif; color: #c45400; font-size: 28px; line-height: 1.0; font-weight: bold; }
-
 	#doc_center_content h1.r2015b,
 	#doc_center_content h2.title.r2015b { padding-right: 61px; padding-bottom: 3px; background: url(../images/nextgen/doc_center/bg_h1_r2015b.png) no-repeat right bottom; font-family: Arial, Helvetica, sans-serif; color: #c45400; font-size: 28px; line-height: 1.0; font-weight: bold; }
+
+	#doc_center_content h1.r2016a,
+	#doc_center_content h2.title.r2016a { padding-right: 61px; padding-bottom: 3px; background: url(../images/nextgen/doc_center/bg_h1_r2016a.png) no-repeat right bottom; font-family: Arial, Helvetica, sans-serif; color: #c45400; font-size: 28px; line-height: 1.0; font-weight: bold; }
 	
 	h1.appicon { min-height: 18px; padding: 3px 44px 3px 0; background-position:right top; }
 
@@ -77,15 +77,15 @@ Conflict with the "collapse" class - Begin line 287
 	/* Whitespace Gecks */
 	#doc_center_content { font-size: 12px; line-height:142% !important; }
 
-	h2.title.r2015a,
 	h2.title.r2015b,
+	h2.title.r2016a,
 	#doc_center_content h1 { font-size:22px !important; line-height: 22px !important; }
 	#doc_center_content h2 { border-color:#ccc; font-size: 16px; line-height: 22px; padding-bottom: 0; margin-bottom: 8px; }
 	#doc_center_content h3 { padding-top:5px; margin-bottom:2px; color:#b04200; font-size: 13px; line-height:142%; font-weight: bold; }
 	#doc_center_content h4 { color:#000; font-size: 12px; line-height:142%; }
 
-	#doc_center_content h2.title.r2015a,
-	#doc_center_content h2.title.r2015b { margin-bottom: 20px; }
+	#doc_center_content h2.title.r2015b,
+	#doc_center_content h2.title.r2016a { margin-bottom: 20px; }
 
 
 /* ---- Anchors ---- */
@@ -96,7 +96,7 @@ Conflict with the "collapse" class - Begin line 287
 code { padding: 0; border-radius: 0; background-color: transparent; font-size: inherit; white-space: normal; }
 pre.code { border: 0px; background: transparent none; font-size: 16px; }
 
-pre { padding: 0; margin-bottom: 10px; border: none; border-radius: 0; background: transparent; color: inherit; font-size: inherit; line-height: inherit; }
+pre { padding: 0; margin-bottom: 10px; border: none; border-radius: 0; background: transparent; color: inherit; font-size: inherit; line-height: inherit; word-break: normal; word-wrap: normal; }
 
 	/* Code: Input/Output */
 	pre.codeinput { padding: 10px; margin: 0 0 20px; border: 1px solid #d3d3d3; background: #f6f6f6; }
@@ -109,7 +109,7 @@ pre { padding: 0; margin-bottom: 10px; border: none; border-radius: 0; backgroun
 	div.programlisting div.codeoutput > pre { margin-bottom: 0; }
 
 		/* Input/Output: Force Scrolling on Long Items */
-		.code_responsive { width: 100%; margin-bottom: 21px; /*border: 1px solid #ddd;*/ overflow-y: hidden; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+		.code_responsive { width: 100%; margin-bottom: 10px; /*border: 1px solid #ddd;*/ overflow-y: hidden; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 		.code_responsive > div.programlisting { margin-bottom: 0 !important; }	
 
 		div.programlisting { display: block; overflow-x: auto; overflow-y: hidden; }
@@ -182,12 +182,12 @@ ol { margin-bottom: 10px; }
 
 
 /* ---- Subscript / Superscript ---- */
-/*
+/* Font Reset */
 sup,
-sub { font-size: 11px; }
+sub { font-size: 12px; }
 
-sup { vertical-align: super; }
-*/
+sub { font-size: 75%; }
+sup { font-size: 75%; top: -.75em; }
 
 /* ---- Tables ---- */
 #doc_center_content table { width:100%; margin-bottom: 12px; border: 1px solid #ccc; border-right: none; border-bottom: none; /* font-size: 11px; */ }
@@ -608,6 +608,9 @@ sup { vertical-align: super; }
 
 	.support_package_list { display: none; }
 
+	/* MATLAB: Links */
+	#dialog-body pre { padding: 9.5px; margin: 0 0 21px; border: 1px solid #ccc; border-radius: 4px; background-color: #f5f5f5; color: #333; display: block; font-size: 13px; line-height: 1.467; word-break: break-all; word-wrap: break-word;	}
+
 
 /* ---- Search ---- Responsive-ification Needed */
 
@@ -718,7 +721,7 @@ table.feedbacklinkbot { margin-top:10px; font-size: 11px; }
 .sidebar-offcanvas ul.nav_toc li span.icon_16 { margin: 1px -21px 0 0; color: #666; font-size: 12px; float: right; }
 */
 
-.sidebar-offcanvas ul.nav_toc { padding-top: 6px; /*border-top:3px solid #d4d4d4;*/ }
+.sidebar-offcanvas ul.nav_toc { padding-top: 6px; border-top: 3px solid #d4d4d4; }
 .sidebar-offcanvas ul.nav_toc > li { padding-left: 15px; padding-right: 5px; }
 .sidebar-offcanvas ul.nav_toc li a { padding: 3px 14px 3px 30px; }
 
@@ -797,6 +800,9 @@ table.feedbacklinkbot { margin-top:10px; font-size: 11px; }
 /* ---- Content ---- */
 .content_container { padding-top: 0; }
 
+	/* Fix for Locked Header w/o Content Container Padding */
+	.sticky_header_container.affix ~ .row-offcanvas .content_container { padding-top: 96px; }
+
 
 /* ---- Body Trail ---- */
 .body_trail_container { font-size: 12px; }
@@ -816,6 +822,7 @@ table.feedbacklinkbot { margin-top:10px; font-size: 11px; }
 -------------------------------------*/
 
 /* ---- F1 Help ---- */
+#responsive_offcanvas.navigation_off #doc_header_spacer { display: none !important; }
 #responsive_offcanvas.navigation_off #header_mobile { display: none !important; }
 #responsive_offcanvas.navigation_off .sticky_header_container { display: none; }
 #responsive_offcanvas.navigation_off .row-offcanvas-left { margin-left: 0; left: 0 !important; }
@@ -833,8 +840,10 @@ h1 + .doc_families_container { margin-top: -20px; }
 .doc_families_container { /*width: 100%; margin-bottom: 20px; background: #F3F3F3; font-size: 11px; overflow: hidden;*/ }
 .doc_families_container ul { /*padding: 15px 20px; margin-bottom: 0;*/ }
 
+/*
 .landing_pg_intro { margin: -10px 0 0; padding: 0 0 10px; color: #878787; }
 .landing_pg_intro p { margin-bottom: 10px; }
+*/
 
 .doc_archives { margin: -37px 0 0; float: right; font-size: 11px; text-align: right; }
 .doc_archives p { margin-bottom: 0; }
@@ -884,7 +893,7 @@ h1 + .doc_category_nav_head { margin-top: -20px; }
 .doc_category_nav_foot li a.pdf { padding-left: 28px; background: url(../images/nextgen/global/ico_pdf.png) no-repeat 7px 4px; }
 .doc_category_nav_foot li a.pdf:hover { background: #6a6a6a url(../images/nextgen/global/ico_pdf.png) no-repeat 7px 4px; }
 
-	/* 15a */
+	/* 15b */
 	#pgtype-landingpage h3 { margin-bottom: 0; } 
 
 
@@ -918,17 +927,14 @@ ul.switch li { border-right: none; border-left: 1px solid #fff; }
 .doc_function_block,
 .doc_block_block { margin:0 0 20px; padding:10px 0 5px; border: 2px solid #fafafa; border-right: none; border-left: none; background: #fcfcfc; }
 
+.doc_blocksgroup_container .doc_block_block,
+.doc_functionsgroup_container .doc_function_block { padding: 0; border: none; background: transparent; }
+
 h2 + .doc_function_block,
 h2 + .doc_block_block { margin-top: -8px; }
 
 h3 + .doc_function_block,
 h3 + .doc_block_block { margin-top: -8px; }
-
-h2 + .doc_functionsgroup_container .doc_function_block,
-h2 + .doc_functionsgroup_container .doc_block_block { margin-top: -8px; }
-
-h3 + .doc_functionsgroup_container .doc_function_block,
-h3 + .doc_functionsgroup_container .doc_block_block { margin-top: -8px; }
 
 
 /* ---- Category Page ---- */
@@ -950,7 +956,7 @@ div.doc_subgroup_container { margin-bottom: 12px; }
 
 .doc_productdescgroup_container + .doc_productsetupgroup_container { margin-top: -16px; }
 
-	/* 15a */
+	/* 15b */
 	#pgtype-category .dcenter_c1title { /*font-size: 18px;*/ font-size: 13px; font-weight: bold; line-height: 142%; }
 	#pgtype-category .subcat_desc { /*margin-bottom: 21px;*/ margin-bottom: 10px; display: block; }
 
@@ -1031,6 +1037,11 @@ a.expandAllLink { text-decoration: none; }
 
 		/* Code Responsive */
 		.syntax_signature .code_responsive { margin-bottom: 0; float: left; }
+
+		/* Boostrap Version for Geck 1127741 */
+		.syntax_signature_module { padding: 7px 15px; border: none; }
+		.syntax_signature_module .row:hover { background: #ddd; }
+		.syntax_signature_module .row .intrnllnk { float: right; font-size: 90%; }
 
 
 	/* Description */
@@ -1136,7 +1147,22 @@ a.expandAllLink { text-decoration: none; }
 
 .searcherror { color: red; }
 
-	/* Search Results: Header/Footer */
+
+.sidebar-offcanvas ul.nav_breadcrumb { border-bottom:none; }
+#facets_area { padding:20px; margin-right:0px; }
+.search_refine h3 { color: #555; }
+.search_refine a { color: #777; }
+
+.search_refine .facet_title { color: #777; }
+
+.search_refine li.refined > a:after { color: #777; }
+
+
+  /* Search Results Nav: Type */
+  .search_refine.type li.refinable a { padding-left: 27px; }
+  .search_refine.type li.refined a { padding-left: 27px; }
+
+/* Search Results: Header/Footer */
 	#search_result_header,
 	#search_result_footer { width: 100%; margin: 0 0 15px; /*font-size: 11px; line-height: 1.3;*/ color: #6a6a6a; float: left; clear: both; }
 
@@ -1153,94 +1179,33 @@ a.expandAllLink { text-decoration: none; }
 	.result_type_rn { background: transparent url(../images/nextgen/doc_center/ico_releasenotes.png) no-repeat 0 3px; } 
 	.result_type_so { background: transparent url(../images/nextgen/doc_center/ico_sysobjects.png) no-repeat 0 3px; }
 
-	/* Search Results: Nav */
-	#facets_area { padding: 20px; }
 
-	.search_refine { margin: 0 0 20px; padding: 0; border: 1px solid #d6d4d4; background: #f8f8f8; /*font-size: 11px;*/ }
+  /* Search Results Nav: Icons */ 
 
-	.search_refine h3 { padding: 7px 6px; margin: 0; border: 1px solid #fff; background: #eaeaea; color: #000; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; line-height: 1.0; }
-	.search_refine ul { padding: 0; margin: 0; border-top: 1px solid #d6d4d4; }
-	.search_refine ul li { padding: 0; margin: 0; background: none; line-height: 1.3; }
-	.search_refine a { background-image: none; color: #005fce; display: block; }
-	.search_refine a:hover { background: #dbdbdb; color: #005fce; text-decoration: none; }
-	.search_refine li a { padding: 8px 30px 8px 7px; }
-	.search_refine li li a { padding: 8px 30px 8px 17px; }
-	.search_refine li li li a { padding: 8px 30px 8px 27px; }
-	.search_refine li a:hover { background: #dbdbdb; color: #3670b5; text-decoration: none; }
+    /* Blocks Icon */
+    .search_refine.type li.blk_type a { background-image: url(../images/nextgen/doc_center/ico_blocks.png); background-repeat:  no-repeat; background-position:  6px center; } 
 
-	.search_refine li.refined a { background: url(../images/nextgen/global/ico_delete_facet.png) no-repeat right 8px; color: #000; }
-	.search_refine li.refined a:hover { color: #000; }
+    /* Examples Icon */
+    .search_refine.type li.eh_type a { background-image: url(../images/nextgen/doc_center/ico_examples.png); background-repeat:  no-repeat; background-position:  6px center; } 
 
-	.search_refine li.refinable a { padding-top: 5px; padding-right: 7px; padding-bottom: 5px; border-bottom: none; background-color: transparent; background-image: none; color: #005fce; }
-	.search_refine li.refinable a:hover { background :#dbdbdb; color: #005fce; text-decoration: none; }
-	
-	.search_refine .refine_category_count,
-	.search_refine .refine_product_count,
-	.search_refine .refine_type_count { margin: 0 0 5px 7px; display: block; float: right; }
+    /* Category Icon */
+    .search_refine.type li.cat_type a { background-image: url(../images/nextgen/doc_center/ico_category.png); background-repeat:  no-repeat; background-position:  6px center; } 
 
-	.search_refine li a { padding: 6px 30px 6px 7px; margin-top: 0; }
-	.search_refine li li a { padding: 6px 30px 6px 17px; }
-	.search_refine li li li a { padding: 6px 30px 6px 27px; }
-	.search_refine li.refinable a { padding-top: 6px; padding-right: 7px; padding-bottom: 5px; }
+    /* Function Icon */
+    .search_refine.type li.fcn_type a { background-image: url(../images/nextgen/doc_center/ico_function.png); background-repeat:  no-repeat; background-position:  6px center; } 
 
-	.search_refine_scroll { max-height: 200px; border-top: 1px solid #d6d4d4; overflow-x: hidden; overflow-y: auto; }
-	.search_refine_scroll ul { border-top: 0; }
+    /* More About Icon */
+    .search_refine.type li.con_type a { background-image: url(../images/nextgen/doc_center/ico_more.png); background-repeat:  no-repeat; background-position:  6px center; } 
 
-	/* Search Results Nav: Type */
-	.search_refine.type li.refinable a { padding: 6px 7px 6px 27px; border-bottom: none; }
-	.search_refine.type li.refined a { padding: 8px 10px 8px 30px; border-bottom: none; }
-	.search_refine.type li.refined a { padding: 6px 7px 6px 27px; }
-	.search_refine.type li a:hover { background-color: transparent; }
+    /* Release Notes Icon */
+    .search_refine.type li.rn_type a { background-image: url(../images/nextgen/doc_center/ico_releasenotes.png); background-repeat:  no-repeat; background-position:  6px center; } 
 
-	/* Search Results Nav: Icons */	
-
-		/* Blocks Icon */
-		.search_refine.type li.blk_type { background: transparent url(../images/nextgen/doc_center/ico_blocks.png) no-repeat 6px center; } 
-		.search_refine.type li.blk_type:hover { background: #dbdbdb url(../images/nextgen/doc_center/ico_blocks.png) no-repeat 6px center; }
-
-		/* Examples Icon */
-		.search_refine.type li.eh_type { background: transparent url(../images/nextgen/doc_center/ico_examples.png) no-repeat 6px center; } 
-		.search_refine.type li.eh_type:hover { background: #dbdbdb url(../images/nextgen/doc_center/ico_examples.png) no-repeat 6px center; }
-
-		/* Category Icon */
-		.search_refine.type li.cat_type { background: transparent url(../images/nextgen/doc_center/ico_category.png) no-repeat 6px center; } 
-		.search_refine.type li.cat_type:hover { background: #dbdbdb url(../images/nextgen/doc_center/ico_category.png) no-repeat 6px center; } 
-
-		/* Function Icon */
-		.search_refine.type li.fcn_type { background: transparent url(../images/nextgen/doc_center/ico_function.png) no-repeat 6px center; } 
-		.search_refine.type li.fcn_type:hover { background: #dbdbdb url(../images/nextgen/doc_center/ico_function.png) no-repeat 6px center; }
-
-		/* More About Icon */
-		.search_refine.type li.con_type { background: transparent url(../images/nextgen/doc_center/ico_more.png) no-repeat 6px center; } 
-		.search_refine.type li.con_type:hover { background: #dbdbdb url(../images/nextgen/doc_center/ico_more.png) no-repeat 6px center; } 
-
-		/* Release Notes Icon */
-		.search_refine.type li.rn_type { background: transparent url(../images/nextgen/doc_center/ico_releasenotes.png) no-repeat 6px center; } 
-		.search_refine.type li.rn_type:hover { background: #dbdbdb url(../images/nextgen/doc_center/ico_releasenotes.png) no-repeat 6px center; } 
-
-		/* System Objects Icon */
-		.search_refine.type li.so_type { background: transparent url(../images/nextgen/doc_center/ico_sysobjects.png) no-repeat 6px center; } 
-		.search_refine.type li.so_type:hover { background: #dbdbdb url(../images/nextgen/doc_center/ico_sysobjects.png) no-repeat 6px center; }
+    /* System Objects Icon */
+    .search_refine.type li.so_type a { background-image: url(../images/nextgen/doc_center/ico_sysobjects.png); background-repeat:  no-repeat; background-position:  6px center; } 
 
 	/* Search Results: Nuggets */
 	.nugget_container { margin-top: 0; margin-bottom: 20px; }
-	/* In Site6 Now */
-	/*
-	#nugget-container { padding: 5px; border: none; margin-bottom: 30px; margin-top: 10px; border-radius: 0; box-shadow: none; overflow: hidden; }
-	.nugget-label { float: left; text-transform: uppercase; margin: 10px 13px 0; font-size: 11px; }
-	.tokens { vertical-align: middle; }
-	.token { border: 1px solid #d6d4d4; margin: 3px 0 0 3px; background-color: #fff; border-radius: 5px; float: left; white-space: nowrap; }
-	.token .label { padding: 0 0 0 10px; color: #555; font-size: 12px; font-weight: normal; vertical-align: middle; }
-	.token a { padding: 5px; color: #555; display: inline-block; }
-	.token a:hover { text-decoration: none; }
-	.token a .icon-remove { vertical-align: middle; }
-	.token:hover { background-color: rgba(0, 0, 0, 0.04); border-color: #777; }
-	.token:hover .label { text-decoration: line-through; }
-	.token-remove-all { padding-top: 9px; margin-left: 10px; background: transparent; display: inline-block; }
-	.token-remove-all:hover { background: transparent; text-decoration: none; }
-	.token-pending-delete { border: 1px solid #777; background-color: rgba(0, 0, 0, 0.04); }
-	.token-pending-delete .label { text-decoration: line-through; }
-	*/
+
 
 
 
@@ -1281,7 +1246,7 @@ $ Override CSS
 
 /* ---- Icons ---- */
 a.ico_interactive_learning { padding: 3px 0 3px 20px; background: url(../images/nextgen/supporting/apps/doc_center/ico-interactive-learning.png) no-repeat 0 2px; display: block; line-height: normal; }
-a.video { padding: 3px 0 3px 20px; background: url(../images/nextgen/supporting/apps/doc_center/ico-video.png) no-repeat 0 3px; display: block; line-height: normal; }
+a.video { padding: 3px 0 3px 20px; background: url(../images/nextgen/supporting/apps/doc_center/ico-video.png) no-repeat 0 1px; display: inline-block; line-height: normal; }
 
 
 
@@ -1292,11 +1257,6 @@ a.video { padding: 3px 0 3px 20px; background: url(../images/nextgen/supporting/
 
 /* ---- Non-Mobile ---- */
 @media only screen and (min-width: 768px) {
-
-/* ---- Structure ---- */
-	/* CTAs */
-	.cta_box { overflow: hidden; }
-	.cta_box .cta_item { float: right; }
 
 }
 
@@ -1322,6 +1282,17 @@ a.video { padding: 3px 0 3px 20px; background: url(../images/nextgen/supporting/
 /* ---- Mobile ---- */
 @media only screen and (max-width: 767px) {
 
+    /* Site Elements: Tables */
+      /* Responsive Tables */
+      .table-responsive > .table > thead > tr > th,
+      .table-responsive > .table > tbody > tr > th,
+      .table-responsive > .table > tfoot > tr > th,
+      .table-responsive > .table > thead > tr > td,
+      .table-responsive > .table > tbody > tr > td,
+      .table-responsive > .table > tfoot > tr > td { white-space: normal; }
+      
+      #doc_center_content .table-responsive table { border:none; }
+
 }
 
 
@@ -1338,7 +1309,6 @@ a.video { padding: 3px 0 3px 20px; background: url(../images/nextgen/supporting/
 .fat_footer h3 { padding:0px; color:#000; }
 
 h3.expand { padding-top:0px; color:#005fce; }
-.search_refine h3 { color:#000; }
 
 p, ul, ol, pre { margin-bottom:10px; }
 ul { padding-top:0px; }
@@ -1416,11 +1386,11 @@ ul.doc_categories { padding-top:0px; }
 
 
 /* Harut CSS Updates */
-h1.r2015a,
-h2.title.r2015a { padding-bottom:3px; font-family:Arial; font-size:22px; line-height:22px; font-weight:normal; }
-
 h1.r2015b,
-h2.title.r2015b { padding-bottom:3px; font-family:Arial; font-size:22px; line-height:22px; font-weight:normal; } 
+h2.title.r2015b { padding-bottom:3px; font-family:Arial; font-size:22px; line-height:22px; font-weight:normal; }
+
+h1.r2016a,
+h2.title.r2016a { padding-bottom:3px; font-family:Arial; font-size:22px; line-height:22px; font-weight:normal; } 
 
 h2 { font-size:16px; color:#3c3c3c; }
 
@@ -1464,3 +1434,13 @@ div.programlisting div.codeoutput > pre { margin-bottom:0px; }
 #doc_center_content table.table_borderless,
 #doc_center_content table.table_borderless th,
 #doc_center_content table.table_borderless td { border: none; }
+
+
+
+/* ---- Subscript / Superscript ---- */
+/* Font Reset */
+sup,
+sub { font-size: 12px; }
+
+sub { font-size: 75%; }
+sup { font-size: 75%; top: -.75em; }
