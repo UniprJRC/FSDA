@@ -1,0 +1,175 @@
+﻿<!DOCTYPE HTML>
+<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
+
+<script src="includesFS/headJS.js" type="text/javascript"></script>
+<!--headJS loads all required javascripts-->
+<script type="text/javascript">
+document.write(headJS);
+</script>
+<!--Insert title of the page-->
+<title>FSDA main page</title>
+<!--Beginning of body-->
+<body id="responsive_offcanvas">
+
+<div id="doc_header_spacer" class="header">
+</div>
+<!--Include serch engine-->
+<script type="text/javascript">
+document.write(engine);
+</script>
+<!--Include left bar menu-->
+<div class="row-offcanvas row-offcanvas-left">
+	<script type="text/javascript">
+	document.write(lbar);
+	</script>
+	<!--Include divs before FSDA text-->
+	<script type="text/javascript">
+document.write(divsbefore);
+</script>
+	<!--BEGINNING OF FSDA TEXT-->
+	<!-- -->
+	<!-- -->
+	<!-- -->
+<h2 class="title">MCD estimators</h2>
+
+
+<p>The MCD estimator works as follows:</p>
+<p>Fix an integer h such that [(n+v+1)/2] ≤h < n where [] denotes the integer part. The preferred choice of h for outlier detection is its lower
+bound, which yields the breakdown value [(n+v+1)/2]/n. Let
+<img alt="" src="images_help/img39.gif"> 
+and&nbsp;
+<img alt="" src="images_help/img3B.gif">
+be the mean and the covariance matrix of the subset of h observations for
+which the determinant of the covariance matrix is minimal.
+<img alt="" src="images_help/img39.gif">is defined to be the MCD
+estimator of μ, whereas the MCD estimator of Σ is proportional to
+<img alt="" src="images_help/img3B.gif">.</p>
+<p>
+The proportionality
+constant is chosen to achieve consistency at the normal model. It was derived by Butler et al.
+(1993) and by Croux and Haesbroeck (1999) as</p>
+<p>
+<img src="images_help/wpdzy6c8.gif">
+</p>
+<p>The MCD is used because it has rate of convergence n<sup>−0.5</sup>, unlike the minimum
+volume ellipsoid estimator (Davies, 1992) for which convergence is at rate n<sup>−1/3</sup>. Another reason
+is the fast algorithm of Rousseeuw and Van Driessen (1999), which has been 
+implemented in many languages. </p>
+<p>Although consistent at the normal model, the estimator</p>
+<img src="images_help/wp3xvutc.gif"><p>
+</p>
+is still biased for small sample sizes in the sense that the empirical size is 
+much greater than the nominal one. Pison et al. (2002) showed by Monte Carlo simulation the
+importance of applying a small sample correction factor to it to achieve an 
+empirical size much closer to the nominal. Let 
+<img src="images_help/wp9vmpw3.gif">
+be this factor
+for a specific choice of n and v. The resulting (squared) robust
+Mahalanobis distances are then
+</p>
+<p><img src="images_help/wpolnvf3.gif"></p>
+<p>
+</p>
+where <img src="images_help/wp2y7w2y.gif">. These distances are compared with the α% cutoff
+value of their asymptotic χ2 
+distribution with v degrees of freedom, with α in most published reports between 0.01
+and 0.05.
+<p></p>
+<p>The exact finite sample distribution of the robust Mahalanobis distances 
+analyzed above is unknown, but
+Hardin and Rocke (2005) proposed a scaled F-approximation which, in small and moderate
+samples, outperforms the asymptotic χ2<sub>v</sub> distribution 
+ approximation of MCD</p>
+<p>To increase efficiency, a reweighted version of the MCD estimators is often used in practice.
+These reweighted estimators, <img src="images_help/wpjx2fzd.gif"> are computed by giving weight 0 to observations
+for which<img src="images_help/wpy5xyaw.gif"> exceeds a cut-off value. Thus a first subset of h observations is used
+to select a second subset from which the parameters are estimated. The default choice for this
+cut-off is</p>
+<p>
+<img alt="" src="images_help/img7A.gif" style="float: left"></p>
+<p></p>
+<p>Both the consistency (Croux and Haesbroeck, 2000) and the small sample (Pison et al., 2002)
+correction factors <img src="images_help/wpd8bvp0.gif">&nbsp; 
+can be applied to <img src="images_help/wpya3upf.gif"> when the squared
+robust Mahalanobis distances become</p>
+<p><img src="images_help/wp12lrpf.gif"></p><p>with
+<img src="images_help/wp2g7x50.gif"> . The reweighted distances are again compared
+with their asymptotic χ2<sub>v</sub>
+-distribution (Lopuhaä, 1999).</p>
+<p>&nbsp;</p>
+<p> </p>
+<h3>Example 1</h3>
+<p>The code below loads the <a href="datasets_mv.html">heads dataset</a> and launch the 
+MCD outlier detection procedure</p>
+<pre class="programlisting">
+% Load the data
+load('head');
+Y=head.data;
+% Use function FSM (Forward search in multivariate analysis with automatic outlier detection purposes)
+[RAW,REW]=mcd(Y,'plots',1,'conflev',1-0.01/size(Y,1));
+</pre>
+<p>No outlier is declared using the Bonferroni threshold using raw or 
+reweuighted mcd.</p>
+<p>
+<img alt="" src="images_help/img17.jpg">
+</p>
+<p>
+<h3>Example 2</h3>
+<p>The code below loads the <a href="datasets_mv.html">mussels dataset</a> and 
+performs an automatic outlier detection procedure 
+in the original scale and then in the BoxCox transformed scale.</p>
+Analysis on the original scale
+<pre class="programlisting">
+load('mussels.mat');
+Y=mussels.data;
+[RAW,REW]=mcd(Y,'plots',1,'conflev',1-0.01/size(Y,1));
+</pre>
+<p>
+<img alt="" src="images_help/img1A.jpg"></p>
+<p>
+&nbsp;</p>
+<p>
+The associated scatter plot matrices with the outliers highlighted, which are 
+produced atuomatically are shown below.</p>
+<p>
+<img alt="" src="images_help/img1C.jpg"></p>
+&nbsp;<p>
+&nbsp;</p>
+
+<p>
+The analysis on the transformed scale is shown below
+<pre class="programlisting">
+load('mussels.mat');
+Y=mussels.data;
+la=[0.5 0 0.5 0 0];
+v=size(Y,2);
+Y=normBoxCox(Y,1:v,la);
+[RAW,REW]=mcd(Y,'plots',1,'conflev&#39;,1-0.01/size(Y,1))</pre>
+
+<br><br>
+<img alt="" src="images_help/img20.jpg"><p>
+&nbsp;</p>
+<p>The raw MCD seems to declare 6 outliers while the reweighted MCD finds just 4.</p>
+You can compare this output with that which 
+comes out from the use of <a href="mult_sandmm.html">S and MM estimators</a> or those based on the 
+<a href="mult_fsm.html">forward search</a>.</p>	
+
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<!--END OF FSDA TEXT-->
+	<!--Include divs after FSDA text-->
+	<script language="javaScript" type="text/javascript">
+document.write(divsafter);
+</script>
+	<!--Include fixed text at the bottom of the page-->
+	<script language="javaScript" type="text/javascript">
+document.write(barra);
+</script>
+	<!--END.CLASS body_trail_container-->
+	<!--close row-offcanvas--></div>
+<!--close class="row-offcanvas row-offcanvas-left" -->
+
+</body>
+
+</html>

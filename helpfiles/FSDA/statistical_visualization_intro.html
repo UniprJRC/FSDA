@@ -1,0 +1,164 @@
+﻿<!DOCTYPE HTML>
+<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
+
+<script src="includesFS/headJS.js" type="text/javascript"></script>
+<!--headJS loads all required javascripts-->
+<script type="text/javascript">
+document.write(headJS);
+</script>
+<!--Insert title of the page-->
+<title>FSDA main page</title>
+<!--Beginning of body-->
+<body id="responsive_offcanvas">
+
+<div id="doc_header_spacer" class="header">
+</div>
+<!--Include serch engine-->
+<script type="text/javascript">
+document.write(engine);
+</script>
+<!--Include left bar menu-->
+<div class="row-offcanvas row-offcanvas-left">
+	<script type="text/javascript">
+	document.write(lbar);
+	</script>
+	<!--Include divs before FSDA text-->
+	<script type="text/javascript">
+document.write(divsbefore);
+</script>
+	<!--BEGINNING OF FSDA TEXT-->
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	
+<h1 class="title">Introduction to Dynamic Statistical Visualization</h1>
+
+<p>The problem of representing data or any quantitative information in a graphical 
+form suitable to human interpretation and exploration has deep roots and has been 
+addressed in statistics and in many other scientific disciplines (Friendly 2005). 
+One of the biggest challenges statisticians face when working on applied problems 
+with non-statisticians is to be able to effectively present and communicate statistical 
+results (Spence 2001, Tufte 1983). In this toolbox we have developed new interactive 
+tools which can dynamically connect the information which comes from different “robust 
+plots”. </p>
+<p>The Flexible Statistics Data Analysis Toolbox&trade; extends the data visualization functions already present 
+in the Statistics toolbox and in MATLAB. The extensions concern a series of robust 
+statistics plots which we made dynamic and interactive. These new features not only 
+help to better present the data to a non statistical audience, but also enable the 
+researcher to highlight the presence of hidden subgroups of data.</p>
+
+<p>MATLAB includes a data brushing facility for marking observations on graphs and 
+allowing the user to remove or save them to new variables. There is also a related 
+data linking facility for connecting graphs with workspace variables, to automatically 
+and interactively update them. In the Forward Search context the applicability of such 
+powerful functions is limited by the fact that with the link function two graphs 
+can be connected, and therefore brushed, only when they refer to the same variables 
+in the workspace. </p>
+<p>For example, linking the Monitoring Residuals Plot with the Scatter 
+Plot Matrix is not possible, as the former refers to the residuals of the data units 
+at each step of the search, while the latter refers to the unit values. Besides, 
+line plots created with <tt>line</tt> and the <tt>gplotmatrix</tt> function 
+in particular cannot be brushed 
+with the standard MATLAB brush function. </p>
+<p>For these reasons in the FSDA toolbox we have re-implemented the brushing and 
+linking facilities. In particular, we have adopted (and adapted to our needs) 
+the&nbsp; powerful <tt>selectdata</tt> function by John 
+D&#39;Errico, available at the MATLAB Central exchange user community (<a href="http://www.mathworks.com/matlabcentral/fileexchange/13857">http://www.mathworks.com/matlabcentral/fileexchange/13857</a>). 
+</p>
+<p>Brushing is implemented in the FSDA toolbox in two modalities. A <em>non persistent</em> modality 
+where the selection can be done by the user only once and a <em>persistent</em> brushing 
+where the selection can be repeated multiple times. In addition, there is a <em>persistent 
+non cumulative</em> brush option, where every time a brushing action is performed previous 
+selections are removed, and a cumulative one where each selection is highlighted 
+and appropriately reported in the legend of the graphs involved.</p>
+<p>The above features are complemented by our customized version of the standard Matlab 
+	<a href="matlab:web(['jar:file:///',matlabroot,'/help/techdoc/help.jar!/creating_plots/f4-44221.html#f4-49948'],'-helpbrowser')">
+<tt>datatip</tt></a>   option that, once a point in a forward trajectory is 
+selected reports in a a tooltip box relevant information about the associated unit(s) and the 
+related statistics.</p>
+	<p>&nbsp;</p>
+<ul type="disc">
+	<li>
+	<p><a href="statistical_visualization_monres.html">Monitoring Residuals plot</a> 
+	is a basic visualization tool to identify outliers and more in general groups 
+	of observations which behave differently from the rest of the data. In this 
+	plot the option <tt>datatooltip</tt> can be used to provide information about 
+	the unit selected, the step in which the unit enters the search and the associated 
+	label. On the other hand, option <tt>databrush</tt> enables the user to select 
+	a set of residual trajectories and to see them highlighted in the y|X plot, 
+	i.e. a matrix of scatter plots of y against each column of X, grouped according 
+	to the selection(s) done by brushing. If the plot y|X does not exist it is automatically 
+	created. In addition, brushed units are automatically highlighted in other forward 
+	plots (e.g. minimum deletion residual plot) if they are already open. </p>
+	<li>
+	<p><a href="statistical_visualization_mdr.html">Minimum Deletion Residual</a> 
+	monitors the value of minimum deletion residual in each step of the forward 
+	search. If one or more atypical observations are present in the data, the plot 
+	of minimum deletion residual will show a peak in the step prior to the inclusion 
+	of the first outlier. The plot may show a subsequent decrease, due to the effect 
+	of masking, as further outliers enter the subset. In this plot the option
+	<tt>datatooltip</tt> can be used to provide information about the unit(s) which 
+	enter the search in the selected step. On the other hand, option <tt>databrush</tt> 
+	enables the user to select a part of the curve of minimum deletion residual 
+	and to see the corresponding units highlighted in the scatter plot matrix and 
+	in other forward plots. </p>
+	</li>
+	<li>
+	<p><a href="statistical_visualization_fan.html">Fan plot</a> helps you identify 
+	the best value of the <a href="transf_intro.html">Box-Cox transformation</a> parameter for the response of your 
+	regression model. The fan plot allows assessment of the proportion of the data 
+	supporting a particular transformation, information not available from other 
+	methods of analysis. In this plot the option <tt>
+	datatooltip</tt> 
+	can be used to provide information about the unit(s) which enter the search 
+	in the selected step. On the other hand, option <tt>databrush</tt> enables 
+	the user to select a part of the curve(s) which make up the fan plot and to see the 
+	corresponding units highlighted in the scatter plot matrix of transformed 
+	and untransfomred data and in other forward plots. </p>
+	</li>
+	<li>
+	<p><a href="statistical_visualization_yx.html">yXplot</a>  
+	plots the dependent variable against the columns of the independent variables 
+	in the input dataset. The function, based on the MATLAB <tt>gplotmatrix</tt> 
+	function, allows to select units in one of the scatter plots and to produce 
+	automatically a Monitoring Residuals plot in which labels are put for the units 
+	which fulfill various user defined criteria.  </p>
+	</li>
+</ul>
+<ul>
+	<li>
+	<p><a href="statistical_visualization_intro.html">Introduction</a></p>
+	</li>
+	<li>
+	<p><a href="statistical_visualization_monres.html">Monitoring Residuals Plot</a></p>
+	</li>
+	<li>
+	<p><a href="statistical_visualization_mdr.html">Minimum Deletion Residual Plot</a></p>
+	</li>
+	<li>
+	<p><a href="statistical_visualization_fan.html">Fan plot</a></p>
+	</li>
+	<li>
+	<p><a href="statistical_visualization_yx.html">Dynamic Scatter Plot Matrix</a></p>
+	</li>
+</ul>
+<p></p>
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<!--END OF FSDA TEXT-->
+	<!--Include divs after FSDA text-->
+	<script language="javaScript" type="text/javascript">
+document.write(divsafter);
+</script>
+	<!--Include fixed text at the bottom of the page-->
+	<script language="javaScript" type="text/javascript">
+document.write(barra);
+</script>
+	<!--END.CLASS body_trail_container-->
+	<!--close row-offcanvas--></div>
+<!--close class="row-offcanvas row-offcanvas-left" -->
+
+</body>
+
+</html>

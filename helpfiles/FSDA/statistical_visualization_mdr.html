@@ -1,0 +1,170 @@
+﻿<!DOCTYPE HTML>
+<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
+
+<script src="includesFS/headJS.js" type="text/javascript"></script>
+<!--headJS loads all required javascripts-->
+<script type="text/javascript">
+document.write(headJS);
+</script>
+<!--Insert title of the page-->
+<title>FSDA main page</title>
+<!--Beginning of body-->
+<body id="responsive_offcanvas">
+
+<div id="doc_header_spacer" class="header">
+</div>
+<!--Include serch engine-->
+<script type="text/javascript">
+document.write(engine);
+</script>
+<!--Include left bar menu-->
+<div class="row-offcanvas row-offcanvas-left">
+	<script type="text/javascript">
+	document.write(lbar);
+	</script>
+	<!--Include divs before FSDA text-->
+	<script type="text/javascript">
+document.write(divsbefore);
+</script>
+	<!--BEGINNING OF FSDA TEXT-->
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<h2 id="bqvsgfl-1" class="title">Monitoring Minimum Deletion Residual Plot</h2>
+<a class="indexterm" name="zmw57dd0e2698"></a>
+<p></p>
+<p>For outlier detection it is useful to monitor the
+minimum deletion residual r<sup>*</sup><sub>[<em>m</em>+1]</sub> among the units not belonging to the subset.
+If one or more atypical observations are
+present in the data, the plot of r<sup>*</sup><sub>[<em>m</em>+1]</sub> against the subset size <em>m</em> will show a peak in the
+step prior to the inclusion of the first outlier.</p>
+<p>Suppose you want to analyze the Hawkins data. </p>
+<pre class="programlisting">
+% Load Hawkins data: 128 observations and 9 explanatory variables
+load hawkins;
+% Define y
+y=hawkins.data(:,9);
+% Define design matrix X
+X=hawkins.data(:,1:8);
+% Initial starting point based on Least Trimmed Squares
+[out]=LXS(y,X,'nsamp',10000);
+% Exploratory Forward Search 
+[out]=FSReda(y,X,out.bs);
+% Monitoring minimum deletion residuals plot
+mdrplot(out,'ylimy',[1 8],'xlimx',[25 128])
+</pre>
+<pre class="programlisting">&nbsp;</pre>
+<p>The plot of minimum deletion residual among observations
+not in the subset, shows three clear peaks (see Figure below).</p>
+<p><img alt="" height="538" src="plots/hawk_mindelres.jpg" width="676"></p>
+
+<p>
+The three
+peaks in the figure show the distance of the nearest observation from the
+model that has been fitted so far. The first peak is the largest because the
+variance of the first 86 cases is so small. The declining shape of each peak
+is caused by the increase in s<sup>2</sup> as outliers are introduced during the search,
+which reduces the size of the deletion residuals. At the end of the peaks
+there is nothing remarkable about the values of the deletion residuals.
+This plot is one
+way in which the forward search reveals the masked nature of the outliers.
+
+This plots, however, is static in the sense that does not enable for example 
+to understand from which units the 3 peaks, which clearly appear in the minimum 
+deletion residual plot, are formed. Similarly, it is not clear which 
+trajectories of the residuals correspond to the three peaks. So far all this 
+information had to be checked manually analyzing the units which entered the 
+search. At present, thanks to the interactive connection which we have created 
+among the different plots it is possible to select a part of the search in the 
+monitoring of the minimum deletion residual using the option <tt>databrush</tt> and 
+suboption <tt>persist</tt> and at the same time to see which are the corresponding residuals 
+in the monitoring residuals plot and/or the position of the units highlighted in the
+scatter plot matrix.</p>
+<p>
+We initially produce the monitoring residuals plot.</p>
+<pre class="programlisting">
+resfwdplot(out);
+</pre>
+<p>
+Finally we use the option databrush inside function mdrplot.</p>
+<pre class="programlisting">
+mdrplot(out,'ylimy',[1 8],'databrush',{'selectionmode','Brush','persist' 'on' 'Label' 'on' 'RemoveLabels' 'off'});
+</pre>
+<p>
+For
+example, Figure below shows that the final part of the search which corresponds to the final peak is selected,
+it corresponds to the  
+most 6 extreme (negative and positive) residuals
+enter the last 6 steps of the search.  The plot of y against all explanatory variables shows
+that in the scatter of y against X8 these units are those which deviate most from the regression line.
+<p><img alt="" height="476" src="plots/hawk_min-res-spm.jpg" width="1000"></p>
+<p>&nbsp;<p>
+</p>
+
+<p>Similarly, if we do a brushing of the steps of the search before the highest 
+peak, we can see that all these steps correspond to the set of trajectories
+which have a residual very close to 0 in the initial part of the search and when 
+the units forming the other groups are introduced their residual is completely 
+mixed to that of the other units (see Figure below).
+<p><img alt="" height="476" src="plots/hawk_min-res-spm1.jpg" width="1000"></p>
+<p></p>
+<p>
+In conclusion: every time
+a brushing action is performed on the monitoring residuals plot, it is possible
+to display in an automatic way also the information about the position of
+the brushed units in the scatter diagram of y against the required explanatory
+variable(s)
+.</p>
+<p></p>
+<p>Using option <tt>datatooltip</tt> it is also possible to interact with the plot of 
+minimum deletion residual. Clicking with the mouse on a point of the curve it is possible to 
+have information about the unit selected, the step in which the unit entered the search and the
+associated label (if it is present). 
+ </p>
+<p>For example, using the command</p>
+<pre class="programlisting">
+ mdrplot(out,'ylimy',[1 8],'datatooltip',1);
+ </pre>
+ 
+ if we click on the curve at step <em>m</em>=98 it is&nbsp; possible to know that the value of minimum deletion residual 
+is equal to 3.16 and that the unit which will join the subset at step <em>m</em>=99 will be 
+the one at row 101.<br>
+<img alt="" height="595" src="plots/hawk_datatooltip.jpg" width="688">
+
+
+
+<p></p>
+<table border="0" cellpadding="0" cellspacing="0" class="nav" summary="Navigation aid" width="100%">
+	<tr valign="top">
+		<td align="left" width="20">
+		<a href="statistical_visualization_monres.html">
+		<img align="bottom" alt="Introduction" border="0" src="images_help/b_prev.gif"></a>
+		</td>
+		<td align="left">Monitoring Residuals Plot</td>
+		<td>&nbsp;</td>
+		<td align="right">Fan Plot</td>
+		<td align="right" width="20">
+		<a href="statistical_visualization_fan.html">
+		<img align="bottom" alt="Fan plot" border="0" src="images_help/b_next.gif"></a></td>
+	</tr>
+</table>
+
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<!--END OF FSDA TEXT-->
+	<!--Include divs after FSDA text-->
+	<script language="javaScript" type="text/javascript">
+document.write(divsafter);
+</script>
+	<!--Include fixed text at the bottom of the page-->
+	<script language="javaScript" type="text/javascript">
+document.write(barra);
+</script>
+	<!--END.CLASS body_trail_container-->
+	<!--close row-offcanvas--></div>
+<!--close class="row-offcanvas row-offcanvas-left" -->
+
+</body>
+
+</html>
