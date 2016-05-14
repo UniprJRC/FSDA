@@ -40,7 +40,7 @@ function out=makecontentsfileFS(varargin)
 %                   FilterOutFileName will not be included inside NameOutputFile.
 %                   If this optional argument is not specified all files containing
 %                   string [OlD] (lower case or uppercase) will not be
-%                i  listed inside NameOutputFile
+%                   listed inside NameOutputFile
 %                   Example - 'FilterOutFileName','veryold'
 %                   Data Types - string
 %FilterFileContent :  filter .m files depending on their content. String.
@@ -419,4 +419,4 @@ if strcmp(ext,'.m')
 end
 
 end
-%FScategory:UTIGEN
+%FScategory:UTIHELP
