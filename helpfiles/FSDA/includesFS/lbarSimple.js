@@ -14,7 +14,7 @@ lbarSimple=lbarSimple +	"						<li role='presentation'>";
 lbarSimple=lbarSimple +	"						<a href='examples.html?s_cid=doc_flyout' role='menuitem' tabindex='-1'>";
 lbarSimple=lbarSimple +	"						Examples</a></li>";
 lbarSimple=lbarSimple +	"						<li role='presentation'>";
-lbarSimple=lbarSimple +	"						<a href='functionlist.html?s_cid=doc_flyout' role='menuitem' tabindex='-1'>";
+lbarSimple=lbarSimple +	"						<a href='function-cate.html?s_cid=doc_flyout' role='menuitem' tabindex='-1'>";
 lbarSimple=lbarSimple +	"						Functions and Other Reference</a></li>";
 lbarSimple=lbarSimple +	"						<li role='presentation'>";
 lbarSimple=lbarSimple +	"						<a href='release_notes.html?s_cid=doc_flyout' role='menuitem' tabindex='-1'>";
