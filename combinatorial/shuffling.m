@@ -23,7 +23,7 @@ function x = shuffling(x)
 % based on the Fisher-Yates shuffle. Once compiled, Knuth solution is more
 % efficient than the natural MATLAB solution x(randperm(numel(x)).
 %
-% See also: randperm.
+% See also: randperm
 %
 % References:
 %

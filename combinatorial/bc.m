@@ -14,7 +14,7 @@ function c = bc(n,k)
 %
 % Output:    
 % 
-%   bc(n,k): The binomial coefficient $n!/k!(n-k)!$. Integer. This is the 
+%       c  : The binomial coefficient $n!/k!(n-k)!$. Integer. This is the 
 %            coefficient of the $x^k$ term in the polynomial expansion of
 %            the binomial power $(1 + x)^n$. This is also the so called
 %            choose function of n and k (nchoosek in MATLAB), i.e. the

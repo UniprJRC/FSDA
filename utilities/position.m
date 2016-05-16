@@ -24,7 +24,7 @@ function position(plmain)
 %
 %  Output:
 %
-% See also cascade
+% See also: cascade
 %
 % References:
 %

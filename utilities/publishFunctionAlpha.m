@@ -18,7 +18,7 @@ function fstring=publishFunctionAlpha(InputCell)
 %
 % Required input arguments:
 %
-%    IputCell: Cell created by function makecontentsfileFS.m. Cell. Cell
+%   InputCell: Cell created by function makecontentsfileFS.m. Cell. Cell
 %              containing information about all files which have to be
 %              included inside the alphabetical HTML file.
 %
@@ -31,7 +31,7 @@ function fstring=publishFunctionAlpha(InputCell)
 %                String. This string contains the full HTML files which all
 %                hypertextual links to all HTML files for each alphabetical
 %                letter. The HTML file function-alpha.html also produced inside 
-%                in folder (main root of FSDA)\helpfiles\FSDA
+%                folder (main root of FSDA)\helpfiles\FSDA
 %
 % See also:    CreateHTLMfunctioncate.m, publishFS.m
 %
@@ -58,7 +58,7 @@ function fstring=publishFunctionAlpha(InputCell)
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
     list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)
-    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory');
+    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);
     cd(fileparts(which('docsearchFS.m')))
     % Create HTML file containing alphabetical list of functions
     fstring=publishFunctionAlpha(out);

@@ -1,29 +1,35 @@
-function cascade
+function cascade()
 %cascade is a third party function used in FSDA demos and examples
 % producing plots that should not direcly overlap.
 %
-% See e.g. brushRES.m and example_regression.m in folder examples
+%<a href="matlab: docsearchFS('cascade')">Link to the help page for this function</a>
 %
-%
-%
-%CASCADE Cascade existing figures so that they don't directly overlap
-%   CASCADE takes and returns no arguments.  This function will cascade as
+% function cascade cascades existing figures so that they don't directly overlap
+%   cascade takes and returns no arguments.  This function will cascade as
 %   many figures as will fit the height/width of the screen.  If there are
 %   more figures than can cascade in a screen, those additional figures are
 %   left in their original position.
 %
-%   Author: Isaac Noh
-%   Copyright The MathWorks, Inc.
-%   November 2007
+% Required input arguments:
 %
 %
+% Optional input arguments:
+%
+% Output:
+%
+%
+%
+%  See also brushRES.m 
+%
+%<a href="matlab: docsearchFS('cascade')">Link to the help page for this function</a>
 %
 % Adapted to FSDA by FSDA team
-%
 % Last modified 06-Feb-2015
 %
 % Examples
+%
 %{
+    % Cascade multiple figures.
     close all;
     load('multiple_regression.txt');
     y=multiple_regression(:,4);

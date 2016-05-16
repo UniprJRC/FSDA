@@ -1,16 +1,29 @@
-function cabc
+function cabc()
 %cabc closes all open figures except the one in foreground (the current)
+%
+%
+%
+%
+%<a href="matlab: docsearchFS('cabc')">Link to the help page for this function</a>
+%
+%
+% Required input arguments:
+%
+%
+% Optional input arguments:
+%
+% Output:
+%
+% See also:     close
 %
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%
-%
-%<a href="matlab: docsearchFS('mve')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('cabc')">Link to the help function</a>
 % Last modified 06-Feb-2015
-
+%
 % Examples:
 
 %{

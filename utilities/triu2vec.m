@@ -10,8 +10,8 @@ function y=triu2vec(A,k)
 %
 %  Required input arguments:
 %
-%         A   : scalar, or square matrix  of order r (r>1).
-%
+%         A   : scalar, or square matrix  of order r (r>1). Scalar or
+%               square matrix.
 %               If A is a non negative integer, it indicates the number of
 %               rows (columns) of a matrix whose linear indexes of the
 %               elements on and above diagonal have to be found. Then,
@@ -24,13 +24,15 @@ function y=triu2vec(A,k)
 %
 %  Optional input arguments:
 %
-%         k   : non negative integer given to return the elements on and
+%         k   : which diagonal. Scalar. Non negative integer given to return the elements on and
 %               above the k-th diagonal of A, being k=0 the main diagonal.
 %               Default is k = 0, i.e., the main diagonal is also returned.
 %               Negative integers are treated as 0, i.e. elements on and
 %               above the main diagonal are returned. No linear indices or
 %               elements are returned if the user provides an integer k
 %               larger than the order of the input matrix.
+%                 Example - 'k',0
+%                 Data Types - double
 %
 %  Output:
 %
@@ -78,6 +80,8 @@ function y=triu2vec(A,k)
 %
 %
 %
+% See also: diag
+%
 % Copyright 2008-2015.
 % Written by FSDA team
 %
@@ -87,8 +91,8 @@ function y=triu2vec(A,k)
 % Examples:
 
 %{
-    % Extract the elements above the main diagonal of a square matrix
-    % of order 5
+    % Extract the elements above the main diagonal. 
+    % The input is a square matrix of order 5.
     A=magic(5);
     disp('Input matrix A')
     disp(A)
@@ -99,8 +103,8 @@ function y=triu2vec(A,k)
 %}
 
 %{
-    % Extract the elements on and above the main diagonal of a square matrix
-    % of order 5
+    % Extract the elements on and above the main diagonal. 
+    % The input is a square matrix of order 5.
     A=magic(5);
     disp('Input matrix A')
     disp(A)

@@ -4,7 +4,7 @@
 %
 %   Name          - Description                                                                                                    - Category       - Date last modified
 %--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-%   ComputePars   - Computes parameters needed for computing overlap                                                               - CLUS-MixSim    - 2016 May 09
+%   ComputePars   - Computes parameters needed for computing overlap                                                               - CLUS-MixSim    - 2016 May 14
 %   estepFS       - Performs e-step for Gaussian mixture distribution                                                              - CLUS-RobClaMULT- 2016 May 09
 %   FSMmmdrs      - FSRmmdrs performs random start monitoring of minimum Mahalanobis distance                                      - CLUS-RobClaMULT- 2016 May 11
 %   FSRmdrrs      - Performs random start monitoring of minimum deletion residual                                                  - CLUS-RobClaREG - 2016 May 09

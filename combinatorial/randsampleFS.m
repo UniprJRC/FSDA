@@ -28,11 +28,11 @@ function y = randsampleFS(n,k,method)
 %   
 % More About:
 %
-%   if method=1 (default option) the program proceeds as follows: if $4*k >
-%   n$ the programs does a random permutation of the population and returns
-%   the first nsel elements else if $4*k<=n$ (that is if the desired sample
-%   is small compared to all combinations, the program repeatedly samples
-%   with replacement until there are nsel unique values.
+%   if method=1 (default option) the program proceeds as follows: 
+%   if  $4*k >n$ the programs does a random permutation of the population
+%   and returns the first nsel elements else if $4*k<=n$ (that is if the
+%   desired sample is small compared to all combinations, the program
+%   repeatedly samples with replacement until there are nsel unique values.
 %
 %   if method=2 Systematic sampling is used where the starting point is
 %   random and the step is also random.
@@ -42,7 +42,7 @@ function y = randsampleFS(n,k,method)
 %   guarantee to get unique numbers.
 %
 %
-% See also: randsample, shuffling.
+% See also: randsample, shuffling
 %
 % References:
 %

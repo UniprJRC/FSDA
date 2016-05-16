@@ -3,14 +3,15 @@ function chkoptions(options,UserOptions)
 %
 % Required input arguments:
 %
-% options           : a structure
-% UserOptions       : cell array of strings
+% options           : Input structure. Structure
+% UserOptions       : cell array of strings containing user options
 %
 % Output:
 %
 %  The program checks if each string inside UserOptions is present in
 %  structure option. If this condition is not fulfilled the execution
-%  terminates and an error message is produced
+%  terminates and an error message is produced. This function is called
+%  inside every routine of FSDA to check whether input options exist
 %
 % See also  chkinputR.m
 %
@@ -49,4 +50,3 @@ if ~isempty(WrongOptions)
 end
 
 end
-%FScategory:UTIGEN

@@ -1,4 +1,4 @@
-function [kcomb,calls]=lexunrank(n,k,N,varargin)
+function [kcomb,calls]=lexunrank(n,k,N,pascalM)
 %lexunrank gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations
 %
 %<a href="matlab: docsearchFS('lexunrank')">Link to the help function</a>
@@ -17,22 +17,25 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
 %
 % Optional input arguments:
 %
-%   the Pascal matrix as given by the MATLAB function pascal(n).
-%   In applications where lexunrank is called many times, it is preferable
-%   to compute the Pascal matrix once outside lexunrank, and pass it
-%   to lexunrank as optional argument. Otherwise, the required binomial
-%   coeffients are computed inside lexunrank using function bc and, when
-%   possible, using the traditional recurrent formula.
+%  pascalM:  Pascal matrix. 
+%            Matrix. The Pascal matrix as given by the MATLAB function pascal(n).
+%           In applications where lexunrank is called many times, it is preferable
+%           to compute the Pascal matrix once outside lexunrank, and pass it
+%           to lexunrank as optional argument. Otherwise, the required binomial
+%           coeffients are computed inside lexunrank using function bc and, when
+%           possible, using the traditional recurrent formula.
+%           Example - pascal(n)
+%           Data Types - single|double
 %
 % Output:
 %
-%   kcomb : Vector of length k. The $k$-combination of n elements at position
-%           N. The position is relative to a reverse co-lexicographic order
+%   kcomb : The $k$-combination of n elements at position
+%           N. Vector of length k. The position is relative to a reverse co-lexicographic order
 %           of the combinations or, equivalently, of position bc(n,k)-N in
 %           the lexicographic order of the same combinations.
 %           Data Types - single|double
 %
-%   calls : Scalar. The number of binomial coefficients used to compute the
+%   calls : Binomial coefficients. Scalar. The number of binomial coefficients used to compute the
 %           $k$-combination. 
 %           Data Types - single|double
 %
@@ -232,7 +235,7 @@ function [kcomb,calls]=lexunrank(n,k,N,varargin)
     all_lex_combs(N_lex,:)
 %}
 
-%% initialization
+%% Beginning of code
 
 % REMARK: checks and unnecessary computations are intentionally avoided, as
 % this function in FSDA is supposed to be called many times, for sampling
@@ -257,7 +260,7 @@ kcomb = zeros(1,k);
 % call to bc function or access to Pascal matrix cells)
 calls = 0;
 
-if isempty(varargin)
+if nargin<4
     
     %% call_bc OPTION:
     
@@ -303,8 +306,6 @@ else
     %% FAST OPTION:
     % binomial coefficients are taken from the pascal matrix rather than
     % computing them using bc. Of course this option is space greedy.
-
-    pascalM=varargin{1};
 
     N_kk = N;
     

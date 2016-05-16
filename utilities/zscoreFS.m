@@ -1,16 +1,11 @@
 function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %zscoreFS computes (robust) standardized z scores
 %
-%<a href="matlab: docsearchFS('zscorefs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('zscoreFS')">Link to the help function</a>
 %
-% Required input arguments:
 %
-%    X: vector of length(n) or data matrix containing n observations on v
-%    variables or 3D array of size n-by-v-by-r.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       automatically be excluded from the computations.
-%
+%    X can be a vector of length(n) or data matrix containing n observations on v
+%       variables or 3D array of size n-by-v-by-r.
 %   Z = zscoreFS(X) returns a centered, scaled version of X, with the same size
 %   as X. For vector input X, Z is the vector of z-scores
 %
@@ -23,25 +18,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %
 %      (X-location(X)) ./ scale(X).
 %
-%    loc is a string which specifies the location measure to use
-%     'median' (default).
-%     'mean'
-%    scale is a string which specifies the dispersion measure to use
-%     'mad' (default). Traditional mad is Me(|x_i-Me(X)|)/norminv(3/4)
-%     'Qn' first quartile of interpoint distances |x_i-x_j|. See function Qn.m  
-%     'Sn' robust Gini's average difference index. See function Sn.m
-%     'std' Unbiased standard deviations. See function std.m ()
-%     'modmadp'. Modified mad where the last letter(s) p of string modmap
-%                 is (are) a number converted to string necessary to
-%                 compute the modified MAD. 
-%       Modified MAD = (order statistic ceil((n+p-1)/2) of |x_i-Me(X)|
-%                 + order statistic floor((n+p-1)/2+1) of |x_i-Me(X)|)
-%                 / (2* ?) where ?= norminv(0.5*((n+p-1)/(2*n)+1))
-%                  Note that p is different from v (columns of X if X is a
-%                  matrix) and must be supplied by the user.
-%       For example if p=5 then the user can supply the string 'modmad5'
-%        as follows.  
-%             p=5; modmadp=['modmap' num2str(p)];
+%
 %
 %
 %   Z=zscoreFS(X,loc,scale) computes robust standardized zscores using the
@@ -51,22 +28,19 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %   computed using the location and scale along the first
 %   non-singleton dimension. For example if X is n-by-v-by-r (with n>1) and
 %   loc='median'; n-by-r medians are computed for each of the n rows of X
-%   and each third dimension r
+%   and each third dimension r.
 %
 %
 %   Z=zscoreFS(X,loc) computes standardized zscores using the
 %   estimates of location specified in loc and the mad as measure of
-%   dispersion
+%   dispersion.
 %
-%   Z=zscoreFS(X,[],scale) computes standardized zscores using as
-%   estimates of location the medians and the measure of dispersion
-%   specified in scale
 %
 %   [Z,mu,sigma] = zscoreFS(X) also returns median(X) in mu and mad in
-%   sigma
+%   sigma.
 %
 %   [Z,mu,sigma] = zscoreFS(X,loc,scale) also returns the estimates of location
-%   in mu and of scale in sigma as specified in loc and scale strings
+%   in mu and of scale in sigma as specified in loc and scale strings.
 %
 %   Z=zscoreFS(X,loc,scale,dim) computes robust standardized zscores along
 %   the dimension dim of X using the estimates of location and scale
@@ -79,8 +53,67 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %
 %   zscoreFS is an extension of function zscore of statistic toolbox
 %   because it enables to specify alternative measures of location and
-%   scale
+%   scale.
 %
+%
+%  Required input arguments:
+%  
+% X :           Input data. Vector or Matrix or 3D array. Vector  of
+%               length n or data matrix containing n
+%               observations on v variables or 3D array of size
+%               n-by-v-by-r.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
+%
+%
+%  Optional input arguments:
+%
+%   loc : location measure to use. 'median' (default) or 'mean'.
+%         String which specifies the location measure to use. The default
+%         value is 'median'. 
+%               Example - 'median'
+%               Data Types - character
+% scale : scale measure to use. 'mad' (default) or 'Qn' or 'Sn' or 'std' or
+%         moddmadp'.
+%         String which specifies the dispersion measure to use
+%           'mad' is the default. Traditional mad is Me(|x_i-Me(X)|)/norminv(3/4);
+%           'Qn' first quartile of interpoint distances |x_i-x_j|. See function Qn.m;  
+%           'Sn' robust Gini's average difference index. See function Sn.m;
+%           'std' Unbiased standard deviations. See function std.m; 
+%           'modmadp'. Modified mad where the last letter(s) p of string modmap
+%                 is (are) a number converted to string necessary to
+%                 compute the modified MAD. 
+%       Modified MAD = (order statistic ceil((n+p-1)/2) of |x_i-Me(X)|
+%                 + order statistic floor((n+p-1)/2+1) of |x_i-Me(X)|)
+%                 / (2* \sigma) where \sigma= norminv(0.5*((n+p-1)/(2*n)+1))
+%                  Note that p is different from v (columns of X if X is a
+%                  matrix) and must be supplied by the user.
+%                   For example if p=5 then the user can supply the string 'modmad5'
+%                   as follows.  p=5; modmadp=['modmap' num2str(p)];
+%               Example - 'mad'
+%               Data Types - character
+%  dim  :   Dimension to operate along. Positive integer scalar. 
+%           Dimension to operate along, specified as a positive integer
+%           scalar. If no value is specified, then the default is the first
+%           array dimension whose size does not equal 1.
+%               Example - 2
+%           Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+%
+%
+%  Output: 
+%
+%       Z : centered, scaled version of X. Array with the same dimension as input X.
+%           Array with the same size as X using location and scale are specified in input
+%           parameters 'loc' and 'scale'. For vector input X, Z is the vector of
+%            z-scores
+%           (X-location(X)) ./ scale(X).
+%   mu : location estimate. Scalar, vector or matrix depending on the size of input matrix X.
+%           Estimates of location specified in loc input string.
+%  sigma : scale estimate. Scalar, vector or matrix depending on the size of input matrix X.
+%           Estimates of scale specified in scale input string.
 %
 % See also zscore, MCD, Smult, MMmult, FSM
 %
@@ -95,7 +128,10 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 
 % Examples
 
+
+
 %{
+    % Scale using medians and mads.
     % zscoreFS with all default options (that is remove the medians and
     % divide by mads)
     n=200;
@@ -109,8 +145,17 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %}
 
 %{
-    % zscoreFS (remove the medians and
-    % divide by Qn)
+    % Scale using mean and mads.
+    % Computes standardized zscores using mean and mads
+    % estimates of location the medians and the measure of dispersion
+    % specified in scale
+    loc='mean'
+    X=randn(10,2);
+    Z=zscoreFS(X,loc,'mad'); 
+%}
+
+%{
+    % Remove the medians and divide by Qn.
     n=200;
     v=1;
     randn('state', 123456);
@@ -124,7 +169,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %}
 
 %{
-    % Examples with 3D arrays
+    % Examples with 3D arrays.
     n=200;
     v=3;
     q=5;
@@ -138,6 +183,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %}
 
 %{
+    % Report also location and scale measures which have have been used.
     % zscoreFS produces the same output as function zscore of statistics
     % toolbox if centroid is arithmetic mean and scale measure is the
     % standard deviation
@@ -152,7 +198,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %}
 
 %{
-    % 3D arrays with dim=1, dim=2 and dim=3
+    % 3D arrays with dim=1, dim=2 and dim=3.
     n=200;
     v=3;
     q=5;
@@ -181,7 +227,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %}
 
 %{
-    % Example of use of modmad as a scale measure
+    % Example of use of modmad as a scale measure.
     p=3;
     X=randn(100,p);
     loc='median';

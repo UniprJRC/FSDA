@@ -32,7 +32,7 @@ function c = nchoosekFS(v,k)
 %   of length $n%. Each row contains a combination of k elements taken
 %   without repetitions among n. In this case function combsFS is used.
 %
-% See also: nchoosek, perms.
+% See also: nchoosek, perms
 %
 % References:
 %

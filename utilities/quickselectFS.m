@@ -5,8 +5,9 @@ function kE = quickselectFS(A,k,kiniindex)
 %
 % Required input arguments:
 %
-%   A:  vector contatining a set of n (distinct) numbers.
-%   k:  an integer between 1 and n indicating the desired order statistic.
+%   A:  a set of quique numbers. Vector. Vector containing a set of n (distinct) numbers.
+%   k:  order statistic. Scalar. An integer between 1 and n indicating the
+%       desired order statistic.
 %
 %
 %
@@ -23,12 +24,15 @@ function kE = quickselectFS(A,k,kiniindex)
 %
 % Output:
 %
-% - kE = element in A that is larger than exactly k - 1 other elements of A.
-
+% kE : k-th order statistic. Scalar. Element in A that is larger than exactly k - 1 other elements of A.
+%
+%
+% See also:  FSMmmd
+%
 % References:
 %
-%       Riani M., Perrotta D. and Cerioli (2013), The Forward Search for
-%       Very Large Datasets, submitted
+%       Riani M., Perrotta D. and Cerioli (2015), The Forward Search for
+%       Very Large Datasets, Journal of Statistical Software
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -40,11 +44,23 @@ function kE = quickselectFS(A,k,kiniindex)
 % Examples:
 %
 %{
-    %% quickselectFS with all default options
+    %% quickselectFS with all default options.
     n=200;
     Y=randn(n,1);
     k=10;
     [out]=quickselectFS(Y,k);
+    % Check the result
+    sorY=sort(Y);
+    disp(out-sorY(k))
+%}
+
+%{
+    %% quickselectFS with kiniindex supplied.
+    n=200;
+    Y=randn(n,1);
+    k=10;
+    % kiniindex is supplied 
+    [out]=quickselectFS(Y,k,20);
     % Check the result
     sorY=sort(Y);
     disp(out-sorY(k))

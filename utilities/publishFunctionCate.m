@@ -18,7 +18,7 @@ function fstring=publishFunctionCate(InputCell)
 %
 % Required input arguments:
 %
-%    IputCell: Cell created by function makecontentsfileFS.m. Cell. Cell
+%   InputCell: Cell created by function makecontentsfileFS.m. Cell. Cell
 %              containing information about all files which have to be
 %              included inside the categorical HTML file.
 %
@@ -31,25 +31,25 @@ function fstring=publishFunctionCate(InputCell)
 %                String. This string contains the full HTML files which all
 %                hypertextual links to all HTML files for each category.
 %                The HTML file function-cate.html also produced inside 
-%                in folder (main root of FSDA)\helpfiles\FSDA
+%                folder (main root of FSDA)\helpfiles\FSDA
 %
-% See also:    CreateHTLMfunctionAlpha.m, publishFS.m
+% See also:    publishfunctionAlpha.m, publishFS.m
 %
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('CreateHTLMfunctionCate')">Link to the help function</a>
+%<a href="matlab: docsearchFS('publishFunctionCate')">Link to the help function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:
 %
 % 
 %{
-    % Creation of file containing categorical list of functions
-    % make sure you are inside the main folder of FSDA.
-    % create contents file for each .m file 
+    % Creation of HTML file containing categorical list of functions.
+    % Make sure you are inside the main folder of FSDA.
+    % Create contents file for each .m file 
     % findDir with optional arguments 'InclDir' and 'ExclDir'.
     FileName='addFSDA2path';
     FullPath=which(FileName);
@@ -58,7 +58,7 @@ function fstring=publishFunctionCate(InputCell)
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
     list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)
-    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory');
+    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);
     cd(fileparts(which('docsearchFS.m')))
     % Create HTML file containing alphabetical list of functions
     fstring=publishFunctionCate(out);

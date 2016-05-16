@@ -33,10 +33,9 @@
 %   regressB         - Computes Bayesian estimates of regression parameters                                                                       - REG-Bayes          - 2016 May 09
 %   regressH         - Fits a multiple linear regression model with heteroskedasticity                                                            - REG-Hetero         - 2016 May 09
 %   regressHart      - Fits a multiple linear regression model using art heteroskedasticity                                                       - REG-Hetero         - 2016 May 09
-%   regressHart_grid - Grid search to find minimum for ART model                                                                                  - REG-Hetero         - 2016 May 09
+%   regressHart_grid - Grid search to find minimum for ART model                                                                                  -                    - 2016 May 09
 %   regressHhar      - RegressH fits a multiple linear regression model with Harvey heteroskedasticity                                            - REG-Hetero         - 2016 May 09
 %   regressHhar_grid - Grid search to find minimum for ART model                                                                                  - REG-Hetero         - 2016 May 09
 %   RobCov           - Computes covariance matrix of robust regression coefficients                                                               - REG-Regression     - 2016 May 09
 %   RobRegrSize      - Provides proper threshold for robust estimators to obtain an empirical size equal to 1 per cent nominal size               - REG-Regression     - 2016 May 09
 %   Score            - Computes the score test for transformation                                                                                 - REG-Transformations- 2016 May 09
-%   Sreg             - Computes S estimators in linear regression                                                                                 - REG-Regression     - 2016 May 09

@@ -1,7 +1,6 @@
 function varargout = dsxy2figxy(varargin)
 %dsxy2figxy transforms points or positions from 'axes data units' to 'normalized figure units'
 %
-%<a href="matlab: docsearchFS('dsxy2figxy')">Link to the help page for this function</a>
 %
 % Required input arguments:
 %
@@ -28,7 +27,7 @@ function varargout = dsxy2figxy(varargin)
 %    rectangle('Position',[x,y,w,h]) 
 %   draws a rectangle from the
 % point x,y  having a width of w and a height of h.
-% Note that in this case the coordinates are specified in in axes data units.
+% Note that in this case the coordinates are specified in axes data units.
 % On the other hand
 %   annotation('line',x,y) 
 % creates a line annotation object that
@@ -67,7 +66,7 @@ if length(varargin{1})== 1 && ishandle(varargin{1}) && ...
 	varargin = varargin(2:end);
 else
 	hAx = gca;
-end;
+end
 
 % Parse either a position vector or two 2-D point tuples
 if length(varargin)==1	% Must be a 4-element POS vector
@@ -100,4 +99,3 @@ end
 set(hAx,'Units',axun)
 end
 
-%FScategory:UTIGEN

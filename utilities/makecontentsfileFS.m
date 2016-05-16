@@ -109,26 +109,32 @@ function out=makecontentsfileFS(varargin)
 %}
 
 %{
-    %Just create out but not the output file if it already exists
+    %Just create output cell out but not the output file if it already exists.
     % Create personalized content file of current folder.
     out=makecontentsfileFS('force',false);
 %}
 
 %{
-    %Create contens file for folder 'D:\matlab\FSDA\utilities' and list
+    %Create contents file for folder 'D:\matlab\FSDA\utilities' and list
     % just the files which contain string '%FScategory'
     makecontentsfileFS('dirpath','D:\matlab\FSDA\utilities','FilterFileContent','%FScategory')
 %}
 
 %{
-    % findDir with optional arguments 'InclDir' and 'ExclDir'.
+    % Example of the use of options dirpath and  FilterFileContent.
+    % Preliminary step: create a list of the subfolders which have to be
+    % included, using routine findDir with options 'InclDir' and 'ExclDir'.
+    % Find full path of the main root where FSDA is installed
     FileName='addFSDA2path';
     FullPath=which(FileName);
     root=FullPath(1:end-length(FileName)-3);
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
+    % Create list of folders which must be presonlized contents file
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
+    % Crete personalized contents file for main folder of FSDA
+    % and required subfolders.
     out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory')
 %}
 
@@ -142,7 +148,8 @@ FilterFileContent=''; % Do not look into the content of the file
 printOutputCell=''; % specifies if the overall output has to be written in a file
 
 options=struct('NameOutputFile',NameOutputFile,'dirpath',dirpath,...
-    'force',force,'FilterOutFileName',FilterOutFileName,'FilterFileContent',FilterFileContent);
+    'force',force,'FilterOutFileName',FilterOutFileName,...
+    'FilterFileContent',FilterFileContent,'printOutputCell',printOutputCell);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -162,6 +169,7 @@ if ~isempty(UserOptions)
     force=options.force;
     FilterOutFileName=options.FilterOutFileName;
     FilterFileContent=options.FilterFileContent;
+    printOutputCell=options.printOutputCell;
     
     % Check if dirpath is a string or a cell array of strings
     if iscell(dirpath)
@@ -301,7 +309,7 @@ for j=1:ldirpath
         end
         fclose(fid);
     else
-        error(message('MATLAB:filebrowser:MakeContentsFileExists'))
+        warning(message('MATLAB:filebrowser:MakeContentsFileExists'))
     end
 end
 

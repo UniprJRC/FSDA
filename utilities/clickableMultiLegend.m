@@ -12,9 +12,13 @@ function varargout = clickableMultiLegend(varargin)
 % legend label. Therefore, the function should work also through plots in
 % different figures.
 %
-% See also
-% clickableLegend by Ameya Deoras:
+% See also clickableLegend by Ameya Deoras:
 % http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
+%
+%
+% Required input arguments:
+% 
+% Optional input arguments:
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -90,7 +94,9 @@ function varargout = clickableMultiLegend(varargin)
     end
     %If the legend texts were clickable before the re-definition, they will remain clickable.  
 %}
-%% Create legend as if it was called directly
+
+%% Beginning of code
+% Create legend as if it was called directly
 [varargout{1:nargout(@legend)}] = legend(varargin{:});
 
 [~, objhan, plothan] = varargout{1:4};

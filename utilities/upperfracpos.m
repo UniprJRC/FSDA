@@ -10,14 +10,37 @@ function upperfracpos(hfigl , hfigr , fraction)
 %half of the screen and with  fraction=0.3 they will occupy the upper third
 %of the screen.
 %
+%<a href="matlab: docsearchFS('upperfracpos')">Link to the help function</a>
+%
+% Required input arguments:
+%
+%
+% hfigl :       handle for figure. matlab.ui.Figure.
+%               Graphics handle of the figure which will be put on the
+%               upper left part of the screen
+% hfigr :       handle for figure. matlab.ui.Figure.
+%               Graphics handle of the figure which will be put on the
+%               upper right part of the screen
+%fraction:      fraction to occupy. Scalar between 0 and 1.
+%               Fraction of the screen which will be occupied.  
+%
+%  Optional input arguments:
+%
+%
+%  Output: 
+%
+%
+% See also: spmplot
+%
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 % Last modified 06-Feb-2015
 %
 % Examples
+%
 %{
-    %% Example of use of upperfracpos
+    %% Example of use of upperfracpos.
     close all;
 
     % create two figures, rescale and position them

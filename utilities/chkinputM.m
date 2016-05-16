@@ -3,20 +3,32 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 %
 % Required input arguments:
 %
-% X :           Data matrix of variables of dimension (n x p), possibly with missing
-%               values (NaN's) and infinite values (Inf's). Rows of X
-%               represent observations, and columns represent variables.
-% nnargin:      The number of input arguments specified for the caller
+% X :          Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               X represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
+% nnargin:      nargin. Scalar. The number of input arguments specified for the caller
 %               function.
-% vvarargin:    The variable length input argument list specified for the
+% vvarargin:    nvarargin. Scalar. The variable length input argument list
+%               specified for the
 %               caller function.
+%
+%
+%  Optional input arguments:
 %
 % Output:
 %
-% X:            The new matrix of variables, with missing or
+% X:            Data matrix without missing and infs. Matrix. 
+%               The new matrix of variables, with missing or
 %               infinite values excluded.
-% n:            Number of rows of X (observations).
-% p:            Number of columns of X.
+% n:            Number of rows of X (observations). Scalar.  Number of
+%               rows after listwise exclusion.
+% p:            Number of columns of X (variables). Scalar.
+%               Number of variable in the input data matrix.
 %
 % See also
 %
