@@ -575,7 +575,7 @@ if nargin>4
             elseif ncolC==k*(v+1)
                 startv1=1;
             else
-                disp('If nsamp is not a scalar it must have v or k*(v+2) columns')
+                disp('If nsamp is not a scalar it must have v or k*(v+1) columns')
                 disp('Please generate nsamp using')
                 disp('nsamp=subsets(number_desired_subsets,n,k) or')
                 disp('nsamp=subsets(number_desired_subsets,n,(v+1)*k)')
@@ -584,7 +584,7 @@ if nargin>4
             NoPriorSubsets=0;
         else
             % If nsamp is a scalar it simply contains the number of subsets
-            % wihch have to be extracted. In this case NoPriorSubsets=1
+            % which have to be extracted. In this case NoPriorSubsets=1
             NoPriorSubsets=1;
             
             % In this case (nsamp is a scalar) we check whether the user has supplied option
