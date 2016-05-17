@@ -20,8 +20,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               Missing values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values will
 %               automatically be excluded from the computations.
-%            k: Number of groups. Scalar.
-%               Scalar which specifies the number of groups
+%            k: Number of groups. 
+%               Scalar which specifies the number of groups.
 %        alpha: global trimming level. alpha is a scalar between 0 and 0.5
 %               or an integer specifying the number of observations which have to
 %               be trimmed. If alpha=0 tclust reduces to traditional model
@@ -301,7 +301,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % Examples:
 
 %{
-    % tclust of geyser data using k=3, alpha=0.1 and  restrfactor=1000.
+    % tclust of geyser data using k=3, alpha=0.1 and  restrfactor=10000.
     Y=load('geyser2.txt');
     out=tclust(Y,3,0.1,10000);
 %}
@@ -526,14 +526,14 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    % tclust applied to Swiss banknotes imposing determinant restriciton
+    % tclust applied to Swiss banknotes imposing determinant restriciton.
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
     out=tclust(Y,3,0.1,10,'restr','deter','refsteps',20,'plots',1)
 %}
 
 %{
-    % tclust applied to the Geyser data imposing determinant restriciton
+    % tclust applied to the Geyser data imposing determinant restriciton.
     Y=load('geyser2.txt');
     out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)
 %}
