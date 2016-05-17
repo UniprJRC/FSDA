@@ -30,36 +30,109 @@ document.write(divsbefore);
 	<!-- -->
 	<!-- -->
 	<!-- -->
-	
-<h1 class="r2016a" itemprop="title content">Getting Started with FSDA Toolbox</h1>
-<div itemprop="content" class="doc_topic_desc"><b>Analyze and model data using robust statistics estimators</b></div>
-
-
-<p></p>
-<h2>Key Features</h2>
-<p>
-			FSDA Toolbox&#8482; provides statisticians, engineers, scientists, researchers,
-			financial analysts with a comprehensive set of tools to
-			assess and understand their data.  Flexible Statistics Data Analysis Toolbox&#8482; 
-			software includes
-			functions and interactive tools for analyzing and modeling
-			data, learning
-			and teaching statistics.
-		</p>
-		<p>
-			The Flexible Statistics Data Analysis Toolbox&#8482; supports 
-			a set of routines to develop robust and efficient
-			regression  analysis. In addition, it offers a rich set
-			interactive graphical tools which enable us to explore
-			the connection in the various features of the different forward plots.
-		</p>
-		<p>
-			All Flexible Statistics Data Analysis Toolbox&#8482; functions are 
-			written in the open MATLAB&#174; language.
-			This means that you can inspect the algorithms, modify the source code,
-			and create your own custom functions.
-
-<p></p>
+	<h1 class="r2016a" itemprop="title content">Getting Started with FSDA Toolbox</h1>
+	<div class="doc_topic_desc" itemprop="content">
+		<b>Analyze and model data using robust statistics estimators</b></div>
+	<p></p>
+	<h2>Key Features</h2>
+	<p>FSDA Toolbox&#8482; provides statisticians, engineers, scientists, researchers, 
+	financial analysts with a comprehensive set of tools to assess and understand 
+	their data. Flexible Statistics Data Analysis Toolbox&#8482; software includes 
+	functions and interactive tools for analyzing and modeling data, learning and 
+	teaching statistics. </p>
+	<p>The Flexible Statistics Data Analysis Toolbox&#8482; supports a set of routines 
+	to develop robust and efficient regression analysis. In addition, it offers 
+	a rich set interactive graphical tools which enable us to explore the connection 
+	in the various features of the different forward plots. </p>
+	<p>All Flexible Statistics Data Analysis Toolbox&#8482; functions are written 
+	in the open MATLAB&#174; language. This means that you can inspect the algorithms, 
+	modify the source code, and create your own custom functions. </p>
+	<p></p>
+	<h3>Analyze and model data using flexible, robust statistical methods</h3>
+	<br>FSDA is a software library in support of a robust and efficient statistical 
+	analysis of data sets, ensuring an output unaffected by anomalies in the provided 
+	data or deviations from model assumptions. The tool:<br>• Is especially useful 
+	in detecting in data potential anomalies (outliers), even when they occur in 
+	groups.<br>• Can be used to identify sub-groups in heterogeneous data.<br>• 
+	Extend functionalities in key statistical domains requiring robust analysis 
+	(cluster analysis, discriminant analysis, model selection, data transformation).<br>
+	• Integrate instruments for interactive data visualization and modern exploratory 
+	data analysis, designed to simplify the interpretation of the statistical results 
+	by the end user.<br>• Provides statisticians, engineers, scientists, financial 
+	analysts a comprehensive set of tools to assess and understand their data.<br>
+	• Provides practitioners, students and teachers with functions and graphical 
+	tools for modeling complex data, learning and teaching statistics.<br>FSDA is 
+	developed for wide applicability. For its capacity to address problems focusing 
+	on anomalies in the data, it is expected that it will be used in applications 
+	such as anti-fraud, detection of computer network intrusions, e-commerce and 
+	credit cards frauds, customer and market segmentation, detection of spurious 
+	signals in data acquisition systems, in chemometrics (a wide field covering 
+	biochemistry, medicine, biology and chemical engineering), in issues related 
+	to the production of official statistics (e.g. imputation and data quality checks), 
+	and so on.<br>System requirements<br>FSDA:<br>• Works from the release R2009b 
+	of MATLAB and uses its Statistics Toolbox.<br>• It has been tested on Microsoft 
+	as well as UNIX (Linux and MacOsX) platforms.<br>• It can be installed in Windows 
+	platforms automatically, with a setup program that also opens inside the MATLAB 
+	editor files containing a series of examples of use in typical statistical problems.<br>
+	• It can be installed in UNIX platforms manually, from a compressed tar-file.<br>
+	• Works without major porting adaptations and with limitations on interactive 
+	graphical functions in GNU OCTAVE. OCTAVE is a software development environment 
+	mostly compatible with MATLAB, freely redistributable under the terms of the 
+	GNU General Public License (GPL) of the Free Software Foundation (http://www.gnu.org/).<br>
+	Main features<br>FSDA includes:<br>• Different categories of robust statistical 
+	functions, covering:<br>- Regression analysis;<br>- Multivariate analysis;<br>
+	- Data transformations in regression and multivariate applications;<br>- Model 
+	selection;<br>- Clustering;<br>- Interactive statistical visualization.<br>• 
+	Graphical user interfaces that allow exploring the main interactive graphics 
+	features on plots generated by running different statistical functions.<br>• 
+	Didactic material in the form of movies (with audio) that can be run in a browser 
+	connected to the Internet.<br>• A rich collection of popular datasets provided 
+	in different data formats and fully documented.<br>• A comprehensive documentation 
+	system:<br>The head of each m-function describes the function purpose, the input–output 
+	parameters, the bibliographic references, possible function dependencies, third 
+	party acknowledgments and self-contained examples of use.<br>The corresponding 
+	html documentation pages are obtained using a parser, publishFS.m, which is 
+	able to recognize the key elements of the head of each m-function (provided 
+	they conform to the syntactical rules documented in publishFS.m). Using publishFS.m, 
+	the FSDA user can generate documentation pages for his/her new functions.<br>
+	The extensive html documentation is perfectly integrated in the documentation 
+	system of MATLAB. Therefore, FSDA functions are accessible from the standard 
+	‘Function Browser’ of MATLAB, which is activated by typing shift+F1, are indexed 
+	by the system and can be conveniently explored from the standard MATLAB search 
+	box.<br><br>
+	<h3>Description of use</h3>
+	<br><br>FSDA is a MATLAB toolbox and it is therefore 
+	used within MATLAB. Typically, the user writes new scripts and/or functions 
+	including FSDA statements in an ordinary text file with “.m” extension, and 
+	executes the code from the standard MATLAB Command Window with a single command 
+	(the “.m” filename).<br>Many FSDA scripts automating steps of typical robust 
+	statistics tasks are available for trial in the head of each FSDA m-function 
+	and in example files.<br>As all MATLAB functions, FSDA functions accept input 
+	arguments and return output arguments, for example:<br>function [out] = FSReda(y,X,bsb,varargin)<br>
+	For many functions the set of input–output parameters is so rich that it is 
+	neither convenient nor possible to treat them comprehensively in these introductory 
+	pages. Details on a specific option is retrieved from the MATLAB Command Window 
+	by typing<br>docsearch(‘option_name’)<br>The order with which the optional input 
+	parameters are set does not matter.<br>Typically, even a well-trained practitioner 
+	will make use of few of the optional parameters available. On the other hand, 
+	a researcher will have the possibility to experiment with many internal variables 
+	controlled by optional parameters, without being forced to touch the source 
+	codes.<br>The use of very flexible and thus elaborated options is simplified 
+	by the adoption of data types of increasing complexity. For example, option 
+	“databrush”, which controls the interactive brushing features of the FSDA dynamic 
+	statistical visualization tools, can be simply neglected if the purpose is to 
+	produce traditional static plots, it can be set to a scalar (e.g. databrush=1) 
+	to make a single data selection, or it can be set to a MATLAB structure (e.g. 
+	databrush.persist=‘on’) to make an indefinite number of selections. In general, 
+	when an option becomes a structure, the list of possible fields will be automatically 
+	set to default values and the user will only have to set what is of interest.<br>
+	The output parameters are dealt with by the same principle: when a function 
+	generates a lot of information, this is organized in an output structure so 
+	that the user can extract only fields of major interest.<br>A second modality 
+	to use FSDA is through Graphical User Interfaces, to perform tasks interactively 
+	through controls such as buttons and sliders. The user can develop GUIs for 
+	FSDA using the standard MATLAB instruments. Few GUIs are integrated in the FSDA 
+	distribution, but they are mainly designed for demonstration purpose.<p></p>
 	<!-- -->
 	<!-- -->
 	<!-- -->
