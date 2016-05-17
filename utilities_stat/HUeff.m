@@ -3,7 +3,7 @@ function ceff = HUeff(eff,v,varargin)
 %
 %
 %
-%<a href="matlab: docsearchFS('tbeff')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HUeff')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -49,6 +49,7 @@ function ceff = HUeff(eff,v,varargin)
 % Examples:
 %
 %{
+    % Find c in regression for 95 per cent efficiency.
     % The constant c associated to a nominal location efficiency of 95% in regression is
     % c = 1.344997508513144
     c=HUeff(0.95,1)

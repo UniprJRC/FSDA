@@ -67,14 +67,14 @@ function psiHYP = HYPpsi(u, cktuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('hyppsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HYPpsi')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:
 
 %{
 
-    % Obtain Figure 2 of  p. 645 of HRR
+    % Obtain Figure 2 of  p. 645 of HRR.
     x=-9:0.1:9;
     ctuning=6;
     ktuning=4.5;
@@ -87,7 +87,7 @@ function psiHYP = HYPpsi(u, cktuning)
 %}
 
 %{
-    % Compare psi function for two values of paramter k.
+    % Compare psi function for two values of parameter k.
     close all
     x=-9:0.1:9;
     ctuning=6;
@@ -109,7 +109,7 @@ function psiHYP = HYPpsi(u, cktuning)
 
 
 %{
-    % Parameters associated to a value of bdp=0.5
+    % Parameters associated to a value of bdp=1/2.
     c=2.158325031399727
     k=4;
     A=0.000162707412432;

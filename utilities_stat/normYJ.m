@@ -5,38 +5,52 @@ function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
 %
 %  Required input arguments:
 %
-%         Y :   n x v data matrix; n observations
-%               and v variables
-%               Rows of Y represent observations, and columns represent
-%               variables.
-%   ColToTra:   k x 1 integer vector specifying the variables which must be
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
+%   ColtoTra:   Variable to transform. Vector.  k x 1 integer vector
+%               specifying the variables which must be
 %               transformed. If it is missing and length(la)=v all
 %               variables are transformed
-%        la :   k x 1 vector containing set of transformation
+%                Data Types - single|double
+%        la :   transformation parameters. Vector.
+%               k x 1 vector containing set of transformation
 %               parameters for the k ColtoTra.
+%                Data Types - single|double
+%
 %
 % Optional input arguments:
 %
-%  Jacobian :   Boolean. If true (default) the transformation is normalized
+%  Jacobian :   Requested Jacobian of transformed values. true (default) or
+%               false. If true (default) the transformation is normalized
 %               to have Jacobian equal to 1
 %
 % Output:
 %
-%   Ytra    : n x v data matrix containing transformed observations
+%   Ytra    : transformed data matrix. Matrix. n x v data matrix containing
+%               transformed observations
 %             The Yeo-Johnson transformation is the Box-Cox transformation
 %             of y+1 for nonnegative values, and of |y|+1 with parameter
 %             2-lambda for y negative.
 %
 %
-% Copyright 2008-2015.
-% Written by FSDA team
+% See also normBoxCox
+%
+% References:
 %
 % Yeo, I.-K. and Johnson, R. (2000) A new family of power
 % transformations to improve normality or symmetry. Biometrika, 87,
 % 954-959.
 %
 %
-% See also normBoxCox
+% Copyright 2008-2015.
+% Written by FSDA team
+%
 %
 %
 %<a href="matlab: docsearchFS('normYJ')">Link to the help function</a>

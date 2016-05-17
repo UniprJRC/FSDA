@@ -18,6 +18,8 @@ function brushFAN(eventdata)
 %              with the second radiobutton will be automatically executed)
 %              Data Types - integer
 %
+%  Output: 
+%
 %
 % See also: brushRES, brushROB
 %

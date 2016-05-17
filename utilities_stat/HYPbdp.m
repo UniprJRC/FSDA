@@ -76,14 +76,14 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 %
 %
 %
-%<a href="matlab: docsearchFS('hypbdp')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HYPbdp')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 %
 % Examples:
 
 %{
-
+    % Find required values.
     % Find value of c, A, B, for a break down point of 0.5
     % when k=4.5
  
@@ -97,6 +97,7 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 %}
 
 %{
+    % Efficienty monitoring.
     % Analysis of efficiency and of paramters A, B abd k as function of bdp
     % for a given value of sup CVC=4
     seqi=0.1:0.1:0.5;

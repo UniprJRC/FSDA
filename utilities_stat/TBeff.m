@@ -1,4 +1,4 @@
-function ceff = TBeff(eff,v,varargin)
+function ceff = TBeff(eff, v, shapeeff, approxsheff)
 %Tbeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
 %
 %
@@ -47,7 +47,7 @@ function ceff = TBeff(eff,v,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('tbeff')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('TBeff')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 
@@ -99,7 +99,7 @@ function ceff = TBeff(eff,v,varargin)
 %% Beginning of code
 
 eps=1e-12;
-if nargin<=2 || varargin{1} ~=1
+if nargin<=2 || shapeeff  ~=1
     % LOCATION EFFICIENCY
     c= 2;
     % c = starting point of the iteration
@@ -147,7 +147,7 @@ if nargin<=2 || varargin{1} ~=1
     end
 else
     % SHAPE EFFICIENCY
-    if nargin<=3 || varargin{2} ~=1
+    if nargin<=3 || approxsheff ~=1
         % approxsheff 0 ==> use exact formulae
         approxsheff=0;
     else

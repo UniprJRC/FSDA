@@ -1,33 +1,48 @@
-function Ytra=basicPower(Y,ColtoTra,la,Jacobian)
+function Ytra=basicPower(Y,ColtoTra,la)
 %basicPower computes the basic power transformation
 %
 %<a href="matlab: docsearchFS('basicPower')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%         Y :   n x v data matrix; n observations
-%               and v variables
-%               Rows of Y represent observations, and columns represent
-%               variables.
-%   ColToTra:   k x 1 integer vector specifying the variables which must be
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
+%   ColtoTra:   Variable to transform. Vector.  k x 1 integer vector
+%               specifying the variables which must be
 %               transformed. If it is missing and length(la)=v all
 %               variables are transformed
-%        la :   k x 1 vector containing set of transformation
+%                Data Types - single|double
+%        la :   transformation parameters. Vector.
+%               k x 1 vector containing set of transformation
 %               parameters for the k ColtoTra.
+%                Data Types - single|double
+%
+% Optional input arguments:
 %
 % Output:
 %
-%   Ytra    : n x v data matrix containing transformed observations
+%   Ytra    : transformed data matrix. Matrix. n x v data matrix containing
+%               transformed observations
 %
-%             When \lambda \ne 0
-%             ytra = (y^
-%             
-%             ytra = log(y)
+%             When $\lambda \ne 0$
+%             \[
+%               ytra = y^\lambda
+%             \]
+%             else
+%             \[ 
+%               ytra = log(y) 
+%             \]
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-% See also normBoxCox,normYJ
+% See also: normBoxCox, normYJ
 % 
 %
 %<a href="matlab: docsearchFS('basicPower')">Link to the help function</a>
@@ -37,7 +52,8 @@ function Ytra=basicPower(Y,ColtoTra,la,Jacobian)
 % Examples:
 
 %{
-    %% Mussels data.
+    % Example of transformation.
+    % Mussels data.
     load('mussels.mat');
     Y=mussels.data;
     la=[0.5 0 0.5 0 0];

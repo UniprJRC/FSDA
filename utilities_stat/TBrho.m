@@ -8,7 +8,7 @@ function rhoTB = TBrho(u,c)
 %    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
 %               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    c :        tuning parameters. Scalar. Scalar greater than 0 which
+%    c :        tuning parameter. Scalar. Scalar greater than 0 which
 %               controls the robustness/efficiency of the estimator
 %               (beta in regression or mu in the location case ...) 
 %

@@ -5,48 +5,59 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
 %
 %  Required input arguments:
 %
-%         Y :   n x v data matrix; n observations
-%               and v variables
-%               Rows of Y represent observations, and columns represent
-%               variables.
-%   ColToTra:   k x 1 integer vector specifying the variables which must be
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
+%   ColtoTra:   Variable to transform. Vector.  k x 1 integer vector
+%               specifying the variables which must be
 %               transformed. If it is missing and length(la)=v all
 %               variables are transformed
-%        la :   k x 1 vector containing set of transformation
+%                Data Types - single|double
+%        la :   transformation parameters. Vector.
+%               k x 1 vector containing set of transformation
 %               parameters for the k ColtoTra.
+%                Data Types - single|double
+%
 %
 % Optional input arguments:
 %
-%  Jacobian :   Boolean. If true (default) the transformation is normalized
+%  Jacobian :   Requested Jacobian of transformed values. true (default) or
+%               false. If true (default) the transformation is normalized
 %               to have Jacobian equal to 1
 %
 % Output:
 %
-%   Ytra    : n x v data matrix containing transformed observations
+%   Ytra    : transformed data matrix. Matrix. n x v data matrix containing
+%               transformed observations
+%             When $\lambda \ne 0$
+%             if jacobian=true:
+%             $ytra = (y^\lambda-1)/ (G^{(\lambda-1)} \lambda)$;
+%             else if jacobian=false:
+%             $ytra = (y^\lambda-1)/ \lambda$;
+%             where $G$ is the geometric mean of the observations.
+%             When $\lambda = 0$
+%             if jacobian=true:
+%             $ytra = G log(y)$;
+%             else if jacobian=false:
+%             $ytra = log(y)$;
+%             where $G$ is the geometric mean of the observations.
 %
-%             When \lambda \ne 0
-%             if jacobian=true
-%             ytra = (y^\lambda-1)/ (G^{(\lambda-1)} \lambda)
-%             else if jacobian=false
-%             ytra = (y^\lambda-1)/ \lambda
-%             where G is the geometric mean of the observations
+% See also normYJ
 %
-%             When \lambda = 0
-%             if jacobian=true
-%             ytra = G log(y)
-%             else if jacobian=false
-%             ytra = log(y)
-%             where G is the geometric mean of the observations
 %
 % References:
 %
-%   BOX, G. E. P. & COX, D. R. (1964). An analysis of transformations (with
-%   Discussion). J. R. Statist. Soc. B 26, 211–252
+%Box, G. E. P. & Cox, D. R. (1964). An analysis of transformations (with
+%Discussion). J. R. Statist. Soc. B 26, 211-252
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-% See also normYJ
 % 
 %
 %<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>

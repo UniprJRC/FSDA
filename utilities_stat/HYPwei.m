@@ -7,46 +7,63 @@ function w = HYPwei(u, cktuning)
 %
 %  Required input arguments:
 %
-%    u :         n x 1 vector containing residuals or Mahalanobis distances
-%                for the n units of the sample
-%    cktuning :  vector of length 2 or of length 5 which specifies the value of the tuning
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
+%               for the n units of the sample
+%    cktuning :  tuning parameters. Vector of length 2 or of length 5.
+%                cktuning specifies  specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed value k (sup of the
 %                change-of-variance sensitivity) and the values of
-%                parameters A, B and d
-%                cktuning(1) = c
-%                cktuning(2) = k = supCVC(psi,x) x \in R
+%                parameters A, B and d:
+%                cktuning(1) = c;
+%                cktuning(2) = k = supCVC(psi,x) x \in R;
 %                cktuning(3)=A;
 %                cktuning(4)=B;
 %                cktuning(5)=d;
 %                Remark: if length(cktuning)==2 values of A, B and d will be
 %                computed automatically
 %
+%  Optional input arguments:
 %
 %  Output:
 %
-%    w :         n x 1 vector contains the hyperbolic weights associated to the residuals or
-%                Mahalanobis distances for the n units of the sample
+%    w :         hyperbolic weights. Vector.
+%                n x 1 vector contains the hyperbolic weights associated to
+%                the scaled residuals or Mahalanobis distances for the n
+%                units of the sample
 %
 %
 % More About:
 %
 % Function HYPwei transforms vector u as follows
 %
-% HYPwei(u) = 	{ 1,			                               |u| <= d,
-%               {
-%		        { \sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)*(c-|u|)/2) .* sign(u)/u
-%		        { 	                 d <= |u| <  c,
-%               {
-%		        { 0,			                         |u| >= c.
+% \[
+% HYPwei(u) =
+% \left\{
+%    \begin{array}{cc}
+% 	1 &	          |u| \leq d, \\
+%		         \sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)*(c-|u|)/2) .* sign(u)/u
+%		         	 &                d \leq |u| <  c, \\
+%		    0	&                 |u| \geq c. \\
+%   \end{array}
+%   \right.
+% \]
+% where $0 < d < c$ is such that
+% \[
+% d = \sqrt{[A(k-1)]}\tanh [\frac{1}{2}\sqrt{\frac{(k-1)B^2}{A}}(c - d)],
+% \]
+% $A$ and $B$ satisfy suitable conditions, and $k$ is related to the bound
+% in the Change of Variance Curve.
 %
-%	It is necessary to have 0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1
-%
+% More precisely, it is necessary to have $0 < A < B < 2 *normcdf(c)-1- 2*c*normpdf(c) <1$%
 % Remark: hyperbolic  psi-function is linear around u = 0 in accordance with
 % Winsor's principle that all distributions are normal in the middle.
 % This means that  \psi (u)/u is approximately constant over the linear region of \psi,
 % so the points in that region tend to get equal weight.
+%
+% See also TBwei, HAwei, OPTwei
 %
 % References:
 %
@@ -60,7 +77,7 @@ function w = HYPwei(u, cktuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('hypwei')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HYPwei')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 %

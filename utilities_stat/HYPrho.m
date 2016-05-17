@@ -87,7 +87,7 @@ function rhoHYP = HYPrho(u, cktuning)
 
 %{
 
-    % Obtain plot of rho function for hyperbolic tangent estimator
+    % Plot of rho function for hyperbolic tangent estimator.
     x=-8:0.001:8;
     ctuning=6;
     ktuning=4.5;
@@ -99,7 +99,7 @@ function rhoHYP = HYPrho(u, cktuning)
 %}
 
 %{
-    % Parameters associated to a value of bdp=0.5
+    % Parameters associated to a value of bdp=1/2.
     c=2.158325031399727
     k=4;
     A=0.000162707412432;

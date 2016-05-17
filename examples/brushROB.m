@@ -18,7 +18,9 @@ function brushROB(eventdata)
 %              with the second radiobutton will be automatically executed)
 %              Data Types - integer
 %
-% See also: brushFAN
+%  Output: 
+%
+% See also: brushFAN, brushRES
 %
 % Copyright 2008-2015.
 % Written by FSDA team

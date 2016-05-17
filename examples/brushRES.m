@@ -19,6 +19,9 @@ function brushRES(eventdata)
 %              with the second radiobutton will be automatically executed)
 %              Data Types - integer
 %
+%  Output: 
+%
+%
 % Examples:
 
 %{

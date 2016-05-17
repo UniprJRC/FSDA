@@ -68,8 +68,8 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %
 % References:
 %
-% Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119,  p.
-% 176).
+% Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley 
+% (equation 7.119,  p. 176).
 %
 %
 % Copyright 2008-2015.
@@ -80,8 +80,9 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 % Examples
 
 %{
+    % Example of M estimate of scale.
     % M estimate of the scale using Tukey biweight rho function with a
-    % value of c associated to a breakdown point of 0.5
+    % value of c associated to a breakdown point of 0.5.
     psifunc=struct;
     psifunc.class='TB';
     bdp=0.5;
@@ -98,7 +99,8 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %}
 
 %{
-    % M estimate of the scale using Hampel biweight rho function with a
+    % Eatimate of scale using Hampel rho function. 
+    % M estimate of the scale using Hampel rho function with a
     % value of c associated to a breakdown point of 0.5
     psifunc=struct;
     psifunc.class='HA'

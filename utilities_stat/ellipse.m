@@ -6,7 +6,7 @@ function Ell=ellipse(mu, Sigma, conflev, Color)
 %
 %   The ellipse is generated using the equation:
 %
-%    $(x-mu)' \Sigma^{-1} (x-mu) = c_{conflev}^2$
+%    $(x-\mu)' \Sigma^{-1} (x-\mu) = c_{conflev}^2$
 %
 %    The length of the ith principal semiaxis $(i=1, 2)$ is $c \lambda_i$ where
 %    $\lambda_i$ is an eigenvalue of $\Sigma$.

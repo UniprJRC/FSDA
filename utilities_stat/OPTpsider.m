@@ -1,10 +1,8 @@
 function psider=OPTpsider(u,c)
 %OPTpsider computes derivative of psi function (second derivative of rho function) for optimal weight function
 %
-%<a href="matlab: docsearchFS('optpsider')">Link to the help function</a>
+%<a href="matlab: docsearchFS('OPTpsider')">Link to the help function</a>
 %
-%
-%  Required input arguments:
 %
 %  Required input arguments:
 %

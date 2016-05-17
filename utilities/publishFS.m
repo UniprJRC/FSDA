@@ -739,8 +739,8 @@ fstring=regexprep(fstring,'ü','&uuml;');
 %% CREATE Name-Value Pair Arguments SECTION OF HTML FILE
 inselOpt=regexp(fstring,'Optional input arguments:');
 if isempty(inselOpt)
-    disp('Please check HTML input file')
-    error('FSDA:missInps','HTML file does not contain ''Optional input arguments:'' string')
+    disp('Please check source .m input file')
+    error('FSDA:WrgInpFile',['Input file ''' file '.m'' does not contain ''Optional input arguments:'' string'])
 end
 
 % substring to search start from Optional input arguments:
@@ -3083,6 +3083,9 @@ fclose('all');
 
 if ~isempty(OptArgsVarargin)
     posoptionsini=regexp(fstring,'options\s*=\s*struct(');
+    if isempty(posoptionsini)
+                error('FSDA:publishFS:WrongUseVarArgInt','varargin is used but structure contaning the options of varargin has not been defined inside .m file')
+    end
     posoptionsini=posoptionsini(1);
     posoptionsfin=regexp(fstring,');');
     posoptionsfin=posoptionsfin(posoptionsfin>posoptionsini);
@@ -3108,7 +3111,7 @@ if ~isempty(OptArgsVarargin)
     % case
     poscommas=regexp(NamePairs,',');
     if length(poscommas)/2==floor(length(poscommas)/2)
-        error('FSDA:FSM:WrongInputOpt','Name pairs must be in pairs: something wrong')
+        error('FSDA:publishFS:WrongInputOpt','Name pairs must be in pairs: something wrong')
     else
         
         numberOptArgs=(length(poscommas)+1)/2;
@@ -3187,7 +3190,7 @@ if evalCode ==1
                 evalin('base', NameToSearchinWS)
                 OutputProduced = fieldnames(evalin('base', NameToSearchinWS));
             catch
-                warning('FSDA:FSM:WrongOut',['In the examples which were executed output argument containing string ' listouti ' which is of class struct has not been found'])
+                warning('FSDA:publishFS:WrongOut',['In the examples which were executed output argument containing string ' listouti ' which is of class struct has not been found'])
                 OutputProduced='';
             end
             if ~isempty(OutputProduced)

@@ -1,4 +1,4 @@
-function psiHYPx = HYPpsix(u, cktuning,varargin)
+function psiHYPx = HYPpsix(u, cktuning)
 %HYPpsix computes psi function for hyperbolic tangent estimator times x
 %
 %<a href="matlab: docsearchFS('hyppsix')">Link to the help function</a>
@@ -28,9 +28,10 @@ function psiHYPx = HYPpsix(u, cktuning,varargin)
 %  Output:
 %
 %
-%   psiHYPx :    n x 1 vector which contains the values of hyperbolic
+%   psiHYPx :    psi(u)*u function. Vector.
+%                n x 1 vector which contains the values of hyperbolic
 %                psi(u)*u function associated to the residuals or Mahalanobis
-%                distances for the n units of the sample
+%                distances for the n units of the sample.
 %
 %
 % More About:
@@ -73,7 +74,7 @@ function psiHYPx = HYPpsix(u, cktuning,varargin)
 
 %{
 
-    %
+    % plot of psi(x)*x for Hyperbolic estimator.
     x=-9:0.1:9;
     ctuning=6;
     ktuning=4.5;

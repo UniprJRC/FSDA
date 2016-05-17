@@ -5,36 +5,51 @@ function Ytra=Powertra(Y,la,varargin)
 %
 %  Required input arguments:
 %
-%         Y :   n x v data matrix; n observations
-%               and v variables
-%               Rows of Y represent observations, and columns represent
-%               variables.
-%        la :   k x 1 vector containing set of transformation
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
+%        la :   transformation parameters. Vector.
+%               k x 1 vector containing set of transformation
 %               parameters for the k ColtoTra.
+%                Data Types - single|double
 %
 % Optional input arguments:
 %
-%    family :   string which identifies the family of transformations which
-%               must be used. Possible values are 'BoxCox' (deafult) or
+%    family :   family of transformations. String. String which identifies
+%               the family of transformations which
+%               must be used. Possible values are 'BoxCox' (default) or
 %               'YeoJohnson' (string YeoJohnson can be abbreviated with YJ)
 %               or 'basicpower'
 %               The Box-Cox family of power transformations equals
-%               (y^{?}-1)/? for ? not equal to zero, and
+%               (y^{\lambda}-1)/\ambda for \lambda not equal to zero, and
 %               log(y)
-%               if ? = 0.
+%               if \lambda = 0.
 %               The YJ (YeoJohnson) transformation is the Box-Cox
 %               transformation of y+1 for nonnegative values, and of |y|+1 with
-%               parameter 2-? for y negative.
-%               The basic power transformation returns y^{?} if ? is not
-%               zero, and log(?) otherwise.
+%               parameter 2-\lambda for y negative.
+%               The basic power transformation returns y^{\lambda} if \lambda is not
+%               zero, and log(\lambda) otherwise.
+%                   Example - 'family','BoxCox'
+%                   Data Types - string
 %               Remark: BoxCox and the basic power family can be used just
 %               if input y is positive. YeoJohnson family of
 %               transformations does not have this limitation.
-%  Jacobian :   Boolean. If true (default) the transformation is normalized
+%  Jacobian :   Requested Jacobian of transformed values. true (default) or
+%               false. If true (default) the transformation is normalized
 %               to have Jacobian equal to 1
-%   ColToTra:   k x 1 integer vector specifying the variables which must be
+%                   Example - 'Jacobian',true
+%                   Data Types - string
+%   ColtoTra:   Variable to transform. Vector.  k x 1 integer vector
+%               specifying the variables which must be
 %               transformed. If it is missing and length(la)=v all
 %               variables are transformed
+%                   Example - 'ColtoTra',[1 2 4]
+%                Data Types - single|double
 %
 % Output:
 %

@@ -5,20 +5,22 @@ function rhoOPT=OPTrho(u, c)
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator 
+%    c :        tuning parameter. Scalar. Scalar greater than 0 which
+%               controls the robustness/efficiency of the estimator
 %               (beta in regression or mu in the location case ...) 
 %
+%  Optional input arguments: TODO_OPTrho_INPUT_OPTIONS
+
 %  Output:
 %
 %
-%   rhoOPT :      n x 1 vector which contains the Tukey's biweight rho
+%   rhoOPT :      residuals after rho filter. Vector. n x 1 vector which contains the Tukey's biweight rho
 %                associated to the residuals or Mahalanobis distances for
 %                the n units of the sample
-%
-%
-% Remark: Function OPTrho transforms vector u as follows 
+%               Function OPTrho transforms vector u as follows 
 %
 %               |  (1/3.25*c^2) x^2/2                                                     |x|<=2c
 %               |   
@@ -28,7 +30,7 @@ function rhoOPT=OPTrho(u, c)
 %
 % 
 %
-%  Remark: Yohai and Zamar (1997)  showed that the \rho function given above
+%  Remark: Yohai and Zamar (1997)  showed that the $\rho$ function given above
 %  is optimal in the following highly desirable sense: the final M estimate
 %  has a breakdown point of one-half and minimizes the maximum bias under
 %  contamination distributions (locally for small fraction of

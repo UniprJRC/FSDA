@@ -17,7 +17,8 @@ function wei = HUwei(u,c)
 %
 %  Output:
 %
-%    w :         n x 1 vector which contains the Tukey's biweight weights
+%    wei :       Weights vector. Vector. 
+%                n x 1 vector containing the Huber weights
 %                associated to the scaled residuals or Mahalanobis
 %                distances for the n units of the sample.
 %
@@ -56,7 +57,7 @@ function wei = HUwei(u,c)
 % Examples:
 
 %{
-
+    % Plot Huber weights.
     x=-6:0.01:6;
     weiHU=HUwei(x,2);
     plot(x,weiHU)

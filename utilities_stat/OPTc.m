@@ -1,4 +1,4 @@
-function [bdp,eff,approxsheff] = OPTc(c,v,varargin)
+function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 %OPTc computes breakdown point and efficiency associated with constant c for Optimal rho function
 %
 %<a href="matlab: docsearchFS('optc')">Link to the help function</a>
@@ -74,6 +74,7 @@ function [bdp,eff,approxsheff] = OPTc(c,v,varargin)
 
 %{
 
+    %% Breakdown vs efficiency.
     %Analysis of breakdown point and asymptotic efficiency
     %at the normal distribution as a function of c in regression.
     c=1:0.01:4;
@@ -115,7 +116,7 @@ function [bdp,eff,approxsheff] = OPTc(c,v,varargin)
 %  where \rho(c) for standardized optimal rho function is 1
 
 
-if nargin<=2 || varargin{1} ~=1
+if nargin<=2 || shapeeff ~=1
     
         % Coefficients of optimal psi standardized using intervals 
     % 0---(2/3)c , (2/3)c---c, >c  

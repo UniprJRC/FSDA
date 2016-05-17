@@ -34,7 +34,7 @@ function psiHAder = HApsider(u, ctuning)
 %
 % More About:
 %
-% Function HApsider transforms vector u as follows
+% Function HApsider transforms vector $u$ as follows
 %
 %  \[
 %  HApsi(u)  = \left\{   

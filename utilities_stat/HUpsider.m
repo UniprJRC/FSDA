@@ -6,12 +6,27 @@ function psider=HUpsider(u,c)
 %
 %  Required input arguments:
 %
-%    u:         n x 1 vector containing residuals or Mahalanobis distances
-%               for the n units of the sample
-%    c :        scalar greater than 0 which controls the robustness/efficiency of the estimator 
+%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1 vector containing 
+%               for the n units of the sample scaled residuals or
+%               Mahalanobis distances
+%    c :        tuning constant. Scalar. scalar greater than 0 which controls the robustness/efficiency of the estimator 
 %               (beta in regression or mu in the location case ...) 
 %
+% Optional input arguments:
+%
+%  Output: 
+%
+%   psider :     derivative of psi function. Vector. 
+%                n x 1 vector which contains the values of the derivative
+%                of the Huber psi function associated to the
+%                residuals or Mahalanobis distances for the n units of the
+%                sample.
+%
+%
 % More About:
+%
+% Function HUpsider transforms vector x as follows 
+% HUpsider(x)=
 %
 % \[
 % HUpsider(u)= \left\{
@@ -23,6 +38,7 @@ function psider=HUpsider(u,c)
 %  \]
 %
 %
+% See also: TBpsider, HYPpsider, OPTpsider
 %
 % References:
 %

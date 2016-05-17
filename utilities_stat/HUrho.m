@@ -59,6 +59,7 @@ function rhoHU = HUrho(u,c)
 % Examples:
 
 %{
+    %% Plot Huber rho function.
     close all
     x=-3:0.001:3;
     c=1.345;
@@ -76,6 +77,7 @@ function rhoHU = HUrho(u,c)
 %}
 
 %{
+    % Huber rhos function for two values of c.
     x=-6:0.01:6;
     c=1.345;
     rhoHU=HUrho(x,c);
@@ -84,7 +86,7 @@ function rhoHU = HUrho(u,c)
     ylabel('$\rho (x,1.345)$','Interpreter','Latex')
     text(-c,0,'-c')
     text(c,0,'c')
-    title('$\rho (u,c)$ with $c=2$ and $c=2$','Interpreter','Latex')
+    title('$\rho (u,c)$ with $c=1,345$ and $c=2$','Interpreter','Latex')
     hold('on')
     rhoHU=HUrho(x,2);
     plot(x,rhoHU,'-.')

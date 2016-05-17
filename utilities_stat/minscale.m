@@ -5,16 +5,16 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 %  refers to Tukey's biweight At present this routine is just called by
 %  Smult and MMmult or MMmultcore
 %
-%
-%
-%<a href="matlab: docsearchFS('minscale')">Link to the help function</a>
-%
 % u = residuals or Mahalanobis distances 
 % (note that u is kept fixed in each iteration)
 % Remark: the scale must satisfy the following equation
-% (1/n) \sum_{i=1}^n \rho((u_i/c)/s) = kc
+% $(1/n) \sum_{i=1}^n \rho((u_i/c)/s) = kc$
 % This routine computes the minimum value of s which satisfies the above
-% equation
+% equation%
+%
+%<a href="matlab: docsearchFS('minscale')">Link to the help function</a>
+%
+%
 %
 % Required input arguments:
 %
@@ -85,4 +85,3 @@ end
 % disp(loop)
 % sc=sc;
 end
-%FScategory:UTISTAT
