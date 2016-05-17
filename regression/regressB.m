@@ -76,7 +76,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               The covariance matrix of the prior distribution
 %               of $\beta$ is
 %               \[
-%               (1/tau0)* (c X0'X0)^{-1} = (1/tau0)* (c*R)^{-1}
+%               (1/\tau_0)(c X_0'X_0)^{-1} = (1/\tau_0)(cR)^{-1}
 %               \]
 %               therefore multiplication of $R$ by $c$ (with $c<1$) increases the
 %               variance of $\beta$.
@@ -102,7 +102,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               1) Bayesian p-values.
 %               2) highest posterior density intervals (HPDI) for each value
 %               of input option conflev.
-%               3) posterior odds for beta_j=0.
+%               3) posterior odds for $\beta_j=0$.
 %               4) posterior model probability of the model which excludes
 %               variable j
 %               Example - 'stats',1
@@ -222,7 +222,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               For example if modelprob(j)= 0.28, that is if the
 %               probability of the model which does not contain variable j
 %               is equal to 0.28, it means that there is a 28 per cent
-%               chance that beta_j=0 and a 72 per cent chance that it is
+%               chance that $\beta_j=0$ and a 72 per cent chance that it is
 %               not.
 %               Warning: modelprob can be computed just if n1>=p
 %

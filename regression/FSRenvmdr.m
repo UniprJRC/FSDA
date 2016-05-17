@@ -51,7 +51,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %               ...
 %               (k+1) col = envelope for quantile prob(k).
 %
-% Subfunctions: tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS
+% Subfunctions: tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS. 
 %
 % Other function dependencies: none.
 %
@@ -76,7 +76,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 % Examples:
 
 %{  
-    %% FSRenvmdr with all default options.
+    % FSRenvmdr with all default options.
     % Example of creation of 1 per cent, 50 per cent and 99 per cent 
     % envelopes based on 1000 observations and 5 explanatory variables using 
     % exact method.

@@ -268,10 +268,10 @@ function [out]=FSRH(y,X,Z,varargin)
 %               scedastic parameters (in step n-k)
 % out.scale  = scalar containing the estimate of the scale
 %                       (sigma). 
-% out.mdr    =  (n-init) x 2 matrix
-%               1st col = fwd search index
+% out.mdr    =  (n-init) x 2 matrix: 
+%               1st col = fwd search index; 
 %               2nd col = value of minimum deletion residual in each step
-%               of the fwd search
+%               of the fwd search. 
 % out.Un     =  (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the

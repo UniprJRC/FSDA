@@ -29,7 +29,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %   beta0 :     Prior mean of $\beta$. p-times-1 vector. 
 %    R    :     Matrix associated with covariance matrix of $\beta$. p-times-p
 %               positive definite matrix.
-%               It can be interpreted as X0'X0 where X0 is a n0 x p
+%               It can be interpreted as $X_0'X_0$ where $X_0$ is a n0 x p
 %               matrix coming from previous experiments (assuming that the
 %               intercept is included in the model)
 %

@@ -52,7 +52,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               bayes.n0 = scalar. Sometimes it helps to think of the prior
 %                      information as coming from n0 previous experiments.
 %                      Therefore we assume that matrix $X_0$ (which defines
-%                      R), was made up of n0 observations)
+%                      R), was made up of n0 observations.
 %                  Example - bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
 %                  Data Types - double
 %       bsb   : list of units forming the initial subset. Vector.
@@ -187,9 +187,9 @@ function [out] = FSRBeda(y, X, varargin)
 %               all expl variables except the one associated with beta0) divided by
 %               p(y| model which contains all expl variables). 
 %               1st col = fwd search index (from init to n); 
-%               2nd col = posterior odd for beta1; 
+%               2nd col = posterior odd for $beta_1$; 
 %               ...; 
-%               (p+1) col = posterior odd for betap. 
+%               (p+1) col = posterior odd for $beta_p$. 
 % out.modelprob =  (n-init+1)-by-(p+1) matrix which contains
 %               posterior model probability of the model which excludes
 %               variable j. For example if modelprob(j)= 0.28, that is if
@@ -201,7 +201,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               $\beta_1$; 
 %               ...; 
 %               (p+1) col = posterior model prob of the model which
-%               excludes betap. 
+%               excludes $beta_p$. 
 %    out.Un=        (n-init) x 11 matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search. 
 %               REMARK: in every step the new subset is compared with the

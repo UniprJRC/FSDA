@@ -64,7 +64,7 @@ function [out]=FSRfan(y,X,varargin)
 %                    Data Types - double
 %       plots   :  Plot on the screen. Scalar.
 %                   If plots=1 the fan plot is produced
-%                   else (default) no plot is produced
+%                   else (default) no plot is produced. 
 %                   Example - 'plots',1 
 %                   Data Types - double
 %                   REMARK: all the following options work only if plots=1
@@ -150,7 +150,8 @@ function [out]=FSRfan(y,X,varargin)
 %               the initial subset for each value of lambda
 %  out.Un     = cell of size length(la).
 %               out.Un{i} is a n-init) x 11 matrix which contains the unit(s) included in
-%               the subset at each step in the search associated with la(i)
+%               the subset at each step in the search associated with
+%               la(i). 
 %               REMARK: in every step the new subset is compared with the old subset. Un
 %               contains the unit(s) present in the new subset but not in
 %               the old one Un(1,:) for example contains the unit included

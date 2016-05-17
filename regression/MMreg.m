@@ -136,7 +136,6 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                       extracted for computing the estimate (the so called
 %                       elemental sets).
 %
-% More About:
 %
 % See also: Sreg
 %

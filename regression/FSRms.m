@@ -195,44 +195,44 @@ function outms = FSRms(y,X,varargin)
 %         outms:   structure which contains the following fields
 %
 %        outms.stor = k x 9 matrix containing statistics which can be used to create the candles
-%               1st col: max Cp values
-%               2nd col: min Cp values
-%               3rd col: average Cp values
-%               4nd col: median Cp values
+%               1st col: max Cp values; 
+%               2nd col: min Cp values; 
+%               3rd col: average Cp values; 
+%               4nd col: median Cp values; 
 %                   Remark: the information in the first 4 columns is
-%                   referred to the central part of the search
-%               5th col: x coordinates (or size of submodel)
+%                   referred to the central part of the search. 
+%               5th col: x coordinates (or size of submodel); 
 %               6th col: number of explanatory variables of the submodel
-%               7th col: y coordinate of final Cp
-%               8th col: units entering the final step of the search
+%               7th col: y coordinate of final Cp; 
+%               8th col: units entering the final step of the search; 
 %               9th col: maximum Cp value during the (central and final
 %               part of the) search (This information is used to print the
-%               labels on top of each model)
+%               labels on top of each model). 
 %        outms.outl = r x 4 matrix containing information about 'influential
-%               units' or empty matrix
+%               units' or empty matrix. 
 %               Influential units in this context are defined as the units
 %               which enter the subset in the final part of the search and
 %               bring the value of Cp below the minimum or above the
-%               maximum value of the central part of the search
-%               1st col: x coordinates
-%               2nd col: y coordinates
-%               3rd col: step of entry into subset
-%               4nd col: unit number
-%               If matrix outl contains more columns they are ignored
+%               maximum value of the central part of the search. 
+%               1st col: x coordinates; 
+%               2nd col: y coordinates; 
+%               3rd col: step of entry into subset; 
+%               4nd col: unit number. 
+%               If matrix outl contains more columns they are ignored. 
 %        outms.siz  = vector of length 2 containing information about n (number of
 %               units of the sample and bigP, number of explanatory
 %               variables, including the constant, in the full model). This
-%               information is necessary to compute the envelopes
+%               information is necessary to compute the envelopes. 
 %         outms.MAL = (n-init+1) x (k+1) matrix
 %                 Mallows Cp monitored along the search for the selected
-%                 models
-%                   1st col is fwd search index
-%                   2nd col is associated with first selected model
-%                   3rd col is associated with second selected model
-%                   ............
+%                 models. 
+%                   1st col is fwd search index; 
+%                   2nd col is associated with first selected model; 
+%                   3rd col is associated with second selected model; 
+%                   ............; 
 %                   (k+1)th col is associated with k-th selected model
 %                   Notice that k<=(n choose smallp) and that all
-%                   models contain the constant
+%                   models contain the constant. 
 %       outms.LAB   =    cell array of strings of length k containing the labels
 %                   of the models which have been extracted. First element
 %                   of LAB is associated with second column of matrix

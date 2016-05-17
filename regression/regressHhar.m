@@ -128,7 +128,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %   
 %       $\sigma^2_i =\sigma^2 \exp(z_i \alpha)$
 %   
-%   Let $z_i$ include a constant term so that \( z_i'=(1 \; q_i) \)where \( q_i \) is the
+%   Let $z_i$ include a constant term so that \( z_i'=(1 \; q_i) \) where \( q_i \) is the
 %   original set of variables which are supposed to explain
 %   heteroscedasticity. This routine automatically adds a column of 1 to
 %   input matrix Z (therefore Z does not have to include a constant term).
@@ -141,9 +141,9 @@ function [out]=regressHhar(y,X,Z,varargin)
 %   \sigma^2_i = \exp(\gamma' z_i)
 %   \]
 %   Once the full parameter vector is estimated \( \exp( \gamma_0)\) provides the
-%   estimator for \( \sigma^2 \)
+%   estimator for \( \sigma^2 \). 
 %
-%  THE MODEL IS 
+%  The model is:  
 %               \[
 %                 y=X \times\beta+ \epsilon,  \qquad 
 %                 \epsilon \sim N(0, \;  \Sigma)
@@ -174,7 +174,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               \]
 %               that is, once the full parameter vector $\gamma$ containing
 %               the skedastic parameters is estimated $\exp( \gamma(1))$
-%               provides the estimator for $\sigma^2$
+%               provides the estimator for $\sigma^2$. 
 %               REMARK2: if $Z=log(X)$ then
 %               \[
 %                            \sigma^2_i= \exp(z_i^T \times \gamma) =
