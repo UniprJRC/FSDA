@@ -25,6 +25,8 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %       init :  scalar, specifies the point where to initialize the search
 %               and start monitoring the required diagnostics. If not
 %               specified, it is set equal to p+1.
+%                 Example - 'init',10
+%                 Data Types - double
 %   bsbsteps :  vector which specifies for which steps of the fwd search it
 %               is necessary to save the units forming subset for each
 %               random start. If bsbsteps is 0 for each random start we
@@ -34,10 +36,14 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %               which are multiple of 100. For example, if n=753 and
 %               init=6, units forming subset are stored for m=init, 100,
 %               200, 300, 400, 500 and 600.
+%                 Example - 'bsbsteps',[10 20 30]
+%                 Data Types - double
 %               REMARK: vector bsbsteps must contain numbers from init to
 %               n. if min(bsbsteps)<init a warning message will appear on
 %               the screen.
 %     nsimul :  scalar, number of random starts. Default value=200.
+%                 Example - 'nsimul',1000
+%                 Data Types - double
 %   nocheck  : It controls whether to perform checks on matrix Y. Scalar.
 %                 If nocheck is equal to 1 no check is performed.
 %                 As default nocheck=0.
@@ -46,6 +52,8 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %      plots :  scalar. If equal to one a plot of random starts minimum
 %               Mahalanobis residual appears  on the screen with 1%, 50% and
 %               99% confidence bands else (default) no plot is shown.
+%               Example - 'plots',0
+%               Data Types - double
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
@@ -59,20 +67,22 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %               may be inconvenient if other applications are running
 %               concurrently). The same happens if the numpool value
 %               chosen by the user exceeds the available number of cores.
-%               REMARK 1: up to R2013b, there was a limitation on the
+%               Example - 'numpool',8
+%               Data Types - double
+%               REMARK : up to R2013b, there was a limitation on the
 %               maximum number of cores that could be addressed by the
 %               parallel processing toolbox (8 and, more recently, 12).
 %               From R2014a, it is possible to run a local cluster of more
 %               than 12 workers.
-%               REMARK 2: Unless you adjust the cluster profile, the
+%               REMARK : Unless you adjust the cluster profile, the
 %               default maximum number of workers is the same as the
 %               number of computational (physical) cores on the machine.
-%               REMARK 3: In modern computers the number of logical cores
+%               REMARK : In modern computers the number of logical cores
 %               is larger than the number of physical cores. By default,
 %               MATLAB is not using all logical cores because, normally,
 %               hyper-threading is enabled and some cores are reserved to
 %               this feature.
-%               REMARK 4: It is because of Remarks 3 that we have chosen as
+%               REMARK : It is because of Remarks 3 that we have chosen as
 %               default value for numpool the number of physical cores
 %               rather than the number of logical ones. The user can
 %               increase the number of parallel pool workers allocated to
@@ -89,17 +99,21 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %               number of workers in the local/current profile overwrites
 %               default value of 'numpool' obtained as feature('numCores')
 %               (i.e. the number of physical cores).
-%  cleanpool :  cleanpool is 1 if the parallel pool has to be cleaned after
+%  cleanpool :  Scalar. Cleanpool is 1 if the parallel pool has to be cleaned after
 %               the execution of the random starts. Otherwise it is 0.
 %               The default value of cleanpool is 1.
 %               Clearly this option has an effect just if previous option
 %               numpool is > 1.
-%       msg  :  scalar which controls whether to display or not messages
+%               Example - 'cleanpool',1
+%               Data Types - double
+%       msg  :  Level of output to display. Scalar. Scalar which controls whether to display or not messages
 %               about random start progress. More precisely, if previous
 %               option numpool>1, then a progress bar is displayed, on
 %               the other hand a message will be displayed on the screen
 %               when 10%, 25%, 50%, 75% and 90% of the random starts have
 %               been accomplished
+%                 Example - 'msg',0 
+%                 Data Types - double
 %               REMARK: in order to create the progress bar when nparpool>1
 %               the program writes on a temporary .txt file in the folder
 %               where the user is working. Therefore it is necessary to
@@ -120,18 +134,19 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %               infinite values will be automatically excluded from the
 %               computations. y can be both a row of column vector.
 %
+%
 % Output:
 %
 %       mmdrs:  Minimum Mahalanobis distance. Matrix.
 %               (n-init)-by-(nsimul+1) matrix which contains the monitoring
 %               of minimum Mahalanobis distance at each step of the forward
 %               search for each random start.
-%               1st col = fwd search index (from init to n-1).
-%               2nd col = minimum Mahalanobis distance for random start 1.
-%               ...
+%               1st col = fwd search index (from init to n-1);
+%               2nd col = minimum Mahalanobis distance for random start 1;
+%               ...;
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
 %
-%       BBrs    units belonging to the subset. 3D array.
+%       BBrs:    units belonging to the subset. 3D array.
 %               Units belonging to the subset
 %               at the steps specified by input option bsbsteps.
 %               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
@@ -155,7 +170,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %               length(bsbsteps) columns.
 %
 %
-% See also:     FSRmdr, FSMmdrrs, FSMmmd
+% See also:     FSRmdr, FSRmdrrs, FSMmmd
 %
 % References:
 %

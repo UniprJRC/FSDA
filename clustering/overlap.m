@@ -119,4 +119,3 @@ cand=triu(OmegaMap,1)+(tril(OmegaMap,-1))';
 
 StdOmega=std(triu2vec(cand,1));
 end
-%FScategory:CLUS-MixSim

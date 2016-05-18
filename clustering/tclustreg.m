@@ -22,6 +22,11 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %             This is a guess on the number of data groups.
 %             Data Types - single|double
 %
+% restrfact : Scatter constraint. Scalar. 
+%            This is a constant c controlling the differences among
+%            group scatters. The value 1 is the strongest restriction.
+%            Data Types - single|double
+%
 %   alpha1 : Trimming level. Scalar. 
 %            alpha1 is a value between 0 and 0.5 or an  integer specifying
 %            the number of observations which have to be trimmed. If
@@ -36,10 +41,6 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            alpha1. If alpha2=0 there is no second-level trimming.
 %            Data Types - single|double
 %
-%restrfact : Scatter constraint. Scalar. 
-%            This is a constant c controlling the differences among
-%            group scatters. The value 1 is the strongest restriction.
-%            Data Types - single|double
 %
 %  Optional input arguments:
 %
@@ -132,7 +133,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 
 %{
     % Generate mixture of regression using MixSimReg, with an average
-    % overlapping at centroids =0.01. Use all default options.
+    % overlapping at centroids =0,001. Use all default options.
     p=3;
     k=2;
     Q=MixSimreg(k,p,'BarOmega',0.001);

@@ -206,8 +206,8 @@ function out  = tclustIC(Y,varargin)
 %                 Data Types - single | double
 %
 %       Ysave : Scalar that is set to 1 to request that the input matrix Y
-%               is saved into the output structure out. Default is 1, i.e.
-%               matrix Y is saved inside output structure out.
+%               is saved into the output structure out. Default is 1, that
+%               is  matrix Y is saved inside output structure out.
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %

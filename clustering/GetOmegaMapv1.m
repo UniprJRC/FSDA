@@ -255,4 +255,3 @@ end
 
 BarOmega=TotalOmega/(0.5*k*(k-1));
 end
-%FScategory:CLUS-MixSim

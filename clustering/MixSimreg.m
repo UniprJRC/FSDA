@@ -51,8 +51,8 @@ function [out]  = MixSimreg(k,p,varargin)
 %
 %  Required input arguments:
 %
-%            k: scalar, number of groups (components)
-%            p: scalar, number of explanatory variables for each regression
+%            k: scalar. Number of groups (components).
+%            p: scalar. Number of explanatory variables for each regression
 %               hyperplane (including intercept).
 %
 %  Optional input arguments:
@@ -211,11 +211,11 @@ function [out]  = MixSimreg(k,p,varargin)
 %               combination of non central chi2 r.v.. This is the
 %               probability of misclassification.
 %     Display : Level of display.
-%               - 'off' displays no output;
+%               - 'off' displays no output.
 %               - 'notify' (default) displays output if requested
-%                  overlap cannot be reached in a particular simulation
+%                  overlap cannot be reached in a particular simulation.
 %               - 'iter' displays output at each iteration of each
-%                 simulation
+%                 simulation.
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -2173,4 +2173,3 @@ out = Q;
         end
     end
 end
-%FScategory:CLUS-MixSim
