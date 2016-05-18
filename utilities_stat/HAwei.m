@@ -46,8 +46,8 @@ function w = HAwei(u, ctuning)
 %  HAwei(u)  = \left\{   
 %  \begin{array}{cc}
 %    1 & |u| <= a                                       \\
-%    \frac{a}{|u|}   & a <= |u| < b                    \\
-%    \frac{a}{|u|} *  \frac{c-|u|}{c-b},  & b <= |u| <  c \\
+%    \frac{a}{|u|}   & a \leq |u| < b                    \\
+%    \frac{a}{|u|} \times  \frac{c-|u|}{c-b},  & b <= |u| <  c \\
 %    0 & |u| >= c 
 %  \end{array} \right.
 % \]

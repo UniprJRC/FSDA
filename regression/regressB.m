@@ -208,7 +208,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               HPDI associated with conflev(end).
 %               Remark: confidence levels are based on the inverse-gamma distribution
 %    out.Bpval =   p-by-1 vector containing Bayesian p-values.
-%               p-value = P(|t| > | \hat \beta se(beta) |)
+%               p-value = P(|t| > | \hat \beta /se(\hat beta) |)
 %               = prob. of beta different from 0
 %  out.postodds = p-by-1 vector which contains posterior odds for
 %               betaj=0.

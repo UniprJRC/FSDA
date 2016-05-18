@@ -5,9 +5,10 @@ function kE = quickselectFS(A,k,kiniindex)
 %
 % Required input arguments:
 %
-%   A:  a set of quique numbers. Vector. Vector containing a set of n (distinct) numbers.
-%   k:  order statistic. Scalar. An integer between 1 and n indicating the
+%   A:  a set of unique numbers. Vector. Vector containing a set of n (distinct) numbers.
+%   k:  order statistic index. Scalar. An integer between 1 and n indicating the
 %       desired order statistic.
+%                 Data Types - double
 %
 %
 %
@@ -17,7 +18,7 @@ function kE = quickselectFS(A,k,kiniindex)
 %      The index of an element in A that is supposed to be "close"
 %      to the desired k-th order statistic. This information is used to
 %      choose the pivot so that the chance to fall into the worst case
-%      performance (O(n^2)) is minimized and the average case performance
+%      performance ($O(n^2)$) is minimized and the average case performance
 %      is maximized.
 %      Example - 'kiniindex',1 
 %      Data Types - double

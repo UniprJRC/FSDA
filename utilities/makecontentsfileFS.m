@@ -205,6 +205,9 @@ for j=1:ldirpath
     end
     
     d = dir([dirpathj filesep '*.m']);
+    if max(strcmp(fieldnames(d),'folder'))>0
+        d=rmfield(d,'folder');
+    end
     
     % if file contains the string FilterOutFileName then it is not
     % listed

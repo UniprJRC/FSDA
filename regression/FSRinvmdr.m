@@ -59,16 +59,16 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %
 %   Atkinson, A.C. and Riani, M. (2006). Distribution theory and
 %   simulations for tests of outliers in regression. Journal of
-%   Computational and Graphical Statistics, Vol. 15, pp. 460–476
+%   Computational and Graphical Statistics, Vol. 15, pp. 460-476
 %   Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward
 %   search for testing multiple outliers in regression, Advances in Data
-%   Analysis and Classification, Vol. 1, pp. 123–141.
+%   Analysis and Classification, Vol. 1, pp. 123-141.
 %
 % Copyright 2008-2015
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('fsrinvmdr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRinvmdr')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:
@@ -172,7 +172,8 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 
 
 %% Input parameters checks
-options=struct('n',mdr(end,1)+1,'plots','');
+n=mdr(end,1)+1;
+options=struct('n',n,'plots','');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

@@ -83,4 +83,3 @@ if nargout > 1 % Calculate confidence interval
 end
 end
 
-%FScategory:REG-Regression

@@ -162,7 +162,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               3rd col = monitoring $\tau_1$ (posterior estimate of
 %               $\tau$).
 %     out.Bpval =   (n-init+1) x (p+1) containing Bayesian p-values.
-%               p-value = $P(|t| > | \hat{\beta} se(beta) |)$
+%               p-value = $P(|t| > | \hat{\beta} / se(beta) |)$
 %               = prob. of beta different from 0. 
 %               1st col = fwd search index (from init to n); 
 %               2nd col = p-value for first variable; 

@@ -39,11 +39,12 @@ function Ytra=basicPower(Y,ColtoTra,la)
 %               ytra = log(y) 
 %             \]
 %
-% Copyright 2008-2015.
-% Written by FSDA team
 %
 % See also: normBoxCox, normYJ
 % 
+%
+% Copyright 2008-2015.
+% Written by FSDA team
 %
 %<a href="matlab: docsearchFS('basicPower')">Link to the help function</a>
 % Last modified 06-Feb-2015

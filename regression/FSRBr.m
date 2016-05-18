@@ -90,11 +90,11 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %
 %Optional Output:
 %
-%           xnew = vector with a number of new points where to evaluate the
+%           xnew : new points. Vector. Vector with a number of new points where to evaluate the
 %                  prediction interval. xnew is a vector.
-%          ypred = values predicted by the fitted model on xnew. Vector of
+%          ypred : values predicted by the fitted model on xnew. Vector of
 %                  length(xnew)
-%           yci  = Confidence intervals. A two-column matrix with each row providing
+%           yci  : Confidence intervals. A two-column matrix with each row providing
 %                  one interval. 
 %
 % See also: FSR

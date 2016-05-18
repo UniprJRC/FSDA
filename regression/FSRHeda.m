@@ -232,9 +232,10 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               n x (n-init+1) matrix which contains information about the
 %               weights assigned to each unit to make the regression equation
 %               skedastic.
-%            More precisely, if $var (\epsilon)= \sigma^2
-%            Omega=diag(omegahat)$ the weights which are stored are
-%            $omegahat.^(-0.5)$;
+%            More precisely, if:
+%            $var (\epsilon)= \sigma^2 \Omega$, where
+%            $\Omega=diag(\omega_1, \ldots, \omega_n)$ the weights which are stored are
+%            $(\omega_1^{-0.5}, \ldots, \omega_n^{-0.5})$;
 %     out.y=     A vector with n elements that contains the response
 %               variable which has been used.
 %     out.X=    Data matrix of explanatory variables
