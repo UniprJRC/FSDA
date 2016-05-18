@@ -4,11 +4,10 @@ function docsearchFS(varargin)
 %<a href="matlab: docsearchFS('docsearchFS')">Link to the help function</a>
 %
 %   docsearchFS opens the Help browser and displays the documentation home
-%   page of FS. 
+%   page of FS.
 %
-%   docsearchFS('namehtmlhelpfile') searches FSDA documentation for pages
-%   with words that match the specified expression (version of matlab
-%   <=2012a) or opens FSDA documentation associated to namehtmlhelpfile.
+%   docsearchFS('namehtmlhelpfile') searches FSDA documentation page
+%   of namehtmlhelpfile
 %
 %
 % Copyright 2008-2015.
@@ -22,18 +21,18 @@ function docsearchFS(varargin)
 
 %
 %{
-    % Open main documentation page of FSDA
+    % Open main documentation page of FSDA (file index.html)
     docsearchFS
 %}
 %
 %
 %{
     % Open html documentation page of FSDA function named LXS
-    docsearchFS('lxs')
+    docsearchFS('LXS')
 %}
 
 %% Beginning of code
-if nargin > 1
+if nargin <1
     namehtmlhelpfile = deblank(sprintf('%s ', varargin{:}));
 elseif nargin == 1
     namehtmlhelpfile = varargin{1};
@@ -41,34 +40,18 @@ else
     namehtmlhelpfile = '';
 end
 
-% Find version of MATLAB which is installed 
-a=ver('matlab');
 
-if str2double(a.Version)>7.14
-    % If installed version of MATLAB is newer than 2012a 
-    % function helpbrowser is called
-    
-    % Find path of docsearchFS.m
-    mname=mfilename('fullpath');
-    
-    if isempty(namehtmlhelpfile)
-        % if namehtmlhelpfile is not specified main page of FSDA
-        % documentation is opened
-        rname = ['' mname(1:end-11) 'helpfiles' filesep 'FSDA' filesep 'fsda_product_page.html' ''];
-        web(rname,'-new')
-    else
-        
-        % rnames contains full path of associated html file
-        rname = ['' mname(1:end-11) 'helpfiles' filesep 'FSDA' filesep namehtmlhelpfile '.html' ''];
-        % Open html help file
-        web(rname,'-new')
-    end
+if isempty(namehtmlhelpfile)
+    web([docroot '/FSDA/index.html'])
 else
-    % If installed version of MATLAB is 2012a or older, matlab function docsearch
-    % is called
-    if isempty(namehtmlhelpfile)
-        docsearch('FSDA')
-    else
-        docsearch(namehtmlhelpfile)
+    
+    [~,~,ext]=fileparts(namehtmlhelpfile);
+    
+    if isempty(ext)
+        namehtmlhelpfile=[namehtmlhelpfile '.html'];
+    elseif strcmp(ext,'html')==0
+        error('FSDA:docsearchFS','Wrong file extension')
     end
+    web([docroot '/FSDA/' namehtmlhelpfile])
+end
 end
