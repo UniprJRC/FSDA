@@ -44,6 +44,7 @@ document.write(divsbefore);
 		<p>Given an estimator of $\beta$, say $\hat \beta$
 		the residuals are defined as</p>
         $r_i(\hat \beta)=y_i- x_i^T \hat \beta$
+        <br>
 		
 		<p>The traditional least squares estimate of $\beta$ is denoted with
 		</p>
@@ -60,38 +61,58 @@ document.write(divsbefore);
 		<p>In the literature of robust statistics the $\rho$ function denotes a function 
 		that</p>
 		<ol>
-			<li>$\rho(x)$ is a non decreasing function of $\mid x \mid$</li>
+			<li>$\rho(x)$ is a non decreasing function of $|x|$</li>
 			<li>$\rho(0)=0$</li>
 			<li>$\rho(x)$ is increasing for $x>0$ such that $\rho(x) < \rho(\infty)$ </li>
 		</ol>
 		<p>&nbsp;</p>
-		<p>Perhaps the most popular choice for the ρ function in is Tukey’s biweight 
+		<p>Perhaps the most popular choice for the $\rho$ function in is Tukey’s biweight 
 		(bisquare) function&nbsp;</p>
-		<p><img alt="" src="images_help/img9C.gif"> </p>
-		where c &gt 0 is a tuning constant which is linked to the breakdown point 
-		of the estimator of β.<p>&nbsp;</p>
-&nbsp;<p>Function ρ for Tukey's biweight is implemented in routine
+        
+  
+\[ \rho(x) = \begin{cases} 
+      \frac{x^2}{2}-\frac{x^4}{2c^2}+\frac{x^6}{6c^4} & if |x| \leq c \\
+      \frac{c^2}{6} & if  |x| > c, \\
+     
+   \end{cases}
+\]
+        
+        
+		
+		where $c>0$ is a tuning constant which is linked to the breakdown point 
+		of the estimator of $\beta$.<p>&nbsp;</p>
+&nbsp;<p>Function $\rho$ for Tukey's biweight is implemented in routine
 		<a href="tbrho.html">TBrho</a>.</p>
 		<p>&nbsp;</p>
 &nbsp; <a name="psi"></a>
-		<h3 class="title">The ψ function</h3>
-		<p>In the literature of robust statistics a ψ (psi) function denotes a function 
-		ψ which is the derivative of a ρ function
-		<img alt="" class="style4" src="images_help/img103.gif"> such that</p>
+		<h3 class="title">The $\psi$ function</h3>
+		<p>In the literature of robust statistics a $\psi$ (psi) function denotes a function 
+		$\psi$ which is the derivative of a $\rho$ function $\psi = \rho'$
+		 such that</p>
 		<ol>
-			<li>ψ is odd and ψ(x)≥0 for x≥0 </li>
+			<li>$\psi$ is odd and $\psi(x) \geq 0$  for $x \geq 0$ </li>
 		</ol>
-		<p>Function ψ for Tukey's biweight </p>
-		<p><img alt="" src="images_help/imgB1.gif"></p>
+		<p>Function $\psi$ for Tukey's biweight </p>
+        \[ \psi(x) = \begin{cases} 
+      x- \frac{2x^3}{c^2}+\frac{x^5}{c^4} = x  \Big[ 1- ( \frac{x}{c})^2 \Big]^2  & if  |x|  \leq c \\
+
+      \frac{c^2}{6} & if   |x| > c, \\
+   \end{cases}
+\]
 		<p>is implemented in routine <a href="tbpsi.html">TBpsi</a>.</p>
 		<p>&nbsp;</p>
 		<a name="equivariance"></a>
 		<h3 class="title">Regression, scale and affine equivariance</h3>
-		We say that an estimate
-		<img alt="" class="style4" src="images_help/img74.gif"> of
-		<img alt="" class="style4" src="images_help/img75.gif"> is regression, scale 
+		We say that an estimate $\tilde \beta$ of
+		$\beta$ is regression, scale 
 		and affine equivariant, if it satisfies the following three properties:
-		<p><img alt="" src="images_help/img6C2.gif"></p>
+        
+        \begin{array}
+$\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{for all} \quad & \gamma \in R^p \\
+\tilde \beta (X, \lambda y) & = & \lambda \tilde \beta(X,y) & \quad \textrm{for all} \quad & \lambda \in R \\
+\tilde \beta(X A, \lambda y) & = &  A^{-1} \tilde\beta(X,\lambda y) & \quad \textrm{for all} \quad A \quad \textrm{with} \quad  & \det|A| \neq 0 
+\end{array}
+        
 		<p>These are desirable properties because they allow us to know how the 
 		estimate changes under linear transformations of the data.</p>
 		<p>&nbsp;</p>
