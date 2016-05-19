@@ -36,6 +36,7 @@ document.write(divsbefore);
 		<h3 class="title">Notation</h3>
 		Consider the usual regression model<p>&nbsp;</p>
 		\[ y_i = x_i^T\beta +u_i \qquad i=1, \ldots, n. \]
+        
 		<p>where $u_i$ are random errors which have common variance 
 		equal to $\sigma^2$ and are independent from the covariates $x_i$.&nbsp;
 		$\beta$, the location component of the linear model, is the parameter 
@@ -43,25 +44,25 @@ document.write(divsbefore);
 		<p>Given an estimator of $\beta$, say $\hat \beta$
 		the residuals are defined as</p>
         $r_i(\hat \beta)=y_i- x_i^T \hat \beta$
-		<p><img class="style4" src="images_help/wpnfqozb.gif"> </p>
-		<p>The traditional least squares estimate of <em>β</em> is denoted with
+		
+		<p>The traditional least squares estimate of $\beta$ is denoted with
 		</p>
-		<p><img alt="" src="images_help/img88.gif"></p>
+        $\hat \beta = \hat \beta_{LS}=\hat \beta_{LS}(X,y)=(X'X)^{-1}X'y$
+		
 		<p>We are concerned with the case where a certain proportion of the observations 
 		may not follow model above. Traditional robust estimators attempt to limit 
-		the influence of outliers by replacing in the estimation of <em>β</em> the 
+		the influence of outliers by replacing in the estimation of $\beta$ the 
 		square of the residuals with a less rapidly increasing loss function or 
 		by a function ρ of the residuals themselves which is bounded. </p>
 		<p>&nbsp;</p>
 		<a name="rho"></a>
-		<h3 class="title">The ρ function</h3>
-		<p>In the literature of robust statistics the ρ function denotes a function 
+		<h3 class="title">The $\rho$ function</h3>
+		<p>In the literature of robust statistics the $\rho$ function denotes a function 
 		that</p>
 		<ol>
-			<li><em>ρ</em>(<em>x</em>) is a non decreasing function of |x|</li>
-			<li><em>ρ</em>(0)=0</li>
-			<li><em>ρ</em>(<em>x</em>) is increasing for x &gt;0 such that <em>ρ</em>(<em>x</em>)&lt;
-			<em>ρ</em>(∞)</li>
+			<li>$\rho(x)$ is a non decreasing function of $\mid x \mid$</li>
+			<li>$\rho(0)=0$</li>
+			<li>$\rho(x)$ is increasing for $x>0$ such that $\rho(x) < \rho(\infty)$ </li>
 		</ol>
 		<p>&nbsp;</p>
 		<p>Perhaps the most popular choice for the ρ function in is Tukey’s biweight 
