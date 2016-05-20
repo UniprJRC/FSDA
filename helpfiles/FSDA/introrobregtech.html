@@ -34,7 +34,8 @@ document.write(divsbefore);
 		<h2 class="title">Technical introduction to Robust methods in regression</h2>
 		<a name="notation"></a>
 		<h3 class="title">Notation</h3>
-		Consider the usual regression model<p>&nbsp;</p>
+		Consider the usual regression model<p>
+		&nbsp;</p>
 		\[ y_i = x_i^T\beta +u_i \qquad i=1, \ldots, n. \]
         
 		<p>where $u_i$ are random errors which have common variance 
@@ -135,7 +136,7 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		<p>Remark 2: it is possible to show that the regression M estimates have 
 		the following asymptotic distribution:</p>
         
-        $\hat \beta_M \approx N \Big( \beta, \sigma^2 \frac{E \psi (u/\sigma)^2}{[E \psi' (u/\sigma)]^2} 	(X'X)^{-1} \Big)$
+        \[\hat \beta_M \approx N \Big( \beta, \sigma^2 \frac{E \psi (u/\sigma)^2}{[E \psi' (u/\sigma)]^2} 	(X'X)^{-1} \Big)\]
         
 <br><br>
 		<p>Thus the approximate covariance matrix of an M-estimate differs only 
@@ -206,7 +207,7 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 
 		<p>the ordered absolute values of the residuals,&nbsp;
 		 $\hat \beta_{LMS}$ is defined as</p>
-         $\hat \beta_{LMS}= \min \limits_{\beta} \textrm{med} |r(\beta)|_i$
+         \[ \hat \beta_{LMS}= \min \limits_{\beta} \; \; med |r(\beta)|_i \]
 		<p> $\hat \beta_{LMS}$ can be computed using routine <a href="lxs.html">LXS</a> (option lms=1)</p>
 		<p>More generally, for a general $K$ a solution $\hat \sigma$
 		 to equation (4) is the $h$ order 
