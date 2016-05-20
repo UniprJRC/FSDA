@@ -284,8 +284,8 @@ else
     critdef ='uni';
 end
 
-options=struct('m0',v+1,'init',hdef,'exact',0,'crit',critdef,'rf',0.95,...
-    'plots',1,'msg',1,'labeladd','','bonflev','','nocheck',0);
+options=struct('m0',v+1,'init',hdef,'crit',critdef,'rf',0.95,...
+    'plots',1,'msg',1,'bonflev','','nocheck',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

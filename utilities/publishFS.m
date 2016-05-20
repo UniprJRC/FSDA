@@ -3084,7 +3084,7 @@ fclose('all');
 if ~isempty(OptArgsVarargin)
     posoptionsini=regexp(fstring,'options\s*=\s*struct(');
     if isempty(posoptionsini)
-                error('FSDA:publishFS:WrongUseVarArgInt','varargin is used but structure contaning the options of varargin has not been defined inside .m file')
+                error('FSDA:publishFS:WrongUseVarArgInt','varargin is used but structure containing the options of varargin has not been defined inside .m file')
     end
     posoptionsini=posoptionsini(1);
     posoptionsfin=regexp(fstring,');');
@@ -3187,14 +3187,14 @@ if evalCode ==1
             end
             
             try
-                evalin('base', NameToSearchinWS)
+                [~]=evalin('base', NameToSearchinWS);
                 OutputProduced = fieldnames(evalin('base', NameToSearchinWS));
             catch
                 warning('FSDA:publishFS:WrongOut',['In the examples which were executed output argument containing string ' listouti ' which is of class struct has not been found'])
                 OutputProduced='';
             end
             if ~isempty(OutputProduced)
-                disp(['Output argument' listouti])
+                disp(['Analysis of output argument: ''' listouti ''''])
                 OutiMisMatch=CompareDescribedUsed(OutputDescribed,OutputProduced);
                 if size(OutiMisMatch,1)>1
                     OutArgsMisMatch{ik+1,1}=listouti;
@@ -3564,7 +3564,7 @@ OptMisMatch{1,2}='Options described';
 OptMisMatch{1,3}='Options used';
 ij=1;
 if ~isempty(ia)
-    disp('Options described but not used')
+    disp('Elements described but not used')
     % OptMisMatch{ij+1:ij+length(ia),1}=OptArgsDescribed{ia};
     OptMisMatch(ij+1:ij+length(ia),1)=OptArgsDescribed(ia);
     OptMisMatch(ij+1:ij+length(ia),2:3)=num2cell([true(length(ia),1),false(length(ia),1)]);
@@ -3572,7 +3572,7 @@ if ~isempty(ia)
     disp(OptArgsDescribed(ia))
 end
 if ~isempty(ib)
-    disp('Options used but not described')
+    disp('Elements used but not described')
     OptMisMatch(ij+1:ij+length(ib),1)=OptArgsUsed(ib);
     OptMisMatch(ij+1:ij+length(ib),2:3)=num2cell([false(length(ib),1),true(length(ib),1)]);
     disp(OptArgsUsed(ib))
