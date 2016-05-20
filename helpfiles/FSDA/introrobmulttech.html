@@ -34,44 +34,44 @@ document.write(divsbefore);
 	<a name="notation"></a>
 	<h3 class="title">Notation</h3>
 	Classical multivariate methods of estimation are based on the assumption of 
-	an i.i.d. sample of observation Y={y<sub>1</sub>, y<sub>2</sub>, ..., y<sub>n</sub>} 
-	with each y<sub>i</sub> have a v-variate normal N<sub>v</sub>(µ, Ʃ) with density 
-	f(y) given by
+	an i.i.d. sample of observation $Y={y_1,y_2,\dots,y_n}$ 
+	with each $y_i$ have a v-variate normal $N_v(\mu, \Sigma)$  with density 
+	$f(y)$ given by
 	<p>&nbsp;</p>
-	<p><img alt="" src="images_help/img114.gif"></p>
+    $$f(y)=\frac{1}{(2\pi)^{v/2}\sqrt{|\Sigma|}}\exp \Big( -\frac{1}{2}(y-\mu)' \Sigma^{-1}(y-\mu)\Big)$$
+
+	
 	<p>&nbsp;</p>
-	<p>where Ʃ =var(y) and |Ʃ| stands for the determinant Ʃ. If y is multivariate 
-	normal for any constant vector a, all linear combinations a'y are normally distributed. 
+	<p>where $\Sigma = \textrm{var}(y)$  and $|\Sigma|$ stands for the determinant $\Sigma$. If y is multivariate 
+	normal for any constant vector a, all linear combinations $a'y$ are normally distributed. 
 	In addition given that conditional expectation of a subgroup of coordinate with 
 	any other subgroup is a linear function of the latters, the type of dependence 
 	among variables is linear. Thus, methods based on multivariate normality only 
 	give information about linear relatioships among coordinates. As in the univariate 
 	case, the main reason for this assumption is simplicity. </p>
-	<p>If one dispersion matrix is a scalar multiple of another i.e. Ʃ<sub>2</sub> 
-	= k Ʃ<sub>1</sub> we say that they have the same shape but a different size. 
-	In what follows we denote with simbol
-	<img alt="" class="style4" src="images_help/img141.gif">the estimate of location, 
-	with symbol <img alt="" class="style4" src="images_help/img2D.gif">the estimate 
+	<p>If one dispersion matrix is a scalar multiple of another i.e. $\Sigma_2=k\Sigma_1$ we say that they have the same shape but a different size. 
+	In what follows we denote with simbol $\hat \mu$ the estimate of location, 
+	with symbol $\hat \Gamma$ the estimate 
 	of the shape matrix and with symbol&nbsp;
-	<img alt="" class="style4" src="images_help/img13B.gif"> the estimate of the 
-	covariance matrix where
-	<img alt="" class="style4" src="images_help/img31.gif">.</p>
+	  $\hat \Sigma$ the estimate of the 
+	covariance matrix where $\hat \Sigma= \hat \sigma^2 \hat \Gamma$.</p>
 	<p>As in the univariate case, one may consider the approach of outlier detection. 
 	We are concerned with the case where a certain proportion of the observations 
 	may not follow model above. The Mahalanobis distance (in squared units) between 
-	the vectors y and µ with respect to matrix Ʃ is defined as </p>
-	<p><img alt="" src="images_help/img130.gif"></p>
+	the vectors $y$ and $\mu$ with respect to matrix $\Sigma$ is defined as </p>
+    $$ d(y,\mu,\Sigma)=(y-\mu)'\Sigma^{-1}(y-\mu)         $$
+
 	<p><em>Remark</em>: the code to implement the Mahalanobis distances from a given 
 	centroid and a scatter matrix (which are not necessarily the mean and the sample 
 	covariance matrix) is implemented in function <a href="mahalfs.html">mahalFS</a>.</p>
 	<p>&nbsp;</p>
 	<a name="equivariance"></a>
 	<h3 class="title">Affine equivariance</h3>
-	Let <img class="style4" src="images_help/wp2ivoaz.gif"> be the location and 
-	dispersion estimates corresponding to a sample Y={y<sub>1</sub>, y<sub>2</sub>, 
-	..., y<sub>n</sub>}, the estimates are affine equivariant if for each constant 
-	vector <em>b</em> and matrix <em>A</em>:<p>
-	<img alt="" src="images_help/img11D.gif"></p>
+	Let $(\tilde \mu(Y),\tilde \Sigma(Y))$ be the location and 
+	dispersion estimates corresponding to a sample $Y={y_1,y_2,\dots,y_n}$, the estimates are affine equivariant if for each constant 
+	vector $b$ and matrix $A$:<p>
+    $$\tilde \mu (AY+b)=A\tilde \mu (Y)+b \quad \quad \quad \tilde \Sigma(AY+b)=A\tilde \Sigma (Y)A'   $$         
+
 	<p>&nbsp;</p>
 	<p>Affine equivariance is a natural property in those situations where it is 
 	desirable that the reuslts remain essentially unchanged under any nonsingular 
@@ -86,12 +86,18 @@ document.write(divsbefore);
 	location and dispersion simultaneously.</p>
 	<p>The multivariate M-estimate of location and dispersion are defined as the 
 	solution of the following system of equations (estimating equations)</p>
-	<p><img alt="" src="images_help/img125.gif"></p>
-	<p>where the functions <em>W</em><sub>1</sub> and <em>W</em><sub>2</sub> need 
+    \[  \begin{cases} 
+      \sum_{i=1}^n W_1(d_i)(y_i-\hat \mu)=0\\
+\\
+      \frac{1}{n}\sum_{i=1}^n W_2(d_i)(y_i-\hat \mu)(y_i-\hat \mu)'=\hat \Sigma \\
+   \end{cases}
+\]
+
+	<p>where the functions $W_1$ and $W_2$ need 
 	not to be equal. </p>
-	<p>Remark 1: If function <em>W</em><sub>2</sub> is non decreasing, the solution 
+	<p>Remark 1: If function  $W_2$ is non decreasing, the solution 
 	to this system of equation is called monotone multivaritate M estimates, while 
-	if <em>W</em><sub>2</sub> is redescending the solutions are called redescending 
+	if  $W_2$ is redescending the solutions are called redescending 
 	multivariate M-estimates and must be defined by the minimization of&nbsp; some 
 	objective function as it happens in the case of S estimates (which are introduced 
 	in the next section). </p>
@@ -101,64 +107,47 @@ document.write(divsbefore);
 	<h3 class="title">The multivariate S-estimates and the MVE estimate</h3>
 	Just as with the regression estimates where we aimed at making the residuals &quot;small&quot;, 
 	we shall define multivaraite estimates of location and dispersion that make 
-	the distances <em>d<sub>i</sub></em> small. To this purpose we look for
-	<img alt="" class="style4" src="images_help/img141.gif">and
-	<img alt="" class="style4" src="images_help/img34.gif"> minimizing some measures 
-	of &quot;largeness&quot; of
-	<img alt="" class="style4" src="images_help/img13D.gif">. From the expression 
+	the distances $d_i$ small. To this purpose we look for $\hat \mu$ and $\hat \Sigma = \hat \sigma^2 \hat \Gamma$
+	 minimizing some measures 
+	of &quot;largeness&quot; of $d(y,\hat \mu,\hat \Sigma)$. From the expression 
 	of the Mahalanobis distance it is clear that the minimum can be trivially attained 
-	by letting the smallest eigenvalue of
-	<img alt="" class="style4" src="images_help/img13B.gif" width="23"> tend to 
-	zero. To prevent this, it is customary to impose the constraint
-	<img alt="" class="style4" src="images_help/img35.gif">. If we call with <em>
-	S<sub>v</sub></em> the set of symmetric positive definite v x v shape matrices. 
-	For a dataset Y call <img alt="" class="style4" src="images_help/img37.gif">the 
-	vector with elements <img alt="" class="style4" src="images_help/img40.gif">with
-	<em>i</em>=1, 2, ..., <em>n</em> and let <img src="images_help/wpwgl4jy.gif">be 
+	by letting the smallest eigenvalue of $\hat \Sigma$  tend to 
+	zero. To prevent this, it is customary to impose the constraint $|\hat \Gamma|=1$. If we call with $S_v$ the set of symmetric positive definite $v \times v$ shape matrices. 
+	For a dataset $Y$ call $d(Y,\hat \mu, \hat \Gamma)$ the 
+	vector with elements $d(y_i,\hat \mu, \hat \Gamma)$ with $i=1,2,\dots,n$  and let $\hat \sigma$ be 
 	a robust scale estimate.
-	<p>Then we define the estimates
-	<img alt="" class="style4" src="images_help/img141.gif">and
-	<img alt="" class="style4" src="images_help/img2D.gif"> by </p>
-	<p><img alt="" src="images_help/img70.gif"></p>
-	<p>If we take for <img src="images_help/wpwgl4jy.gif"> an M scale estimate that 
+	<p>Then we define the estimates $\hat \mu$ and $\hat \Gamma$ by </p>
+    
+    $$ \min \limits_{\hat \mu \in R^p, \; \hat \Gamma \in S_p  \textrm{with} \; |\hat \Gamma|=1} \hat \sigma \Big(d(Y,\hat \mu,\hat \Gamma) \Big) $$
+    
+	<p>If we take for $\hat \sigma$ an M scale estimate that 
 	satisfies</p>
-	<p><img alt="" height="86" src="images_help/imgC.gif" width="205"></p>
-	<p class="style4">where ρ is a smooth bounded ρ-function, we obtain the class 
-	of S estimates. If ρ is differentiable, it is easy to show that to solve the 
+    $$ \frac{1}{n} \sum_{i=1}^n \rho \Bigg(\frac{d_i}{\hat \sigma} \Bigg) = K   $$
+
+	<p class="style4">where $\rho$ is a smooth bounded $\rho$-function, we obtain the class 
+	of S estimates. If $\rho$ is differentiable, it is easy to show that to solve the 
 	minimization problem the solution must satisfy the so called M estimating equations. 
-	So an S estimate&nbsp;
-	<img alt="" class="style4" src="images_help/img1E.gif">and
-	<img alt="" class="style4" src="images_help/img21.gif"> is also an M estimate.</p>
-	<p class="style4">In other words, for any
-	<img alt="" class="style4" src="images_help/img57.gif">,
-	<img alt="" class="style4" src="images_help/img59.gif"> with
-	<img alt="" class="style4" src="images_help/img5B.gif">, and
-	<img alt="" class="style4" src="images_help/img5E.gif">the S estimates
-	<img alt="" class="style4" src="images_help/img1E.gif"> and
-	<img alt="" class="style4" src="images_help/img21.gif"> satisfy the following 
+	So an S estimate $\hat \mu_S$ and $\hat \Sigma_S$
+	 is also an M estimate.</p>
+	<p class="style4">In other words, for any $\tilde \mu$, $\tilde \Gamma$  with $|\tilde \Gamma|=1$, and $\hat \sigma_S = \hat \sigma_S \Big(d(y_i,\hat \mu_S, \hat \Gamma_S)  \Big)$ the S estimates $\hat \mu_S$  and $\hat \Sigma_S$ satisfy the following 
 	inequality</p>
-	<p class="style4"><img alt="" src="images_help/img69.gif"></p>
-	<p class="style4">where&nbsp;
-	<img alt="" class="style4" src="images_help/img63.gif"> is the same in the denominator 
+    
+    $$ \sum_{i=1}^n \rho \Bigg( \frac{d(y_i,\hat \mu_S, \hat \Gamma_S)}{\hat \sigma_S}\Bigg) \leq \sum_{i=1}^n \rho \Bigg( \frac{d(y_i,\tilde \mu,\tilde \Gamma)}{\hat \sigma_S} \Bigg)$$
+    
+	<p class="style4">where $\hat \sigma_S$is the same in the denominator 
 	on both sides of the equation. </p>
-	<p>The S estimate of location
-	<img alt="" class="style4" src="images_help/img3F.gif">, scale
-	<img alt="" class="style4" src="images_help/img41.gif"> and shape
-	<img alt="" class="style4" src="images_help/img43.gif"> and consequently the 
-	S estimate of the covariance matrix&nbsp;
-	<img alt="" class="style4" src="images_help/img45.gif">can be found using routine
+	<p>The S estimate of location $\hat \mu_S$, scale $\hat \sigma_S$ and shape $\hat \Gamma_S$ and consequently the 
+	S estimate of the covariance matrix $\hat \Sigma_S=\sigma_S^2 \hat \Gamma_S$ can be found using routine
 	<a href="smult.html">Smult</a>.</p>
 	<p class="style4">&nbsp;</p>
-	<p>If, we take for <img src="images_help/wpwgl4jy.gif"> (to mimic the approach 
+	<p>If, we take for $\hat \sigma$ (to mimic the approach 
 	that results in the LMS in regression) the sample median of the Mahalanobis 
 	distances, the resulting location and dispersion matrix estimate is called minimum 
 	volume ellipsoid (MVE) estimate. The name comes from the fact that among all 
-	ellipsoids {x: d(x,µ, Ʃ)} containing at least half of the data points, the one 
-	given by the MVE estimate has minimum volume (i.e. minimum |Ʃ|).</p>
-	<p>The MVE estimate of location
-	<img alt="" class="style4" src="images_help/img28.gif"> and&nbsp; of the covariance 
-	matrix&nbsp;
-	<img alt="" class="style4" height="33" src="images_help/img29.gif" width="77">can 
+	ellipsoids $\{x:d(x,\mu,\Sigma)    \}$ containing at least half of the data points, the one 
+	given by the MVE estimate has minimum volume (i.e. minimum $|\Sigma|$).</p>
+	<p>The MVE estimate of location $\hat \mu_{MVE}$ and&nbsp; of the covariance 
+	matrix&nbsp; $\hat \Sigma_{MVE}$ can 
 	be found using routine <a href="mve.html">mve</a>.</p>
 	<p>&nbsp;</p>
 	<p>&nbsp;</p>
@@ -166,24 +155,21 @@ document.write(divsbefore);
 	<h3 class="title">The multivariate L-estimates of scale the MCD estimate
 	</h3>
 	<p>An alternative to using an M-scale or the median of the distances, we can 
-	use a trimmed scale for <img src="images_help/wpwgl4jy.gif"> (as it was done 
+	use a trimmed scale for $\hat \sigma$  (as it was done 
 	in regression to define the LTS estimate). More formally, let </p>
-	<p><img alt="" src="images_help/img12.gif"></p>
-	<p>be the ordered values of the squared distances <em>d</em><sub>i</sub>=<em>d</em>(<em>x</em><sub>i</sub>, 
-	µ, Γ), and for 1 &lt;<em>h</em>&lt;<em>n</em> define the trimmed scale of the 
+    $$d_{(1)} \leq d_{(2)} \leq \ldots \leq d_{(n)} $$
+	<p>be the ordered values of the squared distances $d_i =d(x_i, \mu, \Gamma)$, and for $1< h< n$ define the trimmed scale of the 
 	squared distances as:</p>
-	<p><img alt="" src="images_help/img62.gif"></p>
-	<p>An estimate <img alt="" class="style4" src="images_help/img141.gif">,<img alt="" src="images_help/img13B.gif"> 
+    $$ \hat \sigma = \sum_{i=1}^h d_{(i)}   $$
+	<p>An estimate $\hat \mu$, $\hat \Sigma$ 
 	based on this trimmed scale is called a minimum covariance determinant (MCD) 
-	estimate. The reason for this name is the following: for each ellipsoid {x: 
-	d(x, t, V)} we can compute the covariance matrix C of the data points in the 
-	ellipsoid. If&nbsp; <img alt="" class="style4" src="images_help/img141.gif">,<img alt="" src="images_help/img13B.gif"> 
-	is an MCD estimate, the ellipsoid with t=<img alt="" class="style4" src="images_help/img22.gif"> 
-	and V equal to a scalar multiple of
-	<img alt="" class="style4" src="images_help/img24.gif"> minimizes |C|. </p>
-	<p>The MCD estimate of location
-	<img alt="" class="style4" src="images_help/img22.gif"> and&nbsp; of the covariance 
-	matrix&nbsp; <img alt="" class="style4" src="images_help/img24.gif"> can be 
+	estimate. The reason for this name is the following: for each ellipsoid $\{x: 
+	d(x, t, V)\}$ we can compute the covariance matrix C of the data points in the 
+	ellipsoid. If $\hat \mu$, $\hat \Sigma$ 
+	is an MCD estimate, the ellipsoid with $t=\hat \mu_{MCD}$ 
+	and $V$ equal to a scalar multiple of $\hat \Sigma_{MCD}$ minimizes $|\textrm{C}|$. </p>
+	<p>The MCD estimate of location $\hat \mu_{MCD}$  and of the covariance 
+	matrix $\hat \Sigma_{MCD}$  can be 
 	found using routine <a href="mcd.html">mcd</a>. For each elemental subset which 
 	is extracted (which satisfies certain conditions) we compute the minimum value 
 	of the determinant checking for singularity. For the subsets with the 5 best 
@@ -193,22 +179,22 @@ document.write(divsbefore);
 	<h3 class="title">The multivariate MM-estimate </h3>
 	<p>The MM-regression estimator of location and shape is defined as the minimum 
 	of the following <em>f</em> function</p>
-	<p><img alt="" src="images_help/img65.gif"></p>
-	<p>where ρ<sub>2</sub> is possibly another ρ function which provides higher 
+    
+    
+$$  f(\hat \mu_{MM},\hat \Gamma_{MM})= \min \limits_{\mu \in R^p, \; \Gamma \in S_p \textrm{with} \; |\Gamma|=1}  \frac{1}{n}\sum_{i=1}^n \rho_2 \Bigg( \frac{d(y_i,\mu,\Gamma)}{\hat \sigma} \Bigg )            $$
+
+
+	<p>where $\rho_2$ is possibly another $\rho$ function which provides higher 
 	efficiency than the previous ρ at the null multivariate normal model. Function
-	<em>f</em> is minimized with respect to µ and Ʃ for fixed
-	<img class="style4" src="images_help/regres2.gif">.&nbsp; In this equation
-	<img src="images_help/wpwgl4jy.gif"> is any auxiliary robust scale estimate, 
-	however it is common to use
-	<img class="style4" src="images_help/wp0pxcx5.gif"> and, as starting values 
-	of location and shape, those which come out from the S estimator (that is&nbsp;<img alt="" class="style4" src="images_help/img3F.gif"> 
-	and <img alt="" class="style4" src="images_help/img43.gif">) .</p>
-	<img alt="" src="images_help/img76.gif"> and
-	<img alt="" class="style4" src="images_help/img77.gif"> can be computed using 
+	$f$ is minimized with respect to $\mu$ and $\Sigma$ for fixed $(\hat \sigma)$. In this equation $\hat \sigma$ is any auxiliary robust scale estimate, 
+	however it is common to use $\hat \sigma_S$ and, as starting values 
+	of location and shape, those which come out from the S estimator (that is $\hat \mu_S$
+	and $\hat \Gamma_S$) .</p>
+	$\hat \mu_{MM} $ and $\hat \Gamma_{MM}$ can be computed using 
 	routines <a href="mmmult.html">MMmult</a> and <a href="mmmultcore.html">MMmultcore</a>. 
-	More precisely, MMmultcore assumes that user supplies an estimate of σ, µ and 
-	Γ; on the other hand, function MMmult uses function <a href="smult.html">Smult</a> 
-	to preliminary compute an estimate of σ, µ and Γ
+	More precisely, MMmultcore assumes that user supplies an estimate of $\sigma$, $\mu$ and 
+	$\Gamma$; on the other hand, function MMmult uses function <a href="smult.html">Smult</a> 
+	to preliminary compute an estimate of $\sigma$, $\mu$ and $\Gamma$.
 	<p>&nbsp;</p>
 	<!-- -->
 	<!-- -->
