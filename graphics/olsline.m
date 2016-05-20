@@ -208,5 +208,3 @@ if nargout == 1
     h = hlslines;
 end
 end
-
-%FScategory:VIS-Reg

@@ -20,7 +20,7 @@ function resindexplot(residuals,varargin)
 % Optional input arguments:
 %               h : the axis handle of a figure where to send the resindexplot.
 %                   This can be used to host the resindexplot in a subplot of a
-%                   complex figure formed by different panels (e.g. a panel
+%                   complex figure formed by different panels (for example a panel
 %                   with residuals from a classical ols estimator and another
 %                   with residuals from a robust regression: see example
 %                   below).
@@ -54,7 +54,8 @@ function resindexplot(residuals,varargin)
 %                   Data Types - double
 %        conflev :  confidence interval for the horizontal bands. Numeric
 %                   vector.
-%                   It can be a vector of different confidence level values,
+%                   It can be a vector of different confidence level
+%                   values.
 %                   Example -'conflev',[0.95,0.99,0.999]
 %                   Data Types - double
 %                   Remark: confidence interval is based on the chi^2 distribution
