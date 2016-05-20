@@ -36,11 +36,11 @@ function [out , varargout] = Smult(Y,varargin)
 %    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'nsamp',1000 
+%                 Example - 'refsteps',0 
 %                 Data Types - single | double
 %     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
-%                 Example - 'nsamp',1000 
+%                 Example - 'reftol',1e-8 
 %                 Data Types - single | double
 %refstepsbestr: number of refining iterations for each best subset. Scalar.
 %               Scalar defining number of refining iterations for each

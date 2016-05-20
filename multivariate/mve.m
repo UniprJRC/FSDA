@@ -21,6 +21,15 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %               to be extracted (if not given, default = 500).
 %               Example - 'nsamp',10000 
 %               Data Types - double
+%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
+%               subsample (default = 3).
+%               refsteps = 0 means "raw-subsampling" without iterations.
+%                 Example - 'refsteps',0 
+%                 Data Types - single | double
+%     reftol  : scalar. Default value of tolerance for the refining steps.
+%               The default value is 1e-6;
+%                 Example - 'reftol',1e-8 
+%                 Data Types - single | double
 %     conflev : Scalar. Number between 0 and 1 containing confidence level which is
 %               used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -99,6 +108,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %      RAW.weights = n x 1 vector containing the estimates of the weights.
 %                    These weights determine which are the h observations are used to
 %                    compute the final MVE estimates.
+%            RAW.h = number of observations which have determined MVE.
 %            RAW.Y = Data matrix Y. The field is present if option
 %                    ysaveRAW is set to 1.
 %        RAW.class = 'mve'
@@ -118,9 +128,12 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %                    reweighted MVE scatter of the data.  These distances allow
 %                    us to easily identify the outliers. If the reweighted MVE
 %                    is singular, RAW.md is given here.
+%     REW.outliers = A vector containing the list of the units declared as
+%                    outliers after reweighting.
 %            REW.Y = Data matrix Y. The field is present if option
 %                    ysaveRAW is set to 1.
-%
+%       REW.class = 'mve'
+%            
 %  Optional Output:
 %
 %            C     : matrix of size nsamp-by-v which contains the indices

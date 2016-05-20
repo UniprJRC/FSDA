@@ -37,7 +37,55 @@ function [out , varargout] = MMmult(Y,varargin)
 %               subsets, the supplied option is 'Snsamp',3000
 %               Example - 'Snsamp',1000 
 %               Data Types - single | double
-%
+%         Sbdp :  breakdown point. Scalar.
+%               It measures the fraction of outliers
+%               the algorithm should resist. In this case any value greater
+%               than 0 but smaller or equal than 0.5 will do fine (default=0.5).
+%               Note that given bdp nominal
+%               efficiency is automatically determined.
+%                 Example - 'Sbdp',0.4
+%                 Data Types - double
+%      Sbestr  : number of "best betas" to remember. Scalar. Scalar defining number of "best betas" to remember from the
+%               subsamples. These will be later iterated until convergence
+%               (default=5)
+%                 Example - 'Sbestr',10 
+%                 Data Types - single | double
+%     Sminsctol: tolerance for the iterative
+%               procedure for finding the minimum value of the scale. Scalar. 
+%               Value of tolerance for the iterative
+%               procedure for finding the minimum value of the scale
+%               for each subset and each of the best subsets
+%               (It is used by subroutine minscale.m)
+%               The default value is 1e-7;
+%                 Example - 'Sminsctol',1e-7 
+%                 Data Types - single | double
+%       Snsamp   : Number of subsamples which will be extracted to find the
+%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
+%                 They will be (n choose p).
+%                 If the number of all possible subset is <1000 the
+%                 default is to extract all subsets otherwise just 1000.
+%                 Example - 'Snsamp',1000 
+%                 Data Types - single | double
+%    Srefsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
+%               subsample (default = 3).
+%               refsteps = 0 means "raw-subsampling" without iterations.
+%                 Example - 'Srefsteps',0 
+%                 Data Types - single | double
+%     Sreftol  : scalar. Default value of tolerance for the refining steps.
+%               The default value is 1e-6;
+%                 Example - 'Sreftol',1e-8
+%                 Data Types - single | double
+%Srefstepsbestr: number of refining iterations for each best subset. Scalar.
+%               Scalar defining number of refining iterations for each
+%               best subset (default = 50).
+%                 Example - 'Srefstepsbestr',10 
+%                 Data Types - single | double
+% Sreftolbestr : Tolerance for the refining steps. Scalar. 
+%               Tolerance for the refining steps
+%               for each of the best subsets
+%               The default value is 1e-8;
+%                 Example - 'Sreftolbestr',1e-10 
+%                 Data Types - single | double
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
 %                 0.5 and 0.99). The default value is 0.95

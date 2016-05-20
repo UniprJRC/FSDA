@@ -17,10 +17,10 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %                Data Types - single|double
 %        loc0 :  initial estimate of location. Vector.
 %               Vector containing initial estimate of location (generally
-%               an S estimate with high breakdown point (eg 0.5)
+%               an S estimate with high breakdown point, eg 0.5)
 %     shape0 :  initial estimate of shape. Matrix. 
 %               v x v matrix containing initial estimate of shape
-%               (generally an S estimate with high breakdown point (eg 0.5)
+%               (generally an S estimate with high breakdown point, eg 0.5)
 %   auxscale :  initial estimate of scale. Scalar.
 %               Scalar containing estimate of the scale (generally an S
 %               estimate with high breakdown point).

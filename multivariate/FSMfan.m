@@ -193,7 +193,7 @@ function out = FSMfan(Y,la0,varargin)
 %}
 
 %{
-    % FSMfan with otpional arguments.
+    % FSMfan with optional arguments.
     % Example with Mussels data.
     load('mussels.mat');
     Y=mussels.data;
@@ -206,7 +206,7 @@ function out = FSMfan(Y,la0,varargin)
 
 
 %{
-    %% EmiliaRomagna data (demographic variables).
+    % EmiliaRomagna data (demographic variables).
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -226,7 +226,7 @@ function out = FSMfan(Y,la0,varargin)
 %}
 
 %{
-    %% Emilia Romagna data (modified wealth variables), example 1.
+    % Emilia Romagna data (modified wealth variables), example 1.
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel

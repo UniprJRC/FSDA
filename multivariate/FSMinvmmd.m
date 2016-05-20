@@ -192,7 +192,8 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 
 
 %% Input parameters checks
-options=struct('n',mmd(end,1)+1,'plots','');
+nn=mmd(end,1)+1; % This line is introduced for publishFS
+options=struct('n',nn,'plots','');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

@@ -94,7 +94,7 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %               Row n of matrix BB is referred to unit n;
 %               Units not belonging to subset are denoted with NaN.
 %
-% See also FSMeda, FSM.m, FSMmmd, FSRbsb, FSHbsb, FSRBbsb
+% See also FSMeda, FSM.m, FSMmmd, FSRbsb, FSRHbsb, FSRBbsb
 %
 % References:
 %
@@ -112,7 +112,37 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 % Examples:
 
 %{
-    %% FSMbsb with all default options.
+    % FSMbsb with all default options.
+    n=200;
+    v=3;
+    randn('state',123456);
+    Y=randn(n,v);
+    %Contaminated data
+    Ycont=Y;
+    seqcont=11:10:51;
+    disp('Contaminated units')
+    disp(seqcont)
+    Ycont(seqcont,:)=Ycont(seqcont,:)+2.5;
+    Un=FSMbsb(Ycont,0);
+%}
+
+%{
+    % FSMbsb with optional argument.
+    n=200;
+    v=3;
+    randn('state',123456);
+    Y=randn(n,v);
+    %Contaminated data
+    Ycont=Y;
+    seqcont=11:10:51;
+    disp('Contaminated units')
+    disp(seqcont)
+    Ycont(seqcont,:)=Ycont(seqcont,:)+2.5;
+    [~,BBsel]=FSMbsb(Ycont,0,'bsbsteps',msel);
+%}
+
+%{
+    %% Monitoring the units belonging to subset in each step.
     n=200;
     v=3;
     randn('state',123456);
@@ -132,7 +162,7 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %}
 
 %{
-    % FSMbsb with optional arguments.
+    % Specifying the point where to start monitoring.
     % Specifying the point where to start monitoring units belongng to subset.
     n=200;
     v=3;

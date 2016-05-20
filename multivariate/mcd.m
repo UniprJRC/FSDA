@@ -171,6 +171,8 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %                    reweighted MCD scatter of the data These distances
 %                    allow us to easily identify the outliers. If the
 %                    reweighted MCD is singular, RAW.md is given here.
+%     REW.outliers = A vector containing the list of the units declared as
+%                    outliers after reweighting.
 %      REW.weights = n x 1 vector containing the estimates of the weights.
 %                    Weights assume values 0 or 1. Weight is 0 if the
 %                    associated observation has been declared outlier.
@@ -181,7 +183,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %       REW.method = In case of an exact fit, REW.method contains a
 %                    character string containing information about the
 %                    method and about singular subsamples (if any).
-%       REW.plane  = In case of an exact fit, res.plane contains the
+%       REW.plane  = In case of an exact fit, REW.plane contains the
 %                    coefficients of a (hyper)plane
 %                    a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0
 %                    containing at least h observations, where (m_1,...,m_p)

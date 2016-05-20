@@ -83,7 +83,7 @@ function [out, varargout] = SDest(Y,varargin)
 %                   w(r)= 
 %                   \left\{
 %                   \begin{array}{c}
-%                    [1-(r/c)^2]^2 if |r| \leq c \\
+%                    [1-(r/c)^2]^2 \qquad if \qquad |r| \leq c \\
 %                     0 \qquad \mbox{otherwise} 
 %                   \end{array}
 %                  \right.
@@ -98,7 +98,7 @@ function [out, varargout] = SDest(Y,varargin)
 %                   w(PD)= 
 %                   \left\{
 %                   \begin{array}{c}
-%                     (\exp\{-K(1-PD/C)^2\} - \exp\{-K\})/(1-\exp\{-K\}) \qquad if PD < c \\
+%                     (\exp\{-K(1-PD/C)^2\} - \exp\{-K\})/(1-\exp\{-K\}) \qquad\qquad if \qquad PD < c \\
 %                     1 \qquad \mbox{otherwise} 
 %                   \end{array}
 %                  \right.
@@ -184,7 +184,7 @@ function [out, varargout] = SDest(Y,varargin)
 %      projloc: Type of location. String. String with possible values 'median' (default) and 'mean'
 %               This option controls the type of location  (robust
 %               estimator of scale) to use for the projections for
-%               each subset. The projections are defined as $d^T *y_i$
+%               each subset. The projections are defined as $d^T \times y_i$
 %               where d is a v-by-1 vector containing a particular direction
 %              ($d^T$ is its transpose) (to make estimator location invariant).
 %                 Example - 'projloc',1
@@ -259,15 +259,15 @@ function [out, varargout] = SDest(Y,varargin)
 %               A "robust standardized" projection
 %               score along direction vector d is defined as follows: 
 %
-%               $Rstproj_i = \frac{d^T *y_i -med_j(d^T*y_j)}{MAD_j(d^T*y_j)} \;\;\; i=1,\cdots,n$; 
+%               $Rstproj_i = \frac{d^T \times y_i -med_j(d^T \times y_j)}{MAD_j(d^T \times y_j)} \;\;\; i=1,\cdots,n$; 
 %
-%              where $med_j(d^T *y_j)$ and $MAD_j(d^T *y_j)$ are respectively
+%              where $med_j(d^T \times y_j)$ and $MAD_j(d^T \times y_j)$ are respectively
 %              the median and the modified MAD  $j=1,2,\cdots,n$.
 %              With our two input options  projloc and projscale it is
 %              possible to use alternative estimators of location and scale
-%              to standardize $d^T *y_i$: 
+%              to standardize $d^T \times y_i$: 
 %
-%               $Rstproj_i = \frac{d^T *y_i -projloc(d^T*y_j)}{projscale(d^T *y_j)} \;\;\; i=1,\cdots,n$; 
+%               $Rstproj_i = \frac{d^T \times y_i -projloc(d^T \times y_j)}{projscale(d^T \times y_j)} \;\;\; i=1,\cdots,n$; 
 %
 %              The outlying measure for unit i ($outl_i$) is defined as: 
 %
