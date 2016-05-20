@@ -1,0 +1,414 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tclust</title><meta content="refpage" name="chunktype"><meta content="function:tclust" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclust computes trimmed clustering with restricitons on the eigenvalues." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/suggest.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2016a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Documentation</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Documentation" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--></div><!--END.CLASS container-fluid--></div><!--START.CLASS sticky_header_container--><div class="sticky_header_container includes_subnav"><div class="horizontal_nav_container"><div id="nav_toggle" class="offcanvas_actuator" data-target="#sidebar" data-toggle="offcanvas"><button class="btn" type="button"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_32"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span></div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"></div></div></div></div></div><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"><a href="../documentation-center.html" itemprop="url"><span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"><span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"></span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"><a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"><a href="functionlist.html" role="menuitem" tabindex="-1">Functions and Other Reference</a></li><li role="presentation"><a href="release-notes.html" role="menuitem" tabindex="-1">Release Notes</a></li><li role="presentation"><a href="tutorials.html" role="menuitem" tabindex="-1">Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"><li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a></li><li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="nav_scrollspy_function"><a href="#responsive_offcanvas">tclust</a></li><li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">tclust of geyser data using k=3, alpha=0.1 and  restrfactor=10000.</a></li><li><a class="intrnllnk" href="#Example_2">tclust of geyser with classification plot.</a></li><li><a class="intrnllnk" href="#Example_3">tclust of geyser with varargout.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">tclust of geyser data (output comparison).</a></li><li><a class="intrnllnk" href="#ExtraExample_2">tclust applied to the M5data.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">tclust in presence of structured noise.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">tclust applied to mixture100 data.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">tclust applied to mixture100 data, comparison of different options.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">tclust using simulated data.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Automatic choice of the best number of groups for geyser data.</a></li><li><a class="intrnllnk" href="#ExtraExample_8">Automatic choice of the best number of groups for simulated data with
+     k=5 and v=5.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">tclust applied to Swiss banknotes imposing determinant restriciton.</a></li><li><a class="intrnllnk" href="#ExtraExample_10">tclust applied to the Geyser data imposing determinant restriciton.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li><li><a class="intrnllnk" href="#input_argument_k">k</a></li><li><a class="intrnllnk" href="#input_argument_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_restrfactor">restrfactor</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mixt">mixt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_startv1">startv1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_restr">restr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><table border="0" cellpadding="0" cellspacing="0" class="nav" width="100%"><tr valign="top"><td align="left" width="20"><a href=" "><img align="bottom" alt="" border="0" src="images_help/b_prev.gif"></a></td><td align="left">left</td><td>&nbsp;</td><td align="right"> right</td><td align="right" width="20"><a href=" "><img align="bottom" alt="score" border="0" src="images_help/b_next.gif"></a></td></tr></table><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclust</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclust computes trimmed clustering with restricitons on the eigenvalues</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out =tclust(Y,k,alpha,restrfactor)</code><span class="syntax_example"><a class="intrnllnk" href="tclust.html#Example_1">example</a></span></li><li><code class="synopsis">out =tclust(Y,k,alpha,restrfactor,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclust.html#Example_2">example</a></span></li><li><code class="synopsis">[out , varargout]=tclust(___)</code><span class="syntax_example"><a class="intrnllnk" href="tclust.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tclust partitions the points in the n-by-v data matrix Y
+   into k clusters.  This partition minimizes the trimmed sum, over all
+   clusters, of the within-cluster sums of point-to-cluster-centroid
+   distances.  Rows of Y correspond to points, columns correspond to
+   variables. tclust returns inside structure out an n-by-1 vector idx
+   containing the cluster indices of each point.  By default, tclust uses
+   (squared), possibly constrained, Mahalanobis distances.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclust.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclust(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#inputarg_restrfactor"><code>restrfactor</code></a>)</code></span>tclust of geyser data using k=3, alpha=0.1 and  restrfactor=10000.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclust.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclust(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#inputarg_restrfactor"><code>restrfactor</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>tclust of geyser with classification plot.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclust.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out </code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=tclust(___)</code></span>tclust of geyser with varargout.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust of geyser data using k=3, alpha=0.1 and  restrfactor=10000.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('geyser2.txt');
+    out=tclust(Y,3,0.1,10000);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust of geyser with classification plot.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('geyser2.txt');
+    out=tclust(Y,3,0.1,10000,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust of geyser with varargout.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('geyser2.txt');
+    nsamp=20;
+    [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
+    % MatrixContSubsets is a matrix containing in the rows the indexes of
+    % the nsamp subsets which have been extracted</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclust of geyser data (output comparison).</span></a></span></h3><div class="collapse"><p>
+     We compare the output using three different values of
+     restriction factor.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    close all
+    Y=load('geyser2.txt');
+    restrfactor=10000;
+    % nsamp = number of subsamples which will be extracted
+    nsamp=500;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'plots',1);
+    title(['Restriction factor =' num2str(restrfactor)])
+    restrfactor=10;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
+    title(['Restriction factor =' num2str(restrfactor)])
+    % trimmed k-means solution restrfactor=1
+    restrfactor=1;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
+    title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])
+    cascade</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust applied to the M5data.</span></a></span></h3><div class="collapse"><p>
+      A bivariate data set obtained from three normal bivariate distributions
+      with different scales and proportions 1:2:2. One of the components is very
+      overlapped with another one. A 10 per cent background noise is added uniformly
+      distributed in a rectangle containing the three normal components and not
+      very overlapped with the three mixture components. A precise description
+      of the M5 data set can be found in Garcia-Escudero et al. (2008).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('M5data.txt');
+    % plot(Y(:,1),Y(:,2),'o')
+    % Scatter plot matrix with univariate boxplot on the main diagonal
+    spmplot(Y(:,1:2),Y(:,3),[],'box')
+
+    out=tclust(Y(:,1:2),3,0,1000,'nsamp',100,'plots',1)
+    out=tclust(Y(:,1:2),3,0,10,'nsamp',100,'plots',1)
+    out=tclust(Y(:,1:2),3,0.1,1,'nsamp',1000,'plots',1,'equalweights',1)
+    out=tclust(Y(:,1:2),3,0.1,1000,'nsamp',100,'plots',1)
+</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust in presence of structured noise.</span></a></span></h3><div class="collapse"><p>
+     The data have been generated using the following R instructions
+        set.seed (0)
+        v &lt;- runif (100, -2 * pi, 2 * pi)
+        noise &lt;- cbind (100 + 25 * sin (v), 10 + 5 * v)
+    
+        x &lt;- rbind (
+            rmvnorm (360, c (0.0,  0), matrix (c (1,  0,  0, 1), ncol = 2)),
+            rmvnorm (540, c (5.0, 10), matrix (c (6, -2, -2, 6), ncol = 2)),
+            noise)
+<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('structurednoise.txt');
+    out=tclust(Y(:,1:2),2,0.1,100,'plots',1)
+    out=tclust(Y(:,1:2),5,0.15,1,'plots',1)</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust applied to mixture100 data.</span></a></span></h3><div class="collapse"><p>
+     The data have been generated using the following R instructions
+         set.seed (100)
+         mixt &lt;- rbind (rmvnorm (360, c (  0,  0), matrix (c (1,  0,  0,  1), ncol = 2)),
+                    rmvnorm (540, c (  5, 10), matrix (c (6, -2, -2,  6), ncol = 2)),
+                    rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))
+<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('mixture100.txt');
+    out=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)
+    out=tclust(Y(:,1:2),3,0.05,1,'refsteps',20,'plots',1)</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust applied to mixture100 data, comparison of different options.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('mixture100.txt');
+    % Traditional tclust
+    out1=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)
+    % tclust with mixture models (selection of untrimmed units according to
+    % likelihood contributions
+    out2=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',1)
+    % Tclust with mixture models (selection of untrimmed units according to
+    % densities weighted by estimates of the probability of the components)
+    out3=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',2)</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust using simulated data.</span></a></span></h3><div class="collapse"><p>
+     5 groups and 5 variables<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n1=100;
+    n2=80;
+    n3=50;
+    n4=80;
+    n5=70;
+    v=5;
+    Y1=randn(n1,v)+5;
+    Y2=randn(n2,v)+3;
+    Y3=rand(n3,v)-2;
+    Y4=rand(n4,v)+2;
+    Y5=rand(n5,v);
+
+    group=ones(n1+n2+n3+n4+n5,1);
+    group(n1+1:n1+n2)=2;
+    group(n1+n2+1:n1+n2+n3)=3;
+    group(n1+n2+n3+1:n1+n2+n3+n4)=4;
+    group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
+
+
+    Y=[Y1;Y2;Y3;Y4;Y5];
+    out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1)</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic choice of the best number of groups for geyser data.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('geyser2.txt');
+    maxk=6;
+    CLACLA=[(1:maxk)' zeros(maxk,1)];
+    for j=1:maxk
+        out=tclust(Y,j,0.1,5,'msg',0);
+        CLACLA(j,2)=out.CLACLA;
+    end
+ 
+    MIXCLA=[(1:maxk)' zeros(maxk,1)];
+    MIXMIX=MIXCLA;
+    for j=1:maxk
+        out=tclust(Y,j,0.1,5,'mixt',2,'msg',0);
+        MIXMIX(j,2)=out.MIXMIX;
+        MIXCLA(j,2)=out.MIXCLA;
+    end
+    
+    subplot(1,3,1)
+    plot(CLACLA(:,1),CLACLA(:,2))
+    xlim([1 maxk])
+    xlabel('Number of groups')
+    ylabel('CLACLA')
+
+    subplot(1,3,2)
+    plot(MIXMIX(:,1),MIXMIX(:,2))
+    xlabel('Number of groups')
+    ylabel('MIXMIX')
+    xlim([1 maxk])
+
+    
+    subplot(1,3,3)
+    plot(MIXCLA(:,1),MIXCLA(:,2))
+    xlabel('Number of groups')
+    ylabel('MIXCLA (ICL)')
+    xlim([1 maxk])</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">Automatic choice of the best number of groups for simulated data with
+     k=5 and v=5.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    n1=100;     % Generate 5 groups in 5 dimensions
+    n2=80;
+    n3=50;
+    n4=80;
+    n5=70;
+    v=5;
+    Y1=randn(n1,v)+5;
+    Y2=randn(n2,v)+3;
+    Y3=rand(n3,v)-2;
+    Y4=rand(n4,v)+2;
+    Y5=rand(n5,v);
+
+    group=ones(n1+n2+n3+n4+n5,1);
+    group(n1+1:n1+n2)=2;
+    group(n1+n2+1:n1+n2+n3)=3;
+    group(n1+n2+n3+1:n1+n2+n3+n4)=4;
+    group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
+
+
+    Y=[Y1;Y2;Y3;Y4;Y5];
+    restrfactor=5;
+    maxk=7;
+    CLACLA=[(1:maxk)' zeros(maxk,1)];
+    for j=1:maxk
+        out=tclust(Y,j,0.1,restrfactor);
+        CLACLA(j,2)=out.CLACLA;
+    end
+ 
+    MIXCLA=[(1:maxk)' zeros(maxk,1)];
+    MIXMIX=MIXCLA;
+    for j=1:maxk
+        out=tclust(Y,j,0.1,restrfactor,'mixt',2);
+        MIXMIX(j,2)=out.MIXMIX;
+        MIXCLA(j,2)=out.MIXCLA;
+    end
+    
+    subplot(1,3,1)
+    plot(CLACLA(:,1),CLACLA(:,2))
+    xlabel('Number of groups')
+    ylabel('CLACLA')
+
+    subplot(1,3,2)
+    plot(MIXMIX(:,1),MIXMIX(:,2))
+    xlabel('Number of groups')
+    ylabel('MIXMIX')
+
+    
+    subplot(1,3,3)
+    plot(MIXCLA(:,1),MIXCLA(:,2))
+    xlabel('Number of groups')
+    ylabel('MIXCLA (ICL)')</pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust applied to Swiss banknotes imposing determinant restriciton.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    out=tclust(Y,3,0.1,10,'restr','deter','refsteps',20,'plots',1)</pre></div></div></p></div></div><div id="ExtraExample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title">tclust applied to the Geyser data imposing determinant restriciton.</span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('geyser2.txt');
+    out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containining n observations on v variables
+               Rows of Y represent observations, and columns
+               represent variables </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are allowed,
+               since observations (rows) with missing or infinite values will
+               automatically be excluded from the computations</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups </span>  </a><span class="example_desc">Scalar which specifies the number of groups</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alpha" class="clearfix"> </div> <h3 id="input_argument_alpha" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alpha</code> &#8212; global trimming level </span>  </a><span class="example_desc">alpha is a scalar between 0 and 0.5
+               or an integer specifying the number of observations which have to
+               be trimmed</span></span></h3> <div class="collapse"> <p><p>If alpha=0 tclust reduces to traditional model
+               based or mixture clustering (mclust): see Matlab function
+               gmdistribution.</p> <p>
+               More in detail, if 0&lt; alpha &lt;1 clustering is based on
+                h=fix(n*(1-alpha)) observations
+               Else if alpha is an integer greater than 1 clustering is
+               based on h=n-floor(alpha);</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; positive scalar which constrains the allowed differences
+               among group scatters </span>  </a><span class="example_desc">Larger values imply larger differences of
+               group scatters</span></span></h3> <div class="collapse"> <p>On the other hand a value of 1 specifies the
+               strongest restriction forcing all eigenvalues/determinants
+               to be equal and so the method looks for similarly scattered
+               (respectively spherical) clusters</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'nsamp',1000
+</code>,<code> 'refsteps',10
+</code>,<code> 'reftol',1e-05
+</code>,<code> 'equalweights',true
+</code>,<code> 'mixt',1
+</code>,<code> 'plots',1
+</code>,<code> 'msg',1
+</code>,<code> 'nocheck',10
+</code>,<code> 'startv1',1
+</code>,<code> 'restr','deter'
+</code>,<code> 'Ysave',1
+</code></code></span></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract</span></a><span class="example_desc">scalar | matrix</span></span></h3><div class="collapse">	<p><p>If nsamp is a scalar it contains the number of subsamples
+               which will be extracted. If nsamp=0
+               all subsets will be extracted.</p> <p>
+               Remark - if the number of all possible subset is &lt;300 the
+               default is to extract all subsets, otherwise just 300
+               If nsamp is a matrix it contains in the rows the indexes of
+               the subsets which have to be extracted. nsamp in this case
+               can be conveniently generated  by function subsets. nsamp can
+               have k columns or k*(v+1) columns. If nsamp has k columns
+               the k initial centroids each iteration i are given by
+               X(nsamp(i,:),:) and the covariance matrices are equal to the
+               identity.</p> <p>
+               If nsamp has k*(v+1) columns the initial centroids and covariance
+               matrices in iteration i are computed as follows
+               X1=X(nsamp(i,:),:)
+               mean(X1(1:v+1,:)) contains the initial centroid for group 1
+               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
+               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
+               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
+               ...</p> <p>
+               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
+               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
+               REMARK - if nsamp is not a scalar option option below
+               startv1 is ignored. More precisely if nsamp has k columns
+               startv1=0 elseif nsamp has k*(v+1) columns option startv1
+               =1.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Number of refining
+               iterations in each subsample  Default is 15.</p> <p>
+               refsteps = 0 means "raw-subsampling" without iterations.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;tolerance for the refining steps</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>The default value is 1e-14;</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-05
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_equalweights" class="clearfix"></div><h3 id="input_argument_namevalue_equalweights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>equalweights</code> &#8212;cluster weights in the concentration and assignment steps</span></a><span class="example_desc">logical</span></span></h3><div class="collapse">	<p><p>A logical value specifying whether cluster weights
+               shall be considered in the concentration, assignment steps
+               and computation of the likelihood.</p> <p>
+               if equalweights = true we are (ideally) assuming equally
+               sized groups by maximizing
+
+
+                 </p>\[
+                 \sum_{j=1}^k \sum_{ x_i \in group_j } \log f(x_i; m_j , S_j)
+                 \]
+
+               else if equalweights = false (default) we allow for different group weights by maximizing
+
+                 \[
+                     \sum_{j=1}^k  \sum_{ x_i \in group_j }  \log \left[ \frac{n_j}{n}  f(x_i; m_j , S_j) \right]=
+                 \]
+                 \[
+                   = \sum_{j=1}^k n_j \log n_j/n + \sum_{j=1}^k \sum_{ x_i \in group_j} \log f(x_i; m_j , S_j)
+                 \]
+
+               Remark: $\sum_{j=1}^k n_j \log n_j/n$ is the so called entropy
+               term
+                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;mixture modelling or crisp assignmen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Option mixt specifies whether mixture modelling or crisp
+               assignment approach to model based clustering must be used.</p> <p>
+               In the case of mixture modelling parameter mixt also
+               controls which is the criterior to find the untrimmed units
+               in each step of the maximization
+               If mixt &gt;=1 mixture modelling is assumed else crisp
+               assignment.</p><p>
+                In mixture modelling the likelihood is given by
+                </p>\[
+                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j).
+                \]
+               while in crisp assignment the likelihood is given by
+               \[
+               \prod_{j=1}^k   \prod _{i\in R_j} \phi (y_i; \; \theta_j),
+               \]<p>
+               where $R_j$ contains the indexes of the observations which
+               are assigned to group $j$,
+               Remark - if mixt&gt;=1 previous parameter equalweights is
+               automatically set to 1.</p> <p>
+               Parameter mixt also controls the criterion to select the units to trim
+               if mixt == 2 the h units are those which give the largest
+               contribution to the likelihood that is the h largest
+               values of
+               </p>\[
+                   \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)   \qquad
+                    i=1, 2, ..., n
+               \]
+               elseif mixt==1 the criterion to select the h units is
+               exactly the same as the one which is used in crisp
+               assignment. That is: the n units are allocated to a
+               cluster according to criterion
+               \[
+                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i; \; \hat \theta_j)
+               \]<p>
+               and then these n numbers are ordered and the units
+               associated with the largest h numbers are untrimmed.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mixt',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot with the classification is
+               shown on the screen.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Scalar which controls whether to display or not messages
+               on the screen. If msg==1 (default) messages are displayed
+               on the screen about estimated time to compute the estimator
+               or the number of subsets in which there was no convergence
+               else no message is displayed on the screen
+                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+               matrix Y.</p> <p>
+               As default nocheck=0.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_startv1" class="clearfix"></div><h3 id="input_argument_namevalue_startv1" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>startv1</code> &#8212;how to initialize centroids and cov matrices</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If startv1 is 1 then initial
+               centroids and and covariance matrices are based on (v+1)
+               observations randomly chosen, else each centroid is
+               initialized taking a random row of input data matrix and
+               covariance matrices are initialized with identity matrices.</p> <p>
+               Remark 1- in order to start with a routine which is in the
+               required parameter space, eigenvalue restrictions are
+               immediately applied. The default value of startv1 is 1.</p><p>
+               Remark 2 - option startv1 is used just if nsamp is a scalar
+               (see for more details the help associated with nsamp)
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'startv1',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_restr" class="clearfix"></div><h3 id="input_argument_namevalue_restr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restr</code> &#8212;The type of restriction to be applied on the cluster
+               scatter matrices</span></a><span class="example_desc">valid values are 'eigen' (default), |               'deter'</span></span></h3><div class="collapse">	<p><p>eigen implies restriction on the eigenvalues while
+               deter implies restrictions on the determinant.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restr','deter'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;Scalar that is set to 1 to request that the input matrix Y
+               is saved into the output structure out</span></a><span class="example_desc">default is 0, i</span></span></h3><div class="collapse">	<p><p>e.</p> <p>
+               no saving is done.</p><p>
+                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
+
+    <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>muopt</code></td><td><p><p>k-by-v matrix containing cluster centroid locations.</p> <p>
+                       Robust estimate of final centroids of the groups.</p></p></td></tr><tr valign="top"><td><code>sigmaopt</code></td><td><p>v-by-v-by-k array containing estimated constrained
+                       covariance for the k groups.</p></td></tr><tr valign="top"><td><code>idx</code></td><td><p>n-by-1 vector containing assignment of each unit to
+                       each of the k groups. Cluster names are integer
+                       numbers from 1 to k. 0 indicates trimmed
+                       observations.</p></td></tr><tr valign="top"><td><code>siz</code></td><td><p>matrix of size k-by-3
+                       1st col = sequence from 0 to k
+                       2nd col = number of observations in each cluster
+                       3rd col = percentage of observations in each cluster
+                       Remark: 0 denotes unassigned units</p></td></tr><tr valign="top"><td><code>post</code></td><td><p>n-by-k matrix containing posterior probabilities
+                       out.post(i,j) contains posterior probabilitiy of unit
+                       i from component (cluster) j. For the trimmed units
+                       posterior probabilities are 0</p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p><p>BIC which uses parameters estimated using the
+                       mixture loglikelihood and the maximized mixture
+                       likelihood as goodness of fit measure.</p> <p>
+                       Remark: this output is present just if input option
+                       mixt is &gt;0</p></p></td></tr><tr valign="top"><td><code>MIXCLA</code></td><td><p>BIC which uses the classification likelihood based on
+                       parameters estimated using the mixture likelihood
+                       (In some books this quantity is called ICL)
+                       Remark: this output is present just if input option
+                       mixt is &gt;0</p></td></tr><tr valign="top"><td><code>CLACLA</code></td><td><p>BIC which uses the classification likelihood based on
+                       parameters estimated using the classification likelihood
+                       Remark: this output is present just if input option
+                       mixt is =0</p></td></tr><tr valign="top"><td><code>notconver</code></td><td><p>scalar. Number of subsets without convergence</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>k-by-1 vector containing the units forming initial
+                       subset associated with muopt.</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p><p>scalar. Value of the objective function which is minimized
+                       (value of the best returned solution).</p> <p>
+                       If input option mixt &gt;1 the likelihood which is
+                       maximized is a mixture likelihood as follows
+                       </p>\[
+                       \prod_{i=1}^h  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j).
+                       \]
+                       else the likelihood which is maximized is a classification likelihood of the the form
+                       \[
+                       \prod_{j=1}^k   \prod _{i\in R_j} \pi_j' \phi (y_i; \; \theta_j),
+                       \]
+                       where $R_j$ contains the indexes of the observations which are assigned to group $j$
+                       with the constraint that $\# \bigcup_{j=1}^k
+                       R_j=h$. In the classification likelihood is input
+                       option equalweights=0 then $\pi_j'=1$, $j=1, ...,
+                       k$</p></td></tr><tr valign="top"><td><code>equalweights</code></td><td><p>logical. It is true if in the clustering procedure
+                       we (ideally) assumed equal cluster weights
+                       else it is false if we allowed for different
+                       cluster sizes</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>scalar. Number of observations that have determined the
+                       centroids (number of untrimmed units).</p></td></tr><tr valign="top"><td><code>fullsol</code></td><td><p>column vector of size nsamp which contains the
+                       value of the objective function at the end of the
+                       iterative process for each extracted subsample.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>original data matrix Y. The field is present if option
+                       Ysave is set to 1.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;C     : Indexes of extracted subsamples.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
+                    Matrix of size nsamp-by-(v+1)*k containing (in the
+                    rows) the indices of the subsamples extracted for
+                    computing the estimate.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details </span></a></span></h3><div class="collapse"><p><p>
+
+ This iterative algorithm initializes k clusters randomly and
+ performs "concentration steps" in order to improve the current cluster
+ assignment. The number of maximum concentration steps to be performed is
+ given by input parameter refsteps. For approximately obtaining the global
+ optimum, the system is initialized nsamp times and concentration steps
+ are performed until convergence or refsteps is reached. When processing
+ more complex data sets higher values of nsamp and refsteps have to be
+ specified (obviously implying extra computation time). However, if more
+ then 10 per cent of the iterations do not converge, a warning message is
+ issued, indicating that nsamp has to be increased.</p> <p>
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008),
+ "A General Trimming Approach to Robust Cluster Analysis". Annals
+ of Statistics, Vol.36, 1324-1345. Technical Report available at
+<a href="http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf">http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="estepFS.html" itemprop="url"><span itemprop="name"><code>estepFS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><script type ="text/javascript" language="javaScript">document.write(barra);</script></body></html>

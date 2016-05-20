@@ -1,0 +1,135 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Ex1</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-05-18"><meta name="DC.source" content=".m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Ex1</h1><pre class="codeinput">    Mu=randn(k,p);
+    <span class="comment">% Groups 2 and 3 are far from the other groups</span>
+    Mu(2:3,:) = Mu(2:3,:)+10;
+    <span class="comment">%Mu(3,:) =  Mu(3,:)+2;</span>
+    <span class="comment">%Mu(4,:) =  Mu(4,:)+3;</span>
+    <span class="comment">% S= 3D array of dimension p-by-p-by-k containing covariance matrices</span>
+    <span class="comment">% of the groups</span>
+    S=zeros(p,p,k);
+    <span class="keyword">for</span> j=1:k
+        S(:,:,j)=cov(randn(p+10,p));
+    <span class="keyword">end</span>
+
+    [li, di, const1]=ComputePars(p, k, Pi, Mu, S);
+
+    asympt = 0;
+    c = 1;
+    fixcl=zeros(k,1);
+    tol=1e-8;
+    lim=1e+07;
+    [OmegaMap,  BarOmega, MaxOmega, rcMax] = <span class="keyword">...</span>
+        GetOmegaMap(c, p, k, li, di, const1, fixcl, tol, lim, asympt);
+    disp(<span class="string">'Omegamap= k-by-k matrix which contains misclassification probabilities'</span>)
+    disp(OmegaMap);
+    disp(<span class="string">'Average overlap'</span>)
+    disp(BarOmega)
+    disp(<span class="string">'Maximum overlap'</span>)
+    disp(MaxOmega)
+    disp(<span class="string">'Groups with maximum overlap'</span>)
+    disp(rcMax)
+</pre><pre class="codeoutput error">Undefined function or variable 'k'.
+
+Error in GetOmegaMaptmp (line 2)
+    Mu=randn(k,p);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Ex1
+    Mu=randn(k,p);
+    % Groups 2 and 3 are far from the other groups
+    Mu(2:3,:) = Mu(2:3,:)+10;
+    %Mu(3,:) =  Mu(3,:)+2;
+    %Mu(4,:) =  Mu(4,:)+3;
+    % S= 3D array of dimension p-by-p-by-k containing covariance matrices 
+    % of the groups
+    S=zeros(p,p,k);
+    for j=1:k
+        S(:,:,j)=cov(randn(p+10,p));
+    end
+
+    [li, di, const1]=ComputePars(p, k, Pi, Mu, S);
+
+    asympt = 0;
+    c = 1;
+    fixcl=zeros(k,1);
+    tol=1e-8;
+    lim=1e+07;
+    [OmegaMap,  BarOmega, MaxOmega, rcMax] = ...
+        GetOmegaMap(c, p, k, li, di, const1, fixcl, tol, lim, asympt);
+    disp('Omegamap= k-by-k matrix which contains misclassification probabilities')
+    disp(OmegaMap);
+    disp('Average overlap')
+    disp(BarOmega)
+    disp('Maximum overlap')
+    disp(MaxOmega)
+    disp('Groups with maximum overlap')
+    disp(rcMax)
+##### SOURCE END #####
+--></body></html>
