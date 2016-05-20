@@ -68,6 +68,10 @@ short_name = FSColors.reddish.ShortName
           c.RGB =  [0, 0, 0];
           c.ShortName = 'k';
        end
+       function c = darkgrey
+          c.RGB =  [0.6, 0.6, 0.6];
+          c.ShortName = 'dg';
+       end
        function c = blueish
           c.RGB =  [18/255,104/255,179/255];
           c.ShortName = 'bs';
