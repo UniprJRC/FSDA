@@ -34,8 +34,8 @@ document.write(divsbefore);
 		<h2 class="title">Technical introduction to Robust methods in regression</h2>
 		<a name="notation"></a>
 		<h3 class="title">Notation</h3>
-		Consider the usual regression model<p>
-		&nbsp;</p>
+		Consider the usual regression model<p>&nbsp;
+		</p>
 		\[ y_i = x_i^T\beta +u_i \qquad i=1, \ldots, n. \]
         
 		<p>where $u_i$ are random errors which have common variance 
@@ -44,13 +44,13 @@ document.write(divsbefore);
 		of interest. $\sigma$ is the so called scale component of the linear model. </p>
 		<p>Given an estimator of $\beta$, say $\hat \beta$
 		the residuals are defined as</p>
-        $r_i(\hat \beta)=y_i- x_i^T \hat \beta$
+        $$r_i(\hat \beta)=y_i- x_i^T \hat \beta$$
         <br>
         <br>
 		
 		<p>The traditional least squares estimate of $\beta$ is denoted with
 		</p>
-        $\hat \beta = \hat \beta_{LS}=\hat \beta_{LS}(X,y)=(X'X)^{-1}X'y$
+        $$\hat \beta = \hat \beta_{LS}=\hat \beta_{LS}(X,y)=(X'X)^{-1}X'y$$
 		<br>
         <br>
 		<p>We are concerned with the case where a certain proportion of the observations 
@@ -74,8 +74,9 @@ document.write(divsbefore);
         
   
 \[ \rho(x) = \begin{cases} 
-      \frac{x^2}{2}-\frac{x^4}{2c^2}+\frac{x^6}{6c^4} & if |x| \leq c \\
-      \frac{c^2}{6} & if  |x| > c, \\
+      \frac{x^2}{2}-\frac{x^4}{2c^2}+\frac{x^6}{6c^4} & if \quad |x| \leq c \\
+      \\
+      \frac{c^2}{6} & if \quad |x| > c, \\
      
    \end{cases}
 \]
@@ -97,9 +98,9 @@ document.write(divsbefore);
 		</ol>
 		<p>Function $\psi$ for Tukey's biweight </p>
         \[ \psi(x) = \begin{cases} 
-      x- \frac{2x^3}{c^2}+\frac{x^5}{c^4} = x  \Big[ 1- \Big( \frac{x}{c}\Big)^2 \Big]^2  & if  |x|  \leq c \\
-
-      0 & if   |x| > c, \\
+      x- \frac{2x^3}{c^2}+\frac{x^5}{c^4} = x  \Big[ 1- \Big( \frac{x}{c}\Big)^2 \Big]^2  & if \quad  |x|  \leq c \\
+\\
+      0 & if \quad  |x| > c, \\
    \end{cases}
 \]
 		<p>is implemented in routine <a href="tbpsi.html">TBpsi</a>.</p>
@@ -123,11 +124,11 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		<h3 class="title">The regression M-estimate of location </h3>
 		<p>The regression M-estimate of location (say $\hat \beta_M$)
 		is the value that minimizes the following objective function (eq. 2)</p>
-        $$\sum_{i=1}^{n} \rho \Big( \frac{ r_i(\hat\beta_M)}{\sigma} \Big) = \textrm{min}.$$
+        $$\sum_{i=1}^{n} \rho \Bigg( \frac{ r_i(\hat\beta_M)}{\sigma} \Bigg) = \textrm{min}.$$
 
 		<p>&nbsp;</p>
 		<p>&nbsp;Differentiation of eq. (2) gives</p>
-        $$\sum_{i=1}^{n} \psi \Big( \frac{ r_i(\hat\beta_M)}{\sigma} \Big) x_i = 0$$
+        $$\sum_{i=1}^{n} \psi \Bigg( \frac{ r_i(\hat\beta_M)}{\sigma} \Bigg) x_i = 0$$
 
 		<p>&nbsp;</p>
 		<p>Remark 1: If function $\psi$ is monotone the solution to this equation are 
@@ -136,7 +137,7 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		<p>Remark 2: it is possible to show that the regression M estimates have 
 		the following asymptotic distribution:</p>
         
-        \[\hat \beta_M \approx N \Big( \beta, \sigma^2 \frac{E \psi (u/\sigma)^2}{[E \psi' (u/\sigma)]^2} 	(X'X)^{-1} \Big)\]
+        \[\hat \beta_M \approx N \Bigg( \beta, \sigma^2 \frac{E \psi (u/\sigma)^2}{[E \psi' (u/\sigma)]^2} 	(X'X)^{-1} \Bigg)\]
         
 <br><br>
 		<p>Thus the approximate covariance matrix of an M-estimate differs only 
@@ -154,7 +155,7 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
         $$\frac{1}{n} \sum_{i=1}^n \rho_1 \Bigg( \frac{r_i}{\hat \sigma_M} \Bigg)=K,$$
 
 		<p>where </p>
-        $r_i = r_i(\hat \beta_M), \hat \sigma_M =  \hat \sigma(r_1(\hat \beta_M), \dots, r_n(\hat \beta_M))$
+        $$r_i = r_i(\hat \beta_M), \hat \sigma_M =  \hat \sigma(r_1(\hat \beta_M), \dots, r_n(\hat \beta_M))$$
          <br><br>
         
          and $K$ is a constant which is linked to the breakdown point of the scale estimator.
@@ -175,13 +176,13 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		of the vector of regression coefficients $(\hat \beta_S)$.
 		<p>The word S estimator comes from the fact that it is derived from a scale 
 		statistic in an implicit way. More formally</p>
-       $\hat \beta_S = \min \limits_{\beta} \hat \sigma_M(r(\beta))$
+       $$\hat \beta_S = \min \limits_{\beta} \; \hat \sigma_M(r(\beta))$$
 
 		<br><br>
 		where
        	<br><br>
 
-         $r_i = r_i(\hat \beta_S), \hat \sigma_S =  \hat \sigma(r_1(\hat \beta_S), \dots, r_n(\hat \beta_S))$
+         $$r_i = r_i(\hat \beta_S), \hat \sigma_S =  \hat \sigma(r_1(\hat \beta_S), \dots, r_n(\hat \beta_S))$$
 		<br><br>
 
         <p>Because an S estimate is an M-estimate, it follows that the asymptotic 
@@ -203,11 +204,11 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		(absolute values) of the residuals and we therefore obtain the Least Median 
 		of Squares estimator (LMS).&nbsp; </p>
 		<p>In symbols, call </p>
-        $|r|_{(1)} \leq |r|_{(2)} \leq \dots \leq |r|_{(n)}$
+        $$|r|_{(1)} \leq |r|_{(2)} \leq \dots \leq |r|_{(n)}$$
 
 		<p>the ordered absolute values of the residuals,&nbsp;
-		 $\hat \beta_{LMS}$ is defined as</p>
-         \[ \hat \beta_{LMS}= \min \limits_{\beta} \; \; med |r(\beta)|_i \]
+		$\hat \beta_{LMS}$ is defined as</p>
+         \[ \hat \beta_{LMS}= \min \limits_{\beta} \; med |r(\beta)|_i \]
 		<p> $\hat \beta_{LMS}$ can be computed using routine <a href="lxs.html">LXS</a> (option lms=1)</p>
 		<p>More generally, for a general $K$ a solution $\hat \sigma$
 		 to equation (4) is the $h$ order 
