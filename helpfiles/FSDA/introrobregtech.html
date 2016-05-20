@@ -45,11 +45,13 @@ document.write(divsbefore);
 		the residuals are defined as</p>
         $r_i(\hat \beta)=y_i- x_i^T \hat \beta$
         <br>
+        <br>
 		
 		<p>The traditional least squares estimate of $\beta$ is denoted with
 		</p>
         $\hat \beta = \hat \beta_{LS}=\hat \beta_{LS}(X,y)=(X'X)^{-1}X'y$
-		
+		<br>
+        <br>
 		<p>We are concerned with the case where a certain proportion of the observations 
 		may not follow model above. Traditional robust estimators attempt to limit 
 		the influence of outliers by replacing in the estimation of $\beta$ the 
@@ -94,9 +96,9 @@ document.write(divsbefore);
 		</ol>
 		<p>Function $\psi$ for Tukey's biweight </p>
         \[ \psi(x) = \begin{cases} 
-      x- \frac{2x^3}{c^2}+\frac{x^5}{c^4} = x  \Big[ 1- ( \frac{x}{c})^2 \Big]^2  & if  |x|  \leq c \\
+      x- \frac{2x^3}{c^2}+\frac{x^5}{c^4} = x  \Big[ 1- \Big( \frac{x}{c}\Big)^2 \Big]^2  & if  |x|  \leq c \\
 
-      \frac{c^2}{6} & if   |x| > c, \\
+      0 & if   |x| > c, \\
    \end{cases}
 \]
 		<p>is implemented in routine <a href="tbpsi.html">TBpsi</a>.</p>
