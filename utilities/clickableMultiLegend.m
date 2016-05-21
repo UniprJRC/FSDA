@@ -19,17 +19,21 @@ function [varargout] = clickableMultiLegend(varargin)
 % 
 % Optional input arguments:
 %
+% Output:
+%
 % Optional Output:  
 %
-%               HLEG : returns the handle to legend on the current
-%                      axes or empty if none exists. pippo.
+%               HLEG : handle to legend. Graphics handle.
+%                       This is the handle to legend on the current
+%                      axes or empty if none exists. 
 %    
-% See also: legend, yXplot, clickableLegend  (by Ameya Deoras)
+% See also: legend, yXplot
 %
 % References:
 %
 % clickableMultiLegend extends the clickableLegend by Ameya Deoras to
 % figures with one legend for several subplots. See:
+% Deoras Ameya (2008). 
 % http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
 %
 % Copyright 2008-2015.
@@ -58,16 +62,15 @@ function [varargout] = clickableMultiLegend(varargin)
 %}
 
 %{
-    % clickableMultiLegend applied to multiple subplots (e.g. a gplotmatrix).
-    %
+    % clickableMultiLegend applied to multiple subplots.
+    % For example let us start with a gplotmatrix.
     % Simulate X
     X = rand(100,4);
-    %
+
     % Simulate y with 3 groups
     y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];
-    %
+
     group= [2*ones(10,1); ones(20,1); zeros(70,1)];
-    %
     % Generate the scatter matrix
     [H,AX,bigax] = gplotmatrix(X,y,group);
 
@@ -114,6 +117,7 @@ function [varargout] = clickableMultiLegend(varargin)
 %}
 
 %% Beginning of code
+
 % Create legend as if it was called directly
 [varargout{1:nargout(@legend)}] = legend(varargin{:});
 

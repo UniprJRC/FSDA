@@ -1,4 +1,4 @@
-function out=makecontentsfileFS(varargin)
+function [out, Excluded]=makecontentsfileFS(varargin)
 %makecontentsfileFS  extends Matlab function makecontentsfile
 %
 %<a href="matlab: docsearchFS('makecontentsfileFS')">Link to the help function</a>
@@ -75,14 +75,14 @@ function out=makecontentsfileFS(varargin)
 %                 the files present in required folder or folders if
 %                 dirpath is a cell array of strings.
 %               The columns of dout contain the following information:
-%               dout(:,1)= name of the file (with extension);
-%               dout(:,2)= date (in local format);
-%               dout(:,3)= size of the files in bytes;
-%               dout(:,4)= boolean 1 if name is a folder and 0 if name is a file;
-%               dout(:,5)= Modification date as serial date number;
-%               dout(:,6)= matlab file name (without .m extension);
-%               dout(:,7)= file description (the so called H1 line of the file);
-%               dout(:,8)= string which identifies file category. File
+%               out(:,1)= name of the file (with extension);
+%               out(:,2)= date (in local format);
+%               out(:,3)= size of the files in bytes;
+%               out(:,4)= boolean 1 if name is a folder and 0 if name is a file;
+%               out(:,5)= Modification date as serial date number;
+%               out(:,6)= matlab file name (without .m extension);
+%               out(:,7)= file description (the so called H1 line of the file);
+%               out(:,8)= string which identifies file category. File
 %               category is the string after 'FilterFileContent' in each
 %               file.
 %               Remark: if the file contains:
@@ -91,7 +91,23 @@ function out=makecontentsfileFS(varargin)
 %               FilterFileContentObama, in row 1243;
 %               than category is associated to
 %               the last instance which is found (in this example 'Obama')
-%
+%    Excluded:  structured information of .m files not included.
+%                 cell.
+%                 Cell of size r-times-8 containing detailed information about
+%                 the files present in required folder or folders if
+%                 dirpath is a cell array of strings but which have been
+%                 excluded by the filters.
+%               The columns of Excluded contain the following information:
+%               Excluded(:,1)= name of the file (with extension);
+%               Excluded(:,2)= date (in local format);
+%               Excluded(:,3)= size of the files in bytes;
+%               Excluded(:,4)= boolean 1 if name is a folder and 0 if name is a file;
+%               Excluded(:,5)= Modification date as serial date number;
+%               Excluded(:,6)= matlab file name (without .m extension);
+%               Excluded(:,7)= file description (the so called H1 line of the file);
+%               Excluded(:,8)= string which identifies file category. File
+%               category is the string after 'FilterFileContent' in each
+%               file.
 %
 % See also: makecontentsfileFS,publishFS
 %
@@ -135,7 +151,7 @@ function out=makecontentsfileFS(varargin)
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
-    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory')
+    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false)
 %}
 
 
@@ -193,7 +209,9 @@ lineSep = char(java.lang.System.getProperty('line.separator'));
 % Initialize out with a large number of rows
 
 out=cell(1000,8);
-ij=1;
+iout=1;
+Excluded=out;
+iExcluded=1;
 
 for j=1:ldirpath
     
@@ -213,6 +231,11 @@ for j=1:ldirpath
     % listed
     if ~isempty(FilterOutFileName)
         boo=cellfun('isempty',regexpi({d.name},FilterOutFileName));
+        lExcl=sum(~boo);
+        if lExcl>0
+            Excluded(iExcluded:iExcluded+lExcl-1,1:5)=struct2cell(d(~boo))';
+            iExcluded=iExcluded+lExcl;
+        end
         d=d(boo);
     end
     
@@ -270,14 +293,21 @@ for j=1:ldirpath
     
     if ~isempty(FilterFileContent)
         boo=~cellfun(@isempty,dout(:,8));
-        % Extract just the rows of d for which category is not empty
+        % Extract just the rows of d for which category does not the string
+        % specified inside input option FilterFileContent
+        
+        lExcl=sum(~boo);
+        if lExcl>0
+            Excluded(iExcluded:iExcluded+lExcl-1,:)=dout(~boo,:);
+            iExcluded=iExcluded+lExcl;
+        end
         dout=dout(boo,:);
     end
     
-    %Iclude inside DDout output of current folder
+    %Include inside dout output of jt-folder which has been analyzed
     if ~isempty(dout)
-        out(ij:(ij+size(dout,1)-1),:)=dout;
-        ij=ij+size(dout,1);
+        out(iout:(iout+size(dout,1)-1),:)=dout;
+        iout=iout+size(dout,1);
     else
     end
     
@@ -316,7 +346,9 @@ for j=1:ldirpath
     end
 end
 
-out=out(1:ij-1,:);
+out=out(1:iout-1,:);
+Excluded=Excluded(1:iExcluded-1,:);
+
 % sort output in alphabetical order
 [~,sortIndex] = sort(lower(out(:,6)));
 out = out(sortIndex,:);

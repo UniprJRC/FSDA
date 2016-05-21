@@ -1,61 +1,92 @@
 function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
-%histFS plots a histogram with the elements in each bin grouped according to a vector of labels. 
+%histFS plots a histogram with the elements in each bin grouped according to a vector of labels.
 %
 %<a href="matlab: docsearchFS('histFS')">Link to the help function</a>
 %
-%  Required input arguments
+%  Required input arguments:
 %
-%     y        : vector of n elements.
-%     nbins    : the number of bins.
-%     gy       : vector of n numeric identifiers for the group of each 
+%     y        : vector of n elements to bin. Vector. Vector which contains
+%                the elements which have to be binned
+%     nbins    : the number of bins. Scalar. The elements of of input vector y are binned
+%                into nbins equally spaced containers
+%     gy       : idenitifier vector. Vector. Vector of n numeric
+%                identifiers for the group of each
 %                element in y. If there are k groups in y, unique(gy) = k.
 %
-%  Optional input arguments
+%  Optional input arguments:
 %
-%     gylab     : legend labels identifying the groups of each element in y.
-%                 size(gylab) = size(gy) must hold.
+%     gylab     : legend labels. String | cell of strings.
+%                 Legend labels identifying the groups of each element in y.
+%                 length(gylab) = length(unique(gy)) must hold.
 %                 If not specified, gylab is set to '' and legends are not
-%                 displayed. 
+%                 displayed.
 %                 If gylab = {}, default legend labels are generated.
-%                 If gylab is a cell of strings of lenght n, e.g. gylab =
+%                 If gylab is a cell of strings of length 3, e.g. gylab =
 %                 {'G1' 'G2' 'G3'}, such strings are used for the legends.
-%     ax        : the axis handle where to plot the grouped histogram (e.g.
-%                 a traditional histogram plot to be superimposed). Default
-%                 gca.
-%     barcolors : Personalised RGB matrix of the colors used for the groups.
+%               Example - {'G1' 'G2'}
+%               Data Types - cell array of strings or char
+%     ax        : plots into ax instead of gca. Axis handle. The axis handle
+%                 where to plot the grouped histogram (e.g. a traditional
+%                 histogram plot to be superimposed). Default is gca.
+%               Example - gca
+%               Data Types - graphics handle
+%     barcolors : colors of the bars. char or matrix.
+%                Vector containing the strings of the colors to use (e.g.
+%                'rgy') or RGB matrix of the colors used for the groups
+%                (e.g. [1 0 0; 0 0 1]). If the number of colors supplies is
+%                smaller than the number of groups the program displays an
+%                error.
+%               Example - rgy
+%               Data Types - character or numeric matrix
 %
-%  Output
+%  Output:
 %
-%     ng        : a matrix with a column for each group and a row for 
-%                 each bin. In ng, the column i contains the the number
+%       ng      : number of elements in each container for each group.
+%                 Matrix. A matrix with a column for each group and a row for
+%                 each bin. In ng, column i contains the the number
 %                 of elements of group i in each bin.
-%     hb        : a vector hb with the handles to the barseries objects.
+%                 For example ng(2,3) contains the number of elements
+%                 belonging to the third group included into the second
+%                 container.
+%        hb     : Bar array handles. Vector. A vector containing the
+%                 handles to the barseries objects.
 %
-%<a href="matlab: docsearchFS('histFS')">Link to the help function</a>
+% See also hist
 %
-% Example:
+% Copyright 2008-2015.
+% Written by FSDA team
+%
+%
+%<a href="matlab: docsearchFS('FSMbsb')">Link to the help function</a>
+% Last modified 06-Feb-2015
+%
+% Examples:
+%
 %{
+      %% An example with 4 groups.
       y = randn(500,1);
-      % three groups
+      % four groups
       groups = randi(4,500,1);
       % number of bins
       nbins = 10;
       [ng, hb] = histFS(y,nbins,groups);
 %}
+
 %{
-      % Now with default clickable legends
+      % Example with default clickable legends.
       [ng, hb] = histFS(y,nbins,groups,{});
 %}
+
 %{
-      % Now with personalised clickable legends
+      % Example with personalised clickable legends.
       myleg = {'my group 1' 'my group 2' 'my group 3' 'my group 4'};
       [ng, hb] = histFS(y,nbins,groups,myleg);
 %}
-%{
-      % Now apply to the grouped histogram the legends of a different plot, 
-      
-      hs = gscatter(1:numel(y),y,groups);     % e.g. a scatterplot
 
+%{
+      % Apply to the grouped histogram the legends of a different plot.
+      % Create a scatterplot
+      hs = gscatter(1:numel(y),y,groups);     
       hfs = gcf;                              % get the handle of the scatterplot
       has = get(hfs,'CurrentAxes');           % it is the same as has = gca
       hlegends  = get(has,'Children');        % get the legend entries
@@ -63,26 +94,30 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
       getcol = get(hlegends,'Color');         % get the color of the legend entries
       getcolm = cell2mat(getcol);             % arrange the RGB vectors into a matrix
 
-      figure;                                 
-      [ng, hb] = histFS(y,nbins,groups,getleg,gca,getcolm); 
-
+      figure;
+      [ng, hb] = histFS(y,nbins,groups,getleg,gca,getcolm);
 %}
-%   See also hist, bar.
-%
-% Copyright 2008-2015.
-% Written by FSDA team
-%
-%
-% Last modified 06-Feb-2015
+
+%{
+      % An example of bar color supplied as string.
+      y = randn(500,1);
+      % four groups
+      groups = randi(4,500,1);
+      % number of bins
+      nbins = 10;
+      % Bar colors supplied as character string
+      col='rgyb';
+      [ng, hb] = histFS(y,nbins,groups,[],[],col);
+%}
 
 %% Beginning of code
 if nargin < 6
     barcolors = 'brcmykgbrcmykgbrcmykg';
 end
-if nargin < 5
+if nargin <5 || isempty(ax)
     ax = gca;
 end
-if nargin < 4
+if nargin < 4 || isempty(gylab)
     gylab = '';
 end
 
@@ -90,16 +125,16 @@ end
 % REMARK: the  vector resulting from unique is sorted in ascending order:
 % in histFS this is required to ensure to have always the same order of
 % colors
-groups = unique(gy); 
+groups = unique(gy);
 ngroups = numel(groups);
 
-if nargin >= 4 
+if nargin >= 4
     if ischar(gylab) && isempty(gylab)
         doleg = 0;
     end
-    if iscell(gylab) 
+    if iscell(gylab)
         if isempty(gylab)
-            gylab = cell(1,ngroups); 
+            gylab = cell(1,ngroups);
             for i = 1 : ngroups
                 gylab(1,i) = {['Group n. ' num2str(i)]};
             end
@@ -117,7 +152,7 @@ else
 end
 
 % size of vector
-y = y(:); 
+y = y(:);
 n = size(y,1);
 
 [~,x]   = hist(y,nbins);       % bins locations
@@ -140,9 +175,12 @@ end
 % prepare the colormap for the histogram
 if isnumeric(barcolors)
     Crgb = barcolors;
+    assert(size(Crgb,1) >=ngroups,'Number of supplied colors smaller than number of groups')
 else
     C = textscan(barcolors, '%1c');
     C = C{:};
+    assert(size(C,1) >= ngroups ,'Number of supplied colors smaller than number of groups')
+    
     Crgb = zeros(size(C,1),3);
     for i=1:size(C,1)
         switch C(i)
@@ -188,7 +226,7 @@ if doleg
     clickableMultiLegend(hb, gylab{:});
     axis(axis);
     for i=1:numel(hb)
-         set(findobj(hb(i),'Type','patch'),'DisplayName',gylab{i});
+        set(findobj(hb(i),'Type','patch'),'DisplayName',gylab{i});
     end
 end
 

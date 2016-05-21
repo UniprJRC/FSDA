@@ -118,15 +118,15 @@ function out=publishFS(file,varargin)
 %                 references to linked files.
 %        out.Ex = Examples. cell. Cell of length t containing the t
 %                 examples.
-%                 First column= title of the example; 
-%                 Second column = detailed description; 
+%                 First column= title of the example;
+%                 Second column = detailed description;
 %                 Third column = MATLAB code;
 %                 Fourth column = dummy variable which indicates whether
 %                 the example must be executed or not) If 1 example is executed
 %    out.ExtraEx= Extra Examples. cell. Cell of length u containing the u
 %                 extra examples.
-%                 First column= title of the example; 
-%                 Second column = detailed description; 
+%                 First column= title of the example;
+%                 Second column = detailed description;
 %                 Third column = MATLAB code;
 %                 Fourth column = dummy variable which indicates whether
 %                 the example must be executed or not) If 1 example is executed
@@ -149,7 +149,7 @@ function out=publishFS(file,varargin)
 %                 'reftol'      [                0]    [           1]
 %                 it means that options 'nomes', 'refstesps' and 'reftol'
 %                 have not been described, but are used inside the .m file
-%out.OutArgsStructMisMatch = cell of size r-by-3 which in presence of output 
+%out.OutArgsStructMisMatch = cell of size r-by-3 which in presence of output
 %                 arguments which are structures enables to highlight
 %                 the fields of the structures which are described but
 %                 are not used inside the file and vice versa. More precisely,
@@ -158,7 +158,7 @@ function out=publishFS(file,varargin)
 %                 the field was described. The third column contains 1 is
 %                 the field was effectively used. Of course the sum of
 %                 columns two and three is always 1. For example if
-%                 OutArgsStructMisMatch is 
+%                 OutArgsStructMisMatch is
 %                   []    'Fields described'    'Fields used'
 %                   'out'                    []               []
 %                   'Y'      [               1]    [          0]
@@ -176,7 +176,7 @@ function out=publishFS(file,varargin)
 %                 structure named outMM or Myout then publishFS checks the
 %                 fields present in outMM or Myout to detect eventual
 %                 mismatches.
-%                 
+%
 %
 %
 % More About:
@@ -980,7 +980,7 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
     '<script src="includesFS/mw.imageanimation.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/jquery.highlight.js"></script>\r'...
     '<script src="includesFS/bootstrap.min.js" type="text/javascript"></script>\r'...
- '<script src="includesFS/global.js"></script>\r'...   ' enables scrolling
+    '<script src="includesFS/global.js"></script>\r'...   ' enables scrolling
     '<script src="includesFS/bottom.js" type="text/javascript"></script>\r'...
     '<script src="includesFS/suggest.js" type="text/javascript"></script>\r'... % for search engine
     '<script src="includesFS/underscore-min.js"></script>\r'...                 % for search engine
@@ -996,34 +996,34 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
 
 
 searchenginestring=['<div class="section_header level_3">\r'...
-'<div class="container-fluid">\r'...
-'<div class="row" id="mobile_search_row">\r'...
-'<div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search">\r'...
-'<div class="search_nested_content_container">\r'...
-'<form id="docsearch_form" name="docsearch_form" method="get" data-release="R2016a" data-language="en" action="../templates/searchresults.html">\r'...
-'<div class="input-group tokenized_search_field">\r'...
-'<label class="sr-only">Search Documentation</label>\r'...
-'<input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Documentation" id="docsearch">\r'...
-'<div class="input-group-btn">\r'...
-'<button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button>\r'...
-'</div>\r'...
-'</div>\r'...
-'</form>\r'...
-'</div>\r'...
-'<button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div>\r'...
-'<div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title">\r'...
-'<div class="section_header_content">\r'...
-'<div class="section_header_title">\r'...
-'<h1><a href="../documentation-center.html">Documentation</a></h1>\r'...
-'</div>\r'...
-'</div>\r'...
-'</div>\r'...
-'<div class="visible-xs" id="search_actuator">\r'...
-'<button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button>\r'...
-'</div>\r'...
-'</div><!--END.CLASS row-->\r'...
-'</div><!--END.CLASS container-fluid-->\r'...
-'</div>\r'];
+    '<div class="container-fluid">\r'...
+    '<div class="row" id="mobile_search_row">\r'...
+    '<div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search">\r'...
+    '<div class="search_nested_content_container">\r'...
+    '<form id="docsearch_form" name="docsearch_form" method="get" data-release="R2016a" data-language="en" action="../templates/searchresults.html">\r'...
+    '<div class="input-group tokenized_search_field">\r'...
+    '<label class="sr-only">Search Documentation</label>\r'...
+    '<input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Documentation" id="docsearch">\r'...
+    '<div class="input-group-btn">\r'...
+    '<button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button>\r'...
+    '</div>\r'...
+    '</div>\r'...
+    '</form>\r'...
+    '</div>\r'...
+    '<button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div>\r'...
+    '<div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title">\r'...
+    '<div class="section_header_content">\r'...
+    '<div class="section_header_title">\r'...
+    '<h1><a href="../documentation-center.html">Documentation</a></h1>\r'...
+    '</div>\r'...
+    '</div>\r'...
+    '</div>\r'...
+    '<div class="visible-xs" id="search_actuator">\r'...
+    '<button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button>\r'...
+    '</div>\r'...
+    '</div><!--END.CLASS row-->\r'...
+    '</div><!--END.CLASS container-fluid-->\r'...
+    '</div>\r'];
 
 
 metacontent=sprintf([beforemetacontent purpose aftermetacontent searchenginestring]);
@@ -1239,11 +1239,11 @@ else
     if ~isempty(outargs)
         sintax{j}=[outargs(2:commasOut(1)-1) '=' name strinputarg ')'];
         if length(strinputarg)>1
-        sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg ',Name,Value)'];
+            sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg ',Name,Value)'];
         else
             % just in case function has no compulsary input argument then
             % the comma before 'Name.value' is unnecessary
-        sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg 'Name,Value)'];
+            sintax{j+1}=[outargs(2:commasOut(1)-1) '=' name strinputarg 'Name,Value)'];
         end
         
     else
@@ -1475,7 +1475,7 @@ for j=1:length(sintax)
     
     % Find point where description ends
     inicr=regexp(stri,'\r');
-   
+    
     % This is the first line which does not contain symbol %
     for jj=1:length(inicr)-1
         strtest=stri(inicr(jj):inicr(jj+1));
@@ -2090,9 +2090,9 @@ if nargout>0
         % The initial point of the string is 'listargouts{i}' is there is just
         % one output else is string 'listargouts{i} :' is there is more than
         % one output and this is not varargout
-        % else if there is varargour the initialpoint is the string
+        % else if there is varargout the initialpoint is the string
         % "Optional Output:"
-        if length(listargouts)==1
+        if length(listargouts)==1 && strcmp(listargouts,'varargout') ==0
             inipoint=regexp(fstringsel,listargouts{i});
         elseif  i<length(listargouts)
             inipoint=regexp(fstringsel,[listargouts{i} '\s{0,11}:']);
@@ -2115,6 +2115,13 @@ if nargout>0
             
             if strcmp(listargouts{end},'varargout') ==0
                 endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
+                if isempty(endpoint)
+                    % warning('FSDA:wrongOutDescription',)
+                    errmsg=['Error in processing output argument  ''' listargouts{i} '''\n' ...
+                        'Parser could not find string:  ''' listargouts{i+1} '       :''\n' ...
+                        'Endpoint for the description of output argument ''' listargouts{i} '''not found'];
+                    error('FSDA:wrongOutDescription',errmsg)
+                end
             else
                 % In this case there are also optional arguments
                 endpoint=regexp(fstringsel,'Optional [Oo]utput:');
@@ -2149,7 +2156,9 @@ if nargout>0
             end
             
             endpoint=min(inipointSeeAlso,inipointMoreAbout);
-            
+            %             if isempty(endpoint)
+            %                error('Strings See also and More about are not found inside the file')
+            %             end
         end
         
         % descri = string which contains the description of i-th output
@@ -2166,7 +2175,11 @@ if nargout>0
                 disp(['FSDA:WrongOut','Could not process correctly output argument ' listargouts{i}])
             end
         catch
-            disp(['FSDA:WrongOut','Could not process correctly output argument ' listargouts{i}])
+            disp(['FSDA:WrongOut: ','Could not process correctly output argument ' listargouts{i}])
+            
+            disp('Below is the wrong description that parser publishFS has extracted')
+            starterr=(inipoint(1)+length(listargouts{i})+2);
+            disp(fstringsel(starterr:starterr+300))
         end
         
         % Remove from string descri all '% signs
@@ -2885,7 +2898,7 @@ if evalCode==true
         addpath([outputDir fsep 'tmp'])
         % addpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
         addpath([pathFSDAstr fsep 'utilities' fsep 'privateFS'])
-
+        
         %        addpath([pathstr fileseparator '\helpfiles\FSDA\tmp'])
         %        addpath([pathstr '\utilities\privateFS'])
         
@@ -3084,69 +3097,69 @@ fclose('all');
 if ~isempty(OptArgsVarargin)
     posoptionsini=regexp(fstring,'options\s*=\s*struct(');
     if isempty(posoptionsini)
-                error('FSDA:publishFS:WrongUseVarArgInt','varargin is used but structure containing the options of varargin has not been defined inside .m file')
-    end
-    posoptionsini=posoptionsini(1);
-    posoptionsfin=regexp(fstring,');');
-    posoptionsfin=posoptionsfin(posoptionsfin>posoptionsini);
-    posoptionsfin=posoptionsfin(1);
-    NamePairs=fstring(posoptionsini:posoptionsfin-1);
-    findFirstRoundBracket=regexp(NamePairs,'(');
-    NamePairs=NamePairs(findFirstRoundBracket+1:end);
-    
-    % Remove (if present) "..." symbols, carriage returns and white spaces
-    % from, string NamePairs
-    posThreeFullStops=regexp(NamePairs,'\.');
-    NamePairs(posThreeFullStops)=[];
-    NamePairs=strtrim(NamePairs);
-    posCR=regexp(NamePairs,'\n');
-    NamePairs(posCR)=[];
-    posLF=regexp(NamePairs,'\r');
-    NamePairs(posLF)=[];
-    posWS=regexp(NamePairs,'\s');
-    NamePairs(posWS)=[];
-    
-    
-    % count number of commas (it must be an odd number). Check that this is the
-    % case
-    poscommas=regexp(NamePairs,',');
-    if length(poscommas)/2==floor(length(poscommas)/2)
-        error('FSDA:publishFS:WrongInputOpt','Name pairs must be in pairs: something wrong')
+        warning('FSDA:publishFS:WrongUseVarArgInt','varargin is used but structure containing the options of varargin has not been defined inside .m file')
     else
+        posoptionsini=posoptionsini(1);
+        posoptionsfin=regexp(fstring,');');
+        posoptionsfin=posoptionsfin(posoptionsfin>posoptionsini);
+        posoptionsfin=posoptionsfin(1);
+        NamePairs=fstring(posoptionsini:posoptionsfin-1);
+        findFirstRoundBracket=regexp(NamePairs,'(');
+        NamePairs=NamePairs(findFirstRoundBracket+1:end);
         
-        numberOptArgs=(length(poscommas)+1)/2;
-        OptArgsUsed=cell(numberOptArgs,1);
-        ij=1;
-        for j=1:2:length(poscommas)
-            if j>1
-                OptArgsUsed{ij}=NamePairs(poscommas(j-1)+2:poscommas(j)-2);
-            else
-                % regexp(NamePairs,'\');
-                OptArgsUsed{ij}=NamePairs(2:poscommas(j)-2);
+        % Remove (if present) "..." symbols, carriage returns and white spaces
+        % from, string NamePairs
+        posThreeFullStops=regexp(NamePairs,'\.');
+        NamePairs(posThreeFullStops)=[];
+        NamePairs=strtrim(NamePairs);
+        posCR=regexp(NamePairs,'\n');
+        NamePairs(posCR)=[];
+        posLF=regexp(NamePairs,'\r');
+        NamePairs(posLF)=[];
+        posWS=regexp(NamePairs,'\s');
+        NamePairs(posWS)=[];
+        
+        
+        % count number of commas (it must be an odd number). Check that this is the
+        % case
+        poscommas=regexp(NamePairs,',');
+        if length(poscommas)/2==floor(length(poscommas)/2)
+            error('FSDA:publishFS:WrongInputOpt','Name pairs must be in pairs: something wrong')
+        else
+            
+            numberOptArgs=(length(poscommas)+1)/2;
+            OptArgsUsed=cell(numberOptArgs,1);
+            ij=1;
+            for j=1:2:length(poscommas)
+                if j>1
+                    OptArgsUsed{ij}=NamePairs(poscommas(j-1)+2:poscommas(j)-2);
+                else
+                    % regexp(NamePairs,'\');
+                    OptArgsUsed{ij}=NamePairs(2:poscommas(j)-2);
+                end
+                ij=ij+1;
             end
-            ij=ij+1;
         end
+        % Now compare listOptArgs (described options) with OptArgsUsed
+        % (effectively used options)
+        disp('Check if Name/Pairs optional input arguments are documented')
+        OptMisMatch=CompareDescribedUsed(listOptArgs(:,1),OptArgsUsed);
+        
+        out.InpArgsMisMatch=OptMisMatch;
+        
+        %     if ~isequal(OptArgsDescribed,OptArgsUsed)
+        %         warning('Options described are different from Option effectively used')
+        %         lused=length(OptArgsUsed);
+        %         ldesc=length(OptArgsDescribed);
+        %         if ldesc<lused
+        %             OptArgsDescribed=[OptArgsDescribed; cell(lused-ldesc,1)];
+        %         elseif ldesc>lused
+        %             OptArgsUsed=[OptArgsUsed; cell(ldesc-lused,1)];
+        %         end
+        %         disp('Options described --  Options used')
+        %         disp([OptArgsDescribed OptArgsUsed])
+        %     end
     end
-    % Now compare listOptArgs (described options) with OptArgsUsed
-    % (effectively used options)
-    disp('Check if Name/Pairs optional input arguments are documented')
-    OptMisMatch=CompareDescribedUsed(listOptArgs(:,1),OptArgsUsed);
-    
-    out.InpArgsMisMatch=OptMisMatch;
-    
-    %     if ~isequal(OptArgsDescribed,OptArgsUsed)
-    %         warning('Options described are different from Option effectively used')
-    %         lused=length(OptArgsUsed);
-    %         ldesc=length(OptArgsDescribed);
-    %         if ldesc<lused
-    %             OptArgsDescribed=[OptArgsDescribed; cell(lused-ldesc,1)];
-    %         elseif ldesc>lused
-    %             OptArgsUsed=[OptArgsUsed; cell(ldesc-lused,1)];
-    %         end
-    %         disp('Options described --  Options used')
-    %         disp([OptArgsDescribed OptArgsUsed])
-    %     end
-    
 end
 
 %% Check if all fields of output arguments which are struct are commented inside the HTML file
@@ -3315,8 +3328,8 @@ if ~isempty(IniRefhttp)
                 '<a href="' namehttp '">' namehttp '</a>'...
                 descrHTTP(FinRefhttp(i):end)];
         else
-                descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
-                    '<a href="' namehttp '">' namehttp '</a>'];
+            descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
+                '<a href="' namehttp '">' namehttp '</a>'];
         end
     end
 else
