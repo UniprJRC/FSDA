@@ -1,28 +1,43 @@
-function varargout = clickableMultiLegend(varargin)
-%clickableMultiLegend extends the clickableLegend by Ameya Deoras to figures with one legend for several subplots
+function [varargout] = clickableMultiLegend(varargin)
+%clickableMultiLegend hides/shows symbols inside all gplotmatrix subplots (or similar multi-plots) clicking on the legend.
 %
 %<a href="matlab: docsearchFS('clickableMultiLegend')">Link to the help page for this function</a>
 %
-% An example could be a gplotmatrix figure. In this case, by clicking on a
-% text label in the legend, we want to turn on and off (hide or show) the
-% graphics object (line or patch) associated to that label in all subplots.
+% It is typically applied to gplotmatrix figures. By clicking on a text
+% label in the legend, the graphics (line or patch) objects associated to
+% that label in all subplots are turned on and off (hide/show)
 %
 % The extention to multiple plots is realised by looking for graphics
 % objects with the same DisplayName property of the one associated to the
 % legend label. Therefore, the function should work also through plots in
 % different figures.
 %
-% See also clickableLegend by Ameya Deoras:
-% http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
-%
+% clickableMultiLegend accepts the same parameters of the legend function
+% and can be used in the same way.
 %
 % Required input arguments:
 % 
+%
 % Optional input arguments:
+%
+%
+% Output:
+%
+%      
+% Optional Output:
+%    
+%
+% See also: legend, yXplot, clickableLegend (by Ameya Deoras)
+%
+% References:
+%
+% clickableMultiLegend extends the clickableLegend by Ameya Deoras to
+% figures with one legend for several subplots. 
+% clickableLegend is by Ameya Deoras. See:
+% http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
 %
 % Copyright 2008-2015.
 % Written by FSDA team
-%
 %
 %<a href="matlab: docsearchFS('clickableMultiLegend')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
@@ -30,7 +45,7 @@ function varargout = clickableMultiLegend(varargin)
 % Examples
 
 %{
-%% Example of clickableMultiLegend
+     % clickableMultiLegend applied to a single plot
      z = peaks(100);
      plot(z(:,26:5:50))
      grid on;
@@ -46,17 +61,21 @@ function varargout = clickableMultiLegend(varargin)
 %}
 
 %{
-    %% Generate a plot with multiple subplots (e.g. a gplotmatrix).
+    % clickableMultiLegend applied to multiple subplots (e.g. a gplotmatrix).
+    %
     % Simulate X
     X = rand(100,4);
+    %
     % Simulate y with 3 groups
     y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];
+    %
     group= [2*ones(10,1); ones(20,1); zeros(70,1)];
+    %
+    % Generate the scatter matrix
     [H,AX,bigax] = gplotmatrix(X,y,group);
 
     % Set the DisplayName property (i.e. the texts of the legend) in all panels.
     % Note that in the gplotmatrix only one legend is visible. 
-
     set(H(:,:,1),'DisplayName','group 1');
     set(H(:,:,2),'DisplayName','group 2');
     set(H(:,:,3),'DisplayName','group 3');
@@ -69,16 +88,17 @@ function varargout = clickableMultiLegend(varargin)
 
     % Update the legend and make them clickable
     clickableMultiLegend(sort(hLines), legnew{:});
-    %Now, it is possible to click with the mouse on the different entries to
-    %hide/show a particular group of units. For example, clicking on the entry
-    %"group 2" in the legend we hide group 2.
 
-    %Function gplotmatrix generates the legend texts automatically, based on
-    %the values in the vector defined by option 'group'. In the example above we
-    %have re-defined manually the legend texts set by option 'group' (which are
-    %'1', '2' and '3') as "group 1", "group 2" and "group 3". More conveniently,
-    %especially when the number of groups is not known in advance, one may
-    %re-define the legend texts in a more general way as follows:
+    % Now, it is possible to click with the mouse on the different entries
+    % to hide/show a particular group of units. For example, clicking on the
+    % entry "group 2" in the legend we hide group 2.
+
+    % Function gplotmatrix generates the legend texts automatically, based on
+    % the values in the vector defined by option 'group'. In the example above we
+    % have re-defined manually the legend texts set by option 'group' (which are
+    % '1', '2' and '3') as "group 1", "group 2" and "group 3". More conveniently,
+    % especially when the number of groups is not known in advance, one may
+    % re-define the legend texts in a more general way as follows:
 
 
     % it is convenient to reshape the gplotmatrix handles array to make it 
@@ -92,7 +112,8 @@ function varargout = clickableMultiLegend(varargin)
     for i = 1 : nleg 
         set(newH(:,i),'DisplayName',['Redefined group n. ' num2str(i)]);
     end
-    %If the legend texts were clickable before the re-definition, they will remain clickable.  
+    % If the legend texts were clickable before the re-definition, they
+    % will remain clickable.
 %}
 
 %% Beginning of code
