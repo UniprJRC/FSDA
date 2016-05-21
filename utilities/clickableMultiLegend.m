@@ -5,8 +5,8 @@ function [varargout] = clickableMultiLegend(varargin)
 %
 % It is typically applied to gplotmatrix figures. By clicking on a text
 % label in the legend, the graphics (line or patch) objects associated to
-% that label in all subplots are turned on and off (hide/show)
-%
+% that label in all subplots are turned on and off (hide/show).
+
 % The extention to multiple plots is realised by looking for graphics
 % objects with the same DisplayName property of the one associated to the
 % legend label. Therefore, the function should work also through plots in
@@ -17,31 +17,28 @@ function [varargout] = clickableMultiLegend(varargin)
 %
 % Required input arguments:
 % 
-%
 % Optional input arguments:
 %
+% Optional Output:  
 %
-% Output:
-%
-%      
-% Optional Output:
+%               HLEG : returns the handle to legend on the current
+%                      axes or empty if none exists. pippo.
 %    
-%
-% See also: legend, yXplot, clickableLegend (by Ameya Deoras)
+% See also: legend, yXplot, clickableLegend  (by Ameya Deoras)
 %
 % References:
 %
 % clickableMultiLegend extends the clickableLegend by Ameya Deoras to
-% figures with one legend for several subplots. 
-% clickableLegend is by Ameya Deoras. See:
+% figures with one legend for several subplots. See:
 % http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
 %
 % Copyright 2008-2015.
-% Written by FSDA team
+% clickableMultiLegend has been adapted to this toolbox by FSDA team
 %
 %<a href="matlab: docsearchFS('clickableMultiLegend')">Link to the help page for this function</a>
+%
 % Last modified 06-Feb-2015
-
+%
 % Examples
 
 %{
