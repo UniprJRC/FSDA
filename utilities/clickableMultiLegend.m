@@ -6,7 +6,7 @@ function [varargout] = clickableMultiLegend(varargin)
 % It is typically applied to gplotmatrix figures. By clicking on a text
 % label in the legend, the graphics (line or patch) objects associated to
 % that label in all subplots are turned on and off (hide/show).
-
+%
 % The extention to multiple plots is realised by looking for graphics
 % objects with the same DisplayName property of the one associated to the
 % legend label. Therefore, the function should work also through plots in
@@ -16,25 +16,24 @@ function [varargout] = clickableMultiLegend(varargin)
 % and can be used in the same way.
 %
 % Required input arguments:
-% 
+%
 % Optional input arguments:
 %
 % Output:
 %
-% Optional Output:  
+% Optional Output:
 %
-%               HLEG : handle to legend. Graphics handle.
-%                       This is the handle to legend on the current
-%                      axes or empty if none exists. 
-%    
+%     HLEG : handle to legend. Graphics handle. This is the handle to
+%            legend on the current axes or empty if none exists.
+%
 % See also: legend, yXplot
 %
 % References:
 %
 % clickableMultiLegend extends the clickableLegend by Ameya Deoras to
 % figures with one legend for several subplots. See:
-% Deoras Ameya (2008). 
-% http://www.mathworks.com/matlabcentral/fx_files/21799/1/clickableLegend.m
+% Deoras Ameya (2008).
+% http://www.mathworks.com/matlabcentral/fileexchange/21799-clickablelegend-interactive-highlighting-of-data-in-figures/content/clickableLegend.m
 %
 % Copyright 2008-2015.
 % clickableMultiLegend has been adapted to this toolbox by FSDA team
@@ -75,7 +74,7 @@ function [varargout] = clickableMultiLegend(varargin)
     [H,AX,bigax] = gplotmatrix(X,y,group);
 
     % Set the DisplayName property (i.e. the texts of the legend) in all panels.
-    % Note that in the gplotmatrix only one legend is visible. 
+    % Note that in the gplotmatrix only one legend is visible.
     set(H(:,:,1),'DisplayName','group 1');
     set(H(:,:,2),'DisplayName','group 2');
     set(H(:,:,3),'DisplayName','group 3');
@@ -100,16 +99,15 @@ function [varargout] = clickableMultiLegend(varargin)
     % especially when the number of groups is not known in advance, one may
     % re-define the legend texts in a more general way as follows:
 
-
-    % it is convenient to reshape the gplotmatrix handles array to make it 
-    % more manageable: while H is a 3-dimensional array with the third 
-    % dimension associated to the groups, newH is 2-dimensional with lines 
+    % it is convenient to reshape the gplotmatrix handles array to make it
+    % more manageable: while H is a 3-dimensional array with the third
+    % dimension associated to the groups, newH is 2-dimensional with lines
     % associated to the subplots of the scatterplot and columns associated
-    % to the groups. 
+    % to the groups.
     nleg = numel(hLines);
     newH = reshape(H,numel(H)/nleg,nleg);
     % redefine the legend texts
-    for i = 1 : nleg 
+    for i = 1 : nleg
         set(newH(:,i),'DisplayName',['Redefined group n. ' num2str(i)]);
     end
     % If the legend texts were clickable before the re-definition, they
