@@ -21,15 +21,7 @@ function covplot(out,varargin)
 %
 %
 %  Optional input arguments:
-%           corr:   Correlation or covariance. Scalar.
-%                   Scalar which specifies whether we are dealing with a
-%                   correlation or covariance matrix.
-%                   If empty the program assumes we are dealing with a
-%                   correlation matrix if the absolute value of the
-%                   maximum value of out.S2cov is smaller than 1.
-%                   If corr=1 a correlation matrix is assumed.
-%                   Example - 'corr',1
-%                   Data Types - double
+%
 %       standard:   Appearance of the plot. Structure. Structure which defines the appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
 %                   style, color of the lines, etc. 
@@ -227,7 +219,16 @@ function covplot(out,varargin)
     m0=20;
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'init',30);    
-    covplot(out,'fground',fground,'tag','pl_mycov')
+     % Initialize structure fground
+    fground = struct;
+    % Specify the number of trajectories which have to be highlighted
+    fground.funit=2;
+    % Specify the steps in which labels have to be put
+    n=size(Y,1);
+    fground.flabstep=[n/2 n*0.75 n+0.5];
+    % Specify the line width of the highlighted trajectories
+    fground.LineWidth=3;
+   covplot(out,'fground',fground,'tag','pl_mycov')
 %}
 %
 
