@@ -71,7 +71,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %
 %          out:   structured information of filtered files containing
 %                 selected Tags. cell.
-%                 Cell of size r-times-8 containing detailed information about
+%                 Cell of size r-times-9 containing detailed information about
 %                 the files present in required folder or folders if
 %                 dirpath is a cell array of strings.
 %               The columns of dout contain the following information:
@@ -83,8 +83,9 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %               out(:,6)= matlab file name (without .m extension);
 %               out(:,7)= file description (the so called H1 line of the file);
 %               out(:,8)= string which identifies file category. File
-%               category is the string after 'FilterFileContent' in each
-%               file.
+%                           category is the string after
+%                           'FilterFileContent' in each file.
+%               out(:,9)= string which contains file path.
 %               Remark: if the file contains:
 %               FilterFileContentword1 in row 34;
 %               FilterFileContentAnotherName in row 456;
@@ -93,7 +94,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %               the last instance which is found (in this example 'Obama')
 %    Excluded:  structured information of .m files not included.
 %                 cell.
-%                 Cell of size r-times-8 containing detailed information about
+%                 Cell of size r-times-9 containing detailed information about
 %                 the files present in required folder or folders if
 %                 dirpath is a cell array of strings but which have been
 %                 excluded by the filters.
@@ -106,10 +107,11 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %               Excluded(:,6)= matlab file name (without .m extension);
 %               Excluded(:,7)= file description (the so called H1 line of the file);
 %               Excluded(:,8)= string which identifies file category. File
-%               category is the string after 'FilterFileContent' in each
-%               file.
+%                           category is the string after
+%                           'FilterFileContent' in each file.
+%               Excluded(:,9)= string which contains file path.
 %
-% See also: makecontentsfileFS,publishFS
+% See also: publishFunctionAlpha, publishFunctionCate, publishFS
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -194,7 +196,7 @@ if ~isempty(UserOptions)
         end
         ldirpath=length(dirpath);
     else
-        assert(ischar(dirpath),'''supplied_path'' should be a charater array (string)')
+        assert(ischar(dirpath),'''supplied path'' should be a charater array (string)')
         % Check if dirpath exists
         assert(exist(dirpath,'dir')==7,['Supplied path ' dirpath ' does not exist'])
         ldirpath=1;
@@ -208,7 +210,7 @@ lineSep = char(java.lang.System.getProperty('line.separator'));
 
 % Initialize out with a large number of rows
 
-out=cell(1000,8);
+out=cell(1000,9);
 iout=1;
 Excluded=out;
 iExcluded=1;
@@ -255,7 +257,7 @@ for j=1:ldirpath
     killIndex = [];
     noContentsFlag = 1;
     for i = 1:length(d)
-        % create mfilename (that is namr of the file without .m extension) from
+        % create mfilename (that is name of the file without .m extension) from
         % file name
         d(i).mfilename = regexprep(d(i).name,'\.m$','');
         if strcmp(d(i).name,NameOutputFile)
@@ -267,6 +269,8 @@ for j=1:ldirpath
             [description,category]=get_H1lineandCategory(d(i).name,FilterFileContent);
             d(i).description=description;
             d(i).category=category;
+            % Store also the path
+            d(i).path=dirpathj;
             
             % Check what is the name of the file with the maximum length
             maxNameLen = max(length(d(i).mfilename), maxNameLen);
@@ -290,6 +294,7 @@ for j=1:ldirpath
     % dout(:,6)= matlab file name (wthout .m extension)
     % dout(:,7)= file description
     % dout(:,8)= string which identifies file category
+    % dout(:,9)= file path
     
     if ~isempty(FilterFileContent)
         boo=~cellfun(@isempty,dout(:,8));

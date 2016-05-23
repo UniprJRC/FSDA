@@ -169,9 +169,9 @@ function mdrplot(out,varargin)
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct 
-%       Fontsize:   Size of axes labels. Scalar. Scalar which controls the
+%       FontSize:   Size of axes labels. Scalar. Scalar which controls the
 %                   fontsize of the labels of the axes. Default value is 12
-%                   Example - 'Fontsize',14
+%                   Example - 'FontSize',14
 %                   Data Types - single | double
 %    SizeAxesNum:   Size of axes numbers. Scalar which controls the fontsize of the numbers of
 %                   the axes. Default value is 10
@@ -222,26 +222,25 @@ function mdrplot(out,varargin)
 
 % Examples:
 
+
 %{
+    % Example of the use of function mdrplot with all the default options.
     %Steps common to all the examples
     load('loyalty.txt','loyalty');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
-%}
-
-%{
     [outLXS]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,outLXS.bs);
-    % Example of the use of function mdrplot with all the default options
     mdrplot(out);
 %}
 
 %{
-    %Example of the use of function mdrplot with personalized envelopes
+    %Example of the use of function mdrplot with personalized envelopes.
     mdrplot(out,'quant',[0.99;0.9999]);
 %}
 
 %{
+    % datatooltip passed as scalar.
     %Example of the use of function mdrplot with datatooltip passed as
     %scalar (that is using default options for datacursor (i.e.
     %DisplayStyle =window)
@@ -249,9 +248,7 @@ function mdrplot(out,varargin)
 %}
 
 %{
-    %Example of the use of function mdrplot with datatooltip passed as
-    %structure
-
+    %Datatooltip passed as structure.
     clear tooltip
     tooltip.SnapToDataVertex='on'
     tooltip.DisplayStyle='datatip'
@@ -259,6 +256,7 @@ function mdrplot(out,varargin)
 %}
 
 %{
+    % Use of option sign.
     %Example of the information which can be extracted from option sign=1
     %(default). If the data come from a distribution which has positive
     %asymmetry generally the last part of the search is associated with
@@ -277,20 +275,22 @@ function mdrplot(out,varargin)
 %}
 
 %{
-   %Example of the use of option envm
+   %Example of the use of option envm.
    %In this case the resuperimposed envelope is based on n-2 observations
    mdrplot(out,'envm',length(out.y)-2);
 
 %}
 
 %{
-    % Interactive_example
+    % Input option databrush passed as scalar.
+    % Interactive_example 1.
     %Example of the use of function mdrplot with databrush
      mdrplot(out,'databrush',1);
 %}
 
 %{
-    % Interactive_example
+    % Input option databrush passed as structure.
+    % Interactive_example 2.
     %Example where databrush is a structure
     databrush=struct
     databrush.selectionmode='Lasso'
@@ -298,7 +298,8 @@ function mdrplot(out,varargin)
 %}
 
 %{
-    % Interactive_example
+    % Input option databrush passed as structure and brush mode.
+    % Interactive_example 3.
     %Example of the use of brush using brush mode
     databrush=struct
     databrush.selectionmode='Brush'
@@ -307,8 +308,9 @@ function mdrplot(out,varargin)
 %}
 
 %{
-    % Interactive_example
-    %Example of the use of persistent non cumualtive brush. Every time a
+    % Persistent cumulative brush 1.
+    % Interactive_example 4.
+    %Example of the use of persistent non cumulative brush. Every time a
     %brushing action is performed previous highlightments are removed
     databrush=struct
     databrush.persist='off'
@@ -317,7 +319,8 @@ function mdrplot(out,varargin)
 %}
 
 %{
-    % Interactive_example
+    % Persistent cumulative brush 2.
+    % Interactive_example 5.
     %Example of the use of persistent cumulative brush. Every time a
     %brushing action is performed current highlightments are added to
     %previous highlightments

@@ -34,6 +34,8 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %                     Javascript) adds the link on top and at the bottom of
 %                     the page to the two file which come before and after
 %                     current file in alphabetical order.
+%                 Example - 'CreateTxtFile',false
+%                 Data Types - boolean
 %
 %
 % Output:
