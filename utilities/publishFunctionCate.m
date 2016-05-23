@@ -47,6 +47,7 @@ function fstring=publishFunctionCate(InputCell)
 %
 % 
 %{
+    % Interactive_example
     % Creation of HTML file containing categorical list of functions.
     % Make sure you are inside the main folder of FSDA.
     % Create contents file for each .m file 

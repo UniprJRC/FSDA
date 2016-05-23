@@ -47,6 +47,7 @@ function fstring=publishFunctionAlpha(InputCell)
 %
 % 
 %{
+    % Interactive_example
     % Creation of file containing alphabetical list of functions
     % make sure you are inside the main folder of FSDA.
     % create contents file for each .m file 
