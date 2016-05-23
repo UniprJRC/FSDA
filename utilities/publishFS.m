@@ -857,8 +857,8 @@ for i=1:length(ini)
         try
             descrtype=strtrim(descrtosplit(inifullstops(1)+1:inifullstops(2)-1));
         catch
-           %errmsg=[' Options found by the parser are:\n'  listOptArgs{:,1}];
-           %disp(errmsg)
+            %errmsg=[' Options found by the parser are:\n'  listOptArgs{:,1}];
+            %disp(errmsg)
             error('FSDA:publishFS:WrongInp',['Option: ' listOptArgs{ij,1} '\nSentence\n''' strtrim(descrtosplit) '''\nmust contain at least two full stops'])
         end
         
@@ -969,7 +969,7 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
     '<script type="text/javascript" src="includesFS/jquery-latest.js"></script>\r'...
     '<script>\r'...
     '$(document).ready(function(){\r'...
-     '      $("#div001").load("includesFS/bottom.html");\r'...
+    '      $("#div001").load("includesFS/bottom.html");\r'...
     '});\r'...
     '</script>\r'...
     '<script src="includesFS/jquery-latest.js" type="text/javascript"></script>\r'...
@@ -3170,6 +3170,12 @@ if ~isempty(OptArgsVarargin)
         %         disp([OptArgsDescribed OptArgsUsed])
         %     end
     end
+else
+    OptMisMatch=cell(1,3);
+    OptMisMatch{1,2}='Options described';
+    OptMisMatch{1,3}='Options used';
+    
+    out.InpArgsMisMatch=OptMisMatch;
 end
 
 %% Check if all fields of output arguments which are struct are commented inside the HTML file
