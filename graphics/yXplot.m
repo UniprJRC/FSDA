@@ -5,8 +5,11 @@ function [plot1]=yXplot(y,X,varargin)
 %
 %  Required input arguments:
 %
-%       y   =   a vector containing the response
-%       X   =   a matrix containing the explanatory variables
+%    y: Response variable. Vector. A vector with n elements that contains
+%       the response variable. y can be either a row or a column vector.
+%    X: Data matrix of explanatory variables (also called 'regressors') of
+%       dimension. Rows of X represent observations, and columns
+%       represent variables.
 %
 %      or a structure out containing the following fields
 %
@@ -33,25 +36,40 @@ function [plot1]=yXplot(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%          group:   vector with n elements, grouping variable that determines the
-%                   marker and color assigned to each point. It can be a categorical
-%                   variable, vector, string matrix, or cell array of strings.
-%       nameX   :   cell array of strings of length p containing the labels
+%          group:   identifier vector. Vector. 
+%                   Vector with n elements, grouping variable that
+%                   determines the marker and color assigned to each point.
+%                   It can be a categorical variable, vector, string
+%                   matrix, or cell array of strings.
+%               Example - group, 
+%               Data Types - single or double
+%       nameX   :   explanatory variables names. Cell. Cell array of strings of length p containing the labels
 %                   of the varibles of the regression dataset. If it is empty
 %                 	(default) the sequence X1, ..., Xp will be created
 %                   automatically
-%       namey   :   character containing the label of the response
-%       ylim    :   vector with two elements controlling minimum and maximum
-%                   on the y axis. Default value is '' (automatic scale)
-%       xlim    :   vector with two elements controlling minimum and maximum
+%               Example - group, 
+%               Data Types - single or double
+%       namey   :   response variable name. Character. Character containing the label of the response
+%                   Example - 'namey','response'
+%                   Data Types - character
+%       ylim    :   y limits. Vector. vector with two elements controlling
+%                   minimum and maximum on the y axis. Default value is ''
+%                   (automatic scale)
+%                   Example - 'ylim',[0 4]
+%                   Data Types - single or double
+%       xlim    :   x limits. Vector. vector with two elements controlling minimum and maximum
 %                   on the x axis. Default value is '' (automatic scale)
-%       tag     :   string which identifies the handle of the plot which
+%                   Example - 'xlim',[0 4]
+%                   Data Types - single or double
+%       tag     :   plot tag. String. string which identifies the handle of the plot which
 %                   is about to be created. The default is to use tag
 %                   'pl_yX'. Notice that if the program finds a plot which
 %                   has a tag equal to the one specified by the user, then
 %                   the output of the new plot overwrites the existing one
 %                   in the same window else a new window is created
-%       selunit :   cell arrary of strings, string, or numeric vector for
+%                   Example - 'tag','myplot'
+%                   Data Types - character
+%       selunit :   unit labelling. Cell array of strings, string, or numeric vector for
 %                   labelling units. If out is a structure the threshold is
 %                   associated with the trajectories of the residuals
 %                   monitored along the search else it refers to the values
@@ -74,13 +92,16 @@ function [plot1]=yXplot(y,X,varargin)
 %                   selunit is string '2.5' if the input is a structure
 %                   else it is an empty value if if the input is matrices y
 %                   and X.
+%                   Example - 'selunit','3'
+%                   Data Types - numeric or character
 %
 %
 %       The options which follow can only be used if the input is a
 %       structure which contains information about the fwd search (i.e. the
 %       two fields RES and Un)
 %
-%   datatooltip :   empty value or structure. The default is datatooltip=''
+%   datatooltip :   personalized tooltip. Empty value or structure. 
+%                    The default is datatooltip=''
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
 %                   the step in which the unit enters the search and the
@@ -90,10 +111,14 @@ function [plot1]=yXplot(y,X,varargin)
 %                   datacursormode for more details or the examples below).
 %                   The default options of the structure are
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
-%       label   :   cell containing the labels of the units (optional
+%                   Example - 'datatooltip',''
+%                   Data Types - char
+%       label   :   uni labels. Cell. Cell containing the labels of the units (optional
 %                   argument used when datatooltip=1. If this field is not
 %                   present labels row1, ..., rown will be automatically
 %                   created and included in the pop up datatooltip window)
+%                   Example - 'label',{'Row 1' 'Row 2' 'Row 3'}
+%                   Data Types - cell
 %     databrush :   empty value, scalar or cell.
 %                   DATABRUSH IS AN EMPTY VALUE
 %                   If databrush is an empty value (default), no brushing
@@ -113,7 +138,7 @@ function [plot1]=yXplot(y,X,varargin)
 %                   - s^2 and R^2;
 %                   - Cook distance and modified Cook distance;
 %                   - deletion t statistics.
-%                   Remark: the window style of the other figures is set
+%                   Remark. The window style of the other figures is set
 %                   equal to that which contains the monitoring residual
 %                   plot. In other words, if the scatterplot matrix plot
 %                   is docked all the other figures will be docked too
@@ -167,37 +192,51 @@ function [plot1]=yXplot(y,X,varargin)
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
+%                   Example - 'databrush',1
+%                   Data Types - single | double | struct
 %
 %       The options which follow work in connection with previous option
 %       databrush and produce their effect on the monitoring residuals plot
 %
-%       subsize :   numeric vector containing the subset size with length
+%       subsize :   x axis control. Numeric vector. Numeric vector
+%                   containing the subset size with length
 %                   equal to the number of columns of matrix residuals.
 %                   If it is not specified it will be set equal to
 %                   size(residuals,1)-size(residuals,2)+1:size(residuals,1)
-%       selstep :   numeric vector which specifies for which steps of the
+%                   Example - 'subsize',10:100
+%                   Data Types - single | double
+%       selstep :   text in selected steps. Numeric vector. Numeric vector
+%                   which specifies for which steps of the
 %                   forward search textlabels are added in the monitoring
 %                   residual plot after a brushing action in the yXplot.
 %                   The default is to write the labels at the initial and
 %                   final step. The default is selstep=[m0 n] where m0 and
 %                   n are respectively the first and final step of the
 %                   search.
+%                   Example - 'selstep',100
+%                   Data Types - single | double
 %
-% See also: spmplot, mdrplot, fanplot, resfwdplot.
+%  Output:
+%
+%        plot1  :   handle to the figure. Graphic handle. Handle to the
+%        yXplot.
+%
+% See also: spmplot, mdrplot, fanplot, resfwdplot
 %
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('yxplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('yXplot')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:
 
-% In the first example as input there are two matrices
-% y and X respectively
-% A simple yX plot is created
 %{
+    %First example of yXplot.
+    % In the first example as input there are two matrices
+    % y and X respectively
+    % A simple yX plot is created
     n=100;
     p=3;
     X=randn(n,p);
@@ -209,7 +248,7 @@ function [plot1]=yXplot(y,X,varargin)
 %
 %
 %{
-    % Example of the use of function yXplot with option group
+    % Example of the use of function yXplot with option group.
     n=100;
     p=3;
     X=randn(n,p);
@@ -222,12 +261,14 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 %
 %{
+    % Example of option selunit.
     % Example of the use of function yXplot putting the text for the units
     % which have a value of y smaller than 98 and greater than 102.
     yXplot(y,X,'selunit',{'98' '102'});
 %}
 %
 %{
+    % yXplot with personalized labelling.
     % Example of the use of function yXplot putting the text for the units
     % which have a value of y smaller than 1% percentile and greater than
     % 99% percentile of y
@@ -236,6 +277,7 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 
 %{
+    % Example of use of yXplot when input is a structure.
     % In the following example the input is a strucure which also contains
     % information about the forward search.
     [out]=LXS(y,X,'nsamp',1000);
@@ -249,78 +291,77 @@ function [plot1]=yXplot(y,X,varargin)
 %   RES and Un)
 %
 %{
-% Interactive_example
-%   Example of the use of options selunit and selstep
-   yXplot(out,'selunit',[2 5 20 23 35 45],'selstep',[20 22 27 36],...
+    % Interactive_example number 1.
+    %   Example of the use of options selunit and selstep
+    yXplot(out,'selunit',[2 5 20 23 35 45],'selstep',[20 22 27 36],...
             'databrush',{'persist','off','selectionmode' 'Rect'})
-%   produces a resfwdplot in which labels are put for units
-%   [2 5 20 23 35 45] in steps [20 22 27 36] of the search
+    %   produces a resfwdplot in which labels are put for units
+    %   [2 5 20 23 35 45] in steps [20 22 27 36] of the search
 %}
 %
 %{
-% Interactive_example
-%   Example of the use of options selstep, selunit, selunitbold and
-%   selunitcolor
+    % Interactive_example  number 2.
+    %   Example of the use of options selstep, selunit, selunitbold and
+    %   selunitcolor
    yXplot(out,'selstep',[40 21 80],'selunit','1.5',...
            'databrush',{'persist','off','selectionmode' 'Rect'})
 
-%   produces a yXplot plot in which labels are put for units
-%   which have a residual greater and 1.5. When a set of units is brushed in the yXplot
-%   in the monitoring residuals plot the labels are added in steps selsteps
+    %   produces a yXplot plot in which labels are put for units
+    %   which have a residual greater and 1.5. When a set of units is brushed in the yXplot
+    %   in the monitoring residuals plot the labels are added in steps selsteps
 %}
 %
 %{
-% Interactive_example
-%   Example of the use of option selunit (notice that in this
-%   case selunit is a cell array of string
+    % Interactive_example number 3.
+    %   Example of the use of option selunit (notice that in this
+    %   case selunit is a cell array of string
    yXplot(out,'selunit',{'-3';'2'},...
             'databrush',{'selectionmode' 'Rect'});
-%   highlight only the trajectories which in at least one step of the
-%   search had a value smaller than -3 or greater than 2 and label
-%   them at the beginning and at the end of the search.
+    %   highlight only the trajectories which in at least one step of the
+    %   search had a value smaller than -3 or greater than 2 and label
+    %   them at the beginning and at the end of the search.
 %}
 %
 %{
-%   Example of the use of option datatooltip
+    %   Example of the use of option datatooltip
    yXplot(out,'datatooltip',1);
-%   gives the possibility of clicking on the different points and have
-%   information about the unit selected, the step of entry into the
-%   subset and the associated label
-%
+    %   gives the possibility of clicking on the different points and have
+    %   information about the unit selected, the step of entry into the
+    %   subset and the associated label
 %}
 %{
-% Interactive_example
-%   Example of the use of option databrush
-%   (brushing is done only once using a rectangular selection tool)
-   yXplot(out,'databrush',1)
-%   An equivalent statement is
-   yXplot(out,'databrush',{'selectionmode' 'Rect'})
+    % Interactive_example number 4.
+    %   Example of the use of option databrush
+    %   (brushing is done only once using a rectangular selection tool)
+       yXplot(out,'databrush',1)
+    %   An equivalent statement is
+       yXplot(out,'databrush',{'selectionmode' 'Rect'})
 %}
 %
 %{
-% Interactive_example
-%   Example of the use of brush using a rectangular selection tool and a
-%   cyan colour
+    % Interactive_example number 5.
+    %   Example of the use of brush using a rectangular selection tool and a
+    %   cyan colour
    yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
 %}
 %
 %{
-% Interactive_example
-%   Example of the use of brush using multiple selection circular tools
+    % Interactive_example number 6.
+    %   Example of the use of brush using multiple selection circular tools
     yXplot(out,'databrush',{'selectionmode' 'Brush'})
 %}
 %
 %{
-% Interactive_example
-%   Example of the use of brush using lasso selection tool and fleur pointer
+    % Interactive_example number 7.
+    %   Example of the use of brush using lasso selection tool and fleur pointer
     yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'})
 %}
 %
 %{
-% Interactive_example
-%   Example of the use of rectangular brush with superimposed labels for
-%   the brushed units and persistent labels in the plot which has been
-%   brushed
+    % Interactive_example number 8.
+    %   Example of the use of rectangular brush with superimposed labels for
+    %   the brushed units and persistent labels in the plot which has been
+    %   brushed
     yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})
 %}
 %
@@ -331,30 +372,32 @@ function [plot1]=yXplot(y,X,varargin)
 %   Example of the use of persistent non cumulative brush. Every time a
 %   brushing action is performed previous highlightments are removed
 %{
-% Interactive_example
+    % Interactive_example number 9.
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...
                             'Label' 'on' 'RemoveLabels' 'off'})
 %}
 
 %{
-% Interactive_example
-%   Example of the use of persistent cumulative brush.
-%   Every time a brushing action is performed
-%   current highlightments are added to previous highlightments
+    % Interactive_example number 10.
+    %   Example of the use of persistent cumulative brush.
+    %   Every time a brushing action is performed
+    %   current highlightments are added to previous highlightments
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'Label' 'off' 'RemoveLabels' 'on'})
 %}
 
 
 %{
-% Interactive_example
-   %   Example of the use of persistent cumulative brush.
+    % Interactive_example number 11.
+       %   Example of the use of persistent cumulative brush.
     %   with option labeladd '1'. In this case the row numbers of the
     %   selected units is displayed in the monitoring residuals plot
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'labeladd' '1'})
 %}
-%% Initialization (common with resfwdplot)
+
+%% Beginning of code
+% (common with resfwdplot)
 %
 % Close existing yXplot and resfwdplot
 % if isempty(findobj('type','figure','Tag','pl_fan'))
@@ -429,9 +472,10 @@ else
 end
 
 %% User options
+one=ones(n,1);
 options= struct('subsize',x,'selstep',x([1 end]),'selunit',selthdef,...
     'xlim','','ylim','','tag','pl_yX',...
-    'datatooltip',0,'label','','databrush','','nameX','','namey','','group',ones(n,1));
+    'datatooltip',0,'label','','databrush','','nameX','','namey','','group',one);
 
 if nargin>2 || (nargin>1 && onlyyX==0)
     
@@ -1220,7 +1264,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                     % unit entered the subset at step before Un(1,:), that
                     % is before the first step which has been monitored
                     if ~isempty(row)
-                        % REAMRK: mod(row,size(Un,1)) is used rather than
+                        % REMARK: mod(row,size(Un,1)) is used rather than
                         % Un(row,:) because the unit could have entered the
                         % subset together with other units (i.e. could be
                         % in a column  of matrix Un different from the

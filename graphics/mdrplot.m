@@ -84,7 +84,7 @@ function mdrplot(out,varargin)
 %                   Example - 'tag','mymdr'
 %                   Data Types - char 
 %   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure. The default is datatooltip=''.
+%                   structure. 
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
 %                   the step in which the unit enters the search and the
@@ -94,7 +94,7 @@ function mdrplot(out,varargin)
 %                   examples below). The default options of the structure
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'
 %                   Example - 'datatooltip',''
-%                   Data Types - char 
+%                   Data Types - empty value, numeric or structure
 %       label   :   row labels. Cell of strings. Cell containing the labels
 %                   of the units (optional argument used when
 %                   datatooltip=1. If this field is not present labels
@@ -104,7 +104,7 @@ function mdrplot(out,varargin)
 %                   Data Types - cell 
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or structure.
-%                   DATABRUSH IS AN EMPTY VALUE 
+%                   DATABRUSH IS AN EMPTY VALUE. 
 %                   If databrush is an empty
 %                   value (default), no brushing is done. The activation of
 %                   this option (databrush is a scalar or a structure) enables
@@ -113,16 +113,17 @@ function mdrplot(out,varargin)
 %                   plot (notice that if the plot y|X does not exist it is
 %                   automatically created). In addition, brushed units can
 %                   be highlighted in the monitoring residual plot
-%                   Remark. the window style of the
+%                   The window style of the
 %                   other figures is set equal to that which contains the
 %                   monitoring residual plot. In other words, if the
 %                   monitoring residual plot is docked all the other
 %                   figures will be docked too.
-%                  DATABRUSH IS A SCALAR
+%                  DATABRUSH IS A SCALAR.
 %                   If databrush is a scalar the default selection tool is a
 %                   rectangular brush and it is possible to brush only once
 %                   (that is persist='').
-%                  DATABRUSH IS A STRUCTURE If databrush is a structure, it is
+%                  DATABRUSH IS A STRUCTURE. 
+%                   If databrush is a structure, it is
 %                   possible to use all optional arguments
 %                   of function selectdataFS.m and the following optional
 %                   argument:
@@ -168,9 +169,6 @@ function mdrplot(out,varargin)
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct 
-%                   Remark: if databrush is a cell, it is possible to
-%                   specify all optional arguments of function selectdataFS
-%                   and LXS inside the curly brackets of option databrush.
 %       Fontsize:   Size of axes labels. Scalar. Scalar which controls the
 %                   fontsize of the labels of the axes. Default value is 12
 %                   Example - 'Fontsize',14

@@ -6,58 +6,100 @@ function malindexplot(md,v,varargin)
 %
 % Required input arguments:
 %
-% md : vector of Mahalanobis distances (in squared units) or a structure
-%      containing fields md and Y
-%  v : scalar, the number of variables which have been used to construct md
+%   md : Mahalanobis distances. Vector or structure. Vector of Mahalanobis distances (in squared units) or a structure
+%       containing fields md and Y. In this second case ms is a structure with the followign fields: 
+%        md.md = contains the Mahalanobis distances;
+%        md.Y = contains the original data matrix whose Mahalanobis
+%        distances have been computed.
+%  v : Number of variables. Scalar, the number of variables of the original
+%       data matrix. which have been used to construct md.
 %
 % Optional input arguments:
 %
-%               h : the axis handle of a figure where to send the malindexplot.
+%               h : Where to plot. Axis hadle. 
+%                   The axis handle of the Figure where to send the malindexplot.
 %                   This can be used to host the malindexplot in a subplot of
 %                   a complex figure formed by different panels (e.g. a
 %                   panel with malindexplot from a classical mle estimator and
 %                   another with Mahalanobis distances from a robust
-%                   analysis: see example below).
-%              x :  the vector to be plotted on the x-axis. Default is the
+%                   analysis, see example below).
+%                   Example - 'h',gca
+%                   Data Types - graphics handle
+%              x :  x-axis index. Vector. The vector to be plotted on the x-axis. Default is the
 %                   sequence 1:length(md).
-%           labx :  a label for the x-axis (default: '').
-%           laby :  a label for the y-axis (default: '').
-%          title :  a label containing the title of the plot. Default is
+%                   Example - 'x','1:100'
+%                   Data Types - numeric
+%           labx :  x label. Character. A label for the x-axis (default: '').
+%                   Example - 'labx','unit number'
+%                   Data Types - character
+%           laby :  y label. Character. A label for the y-axis (default: '').
+%                   Example - 'laby','MD'
+%                   Data Types - character
+%          title :  plot title. Character. A label containing the title of the plot. Default is
 %                   'Index plot of Mahalanobid distances'.
+%                   Example - 'title','Index plot of MD'
+%                   Data Types - character
 %          numlab:  number of points to be labelled in the plot.
-%                   If numlab is a cell containing scalar k, the units
+%                   vector or cell. If numlab is a cell containing scalar k, the units
 %                   with the k largest md are labelled in the plots.
 %                   If numlab is a vector, the units indexed by the vector
 %                   are labelled in the plot.
 %                   Default is numlab={5}, that is units with the 5
 %                   largest md are labelled.
 %                   Use numlab='' for no labelling.
-%        conflev :  confidence interval for the horizontal bands.
+%                   Example - 'numlab',{3}
+%                   Data Types - numeric vector or cell.
+%        conflev :  confidence interval for the horizontal bands. Vector.
 %                   It can be a vector of different confidence level values,
 %                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
 %                   the chi^2 distribution.
-%        Fontsize:  Scalar which controls the fontsize of the labels of the
+%                   Example - 'conflev',0.99
+%                   Data Types - numeric
+%        FontSize:  Labels font size. Scalar. Scalar which controls the
+%                   font size of the labels of the
 %                   axes. Default value is 12.
-%     SizeAxesNum:  Scalar which controls the fontsize of the numbers of
+%                   Example - 'FontSize',12
+%                   Data Types - numeric
+%     SizeAxesNum:  Numbers font size. Scalar. Scalar which controls the
+%                   fontsize of the numbers of
 %                   the axes. Default value is 10.
-%           ylimy:  Vector with two elements controlling minimum and
+%                   Example - 'SizeAxesNum',12
+%                   Data Types - numeric
+%           ylimy:  ylimits. Vector. Vector with two elements controlling minimum and
 %                   maximum value of the y axis. Default is '' (automatic
 %                   scale).
-%           xlimx:  Vector with two elements controlling minimum and
+%                   Example - 'ylimiy',[-3 3]
+%                   Data Types - numeric
+%           xlimx:  xlimits. Vector. Vector with two elements controlling minimum and
 %                   maximum value of the x axis. Default is '' (automatic
 %                   scale).
-%          lwdenv:  Scalar which controls the width of the lines associated
+%                   Example - 'xlimix',[1 30]
+%                   Data Types - numeric
+%          lwdenv:  Envelope line width. Scalar. Scalar which controls the
+%                   width of the lines associated
 %                   with the envelopes. Default is lwdenv=1.
-%      MarkerSize:  Scalar specifying the size of the marker in points
+%                   Example - 'lwdenv',4
+%                   Data Types - numeric
+%      MarkerSize:  Marker size of points. Scalar. Scalar specifying the size of the marker in points
 %                   (1 point = 1/72 inch). Default is MarkerSize = 6.
-% MarkerFaceColor:  The fill color for markers that are closed shapes
+%                   Example - 'MarkerSize',4
+%                   Data Types - numeric
+% MarkerFaceColor:  Marker fill color of points. Character or length 3 RGB
+%                   numeric vector. The fill color for markers that are closed shapes
 %                   (circle, square, diamond, pentagram, hexagram, and the
 %                   four triangles).
-%    databrush  :   empty value, scalar or structure.
+%                   Example - 'MarkerFaceColor','b'
+%                   Data Types - numeric | character
+%             tag:  Figure tag. Character.  
+%                   Tag of the figure which will host the malindexplot. The
+%                   default tag is pl_malindex
+%                   Example - 'tag','indexPlot'
+%                   Data Types - character
+%    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
 %                   The activation of this option (databrush is a scalar or
-%                   a cell) enables the user  to select a set the
+%                   a structure) enables the user  to select a set the
 %                   points in the current plot and to see them
 %                   highlighted in the scatter plot matrix (spm).
 %                   If spm does not exist it is automatically created.
@@ -85,13 +127,32 @@ function malindexplot(md,v,varargin)
 %                     scatter plot matrix the units of the last selected
 %                     group with the unit row index in matrix Y. The
 %                     default value is labeladd='', i.e. no label is added.
+%                   Example - 'databrush',1
+%                   Data Types - single | double | struct
 %
 %
-% See also resfwdplot.m resindexplot.m
+%
+%
+%       The options which follow work in connection with previous option
+%       databrush and produce their effect on the scatter plot matrix of the original data
+%
+%           nameY: variables labels of the original data matrix. Cell. Cell
+%                array of strings containing the labels of the
+%                variables. As default value, the labels which are added
+%                are Y1, ..., Yv. This option is used just if previous
+%                option databrush is not empty.
+%                   Example - 'nameY',{'Y_1' Y_2'}
+%                   Data Types - character
+%
+%
+%  Output:
+%
+%
+% See also resfwdplot.m, resindexplot.m
 %
 % References:
 %
-%   Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection.
+%   Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection,
 %   Wiley.
 %
 % Copyright 2008-2015.
@@ -103,12 +164,14 @@ function malindexplot(md,v,varargin)
 
 % Examples:
 
-%   Mahalanobis distance plot of 100 random numbers from the chi2 with 5
-%   degrees os freedom
-%   malindexplot(chi2rnd(5,100,1),5)
-
-%   Compare traditional md with robust md for the stack loss data
 %{
+    %   Mahalanobis distance plot of 100 random numbers. 
+    %   Numbers are from from the chi2 with 5 degrees of freedom
+     malindexplot(chi2rnd(5,100,1),5)
+%}
+
+%{
+    %   Compare traditional md with robust md for the stack loss data.
     load('stack_loss.txt');
     X=stack_loss(:,1:3);
     [n,v]=size(X);
@@ -133,8 +196,8 @@ function malindexplot(md,v,varargin)
 
 
 %{
-    % Interactive_example
-    %   Index plot Mahalanobis distance with databrush option
+    %   Index plot Mahalanobis distance with databrush option.
+    % Interactive_example 1.
     n=200;
     v=3;
     randn('state', 123456);
@@ -148,8 +211,8 @@ function malindexplot(md,v,varargin)
 %}
 
 %{
-    % Interactive_example
-    %   Index plot Mahalanobis distance with personalized databrush option
+    %   Index plot Mahalanobis distance with personalized databrush option.
+    % Interactive_example 2.
     n=200;
     v=3;
     randn('state', 123456);
@@ -207,6 +270,7 @@ options=struct('h','','x',1:n,'labx','','laby','','numlab',{{5}},'conflev',0.975
     'xlimx','','ylimy','','lwdenv',1,'MarkerSize',6,'MarkerFaceColor','w',...
     'databrush','','tag','pl_malindex','nameY','');
 
+
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
@@ -247,7 +311,7 @@ else
     end
 end
 
-% Create the figure that will host the resindexplot
+% Create the figure that will host the malindexplot
 hfig = figure('Name', 'Residual plot', 'NumberTitle', 'off',...
     'Tag','pl_malindex');
 

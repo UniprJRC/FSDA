@@ -5,7 +5,8 @@ function mmdplot(out,varargin)
 %
 % Required input arguments:
 %
-%  out :  structure containing the following fields
+%  out :  Structure containing monitoring of mdr. Structure. 
+%               Structure containing the following fields.
 %        out.mmd =  a matrix containing the monitoring of minimum Mahalanobis 
 %               distance in each step of the forward search. The first
 %               column of mdr must contain the fwd search index This matrix
@@ -20,42 +21,50 @@ function mmdplot(out,varargin)
 %
 % Optional input arguments:
 %
-%       quant   :   vector containing quantiles for which envelopes have
-%                   to be computed. The default is to produce 1%, 50% and
-%                   99% envelopes. In other words the default is
-%                   quant=[0.01;0.5;0.99];
-%       exact:      scalar, if it is equal to 1 the calculation of the
-%                   quantiles of the F distribution is based on
-%                   functions finv and tinv from the Matlab statistics
-%                   toolbox, otherwise the calculations of the former
-%                   quantiles is based on function invcdff invcdft.
-%                   The solution has a tolerance of 1e-8 (change variable
-%                   tol in file invcdff.m required.
-%                   Remark: the use of function finv is more
-%                   precise but requires more time. The default value of
-%                   exact is 1 (exact solution).
-%       mplus1  :   Scalar, if mplus1=1 it is also possible to plot the
-%                   curve associated with (m+1)th order statistic.
-%                   The default is mplus1=0
-%       envm    :   Scalar which specifies the size of the sample which is
+%  quant:    quantiles for which envelopes have
+%               to be computed. Vector.
+%               1 x k vector containing quantiles for which envelopes have
+%               to be computed. The default is to produce 1%, 50% and 99%
+%               envelopes.
+%               Example - 'quant',[0.01 0.99] 
+%               Data Types - double
+%    mplus1  :  add (m+1) order statistic curve. Scalar. If mplus1=1 it
+%               is also possible to plot the
+%               curve associated with (m+1)th order statistic.
+%               The default is mplus1=0
+%               Example - 'mplus1',1 
+%               Data Types - double
+%       envm    :  sample size to use. Scalar. Scalar which specifies the size of the sample which is
 %                   used to superimpose the envelope. The default is to add
 %                   an envelope based on all the observations (size n
 %                   envelope)
-%       xlimx   :   vector with two elements controlling minimum and
-%                   maximum on the x axis. Default value is mdr(1,1)-3 and
-%                   mdr(end,1)*1.3
-%       ylimy   :   vector with two elements controlling minimum and
-%                   maximum on the y axis. Default value is min(mdr(:,2))
-%                   and max(mdr(:,2));
-%       lwdenv  :   Scalar which controls the width of the lines associated
+%               Example - 'envm',n 
+%               Data Types - double
+%       xlimx   :   min and max for x axis. Vector. vector with two elements controlling minimum and
+%                   maximum on the x axis. Default value is mmd(1,1)-3 and
+%                   mmd(end,1)*1.3
+%                   Example - 'xlimx',[20 100]
+%                   Data Types - double
+%       ylimy   :   min and max for x axis. Vector. Vector with two elements controlling minimum and
+%                   maximum on the y axis. Default value is min(mmd(:,2))
+%                   and max(mmd(:,2));
+%                   Example - 'ylimy',[2 6]
+%                   Data Types - double
+%       lwdenv  :   Line width. Scalar. Scalar which controls the width of the lines associated
 %                   with the envelopes. Default is lwdenv=1
-%       tag     :   string which identifies the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   'pl_mmd'. Notice that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
-%   datatooltip :   empty value or structure. The default is datatooltip=''
+%                   Example - 'lwdenv',2
+%                   Data Types - double
+%       tag     :   plot handle. String. String which identifies the handle
+%                   of the plot which is about to be created. The default
+%                   is to use tag 'pl_mmd'. Notice that if the program
+%                   finds a plot which has a tag equal to the one specified
+%                   by the user, then the output of the new plot overwrites
+%                   the existing one in the same window else a new window
+%                   is created
+%                   Example - 'tag','mymmd'
+%                   Data Types - char 
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure. 
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit seected,
 %                   the step in which the unit enters the search and the
@@ -63,13 +72,20 @@ function mmdplot(out,varargin)
 %                   possible to control the aspect of the data cursor (see
 %                   function datacursormode for more details or the
 %                   examples below). The default options of the structure
-%                   are DisplayStyle='Window' and SnapToDataVertex='on'
-%       label   :   cell containing the labels of the units (optional
-%                   argument used when datatooltip=1. If this field is not
-%                   present labels row1, ..., rown will be automatically
-%                   created and included in the pop up datatooltip window)
-%    databrush :    empty value, scalar or structure.
-%                   DATABRUSH IS AN EMPTY VALUE If databrush is an empty
+%                   are DisplayStyle='Window' and SnapToDataVertex='on'.
+%                   Example - 'datatooltip',1
+%                   Data Types - empty value, numeric or structure
+%       label   :   rwo labels. Cell. Cell containing the labels of the
+%                   units (optional argument used when datatooltip=1. If
+%                   this field is not present labels row1, ..., rown will
+%                   be automatically created and included in the pop up
+%                   datatooltip window)
+%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
+%                   Data Types - cell 
+%    databrush :    interactive mouse brushing. Empty value (default),
+%                   scalar or structure.
+%                   DATABRUSH IS AN EMPTY VALUE .
+%                   If databrush is an empty
 %                   value (default), no brushing is done. The activation of
 %                   this option (databrush is a scalar or a structure) enables
 %                   the user  to select a set of trajectories in the
@@ -77,16 +93,17 @@ function mmdplot(out,varargin)
 %                   (notice that if the spm does not exist it is
 %                   automatically created). In addition, brushed units can
 %                   be highlighted in the monitoring MD plot
-%                   Remark: the window style of the
+%                   Note that the window style of the
 %                   other figures is set equal to that which contains the
 %                   monitoring residual plot. In other words, if the
 %                   monitoring residual plot is docked all the other
 %                   figures will be docked too.
-%                  DATABRUSH IS A SCALAR
+%                  DATABRUSH IS A SCALAR.
 %                   If databrush is a scalar the default selection tool is a
 %                   rectangular brush and it is possible to brush only once
 %                   (that is persist='').
-%                  DATABRUSH IS A STRUCTURE If databrush is a structure, it is
+%                  DATABRUSH IS A STRUCTURE. 
+%                   If databrush is a structure, it is
 %                   possible to use all optional arguments
 %                   of function selectdataFS.m and the following optional
 %                   argument:
@@ -105,21 +122,43 @@ function mmdplot(out,varargin)
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
-%       Fontsize:   Scalar which controls the fontsize of the labels of the
-%                   axes. Default value is 12
-%    SizeAxesNum:   Scalar which controls the fontsize of the numbers of
+%                   Example - 'databrush',1
+%                   Data Types - single | double | struct 
+%                   Remark: if databrush is a struct, it is possible to
+%                   specify all optional arguments of function selectdataFS
+%                   inside the curly brackets of option databrush.
+%       Fontsize:   Size of axes labels. Scalar. Scalar which controls the
+%                   fontsize of the labels of the axes. Default value is 12
+%                   Example - 'Fontsize',14
+%                   Data Types - single | double
+%    SizeAxesNum:   Size of axes numbers. Scalar which controls the fontsize of the numbers of
 %                   the axes. Default value is 10
-%       nameY   :   cell array of strings of length p containing the labels
-%                   of the varibles of the regression dataset. If it is empty
+%                   Example - 'SizeAxesNum',14
+%                   Data Types - single | double
+%       nameX   :   Regressors names. Cell array of strings. Cell array of
+%                   strings of length v containing the labels
+%                   of the varibales of the original data matrix. If it is empty
 %                 	(default) the sequence Y1, ..., Yp will be created
 %                   automatically
-%       lwd     :   Scalar which controls linewidth of the curve which
+%                   Example - 'nameY',{'Age','Income','Married','Profession'}
+%                   Data Types - cell 
+%       lwd     :   Curves line width. Scalar. Scalar which controls linewidth of the curve which
 %                   contains the monitoring of minimum Mahalanobis distance.
 %                   Default line width=2
-%       titl    :   a label for the title (default: '')
-%       labx    :   a label for the x-axis (default: 'Subset size m')
-%       laby    :   a label for the y-axis (default: 'Minimum Mahalnobis distance')
+%                   Example - 'lwd',3
+%                   Data Types - single | double 
+%       titl    :   main title. Character. A label for the title (default: '')
+%                   Example - 'namey','Plot title'
+%                   Data Types - char 
+%       labx    :   x axis title. Character. A label for the x-axis (default: 'Subset size m')
+%                   Example - 'labx','Subset size m'
+%                   Data Types - char 
+%       laby    :   y axis title. Character. A label for the y-axis (default: 'Minimum Mahalnobis distance')
+%                   Example - 'laby','mmd'
+%                   Data Types - char 
 %
+%
+% Output: 
 %
 % See also:
 %
@@ -138,6 +177,7 @@ function mmdplot(out,varargin)
 % Examples:
 
 %{
+    %% Example of mmdplot.
     %Steps common to all the examples
     Y=load('head.txt');
     [fre]=unibiv(Y);
@@ -152,12 +192,13 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    %Example of the use of function mdrplot with personalized envelopes
+    %Example of the use of function mmd with personalized envelopes.
     mmdplot(out,'quant',[0.99;0.9999]);
 %}
 
 %{
-    % Interactive_example
+    % mmdplot with option dataooltip.
+    % Interactive_example 1
     %Example of the use of function mmdplot with datatooltip passed as
     %scalar (that is using default options for datacursor (i.e.
     %DisplayStyle =window)
@@ -165,10 +206,10 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    % Interactive_example
+    % mmdplot with option dataooltip passed as structure.
+    % Interactive_example 2
     %Example of the use of function mmdplot with datatooltip passed as
     %structure
-
     clear tooltip
     tooltip.SnapToDataVertex='on'
     tooltip.DisplayStyle='datatip'
@@ -177,20 +218,22 @@ function mmdplot(out,varargin)
 
 
 %{
-   %Example of the use of option envm
+   %Example of the use of option envm.
    %In this case the resuperimposed envelope is based on n-2 observations
    mmdplot(out,'envm',size(Y,1)-2);
 
 %}
 
 %{
-    % Interactive_example
-    %Example of the use of function mdrplot with databrush
+    % Example of databrush.
+    % Interactive_example 3.
+    %Example of the use of function mdrplot with databrush.
     mmdplot(out,'databrush',1);
 %}
 
 %{
-    % Interactive_example
+    % Example of databrush passed as structure.
+    % Interactive_example 4.
     %Example where databrush is a structure
     databrush=struct
     databrush.selectionmode='Lasso'
@@ -198,8 +241,8 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    % Interactive_example
-    %Example of the use of brush using brush mode
+    %Example of the use of brush using brush mode.
+    % Interactive_example 5.
     databrush=struct
     databrush.selectionmode='Brush'
     databrush.Label='on';
@@ -207,8 +250,9 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    % Interactive_example
-    %Example of the use of persistent non cumulative brush. Every time a
+    %Example of the use of persistent non cumulative brush. 
+    % Interactive_example 6
+    %Every time a
     %brushing action is performed previous highlightments are removed
     databrush=struct
     databrush.persist='off'
@@ -218,8 +262,9 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    % Interactive_example
-    %Example of the use of persistent cumulative brush. Every time a
+    %Example of the use of persistent cumulative brush. 
+    % Interactive_example 7
+    % Every time a
     %brushing action is performed current highlightments are added to
     %previous highlightments
     databrush=struct
@@ -257,7 +302,7 @@ laby='Minimum Mahalanobis distance';
 
 %% User options
 
-options=struct('quant', quant,'exact',0,'sign',0,'mplus1',0,...
+options=struct('quant', quant,'sign',0,'mplus1',0,...
     'envm',n,'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
     'FontSize',12,'SizeAxesNum',10,'tag','pl_mmd',...
     'datatooltip','','databrush','',...
@@ -343,7 +388,6 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
 % Quantiles associated with the envelope based on all the observations.
 quant=options.quant;
-exact=options.exact;
 mplus1=options.mplus1;
 
 % scaled = scaled or unscaled envelopes (default is unscaled envelopes)
@@ -385,8 +429,7 @@ set(h,'Name', 'Monitoring of Minimum Mahalnobis distance', 'NumberTitle', 'off')
 hold('all');
 
 % Theoretical envelopes for minimum Mahalnobis distance
-% [gmin] = FSRenvmdr(envm,p,'prob',quant,'init',init,'exact',exact);
-[gmin] = FSMenvmmd(envm,v,'prob',quant,'init',init,'exact',exact,'scaled',scaled);
+[gmin] = FSMenvmmd(envm,v,'prob',quant,'init',init,'scaled',scaled);
 
 box('on');
 

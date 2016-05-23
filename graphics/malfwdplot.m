@@ -121,8 +121,9 @@ function plotopt=malfwdplot(out,varargin)
 %
 %                   Example - 'fground.LineWidth','1'
 %                   Data Types - struct 
-%         bground : trajectories in background. Structure.
-%                   Structure which specifies the trajectories in background,
+%         bground : characterictics of the trajectories in background.
+%                   Structure. 
+%                    Structure which specifies the trajectories in background,
 %                   i.e. the trajectories corresponding to "unimmportant"
 %                   units in the central part of the data. The structure
 %                   also specifies the style used in the plot to give them
@@ -160,7 +161,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   Remark: bground='' is equivalent to bground.bthresh=-Inf
 %                   that is all trajectories are considered relevant.
 %
-%       tag     :   Personalized tag. String. String which identifies the
+%       tag     :   Personalized plot tag. String. String which identifies the
 %                   handle of the plot which is about to be created. The
 %                   default is to use tag 'pl_mal'. 
 %                   Note that if the program finds a plot which has a tag
@@ -232,7 +233,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       converted to blue, i.e. SubsetLinesColor will be
 %                       forced to be [0 0 1].
 %                   Example - 'datatooltip',''
-%                   Data Types - char 
+%                   Data Types - empty value, scalar or struct 
 %       label   :   row labels. Cell of strings. Cell containing the labels
 %                   of the units (optional argument used when
 %                   datatooltip=1. If this field is not present labels
@@ -240,7 +241,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   included in the pop up datatooltip window).
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
 %                   Data Types - cell 
-%    databrush  :   interactive mouse brushing. empty value, scalar or structure.
+%    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
 %                   The activation of this option (databrush is a scalar or
@@ -304,7 +305,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   screen
 %                   Example - 'msg',1
 %                   Data Types - single or double 
-
+%
 %
 % Output:
 %
@@ -313,7 +314,7 @@ function plotopt=malfwdplot(out,varargin)
 %               generate the plot inside cell plotopt.
 %
 %
-% See also resfwdplot
+% See also: resfwdplot
 %
 % References:
 %

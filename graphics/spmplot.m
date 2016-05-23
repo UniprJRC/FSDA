@@ -188,7 +188,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       databrush and produce their effect on the monitoring MD plot
 %       (malfwdplot)
 %
-%       subsize :   control x axis in malfwdplot. Vector. numeric vector containing the subset size with length
+%       subsize :   x axis control in malfwdplot. Vector. numeric vector containing the subset size with length
 %                   equal to the number of columns of matrix Y.MAL.
 %                   If it is not specified it will be set equal to
 %                   size(Y.MAL,1)-size(Y.MAL,2)+1:size(Y.MAL,1)
@@ -274,7 +274,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %
 %{
-    % Generate contaminated data
+    % Example of spmpot called by routine FSM.
+    % Generate contaminated data.
     state=100;
     randn('state', state);
     n=200;
@@ -312,6 +313,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
+    % spm with personalized tags.
     % With two groups, and if the Tag of the figure contains the word
     % 'outlier', the legend will identify one group for outliers and the
     % other for normal units. The largest number in the 'group' variable
@@ -333,7 +335,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 
 %{
-    % An example with 5 groups
+    % An example with 5 groups.
     rng('default')
     rng(2); n1=100;
     n2=80;
@@ -359,6 +361,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
+    % spmplot called with name/pairs.
     % In all previous examples spmplot was called without the
     % name/value pairs arguments
     % The example which follow make use of the name/value pairs arguments
@@ -378,8 +381,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % the fields Y and Un
 
 %{
-    %% First input argument is a structure.
-    % Example of use of option datatooltip
+    % Example of use of option datatooltip.
+    % First input argument is a structure.
     n=100;
     v=3;
     m0=3;
@@ -401,7 +404,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
-    % Interactive_example
+    % Interactive_example.
     % First input argument is a structure.
     % Example of use of option databrush
     close all
@@ -515,8 +518,8 @@ if nargin>1
             % The default is not to add textlabels to any unit
             selthdef='';
         end
-        
-        options=struct('group',ones(n,1),'plo',[],'subsize',x,'selstep',x([1 end]),...
+        one=ones(n,1);
+        options=struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),...
             'selunit',selthdef,'datatooltip',0,'label','',...
             'dispopt','hist','databrush','','tag','pl_spm');
         

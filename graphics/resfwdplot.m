@@ -5,54 +5,56 @@ function plotopt=resfwdplot(out,varargin)
 %<a href="matlab: docsearchFS('resfwdplot')">Link to the help function</a>
 %
 %  Required input arguments:
-%  out :  structure containing the following fields
-%       RES :   matrix containing the residuals monitored in each step of
+%
+%  out :  Structure containing monitoring of scaled residuals. Structure. 
+%               Structure containing the following fields.
+%   out.RES =   matrix containing the residuals monitored in each step of
 %               the forward search. Every row is associated with a residual
 %               (unit). This matrix can be created using function FSReda.
-%       Un  :   matrix containing the order of entry in the subset of each
+%   out.Un  =   matrix containing the order of entry in the subset of each
 %               unit (required only when datatooltip is true or databrush
 %               is not empty).
-%       y   :   a vector containing the response (required only when option
+%     out.y  =   a vector containing the response (required only when option
 %               databrush is not empty).
-%       X   :   a matrix containing the explanatory variables (required only
+%     out.X  =   a matrix containing the explanatory variables (required only
 %               when option databrush is not empty).
-%     Bols  :   (n-init+1) x (p+1) matrix containing the estimated beta
+%   out.Bols =   (n-init+1) x (p+1) matrix containing the estimated beta
 %               coefficients monitored in each step of the forward search
 %               (required only when option databrush is not empty and
 %               suboption multivarfit is not empty).
 %
 %
 %  Optional input arguments:
-%           standard : structure which defines the appearance of the plot
+%           standard : appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. The structure contains
-%                   the following fields:
-%                   SizeAxesNum : scalar specifying the fontsize of the
+%                   style, color of the lines, etc. Structure. 
+%                   Structure standard contains the following fields
+%                   standard.SizeAxesNum  = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
-%                   xlim : two elements vector with minimum and maximum of
+%                   standard.xlim = two elements vector with minimum and maximum of
 %                       the x axis. Default value is '' (automatic scale).
-%                   ylim : two elements vector with minimum and maximum of
+%                   standard.ylim = two elements vector with minimum and maximum of
 %                       the y axis. Default value is '' (automatic scale).
-%                   titl : a label for the title (default: '').
-%                   labx : a label for the x-axis (default: 'Subset size m').
-%                   laby : a label for the y-axis (default:'Scaled residuals'
+%                   standard.titl = a label for the title (default: '').
+%                   standard.labx = a label for the x-axis (default: 'Subset size m').
+%                   standard.laby = a label for the y-axis (default:'Scaled residuals'
 %                       or 'Scaled squared residuals').
-%                   SizeAxesLab : Scalar specifying the fontsize of the
+%                  standard. SizeAxesLab = Scalar specifying the fontsize of the
 %                       labels of the axes. Default value is 12.
-%                   xvalues : vector. x axis values.  
+%                   standard.xvalues = vector. x axis values.  
 %                       Numeric vector of length(size(out.RES,2)) controlling the x
 %                       axis coordinates. The default value of xvalues is
 %                       size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
-%                   LineWidth : scalar specifying line width for the
+%                   standard.LineWidth = scalar specifying line width for the
 %                       trajectories.
-%                   Color : cell array of strings containing the colors to
+%                   standard.Color = cell array of strings containing the colors to
 %                       be used for the highlighted units.
 %                       If length(Color)=1 the same color will be used for
 %                       all units.
 %                       If length(Color)=2 half of the trajectories will
 %                       appear with Color{1} and the other half with
 %                       Color{2}. And so on with 3 cell elements, etc.
-%                   LineStyle : cell containing the line types.
+%                   standard.LineStyle = cell containing the line types.
 %
 %                   The default values of structure standard are:
 %                   standard.SizeAxesNum=10
@@ -66,15 +68,18 @@ function plotopt=resfwdplot(out,varargin)
 %                   standard.Color={'b'}
 %                   standard.LineStyle={'-'}
 %                   standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
+%                   Example - 'standard.LineWidth','1'
+%                   Data Types - struct 
 %
-%         fground : structure which defines the trajectories in foregroud,
-%                   that is which trajectories are highlighted and how
-%                   they are plot to be distinguishable from the others.
+%         fground : trajectories in foregroud.
+%                   Structure. Structure which controls which trajectories
+%                   are highlighted and how
+%                   they are plotted to be distinguishable from the others.
 %                   It is possible to control the label, the width, the
 %                   color, the line type and the marker of the highlighted
 %                   units. The structure fground contains the following
 %                   fields:
-%                   fthresh = (alternative to funit) numeric vector of
+%                   fground.fthresh = (alternative to funit) numeric vector of
 %                       length 1 or 2 which specifies the highlighted
 %                       trajectories.
 %                       If length(fthresh)=1 the highlighted trajectories
@@ -85,17 +90,17 @@ function plotopt=resfwdplot(out,varargin)
 %                       are those of units that throughtout the search had
 %                       a residual at leat once bigger than fthresh(2) or
 %                       smaller than fthresh(1).
-%                   funit : (alternative to fthresh) vector containing the
+%                   fground.funit = (alternative to fthresh) vector containing the
 %                       list of the units to be highlighted. If funit is
 %                       supplied, fthresh is ignored.
-%                   flabstep : numeric vector which specifies the steps of
+%                   fground.flabstep = numeric vector which specifies the steps of
 %                       the search where to put labels for the highlighted
 %                       trajectories (units). The default is to put the
 %                       labels at the initial and final steps of the search.
 %                       flabstep='' means no label.
-%                   LineWidth : scalar specifying line width for the
+%                   fground.LineWidth = scalar specifying line width for the
 %                       highlighted trajectories (units). Default is 1.
-%                   Color : cell array of strings containing the colors to
+%                   fground.Color = cell array of strings containing the colors to
 %                       be used for the highlighted trajectories (units).
 %                       If length(scolor)==1 the same color will be used for
 %                       all highlighted units Remark: if for example
@@ -103,14 +108,14 @@ function plotopt=resfwdplot(out,varargin)
 %                       3 highlighted trajectories appear with
 %                       selunitcolor{1} and 3 highlighted trajectories with
 %                       selunitcolor{2}
-%                   LineStyle : cell containing the line type of the highlighted
+%                   fground.LineStyle = cell containing the line type of the highlighted
 %                       trajectories.
-%                   fmark  : scalar controlling whether to plot highlighted
+%                   fground.fmark  = scalar controlling whether to plot highlighted
 %                       trajectories as markers.
 %                       if 1 each line is plotted using a different marker
 %                       else no marker is used (default).
-%                FontSize  : scalar controlling font size of the labels of
-%                       the trajectories in foreground
+%                fground.FontSize = scalar controlling font size of the labels of
+%                       the trajectories in foreground.
 %
 %                   The default values of structure fground are:
 %                    fground.fthresh=2.5
@@ -119,17 +124,21 @@ function plotopt=resfwdplot(out,varargin)
 %                    fground.LineStyle={'-'}
 %                    fground.FontSize=12
 %
+%                   Example - 'fground.LineWidth','1'
+%                   Data Types - struct 
 %                   Remark: if fground='' no unit is highlighted and no
 %                   label is inserted into the plot.
 %
-%         bground : structure which specifies the trajectories in background,
+%         bground : characterictics of the trajectories in background.
+%                   Structure. 
+%                    Structure which specifies the trajectories in background,
 %                   i.e. the trajectories corresponding to "unimmportant"
 %                   units in the central part of the data. The structure
 %                   also specifies the style used in the plot to give them
 %                   less emphasis, so that to not distract the eye of the
 %                   analyst from the trajectories of the relevant units.
 %                   The structure contains the following fields:
-%                   bthresh = numeric vector of length 1 or 2 which
+%                   bground.bthresh = numeric vector of length 1 or 2 which
 %                       specifies how to define the unimmportant trajectories.
 %                       Unimmportant trajectories will be plotted using a
 %                       colormap, in greysh or will be hidden.
@@ -145,7 +154,7 @@ function plotopt=resfwdplot(out,varargin)
 %                       n<=100 and, if n>100, to reduce emphasis only to
 %                       trajectories having in all steps of the search a
 %                       value of scaled residual smaller than 2.5.
-%                   bstyle = specifies how to plot the unimportant
+%                   bground.bstyle = specifies how to plot the unimportant
 %                       trajectories as defined in option bthresh.
 %                       'faint': unimportant trajectories are plotted using
 %                           a colormap.
@@ -155,17 +164,23 @@ function plotopt=resfwdplot(out,varargin)
 %                       When n>100 the default option is 'faint'.
 %                       When n<=100 and bthresh = -Inf option bstyle is
 %                       ignored.
-%
+%                   Example - 'bground.bstyle','faint'
+%                   Data Types - struct 
 %                   Remark: bground='' is equivalent to bground.thresh=-Inf
 %                   that is all trajectories are considered relevant.
 %
-%       tag     :   string which identifies the handle of the plot which
+%       tag     :    Personalized plot tag. String. String which identifies
+%                   the handle of the plot which
 %                   is about to be created. The default is to use tag
 %                   'pl_resfwd'. Note that if the program finds a plot which
 %                   has a tag equal to the one specified by the user, then
 %                   the output of the new plot overwrites the existing one
 %                   in the same window else a new window is created.
-%   datatooltip :   is inactive if it is an empty value. The default is
+%                   Example - 'tag','myplot'
+%                   Data Types - char 
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure. The default is datatooltip=''.
+%                   It is inactive if it is an empty value. The default is
 %                   datatooltip = 1, i.e. the user can select with the
 %                   mouse an individual residual trajectory in order to
 %                   have information about the corresponding unit, the
@@ -198,11 +213,16 @@ function plotopt=resfwdplot(out,varargin)
 %                   initialization for SubsetLinesColor which cannot be
 %                   interpreted as RGB vector will be converted to blue,
 %                   i.e. SubsetLinesColor will be forced to be [0 0 1].
-%       label   :   cell containing the labels of the units (optional
+%                   Example - 'datatooltip',''
+%                   Data Types - empty value, scalar or struct 
+%       label   :   row labels. Cell of strings. 
+%                   Cell containing the labels of the units (optional
 %                   argument used when datatooltip=1. If this field is not
 %                   present labels row1, ..., rown will be automatically
 %                   created and included in the pop up datatooltip window)
-%    databrush  :   empty value, scalar or structure.
+%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
+%                   Data Types - cell 
+%    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
 %                   The activation of this option (databrush is a scalar or
@@ -221,15 +241,15 @@ function plotopt=resfwdplot(out,varargin)
 %                   - s^2 and R^2;
 %                   - Cook distance and modified Cook distance;
 %                   - deletion t statistics.
-%                   Remark: the window style of the other figures is set
+%                   Note that the window style of the other figures is set
 %                   equal to that which contains the monitoring residual
 %                   plot. In other words, if the monitoring residual plot
 %                   is docked all the other figures will be docked too
 %                   DATABRUSH IS A SCALAR
 %                   If databrush is a scalar the default selection tool is
 %                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='')
-%                   DATABRUSH IS A STRUCTURE
+%                   once (that is persist='').
+%                   DATABRUSH IS A STRUCTURE.
 %                   If databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
 %                   following optional argument:
@@ -278,7 +298,7 @@ function plotopt=resfwdplot(out,varargin)
 %                       coefficient of Xi in the multivariate regression
 %                       and avconst is the effect of all the other
 %                       explanatory variables different from Xi evaluated
-%                       at their centroid (that is overline{y}'C))
+%                       at their centroid (that is $\overline{y}'C$)).
 %                     multivarfit = '2'
 %                       exactly equal to multivarfit ='1' but this time we
 %                       add the line based on the group of unselected
@@ -287,25 +307,40 @@ function plotopt=resfwdplot(out,varargin)
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
-%       nameX   :   cell array of strings of length p containing the labels
-%                   of the varibles of the regression dataset. If it is
-%                   empty
-%                 	(default) the sequence X1, ..., Xp will be created
+%                   Example - 'databrush',1
+%                   Data Types - single | double | struct 
+%       nameX   :  labels of the explanatory variables. Cell. Cell array of
+%                   strings of length p containing the labels
+%                   of the variables of the regression dataset. If it is
+%                   empty the sequence X1, ..., Xp will be created
 %                   automatically
-%       namey   :   character containing the label of the response
-%       msg     :   scalar which controls whether to display or to save
+%                   Example - 'nameX',{'var1', var2, 'var3'}
+%                   Data Types - cell of strings 
+%       namey   :   response label. Character. Character containing the label of the response
+%                   Example - 'namey','response'
+%                   Data Types - character 
+%       msg     :   display or save used options. Scalar.
+%                   Scalar which controls whether to display or to save
 %                   as output the options inside structures standard,
 %                   fground and bground which have been used to draw the
-%                   plot
+%                   plot.
 %                   plotopt=resfwdplot(out,'msg',1) enables to save inside
 %                   cell  plotopt the options which have been used to draw
 %                   the three types of trajectories (standard, foreground
-%                   and background)
+%                   and background).
 %                   plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt
 %                   the options which have been used and prints them on the
-%                   screen
+%                   screen.
+%                   Example - 'msg',1
+%                   Data Types - single or double 
 %
-% See also
+% Output:
+%
+%   plotopt : options which have been used to create the plot. Cell array
+%               of strings. Store all options which have been used to
+%               generate the plot inside cell plotopt.
+%
+% See also: malfwdplot
 %
 % References:
 %
@@ -322,18 +357,18 @@ function plotopt=resfwdplot(out,varargin)
 % Examples:
 
 %{
+    % Monitoring residuals plot with all the default options.
     % generate input structure for the resfwdplot
     n=100;
     y=randn(n,1);
     X=randn(n,4);
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
-%}
-%
-%{
-    % Produce monitoring residuals plot with all the default options
+    % Produce  resfwdplot
     resfwdplot(out);
 %}
+%
+
 %
 %{
     % Example of the use of some options inside structure standard.
@@ -347,7 +382,7 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of the use of some options inside structure fground
+    % Example of the use of some options inside structure fground.
     % Initialize structure fground
     fground = struct;
     % Specify which trajectories have to be highlighted
@@ -364,7 +399,7 @@ function plotopt=resfwdplot(out,varargin)
 %
 %
 %{
-    % Example of the use of some options inside structure bground
+    % Example of the use of some options inside structure bground.
     bground = struct;
     % Specify a threshold to define the "background" trajectories
     bground.bthresh=2;
@@ -404,8 +439,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
     % Another example of the use of option datatooltip.
+    % Interactive_example 1.
     % The user can highlight the trajectories of the units that are in
     % the subset at a given step with a mouse click in proximity
     % of that step. A right click will terminate the exercise.
@@ -424,8 +459,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    %   Example of the use of option databrush
+    %   Example of the use of option databrush.
+    % Interactive_example 2.
     %   (brushing is done only once using a rectangular selection tool)
     resfwdplot(out,'databrush',1)
     %   An equivalent statement is
@@ -435,24 +470,23 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    %   Example of the use of brush using a rectangular selection tool and
-    %   a cyan colour
+    %   Example of the use of brush using a rectangular selection tool 
+    % Use a cyan colour.
+    % Interactive_example 3.
     resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
 %}
 %
 %{
-    % Interactive_example
-    %   Example of the use of brush using multile selection circular tools
+    % Example of the use of brush using multiple selection circular tools.
+    % Interactive_example.
     databrush=struct;
     databrush.selectionmode='Brush';
     resfwdplot(out,'databrush',databrush)
 %}
 %
 %{
-    % Interactive_example
-    %   Example of the use of brush using lasso selection tool and fleur
-    %   pointer
+    %   Example of the use of brush using lasso selection tool and fleur pointer.
+    % Interactive_example 4.
     databrush=struct;
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
@@ -460,10 +494,11 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
-    %   Example of the use of rectangular brush with superimposed labels
+    %Example of the use of rectangular brush.
+    % Interactive_example 5.
+    %  We havesuperimposed labels
     %   for the brushed units and persistent labels in the plot which has
-    %   been brushed
+    %   been brushed.
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -476,7 +511,8 @@ function plotopt=resfwdplot(out,varargin)
 %   (that is brushing can be done multiple times)
 %
 %{
-    % Interactive_example
+    % Example of persistent brushing.
+    % Interactive_example 6.
     %   Example of the use of persistent non cumulative brush. Every time a
     %   brushing action is performed previous highlightments are removed
     databrush=struct;
@@ -488,7 +524,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
+    % Example of persistent cumulative brush.
+    % Interactive_example 7.
     %   Example of the use of persistent cumulative brush. Every time a
     %   brushing action is performed current highlightments are added to
     %   previous highlightments
@@ -501,7 +538,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
+    % Example of persistent cumulative brush with ols line.
+    % Interactive_example 8.
     %   The same as before, but also fit one ols line to each selected group
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -513,7 +551,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
+    % Example of persistent cumulative brush with a single ols line.
+    % Interactive_example 9.
     %   The same but now fit a single ols line to all data.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -525,7 +564,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
+    % Example of persistent cumulative brush with two ols lines.
+    % Interactive_example 10.
     %   The same but now fit a first ols line to all data and a second line
     %   on the group of observations which remain unselected.
     databrush=struct;
@@ -538,7 +578,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
+    % Example of persistent cumulative brush with ols line for a particular group.
+    % Interactive_example 11.
     %   The same but now fit a single ols line to the group with index 4.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -550,7 +591,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
+    % Example of persistent cumulative brush with personalized line.
+    % Interactive_example 12.
     %   The same but now add the line mean(y)+Ci*Xi.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -562,7 +604,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
+    % Example of persistent cumulative brush with option multivarfit.
+    % Interactive_example 13.
     % Example of use of option databrush suboptions multivarfit 2, persist on
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
@@ -583,7 +626,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive_example
+    % Interactive example for the loyalty cards data.
+    % Interactive_example 14.
     % Fidelity cards data
     XX=load('loyalty.txt');
     namey='Sales'
@@ -607,6 +651,7 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
+    % Example of the  use of option msg.
     % Fidelity cards data
     XX=load('loyalty.txt');
     namey='Sales'
@@ -622,7 +667,7 @@ function plotopt=resfwdplot(out,varargin)
 %}
 
 %{
-    % Example of us of option xvalues inside structure standard
+    % Example of use of option xvalues inside structure standard.
     XX=load('loyalty.txt');
     namey='Sales'
     y=XX(:,end);
