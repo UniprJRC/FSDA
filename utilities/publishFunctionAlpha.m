@@ -1,18 +1,18 @@
-function fstring=publishFunctionAlpha(InputCell)
+function fstring=publishFunctionAlpha(InputCell, varargin)
 %publishFunctionAlpha enables to create web page which contains the alphabetical list of functions
 %
 % This routins uses as input the cell which is created with routine
 % makecontentsfileFS.m and uses template file function-alphaEmpty.html
-% which is contained inside: 
-% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA; 
+% which is contained inside:
+% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
 % to create in a fully automatic way the alphabetical list of
-% functions with automatic links for each alphabetic letter. 
+% functions with automatic links for each alphabetic letter.
 % The output file will be created inside
-% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA; 
+% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
 % and will have name function-alphaEmpty.html
 % The automatic help file starting from structured .m file can be created
 % using function publishFS.m
-% 
+%
 %
 %<a href="matlab: docsearchFS('publishFunctionAlpha')">Link to the help function</a>
 %
@@ -24,13 +24,24 @@ function fstring=publishFunctionAlpha(InputCell)
 %
 % Optional input arguments:
 %
+%     CreateTxtFile : create txt file. Boolean. If CreateTxtFile is false
+%                     (default) no txt file is created, else, a txt file named
+%                     function-alpha.txt is created which contains, the
+%                     names of the files (separated by commas), inside
+%                     folder (main root of FSDA)\helpfiles\FSDA. Every
+%                     function which will be automatically created by
+%                     publishFS looks into this file and (through a
+%                     Javascript) adds the link on top and at the bottom of
+%                     the page to the two file which come before and after
+%                     current file in alphabetical order.
+%
 %
 % Output:
 %
 %       fstring:  string containing list of files in alphabetical order.
 %                String. This string contains the full HTML files which all
 %                hypertextual links to all HTML files for each alphabetical
-%                letter. The HTML file function-alpha.html also produced inside 
+%                letter. The HTML file function-alpha.html also produced inside
 %                folder (main root of FSDA)\helpfiles\FSDA
 %
 % See also:    CreateHTLMfunctioncate.m, publishFS.m
@@ -45,12 +56,11 @@ function fstring=publishFunctionAlpha(InputCell)
 %
 % Examples:
 %
-% 
+%
 %{
-    % Interactive_example
     % Creation of file containing alphabetical list of functions
     % make sure you are inside the main folder of FSDA.
-    % create contents file for each .m file 
+    % create contents file for each .m file
     % findDir with optional arguments 'InclDir' and 'ExclDir'.
     FileName='addFSDA2path';
     FullPath=which(FileName);
@@ -76,6 +86,26 @@ function fstring=publishFunctionAlpha(InputCell)
 % % \ = Windows
 % % / = Unix
 fsep=filesep;
+CreateTxtFile=false;
+
+if nargin>1
+    options=struct('CreateTxtFile',CreateTxtFile);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    % Check if number of supplied options is valid
+    if length(varargin) ~= 2*length(UserOptions)
+        error('FSDA:FSMbsb:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    end
+    % Check if user options are valid options
+    chkoptions(options,UserOptions)
+    
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin);
+        options.(varargin{i})=varargin{i+1};
+    end
+    
+    CreateTxtFile=options.CreateTxtFile;
+end
 
 
 % Open input function-alphaEmpty.html file, put it in a string and do a series of preliminary operations
@@ -149,8 +179,38 @@ if file1ID==-1
     
     error('FSDA:publishFS:WrngOutFolder',errmsg);
 end
-
 fprintf(file1ID,'%s',fstring);
+
+if CreateTxtFile
+    %now write inside file function-alpha.txt if requested
+    file2ID=fopen([outputDir fsep name '.txt'],'w');
+    
+    if file2ID==-1
+        
+        if ismac || isunix
+            errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+        elseif ispc
+            outputDir=strrep(outputDir,'\','\\');
+            errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
+        else
+            errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+        end
+        
+        error('FSDA:publishFS:WrngOutFolder',errmsg);
+    end
+    
+    % now construct string which has to be written inside the file
+    % Initialize the string.
+    ReQstring='index.html';
+    
+    for i=1:size(InputCell,1)
+        ReQstring =[ ReQstring ',' InputCell{i,6} '.html']; %#ok<AGROW>
+    end
+    ReQstring=[ ReQstring ',' 'function-cate.html'];
+    
+    fprintf(file2ID,'%s',ReQstring);
+    
+end
 fclose('all');
 
 end
