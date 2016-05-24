@@ -6,22 +6,40 @@ function out = lga(X,k,varargin)
 %
 %  Required input arguments:
 %
-%       X   : scalar defining breakdown point (i.e a number between 0 and 0.5)
-%       k   : scalar number of clusters
+%       X   :   Input data. Matrix. 
+%               Scalar defining breakdown point (i.e a number between 0 and
+%               0.5).
+%       k   :  number of clusters. Scalar.
 %
 %  Optional input arguments:
 %
 %
-%     biter : an integer for the number of different starting hyperplanes to try.
-%     niter : an integer for the number of iterations to attempt for convergence
-%   showall : logical. If true then display all the outcomes, not just the best one.
-%    stand  : logical. If true standardize the X matrix with the standard
-%             deviation before fitting
-%    silent : logical. If true, produces no text output during processing.
-%             The default value is false
-%    plots  : scalar. If plots=1 a plot is showed on the screen with the
+%     biter : number of different starting hyperplanes to try. Integer.
+%               Example - 'biter',1 
+%               Data Types - double
+%     niter : number of iterations to attempt for convergence. Integer.
+%               Example - 'niter',1 
+%               Data Types - double
+%   showall : If true then display all the outcomes, not just the best one. Logical.
+%               Example - 'showall','true' 
+%               Data Types - char 
+%    stand  : If true standardize the X matrix with the standard
+%             deviation before fitting. Logical.
+%               Example - 'stand','true' 
+%               Data Types - char 
+% nnode : an integer of many CPUS to use for parallel processing. Integer. Defaults
+%               NULL that is no parallel processing.
+%               Example - 'nnode',1 
+%               Data Types - double 
+%    silent : If true, produces no text output during processing. Logical. The
+%               default value is false. 
+%               Example - 'silent','true' 
+%               Data Types - char                           
+%    plots  : If plots=1 a plot is showed on the screen with the
 %             final allocation (and if size(X,2)==2 with the lines
-%             associated to the groups)
+%             associated to the groups). Scalar.
+%               Example - 'plots',1 
+%               Data Types - double
 %
 %  Output:
 %
@@ -31,11 +49,14 @@ function out = lga(X,k,varargin)
 %                out.ROSS = the Residual Orthogonal Sum of Squares for the solution.
 %           out.converged = logical. True if at least one solution has converged.
 %            out.nconverg = the number of converged solutions (out of biter starts).
-%                   out.x = the (scaled if selected) dataset.
+%                   out.X = the (scaled if selected) dataset.
+%                   out.hpcoeff =  best hyerplane
 %              out.scaled = logical. Is the data scaled?
 %                   out.k = the number of clusters to be found.
 %               out.biter = the biter setting used.
 %               out.niter = the niter setting used.
+%               out.class = 'lga'.
+% See also: rlga.m
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -49,8 +70,13 @@ function out = lga(X,k,varargin)
 % Examples:
 %
 %{
+    % lga with all default options.
     X=load('X.txt');
     out=lga(X,3);
+%}
+%{
+    % lga with all niter = 1000 and biter = 3000.
+    X=load('X.txt');
     out=lga(X,4,'niter',1000,'biter',3000);
 %}
 %
