@@ -6,9 +6,10 @@ function out = rlga(X,k,alpha,varargin)
 %
 %  Required input arguments:
 %
-%       X   : scalar defining breakdown point (that is, a number between 0
-%       and 0.5). Scalar.
-%       k   : number of clusters. Scalar.
+%       X   : input data matrix. Matrix. Input data as matrix of size
+%            n-by-p
+%       k   : number of clusters. Scalar. Scalar which specifies the number
+%             of clusters.
 %    alpha  : a numeric value between 0.5 and 1. Scalar. For the robust estimate of
 %             LGA, specifying the percentage of points in the best subset.
 %             alpha must be a number in the interval [0.5 1]   
@@ -17,7 +18,7 @@ function out = rlga(X,k,alpha,varargin)
 %
 %
 %     biter : an integer for the number of different starting hyperplanes
-%     to try. Integer.
+%               to try. Integer.
 %               Example - 'biter',1 
 %               Data Types - double
 %     niter : an integer for the number of iterations to attempt for convergence. Integer.
@@ -31,17 +32,13 @@ function out = rlga(X,k,alpha,varargin)
 %             deviation before fitting. Logical.
 %               Example - 'stand','true' 
 %               Data Types - char 
-% nnode : an integer of many CPUS to use for parallel processing. Integer. Defaults
-%               NULL that is no parallel processing.
-%               Example - 'nnode',1 
-%               Data Types - double 
-%    silent : If true, produces no text output during processing. Logical.
+%    silent : Text output. Logical. If true, produces no text output during processing. 
 %             The default value is false
 %               Example - 'silent','true' 
 %               Data Types - char                  
-%    plots  :  If plots=1 a plot is showed on the screen with the
+%    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on the screen with the
 %             final allocation (and if size(X,2)==2 with the lines
-%             associated to the groups). Scalar.
+%             associated to the groups). 
 %               Example - 'plots',1 
 %               Data Types - double
 %
@@ -55,7 +52,7 @@ function out = rlga(X,k,alpha,varargin)
 %          out.nconverg   = the number of converged solutions (out of biter starts).
 %          out.hpcoeff     =  best hyerplane
 %           out.x	      = the (scaled if selected) dataset.
-%          out.scaled     = logical. Is the data scaled?
+%          out.scaled     = logical. Is the data set scaled?
 %          out.k          = the number of clusters to be found.
 %           out.biter     = the biter setting used.
 %           out.niter	  = the niter setting used.
@@ -381,3 +378,4 @@ end
     end
 
 end
+%FScategory:CLUS-RobClaREG

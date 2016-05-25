@@ -11,10 +11,10 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %  Required input arguments:
 %
-%eigenvalues: v x k matrix containing the eigenvalues of the covariance matrices of the k groups
+%eigenvalues: Eigenvalues. Matrix. v x k matrix containing the eigenvalues of the covariance matrices of the k groups
 %            v= number of variables of the dataset which has to be clustered
-%     niini: k x 1 vector containing the size of the k clusters
-%     restr: scalar containing the restr parameter in tclust program.
+%     niini: Cluster size. Vector. k x 1 vector containing the size of the k clusters
+%     restr: Restriction factor. Scalar. Scalar containing the restr parameter in tclust program.
 %            More in detail, parameter restr defines the cluster's shape
 %            restrictions, which are applied on all clusters during each
 %            iteration.
@@ -25,17 +25,22 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %  Optional input arguments:
 %
-%      tol : scalar defining the tolerance of the procedure.
+%      tol : tolerance. Scalar defining the tolerance of the procedure.
 %            The default value is 1e-8
-% userepmat : scalar. If userepmat is true function repmat is used instead
+%               Example - 'tol',[1e-18] 
+%               Data Types - double
+% userepmat : use builtin repmat. Scalar. If userepmat is true function repmat is used instead
 %             of bsxfun inside the procedure. Remark: repmat is built in
 %             from MATLAB 2013b so it is faster to use repmat if the
 %             current version of MATLAB is >2013a
+%               Example - 'userepmat',1 
+%               Data Types - double
 %
 %  Output:
 %
 %
-%            out      : v-by-k matrix containing restricted eigenvalues
+%            out      : Restricted eigenvalues. Matrix. v-by-k matrix 
+%                       containing restricted eigenvalues. 
 %                       The ratio between two possible elements in matrix
 %                       out is not greater than restr
 %
@@ -66,6 +71,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 % Examples:
 %
 %{
+   % Example using all default options.
    % Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
    % First column of matrix eigenvalues contains the eigenvalues of the first group
    % Second column of matrix eigenvalues contains the eigenvalues of the second group
@@ -88,6 +94,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %
 %{
+    % Second example of eigenvalue restriction.
     eigenvalues=abs(randn(3,4));
     eigenvalues(:,3)=0;
     restreigen(eigenvalues,niini,1.1)
@@ -97,7 +104,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %
 %{
-    % Trimmed k-means using geyser data
+    % Trimmed k-means using geyser data.
     % 3 groups and trimming level of 3%
     Y=load('geyser2.txt');
     out=tkmeans(Y,3,0.03,'plots',1)

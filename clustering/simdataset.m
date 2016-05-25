@@ -33,19 +33,24 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Required input arguments:
 %
-%         n   : scalar or matrix of size n-by-v. If n is a scalar it
+%         n   : sample size or input matrix. Scalar or matrix of size n-by-v. If n is a scalar it
 %               is interpreted as the sample size of the dataset which must
 %               be simulated. On the other hand, if n is a n-by-v it is
 %               interpreted as a matrix of size n-by-v which has to be
 %               contaminated with optional input arguments 'noiseunits' and
 %               'noisevars'
-%        Pi   : vector of length(k) defining mixing proportions. \sum_{j=1}^k Pi=1
-%        Mu   : k-by-v matrix containing components' mean vectors
-%         S   : v-by-v-by-k arrary containing components' covariance matrices
+%  Pi : Mixin proportions. Vector. Vector of size k containing mixing
+%       proportions. The sum of the elements of Pi is 1. 
+%  Mu : centroids. Matrix. Matrix of size k-by-v containing (in the rows) the centroids of the
+%       k groups. 
+%  S  : Covariance matrices. 3D array. 3D array of size v-by-v-by-k
+%       containing covariance matrices of the
+%       k groups. 
 %
 %  Optional input arguments:
 %
-%   noiseunits : missing value, scalar or structure, specifying the number
+%   noiseunits : number of type of outlying observations. Missing value, scalar or structure. 
+%                This input parameter specifies the number
 %                and type of outlying observations. The default value of
 %                noiseunits is 0.
 %                - If noiseunits is a scalar t different from 0, then t
@@ -58,15 +63,15 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                  of attempts is equal to 10000.
 %                - If noiseunits is a structure it may contain the following
 %                  fields:
-%                  number : scalar, or vector of length f. The sum of the
+%                  number = scalar, or vector of length f. The sum of the
 %                       elements of vector 'number' is equal to the total
 %                       number of outliers which are simulated.
-%                  alpha : scalar or vector of legth f containing the
+%                  alpha = scalar or vector of legth f containing the
 %                       level(s) of simulated outliers. The default value
 %                       of alpha is 0.001.
-%                  maxiter : maximum number of trials to simulate outliers.
+%                  maxiter = maximum number of trials to simulate outliers.
 %                       The default value of maxiter is 10000.
-%                  interval: missing value or vector of length 2 or matrix
+%                  interval= missing value or vector of length 2 or matrix
 %                         of size 2-by-v which controls the min and max of
 %                         the generated outliers for each dimension.
 %                         If interval is empty (default), the outliers
@@ -79,7 +84,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         interval(1,1) interval (2,1) for variable 1
 %                         ...
 %                         interval(1,v) interval (2,v) for variable v
-%                  typeout : list of length f containing the type of
+%                  typeout = list of length f containing the type of
 %                       outliers which must be simulated. Possible values
 %                       for typeout are:
 %                       * unif (or uniform), if the outliers must be
@@ -108,7 +113,9 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                a uniform distribution and the last 100 using
 %                componentwise scheme. Outliers are generated in the
 %                interval [-2 2] for each variable.
-%    noisevars : empty value, scalar or structure.
+%               Example - 'noiseunits', 10
+%               Data Types - double
+%    noisevars : Type of noise variables. Empty value, scalar or structure.
 %                - If noisevars is not specified or is an empty value
 %                  (default) no noise variable is added to the matrix of
 %                  simulated data.
@@ -118,10 +125,10 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                  max(X)].
 %                - If noisevars is a structure it may contain the following
 %                  fields:
-%                  number: a scalar or a vector of length f. The sum of
+%                  noisevars.number= a scalar or a vector of length f. The sum of
 %                       elements of vector 'number' is equal to the total
 %                       number of noise variables to be addded.
-%                  distribution: string or cell array of strings of length
+%                  noisevars.distribution= string or cell array of strings of length
 %                       f which specifies the distribution to be used to
 %                       simulate the noise variables.
 %                       If field distribution is not present then the
@@ -139,7 +146,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         degreess of freedom. For example, chisquare8
 %                         specifies to generate the data according to a Chi
 %                         square distribution with 8 degrees of freedom.
-%                  interval: string or vector of length 2 or matrix of size
+%                  noisevars.interval= string or vector of length 2 or matrix of size
 %                         2-by-f (where f is the number of noise variables)
 %                         which controls for each element of vector
 %                         'number' or each element of cell 'distribution',
@@ -162,29 +169,39 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                the Chi2 with 5 degrees of freedom and the last two
 %                using the Student t with 3 degrees of freedom. Noise
 %                variables are generated in the interval min(X) max(X).
-%       lambda : vector of length v containing inverse Box-Cox
+%               Example - 'noisevars', 5
+%               Data Types - double
+%       lambda : Transformation coefficients. Vector. Vector of length v containing inverse Box-Cox
 %                transformation coefficients. The value false (default)
 %                implies that no transformation is applied to any variable.
-%      R_seed : scalar > 0 for the seed to be used to generate random numbers
+%               Example - 'lambda',[1 1 0];
+%               Data Types - double
+%      R_seed : random numbers from R language. Scalar. Scalar > 0 for the seed to be used to generate random numbers
 %               in a R instance. This is used to check consistency of the
 %               results obtained with the R package MixSim. See file
 %               Connect_Matlab_with_R_HELP.m to know how to connect MATLAB
 %               with R.  This option requires the installation of the
 %               R-(D)COM Interface. Default is 0, i.e. random numbers are
 %               generated by matlab.
+%               Example - 'R_seed',1;
+%               Data Types - double
 %
 %
 %  Output:
 %
-%           X  : simulated dataset of size (n + noiseunits)-by-(v + noisevars).
+%           X  : Simulated dataset. Matrix. Simulated dataset of size (n + noiseunits)-by-(v + noisevars).
 %                Noise coordinates are provided in the last noisevars columns.
-%           id : classification vector of length n + noiseunits. Negative
+%           id : Classification vector. Vector. Classification vector of
+%                length n + noiseunits. Negative
 %                numbers represents the groups associated to the
 %                contaminated units.
 %
 %           REMARK: If noiseunits outliers could not be generated a warning
 %                   is produced. In this case matrix X and vector id will
 %                   have less than n + noiseunits rows.
+%
+%
+% See also: MixSim
 %
 %
 % Copyright 2008-2015.
@@ -197,6 +214,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 % Examples:
 
 %{
+    %Example of mixture generation.
     out = MixSim(4,2,'BarOmega',0.01);
     n=60;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
@@ -214,8 +232,8 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 
 
 %{
+    % Generate 4 groups in 2 dimensions.
     rng('default')
-    % Generate 4 groups in 2 dimensions
     rng(100)
     out = MixSim(4,2,'BarOmega',0.01);
     n=300;
@@ -225,7 +243,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers generated from uniform distribution
+    %% Add outliers generated from uniform distribution.
     n=300;
     noisevars=0;
     noiseunits=3000;
@@ -235,7 +253,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers generated from Chi2 with 5 degrees of freedom
+    %% Add outliers generated from Chi2 with 5 degrees of freedom.
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -248,7 +266,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers generated from Chi2 with 40 degrees of freedom
+    %% Add outliers generated from Chi2 with 40 degrees of freedom.
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -261,7 +279,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers generated from normal distribution
+    %% Add outliers generated from normal distribution.
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -274,7 +292,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers generated from Student T with 5 degrees of freedom
+    %% Add outliers generated from Student T with 5 degrees of freedom.
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -287,7 +305,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add componentwise contamination
+    %% Add componentwise contamination.
     n=300;
     noisevars='';
     noiseunits=struct;
@@ -300,7 +318,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers generated from Chisquare and T distribution
+    %% Add outliers generated from Chisquare and T distribution.
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -312,7 +330,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers from Chisquare and T distribution and use a personalized value of alpha
+    %% Add outliers from Chisquare and T distribution and use a personalized value of alpha.
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -325,7 +343,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers from Chi2 + point mass contamination and add one noise variable
+    %% Add outliers from Chi2 + point mass contamination and add one noise variable.
     noisevars=struct;
     noisevars.number=1;
     noiseunits=struct;
@@ -337,7 +355,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Example of the use of personalized interval to generate outliers
+    %% Example of the use of personalized interval to generate outliers.
     noiseunits=struct;
     noiseunits.number=1000;
     noiseunits.typeout={'uniform'};
@@ -354,7 +372,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    % Example of the use of personalized interval to generate outliers.
+    % Example of the use of personalized interval to generate outliers (1).
     % Generate 1000 outliers from uniform in the interval [-2 3] and
     % 1000 units using componentwise contamination in the interval [-2 3]
     noiseunits=struct;
@@ -368,7 +386,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add 5 noise variables
+    %% Add 5 noise variables.
     n=300;
     noisevars=struct;
     noisevars.number=[2 3];
@@ -380,7 +398,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add 3 noise variables
+    %% Add 3 noise variables.
     n=300;
     noisevars=struct;
     noisevars.number=[1 2];
@@ -392,7 +410,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add 3 noise variables and use 'minmax' interval
+    %% Add 3 noise variables and use 'minmax' interval.
     n=300;
     noisevars=struct;
     noisevars.number=[1 2];
@@ -405,7 +423,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add 3 noise variables and use a personalized interval for each variable
+    %% Add 3 noise variables and use a personalized interval for each variable.
     n=300;
     noisevars=struct;
     noisevars.number=[1 2];
@@ -420,7 +438,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add noise to an existing dataset
+    %% Add noise to an existing dataset.
     %  Add outliers generated from uniform distribution to the IRIS dataset
     load fisheriris;
     Y=meas;

@@ -8,45 +8,45 @@ function [out]  = MixSimreg(k,p,varargin)
 %
 %  Notation and background.
 %
-%  Given two generic clusters i and j with i \ne j=1,...,k, indexed by
-%  \phi(x,\mu_i,\sigma_i^2) and \phi(x,\mu_j, \sigma_j^2) with probabilities of
-%  occurrence \pi_i and \pi_j, the misclassification probability with
-%  respect to cluster i (denoted with w_j|i) is defined as Pr[\pi_i
-%  \phi(x,\mu_i,\sigma_i^2) < \pi_j \phi(x,\mu_j,\sigma_j^2)].
-%  where, in the regression context, \mu_i=\overline x_i' \beta_i and
-%  \mu_j= \overline x_j' \beta_j. We assume that the length of vectors x_i,
-%  x_j, \beta_i, and \beta_j is p (number of explanatory variables
+%  Given two generic clusters $i$ and $j$ with $i \ne j=1,...,k$, indexed by
+%  $\phi(x,\mu_i,\sigma_i^2)$ and $\phi(x,\mu_j, \sigma_j^2)$ with probabilities of
+%  occurrence $\pi_i$ and $\pi_j$, the misclassification probability with
+%  respect to cluster i (denoted with w_{j|i}) is defined as 
+%  \[ Pr[\pi_i \phi(x,\mu_i,\sigma_i^2) < \pi_j \phi(x,\mu_j,\sigma_j^2)] \]
+%  where, in the regression context, $\mu_i={\overline x}_i' \beta_i$ and
+%  $\mu_j= \overline x_j' \beta_j$. We assume that the length of vectors $x_i$,
+%  $x_j$, $\beta_i$, and $\beta_j$ is $p$ (number of explanatory variables
 %  including or excluding intercept). In our implmentation, the
-%  distribution of the elements of vectors beta_i (beta_j) can be 'Normal'
-%  (with parameters mu and sigma), 'HalfNormal' (with parameter sigma) or
-%  uniform (with parameters a and b). Same thing for the distribution of
-%  the elements of x_i (x_j). However, while the parameters of the
-%  distributions are the same for all elements of \beta in all groups, the
-%  parameters of the ditribution of the elements of vectors x_i (x_j) can
+%  distribution of the elements of vectors $\beta_i$ ($\beta_j$) can be 'Normal'
+%  (with parameters $\mu$ and $\sigma$), 'HalfNormal' (with parameter $\sigma$) or
+%  uniform (with parameters $a$ and $b$). Same thing for the distribution of
+%  the elements of $x_i$ ($x_j$). However, while the parameters of the
+%  distributions are the same for all elements of $\beta$ in all groups, the
+%  parameters of the diwtribution of the elements of vectors $x_i$ ($x_j$) can
 %  vary for each group and each explanatory variable. In other words, it is
 %  possible to specify (say) that the distribution of the second
-%  explanatory variable in the first group is U(2 3) while the distribution
-%  of the third explanatory variable in the second group is U(2 10).
+%  explanatory variable in the first group is $U(2, 3)$ while the distribution
+%  of the third explanatory variable in the second group is $U(2, 10)$.
 %
-%  The matrix containing the misclassification probabilities w_j|i is
+%  The matrix containing the misclassification probabilities $w_{j|i}$ is
 %  called OmegaMap.
 %  The probability of overlapping between groups i and j is given by
-%            w_j|i + w_i|j          i,j=1,2, ..., k
+%      \[      w_{j|i} + w_{i|j}    \qquad       i,j=1,2, ..., k      \]
 %  The diagonal elements of OmegaMap are equal to 1.
 %  The average overlap (BarOmega, in the code) is defined as the sum of the
 %  off diagonal elements of OmegaMap (containing the misclassification
-%  probabilities) divided by k*(k-1)/2.
+%  probabilities) divided by $k*(k-1)/2$.
 %  The maximum overlap (MaxOmega, in the code) is defined as:
-%            max(w_j|i + w_i|j)  i \ne j=1,2, ..., k
-%  The probability of overlapping w_j|i is nothing but the cdf of a linear
-%  combination of non central chi^2 distributions with 1 degree of freedom
-%  + a linear combination of N(0,1) evaluated in a point c.
-%  The coefficients of the linear combinations of non central chi^2 and
+%     \[       \max (w_{j|i} + w_{i|j})  \qquad i \ne j=1,2, ..., k   \]
+%  The probability of overlapping $w_{j|i}$ is nothing but the cdf of a linear
+%  combination of non central  $\chi^2$ distributions with 1 degree of freedom
+%  + a linear combination of $N(0,1)$ evaluated in a point $c$.
+%  The coefficients of the linear combinations of non central $\chi^2$ and
 %  N(0,1) depend on the eigenvalues and eigenvectors of matrix
-%  \Sigma_j|i = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i.
+%  $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.
 %  Point c depends on the same eigenvalues and eigenvectors of matrix
-%  \Sigma_j|i, the mixing proportions \pi_i and \pi_j and the determinants
-%  |\Sigma_i| and |\Sigma_j|. This probability is computed using routine
+%  $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the determinants
+%  $|\Sigma_i|$ and $|\Sigma_j|$. This probability is computed using routine
 %  ncx2mixtcdf
 %
 %  Required input arguments:
@@ -342,7 +342,7 @@ function [out]  = MixSimreg(k,p,varargin)
 % Examples:
 %
 %{
-    % Example 1
+    % Example 1: Mixture of regression with prefixed average overlap.
     % Generate mixture of regression using an average overlapping at
     % centroids =0.01. Use all default options
     % 1) Beta is generated according to random normal for each group with
@@ -366,7 +366,7 @@ function [out]  = MixSimreg(k,p,varargin)
 %}
 
 %{
-    % Example 2
+    % Example 2: Mixture of regression with prefixed average overlap.
     % Generate mixture of regression hyperplanes using an average overlapping at
     % centroids =0.01.
     % 1) we use all the default options for Beta (random normal for each group with
@@ -396,7 +396,7 @@ function [out]  = MixSimreg(k,p,varargin)
 %}
 
 %{
-    % Example 3
+    % Example 3: Mixture of regression with prefixed average overlap.
     % Exactly as before but now the distribution of beta is N(0 6)
     rng(10,'twister')
     p=5;
@@ -425,8 +425,7 @@ function [out]  = MixSimreg(k,p,varargin)
 %}
 
 %{
-    % Example 4
-    % Internation trade data example
+    % Example 4: Internation trade data example.
     % All slopes are positive (beta generated using half normal) p=1 and there
     % is no intercept
     rng(10,'twister')
@@ -450,8 +449,7 @@ function [out]  = MixSimreg(k,p,varargin)
 
 
 %{
-    % Example 5
-    % Another international trade data example
+    % Example 5:  Another international trade data example.
     % Here the strips of certain groups are limited up to certain values
     % There is no intercept.
     % In this example we compare high and low overlap among regression hyperplanes
@@ -2205,3 +2203,4 @@ out = Q;
         end
     end
 end
+%FScategory:CLUS-MixSim

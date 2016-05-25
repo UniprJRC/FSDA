@@ -6,38 +6,34 @@ function out = lga(X,k,varargin)
 %
 %  Required input arguments:
 %
-%       X   :   Input data. Matrix. 
-%               Scalar defining breakdown point (i.e a number between 0 and
-%               0.5).
-%       k   :  number of clusters. Scalar.
+%       X   : input data matrix. Matrix. Input data as matrix of size
+%            n-by-p
+%       k   : number of clusters. Scalar. Scalar which specifies the number
+%             of clusters.
 %
 %  Optional input arguments:
 %
 %
-%     biter : number of different starting hyperplanes to try. Integer.
+%     biter : Hyperplane number. Integer. number of different starting hyperplanes to try. 
 %               Example - 'biter',1 
 %               Data Types - double
-%     niter : number of iterations to attempt for convergence. Integer.
+%     niter : Number of iterations. Positive integer. Number of iterations to attempt for convergence.
 %               Example - 'niter',1 
 %               Data Types - double
-%   showall : If true then display all the outcomes, not just the best one. Logical.
+%   showall : Type of display. Logical. If true then display all the outcomes, not just the best one. 
 %               Example - 'showall','true' 
 %               Data Types - char 
-%    stand  : If true standardize the X matrix with the standard
-%             deviation before fitting. Logical.
+%    stand  : Data standardization. Logical. If true standardize the X matrix with the standard
+%             deviation before fitting. 
 %               Example - 'stand','true' 
 %               Data Types - char 
-% nnode : an integer of many CPUS to use for parallel processing. Integer. Defaults
-%               NULL that is no parallel processing.
-%               Example - 'nnode',1 
-%               Data Types - double 
-%    silent : If true, produces no text output during processing. Logical. The
+%    silent : Text ouptut. Logical. If true, produces no text output during processing. The
 %               default value is false. 
 %               Example - 'silent','true' 
 %               Data Types - char                           
-%    plots  : If plots=1 a plot is showed on the screen with the
+%    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on the screen with the
 %             final allocation (and if size(X,2)==2 with the lines
-%             associated to the groups). Scalar.
+%             associated to the groups). 
 %               Example - 'plots',1 
 %               Data Types - double
 %
@@ -354,3 +350,4 @@ end
     end
 
 end
+%FScategory:CLUS-RobClaREG

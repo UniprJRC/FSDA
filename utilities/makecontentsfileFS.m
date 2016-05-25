@@ -153,7 +153,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
-    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false)
+    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',true)
 %}
 
 
@@ -310,6 +310,7 @@ for j=1:ldirpath
             iExcluded=iExcluded+lExcl;
         end
         dout=dout(boo,:);
+        d=d(boo);
     end
     
     %Include inside dout output of jt-folder which has been analyzed
