@@ -1,7 +1,7 @@
 function rhoHA = HArho(u, ctuning)
 %HArho computes rho function  using Hampel proposal
 %
-%<a href="matlab: docsearchFS('harho')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HArho')">Link to the help function</a>
 %
 %  Required input arguments:
 %

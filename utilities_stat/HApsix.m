@@ -70,7 +70,7 @@ function psiHAx = HApsix(u, ctuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('hapsix')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HApsix')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

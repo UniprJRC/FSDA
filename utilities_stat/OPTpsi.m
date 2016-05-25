@@ -1,7 +1,7 @@
 function psiOPT=OPTpsi(u,c)
 %OPTpsi computes psi function (derivative of rho function) for optimal weight function
 %
-%<a href="matlab: docsearchFS('optpsi')">Link to the help function</a>
+%<a href="matlab: docsearchFS('OPTpsi')">Link to the help function</a>
 %
 %
 %  Required input arguments:

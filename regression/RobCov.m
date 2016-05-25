@@ -1,7 +1,7 @@
 function out=RobCov(X,scaledres,scaleest,varargin)
 %robCov computes covariance matrix of robust regression coefficients
 %
-%<a href="matlab: docsearch('RobCov')">Link to the help function</a>
+%<a href="matlab: docsearchFS('RobCov')">Link to the help function</a>
 %
 % Under some regularity conditions, robust (S and MM) estimates are
 % asymptotically normal, thereby allowing for Wald-type tests and
@@ -187,7 +187,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % FSDA toolbox
 %
 %
-%<a href="matlab: docsearch('RobCov')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('RobCov')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

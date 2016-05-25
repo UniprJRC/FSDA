@@ -2,7 +2,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %FSRBmdr computes minimum deletion residual and other basic linear regression quantities in each step of the Bayesian search.
 %
 %
-%<a href="matlab: docsearch('FSRBmdr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRBmdr')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -165,7 +165,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('fsrbmdr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRBmdr')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

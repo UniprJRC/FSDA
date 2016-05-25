@@ -1,7 +1,7 @@
 function [AR,RI,MI,HI]=RandIndexFS(c1,c2, noisecluster)
 %RandIndexFS calculates Rand type Indices to compare two partitions
 %
-%<a href="matlab: docsearch('RandIndexFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('RandIndexFS')">Link to the help function</a>
 %
 % Suppose we want to compare two partitions summarized by the contingency
 % table $T=[n_{ij}]$ where $i=1, 2, ..., r$ and $j=1,...,c$ and $n_{ij}$

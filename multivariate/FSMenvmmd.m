@@ -68,7 +68,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('FSRenvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMenvmmd')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

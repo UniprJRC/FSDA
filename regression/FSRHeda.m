@@ -16,8 +16,8 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               infinite values (Inf's) are allowed, since observations
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations.
-%     Z :       Predictor variables in the scedastic equation. Matrix. 
-%               n x r matrix or vector of length r.
+%     Z :       Predictor variables in the scedastic equation. 
+%               n x r matrix or index vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)
 %               \[
@@ -176,7 +176,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               estimate of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
 %               unbiased).
-%   out.Coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
+%   out.coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search: 
 %               1st col = fwd search index (from init to n); 
 %               2nd col = monitoring of Cook distance; 
@@ -191,7 +191,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
-%  out.betaint = Confidence intervals for the elements of $\beta$.
+%  out.betaINT = Confidence intervals for the elements of $\beta$.
 %                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D
 %                 array. 
 %                 Each third dimension refers to an element of beta: 
@@ -241,7 +241,8 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %     out.X=    Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1).
-%  out.class =  string FSRHeda.
+%     out.Z=   Predictor variables in the scedastic equation. 
+%   out.class =  string FSRHeda.
 %
 %
 % See also FSRH.m, FSRHmdr.m, FSReda.m

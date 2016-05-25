@@ -11,27 +11,27 @@ function FilesWithProblems=publishFSallFiles(InputCell)
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
-    % Create list of folders which must be presonlized contents file
+    % Create list of folders which must have a personalized contents file
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
-    [outTest,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false)
+    [outTest,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false)
     FilesWithProblems=publishFSallFiles(outTest);
 %}
 %
 
 %% Beginning of code
-FilesWithProblems=cell(1000,5);
+FilesWithProblems=cell(1000,6);
 ij=1;
 for i=1:size(InputCell,1)
     dirpathi=InputCell{i,end};
-    disp(['Processing file: ' InputCell{i,1}])
-    disp(['contained in folder: '  dirpathi])
+    disp(['Processing file: ' dirpathi filesep InputCell{i,1}])
     try
+        % call publishFS
         out=publishFS(InputCell{i,1});
         
         
-        if  size(out.InpArgsMisMatch,1)+size(out.OutArgsStructMisMatch,1)>2 || ~isempty(out.laste)
+        if  (size(out.InpArgsMisMatch,1)+size(out.OutArgsStructMisMatch,1))>2 || ~isempty(out.laste) || out.linkHTMLMisMatch==1
             % Store information about files with problems
             % Store file name
             FilesWithProblems{ij,1}=InputCell{i,1};
@@ -43,6 +43,8 @@ for i=1:size(InputCell,1)
             FilesWithProblems{ij,4}=out.OutArgsStructMisMatch;
             % Store laste
             FilesWithProblems{ij,5}=out.laste;
+            FilesWithProblems{ij,6}= out.linkHTMLMisMatch;
+            
             ij=ij+1;
         end
         
@@ -50,6 +52,9 @@ for i=1:size(InputCell,1)
         FilesWithProblems{ij,1}=InputCell{i,1};
         % Store file path
         FilesWithProblems{ij,2}=InputCell{i,9};
+        % Store catch message
+        FilesWithProblems{ij,3}='notrun';
+        
         ij=ij+1;
         errmsg=['%s','Could not parse file: ' InputCell{i,1}];
         warning('FSDA:publishFSallFiles:WrongInput',errmsg)

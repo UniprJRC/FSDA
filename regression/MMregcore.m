@@ -147,7 +147,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('mmregcore')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('MMregcore')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

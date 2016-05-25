@@ -153,7 +153,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
-    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false)
+    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false)
 %}
 
 
@@ -284,8 +284,11 @@ for j=1:ldirpath
     maxCategoryLenStr = num2str(maxCategoryLen);
     maxDescriptionLenStr = num2str(maxDescriptionLen);
     
-    
+    try
     dout=struct2cell(d)';
+    catch
+        dddd=1;
+    end
     % dout(:,1)= name of the file (with extension)
     % dout(:,2)= date (in local format)
     % dout(:,3)= size ()
@@ -444,7 +447,10 @@ if strcmp(ext,'.m')
     fstring=fscanf(fid,'%c');
     
     if ~isempty(searchTag)
-        FScatPos=regexp(fstring,searchTag);
+        % Note that in order to avoid extracting all the files which at the
+        % end of the searchTag symbol ' we added as condition '[^'']' that
+        % is not as subsequent character symbol '
+        FScatPos=regexp(fstring,[searchTag '[^'']']);
         fincatPos=regexp(fstring,'\s');
         
         if isempty(FScatPos)
@@ -455,9 +461,9 @@ if strcmp(ext,'.m')
             fincatPos=fincatPos(fincatPos>FScatPos(end));
             
             if isempty(fincatPos)
-                category=strtrim(fstring(FScatPos(end)+length(searchTag)+1:end));
+                category=strtrim(fstring(FScatPos(end)+length(searchTag):end));
             else
-                category=strtrim(fstring(FScatPos(end)+length(searchTag)+1:fincatPos(1)));
+                category=strtrim(fstring(FScatPos(end)+length(searchTag):fincatPos(1)));
             end
         end
     else

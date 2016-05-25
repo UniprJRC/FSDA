@@ -122,7 +122,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('zscorefs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('zscoreFS')">Link to the help function</a>
 % Last modified 06-Feb-2015
 %
 

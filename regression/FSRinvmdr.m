@@ -1,7 +1,7 @@
 function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %FSRinvmdr converts values of minimum deletion residual into confidence levels
 %
-%<a href="matlab: docsearchFS('fsrinvmdr')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRinvmdr')">Link to the help function</a>
 %
 %  Required input arguments:
 %

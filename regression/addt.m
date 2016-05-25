@@ -48,10 +48,10 @@ function [out]=addt(y,X,w,varargin)
 %               for units else text label of units are added on the plot
 %               Example - 'textlab','1' 
 %               Data Types - char
-%   Fontsize:   Label font size inside plot. Scalar. It controls the
+%   FontSize:   Label font size inside plot. Scalar. It controls the
 %               fontsize of the labels of the axes and eventual plot
 %               labels. Default value is 12
-%               Example - 'Fontsize',14 
+%               Example - 'FontSize',14 
 %               Data Types - double
 %   SizeAxesNum: Font size of axes numbers. Scalar. It controls the
 %               fontsize of the numbers of the
@@ -68,6 +68,8 @@ function [out]=addt(y,X,w,varargin)
 %       out.S2add=  estimate of $s^2$ of the model which contains the
 %                       additional explanatory variable
 %       out.Tadd=         t statistic for additional explanatory variable
+%       out.pval=         p-value of the t statistic
+%
 %
 % See also FSRaddt
 %

@@ -70,7 +70,7 @@ function psiHA = HApsi(u, ctuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('hapsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HApsi')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

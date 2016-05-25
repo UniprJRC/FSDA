@@ -335,13 +335,13 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 
     v=size(Y,2);
     % Compare the following figure with panel (b) of Fig. 8 of Pison et al.
-    ylim=[0 36];
-    malindexplot(RAW.md,v,'conflev',0.975,'laby','robust distances','numlab',RAW.outliers,'ylimy',ylim);
+    ylimy=[0 36];
+    malindexplot(RAW.md,v,'conflev',0.975,'laby','robust distances','numlab',RAW.outliers,'ylimy',ylimy);
     title('Corrected MCD')
 
     % Compare the following figure with panel (4) of Fig. 8 of Pison et al.
-    ylim=[0 36];
-    malindexplot(REW.md,v,'conflev',0.975,'laby','robust distances','numlab',REW.outliers,'ylimy',ylim);
+    ylimy=[0 36];
+    malindexplot(REW.md,v,'conflev',0.975,'laby','robust distances','numlab',REW.outliers,'ylimy',ylimy);
     title('Corrected reweighted MCD')
 
 %}

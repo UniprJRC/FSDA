@@ -1,7 +1,7 @@
 function [out]  = MixSim(k,v,varargin)
 %MixSim generates k clusters in v dimensions with given overlap
 %
-%<a href="matlab: docsearchFS('mixsim')">Link to the help function</a>
+%<a href="matlab: docsearchFS('MixSim')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -245,7 +245,7 @@ function [out]  = MixSim(k,v,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('mixsim')">Link to the help function</a>
+%<a href="matlab: docsearchFS('MixSim')">Link to the help function</a>
 % Last modified 06-Feb-2015
 %
 

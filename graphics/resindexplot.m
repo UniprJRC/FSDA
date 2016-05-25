@@ -59,7 +59,7 @@ function resindexplot(residuals,varargin)
 %                   Example -'conflev',[0.95,0.99,0.999]
 %                   Data Types - double
 %                   Remark: confidence interval is based on the chi^2 distribution
-%        Fontsize:  Scalar which controls the fontsize of the labels of the
+%        FontSize:  Scalar which controls the fontsize of the labels of the
 %                   axes. Default value is 12.
 %                   Example -'Fontsize',10
 %                   Data Types - double
@@ -186,6 +186,11 @@ function resindexplot(residuals,varargin)
 %                   empty (default) label 'y' will be used.
 %                   Example - 'namey','response'
 %                   Data Types - char
+%           tag  :  Figure tag. Character.  
+%                   Tag of the figure which will host the malindexplot. The
+%                   default tag is pl_resindex
+%                   Example - 'tag','indexPlot'
+%                   Data Types - character
 %
 % Output: 
 %

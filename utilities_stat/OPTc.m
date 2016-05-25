@@ -1,7 +1,7 @@
 function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 %OPTc computes breakdown point and efficiency associated with constant c for Optimal rho function
 %
-%<a href="matlab: docsearchFS('optc')">Link to the help function</a>
+%<a href="matlab: docsearchFS('OPTc')">Link to the help function</a>
 %
 %
 %

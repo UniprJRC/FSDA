@@ -127,7 +127,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('mmmultcore')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('MMmultcore')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

@@ -1,7 +1,7 @@
 function out=regressH(y,X,Z,varargin)
 %regressH fits a multiple linear regression model with heteroskedasticity
 %
-%<a href="matlab: docsearchFS('regressh')">Link to the help function</a>
+%<a href="matlab: docsearchFS('regressH')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -138,7 +138,7 @@ function out=regressH(y,X,Z,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('regressh')">Link to the help function</a>
+%<a href="matlab: docsearchFS('regressH')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

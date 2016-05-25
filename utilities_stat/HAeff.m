@@ -1,6 +1,8 @@
 function ceff = HAeff(eff,v,abc)
 %HAeff finds the tuning constant guarrantees a requested asymptotic efficiency
 %
+%<a href="matlab: docsearchFS('HAeff')">Link to the help function</a>
+%
 %  Required input arguments:
 %
 %    eff:       efficiency. Scalar.  Scalar which contains the required
@@ -62,7 +64,7 @@ function ceff = HAeff(eff,v,abc)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('haeff')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HAeff')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Paramter ceff multiplies parameters (a,b,c) of Hampel estimator

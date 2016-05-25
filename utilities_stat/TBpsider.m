@@ -1,7 +1,7 @@
 function psider=TBpsider(u,c)
 %TBpsider computes derivative of psi function (second derivative of rho function) for Tukey's biweight  
 %
-%<a href="matlab: docsearchFS('HUpsider')">Link to the help function</a>
+%<a href="matlab: docsearchFS('TBpsider')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -55,7 +55,7 @@ function psider=TBpsider(u,c)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('HUpsider')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('TBpsider')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

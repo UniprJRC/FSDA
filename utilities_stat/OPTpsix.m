@@ -1,7 +1,7 @@
 function psix=OPTpsix(u,c)
 %OPTpsix computes psi function (derivative of rho function) times x
 %
-%<a href="matlab: docsearchFS('optpsix')">Link to the help function</a>
+%<a href="matlab: docsearchFS('OPTpsix')">Link to the help function</a>
 %
 %
 %  Required input arguments:

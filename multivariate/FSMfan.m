@@ -178,28 +178,29 @@ function out = FSMfan(Y,la0,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('FSMtra')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMfan')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:
 
 %{
-    % FSMfan with all default options.
-    % Example with Mussels data.
+    %%FSMfan with all default options.
+    % First example with Mussels data.
     load('mussels.mat');
     Y=mussels.data;
-    % FS based on with H_0:\lambda=[1 0.5 1 0 1/3]
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y,[0.5 0 0.5 0 0]);
 %}
 
 %{
-    % FSMfan with optional arguments.
+    %% FSMfan with optional arguments.
     % Example with Mussels data.
     load('mussels.mat');
     Y=mussels.data;
     % FS based on with H_0:\lambda=[1 0.5 1 0 1/3]
     plotslrt=struct;
     plotslrt.ylim=[-6.2 6.2];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y,[0.5 0 0.5 0 0],'laAround',[-1 -0.5 0 1/3 0.5 1],'init',58,'plotslrt',plotslrt);
     % Compare this plot with Figure 4.24 p. 182 of ARC (2004)
 %}
@@ -221,6 +222,7 @@ function out = FSMfan(Y,la0,varargin)
     plotslrt.ylim=[-8.2 8.2];
     la0=[0 0.25 0 0.5 0.5 0 0 0.5 0.25];
     ColToComp=[1 3 5 9];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames);
     % Compare the plot Figure 4.35 p. 192 of ARC (2004)
 %}
@@ -244,6 +246,7 @@ function out = FSMfan(Y,la0,varargin)
     plotslrt.ylim=[-8.2 8.2];
     la0=[0 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];
     ColToComp=[1 7];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames);
     % Compare the plot with the two upper panels of Figure 4.38 p. 188 of ARC (2004)
 %}
@@ -268,6 +271,7 @@ function out = FSMfan(Y,la0,varargin)
     la0=[0 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];
     ColToComp=[3 9];
     laAround=[0 0.25 1/3 0.5];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y1,la0,'laAround',laAround,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames);
     % Compare the plot with the two bottom panels of Figure 4.39 p. 195 of ARC (2004)
 %}
@@ -288,6 +292,7 @@ function out = FSMfan(Y,la0,varargin)
     la0=[0 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];
     ColToComp=[3 9];
     laAround=[0 0.25 1/3 0.5];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y1,la0,'laAround',laAround,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames,'family','YJ');
 %}
 
@@ -308,6 +313,7 @@ function out = FSMfan(Y,la0,varargin)
     plotslrt.ylim=[-8.2 8.2];
     ColToComp=[1:4];
     laAround=[-1 -0.5 0 0.25 0.5 1 2];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'colnames',colnames);
     % Compare the plot with Figure 4.43 p. 198 of ARC (2004)
 %}
@@ -333,6 +339,7 @@ function out = FSMfan(Y,la0,varargin)
     plotslrt.ylim=[-8.2 8.2];
     ColToComp=[6 7];
     laAround=[-1 -0.5 0 0.25 0.5 1 1.5 2];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'colnames',colnames);
     % Compare the plot with Figure 4.44 p. 199 of ARC (2004)
 %}
@@ -360,6 +367,7 @@ function out = FSMfan(Y,la0,varargin)
     plotslrt.ylim=[-8.2 8.2];
     ColToComp=[8 9 14 25];
     laAround=[-1 -0.5 0 0.25 0.5 1 1.5 2];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y,la0C1,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'init',100);
     % Compare the plot with Figure 4.45 p. 199 of ARC (2004)
 %}
@@ -387,6 +395,7 @@ function out = FSMfan(Y,la0,varargin)
     plotslrt.ylim=[-8.2 8.2];
     ColToComp=[8 9 14 25];
     laAround=[-1 -0.5 0 0.25 0.5 1 1.5 2];
+    warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y,la0C1,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'init',100,'family','YJ');
 %}
 

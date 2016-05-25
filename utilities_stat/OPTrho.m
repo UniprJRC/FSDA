@@ -1,7 +1,7 @@
 function rhoOPT=OPTrho(u, c)
 %OPTrho computes rho function for optimal weight function
 %
-%<a href="matlab: docsearchFS('optrho')">Link to the help function</a>
+%<a href="matlab: docsearchFS('OPTrho')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -53,7 +53,7 @@ function rhoOPT=OPTrho(u, c)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('optrho')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('OPTrho')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

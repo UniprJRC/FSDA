@@ -2,7 +2,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %Taureg computes Tau estimators in linear regression
 %
 %
-%<a href="matlab: docsearchFS('taureg')">Link to the help function</a>
+%<a href="matlab: docsearchFS('Taureg')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -204,7 +204,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('taureg')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('Taureg')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

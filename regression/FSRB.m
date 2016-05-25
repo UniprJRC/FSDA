@@ -1,7 +1,7 @@
 function [out]=FSRB(y,X,varargin)
 %FSRB gives an automatic outlier detection procedure in Bayesian linear regression
 %
-%<a href="matlab: docsearch('FSRB')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRB')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -224,7 +224,7 @@ function [out]=FSRB(y,X,varargin)
 %               Second row contains the frequency distribution.
 % out.constr  = This output is produced only if the search found at a
 %               certain step a non singular matrix X. In this case the
-%               search run in a constrained mode, that is including the
+%               search runs in a constrained mode, that is including the
 %               units which produced a singular matrix in the last n-constr
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
@@ -244,7 +244,7 @@ function [out]=FSRB(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('FSRB')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('FSRB')">Link to the help page for this function</a>
 %
 % Last modified 06-Feb-2015
 
@@ -253,12 +253,11 @@ function [out]=FSRB(y,X,varargin)
 %{
     % FSRB with all default options.
     % Common part to the first examples: load Houses Price Dataset.
-    
     load hprice.txt;
     n=size(hprice,1);
     y=hprice(:,1);
     X=hprice(:,2:5);
-    outBA=FSRB(y,X);
+    out=FSRB(y,X);
 %}
 
 %{
@@ -296,7 +295,7 @@ function [out]=FSRB(y,X,varargin)
     intercept=1;
 
     % function call
-    outBA=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)
+    out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)
 %}
 
 %{
@@ -608,7 +607,7 @@ function [out]=FSRB(y,X,varargin)
 %}
 
 %{
-    %% Outlier detection for Bank-Profit data
+    %% Outlier detection for Bank-Profit data.
     XX=load('BankProfit.txt');
     R=load('BankProfitR.txt');
 
@@ -643,11 +642,11 @@ function [out]=FSRB(y,X,varargin)
     intercept=1;
     n=length(y);
 
-    outBA=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...
+    out=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...
     'init',round(n/2),'xlim',[1700 1905],'ylim',[2 4]);
 
     %% Plot the outliers with a different symbol using a 3x3 layout
-    selout=outBA.ListOut;
+    selout=out.ListOut;
     selin=setdiff(1:n,selout);
 
     close all

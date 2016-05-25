@@ -69,7 +69,7 @@ function psiHAder = HApsider(u, ctuning)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('hapsider')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('HApsider')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

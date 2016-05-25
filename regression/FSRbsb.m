@@ -101,7 +101,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('fsrbsb')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRbsb')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

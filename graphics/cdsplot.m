@@ -53,13 +53,13 @@ function cdsplot(outms,varargin)
 %              candles. The default LineWidth is 0.5 points.
 %                   Example - 'LineWidth',0.3
 %                   Data Types - double
-%    ylim    : y axis scale. Vector. Vector with two elements controlling minimum and maximum
+%    ylimy    : y axis scale. Vector. Vector with two elements controlling minimum and maximum
 %              on the y axis. Default value is [-2 50] (automatic scale).
-%                   Example - 'ylim',[0 100]
+%                   Example - 'ylimy',[0 100]
 %                   Data Types - double
-%    xlim    : x axis scale. Vector. Vector with two elements controlling minimum and maximum
+%    xlimx    : x axis scale. Vector. Vector with two elements controlling minimum and maximum
 %              on the x axis. Default value is '' (automatic scale).
-%                   Example - 'xlim',[0 100]
+%                   Example - 'xlimx',[0 100]
 %                   Data Types - double
 %   label   : Labels of the selected models. Cell array of strings. Cell array of strings of length k (number of rows of matrix stat)
 %              containing the labels of the selected models. Default value is ''
@@ -156,17 +156,19 @@ function cdsplot(outms,varargin)
 
 
 %{
-    % Interactive_example
     % cdsplot with optional arguments.
+    % Interactive_example
     % Load Ozone data (full data)
     X=load('ozone_330_obs.txt');
     y=log(X(:,9));
     Time1=[(1:165)';(165:-1:1)'];
     X=[Time1 X(:,1:8)];
     labels={'Time','1','2','3','4','5','6','7','8'};
-    outms=FSRms(y,X,'labels',labels,'smallpint',4:5);
+    outms=FSRms(y,X,'labels',labels,'smallpint',5:6);
     cdsplot(outms,'cpbrush',1,'laboutl',1);
 %}
+
+%% Beginning of code
 
 if nargin < 1
     error('FSDA:cdsplot:missingInputs', ...

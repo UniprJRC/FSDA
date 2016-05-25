@@ -1,7 +1,7 @@
 function [out]=FSM(Y,varargin)
 %FSM gives an automatic outlier detection procedure in mult. analysis
 %
-%<a href="matlab: docsearchFS('fsm')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSM')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -183,7 +183,7 @@ function [out]=FSM(Y,varargin)
 %
 %
 %
-%<a href="matlab: docsearchFS('fsm')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('FSM')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

@@ -1,7 +1,7 @@
 function psiHYP = HYPpsi(u, cktuning)
 %HYPpsi computes psi function for hyperbolic tangent estimator
 %
-%<a href="matlab: docsearchFS('hyppsi')">Link to the help function</a>
+%<a href="matlab: docsearchFS('HYPpsi')">Link to the help function</a>
 %
 %  Required input arguments:
 %

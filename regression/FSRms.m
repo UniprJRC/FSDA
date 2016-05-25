@@ -1,7 +1,7 @@
 function outms = FSRms(y,X,varargin)
 %FSRms performs robust model selection using flexible trimming in linear regression
 %
-%<a href="matlab: docsearchFS('fsrms')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRms')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -298,7 +298,7 @@ function outms = FSRms(y,X,varargin)
     X=X(:,1:end-1);
     n=length(y);
     fin_step=floor([n*0.1 n*0.02]);
-    FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7])
+    outms=FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7]);
 
     %The figure has slightly changed and certainly there can be some random
     %fluctuations due to the number of subset which have been used to initialize

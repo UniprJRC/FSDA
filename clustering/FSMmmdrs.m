@@ -193,7 +193,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('fsmmmdrs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSMmmdrs')">Link to the help function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:
@@ -348,8 +348,8 @@ else
 end
 
 nsimuldef = 200; % nsimuldef = default number of random starts
-options   = struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','nsimul',nsimuldef,'numpool',numpool, 'cleanpool', true, ...
+options   = struct('init',initdef,'plots',0,'nocheck',0,'msg',1,...
+    'nsimul',nsimuldef,'numpool',numpool, 'cleanpool', true, ...
     'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));

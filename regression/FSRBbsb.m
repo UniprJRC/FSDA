@@ -2,7 +2,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %FSRBbsb returns the units belonging to the subset in each step of the Bayesian forward search
 %
 %
-%<a href="matlab: docsearch('FSRBbsb')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRBbsb')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -135,7 +135,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('FSRBbsb')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRBbsb')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

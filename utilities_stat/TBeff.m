@@ -3,7 +3,7 @@ function ceff = TBeff(eff, v, shapeeff, approxsheff)
 %
 %
 %
-%<a href="matlab: docsearchFS('tbeff')">Link to the help function</a>
+%<a href="matlab: docsearchFS('TBeff')">Link to the help function</a>
 %
 %
 %  Required input arguments:

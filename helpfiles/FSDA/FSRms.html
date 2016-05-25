@@ -23,7 +23,8 @@ small p=7
 small p=6
 small p=5
 small p=4
-Warning: Rank deficient, rank = 2, tol =  1.111012e-11. 
+------------------------------
+Warning: Number of subsets without full rank equal to 11.4%
 small p=3
 </pre><img vspace="5" hspace="5" src="images\FSRms_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     X=load('ozone.txt');
@@ -33,7 +34,7 @@ small p=3
     X=X(:,1:end-1);
     n=length(y);
     fin_step=floor([n*0.1 n*0.02]);
-    FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7])
+    outms=FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7]);
 
     %The figure has slightly changed and certainly there can be some random
     %fluctuations due to the number of subset which have been used to initialize
@@ -46,12 +47,6 @@ small p=3
 small p=6
 small p=5
 small p=4
-ans = 
-     siz: [80 10]
-     MAL: [50x24 double]
-     LAB: {24x1 cell}
-    outl: [100x6 double]
-    stor: [24x9 double]
 </pre><img vspace="5" hspace="5" src="images\FSRms_02.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Considering all submodels.</li></span></a></span></h3><div class="collapse"><p>
      Perform robust model selection and show the generalized candlestick
      plot considering all submodels for each smallp from 2 to size(X).
@@ -84,6 +79,55 @@ small p=5
 small p=4
 small p=6
 small p=5
+Warning: Rank deficient, rank = 3, tol =  1.387636e-11. 
+Warning: Rank deficient, rank = 3, tol =  1.830149e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.313476e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.807785e-11. 
+Warning: Rank deficient, rank = 3, tol =  3.346496e-11. 
+Warning: Rank deficient, rank = 3, tol =  3.927115e-11. 
+Warning: Matrix is singular to working precision. 
+Warning: Rank deficient, rank = 3, tol =  4.540885e-11. 
+Warning: Rank deficient, rank = 9, tol =  4.540885e-11. 
+Warning: Rank deficient, rank = 3, tol =  5.187580e-11. 
+Warning: Rank deficient, rank = 9, tol =  5.187580e-11. 
+Warning: Rank deficient, rank = 3, tol =  5.854974e-11. 
+Warning: Rank deficient, rank = 9, tol =  5.854974e-11. 
+Warning: Rank deficient, rank = 3, tol =  6.555516e-11. 
+Warning: Rank deficient, rank = 9, tol =  6.555516e-11. 
+Warning: Rank deficient, rank = 3, tol =  7.261250e-11. 
+Warning: Rank deficient, rank = 9, tol =  7.261250e-11. 
+Warning: Rank deficient, rank = 3, tol =  8.001211e-11. 
+Warning: Rank deficient, rank = 9, tol =  8.001211e-11. 
+Warning: Rank deficient, rank = 3, tol =  8.748443e-11. 
+Warning: Rank deficient, rank = 9, tol =  8.748443e-11. 
+Warning: Rank deficient, rank = 3, tol =  9.552612e-11. 
+Warning: Rank deficient, rank = 9, tol =  9.552612e-11. 
+Warning: Rank deficient, rank = 3, tol =  1.036610e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.036610e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.119545e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.119545e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.204176e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.204176e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.289608e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.289608e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.378865e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.378865e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.468472e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.468472e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.563980e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.563980e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.659264e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.659264e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.754914e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.754914e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.854212e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.854212e-10. 
+Warning: Rank deficient, rank = 3, tol =  1.953877e-10. 
+Warning: Rank deficient, rank = 9, tol =  1.953877e-10. 
+Warning: Rank deficient, rank = 3, tol =  2.055629e-10. 
+Warning: Rank deficient, rank = 9, tol =  2.055629e-10. 
+Warning: Rank deficient, rank = 3, tol =  2.158843e-10. 
+Warning: Rank deficient, rank = 9, tol =  2.158843e-10. 
 small p=4
 </pre><img vspace="5" hspace="5" src="images\FSRms_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_05.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Changing confidence bands.</li></span></a></span></h3><div class="collapse"><p>
      Same options as before but using different confidence bands.

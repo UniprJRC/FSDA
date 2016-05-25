@@ -1,7 +1,7 @@
 function psi=TBpsi(u,c)
 %TBpsi computes psi function (derivative of rho function) for Tukey's biweight  
 %
-%<a href="matlab: docsearchFS('tbpsi')">Link to the help function</a>
+%<a href="matlab: docsearchFS('TBpsi')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -56,7 +56,7 @@ function psi=TBpsi(u,c)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('tbpsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('TBpsi')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

@@ -1,7 +1,7 @@
 function [out , varargout] = Sreg(y,X,varargin)
 %Sreg computes S estimators in linear regression
 %
-%<a href="matlab: docsearchFS('sreg')">Link to the help function</a>
+%<a href="matlab: docsearchFS('Sreg')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -196,7 +196,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('sreg')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('Sreg')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:

@@ -1,7 +1,6 @@
 function add2yX(varargin)
 %add2yX adds objects to the yXplot.
 %
-%<a href="matlab: docsearchFS('add2yx')">Link to the help page for this function</a>
 %
 %
 % Required input arguments:
@@ -58,7 +57,6 @@ function add2yX(varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('add2yX')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 
@@ -330,4 +328,3 @@ if iscell(eLegend)
     clickableMultiLegend(hLines, eLegend{:});
 end
 end
-%FScategory:VIS-Reg

@@ -1,7 +1,7 @@
 function rhoTB = TBrho(u,c)
 %TBrho computes (rho) function for Tukey biweight
 %
-%<a href="matlab: docsearchFS('tbrho')">Link to the help function</a>
+%<a href="matlab: docsearchFS('TBrho')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -53,7 +53,7 @@ function rhoTB = TBrho(u,c)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('tbrho')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('TBrho')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

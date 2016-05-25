@@ -1,7 +1,7 @@
 function [out] = FSRBeda(y, X, varargin)
 %FSRBeda enables to monitor several quantities in each step of the Bayesian search
 %
-%<a href="matlab: docsearchFS('fsrbeda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRBeda')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -229,7 +229,7 @@ function [out] = FSRBeda(y, X, varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('fsrbeda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRBeda')">Link to the help function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

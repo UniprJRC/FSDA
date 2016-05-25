@@ -2,6 +2,8 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %Mscale finds the M estimator of the scale
 %
 %
+%<a href="matlab: docsearchFS('Mscale')">Link to the help function</a>
+%
 % Required input arguments:
 %
 %    u:       : residuals or Mahalanobis distances. Vector.
@@ -74,10 +76,12 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %
 % Copyright 2008-2015.
 % Written by FSDA team
-
+%
+%
+%<a href="matlab: docsearchFS('mve')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
-
-% Examples
+%
+% Examples:
 
 %{
     % Example of M estimate of scale.

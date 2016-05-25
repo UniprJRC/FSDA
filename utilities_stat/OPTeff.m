@@ -1,6 +1,8 @@
 function ceff = OPTeff(eff,v)
 %OPTeff finds the constant c which is associated to the requested efficiency
 %
+%<a href="matlab: docsearchFS('OPTeff')">Link to the help function</a>
+%
 %  Required input arguments:
 %
 %    eff:       required efficienty. Scalar.
@@ -57,8 +59,6 @@ function ceff = OPTeff(eff,v)
 %
 %<a href="matlab: docsearchFS('OPTeff')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
-%
-%
 %
 % Examples:
 %

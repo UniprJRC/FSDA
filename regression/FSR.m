@@ -97,18 +97,6 @@ function [out]=FSR(y,X,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100 
 %               Data Types - double
-%       exact   : quantiles of the T and F distribution. Scalar.
-%               If it is equal to 1 the calculation of the quantiles
-%                 of the T and F distribution is based on functions finv
-%                 and tinv from the Matlab statistics toolbox, else the
-%                 calculations of the former quantiles is based on
-%                 functions invcdff and invcdft.
-%                 The solution has a tolerance of 1e-8 (change variable tol
-%                 in files invcdff.m and invcdft.m if required).
-%               Example - 'exact',1 
-%               Data Types - double
-%                 Remark: the use of functions tinv and finv is more precise
-%                 but requires more time.
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
@@ -250,7 +238,7 @@ function [out]=FSR(y,X,varargin)
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
 % out.constr  = This output is produced only if the search found at a
-%               certain step a non singular matrix X. In this case the
+%               certain step is a non singular matrix X. In this case the
 %               search run in a constrained mode, that is including the
 %               units which produced a singular matrix in the last n-constr
 %               steps. out.constr is a vector which contains the list of
@@ -269,7 +257,7 @@ function [out]=FSR(y,X,varargin)
 %
 %
 %
-%<a href="matlab: docsearchFS('fsr')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('FSR')">Link to the help page for this function</a>
 % Last modified 06-Feb-2015
 
 % Examples:

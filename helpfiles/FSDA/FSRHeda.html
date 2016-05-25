@@ -7,7 +7,7 @@
     X=X./max(X);
     Z=log(X);
     [out]=LXS(y,X,'nsamp',1000);
-    out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.04 seconds 
+    out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
 Warning: interchange greater than 10 when m=97
 Warning: interchange greater than 10 when m=99
 m=100
@@ -136,17 +136,11 @@ m=1100
     line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
     title('Normality test');
     xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.12 seconds 
-Warning: Maximum number of iterations has been reached without convergence 
-Warning: Rank deficient, rank = 2, tol =  4.554681e+03. 
+Warning: Rank deficient, rank = 3, tol =  9.970258e+00. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  5.893877e-20. 
-Warning: Rank deficient, rank = 1, tol =  1.344331e+03. 
+RCOND =  1.637954e-17. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  4.246314e-20. 
-Warning: Rank deficient, rank = 2, tol =  1.512788e+03. 
-Warning: Rank deficient, rank = 2, tol =  7.613635e+03. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  4.442869e-19. 
+RCOND =  4.728220e-20. 
 Warning: Imaginary parts of complex X and/or Y arguments ignored 
 </pre><img vspace="5" hspace="5" src="images\FSRHeda_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRHeda_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRHeda_03.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
      beta and sigma2.</li></span></a></span></h3><div class="collapse"><p>
@@ -220,9 +214,9 @@ Warning: Imaginary parts of complex X and/or Y arguments ignored
     % Add multiple title
     suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.34 seconds 
+        ']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.44 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 34.55%
+Warning: Number of subsets without full rank equal to 34.02%
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
 inaccurate. RCOND = NaN. 
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
@@ -1046,10 +1040,9 @@ m=500
                columns represent variables</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and
                infinite values (Inf's) are allowed, since observations
                (rows) with missing or infinite values will automatically
-               be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Z" class="clearfix"> </div> <h3 id="input_argument_Z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Z</code> &#8212; Predictor variables in the scedastic equation </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>n x r matrix or vector of length r.</p> <p>
-               If Z is a n x r matrix it contains the r variables which
+               be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Z" class="clearfix"> </div> <h3 id="input_argument_Z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Z</code> &#8212; Predictor variables in the scedastic equation </span>  </a><span class="example_desc">n x r matrix or index vector of length r</span></span></h3> <div class="collapse"> <p>If Z is a n x r matrix it contains the r variables which
                form the scedastic function as follows (if input option art==1)
-               </p>\[
+               \[
                \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
                \]
                If Z is a vector of length r it contains the indexes of the
@@ -1168,7 +1161,7 @@ m=500
                4th col = monitoring of rescaled S2. In this case the
                estimate of $\sigma^2$ at step m is divided by the
                consistency factor (to make the estimate asymptotically
-               unbiased).</p></p></td></tr><tr valign="top"><td><code>Coo</code></td><td><p><p>(n-init+1) x 3 matrix containing the monitoring of Cook or
+               unbiased).</p></p></td></tr><tr valign="top"><td><code>coo</code></td><td><p><p>(n-init+1) x 3 matrix containing the monitoring of Cook or
                modified Cook distance in each step of the forward search:</p> <p> 
                1st col = fwd search index (from init to n);</p> <p> 
                2nd col = monitoring of Cook distance;</p><p> 
@@ -1180,7 +1173,7 @@ m=500
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one Un(1,2) for example contains
                the unit included in step init+1 Un(end,2) contains the
-               units included in the final step of the search</p></p></td></tr><tr valign="top"><td><code>betaint</code></td><td><p><p>Confidence intervals for the elements of $\beta$.</p> <p>
+               units included in the final step of the search</p></p></td></tr><tr valign="top"><td><code>betaINT</code></td><td><p><p>Confidence intervals for the elements of $\beta$.</p> <p>
                  betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D
                  array.</p> <p> 
                  Each third dimension refers to an element of beta:</p> <p> 
@@ -1224,5 +1217,5 @@ m=500
             $(\omega_1^{-0.5}, \ldots, \omega_n^{-0.5})$;</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>A vector with n elements that contains the response
                variable which has been used.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>Data matrix of explanatory variables
                which has been used (it also contains the column of ones if
-               input option intercept was missing or equal to 1).</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>string FSRHeda.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
+               input option intercept was missing or equal to 1).</p></td></tr><tr valign="top"><td><code>Z</code></td><td><p>Predictor variables in the scedastic equation.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>string FSRHeda.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
    Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRH.html" itemprop="url"><span itemprop="name"><code>FSRH</code></span></a></span> | <span itemprop="seealso"><a href="FSRHmdr.html" itemprop="url"><span itemprop="name"><code>FSRHmdr</code></span></a></span> | <span itemprop="seealso"><a href="FSReda.html" itemprop="url"><span itemprop="name"><code>FSReda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

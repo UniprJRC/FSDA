@@ -404,8 +404,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
+    % Example when first input argument is a structure.
     % Interactive_example.
-    % First input argument is a structure.
     % Example of use of option databrush
     close all
     rng(841,'shr3cong');

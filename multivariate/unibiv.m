@@ -131,7 +131,7 @@ function [fre]=unibiv(Y,varargin)
 rfdef=0.95;
 
 options=struct('rf',rfdef,'plots',0,'textlab',0,...
-    'xlim','','ylim','','tag','pl_unibiv','robscale',1,'madcoef',1.4815);
+    'tag','pl_unibiv','robscale',1,'madcoef',1.4815);
 
 %% Input parameters checking
 

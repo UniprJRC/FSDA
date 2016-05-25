@@ -352,7 +352,7 @@ Sco=out.Score;
 %% User options
 options=struct('conflev',0.99,'titl','Fan plot','labx','Subset size m',...
     'laby','Score test statistic','xlimx','','ylimy','','lwd',2,'lwdenv',1,'FontSize',12,'SizeAxesNum',10,...
-    'tag','pl_fan','datatooltip','','databrush','','intercept',1,'nameX','','namey','','label','');
+    'tag','pl_fan','datatooltip','','databrush','','nameX','','namey','','label','');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

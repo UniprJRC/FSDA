@@ -158,6 +158,12 @@ function tclustICplot(IC,varargin)
 %                      histograms, or 'box' to plot boxplots.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
+%         nameY  : variable labels. Cell array. Cell array of strings
+%                   containing the labels of the
+%                   variables. As default value, the labels which are added
+%                   are Y1, ..., Yv.
+%                   Example - 'nameY',{'myY1', 'myY2'}
+%                   Data Types - cell
 %
 %  Output:
 %
@@ -170,7 +176,7 @@ function tclustICplot(IC,varargin)
 % A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016). Finding
 % the Number of Groups in Model-Based Clustering via Constrained
 % Likelihoods, submitted.
-% L. Hubert and P. Arabie (1985) "Comparing Partitions" Journal of
+% L. Hubert and P. Arabie (1985). Comparing Partitions, Journal of
 % Classification 2:193-218
 %
 %

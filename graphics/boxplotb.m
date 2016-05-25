@@ -403,8 +403,7 @@ out.cent=cent;
 out.outliers=outliers;
 
 % Store coordinates of inner and outer spline
-out.Inspl=Inspl;
-out.Ospl=Ospl;
+out.Spl=[Inspl Ospl];
 % fcns = localfunctions;
 % display(fcns)
 

@@ -67,6 +67,168 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %               screen
 %                 Example - 'plotsPI',1
 %                 Data Types - double
+%   intercept   :  Indicator for constant term. Scalar.
+%                       If 1, a model with constant term will be fitted
+%                       (default), if 0, no constant term will be included.
+%                        Example - 'intercept',1
+%                       Data Types - double
+%    bayes      : Prior information. Structure.
+%
+%                       It contains the following fields
+%               bayes.beta0=  p-times-1 vector containing prior mean of \beta
+%               bayes.R    =  p-times-p positive definite matrix which can be
+%                       interpreted as X0'X0 where X0 is a n0 x p matrix
+%                       coming from previous experiments (assuming that the
+%                       intercept is included in the model.
+%
+%               The prior distribution of $\tau_0$ is a gamma distribution with
+%               parameters $a_0$ and $b_0$, that is
+%               \[
+%                     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
+%                       \qquad E(\tau_0) = a_0/b_0
+%               \]
+%               bayes.tau0 = scalar. Prior estimate of
+%                       \[ \tau=1/ \sigma^2 =a_0/b_0 \]
+%               bayes.n0   = scalar. Sometimes it helps to think of the prior
+%                      information as coming from n0 previous experiments.
+%                      Therefore we assume that matrix X0 (which defines
+%                      R), was made up of n0 observations.
+%              REMARK if structure bayes is not supplied the default
+%                      values which are used are.
+%                      beta0= zeros(p,1):  Vector of zeros.
+%                      R=eye(p):           Identity matrix.
+%                      tau0=1/1e+6:        Very large value for the
+%                                          prior variance, that is a very
+%                                          small value for tau0.
+%                      n0=1:               just one prior observation.
+%
+%               $\beta$ is assumed to have a normal distribution with
+%               mean $\beta_0$ and (conditional on $\tau_0$) covariance
+%               $(1/\tau_0) (X_0'X_0)^{-1}$.
+%               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$
+%
+%                     Example - bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
+%                     Data Types - double
+% plots   :    Plot on the screen. Scalar.
+%                 If plots=1 (default) the plot of minimum deletion
+%                 residual with envelopes based on n observations and the
+%                 scatterplot matrix with the outliers highlighted is
+%                 produced.
+%                 If plots=2 the user can also monitor the intermediate
+%                 plots based on envelope superimposition.
+%                 Else no plot is produced.
+%                 Example - 'plots',1
+%                 Data Types - double
+%       init    :  Search initialization. Scalar.
+%                   scalar which specifies the initial subset size to start
+%                   monitoring exceedances of minimum deletion residual, if
+%                   init is not specified it set equal to:
+%                   p+1, if the sample size is smaller than 40;
+%                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                   Example - 'init',100 starts monitoring from step m=100
+%                   Data Types - double
+%   nocheck : Check input arguments. Scalar.
+%                    If nocheck is equal to 1 no check is performed on
+%                    matrix y and matrix X. Notice that y and X are left
+%                    unchanged. In other words the additional column of ones
+%                     for the intercept is not added. As default nocheck=0.
+%                   Example - 'nocheck',1
+%                   Data Types - double
+%    bivarfit :  Superimpose bivariate least square lines. Character.
+%                   This option adds one or more least square lines, based on
+%                   SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
+%                  bivarfit = ''
+%                   is the default: no line is fitted.
+%                  bivarfit = '1'
+%                   fits a single ols line to all points of each bivariate
+%                   plot in the scatter matrix y|X.
+%                  bivarfit = '2'
+%                   fits two ols lines: one to all points and another to
+%                   the group of the genuine observations. The group of the
+%                   potential outliers is not fitted.
+%                  bivarfit = '0'
+%                   fits one ols line to each group. This is useful for the
+%                   purpose of fitting mixtures of regression lines.
+%                  bivarfit = 'i1' or 'i2' or 'i3' etc.
+%                   fits an ols line to a specific group, the one with
+%                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
+%                   of mixtures.
+%                 Example - 'bivarfit',2
+%                 Data Types - char
+%       multivarfit : Superimpose multivariate least square lines. Character.
+%                   This option adds one or more least square lines, based on
+%                   MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
+%                 multivarfit = ''
+%                   is the default: no line is fitted.
+%                 multivarfit = '1'
+%                   fits a single ols line to all points of each bivariate
+%                   plot in the scatter matrix y|X. The line added to the
+%                   scatter plot y|Xi is avconst + Ci*Xi, where Ci is the
+%                   coefficient of Xi in the multivariate regression and
+%                   avconst is the effect of all the other explanatory
+%                   variables different from Xi evaluated at their centroid
+%                   (that is overline{y}'C))
+%                 multivarfit = '2'
+%                   equal to multivarfit ='1' but this time we also add the
+%                   line based on the group of unselected observations
+%                   (i.e. the normal units).
+%                 Example - 'multivarfit','1'
+%                 Data Types - char
+%      labeladd : Add outlier labels in plot. Character.
+%                 If this option is '1',  we label the outliers with the
+%                 unit row index in matrices X and y. The default value is
+%                 labeladd='', i.e. no label is added.
+%                 Example - 'labeladd','1'
+%                 Data Types - char
+%       nameX  :  Add variable labels in plot. Cell array of strings.
+%                 cell array of strings of length p containing the labels of
+%                 the variables of the regression dataset. If it is empty
+%                 (default) the sequence X1, ..., Xp will be created
+%                 automatically
+%                 Example - 'nameX',{'NameVar1','NameVar2'}
+%                 Data Types - cell
+%       namey  :  Add response label. Character.
+%               character containing the label of the response
+%               Example - 'namey','NameOfResponse'
+%               Data Types - char
+%       ylim   :   Control y scale in plot. Vector.
+%                   vector with two elements controlling minimum and maximum
+%                 on the y axis. Default value is '' (automatic scale)
+%               Example - 'ylim','[0,10]' sets the minim value to 0 and the
+%               max to 10 on the y axis
+%               Data Types - double
+%       xlim   :   Control x scale in plot. Vector.
+%                  vector with two elements controlling minimum and maximum
+%                 on the x axis. Default value is '' (automatic scale)
+%               Example - 'xlim','[0,10]' sets the minim value to 0 and the
+%               max to 10 on the x axis
+%               Data Types - double
+%      bonflev  : Signal to use to identify outliers. Scalar.
+%                   option to be used if the distribution of the data is
+%                 strongly non normal and, thus, the general signal
+%                 detection rule based on consecutive exceedances cannot be
+%                 used. In this case bonflev can be:
+%                 - a scalar smaller than 1 which specifies the confidence
+%                   level for a signal and a stopping rule based on the
+%                   comparison of the minimum MD with a
+%                   Bonferroni bound. For example if bonflev=0.99 the
+%                   procedure stops when the trajectory exceeds for the
+%                   first time the 99% bonferroni bound.
+%                 - A scalar value greater than 1. In this case the
+%                   procedure stops when the residual trajectory exceeds
+%                   for the first time this value.
+%                 Default value is '', which means to rely on general rules
+%                 based on consecutive exceedances.
+%               Example - 'bonflev',0.99
+%               Data Types - double
+%       msg    :  Level of output to display. Scalar.
+%               scalar which controls whether to display or not messages
+%                 on the screen
+%                 If msg==1 (default) messages are displayed on the screen about
+%                   step in which signal took place and ....
+%                 else no message is displayed on the screen
+%               Example - 'msg',1
+%               Data Types - double
 %
 %
 % Output:
@@ -97,7 +259,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %           yci  : Confidence intervals. A two-column matrix with each row providing
 %                  one interval. 
 %
-% See also: FSR
+% See also: FSRB, FSR
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -110,6 +272,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 % Examples:
 %
 %{
+        %% Example of FSRB for international trade data.
         % Bayesian FS to fit the group of undervalued flows.
         load('fishery');
         X = fishery.data(:,1);

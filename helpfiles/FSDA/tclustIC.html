@@ -46,10 +46,10 @@ MIXMIX (BIC)
                  c_1                 c_2                 c_4                 c_8                 c_16                c_32                c_64               c_128      
            ________________    ________________    ________________    ________________    ________________    ________________    ________________    ________________
     k=1    1475.67453427899    1407.22885175685    1355.99547019444     1342.7743432537    1342.95468864477     1343.0426059045    1343.08603271564    1343.10761687117
-    k=2    1245.50458776692    1133.23787732571    1040.55869899625    982.038897531286    950.920284720471    943.204022363999    943.318509957943    943.415352731664
-    k=3    810.314495851936    790.663619334455    785.854398742156     788.47107558716    789.925279484971    790.646274136045    791.005312454654    791.184474786438
-    k=4    812.152447067811    802.195995066478    805.903001640955    804.482933959708    800.497407110116    799.543907057213    800.200013946818    799.872857843444
-    k=5    815.501423889717    820.431285329632     827.23048796409    824.741129715507     817.34666659321    816.204895070611    817.820471444495    818.832520945516
+    k=2    1245.50458776786    1133.23787732571    1040.55869899625    982.038897531286    950.920284720472    943.204022363999    943.318509957944    943.415352731664
+    k=3    810.314495851936    790.663619334455    785.854398742156    788.471075587161    789.925279484971    790.646274136045    791.005312454655    791.184474786438
+    k=4    812.152586342798    802.184017381487    805.929492309173    804.071712282952    801.285500902617    799.338471294177    799.442895073812    800.765284931563
+    k=5     815.46699623897     820.57762612506    827.137927938222    824.189934118607    816.685358545807    815.077593062731    820.275151888218    816.519125924373
 Smallest value of IC is 785.8544 and takes place for
 k=3 and  c=4
 </pre><img vspace="5" hspace="5" src="images\tclustIC_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclustIC_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustIC_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Automatic choice of k in an example with 3 components and prefixed overlap.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -96,7 +96,19 @@ k=3 and  c=4
         xlabel('Restr. fact. $c$','Interpreter','Latex')
         title(['k=' num2str(j)])
     end
-    suplabel('BIC (MIXMIX)','t')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containining n observations on v variables
+    suplabel('BIC (MIXMIX)','t')</pre></div></div><pre class="codeoutput">ans = 
+  Axes (suplabel) with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [1x4 double]
+            Units: 'normalized'
+
+  Use GET to show all properties
+</pre><img vspace="5" hspace="5" src="images\tclustIC_04.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containining n observations on v variables
                Rows of Y represent observations, and columns represent
                variables </span>  </a><span class="example_desc">Observations (rows) with missing (NaN) or or
                infinite (Inf) values will automatically be excluded from

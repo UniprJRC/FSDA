@@ -320,6 +320,7 @@ for k=1:length(kk) % loop for different values of k (number of groups)
     end
 end
 
+out=struct;
 
 if typeIC==2 || typeIC==3
     [MIXMIXbs,MIXMIXbsari]=findBestSolutions(IC.MIXMIX,ARIMIX,IC.IDXMIX,kk,cc,NumberOfBestSolutions,ThreshRandIndex,msg);
