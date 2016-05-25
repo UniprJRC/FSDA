@@ -53,16 +53,15 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('CreateHTLMfunctionAlpha')">Link to the help function</a>
+%<a href="matlab: docsearchFS('publishFunctionAlpha')">Link to the help function</a>
 % Last modified 06-Feb-2015
 %
 % Examples:
 %
 %
 %{
-    % Creation of file containing alphabetical list of functions
-    % make sure you are inside the main folder of FSDA.
-    % create contents file for each .m file
+    % Creation of file containing alphabetical list of functions.
+    % Create contents file for each .m file
     % findDir with optional arguments 'InclDir' and 'ExclDir'.
     FileName='addFSDA2path';
     FullPath=which(FileName);
@@ -82,6 +81,33 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
     outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-alpha.html'];
     web(outputOFHtmlHelpFile,'-browser');
 %}
+
+%{
+    % Creation of txt file.
+    % File function-alpha.txt is created which contains, the
+    % names of the files (separated by commas), inside
+    % folder (main root of FSDA)\helpfiles\FSDA.
+    % Create contents file for each .m file
+    % findDir with optional arguments 'InclDir' and 'ExclDir'.
+    FileName='addFSDA2path';
+    FullPath=which(FileName);
+    FSDAroot=FullPath(1:end-length(FileName)-3);
+    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
+    'examples' 'utilities' 'utilities_stat'};
+    ExclDir={'privateFS'  'datasets'};
+    list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)
+    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);
+    cd(fileparts(which('docsearchFS.m')))
+    % Create HTML file containing alphabetical list of functions
+    fstring=publishFunctionAlpha(out,'CreateTxtFile',true);
+    % open outfile txt in web browser
+    FileWithFullPath=which('docsearchFS.m');
+    [pathFSDAstr]=fileparts(FileWithFullPath);
+    fsep=filesep;
+    outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-alpha.txt'];
+    web(outputOFHtmlHelpFile,'-browser');
+%}
+
 
 %% Beginning of code
 % % Use file separator of current operating system

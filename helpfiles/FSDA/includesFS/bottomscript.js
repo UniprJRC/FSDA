@@ -1,5 +1,5 @@
 // this script manages the bottom bar behavior
-// plz. note that: 'function_list.txt' should be put in folder (...)\helpfiles\FSDA
+// plz. note that: 'function-alpha.txt' should be put in folder (...)\helpfiles\FSDA
 // 				   'bottomscript.js'   should be put in folder (...)\helpfiles\FSDA\includeFS
 // 				   'bottom.html'       should be put in folder (...)\helpfiles\FSDA\includeFS
 var stuff;
@@ -10,7 +10,7 @@ var mess;
 fname=document.location.pathname.match(/[^\/]+$/)[0];
 
 // load the file list and store the big string in a variable by a callback f(x)='function(stuff)'
-$.get('function_alpha.txt', function(stuff){
+$.get('function-alpha.txt', function(stuff){
 
 // define new blank array and...
 var fileArray = new Array();
