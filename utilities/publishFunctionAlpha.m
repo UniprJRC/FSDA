@@ -46,7 +46,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %                letter. The HTML file function-alpha.html also produced inside
 %                folder (main root of FSDA)\helpfiles\FSDA
 %
-% See also:    CreateHTLMfunctioncate.m, publishFS.m
+% See also:    publishFunctionCate.m, publishFS.m
 %
 %
 % Copyright 2008-2015.

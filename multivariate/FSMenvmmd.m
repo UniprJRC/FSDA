@@ -35,7 +35,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %   scaled:  It indicates how to compute the envelopes. Scalar. 
 %               If scaled=1 the envelopes are produced for
 %               scaled Mahalanobis distances (no consistency factor is
-%               applied) else the traditional consistency factor is applies
+%               applied) else the traditional consistency factor is applied
 %               (this is the default)
 %                 Example - 'scaled',0 
 %                 Data Types - double

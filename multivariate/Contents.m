@@ -3,12 +3,12 @@
 % File names, description, category and date last modified
 %
 %   Name             - Description                                                                              - Category            - Date last modified
-%--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %   FSM              - Gives an automatic outlier detection procedure in mult. analysis                         - MULT-Multivariate   - 2016 May 25
 %   FSMbbm           - Gives the units belonging to subset at step(s) msel of the forward search                - MULT-Multivariate   - 2016 May 09
 %   FSMbsb           - Gives the units belonging to subset at step(s) msel of the forward search                - MULT-Multivariate   - 2016 May 20
 %   FSMeda           - Performs forward search in multivariate analysis with exploratory data analysis purposes - MULT-Multivariate   - 2016 May 09
-%   FSMenvmmd        - Computes the theoretical envelopes of Minimum MD outside subset during the search        - MULT-Multivariate   - 2016 May 25
+%   FSMenvmmd        - Computes the theoretical envelopes of Minimum MD outside subset during the search        - MULT-Multivariate   - 2016 May 26
 %   FSMfan           - Computes confirmatory lrt of a suggested transformation                                  - MULT-Transformations- 2016 May 23
 %   FSMinvmmd        - Converts values of minimum Mahalanobis distance into confidence levels                   - MULT-Multivariate   - 2016 May 25
 %   FSMmmd           - Monitors minMD                                                                           - MULT-Multivariate   - 2016 May 16

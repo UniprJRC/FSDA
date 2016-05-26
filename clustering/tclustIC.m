@@ -331,10 +331,8 @@ function out  = tclustIC(Y,varargin)
 
     % Automatic choice of k
     out=tclustIC(Y,'cleanpool',false,'plots',1,'nsamp',100);
-%}
 
-%{
-    %% Plot of MIXMIX as function of c given k.
+    % Plot of MIXMIX as function of c given k.
     figure('units','normalized','outerposition',[0 0 1 1])
     % Specify whether to use the same y scale for ALL plots
     samescale=1;

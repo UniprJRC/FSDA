@@ -1,5 +1,5 @@
 function Xwins = winsor(X, p, dim)
-%winsor returns a copy of X in which all entries smaller than the p(1) quantile have been replaced by this value and likewise for all entries larger than the p(2) quantile.
+%winsor returns a winsorized copy of input 
 %
 % Measurement data often contains "outliers," sample points rather far
 % outside the range containing the majority of the points. While expected

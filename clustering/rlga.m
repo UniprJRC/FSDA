@@ -95,7 +95,7 @@ biterdef=ceil(log(1-p)/log(1-nchoosekFS(n1,d)^k/nchoosekFS(n1*k,k*d)));
 niterdef=10;
 
 options=struct('biter',biterdef,'niter',niterdef,'showall',false,...
-    'stand',true,'nnode','','silent',false,'plots',1);
+    'stand',true,'silent',false,'plots',1);
 
 % Write in structure 'options' the options chosen by the user
 for i=1:2:length(varargin);

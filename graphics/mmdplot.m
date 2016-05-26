@@ -127,15 +127,15 @@ function mmdplot(out,varargin)
 %                   Remark: if databrush is a struct, it is possible to
 %                   specify all optional arguments of function selectdataFS
 %                   inside the curly brackets of option databrush.
-%       Fontsize:   Size of axes labels. Scalar. Scalar which controls the
+%       FontSize:   Size of axes labels. Scalar. Scalar which controls the
 %                   fontsize of the labels of the axes. Default value is 12
-%                   Example - 'Fontsize',14
+%                   Example - 'FontSize',14
 %                   Data Types - single | double
 %    SizeAxesNum:   Size of axes numbers. Scalar which controls the fontsize of the numbers of
 %                   the axes. Default value is 10
 %                   Example - 'SizeAxesNum',14
 %                   Data Types - single | double
-%       nameX   :   Regressors names. Cell array of strings. Cell array of
+%       nameY   :   Regressors names. Cell array of strings. Cell array of
 %                   strings of length v containing the labels
 %                   of the varibales of the original data matrix. If it is empty
 %                 	(default) the sequence Y1, ..., Yp will be created
@@ -156,7 +156,13 @@ function mmdplot(out,varargin)
 %       laby    :   y axis title. Character. A label for the y-axis (default: 'Minimum Mahalnobis distance')
 %                   Example - 'laby','mmd'
 %                   Data Types - char 
-%
+%        scaled :   scaled or unscaled envelopes. Boolean. Use reference envelopes scaled or unscaled).
+%                   If scaled=1 the envelopes are produced for
+%                   scaled Mahalanobis distances (no consistency factor is
+%                   applied) else the traditional consistency factor is applied
+%                   Default is to use unscaled envelopes
+%                   Example - 'scaled',0
+%                   Data Types - char 
 %
 % Output: 
 %

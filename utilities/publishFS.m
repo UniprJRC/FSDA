@@ -48,7 +48,7 @@ function out=publishFS(file,varargin)
 %             specified images will be save into the same folder of the
 %             HTML output file
 %             Remark - imagesDir must be a valid path.
-%             Example - 'outputDir','C:'
+%             Example - 'imagesDir','C:'
 %             Data Types - string
 % evalCode :  Option to run code. Logical. Option to evaluate code of the
 %             examples in the input .m files enclosed in tags "%{" "%}" whose
@@ -673,7 +673,7 @@ imagesDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
 
 
 if nargin>1
-    options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir);
+    options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir,'imagesDir',imagesDir);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -694,13 +694,13 @@ if nargin>1
     evalCode=options.evalCode;
     outputDir=options.outputDir;
     Display=options.Display;
-    checkimageDir = strcmp(UserOptions,'imageDir');
+    checkimageDir = strcmp(UserOptions,'imagesDir');
     checkoutputDir = strcmp(UserOptions,'outputDir');
     
     if sum(checkimageDir)==0 && sum(checkoutputDir)==1
         imagesDir=outputDir;
     elseif sum(checkimageDir)==1 && sum(checkoutputDir)==1
-        imagesDir=options.imageDir;
+        imagesDir=options.imagesDir;
     else
     end
 end
@@ -976,6 +976,7 @@ aftermetacontent=['." itemprop="description" name="description" />\r'...
     '<script type="text/javascript" src="includesFS/jquery-latest.js"></script>\r'...
     '<script>\r'...
     '$(document).ready(function(){\r'...
+    '      $("#div002").load("includesFS/top.html");\r'...
     '      $("#div001").load("includesFS/bottom.html");\r'...
     '});\r'...
     '</script>\r'...
@@ -1064,6 +1065,8 @@ insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="10
     '<img align="bottom" alt="score" border="0" src="images_help/b_next.gif"></a></td>\r'...
     '</tr>\r'...
     '</table>'])];
+
+insnav=sprintf('<div id="div002"></div>');
 
 
 
@@ -3252,7 +3255,11 @@ if evalCode ==1
                 findBegFileNameString=regexp(WhereToSearch,['\w*=\s*' name]);
                 findEndFileNameString=regexp(WhereToSearch,['=\s*' name]);
                 if size(listOutArgs,1)==1
-                    varToSearch=strtrim(WhereToSearch(findBegFileNameString(1):findEndFileNameString(1)-1));
+                    try
+                        varToSearch=strtrim(WhereToSearch(findBegFileNameString(1):findEndFileNameString(1)-1));
+                    catch
+                        varToSearch='';
+                    end
                 else
                     varToSearch='';
                 end
@@ -3286,7 +3293,9 @@ if evalCode ==1
                     OutputProduced='';
                 end
                 if ~isempty(OutputProduced)
-                    disp(['Analysis of output argument: ''' listouti ''''])
+                    if strcmp(Display,'iter-detailed')
+                        disp(['Analysis of output argument: ''' listouti ''''])
+                    end
                     OutiMisMatch=CompareDescribedUsed(OutputDescribed,OutputProduced);
                     if size(OutiMisMatch,1)>1
                         OutArgsMisMatch{ik+1,1}=listouti;

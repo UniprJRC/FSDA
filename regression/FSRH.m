@@ -137,10 +137,10 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100 
 %               Data Types - double
-%       scoring:  Algorithm to be used. Scalar.
-%                 if scoring=1 a scoring algorithm is executed, if scoring=0,
-%                 standard algorithm is executed.
-%               Example - 'scoring',1 
+%    gridsearch:  Algorithm to be used. Scalar.
+%                   If gridsearch ==1 grid search will be used else (default) the
+%               scoring algorith will be used.
+%               Example - 'gridsearch',1 
 %               Data Types - double
 %       nocheck : Check input arguments. Scalar.
 %                 If nocheck is equal to 1 no check is performed on

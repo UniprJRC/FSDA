@@ -1,0 +1,365 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title></title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-05-25"><meta name="DC.source" content=".m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Ex3</a></li><li><a href="#2">ExExtra1</a></li><li><a href="#3">ExExtra2</a></li><li><a href="#4">ExExtra3</a></li><li><a href="#5">ExExtra4</a></li><li><a href="#6">ExExtra5</a></li><li><a href="#7">ExExtra6</a></li><li><a href="#8">ExExtra7</a></li><li><a href="#9">ExExtra8</a></li><li><a href="#10">ExExtra9</a></li><li><a href="#11">ExExtra11</a></li><li><a href="#12">ExExtra12</a></li><li><a href="#13">ExExtra13</a></li><li><a href="#14">ExExtra14</a></li><li><a href="#15">ExExtra15</a></li></ul></div><h2>Ex3<a name="1"></a></h2><pre class="codeinput">    n=300;
+    noisevars=0;
+    noiseunits=3000;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from uniform'</span>)
+</pre><pre class="codeoutput error">Reference to non-existent field 'Pi'.
+Error in simdatasettmp (line 5)
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);</pre><h2>ExExtra1<a name="2"></a></h2><pre class="codeinput">    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    <span class="comment">% Add asymmetric very concentrated noise</span>
+    noiseunits.typeout={<span class="string">'Chisquare5'</span>};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from $\chi^2_5$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra2<a name="3"></a></h2><pre class="codeinput">    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    <span class="comment">% Add asymmetric concentrated noise</span>
+    noiseunits.typeout={<span class="string">'Chisquare40'</span>};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from $\chi^2_{40}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra3<a name="4"></a></h2><pre class="codeinput">    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    <span class="comment">% Add normal noise</span>
+    noiseunits.typeout={<span class="string">'normal'</span>};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from normal distribution'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra4<a name="5"></a></h2><pre class="codeinput">    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    <span class="comment">% Add outliers from T5</span>
+    noiseunits.typeout={<span class="string">'T5'</span>};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from Student T with 5 degrees if freedom'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra5<a name="6"></a></h2><pre class="codeinput">    n=300;
+    noisevars=<span class="string">''</span>;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    <span class="comment">% Add asymmetric concentrated noise</span>
+    noiseunits.typeout={<span class="string">'componentwise'</span>};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with component wise outliers'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra6<a name="7"></a></h2><pre class="codeinput">    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=5000*ones(2,1);
+    noiseunits.typeout={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra7<a name="8"></a></h2><pre class="codeinput">    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=5000*ones(2,1);
+    noiseunits.typeout={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
+    noiseunits.alpha=0.2;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra8<a name="9"></a></h2><pre class="codeinput">    noisevars=struct;
+    noisevars.number=1;
+    noiseunits=struct;
+    noiseunits.number=[100 100];
+    noiseunits.typeout={<span class="string">'pointmass'</span> <span class="string">'Chisquare5'</span>};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra9<a name="10"></a></h2><pre class="codeinput">    noiseunits=struct;
+    noiseunits.number=1000;
+    noiseunits.typeout={<span class="string">'uniform'</span>};
+    <span class="comment">% Generate outliers in the interval [-1 1] for the first variable and</span>
+    <span class="comment">% interval [1 2] for the second variable</span>
+    noiseunits.interval=[-1 1;
+                         1 2];
+    <span class="comment">% Finally add a noise variable</span>
+    noisevars=struct;
+    noisevars.number=1;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups with outliers from uniform using a personalized interval $+1$ noise var'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra11<a name="11"></a></h2><pre class="codeinput">    n=300;
+    noisevars=struct;
+    noisevars.number=[2 3];
+    noisevars.distribution={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
+    noiseunits=<span class="string">''</span>;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id,[],<span class="string">'box'</span>);
+    title(<span class="string">'4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra12<a name="12"></a></h2><pre class="codeinput">    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={<span class="string">'Chisquare3'</span>,<span class="string">'T2'</span>};
+    noiseunits=<span class="string">''</span>;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra13<a name="13"></a></h2><pre class="codeinput">    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
+    noisevars.interval=<span class="string">'minmax'</span>;
+    noiseunits=<span class="string">''</span>;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups in 2 dims with 3 noise variables with ''minimax'' interval'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra14<a name="14"></a></h2><pre class="codeinput">    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
+    noiseunits=<span class="string">''</span>;
+    <span class="comment">% In this example we supply min and max for each noise variable</span>
+    v1=sum(noisevars.number);
+    noisevars.interval=[3*ones(1,v1); 10*ones(1,v1)];
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(X,id);
+    title(<span class="string">'4 groups in 2 dims with 3 noise variables with personalized interval'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
+</pre><h2>ExExtra15<a name="15"></a></h2><pre class="codeinput">    load <span class="string">fisheriris</span>;
+    Y=meas;
+    Mu=grpstats(Y,species);
+
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
+
+    pigen=ones(3,1)/3;
+    <span class="comment">% Add 100 outliers and specify a very small value of alpha</span>
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=100;
+    noiseunits.alpha=0.000001;
+    <span class="comment">% In this case the first argument which is supplied to simdataset is</span>
+    <span class="comment">% the original matrix X</span>
+    [Ywithnoise,id]=simdataset(Y, pigen, Mu, S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    spmplot(Ywithnoise,id,[],<span class="string">'box'</span>);
+    title(<span class="string">'4 groups with outliers from uniform'</span>)
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Ex3
+    n=300;
+    noisevars=0;
+    noiseunits=3000;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from uniform')%% ExExtra1
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    % Add asymmetric very concentrated noise
+    noiseunits.typeout={'Chisquare5'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_5$','Interpreter','Latex')%% ExExtra2
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    % Add asymmetric concentrated noise
+    noiseunits.typeout={'Chisquare40'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')%% ExExtra3
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    % Add normal noise
+    noiseunits.typeout={'normal'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from normal distribution','Interpreter','Latex')%% ExExtra4
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=3000;
+    % Add outliers from T5
+    noiseunits.typeout={'T5'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from Student T with 5 degrees if freedom','Interpreter','Latex')%% ExExtra5
+    n=300;
+    noisevars='';
+    noiseunits=struct;
+    noiseunits.number=3000;
+    % Add asymmetric concentrated noise
+    noiseunits.typeout={'componentwise'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with component wise outliers','Interpreter','Latex')%% ExExtra6
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=5000*ones(2,1);
+    noiseunits.typeout={'Chisquare3','T20'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')%% ExExtra7
+    n=300;
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=5000*ones(2,1);
+    noiseunits.typeout={'Chisquare3','T20'};
+    noiseunits.alpha=0.2;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$','Interpreter','Latex')%% ExExtra8
+    noisevars=struct;
+    noisevars.number=1;
+    noiseunits=struct;
+    noiseunits.number=[100 100];
+    noiseunits.typeout={'pointmass' 'Chisquare5'};
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')%% ExExtra9
+    noiseunits=struct;
+    noiseunits.number=1000;
+    noiseunits.typeout={'uniform'};
+    % Generate outliers in the interval [-1 1] for the first variable and
+    % interval [1 2] for the second variable
+    noiseunits.interval=[-1 1;
+                         1 2];
+    % Finally add a noise variable
+    noisevars=struct;
+    noisevars.number=1;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')%% ExExtra11
+    n=300;
+    noisevars=struct;
+    noisevars.number=[2 3];
+    noisevars.distribution={'Chisquare3','T20'};
+    noiseunits='';
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id,[],'box');
+    title('4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$','Interpreter','Latex')%% ExExtra12
+    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={'Chisquare3','T2'};
+    noiseunits='';
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$','Interpreter','Latex')%% ExExtra13
+    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={'Chisquare3','T20'};
+    noisevars.interval='minmax';
+    noiseunits='';
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups in 2 dims with 3 noise variables with ''minimax'' interval','Interpreter','Latex')%% ExExtra14
+    n=300;
+    noisevars=struct;
+    noisevars.number=[1 2];
+    noisevars.distribution={'Chisquare3','T20'};
+    noiseunits='';
+    % In this example we supply min and max for each noise variable
+    v1=sum(noisevars.number);
+    noisevars.interval=[3*ones(1,v1); 10*ones(1,v1)];
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')%% ExExtra15
+    load fisheriris;
+    Y=meas;
+    Mu=grpstats(Y,species);
+
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
+
+    pigen=ones(3,1)/3;
+    % Add 100 outliers and specify a very small value of alpha
+    noisevars=0;
+    noiseunits=struct;
+    noiseunits.number=100;
+    noiseunits.alpha=0.000001;
+    % In this case the first argument which is supplied to simdataset is
+    % the original matrix X
+    [Ywithnoise,id]=simdataset(Y, pigen, Mu, S,'noisevars',noisevars,'noiseunits',noiseunits);
+    spmplot(Ywithnoise,id,[],'box');
+    title('4 groups with outliers from uniform')
+##### SOURCE END #####
+--></body></html>

@@ -1,5 +1,9 @@
 function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
-%HYPk computes breakdown point and efficiency associated with constant k=sup CVC for hyperbolic tangent estimator (for a given value of c)
+%HYPk computes breakdown point and efficiency for hyp. tan. estimator
+%
+% This function computes the breakdown point and efficiency associated with
+% constant k=sup CVC for hyperbolic tangent estimator (for a given value of
+% c)
 %
 %
 %<a href="matlab: docsearchFS('HYPk')">Link to the help function</a>

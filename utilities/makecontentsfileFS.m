@@ -153,7 +153,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
-    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',true)
+    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',true,'printOutputCell','Contents.m')
 %}
 
 
@@ -215,6 +215,16 @@ iout=1;
 Excluded=out;
 iExcluded=1;
 
+
+    % Find for all file in all required subfolder:
+    % maximal name length of a file
+    % maximal length of a file category
+    % maximal length of a file description
+    maxNameLenAll=0;
+    maxCategoryLenAll = 0;
+    maxDescriptionLenAll=0;
+
+
 for j=1:ldirpath
     
     if iscell(dirpath)
@@ -244,12 +254,16 @@ for j=1:ldirpath
     % Sort files in alphabetical order
     [~,sortIndex] = sort(lower({d.name}));
     d = d(sortIndex);
+
     
+    % For each particulat folder find:
+    % maximal name length of a file
+    % maximal length of a file category
+    % maximal length of a file description
     % maxNameLen is linked to the maximal name length of a file
     maxNameLen = 0;
     % maxDescriptionLen is linked to the maximal length of a file category
     maxCategoryLen = 0;
-    
     % maxDescriptionLen is linked to the maximal length of a file description
     maxDescriptionLen=0;
     
@@ -278,17 +292,24 @@ for j=1:ldirpath
             maxDescriptionLen= max(length(d(i).description), maxDescriptionLen);
         end
     end
+    
+        maxNameLenAll=max(maxNameLenAll,maxNameLen);
+    maxCategoryLenAll = max(maxCategoryLenAll,maxCategoryLen);
+    maxDescriptionLenAll=max(maxDescriptionLenAll,maxDescriptionLen);
+
+    
     d(killIndex) = [];
     
     maxNameLenStr = num2str(maxNameLen);
     maxCategoryLenStr = num2str(maxCategoryLen);
     maxDescriptionLenStr = num2str(maxDescriptionLen);
-    
-    try
+
+        maxNameLenAllStr = num2str(maxNameLenAll);
+    maxCategoryLenAllStr = num2str(maxCategoryLenAll);
+    maxDescriptionLenAllStr = num2str(maxDescriptionLenAll);
+
     dout=struct2cell(d)';
-    catch
-        dddd=1;
-    end
+ 
     % dout(:,1)= name of the file (with extension)
     % dout(:,2)= date (in local format)
     % dout(:,3)= size ()
@@ -340,7 +361,7 @@ for j=1:ldirpath
         
         fprintf(fid,['%%   %-' maxNameLenStr 's - %-' maxDescriptionLenStr 's - %-' maxCategoryLenStr 's- %s%s'], ...
             'Name', 'Description','Category', 'Date last modified', lineSep);
-        fprintf(fid,'%%--------------------------------------------------------------------------------------------------------------------------------------------------------------------%s', lineSep);
+        fprintf(fid,'%%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%s', lineSep);
         
         % date of last modified file in required format
         date=datestr(cell2mat(dout(:,5)),'yyyy mmm dd');
@@ -379,9 +400,9 @@ if ~isempty(printOutputCell)
         
         fprintf(fid,['%%' lineSep]);
         
-        fprintf(fid,['%%   %-' maxNameLenStr 's - %-' maxDescriptionLenStr 's - %-' maxCategoryLenStr 's- %s%s'], ...
+        fprintf(fid,['%%   %-' maxNameLenAllStr 's - %-' maxDescriptionLenAllStr 's - %-' maxCategoryLenAllStr 's- %s%s'], ...
             'Name', 'Description','Category', 'Date last modified', lineSep);
-        fprintf(fid,'%%--------------------------------------------------------------------------------------------------------------------------------------------------------------------%s', lineSep);
+        fprintf(fid,'%%-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%s', lineSep);
         
         % date of last modified file in required format
         date=datestr(cell2mat(out(:,5)),'yyyy mmm dd');
@@ -389,7 +410,7 @@ if ~isempty(printOutputCell)
         for i = 1:size(out,1)
             %            fprintf(fid,['%%   %-' maxNameLenStr 's - %-' maxDescriptionLenStr 's - %-' maxCategoryLenStr 's- %s%s'], ...
             %                d(i).mfilename, d(i).description,d(i).category, date(i,:), lineSep);
-            fprintf(fid,['%%   %-' maxNameLenStr 's - %-' maxDescriptionLenStr 's - %-' maxCategoryLenStr 's- %s%s'], ...
+            fprintf(fid,['%%   %-' maxNameLenAllStr 's - %-' maxDescriptionLenAllStr 's - %-' maxCategoryLenAllStr 's- %s%s'], ...
                 out{i,6}, out{i,7},out{i,8}, date(i,:), lineSep);
         end
         fclose(fid);

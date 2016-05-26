@@ -380,10 +380,11 @@ while cont==1 && iter<maxiter
         disp(newgamma)
         if test==1
             disp('Tests')
-            disp(['Likelihood ratio test    (LR)=' num2str(LR)])
-            disp(['Lagrange multiplier test (LM)=' num2str(LM)])
-            disp(['Wald test                (Wa)=' num2str(WA)])
-            disp(['Complete maximized log likelihood=' num2str(LogL)])
+%TODO
+%             disp(['Likelihood ratio test    (LR)=' num2str(LR)])
+%             disp(['Lagrange multiplier test (LM)=' num2str(LM)])
+%             disp(['Wald test                (Wa)=' num2str(WA)])
+%             disp(['Complete maximized log likelihood=' num2str(LogL)])
         end
     end
     
@@ -531,7 +532,7 @@ end
 
 % The two lines below are temporary just to have the connection with power
 % model
-out.alphaOLD=out.Gamma(end,1);
-out.GammaOLD=exp(out.Gamma(1,1));
+% out.alphaOLD=out.Gamma(end,1);
+% out.GammaOLD=exp(out.Gamma(1,1));
 end
 %FScategory:REG-Hetero
