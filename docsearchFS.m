@@ -40,18 +40,46 @@ else
     namehtmlhelpfile = '';
 end
 
+a=ver('matlab');
 
-if isempty(namehtmlhelpfile)
-    web([docroot '/FSDA/index.html'])
-else
+if str2double(a.Version)>7.14
     
-    [~,~,ext]=fileparts(namehtmlhelpfile);
-    
-    if isempty(ext)
-        namehtmlhelpfile=[namehtmlhelpfile '.html'];
-    elseif strcmp(ext,'html')==0
-        error('FSDA:docsearchFS','Wrong file extension')
+    if isempty(namehtmlhelpfile)
+        web([docroot '/FSDA/index.html'])
+    else
+        
+        [~,~,ext]=fileparts(namehtmlhelpfile);
+        
+        if isempty(ext)
+            namehtmlhelpfile=[namehtmlhelpfile '.html'];
+        elseif strcmp(ext,'html')==0
+            error('FSDA:docsearchFS','Wrong file extension')
+        end
+        web([docroot '/FSDA/' namehtmlhelpfile])
     end
-    web([docroot '/FSDA/' namehtmlhelpfile])
+    
+else
+    % If installed version of MATLAB is 2012a or older, matlab function web
+    % is called
+    FileWithFullPath=which('docsearchFS.m');
+    [pathFSDAstr]=fileparts(FileWithFullPath);
+    fsep=filesep;
+    
+    if isempty(namehtmlhelpfile)
+        outputOFHtmlHelpFile=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA\index.html'];
+        web(outputOFHtmlHelpFile);
+        
+    else
+        [~,~,ext]=fileparts(namehtmlhelpfile);
+        if isempty(ext)
+            outputOFHtmlHelpFile=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' filesep namehtmlhelpfile '.html'];
+        else
+            outputOFHtmlHelpFile=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' filesep namehtmlhelpfile];
+        end
+        web(outputOFHtmlHelpFile);
+    end
+    
+    
 end
+
 end
