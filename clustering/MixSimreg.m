@@ -498,22 +498,19 @@ if k<=1
     error('FSDA:MixSimreg:Wrongk','Wrong number of mixture components k')
 end
 
-Rseeddef = 0;
 BarOmegadef = '';
 MaxOmegadef = 0.15;
 StdOmegadef = '';
-eccdef      = 0.9;
 PiLowdef    = 0;
-intdef      = [0 1];
 resNdef     = 100;
 toldef      = [1e-06; 1e-06];
 limdef      = 1e06;
 restrfactordef='';
 
-options=struct('R_seed', Rseeddef, 'BarOmega',BarOmegadef,'MaxOmega',MaxOmegadef,...
+options=struct( 'BarOmega',BarOmegadef,'MaxOmega',MaxOmegadef,...
     'StdOmega',StdOmegadef, 'Display', 'notify', ...
-    'sph',false,'hom',false,'ecc',eccdef,'PiLow',PiLowdef,'betadistrib', 1,'Xdistrib',1, ...
-    'int',intdef,'resN',resNdef,'tol',toldef,'lim',limdef,'restrfactor',restrfactordef);
+    'hom',false,'PiLow',PiLowdef,'betadistrib', 1,'Xdistrib',1, ...
+    'resN',resNdef,'tol',toldef,'lim',limdef,'restrfactor',restrfactordef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -552,7 +549,6 @@ end
 
 % Default values for the optional parameters are set inside structure
 % 'options'
-int=options.int;
 
 rcMax  = [0 0];
 
@@ -568,7 +564,6 @@ tolmap    = options.tol(1);
 % linear combinations of non central chi2 distributions)
 tolncx2  = options.tol(2);
 hom      = options.hom;
-ecc      = options.ecc;
 PiLow    = options.PiLow;
 resN     = options.resN;
 lim      = options.lim;
@@ -766,17 +761,10 @@ if ~islogical(hom)
     error('FSDA:MixSimreg:Wronghom','option hom must be a logical value')
 end
 
-if ecc <= 0 || ecc > 1
-    error('FSDA:MixSimreg:Wrongecc','ecc must be a scalar in the interval (0 1]')
-end
-
 if PiLow < 0 || PiLow > 1
     error('FSDA:MixSimreg:WrongPiLow','Option PiLow must be in interval [0 1]')
 end
 
-if int(1) >= int(2)
-    error('FSDA:MixSimreg:Wrongint','Second element of int must be greater than first, that is: int(2) >int(1)')
-end
 
 if resN < 1
     error('FSDA:MixSimreg:WrongresN','Number of resimulations cannot be smaller than 1')
