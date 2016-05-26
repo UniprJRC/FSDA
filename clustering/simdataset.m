@@ -33,13 +33,13 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Required input arguments:
 %
-%         n   : sample size or input matrix. Scalar or matrix of size n-by-v. If n is a scalar it
+%         n   : sample size or input matrix. Scalar. Scalar or matrix of size n-by-v. If n is a scalar it
 %               is interpreted as the sample size of the dataset which must
 %               be simulated. On the other hand, if n is a n-by-v it is
 %               interpreted as a matrix of size n-by-v which has to be
 %               contaminated with optional input arguments 'noiseunits' and
-%               'noisevars'
-%  Pi : Mixin proportions. Vector. Vector of size k containing mixing
+%               'noisevars'.
+%  Pi : Mixing proportions. Vector. Vector of size k containing mixing
 %       proportions. The sum of the elements of Pi is 1. 
 %  Mu : centroids. Matrix. Matrix of size k-by-v containing (in the rows) the centroids of the
 %       k groups. 
@@ -49,7 +49,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Optional input arguments:
 %
-%   noiseunits : number of type of outlying observations. Missing value, scalar or structure. 
+%   noiseunits : number of type of outlying observations. Scalar or structure. Missing value, scalar or structure. 
 %                This input parameter specifies the number
 %                and type of outlying observations. The default value of
 %                noiseunits is 0.
@@ -115,7 +115,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                interval [-2 2] for each variable.
 %               Example - 'noiseunits', 10
 %               Data Types - double
-%    noisevars : Type of noise variables. Empty value, scalar or structure.
+%    noisevars : Type of noise variables. Scalar or structure. Empty value, scalar or structure.
 %                - If noisevars is not specified or is an empty value
 %                  (default) no noise variable is added to the matrix of
 %                  simulated data.
@@ -203,6 +203,19 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 % See also: MixSim
 %
+% References:
+%
+%   Maitra, R. and Melnykov, V. (2010). Simulating data to study performance
+%   of finite mixture modeling and clustering algorithms, The Journal of
+%   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
+%   this publication we will use "MM2010 JCGS")
+%
+%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package
+%   for Simulating Data to Study Performance of Clustering Algorithms,
+%   Journal of Statistical Software, 51:12, 1-25.
+%
+%   Davies, R. (1980) The distribution of a linear combination of
+%   chi-square random variables, Applied Statistics, 29, 323-333.
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -343,7 +356,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers from Chi2 + point mass contamination and add one noise variable.
+    %% Add outliers from Chi2 and point mass contamination and add one noise variable.
     noisevars=struct;
     noisevars.number=1;
     noiseunits=struct;
@@ -979,3 +992,4 @@ end
         end
     end
 end
+%FScategory:CLUS-MixSim

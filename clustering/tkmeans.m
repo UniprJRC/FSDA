@@ -14,49 +14,68 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %
 %  Required input arguments:
 %
-%     Y: Data matrix containining n observations on v variables
+%     Y: Input data. Matrix. Data matrix containining n observations on v
+%     variables.
 %        Rows of Y represent observations, and columns
 %        represent variables.
 %        Missing values (NaN's) and infinite values (Inf's) are allowed,
 %        since observations (rows) with missing or infinite values will
 %        automatically be excluded from the computations.
-%     k: scalar which specifies the number of groups
-% alpha: global trimming level. alpha is a scalar between 0 and 0.5. If
+%     k: number of groups. Scalar.
+% alpha: global trimming level. Scalar. alpha is a scalar between 0 and 0.5. If
 %        alpha=0 tkmeans reduces to kmeans
 %
 %  Optional input arguments:
 %
 %       nsamp : Number of subsamples which will be extracted to find the
-%               partition. If nsamp=0 all subsets will be extracted.
+%               partition. Integer. If nsamp=0 all subsets will be extracted.
 %               They will be (n choose k).
+%                 Example - 'nsamp',0 
+%                 Data Types - double
 %               Remark: if the number of all possible subset is <300 the
 %               default is to extract all subsets, otherwise just 300
-%    refsteps : scalar defining number of refining iterations in each
-%               subsample (default = 15).
-%     reftol  : scalar. Default value of tolerance for the refining steps
-%               The default value is 1e-14;
-%     weights : a dummy scalar, specifying whether cluster weights
+%    refsteps : number of refining iterations in each
+%               subsample (default = 15). Scalar.
+%                 Example - 'refsteps',20 
+%                 Data Types - double
+%     reftol  : Default value of tolerance for the refining steps. Scalar.
+%               The default value is 1e-14.
+%                 Example - 'reftol',0.0001 
+%                 Data Types - double
+%     weights :  cluster weights. Integer. A dummy scalar, specifying whether cluster weights
 %               (1) shall be considered in the concentration and
-%               assignment steps. Remark: if weights=1 in the assignment
+%               assignment steps. If weights=1 in the assignment
 %               step to the squared Euclidean distance of unit i to group j
-%               log n_j is substracted. The default is no cluster weights
-%       plots : Scalar or structure.
+%               log n_j is substracted. The default is no cluster weights.
+%                 Example - 'weights',1 
+%                 Data Types - double
+%       plots : plots generation. Scalar or structure.
 %               If plots = 1, a plot with the classification is
 %               shown on the screen.
+%                 Example - 'plots',1 
+%                 Data Types - double
 %        msg  : scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displayed
+%               on the screen. Scalar. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
-%               else no message is displayed on the screen
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix Y. 
+%               else no message is displayed on the screen.
+%                 Example - 'msg',1 
+%                 Data Types - double
+%      nocheck:  If nocheck is equal to 1 no check is performed on
+%               matrix Y. Scalar. 
 %               As default nocheck=0. 
-%        nomes: Scalar. If nomes is equal to 1 no message about estimated
+%                 Example - 'nocheck',1 
+%                 Data Types - double
+%        nomes: estimated time. Scalar. If nomes is equal to 1 no message about estimated
 %               time to compute tkemans is displayed, else if nomes is
 %               equal to 0 (default), a message about estimated time is
 %               displayed.
-%       Ysave : scalar that is set to 1 to request that the input matrix Y
+%                 Example - 'nomes',1 
+%                 Data Types - double
+%       Ysave : saving Y. Scalar. Scalar that is set to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 0, i.e.
 %               no saving is done.
+%                 Example - 'Ysave',1 
+%                 Data Types - double
 %
 %
 %       Remark: The user should only give the input arguments that have to
@@ -66,7 +85,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %
 %
 %  Output:
-%
+% 
 %         out:   structure which contains the following fields
 %
 %            out.idx  : n-by-1 vector containing assignment of each unit to
@@ -94,6 +113,11 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                       (value of the best returned solution).
 %              out.Y  : original data matrix Y. The field is present if option
 %                       Ysave is set to 1.
+%
+%Optional Output:
+% 
+%       C       :   subsamples extracted. Cell. .
+%
 %
 % See also kmeans, tclust
 %
@@ -127,7 +151,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 
 %
 %{
-    % Trimmed k-means using geyser data
+    %% Trimmed k-means using geyser data (1).
     % 3 groups and trimming level of 3%
     Y=load('geyser2.txt');
     out=tkmeans(Y,3,0.03,'plots',1)
@@ -135,14 +159,14 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 
 
 %{
-    % Trimmed k-means using geyser data
+    % Trimmed k-means using geyser data (2).
     % option weights =1
     Y=load('geyser2.txt');
     out=tkmeans(Y,3,0.03,'plots',1,'weights',1)
 %}
 
 %{
-    % Trimmed k-means using M5data
+    % Trimmed k-means using M5data.
     % Weights =1
     Y=load('M5data.txt');
     out=tkmeans(Y(:,1:2),3,0,'plots',1)
@@ -151,7 +175,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %}
 
 %{
-    % Trimmed k-means using structured noise
+    % Trimmed k-means using structured noise.
     % The data have been generated using the following R instructions
     %    set.seed (0)
     %    v <- runif (100, -2 * pi, 2 * pi)
@@ -172,7 +196,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %}
 
 %{
-    % Trimmed k-means using mixture100 data
+    % Trimmed k-means using mixture100 data.
     % The data have been generated using the following R instructions
     %     set.seed (100)
     %     mixt <- rbind (rmvnorm (360, c (  0,  0), matrix (c (1,  0,  0,  1), ncol = 2)),
@@ -525,6 +549,7 @@ if plots==1;
 end
 
 end
+%FScategory:CLUS-RobClaMULT
 
 
 

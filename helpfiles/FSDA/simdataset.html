@@ -1,227 +1,56 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>simdataset</title><meta content="refpage" name="chunktype"><meta content="function:simdataset" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="simdataset simulates and/or contaminates a dataset given the parameters of finite mixture model with Gaussian componen." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#div002").load("includesFS/top.html");      $("#div001").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/suggest.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2016a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Documentation</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Documentation" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--></div><!--END.CLASS container-fluid--></div><!--START.CLASS sticky_header_container--><div class="sticky_header_container includes_subnav"><div class="horizontal_nav_container"><div id="nav_toggle" class="offcanvas_actuator" data-target="#sidebar" data-toggle="offcanvas"><button class="btn" type="button"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_32"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span></div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"></div></div></div></div></div><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"><a href="../documentation-center.html" itemprop="url"><span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"><span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"></span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"><a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"><a href="functionlist.html" role="menuitem" tabindex="-1">Functions and Other Reference</a></li><li role="presentation"><a href="release-notes.html" role="menuitem" tabindex="-1">Release Notes</a></li><li role="presentation"><a href="tutorials.html" role="menuitem" tabindex="-1">Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"><li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a></li><li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="nav_scrollspy_function"><a href="#responsive_offcanvas">simdataset</a></li><li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example of mixture generation.</a></li><li><a class="intrnllnk" href="#Example_2">Generate 4 groups in 2 dimensions.</a></li><li><a class="intrnllnk" href="#Example_3">Add outliers generated from uniform distribution.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Add outliers generated from Chi2 with 5 degrees of freedom.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Add outliers generated from Chi2 with 40 degrees of freedom.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Add outliers generated from normal distribution.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Add outliers generated from Student T with 5 degrees of freedom.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Add componentwise contamination.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Add outliers generated from Chisquare and T distribution.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Add outliers from Chisquare and T distribution and use a personalized value of alpha.</a></li><li><a class="intrnllnk" href="#ExtraExample_8">Add outliers from Chi2 and point mass contamination and add one noise variable.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">Example of the use of personalized interval to generate outliers.</a></li><li><a class="intrnllnk" href="#ExtraExample_10">Example of the use of personalized interval to generate outliers (1).</a></li><li><a class="intrnllnk" href="#ExtraExample_11">Add 5 noise variables.</a></li><li><a class="intrnllnk" href="#ExtraExample_12">Add 3 noise variables.</a></li><li><a class="intrnllnk" href="#ExtraExample_13">Add 3 noise variables and use 'minmax' interval.</a></li><li><a class="intrnllnk" href="#ExtraExample_14">Add 3 noise variables and use a personalized interval for each variable.</a></li><li><a class="intrnllnk" href="#ExtraExample_15">Add noise to an existing dataset.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_n">n</a></li><li><a class="intrnllnk" href="#input_argument_Pi">Pi</a></li><li><a class="intrnllnk" href="#input_argument_Mu">Mu</a></li><li><a class="intrnllnk" href="#input_argument_S">S</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_noiseunits">noiseunits</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_noisevars">noisevars</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lambda">lambda</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_R_seed">R_seed</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_X">X</a></li><li><a class="intrnllnk" href="#output_argument_id">id</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="div002"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">simdataset</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">simdataset simulates and/or contaminates a dataset given the parameters of finite mixture model with Gaussian componen</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">X=simdataset(n, Pi, Mu, S)</code><span class="syntax_example"><a class="intrnllnk" href="simdataset.html#Example_1">example</a></span></li><li><code class="synopsis">X=simdataset(n, Pi, Mu, S,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="simdataset.html#Example_2">example</a></span></li><li><code class="synopsis">[X,id]=simdataset(___)</code><span class="syntax_example"><a class="intrnllnk" href="simdataset.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>simdataset(n, Pi, Mu, S) generates a matrix of size n-by-p containing n
+   observations p dimensions from k groups. More precisely, this function
+   produces a dataset of n observations from a mixture model with
+   parameters 'Pi' (mixing proportions), 'Mu' (mean vectors), and 'S'
+   (covariance matrices). Mixture component sample sizes are produced as a
+   realization from a multinomial distribution with probabilities given by
+   the mixing proportions. For example, if n=200, k=4 and Pi=[0.25, 0.25,
+   0.25, 0.25] function Nk1=mnrnd( n-k, Pi) is used to generate k integers
+   (whose sum is n-k) from the multinomial distribution with parameters
+   n-k and Pi. The size of the groups is given by Nk1+1. The first
+   Nk1(1)+1  observations are generated using centroid Mu(1,:) and
+   covariance S(:,:,1), ..., the last Nk1(k)+1 observations are generated
+   using centroid Mu(k,:) and covariance S(:,:,k)
 
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
-This HTML was auto-generated from MATLAB code.
-To make changes, update the MATLAB code and republish this document.
-      --><title></title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-05-25"><meta name="DC.source" content=".m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+   DETAILS
 
-html { min-height:100%; margin-bottom:1px; }
-html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
-html body td { vertical-align:top; text-align:left; }
+ To make a dataset more challenging for clustering, a user might want to
+ simulate noise variables or outliers. The optional parameter 'noiseunits'
+ controls the number and the type of outliers which must be added. The
+ optional parameter 'noisevars' controls the number and the type of noise
+ variables which must be added (it is possible to control the
+ distribution, the interval and the number). Finally, the user can apply
+ an inverse Box-Cox transformation providing a vector of coefficients
+ 'lambda'. The value 1 implies that no transformation is needed for the
+ corresponding coordinate. It is also possible to add outliers to an
+ existing dataset by simply suppling as first argument the matrix of
+ existing data</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdataset.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_X"><code>X</code></a>=simdataset(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_Pi"><code>Pi</code></a>,<a class="intrnllnk" href="#inputarg_Mu"><code>Mu</code></a>,<a class="intrnllnk" href="#inputarg_S"><code> S</code></a>)</code></span>Example of mixture generation.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdataset.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_X"><code>X</code></a>=simdataset(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_Pi"><code>Pi</code></a>,<a class="intrnllnk" href="#inputarg_Mu"><code>Mu</code></a>,<a class="intrnllnk" href="#inputarg_S"><code>S</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Generate 4 groups in 2 dimensions.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdataset.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#outputarg_id"><code>id</code></a>]=simdataset(___)</code></span>Add outliers generated from uniform distribution.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of mixture generation.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    out = MixSim(4,2,'BarOmega',0.01);
+    n=60;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
 
-h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
-h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
-h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+    %  Simulate dataset with 10 outliers
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',10);
 
-a { color:#005fce; text-decoration:none; }
-a:hover { color:#005fce; text-decoration:underline; }
-a:visited { color:#004aa0; text-decoration:none; }
-
-p { padding:0px; margin:0px 0px 20px; }
-img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
-
-ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
-ul li { padding:0px; margin:0px 0px 7px 0px; }
-ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
-ul li ol li { list-style:decimal; }
-ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
-ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
-ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
-ol li ol li { list-style-type:lower-alpha; }
-ol li ul { padding-top:7px; }
-ol li ul li { list-style:square; }
-
-.content { font-size:1.2em; line-height:140%; padding: 20px; }
-
-pre, code { font-size:12px; }
-tt { font-size: 1.2em; }
-pre { margin:0px 0px 20px; }
-pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
-pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
-pre.error { color:red; }
-
-@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
-
-span.keyword { color:#0000FF }
-span.comment { color:#228B22 }
-span.string { color:#A020F0 }
-span.untermstring { color:#B20000 }
-span.syscmd { color:#B28C00 }
-
-.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
-.footer p { margin:0px; }
-.footer a { color:#878787; }
-.footer a:hover { color:#878787; text-decoration:underline; }
-.footer a:visited { color:#878787; }
-
-table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
-table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
-
-
-
-
-
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Ex3</a></li><li><a href="#2">ExExtra1</a></li><li><a href="#3">ExExtra2</a></li><li><a href="#4">ExExtra3</a></li><li><a href="#5">ExExtra4</a></li><li><a href="#6">ExExtra5</a></li><li><a href="#7">ExExtra6</a></li><li><a href="#8">ExExtra7</a></li><li><a href="#9">ExExtra8</a></li><li><a href="#10">ExExtra9</a></li><li><a href="#11">ExExtra11</a></li><li><a href="#12">ExExtra12</a></li><li><a href="#13">ExExtra13</a></li><li><a href="#14">ExExtra14</a></li><li><a href="#15">ExExtra15</a></li></ul></div><h2>Ex3<a name="1"></a></h2><pre class="codeinput">    n=300;
-    noisevars=0;
-    noiseunits=3000;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+    %  Simulate dataset with 100 outliers
+    out = MixSim(4,3,'BarOmega',0.1);
+    n=300;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',100);
     spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from uniform'</span>)
-</pre><pre class="codeoutput error">Reference to non-existent field 'Pi'.
-Error in simdatasettmp (line 5)
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);</pre><h2>ExExtra1<a name="2"></a></h2><pre class="codeinput">    n=300;
-    noisevars=0;
-    noiseunits=struct;
-    noiseunits.number=3000;
-    <span class="comment">% Add asymmetric very concentrated noise</span>
-    noiseunits.typeout={<span class="string">'Chisquare5'</span>};
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
+</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 2 dimensions.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    rng('default')
+    rng(100)
+    out = MixSim(4,2,'BarOmega',0.01);
+    n=300;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
     spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from $\chi^2_5$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra2<a name="3"></a></h2><pre class="codeinput">    n=300;
-    noisevars=0;
-    noiseunits=struct;
-    noiseunits.number=3000;
-    <span class="comment">% Add asymmetric concentrated noise</span>
-    noiseunits.typeout={<span class="string">'Chisquare40'</span>};
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from $\chi^2_{40}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra3<a name="4"></a></h2><pre class="codeinput">    n=300;
-    noisevars=0;
-    noiseunits=struct;
-    noiseunits.number=3000;
-    <span class="comment">% Add normal noise</span>
-    noiseunits.typeout={<span class="string">'normal'</span>};
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from normal distribution'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra4<a name="5"></a></h2><pre class="codeinput">    n=300;
-    noisevars=0;
-    noiseunits=struct;
-    noiseunits.number=3000;
-    <span class="comment">% Add outliers from T5</span>
-    noiseunits.typeout={<span class="string">'T5'</span>};
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from Student T with 5 degrees if freedom'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra5<a name="6"></a></h2><pre class="codeinput">    n=300;
-    noisevars=<span class="string">''</span>;
-    noiseunits=struct;
-    noiseunits.number=3000;
-    <span class="comment">% Add asymmetric concentrated noise</span>
-    noiseunits.typeout={<span class="string">'componentwise'</span>};
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups with component wise outliers'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra6<a name="7"></a></h2><pre class="codeinput">    n=300;
-    noisevars=0;
-    noiseunits=struct;
-    noiseunits.number=5000*ones(2,1);
-    noiseunits.typeout={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra7<a name="8"></a></h2><pre class="codeinput">    n=300;
-    noisevars=0;
-    noiseunits=struct;
-    noiseunits.number=5000*ones(2,1);
-    noiseunits.typeout={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
-    noiseunits.alpha=0.2;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra8<a name="9"></a></h2><pre class="codeinput">    noisevars=struct;
-    noisevars.number=1;
-    noiseunits=struct;
-    noiseunits.number=[100 100];
-    noiseunits.typeout={<span class="string">'pointmass'</span> <span class="string">'Chisquare5'</span>};
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra9<a name="10"></a></h2><pre class="codeinput">    noiseunits=struct;
-    noiseunits.number=1000;
-    noiseunits.typeout={<span class="string">'uniform'</span>};
-    <span class="comment">% Generate outliers in the interval [-1 1] for the first variable and</span>
-    <span class="comment">% interval [1 2] for the second variable</span>
-    noiseunits.interval=[-1 1;
-                         1 2];
-    <span class="comment">% Finally add a noise variable</span>
-    noisevars=struct;
-    noisevars.number=1;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups with outliers from uniform using a personalized interval $+1$ noise var'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra11<a name="11"></a></h2><pre class="codeinput">    n=300;
-    noisevars=struct;
-    noisevars.number=[2 3];
-    noisevars.distribution={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
-    noiseunits=<span class="string">''</span>;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id,[],<span class="string">'box'</span>);
-    title(<span class="string">'4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra12<a name="12"></a></h2><pre class="codeinput">    n=300;
-    noisevars=struct;
-    noisevars.number=[1 2];
-    noisevars.distribution={<span class="string">'Chisquare3'</span>,<span class="string">'T2'</span>};
-    noiseunits=<span class="string">''</span>;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra13<a name="13"></a></h2><pre class="codeinput">    n=300;
-    noisevars=struct;
-    noisevars.number=[1 2];
-    noisevars.distribution={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
-    noisevars.interval=<span class="string">'minmax'</span>;
-    noiseunits=<span class="string">''</span>;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups in 2 dims with 3 noise variables with ''minimax'' interval'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra14<a name="14"></a></h2><pre class="codeinput">    n=300;
-    noisevars=struct;
-    noisevars.number=[1 2];
-    noisevars.distribution={<span class="string">'Chisquare3'</span>,<span class="string">'T20'</span>};
-    noiseunits=<span class="string">''</span>;
-    <span class="comment">% In this example we supply min and max for each noise variable</span>
-    v1=sum(noisevars.number);
-    noisevars.interval=[3*ones(1,v1); 10*ones(1,v1)];
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(X,id);
-    title(<span class="string">'4 groups in 2 dims with 3 noise variables with personalized interval'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>)
-</pre><h2>ExExtra15<a name="15"></a></h2><pre class="codeinput">    load <span class="string">fisheriris</span>;
-    Y=meas;
-    Mu=grpstats(Y,species);
-
-    S=zeros(4,4,3);
-    S(:,:,1)=cov(Y(1:50,:));
-    S(:,:,2)=cov(Y(51:100,:));
-    S(:,:,3)=cov(Y(101:150,:));
-
-    pigen=ones(3,1)/3;
-    <span class="comment">% Add 100 outliers and specify a very small value of alpha</span>
-    noisevars=0;
-    noiseunits=struct;
-    noiseunits.number=100;
-    noiseunits.alpha=0.000001;
-    <span class="comment">% In this case the first argument which is supplied to simdataset is</span>
-    <span class="comment">% the original matrix X</span>
-    [Ywithnoise,id]=simdataset(Y, pigen, Mu, S,<span class="string">'noisevars'</span>,noisevars,<span class="string">'noiseunits'</span>,noiseunits);
-    spmplot(Ywithnoise,id,[],<span class="string">'box'</span>);
-    title(<span class="string">'4 groups with outliers from uniform'</span>)
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
-##### SOURCE BEGIN #####
-%% Ex3
+    title('4 groups without noise and outliers')</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=3000;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from uniform')%% ExExtra1
+    title('4 groups with outliers from uniform')</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -230,7 +59,7 @@ Error in simdatasettmp (line 5)
     noiseunits.typeout={'Chisquare5'};
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from $\chi^2_5$','Interpreter','Latex')%% ExExtra2
+    title('4 groups with outliers from $\chi^2_5$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -239,7 +68,7 @@ Error in simdatasettmp (line 5)
     noiseunits.typeout={'Chisquare40'};
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')%% ExExtra3
+    title('4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from normal distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -248,7 +77,7 @@ Error in simdatasettmp (line 5)
     noiseunits.typeout={'normal'};
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from normal distribution','Interpreter','Latex')%% ExExtra4
+    title('4 groups with outliers from normal distribution','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Student T with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -257,7 +86,7 @@ Error in simdatasettmp (line 5)
     noiseunits.typeout={'T5'};
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from Student T with 5 degrees if freedom','Interpreter','Latex')%% ExExtra5
+    title('4 groups with outliers from Student T with 5 degrees if freedom','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars='';
     noiseunits=struct;
@@ -266,7 +95,7 @@ Error in simdatasettmp (line 5)
     noiseunits.typeout={'componentwise'};
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with component wise outliers','Interpreter','Latex')%% ExExtra6
+    title('4 groups with component wise outliers','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -274,7 +103,7 @@ Error in simdatasettmp (line 5)
     noiseunits.typeout={'Chisquare3','T20'};
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')%% ExExtra7
+    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chisquare and T distribution and use a personalized value of alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -283,7 +112,7 @@ Error in simdatasettmp (line 5)
     noiseunits.alpha=0.2;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$','Interpreter','Latex')%% ExExtra8
+    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chi2 and point mass contamination and add one noise variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     noisevars=struct;
     noisevars.number=1;
     noiseunits=struct;
@@ -291,7 +120,7 @@ Error in simdatasettmp (line 5)
     noiseunits.typeout={'pointmass' 'Chisquare5'};
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')%% ExExtra9
+    title('4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of personalized interval to generate outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     noiseunits=struct;
     noiseunits.number=1000;
     noiseunits.typeout={'uniform'};
@@ -304,7 +133,17 @@ Error in simdatasettmp (line 5)
     noisevars.number=1;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')%% ExExtra11
+    title('4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of personalized interval to generate outliers (1).</li></span></a></span></h3><div class="collapse"><p>
+     Generate 1000 outliers from uniform in the interval [-2 3] and
+     1000 units using componentwise contamination in the interval [-2 3]<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    noiseunits=struct;
+    noiseunits.number=[1000 1000];
+    noiseunits.typeout={'uniform' 'componentwise'};
+    noiseunits.interval=[-2 3];
+
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',noiseunits);
+    spmplot(X,id);
+    title('4 groups with outliers componentwise and from uniform in interval [-2 3]','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 5 noise variables.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=struct;
     noisevars.number=[2 3];
@@ -312,7 +151,7 @@ Error in simdatasettmp (line 5)
     noiseunits='';
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id,[],'box');
-    title('4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$','Interpreter','Latex')%% ExExtra12
+    title('4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=struct;
     noisevars.number=[1 2];
@@ -320,7 +159,7 @@ Error in simdatasettmp (line 5)
     noiseunits='';
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$','Interpreter','Latex')%% ExExtra13
+    title('4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables and use 'minmax' interval.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=struct;
     noisevars.number=[1 2];
@@ -329,7 +168,7 @@ Error in simdatasettmp (line 5)
     noiseunits='';
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups in 2 dims with 3 noise variables with ''minimax'' interval','Interpreter','Latex')%% ExExtra14
+    title('4 groups in 2 dims with 3 noise variables with ''minimax'' interval','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables and use a personalized interval for each variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=struct;
     noisevars.number=[1 2];
@@ -340,7 +179,8 @@ Error in simdatasettmp (line 5)
     noisevars.interval=[3*ones(1,v1); 10*ones(1,v1)];
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(X,id);
-    title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')%% ExExtra15
+    title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add noise to an existing dataset.</li></span></a></span></h3><div class="collapse"><p>
+      Add outliers generated from uniform distribution to the IRIS dataset<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load fisheriris;
     Y=meas;
     Mu=grpstats(Y,species);
@@ -360,6 +200,157 @@ Error in simdatasettmp (line 5)
     % the original matrix X
     [Ywithnoise,id]=simdataset(Y, pigen, Mu, S,'noisevars',noisevars,'noiseunits',noiseunits);
     spmplot(Ywithnoise,id,[],'box');
-    title('4 groups with outliers from uniform')
-##### SOURCE END #####
---></body></html>
+    title('4 groups with outliers from uniform')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size or input matrix </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p>Scalar or matrix of size n-by-v. If n is a scalar it
+               is interpreted as the sample size of the dataset which must
+               be simulated. On the other hand, if n is a n-by-v it is
+               interpreted as a matrix of size n-by-v which has to be
+               contaminated with optional input arguments 'noiseunits' and
+               'noisevars'.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Pi" class="clearfix"> </div> <h3 id="input_argument_Pi" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Pi</code> &#8212; Mixing proportions </span>  </a><span class="example_desc">Vector</span></span></h3> <div class="collapse"> <p>Vector of size k containing mixing
+       proportions. The sum of the elements of Pi is 1.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Mu" class="clearfix"> </div> <h3 id="input_argument_Mu" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Mu</code> &#8212; centroids </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p>Matrix of size k-by-v containing (in the rows) the centroids of the
+       k groups.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_S" class="clearfix"> </div> <h3 id="input_argument_S" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>S</code> &#8212; Covariance matrices </span>  </a><span class="example_desc">3D array</span></span></h3> <div class="collapse"> <p>3D array of size v-by-v-by-k
+       containing covariance matrices of the
+       k groups.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'noiseunits', 10
+</code>,<code> 'noisevars', 5
+</code>,<code> 'lambda',[1 1 0];
+</code>,<code> 'R_seed',1;
+</code></code></span></div><div class="expandableContent"><div id="inputarg_noiseunits" class="clearfix"></div><h3 id="input_argument_namevalue_noiseunits" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>noiseunits</code> &#8212;number of type of outlying observations</span></a><span class="example_desc">scalar | structure</span></span></h3><div class="collapse">	<p><p>Missing value, scalar or structure.</p> <p> 
+                This input parameter specifies the number
+                and type of outlying observations. The default value of
+                noiseunits is 0.</p> <p>
+                - If noiseunits is a scalar t different from 0, then t
+                  units from the uniform distribution in the interval
+                  min(X) max(X) are generated in such a way that their
+                  squared Mahalanobis distance from the centroids of each
+                  existing group is larger then the quantile 1-0.999 of
+                  the Chi^2 distribution with p degrees of freedom. In
+                  order to generate these units the maximum number
+                  of attempts is equal to 10000.</p> <p>
+                - If noiseunits is a structure it may contain the following
+                  fields:</p> <p>
+                  number = scalar, or vector of length f. The sum of the
+                       elements of vector 'number' is equal to the total
+                       number of outliers which are simulated.</p> <p>
+                  alpha = scalar or vector of legth f containing the
+                       level(s) of simulated outliers. The default value
+                       of alpha is 0.001.</p> <p>
+                  maxiter = maximum number of trials to simulate outliers.</p> <p>
+                       The default value of maxiter is 10000.</p> <p>
+                  interval= missing value or vector of length 2 or matrix
+                         of size 2-by-v which controls the min and max of
+                         the generated outliers for each dimension.</p> <p>
+                         If interval is empty (default), the outliers
+                         are simulated in the interval min(X) max(X).</p> <p>
+                         If interval is a vector of length(2), outliers for
+                         each variables are simulated in the range
+                         interval(1) and interval(2).</p> <p>
+                         If interval is a 2-by-v matrix outliers are
+                         simulated in:</p> <p>
+                         interval(1,1) interval (2,1) for variable 1
+                         ...</p> <p>
+                         interval(1,v) interval (2,v) for variable v
+                  typeout = list of length f containing the type of
+                       outliers which must be simulated. Possible values
+                       for typeout are:</p> <p>
+                       * unif (or uniform), if the outliers must be
+                         generated using the uniform distribution;</p> <p>
+                       * norm (or normal), if the outliers must be
+                         generated using the normal distribution;</p> <p>
+                       * Chisquarez, if the outliers must be generated
+                         using the Chi2 distribution with z degrees of
+                         freedom;</p> <p>
+                       * Tz or tz, if the outliers must be generated using
+                         the Student T distribution with z degrees of
+                         freedom;</p> <p>
+                       * pointmass, if the outliers are concentrated on a
+                         particular point;</p> <p>
+                       * componentwise, if the outliers must have the same
+                         coordinates of the existing rows of matrix X apart
+                         from a single coordinate (which will be to the
+                         min or max in that particular dimension or to the
+                         min or max specified in interval).</p> <p>
+                For example, the code:</p> <p>
+                   noiseunits=struct;</p><p>
+           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>[100 100];</p></td></tr><tr valign="top"><td><code>typeout</code></td><td><p>{'uniform' 'componentwise'};</p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>[-2 2];</p> <p>
+                adds 200 outliers, the first 100 generated using
+                a uniform distribution and the last 100 using
+                componentwise scheme. Outliers are generated in the
+                interval [-2 2] for each variable.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'noiseunits', 10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_noisevars" class="clearfix"></div><h3 id="input_argument_namevalue_noisevars" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>noisevars</code> &#8212;Type of noise variables</span></a><span class="example_desc">scalar | structure</span></span></h3><div class="collapse">	<p><p>Empty value, scalar or structure.</p> <p>
+                - If noisevars is not specified or is an empty value
+                  (default) no noise variable is added to the matrix of
+                  simulated data.</p> <p>
+                - If noisevars is a scalar equal to r, then r new noise
+                  variables are added to the matrix of simulated data
+                  using the uniform distribution in the range [min(X)
+                  max(X)].</p> <p>
+                - If noisevars is a structure it may contain the following
+                  fields:</p><p>
+          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>a scalar or a vector of length f. The sum of
+                       elements of vector 'number' is equal to the total
+                       number of noise variables to be addded.</p></td></tr><tr valign="top"><td><code>distribution</code></td><td><p><p>string or cell array of strings of length
+                       f which specifies the distribution to be used to
+                       simulate the noise variables.</p> <p>
+                       If field distribution is not present then the
+                       uniform distribution is used to simulate the noise
+                       variables.</p> <p>
+                       String 'distribution' can be one of the following
+                       values:</p> <p>
+                       * uniform = uniform distribution
+                       * normal  = normal distribution
+                       * t or T followed by a number which controls the
+                         degrees of freedom. For example, t6 specifies to
+                         generate the data according to a Student T with 6
+                         degrees of freedom.</p><p>
+                       * chisquare followed by a number which controls the
+                         degreess of freedom. For example, chisquare8
+                         specifies to generate the data according to a Chi
+                         square distribution with 8 degrees of freedom.</p></p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>string or vector of length 2 or matrix of size
+                         2-by-f (where f is the number of noise variables)
+                         which controls for each element of vector
+                         'number' or each element of cell 'distribution',
+                         the min and max of the noise variables. For
+                         example, interval(1,3) and interval(2,3) are
+                         respectively the minimum and maximum values of
+                         simulated the data for the third noise variable
+                         If interval is empty (default), the noise variables
+                         are simulated uniformly between the smallest and
+                         the largest coordinates of mean vectors.</p> <p>
+                         If interval is 'minmax' the noise varaibles are
+                         simulated uniformly between the smallest and the
+                         largest coordinates of the simulated data matrix.</p> <p>
+                For example, the code:</p> <p>
+                   noisevars=struct;</p> <p>
+                   noisevars.number=[3 2];</p> <p>
+                   noisevars.distribution={'Chisquare5' 'T3'};</p> <p>
+                   noisevars.interval='minmax';</p><p>
+                adds 5 noise variables, the first 3 generated using
+                the Chi2 with 5 degrees of freedom and the last two
+                using the Student t with 3 degrees of freedom. Noise
+                variables are generated in the interval min(X) max(X).</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'noisevars', 5
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lambda" class="clearfix"></div><h3 id="input_argument_namevalue_lambda" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lambda</code> &#8212;Transformation coefficients</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>Vector of length v containing inverse Box-Cox
+                transformation coefficients. The value false (default)
+                implies that no transformation is applied to any variable.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lambda',[1 1 0];
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_R_seed" class="clearfix"></div><h3 id="input_argument_namevalue_R_seed" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>R_seed</code> &#8212;random numbers from R language</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar &gt; 0 for the seed to be used to generate random numbers
+               in a R instance. This is used to check consistency of the
+               results obtained with the R package MixSim. See file
+               <a href="Connect_Matlab_with_R_HELP.html">Connect_Matlab_with_R_HELP</a> to know how to connect MATLAB
+               with R.  This option requires the installation of the
+               R-(D)COM Interface. Default is 0, i.e. random numbers are
+               generated by matlab.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'R_seed',1;
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_X" class="clearfix"></div><h3 id="output_argument_X" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>X</code> &#8212;Simulated dataset.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p> Simulated dataset of size (n + noiseunits)-by-(v + noisevars).</p> <p>
+                Noise coordinates are provided in the last noisevars columns.</p></p></div></div><div class="expandableContent"><div id="outputarg_id" class="clearfix"></div><h3 id="output_argument_id" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>id</code> &#8212;Classification vector.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p> Classification vector of
+                length n + noiseunits. Negative
+                numbers represents the groups associated to the
+                contaminated units.</p> <p>
+
+           REMARK: If noiseunits outliers could not be generated a warning
+                   is produced. In this case matrix X and vector id will
+                   have less than n + noiseunits rows.</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maitra, R. and Melnykov, V. (2010). Simulating data to study performance
+   of finite mixture modeling and clustering algorithms, The Journal of
+   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
+   this publication we will use "MM2010 JCGS")</p></div><div><p>Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package
+   for Simulating Data to Study Performance of Clustering Algorithms,
+   Journal of Statistical Software, 51:12, 1-25.</p></div><div><p>Davies, R. (1980) The distribution of a linear combination of
+   chi-square random variables, Applied Statistics, 29, 323-333.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="MixSim.html" itemprop="url"><span itemprop="name"><code>MixSim</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
