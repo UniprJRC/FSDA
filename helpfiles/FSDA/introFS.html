@@ -33,14 +33,13 @@ document.write(divsbefore);
 	<h2 id="f57140" class="title">Introduction to the Forward Search philosophy of data 
 analysis</h2>
 <p>To introduce the rationale of our statistical approach, we consider a very basic 
-goal, that is estimation of a parameter of interest µ (for example the mean of the 
-population). The frequentist approach to statistical inference treats µ as an unknown 
+goal, that is estimation of a parameter of interest $\mu$ (for example the mean of the 
+population). The frequentist approach to statistical inference treats $\mu$ as an unknown 
 constant. Furthermore it requires the specification of a family of models which 
-are indexed by µ and uses the sample data to answer questions about µ and the model 
+are indexed by $\mu$ and uses the sample data to answer questions about $\mu$ and the model 
 itself (Cox 2006). If the data do not contain outliers strong arguments can be produced 
-for representing the data by their mean. That is, all information on µ given by 
-the sample y<sub>1</sub>, … , y<sub>n</sub> is conveyed by the function M(y)= (1/n) 
-∑ y<sub>i</sub>. However, if the family of models is more sophisticated and allows 
+for representing the data by their mean. That is, all information on $\mu$ given by 
+the sample $y_1, \dots, y_n$ is conveyed by the function $M(y)= (1/n)\Sigma y_i$. However, if the family of models is more sophisticated and allows 
 the data to be contaminated from another distribution, a more complex function than 
 the sample mean should be used to represent the data. One example of such a function 
 is the trimmed mean, other examples are the M-estimator of location and the sample 
@@ -48,7 +47,7 @@ median (e.g. Maronna <em>et al., 2006</em>). All these functions originate from
 the pioneering work on robust statistics of Peter Huber and Frank Hampel in the 
 1970s and try to take into account the fact that the data under study may contain 
 outliers. </p>
-<p>To obtain robust estimates of the unknown parameter µ we thus need to follow 
+<p>To obtain robust estimates of the unknown parameter $\mu$ we thus need to follow 
 one of the following strategies: </p>
 <p>a) Use a reduced number of observations in order to exclude outliers; </p>
 <p>b) Down-weight each observation according to its deviation from the centre;
@@ -57,7 +56,7 @@ one of the following strategies: </p>
 </p>
 <p>However, in all instances the simplicity of the sample mean is lost. Further 
 disadvantages of these approaches are the fact that the percentage of observations 
-to be discarded for estimation of µ needs to be fixed in advance (strategy a), that 
+to be discarded for estimation of $\mu$ needs to be fixed in advance (strategy a), that 
 there is no universally accepted way to downweight observations (strategy b), and 
 that optimization of complex functions may cause severe computational problems. 
 Another fundamental shortcoming common to all the robust strategies described above 
@@ -68,7 +67,7 @@ ad hoc strategies for each specific problem. </p>
 all the complexity features described above and provide the user with a unified 
 view of the available data. Finally, the researcher loses the connection of the 
 effect that each observation exerts on the estimates of the parameters in the proposed 
-model. In the previous example of the estimation of µ, whatever approach is used 
+model. In the previous example of the estimation of $\mu$, whatever approach is used 
 the researcher loses the information that each observation, outlier or not, has 
 on the final proposed estimate. </p>
 <p>Our approach to data analysis and inference is different. Although, as in robust 
@@ -160,17 +159,20 @@ the model.
 <h3 id="regmat" class="title">Mathematical details</h3>
 
 <p>In the regression model </p>
-<img src="plots/wpjcngj3.gif">
-<p><em>y</em> is the <em>n</em>×1 vector of responses, <em>X</em> is an <em>n</em>-by-<em>p</em> full-rank matrix of known 
-constants, with ith row <img alt="" class="style1" src="plots/img8.gif">, and β 
-is a vector of <em>p</em> unknown parameters. The normal theory assumptions are that the 
-errors <em>ɛ</em><sub>i</sub> are i.i.d. N(0,σ<sup>2</sup>). The least squares 
-estimator of <em>β</em> is <img alt="" class="style1" src="plots/imgF.gif"> Then the vector of 
-<em>n</em> least squares residuals is </p>
-<p><img src="plots/wpalwc8l.gif"> </p>
-<p>where <img alt="" src="plots/img3F.gif"> is the ‘hat" matrix, with diagonal elements hi and off-diagonal 
-elements h<sub>ij</sub>. The residual mean square estimator of σ<sup>2</sup> is </p>
-<p><img alt="" src="plots/img42.gif"></p>
+$$y=X\beta+\epsilon$$,
+
+<p>$y$ is the $n \times 1$ vector of responses, $X$ is an $n \textrm{-by-} p$ full-rank matrix of known 
+constants, with ith row $x_i^T$, and $\beta$ 
+is a vector of $p$ unknown parameters. The normal theory assumptions are that the 
+errors $\epsilon_i$ are i.i.d. $N(0,\sigma^2)$. The least squares 
+estimator of $\beta$ is $\hat \beta$. Then the vector of 
+$n$ least squares residuals is </p>
+$$e=y-\hat y =y-X\hat \beta=(I-H)y$$
+
+<p>where $H=X(X^TX)^{-1}X^T$  is the ‘hat" matrix, with diagonal elements hi and off-diagonal 
+elements $h_{ij}$h. The residual mean square estimator of $\sigma^2$ is </p>
+$$ s^2 = e^T e/(n-p)=\sum_{i=1}^n e_i^2 / (n-p)      $$
+
 <p>The forward search in linear regression starts from a small, robustly chosen, 
 subset of the data that is clear of outliers and fits subsets of increasing size. 
 Each observation is tested for outlyingness before it is included in the fitted 
@@ -179,26 +181,23 @@ already in the subset reduces to the well-known deletion residual. As the subset
 size increases, the method of fitting moves from very robust to highly efficient 
 likelihood methods. The FS thus provides a data dependent compromise between robustness 
 and statistical efficiency. </p>
-<p>Let <img alt="" src="plots/img43.gif"> be the subset of size m found by the 
-forward search, for which the matrix of regressors is <em>X</em><sub><sub>*</sub></sub>(<em>m</em>). 
-Least squares on this subset of observations yields parameter estimates
-<img alt=""  class="style1" src="plots/img45.gif"> and <img alt=""  class="style1" src="plots/img47.gif">, the mean square estimate of σ<sup>2</sup> 
-on <em>m &minus; p </em>degrees of freedom. Residuals can be calculated for all observations 
-including those not in <img alt="" src="plots/img49.gif"> . The <em>n </em>resulting least squares residuals are</p>
-<p><img alt="" src="plots/img4B.gif"></p>
-<p>The search moves forward with the augmented subset
-<img alt=""  class="style1" src="plots/img4D.gif"> consisting 
-of the observations with the <em>m</em> + 1 smallest absolute values of 
-<img alt="" class="style1" src="plots/img4F.gif">. 
+<p>Let $S^{*(m)}$ be the subset of size m found by the 
+forward search, for which the matrix of regressors is $X_{*}(m)$. 
+Least squares on this subset of observations yields parameter estimates $\hat \beta_{*}(m)$ and $s_{*}^2(m)$, the mean square estimate of $\sigma^2$ 
+on $m-p$ degrees of freedom. Residuals can be calculated for all observations 
+including those not in  $S^{*(m)}$. The $n$ resulting least squares residuals are</p>
+ $$ e_{i*}(m)=y_i-x_i^T \hat \beta_{*}(m)  $$
+<p>The search moves forward with the augmented subset $S^{*(m+1)}$ consisting 
+of the observations with the $m+1$ smallest absolute values of $e_{i*}(m)$. 
 The estimates of the parameters are based only on those observations giving the 
 central m residuals. </p>
-<p>To start we take <em>m<sub>0</sub></em> = <em>p</em> and search over subsets of 
-<em>p</em> observations to find the 
+<p>To start we take $m_0=p$ and search over subsets of 
+$p$ observations to find the 
 subset, out of 3,000, that yields the least median of squares (LMS) estimate of 
-<em>β</em>&nbsp; (Rousseeuw 1984). Although this initial estimator is not √ n-consistent 
+$\beta$ (Rousseeuw 1984). Although this initial estimator is not √ n-consistent 
 (Hawkins and Olive 2002) our results show that the initial estimator is not important, 
 provided masking is broken. Identical inferences are obtained using the least trimmed 
-squares estimator except sometimes when m is small and <em>n</em>/<em>p</em><5. Random starting 
+squares estimator except sometimes when $m$ is small and $n/p < 5$. Random starting 
 subsets also yield indistinguishable results over the last one third of the search. 
 Examples for multivariate data are in Atkinson et al. (2006). The forward search, 
 adding, and sometimes deleting, observations provides a bridge between the initial 
@@ -210,7 +209,7 @@ in Maronna and Yohai (2002).</p>
 
 <h3 id="multdet" class="title">Basic ideas</h3>
 
-<strong>Starting the Search.</strong> In presence of a <em>v</em> variables we find a small subset of size m<sub>0</sub> which is outlier free. A size of 3<em>v</em>
+<strong>Starting the Search.</strong> In presence of a $v$ variables we find a small subset of size $m_0$ which is outlier free. A size of $3v$
 may be appropriate, although the size is not crucial. In the
 univariate example we could  take the median observation and one
 observation either side and use these observations to estimate the
@@ -218,25 +217,25 @@ mean and variance. This subset will be at the center of a
 univariate distribution with some outliers, from which it will be
 far. They will therefore be clearly revealed by their large Mahalanobis distances.
 
-In <em>v</em> dimensions we use medians as estimators of location and
+In $v$ dimensions we use medians as estimators of location and
 find observations that are close to the median in all bivariate
 plots of the data.
 
 <p>&nbsp;</p>
-<strong>Progressing in the Search.</strong> Given a subset of size <em>m</em> we
-estimate the parameters and  calculate all <em>n </em>Mahalanobis
+<strong>Progressing in the Search.</strong> Given a subset of size $m$ we
+estimate the parameters and  calculate all $n$ Mahalanobis
 distances. These are then ordered from smallest to largest and the
-<em>m</em>+1 observations with the <em>m</em>+1 smallest distances form the new
-subset. Here <em>m</em> runs from <em>m</em><sub>0</sub> to the fit to all observations
-when <em>m</em> = <em>n</em>. Usually one observation is added at a time, but the
+$m+1$ observations with the $m+1$ smallest distances form the new
+subset. Here $m$ runs from $m_0$ to the fit to all observations
+when $m=n$. Usually one observation is added at a time, but the
 inclusion of an outlier can cause the ordering of the observations
 to change, when more than one unit may enter. Of course, at least
 one unit then has to leave the subset in order for the size to
 increase by one unit. This change of order during the search is a
 feature of multivariate data which we have stressed is absent in
 the analysis of univariate data. <p>&nbsp;</p>
-<strong>Monitoring the Search.</strong> For each value of <em>m</em> we can look 
-at the plot of all <em>n</em> Mahalanobis distances. If there are outliers they 
+<strong>Monitoring the Search.</strong> For each value of $m$ we can look 
+at the plot of all $n$ Mahalanobis distances. If there are outliers they 
 will have large distances during the early part of the search that decrease 
 dramatically at the end as the outlying observations are included in the subset 
 of observations used for parameter estimation. If our interest is in outlier 
@@ -250,48 +249,49 @@ cluster of outliers join.
 
 The main tools that we use are the values of various Mahalanobis distances. The squared distances
 for the sample are defined as
-<p>
-<img alt="" src="plots/img14.gif"></p>
-where  <img alt="" class="style1"  src="plots/img18.gif">and <img alt="" class="style1" src="plots/img19.gif"> are the unbiased moment estimators of the mean and covariance matrix of the
-n observations and y<sub>i</sub> is v×1.
-In the forward search the parameters <em>μ</em> and <em>Σ</em> are estimated from
-a subset of <em>m</em> observations, yielding estimates<p>&nbsp;</p>
-&nbsp;<img alt="" src="plots/img1B1.gif"> with <img alt="" src="plots/img1D.gif"> and 
-<img alt="" src="plots/img1F.gif"> with <img alt="" src="plots/img21.gif"><img alt="" src="plots/img23.gif">. 
-<p>&nbsp;</p>
-Note that here <em>y</em><sub>j</sub> and <em>y</em><sub><em>k</em></sub> are m×1. From this subset we obtain 
-<em>n</em>
+
+$$d_i^2 = (y_i-\hat \mu)^T \hat \Sigma^{-1}(y_i-\hat \mu)$$
+
+where $\hat \mu$ and $\hat \Sigma$ are the unbiased moment estimators of the mean and covariance matrix of the
+n observations and $y_i$ is $v \times 1$.
+In the forward search the parameters $\mu$ and $\Sigma$ are estimated from
+a subset of $m$ observations, yielding estimates
+$$ \hat \mu(m) \; \textrm{with} \; \hat \mu(m)_j = \bar y_j \; \textrm{and} \; \hat \Sigma(m) \; \textrm{with} \; \hat \Sigma(m)_{jk} =(y_i - \bar y_i)^T(y_k-\bar y_k)/(m-1)$$
+
+
+Note that here $y_j$ and $y_k$ are $m \times 1$. From this subset we obtain 
+$n$
 squared Mahalanobis distances
-<p><img alt="" src="plots/img26.gif"></p>
+$$ d_i^2(m)=(y_i-\hat \mu(m))^T \hat \Sigma^{-1}(m)(y_i-\hat \mu (m)), \quad \quad \quad i=1, \dots , n.  $$
+
 Unlike other methods, in the
 forward search we use many subsets for outlier detection, rather than one. The difference is
 between viewing a movie and a single snapshot.
-In the forward search we start with a subset of <em>m<sub>0</sub></em> observations which grows in size during
-the search. When a subset <em>S</em>*(<em>m</em>) of <em>m</em> observations is used in fitting we order the squared
-distances and take the observations corresponding to the <em>m</em>+1 smallest as the new subset
-<em>S</em>*(<em>m</em>+1). Usually this process augments the subset by one observation, but sometimes two or
+In the forward search we start with a subset of $m_0$ observations which grows in size during
+the search. When a subset $S^*(m)$  of $m$ observations is used in fitting we order the squared
+distances and take the observations corresponding to the $m+1$ smallest as the new subset $S^*(m+1)$. Usually this process augments the subset by one observation, but sometimes two or
 more observations enter as one or more leave. To start the procedure we find a starting subset
-<em>S</em>*(<em>m<sub>0</sub></em>) that is not outlying in any two-dimensional projection of the data 
+$S^*(m_0)$ that is not outlying in any two-dimensional projection of the data 
 (Atkinson et al. (2004), section 2.13). We look at forward plots of quantities that are derived from the distances
-<em>d</em><sub>i</sub>(<em>m</em>) in which the parameters are estimated from the observations in <em>S</em>*(<em>m</em>). These distances
-for <em>i</em>not belonging to <em>S</em>*(<em>m</em>) tend to decrease as <em>n</em> increases. If interest is in the latter part of the search we may
-use scaled distances<p><img alt="" src="plots/img2D.gif"></p>
-&nbsp;where <img alt="" class="style1" src="plots/img2F.gif"> is the estimate of 
-<img alt="" class="style1" src="plots/img31.gif"> at the end of the search.
+$d_i(m)$ in which the parameters are estimated from the observations in $S^*(m)$ . These distances
+for $i$ not belonging to $S^*(m)$  tend to decrease as $n$ increases. If interest is in the latter part of the search we may
+use scaled distances
+$$ d_i^{SC}(m)  = d_i(m)\{|\hat \Sigma(m)|/|\hat \Sigma(n)|\}^{1/2v} $$   where $\hat \Sigma (n)$ is the estimate of 
+ $\Sigma$ at the end of the search.
 To detect outliers all methods compare selected Mahalanobis distances with a threshold. We
 examine the minimum Mahalanobis distance among observations that are not in the subset
-<br><img alt="" src="plots/img33.gif"> <br>or its scaled version
-<img alt="" class="style1" src="plots/img35.gif">. If this ordered observation [m+1] is an outlier relative to the other
-m observations, this distance will be ‘large" compared with the maximum Mahalanobis distance
+<br>
+$$ d_{min} (m) =\min \{d_i(m)\}, \quad \quad \quad i \not \in S^*(m), $$
+ <br>or its scaled version $d_{min}^{SC}(m)$. If this ordered observation $[m+1]$ is an outlier relative to the other
+$m$ observations, this distance will be ‘large" compared with the maximum Mahalanobis distance
 of observations in the subset.
-In uncalibrated use of the distances <img alt="" class="style1" src="plots/img38.gif"> to detect outliers the decision whether a difference
+In uncalibrated use of the distances $d_{min}(m)$  to detect outliers the decision whether a difference
 in distances is ‘large" is subjective, without reference to any null distribution. Examples
 include the data analyses in chapter 3 of Atkinson et al. (2004). Even if the asymptotic distribution
 of the individual distances is determined, as in Clarke and Schubert (2006), we still need
 to calibrate the complete search to provide an outlier test of ascertainable properties.
 To calibrate the forward search and so to provide an objective basis for decisions about the
-number of outliers in a sample we have found the distribution of
-<img alt="" class="style1" src="plots/img38.gif">in the forward search. 
+number of outliers in a sample we have found the distribution of $d_{min}(m)$ in the forward search. 
 <p>&nbsp;</p>
 
 	<!-- -->
