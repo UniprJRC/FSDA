@@ -19,7 +19,7 @@ then
 	exit 1
 fi
 
-EXCL_FILES="! -name \"docsearchFS.m\" ! -name \"publishFSallFiles.m\" ! -name \"publishFunctionAlpha.m\" ! -name \"publishFunctionCate.m\" ! -name \"docrootFS.m\" ! -name \"setuphelp.m\" ! -name \"createFSDAhelpFile.m\" "
+EXCL_FILES="! -name docsearchFS.m ! -name publishFSallFiles.m ! -name publishFunctionAlpha.m ! -name publishFunctionCate.m ! -name docrootFS.m ! -name setuphelp.m ! -name createFSDAhelpFile.m"
 
 /usr/bin/find $what -name "*.m" ! -path "*_automation_tools*" ! -path "*helpfiles*" ! -path "*TODO*" ! -path "*FSDAdemos*" ! -name "publishFS.m" $EXCL_FILES >list_matlab_func
 
