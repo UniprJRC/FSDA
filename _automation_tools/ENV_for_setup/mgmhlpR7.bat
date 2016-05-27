@@ -13,6 +13,6 @@ rem echo "SONO IN mgmhlpR7 . Il parametro vale " %where%
 
 cd FSDA\helpfiles
 
-rmdir /S /Q FSDAR8
+rem rmdir /S /Q FSDAR8
 
-rename FSDAR7 FSDA
+rem rename FSDAR7 FSDA

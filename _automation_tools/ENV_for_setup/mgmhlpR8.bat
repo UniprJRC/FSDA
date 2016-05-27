@@ -2,7 +2,7 @@
 
 set where=%1
 
-set matexe=%2
+set mathpath=%2
 
 set drv=%where:~1,2%
 
@@ -15,18 +15,22 @@ rem echo "SONO IN mgmhlpR8 . Il parametro vale " %where% " il drv " %drv%
 rem pause
 
 cd FSDA\helpfiles
+rename FSDA FSDAtomove
+mkdir FSDA
+cd FSDAtomove
+move helptoc.xml ..\FSDA
+move fsda_product_page.html ..\FSDA
 
-rmdir /S /Q FSDAR7
+cd ..
 
-rename FSDAR8 FSDA
+move FSDAtomove ..\FSDA
 
-set matpat=%matexe:bin\matlab.exe=%
+cd ..
 
-rem set matpatN=%matpat:\=\\%
+set matdocroot=%mathpath%\help
 
-rem set matpatF=%matpatN:"=%
+move FSDA %matdocroot%\.
+pause
+%matpath%\bin\matlab.exe -r "builddocsearchdb %matdocroot%\FSDA "
+pause
 
-rem set final=help\\documentation-center.html
-
-rem echo var home = 'file:///%matpatF%%final%';  >FSDA\home.js
-rem echo var home = 'fsda_product_page.html' ; >FSDA\home.js

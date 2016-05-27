@@ -129,6 +129,7 @@ function GetNumber(var temp: String): Integer;
 ////////////////////////
 var
 MatlabExe: String;
+MatlabPath: String;
 doc_command: String;
 adobe_comm: String;
 command: String;
@@ -138,7 +139,7 @@ MatlabIsInstalled: Boolean;
 
 function MyMatlabVersion(param: String): String;
 var
-  MatlabPath: String;
+   
   VersionMatlab: TArrayOfString;
   I: Integer;
   I_Iteratore: Integer;
@@ -334,13 +335,13 @@ end;
 
 function doc_func(param: String): String;
 begin
-  if (Rel8) then
-    if (Rel2015) then
+//  if (Rel8) then
+//    if (Rel2015) then
         doc_command := ExpandConstant('docsearchFS fsda_product_page %')
-    else
-        doc_command := ExpandConstant('doc -classic ')
-  else
-    doc_command := ExpandConstant('doc ');
+//    else
+//        doc_command := ExpandConstant('doc -classic ')
+//  else
+//    doc_command := ExpandConstant('doc ');
   Result := doc_command;
 end;
 
@@ -414,7 +415,7 @@ begin
   begin
    if (Rel8) then
      begin
-       Exec(ExpandConstant('{app}\FSDA\mgmhlpR8.bat'), ExpandConstant(' "{app}" '+'"'+ MatlabExe +'"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
+       Exec(ExpandConstant('{app}\FSDA\mgmhlpR8.bat'), ExpandConstant(' "{app}" '+'"'+ MatlabPath +'"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
        Exec(MatlabExe, ExpandConstant(' -wait -automation -nodesktop -r " cd ''{app}\FSDA'' ; matlab.apputil.install(''brushRES''); matlab.apputil.install(''brushFAN''); matlab.apputil.install(''brushROB''); quit; " '), '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
 
 

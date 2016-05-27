@@ -22,20 +22,20 @@ rem set PWD=%~dp0
 
 cd %TEMP%
 
-cd FSDA\helpfiles\FSDA
-mkdir ..\XML
-mkdir ..\XML\helpsearch 
-copy *.xml ..\XML\.
-copy helpsearch\* ..\XML\helpsearch\.
+rem cd FSDA\helpfiles\FSDA
+rem mkdir ..\XML
+rem mkdir ..\XML\helpsearch 
+rem copy *.xml ..\XML\.
+rem copy helpsearch\* ..\XML\helpsearch\.
 
-echo "ARCHIVIO jar PER helpfile..............."
-pause
-"C:\Program Files\Java\jdk1.7.0_51\bin\jar" cvf ..\XML\help.jar *
-cd ..
-rename FSDA FSDAR8
-rename XML FSDAR7
+rem echo "ARCHIVIO jar PER helpfile..............."
+rem pause
+rem "C:\Program Files\Java\jdk1.7.0_51\bin\jar" cvf ..\XML\help.jar *
+rem cd ..
+rem rename FSDA FSDAR8
+rem rename XML FSDAR7
 
-cd ..\..
+rem cd ..\..
 
 rem transform_help.exe %PWD%\FSDA\helpfiles\FSDA\ %PWD%\FSDA\helpfiles\FSDAR8\ helptoc.xml %PWD%\template.html
 
@@ -74,10 +74,10 @@ pause
 echo "----> FSDAtoolbox_for_MATLAB-setup.exe  generato in " %TEMP% " !!!!!!"
 pause
 
-rem "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe" sign /f "E:\usr_MATLAB\FSDA_setup\CERT\key.pfx" /d "FSDA Toolbox" /du "http://www.riani.it" /t "http://timestamp.verisign.com/scripts/timestamp.dll" "FSDAtoolbox_for_MATLAB-setup.exe"
+"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe" sign /f mycode-signing.p12 /p scacchi2016  %TEMP%\FSDAtoolbox_for_MATLAB-setup.exe
 
-rem echo "FSDAtoolbox_for_MATLAB-setup.exe SIGNED !"
-rem pause 
+echo "FSDAtoolbox_for_MATLAB-setup.exe SIGNED !"
+pause 
 
 echo "Generazione tar package per Linux"
 pause
@@ -89,7 +89,7 @@ copy %TOOL%\setupLINUX.sh .
 
 "C:\cygwin64\bin\tar.exe" cvf FSDA.tar FSDA setupLINUX.sh
 "C:\cygwin64\bin\gzip.exe" FSDA.tar
-echo "---> FSDA.tar.gz genearto in " %TEMP% " !!!!!!!!!!!!!!"
+echo "---> FSDA.tar.gz generato in " %TEMP% " !!!!!!!!!!!!!!"
 pause
 
 
