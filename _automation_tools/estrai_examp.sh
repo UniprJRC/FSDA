@@ -19,7 +19,9 @@ then
 	exit 1
 fi
 
-/usr/bin/find $what -name "*.m" ! -path "*_automation_tools*" ! -path "*helpfiles*" ! -path "*TODO*" ! -path "*FSDAdemos*" ! -name "publishFS.m" ! -name "docsearchFS.m" >list_matlab_func
+EXCL_FILES="! -name \"docsearchFS.m\" ! -name \"publishFSallFiles.m\" ! -name \"publishFunctionAlpha.m\" ! -name \"publishFunctionCate.m\" ! -name \"docrootFS.m\" ! -name \"setuphelp.m\" ! -name \"createFSDAhelpFile.m\" "
+
+/usr/bin/find $what -name "*.m" ! -path "*_automation_tools*" ! -path "*helpfiles*" ! -path "*TODO*" ! -path "*FSDAdemos*" ! -name "publishFS.m" $EXCL_FILES >list_matlab_func
 
 cat list_matlab_func |while read func_file
 do
