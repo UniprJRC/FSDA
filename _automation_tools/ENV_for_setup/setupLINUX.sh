@@ -12,13 +12,19 @@ echo "The FSDA toolbox is protected by a European Union Public Licence (EUPL)."
 echo "The EUPL is the first European Free/Open Source Software (F/OSS) Licence."
 echo "For more information on the EUPL, please visit http://www.osor.eu/eupl"
 echo ""
-echo "Requisite for FSDA toolbox is MATLAB, which is copyright by © 1994-2013 The MathWorks, Inc."
+echo "Requisite for FSDA toolbox is MATLAB, which is copyright by © 1994-2016 The MathWorks, Inc."
 echo ""
-echo "AUTHORS:"
-echo "	Marco Riani               University of Parma"
-echo "	Domenico Perrotta         European Commission - JRC Ispra"
-echo "	Francesca Torti           University of Parma"
-echo "	Vytis Kopustinskas        European Commission - JRC Ispra (2009 - 2010)"
+echo "AUTHORS and DEVELOPERS:"
+echo "	Marco Riani           University of Parma"
+echo "	Andrea Cerioli        University of Parma"
+echo "	Domenico Perrotta     European Commission - JRC Ispra"
+echo "	Francesca Torti       European Commission - JRC Ispra"
+echo ""
+echo "OTHER DEVELOPERS:"
+echo "	Aldo Corbellini       University of Parma"
+echo "	Emmanuele Sordini     European Commission - JRC Ispra"
+echo "	Patrizia Calcaterra   Serco Belgium S.A. - seconded at EC JRC Ispra"
+echo "	Daniele Palermo       Freelance consultant - seconded at EC JRC Ispra"
 echo ""
 echo "The sources are open and the use is regulated by EUPL."
 echo ""
@@ -72,13 +78,13 @@ MATPAT=${MATEXE%%/bin/matlab}
 
 if [ $REL == 8 ]
 then
-	rm -rf $where/helpfiles/FSDAR7
-	mv $where/helpfiles/FSDAR8 $where/helpfiles/FSDA
-# echo "var home = 'fsda_product_page.html' ;" >$where/helpfiles/FSDA/home.js
-else
-	rm -rf $where/helpfiles/FSDAR8
-	mv $where/helpfiles/FSDAR7 $where/helpfiles/FSDA
-
+	mv $where/helpfiles/FSDA $where/helpfiles/FSDAtomove
+	mkdir $where/helpfiles/FSDA
+	mv $where/helpfile/FSDAtomove/helptoc.xml $where/helpfiles/FSDA/.
+	mv $where/helpfiles/FSDAtomove/fsda_product_page.html $where/helpfiles/FSDA/.
+	mv $where/helpfiles/FSDAtomove ${MATPAT}/help/.
+	mv ${MATPAT}/help/FSDAtomove ${MATPAT}/help/FSDA
+	matlab -nodesktop -r "builddocsearchdb ${MATPAT}/help/FSDA"
 fi
 
 
@@ -106,7 +112,7 @@ echo "{FSDA toolbox}/graphics"
 echo "{FSDA toolbox}/utilities"
 echo "{FSDA toolbox}/examples"
 echo "{FSDA toolbox}/combinatorial"
-echo "{FSDA toolbox}/datasets/clusatering"
+echo "{FSDA toolbox}/datasets/clustering"
 echo "{FSDA toolbox}/datasets/multivariate"
 echo "{FSDA toolbox}/datasets/regression"
 echo "{FSDA toolbox}/datasets/multivariate_regression"
