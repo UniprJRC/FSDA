@@ -51,7 +51,7 @@ estimator. </p>
 
 <p>
 <em>Remark</em>: Cook and Hawkins (1990) suggested that the procedure of Rousseeuw and van Zomeren (1990) may find ‘outliers everywhere’. The implication is that the size of the outlier test may be very much larger than the nominal 5% or 1%. Many of these methods are designed to test whether individual observations are outlying. As do Becker and Gather (1999), we, however, stress the importance of multiple outlier testing and focus on simultaneous tests of outlyingness. 
-Note that in this toolbox we develop methods that are intended, when the samples are multivariate normal, to find outliers in α% of the data sets.
+Note that in this toolbox we develop methods that are intended, when the samples are multivariate normal, to find outliers in $\alpha \%$ of the data sets.
 </p>
 
 <p>This chapter considers the following procedures. </p>
@@ -102,17 +102,14 @@ and minimizing the kurtosis coefficient of the projected data. They also
 proposed an iterative algorithm where each observation is repeatedly tested for 
 outlyingness in these directions, using subsamples of decreasing size with 
 potential outliers removed. Their final robust estimates, $\hat \mu_{PP}$
-<img alt="" src="images_help/imgC9.gif"> and
-<img alt="" src="images_help/imgCB.gif">, are computed by using the observations 
+ and $\hat \Sigma_{PP}$, are computed by using the observations 
 which are considered not to be outliers at the end of the iterations. A 
-calibration factor 
-<em>k</em><sub>PP</sub>
-is still required to allow for bias in estimation of Σ. The resulting (squared) 
-robust Mahalanobis</p>
-distances<p><img src="images_help/wp9r90f4.gif">
-</p>
+calibration factor $k_{PP}$
+is still required to allow for bias in estimation of $\Sigma$. The resulting (squared) 
+robust Mahalanobis distances</p>
+$$ d_{(PP)i}=k_{PP}(y_i-\hat \mu_{PP})^T \hat \Sigma_{PP}^{-1}(y_i-\hat \mu_{PP}), \quad \quad \quad i=1,\dots,n, $$
 
-<p>are compared with the <img src="images_help/wp05femj.gif"> distribution.</p>
+<p>are compared with the $\{v(n-1)/(n-v)\}F_{v,n-v} $  distribution.</p>
 <p>A comparison of the above procedures with the forward search in terms of size 
 and power can be found in &nbsp;Riani et al. (2009). In this paper the author show 
 that procedure implemented in function FSM has superior power as well as good 
