@@ -6,7 +6,7 @@
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %   add2spm      - Adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix - VIS-Mult- 2016 May 09
 %   boxplotb     - Computes a bivariate boxplot                                                                  - VIS-Mult- 2016 May 23
-%   cdsplot      - Produces the candlestick plot for robust model selection in linear regression                 - VIS-Reg - 2016 May 25
+%   cdsplot      - Produces the candlestick plot for robust model selection in linear regression                 - VIS-Reg - 2016 May 27
 %   covplot      - Plots the trajectories of the elements of the covariance (correlation) matrix monitored       - VIS-Mult- 2016 May 23
 %   fanplot      - Plots the fan plot for transformation in linear regression                                    - VIS-Reg - 2016 May 23
 %   histFS       - Plots a histogram with the elements in each bin grouped according to a vector of labels       - VIS-Reg - 2016 May 25

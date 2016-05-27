@@ -33,7 +33,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMapv1(c, Pi, Mu, S, fix, 
 %               probabilities. More precisely, OmegaMap(i,j) is the
 %               misclassification probability with respect to cluster i,
 %               (that is conditionally on x belonging to cluster i,  which
-%               is called w_{j|i})
+%               is called $w_{j|i})$
 %               (i ~= j)=1, 2, ..., k
 %    BarOmega : scalar associated with average overlap.
 %               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))

@@ -10,7 +10,7 @@
     end
     disp('Maximum absolute difference is:');
     disp(max(max(abs(Y-Ychk))));</pre></div></div><pre class="codeoutput">Maximum absolute difference is:
-     1.136868377216160e-13
+   1.1369e-13
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Check accuracy of results monitoring $|p-F_{IG} (F_{IG}^{-1}(p))|$.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     a=[1,2,3,50,100,10000];
     b=[1,10,100,0.05,10,800];
@@ -27,9 +27,9 @@
     disp(max(max(abs(Y))));
     disp('Maximum deviation from 0 using fast routine:');
     disp(max(max(abs(Ychk))));</pre></div></div><pre class="codeoutput">Maximum deviation from 0 passing through routine gaminv:
-     1.570965579844597e-14
+   1.5710e-14
 Maximum deviation from 0 using fast routine:
-     1.121325254871408e-14
+   1.1213e-14
 </pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare results with R (library actuar).</li></span></a></span></h3><div class="collapse"><p>
      The example below assumes that the Connection with R has already been setup
      For more information on how to connect R and Matlab see file

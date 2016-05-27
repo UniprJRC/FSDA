@@ -16,7 +16,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+4;
-    [out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  3.06 seconds 
+    [out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.62 seconds 
 </pre><img vspace="5" hspace="5" src="images\SDest_01.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_02.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_03.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>SDest with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
@@ -34,10 +34,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(2:20,3)=100;
-    [out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  2.94 seconds 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
+    [out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.61 seconds 
 Warning: Matrix is singular to working precision. 
 Warning: Matrix is singular to working precision. 
 Warning: Matrix is singular to working precision. 

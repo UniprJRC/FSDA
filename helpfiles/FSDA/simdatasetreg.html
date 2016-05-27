@@ -36,33 +36,24 @@
     % Probabilities of overlapping are evaluated at
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X(:,2:end)],id)</pre></div></div><pre class="codeoutput">
-ans(:,:,1) =
-
-   -1.0000    6.0021   10.0021   14.0021   18.0021
-    2.0021   -1.0000   11.0021   15.0021   19.0021
-    3.0021    7.0021   -1.0000   16.0021   20.0021
-    4.0021    8.0021   12.0021   -1.0000   21.0021
-    5.0021    9.0021   13.0021   17.0021   -1.0000
-
-
+    spmplot([y X(:,2:end)],id)</pre></div></div><pre class="codeoutput">ans(:,:,1) =
+   -1.0000    6.0099   10.0099   14.0099   18.0099
+    2.0099   -1.0000   11.0099   15.0099   19.0099
+    3.0099    7.0099   -1.0000   16.0099   20.0099
+    4.0099    8.0099   12.0099   -1.0000   21.0099
+    5.0099    9.0099   13.0099   17.0099   -1.0000
 ans(:,:,2) =
-
-   -1.0000   26.0021   30.0021   34.0021   38.0021
-   22.0021   -1.0000   31.0021   35.0021   39.0021
-   23.0021   27.0021   -1.0000   36.0021   40.0021
-   24.0021   28.0021   32.0021   -1.0000   41.0021
-   25.0021   29.0021   33.0021   37.0021   -1.0000
-
-
+   -1.0000   26.0099   30.0099   34.0099   38.0099
+   22.0099   -1.0000   31.0099   35.0099   39.0099
+   23.0099   27.0099   -1.0000   36.0099   40.0099
+   24.0099   28.0099   32.0099   -1.0000   41.0099
+   25.0099   29.0099   33.0099   37.0099   -1.0000
 ans(:,:,3) =
-
-         0   46.0021   50.0021   54.0021   58.0021
-   42.0021         0   51.0021   55.0021   59.0021
-   43.0021   47.0021         0   56.0021   60.0021
-   44.0021   48.0021   52.0021         0   61.0021
-   45.0021   49.0021   53.0021   57.0021         0
-
+         0   46.0099   50.0099   54.0099   58.0099
+   42.0099         0   51.0099   55.0099   59.0099
+   43.0099   47.0099         0   56.0099   60.0099
+   44.0099   48.0099   52.0099         0   61.0099
+   45.0099   49.0099   53.0099   57.0099         0
 </pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size  of the dataset </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Pi" class="clearfix"> </div> <h3 id="input_argument_Pi" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Pi</code> &#8212; vector of length k defining mixing proportions </span>  </a><span class="example_desc">Vector</span></span></h3> <div class="collapse"> <p>\sum_{j=1}^k Pi=1</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Beta" class="clearfix"> </div> <h3 id="input_argument_Beta" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Beta</code> &#8212; p-by-k matrix containing (in the columns) regression
                coefficients for the k groups </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_S" class="clearfix"> </div> <h3 id="input_argument_S" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>S</code> &#8212; vector of length k containing the variances of the k
                regression hyperplanes </span>  </a><span class="example_desc">Vector</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Xdistrib" class="clearfix"> </div> <h3 id="input_argument_Xdistrib" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Xdistrib</code> &#8212; information about how to generate

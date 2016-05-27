@@ -1,7 +1,7 @@
 function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %regressB computes Bayesian estimates of regression parameters
 %
-%<a href="matlab: docsearch('regressB')">Link to the help function</a>
+%<a href="matlab: docsearchFS('regressB')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -287,7 +287,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 % Copyright 2008-2015.
 % Written by FSDA team
 %
-%<a href="matlab: docsearch('regressB')">Link to the help function</a>
+%<a href="matlab: docsearchFS('regressB')">Link to the help function</a>
 %
 % Last modified 06-Feb-2015
 %

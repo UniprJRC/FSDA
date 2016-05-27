@@ -3,33 +3,34 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %<a href="matlab: docsearchFS('simdataset')">Link to the help function</a>
 %
-%   simdataset(n, Pi, Mu, S) generates a matrix of size n-by-p containing n
-%   observations p dimensions from k groups. More precisely, this function
-%   produces a dataset of n observations from a mixture model with
-%   parameters 'Pi' (mixing proportions), 'Mu' (mean vectors), and 'S'
-%   (covariance matrices). Mixture component sample sizes are produced as a
-%   realization from a multinomial distribution with probabilities given by
-%   the mixing proportions. For example, if n=200, k=4 and Pi=[0.25, 0.25,
-%   0.25, 0.25] function Nk1=mnrnd( n-k, Pi) is used to generate k integers
-%   (whose sum is n-k) from the multinomial distribution with parameters
-%   n-k and Pi. The size of the groups is given by Nk1+1. The first
-%   Nk1(1)+1  observations are generated using centroid Mu(1,:) and
-%   covariance S(:,:,1), ..., the last Nk1(k)+1 observations are generated
-%   using centroid Mu(k,:) and covariance S(:,:,k)
+%   simdataset(n, Pi, Mu, S) generates a matrix of size $n$-by-$p$
+%   containing $n$ observations $p$ dimensions from $k$ groups. More
+%   precisely, this function produces a dataset of n observations from a
+%   mixture model with parameters 'Pi' (mixing proportions), 'Mu' (mean
+%   vectors), and 'S' (covariance matrices). Mixture component sample sizes
+%   are produced as a realization from a multinomial distribution with
+%   probabilities given by the mixing proportions. For example, if n=200,
+%   k=4 and Pi=[0.25, 0.25, 0.25, 0.25] function Nk1=mnrnd( n-k, Pi) is
+%   used to generate k integers (whose sum is n-k) from the multinomial
+%   distribution with parameters n-k and Pi. The size of the groups is
+%   given by Nk1+1. The first Nk1(1)+1  observations are generated using
+%   centroid Mu(1,:) and covariance S(:,:,1), ..., the last Nk1(k)+1
+%   observations are generated using centroid Mu(k,:) and covariance
+%   S(:,:,k).
 %
-%   DETAILS
+%   DETAILS.
 %
-% To make a dataset more challenging for clustering, a user might want to
-% simulate noise variables or outliers. The optional parameter 'noiseunits'
-% controls the number and the type of outliers which must be added. The
-% optional parameter 'noisevars' controls the number and the type of noise
-% variables which must be added (it is possible to control the
-% distribution, the interval and the number). Finally, the user can apply
-% an inverse Box-Cox transformation providing a vector of coefficients
-% 'lambda'. The value 1 implies that no transformation is needed for the
-% corresponding coordinate. It is also possible to add outliers to an
-% existing dataset by simply suppling as first argument the matrix of
-% existing data
+%   To make a dataset more challenging for clustering, a user might want to
+%   simulate noise variables or outliers. The optional parameter
+%   'noiseunits' controls the number and the type of outliers which must be
+%   added. The optional parameter 'noisevars' controls the number and the
+%   type of noise variables which must be added (it is possible to control
+%   the distribution, the interval and the number). Finally, the user can
+%   apply an inverse Box-Cox transformation providing a vector of
+%   coefficients 'lambda'. The value 1 implies that no transformation is
+%   needed for the corresponding coordinate. It is also possible to add
+%   outliers to an existing dataset by simply suppling as first argument
+%   the matrix of existing data.
 %
 %  Required input arguments:
 %
@@ -256,8 +257,10 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %}
 
 %{
-    %% Add outliers generated from uniform distribution.
-    n=300;
+    %% Generate 4 groups in 2 dimensions and add outliers from uniform distribution.
+    rng(100)
+    out = MixSim(4,2,'BarOmega',0.01);
+    n=300;n=300;
     noisevars=0;
     noiseunits=3000;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);

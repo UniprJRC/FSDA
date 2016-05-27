@@ -150,6 +150,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %{
     %% Find matrix of misclassification probabilities.
+    % Fix number of groups, dimensions and mixing proportions
     k = 4;    % Number of groups
     p = 5;    % Number of dimensions
     Pi= [0.1 0.2 0.4 0.3]; % mixing proportions

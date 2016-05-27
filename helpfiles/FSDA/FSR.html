@@ -24,7 +24,7 @@
     [outFS]=FSR(y,X,'plots',2);
     %The envelopes based on all the observations show that in the central part of the search the observed curve is well beyond the extreme thresholds. More precisely, the message inside the graph informs that the signal took place in step 81 because the value of minimum deletion residual in this step was greater than 99.999% threshold.
     %Once a signal takes place the envelopes are resuperimposed until a stopping rule is fulfilled
-    %The procedure of resuperimposing envelopes in this case stops when n = 85, the first time in which we have a value of rmin(m) for n&gt;=m†-1 greater than the 99% threshold. The group can therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.16 seconds 
+    %The procedure of resuperimposing envelopes in this case stops when n = 85, the first time in which we have a value of rmin(m) for n&gt;=m†-1 greater than the 99% threshold. The group can therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
 -------------------------
 Signal detection loop
 Tentative signal in central part of the search: step m=81 because
@@ -42,7 +42,7 @@ Final output
 Number of units declared as outliers=16
 Summary of the exceedances
            1          99         999        9999       99999
-           1          17          10           9           6
+           0          17          10           9           6
 </pre><img vspace="5" hspace="5" src="images\FSR_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_04.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSR with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Monitor the exceedances from m=60 without showing plots.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
@@ -67,13 +67,13 @@ Summary of the exceedances
     p=3;
     X=randn(n,p);
     y=randn(n,1);
-    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.20 seconds 
+    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
 -------------------------
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
            1          99         999        9999       99999
-           0           1           0           0           0
+           0           0           0           0           0
 </pre><img vspace="5" hspace="5" src="images\FSR_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_06.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of options xlim and ylim (Hawkins data).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('hawkins.txt','hawkins');
     y=hawkins(:,9);

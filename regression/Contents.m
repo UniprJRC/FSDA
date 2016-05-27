@@ -22,13 +22,13 @@
 %   FSRHeda          - Enables to monitor several quantities in each step of the forward search                                                   - REG-Hetero         - 2016 May 23
 %   FSRHmdr          - Computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search - REG-Hetero         - 2016 May 26
 %   FSRinvmdr        - Converts values of minimum deletion residual into confidence levels                                                        - REG-Regression     - 2016 May 25
-%   FSRmdr           - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                 - REG-Regression     - 2016 May 25
+%   FSRmdr           - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                 - REG-Regression     - 2016 May 27
 %   FSRms            - Performs robust model selection using flexible trimming in linear regression                                               - REG-ModelSelection - 2016 May 25
 %   FSRr             - Forward search in linear regression reweighted                                                                             - REG-Regression     - 2016 May 09
 %   LXS              - Computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators                                       - REG-Regression     - 2016 May 09
 %   MMreg            - Computes MM estimator of regression coefficients                                                                           - REG-Regression     - 2016 May 25
 %   MMregcore        - Computes MM regression estimators for a selected fixed scale                                                               - REG-Regression     - 2016 May 25
-%   regressB         - Computes Bayesian estimates of regression parameters                                                                       - REG-Bayes          - 2016 May 25
+%   regressB         - Computes Bayesian estimates of regression parameters                                                                       - REG-Bayes          - 2016 May 27
 %   regressH         - Fits a multiple linear regression model with heteroskedasticity                                                            - REG-Hetero         - 2016 May 25
 %   regressHart      - Fits a multiple linear regression model using art heteroskedasticity                                                       - REG-Hetero         - 2016 May 26
 %   regressHhar      - RegressH fits a multiple linear regression model with Harvey heteroskedasticity                                            - REG-Hetero         - 2016 May 17

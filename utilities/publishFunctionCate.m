@@ -61,7 +61,7 @@ function fstring=publishFunctionCate(InputCell)
     list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)
     out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);
     cd(fileparts(which('docsearchFS.m')))
-    % Create HTML file containing alphabetical list of functions
+    % Create HTML file containing categorical list of functions
     fstring=publishFunctionCate(out);
     % open outfile file in web browser
     FileWithFullPath=which('docsearchFS.m');

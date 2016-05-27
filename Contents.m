@@ -14,7 +14,7 @@
 %   brushROB                   - Displays a GUI which enables brushing in resindexplot                                                                           - GUI                 - 2016 May 17
 %   cabc                       - Closes all open figures except the one in foreground (the current)                                                              - UTIGEN              - 2016 May 16
 %   cascade                    - Is a third party function used in FSDA demos and examples                                                                       - UTIGEN              - 2016 May 16
-%   cdsplot                    - Produces the candlestick plot for robust model selection in linear regression                                                   - VIS-Reg             - 2016 May 25
+%   cdsplot                    - Produces the candlestick plot for robust model selection in linear regression                                                   - VIS-Reg             - 2016 May 27
 %   clickableMultiLegend       - Hides/shows symbols inside all gplotmatrix subplots (or similar multi-plots) clicking on the legend                             - UTIGEN              - 2016 May 22
 %   combsFS                    - Is an iterative algorithm equivalent to the MATLAB combs.m                                                                      - UTICOMB             - 2016 May 09
 %   covplot                    - Plots the trajectories of the elements of the covariance (correlation) matrix monitored                                         - VIS-Mult            - 2016 May 23
@@ -52,7 +52,7 @@
 %   FSRHeda                    - Enables to monitor several quantities in each step of the forward search                                                        - REG-Hetero          - 2016 May 23
 %   FSRHmdr                    - Computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search      - REG-Hetero          - 2016 May 26
 %   FSRinvmdr                  - Converts values of minimum deletion residual into confidence levels                                                             - REG-Regression      - 2016 May 25
-%   FSRmdr                     - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                      - REG-Regression      - 2016 May 25
+%   FSRmdr                     - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                      - REG-Regression      - 2016 May 27
 %   FSRmdrrs                   - Performs random start monitoring of minimum deletion residual                                                                   - CLUS-RobClaREG      - 2016 May 25
 %   FSRms                      - Performs robust model selection using flexible trimming in linear regression                                                    - REG-ModelSelection  - 2016 May 25
 %   FSRr                       - Forward search in linear regression reweighted                                                                                  - REG-Regression      - 2016 May 09
@@ -91,7 +91,7 @@
 %   logmvnpdfFS                - Produces log of Multivariate normal probability density function (pdf)                                                          - UTISTAT             - 2016 May 26
 %   LXS                        - Computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators                                            - REG-Regression      - 2016 May 09
 %   mahalFS                    - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                      - UTISTAT             - 2016 May 17
-%   makecontentsfileFS         - Extends Matlab function makecontentsfile                                                                                        - UTIHELP             - 2016 May 26
+%   makecontentsfileFS         - Extends Matlab function makecontentsfile                                                                                        - UTIHELP             - 2016 May 27
 %   malfwdplot                 - Plots the trajectories of scaled Mahalanobis distances along the search                                                         - VIS-Mult            - 2016 May 22
 %   malindexplot               - Plots the Mahalanobis distances versus a selected variable                                                                      - VIS-Mult            - 2016 May 25
 %   mcd                        - Computes Minimum Covariance Determinant                                                                                         - MULT-Multivariate   - 2016 May 25
@@ -129,18 +129,21 @@
 %   quickselectFS              - Finds the k-th order statistic                                                                                                  - UTIGEN              - 2016 May 25
 %   RandIndexFS                - Calculates Rand type Indices to compare two partitions                                                                          - UTISTAT             - 2016 May 25
 %   randsampleFS               - Generates a random sample of k elements from the integers 1 to n (k<=n)                                                         - UTICOMB             - 2016 May 16
-%   regressB                   - Computes Bayesian estimates of regression parameters                                                                            - REG-Bayes           - 2016 May 25
+%   regressB                   - Computes Bayesian estimates of regression parameters                                                                            - REG-Bayes           - 2016 May 27
 %   regressH                   - Fits a multiple linear regression model with heteroskedasticity                                                                 - REG-Hetero          - 2016 May 25
 %   regressHart                - Fits a multiple linear regression model using art heteroskedasticity                                                            - REG-Hetero          - 2016 May 26
 %   regressHhar                - RegressH fits a multiple linear regression model with Harvey heteroskedasticity                                                 - REG-Hetero          - 2016 May 17
 %   resfwdplot                 - Plots the trajectories of the scaled (squared) residuals monitored                                                              - VIS-Reg             - 2016 May 23
 %   resindexplot               - Plots the residuals from a regression analysis versus index number or any other variable                                        - VIS-Reg             - 2016 May 25
+%   restreigen                 - Computes eigenvalues restriction (without Dykstra algorithm)                                                                    - CLUS-RobClaMULT     - 2016 May 27
 %   rlga                       - Performs robust linear grouping analysis                                                                                        - CLUS-RobClaREG      - 2016 May 26
 %   RobCov                     - Computes covariance matrix of robust regression coefficients                                                                    - REG-Regression      - 2016 May 25
 %   RobRegrSize                - Provides proper threshold for robust estimators to obtain an empirical size equal to 1 per cent nominal size                    - REG-Regression      - 2016 May 25
 %   Score                      - Computes the score test for transformation                                                                                      - REG-Transformations - 2016 May 09
 %   SDest                      - Computes Stahel-Donoho robust estimator of dispersion/location                                                                  - MULT-Multivariate   - 2016 May 25
 %   shuffling                  - Does a random permutation of the elements of input vector                                                                       - UTICOMB             - 2016 May 16
+%   simdataset                 - Simulates and/or contaminates a dataset given the parameters of finite mixture model with Gaussian components%                  - CLUS-MixSim         - 2016 May 27
+%   simdatasetreg              - Simulates regression dataset given the parameters of a mixture regression model                                                 - CLUS-MixSim         - 2016 May 27
 %   Smult                      - Computes S estimators in multivariate analysis                                                                                  - MULT-Multivariate   - 2016 May 25
 %   Sn                         - Robust estimator of scale (robust version of Gini's average difference)                                                         - UTISTAT             - 2016 May 25
 %   spmplot                    - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal                                     - VIS-Mult            - 2016 May 25
@@ -161,6 +164,7 @@
 %   tclustICplot               - Plots information criterion as a function of c and k                                                                            - VIS-Clu             - 2016 May 25
 %   tclustICsol                - Extracts a set of best relevant solutions                                                                                       - CLUS-RobClaMULT     - 2016 May 25
 %   tclustreg                  - Performs robust linear grouping analysis                                                                                        - CLUS-RobClaREG      - 2016 May 19
+%   tkmeans                    - Computes trimmed k-means                                                                                                        - CLUS-RobClaMULT     - 2016 May 27
 %   triu2vec                   - Extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix                       - UTIGEN              - 2016 May 16
 %   unibiv                     - Has the purpose of detecting univariate and bivariate outliers                                                                  - MULT-Multivariate   - 2016 May 25
 %   upperfracpos               - Positions two figures on the upper part of the screen                                                                           - UTIGEN              - 2016 May 25

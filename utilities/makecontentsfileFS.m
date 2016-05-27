@@ -153,7 +153,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
-    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',true,'printOutputCell','Contents.m')
+    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false)
 %}
 
 

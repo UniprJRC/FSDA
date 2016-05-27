@@ -10,7 +10,7 @@
 %   findDir                - Finds recursively all directories in root                                                                    - UTIGEN - 2016 May 11
 %   findFile               - Finds recursively all files in root                                                                          - UTIGEN - 2016 May 09
 %   isfunction             - Checks if a function exists                                                                                  - UTIGEN - 2016 May 09
-%   makecontentsfileFS     - Extends Matlab function makecontentsfile                                                                     - UTIHELP- 2016 May 26
+%   makecontentsfileFS     - Extends Matlab function makecontentsfile                                                                     - UTIHELP- 2016 May 27
 %   PoolClose              - Closes the pool of MATLAB instances opened with PoolPrepare to execute code in parallel                      - UTIGEN - 2016 May 09
 %   PoolPrepare            - Prepares a pool of MATLAB instances for executing code in parallel                                           - UTIGEN - 2016 May 09
 %   position               - Controls the position of the open figures                                                                    - UTIGEN - 2016 May 16

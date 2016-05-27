@@ -156,8 +156,8 @@ function cdsplot(outms,varargin)
 
 
 %{
-    % Interactive_example
     % cdsplot with optional arguments.    
+    % Interactive_example
     % Load Ozone data (full data)
     X=load('ozone_330_obs.txt');
     y=log(X(:,9));
