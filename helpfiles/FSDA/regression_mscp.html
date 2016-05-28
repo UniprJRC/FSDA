@@ -34,64 +34,64 @@ document.write(divsbefore);
 </h2>
 <a class="indexterm" name="zmw57dd0e2698"></a>
 <p></p>
-<p>In the selection of regression variables σ<sup>2</sup> is estimated from a large regression
-model with n × p+ matrix <em>X</em><sup>+</sup>, <em>p</em><sup>+</sup> > p, of which 
-<em>X</em> is submatrix. The
-unbiased estimator of σ<sup>2</sup> comes from regression on all p<sup>+</sup> columns of 
-<em>X</em><sup>+</sup> and
+<p>In the selection of regression variables $\sigma^2$ is estimated from a large regression
+model with $n \times p^+$ matrix $X^+$, $p^+ > p$, of which 
+$X$ is submatrix. The
+unbiased estimator of $\sigma^2$ comes from regression on all $p^+$ columns of 
+$X^+$ and
 can be written</p>
 <p>
-<img alt="" src="images_help/img6C.gif">&nbsp;</p>
-<p><em>C<sub>p</sub></em> is defined as follows: </p>
+$$ s^2=R_{p^+}(n)/(n-p^+)$$
+<p>$C_p$ is defined as follows: </p>
 <p>
-<img alt="" src="images_help/img6E.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+$$ C_p = R_p(n)/s^2 - n+2p=(n-p^+)R_p(n)/R_{p^+}(n)-n+2p.$$
+
 </p>
-<p>One derivation of <em>C<sub>p</sub></em> (Mallows 1973) is that it provides an estimate of the
-mean squared error of prediction at the <em>n</em> observational points from the model
-with <em>p</em> linear parameters, provided the full model with <em>p<sup>+</sup></em> parameters yields
-an unbiased estimate of σ<sup>2</sup>. Then E{<em>R<sub>p</sub></em>(<em>n</em>)} = (<em>n</em> − <em>p</em>)σ<sup>2</sup>, E(<em>s</em><sup>2</sup>) = σ<sup>2</sup> and
-E(<em>C<sub>p</sub></em>) is approximately <em>p</em>.</p>
-<p>The <em>C<sub>p</sub></em> criterion for all observations is a function of the residual sums
-of squares <em>R<sub>p</sub></em>(<em>n</em>) and <em>R<sub>p+</sub></em>(<em>n</em>). For a subset of 
-<em>m</em> observations we can define
-the forward value of <em>C<sub>p</sub></em> (which we denote <em>C<sub>p</sub></em>(<em>m</em>)) as</p>
+<p>One derivation of $C_p$ (Mallows 1973) is that it provides an estimate of the
+mean squared error of prediction at the $n$ observational points from the model
+with $p$ linear parameters, provided the full model with $p^+$ parameters yields
+an unbiased estimate of $\sigma^2$. Then $E\{R_p(n)\} = (n − p)\sigma^2$, $E(s^2) = \sigma^2$ and
+$E(C_p)$ is approximately $p$.</p>
+<p>The $C_p$  criterion for all observations is a function of the residual sums
+of squares $R_{p}(n)$ and $R_{p^+}(n)$. For a subset of $m$ observations we can define
+the forward value of $C_p$ (which we denote $C_p(m)$) as</p>
 <p>
-<img alt="" src="images_help/img72.gif">&nbsp;</p>
-<p>For each <em>m</em> we calculate <em>C<sub>p</sub></em>(<em>m</em>) for all models of interest. However, some
+$$ C_p(m)= (m-p^+)R_p(m)/R_{p^+}(m)-m+2p. $$
+<p>For each $m$ we calculate $ C_p(m)$ for all models of interest. However, some
 care is needed in interpreting this definition. For each of the models with p
-parameters, the search may be different, so that the subset S(<em>m</em>) will depend
-on which model is being fitted. This same subset is used to calculate <em>R<sub>p+</sub></em>(<em>n</em>),
-so that the estimate <em>s</em><sup>2</sup> will also depend on the particular model being
-evaluated as well as on <em>m</em>. Since the searches are for different models, outliers
+parameters, the search may be different, so that the subset $S(m)$ will depend
+on which model is being fitted. This same subset is used to calculate $R_{p^+}(n)$,
+so that the estimate $s^2$ will also depend on the particular model being
+evaluated as well as on $m$. Since the searches are for different models, outliers
 will not necessarily enter in the same order for all models.
 </p>
-<p>It is straightforward to show that the distribution of 
- <em>C<sub>p</sub></em> is</p>
+<p>It is straightforward to show that the distribution of $C_p$ is</p>
+$$ C_p \sim (p^+ -p)F+2p-p^+ \quad \quad  \textrm{where}\quad \quad  F \sim F_{p^+-p,n-p^+}.  $$
+</p>
 
-<img src="images_help/wpo2g3sk.gif"><p>&nbsp;</p>
-
-Riani and Atkinson (2010) show that when we consider a subset of size m, 
-the full sample distribution holds with n replaced by m.
+Riani and Atkinson (2010) show that when we consider a subset of size $m$, 
+the full sample distribution holds with $n$ replaced by $m$.
 More specifically:
-<img src="images_help/wp4l5pa8.gif" height="65" width="780">
+$$ C_p(m) \sim (p^+ -p)F+2p-p^+ \quad \quad  \textrm{where}\quad \quad  F \sim F_{p^+-p,m-p^+}.  $$
+
 <p>
-so that the only change is in the degrees of freedom of the <em>F </em>distribution
+so that the only change is in the degrees of freedom of the $F$ distribution
 </p>
 <p>
-The expression of <em>C<sub>p</sub></em>(<em>m</em>) is the multivariate generalization of the forward added
-variable <em>t</em> test of Atkinson and Riani (2002). The orthogonality of the
+The expression of $ C_p(m) $  is the multivariate generalization of the forward added
+variable $t$ test of Atkinson and Riani (2002). The orthogonality of the
 distribution to the search can again be shown by the orthogonality of the
 residuals of added variables. The difference is that now the adjustments
 using the variables are not restricted to the addition of single terms to the
 model.
 It is important to be clear about the similarity of the structure of the
-forward searches in the two situations. In the calculation of added variable <em>t</em>
+forward searches in the two situations. In the calculation of added variable $t$
 tests a single search is used for each model and the added variable statistic
-constructed. Likewise, in the calculation of <em>C<sub>p</sub></em>(<em>m</em>), there is a single search
+constructed. Likewise, in the calculation of $ C_p(m) $, there is a single search
 for each model which is used for the calculation of the two sums of squares
-<em>R<sub>p</sub></em>(<em>m</em>) and <em>R<sub>p+</sub></em>(<em>m</em>). 
-As a consequence the distributional results for <em>C<sub>p</sub></em>(<em>m</em>) are a direct multivariate generalization of those for the 
-<em>t </em>test.
+$ R_p(m) $ and $ R_{p^+}(m) $. 
+As a consequence the distributional results for $ C_p(m) $  are a direct multivariate generalization of those for the 
+$t$ test.
 </p>
 
 &nbsp;<br><h3>Example 1</h3>
