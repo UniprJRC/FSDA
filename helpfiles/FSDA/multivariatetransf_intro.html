@@ -42,34 +42,35 @@ the response rather than the original response itself.
 <p>
 In
 the  extension of the Box and Cox (1964) family to multivariate responses
-there is a vector &lambda; of v transformation parameters
-&lambda;<sub>j</sub>, one for each of the v responses.  As before,  y<sub>i</sub> is the v × 1 vector of responses at observation i with y<sub>ij</sub> the
-observation on response j. The normalized transformation of
-y<sub>ij</sub> is given by</p>
+there is a vector $\lambda$ of $v$ transformation parameters $\lambda_i$, one for each of the $v$ responses.  As before,  $y_i$  is the $v \times 1$ vector of responses at observation i with $y_{ij}$ the
+observation on response $j$. The normalized transformation of
+$y_{ij}$ is given by</p>
 <p>
-<img alt="" src="images_help/img19.gif"></p>
-<p>where 
-<img alt="" class="style1" src="images_help/img1C.gif"> 
-is is the geometric mean of the jth response. The
-value  &lambda;<sub><em>j</em></sub>  = 1 (<em>j</em> = 1,... , v) corresponds to no
+\begin{eqnarray} z_{ij}(\lambda_j) & = & (y_{ij}^{\lambda_j}-1)/\lambda_j \dot{y}_{j}^{\lambda_j-1} \quad \quad (\lambda \neq 0)\\
+& = & \dot{y}_{j} \log y_{ij} \quad \quad \quad \quad  \quad \quad \quad \quad (\lambda = 0),
+\end{eqnarray}
+<p>where  $\dot{y}_{j}$
+is is the geometric mean of the $j$-th response. The
+value  $\lambda_j=1 \; (j=1,\dots,v)$ &lambda;<sub><em>j</em></sub>  = 1 (<em>j</em> = 1,... , v) corresponds to no
 transformation of any of the responses. If the transformed
-observations are normally distributed with vector mean µ<sub>i</sub> for
-the i-th observation and covariance matrix ∑, twice the
+observations are normally distributed with vector mean $\mu_i$  for
+the $i$-th observation and covariance matrix $\Sigma$, twice the
 profile loglikelihood of the
 observations is given by</p>
-<p><img alt="" src="images_help/img20.gif">&nbsp;</p>
-<p>In this equation the parameter estimates
-<img alt="" class="style1" src="images_help/img27.gif"> 
-are found for fixed &lambda; and
-e<sub>i</sub>(&lambda;) is the v × 1 vector of residuals for
-observation i for the same value of &lambda;. As in
+\begin{eqnarray}
+2L_{\max}(\lambda) & = & \textrm{const} - n\log |\hat \Sigma(\lambda)|-\sum_{i=1}^n \{z_i(\lambda)-\hat \mu_i(\lambda)\}^T\hat\Sigma^{-1}(\lambda)\{z_i(\lambda)-\hat \mu_i(\lambda)\}\\
+& = & \textrm{const} - n\log |\hat \Sigma(\lambda)|-\sum_{i=1}^n e_i(\lambda)^T \hat \Sigma(\lambda)^{-1}e_i(\lambda).
+\end{eqnarray}
+<p>In this equation the parameter estimates $\hat \mu_i(\lambda)$  and $\hat \Sigma(\lambda)$
+are found for fixed $\lambda$ and $e_i(\lambda)$ is the $v \times 1$ vector of residuals for
+observation $i$ for the same value of $\lambda$. As in
 the analysis of univariate transformations, it makes no
-difference in likelihood ratio tests for the value of &lambda;
-whether we use the maximum likelihood estimator of ∑, or
-the unbiased estimator ∑<sub>u</sub>. Suppose the maximum
+difference in likelihood ratio tests for the value of $\lambda$
+whether we use the maximum likelihood estimator of $\Sigma$, or
+the unbiased estimator $\Sigma_u$. Suppose the maximum
 likelihood estimator is used, so
 <p>
-<img src="images_help/wpslb5gm.gif">
+$$ n\hat \Sigma (\lambda) = \sum_{i=1}^n e_ie_i^T.$$ 
 </p>
 
 
@@ -77,81 +78,75 @@ When this estimate is  substituted in the previous equation,
 the profile
 loglikelihood reduces to
 
-<p><img src="images_help/wp7fussp.gif">
-</p><p>So, to test the hypothesis &lambda; = &lambda;<sub>0</sub>, the
+$$ 2L_{\max}(\lambda) = \textrm{const}' -n \log |\hat \Sigma (\lambda)|. $$
+</p><p>So, to test the hypothesis $\lambda = \lambda_0$, the
 likelihood ratio test statistic for transformation becomes</p>
+$$T_{LR} =n \log \{ |\hat \Sigma (\lambda_0)|/|\hat \Sigma(\hat \lambda)|\} $$
 
-<p><img src="images_help/wp665hpf.gif"></p>
-
-<p>is compared with the χ<sup>2</sup> distribution on v degrees of
-freedom. In this equation 
-<img alt="" src="images_help/imgD1.gif"> is the vector of v
-parameter estimates maximising <em>L</em><sub>max</sub>, which is found by
-numerical search. Replacement of 
-<img alt="" class="style1" src="images_help/img3E.gif"> by the unbiased estimator 
+<p>is compared with the $\chi^2$ distribution on $v$ degrees of
+freedom. In this equation $\hat \lambda$ is the vector of $v$
+parameter estimates maximising $L_{\max}$, which is found by
+numerical search. Replacement of $\hat \Sigma (\lambda)$  by the unbiased estimator 
 results in the multiplication of each determinant by a factor which cancels, 
 leaving the value of the statistic unchanged. There are two special cases when 
-tests of the form of T<sub>LR</sub> are on one degree of freedom. In the first we test 
-that all responses should have the same, unspecified, transformation, that is that &lambda;<sub>1</sub> =
-&lambda;<sub>2</sub> = ...  = &lambda;<sub>v</sub> = &lambda;. The second is
-the test of just one component of &lambda; when all others are
+tests of the form of $t_{LR}$ are on one degree of freedom. In the first we test 
+that all responses should have the same, unspecified, transformation, that is that $\lambda_1 = \lambda_2 = \dots = \lambda_v = \lambda$. The second is
+the test of just one component of $\lambda$ when all others are
 kept at some specified value.  In both cases we sometimes plot
-T<sub>N</sub>, the signed square root form of these tests is used.</p>
+$T_N$, the signed square root form of these tests is used.</p>
 
 <p>For transformations of a single variable we use forward plots of
-the <a href="fanplot.html">score statistic</a> T<sub>p</sub>(&lambda;). However, influential
+the <a href="fanplot.html">score statistic</a> $T_p(\lambda)$. However, influential
 observations may only be evident for some transformations of the
 data, but not others. Therefore, we employ the forward search on
 untransformed  data and on data subject to various
 transformations. In other words, with just one variable for transformation it is
 easy to use the fan plot from the five forward searches with
-standard values of &lambda; to find satisfactory transformations,
+standard values of $\lambda$ to find satisfactory transformations,
 if such exist, and to discover the observations that are
 influential in their choice. However, with v variables for
-transformation, there are 5<sup><em>v</em></sup> combinations of the five standard
+transformation, there are $5^v$ combinations of the five standard
 values to be investigated. Whether or not the calculations are
 time consuming, trying to absorb and sort the information would be
 difficult. We therefore suggest three steps to help structure the
 search for a multivariate transformation: </p>
 <ol>
 	<li>Run a forward search through the untransformed data,
-ordering the observations at each m by Mahalanobis distances
-calculated from untransformed observations. Estimate &lambda; at
-each value of m. Use the forward plot of  
-<img alt="" src="images_help/imgD1.gif"> to
-select a set of&nbsp; transformation parameters.</li>
+ordering the observations at each $m$ by Mahalanobis distances
+calculated from untransformed observations. Estimate $\lambda$ at
+each value of $m$. Use the forward plot of   $\hat \lambda$ to
+select a set of transformation parameters.</li>
 	<li>Rerun the forward
 search, now ordering the observations by distances calculated with
-the parameters selected in the first step;  &lambda; is again
-estimated  for each m. As the search is now on transformed data,
+the parameters selected in the first step;  $\lambda$ is again
+estimated  for each $m$. As the search is now on transformed data,
 the order in which the observations enter the subset will have
-changed from that in Step 1. Again monitor the values of
-<img alt="" src="images_help/imgD1.gif"> and of the likelihood ratio test for the
+changed from that in Step 1. Again monitor the values of $\hat \lambda$ and of the likelihood ratio test for the
 transformation. If a correct transformation has been found, the
 parameter estimates, if
 well defined, will be stable until near the end of the search,
 when any outliers start to enter. At this point, the value of the
 test statistic may increase rapidly.  How well defined the
 parameter estimates are can be determined by
-plots of profile loglikelihoods against the individual values of &lambda; for
-various values of <em>m</em>. A flat likelihood will explain an estimate
-of &lambda; which is behaving erratically.
+plots of profile loglikelihoods against the individual values of $\lambda$ for
+various values of $m$. A flat likelihood will explain an estimate
+of $\lambda$ which is behaving erratically.
 
- If some change is suggested in &lambda;, perhaps
+ If some change is suggested in $\lambda$, perhaps
 because outliers appear to be entering before the end of the
 search, repeat Step 2 until a reasonable set of transformations
-has been found. Let this be &lambda;<sub>R</sub>.
+has been found. Let this be $\lambda_R$.
  </li>
 	<li>&nbsp;Confirmatory
 testing of the suggested transformation. We expand each
 transformation parameter in turn around the five common values of
-&lambda; (-1, -0.5, 0, 0.5, 1), using the values of the vector
-&lambda;<sub>R</sub> for transforming the other <em>v</em>-1 variables. In this
-way we turn a multivariate problem into a series of v univariate
+$\lambda(-1, -0.5, 0, 0.5, 1)$, using the values of the vector
+$\lambda_R$ for transforming the other $v-1$ variables. In this
+way we turn a multivariate problem into a series of $v$ univariate
 ones. In each search we can test the transformation by comparing
-the likelihood ratio test with χ<sup>2</sup> on 1 degree of freedom. But we use 
+the likelihood ratio test with $\chi^2$ on 1 degree of freedom. But we use 
 	the signed square root of the likelihood ratio&nbsp; in
-order to learn whether lower or higher values of &lambda; are
+order to learn whether lower or higher values of $\lambda$ are
 indicated. The plot is thus a version of the fan plot.
 </li>
 </ol>
@@ -161,28 +156,23 @@ perhaps from univariate estimation on each response separately.
 Some iteration may be needed between Steps 2 and
 3. <br><br>
 <p>In summary, for the analysis of multivariate transformations we monitor forward plots of 
-parameter estimates and likelihood ratio tests for the vector parameter λ. We 
+parameter estimates and likelihood ratio tests for the vector parameter $\lambda$. We 
 produce the fan plot using the multivariate version of the signed square root 
 form of the univariate likelihood ratio test. We
-calculate a set of tests by varying each component of &lambda;
-about &lambda;<sub>0</sub>. Suppose we require a fan plot for &lambda;<sub>j</sub>.
-Let &lambda;<sub>0(j)</sub> be the vector of all parameters in
-&lambda;<sub>0</sub> except &lambda;<sub>j</sub>. Then &lambda;<sub>0(j)</sub> =
-(&lambda;<sub>0(j)</sub>:λ<sub>j</sub><sup>S</sup>) is the vector of parameter values
-in which &lambda;<sub>j</sub> takes one of the five standard values λ<sup>S</sup> while the other parameters keep their values in
-&lambda;<sub>0</sub>. To form the likelihood ratio test we also require the
-estimator<sub><img alt="" src="images_help/imgD1.gif">0(j)</sub>&nbsp; found by maximization only over
-&lambda;<sub>j</sub>. More explicitly, we can write  
-<img alt="" src="images_help/imgD1.gif"><sub>0j</sub> = (λ<sub>0(j)</sub>:<img alt="" src="images_help/imgD1.gif"><sub>j</sub>). 
+calculate a set of tests by varying each component of $\lambda$
+about $\lambda_0$. Suppose we require a fan plot for $\lambda_j$.
+Let $\lambda_{0(j)}$ be the vector of all parameters in $\lambda_0$ except  $\lambda_j$. Then $\lambda_{0(j)}  =
+(\lambda_{0(j)}:\lambda_j^S)$ is the vector of parameter values
+in which $\lambda_{j}$ takes one of the five standard values $\lambda^S$ while the other parameters keep their values in $\lambda_0$. To form the likelihood ratio test we also require the
+estimator $\hat \lambda_{0(j)}$ found by maximization only over $\lambda_j$. More explicitly, we can write  $\hat \lambda_{0(j)}=(\lambda_{0(j)}:\hat \lambda_j)$. 
 Then the version, for multivariate data, of the signed square root likelihood 
 ratio test is</p>
 
 <p>
-<img src="images_help/wp6rxl09.gif">
+$$ T_N(\lambda) = \textrm{sign}(\hat \lambda_j-\lambda_j^S)\sqrt{m \log \{|\hat \Sigma_m(\lambda_{0(j)})|/|\hat \Sigma_m(\hat \lambda_{0(j)})|\}}.$$
 </p>
 <p>
-We produce <em>v</em> fan plots, one for each variable, by letting
-&lambda;<sub>j</sub>, <em>j</em> = 1,... ,<em>v</em> take each of the five standard values. 
+We produce $v$ fan plots, one for each variable, by letting $\lambda_j$, $j = 1,\dots,v$ take each of the five standard values. 
 Alternatively, particularly if numerical maximization of the likelihood is time 
 consuming, we could produce the fan plot from the signed square root of the 
 score test .
