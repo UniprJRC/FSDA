@@ -35,19 +35,17 @@ of squares (LMS)</h2>
 <a class="indexterm" name="zmw57dd0e2698"></a>
 <p></p>
 <p>The LTS regression estimators tries to find the estimate of 
-β which minimizes the sum of the <em>h</em> smallest squared 
-residuals, where h must be at least half the number of observations. 
+$\beta$ which minimizes the sum of the $h$ smallest squared 
+residuals, where $h$ must be at least half the number of observations. 
 
 <br>The LMS regression estimators tries to find the estimate of 
-β which minimizes a quantile (generally the median) of squared 
+$\beta$ which minimizes a quantile (generally the median) of squared 
 residuals. 
 
-LTS belongs to the class of L-estimators, so is asymptotically normal and has the usual convergence rate of
-<em>n</em><sup>-0.5</sup>.
+LTS belongs to the class of L-estimators, so is asymptotically normal and has the usual convergence rate of $n^{-0.5}$.
 
 On the other hand, it is possible to show that even if the LMS estimator has an 
-asymptotic normal distribution has a slower convergence rate of
-<em>n</em><sup>-1/3</sup>.
+asymptotic normal distribution has a slower convergence rate of $n^{-1/3}$.
 
 </p>
 <p>In the analysis which follows we analyze the transformed fidelity data and we 
@@ -100,8 +98,8 @@ The picture below gives the residuals which appear if we use LMS or LTS combined
 with the option reweighting and we use a nominal 99% confidence interval 
 individual test. Notice that using standard individual test procedure with 
 nominal size 
-α, in 
-each dataset we expect to declare as outliers α% of the values. </p>
+$\alpha$, in 
+each dataset we expect to declare as outliers $\alpha\%$ of the values. </p>
 <p>
 <img alt="Comparison of robust residuals" src="plots/residualscomp.jpg" height="727" width="1336">&nbsp;</p>
 <p>If we use a simultaneous confidence interval,
@@ -111,7 +109,7 @@ that is if we specify <tt>conflev</tt> using the following code
 conflev=1-0.01/length(y);
 </pre>
 these are the plots that we get. Notice that using a simultaneous test procedure with size 
-α we expect to find at least one outlier in α% of the 
+$\alpha$ we expect to find at least one outlier in $\alpha\%$ of the 
 datasets.
 <p>
 <img alt="Comparison of robust residuals" src="plots/residualscompS.jpg" height="727" width="1336">&nbsp;</p>
