@@ -35,40 +35,39 @@ document.write(divsbefore);
 <a class="indexterm" name="zmw57dd0e2698"></a>
 <p></p>
 <p>Since the search orders the observations by the magnitude of their residuals 
-from the fitted subsets, the value of s<sup>2</sup> increases during the search, although not 
+from the fitted subsets, the value of $s^2$ increases during the search, although not 
 necessarily monotonically. As a consequence, even in the absence of outliers and 
 model inadequacies, the values of the t-statistics for the parameters in the model 
 decrease during the search and are hard to interpret. Atkinson and Riani (2002) 
 in order to overcome this problem use the method of added variables to provide plots 
 of t-tests which are orthogonal to the search.</p>
-<p>In order to obtain useful forward plots of t-tests we write the regression model for all n observations
+<p>In order to obtain useful forward plots of t-tests we write the regression model for all $n$ observations
 as</p>
-<p><img src="plots/wpr4w6td.gif"></p>
-<p>where <em>Q</em> is n×p, the errors ɛ satisfy the second-order assumptions with variances 
-σ<sup>2</sup> and <em>γ</em> is a
-scalar. In turn we take each of the columns of <em>Q</em> as the vector <em>w</em>, except for the column corresponding
+<p>$$ y=Q\theta+\varepsilon = X \beta + w \gamma +\varepsilon $$,</p>
+<p>where $Q$ is $n \times p$, the errors $\varepsilon$ satisfy the second-order assumptions with variances $\sigma^2$ and $\gamma$ is a
+scalar. In turn we take each of the columns of $Q$ as the vector $w$, except for the column corresponding
 to the constant term in the model. The well-established approach of added variables (see 
 for example Atkinson and 
 Riani, 2000, § 2.2) leads to an expression for the least squares estimator of 
-<em>γ</em>
+$\gamma$
 as a function of residuals
-from the regression of y and <em>w</em> on <em>X.</em></p>
+from the regression of $y$ and $w$ on $X$.</p>
 <p>More specifically:</p>
-<p><img alt="" src="plots/img67.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img alt="" src="plots/img69.gif"></p>
-<p>The residual mean square estimator of <em>s</em><sup>2</sup> from
-regression on <em>X</em> and <em>w</em>, can be written as</p>
-<img alt="" src="plots/img24.gif"><br>
-<p>The t-statistic for testing that <em>γ</em>=0 (<em>t<sub>γ</sub></em>) is thus</p>
-<p><img alt="" src="plots/img72.gif"></p>
+$$ \hat \gamma = \overset{*}{w}^T e /(\overset{*}{w}^T\overset{*}{w})=w^T Ay/(w^T Aw) \quad %
+\quad \quad \textrm{var}(\hat \gamma) = \sigma^2/(\overset{*}{w}^T\overset{*}{w}) = \sigma^2/(w^T Aw) .
+$$ 
+<p>The residual mean square estimator of $s^2$ from
+regression on $X$ and $w$, can be written as</p>
+$$ (n-p)s_w^2 = y^T Ay - (y^T Aw)^2/(w^T Aw). $$
+<p>The t-statistic for testing that $\gamma =0 \;(t_{\gamma})$ is thus</p>
+$$ t_{\gamma}= \hat \gamma /\{s_w^2/(w^TAw)\}^{\frac{1}{2}}. $$
 <p>This added-variable test is not affected by the ordering of the data and so has 
-the required <em>t</em> distribution.</p>
+the required $t$ distribution.</p>
 <p>More precisely, in searches using the added-variable test, we fit the reduced 
-model E(<em>Y</em>)=<em>Xb</em>, the residuals from which are used to determine the progress of the 
-search. We do not include <em>w</em> in the model. The choice of observations to be included 
-in the subset thus depends only on <em>y</em> and <em>X</em>. The ordering of observations using
-<em>X</em> 
-therefore does not affect the null distribution of the test statistic.</p>
+model $E(Y)=Xb$, the residuals from which are used to determine the progress of the 
+search. We do not include $w$ in the model. The choice of observations to be included 
+in the subset thus depends only on $y$ and $X$. The ordering of observations using
+$X$ therefore does not affect the null distribution of the test statistic.</p>
 <h3>Example 1</h3>
 <p>In the analysis which follows we analyze the transformed fidelity data which 
 have been used in previous pages and other dataset</p>
