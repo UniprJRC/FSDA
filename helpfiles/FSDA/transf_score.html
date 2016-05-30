@@ -33,18 +33,23 @@ document.write(divsbefore);
 	<h2>Score test for transformation</h2>
 <!-- SYNCHTO: bq_w_hm.html -->
 <p class="purpose">Approximate score test statistic for
-testing the transformation &lambda; = &lambda;<sub>0</sub>  </p>
+testing the transformation $\lambda=\lambda_0$ </p>
 <p>
 Box and Cox (1964) analyze the normalized power
 transformation  
 </p>
 <p>
-<img alt="Box-Cox" src="plots/Box-Cox.gif"></p>
+$$  z(\lambda) = \begin{cases} 
+(y^{\lambda}-1)/(\lambda \dot{y}^{\lambda-1})  \quad \quad \lambda\neq 0\\
+\\
+\dot{y} \log y \quad \quad \quad \quad \quad \quad  \quad  \quad \quad \lambda =0    
+\end{cases}    \qquad  (1)
+$$
 <p>
-where symbol y with dot on top denotes the geometric mean of the observations. 
+where symbol $y$ with dot on top denotes the geometric mean of the observations. 
 
-When &lambda; = 1, there is no transformation: &lambda; = 1/2 is the square root
-transformation, &lambda; = 0 gives the log transformation and &lambda; = &minus;1 the reciprocal.
+When $\lambda = 1$, there is no transformation: $\lambda = 1/2$ is the square root
+transformation, $\lambda = 0$ gives the log transformation and $\lambda = -1$ the reciprocal.
 These are the most widely used transformations, frequently supported
 by some empirical reasoning. For example, measurements of concentration
 often have a standard deviation proportional to the mean, so that the variance
@@ -58,49 +63,46 @@ similar requirement applies to the transformation of explanatory variables.
 <p>
 
 <br>The hope is that, for
-some &lambda; which has to be estimated, the transformed
+some $\lambda$ which has to be estimated, the transformed
 observations will satisfy the linear regression model.</p>
 <p>
-<img alt="zlambda" src="plots/Box-Cox1.gif"></p>
+$$  z(\lambda) = x^T\beta+\epsilon, \qquad (2) $$
 <p>
-where <em>x</em> is <tt>p</tt>-times-1 and the errors  are independently
-normally distributed with constant variance σ<sup>2</sup>. For inference about 
-the transformation parameter &lambda;, Box and Cox suggest the likelihood ratio test 
+where $x$ is <tt>p</tt>-times-1 and the errors  are independently
+normally distributed with constant variance $\sigma^2$. For inference about 
+the transformation parameter $\lambda$, Box and Cox suggest the likelihood ratio test 
 statistic. For regression models, a computationally
 simpler alternative test of the hypothesis
-&lambda; = &lambda;<sub>0</sub> is the approximate score statistic derived by
+$\lambda = \lambda_0$ is the approximate score statistic derived by
 Taylor series expansion of Eq. (1).
 
 
 
  </p>
 <p>
-<img alt="expansion"   class="style1"  src="plots/img11.gif">
+$$ z(\lambda) \doteq z(\lambda_0)+(\lambda-\lambda_0)w(\lambda_0) \qquad (3)   $$
 <p>&nbsp; where&nbsp;<p>
-<img alt="" src="plots/img15.gif">.</p>
-<p>
-
-</p>
+$$ \left. w(\lambda_0)= \frac{\partial z(\lambda)}{\partial  \lambda} \right|_{\lambda=\lambda_0}$$
 <p>
 If the linearized response (3) is substituted in the regression
 model (2), the model becomes
 </p>
 <p>
-<img alt="" src="plots/img1B.gif"></p>
+$$ z(\lambda_0)=x^T\beta-(\lambda-\lambda_0) w (\lambda_0)+\epsilon   \qquad (4)$$.
 <p>Because Eq. (4) is again a regression model with an
-extra variable <em>w</em>(&lambda;<sub>0</sub>) derived from the transformation,
+extra variable $w(\lambda_0)$ derived from the transformation,
 the new variable is called the constructed variable for
-the transformation. If the true value of &lambda; is close to &lambda;<sub>0</sub>,
-the coefficient (&lambda;-&lambda;<sub>0</sub>) of the constructed variable will
+the transformation. If the true value of $\lambda$ is close to $\lambda_0$,
+the coefficient $(\lambda-\lambda_0)$ of the constructed variable will
 be small. The regression model (4) can be rewritten
-more conventionally by putting  <em>γ</em> =-(&lambda;-&lambda;<sub>0</sub>) when;</p>
+more conventionally by putting  $\gamma=-(\lambda-\lambda_0)$< when;</p>
 <p>
-<img alt="" src="plots/img25.gif"></p>
-<p>Small values of <em>γ</em> then indicate that no transformation
+$$ z(\lambda_0)=x^T \beta + \gamma w (\lambda_0)+ \epsilon  \qquad (5)$$
+<p>Small values of $\gamma$ then indicate that no transformation
 is necessary. The approximate score statistic for
-testing the transformation &lambda; = &lambda;<sub>0</sub> (which is often denoted in the 
-statistical literature with symbol <em>T<sub>p</sub></em>(&lambda;)) is just the <em>t</em>-statistic
-for the coefficient of regression on <em>w</em>(&lambda;<sub>0</sub>) in Eq. (5).
+testing the transformation $\lambda=\lambda_0$  (which is often denoted in the 
+statistical literature with symbol $T_p(\lambda)$  is just the $t$-statistic
+for the coefficient of regression on $w(\lambda_0)$  in Eq. (5).
 </p>
 <p></p>
 <a name="bq9x7hn"></a><a name="bq5gf2y"></a>
