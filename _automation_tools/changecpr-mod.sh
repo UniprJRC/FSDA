@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#set -x
+set -x
 
 echo "Inserire il path assoluto (Linux) dell'archivio FSDA da modificare : "
 echo " es: /home/adminjrc/FSDA_last_checkout "
@@ -20,6 +20,8 @@ then
 	exit 1
 fi
 
+currdir=`pwd`
+
 to=/tmp/FSDA_modified
 mkdir $to
 if [ $? != 0 ]
@@ -29,32 +31,25 @@ then
 fi
 
 cd $from
-find . -name "*.m" |grep -v "Contents.m" | grep -v "%" >REP/l_f_copyright
+find . -name "*.m" |grep -v "Contents.m"  >$currdir/REP/l_f_m
 
-cat REP/l_f_copyright |while read nomefile
+cat $currdir/REP/l_f_m |while read nomefile
 do
 dname=`dirname "$nomefile"`
 mkdir -p $to/$dname
 
+
 export anno=`date +%Y`
 
-export data=`date -r ${to}/${nomefile}`
+export data=`date -r ${from}/${nomefile}`
 
-vi "$nomefile" <<EOF
-:g/% Copyright [0-9,-]*
-!!echo $anno
-I% Copyright 2008-^[
-:g/% Last modified
-!!echo $data
-I% Last modified ^[:wq
-EOF
-
+sed -e 's/% Copyright 2008-.*/% Copyright 2008-'"$anno"'./' -e 's/% Last modified .*/%Last modified '"$data"'/'  < $from/$nomefile >$to/$nomefile
 
 unix2dos $to/"$nomefile"
 done
 
 
-diff -r $from $to >REP/diff_copyright.txt
+diff -r $from $to >$currdir/REP/diff_cpr_mod.txt
 echo "Trovi i .m modificati in $to "
-echo "Il report della diff tra FSDA e FSDA_modified in " REP/diff_copyright.txt
+echo "Il report della diff tra FSDA e FSDA_modified in " $currdir/REP/diff_cpr_mod.txt
 
