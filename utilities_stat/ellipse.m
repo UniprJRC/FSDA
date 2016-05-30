@@ -1,4 +1,4 @@
-function Ell=ellipse(mu, Sigma, conflev, Color)
+function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %ellipse generates an ellipse given mu (location vector) and Sigma (scatter matrix)
 %
 %
@@ -29,6 +29,7 @@ function Ell=ellipse(mu, Sigma, conflev, Color)
 %                         chi2inv(0.95,2) is used
 %                 Example - 0.99 
 %                 Data Types - single | double
+%
 %               Color   : LineColor of the ellipse. String or 3 elements numeric vector.
 %                        Line color, specified as an RGB triplet, a color
 %                        string, or 'none'. If you specify the Color as
@@ -183,7 +184,7 @@ X=[xx yy]*Gam;
 Ell=bsxfun(@plus,X, mu);
 
 % hold('on')
-plot(Ell(:,1),Ell(:,2),'Color',Color,'LineWidth',LineWidth);
+he = plot(Ell(:,1),Ell(:,2),'Color',Color,'LineWidth',LineWidth);
 
 % Add line associated with major axis
 ax1=[-lenax1 0; lenax1 0];

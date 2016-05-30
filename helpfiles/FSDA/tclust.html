@@ -9,7 +9,18 @@
     Y=load('geyser2.txt');
     out=tclust(Y,3,0.1,10000);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with classification plot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
-    out=tclust(Y,3,0.1,10000,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    out=tclust(Y,3,0.1,10000,'plots',1);
+
+    % tclust of geyser with classification plot and confidence ellipses.
+    out=tclust(Y,3,0.1,10000,'plots',2);
+
+    % tclust of geyser with classification plot and contour plots.
+    out=tclust(Y,3,0.1,10000,'plots','contour');
+
+    % tclust of geyser with classification plot and filled contour plots.
+    out=tclust(Y,3,0.1,10000,'plots','contourf');
+
+    cascade</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
     nsamp=20;
     [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
@@ -31,16 +42,16 @@
     restrfactor=1;
     out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
     title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])
-    cascade</pre></div></div><pre class="codeoutput">Total estimated time to complete tclust:  5.53 seconds 
+    cascade</pre></div></div><pre class="codeoutput">Total estimated time to complete tclust:  4.16 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 19.4%
-Total estimated time to complete tclust:  2.86 seconds 
+Warning: Number of subsets without convergence equal to 20.8%
+Total estimated time to complete tclust:  2.62 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 27.6%
-Total estimated time to complete tclust:  2.92 seconds 
+Warning: Number of subsets without convergence equal to 21.6%
+Total estimated time to complete tclust:  3.35 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 23.8%
-</pre><img vspace="5" hspace="5" src="images\tclust_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
+Warning: Number of subsets without convergence equal to 20.2%
+</pre><img vspace="5" hspace="5" src="images/tclust_01.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_03.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate distributions
       with different scales and proportions 1:2:2. One of the components is very
       overlapped with another one. A 10 per cent background noise is added uniformly
@@ -143,7 +154,7 @@ Warning: Number of subsets without convergence equal to 23.8%
     plot(MIXCLA(:,1),MIXCLA(:,2))
     xlabel('Number of groups')
     ylabel('MIXCLA (ICL)')
-    xlim([1 maxk])</pre></div></div><img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
+    xlim([1 maxk])</pre></div></div><img vspace="5" hspace="5" src="images/tclust_04.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
      k=5 and v=5.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n1=100;     % Generate 5 groups in 5 dimensions
     n2=80;
@@ -321,10 +332,32 @@ Warning: Number of subsets without convergence equal to 23.8%
                and then these n numbers are ordered and the units
                associated with the largest h numbers are untrimmed.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mixt',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot with the classification is
-               shown on the screen.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Scalar which controls whether to display or not messages
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen</span></a><span class="example_desc">scalar | matrix | string</span></span></h3><div class="collapse">	<p><p>- If plots = 0 (default), plots are not generated.</p> <p>
+               - If plots = 1, a plot with the classification is shown on
+                 the screen. The plot can be:</p> <p>
+                   * for v=1, an histogram of the univariate data.</p> <p>
+                   * for v=2, a bivariate scatterplot.</p> <p>
+                   * for v&gt;2, a scatterplot matrix generated by spmplot.</p> <p>
+               When v = 2, plots offers the following additional features
+               (for v=1 or v&gt;2 the behaviour is forced that of plots=1):</p> <p>
+               - plots = 2 superimposes confidence ellipses to the
+                 bivariate scatterplot. The size of the ellipse is
+                 chi2inv(0.95,2), i.e. the confidence level used by
+                 default is 95%.</p> <p>
+               - 0 &lt; plots &lt; 1 superimposes confidence ellipses with size
+                 given by chi2inv(plots,2), i.e. with the confidence level
+                 provided by the user in plots.</p> <p>
+               - plots = 'contour' superimposes to the bivariate
+                 scatterplot a contour plot.</p> <p>
+               - plots = 'contourf' superimposes to the bivariate
+                 scatterplot a filled contour plot. The colormap of the
+                 filled contour is based on grey levels.</p> <p>
+               - If plots is three-column matrix of values in the range
+                 [0,1], the behaviour is like for 'contourf' but with a
+                 personalized colormap where each row of 'plots' is an RGB
+                 triplet that defines one color.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | matrix | string</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Scalar which controls whether to display or not messages
                on the screen. If msg==1 (default) messages are displayed
                on the screen about estimated time to compute the estimator
                or the number of subsets in which there was no convergence
