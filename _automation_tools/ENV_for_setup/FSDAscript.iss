@@ -51,7 +51,7 @@ Name: "{commondesktop}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersio
 
 [Run]
 Filename: "{code:MyMatlabVersion}"; Parameters: " -wait -automation -nodesktop -r "" addpath '{app}\FSDA\examples' ; addpath '{app}\FSDA\utilities' ; addpath '{app}\FSDA\combinatorial' ; addpath '{app}\FSDA\FSDAdemos' ; addpath '{app}\FSDA\graphics' ; addpath '{app}\FSDA\utilities_stat' ; addpath '{app}\FSDA\datasets\multivariate' ; addpath '{app}\FSDA\datasets\regression' ; addpath '{app}\FSDA\datasets\multivariate_regression' ; addpath '{app}\FSDA\datasets\clustering' ; addpath '{app}\FSDA\clustering' ;addpath '{app}\FSDA\regression' ; addpath '{app}\FSDA\multivariate' ; addpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Setting MATLAB environment ..." ; Flags: shellexec waituntilterminated
-Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; builddocsearchdb '{app}\FSDA\helpfiles\FSDA' ; {code:doc_func} FSDA "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
+Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; {code:doc_func} FSDA "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
 Filename: "{code:adobe_name}"; Parameters: " /n ""{app}\FSDA\InstallationNotes.pdf"" " ; Description: "{cm:OpenProgram, Installation Notes ( Acrobat Reader is required )}"; Flags: shellexec postinstall skipifsilent unchecked
 
 [UninstallRun]
@@ -435,7 +435,8 @@ begin
      end
    else 
     begin
-      Exec(ExpandConstant('{app}\FSDA\mgmhlpR7.bat'), ExpandConstant('"{app}"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
+     Exec(ExpandConstant('{app}\FSDA\mgmhlpR7.bat'), ExpandConstant(' "{app}" '+'"'+ MatlabPath +'"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);  
+//      Exec(ExpandConstant('{app}\FSDA\mgmhlpR7.bat'), ExpandConstant('"{app}"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
 //     MsgBox('esecuzione di mgm7' + ExpandConstant('{app}\FSDA\mgmhlpR7.bat {app}'), mbInformation, MB_OK);
 //    if Exec(ExpandConstant('{app}\FSDA\mgmhlpR7.bat'), ExpandConstant('{app}'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode) then
 //      begin
