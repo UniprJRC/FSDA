@@ -34,7 +34,7 @@ document.write(divsbefore);
 outlier detection procedure</h2>
 <p class="purpose">The forward search in multivariate analysis used for outlier detection 
 purposes examines the minimum Mahalanobis distance (MD) among observations that are not 
-in the subset (say of size m). If this ordered observation [m+1] is an outlier relative 
+in the subset (say of size m). If this ordered observation $[m+1]$ is an outlier relative 
 to the other m observations, this distance will be ‘large" compared with the maximum 
 MD of observations in the subset. In uncalibrated use of the minimum MD to detect outliers the decision whether a difference in distances is ‘large" 
 is subjective, without reference to any null distribution. To calibrate the forward 
@@ -45,13 +45,13 @@ forward search. The output is a series of theoretical simultaneous confidence ba
 <p>To use the envelopes in the forward search for outlier detection we follow a 
 two-stage process. In the first stage we run a search on the data, monitoring the 
 bounds for all n observations until we obtain a "signal" indicating that observation 
-m<sup>&dagger;</sup> therefore succeeding observations, may be outliers, because the value 
+$m^\dagger$ therefore succeeding observations, may be outliers, because the value 
 of the statistic lies beyond our threshold. In the context of signal detection, 
 we have tried to take into account the fact that the envelopes of minimum deletion 
 residual outside subset consist roughly of three parts; an initial decreasing part, 
 a "central" roughly flat part and a steeply curving "final" part. Once a signal 
 has been found (e.g. three consecutive values of minimum MD above 
-a certain threshold), we superimpose envelopes for values of n from this point until 
+a certain threshold), we superimpose envelopes for values of $n$ from this point until 
 the first time that we introduce an observation we recognize as an outlier. </p>
 <p> </p>
 <h3>Example 1</h3>
