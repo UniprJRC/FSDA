@@ -18,6 +18,8 @@ mkdir %TEMP%\FSDA
 
 Xcopy /E /H /EXCLUDE:%TOOL%\exclude.txt "%SOURCE%"\* %TEMP%\FSDA\.
 
+
+
 rem set PWD=%~dp0
 
 cd %TEMP%
@@ -43,6 +45,7 @@ rem rmdir /s /q "%PWD%\FSDA\helpfiles\FSDA"
 
 copy %TOOL%\mgmhlpR7.bat FSDA\.
 copy %TOOL%\mgmhlpR8.bat FSDA\.
+
 rem copy brushFAN.mlappinstall FSDA\.
 rem copy brushRES.mlappinstall FSDA\.
 rem copy brushROB.mlappinstall FSDA\.
@@ -57,6 +60,7 @@ copy %TOOL%\logo.ico .
 copy %TOOL%\fsda_black_trasp_300dpi_recol.bmp .
 copy %TOOL%\FSDA_logo_trasp_58.bmp .
 copy %TOOL%\FSDAscript.iss .
+copy %TOOL%\mycode-signing.p12 .
 
 
 echo "MODIFICA data setup................"
@@ -74,7 +78,7 @@ pause
 echo "----> FSDAtoolbox_for_MATLAB-setup.exe  generato in " %TEMP% " !!!!!!"
 pause
 
-"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe" sign /f mycode-signing.p12 /p scacchi2016  %TEMP%\FSDAtoolbox_for_MATLAB-setup.exe
+"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe" sign /f .\mycode-signing.p12 /p scacchi2016  %TEMP%\FSDAtoolbox_for_MATLAB-setup.exe
 
 echo "FSDAtoolbox_for_MATLAB-setup.exe SIGNED !"
 pause 

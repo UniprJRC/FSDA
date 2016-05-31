@@ -1,5 +1,4 @@
 @echo off
-
 set where=%1
 
 set mathpath=%2
@@ -11,8 +10,6 @@ set drv=%where:~1,2%
 cd "%where%"
 
 rem echo "SONO IN mgmhlpR8 . Il parametro vale " %where% " il drv " %drv%
-
-rem pause
 
 cd FSDA\helpfiles
 rename FSDA FSDAtomove
@@ -27,10 +24,17 @@ move FSDAtomove ..\FSDA
 
 cd ..
 
+rem echo "mathpath " %mathpath%
 set matdocroot=%mathpath%\help
+rem echo "matdocroot " %matdocroot%
+rem pause
 
 move FSDA %matdocroot%\.
-pause
-%matpath%\bin\matlab.exe -r "builddocsearchdb %matdocroot%\FSDA "
-pause
+
+set mathpath=%mathpath:~1,-1%
+set matdocroot=%mathpath%\help
+
+rem pause
+"%mathpath%"\bin\matlab.exe -nodesktop -r " addpath '%matdocroot%\FSDA' ; builddocsearchdb ('%matdocroot%\FSDA') "
+rem pause
 

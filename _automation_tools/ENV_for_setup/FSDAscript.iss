@@ -57,9 +57,12 @@ Filename: "{code:adobe_name}"; Parameters: " /n ""{app}\FSDA\InstallationNotes.p
 [UninstallRun]
 Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" rmpath '{app}\FSDA\examples' ; rmpath '{app}\FSDA\utilities' ; rmpath '{app}\FSDA\combinatorial' ; rmpath '{app}\FSDA\FSDAdemos' ; rmpath '{app}\FSDA\graphics' ;  rmpath '{app}\FSDA\utilities_stat' ; rmpath '{app}\FSDA\datasets\multivariate' ; rmpath '{app}\FSDA\datasets\regression' ; rmpath '{app}\FSDA\datasets\multivariate_regression' ; rmpath '{app}\FSDA\datasets\clustering' ; rmpath '{app}\FSDA\clustering' ; rmpath '{app}\FSDA\regression' ; rmpath '{app}\FSDA\multivariate' ; rmpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Remove FSDA paths from MATLAB environment ..." ; Flags: shellexec waituntilterminated
 Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" {code:app_uninst}  quit;"" "; StatusMsg: "Remove FSDA apps from MATLAB environment ..." ; Flags: shellexec waituntilterminated
+Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" rmdir ( [docroot '\FSDA'],'s') ; quit;"" "; Flags: shellexec waituntilterminated
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\FSDA\helpfiles\FSDA";
+Type: filesandordirs; Name: "{%MatlabPath}\help\FSDA";
+
 
 [Registry]
 Root: HKLM; Subkey: "Software\JRC-UNIPR"; Flags: uninsdeletekeyifempty
@@ -419,7 +422,7 @@ begin
        Exec(MatlabExe, ExpandConstant(' -wait -automation -nodesktop -r " cd ''{app}\FSDA'' ; matlab.apputil.install(''brushRES''); matlab.apputil.install(''brushFAN''); matlab.apputil.install(''brushROB''); quit; " '), '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
 
 
-//  MsgBox('dopo app install' + ExpandConstant('"{app}\FSDA\mgmhlpR8.bat"') + ExpandConstant('"{app}"') , mbInformation, MB_OK);
+// MsgBox('dopo app install' + ExpandConstant('"{app}\FSDA\mgmhlpR8.bat"') + ExpandConstant(' "{app}" '+'"'+ MatlabPath +'"') , mbInformation, MB_OK);
 //      if Exec(ExpandConstant('{app}\FSDA\mgmhlpR8.bat'), ExpandConstant('{app}'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode) then
 //      begin
     // handle success if necessary; ResultCode contains the exit code

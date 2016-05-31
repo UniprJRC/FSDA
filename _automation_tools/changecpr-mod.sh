@@ -43,7 +43,7 @@ export anno=`date +%Y`
 
 export data=`date -r ${from}/${nomefile}`
 
-sed -e 's/% Copyright 2008-.*/% Copyright 2008-'"$anno"'./' -e 's/% Last modified .*/%Last modified '"$data"'/'  < $from/$nomefile >$to/$nomefile
+sed -e 's/% Copyright 2008-.*/% Copyright 2008-'"$anno"'./' -e 's/%Copyright 2008-.*/% Copyright 2008-'"$anno"'./' -e 's/% Last modified .*/% Last modified '"$data"'/'  < $from/$nomefile >$to/$nomefile
 
 unix2dos $to/"$nomefile"
 done

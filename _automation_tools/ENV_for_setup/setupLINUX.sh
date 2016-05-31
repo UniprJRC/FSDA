@@ -84,7 +84,7 @@ then
 	mv $where/helpfiles/FSDAtomove/fsda_product_page.html $where/helpfiles/FSDA/.
 	mv $where/helpfiles/FSDAtomove ${MATPAT}/help/.
 	mv ${MATPAT}/help/FSDAtomove ${MATPAT}/help/FSDA
-	matlab -nodesktop -r "builddocsearchdb ${MATPAT}/help/FSDA"
+	matlab -nodesktop -r " addpath ${MATPAT}/help/FSDA ; builddocsearchdb ('${MATPAT}/help/FSDA') "
 fi
 
 
