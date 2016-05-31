@@ -76,15 +76,17 @@ REL=`echo $VER | cut -c1`
 MATEXE=`which matlab`
 MATPAT=${MATEXE%%/bin/matlab}
 
+matlab -wait -automation -nodesktop -r " builddocsearchdb ('${where}/FSDA/helpfiles/FSDA') ; quit"
+
 if [ $REL == 8 ]
 then
-	mv $where/helpfiles/FSDA $where/helpfiles/FSDAtomove
+    mv $where/helpfiles/FSDA $where/helpfiles/FSDAtomove
 	mkdir $where/helpfiles/FSDA
 	mv $where/helpfile/FSDAtomove/helptoc.xml $where/helpfiles/FSDA/.
 	mv $where/helpfiles/FSDAtomove/fsda_product_page.html $where/helpfiles/FSDA/.
 	mv $where/helpfiles/FSDAtomove ${MATPAT}/help/.
 	mv ${MATPAT}/help/FSDAtomove ${MATPAT}/help/FSDA
-	matlab -nodesktop -r " addpath ${MATPAT}/help/FSDA ; builddocsearchdb ('${MATPAT}/help/FSDA') "
+#	matlab -nodesktop -r " addpath ${MATPAT}/help/FSDA ; builddocsearchdb ('${MATPAT}/help/FSDA') "
 fi
 
 
