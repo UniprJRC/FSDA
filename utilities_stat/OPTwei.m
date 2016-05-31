@@ -54,12 +54,12 @@ function w = OPTwei(u,c)
 % regression. J Plan Stat Inference 64, pp. 309– 323
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('OPTwei')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 %
 % Examples:
 

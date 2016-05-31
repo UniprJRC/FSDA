@@ -14,9 +14,9 @@ classdef FSColors
 % REMARK: This represents a first test in view of making a more extensive
 % use of MATLAB classes/methods constructs in FSDA.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
-% Last modified 06-Feb-2015
+% Last modified sab 21 mag 2016 01:25:09
 %
 %  <a href="matlab: docsearchFS('fscolors')">Link to the help function</a>
 %

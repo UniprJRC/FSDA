@@ -229,12 +229,12 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %   heteroskedastic regression, submitted (ART)
 
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('FSRHmdr')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified gio 26 mag 2016 18:58:40
 
 % Examples:
 

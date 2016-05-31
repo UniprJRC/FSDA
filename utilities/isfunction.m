@@ -30,14 +30,14 @@ function [check , location] = isfunction(funstr)
 %
 % References:
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %
 %<a href="matlab: docsearchFS('isfunction')">Link to the help page for this function</a>
 %
-% Last modified 15-Feb-2016
+% Last modified mer 11 mag 2016 11:36:23
 
 % Examples:
 %{

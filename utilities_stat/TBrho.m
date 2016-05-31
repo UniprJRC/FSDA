@@ -49,12 +49,12 @@ function rhoTB = TBrho(u,c)
 % efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
 % http://dx.doi.org/10.1007/s11749-014-0357-7
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('TBrho')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 
 % Examples:
 

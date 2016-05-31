@@ -74,12 +74,12 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 %
 % References:
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('PoolPrepare')">Link to the help page for this function</a>
 %
-% Last modified 15-Feb-2016
+% Last modified lun  9 mag 2016 19:01:36
 
 % Examples:
 %{

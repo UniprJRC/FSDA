@@ -36,12 +36,12 @@ function fstring=publishFunctionCate(InputCell)
 % See also:    publishfunctionAlpha.m, publishFS.m
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('publishFunctionCate')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified ven 27 mag 2016 13:25:26
 %
 % Examples:
 %

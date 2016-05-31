@@ -35,12 +35,12 @@ function [varargout] = clickableMultiLegend(varargin)
 % Deoras Ameya (2008).
 % http://www.mathworks.com/matlabcentral/fileexchange/21799-clickablelegend-interactive-highlighting-of-data-in-figures/content/clickableLegend.m
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % clickableMultiLegend has been adapted to this toolbox by FSDA team
 %
 %<a href="matlab: docsearchFS('clickableMultiLegend')">Link to the help page for this function</a>
 %
-% Last modified 06-Feb-2015
+% Last modified sab 21 mag 2016 23:49:33
 %
 % Examples
 

@@ -178,13 +178,13 @@ function [out]=FSM(Y,varargin)
 %       and scatter, Journal of Multivariate Analysis, Vol. 126, 
 %       pp. 167-183, http://dx.doi.org/10.1016/j.jmva.2013.12.010.
 % 
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %
 %<a href="matlab: docsearchFS('FSM')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 
 % Examples:
 

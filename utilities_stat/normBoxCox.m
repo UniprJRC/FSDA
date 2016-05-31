@@ -55,13 +55,13 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
 %Box, G. E. P. & Cox, D. R. (1964). An analysis of transformations (with
 %Discussion). J. R. Statist. Soc. B 26, 211-252
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 % 
 %
 %<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified mar 17 mag 2016 12:19:52
 
 
 % Examples:

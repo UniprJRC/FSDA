@@ -347,12 +347,12 @@ function plotopt=resfwdplot(out,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('resfwdplot')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified lun 23 mag 2016 15:09:03
 
 % Examples:
 

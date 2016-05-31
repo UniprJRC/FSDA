@@ -41,12 +41,12 @@ function list = findDir(root,varargin)
 %
 % References:
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('findDir')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 11 mag 2016 13:19:08
 %
 % Examples:
 %

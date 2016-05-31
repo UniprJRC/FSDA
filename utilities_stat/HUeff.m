@@ -37,12 +37,12 @@ function ceff = HUeff(eff,v,varargin)
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
 % and Methods, Wiley, New York.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('HUeff')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mar 17 mag 2016 12:19:52
 %
 
 %

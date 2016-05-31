@@ -143,12 +143,12 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %   Salini S., Cerioli A., Laurini F. and Riani M. (2014), Reliable Robust
 %   Regression Diagnostics, submitted.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('RobRegrSize')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 
 %{
     % RobRgerSize with all defalut options.

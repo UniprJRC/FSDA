@@ -54,12 +54,12 @@ function out = lga(X,k,varargin)
 %               out.class = 'lga'.
 % See also: rlga.m
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('lga')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 21:33:29
 %
 %
 %

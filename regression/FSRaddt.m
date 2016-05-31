@@ -150,12 +150,12 @@ function [out]=FSRaddt(y,X,varargin)
 %   tests and the effect of masked outliers on model selection. Biometrika,
 %   Vol. 89, pp. 939-946.
 %
-% Copyright 2008-2015
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('FSRaddt')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified lun  9 mag 2016 19:01:36
 
 % Examples
 

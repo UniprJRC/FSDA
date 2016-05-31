@@ -42,12 +42,12 @@ function brushRES(eventdata)
 %
 % See also: brushFAN, brushROB
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('brushRES')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mar 17 mag 2016 12:19:52
 %
 
 %% Beginning of code

@@ -65,12 +65,12 @@ function [out] = regressHart_grid(y,X,Z,varargin)
 %out.sigma2= estimate of sigma2
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('regressHart_grid')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified lun 16 mag 2016 23:43:20
 
 % Examples:
 

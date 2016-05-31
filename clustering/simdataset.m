@@ -218,12 +218,12 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %   Davies, R. (1980) The distribution of a linear combination of
 %   chi-square random variables, Applied Statistics, 29, 323-333.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('simdataset')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified ven 27 mag 2016 13:25:26
 
 % Examples:
 

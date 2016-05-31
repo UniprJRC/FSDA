@@ -2,10 +2,10 @@ function status = closereqFS(~,~)
 %closereqFS is a user-defined close request function which displays a question dialog box
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
-% Copyright 2008-2015.
-% Last modified 06-Feb-2015
+% Copyright 2008-2016.
+% Last modified lun  9 mag 2016 19:01:36
 %
 
 %% Beginning of code

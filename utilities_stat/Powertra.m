@@ -60,7 +60,7 @@ function Ytra=Powertra(Y,la,varargin)
 %             2-lambda for y negative.
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 % Yeo, I.-K. and Johnson, R. (2000) A new family of power
@@ -72,7 +72,7 @@ function Ytra=Powertra(Y,la,varargin)
 %
 %
 %<a href="matlab: docsearchFS('Powertra')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified mar 17 mag 2016 12:19:52
 
 % Examples:
 

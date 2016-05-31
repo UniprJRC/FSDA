@@ -60,12 +60,12 @@ function ceff = HAeff(eff,v,abc)
 % D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and
 % Exploratory Data Analysis Wiley, New York.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('HAeff')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 %
 % Paramter ceff multiplies parameters (a,b,c) of Hampel estimator
 %

@@ -130,12 +130,12 @@ function covplot(out,varargin)
 %   the Forward Search,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('covplot')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified lun 23 mag 2016 18:53:27
 
 % Examples:
 

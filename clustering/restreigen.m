@@ -54,7 +54,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 % clustering. Available at
 % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf%
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 % DETAILS. This algorithm solves the minimization problem with constraints
@@ -66,7 +66,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %
 %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified ven 27 mag 2016 13:25:26
 
 % Examples:
 %

@@ -160,12 +160,12 @@ function [out]=regressHart(y,X,Z,varargin)
 %   Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for
 %   heteroskedastic regression, submitted (ART)
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('regressHart')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified gio 26 mag 2016 18:58:40
 
 % Examples:
 

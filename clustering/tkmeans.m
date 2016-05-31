@@ -129,7 +129,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 % DETAILS. This iterative algorithm initializes k clusters randomly and
@@ -145,7 +145,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %
 %
 %<a href="matlab: docsearchFS('tkmeans')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified gio 26 mag 2016 21:09:13
 
 % Examples:
 

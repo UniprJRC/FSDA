@@ -51,11 +51,11 @@ function c = OPTbdp(bdp,v)
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
 % and Methods, Wiley, New York.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('OPTbdp')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified lun  9 mag 2016 19:01:36
 %
 
 %

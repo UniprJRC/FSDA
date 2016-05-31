@@ -192,12 +192,12 @@ function fanplot(out,varargin)
 %   diagnostic transformations in regression, Chemometrics and Intelligent
 %   Laboratory Systems, Vol. 60, pp. 87–100.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 
 % Examples:
 
@@ -1188,7 +1188,7 @@ end % close options.databrush
         %
         % Written by FSDA team
         %
-        % Last modified 06-Feb-2015
+        % Last modified mer 25 mag 2016 18:19:58
         
         %%
         pos = get(event_obj,'Position');

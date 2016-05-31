@@ -31,12 +31,12 @@ function c = bc(n,k)
 %    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52--74. ISBN
 %    0-201-89683-4.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Matlab function bc has been adapted to this toolbox by FSDA team
 %
 %<a href="matlab: docsearchFS('bc')">Link to the help page for this function</a>
 %
-% Last modified 06-Feb-2015
+% Last modified lun 16 mag 2016 23:43:20
 %
 % Examples:
 %{

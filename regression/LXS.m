@@ -194,12 +194,12 @@ function [out , varargout] = LXS(y,X,varargin)
 %   Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection.
 %   Wiley.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('LXS')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified lun  9 mag 2016 19:01:36
 
 % Examples:
 

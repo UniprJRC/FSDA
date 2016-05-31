@@ -140,13 +140,13 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %   Davies, R. (1980) The distribution of a linear combination of
 %   chi-square random variables, Applied Statistics, 29, 323-333.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('GetOmegaMap')">Link to the help function</a>
 %
-% Last modified 06-Feb-2015
+% Last modified ven 27 mag 2016 13:25:26
 %
 %{
     %% Find matrix of misclassification probabilities.

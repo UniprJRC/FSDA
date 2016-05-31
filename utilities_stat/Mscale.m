@@ -74,12 +74,12 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 % (equation 7.119,  p. 176).
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('Mscale')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified gio 26 mag 2016 18:58:40
 %
 % Examples:
 

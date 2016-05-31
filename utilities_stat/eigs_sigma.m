@@ -10,10 +10,10 @@ function sigmaest = eigs_sigma(y,varargin)
 %
 % See also: eigs
 %
-%Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
-% Last modified 06-Feb-2015
+% Last modified lun 20 lug 2015 09:31:37
 %
 % Examples
 %

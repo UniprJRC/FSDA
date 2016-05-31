@@ -223,12 +223,12 @@ function [plot1]=yXplot(y,X,varargin)
 %
 % See also: spmplot, mdrplot, fanplot, resfwdplot
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('yXplot')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 
 % Examples:
 

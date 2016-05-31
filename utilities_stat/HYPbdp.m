@@ -71,13 +71,13 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648 (HRR)
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %
 %<a href="matlab: docsearchFS('HYPbdp')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 %
 %
 % Examples:

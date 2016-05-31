@@ -45,10 +45,10 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMapv1(c, Pi, Mu, S, fix, 
 %               highest overlap (largest off diagonal element of matrix
 %               OmegaMap)
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
-% Last modified 06-Feb-2015
+% Last modified ven 27 mag 2016 13:25:26
 %{
     % COMPARE OLD AND NEW FUNCTION
     rng(65123,'twister');

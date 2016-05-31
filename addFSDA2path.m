@@ -40,12 +40,12 @@ function addFSDA2path(FSroot)
 %
 % See also path
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 
 
-% Last modified 06-Feb-2015
+% Last modified sab 15 ago 2015 19:28:22
 
 % Examples:
 

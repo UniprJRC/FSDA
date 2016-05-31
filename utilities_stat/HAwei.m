@@ -72,12 +72,12 @@ function w = HAwei(u, ctuning)
 % Exploratory Data Analysis Wiley, New York.
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('HAwei')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 18 mag 2016 09:00:06
 %
 % Examples:
 

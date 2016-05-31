@@ -27,12 +27,12 @@ function h = olsline(varargin)
 %
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('olsline')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified ven 20 mag 2016 13:04:13
 
 % Examples:
 

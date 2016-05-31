@@ -189,12 +189,12 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %   Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS.
 %   (pp. 271-286). IOS Press, Amsterdam (The Netherlands).
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('FSMmmdrs')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 21:33:29
 %
 % Examples:
 %

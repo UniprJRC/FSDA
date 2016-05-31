@@ -59,10 +59,10 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 %
 %
 %<a href="matlab: docsearchFS('HYPck')">Link to the help page for this function</a>
-% Last modified 06-Feb-2015
+% Last modified mer 25 mag 2016 18:19:58
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 % Examples:

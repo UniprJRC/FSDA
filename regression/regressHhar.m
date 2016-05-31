@@ -208,12 +208,12 @@ function [out]=regressHhar(y,X,Z,varargin)
 %   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282).
 %   Prentice Hall.
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
-% Last modified 06-Feb-2015
+% Last modified mar 17 mag 2016 16:52:21
 
 % Examples:
 
