@@ -39,14 +39,14 @@ being guided by the results of previous searches.</p>
 the Horse Mussels data. There are 82
 observations on Horse mussels from New Zealand. The five variables
 are:</p>
-&nbsp;<p>y<sub>1</sub>: shell length, mm<br><br>y<sub>2</sub>: shell width, mm<br><br>y<sub>3</sub>: 
-shell height, mm<br><br>y<sub>4</sub>: shell mass, grams<br><br>y<sub>5</sub>: muscle mass, 
+&nbsp;<p>$y_1$: shell length, mm<br><br>$y_2$: shell width, mm<br><br>$y_3$: 
+shell height, mm<br><br>$y_4$: shell mass, grams<br><br>$y_5$: muscle mass, 
 grams.</p>
 <p>Our purpose is to see whether multivariate normality
 can be obtained by joint transformation of all five variables.</p>
 <p>We start with a forward search with untransformed data.
 Figure below is the forward plot of the resulting likelihood
-ratio test, to be compared with \chi^2_5. The value at the end
+ratio test, to be compared with $\chi^2_5$. The value at the end
 of the search is 160.56 and the statistic is significant
 throughout the range shown in the figure. The data need to be
 transformed.</p>
@@ -63,7 +63,7 @@ transformed.</p>
 </p>
 <p>
 To obtain a first idea of a better transformation consider the
-forward plot of the estimates of &lambda; in Figure below
+forward plot of the estimates of $\lambda$ in Figure below
 </p>
 <p>
 <pre class="programlisting">
@@ -78,9 +78,9 @@ forward plot of the estimates of &lambda; in Figure below
 <p>These estimates all trend down at the end of the search,
 indicating the continuing introduction of units which are further
 and further from the untransformed multivariate normal model. The
-jump at m=71 is caused by the introduction of unit 78. The
+jump at $m=71$ is caused by the introduction of unit 78. The
 general shape of the curves towards the end of the search suggests
-we might try &lambda; = (1, 0.5, 1, 0, 1/3). Although
+we might try $\lambda = (1, 0.5, 1, 0, 1/3)$. Although
 1/3 is not
 one of the standard five values we have previously used, it is
 sometimes appropriate for transforming volume, or mass, to have
@@ -90,7 +90,7 @@ not crucial, since we can continue to try a variety of forward
 searches.
 
 The forward plot of the likelihood ratio statistic for testing
-&lambda; = (1, 0.5, 1, 0, 1/3) is in Figure below</p>
+$\lambda = (1, 0.5, 1, 0, 1/3)$ is in Figure below</p>
 
 <pre class="programlisting">
 % Compare plot of lrt with Figure 4.20 p. 178 of ARC (2004)
@@ -119,16 +119,16 @@ towards the end.</p>
 <p>
 <img src="images_help/wptgr96l.gif"></p>
 
-<p>For example, unit 78 now enters when m=80. To find parameter
+<p>For example, unit 78 now enters when $m=80$. To find parameter
 values for our third search we move to slightly smaller values of
 m. At m=75 an outlier appears to be entering which is causing
-an appreciable jump in the value of \hat{&lambda;}_5. The
-estimates just before this suggest we try &lambda; = (0.5, 0,
-0.5, 0, 0), a stronger transformation than before.
+an appreciable jump in the value of $\hat{\lambda}_5$. The
+estimates just before this suggest we try $\lambda = (0.5, 0,
+0.5, 0, 0)$, a stronger transformation than before.
 
 This transformation does very well. Figure below is the forward
-plot of the likelihood ratio test for &lambda; = (0.5, 0, 0.5, 0,
-0).</p>
+plot of the likelihood ratio test for $\lambda = (0.5, 0, 0.5, 0,
+0)$.</p>
 
 <pre class="programlisting">
 % Compare plot of lrt with Figure 4.22 p. 180 of ARC (2004)
@@ -142,13 +142,13 @@ plot of the likelihood ratio test for &lambda; = (0.5, 0, 0.5, 0,
 We have found a transformation which is supported by all the data
 except the outliers, which enter at the end of the search. The
 forward plot of the parameter estimates in Figure below shows
-that, until m=79, three of the parameter estimates are stable
+that, until $m=79$, three of the parameter estimates are stable
 around zero and two around 0.5.</p>
 <p>
 <img src="images_help/wpvrmjti.gif"></p>
 <p>
 The only one thing which remains to be done is to use the multivariate fan plot to confirm these 
-individual values of &lambda;. See page <a href="mult_fsmfan.html">mullt_fsmfan.html</a>
+individual values of $\lambda$. See page <a href="mult_fsmfan.html">mullt_fsmfan.html</a>
 </p>
 
 
