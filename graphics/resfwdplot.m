@@ -439,8 +439,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Another example of the use of option datatooltip.
     % Interactive_example 1.
+    % Another example of the use of option datatooltip.
     % The user can highlight the trajectories of the units that are in
     % the subset at a given step with a mouse click in proximity
     % of that step. A right click will terminate the exercise.
@@ -459,8 +459,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    %   Example of the use of option databrush.
     % Interactive_example 2.
+    %   Example of the use of option databrush.
     %   (brushing is done only once using a rectangular selection tool)
     resfwdplot(out,'databrush',1)
     %   An equivalent statement is
@@ -470,23 +470,23 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
+    % Interactive_example 3.
     %   Example of the use of brush using a rectangular selection tool 
     % Use a cyan colour.
-    % Interactive_example 3.
     resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
 %}
 %
 %{
-    % Example of the use of brush using multiple selection circular tools.
     % Interactive_example.
+    % Example of the use of brush using multiple selection circular tools.
     databrush=struct;
     databrush.selectionmode='Brush';
     resfwdplot(out,'databrush',databrush)
 %}
 %
 %{
-    %   Example of the use of brush using lasso selection tool and fleur pointer.
     % Interactive_example 4.
+    %   Example of the use of brush using lasso selection tool and fleur pointer.
     databrush=struct;
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
@@ -494,8 +494,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    %Example of the use of rectangular brush.
     % Interactive_example 5.
+    % Example of the use of rectangular brush.
     %  We havesuperimposed labels
     %   for the brushed units and persistent labels in the plot which has
     %   been brushed.
@@ -511,8 +511,8 @@ function plotopt=resfwdplot(out,varargin)
 %   (that is brushing can be done multiple times)
 %
 %{
-    % Example of persistent brushing.
     % Interactive_example 6.
+    % Example of persistent brushing.
     %   Example of the use of persistent non cumulative brush. Every time a
     %   brushing action is performed previous highlightments are removed
     databrush=struct;
@@ -524,8 +524,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of persistent cumulative brush.
     % Interactive_example 7.
+    % Example of persistent cumulative brush.
     %   Example of the use of persistent cumulative brush. Every time a
     %   brushing action is performed current highlightments are added to
     %   previous highlightments
@@ -538,8 +538,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of persistent cumulative brush with ols line.
     % Interactive_example 8.
+    % Example of persistent cumulative brush with ols line.
     %   The same as before, but also fit one ols line to each selected group
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -551,8 +551,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of persistent cumulative brush with a single ols line.
     % Interactive_example 9.
+    % Example of persistent cumulative brush with a single ols line.
     %   The same but now fit a single ols line to all data.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -564,8 +564,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of persistent cumulative brush with two ols lines.
     % Interactive_example 10.
+    % Example of persistent cumulative brush with two ols lines.
     %   The same but now fit a first ols line to all data and a second line
     %   on the group of observations which remain unselected.
     databrush=struct;
@@ -578,8 +578,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of persistent cumulative brush with ols line for a particular group.
     % Interactive_example 11.
+    % Example of persistent cumulative brush with ols line for a particular group.
     %   The same but now fit a single ols line to the group with index 4.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -591,8 +591,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of persistent cumulative brush with personalized line.
     % Interactive_example 12.
+    % Example of persistent cumulative brush with personalized line.
     %   The same but now add the line mean(y)+Ci*Xi.
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -604,8 +604,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of persistent cumulative brush with option multivarfit.
     % Interactive_example 13.
+    % Example of persistent cumulative brush with option multivarfit.
     % Example of use of option databrush suboptions multivarfit 2, persist on
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
@@ -626,8 +626,8 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Interactive example for the loyalty cards data.
     % Interactive_example 14.
+    % Interactive example for the loyalty cards data.
     % Fidelity cards data
     XX=load('loyalty.txt');
     namey='Sales'
