@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId=FSDA
 AppName=FSDA toolbox for MATLAB
-AppVerName=FSDA toolbox for MATLAB Release 3.0 (06-feb-15)
+AppVerName=FSDA toolbox for MATLAB Release 3.2 (03-jun-16)
 AppPublisher=University of Parma and European Union
 AppPublisherURL=http://www.riani.it/MATLAB.htm
 AppSupportURL=http://www.riani.it/MATLAB.htm
