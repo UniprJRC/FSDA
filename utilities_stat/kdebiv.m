@@ -1,4 +1,6 @@
-function F = kdebiv(X,contourtype,cmap)
+function F = kdebiv(X,varargin)
+
+%function F = kdebiv(X,contourtype,cmap)
 %kdebiv computes (and optionally plots) a kernel smoothing estimate for bivariate data.
 %
 %<a href="matlab: docsearchFS('kdebiv')">Link to the help function</a>
@@ -16,26 +18,29 @@ function F = kdebiv(X,contourtype,cmap)
 %      Data Types - single | double.
 %
 %
+% Optional input arguments:
+%
 %   contourtype: Plot on the screen. String. Takes one of these string:
 %               - contourtype = 'contour' superimposes to the bivariate
 %                 scatterplot a contour plot.
 %               - contourtype = 'contourf' superimposes to the bivariate
 %                 scatterplot a filled contour plot. The colormap of the
 %                 filled contour is based on grey levels.
-%                 Data Types - char.
+%                 Data Types - char
+%                 Example - 'contourtype','contourf'
 %
 %   cmap:       - Three-column matrix of values in the range [0,1]
 %                 representing a colormap. Matrix. A personalized colormap
 %                 is used to plot the contour. Each row of 'plots' is
 %                 an RGB triplet that defines one color.
-%                 Data Types - double.
-%
-% Optional input arguments:
+%                 Data Types - char | double
+%                 Example - 'cmap','gray'
+%                 Example - 'cmap',[0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ]
 %
 %
 %  Output:
 %
-%   F =         F is the vector of density values. Matrix. The estimate is 
+%   F :         F is the vector of density values. Matrix. The estimate is
 %               based on the normal kernel function, using the window
 %               parameter (bandwidth) that is a function of the number of
 %               points and dimension in X.
@@ -48,35 +53,33 @@ function F = kdebiv(X,contourtype,cmap)
 %    A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
 %    Techniques for Data Analysis," Oxford University Press.
 %
-%   
+%
 % Copyright 2008-2015.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('kdebiv')">Link to the help function</a>
 
-% Examples:
+% % Examples:
 
 %{
       %% Density plots for a mixture of two normal distributions.
       X1 = [0+.5*randn(100,1)   5+2.5*randn(100,1)];
       X2 = [1.75+.25*randn(40,1) 8.75+1.25*randn(40,1)];
       X = [X1 ; X2];
-    
+
       % A filled contour plot.
-      contourtype = 'contourf';
-      F1 = kdebiv(X,contourtype);
+      F1 = kdebiv(X,'contourtype','contourf','cmap','summera');
 
       % The default is a standard (not filled) contour plot.
       figure;
-      F2 = kdebiv(X,[],'hot');
+      F2 = kdebiv(X,'cmap','hot');
 
       % A filled contour plot with personalized colormap: note the last
       % line of cmap (1 1 1), which is added to obtain a white background
       % in the low densit areas.
       figure;
       cmap =   [0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ; 0, 0, 0.6 ;  0, 0, 0.8 ; 0, 0, 1.0 ; 1, 1, 1 ; 1, 1, 1 ];
-
-      F3 = kdebiv(X,contourtype,cmap);
+      F3 = kdebiv(X,'cmap',cmap);
 
       % Superimpose data points to the last density plot.
       hold on;
@@ -86,39 +89,55 @@ function F = kdebiv(X,contourtype,cmap)
       cascade;
 %}
 
-%% check options
-switch nargin
-    case 1
-        plot_contour = 0;
-    case 2
-        plot_contour = 1;
-        cmap         = 'gray';
-        if ~isempty(contourtype) && ~(ischar(contourtype) && max(strcmp(contourtype,{'contourf' , 'contour' , 'surf' , 'mesh'})))
-            contourtype = 'contour';
-        end
-    case 3
-        plot_contour = 1;
-        if isempty(contourtype) || ~(ischar(contourtype) && max(strcmp(contourtype,{'contourf' , 'contour' , 'surf' , 'mesh'})))
-            contourtype = 'contour';
-        end
-        if isempty(cmap) || (~ischar(cmap) && ~((size(cmap,2) == 3 && (min(min(cmap))>=0 && max(max(cmap))<=1))))
-            cmap        = 'gray';
-        end
+%% Input parameters checking
+nnargin=nargin;
+vvarargin=varargin;
+[X, nn , d] = chkinputM(X,nnargin,vvarargin);
+
+options     = struct('contourtype','contour','cmap','gray');
+UserOptions = varargin(1:2:length(varargin));
+if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
+    error('FSDA:kdebiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
 end
 
-% get data
-xx = X(:,1);
-yy = X(:,2);
+if nargin>1
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin);
+        options.(varargin{i})=varargin{i+1};
+    end
+end
 
+contourtype = options.contourtype;
+cmap        = options.cmap;
+
+if ~isempty(UserOptions)
+    cmaptypes    = {'white','flag','prism','colorcube','lines','pink','copper','bone','gray','winter','autumn','summer','spring','parula' , 'jet' , 'hsv' , 'hot' , 'cool'};
+    contourtypes = {'contourf' , 'contour' , 'surf' , 'mesh'};
+    
+    if  isempty(contourtype) || ~(ischar(contourtype) && max(strcmp(contourtype,contourtypes)))
+        contourtype = 'contour';
+    end
+    if isempty(cmap) || ...
+            (~ischar(cmap) && ~((size(cmap,2) == 3 && (min(min(cmap))>=0 && max(max(cmap))<=1)))) ...
+             || ~(ischar(cmap) && max(strcmp(cmap,cmaptypes)))
+        cmap        = 'gray';
+    end
+    
+    plot_contour = 1;
+
+else
+    plot_contour = 0;
+end
+
+%% kernel smoothing estimation
 if verLessThan('matlab','9.0')
-    % The kernel smoothing function is estimated here from scratch
+    % The kernel smoothing function is estimated from scratch if MATLAB
+    % release is before R2016a
     
     % Estimate the bandwidth using Scott's rule (optimal for normal
     % distribution). It is a rule of thumb  suggested by Bowman and
     % Azzalini (1997), p.31.
-    xy       = [xx,yy];
-    [nn , d] = size(xy);
-    sig      = mad(xy,1,1) / 0.6745;
+    sig      = mad(X,1,1) / 0.6745;
     bw       = sig * (4/((d+2)*nn))^(1/(d+4));
     %bw = median(abs(xy-repmat(median(xy),nn,1)))/0.6745*(1/nn)^(1/6);
     
@@ -133,8 +152,8 @@ if verLessThan('matlab','9.0')
     
     
     % Compute a two-dimensional histogram
-    xy_max   = max(xy);
-    xy_min   = min(xy);
+    xy_max   = max(X);
+    xy_min   = min(X);
     xy_lim   = [-inf -inf inf inf];
     xy_max   = min([xy_max+3*bw ; xy_lim(3:4)]);
     xy_min   = max([xy_min-3*bw ; xy_lim(1:2)]);
@@ -161,10 +180,9 @@ if verLessThan('matlab','9.0')
     
     % The xy space is cut into rectangles and the number of
     % observations in each rectangle is counted.
-    [nn,~] = size(xx);
     bin    = zeros(nn,2);
-    [~,bin(:,2)] = histc(xx,ed1);
-    [~,bin(:,1)] = histc(yy,ed2);
+    [~,bin(:,2)] = histc(X(:,1),ed1);
+    [~,bin(:,1)] = histc(X(:,2),ed2);
     H  = accumarray(bin,1,nbins([2 1])) ./ nn;
     
     % subfunction smooth1D smoothes the two-dimensional histogram.
@@ -178,7 +196,7 @@ else
     % The MATLAB ksdensity follows. It is based on:
     %   A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
     %   Techniques for Data Analysis," Oxford University Press.
-    [F,xi] = ksdensity([xx yy],'Support','unbounded');
+    [F,xi] = ksdensity(X,'Support','unbounded');
     xi1 = xi(:,1);
     xi2 = xi(:,2);
 end
@@ -186,6 +204,8 @@ end
 % Call subfunction computeGrid to interpolate the estimated
 % density on the grid xi1 and xi1. Uses meshgrid and griddata.
 [xq,yq,F] = computeGrid(xi1 , xi2 , F);
+
+%% Now plot the countour
 
 if plot_contour
     
@@ -197,10 +217,10 @@ if plot_contour
     switch(contourtype)
         case 'surf'
             % undocumented: produces a surface plot
-            surf(xq,yq,1-FF,'EdgeAlpha',0);
+            surf(xq,yq,FF,'EdgeAlpha',0);
         case 'mesh'
             % undocumented: produces a mesh plot
-            mesh(xq,yq,1-FF,'EdgeAlpha',1,'FaceAlpha',0);
+            mesh(xq,yq,FF,'EdgeAlpha',1,'FaceAlpha',0);
             mymap(1,:) = [1 1 1];
         case 'contour'
             contour(xq,yq,1-FF,'Clipping','off');
@@ -211,6 +231,8 @@ if plot_contour
     colormap(mymap);
     
 end
+
+%% subfunctions needed for the density estimate if before R2016a
 
     function [xq,yq,z] = computeGrid(x1,x2,fout)
         % computeGrid is a subfunction used to interpolate function
