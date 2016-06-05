@@ -1669,7 +1669,8 @@ if (isscalar(plots) && plots > 0) || ...
         
         % add the density countour
         if ischar(plots)
-            addcontour(Y(not(idxj),1) , Y(not(idxj),2) , plots , cmap);
+%            addcontour(Y(not(idxj),1) , Y(not(idxj),2) , plots , cmap);
+            kdebiv([Y(not(idxj),1) , Y(not(idxj),2)] , plots , cmap);
         end
         
         % add the trimmed units
@@ -1712,121 +1713,132 @@ if (isscalar(plots) && plots > 0) || ...
     
 end
 
-    function addcontour(xx,yy,contourtype,cmap)
-        
-        % before MATLAB R2016a function ksdensity was not supporting
-        % bi-dimensional data.
-        
-        if verLessThan('matlab','9.0')
-            % The kernel smoothing function is estimated here from scratch
-            % Start by computing a two-dimensional histogram.
-            
-            % rule of thumb bandwidth suggested by Bowman and Azzalini (1997) p.31
-            xy = [xx,yy];
-            nn = length(xy);
-            bw = median(abs(xy-repmat(median(xy),nn,1)))/0.6745*(1/nn)^(1/6);
-            
-            % rule of thumb for the number of bins
-            nbins = round(8 * log(nn))/2; %nbins = 50;
-            
-            xy_max   = max(xy);
-            xy_min   = min(xy);
-            xy_lim   = [-inf -inf inf inf];
-            xy_max   = min([xy_max+3*bw ; xy_lim(3:4)]);
-            xy_min   = max([xy_min-3*bw ; xy_lim(1:2)]);
-            ed1     = linspace(xy_min(1),xy_max(1),nbins+1);
-            ed2     = linspace(xy_min(2),xy_max(2),nbins+1);
-            
-            nbins   = [nbins , nbins];
-            
-            %%
-            % The histograms have 200 bins max in both directions.
-            %             minx  = min(xx,[],1);  maxx  = max(xx,[],1);
-            %             miny  = min(yy,[],1);  maxy  = max(yy,[],1);
-            %             nbins = [min(numel(unique(xx)),200) , min(numel(unique(yy)),200)];
-            %
-            %             ed1  = linspace(minx, maxx, nbins(1)+1);
-            %             ed2  = linspace(miny, maxy, nbins(2)+1);
-            %%
-            
-            xi1  = ed1(1:end-1) + .5*diff(ed1);
-            ed1  = [-Inf ed1(2:end-1) Inf];
-            
-            xi2  = ed2(1:end-1) + .5*diff(ed2);
-            ed2  = [-Inf ed2(2:end-1) Inf];
-            
-            % The xy space is cut into rectangles and the number of
-            % observations in each rectangle is counted.
-            [nn,~] = size(xx);
-            bin    = zeros(nn,2);
-            [~,bin(:,2)] = histc(xx,ed1);
-            [~,bin(:,1)] = histc(yy,ed2);
-            H  = accumarray(bin,1,nbins([2 1])) ./ nn;
-            
-            % subfunction smooth1D smoothes the two-dimensional histogram.
-            % lambda is a smoothing parameter. Smaller lambda values provide
-            % smoother results.
-            lambda = 10;
-            G  = expsm(H ,nbins(2)/lambda);
-            FF = expsm(G',nbins(1)/lambda)';
-            
-        else
-            % The MATLAB ksdensity follows
-            %   A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
-            %   Techniques for Data Analysis," Oxford University Press.
-            [FF,xi] = ksdensity([xx yy],'Support','unbounded');
-            xi1 = xi(:,1);
-            xi2 = xi(:,2);
-        end
-        
-        % Call subfunction computeGrid to interpolate the estimated
-        % density on the grid xi1 and xi1. Uses meshgrid and griddata.
-        [xq,yq,F] = computeGrid(xi1 , xi2 , FF);
-        
-        % For plotting reasons, we do not want zero values
-        F(F==0) = min(F(F~=0));
-        
-        mymap = colormap(cmap);
-        switch(contourtype)
-            case 'surf'
-                % undocumented: produces a surface plot
-                surf(xq,yq,1-F,'EdgeAlpha',0);
-            case 'mesh'
-                % undocumented: produces a mesh plot
-                mesh(xq,yq,1-F,'EdgeAlpha',1,'FaceAlpha',0);
-                mymap(1,:) = [1 1 1];
-            case 'contour'
-                contour(xq,yq,1-F,'Clipping','off');
-            case 'contourf'
-                contourf(xq,yq,1-F,'Clipping','off');
-        end
-        colormap(mymap);
-        
-        function [xq,yq,z] = computeGrid(x1,x2,fout)
-            % computeGrid is a subfunction used to interpolate function
-            % fout on the points in the grid given by x1 and x2
-            x = linspace(min(x1),max(x1));
-            y = linspace(min(x2),max(x2));
-            % define a data grid
-            [xq,yq] = meshgrid(x,y);
-            orig_state = warning;
-            warning('off','all');
-            % Interpolate the scattered data on the grid
-            z = griddata(x1,x2,fout,xq,yq);
-            warning(orig_state);
-        end
-        
-        function Z  = expsm(GG,lambda)
-            % A rough but fast smoothing of the two-dimensional histogram
-            [m,~]   = size(GG);
-            E       = eye(m);
-            D1      = diff(E,1);
-            D2      = diff(D1,1);
-            P       = lambda.^2 .* D2'*D2 + 2.*lambda .* D1'*D1;
-            Z       = (E + P) \ GG;
-        end
-        
-    end
+%     function addcontour(xx,yy,contourtype,cmap)
+%         
+%         % before MATLAB R2016a function ksdensity was not supporting
+%         % bi-dimensional data.
+%         
+%         if verLessThan('matlab','9.0')
+%             % The kernel smoothing function is estimated here from scratch
+%             % Start by computing a two-dimensional histogram.
+%             
+%             % Estimate the bandwidth using Scott's rule (optimal for normal
+%             % distribution). It is a rule of thumb  suggested by Bowman and
+%             % Azzalini (1997), p.31.
+%             xy       = [xx,yy];
+%             [nn , d] = size(xy);
+%             sig      = mad(xy,1,1) / 0.6745;
+%             bw       = sig * (4/((d+2)*nn))^(1/(d+4));
+%             %bw = median(abs(xy-repmat(median(xy),nn,1)))/0.6745*(1/nn)^(1/6);
+%             
+%             % rule of thumb for the number of bins
+%             nbins = round(8 * log(nn))/2; %nbins = 50;
+%             
+%             %             % bivariate Gaussian kernel function
+%             %             K = @(sigma,x,y) exp(-(x.^2+y.^2)/2/sigma.^2 );         
+%             %             [dx,dy]=meshgrid(xx,yy);
+%             %             weight = K(bw,dx,dy)/sum(sum(K(bw,dx,dy)));
+%             %             Ysmooth = conv2(xy,weight,'same');
+%             
+%             
+%             xy_max   = max(xy);
+%             xy_min   = min(xy);
+%             xy_lim   = [-inf -inf inf inf];
+%             xy_max   = min([xy_max+3*bw ; xy_lim(3:4)]);
+%             xy_min   = max([xy_min-3*bw ; xy_lim(1:2)]);
+%             ed1     = linspace(xy_min(1),xy_max(1),nbins+1);
+%             ed2     = linspace(xy_min(2),xy_max(2),nbins+1);
+%             
+%             nbins   = [nbins , nbins];
+%             
+%             %%
+%             % The histograms have 200 bins max in both directions.
+%             %             minx  = min(xx,[],1);  maxx  = max(xx,[],1);
+%             %             miny  = min(yy,[],1);  maxy  = max(yy,[],1);
+%             %             nbins = [min(numel(unique(xx)),200) , min(numel(unique(yy)),200)];
+%             %
+%             %             ed1  = linspace(minx, maxx, nbins(1)+1);
+%             %             ed2  = linspace(miny, maxy, nbins(2)+1);
+%             %%
+%             
+%             xi1  = ed1(1:end-1) + .5*diff(ed1);
+%             ed1  = [-Inf ed1(2:end-1) Inf];
+%             
+%             xi2  = ed2(1:end-1) + .5*diff(ed2);
+%             ed2  = [-Inf ed2(2:end-1) Inf];
+%             
+%             % The xy space is cut into rectangles and the number of
+%             % observations in each rectangle is counted.
+%             [nn,~] = size(xx);
+%             bin    = zeros(nn,2);
+%             [~,bin(:,2)] = histc(xx,ed1);
+%             [~,bin(:,1)] = histc(yy,ed2);
+%             H  = accumarray(bin,1,nbins([2 1])) ./ nn;
+%             
+%             % subfunction smooth1D smoothes the two-dimensional histogram.
+%             % lambda is a smoothing parameter. Smaller lambda values provide
+%             % smoother results.
+%             lambda = 10;
+%             G  = expsm(H ,nbins(2)/lambda);
+%             FF = expsm(G',nbins(1)/lambda)';
+%             
+%         else
+%             % The MATLAB ksdensity follows
+%             %   A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
+%             %   Techniques for Data Analysis," Oxford University Press.
+%             [FF,xi] = ksdensity([xx yy],'Support','unbounded');
+%             xi1 = xi(:,1);
+%             xi2 = xi(:,2);
+%         end
+%         
+%         % Call subfunction computeGrid to interpolate the estimated
+%         % density on the grid xi1 and xi1. Uses meshgrid and griddata.
+%         [xq,yq,F] = computeGrid(xi1 , xi2 , FF);
+%         
+%         % For plotting reasons, we do not want zero values
+%         F(F==0) = min(F(F~=0));
+%         
+%         mymap = colormap(cmap);
+%         switch(contourtype)
+%             case 'surf'
+%                 % undocumented: produces a surface plot
+%                 surf(xq,yq,1-F,'EdgeAlpha',0);
+%             case 'mesh'
+%                 % undocumented: produces a mesh plot
+%                 mesh(xq,yq,1-F,'EdgeAlpha',1,'FaceAlpha',0);
+%                 mymap(1,:) = [1 1 1];
+%             case 'contour'
+%                 contour(xq,yq,1-F,'Clipping','off');
+%             case 'contourf'
+%                 contourf(xq,yq,1-F,'Clipping','off');
+%         end
+%         colormap(mymap);
+%         
+%         function [xq,yq,z] = computeGrid(x1,x2,fout)
+%             % computeGrid is a subfunction used to interpolate function
+%             % fout on the points in the grid given by x1 and x2
+%             x = linspace(min(x1),max(x1));
+%             y = linspace(min(x2),max(x2));
+%             % define a data grid
+%             [xq,yq] = meshgrid(x,y);
+%             orig_state = warning;
+%             warning('off','all');
+%             % Interpolate the scattered data on the grid
+%             z = griddata(x1,x2,fout,xq,yq);
+%             warning(orig_state);
+%         end
+%         
+%         function Z  = expsm(GG,lambda)
+%             % A rough but fast smoothing of the two-dimensional histogram
+%             [m,~]   = size(GG);
+%             E       = eye(m);
+%             D1      = diff(E,1);
+%             D2      = diff(D1,1);
+%             P       = lambda.^2 .* D2'*D2 + 2.*lambda .* D1'*D1;
+%             Z       = (E + P) \ GG;
+%         end
+%         
+%     end
 
     function [out]  = restreigen(eigenvalues,niini,restr,tol,userepmat)
         %restreigen computes eigenvalues restriction (without Dykstra algorithm)
