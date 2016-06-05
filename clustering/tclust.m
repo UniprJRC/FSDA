@@ -1669,7 +1669,7 @@ if (isscalar(plots) && plots > 0) || ...
         
         % add the density countour
         if ischar(plots)
-            kdebiv([Y(not(idxj),1) , Y(not(idxj),2)] , plots , cmap);
+            kdebiv([Y(not(idxj),1) , Y(not(idxj),2)] , 'contourtype', plots , 'cmap' , cmap);
         end
         
         % add the trimmed units
