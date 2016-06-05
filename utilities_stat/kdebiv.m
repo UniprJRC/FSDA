@@ -29,10 +29,10 @@ function F = kdebiv(X,varargin)
 %                 Data Types - char
 %                 Example - 'contourtype','contourf'
 %
-%   cmap:       - Three-column matrix of values in the range [0,1]
-%                 representing a colormap. Matrix. A personalized colormap
-%                 is used to plot the contour. Each row of 'plots' is
-%                 an RGB triplet that defines one color.
+%   cmap:       Three-column matrix with colormap values in the range
+%               [0,1]. Matrix. A personalized colormap is used to plot 
+%               the contour.  Each row of 'plots' is an RGB triplet that
+%               defines one color.
 %                 Data Types - char | double
 %                 Example - 'cmap','gray'
 %                 Example - 'cmap',[0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ]
@@ -59,7 +59,7 @@ function F = kdebiv(X,varargin)
 %
 %<a href="matlab: docsearchFS('kdebiv')">Link to the help function</a>
 
-% % Examples:
+% Examples:
 
 %{
       %% Density plots for a mixture of two normal distributions.
@@ -67,10 +67,12 @@ function F = kdebiv(X,varargin)
       X2 = [1.75+.25*randn(40,1) 8.75+1.25*randn(40,1)];
       X = [X1 ; X2];
 
-      % A filled contour plot.
-      F1 = kdebiv(X,'contourtype','contourf','cmap','summera');
+      % A filled contour plot obtained using colormap 'cmap' = 'summer'.
+      F1 = kdebiv(X,'contourtype','contourf','cmap','summer');
+%}
 
-      % The default is a standard (not filled) contour plot.
+%{
+      %% A standard (not filled) contour plot obtained using colormap 'cmap' = 'hot'.
       figure;
       F2 = kdebiv(X,'cmap','hot');
 
@@ -150,15 +152,14 @@ if verLessThan('matlab','9.0')
     %             weight = K(bw,dx,dy)/sum(sum(K(bw,dx,dy)));
     %             Ysmooth = conv2(xy,weight,'same');
     
-    
     % Compute a two-dimensional histogram
     xy_max   = max(X);
     xy_min   = min(X);
     xy_lim   = [-inf -inf inf inf];
     xy_max   = min([xy_max+3*bw ; xy_lim(3:4)]);
     xy_min   = max([xy_min-3*bw ; xy_lim(1:2)]);
-    ed1     = linspace(xy_min(1),xy_max(1),nbins+1);
-    ed2     = linspace(xy_min(2),xy_max(2),nbins+1);
+    ed1      = linspace(xy_min(1),xy_max(1),nbins+1);
+    ed2      = linspace(xy_min(2),xy_max(2),nbins+1);
     
     nbins   = [nbins , nbins];
     
