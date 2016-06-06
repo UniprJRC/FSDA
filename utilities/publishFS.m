@@ -1493,6 +1493,14 @@ for j=1:length(sintax)
     
     % Find point where description ends
     inicr=regexp(stri,'\r');
+    if isempty(inicr)
+        disp('String below seems to be without carriage return')
+        disp('------------------------------------------------')
+            disp(stri)
+            errmsg=['Carriage return could not be found in the example section \n'...
+            'Probably file has been created using Linux'];
+            error('FSDA:wrongdelimiter',errmsg)
+    end
     
     % This is the first line which does not contain symbol %
     for jj=1:length(inicr)-1
