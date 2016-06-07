@@ -2,19 +2,20 @@
 Requisite for FSDA toolbox is MATLAB, which is copyright by © 1994-2016 The MathWorks, Inc.
 
 AUTHORS and DEVELOPERS:
-
-	University of Parma: Marco Riani
-						 Aldo Corbellini
-						 Andrea Cerioli
-						 Gianluca Morelli
-						 Fabrizio Laurini
-						 
-	European Commission, Joint Research Centre: Domenico Perrotta
-												Francesca Torti
-												Emmanuele Sordini
-												Patrizia Calcaterra
-												Andrea Cerasa
-												Massimiliano Gusmini
+University of Parma:
+                    Marco Riani
+                    Aldo Corbellini
+                    Andrea Cerioli
+                    Gianluca Morelli
+                    Fabrizio Laurini
+					
+European Commission, Joint Research Centre:
+                    Domenico Perrotta
+                    Francesca Torti
+                    Emmanuele Sordini
+                    Patrizia Calcaterra
+                    Andrea Cerasa
+                    Massimiliano Gusmini
 
 The sources are open and the use is regulated by EUPL.
 

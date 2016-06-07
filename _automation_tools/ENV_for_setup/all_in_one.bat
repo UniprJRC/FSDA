@@ -66,7 +66,9 @@ copy %TOOL%\mycode-signing.p12 .
 echo "MODIFICA data setup................"
 pause
 
-"C:\cygwin64\bin\sed.exe"  -i "s/AppVerName=FSDA toolbox for MATLAB .*/AppVerName=FSDA toolbox for MATLAB Release 3.0 (%date%)/" FSDAscript.iss
+set miadata=%date:/=-%
+
+"C:\cygwin64\bin\sed.exe"  -i "s/AppVerName=FSDA toolbox for MATLAB .*/AppVerName=FSDA toolbox for MATLAB Release 3.2 (%miadata%)/" FSDAscript.iss
 
 "C:\cygwin64\bin\unix2dos.exe" FSDAscript.iss
 

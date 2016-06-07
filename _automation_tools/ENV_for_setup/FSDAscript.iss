@@ -45,19 +45,19 @@ Source: "FSDA\*"; DestDir: "{app}\FSDA"; Flags: ignoreversion recursesubdirs cre
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; {code:doc_func} FSDA "" "
+Name: "{group}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; {code:doc_func} "" "
 Name: "{group}\{cm:UninstallProgram,FSDA toolbox for MATLAB}"; Filename: "{uninstallexe}" ; IconFilename: "{app}\FSDA\logo.ico"
-Name: "{commondesktop}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; {code:doc_func} FSDA "" " ; Tasks: desktopicon
+Name: "{commondesktop}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; {code:doc_func} "" " ; Tasks: desktopicon
 
 [Run]
 Filename: "{code:MyMatlabVersion}"; Parameters: " -wait -automation -nodesktop -r "" addpath '{app}\FSDA\examples' ; addpath '{app}\FSDA\utilities' ; addpath '{app}\FSDA\combinatorial' ; addpath '{app}\FSDA\FSDAdemos' ; addpath '{app}\FSDA\graphics' ; addpath '{app}\FSDA\utilities_stat' ; addpath '{app}\FSDA\datasets\multivariate' ; addpath '{app}\FSDA\datasets\regression' ; addpath '{app}\FSDA\datasets\multivariate_regression' ; addpath '{app}\FSDA\datasets\clustering' ; addpath '{app}\FSDA\clustering' ;addpath '{app}\FSDA\regression' ; addpath '{app}\FSDA\multivariate' ; addpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Setting MATLAB environment ..." ; Flags: shellexec waituntilterminated
-Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; {code:doc_func} FSDA "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
+Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; {code:doc_func} "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
 Filename: "{code:adobe_name}"; Parameters: " /n ""{app}\FSDA\InstallationNotes.pdf"" " ; Description: "{cm:OpenProgram, Installation Notes ( Acrobat Reader is required )}"; Flags: shellexec postinstall skipifsilent unchecked
 
 [UninstallRun]
 Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" rmpath '{app}\FSDA\examples' ; rmpath '{app}\FSDA\utilities' ; rmpath '{app}\FSDA\combinatorial' ; rmpath '{app}\FSDA\FSDAdemos' ; rmpath '{app}\FSDA\graphics' ;  rmpath '{app}\FSDA\utilities_stat' ; rmpath '{app}\FSDA\datasets\multivariate' ; rmpath '{app}\FSDA\datasets\regression' ; rmpath '{app}\FSDA\datasets\multivariate_regression' ; rmpath '{app}\FSDA\datasets\clustering' ; rmpath '{app}\FSDA\clustering' ; rmpath '{app}\FSDA\regression' ; rmpath '{app}\FSDA\multivariate' ; rmpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Remove FSDA paths from MATLAB environment ..." ; Flags: shellexec waituntilterminated
 Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" {code:app_uninst}  quit;"" "; StatusMsg: "Remove FSDA apps from MATLAB environment ..." ; Flags: shellexec waituntilterminated
-Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" rmdir ( [docroot '\FSDA'],'s') ; quit;"" "; Flags: shellexec waituntilterminated
+Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" if exist([docroot '\FSDA'],'dir');rmdir( [docroot '\FSDA'],'s') ; end; quit;"" "; Flags: shellexec waituntilterminated
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\FSDA\helpfiles\FSDA";
