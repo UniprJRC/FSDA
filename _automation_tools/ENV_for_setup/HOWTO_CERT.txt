@@ -1,6 +1,6 @@
-$LastChangedDate$
-$LastChangedRevision$
-$LastChangedBy$
+%$LastChangedDate$
+%$LastChangedRevision$
+%$LastChangedBy$
 
 
 psw = psw4FSDA
