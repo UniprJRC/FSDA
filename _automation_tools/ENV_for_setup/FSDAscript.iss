@@ -340,7 +340,7 @@ function doc_func(param: String): String;
 begin
 //  if (Rel8) then
 //    if (Rel2015) then
-        doc_command := ExpandConstant('docsearchFS fsda_product_page %')
+        doc_command := ExpandConstant('docsearchFS ')
 //    else
 //        doc_command := ExpandConstant('doc -classic ')
 //  else

@@ -41,7 +41,7 @@ mkdir -p $to/$dname
 
 export anno=`date +%Y`
 
-export data=`date -r ${from}/${nomefile}`
+export data=`date -r ${from}/${nomefile} +%d/%m/%Y`
 
 sed -e 's/% Copyright 2008-.*/% Copyright 2008-'"$anno"'./' -e 's/%Copyright 2008-.*/% Copyright 2008-'"$anno"'./' -e 's/% Last modified .*/% Last modified '"$data"'/'  < $from/$nomefile >$to/$nomefile
 
