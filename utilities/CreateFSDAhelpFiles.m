@@ -21,6 +21,8 @@ function outHELP=CreateFSDAhelpFiles()
 % separated by commas. This file is necessary in order to create the right
 % and left buttons which enable us to navigate in alphabetical order inside the
 % HTML navigation system
+% 
+% 5) Creare all pointer files using routine CreateFSDApointerFiles
 %
 % Required input arguments:
 %
@@ -114,7 +116,14 @@ fileCate=publishFunctionCate(FilesIncluded);
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
-%% Not if all was well let us do teh setup.rxr
+%% STEP 5: create HTML pointer files
+
+ h=CreateFSDApointerFiles(FilesIncluded);
+if h
+    disp('Succesful creation of pointer files')
+end
+ 
+%% Not if all was well let us do th setup.exe
 disp('Congratulations the FSDA package is ready to be deployed')
 
 % Store all quantities inside structure outHELP

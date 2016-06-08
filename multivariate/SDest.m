@@ -1,5 +1,5 @@
 function [out, varargout] = SDest(Y,varargin)
-%SDest computes Stahel-Donoho robust estimator of dispersion/location
+%SDest computes Stahel-Donoho robust estimator of dispersion-location
 %
 %<a href="matlab: docsearchFS('SDest')">Link to the help function</a>
 %

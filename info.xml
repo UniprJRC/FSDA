@@ -8,7 +8,7 @@
 <type>toolbox</type>
 <icon>$toolbox/matlab/icons/matlabicon.gif</icon>
 
-<help_location>/helpfiles/FSDA</help_location>
+<help_location>/helpfiles/pointersHTML</help_location>
 
 <list>
 
