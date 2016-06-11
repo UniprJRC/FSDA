@@ -1,5 +1,5 @@
 function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
-%tclustreg performs robust linear grouping analysis
+%tclustreg performs robust clustering in regression 
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help function</a>
 %

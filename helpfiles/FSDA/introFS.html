@@ -52,16 +52,17 @@ one of the following strategies: </p>
 <p>a) Use a reduced number of observations in order to exclude outliers; </p>
 <p>b) Down-weight each observation according to its deviation from the centre;
 </p>
-<p>c) Optimize an objective function which is more robust than the classical least-squares.
+<p>c) Optimize an objective function which is more robust than classical least-squares.
 </p>
 <p>However, in all instances the simplicity of the sample mean is lost. Further 
 disadvantages of these approaches are the fact that the percentage of observations 
-to be discarded for estimation of $\mu$ needs to be fixed in advance (strategy a), that 
+to be discarded for estimation of $\mu$ needs to be fixed in advance and often 
+leads to the exclusion of uncontaminated observations (strategy a), that 
 there is no universally accepted way to downweight observations (strategy b), and 
 that optimization of complex functions may cause severe computational problems. 
 Another fundamental shortcoming common to all the robust strategies described above 
 is that their extension to complex problems such as those originating from serial 
-and spatial correlation, the heterogeneity of data, etc. is difficult and requires 
+and spatial correlation, the heterogeneity of data, etc., is difficult and requires 
 ad hoc strategies for each specific problem. </p>
 <p>Therefore, no single available robust technique can deal simultaneously with 
 all the complexity features described above and provide the user with a unified 
@@ -159,7 +160,7 @@ the model.
 <h3 id="regmat" class="title">Mathematical details</h3>
 
 <p>In the regression model </p>
-$$y=X\beta+\epsilon$$,
+$$y=X\beta+\epsilon,$$
 
 <p>$y$ is the $n \times 1$ vector of responses, $X$ is an $n \textrm{-by-} p$ full-rank matrix of known 
 constants, with ith row $x_i^T$, and $\beta$ 

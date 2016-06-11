@@ -36,13 +36,13 @@ document.write(divsbefore);
 		<h3 class="title">Notation</h3>
 		Consider the usual regression model<p>&nbsp;
 		</p>
-		\[ y_i = x_i^T\beta +u_i \qquad i=1, \ldots, n. \]
+		\[ y_i = x_i^T\beta +u_i \qquad i=1, \ldots, n, \]
         
 		<p>where $u_i$ are random errors which have common variance 
 		equal to $\sigma^2$ and are independent from the covariates $x_i$.&nbsp;
-		$\beta$, the location component of the linear model, is the parameter 
+		$\beta,$ the location component of the linear model, is the parameter 
 		of interest. $\sigma$ is the so called scale component of the linear model. </p>
-		<p>Given an estimator of $\beta$, say $\hat \beta$
+		<p>Given an estimator of $\beta$, say $\hat \beta,$
 		the residuals are defined as</p>
         $$r_i(\hat \beta)=y_i- x_i^T \hat \beta$$
         <br>
@@ -74,9 +74,9 @@ document.write(divsbefore);
         
   
 \[ \rho(x) = \begin{cases} 
-      \frac{x^2}{2}-\frac{x^4}{2c^2}+\frac{x^6}{6c^4} & if \quad |x| \leq c \\
+      \frac{x^2}{2}-\frac{x^4}{2c^2}+\frac{x^6}{6c^4} & \mbox{if} \quad |x| \leq c \\
       \\
-      \frac{c^2}{6} & if \quad |x| > c, \\
+      \frac{c^2}{6} & \mbox{if} \quad |x| > c, \\
      
    \end{cases}
 \]
@@ -98,9 +98,10 @@ document.write(divsbefore);
 		</ol>
 		<p>Function $\psi$ for Tukey's biweight </p>
         \[ \psi(x) = \begin{cases} 
-      x- \frac{2x^3}{c^2}+\frac{x^5}{c^4} = x  \Big[ 1- \Big( \frac{x}{c}\Big)^2 \Big]^2  & if \quad  |x|  \leq c \\
+      x- \frac{2x^3}{c^2}+\frac{x^5}{c^4} = x  \Big[ 1- \Big( \frac{x}{c}\Big)^2 \Big]^2  & 
+		\mbox{if} \quad  |x|  \leq c \\
 \\
-      0 & if \quad  |x| > c, \\
+      0 & \mbox{if} \quad  |x| > c, \\
    \end{cases}
 \]
 		<p>is implemented in routine <a href="tbpsi.html">TBpsi</a>.</p>
@@ -122,18 +123,18 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		<p>&nbsp;</p>
 		<a name="Mloc"></a>
 		<h3 class="title">The regression M-estimate of location </h3>
-		<p>The regression M-estimate of location (say $\hat \beta_M$)
-		is the value that minimizes the following objective function (eq. 2)</p>
+		<p>The regression M-estimate of location (say $\hat \beta_M$) is the 
+		value that minimizes the following objective function (label{eq:rho})</p>
         $$\sum_{i=1}^{n} \rho \Bigg( \frac{ r_i(\hat\beta_M)}{\sigma} \Bigg) = \textrm{min}.$$
 
 		<p>&nbsp;</p>
-		<p>&nbsp;Differentiation of eq. (2) gives</p>
+		<p>&nbsp;Differentiation of eq. (ref{eq:rho}) gives (label{eq:psi})</p>
         $$\sum_{i=1}^{n} \psi \Bigg( \frac{ r_i(\hat\beta_M)}{\sigma} \Bigg) x_i = 0$$
 
 		<p>&nbsp;</p>
 		<p>Remark 1: If function $\psi$ is monotone the solution to this equation are 
-		called monotone regression M estimates, while if $\psi$ is redescending the solution 
-		to are called redescending regression M-estimates. </p>
+		called monotone regression M estimates, while if $\psi$ is redescending the solutions 
+		to ref{eq:psi}) are called redescending regression M-estimates. </p>
 		<p>Remark 2: it is possible to show that the regression M estimates have 
 		the following asymptotic distribution:</p>
         
@@ -145,13 +146,13 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		perturbations does not depend on $X$.</p>
 		<p>&nbsp; <a name="Msca"></a></p>
 		<h3 class="title">The regression M-estimate of scale </h3>
-		<p>In equation (2) it is assumed that $\sigma$ is known. However, when this condition 
+		<p>In equation (ref{eq:rho}) it is assumed that $\sigma$ is known. However, when this condition 
 		is not fulfilled, it is necessary to use an auxiliary robust scale estimate $(\hat \sigma)$
 		 to make $\hat \beta_M$ scale equivariant.
 		</p>
 		<p class="style4">An M-estimator of scale $\hat \sigma_M$
 		is defined as the solution to the 
-		following equation</p>
+		following equation label{eq:rhoscale}</p>
         $$\frac{1}{n} \sum_{i=1}^n \rho_1 \Bigg( \frac{r_i}{\hat \sigma_M} \Bigg)=K,$$
 
 		<p>where </p>
@@ -162,8 +163,8 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		</p>
 		<p>It is worthwhile to notice that in this equation&nbsp; we have used the 
 		symbol $\rho_1$, because the $\rho$ function which is used to obtain 
-		the scale estimator is not necessarily the same which is used in (2).</p>
-		<p>It is interesting to notice that if in equation (4) we choose $\rho_1=I(|t|>1)$ and $K=1/2$ we obtain as a solution for the M estimator 
+		the scale estimator is not necessarily the same which is used in (label{eq:rho}).</p>
+		<p>It is interesting to notice that if in equation (ref{eq:rhoscale}) we choose $\rho_1=I(|t|>1)$ and $K=1/2$ we obtain as a solution for the M estimator 
 		of scale the median of the absolute values of the residuals. In general 
 		if $\rho_1=I(|t|>1)$, we obtain as a solution the $h$-th order statistic of the $|r|_i$
  with $h=n-[nK]$.</p>
@@ -171,7 +172,7 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		<a name="Sest"></a>
 		<h3 class="title">The regression S-estimates and the LMS estimate</h3>
 		If we take the minimum value of $\hat \sigma_M$ which satisfies equation 
-		(4), we obtain the so called S-estimate of scale $(\hat \sigma_S)$
+		(ref{eq:rhoscale}), we obtain the so called S-estimate of scale $(\hat \sigma_S)$
 		 and the associated estimate 
 		of the vector of regression coefficients $(\hat \beta_S)$.
 		<p>The word S estimator comes from the fact that it is derived from a scale 
@@ -200,7 +201,7 @@ $\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{
 		with the 5 best (bestr) minimum values of the scale a series of refining 
 		steps (C-steps) are done.</p>
 &nbsp;<p>Remark: if we choose as rho function $\rho(t)=I(|t|>1)$  and in equation 
-		(4) we put $K=n/2$  we minimize the median of the squares 
+		(label{eq:rhoscale}) we put $K=n/2$  we minimize the median of the squares 
 		(absolute values) of the residuals and we therefore obtain the Least Median 
 		of Squares estimator (LMS).&nbsp; </p>
 		<p>In symbols, call </p>
@@ -224,7 +225,7 @@ $$f(\hat \beta_{MM})=\frac{1}{n} \sum_{i=1}^n \rho_2 \Big(\frac{r_i}{\hat \sigma
 		is minimized with respect to $\beta$ for fixed $(\hat \sigma)$ Among the possible local 
 		minima which have been found, we choose the one for which this equation 
 		is smallest. In this equation $\hat \sigma$ is any scale estimator 
-		satisfying equation (4). It is common however to use $\hat \sigma_S$
+		satisfying equation (label{eq:rhoscale}). It is common however to use $\hat \sigma_S$
 		 (the minimum value).</p>
 		<p>The consistency and asymptotic distribution of MM-estimates when the 
 		observed data follow the central model (1) has been studied by Yohai (1987) 

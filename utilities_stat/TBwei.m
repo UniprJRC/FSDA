@@ -1,5 +1,5 @@
 function w = TBwei(u,c)
-%TBwei computes weight function psi(u)/u for Tukey biweight  
+%TBwei computes weight function psi(u)/u for Tukey's biweight  
 %
 %<a href="matlab: docsearchFS('TBwei')">Link to the help function</a>
 %

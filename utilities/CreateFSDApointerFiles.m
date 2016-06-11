@@ -5,19 +5,19 @@ function outHELP=CreateFSDApointerFiles(InputCell)
 % 1) buildocsearchdb enables to create the database just for
 % the files which are inside hte helpfile location specified in the
 % info.xml file 
-% 2) all the entries which are found by buildocsearchdb are opened in fram
-% of the right
+% 2) all the entries which are found by buildocsearchdb are opened in the
+% frame of the right (iframe)
 % 3) FSDA team spent a lot of time to have proper HTML documentation which
 % is not relagated to the right panel, 
 % 4) true HTML documentation file of FSDA are inside (docroot)/FSDA otherwise
-% the lucene search engine does not work.
+% the lucene MATLAB search engine does not work.
 %
 % The purpose of this function is to take as input all the files which are
 % inside (FSDA root folder)/helpfiles/FSDA
-% and for each of them to create a corresponding HTML file inside path
+% and for each of them to create a corresponding pointer HTML file inside path
 % (FSDA root folder)/helpfiles/pointersHTML
 % which contains
-% a) the minimum necessary information to be found by lucene search enegine
+% a) the minimum necessary information to be indexed by lucene search enegine
 % b) a response.redirect which links to the true HTML file which is
 % contained inside (docroot)/FSDA. 
 %

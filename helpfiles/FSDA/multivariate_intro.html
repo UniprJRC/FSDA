@@ -50,7 +50,7 @@ et al. (2002) or Hardin and Rocke (2005) uses the minimum covariance determinant
 estimator. </p>
 
 <p>
-<em>Remark</em>: Cook and Hawkins (1990) suggested that the procedure of Rousseeuw and van Zomeren (1990) may find ‘outliers everywhere’. The implication is that the size of the outlier test may be very much larger than the nominal 5% or 1%. Many of these methods are designed to test whether individual observations are outlying. As do Becker and Gather (1999), we, however, stress the importance of multiple outlier testing and focus on simultaneous tests of outlyingness. 
+<em>Remark</em>: There is now evidence that the application of highly robust procedures can produce a proportion of outliers much larger than expected. The implication is that the size of the outlier test may be very much larger than the nominal 5% or 1%. Many of these methods are designed to test whether individual observations are outlying. As do Becker and Gather (1999), we, however, stress the importance of multiple outlier testing and focus on simultaneous tests of outlyingness. 
 Note that in this toolbox we develop methods that are intended, when the samples are multivariate normal, to find outliers in $\alpha \%$ of the data sets.
 </p>
 
@@ -111,7 +111,7 @@ $$ d_{(PP)i}=k_{PP}(y_i-\hat \mu_{PP})^T \hat \Sigma_{PP}^{-1}(y_i-\hat \mu_{PP}
 
 <p>are compared with the $\{v(n-1)/(n-v)\}F_{v,n-v} $  distribution.</p>
 <p>A comparison of the above procedures with the forward search in terms of size 
-and power can be found in &nbsp;Riani et al. (2009). In this paper the author show 
+and power can be found in &nbsp;Riani et al. (2009). In this paper the authors show 
 that procedure implemented in function FSM has superior power as well as good 
 size and so is to be recommended. Similar computations referred to regression 
 can be found in Perrotta and Torti (2010).</p>

@@ -388,8 +388,8 @@ function plotopt=malfwdplot(out,varargin)
 %
 %
 %{
-    % Interactive_example.
-    %   Example of the use of option databrush
+    % Interactive_example
+    %   Example of the use of option databrush.
     %   (brushing is done only once using a rectangular selection tool)
     malfwdplot(out,'databrush',1)
     %   An equivalent statement is
@@ -398,6 +398,7 @@ function plotopt=malfwdplot(out,varargin)
     malfwdplot(out,'databrush',databrush)
 %}
 %{
+    % Example of the use of some options inside structure fground.
     % load Swiss banknotes
     Y=load('swiss_banknotes.txt');
     [fre]=unibiv(Y);
@@ -405,7 +406,6 @@ function plotopt=malfwdplot(out,varargin)
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'init',30);
 
-    % Example of the use of some options inside structure fground
     % Initialize structure fground
     fground = struct;
     % Specify which trajectories have to be highlighted
@@ -429,7 +429,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of the use of option datatooltip.
+    % Example of the use of option datatooltip personalized.
     % Gives the user the possibility of clicking on the different points
     % and have information about the unit selected, the step of entry
     % into the subset and the associated label.
@@ -478,7 +478,7 @@ function plotopt=malfwdplot(out,varargin)
 %
 %{
     % Interactive_example
-    %   Example of the use of option databrush
+    %   Example of the use of option databrush.
     %   (brushing is done only once using a rectangular selection tool)
     malfwdplot(out,'databrush',1)
     %   An equivalent statement is
@@ -490,7 +490,7 @@ function plotopt=malfwdplot(out,varargin)
 %{
     % Interactive_example
     %   Example of the use of brush using a rectangular selection tool and
-    %   a cyan colour
+    %   a cyan colour.
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.FlagColor='c';
@@ -499,7 +499,7 @@ function plotopt=malfwdplot(out,varargin)
 %
 %{
     % Interactive_example
-    %   Example of the use of brush using multile selection circular tools
+    %   Example of the use of brush using multile selection circular tools.
     databrush=struct;
     databrush.selectionmode='Brush';
     malfwdplot(out,'databrush',databrush);
@@ -508,7 +508,7 @@ function plotopt=malfwdplot(out,varargin)
 %{
     % Interactive_example
     %   Example of the use of brush using lasso selection tool and fleur
-    %   pointer
+    %   pointer.
     databrush=struct;
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
@@ -517,8 +517,8 @@ function plotopt=malfwdplot(out,varargin)
 %
 %{
     % Interactive_example
-    %   Example of the use of rectangular brush with superimposed labels
-    %   for the brushed units and persistent labels in the plot which has
+    %   Example of the use of rectangular brush.
+    %    Labels are added for the brushed units. Persistent labels appear in the plot which has
     %   been brushed
     databrush=struct;
     databrush.selectionmode='Rect';
@@ -557,6 +557,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 %
 %{
+    % Example of the use of some options inside structure fground.
     % load Swiss banknotes
     Y=load('swiss_banknotes.txt');
     [fre]=unibiv(Y);
@@ -564,7 +565,6 @@ function plotopt=malfwdplot(out,varargin)
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'init',30);
 
-    % Example of the use of some options inside structure fground
     % Initialize structure fground
     fground = struct;
     % Specify which trajectories have to be highlighted

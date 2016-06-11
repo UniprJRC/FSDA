@@ -1,5 +1,5 @@
 function y = inversegampdf(x,a,b,nocheck)
-%inversegampdf Inverse-gamma probability density function.
+%inversegampdf computes inverse-gamma probability density function.
 %
 %<a href="matlab: docsearchFS('inversegampdf')">Link to the help function</a>
 %

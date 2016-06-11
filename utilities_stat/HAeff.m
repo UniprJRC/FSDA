@@ -1,5 +1,5 @@
 function ceff = HAeff(eff,v,abc)
-%HAeff finds the tuning constant guarrantees a requested asymptotic efficiency
+%HAeff finds the tuning constant that guarrantees a requested asymptotic efficiency
 %
 %<a href="matlab: docsearchFS('HAeff')">Link to the help function</a>
 %

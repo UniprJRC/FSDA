@@ -1338,8 +1338,8 @@ end
 %listEx = list which contains the examples (associated to sintax)
 % First column= title, second column detailed description. Third column
 % code
-% Fourth colum dummy variable which indicates whether the example must be
-% executed or not) If 1 example is executed
+% Fourth column is a dummy variable which indicates whether the example must be
+% executed or not). If 1 example is executed
 listEx=cell(length(sintax),4);
 
 for j=1:length(sintax)
@@ -1496,10 +1496,10 @@ for j=1:length(sintax)
     if isempty(inicr)
         disp('String below seems to be without carriage return')
         disp('------------------------------------------------')
-            disp(stri)
-            errmsg=['Carriage return could not be found in the example section \n'...
+        disp(stri)
+        errmsg=['Carriage return could not be found in the example section \n'...
             'Probably file has been created using Linux'];
-            error('FSDA:wrongdelimiter',errmsg)
+        error('FSDA:wrongdelimiter',errmsg)
     end
     
     % This is the first line which does not contain symbol %
@@ -1664,9 +1664,26 @@ if length(startIndexEx)>length(sintax)
         disp('Detailed information about all the Extra examples')
         disp(listExtraEx)
     end
+    
+    % Now check whether the first column of cell listExtraEx contains the string interactive_example
+    NumOfInterEx=1;
+    for i=1:size(listExtraEx,1)
+        [StartInteractive,EndInteractive]=regexp(listExtraEx{i,1},'[Ii]nteractive_example.');
+        if ~isempty(StartInteractive)
+            
+            StringToReplace=listExtraEx{i,1};
+       %     if strcmp(StringToReplace(end),'.')
+         %       listExtraEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive:end)];
+         %   else
+                listExtraEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
+          %  end
+            NumOfInterEx=NumOfInterEx+1;
+        end
+    end
 else
     listExtraEx='';
 end
+
 
 closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
     '<p> </p>\r']);

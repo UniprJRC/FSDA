@@ -1,5 +1,5 @@
 function ceff = TBeff(eff, v, shapeeff, approxsheff)
-%Tbeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
+%Tbeff finds the constant c which is associated to the requested efficiency for Tukey's biweight
 %
 %
 %

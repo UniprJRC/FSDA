@@ -226,13 +226,15 @@ function tclustICplot(IC,varargin)
 %}
 
 %{
-    % Interactive_example (databrushing from the ICplot)
+    % Interactive_example
+    % databrushing from the ICplot.
     % Use all default options for databrush (brush just once)
     tclustICplot(out,'databrush',1)
 %}
 
 %{
-    % Interactive_example (databrushing from the ICplot)
+    % Interactive_example
+    % Repeated databrushing from the ICplot.
     % enable repeated brushing and show boxplots of groups inside diag of spm
     databrush=struct;
     % Set the shape of the brush

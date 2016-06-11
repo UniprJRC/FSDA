@@ -37,7 +37,7 @@ testing the transformation $\lambda=\lambda_0$ </p>
 <p>
 Box and Cox (1964) analyze the normalized power
 transformation  
-</p>
+label{eq:BoxCox}</p>
 <p>
 $$  z(\lambda) = \begin{cases} 
 (y^{\lambda}-1)/(\lambda \dot{y}^{\lambda-1})  \quad \quad \lambda\neq 0\\
@@ -64,45 +64,39 @@ similar requirement applies to the transformation of explanatory variables.
 
 <br>The hope is that, for
 some $\lambda$ which has to be estimated, the transformed
-observations will satisfy the linear regression model.</p>
+observations will satisfy the linear regression model. label{eq:linmodeltra}</p>
 <p>
 $$  z(\lambda) = x^T\beta+\epsilon, \qquad (2) $$
 <p>
-where $x$ is <tt>p</tt>-times-1 and the errors  are independently
-normally distributed with constant variance $\sigma^2$. For inference about 
-the transformation parameter $\lambda$, Box and Cox suggest the likelihood ratio test 
-statistic. For regression models, a computationally
-simpler alternative test of the hypothesis
-$\lambda = \lambda_0$ is the approximate score statistic derived by
-Taylor series expansion of Eq. (1).
-
-
-
- </p>
+where $x$ is <tt>p</tt>-times-1 and the errors are independently normally 
+distributed with constant variance $\sigma^2$. For inference about the 
+transformation parameter $\lambda$, Box and Cox suggest the likelihood ratio 
+test statistic. For regression models, a computationally simpler alternative 
+test of the hypothesis $\lambda = \lambda_0$ is the approximate score statistic 
+derived by Taylor series expansion of Eq. ref{eq:BoxCox}. label{eq:linmodelTay1}</p>
 <p>
 $$ z(\lambda) \doteq z(\lambda_0)+(\lambda-\lambda_0)w(\lambda_0) \qquad (3)   $$
 <p>&nbsp; where&nbsp;<p>
 $$ \left. w(\lambda_0)= \frac{\partial z(\lambda)}{\partial  \lambda} \right|_{\lambda=\lambda_0}$$
 <p>
-If the linearized response (3) is substituted in the regression
-model (2), the model becomes
-</p>
+If the linearized response (ref{eq:linmodelTay1}) is substituted in the regression
+model (ref{eq:linmodeltra}), the model becomes (label{linmodelw})</p>
 <p>
 $$ z(\lambda_0)=x^T\beta-(\lambda-\lambda_0) w (\lambda_0)+\epsilon   \qquad (4)$$.
-<p>Because Eq. (4) is again a regression model with an
+<p>Because Eq. (ref{linmodelw}) is again a regression model with an
 extra variable $w(\lambda_0)$ derived from the transformation,
 the new variable is called the constructed variable for
 the transformation. If the true value of $\lambda$ is close to $\lambda_0$,
 the coefficient $(\lambda-\lambda_0)$ of the constructed variable will
-be small. The regression model (4) can be rewritten
-more conventionally by putting  $\gamma=-(\lambda-\lambda_0)$< when;</p>
+be small. The regression model (ref{linmodelw}) can be rewritten more 
+conventionally by putting $\gamma=-(\lambda-\lambda_0)$ label{linmodelfin};</p>
 <p>
 $$ z(\lambda_0)=x^T \beta + \gamma w (\lambda_0)+ \epsilon  \qquad (5)$$
 <p>Small values of $\gamma$ then indicate that no transformation
 is necessary. The approximate score statistic for
 testing the transformation $\lambda=\lambda_0$  (which is often denoted in the 
 statistical literature with symbol $T_p(\lambda)$  is just the $t$-statistic
-for the coefficient of regression on $w(\lambda_0)$  in Eq. (5).
+for the coefficient of regression on $w(\lambda_0)$  in Eq. (ref{linmodelfin}).
 </p>
 <p></p>
 <a name="bq9x7hn"></a><a name="bq5gf2y"></a>

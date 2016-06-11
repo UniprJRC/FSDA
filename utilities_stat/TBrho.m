@@ -1,5 +1,5 @@
 function rhoTB = TBrho(u,c)
-%TBrho computes (rho) function for Tukey biweight
+%TBrho computes rho function for Tukey's biweight
 %
 %<a href="matlab: docsearchFS('TBrho')">Link to the help function</a>
 %

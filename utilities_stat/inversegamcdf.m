@@ -1,5 +1,5 @@
 function y = inversegamcdf(x,a,b,nocheck)
-%inversegampdf Inverse-gamma cumulative distribution function.
+%inversegamcdf computes inverse-gamma cumulative distribution function.
 %
 %<a href="matlab: docsearchFS('inversegamcdf')">Link to the help function</a>
 %

@@ -1,5 +1,5 @@
 function rhoHU = HUrho(u,c)
-%HUrho computes (rho) function for Huber
+%HUrho computes rho function for Huber
 %
 %<a href="matlab: docsearchFS('HUrho')">Link to the help function</a>
 %

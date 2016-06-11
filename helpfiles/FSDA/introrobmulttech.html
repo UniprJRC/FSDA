@@ -42,9 +42,10 @@ document.write(divsbefore);
 
 	
 	<p>&nbsp;</p>
-	<p>where $\Sigma = \textrm{var}(y)$  and $|\Sigma|$ stands for the determinant $\Sigma$. If y is multivariate 
+	<p>where $\Sigma = \textrm{var}(y)$  and $|\Sigma|$ stands for the determinant 
+	of $\Sigma$. If y is multivariate 
 	normal for any constant vector a, all linear combinations $a'y$ are normally distributed. 
-	In addition given that conditional expectation of a subgroup of coordinate with 
+	In addition given that the conditional expectation of a subgroup of coordinates with 
 	any other subgroup is a linear function of the latters, the type of dependence 
 	among variables is linear. Thus, methods based on multivariate normality only 
 	give information about linear relatioships among coordinates. As in the univariate 
@@ -75,7 +76,7 @@ document.write(divsbefore);
 	<p>&nbsp;</p>
 	<p>Affine equivariance is a natural property in those situations where it is 
 	desirable that the reuslts remain essentially unchanged under any nonsingular 
-	linear transformations, like linear discriminant analysis, canonical correlations 
+	linear transformations, like linear discriminant analysis, canonical correlation 
 	and factor analysis.</p>
 	<p>&nbsp;</p>
 	<a name="Mloc"></a>
@@ -96,7 +97,7 @@ document.write(divsbefore);
 	<p>where the functions $W_1$ and $W_2$ need 
 	not to be equal. </p>
 	<p>Remark 1: If function  $W_2$ is non decreasing, the solution 
-	to this system of equation is called monotone multivaritate M estimates, while 
+	to this system of equations is called monotone multivaritate M estimates, while 
 	if  $W_2$ is redescending the solutions are called redescending 
 	multivariate M-estimates and must be defined by the minimization of&nbsp; some 
 	objective function as it happens in the case of S estimates (which are introduced 
@@ -140,7 +141,7 @@ document.write(divsbefore);
 	S estimate of the covariance matrix $\hat \Sigma_S=\sigma_S^2 \hat \Gamma_S$ can be found using routine
 	<a href="smult.html">Smult</a>.</p>
 	<p class="style4">&nbsp;</p>
-	<p>If, we take for $\hat \sigma$ (to mimic the approach 
+	<p>If we take for $\hat \sigma$ (to mimic the approach 
 	that results in the LMS in regression) the sample median of the Mahalanobis 
 	distances, the resulting location and dispersion matrix estimate is called minimum 
 	volume ellipsoid (MVE) estimate. The name comes from the fact that among all 
@@ -152,7 +153,7 @@ document.write(divsbefore);
 	<p>&nbsp;</p>
 	<p>&nbsp;</p>
 	<a name="Lest"></a>
-	<h3 class="title">The multivariate L-estimates of scale the MCD estimate
+	<h3 class="title">The multivariate L-estimates of scale and the MCD estimate
 	</h3>
 	<p>An alternative to using an M-scale or the median of the distances, we can 
 	use a trimmed scale for $\hat \sigma$  (as it was done 

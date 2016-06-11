@@ -1,6 +1,5 @@
 function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
-%HYPbdp finds constant c which is associated to the requested breakdown
-%point for hyperbolic estimator
+%HYPbdp finds constant c which is associated to the requested breakdown point for hyp. tan. estimator
 %
 %<a href="matlab: docsearchFS('HYPbdp')">Link to the help page for this function</a>
 %

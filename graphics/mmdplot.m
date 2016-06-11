@@ -1,5 +1,5 @@
 function mmdplot(out,varargin)
-%mmdplot plots the trajectory of minimum mhalanobis distance (mmd)
+%mmdplot plots the trajectory of minimum Mahalanobis distance (mmd)
 %
 %<a href="matlab: docsearchFS('mmdplot')">Link to the help function</a>
 %
@@ -212,8 +212,8 @@ function mmdplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     % mmdplot with option dataooltip passed as structure.
-    % Interactive_example 2
     %Example of the use of function mmdplot with datatooltip passed as
     %structure
     clear tooltip
@@ -231,14 +231,13 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    % Interactive_example 3.
-    % Example of databrush.    
-    %Example of the use of function mdrplot with databrush.
+    % Interactive_example
+    % Example of the use of function mdrplot with databrush.
     mmdplot(out,'databrush',1);
 %}
 
 %{
-    % Interactive_example 4.
+    % Interactive_example
     % Example of databrush passed as structure.
     % Example where databrush is a structure
     databrush=struct
@@ -247,7 +246,7 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    % Interactive_example 5.
+    % Interactive_example
     %Example of the use of brush using brush mode.    
     databrush=struct
     databrush.selectionmode='Brush'
@@ -256,7 +255,7 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    % Interactive_example 6
+    % Interactive_example
     %Example of the use of persistent non cumulative brush.     
     %Every time a
     %brushing action is performed previous highlightments are removed
@@ -268,7 +267,7 @@ function mmdplot(out,varargin)
 %}
 
 %{
-    % Interactive_example 7
+    % Interactive_example
     %Example of the use of persistent cumulative brush.     
     % Every time a
     %brushing action is performed current highlightments are added to

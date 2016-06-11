@@ -1,5 +1,5 @@
 function [out]=addt(y,X,w,varargin)
-%addt produces the t test for an additional expl. variable
+%addt produces the t test for an additional explanatory variable
 %
 %<a href="matlab: docsearchFS('addt')">Link to the help page for this function</a>
 %

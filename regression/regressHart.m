@@ -1,5 +1,5 @@
 function [out]=regressHart(y,X,Z,varargin)
-%regressHart fits a multiple linear regression model using art heteroskedasticity
+%regressHart fits a multiple linear regression model using ART heteroskedasticity
 %
 %<a href="matlab: docsearchFS('regressHart')">Link to the help function</a>
 %

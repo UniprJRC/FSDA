@@ -1,5 +1,5 @@
 function [out]=FSRaddt(y,X,varargin)
-%FSRaddt produces t deletion tests for each expl. variable.
+%FSRaddt produces t deletion tests for each explanatory variable.
 %
 %<a href="matlab: docsearchFS('FSRaddt')">Link to the help function</a>
 %
