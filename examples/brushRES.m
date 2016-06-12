@@ -22,25 +22,7 @@ function brushRES(eventdata)
 %  Output: 
 %
 %
-% Examples:
-
-%{
-    % Interactive_example
-    % Display a GUI where it is possible to brush steps from the monitoring
-    % residuals plot and to see the corresponding units highlighted in
-    % other plots
-    brushRES
-%}
-%
-%{
-    %% Run examples associated with radiobuttons 1 to 6
-    for j=1:6
-        brushRES(j);
-    end
-%}
-%
-%
-% See also: brushFAN, brushROB
+% See also: brushRES, brushROB
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -49,6 +31,30 @@ function brushRES(eventdata)
 %<a href="matlab: docsearchFS('brushRES')">Link to the help page for this function</a>
 % Last modified mar 17 mag 2016 12:19:52
 %
+%
+% Examples:
+
+%{
+    % Interactive_example
+    % Display a GUI where it is possible to brush steps from the monitoring
+    % residuals plot and to see the corresponding units highlighted in
+    % other plots.
+    brushRES
+%}
+%
+%{
+    %% Run examples associated with radiobuttons 1 to 6.
+    for j=1:6
+        brushRES(j);
+    end
+%}
+%
+%{
+    % Run the example associated with radiobutton 2.
+    brushRES(2);
+%}
+%
+
 
 %% Beginning of code
 if nargin < 1
@@ -366,12 +372,7 @@ end
 
 
 
-a=version;
-if str2double(a(1))>=8
-    stri='Detailed information about the datasets used in this GUI can be found in the <a href="matlab: doc -classic">section USER GUIDE of the FSDA html help system </a>';
-else
     stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
-end
 disp(stri)
 
 end

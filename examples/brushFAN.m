@@ -35,24 +35,24 @@ function brushFAN(eventdata)
 %{
     % Interactive_example
     % Display a GUI where it is possible to brush steps from the fan plot
-    % and to see the corresponding units highlighted in other plots
+    % and to see the corresponding units highlighted in other plots.
     brushFAN
 %}
 %
 %{
-    %% Run examples associated with radiobuttons 1 to 4
+    %% Run examples associated with radiobuttons 1 to 4.
     for j=1:4
         brushFAN(j);
     end
 %}
 %
 %{
-    %% Run the example associated with radiobutton 2
+    %% Run the example associated with radiobutton 2.
     brushFAN(2);
 %}
 %
 %{
-    %% Run the example associated with radiobutton 3
+    %% Run the example associated with radiobutton 3.
     brushFAN(3);
 %}
 %
@@ -220,17 +220,9 @@ end
         set(plresfwd,'Position',[(width+10) scrsz(4)/10  width scrsz(4)/3])
         set(plyX,'Position',[(2*width+10) scrsz(4)/10  width scrsz(4)/3])
         set(plmdr,'Position',[(3*width+10) scrsz(4)/10  width scrsz(4)/3])
-        
-        
-        
-    end
+     end
 
-a=version;
-if str2double(a(1))>=8
-    stri='Detailed information about the datasets used in this GUI can be found in the <a href="matlab: doc -classic">section USER GUIDE of the FSDA html help system </a>';
-else
     stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
-end
 disp(stri)
 
 end

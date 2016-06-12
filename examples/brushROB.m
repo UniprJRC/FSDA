@@ -34,12 +34,12 @@ function brushROB(eventdata)
 %{
     % Interactive_example
     % Display a GUI to brush units from the index plot of residuals
-    % and see the corresponding units highlighted in the yXplot
+    % and see the corresponding units highlighted in the yXplot.
     brushROB
 %}
 %
 %{
-    %% Run examples associated with radiobuttons 1 to 6
+    %% Run examples associated with radiobuttons 1 to 6.
     for j=1:6
         brushROB(j);
     end
@@ -307,13 +307,7 @@ end
         
     end
 
-
-a=version;
-if str2double(a(1))>=8
-    stri='Detailed information about the datasets used in this GUI can be found in the <a href="matlab: doc -classic">section USER GUIDE of the FSDA html help system </a>';
-else
     stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
-end
 disp(stri)
 
 end

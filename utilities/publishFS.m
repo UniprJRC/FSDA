@@ -685,7 +685,7 @@ if nargin>1
         chkoptions(options,UserOptions)
         
         % Write in structure 'options' the options chosen by the user
-        for i=1:2:length(varargin);
+        for i=1:2:length(varargin)
             options.(varargin{i})=varargin{i+1};
         end
         
@@ -916,7 +916,7 @@ listOptArgs=listOptArgs(1:ij-1,:);
 if ~isempty(listOptArgs)
     Checklastremark=listOptArgs{end,4};
     DelTheUser=regexp(Checklastremark,'Remark\s*:\s*The user','once','start','ignorecase');
-    if ~isempty(DelTheUser);
+    if ~isempty(DelTheUser)
         
         listOptArgsIns=Checklastremark(1:DelTheUser-1);
         % Remove extra % signs if present in the string
@@ -1053,18 +1053,18 @@ metacontent=sprintf([beforemetacontent purpose aftermetacontent searchenginestri
 
 % Insert navigation bar on top of the page
 % necessary to insert sprintf later because there is symbol % in 100%
-insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="100%">'...
-    sprintf(['\r<tr valign="top">\r'...
-    '<td align="left" width="20"><a href=" ">\r'...
-    '<img align="bottom" alt="" border="0" src="images_help/b_prev.gif"></a>\r'...
-    '</td>\r'...
-    '<td align="left">left</td>\r'...
-    '<td>&nbsp;</td>\r'...
-    '<td align="right"> right</td>\r'...
-    '<td align="right" width="20"><a href=" ">\r'...
-    '<img align="bottom" alt="score" border="0" src="images_help/b_next.gif"></a></td>\r'...
-    '</tr>\r'...
-    '</table>'])];
+% insnav=['<table border="0" cellpadding="0" cellspacing="0" class="nav" width="100%">'...
+%     sprintf(['\r<tr valign="top">\r'...
+%     '<td align="left" width="20"><a href=" ">\r'...
+%     '<img align="bottom" alt="" border="0" src="images_help/b_prev.gif"></a>\r'...
+%     '</td>\r'...
+%     '<td align="left">left</td>\r'...
+%     '<td>&nbsp;</td>\r'...
+%     '<td align="right"> right</td>\r'...
+%     '<td align="right" width="20"><a href=" ">\r'...
+%     '<img align="bottom" alt="score" border="0" src="images_help/b_next.gif"></a></td>\r'...
+%     '</tr>\r'...
+%     '</table>'])];
 
 insnav=sprintf('<div id="div002"></div>');
 
@@ -1220,7 +1220,7 @@ PosOpt=sort(PosOpt);
 sintax=cell(nargout+1+nOPTargin,1);
 
 if nOPTargin>0
-    for j=1:nOPTargin;
+    for j=1:nOPTargin
         if ~isempty(outargs)
             sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs(1:commasIn(PosOpt(j)-1)-1) ')'];
         else
@@ -1360,7 +1360,7 @@ for j=1:length(sintax)
     
     if ~isempty(outs)
         commaspos=regexp(outs,',');
-        if isempty(commaspos);
+        if isempty(commaspos)
             noutel=1;
         else
             noutel=length(commaspos)+1;
@@ -1411,7 +1411,7 @@ for j=1:length(sintax)
     [startIndex] = regexp(sintaxj,'(');
     inps=sintaxj(startIndex+1:end-1);
     commaspos=regexp(inps,',');
-    if isempty(commaspos);
+    if isempty(commaspos)
         ninpel=1;
     else
         ninpel=length(commaspos)+1;
@@ -1505,7 +1505,7 @@ for j=1:length(sintax)
     % This is the first line which does not contain symbol %
     for jj=1:length(inicr)-1
         strtest=stri(inicr(jj):inicr(jj+1));
-        if isempty(regexp(strtest,'%','once'));
+        if isempty(regexp(strtest,'%','once'))
             break
         end
     end
@@ -1536,6 +1536,16 @@ for j=1:length(sintax)
     descriptionhtml= [descriptionhtml description];
 end
 
+    % Now check whether the first column of cell listEx contains the string interactive_example
+    NumOfInterEx=1;
+    for i=1:size(listEx,1)
+        [StartInteractive,EndInteractive]=regexp(listEx{i,1},'[Ii]nteractive_example.');
+        if ~isempty(StartInteractive)
+            StringToReplace=listEx{i,1};
+                listEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
+            NumOfInterEx=NumOfInterEx+1;
+        end
+    end
 
 closedescription=sprintf(['								</div>\r'...
     '							</div>\r'...
@@ -1666,17 +1676,11 @@ if length(startIndexEx)>length(sintax)
     end
     
     % Now check whether the first column of cell listExtraEx contains the string interactive_example
-    NumOfInterEx=1;
     for i=1:size(listExtraEx,1)
         [StartInteractive,EndInteractive]=regexp(listExtraEx{i,1},'[Ii]nteractive_example.');
         if ~isempty(StartInteractive)
-            
             StringToReplace=listExtraEx{i,1};
-       %     if strcmp(StringToReplace(end),'.')
-         %       listExtraEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive:end)];
-         %   else
                 listExtraEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
-          %  end
             NumOfInterEx=NumOfInterEx+1;
         end
     end
@@ -2035,7 +2039,7 @@ else
     
     
     OptArgsNameValue='';
-    for i=1:size(listOptArgs,1);
+    for i=1:size(listOptArgs,1)
         nameoptarg=listOptArgs{i,1};
         
         titloptarg=listOptArgs{i,2};
@@ -2188,7 +2192,7 @@ if nargout>0
             end
             
             inipointMoreAbout=regexp(fstringsel,'More About:','once');
-            if ~isempty(inipointMoreAbout);
+            if ~isempty(inipointMoreAbout)
                 MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
                 posPercentageSigns=regexp(MoreAbout,'[^"^%]%')+1;
                 
@@ -2373,7 +2377,7 @@ else
     
     
     inipointMoreAbout=regexp(fstringsel,'More About:','once');
-    if ~isempty(inipointMoreAbout);
+    if ~isempty(inipointMoreAbout)
         MoreAbout=fstringsel(inipointMoreAbout+15:inipointSeeAlso-1);
         posPercentageSigns=regexp(MoreAbout,'%');
         MoreAbout(posPercentageSigns)=[];
@@ -2429,7 +2433,7 @@ end
 
 %% REFERENCES
 inipointAcknowledgements=regexp(fstring,'%\s*Acknowledgements:');
-if isempty(inipointAcknowledgements);
+if isempty(inipointAcknowledgements)
     Acknowledgements='';
 end
 
@@ -2444,7 +2448,7 @@ else
     inipointCopyright=regexp(fstring,'Copyright');
     
     
-    if ~isempty(inipointAcknowledgements);
+    if ~isempty(inipointAcknowledgements)
         Acknowledgements=fstring(inipointAcknowledgements+19:inipointCopyright-1);
         posPercentageSigns=regexp(Acknowledgements,'%');
         Acknowledgements(posPercentageSigns)=[];
@@ -2575,7 +2579,7 @@ Seealsohtml='';
 listSeeAlso=cell(nseealso,1);
 
 for i=1:nseealso
-    if nseealso==1;
+    if nseealso==1
         Seealsoitem= seealsostr(1:end);
     else
         if i==nseealso
