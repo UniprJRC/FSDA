@@ -49,13 +49,14 @@ function x = shuffling(x)
 %}
 
 %{
+    % shuffling applied with parsimonious data type.
     % shuffling applied to a set of 20 elements, but using a parsimonious
-    %data  type; this is convenient if the vector is big.
+    % data type; this is convenient if the vector is big.
     shuffling(int8(1:20))
 %}
 
 %{
-    % check of the permutation produced by shuffling
+    % check of the permutation produced by shuffling.
     x = 1:200000;
     numel(unique(shuffling(x)))
 %}
