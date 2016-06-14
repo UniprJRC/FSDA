@@ -19,30 +19,28 @@ function sigmaest = eigs_sigma(y,varargin)
 %
 %{
 
-clear all;
-% a symmetric matrix
-A = gallery('moler',5,0.3);
-disp('larger eigenvalues');
-lambda = eigs(A)
-disp('smaller eigenvalues');
-sigma = 0;
-lambda = eigs(A,size(A,1),sigma)
+    clear all;
+    % a symmetric matrix
+    A = gallery('moler',5,0.3);
+    disp('larger eigenvalues');
+    lambda = eigs(A)
+    disp('smaller eigenvalues');
+    sigma = 0;
+    lambda = eigs(A,size(A,1),sigma)
 
 %}
 
 %{ 
-% example_producing_error
-
-% the same matrix, but with two identical raws
-clear all;
-A = gallery('moler',5,0.3);
-A(5,:)=A(4,:);
-disp('larger eigenvalues are still fine');
-lambda = eigs(A)
-disp('but smaller eigenvalues produce an error');
-sigma = 0;
-lambda = eigs(A,size(A,1),sigma)
-
+    % example_producing_error.
+    % the same matrix, but with two identical raws
+    clear all;
+    A = gallery('moler',5,0.3);
+    A(5,:)=A(4,:);
+    disp('larger eigenvalues are still fine');
+    lambda = eigs(A)
+    disp('but smaller eigenvalues produce an error');
+    sigma = 0;
+    lambda = eigs(A,size(A,1),sigma)
 %}
 
 %{ 

@@ -2,16 +2,28 @@
         n = 5; 
         k = 2; 
         N = 7;
-        kcomb=lexunrank(n,k,N)</pre></div></div><pre class="codeoutput">kcomb =
+        kcomb=lexunrank(n,k,N)</pre></div></div><pre class="codeoutput">
+kcomb =
+
      4     1
+
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> number of binomial coefficient calls necessary to compute the 7th 2 combination chosen among 5 element.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-        [~,calls]=lexunrank(n,k,N)</pre></div></div><pre class="codeoutput">calls =
-     8
-</pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> 7th 2 combination chosen among 5 element, using the pascal matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-        [kcomb,calls]=lexunrank(n,k,N,pascal(n))</pre></div></div><pre class="codeoutput">kcomb =
-     4     1
+        [~,calls]=lexunrank(n,k,N)</pre></div></div><pre class="codeoutput">
 calls =
+
+     8
+
+</pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> 7th 2 combination chosen among 5 element, using the pascal matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+        [kcomb,calls]=lexunrank(n,k,N,pascal(n))</pre></div></div><pre class="codeoutput">
+kcomb =
+
+     4     1
+
+
+calls =
+
      7
+
 </pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Additional example on the use of lexunrank.</li></span></a></span></h3><div class="collapse"><p>
      Standard use.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n = 4; p = 3;

@@ -42,9 +42,14 @@ function Ytra=basicPower(Y,ColtoTra,la)
 %
 % See also: normBoxCox, normYJ
 % 
+% References:
+%
+%Box, G. E. P. & Cox, D. R. (1964). An analysis of transformations (with
+%Discussion). J. R. Statist. Soc. B 26, 211-252
 %
 % Copyright 2008-2016.
 % Written by FSDA team
+%
 %
 %<a href="matlab: docsearchFS('basicPower')">Link to the help function</a>
 % Last modified mer 18 mag 2016 09:00:06

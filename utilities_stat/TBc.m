@@ -1,4 +1,4 @@
-function [bdp,eff,approxsheff] = TBc(c,v,varargin)
+function [bdp,eff,approxsheff] = TBc(c,v,shapeeff)
 %TBc computes breakdown point and efficiency associated with constant c for Tukey's biweight
 %
 %<a href="matlab: docsearchFS('TBc')">Link to the help function</a>
@@ -17,7 +17,7 @@ function [bdp,eff,approxsheff] = TBc(c,v,varargin)
 %   shapeeff : location or shape efficiency. Scalar. 
 %              If shapeeff=1, the efficiency is referred to the shape else
 %              (default) is referred to the location estimator
-%               Example - 'shapeeff',1 
+%               Example - 1 
 %               Data Types - double
 %
 % Output:
@@ -56,7 +56,27 @@ function [bdp,eff,approxsheff] = TBc(c,v,varargin)
 % Examples:
 
 %{
+    %Tbc with just one output argument.
+    [bdp]=TBc(2,1)
+    disp('Break down point')
+    disp(bdp)
+%}
 
+%{
+    %Tbc with 2 output arguments.
+    [bdp,eff]=TBc(2,1)
+    disp('Break down point and efficienty')
+    disp(bdp)
+    disp(eff)
+%}
+
+%{
+    % Find also approximate value of scale efficienty (for R comparability).
+    [bdp,eff,approxeff]=TBc(2,2,1)
+%}
+
+%{
+    %Breakdown point and efficiency.
     %Analysis of breakdown point and asymptotic efficiency
     %at the normal distribution as a function of c in regression.
     c=1:0.01:6;
@@ -84,7 +104,7 @@ bdp=(Erho./(c.^2))*(6);
 
 
 
-if nargin<=2 || varargin{1} ~=1
+if nargin<=2 || shapeeff ~=1
     % LOCATION EFFICIENCY
     p4=(v+4)*(v+2);
     p6=(v+6)*(v+4)*(v+2);

@@ -86,6 +86,39 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 % Examples:
 
 %{
+        %HYPk with all default options.
+        [bdp]=HYPk(4.5,1);
+        disp('Break down point')
+        disp(bdp)
+%}
+
+%{
+        %HYPk with all default options.
+        [bdp,eff]=HYPk(4.5,1);
+        disp('efficiency')
+        disp(eff)
+%}
+
+%{
+        %HYPk with all default options.
+        [bdp,eff,A,B,d]=HYPk(4.5,1);
+        disp('Constants A, B and d')
+        disp(A)
+        disp(B)
+        disp(d)
+%}
+
+%{
+        %Example of use optional argument c.
+        [bdp,eff,A,B,d]=HYPk(4.5,1,'c',3);
+        disp('Constants A, B and d')
+        disp(A)
+        disp(B)
+        disp(d)
+%}
+
+%{
+    %Breakwodn point and efficiency.
     %Analysis of breakdown point and asymptotic efficiency
     %at the normal distribution as a function of k (supCVC) in regression.
     kk=2:0.1:6;

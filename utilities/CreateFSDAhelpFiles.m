@@ -118,7 +118,7 @@ web(outputOFHtmlHelpFile,'-browser');
 
 %% STEP 5: create HTML pointer files
 
- h=CreateFSDApointerFiles(FilesIncluded);
+ h=CreateFSDApointerFiles(FilesIncluded,OUT);
 if h
     disp('Succesful creation of pointer files')
 end

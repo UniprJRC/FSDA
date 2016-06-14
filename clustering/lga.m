@@ -73,7 +73,7 @@ function out = lga(X,k,varargin)
 % Examples:
 %
 %{
-    % lga with all default options.
+    %% lga with all default options.
     X=load('X.txt');
     out=lga(X,3);
 %}

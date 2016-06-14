@@ -21,6 +21,7 @@ function plotopt=levfwdplot(out,varargin)
 %               estimated beta coefficients in each step of the forward search
 %               (necessary only if option databrush is not empty and
 %               suboption lineadd is not empty)
+%      Data Types - struct
 %
 % Optional input arguments:
 %           standard : appearance of the plot

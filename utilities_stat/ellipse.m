@@ -58,6 +58,11 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %
 % See also: ellipsoid
 %
+% References:
+%
+%   MARDIA, K. V., J. T. KENT, J. M. BIBBY (1979). Multivariate Analysis. Academic
+%   Press, London-New York-Toronto-Sydney-San Francisco.
+%
 %
 % Copyright 2008-2016.
 % Written by FSDA team

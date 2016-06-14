@@ -252,7 +252,8 @@ function [out]  = MixSim(k,v,varargin)
 % Examples:
 %
 %{
-	% Generate 3 groups in 4 dimensions using maximum overlap equal to 0.15
+	%% Generate 3 groups in 4 dimensions.
+    % Use a maximum overlap equal to 0.15.
     rng(10,'twister')
     out=MixSim(3,4)
     n=200;
@@ -261,8 +262,9 @@ function [out]  = MixSim(k,v,varargin)
 %}
 %
 %{
-    % Generate 4 groups in 5 dimensions using average overlap of 0.05 and
-    % maximum overlap equal to 0.15
+    % Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.
+    % Use average overlap of 0.05 and
+    % maximum overlap equal to 0.15.
     k=4;
     v=5;
     BarOmega=0.05;

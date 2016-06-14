@@ -1,0 +1,2042 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tkmeans</title><meta content="refpage" name="chunktype"><meta content="function:tkmeans" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tkmeans computes trimmed k-means." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#div002").load("includesFS/top.html");      $("#div001").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/suggest.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2016a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Documentation</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Documentation" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--></div><!--END.CLASS container-fluid--></div><!--START.CLASS sticky_header_container--><div class="sticky_header_container includes_subnav"><div class="horizontal_nav_container"><div id="nav_toggle" class="offcanvas_actuator" data-target="#sidebar" data-toggle="offcanvas"><button class="btn" type="button"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_32"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span></div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"></div></div></div></div></div><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"><a href="../documentation-center.html" itemprop="url"><span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"><span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"></span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"><a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"><a href="functionlist.html" role="menuitem" tabindex="-1">Functions and Other Reference</a></li><li role="presentation"><a href="release-notes.html" role="menuitem" tabindex="-1">Release Notes</a></li><li role="presentation"><a href="tutorials.html" role="menuitem" tabindex="-1">Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"><li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a></li><li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="nav_scrollspy_function"><a href="#responsive_offcanvas">tkmeans</a></li><li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Trimmed k-means using geyser data (1).</a></li><li><a class="intrnllnk" href="#Example_2">Trimmed k-means using geyser data (2).</a></li><li><a class="intrnllnk" href="#Example_3">Trimmed k-means using M5data.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Trimmed k-means using structured noise.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Trimmed k-means using mixture100 data.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li><li><a class="intrnllnk" href="#input_argument_k">k</a></li><li><a class="intrnllnk" href="#input_argument_alpha">alpha</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_weights">weights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nomes">nomes</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="div002"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tkmeans</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tkmeans computes trimmed k-means</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out =tkmeans(Y,k,alpha)</code><span class="syntax_example"><a class="intrnllnk" href="tkmeans.html#Example_1">example</a></span></li><li><code class="synopsis">out =tkmeans(Y,k,alpha,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tkmeans.html#Example_2">example</a></span></li><li><code class="synopsis">[out , varargout]=tkmeans(___)</code><span class="syntax_example"><a class="intrnllnk" href="tkmeans.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tkmeans(Y, k, alpha) partitions the points in the n-by-v data matrix Y
+   into k clusters.  This partition minimizes the trimmed sum, over all
+   clusters, of the within-cluster sums of point-to-cluster-centroid
+   distances.  Rows of Y correspond to points, columns correspond to
+   variables. tkmeans returns inside structure out an n-by-1 vector IDX
+   containing the cluster indices of each point.  By default, tkmeans uses
+   (squared) Euclidean distances.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tkmeans(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>)</code></span>Trimmed k-means using geyser data (1).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tkmeans(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Trimmed k-means using geyser data (2).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out </code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=tkmeans(___)</code></span>Trimmed k-means using M5data.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Trimmed k-means using geyser data (1).</li></span></a></span></h3><div class="collapse"><p>
+     3 groups and trimming level of 3%<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('geyser2.txt');
+    out=tkmeans(Y,3,0.03,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.37 seconds 
+
+ans =
+
+    2.1720    3.7271
+    2.1791    3.7282
+    2.1861    3.7294
+    2.1932    3.7306
+    2.2002    3.7320
+    2.2072    3.7334
+    2.2142    3.7348
+    2.2211    3.7364
+    2.2281    3.7380
+    2.2350    3.7397
+    2.2419    3.7415
+    2.2489    3.7434
+    2.2557    3.7453
+    2.2626    3.7473
+    2.2694    3.7494
+    2.2763    3.7515
+    2.2831    3.7538
+    2.2898    3.7561
+    2.2966    3.7585
+    2.3033    3.7609
+    2.3100    3.7634
+    2.3167    3.7660
+    2.3234    3.7687
+    2.3300    3.7714
+    2.3366    3.7742
+    2.3432    3.7771
+    2.3497    3.7801
+    2.3562    3.7831
+    2.3627    3.7862
+    2.3692    3.7894
+    2.3756    3.7926
+    2.3820    3.7959
+    2.3883    3.7993
+    2.3947    3.8027
+    2.4010    3.8063
+    2.4072    3.8098
+    2.4134    3.8135
+    2.4196    3.8172
+    2.4258    3.8210
+    2.4319    3.8249
+    2.4380    3.8288
+    2.4440    3.8328
+    2.4500    3.8368
+    2.4560    3.8409
+    2.4619    3.8451
+    2.4678    3.8494
+    2.4736    3.8537
+    2.4794    3.8581
+    2.4852    3.8625
+    2.4909    3.8670
+    2.4965    3.8716
+    2.5022    3.8762
+    2.5077    3.8809
+    2.5133    3.8856
+    2.5188    3.8905
+    2.5242    3.8953
+    2.5296    3.9003
+    2.5350    3.9053
+    2.5403    3.9103
+    2.5455    3.9154
+    2.5507    3.9206
+    2.5559    3.9258
+    2.5610    3.9311
+    2.5660    3.9364
+    2.5710    3.9418
+    2.5760    3.9472
+    2.5809    3.9527
+    2.5857    3.9583
+    2.5905    3.9639
+    2.5953    3.9696
+    2.6000    3.9753
+    2.6046    3.9810
+    2.6092    3.9868
+    2.6137    3.9927
+    2.6182    3.9986
+    2.6226    4.0046
+    2.6269    4.0106
+    2.6312    4.0167
+    2.6355    4.0228
+    2.6397    4.0289
+    2.6438    4.0351
+    2.6479    4.0414
+    2.6519    4.0477
+    2.6558    4.0540
+    2.6597    4.0604
+    2.6635    4.0668
+    2.6673    4.0733
+    2.6710    4.0798
+    2.6747    4.0863
+    2.6782    4.0929
+    2.6818    4.0995
+    2.6852    4.1062
+    2.6886    4.1129
+    2.6919    4.1197
+    2.6952    4.1265
+    2.6984    4.1333
+    2.7016    4.1401
+    2.7046    4.1470
+    2.7076    4.1539
+    2.7106    4.1609
+    2.7135    4.1679
+    2.7163    4.1749
+    2.7190    4.1820
+    2.7217    4.1891
+    2.7243    4.1962
+    2.7269    4.2033
+    2.7294    4.2105
+    2.7318    4.2177
+    2.7341    4.2249
+    2.7364    4.2322
+    2.7386    4.2395
+    2.7408    4.2468
+    2.7429    4.2541
+    2.7449    4.2615
+    2.7468    4.2688
+    2.7487    4.2762
+    2.7505    4.2837
+    2.7522    4.2911
+    2.7539    4.2986
+    2.7555    4.3061
+    2.7570    4.3136
+    2.7584    4.3211
+    2.7598    4.3286
+    2.7611    4.3362
+    2.7624    4.3437
+    2.7636    4.3513
+    2.7647    4.3589
+    2.7657    4.3665
+    2.7667    4.3742
+    2.7675    4.3818
+    2.7684    4.3894
+    2.7691    4.3971
+    2.7698    4.4048
+    2.7704    4.4124
+    2.7709    4.4201
+    2.7714    4.4278
+    2.7718    4.4355
+    2.7721    4.4432
+    2.7723    4.4509
+    2.7725    4.4586
+    2.7726    4.4663
+    2.7726    4.4740
+    2.7726    4.4818
+    2.7725    4.4895
+    2.7723    4.4972
+    2.7721    4.5049
+    2.7717    4.5126
+    2.7713    4.5204
+    2.7709    4.5281
+    2.7703    4.5358
+    2.7697    4.5435
+    2.7690    4.5512
+    2.7683    4.5589
+    2.7675    4.5666
+    2.7666    4.5742
+    2.7656    4.5819
+    2.7646    4.5896
+    2.7635    4.5972
+    2.7623    4.6049
+    2.7610    4.6125
+    2.7597    4.6201
+    2.7583    4.6277
+    2.7569    4.6353
+    2.7553    4.6429
+    2.7537    4.6505
+    2.7521    4.6580
+    2.7503    4.6655
+    2.7485    4.6730
+    2.7466    4.6805
+    2.7447    4.6880
+    2.7427    4.6955
+    2.7406    4.7029
+    2.7384    4.7103
+    2.7362    4.7177
+    2.7339    4.7251
+    2.7316    4.7324
+    2.7292    4.7398
+    2.7267    4.7470
+    2.7241    4.7543
+    2.7215    4.7616
+    2.7188    4.7688
+    2.7160    4.7760
+    2.7132    4.7831
+    2.7103    4.7903
+    2.7074    4.7974
+    2.7044    4.8045
+    2.7013    4.8115
+    2.6981    4.8185
+    2.6949    4.8255
+    2.6916    4.8324
+    2.6883    4.8393
+    2.6849    4.8462
+    2.6814    4.8530
+    2.6779    4.8599
+    2.6743    4.8666
+    2.6707    4.8733
+    2.6669    4.8800
+    2.6632    4.8867
+    2.6593    4.8933
+    2.6554    4.8999
+    2.6515    4.9064
+    2.6475    4.9129
+    2.6434    4.9193
+    2.6393    4.9258
+    2.6351    4.9321
+    2.6308    4.9384
+    2.6265    4.9447
+    2.6222    4.9509
+    2.6178    4.9571
+    2.6133    4.9633
+    2.6088    4.9693
+    2.6042    4.9754
+    2.5995    4.9814
+    2.5948    4.9873
+    2.5901    4.9932
+    2.5853    4.9991
+    2.5804    5.0048
+    2.5755    5.0106
+    2.5706    5.0163
+    2.5656    5.0219
+    2.5605    5.0275
+    2.5554    5.0330
+    2.5502    5.0385
+    2.5450    5.0439
+    2.5398    5.0493
+    2.5345    5.0546
+    2.5291    5.0599
+    2.5237    5.0651
+    2.5183    5.0702
+    2.5128    5.0753
+    2.5072    5.0803
+    2.5016    5.0853
+    2.4960    5.0902
+    2.4903    5.0950
+    2.4846    5.0998
+    2.4789    5.1045
+    2.4731    5.1092
+    2.4672    5.1138
+    2.4613    5.1183
+    2.4554    5.1228
+    2.4494    5.1272
+    2.4434    5.1316
+    2.4374    5.1359
+    2.4313    5.1401
+    2.4252    5.1442
+    2.4191    5.1483
+    2.4129    5.1524
+    2.4066    5.1563
+    2.4004    5.1602
+    2.3941    5.1640
+    2.3878    5.1678
+    2.3814    5.1715
+    2.3750    5.1751
+    2.3686    5.1787
+    2.3621    5.1822
+    2.3556    5.1856
+    2.3491    5.1889
+    2.3426    5.1922
+    2.3360    5.1954
+    2.3294    5.1986
+    2.3227    5.2016
+    2.3161    5.2046
+    2.3094    5.2075
+    2.3027    5.2104
+    2.2960    5.2132
+    2.2892    5.2159
+    2.2824    5.2185
+    2.2756    5.2211
+    2.2688    5.2236
+    2.2620    5.2260
+    2.2551    5.2283
+    2.2482    5.2306
+    2.2413    5.2328
+    2.2344    5.2349
+    2.2274    5.2370
+    2.2205    5.2390
+    2.2135    5.2409
+    2.2065    5.2427
+    2.1995    5.2444
+    2.1925    5.2461
+    2.1855    5.2477
+    2.1784    5.2492
+    2.1714    5.2507
+    2.1643    5.2521
+    2.1572    5.2534
+    2.1501    5.2546
+    2.1430    5.2557
+    2.1359    5.2568
+    2.1288    5.2578
+    2.1217    5.2587
+    2.1145    5.2595
+    2.1074    5.2603
+    2.1003    5.2610
+    2.0931    5.2616
+    2.0860    5.2621
+    2.0788    5.2626
+    2.0717    5.2629
+    2.0645    5.2632
+    2.0574    5.2635
+    2.0502    5.2636
+    2.0431    5.2637
+    2.0359    5.2637
+    2.0288    5.2636
+    2.0216    5.2634
+    2.0145    5.2632
+    2.0073    5.2628
+    2.0002    5.2625
+    1.9931    5.2620
+    1.9859    5.2614
+    1.9788    5.2608
+    1.9717    5.2601
+    1.9646    5.2593
+    1.9575    5.2585
+    1.9504    5.2575
+    1.9434    5.2565
+    1.9363    5.2554
+    1.9293    5.2543
+    1.9222    5.2530
+    1.9152    5.2517
+    1.9082    5.2503
+    1.9012    5.2488
+    1.8942    5.2473
+    1.8873    5.2457
+    1.8803    5.2440
+    1.8734    5.2422
+    1.8665    5.2404
+    1.8596    5.2385
+    1.8528    5.2365
+    1.8459    5.2344
+    1.8391    5.2323
+    1.8323    5.2300
+    1.8255    5.2277
+    1.8187    5.2254
+    1.8120    5.2229
+    1.8053    5.2204
+    1.7986    5.2178
+    1.7920    5.2152
+    1.7853    5.2125
+    1.7787    5.2097
+    1.7721    5.2068
+    1.7656    5.2038
+    1.7591    5.2008
+    1.7526    5.1977
+    1.7461    5.1946
+    1.7397    5.1914
+    1.7333    5.1881
+    1.7269    5.1847
+    1.7206    5.1813
+    1.7143    5.1778
+    1.7080    5.1742
+    1.7018    5.1705
+    1.6956    5.1668
+    1.6895    5.1631
+    1.6833    5.1592
+    1.6773    5.1553
+    1.6712    5.1513
+    1.6652    5.1473
+    1.6592    5.1432
+    1.6533    5.1390
+    1.6474    5.1348
+    1.6416    5.1304
+    1.6358    5.1261
+    1.6300    5.1217
+    1.6243    5.1172
+    1.6186    5.1126
+    1.6130    5.1080
+    1.6074    5.1033
+    1.6019    5.0986
+    1.5964    5.0938
+    1.5909    5.0889
+    1.5855    5.0840
+    1.5802    5.0790
+    1.5748    5.0740
+    1.5696    5.0689
+    1.5644    5.0637
+    1.5592    5.0585
+    1.5541    5.0532
+    1.5490    5.0479
+    1.5440    5.0425
+    1.5391    5.0371
+    1.5341    5.0316
+    1.5293    5.0260
+    1.5245    5.0204
+    1.5197    5.0148
+    1.5150    5.0091
+    1.5104    5.0033
+    1.5058    4.9975
+    1.5013    4.9917
+    1.4968    4.9858
+    1.4924    4.9798
+    1.4880    4.9738
+    1.4837    4.9678
+    1.4795    4.9617
+    1.4753    4.9555
+    1.4711    4.9493
+    1.4670    4.9431
+    1.4630    4.9368
+    1.4591    4.9305
+    1.4552    4.9241
+    1.4513    4.9177
+    1.4476    4.9112
+    1.4438    4.9047
+    1.4402    4.8982
+    1.4366    4.8916
+    1.4331    4.8850
+    1.4296    4.8783
+    1.4262    4.8716
+    1.4228    4.8649
+    1.4196    4.8581
+    1.4164    4.8513
+    1.4132    4.8444
+    1.4101    4.8375
+    1.4071    4.8306
+    1.4041    4.8237
+    1.4012    4.8167
+    1.3984    4.8097
+    1.3957    4.8026
+    1.3930    4.7955
+    1.3903    4.7884
+    1.3878    4.7813
+    1.3853    4.7741
+    1.3828    4.7669
+    1.3805    4.7597
+    1.3782    4.7524
+    1.3760    4.7451
+    1.3738    4.7378
+    1.3717    4.7305
+    1.3697    4.7232
+    1.3678    4.7158
+    1.3659    4.7084
+    1.3641    4.7010
+    1.3623    4.6935
+    1.3606    4.6861
+    1.3590    4.6786
+    1.3575    4.6711
+    1.3560    4.6636
+    1.3546    4.6560
+    1.3533    4.6485
+    1.3521    4.6409
+    1.3509    4.6333
+    1.3498    4.6257
+    1.3487    4.6181
+    1.3478    4.6105
+    1.3469    4.6029
+    1.3460    4.5952
+    1.3453    4.5876
+    1.3446    4.5799
+    1.3440    4.5722
+    1.3434    4.5646
+    1.3430    4.5569
+    1.3426    4.5492
+    1.3422    4.5415
+    1.3420    4.5338
+    1.3418    4.5261
+    1.3417    4.5183
+    1.3416    4.5106
+    1.3416    4.5029
+    1.3417    4.4952
+    1.3419    4.4875
+    1.3422    4.4798
+    1.3425    4.4720
+    1.3429    4.4643
+    1.3433    4.4566
+    1.3438    4.4489
+    1.3444    4.4412
+    1.3451    4.4335
+    1.3459    4.4258
+    1.3467    4.4181
+    1.3476    4.4104
+    1.3485    4.4028
+    1.3495    4.3951
+    1.3506    4.3874
+    1.3518    4.3798
+    1.3530    4.3722
+    1.3543    4.3645
+    1.3557    4.3569
+    1.3572    4.3493
+    1.3587    4.3418
+    1.3603    4.3342
+    1.3619    4.3266
+    1.3637    4.3191
+    1.3655    4.3116
+    1.3673    4.3041
+    1.3693    4.2966
+    1.3713    4.2892
+    1.3733    4.2817
+    1.3755    4.2743
+    1.3777    4.2669
+    1.3800    4.2595
+    1.3823    4.2522
+    1.3847    4.2449
+    1.3872    4.2376
+    1.3897    4.2303
+    1.3924    4.2230
+    1.3950    4.2158
+    1.3978    4.2086
+    1.4006    4.2014
+    1.4035    4.1943
+    1.4064    4.1872
+    1.4094    4.1801
+    1.4125    4.1731
+    1.4156    4.1661
+    1.4188    4.1591
+    1.4221    4.1521
+    1.4254    4.1452
+    1.4288    4.1383
+    1.4323    4.1315
+    1.4358    4.1247
+    1.4394    4.1179
+    1.4430    4.1112
+    1.4467    4.1045
+    1.4505    4.0978
+    1.4543    4.0912
+    1.4582    4.0846
+    1.4621    4.0781
+    1.4661    4.0716
+    1.4702    4.0651
+    1.4743    4.0587
+    1.4785    4.0523
+    1.4827    4.0460
+    1.4870    4.0397
+    1.4914    4.0335
+    1.4958    4.0273
+    1.5003    4.0212
+    1.5048    4.0151
+    1.5094    4.0090
+    1.5140    4.0030
+    1.5187    3.9971
+    1.5234    3.9912
+    1.5282    3.9853
+    1.5331    3.9795
+    1.5379    3.9738
+    1.5429    3.9681
+    1.5479    3.9624
+    1.5529    3.9568
+    1.5581    3.9513
+    1.5632    3.9458
+    1.5684    3.9404
+    1.5737    3.9350
+    1.5790    3.9297
+    1.5843    3.9244
+    1.5897    3.9192
+    1.5951    3.9141
+    1.6006    3.9090
+    1.6062    3.9039
+    1.6117    3.8990
+    1.6174    3.8941
+    1.6230    3.8892
+    1.6287    3.8844
+    1.6345    3.8797
+    1.6403    3.8750
+    1.6461    3.8704
+    1.6520    3.8658
+    1.6579    3.8613
+    1.6639    3.8569
+    1.6699    3.8526
+    1.6759    3.8483
+    1.6820    3.8440
+    1.6881    3.8399
+    1.6942    3.8358
+    1.7004    3.8317
+    1.7066    3.8278
+    1.7129    3.8239
+    1.7192    3.8200
+    1.7255    3.8162
+    1.7319    3.8125
+    1.7382    3.8089
+    1.7447    3.8053
+    1.7511    3.8018
+    1.7576    3.7984
+    1.7641    3.7951
+    1.7707    3.7918
+    1.7772    3.7885
+    1.7838    3.7854
+    1.7905    3.7823
+    1.7971    3.7793
+    1.8038    3.7764
+    1.8105    3.7735
+    1.8172    3.7707
+    1.8240    3.7680
+    1.8308    3.7653
+    1.8375    3.7628
+    1.8444    3.7603
+    1.8512    3.7578
+    1.8581    3.7555
+    1.8650    3.7532
+    1.8719    3.7510
+    1.8788    3.7488
+    1.8857    3.7468
+    1.8927    3.7448
+    1.8996    3.7429
+    1.9066    3.7410
+    1.9136    3.7393
+    1.9207    3.7376
+    1.9277    3.7360
+    1.9347    3.7344
+    1.9418    3.7330
+    1.9488    3.7316
+    1.9559    3.7303
+    1.9630    3.7291
+    1.9701    3.7279
+    1.9772    3.7268
+    1.9843    3.7258
+    1.9915    3.7249
+    1.9986    3.7241
+    2.0057    3.7233
+    2.0129    3.7226
+    2.0200    3.7220
+    2.0271    3.7214
+    2.0343    3.7210
+    2.0414    3.7206
+    2.0486    3.7203
+    2.0558    3.7200
+    2.0629    3.7199
+    2.0701    3.7198
+    2.0772    3.7198
+    2.0844    3.7199
+    2.0915    3.7200
+    2.0987    3.7202
+    2.1058    3.7205
+    2.1129    3.7209
+    2.1201    3.7214
+    2.1272    3.7219
+    2.1343    3.7225
+    2.1414    3.7232
+    2.1485    3.7240
+    2.1556    3.7248
+    2.1627    3.7258
+    2.1698    3.7268
+    2.1768    3.7278
+
+
+ans =
+
+    5.2596    2.0069
+    5.2598    2.0135
+    5.2600    2.0201
+    5.2600    2.0267
+    5.2600    2.0333
+    5.2599    2.0399
+    5.2597    2.0465
+    5.2593    2.0531
+    5.2589    2.0597
+    5.2584    2.0663
+    5.2579    2.0729
+    5.2572    2.0795
+    5.2564    2.0861
+    5.2556    2.0927
+    5.2546    2.0993
+    5.2536    2.1059
+    5.2524    2.1124
+    5.2512    2.1190
+    5.2499    2.1256
+    5.2485    2.1321
+    5.2470    2.1387
+    5.2455    2.1452
+    5.2438    2.1517
+    5.2420    2.1582
+    5.2402    2.1648
+    5.2382    2.1712
+    5.2362    2.1777
+    5.2341    2.1842
+    5.2319    2.1906
+    5.2296    2.1971
+    5.2272    2.2035
+    5.2248    2.2099
+    5.2222    2.2163
+    5.2196    2.2227
+    5.2168    2.2290
+    5.2140    2.2354
+    5.2111    2.2417
+    5.2081    2.2480
+    5.2051    2.2542
+    5.2019    2.2605
+    5.1987    2.2667
+    5.1953    2.2730
+    5.1919    2.2791
+    5.1884    2.2853
+    5.1848    2.2915
+    5.1812    2.2976
+    5.1774    2.3037
+    5.1736    2.3097
+    5.1697    2.3158
+    5.1657    2.3218
+    5.1616    2.3278
+    5.1574    2.3337
+    5.1532    2.3397
+    5.1489    2.3456
+    5.1445    2.3514
+    5.1400    2.3573
+    5.1354    2.3631
+    5.1308    2.3689
+    5.1261    2.3746
+    5.1213    2.3803
+    5.1164    2.3860
+    5.1115    2.3916
+    5.1065    2.3972
+    5.1014    2.4028
+    5.0962    2.4084
+    5.0909    2.4139
+    5.0856    2.4193
+    5.0802    2.4247
+    5.0747    2.4301
+    5.0692    2.4355
+    5.0636    2.4408
+    5.0579    2.4461
+    5.0521    2.4513
+    5.0463    2.4565
+    5.0404    2.4617
+    5.0345    2.4668
+    5.0284    2.4718
+    5.0223    2.4769
+    5.0161    2.4818
+    5.0099    2.4868
+    5.0036    2.4917
+    4.9972    2.4965
+    4.9908    2.5013
+    4.9843    2.5061
+    4.9778    2.5108
+    4.9711    2.5155
+    4.9644    2.5201
+    4.9577    2.5246
+    4.9509    2.5292
+    4.9440    2.5336
+    4.9371    2.5381
+    4.9301    2.5425
+    4.9231    2.5468
+    4.9160    2.5511
+    4.9088    2.5553
+    4.9016    2.5595
+    4.8943    2.5636
+    4.8870    2.5677
+    4.8796    2.5717
+    4.8722    2.5756
+    4.8647    2.5796
+    4.8572    2.5834
+    4.8496    2.5872
+    4.8420    2.5910
+    4.8343    2.5947
+    4.8265    2.5983
+    4.8188    2.6019
+    4.8109    2.6055
+    4.8030    2.6089
+    4.7951    2.6124
+    4.7872    2.6157
+    4.7792    2.6190
+    4.7711    2.6223
+    4.7630    2.6255
+    4.7549    2.6286
+    4.7467    2.6317
+    4.7385    2.6347
+    4.7302    2.6377
+    4.7219    2.6406
+    4.7136    2.6434
+    4.7053    2.6462
+    4.6969    2.6489
+    4.6884    2.6515
+    4.6799    2.6541
+    4.6714    2.6567
+    4.6629    2.6592
+    4.6543    2.6616
+    4.6457    2.6639
+    4.6371    2.6662
+    4.6285    2.6685
+    4.6198    2.6706
+    4.6111    2.6727
+    4.6023    2.6748
+    4.5936    2.6768
+    4.5848    2.6787
+    4.5760    2.6805
+    4.5671    2.6823
+    4.5583    2.6840
+    4.5494    2.6857
+    4.5405    2.6873
+    4.5316    2.6888
+    4.5227    2.6903
+    4.5137    2.6917
+    4.5048    2.6931
+    4.4958    2.6943
+    4.4868    2.6955
+    4.4778    2.6967
+    4.4687    2.6978
+    4.4597    2.6988
+    4.4507    2.6997
+    4.4416    2.7006
+    4.4325    2.7014
+    4.4235    2.7022
+    4.4144    2.7029
+    4.4053    2.7035
+    4.3962    2.7041
+    4.3871    2.7045
+    4.3780    2.7050
+    4.3689    2.7053
+    4.3598    2.7056
+    4.3507    2.7059
+    4.3416    2.7060
+    4.3325    2.7061
+    4.3234    2.7061
+    4.3143    2.7061
+    4.3052    2.7060
+    4.2961    2.7058
+    4.2870    2.7056
+    4.2779    2.7053
+    4.2688    2.7049
+    4.2598    2.7045
+    4.2507    2.7040
+    4.2416    2.7034
+    4.2326    2.7028
+    4.2236    2.7021
+    4.2146    2.7013
+    4.2056    2.7005
+    4.1966    2.6996
+    4.1876    2.6987
+    4.1787    2.6976
+    4.1697    2.6966
+    4.1608    2.6954
+    4.1519    2.6942
+    4.1430    2.6929
+    4.1342    2.6915
+    4.1253    2.6901
+    4.1165    2.6887
+    4.1077    2.6871
+    4.0989    2.6855
+    4.0902    2.6838
+    4.0815    2.6821
+    4.0728    2.6803
+    4.0641    2.6784
+    4.0555    2.6765
+    4.0469    2.6745
+    4.0383    2.6725
+    4.0298    2.6704
+    4.0212    2.6682
+    4.0128    2.6660
+    4.0043    2.6637
+    3.9959    2.6613
+    3.9875    2.6589
+    3.9792    2.6564
+    3.9709    2.6538
+    3.9626    2.6512
+    3.9544    2.6486
+    3.9462    2.6458
+    3.9381    2.6431
+    3.9299    2.6402
+    3.9219    2.6373
+    3.9139    2.6343
+    3.9059    2.6313
+    3.8979    2.6282
+    3.8901    2.6251
+    3.8822    2.6219
+    3.8744    2.6186
+    3.8667    2.6153
+    3.8590    2.6120
+    3.8513    2.6085
+    3.8437    2.6050
+    3.8362    2.6015
+    3.8287    2.5979
+    3.8212    2.5943
+    3.8138    2.5905
+    3.8065    2.5868
+    3.7992    2.5830
+    3.7920    2.5791
+    3.7848    2.5752
+    3.7777    2.5712
+    3.7706    2.5672
+    3.7636    2.5631
+    3.7567    2.5590
+    3.7498    2.5548
+    3.7429    2.5506
+    3.7362    2.5463
+    3.7295    2.5419
+    3.7228    2.5376
+    3.7163    2.5331
+    3.7097    2.5286
+    3.7033    2.5241
+    3.6969    2.5195
+    3.6906    2.5149
+    3.6843    2.5102
+    3.6781    2.5055
+    3.6720    2.5008
+    3.6659    2.4959
+    3.6600    2.4911
+    3.6540    2.4862
+    3.6482    2.4813
+    3.6424    2.4763
+    3.6367    2.4712
+    3.6311    2.4662
+    3.6255    2.4610
+    3.6200    2.4559
+    3.6146    2.4507
+    3.6092    2.4455
+    3.6040    2.4402
+    3.5988    2.4349
+    3.5936    2.4295
+    3.5886    2.4241
+    3.5836    2.4187
+    3.5787    2.4132
+    3.5739    2.4077
+    3.5692    2.4022
+    3.5645    2.3966
+    3.5599    2.3910
+    3.5554    2.3853
+    3.5510    2.3796
+    3.5467    2.3739
+    3.5424    2.3682
+    3.5382    2.3624
+    3.5341    2.3566
+    3.5301    2.3507
+    3.5261    2.3449
+    3.5223    2.3390
+    3.5185    2.3330
+    3.5148    2.3271
+    3.5112    2.3211
+    3.5077    2.3151
+    3.5042    2.3090
+    3.5009    2.3029
+    3.4976    2.2969
+    3.4944    2.2907
+    3.4913    2.2846
+    3.4883    2.2784
+    3.4854    2.2722
+    3.4825    2.2660
+    3.4798    2.2598
+    3.4771    2.2535
+    3.4745    2.2472
+    3.4720    2.2409
+    3.4696    2.2346
+    3.4673    2.2283
+    3.4651    2.2219
+    3.4629    2.2155
+    3.4609    2.2091
+    3.4589    2.2027
+    3.4571    2.1963
+    3.4553    2.1899
+    3.4536    2.1834
+    3.4520    2.1770
+    3.4504    2.1705
+    3.4490    2.1640
+    3.4477    2.1575
+    3.4464    2.1510
+    3.4453    2.1444
+    3.4442    2.1379
+    3.4432    2.1314
+    3.4423    2.1248
+    3.4416    2.1182
+    3.4409    2.1117
+    3.4402    2.1051
+    3.4397    2.0985
+    3.4393    2.0919
+    3.4389    2.0853
+    3.4387    2.0787
+    3.4385    2.0721
+    3.4385    2.0655
+    3.4385    2.0589
+    3.4386    2.0523
+    3.4388    2.0457
+    3.4391    2.0391
+    3.4395    2.0325
+    3.4400    2.0259
+    3.4405    2.0193
+    3.4412    2.0127
+    3.4420    2.0061
+    3.4428    1.9995
+    3.4437    1.9929
+    3.4448    1.9864
+    3.4459    1.9798
+    3.4471    1.9732
+    3.4484    1.9667
+    3.4498    1.9601
+    3.4512    1.9536
+    3.4528    1.9470
+    3.4545    1.9405
+    3.4562    1.9340
+    3.4580    1.9275
+    3.4599    1.9210
+    3.4620    1.9145
+    3.4641    1.9080
+    3.4662    1.9016
+    3.4685    1.8951
+    3.4709    1.8887
+    3.4733    1.8823
+    3.4759    1.8759
+    3.4785    1.8695
+    3.4812    1.8632
+    3.4840    1.8568
+    3.4869    1.8505
+    3.4899    1.8442
+    3.4929    1.8379
+    3.4961    1.8317
+    3.4993    1.8254
+    3.5026    1.8192
+    3.5060    1.8130
+    3.5095    1.8069
+    3.5131    1.8007
+    3.5167    1.7946
+    3.5205    1.7885
+    3.5243    1.7824
+    3.5282    1.7764
+    3.5322    1.7704
+    3.5362    1.7644
+    3.5404    1.7584
+    3.5446    1.7525
+    3.5489    1.7466
+    3.5533    1.7407
+    3.5578    1.7348
+    3.5623    1.7290
+    3.5670    1.7232
+    3.5717    1.7175
+    3.5764    1.7118
+    3.5813    1.7061
+    3.5862    1.7005
+    3.5912    1.6948
+    3.5963    1.6893
+    3.6015    1.6837
+    3.6067    1.6782
+    3.6120    1.6727
+    3.6174    1.6673
+    3.6229    1.6619
+    3.6284    1.6565
+    3.6340    1.6512
+    3.6397    1.6459
+    3.6454    1.6407
+    3.6513    1.6355
+    3.6571    1.6304
+    3.6631    1.6252
+    3.6691    1.6202
+    3.6752    1.6151
+    3.6814    1.6101
+    3.6876    1.6052
+    3.6939    1.6003
+    3.7002    1.5954
+    3.7067    1.5906
+    3.7132    1.5859
+    3.7197    1.5811
+    3.7263    1.5765
+    3.7330    1.5718
+    3.7397    1.5673
+    3.7465    1.5627
+    3.7534    1.5582
+    3.7603    1.5538
+    3.7673    1.5494
+    3.7743    1.5451
+    3.7814    1.5408
+    3.7886    1.5366
+    3.7958    1.5324
+    3.8030    1.5283
+    3.8103    1.5242
+    3.8177    1.5201
+    3.8251    1.5162
+    3.8326    1.5122
+    3.8401    1.5084
+    3.8477    1.5046
+    3.8553    1.5008
+    3.8630    1.4971
+    3.8707    1.4934
+    3.8785    1.4898
+    3.8863    1.4863
+    3.8942    1.4828
+    3.9021    1.4794
+    3.9101    1.4760
+    3.9181    1.4727
+    3.9261    1.4694
+    3.9342    1.4662
+    3.9423    1.4631
+    3.9505    1.4600
+    3.9587    1.4570
+    3.9670    1.4540
+    3.9752    1.4511
+    3.9836    1.4482
+    3.9919    1.4455
+    4.0003    1.4427
+    4.0087    1.4401
+    4.0172    1.4374
+    4.0257    1.4349
+    4.0342    1.4324
+    4.0428    1.4300
+    4.0514    1.4276
+    4.0600    1.4253
+    4.0687    1.4231
+    4.0773    1.4209
+    4.0860    1.4188
+    4.0948    1.4167
+    4.1035    1.4147
+    4.1123    1.4128
+    4.1211    1.4110
+    4.1300    1.4092
+    4.1388    1.4074
+    4.1477    1.4057
+    4.1566    1.4041
+    4.1655    1.4026
+    4.1744    1.4011
+    4.1834    1.3997
+    4.1923    1.3983
+    4.2013    1.3971
+    4.2103    1.3958
+    4.2193    1.3947
+    4.2283    1.3936
+    4.2374    1.3926
+    4.2464    1.3916
+    4.2555    1.3907
+    4.2645    1.3899
+    4.2736    1.3891
+    4.2827    1.3884
+    4.2918    1.3878
+    4.3009    1.3872
+    4.3099    1.3867
+    4.3190    1.3863
+    4.3282    1.3859
+    4.3373    1.3856
+    4.3464    1.3854
+    4.3555    1.3852
+    4.3646    1.3851
+    4.3737    1.3850
+    4.3828    1.3851
+    4.3919    1.3852
+    4.4010    1.3853
+    4.4101    1.3855
+    4.4192    1.3858
+    4.4282    1.3862
+    4.4373    1.3866
+    4.4464    1.3871
+    4.4554    1.3877
+    4.4645    1.3883
+    4.4735    1.3890
+    4.4825    1.3897
+    4.4915    1.3905
+    4.5005    1.3914
+    4.5095    1.3924
+    4.5184    1.3934
+    4.5274    1.3945
+    4.5363    1.3956
+    4.5452    1.3968
+    4.5541    1.3981
+    4.5629    1.3994
+    4.5718    1.4008
+    4.5806    1.4023
+    4.5894    1.4038
+    4.5982    1.4054
+    4.6069    1.4071
+    4.6156    1.4088
+    4.6243    1.4106
+    4.6330    1.4124
+    4.6417    1.4144
+    4.6503    1.4163
+    4.6588    1.4184
+    4.6674    1.4205
+    4.6759    1.4226
+    4.6844    1.4249
+    4.6929    1.4272
+    4.7013    1.4295
+    4.7097    1.4319
+    4.7180    1.4344
+    4.7263    1.4369
+    4.7346    1.4395
+    4.7428    1.4422
+    4.7510    1.4449
+    4.7592    1.4477
+    4.7673    1.4505
+    4.7753    1.4534
+    4.7834    1.4564
+    4.7914    1.4594
+    4.7993    1.4625
+    4.8072    1.4656
+    4.8150    1.4688
+    4.8228    1.4720
+    4.8306    1.4753
+    4.8383    1.4787
+    4.8460    1.4821
+    4.8536    1.4856
+    4.8611    1.4891
+    4.8686    1.4927
+    4.8761    1.4963
+    4.8835    1.5000
+    4.8909    1.5038
+    4.8981    1.5076
+    4.9054    1.5115
+    4.9126    1.5154
+    4.9197    1.5193
+    4.9268    1.5234
+    4.9338    1.5274
+    4.9407    1.5316
+    4.9476    1.5357
+    4.9545    1.5400
+    4.9613    1.5442
+    4.9680    1.5486
+    4.9746    1.5529
+    4.9812    1.5574
+    4.9877    1.5618
+    4.9942    1.5663
+    5.0006    1.5709
+    5.0069    1.5755
+    5.0132    1.5802
+    5.0194    1.5849
+    5.0255    1.5897
+    5.0316    1.5945
+    5.0376    1.5993
+    5.0435    1.6042
+    5.0494    1.6091
+    5.0552    1.6141
+    5.0609    1.6191
+    5.0665    1.6242
+    5.0721    1.6293
+    5.0776    1.6345
+    5.0831    1.6397
+    5.0884    1.6449
+    5.0937    1.6502
+    5.0989    1.6555
+    5.1040    1.6608
+    5.1091    1.6662
+    5.1141    1.6716
+    5.1190    1.6771
+    5.1238    1.6826
+    5.1286    1.6881
+    5.1333    1.6937
+    5.1378    1.6993
+    5.1424    1.7050
+    5.1468    1.7106
+    5.1512    1.7163
+    5.1554    1.7221
+    5.1596    1.7279
+    5.1638    1.7337
+    5.1678    1.7395
+    5.1717    1.7454
+    5.1756    1.7513
+    5.1794    1.7572
+    5.1831    1.7632
+    5.1867    1.7691
+    5.1903    1.7752
+    5.1937    1.7812
+    5.1971    1.7873
+    5.2004    1.7934
+    5.2036    1.7995
+    5.2067    1.8056
+    5.2097    1.8118
+    5.2127    1.8180
+    5.2155    1.8242
+    5.2183    1.8304
+    5.2210    1.8367
+    5.2236    1.8430
+    5.2261    1.8493
+    5.2285    1.8556
+    5.2308    1.8619
+    5.2331    1.8683
+    5.2352    1.8746
+    5.2373    1.8810
+    5.2393    1.8874
+    5.2412    1.8938
+    5.2430    1.9003
+    5.2447    1.9067
+    5.2463    1.9132
+    5.2478    1.9197
+    5.2493    1.9262
+    5.2506    1.9327
+    5.2519    1.9392
+    5.2530    1.9457
+    5.2541    1.9522
+    5.2551    1.9588
+    5.2560    1.9653
+    5.2568    1.9719
+    5.2575    1.9785
+    5.2582    1.9850
+    5.2587    1.9916
+    5.2592    1.9982
+    5.2595    2.0048
+    5.2598    2.0114
+
+
+ans =
+
+    5.2085    3.6270
+    5.2123    3.6347
+    5.2160    3.6425
+    5.2196    3.6503
+    5.2230    3.6582
+    5.2264    3.6661
+    5.2297    3.6741
+    5.2329    3.6821
+    5.2360    3.6902
+    5.2390    3.6982
+    5.2419    3.7064
+    5.2447    3.7145
+    5.2474    3.7228
+    5.2500    3.7310
+    5.2524    3.7393
+    5.2548    3.7476
+    5.2571    3.7560
+    5.2593    3.7644
+    5.2614    3.7728
+    5.2634    3.7812
+    5.2653    3.7897
+    5.2671    3.7982
+    5.2688    3.8068
+    5.2703    3.8154
+    5.2718    3.8240
+    5.2732    3.8326
+    5.2745    3.8413
+    5.2757    3.8500
+    5.2767    3.8587
+    5.2777    3.8674
+    5.2786    3.8762
+    5.2793    3.8850
+    5.2800    3.8938
+    5.2805    3.9026
+    5.2810    3.9114
+    5.2813    3.9203
+    5.2816    3.9292
+    5.2817    3.9381
+    5.2818    3.9470
+    5.2817    3.9559
+    5.2816    3.9649
+    5.2813    3.9739
+    5.2809    3.9828
+    5.2804    3.9918
+    5.2799    4.0008
+    5.2792    4.0098
+    5.2784    4.0188
+    5.2775    4.0279
+    5.2765    4.0369
+    5.2754    4.0459
+    5.2742    4.0550
+    5.2729    4.0640
+    5.2715    4.0731
+    5.2700    4.0821
+    5.2684    4.0912
+    5.2667    4.1002
+    5.2649    4.1093
+    5.2630    4.1184
+    5.2610    4.1274
+    5.2589    4.1365
+    5.2567    4.1455
+    5.2544    4.1546
+    5.2519    4.1636
+    5.2494    4.1726
+    5.2468    4.1817
+    5.2441    4.1907
+    5.2413    4.1997
+    5.2384    4.2087
+    5.2354    4.2177
+    5.2323    4.2267
+    5.2290    4.2356
+    5.2257    4.2446
+    5.2223    4.2535
+    5.2188    4.2624
+    5.2152    4.2713
+    5.2115    4.2802
+    5.2078    4.2891
+    5.2039    4.2980
+    5.1999    4.3068
+    5.1958    4.3156
+    5.1916    4.3244
+    5.1874    4.3332
+    5.1830    4.3419
+    5.1786    4.3506
+    5.1740    4.3593
+    5.1694    4.3680
+    5.1646    4.3766
+    5.1598    4.3853
+    5.1549    4.3939
+    5.1499    4.4024
+    5.1448    4.4109
+    5.1396    4.4194
+    5.1344    4.4279
+    5.1290    4.4363
+    5.1236    4.4447
+    5.1180    4.4531
+    5.1124    4.4614
+    5.1067    4.4697
+    5.1009    4.4780
+    5.0950    4.4862
+    5.0890    4.4944
+    5.0830    4.5025
+    5.0769    4.5106
+    5.0707    4.5187
+    5.0644    4.5267
+    5.0580    4.5347
+    5.0515    4.5426
+    5.0450    4.5505
+    5.0384    4.5584
+    5.0317    4.5662
+    5.0249    4.5739
+    5.0180    4.5816
+    5.0111    4.5893
+    5.0041    4.5969
+    4.9970    4.6045
+    4.9899    4.6120
+    4.9826    4.6194
+    4.9753    4.6268
+    4.9680    4.6342
+    4.9605    4.6415
+    4.9530    4.6487
+    4.9454    4.6559
+    4.9377    4.6631
+    4.9300    4.6701
+    4.9222    4.6772
+    4.9144    4.6841
+    4.9064    4.6910
+    4.8984    4.6979
+    4.8904    4.7047
+    4.8822    4.7114
+    4.8741    4.7181
+    4.8658    4.7247
+    4.8575    4.7312
+    4.8491    4.7377
+    4.8407    4.7441
+    4.8322    4.7505
+    4.8237    4.7568
+    4.8150    4.7630
+    4.8064    4.7692
+    4.7977    4.7752
+    4.7889    4.7813
+    4.7801    4.7872
+    4.7712    4.7931
+    4.7622    4.7989
+    4.7533    4.8047
+    4.7442    4.8103
+    4.7351    4.8160
+    4.7260    4.8215
+    4.7168    4.8270
+    4.7076    4.8323
+    4.6983    4.8377
+    4.6890    4.8429
+    4.6797    4.8481
+    4.6702    4.8532
+    4.6608    4.8582
+    4.6513    4.8631
+    4.6418    4.8680
+    4.6322    4.8728
+    4.6226    4.8775
+    4.6130    4.8821
+    4.6033    4.8867
+    4.5936    4.8912
+    4.5838    4.8956
+    4.5740    4.8999
+    4.5642    4.9041
+    4.5544    4.9083
+    4.5445    4.9124
+    4.5346    4.9164
+    4.5247    4.9203
+    4.5147    4.9241
+    4.5047    4.9279
+    4.4947    4.9316
+    4.4847    4.9352
+    4.4746    4.9387
+    4.4645    4.9421
+    4.4544    4.9454
+    4.4443    4.9487
+    4.4341    4.9518
+    4.4240    4.9549
+    4.4138    4.9579
+    4.4036    4.9608
+    4.3934    4.9637
+    4.3831    4.9664
+    4.3729    4.9691
+    4.3626    4.9716
+    4.3524    4.9741
+    4.3421    4.9765
+    4.3318    4.9788
+    4.3215    4.9810
+    4.3112    4.9832
+    4.3009    4.9852
+    4.2906    4.9871
+    4.2803    4.9890
+    4.2700    4.9908
+    4.2597    4.9925
+    4.2493    4.9941
+    4.2390    4.9956
+    4.2287    4.9970
+    4.2184    4.9983
+    4.2081    4.9996
+    4.1977    5.0007
+    4.1874    5.0018
+    4.1771    5.0028
+    4.1668    5.0036
+    4.1566    5.0044
+    4.1463    5.0051
+    4.1360    5.0057
+    4.1258    5.0063
+    4.1155    5.0067
+    4.1053    5.0070
+    4.0951    5.0073
+    4.0849    5.0074
+    4.0747    5.0075
+    4.0645    5.0075
+    4.0544    5.0074
+    4.0443    5.0071
+    4.0342    5.0069
+    4.0241    5.0065
+    4.0140    5.0060
+    4.0040    5.0054
+    3.9940    5.0048
+    3.9840    5.0040
+    3.9740    5.0032
+    3.9641    5.0023
+    3.9542    5.0012
+    3.9443    5.0001
+    3.9345    4.9989
+    3.9246    4.9976
+    3.9149    4.9963
+    3.9051    4.9948
+    3.8954    4.9932
+    3.8857    4.9916
+    3.8761    4.9899
+    3.8665    4.9880
+    3.8569    4.9861
+    3.8474    4.9841
+    3.8379    4.9820
+    3.8285    4.9799
+    3.8191    4.9776
+    3.8097    4.9752
+    3.8004    4.9728
+    3.7911    4.9703
+    3.7819    4.9677
+    3.7727    4.9650
+    3.7636    4.9622
+    3.7545    4.9593
+    3.7455    4.9563
+    3.7365    4.9533
+    3.7275    4.9502
+    3.7187    4.9470
+    3.7098    4.9437
+    3.7011    4.9403
+    3.6924    4.9368
+    3.6837    4.9333
+    3.6751    4.9296
+    3.6665    4.9259
+    3.6581    4.9221
+    3.6496    4.9182
+    3.6413    4.9143
+    3.6329    4.9102
+    3.6247    4.9061
+    3.6165    4.9019
+    3.6084    4.8976
+    3.6003    4.8933
+    3.5923    4.8888
+    3.5844    4.8843
+    3.5766    4.8797
+    3.5688    4.8750
+    3.5610    4.8703
+    3.5534    4.8654
+    3.5458    4.8605
+    3.5383    4.8555
+    3.5308    4.8505
+    3.5235    4.8453
+    3.5162    4.8401
+    3.5089    4.8349
+    3.5018    4.8295
+    3.4947    4.8241
+    3.4877    4.8186
+    3.4808    4.8130
+    3.4739    4.8073
+    3.4672    4.8016
+    3.4605    4.7958
+    3.4538    4.7900
+    3.4473    4.7841
+    3.4409    4.7781
+    3.4345    4.7720
+    3.4282    4.7659
+    3.4220    4.7597
+    3.4159    4.7534
+    3.4098    4.7471
+    3.4039    4.7407
+    3.3980    4.7343
+    3.3922    4.7278
+    3.3865    4.7212
+    3.3809    4.7146
+    3.3753    4.7079
+    3.3699    4.7011
+    3.3645    4.6943
+    3.3593    4.6874
+    3.3541    4.6805
+    3.3490    4.6735
+    3.3440    4.6664
+    3.3391    4.6593
+    3.3343    4.6521
+    3.3295    4.6449
+    3.3249    4.6376
+    3.3204    4.6303
+    3.3159    4.6229
+    3.3116    4.6155
+    3.3073    4.6080
+    3.3031    4.6005
+    3.2991    4.5929
+    3.2951    4.5852
+    3.2912    4.5776
+    3.2874    4.5698
+    3.2837    4.5620
+    3.2801    4.5542
+    3.2766    4.5464
+    3.2732    4.5384
+    3.2699    4.5305
+    3.2667    4.5225
+    3.2636    4.5144
+    3.2606    4.5064
+    3.2577    4.4982
+    3.2549    4.4901
+    3.2522    4.4819
+    3.2496    4.4736
+    3.2471    4.4653
+    3.2447    4.4570
+    3.2424    4.4487
+    3.2402    4.4403
+    3.2380    4.4319
+    3.2360    4.4234
+    3.2341    4.4149
+    3.2323    4.4064
+    3.2306    4.3979
+    3.2290    4.3893
+    3.2275    4.3807
+    3.2261    4.3721
+    3.2248    4.3634
+    3.2237    4.3547
+    3.2226    4.3460
+    3.2216    4.3373
+    3.2207    4.3285
+    3.2199    4.3197
+    3.2192    4.3109
+    3.2187    4.3021
+    3.2182    4.2933
+    3.2178    4.2844
+    3.2176    4.2755
+    3.2174    4.2666
+    3.2174    4.2577
+    3.2174    4.2488
+    3.2175    4.2398
+    3.2178    4.2309
+    3.2182    4.2219
+    3.2186    4.2129
+    3.2192    4.2039
+    3.2198    4.1949
+    3.2206    4.1859
+    3.2215    4.1769
+    3.2225    4.1679
+    3.2235    4.1588
+    3.2247    4.1498
+    3.2260    4.1407
+    3.2274    4.1317
+    3.2289    4.1226
+    3.2304    4.1136
+    3.2321    4.1045
+    3.2339    4.0954
+    3.2358    4.0864
+    3.2378    4.0773
+    3.2399    4.0683
+    3.2421    4.0592
+    3.2444    4.0502
+    3.2468    4.0411
+    3.2493    4.0321
+    3.2519    4.0231
+    3.2546    4.0141
+    3.2574    4.0050
+    3.2603    3.9960
+    3.2633    3.9871
+    3.2664    3.9781
+    3.2696    3.9691
+    3.2729    3.9602
+    3.2762    3.9512
+    3.2797    3.9423
+    3.2833    3.9334
+    3.2870    3.9245
+    3.2908    3.9156
+    3.2946    3.9068
+    3.2986    3.8979
+    3.3027    3.8891
+    3.3068    3.8803
+    3.3111    3.8715
+    3.3154    3.8628
+    3.3199    3.8541
+    3.3244    3.8454
+    3.3290    3.8367
+    3.3337    3.8280
+    3.3385    3.8194
+    3.3434    3.8108
+    3.3484    3.8023
+    3.3535    3.7937
+    3.3587    3.7852
+    3.3639    3.7767
+    3.3693    3.7683
+    3.3747    3.7599
+    3.3802    3.7515
+    3.3858    3.7432
+    3.3915    3.7349
+    3.3973    3.7266
+    3.4032    3.7184
+    3.4091    3.7102
+    3.4152    3.7021
+    3.4213    3.6940
+    3.4275    3.6859
+    3.4338    3.6779
+    3.4401    3.6699
+    3.4466    3.6619
+    3.4531    3.6540
+    3.4597    3.6462
+    3.4664    3.6384
+    3.4732    3.6306
+    3.4800    3.6229
+    3.4869    3.6152
+    3.4939    3.6076
+    3.5010    3.6001
+    3.5081    3.5925
+    3.5153    3.5851
+    3.5226    3.5777
+    3.5300    3.5703
+    3.5374    3.5630
+    3.5449    3.5557
+    3.5525    3.5485
+    3.5602    3.5414
+    3.5679    3.5343
+    3.5757    3.5273
+    3.5835    3.5203
+    3.5914    3.5134
+    3.5994    3.5065
+    3.6075    3.4997
+    3.6156    3.4930
+    3.6238    3.4863
+    3.6320    3.4797
+    3.6403    3.4731
+    3.6487    3.4666
+    3.6571    3.4602
+    3.6656    3.4538
+    3.6741    3.4475
+    3.6827    3.4413
+    3.6914    3.4351
+    3.7001    3.4290
+    3.7088    3.4230
+    3.7177    3.4170
+    3.7265    3.4111
+    3.7355    3.4053
+    3.7444    3.3996
+    3.7535    3.3939
+    3.7625    3.3882
+    3.7717    3.3827
+    3.7808    3.3772
+    3.7901    3.3718
+    3.7993    3.3665
+    3.8086    3.3612
+    3.8180    3.3561
+    3.8274    3.3509
+    3.8368    3.3459
+    3.8463    3.3410
+    3.8558    3.3361
+    3.8654    3.3313
+    3.8750    3.3266
+    3.8846    3.3219
+    3.8943    3.3173
+    3.9040    3.3128
+    3.9138    3.3084
+    3.9235    3.3041
+    3.9333    3.2998
+    3.9432    3.2957
+    3.9531    3.2916
+    3.9630    3.2876
+    3.9729    3.2836
+    3.9828    3.2798
+    3.9928    3.2760
+    4.0028    3.2723
+    4.0129    3.2687
+    4.0229    3.2652
+    4.0330    3.2618
+    4.0431    3.2584
+    4.0532    3.2551
+    4.0634    3.2520
+    4.0736    3.2489
+    4.0837    3.2459
+    4.0939    3.2429
+    4.1041    3.2401
+    4.1144    3.2373
+    4.1246    3.2347
+    4.1349    3.2321
+    4.1451    3.2296
+    4.1554    3.2272
+    4.1657    3.2249
+    4.1760    3.2226
+    4.1863    3.2205
+    4.1966    3.2184
+    4.2069    3.2165
+    4.2172    3.2146
+    4.2275    3.2128
+    4.2378    3.2111
+    4.2482    3.2095
+    4.2585    3.2080
+    4.2688    3.2065
+    4.2791    3.2052
+    4.2894    3.2039
+    4.2998    3.2028
+    4.3101    3.2017
+    4.3204    3.2007
+    4.3307    3.1998
+    4.3409    3.1990
+    4.3512    3.1983
+    4.3615    3.1977
+    4.3717    3.1971
+    4.3820    3.1967
+    4.3922    3.1963
+    4.4024    3.1961
+    4.4126    3.1959
+    4.4228    3.1958
+    4.4330    3.1958
+    4.4431    3.1959
+    4.4533    3.1961
+    4.4634    3.1964
+    4.4735    3.1968
+    4.4835    3.1972
+    4.4936    3.1978
+    4.5036    3.1984
+    4.5136    3.1992
+    4.5235    3.2000
+    4.5335    3.2009
+    4.5434    3.2019
+    4.5533    3.2030
+    4.5631    3.2042
+    4.5729    3.2055
+    4.5827    3.2068
+    4.5925    3.2083
+    4.6022    3.2098
+    4.6119    3.2114
+    4.6215    3.2132
+    4.6311    3.2150
+    4.6407    3.2169
+    4.6502    3.2189
+    4.6597    3.2209
+    4.6692    3.2231
+    4.6786    3.2253
+    4.6880    3.2277
+    4.6973    3.2301
+    4.7066    3.2326
+    4.7158    3.2352
+    4.7250    3.2379
+    4.7341    3.2407
+    4.7432    3.2435
+    4.7522    3.2465
+    4.7612    3.2495
+    4.7702    3.2526
+    4.7791    3.2558
+    4.7879    3.2591
+    4.7967    3.2625
+    4.8054    3.2659
+    4.8141    3.2695
+    4.8227    3.2731
+    4.8312    3.2768
+    4.8397    3.2806
+    4.8482    3.2844
+    4.8566    3.2884
+    4.8649    3.2924
+    4.8731    3.2965
+    4.8813    3.3007
+    4.8895    3.3050
+    4.8975    3.3093
+    4.9055    3.3138
+    4.9135    3.3183
+    4.9213    3.3229
+    4.9291    3.3275
+    4.9369    3.3323
+    4.9445    3.3371
+    4.9521    3.3420
+    4.9597    3.3470
+    4.9671    3.3520
+    4.9745    3.3571
+    4.9818    3.3623
+    4.9891    3.3676
+    4.9962    3.3730
+    5.0033    3.3784
+    5.0103    3.3839
+    5.0173    3.3894
+    5.0241    3.3951
+    5.0309    3.4008
+    5.0376    3.4065
+    5.0442    3.4124
+    5.0508    3.4183
+    5.0573    3.4243
+    5.0636    3.4303
+    5.0699    3.4364
+    5.0762    3.4426
+    5.0823    3.4489
+    5.0884    3.4552
+    5.0943    3.4615
+    5.1002    3.4680
+    5.1060    3.4745
+    5.1118    3.4811
+    5.1174    3.4877
+    5.1229    3.4944
+    5.1284    3.5011
+    5.1338    3.5079
+    5.1390    3.5148
+    5.1442    3.5217
+    5.1493    3.5287
+    5.1544    3.5358
+    5.1593    3.5429
+    5.1641    3.5500
+    5.1688    3.5573
+    5.1735    3.5645
+    5.1781    3.5718
+    5.1825    3.5792
+    5.1869    3.5866
+    5.1912    3.5941
+    5.1953    3.6016
+    5.1994    3.6092
+    5.2034    3.6169
+    5.2073    3.6245
+    5.2111    3.6323
+
+
+out = 
+
+      muopt: [3x2 double]
+         bs: [19 236 259]
+        idx: [271x1 double]
+        siz: [4x3 double]
+    weights: [0.3333 0.3333 0.3333]
+          h: 263
+          D: [271x3 double]
+        obj: 0.1157
+
+</pre><img vspace="5" hspace="5" src="images\tkmeans_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Trimmed k-means using geyser data (2).</li></span></a></span></h3><div class="collapse"><p>
+     option weights =1<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('geyser2.txt');
+    out=tkmeans(Y,3,0.03,'plots',1,'weights',1)</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Trimmed k-means using M5data.</li></span></a></span></h3><div class="collapse"><p>
+     Weights =1<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('M5data.txt');
+    out=tkmeans(Y(:,1:2),3,0,'plots',1)
+    out=tkmeans(Y(:,1:2),5,0.1,'plots',1)
+</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Trimmed k-means using structured noise.</li></span></a></span></h3><div class="collapse"><p>
+     The data have been generated using the following R instructions
+        set.seed (0)
+        v &lt;- runif (100, -2 * pi, 2 * pi)
+        noise &lt;- cbind (100 + 25 * sin (v), 10 + 5 * v)
+    
+    
+        x &lt;- rbind (
+            rmvnorm (360, c (0.0,  0), matrix (c (1,  0,  0, 1), ncol = 2)),
+            rmvnorm (540, c (5.0, 10), matrix (c (6, -2, -2, 6), ncol = 2)),
+            noise)
+
+
+    <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('structurednoise.txt');
+    out=tkmeans(Y(:,1:2),2,0.1,'plots',1)
+    out=tkmeans(Y(:,1:2),5,0.15,'plots',1)
+</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Trimmed k-means using mixture100 data.</li></span></a></span></h3><div class="collapse"><p>
+     The data have been generated using the following R instructions
+         set.seed (100)
+         mixt &lt;- rbind (rmvnorm (360, c (  0,  0), matrix (c (1,  0,  0,  1), ncol = 2)),
+                    rmvnorm (540, c (  5, 10), matrix (c (6, -2, -2,  6), ncol = 2)),
+                    rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))
+
+
+     <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    Y=load('mixture100.txt');
+    out=tkmeans(Y(:,1:2),3,0,'plots',1)
+    out=tkmeans(Y(:,1:2),2,0.05,'plots',1)
+</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>Data matrix containining n observations on v
+     variables.</p> <p>
+        Rows of Y represent observations, and columns
+        represent variables.</p><p>
+        Missing values (NaN's) and infinite values (Inf's) are allowed,
+        since observations (rows) with missing or infinite values will
+        automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; number of groups </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alpha" class="clearfix"> </div> <h3 id="input_argument_alpha" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alpha</code> &#8212; global trimming level </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p>alpha is a scalar between 0 and 0.5. If
+        alpha=0 tkmeans reduces to kmeans</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'nsamp',0 
+</code>,<code> 'refsteps',20 
+</code>,<code> 'reftol',0.0001 
+</code>,<code> 'weights',1 
+</code>,<code> 'plots',1 
+</code>,<code> 'msg',1 
+</code>,<code> 'nocheck',1 
+</code>,<code> 'nomes',1 
+</code>,<code> 'Ysave',1 
+</code></code></span></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find the
+               partition</span></a><span class="example_desc">integer</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be extracted.</p> <p>
+               They will be (n choose k).</p><p>
+                 %               Remark: if the number of all possible subset is &lt;300 the
+               default is to extract all subsets, otherwise just 300
+</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',0 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;number of refining iterations in each
+               subsample (default = 15)</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',20 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;Default value of tolerance for the refining steps</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>The default value is 1e-14.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',0.0001 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_weights" class="clearfix"></div><h3 id="input_argument_namevalue_weights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>weights</code> &#8212;cluster weights</span></a><span class="example_desc">integer</span></span></h3><div class="collapse">	<p><p>A dummy scalar, specifying whether cluster weights
+               (1) shall be considered in the concentration and
+               assignment steps. If weights=1 in the assignment
+               step to the squared Euclidean distance of unit i to group j
+               log n_j is substracted. The default is no cluster weights.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'weights',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;plots generation</span></a><span class="example_desc">scalar | structure</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot with the classification is
+               shown on the screen.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;scalar which controls whether to display or not messages
+               on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displayed
+               on the screen about estimated time to compute the estimator
+               else no message is displayed on the screen.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;If nocheck is equal to 1 no check is performed on
+               matrix Y</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>As default nocheck=0.</p> <p> 
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nomes" class="clearfix"></div><h3 id="input_argument_namevalue_nomes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nomes</code> &#8212;estimated time</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nomes is equal to 1 no message about estimated
+               time to compute tkemans is displayed, else if nomes is
+               equal to 0 (default), a message about estimated time is
+               displayed.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nomes',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;saving Y</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the input matrix Y
+               is saved into the output structure out. Default is 0, i.e.</p> <p>
+               no saving is done.</p><p>
+                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields
+
+            out.idx  : n-by-1 vector containing assignment of each unit to
+                       each of the k groups. Cluster names are integer
+                       numbers from 1 to k, 0 indicates trimmed
+                       observations.</p> <p>
+            out.muopt: k-by-v matrix containing cluster centroid locations.</p> <p>
+                       Robust estimate of final centroids of the groups
+              out.bs : k-by-1 vector containing the units forming initial
+                       subset associated with muopt.</p> <p>
+               out.D : n-by-k matrix containing squared Euclidean
+                       distances from each point to every centroid.</p><p>
+            out.siz  : matrix of size k-by-3
+                       1st col = sequence from 0 to k
+                       2nd col = number of observations in each cluster
+                       3rd col = percentage of observations in each cluster
+                       Remark: 0 denotes unassigned units
+        out.weights  : numerical vector of length k, containing the
+                       weights of each cluster. If input option weights=1
+               </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>weights</code></td><td><p><p>(1/k, ...., 1/k) else if input option
+                       weights &lt;&gt; 1 out.weights=(n1/n, ..., nk/n)
+               out.h : scalar. Number of observations that have determined the
+                       centroids (number of untrimmed units).</p> <p>
+             out.obj : scalar. Value of the objective function which is minimized 
+                       (value of the best returned solution).</p><p>
+              out.Y  : original data matrix Y. The field is present if option
+                       Ysave is set to 1.</p></p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;C       :   subsamples extracted.</span></a><span class="example_desc">Cell</span></span></h3><div class="collapse"><p> .</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>(2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
+ of Statistics, Vol.36, 1324-1345. Technical Report available at
+ www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/kmeans.html'))" itemprop="url"><span itemprop="name"><code>kmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

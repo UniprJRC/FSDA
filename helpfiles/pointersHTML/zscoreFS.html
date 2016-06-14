@@ -1,1 +1,50 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>zscoreFS</title> <meta content="refpage" name="chunktype"><meta content="function:zscoreFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="zscoreFS Computes (robust) standardized z scores" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/zscoreFS.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">zscoreFS</h1><h1 class="reftitle">zscoreFS Computes (robust) standardized z scores</h1></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>zscoreFS</title> <meta content="refpage" name="chunktype"><meta content="function:zscoreFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="zscoreFS Computes (robust) standardized z scores" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/zscoreFS.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">zscoreFS</h1><h1 class="reftitle">zscoreFS Computes (robust) standardized z scores</h1><h2>Description</h2><P>X can be a vector of length(n) or data matrix containing n observations on v
+       variables or 3D array of size n-by-v-by-r.
+   Z = zscoreFS(X) returns a centered, scaled version of X, with the same size
+   as X. For vector input X, Z is the vector of z-scores
+
+      (X-median(X)) ./ mad(X).
+
+   Z=zscoreFS(X,loc,scale) returns a centered, scaled version of X, the
+   same size as X using location and scale are specified in input
+   parameters 'loc' and 'scale'. For vector input X, Z is the vector of
+   z-scores
+
+      (X-location(X)) ./ scale(X).
+
+
+
+
+   Z=zscoreFS(X,loc,scale) computes robust standardized zscores using the
+   estimates of location and scale specified in loc and scale strings. If
+   X is a 2D matrix, zscores are computed using loc and scale along each
+   column of X. If X is a 3D array zscores are
+   computed using the location and scale along the first
+   non-singleton dimension. For example if X is n-by-v-by-r (with n&gt;1) and
+   loc='median'; n-by-r medians are computed for each of the n rows of X
+   and each third dimension r.
+
+
+   Z=zscoreFS(X,loc) computes standardized zscores using the
+   estimates of location specified in loc and the mad as measure of
+   dispersion.
+
+
+   [Z,mu,sigma] = zscoreFS(X) also returns median(X) in mu and mad in
+   sigma.
+
+   [Z,mu,sigma] = zscoreFS(X,loc,scale) also returns the estimates of location
+   in mu and of scale in sigma as specified in loc and scale strings.
+
+   Z=zscoreFS(X,loc,scale,dim) computes robust standardized zscores along
+   the dimension dim of X using the estimates of location and scale
+   specified in loc and scale strings. dim standardizes X by working along
+   the dimension dim of X. For example if X is a two dimensional matrix
+   dim=2 (default) standardizes the columns of X else if dim=1
+   standardizes the rows. If X is a three dimensional dim = 1 standardizes
+   the columns, dim =2 standardizes the rows and dim =3 standardizes the
+   third dimension.
+
+   zscoreFS is an extension of function zscore of statistic toolbox
+   because it enables to specify alternative measures of location and
+   scale.</P><h2>More About</h2><P></P><h2>References</h2><P></P></html>

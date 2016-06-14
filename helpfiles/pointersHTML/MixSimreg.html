@@ -1,1 +1,48 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>MixSimreg</title> <meta content="refpage" name="chunktype"><meta content="function:MixSimreg " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="MixSimreg Generates k regression hyperplanes in p dimensions with given overlap" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/MixSimreg.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">MixSimreg</h1><h1 class="reftitle">MixSimreg Generates k regression hyperplanes in p dimensions with given overlap</h1></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>MixSimreg</title> <meta content="refpage" name="chunktype"><meta content="function:MixSimreg " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="MixSimreg Generates k regression hyperplanes in p dimensions with given overlap" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/MixSimreg.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">MixSimreg</h1><h1 class="reftitle">MixSimreg Generates k regression hyperplanes in p dimensions with given overlap</h1><h2>Description</h2><P>MixSimreg(k,p) generates k groups in p dimensions. It is possible to
+  control the average and maximum or standard deviation of overlapping.
+
+  Notation and background.
+
+  Given two generic clusters $i$ and $j$ with $i \ne j=1,...,k$, indexed by
+  $\phi(x,\mu_i,\sigma_i^2)$ and $\phi(x,\mu_j, \sigma_j^2)$ with probabilities of
+  occurrence $\pi_i$ and $\pi_j$, the misclassification probability with
+  respect to cluster i (denoted with w_{j|i}) is defined as 
+  \[ Pr[\pi_i \phi(x,\mu_i,\sigma_i^2) &lt; \pi_j \phi(x,\mu_j,\sigma_j^2)] \]
+  where, in the regression context, $\mu_i={\overline x}_i' \beta_i$ and
+  $\mu_j= \overline x_j' \beta_j$. We assume that the length of vectors $x_i$,
+  $x_j$, $\beta_i$, and $\beta_j$ is $p$ (number of explanatory variables
+  including or excluding intercept). In our implmentation, the
+  distribution of the elements of vectors $\beta_i$ ($\beta_j$) can be 'Normal'
+  (with parameters $\mu$ and $\sigma$), 'HalfNormal' (with parameter $\sigma$) or
+  uniform (with parameters $a$ and $b$). Same thing for the distribution of
+  the elements of $x_i$ ($x_j$). However, while the parameters of the
+  distributions are the same for all elements of $\beta$ in all groups, the
+  parameters of the diwtribution of the elements of vectors $x_i$ ($x_j$) can
+  vary for each group and each explanatory variable. In other words, it is
+  possible to specify (say) that the distribution of the second
+  explanatory variable in the first group is $U(2, 3)$ while the distribution
+  of the third explanatory variable in the second group is $U(2, 10)$.
+
+  The matrix containing the misclassification probabilities $w_{j|i}$ is
+  called OmegaMap.
+  The probability of overlapping between groups i and j is given by
+      \[      w_{j|i} + w_{i|j}    \qquad       i,j=1,2, ..., k      \]
+  The diagonal elements of OmegaMap are equal to 1.
+  The average overlap (BarOmega, in the code) is defined as the sum of the
+  off diagonal elements of OmegaMap (containing the misclassification
+  probabilities) divided by $k*(k-1)/2$.
+  The maximum overlap (MaxOmega, in the code) is defined as:
+     \[       \max (w_{j|i} + w_{i|j})  \qquad i \ne j=1,2, ..., k   \]
+  The probability of overlapping $w_{j|i}$ is nothing but the cdf of a linear
+  combination of non central  $\chi^2$ distributions with 1 degree of freedom
+  + a linear combination of $N(0,1)$ evaluated in a point $c$.
+  The coefficients of the linear combinations of non central $\chi^2$ and
+  N(0,1) depend on the eigenvalues and eigenvectors of matrix
+  $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.
+  Point c depends on the same eigenvalues and eigenvectors of matrix
+  $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the determinants
+  $|\Sigma_i|$ and $|\Sigma_j|$. This probability is computed using routine
+  ncx2mixtcdf</P><h2>More About</h2><P></P><h2>References</h2><P>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
+   of finite mixture modeling and clustering algorithms, The Journal of
+   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
+   this publication we will use "MM2010 JCGS")</P></html>

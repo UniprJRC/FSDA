@@ -35,6 +35,7 @@ function cdsplot(outms,varargin)
 %               units of the sample and bigP, number of explanatory variables,
 %               including the constant, in the full model). This
 %               information is necessary to compute the envelopes.
+%      Data Types - struct
 %
 % Optional input arguments:
 %

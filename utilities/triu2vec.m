@@ -39,7 +39,7 @@ function y=triu2vec(A,k)
 %        y  : vector containing the linear indexes or the elements on and
 %             above the k-th diagonal.
 %
-%                     For example if k =0 or nargin ==1
+%                     For example if k =0 or number of input arguments ==1
 %             If input argument A is a scalar, y is a vector of length
 %             (A*(A-1)/2)+A containing the linear indexes of the
 %             elements on and above diagonal of a square matrix of order A.
@@ -81,6 +81,13 @@ function y=triu2vec(A,k)
 %
 %
 % See also: diag
+
+% References:
+%
+%
+% Harveille D. A. (1997). Matrix Algebra froma  statistician's perspective,
+% Springer, New York
+%
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -114,6 +121,7 @@ function y=triu2vec(A,k)
 %}
 
 %{
+    % Find linear indexes.
     % Finds the linear indexes of the elements on and above the main diagonal of a
     % square matrix of order 5
     r=5;

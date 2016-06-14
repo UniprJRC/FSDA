@@ -308,7 +308,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Define X
     X=X(:,1:end-1);   
     smallp=4;
-    [Cpmon]=FSRcp(y,X,smallp,'plots',1);
+    [outCp]=FSRcp(y,X,smallp,'plots',1);
 %}
 
 %{

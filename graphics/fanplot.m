@@ -25,6 +25,7 @@ function fanplot(out,varargin)
 %              databrush is true). 
 %         out.X  = a matrix containing the explanatory variables (necessary
 %              only if option databrush is not empty). 
+%      Data Types - struct
 %
 % Optional input arguments:
 %

@@ -48,11 +48,10 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 % References:
 %
-% This function implements the algorithm described in
-% Fritz H. Garcia-Escudero, L.A. and Mayo-Iscar, A.
-% (2012), A fast algorithm for robust constrained
-% clustering. Available at
-% http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf%
+% This function implements the algorithm described in 
+% Fritz H. Garcia-Escudero, L.A. and Mayo-Iscar, A. (2012), A fast
+% algorithm for robust constrained clustering. Available at
+% http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf
 %
 % Copyright 2008-2016.
 % Written by FSDA team

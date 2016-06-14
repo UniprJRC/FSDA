@@ -1,1 +1,31 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>simdataset</title> <meta content="refpage" name="chunktype"><meta content="function:simdataset " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="simdataset Simulates and-or contaminates a dataset given the parameters of a finite mixture model with Gaussian components" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/simdataset.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">simdataset</h1><h1 class="reftitle">simdataset Simulates and-or contaminates a dataset given the parameters of a finite mixture model with Gaussian components</h1></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>simdataset</title> <meta content="refpage" name="chunktype"><meta content="function:simdataset " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="simdataset Simulates and-or contaminates a dataset given the parameters of a finite mixture model with Gaussian components" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/simdataset.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">simdataset</h1><h1 class="reftitle">simdataset Simulates and-or contaminates a dataset given the parameters of a finite mixture model with Gaussian components</h1><h2>Description</h2><P>simdataset(n, Pi, Mu, S) generates a matrix of size $n$-by-$p$
+   containing $n$ observations $p$ dimensions from $k$ groups. More
+   precisely, this function produces a dataset of n observations from a
+   mixture model with parameters 'Pi' (mixing proportions), 'Mu' (mean
+   vectors), and 'S' (covariance matrices). Mixture component sample sizes
+   are produced as a realization from a multinomial distribution with
+   probabilities given by the mixing proportions. For example, if n=200,
+   k=4 and Pi=[0.25, 0.25, 0.25, 0.25] function Nk1=mnrnd( n-k, Pi) is
+   used to generate k integers (whose sum is n-k) from the multinomial
+   distribution with parameters n-k and Pi. The size of the groups is
+   given by Nk1+1. The first Nk1(1)+1  observations are generated using
+   centroid Mu(1,:) and covariance S(:,:,1), ..., the last Nk1(k)+1
+   observations are generated using centroid Mu(k,:) and covariance
+   S(:,:,k).
+
+   DETAILS.
+
+   To make a dataset more challenging for clustering, a user might want to
+   simulate noise variables or outliers. The optional parameter
+   'noiseunits' controls the number and the type of outliers which must be
+   added. The optional parameter 'noisevars' controls the number and the
+   type of noise variables which must be added (it is possible to control
+   the distribution, the interval and the number). Finally, the user can
+   apply an inverse Box-Cox transformation providing a vector of
+   coefficients 'lambda'. The value 1 implies that no transformation is
+   needed for the corresponding coordinate. It is also possible to add
+   outliers to an existing dataset by simply suppling as first argument
+   the matrix of existing data.</P><h2>More About</h2><P></P><h2>References</h2><P>Maitra, R. and Melnykov, V. (2010). Simulating data to study performance
+   of finite mixture modeling and clustering algorithms, The Journal of
+   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
+   this publication we will use "MM2010 JCGS")</P></html>

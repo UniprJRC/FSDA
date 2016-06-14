@@ -38,13 +38,16 @@
     intercept=1;
 
     % function call
-    out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</pre></div></div><pre class="codeoutput">out = 
+    out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</pre></div></div><pre class="codeoutput">
+out = 
+
     ListOut: [1x18 double]
         mdr: [273x2 double]
          Un: [273x11 double]
        nout: [2x5 double]
-       beta: [1x5 double]
-      scale: 1.651938934186391e+04
+       beta: [1.0945e+03 5.0552 1.2819e+03 1.5999e+04 8.3182e+03]
+      scale: 1.6519e+04
+
 </pre><img vspace="5" hspace="5" src="images\FSRB_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_02.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>
      nsamp is the number of subsamples to use in the frequentist analysis of first
      year, in order to find initial subset using LMS.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -432,6 +435,7 @@ Number of units declared as outliers=48
 Summary of the exceedances
            1          99         999        9999       99999
           78         180         150         124         102
+
 </pre><img vspace="5" hspace="5" src="images\FSRB_15.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_16.png" alt=""> <h2>Plot the outliers with a different symbol using a 3x3 layout<a name="5"></a></h2><pre class="codeinput">    selout=out.ListOut;
     selin=setdiff(1:n,selout);
 

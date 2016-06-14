@@ -79,9 +79,13 @@ function add2spm(H,AX,BigAx,varargin)
 %
 % See also spmplot
 %
+% References:
+%
+%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire 
 %
 % Copyright 2008-2016.
 % Written by FSDA team
+%
 %
 %<a href="matlab: docsearchFS('add2spm')">Link to the help function</a>
 % Last modified lun  9 mag 2016 19:01:36

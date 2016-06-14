@@ -261,6 +261,12 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %
 % See also: FSRB, FSR
 %
+% References:
+%
+% Atkinson A.C., Corbellini A., Riani M., (2016) Robust Bayesian
+% Regression, submitted
+%
+%
 % Copyright 2008-2016.
 % Written by FSDA team
 %
@@ -323,6 +329,59 @@ function [out , varargout] = FSRBr(y, X, varargin)
 
 %}
 
+
+%{
+        % Example of FSRB for international trade data (explore options).
+        % Bayesian FS to fit the group of undervalued flows.
+        load('fishery');
+        X = fishery.data(:,1);
+        y = fishery.data(:,2);
+        [n,p] = size(X);
+        X = X + 0.000001*randn(n,1);
+
+        % id = undervalued flows
+        id = (y./X < 9.5);
+        
+        % my prior on beta
+        mybeta = median(y(id)./X(id));
+        bmad   = mad(y(id)./X(id));
+        ListIn = find(y./X <= mybeta + bmad);
+        % gscatter(X,y,id)
+
+
+        rr          = y(ListIn)-(X(ListIn,:) * mybeta);
+        numS2cl     = rr'*rr;
+        dfe         = length(ListIn)-p;
+        S2cl        = numS2cl/dfe;
+        bayes       = struct;
+        bayes.R     = X(ListIn,:)'*X(ListIn,:);
+        bayes.tau0  = 1/S2cl;
+        bayes.n0    = length(ListIn);
+        bayes.beta0 = mybeta;
+        alpha=0.0001;
+        bonflev=0.99999;
+        % fit based on Bayesian FS with prior on the underdeclared flows
+        [out_B, xnew1 , ypred1, yci1]   = FSRBr(y,X,'bayes',bayes,'intercept',0,'alpha',alpha,'bonflev',bonflev,'fullreweight',false,'plotsPI',1,'plots',0);
+         
+        h1 = allchild(gca); a1 = gca; f1 = gcf;
+
+        % fit based on traditional FS
+        [out, xnew2 , ypred2, yci2]   = FSRr(y,X,'intercept',0,'alpha',alpha,'bonflev',bonflev,'fullreweight',false,'plotsPI',1,'plots',0);
+
+        h2 = allchild(gca); a2 = gca; f2 = gcf;
+
+        % move the figure above into a single one with two panels
+        hh = figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);
+        copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));
+        copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));
+        figsize = get(hh, 'Position'); 
+        set(hh,'Position',figsize);
+        close(f1); close(f2);
+
+        disp(['Bayesian FS fit    = ' num2str(out_B.betar) ' using a prior based on undervalued flows']);
+        disp(['Traditional FS fit = ' num2str(out.betar)]);
+
+%}
 
 %% Beginning of code
 

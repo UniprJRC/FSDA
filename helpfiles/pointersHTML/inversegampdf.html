@@ -1,1 +1,30 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>inversegampdf</title> <meta content="refpage" name="chunktype"><meta content="function:inversegampdf " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="inversegampdf Computes inverse-gamma probability density function" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/inversegampdf.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">inversegampdf</h1><h1 class="reftitle">inversegampdf Computes inverse-gamma probability density function</h1></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>inversegampdf</title> <meta content="refpage" name="chunktype"><meta content="function:inversegampdf " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="inversegampdf Computes inverse-gamma probability density function" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/inversegampdf.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">inversegampdf</h1><h1 class="reftitle">inversegampdf Computes inverse-gamma probability density function</h1><h2>Description</h2><P></P><h2>More About</h2><P>
+ The density of the inverse gamma distribution defined over the support
+ $x&gt;0$ with shape parameter $a$ and scale parameter $b$ is
+  \[
+  f_{IG}(x, a, b) \propto x^{-a -1} \exp (-b/x)
+  \frac{b^a}{\Gamma(a)}
+  \]
+
+ inversegampdf computes the gamma pdf at each of the values in x using the
+ corresponding shape parameters in a and scale parameters in b. Parameters
+ x, a, and b can be vectors, matrices, or multidimensional arrays that all
+ have the same size. A scalar input is expanded to a constant array with
+ the same dimensions as the other inputs. The parameters in a and b must
+ all be positive and the values in x must be in the interval $[0,\infty)$.
+
+ The chief use of the inverse gamma distribution is in Bayesian
+ statistics, where the distribution arises as the marginal posterior
+ distribution for the unknown variance of a normal distribution if an
+ uninformative prior is used; and as an analytically tractable conjugate
+ prior if an informative prior is required. See the last example below. 
+
+ Relation with the Gamma distribution.
+ If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution
+ with paramters $a$ and $1/b$.
+
+</P><h2>References</h2><P>Arnold Zellner (1971). An introduction to Bayesian Inference in
+ Econometrics, Wiley. See the appendix for a detailed description of the
+ inverse Gamma distribution.
+
+ https://en.wikipedia.org/wiki/Inverse-gamma_distribution.</P></html>

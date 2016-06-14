@@ -14,7 +14,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    RAW=mve(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MVE:  0.55 seconds 
+    RAW=mve(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MVE:  0.51 seconds 
 </pre><img vspace="5" hspace="5" src="images\mve_01.png" alt=""> <img vspace="5" hspace="5" src="images\mve_02.png" alt=""> <img vspace="5" hspace="5" src="images\mve_03.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mve monitoring the reweighted estimates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
@@ -31,7 +31,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [RAW,REW,C]=mve(Ycont);</pre></div></div><pre class="codeoutput">Total estimated time to complete MVE:  0.54 seconds 
+    [RAW,REW,C]=mve(Ycont);</pre></div></div><pre class="codeoutput">Total estimated time to complete MVE:  0.52 seconds 
 </pre></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containining n observations on v variables </span>  </a><span class="example_desc">Rows of Y represent observations, and columns represent variables</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
        since observations (rows) with missing or infinite values will
        be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bdp',1/4 

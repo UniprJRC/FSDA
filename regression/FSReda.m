@@ -126,7 +126,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               estimated of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
 %               unbiased).
-%   out.Coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
+%   out.coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search: 
 %               1st col = fwd search index (from init to n); 
 %               2nd col = monitoring of Cook distance; 
@@ -292,8 +292,8 @@ function [out] = FSReda(y,X,bsb,varargin)
     y=hprice(:,1);
     X=hprice(:,2:5);
 
-    out=FSR(y,X,'plots',0,'msg',0);
-    dout=n-length(out.ListOut);
+    outFSR=FSR(y,X,'plots',0,'msg',0);
+    dout=n-length(outFSR.ListOut);
     % init = point to start monitoring diagnostics along the FS
     init=20;
     [outLXS]=LXS(y,X,'nsamp',10000);
@@ -529,7 +529,7 @@ mdr=[(init:n-1)'  zer];
 %  among bsb and m-th studentized residual
 msr=[(init:n)'  zer1];
 
-% coo= (n-init) x 3 matrix which will contain Cook distances
+% Coo= (n-init) x 3 matrix which will contain Cook distances
 %  (2nd col) and modified Cook distance (3rd col)
 coo=[((init+1):n)'  NaN(n-init,6)];
 

@@ -18,6 +18,7 @@ function covplot(out,varargin)
 %               (necessary if datatooltip is true).
 %     out.Y =   n x v data matrix; n observations
 %               and v variables. 
+%      Data Types - struct
 %
 %
 %  Optional input arguments:

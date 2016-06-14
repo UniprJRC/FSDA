@@ -1,1 +1,14 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>nchoosekFS</title> <meta content="refpage" name="chunktype"><meta content="function:nchoosekFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="nchoosekFS Returns the Binomial coefficient or matrix containing all combinations" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/nchoosekFS.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">nchoosekFS</h1><h1 class="reftitle">nchoosekFS Returns the Binomial coefficient or matrix containing all combinations</h1></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>nchoosekFS</title> <meta content="refpage" name="chunktype"><meta content="function:nchoosekFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="nchoosekFS Returns the Binomial coefficient or matrix containing all combinations" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/nchoosekFS.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><h1 itemprop="title">nchoosekFS</h1><h1 class="reftitle">nchoosekFS Returns the Binomial coefficient or matrix containing all combinations</h1><h2>Description</h2><P></P><h2>More About</h2><P>
+   This function is similar to nchoosek of Statistics Toolbox but it is
+   much faster and makes a more efficient use of memory.
+
+   Returns the scalar $v!/k!(v-k)!$ if $v$ and $k$ are non-negative integers.
+   This is the number of combinations of $v$ things taken $k$ at a time. In
+   this case it makes use of function bc.
+
+   Produces a matrix with $n!/k!(n-k)!$ rows and $k$ columns if $v$ is a vector
+   of length $n. Each row contains a combination of k elements taken
+   without repetitions among n. In this case function combsFS is used.
+
+</P><h2>References</h2><P>Riordan, John (1958). An Introduction to Combinatorial Analysis, 
+    New York, NY: Wiley & Sons.</P></html>

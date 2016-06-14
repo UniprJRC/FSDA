@@ -24,6 +24,10 @@ function brushRES(eventdata)
 %
 % See also: brushRES, brushROB
 %
+% References:
+%
+%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire 
+%
 % Copyright 2008-2016.
 % Written by FSDA team
 %
