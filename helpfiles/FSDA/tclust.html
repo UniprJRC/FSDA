@@ -42,16 +42,16 @@
     restrfactor=1;
     out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
     title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])
-    cascade</pre></div></div><pre class="codeoutput">Total estimated time to complete tclust:  4.16 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 20.8%
-Total estimated time to complete tclust:  2.62 seconds 
+    cascade</pre></div></div><pre class="codeoutput">Total estimated time to complete tclust:  3.90 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 21.6%
-Total estimated time to complete tclust:  3.35 seconds 
+Total estimated time to complete tclust:  2.77 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 20.2%
-</pre><img vspace="5" hspace="5" src="images/tclust_01.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_03.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
+Warning: Number of subsets without convergence equal to 23.2%
+Total estimated time to complete tclust:  2.76 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 25%
+</pre><img vspace="5" hspace="5" src="images\tclust_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate distributions
       with different scales and proportions 1:2:2. One of the components is very
       overlapped with another one. A 10 per cent background noise is added uniformly
@@ -154,7 +154,7 @@ Warning: Number of subsets without convergence equal to 20.2%
     plot(MIXCLA(:,1),MIXCLA(:,2))
     xlabel('Number of groups')
     ylabel('MIXCLA (ICL)')
-    xlim([1 maxk])</pre></div></div><img vspace="5" hspace="5" src="images/tclust_04.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
+    xlim([1 maxk])</pre></div></div><img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
      k=5 and v=5.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n1=100;     % Generate 5 groups in 5 dimensions
     n2=80;

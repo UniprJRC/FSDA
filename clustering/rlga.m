@@ -60,6 +60,14 @@ function out = rlga(X,k,alpha,varargin)
 %
 % See also: lga.m
 %
+% References:
+%
+% García-Escudero, L. A., Gordaliza, A., San Martín, R., Van Aelst, S. and
+% Zamar, R. (2009), Robust linear clustering. Journal of the Royal
+% Statistical Society: Series B (Statistical Methodology), 71: 301–318.
+% doi: 10.1111/j.1467-9868.2008.00682.x
+%
+%
 % Copyright 2008-2016.
 % Written by FSDA team
 %

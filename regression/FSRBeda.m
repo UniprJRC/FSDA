@@ -683,7 +683,7 @@ else
 end
 
 % If nocheck=1 skip checks on y and X
-if ~isempty(chkint) && cell2mat(varargin(2*chkint))==1;
+if ~isempty(chkint) && cell2mat(varargin(2*chkint))==1
     [n,p]=size(X);
 else
     
@@ -762,7 +762,7 @@ if nargin > 3
     % We now overwrite inside structure options the default values with
     % those chosen by the user
     % Notice that in order to do this we use dynamic field names
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -787,15 +787,13 @@ ini0=length(bsb);
 
 % check init
 init=options.init;
-if init<ini0;
-    mess=sprintf(['Attention : init should be >= length of supplied subset. \n',...
+if init<ini0
+    fprintf(['Attention : init should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
-    disp(mess);
     init=ini0;
-elseif init>=n;
-    mess=sprintf(['Attention : init should be smaller than n. \n',...
+elseif init>=n
+        fprintf(['Attention : init should be smaller than n. \n',...
         'It is set to n-1.']);
-    disp(mess);
     init=n-1;
 end
 
@@ -889,11 +887,11 @@ postodds=beta1;
 modelprob=beta1;
 
 %% Start of the forward search
-for mm=ini0:n;
+for mm=ini0:n
     
     % if n>200 show every 100 steps the fwd search index
-    if n>200;
-        if length(intersect(mm,seq100))==1;
+    if n>200
+        if length(intersect(mm,seq100))==1
             disp(['m=' int2str(mm)]);
         end
     end
@@ -910,7 +908,7 @@ for mm=ini0:n;
     % why not bayes.res?
     b=bayes.beta1;
     
-    if (mm>=init);
+    if (mm>=init)
         
         % Store Units belonging to the subset
         BB(bsb,mm-init+1)=bsb;
@@ -980,7 +978,7 @@ for mm=ini0:n;
     
     r(:,2)=e.^2;
     
-    if mm>init;
+    if mm>init
         % Store in the second column of matrix coo the Cook
         % distance
         bib=beta1(mm-init+1,2:p+1)-beta1(mm-init,2:p+1);
@@ -988,13 +986,13 @@ for mm=ini0:n;
         coo(mm-init,2)=bib*(mAm\(bib'))/p;
         % bib*inv(bayes.covbeta1)*(bib')/(p)
         
-        if length(unit)>5;
+        if length(unit)>5
             unit=unit(1:5);
         end
     end
     
-    if mm<n;
-        if mm>=init;
+    if mm<n
+        if mm>=init
             % ord = matrix whose first col (divided by S2(i)) contains the deletion residuals
             % for all units. For the units belonging to the subset these are proper deletion residuals
             % ord = [(r(:,2)./(1+hi)) e];
@@ -1018,7 +1016,7 @@ for mm=ini0:n;
         
         Xb=X(bsb,:);  % subset of X
         
-        if mm>=init;
+        if mm>=init
             unit=setdiff(bsb,oldbsb);
             if length(unit)<=10
                 Un(mm-init+1,2:(length(unit)+1))=unit;
@@ -1029,7 +1027,7 @@ for mm=ini0:n;
         end
         
         
-        if mm < n-1;
+        if mm < n-1
             % ncl= units forming the new noclean
             ncl=ord(mm+2:n,1);
         end

@@ -52,7 +52,14 @@ function out = lga(X,k,varargin)
 %               out.biter = the biter setting used.
 %               out.niter = the niter setting used.
 %               out.class = 'lga'.
+%
 % See also: rlga.m
+%
+% References:
+%
+% Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) ‘Linear
+% Grouping Using Orthogonal Regression’, Computational Statistics and Data
+% Analysis 50, 1287–1312.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -88,7 +95,7 @@ biterdef=ceil(log(1-p)/log(1-nchoosekFS(n1,d)^k/nchoosekFS(n1*k,k*d)));
 niterdef=10;
 
 options=struct('biter',biterdef,'niter',niterdef,'showall',false,...
-    'stand',true,'nnode','','silent',false,'plots',1);
+    'stand',true,'silent',false,'plots',1);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -109,7 +116,7 @@ if ~isempty(UserOptions)
 end
 
 % Write in structure 'options' the options chosen by the user
-for i=1:2:length(varargin);
+for i=1:2:length(varargin)
     options.(varargin{i})=varargin{i+1};
 end
 

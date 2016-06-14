@@ -23,13 +23,13 @@
     outMM=MMmultcore(Ycont,out.loc,out.shape,out.scale,'plots',1,'nocheck',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.03 seconds 
 outMM = 
        class: 'MM'
-         loc: [-0.0037 0.0471 -0.1103]
+         loc: [-0.003728456901750 0.047092784228019 -0.110314898402169]
        shape: [3x3 double]
          cov: [3x3 double]
      weights: [200x1 double]
           md: [200x1 double]
     outliers: [1 2 3 4 5 127 132 136 180 183]
-     conflev: 0.9750
+     conflev: 0.975000000000000
 </pre><img vspace="5" hspace="5" src="images\MMmultcore_01.png" alt=""> <img vspace="5" hspace="5" src="images\MMmultcore_02.png" alt=""> <img vspace="5" hspace="5" src="images\MMmultcore_03.png" alt=""> </p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are

@@ -258,6 +258,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 
 %{
     %% Generate 4 groups in 2 dimensions and add outliers from uniform distribution.
+    rng('default')
     rng(100)
     out = MixSim(4,2,'BarOmega',0.01);
     n=300;n=300;

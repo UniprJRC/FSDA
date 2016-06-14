@@ -50,6 +50,11 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %                 ellipse.
 %                 1st column = x coordinates;
 %                 2nd column = y coordinates.
+%       he   :    vector of chart line objects. matlab.graphics.chart.primitive.Line.
+%                 A column vector of chart line objects. It can be used to
+%                 modify properties of a specific chart line of the plot
+%                 containing the ellipse after it is created. For a list of
+%                 properties, see Chart Line Properties.
 %
 % See also: ellipsoid
 %

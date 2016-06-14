@@ -10,9 +10,9 @@ function outHELP=CreateFSDAhelpFiles()
 % the requested subfolders
 %
 % 2) Create for each .m file, filtered by previous procedure
-%    makecontentsfileFS.m  the corresponding HTML file (to accomplish
-%    this task use procedure publishFSallFiles.
-%    Check that all HTML files have been generated correctly.
+% makecontentsfileFS.m  the corresponding HTML file (to accomplish
+% this task use procedure publishFSallFiles).
+% Check that all HTML files have been generated correctly.
 %
 % 3) Create files function-alpha.html and function-cate.html (list of
 % functions in alphabetical and categorical order)
@@ -65,7 +65,7 @@ disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))
 
 %% STEP 2: create HTML for all files filtered using makecontentsFilesFS
-FilesWithProblems=publishFSallFiles(FilesIncluded);
+[FilesWithProblems,OUT]=publishFSallFiles(FilesIncluded);
 
 % Check correctness of HTML link inside each .m file
 chkHTMLlink=cell2mat(FilesWithProblems(:,6));

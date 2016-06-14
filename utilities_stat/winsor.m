@@ -46,6 +46,11 @@ function Xwins = winsor(X, p, dim)
 %
 % See also: trimmean
 %
+% References:
+%
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
+%
 % Copyright 2008-2016.
 % Written by FSDA team
 %

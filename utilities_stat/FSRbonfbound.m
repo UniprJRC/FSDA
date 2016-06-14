@@ -61,13 +61,22 @@ function Bbound = FSRbonfbound(n,p,varargin)
 % Examples:
 
 %{
-% Example of creation of 1% 50% and 99% envelopes based on 1000
-% observations and 5 explanatory variables using exact method
-  MDRenv = FSRenvmdr(1000,5,'exact',1,'init',10,'prob',[0.01 0.5 0.99 0.999]);
-  Bbound = FSRbonfbound(1000,5,'init',10,'prob',[0.01 0.5 0.99 0.999]);
-  plot(MDRenv(:,1),MDRenv(:,2:5),Bbound(:,1),Bbound(:,2:5));
+    %% mdr with Bonferroni envelopes.
+    % Example of creation of 1, 50 and 99 per cent envelopes based on 1000
+    % observations and 5 explanatory variables using exact method
+    MDRenv = FSRenvmdr(1000,5,'exact',1,'init',10);
+    Bbound = FSRbonfbound(1000,5,'init',10);
+    plot(MDRenv(:,1),MDRenv(:,2:end),Bbound(:,1),Bbound(:,2:end));
 %}
 
+%{
+    % mdr with personalized Bonferroni envelopes.
+    % Example of creation of 1, 50, 99  and 99.9 per cent envelopes based on 1000
+    % observations and 5 explanatory variables using exact method
+    MDRenv = FSRenvmdr(1000,5,'exact',1,'init',10,'prob',[0.01 0.5 0.99 0.999]);
+    Bbound = FSRbonfbound(1000,5,'init',10,'prob',[0.01 0.5 0.99 0.999]);
+    plot(MDRenv(:,1),MDRenv(:,2:5),Bbound(:,1),Bbound(:,2:5));
+%}
 %% Input parameters checks
 
 if ~isscalar(n) || isempty(n) || isnan(n)

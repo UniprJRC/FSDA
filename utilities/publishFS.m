@@ -1465,7 +1465,7 @@ for j=1:length(sintax)
     catch
         %disp(stri)
         warning('FSDA:wrongEx','This file does not contain enough examples, please add them!')
-        stri='EXAMPLS TO ADD';
+        stri='EXAMPLES TO ADD';
     end
     
     % What is before the first full stop is the title.
@@ -1493,7 +1493,7 @@ for j=1:length(sintax)
     
     % Find point where description ends
     inicr=regexp(stri,'\r');
-    if isempty(inicr)
+    if isempty(inicr) && strcmp(stri,'EXAMPLES TO ADD')~=1
         disp('String below seems to be without carriage return')
         disp('------------------------------------------------')
         disp(stri)

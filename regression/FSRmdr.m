@@ -323,6 +323,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     load('hawkins.txt');
     y=hawkins(:,9);
     X=hawkins(:,1:8);
+    rng('default')
     rng(100)
     [out]=LXS(y,X,'nsamp',10000);
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'bsbsteps',[30 60]);

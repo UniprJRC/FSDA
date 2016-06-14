@@ -21,10 +21,17 @@ function cascade()
 %
 %  See also brushRES.m 
 %
-%<a href="matlab: docsearchFS('cascade')">Link to the help page for this function</a>
+% References:
 %
-% Adapted to FSDA by FSDA team
-% Last modified lun 16 mag 2016 23:43:20
+%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire 
+%
+% Copyright 2008-2016.
+% Written by FSDA team
+%
+%
+%<a href="matlab: docsearchFS('cascade')">Link to the help page for this function</a>
+% Last modified lun  9 mag 2016 19:01:36
+%
 %
 % Examples
 %

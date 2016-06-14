@@ -1,5 +1,10 @@
-function FilesWithProblems=publishFSallFiles(InputCell)
+function [FilesWithProblems,OUT]=publishFSallFiles(InputCell)
 %publishFSallFiles passes routine publishFS to all files found with makecontentsfileFS
+%
+%
+%   InputCell : Cell created using routine makecontentsfileFS
+%
+
 %{
     % Example of the use of options dirpath and  FilterFileContent.
     % Preliminary step: create a list of the subfolders which have to be
@@ -22,6 +27,7 @@ function FilesWithProblems=publishFSallFiles(InputCell)
 
 %% Beginning of code
 FilesWithProblems=cell(1000,6);
+OUT=cell(size(InputCell,1),1);
 ij=1;
 for i=1:size(InputCell,1)
     dirpathi=InputCell{i,end};
@@ -29,7 +35,8 @@ for i=1:size(InputCell,1)
     try
         % call publishFS
         out=publishFS(InputCell{i,1});
-        
+        % Store output cell out inside OUT
+        OUT{i}=out;
         
         if  (size(out.InpArgsMisMatch,1)+size(out.OutArgsStructMisMatch,1))>2 || ~isempty(out.laste) || out.linkHTMLMisMatch==1
             % Store information about files with problems

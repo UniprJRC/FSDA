@@ -17,11 +17,11 @@
     % Run regressB using all n1 data and use the default value of c=1
     out=regressB(y, X, beta0, R, tau0, n0);
     disp(out)</pre></div></div><pre class="codeoutput">       beta1: [3x1 double]
-          a1: 63.5000
-          b1: 68.1135
-        tau1: 0.9323
+          a1: 63.500000000000000
+          b1: 68.113522827041436
+        tau1: 0.932267152900660
     covbeta1: [3x3 double]
-     sigma21: 1.0898
+     sigma21: 1.089816365232663
          res: [100x2 double]
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressB with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Run regressB and compute new estimate of beta using just the first 20
@@ -90,14 +90,14 @@
     out=regressB(y, X, beta0, R, tau0, n0,'stats',1);
     disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5x1 double]
             a1: 273
-            b1: 9.0326e+10
-          tau1: 3.0224e-09
+            b1: 9.032579499463866e+10
+          tau1: 3.022392440788416e-09
       covbeta1: [5x5 double]
-       sigma21: 3.3208e+08
+       sigma21: 3.320801286567597e+08
            res: [546x2 double]
       beta1HPD: [5x4 double]
-       tau1HPD: [2.6745e-09 3.3913e-09 2.5720e-09 3.5143e-09]
-    sigma21HPD: [2.9487e+08 3.7391e+08 2.8455e+08 3.8880e+08]
+       tau1HPD: [1x4 double]
+    sigma21HPD: [1x4 double]
          Bpval: [5x1 double]
       postodds: [5x1 double]
      modelprob: [5x1 double]

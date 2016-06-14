@@ -52,7 +52,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %
 %  sc : M-estimate of the scale. Scalar.
 %       Robust M estimate of scale. 
-%       This routine is called by Taureg and Sreg.m
+%       This routine is called by Taureg.m and Sreg.m
 %
 % More About:
 %
@@ -103,7 +103,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %}
 
 %{
-    % Eatimate of scale using Hampel rho function. 
+    % Estimate of scale using Hampel rho function. 
     % M estimate of the scale using Hampel rho function with a
     % value of c associated to a breakdown point of 0.5
     psifunc=struct;
