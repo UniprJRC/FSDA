@@ -79,7 +79,7 @@ REL=`echo $VER | cut -c1`
 MATEXE=`which matlab`
 MATPAT=${MATEXE%%/bin/matlab}
 
-matlab -wait -automation -nodesktop -r " builddocsearchdb ('${where}/FSDA/helpfiles/FSDA') ; quit"
+# matlab -wait -automation -nodesktop -r " builddocsearchdb ('${where}/FSDA/helpfiles/FSDA') ; quit"
 
 if [ $REL == 8 ]
 then
