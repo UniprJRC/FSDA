@@ -11,7 +11,7 @@ cd "%where%"
 
 rem echo "SONO IN mgmhlpR8 . Il parametro vale " %where% " il drv " %drv%
 
-%mathpath%\bin\matlab.exe -wait -automation -nodesktop -r " builddocsearchdb ('%where%\FSDA\helpfiles\FSDA') ; quit "
+rem %mathpath%\bin\matlab.exe -wait -automation -nodesktop -r " builddocsearchdb ('%where%\FSDA\helpfiles\FSDA') ; quit "
 
 cd FSDA\helpfiles
 rename FSDA FSDAtomove
