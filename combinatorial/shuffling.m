@@ -40,7 +40,7 @@ function x = shuffling(x)
 %
 %<a href="matlab: docsearchFS('shuffling')">Link to the help function</a>
 %
-% Last modified lun 16 mag 2016 23:43:20
+% Last modified 14-06-2016
 
 % Examples:
 %{

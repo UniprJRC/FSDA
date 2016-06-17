@@ -61,7 +61,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
 % 
 %
 %<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
-% Last modified mar 17 mag 2016 12:19:52
+% Last modified 31-05-2016
 
 
 % Examples:

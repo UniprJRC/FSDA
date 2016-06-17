@@ -24,7 +24,7 @@ function [out1,out2,out3] = ginputFS(arg1,varargin)
 % Copyright 2008-2016.
 % Written by FSDA team
 %
-% Last modified mar 11 ago 2015 12:20:27
+% Last modified 31-05-2016
 %
 %Examples
 %

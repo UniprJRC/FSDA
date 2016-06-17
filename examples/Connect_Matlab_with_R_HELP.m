@@ -112,7 +112,7 @@
 % Copyright 2008-2016.
 % FSDA toolbox
 %
-% Last modified lun  9 mag 2016 19:01:36
+% Last modified 31-05-2016
 
 %% EXAMPLE 1: create from within R an identity matrix
 

@@ -283,7 +283,7 @@ function out  = tclustIC(Y,varargin)
 %
 %
 %<a href="matlab: docsearchFS('tclustIC')">Link to the help function</a>
-% Last modified gio 26 mag 2016 18:58:40
+% Last modified 31-05-2016
 
 % Examples:
 

@@ -223,7 +223,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %
 %<a href="matlab: docsearchFS('simdataset')">Link to the help function</a>
-% Last modified ven 27 mag 2016 13:25:26
+% Last modified 14-06-2016
 
 % Examples:
 

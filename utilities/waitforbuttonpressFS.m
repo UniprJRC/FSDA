@@ -4,7 +4,7 @@ function [ss]=waitforbuttonpressFS
 % Copyright 2008-2016.
 % Written by FSDA team
 %
-% Last modified ven  6 feb 2015 12:22:42
+% Last modified 31-05-2016
 %
 %
 

@@ -40,7 +40,7 @@ function [varargout] = clickableMultiLegend(varargin)
 %
 %<a href="matlab: docsearchFS('clickableMultiLegend')">Link to the help page for this function</a>
 %
-% Last modified sab 21 mag 2016 23:49:33
+% Last modified 31-05-2016
 %
 % Examples
 

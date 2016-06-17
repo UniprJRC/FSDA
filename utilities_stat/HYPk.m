@@ -81,7 +81,7 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 %
 %
 %<a href="matlab: docsearchFS('HYPk')">Link to the help page for this function</a>
-% Last modified gio 26 mag 2016 18:58:40
+% Last modified 14-06-2016
 %
 % Examples:
 

@@ -69,7 +69,7 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %
 %
 %<a href="matlab: docsearchFS('ellipse')">Link to the help function</a>
-% Last modified lun 30 mag 2016 02:07:55
+% Last modified 14-06-2016
 
 % Examples:
 

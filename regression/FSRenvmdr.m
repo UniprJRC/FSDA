@@ -71,7 +71,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSRenvmdr')">Link to the help function</a>
-% Last modified mar 17 mag 2016 16:52:21
+% Last modified 31-05-2016
 
 % Examples:
 

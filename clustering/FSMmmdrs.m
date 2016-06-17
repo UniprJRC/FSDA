@@ -194,7 +194,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSMmmdrs')">Link to the help function</a>
-% Last modified mer 25 mag 2016 21:33:29
+% Last modified 31-05-2016
 %
 % Examples:
 %

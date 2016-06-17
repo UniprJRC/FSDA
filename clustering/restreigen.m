@@ -65,7 +65,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %
 %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
-% Last modified ven 27 mag 2016 13:25:26
+% Last modified 14-06-2016
 
 % Examples:
 %

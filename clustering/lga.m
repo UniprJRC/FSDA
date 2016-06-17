@@ -66,7 +66,7 @@ function out = lga(X,k,varargin)
 %
 %
 %<a href="matlab: docsearchFS('lga')">Link to the help page for this function</a>
-% Last modified mer 25 mag 2016 21:33:29
+% Last modified 14-06-2016
 %
 %
 %

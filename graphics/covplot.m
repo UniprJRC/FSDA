@@ -136,7 +136,7 @@ function covplot(out,varargin)
 %
 %
 %<a href="matlab: docsearchFS('covplot')">Link to the help function</a>
-% Last modified lun 23 mag 2016 18:53:27
+% Last modified 14-06-2016
 
 % Examples:
 

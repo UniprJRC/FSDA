@@ -51,7 +51,7 @@ function psider=HUpsider(u,c)
 %
 %
 %<a href="matlab: docsearchFS('HUpsider')">Link to the help page for this function</a>
-% Last modified mar 17 mag 2016 12:19:52
+% Last modified 31-05-2016
 %
 % Examples:
 

@@ -160,7 +160,7 @@ function malindexplot(md,v,varargin)
 %
 %
 %<a href="matlab: docsearchFS('malindexplot')">Link to the help function</a>
-% Last modified mar 31 mag 2016 10:16:14
+% Last modified 31-05-2016
 
 % Examples:
 

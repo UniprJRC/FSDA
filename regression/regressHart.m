@@ -165,7 +165,7 @@ function [out]=regressHart(y,X,Z,varargin)
 %
 %
 %<a href="matlab: docsearchFS('regressHart')">Link to the help function</a>
-% Last modified gio 26 mag 2016 18:58:40
+% Last modified 11-06-2016
 
 % Examples:
 

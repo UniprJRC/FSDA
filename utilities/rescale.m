@@ -18,7 +18,7 @@ function y = rescale(x,a,b)
 %
 %
 %<a href="matlab: docsearchFS('rescale')">Link to the help function</a>
-% Last modified gio 26 mag 2016 18:58:40
+% Last modified 31-05-2016
 
 % Examples:
 

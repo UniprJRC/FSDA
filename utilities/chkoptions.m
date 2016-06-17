@@ -19,7 +19,7 @@ function chkoptions(options,UserOptions)
 % Written by FSDA team
 %
 %
-% Last modified lun 16 mag 2016 23:43:20
+% Last modified 31-05-2016
 %
 % Examples:
 %

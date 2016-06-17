@@ -155,7 +155,7 @@ function [out]=FSRaddt(y,X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSRaddt')">Link to the help function</a>
-% Last modified lun  9 mag 2016 19:01:36
+% Last modified 11-06-2016
 
 % Examples
 

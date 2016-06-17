@@ -623,7 +623,7 @@ function out=publishFS(file,varargin)
 %
 %<a href="matlab: docsearchFS('publishFS')">Link to the help function</a>
 %
-% Last modified gio 26 mag 2016 18:58:40
+% Last modified 14-06-2016
 
 % Examples:
 

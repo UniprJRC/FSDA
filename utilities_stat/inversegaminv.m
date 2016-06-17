@@ -97,7 +97,7 @@ function x = inversegaminv(p,a,b,nocheck)
 %
 %
 %<a href="matlab: docsearchFS('inversegaminv')">Link to the help function</a>
-% Last modified lun  9 mag 2016 19:01:36
+% Last modified 31-05-2016
 %
 
 % Examples:

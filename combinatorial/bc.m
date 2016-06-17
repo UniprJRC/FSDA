@@ -36,7 +36,7 @@ function c = bc(n,k)
 %
 %<a href="matlab: docsearchFS('bc')">Link to the help page for this function</a>
 %
-% Last modified lun 16 mag 2016 23:43:20
+% Last modified 31-05-2016
 %
 % Examples:
 %{

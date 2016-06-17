@@ -94,7 +94,7 @@ function [AR,RI,MI,HI]=RandIndexFS(c1,c2, noisecluster)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('RandIndexFS')">Link to the help function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 31-05-2016
 
 % Examples:
 

@@ -174,7 +174,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSRmdr')">Link to the help function</a>
-% Last modified ven 27 mag 2016 13:25:26
+% Last modified 14-06-2016
 
 % Examples:
 

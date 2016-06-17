@@ -58,7 +58,7 @@ function y=Qn(X,dim)
 %
 %
 %<a href="matlab: docsearchFS('Qn')">Link to the help function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 31-05-2016
 %
 
 % Examples:

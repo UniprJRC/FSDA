@@ -15,7 +15,7 @@ function docsearchFS(varargin)
 %
 %
 %<a href="matlab: docsearchFS('docsearchFS')">Link to the help page for this function</a>
-% Last modified gio 26 mag 2016 20:34:05
+% Last modified 31-05-2016
 
 % Examples:
 

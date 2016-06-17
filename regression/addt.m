@@ -83,7 +83,7 @@ function [out]=addt(y,X,w,varargin)
 %
 %
 %<a href="matlab: docsearchFS('addt')">Link to the help page for this function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 11-06-2016
 
 % Examples:
 

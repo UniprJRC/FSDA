@@ -176,7 +176,7 @@ function [out]=FSRcore(INP,model,options)
 % Written by FSDA team
 %
 %
-% Last modified mar 29 mar 2016 19:09:04
+% Last modified 31-05-2016
 
 %% Beginning of code
 

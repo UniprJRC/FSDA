@@ -136,7 +136,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FSRBbsb')">Link to the help function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 31-05-2016
 
 % Examples:
 

@@ -57,7 +57,7 @@ function psi=HUpsi(u,c)
 %
 %
 %<a href="matlab: docsearchFS('HUpsi')">Link to the help page for this function</a>
-% Last modified mer 11 mag 2016 13:19:08
+% Last modified 31-05-2016
 
 % Examples:
 

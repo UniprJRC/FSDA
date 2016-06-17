@@ -232,7 +232,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %
 %
 %<a href="matlab: docsearchFS('selectdatafs')">Link to the help function</a>
-% Last modified mer 18 mag 2016 09:00:06
+% Last modified 31-05-2016
 
 % Examples:
 

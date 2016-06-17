@@ -61,7 +61,7 @@ function [li,di,const1]=ComputePars(v, k, Pi, Mu, S, S05, Sinv, detS)
 %              Similarly, sums in (2) and (4) are for l:li(i,j,l) is = 1
 %
 % Copyright 2008-2016.
-% Last modified mer 25 mag 2016 21:33:29
+% Last modified 31-05-2016
 
 % Examples:
 

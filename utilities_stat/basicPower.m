@@ -52,7 +52,7 @@ function Ytra=basicPower(Y,ColtoTra,la)
 %
 %
 %<a href="matlab: docsearchFS('basicPower')">Link to the help function</a>
-% Last modified mer 18 mag 2016 09:00:06
+% Last modified 14-06-2016
 
 
 % Examples:

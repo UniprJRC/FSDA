@@ -37,7 +37,7 @@ function [check , location] = isfunction(funstr)
 %
 %<a href="matlab: docsearchFS('isfunction')">Link to the help page for this function</a>
 %
-% Last modified mer 11 mag 2016 11:36:23
+% Last modified 14-06-2016
 
 % Examples:
 %{

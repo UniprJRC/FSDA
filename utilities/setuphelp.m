@@ -9,7 +9,7 @@ function setuphelp(FSDApath)
 % Copyright 2008-2016.
 % Written by FSDA team
 %
-% Last modified dom  8 feb 2015 17:16:30
+% Last modified 31-05-2016
 
 % Examples:
 

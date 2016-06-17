@@ -56,7 +56,7 @@ function psider=TBpsider(u,c)
 %
 %
 %<a href="matlab: docsearchFS('TBpsider')">Link to the help page for this function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 31-05-2016
 %
 % Examples:
 

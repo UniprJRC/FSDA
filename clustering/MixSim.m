@@ -246,7 +246,7 @@ function [out]  = MixSim(k,v,varargin)
 %
 %
 %<a href="matlab: docsearchFS('MixSim')">Link to the help function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 14-06-2016
 %
 
 % Examples:

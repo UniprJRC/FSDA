@@ -52,7 +52,7 @@ function Bbound = FSMbonfbound(n,p,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSMbonfbound')">Link to the help function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 31-05-2016
 
 % Examples:
 %{

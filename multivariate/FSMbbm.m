@@ -84,7 +84,7 @@ function BBmsel = FSMbbm(Y,bsb,msel,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSMbbm')">Link to the help function</a>
-% Last modified lun  9 mag 2016 19:01:36
+% Last modified 31-05-2016
 
 
 % Examples:

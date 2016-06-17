@@ -57,7 +57,7 @@ function psix=HUpsix(u,c)
 %
 %
 %<a href="matlab: docsearchFS('HUpsix')">Link to the help page for this function</a>
-% Last modified lun  9 mag 2016 19:01:36
+% Last modified 31-05-2016
 
 % Examples:
 

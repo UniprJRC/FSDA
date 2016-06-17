@@ -148,7 +148,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %
 %
 %<a href="matlab: docsearchFS('RobRegrSize')">Link to the help function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 11-06-2016
 
 %{
     % RobRgerSize with all defalut options.

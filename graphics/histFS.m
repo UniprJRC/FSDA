@@ -61,7 +61,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('histFS')">Link to the help function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 14-06-2016
 %
 % Examples:
 %

@@ -54,7 +54,7 @@ function F = kdebiv(X,varargin)
 %    Techniques for Data Analysis," Oxford University Press.
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('kdebiv')">Link to the help function</a>

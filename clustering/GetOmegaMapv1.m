@@ -48,7 +48,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMapv1(c, Pi, Mu, S, fix, 
 % Copyright 2008-2016.
 % Written by FSDA team
 %
-% Last modified ven 27 mag 2016 13:25:26
+% Last modified 31-05-2016
 %{
     % COMPARE OLD AND NEW FUNCTION
     rng(65123,'twister');

@@ -48,7 +48,7 @@
 % Copyright 2008-2016.
 % Written by FSDA team
 
-% Last modified gio 21 mag 2015 15:16:38
+% Last modified 31-05-2016
 
 %% Generate 5 groups in 7 dimensions controlling average and maximum overlapping
 clearvars -except RandomDataFromR; close all;

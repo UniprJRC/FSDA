@@ -106,7 +106,7 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSMbsb')">Link to the help function</a>
-% Last modified ven 20 mag 2016 13:32:08
+% Last modified 31-05-2016
 
 
 % Examples:

@@ -166,7 +166,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('simdatasetreg')">Link to the help function</a>
-% Last modified gio 26 mag 2016 21:09:13
+% Last modified 11-06-2016
 
 % Examples:
 %

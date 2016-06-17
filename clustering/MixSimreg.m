@@ -336,7 +336,7 @@ function [out]  = MixSimreg(k,p,varargin)
 %
 %
 %<a href="matlab: docsearchFS('MixSimreg')">Link to the help function</a>
-% Last modified gio 26 mag 2016 18:54:55
+% Last modified 31-05-2016
 %
 
 % Examples:

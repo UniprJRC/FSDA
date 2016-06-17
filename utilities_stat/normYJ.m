@@ -54,7 +54,7 @@ function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
 %
 %
 %<a href="matlab: docsearchFS('normYJ')">Link to the help function</a>
-% Last modified mar 17 mag 2016 12:19:52
+% Last modified 31-05-2016
 
 % Examples:
 

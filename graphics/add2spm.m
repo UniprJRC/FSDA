@@ -88,7 +88,7 @@ function add2spm(H,AX,BigAx,varargin)
 %
 %
 %<a href="matlab: docsearchFS('add2spm')">Link to the help function</a>
-% Last modified lun  9 mag 2016 19:01:36
+% Last modified 14-06-2016
 
 % Examples:
 

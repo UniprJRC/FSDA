@@ -146,7 +146,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %<a href="matlab: docsearchFS('GetOmegaMap')">Link to the help function</a>
 %
-% Last modified ven 27 mag 2016 13:25:26
+% Last modified 31-05-2016
 %
 %{
     %% Find matrix of misclassification probabilities.

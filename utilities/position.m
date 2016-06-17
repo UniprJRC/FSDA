@@ -33,7 +33,7 @@ function position(plmain)
 %
 %<a href="matlab: docsearchFS('position')">Link to the help function</a>
 %
-% Last modified lun 16 mag 2016 23:43:20
+% Last modified 31-05-2016
 %
 % Examples:
 

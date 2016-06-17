@@ -77,7 +77,7 @@ function w = HAwei(u, ctuning)
 %
 %
 %<a href="matlab: docsearchFS('HAwei')">Link to the help page for this function</a>
-% Last modified mer 18 mag 2016 09:00:06
+% Last modified 31-05-2016
 %
 % Examples:
 

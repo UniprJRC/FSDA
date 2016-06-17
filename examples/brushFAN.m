@@ -34,7 +34,7 @@ function brushFAN(eventdata)
 %
 %
 %<a href="matlab: docsearchFS('brushFAN')">Link to the help page for this function</a>
-% Last modified mar 17 mag 2016 12:19:52
+% Last modified 14-06-2016
 
 % Examples:
 

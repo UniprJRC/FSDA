@@ -40,7 +40,7 @@ function kE = quickselectFS(A,k,kiniindex)
 %
 %
 %<a href="matlab: docsearchFS('quickselectFS')">Link to the help page for this function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 31-05-2016
 
 % Examples:
 %

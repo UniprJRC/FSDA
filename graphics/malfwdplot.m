@@ -327,7 +327,7 @@ function plotopt=malfwdplot(out,varargin)
 %
 %
 %<a href="matlab: docsearchFS('malfwdplot')">Link to the help function</a>
-% Last modified lun 23 mag 2016 10:46:47
+% Last modified 11-06-2016
 
 % Examples:
 

@@ -101,7 +101,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help page for this function</a>
-% Last modified mer 18 mag 2016 20:19:37
+% Last modified 11-06-2016
 %
 %
 %

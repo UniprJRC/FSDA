@@ -3,7 +3,7 @@
 % Copyright 2008-2016.
 % Written by FSDA team
 
-% Last modified lun  8 feb 2016 18:41:11
+% Last modified 31-05-2016
 
 %% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
 % Interactive_example

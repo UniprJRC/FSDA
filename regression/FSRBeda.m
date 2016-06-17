@@ -230,7 +230,7 @@ function [out] = FSRBeda(y, X, varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSRBeda')">Link to the help function</a>
-% Last modified mer 25 mag 2016 18:19:58
+% Last modified 14-06-2016
 
 % Examples:
 

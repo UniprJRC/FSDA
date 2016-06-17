@@ -202,7 +202,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %
 %
 %<a href="matlab: docsearchFS('mve')">Link to the help page for this function</a>
-% Last modified ven 20 mag 2016 18:55:20
+% Last modified 31-05-2016
 %
 % Examples:
 
