@@ -419,6 +419,8 @@ begin
    if (Rel8) then
      begin
        Exec(ExpandConstant('{app}\FSDA\mgmhlpR8.bat'), ExpandConstant(' "{app}" '+'"'+ MatlabPath +'"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
+       Exec(ExpandConstant('del /f {app}\FSDA\mgmhlpR8.bat'),'', '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
+       Exec(ExpandConstant('del /f {app}\FSDA\mgmhlpR7.bat'),'', '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
        Exec(MatlabExe, ExpandConstant(' -wait -automation -nodesktop -r " cd ''{app}\FSDA'' ; matlab.apputil.install(''brushRES''); matlab.apputil.install(''brushFAN''); matlab.apputil.install(''brushROB''); quit; " '), '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
 
 
@@ -435,7 +437,9 @@ begin
      end
    else 
     begin
-     Exec(ExpandConstant('{app}\FSDA\mgmhlpR7.bat'), ExpandConstant(' "{app}" '+'"'+ MatlabPath +'"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);  
+     Exec(ExpandConstant('{app}\FSDA\mgmhlpR7.bat'), ExpandConstant(' "{app}" '+'"'+ MatlabPath +'"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
+     Exec(ExpandConstant('del /f {app}\FSDA\mgmhlpR8.bat'),'', '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
+     Exec(ExpandConstant('del /f {app}\FSDA\mgmhlpR7.bat'),'', '', SW_SHOW,ewWaitUntilTerminated, ResultCode);  
 //      Exec(ExpandConstant('{app}\FSDA\mgmhlpR7.bat'), ExpandConstant('"{app}"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
 //     MsgBox('esecuzione di mgm7' + ExpandConstant('{app}\FSDA\mgmhlpR7.bat {app}'), mbInformation, MB_OK);
 //    if Exec(ExpandConstant('{app}\FSDA\mgmhlpR7.bat'), ExpandConstant('{app}'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode) then

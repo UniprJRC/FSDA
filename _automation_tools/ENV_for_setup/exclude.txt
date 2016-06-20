@@ -11,3 +11,4 @@ desktop.ini
 .svn
 _automation_tools
 _TODO
+InstallationNotes.docx
