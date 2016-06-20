@@ -39,4 +39,5 @@ set matdocroot=%mathpath%\help
 rem pause
 rem "%mathpath%"\bin\matlab.exe -nodesktop -r " addpath '%matdocroot%\FSDA' ; builddocsearchdb ('%matdocroot%\FSDA') "
 rem pause
-
+del /f mgmhlpR7.bat
+(goto) 2>nul & del "%~f0"
