@@ -341,6 +341,7 @@ function plotopt=levfwdplot(out,varargin)
 % Examples:
 
 %{
+    % Produce monitoring leverage plot with all the default options.
     % Generate input structure for the levfwdplot
     n=200;
     p=3;
@@ -352,10 +353,6 @@ function plotopt=levfwdplot(out,varargin)
     y(1:5)=y(1:5)+6;
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
-%}
-%
-%{
-    % Produce monitoring leverage plot with all the default options
     levfwdplot(out);
 %}
 %
@@ -371,7 +368,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of the use of some options inside structure fground
+    % Example of the use of some options inside structure fground.
     % Initialize structure fground
     fground = struct;
     % Specify which trajectories have to be highlighted
@@ -555,7 +552,7 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Interactive_example
-    % Example of use of option databrush suboptions multivarfit 2, persist on
+    % Example of use of option databrush suboptions multivarfit 2, persist on.
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);
@@ -576,7 +573,7 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Interactive_example
-    % Fidelity cards data
+    % Fidelity cards data 1.
     XX=load('loyalty.txt');
     namey='Sales'
     y=XX(:,end);
@@ -599,7 +596,7 @@ function plotopt=levfwdplot(out,varargin)
 %}
 %
 %{
-    % Fidelity cards data
+    % Fidelity cards data 2.
     XX=load('loyalty.txt');
     namey='Sales'
     y=XX(:,end);
