@@ -31,53 +31,53 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %   intercept   : Indicator for constant term. Scalar.
 %                       If 1, a model with constant term will be fitted (default),
 %                       if 0, no constant term will be included.
-%                       Example - 'intercept',1 
+%                       Example - 'intercept',1
 %                       Data Types - double
 %     nocheck   : Check input arguments. Scalar.
 %                        If nocheck is equal to 1 no check is performed on
 %                       matrix y and matrix X. Note that y and X are left
 %                       unchanged. In other words the additioanl column of ones
 %                       for the intercept is not added. As default nocheck=1.
-%                       Example - 'nocheck',1 
+%                       Example - 'nocheck',1
 %                       Data Types - double
 %           h   :       number of observations that have determined the least
 %                       trimmed squares estimator. Integer.
 %                       h is an integer greater than
 %                       smallp+1 but smaller then n. The default value of h is
 %                       [(n+smallp+1)/2]
-%                       Example - 'h',3 
+%                       Example - 'h',3
 %                       Data Types - double
 %           lms :    Criterion to use to find the initlal  subset to
 %                       initialize the search. Scalar. If lms=1 (default) Least Median of Squares is
 %                       computed, else Least Trimmed of Squares is computed.
-%                       Example - 'lms',1 
+%                       Example - 'lms',1
 %                       Data Types - double
 %          nomes:       Displaying time message. Scalar. If nomes is equal to 1 (default) no message about
 %                       estimated time to compute LMS (LTS) for each considered
 %                       model is displayed, else a message about estimated time
 %                       is displayed.
-%                       Example - 'lms',1 
+%                       Example - 'lms',1
 %                       Data Types - double
 %         nsamp : Number of subsamples which will be extracted to find the
 %                       robust estimator. Scalar.
 %                       If nsamp=0 all subsets will be extracted.
 %                       They will be (n choose smallp).
-%                       Example - 'nsamp',1000 
+%                       Example - 'nsamp',1000
 %                       Data Types - double
 %                       Remark: if the number of all possible subset is <1000 the
 %                       default is to extract all subsets otherwise just 1000.
-%          init :       Search initialization. Scalar. 
+%          init :       Search initialization. Scalar.
 %                       It specifies the initial subset size to start
 %                       monitoring the required quantities, if init is not
 %                       specified it will be set equal to
 %                       smallp+1, if the sample size is smaller than 40;
 %                       min(3*smallp+1,floor(0.5*(n+smallp+1))), otherwise.
-%                       Example - 'init',100 starts monitoring from step m=100 
+%                       Example - 'init',100 starts monitoring from step m=100
 %                       Data Types - double
-%           aic :      Akaike's information criterion. Scalar. 
+%           aic :      Akaike's information criterion. Scalar.
 %                       If aic=1 the value of AIC is also stored in each
 %                       step of the search else (default) only Mallows Cp is stored
-%                       Example - 'aic',1 
+%                       Example - 'aic',1
 %                       Data Types - double
 %        labels :   names of the explanatory variables. Cell array of strings.
 %                       Cell array of strings of length bigP-1 containing the  names of the explanatory variables.
@@ -96,21 +96,21 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 interval (0 0.5] than the program considers the last
 %                 round(n*alpha) steps. As default fin_step=round(n*0.2)
 %                 that is the last 20% of the steps are considered.
-%                       Example - 'fin_step',1 
+%                       Example - 'fin_step',1
 %                       Data Types - double
 %                 Remark1: the number of best models to consider is
-%                 controlled by scalar first_k (see below). 
+%                 controlled by scalar first_k (see below).
 %                 Remark2: if fin_step is an empty value, no selection is
 %                 done and all trajectories of Cp are displayed (in this
 %                 case the value of first_k below is ignored, all models are
 %                 considered of interest and output matrix outCp.Ajout is
-%                 equal to an empty value). 
+%                 equal to an empty value).
 %       first_k :  number of best models to
 %                      consider in each of the last fin_step. Scalar.
 %                       For example if first_k=5 in each of the last fin_step, the models which had
 %                       the 5 smallest values of Cp are considered. As default
 %                       first_k=3
-%                       Example - 'first_k',5 
+%                       Example - 'first_k',5
 %                       Data Types - double
 %          Excl : Matrix which contains the models which surely do not have
 %                 to be considered. Matrix.
@@ -139,12 +139,12 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 confidence bands. The second contains the trajectories of
 %                 AIC monitored along the search
 %                 else (default) no plot is shown on the screen
-%                 Example - 'plots',1 
+%                 Example - 'plots',1
 %                 Data Types - double
-%        labout :If labout=1 the output LABOUT contains the list of models 
+%        labout :If labout=1 the output LABOUT contains the list of models
 %                 whose Cp values are inacceptable. Scalar. Default: no
 %                 model is created.
-%                 Example - 'labout',1 
+%                 Example - 'labout',1
 %                 Data Types - double
 %                 Remark: the options below only work if plots is equal 1.
 %
@@ -153,7 +153,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                The elements of quant are numbers
 %                 between 0 and 1. The default value of quant is
 %                 quant=[0.025 0.5 0.975];
-%                 Example - 'quant',0.1 
+%                 Example - 'quant',0.1
 %                 Data Types - double
 %         steps : It specifies in which steps of the plot which
 %                 monitors Cp it is necessary to include the labels of the
@@ -170,7 +170,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                   default: 'Subset size m'
 %                 Example - 'labx','my label'
 %                 Data Types - double
-%       laby    : a label for the y-axis. Character. 
+%       laby    : a label for the y-axis. Character.
 %                   default:''
 %                 Example - 'laby','my label'
 %                 Data Types - char
@@ -197,7 +197,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 Default value is 12
 %                 Example - 'FontSize',20
 %                 Data Types - double
-%    SizeAxesNum: size of the numbers of the axes. Scalar. 
+%    SizeAxesNum: size of the numbers of the axes. Scalar.
 %                 Default value is 10
 %                 Example - 'SizeAxesNum',30
 %                 Data Types - double
@@ -216,28 +216,28 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %  The output consists of a structure 'outCp' containing the following fields:
 %
 %         outCp.MAL = (n-init+1) x (k+1) matrix.
-%                 Mallows Cp monitored along the search: 
-%                   1st col is fwd search index; 
-%                   2nd col is associated with first selected model; 
-%                   3rd col is associated with second selected model; 
-%                   ...; 
-%                   (k+1)th col is associated with k-th selected model.  
+%                 Mallows Cp monitored along the search:
+%                   1st col is fwd search index;
+%                   2nd col is associated with first selected model;
+%                   3rd col is associated with second selected model;
+%                   ...;
+%                   (k+1)th col is associated with k-th selected model.
 %                   Notice that k<=(n choose smallp) and that all
 %                   models contain the constant.
-%         outCp.AIC = (n-init+1) x (k+1) matrix. 
-%                AIC monitored along the search: 
-%                   1st col is fwd search index; 
-%                   2nd col is associated with first selected model; 
-%                   3rd col is associated with second selected model; 
-%                   ...; 
-%                   (k+1)th col is associated with k-th selected model. 
-%                   Remark 1: k<=(n choose smallp). 
-%                   Remark 2: all models contain the constant. 
+%         outCp.AIC = (n-init+1) x (k+1) matrix.
+%                AIC monitored along the search:
+%                   1st col is fwd search index;
+%                   2nd col is associated with first selected model;
+%                   3rd col is associated with second selected model;
+%                   ...;
+%                   (k+1)th col is associated with k-th selected model.
+%                   Remark 1: k<=(n choose smallp).
+%                   Remark 2: all models contain the constant.
 %                   Remark 3: matrix AIC is produced only if input option
-%                   aic=1. 
+%                   aic=1.
 %      outCp.UnAll =    cell of dimension k. Each element of the cell is a
 %                   (n-init) x 11 matrix containing the unit(s) included
-%                   in the subset at each step of the search. 
+%                   in the subset at each step of the search.
 %                   REMARK: in every step the new subset is compared with the old
 %                   subset. Un contains the unit(s) present in the new
 %                   subset but not in the old one.
@@ -252,10 +252,10 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                   possible to skip the computation of the submodels of
 %                   the rows of matrix Ajout.
 %                   For example if smallp=3, bigP=6 and
-%                   Ajout = [ 23; 24; 27 ] 
+%                   Ajout = [ 23; 24; 27 ]
 %                   the three models 23, 24, and 27 always have Cp values
 %                   much greater than the threshold (that is variables
-%                   2,3,4,7 are considered unimportant). 
+%                   2,3,4,7 are considered unimportant).
 %    outCp.LABout  =   it is created only if option labout=1. LABout
 %                   is a cell array of strings which which contains as
 %                   strings the list of models which are inacceptable.
@@ -279,7 +279,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 
 %{
     % FSRcp with all default options.
-    % Extract the best models of size 4, also store AIC. 
+    % Extract the best models of size 4, also store AIC.
     % Common part to all examples: load Ozone dataset.
     X=load('ozone.txt');
     % Transform the response using logs
@@ -306,7 +306,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Define y
     y=X(:,end);
     % Define X
-    X=X(:,1:end-1);   
+    X=X(:,1:end-1);
     smallp=4;
     [outCp]=FSRcp(y,X,smallp,'plots',1);
 %}
@@ -325,7 +325,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Define y
     y=X(:,end);
     % Define X
-    X=X(:,1:end-1);   
+    X=X(:,1:end-1);
     smallp=4;
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels);
@@ -344,14 +344,14 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Define y
     y=X(:,end);
     % Define X
-    X=X(:,1:end-1);   
+    X=X(:,1:end-1);
     smallp=4;
     [Cpmon]=FSRcp(y,X,smallp,'plots',1,'fin_step','');
 %}
 
 %{
     % Extract the best models of size 5 and plot monitoring of Cp.
-    % Extract 1000 subsets to initialize the search and use labels defined 
+    % Extract 1000 subsets to initialize the search and use labels defined
     % by the user.
     X=load('ozone.txt');
     % Transform the response using logs
@@ -361,7 +361,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Define y
     y=X(:,end);
     % Define X
-    X=X(:,1:end-1);   
+    X=X(:,1:end-1);
     smallp=5;
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpmon]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);
@@ -370,7 +370,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %{
     %% Extract the best models of size 6 and 5 and plot monitoring of Cp.
     % Extract 1000 subsets to initialize the search andse labels defined by
-    % the user. Exclude the searches of the models which were unacceptable 
+    % the user. Exclude the searches of the models which were unacceptable
     % for smallp=5.
     X=load('ozone.txt');
     % Transform the response using logs
@@ -380,7 +380,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Define y
     y=X(:,end);
     % Define X
-    X=X(:,1:end-1);   
+    X=X(:,1:end-1);
     smallp=6;
     labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpmon6]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);
@@ -399,7 +399,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Define y
     y=X(:,end);
     % Define X
-    X=X(:,1:end-1);   
+    X=X(:,1:end-1);
     labels={'Time','1','2','3','4','5','6','7','8'};
    [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);
 %}
@@ -425,7 +425,7 @@ hdef=floor(0.5*(n+smallp+1));
 if n<40
     init=smallp+1;
 else
-    init=min(3*smallp+1,floor(0.5*(n+smallp+1)));  
+    init=min(3*smallp+1,floor(0.5*(n+smallp+1)));
 end
 steplabdef=round([hdef n*0.8 n]);
 
@@ -450,7 +450,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -498,12 +498,12 @@ Excl=options.Excl;
 if ~isempty(Excl)
     
     ajsel=1:rAj;
-    for i=1:rAj;
-        for j=1:size(Excl,1);
+    for i=1:rAj
+        for j=1:size(Excl,1)
             % If the following condition is fulfilled means that the model
             % including the previous set of explanatory variables had
             % already been analyzed and has been found unuseful
-            if length(intersect(Aj(i,:),Excl(j,:)))==cAj;
+            if length(intersect(Aj(i,:),Excl(j,:)))==cAj
                 ajsel(i)=0;
                 break;
             else
@@ -561,7 +561,7 @@ if ~isempty(Aj)
     % models with best Cp
     fin_step=options.fin_step;
     
-    if fin_step<0.5;
+    if fin_step<0.5
         fin_step=round(n*fin_step);
     end
     
@@ -582,10 +582,10 @@ if ~isempty(Aj)
         
         %% Forward search loop
         
-        for mm=smallp:n;
+        for mm=smallp:n
             % if n>200 show every 100 steps the fwd search index
-            if n>500;
-                if length(intersect(mm,seq100))==1;
+            if n>500
+                if length(intersect(mm,seq100))==1
                     disp(['m=' int2str(mm)]);
                 end
             end
@@ -603,9 +603,9 @@ if ~isempty(Aj)
             rall=yb-Xball*ball;
             sall=rall'*rall/(mm-p);
             
-            if mm>=init;
+            if mm>=init
                 % Now compute AIC criterion for that particular subset of data
-                if aic==1;
+                if aic==1
                     AIC(mm-init+1,jj+1)=mm*log(2*pi) +mm*sall  +sred/sall+2*smallp;
                 end
                 MAL(mm-init+1,jj+1)=sred/sall-mm+2*smallp;
@@ -616,7 +616,7 @@ if ~isempty(Aj)
             
             r(:,2)=e.^2;
             
-            if mm<n;
+            if mm<n
                 
                 % store units forming old subset in vector oldbsb
                 oldbsb=bsb;
@@ -632,7 +632,7 @@ if ~isempty(Aj)
                 Xball=X(bsb,:);
                 yb=y(bsb);    % subset of y
                 
-                if mm>=init;
+                if mm>=init
                     unit=setdiff(bsb,oldbsb);
                     % If the interchange involves more than 10 units, store only the
                     % first 10.
@@ -714,15 +714,13 @@ if ~isempty(Aj)
         x=MAL(:,1);
         
         if max(steps)>n
-            mess=sprintf(['One of the steps which has beeen chosen is greater than n. \n',...
+            fprintf(['One of the steps which has beeen chosen is greater than n. \n',...
                 'It is deleted.']);
-            disp(mess);
             steps=steps(steps<=n);
         end
         if min(steps)<x(1)
-            mess=sprintf(['One of the steps which has beeen chosen is smaller than m0. \n',...
+            fprintf(['One of the steps which has beeen chosen is smaller than m0. \n',...
                 'It is deleted.']);
-            disp(mess);
             steps=steps(steps>=x(1));
         end
         
@@ -821,7 +819,7 @@ if ~isempty(Aj)
         end
         
         
-        if plots==2;
+        if plots==2
             if ~isempty(fin_step)
                 % Find in the last fin_steps which are the searches with the smallest
                 % first_k Mallows Cp
@@ -866,7 +864,7 @@ if ~isempty(Aj)
         end
     end
     
-    if aic==1;
+    if aic==1
         outCp.AIC=AIC;
     end
     
@@ -878,7 +876,7 @@ if ~isempty(Aj)
         
         cor=((p-smallp)+2*smallp-p);
         ast=finv(options.ExclThresh,p-smallp,n-p)*cor;
-
+        
         Ajout=Aj(min(MAL(end-fin_step(1)+1:end,2:end))>ast,:)-1;
         LABout=LAB(min(MAL(end-fin_step(1)+1:end,2:end))>ast);
         

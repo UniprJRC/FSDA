@@ -196,7 +196,7 @@ S2=INP.S2;
 % Used here to check if X includes the constant term for the intercept.
 % The variable 'intercept' will be used later for plotting.
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0,1);
-if any(intcolumn) && p>1;
+if any(intcolumn) && p>1
     intercept=1;
 else
     intercept=0;
@@ -215,7 +215,7 @@ bonflev=options.bonflev;
 seq=1:n;
 
 if ~isempty(bonflev)
-    if bonflev<1;
+    if bonflev<1
         [gbonf] = FSRbonfbound(n,p,'prob',bonflev,'init',init);
         bonfthresh=gbonf;
     else
@@ -267,9 +267,9 @@ else
     % NoFalseSig is set to 1 if the condition for an INCONTROVERTIBLE SIGNAL is
     % fulfilled.
     n9999 = nout(2,nout(1,:)==9999);
-    if (n9999>=10);
+    if (n9999>=10)
         NoFalseSig=1;
-        if msg;
+        if msg
             disp('Observed curve of r_min is at least 10 times greater than 99.99% envelope'); % exact number is int2str(n9999)
             disp('--------------------------------------------------');
         end
@@ -304,17 +304,17 @@ end
 % of mdr or on exceedance of global Bonferroni level
 if isempty(bonflev)
     % Signal detection loop
-    for i=3:nmdr;
+    for i=3:nmdr
         
-        if i<istep-init+1; % CENTRAL PART OF THE SEARCH
+        if i<istep-init+1 % CENTRAL PART OF THE SEARCH
             % Extreme triplet or an extreme single value
             % Three consecutive values of d_min above the 99.99% threshold or 1
             % above 99.999% envelope
-            if ((mdr(i,2)>gmin(i,c9999) && mdr(i+1,2)>gmin(i+1,c9999) && mdr(i-1,2)>gmin(i-1,c9999)) || mdr(i,2)>gmin(end,c99) || mdr(i,2)>gmin(i,c99999));
+            if ((mdr(i,2)>gmin(i,c9999) && mdr(i+1,2)>gmin(i+1,c9999) && mdr(i-1,2)>gmin(i-1,c9999)) || mdr(i,2)>gmin(end,c99) || mdr(i,2)>gmin(i,c99999))
                 if msg
                     disp(['Tentative signal in central part of the search: step m=' int2str(mdr(i,1)) ' because']);
                 end
-                if (mdr(i,2)>gmin(i,c9999) && mdr(i+1,2)>gmin(i+1,c9999) && mdr(i-1,2)>gmin(i-1,c9999));
+                if (mdr(i,2)>gmin(i,c9999) && mdr(i+1,2)>gmin(i+1,c9999) && mdr(i-1,2)>gmin(i-1,c9999))
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.99% and rmin(' int2str(mdr(i-1,1)) ',' int2str(n) ')>99.99% and rmin(' int2str(mdr(i+1,1)) ',' int2str(n) ')>99.99%']);
                     end
@@ -322,7 +322,7 @@ if isempty(bonflev)
                     mdrsel=mdr(i-1:i+1,1:2);
                 end
                 
-                if (mdr(i,2)>gmin(i,c99999));
+                if (mdr(i,2)>gmin(i,c99999))
                     if msg
                         disp(['rmin(' int2str(mdr(i,1)) ',' int2str(n) ')>99.999%']);
                     end
@@ -330,7 +330,7 @@ if isempty(bonflev)
                     mdrsel=mdr(i-1:i+1,1:2);
                 end
                 
-                if (mdr(i,2)>gmin(end,c99));
+                if (mdr(i,2)>gmin(end,c99))
                     if msg
                         disp(['rmin(' int2str(mdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the central part of the search.']);
                     end
@@ -354,14 +354,14 @@ if isempty(bonflev)
                 mdag=mdr(i,1);
             else
             end
-        elseif i<size(mdr,1)-1; % FINAL PART OF THE SEARCH
+        elseif i<size(mdr,1)-1 % FINAL PART OF THE SEARCH
             % Extreme couple adjacent to an exceedance
             % Two consecutive values of mdr above the 99.99% envelope and 1 above 99%
-            if ((mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99)) || (mdr(i-1,2)>gmin(i-1,c999) && mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c99)) || mdr(i,2)>gmin(end,c99) || mdr(i,2)>gmin(i,c99999));
+            if ((mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99)) || (mdr(i-1,2)>gmin(i-1,c999) && mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c99)) || mdr(i,2)>gmin(end,c99) || mdr(i,2)>gmin(i,c99999))
                 if msg
                     disp(['Signal in final part of the search: step ' num2str(mdr(i,1)) ' because']);
                 end
-                if (mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99));
+                if (mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99))
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99%']);
                     end
@@ -369,7 +369,7 @@ if isempty(bonflev)
                     mdrsel=mdr(i-1:i+1,1:2);
                 end
                 
-                if (mdr(i-1,2)>gmin(i-1,c999) && mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c99));
+                if (mdr(i-1,2)>gmin(i-1,c999) && mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c99))
                     if msg
                         disp(['rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99%']);
                     end
@@ -377,7 +377,7 @@ if isempty(bonflev)
                     mdrsel=mdr(i-1:i+1,1:2);
                 end
                 
-                if (mdr(i,2)>gmin(end,c99));
+                if (mdr(i,2)>gmin(end,c99))
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
                     end
@@ -386,7 +386,7 @@ if isempty(bonflev)
                 end
                 
                 % Extreme single value above the upper threshold
-                if mdr(i,2)>gmin(i,c99999);
+                if mdr(i,2)>gmin(i,c99999)
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.999%']);
                     end
@@ -400,28 +400,28 @@ if isempty(bonflev)
                 NoFalseSig=1;
                 signal=1;
             end
-        elseif (mdr(i,2)>gmin(i,c999) || mdr(i,2)>gmin(end,c99)) && i==size(mdr,1)-1;
+        elseif (mdr(i,2)>gmin(i,c999) || mdr(i,2)>gmin(end,c99)) && i==size(mdr,1)-1
             % potential couple of outliers
             signal=1;
             if msg
                 disp('Signal is in penultimate step of the search');
             end
             
-            if (mdr(i,2)>gmin(i,c999));
+            if (mdr(i,2)>gmin(i,c999))
                 if msg
                     disp(['rmin(' int2str(mdr(i,1)) ',' int2str(n) ')>99.9%']);
                 end
                 strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.9\%$'];
             end
             
-            if (mdr(i,2)>gmin(end,c99));
+            if (mdr(i,2)>gmin(end,c99))
                 if msg
                     disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
                 end
                 strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
             end
             mdrsel=mdr(i:i,1:2);
-        elseif  mdr(i,2)>gmin(i,c99) && i==size(mdr,1);
+        elseif  mdr(i,2)>gmin(i,c99) && i==size(mdr,1)
             % a single outlier
             signal=1;
             if msg
@@ -430,7 +430,7 @@ if isempty(bonflev)
             strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99\%$ at final step'];
             mdrsel=mdr(i:i,1:2);
             
-        elseif mdr(i,2)<gmin(i,end) && lowexceed==1; % exceedance of the lower extreme envelope
+        elseif mdr(i,2)<gmin(i,end) && lowexceed==1 % exceedance of the lower extreme envelope
             signal=2;
             if msg
                 disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')<0.0001%']);
@@ -441,7 +441,7 @@ if isempty(bonflev)
         end
         
         %% Stage 1b: signal validation
-        if signal==1;
+        if signal==1
             if msg
                 disp('-------------------')
                 disp('Signal validation exceedance of upper envelopes');
@@ -449,11 +449,11 @@ if isempty(bonflev)
             % mdag is $m^\dagger$
             mdag=mdr(i,1);
             
-            if mdr(i,1)<n-2;
+            if mdr(i,1)<n-2
                 % Check if the signal is incontrovertible
                 % Incontrovertible signal = 3 consecutive values of d_min >
                 % 99.999% threshold
-                if mdr(i,2)>gmin(i,c99999) && mdr(i-1,2)>gmin(i-1,c99999) &&  mdr(i+1,2)>gmin(i+1,c99999);
+                if mdr(i,2)>gmin(i,c99999) && mdr(i-1,2)>gmin(i-1,c99999) &&  mdr(i+1,2)>gmin(i+1,c99999)
                     if msg
                         disp(['3 consecutive values of r_min greater than 99.999% envelope in step mdag= ' int2str(mdr(i,1))]);
                     end
@@ -466,13 +466,13 @@ if isempty(bonflev)
             
             % if the following statement is true, observed curve of r_min is
             % above 99.99% and later is below 1%: peak followed by dip
-            if size(mdr,1)>mdag-mdr(1,1)+31;
-                if sum(mdr(i+1:i+31,2)<gmin(i+1:i+31,c001))>=2;
+            if size(mdr,1)>mdag-mdr(1,1)+31
+                if sum(mdr(i+1:i+31,2)<gmin(i+1:i+31,c001))>=2
                     NoFalseSig=1;  % Peak followed by dip
                     extram2='Peak followed by dip (d_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope';
                 end
             else
-                if sum(mdr(i+1:end,2) < gmin(i+1:end,c001))>=2;
+                if sum(mdr(i+1:end,2) < gmin(i+1:end,c001))>=2
                     NoFalseSig=1;  %Peak followed by dip in the final part of the search';
                     extram2='Peak followed by dip (r_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope)';
                 end
@@ -483,12 +483,12 @@ if isempty(bonflev)
             % 2) signal tool place in the central part of the search
             % 3) signal was not incontrovertible
             % 4) there was not a peak followed by dip
-            if NoFalseSig==0;
+            if NoFalseSig==0
                 % Compute the final value of the envelope based on
                 % mdr(i+1,1)=mdagger+1 observations
                 %[gval]=FSRenvmdr(mdag+1,p,'prob',0.01,'m0',mdag);
                 [gval]=FSRenvmdr(mdag+1,p,'prob',0.01,'init',mdag);
-                if mdr(i,2)<gval(1,2);
+                if mdr(i,2)<gval(1,2)
                     if msg
                         disp('false signal in step');
                         disp(['mdag='  int2str(mdag)]);
@@ -502,7 +502,7 @@ if isempty(bonflev)
             
             % If the signal has been validated get out of the signal detection
             % loop and move to stage 2: superimposition of the envelopes
-            if (NoFalseSig==1);
+            if (NoFalseSig==1)
                 if msg
                     disp('Validated signal');
                 end
@@ -699,7 +699,7 @@ if plo==1 || plo ==2
                 figy2=1;
             else
             end
-            if figx>=0;
+            if figx>=0
                 annotation(figure1,'line',[figx figx],[figy figy2],...
                     'UserData',[istep yl1 yl2],...
                     'Tag','FinalPartLine');
@@ -745,7 +745,7 @@ end
 % if a validated signal took place, superimposition of the envelopes starts
 % from m^\dagger-1
 
-if signal==1 || signal==2;
+if signal==1 || signal==2
     if isempty(bonflev) && signal==1
         
         if msg
@@ -753,13 +753,13 @@ if signal==1 || signal==2;
             disp(['Start resuperimposing envelopes from step m=' int2str(mdag-1)]);
         end
         
-        if plo==2;
+        if plo==2
             % jwind is associated with subplot window number
             % nr is the number of row panes in the plot
             % nc is the number of columns panes in the plot
             jwind=1;
             nc=2;
-            if mdr(i,1)>=n-2;
+            if mdr(i,1)>=n-2
                 nr=1;
             else
                 nr=2;
@@ -772,16 +772,16 @@ if signal==1 || signal==2;
         
         % First resuperimposed envelope is based on mdag-1 observations
         % Notice that mdr(i,1) = m dagger
-        for tr=(mdag-1):(n);
+        for tr=(mdag-1):(n)
             % Compute theoretical envelopes based on tr observations
             gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.999; 0.01; 0.5],'init',init);
             
-            for ii=(i-1):size(gmin1,1);
+            for ii=(i-1):size(gmin1,1)
                 
                 % CHECK IF STOPPING RULE IS FULFILLED
                 % ii>=size(gmin1,1)-2 = final, penultimate or antepenultimate value
                 % of the resuperimposed envelope based on tr observations
-                if mdr(ii,2)>gmin1(ii,c99) && ii>=size(gmin1,1)-2;
+                if mdr(ii,2)>gmin1(ii,c99) && ii>=size(gmin1,1)-2
                     % Condition S1
                     mes=['$r_{min}('   int2str(mdr(ii,1)) ',' int2str(tr) ')>99$\% envelope'];
                     if msg
@@ -790,7 +790,7 @@ if signal==1 || signal==2;
                     end
                     sto=1;
                     break
-                elseif ii<size(gmin1,1)-2 &&  mdr(ii,2)>gmin1(ii,c999);
+                elseif ii<size(gmin1,1)-2 &&  mdr(ii,2)>gmin1(ii,c999)
                     % Condition S2
                     mes=['$r_{min}('   int2str(mdr(ii,1)) ',' int2str(tr) ')>99.9$\% envelope'];
                     if msg
@@ -831,17 +831,17 @@ if signal==1 || signal==2;
                 % For all plots not located on the left and the right hand side
                 % delete numbers on the y axis (YTickLabels)
                 getYTickLab=get(gca,'YTickLabel');
-                if isempty(intersect(jwind,[plleft plright])) && nr*nc>1;
+                if isempty(intersect(jwind,[plleft plright])) && nr*nc>1
                     set(gca,'YTickLabel',[]);
                 end
                 % For all plots not located on the right hand side put the
                 % yaxis location on the right
-                if ~isempty(intersect(jwind,plright)) && nr*nc>1  && nc>1;
+                if ~isempty(intersect(jwind,plright)) && nr*nc>1  && nc>1
                     set(gca,'YAxisLocation','right');
                 end
                 % For all plots which are not on the bottom hand side delete
                 % numbers on the x axis (XTickLabels)
-                if isempty(intersect(jwind,(nr-1)*nc+1:(nr*nc)));
+                if isempty(intersect(jwind,(nr-1)*nc+1:(nr*nc)))
                     set(gca,'XTickLabel',[]);
                 else
                     % For the plots on the bottom side add the xlabel
@@ -856,7 +856,7 @@ if signal==1 || signal==2;
                 jwind=jwind+1;
             end
             
-            if sto==1;
+            if sto==1
                 if plo==2
                     % Write on the plot the reason why the procedure stopped
                     annotation(figure2,...
@@ -867,7 +867,7 @@ if signal==1 || signal==2;
                     % Unless for all plots not located on the right hand side
                     % For the final plot put the yaxis location on the right
                     % Unless it is the first on the left hand side
-                    if isempty(intersect(jwind-1,plleft)) && nr*nc>1  && nc>1;
+                    if isempty(intersect(jwind-1,plleft)) && nr*nc>1  && nc>1
                         set(gca,'YTickLabel',getYTickLab);
                         set(gca,'YAxisLocation','right');
                     end
@@ -878,7 +878,7 @@ if signal==1 || signal==2;
                     
                     % if jwind=2 than the width of the last plot is enlarged to
                     % full screen
-                    if jwind==2 && nr*nc>1;
+                    if jwind==2 && nr*nc>1
                         set(gca,'Position',[0.1 0.1 0.85 0.85])
                         % Relocate the two messages
                         set(findall(gcf,'Tag','mes1'),'Units','normalized','Position',[0.3 0.7 0.5 0.1])
@@ -889,7 +889,7 @@ if signal==1 || signal==2;
                 break
             end
             if plo==2
-                if jwind==nr*nc+1;
+                if jwind==nr*nc+1
                     jwind=1;
                     figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
                     resup=resup+1;
@@ -908,9 +908,9 @@ if signal==1 || signal==2;
         % m*=mdr(ii,1)
         % Condition H2
         % Check if stopping rule takes place at m* <m^\dagger+k
-        if (mdr(ii,1)<tr-1);
+        if (mdr(ii,1)<tr-1)
             % Condition H2b and H2a
-            if sum(gmin1(ii+1:end,4)>mdr(ii+1:size(gmin1,1),2))>0;
+            if sum(gmin1(ii+1:end,4)>mdr(ii+1:size(gmin1,1),2))>0
                 if msg
                     disp(['Subsample of ' int2str(tr-1) ' units is not homogeneous because the curve was above 99.99% and later it was below 1%']);
                     disp('----------------------------------------');
@@ -960,7 +960,7 @@ if signal==1 || signal==2;
         
         
         
-        for tr=(mdag-1):-1:max(mdag-80,init+1);
+        for tr=(mdag-1):-1:max(mdag-80,init+1)
             % Compute theoretical envelopes based on tr observations
             gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.01; 0.5; 0.001],'init',init);
             
@@ -969,7 +969,7 @@ if signal==1 || signal==2;
             % CHECK IF STOPPING RULE IS FULFILLED
             % resuperimposed envelope based on tr observations is greater
             % than 0.1% threshold
-            if mdr(ii,2)>gmin1(ii,5);
+            if mdr(ii,2)>gmin1(ii,5)
                 % Condition N1
                 mes=['$r_{min}('   int2str(mdr(ii,1)) ',' int2str(tr) ')>0.1$\% envelope'];
                 if msg
@@ -978,7 +978,7 @@ if signal==1 || signal==2;
                 end
                 sto=1;
                 
-            elseif tr==max(mdag-80,init+1);
+            elseif tr==max(mdag-80,init+1)
                 disp('Exceedance of the lower envelope in the intial part of the search')
                 disp('Please decrease the value of init')
                 % mdr is still below the 0.1% lower envelope, so keep resuperimposing
@@ -1017,17 +1017,17 @@ if signal==1 || signal==2;
                 % For all plots not located on the left and the right hand side
                 % delete numbers on the y axis (YTickLabels)
                 getYTickLab=get(gca,'YTickLabel');
-                if isempty(intersect(jwind,[plleft plright])) && nr*nc>1;
+                if isempty(intersect(jwind,[plleft plright])) && nr*nc>1
                     set(gca,'YTickLabel',[]);
                 end
                 % For all plots not located on the right hand side put the
                 % yaxis location on the right
-                if ~isempty(intersect(jwind,plright)) && nr*nc>1  && nc>1;
+                if ~isempty(intersect(jwind,plright)) && nr*nc>1  && nc>1
                     set(gca,'YAxisLocation','right');
                 end
                 % For all plots which are not on the bottom hand side delete
                 % numbers on the x axis (XTickLabels)
-                if isempty(intersect(jwind,(nr-1)*nc+1:(nr*nc)));
+                if isempty(intersect(jwind,(nr-1)*nc+1:(nr*nc)))
                     set(gca,'XTickLabel',[]);
                 else
                     % For the plots on the bottom side add the xlabel
@@ -1042,7 +1042,7 @@ if signal==1 || signal==2;
                 jwind=jwind+1;
             end
             
-            if sto==1;
+            if sto==1
                 if plo==2
                     % Write on the plot the reason why the procedure stopped
                     annotation(figure2,...
@@ -1053,7 +1053,7 @@ if signal==1 || signal==2;
                     % Unless for all plots not located on the right hand side
                     % For the final plot put the yaxis location on the right
                     % Unless it is the first on the left hand side
-                    if isempty(intersect(jwind-1,plleft)) && nr*nc>1  && nc>1;
+                    if isempty(intersect(jwind-1,plleft)) && nr*nc>1  && nc>1
                         set(gca,'YTickLabel',getYTickLab);
                         set(gca,'YAxisLocation','right');
                     end
@@ -1064,7 +1064,7 @@ if signal==1 || signal==2;
                     
                     % if jwind=2 than the width of the last plot is enlarged to
                     % full screen
-                    if jwind==2 && nr*nc>1;
+                    if jwind==2 && nr*nc>1
                         set(gca,'Position',[0.1 0.1 0.85 0.85])
                         % Relocate the two messages
                         set(findall(gcf,'Tag','mes1'),'Units','normalized','Position',[0.3 0.7 0.5 0.1])
@@ -1075,7 +1075,7 @@ if signal==1 || signal==2;
                 break
             end
             if plo==2
-                if jwind==nr*nc+1;
+                if jwind==nr*nc+1
                     jwind=1;
                     resup=resup+1;
                     figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
@@ -1111,12 +1111,12 @@ if msg && isempty(bonflev)
 end
 
 if msg
-    if ~isempty(extram3);
+    if ~isempty(extram3)
         disp(extram3);
     else
     end
     
-    if ~isempty(extram2);
+    if ~isempty(extram2)
         disp(extram2);
     else
     end
@@ -1127,7 +1127,7 @@ group=ones(n,1);
 % Plot entry order of the untis
 % plot([Un(1,1)-1;Un(:,1)],bb','x')
 
-if ndecl>0;
+if ndecl>0
     % Now find the list of the units declared as outliers
     % bsel=~isnan(bb(:,tr-init+1));
     % ListOut=setdiff(1:n,bsel,1);

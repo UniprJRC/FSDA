@@ -505,7 +505,7 @@ if nargin > 3
     % We now overwrite inside structure options the default values with
     % those chosen by the user
     % Notice that in order to do this we use dynamic field names
-    for i = 1:2:length(varargin);
+    for i = 1:2:length(varargin)
         options.(varargin{i}) = varargin{i+1};
     end
 end
@@ -533,20 +533,17 @@ ini0 = length(bsb);
 
 % check init
 init = options.init;
-if  init < p;
-    mess = sprintf(['Attention : init should be larger than p+1. \n',...
+if  init < p
+    fprintf(['Attention : init should be larger than p+1. \n',...
         'It is set to p.']);
-    disp(mess);
     init = p;
-elseif init < ini0;
-    mess = sprintf(['Attention : init should be >= length of supplied subset. \n',...
+elseif init < ini0
+    fprintf(['Attention : init should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
-    disp(mess);
     init = ini0;
-elseif init >= n;
-    mess = sprintf(['Attention : init should be smaller than n. \n',...
+elseif init >= n
+    fprintf(['Attention : init should be smaller than n. \n',...
         'It is set to n-1.']);
-    disp(mess);
     init = n-1;
 end
 
@@ -699,11 +696,11 @@ if (rank(Xb) ~= p)
     warning('FSDA:FSRHeda:NoFullRank','The provided initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
-    for mm = ini0:n;
+    for mm = ini0:n
         
         % if n>200 show every 100 steps the fwd search index
-        if n > 200;
-            if length(intersect(mm,seq100)) == 1;
+        if n > 200
+            if length(intersect(mm,seq100)) == 1
                 disp(['m=' int2str(mm)]);
             end
         end
@@ -750,7 +747,7 @@ else
             % at step m
             % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
             Xw = bsxfun(@times, X, sqweights);
-            if (mm >= init);
+            if (mm >= init)
                 % Store weights
                 WEI(:,mm-init+1) = sqweights;
             end
@@ -776,7 +773,7 @@ else
             e = y-X*b;  % e = vector of residual for all units using b estimated using subset
         end
         
-        if (mm >= init);
+        if (mm >= init)
             
             % Store Units belonging to the subset
             BB(bsb,mm-init+1) = bsb;
@@ -876,28 +873,28 @@ else
         
         r(:,2) = e.^2;
         
-        if mm > init;
+        if mm > init
             
             if NoRankProblem
                 
                 % Store in the second column of matrix coo the Cook
                 % distance
                 bib = Bgls(mm-init+1,2:p+1)-Bgls(mm-init,2:p+1);
-                if S2(mm-init+1,2) > 0;
+                if S2(mm-init+1,2) > 0
                     coo(mm-init,2) = bib*mAm*(bib')/(p*S2(mm-init+1,2));
                 end
                 
-                if length(unit) > 5;
+                if length(unit) > 5
                     unit = unit(1:5);
                 end
-                if S2(mm-init,2) > 0;
+                if S2(mm-init,2) > 0
                     coo(mm-init,3:length(unit)+2) = 1./(1-hi(unit)).* sqrt(((mm-p)/p)*hi(unit).*r(unit,2)./S2(mm-init,2));
                 end
             end % NoRankProblem
         end
         
-        if mm < n;
-            if mm >= init;
+        if mm < n
+            if mm >= init
                 if NoRankProblem
                     % ord = matrix whose first col (divided by S2(i)) contains the deletion residuals
                     % for all units. For the units belonging to the subset these are proper deletion residuals
@@ -943,13 +940,13 @@ else
             yb = y(bsb);    % subset of y
             Zb = Z(bsb,:);  % subset of Z
             
-             if mm < n-1;
+             if mm < n-1
                 % ncl= units forming the new noclean
                 ncl=ord(mm+2:n,1);
                 
             end
 
-            if mm >= init;
+            if mm >= init
                 unit = setdiff(bsb,oldbsb);
                 if length(unit) <= 10
                     Un(mm-init+1,2:(length(unit)+1)) = unit;
@@ -960,7 +957,7 @@ else
             end
         end
         
-        if mm >= init;
+        if mm >= init
             if NoRankProblem
                 if strcmp(options.tstat,'scal')
                  Tgls(mm-init+1,2:end) = sqrt(corr)*Bgls(mm-init+1,2:end)./sqrt(Sb*dmmX');
@@ -968,7 +965,7 @@ else
                 elseif strcmp(options.tstat,'trad')
                     Tgls(mm-init+1,2:end) = Bgls(mm-init+1,2:end)./sqrt(Sb*dmmX');
                 else
-                    error('just options scal and trad are valid')
+                    error('FSDA:FSRHeda:WngOpt','Just options scal and trad are valid')
                 end
                 
                 % Compute highest posterior density interval for each value of

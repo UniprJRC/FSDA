@@ -351,7 +351,7 @@ vvarargin=varargin;
 % Used here to check if X includes the constant term for the intercept.
 % The variable 'intercept' will be used later for plotting.
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0,1);
-if any(intcolumn) && p>1;
+if any(intcolumn) && p>1
     intercept=1;
 else
     intercept=0;
@@ -394,7 +394,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -417,7 +417,7 @@ iter=0;
 % Use as initial subset the one supplied by the user or the best according
 % to LMS or LTS
 
-if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
+if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     if length(lms)>1
         bs=lms;
     else
@@ -431,7 +431,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'));
     [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
     
     if size(mdr,2)<2
-        if length(mdr)>=n/2;
+        if length(mdr)>=n/2
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
             disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
@@ -482,7 +482,7 @@ else % initial subset is not supplied by the user
         %    non singular matrix
         
         if size(mdr,2)<2
-            if length(mdr)>=n/2;
+            if length(mdr)>=n/2
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
                 

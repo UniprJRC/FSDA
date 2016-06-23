@@ -26,7 +26,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               $(1/\tau_0) (X_0'X_0)^{-1}$.
 %               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$
 %
-%   beta0 :     Prior mean of $\beta$. p-times-1 vector. 
+%   beta0 :     Prior mean of $\beta$. p-times-1 vector.
 %    R    :     Matrix associated with covariance matrix of $\beta$. p-times-p
 %               positive definite matrix.
 %               It can be interpreted as $X_0'X_0$ where $X_0$ is a n0 x p
@@ -35,7 +35,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 %               The prior distribution of $\tau_0$ is a gamma distribution with
 %               parameters $a_0$ and $b_0$, that is
-%               
+%
 %                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
 %                       \qquad   E(\tau_0)= a_0/b_0               \]
 %
@@ -96,13 +96,13 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               Example - 'msg',1
 %               Data Types - double
 %   bsbsteps :  steps of the fwd search where to save the units forming subset. Vector.
-%               If bsbsteps is 0 we store the units forming 
+%               If bsbsteps is 0 we store the units forming
 %               subset in all steps. The default is store the units forming
 %               subset in all steps if n<5000, else to store the units
 %               forming subset at steps init and steps which are multiple
 %               of 100. For example, if n=753 and init=6, units forming
 %               subset are stored for m=init, 100, 200, 300, 400, 500 and
-%               600. 
+%               600.
 %               Example - 'bsbsteps',[10,20,30]
 %               Data Types - double
 %
@@ -134,23 +134,23 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               of the search.
 %  BB:           n x (n-init+1) matrix which contains the units belonging to the
 %               subset at each step of the forward search.
-%               1st col = index forming subset in the initial step; 
-%               ...; 
+%               1st col = index forming subset in the initial step;
+%               ...;
 %               last column = units forming subset in the final step
 %               (i.e. all units).
 %  BBayes:       posterior estimates of $\beta$. Matrix.
 %               (n-init+1) x (p+1) matrix containing the monitoring o
 %               posterior mean of $\beta$ (regression coefficents)
 %               $\beta_1 = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$.
-%  S2Bayes :    posterior estimate of $\sigma^2$ and $\tau$. Matrix. 
+%  S2Bayes :    posterior estimate of $\sigma^2$ and $\tau$. Matrix.
 %               (n-init+1) x 3 matrix containing the monitoring of
-%               posterior estimate of $\sigma^2$ and $\tau$  
-%               in each step of the forward search. 
-%               1st col = fwd search index (from init to n). 
+%               posterior estimate of $\sigma^2$ and $\tau$
+%               in each step of the forward search.
+%               1st col = fwd search index (from init to n).
 %               2nd col = monitoring of $\sigma^2_1$ (posterior estimate of
-%               $\sigma^2$). 
+%               $\sigma^2$).
 %               3rd col = monitoring $\tau_1$ (posterior estimate of
-%               $\tau$). 
+%               $\tau$).
 %
 % See also
 %
@@ -437,14 +437,14 @@ if nargin > 7
     
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
 % And check if the optional user parameters are reasonable.
 bsb=options.bsb;
 
-if bsb==0;
+if bsb==0
     bsb=randsample(n,p);
     Xb=X(bsb,:);
     yb=y(bsb);
@@ -456,20 +456,17 @@ end
 
 % check init
 init=options.init;
-if  init <0;
-    mess=sprintf(['Attention : init should be greater or equal than 0. \n',...
+if  init <0
+    fprintf(['Attention : init should be greater or equal than 0. \n',...
         'It is set to 0.']);
-    disp(mess);
     init=0;
-elseif init<length(bsb);
-    mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
+elseif init<length(bsb)
+    fprintf(['Attention : init1 should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
-    disp(mess);
     init=length(bsb);
-elseif init>=n;
-    mess=sprintf(['Attention : init1 should be smaller than n. \n',...
+elseif init>=n
+    fprintf(['Attention : init1 should be smaller than n. \n',...
         'It is set to n-1.']);
-    disp(mess);
     init=n-1;
 end
 
@@ -543,18 +540,18 @@ Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 %% Start of the forward search
 
 %mj=1;
-for mm=ini0:n;
+for mm=ini0:n
     
     % if n>5000 show every 500 steps the fwd search index
-    if msg==1 && n>5000;
-        if length(intersect(mm,seq500))==1;
+    if msg==1 && n>5000
+        if length(intersect(mm,seq500))==1
             disp(['m=' int2str(mm)]);
         end
     end
     
     % call bayesian procedure
     [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb, 'nocheck',1);
-
+    
     % bayesian beta
     b=bayes.beta1;
     
@@ -569,7 +566,7 @@ for mm=ini0:n;
     
     r(:,2)=e.^2;
     
-    if (mm>=init);
+    if (mm>=init)
         % Store units belonging to the subset
         if intersect(mm,bsbsteps)==mm
             BB(bsb,ij)=bsb;
@@ -592,7 +589,7 @@ for mm=ini0:n;
         end
     end
     
-    if mm<n;
+    if mm<n
         
         % store units forming old subset in vector oldbsb
         oldbsb=bsb;
@@ -606,7 +603,7 @@ for mm=ini0:n;
         Xb=X(bsb,:);  % subset of X
         yb=y(bsb);    % subset of y
         
-        if mm>=init;
+        if mm>=init
             unit=setdiff(bsb,oldbsb);
             
             % If the interchange involves more than 10 units, store only the
@@ -622,7 +619,7 @@ for mm=ini0:n;
             end
         end
         
-        if mm < n-1;
+        if mm < n-1
             ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
         end
     end   % if mm<n

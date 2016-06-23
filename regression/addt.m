@@ -148,7 +148,7 @@ end
 if nargin > 3
     % We overwrite inside structure options the default values with those
     % chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -184,7 +184,7 @@ if rank(X)==p && rank([X w])==p+1      % Full rank
     if ~isempty(la)
         %geometric mean of the y
         G=exp(mean(log(y)));
-        if la==0;
+        if la==0
             z=G*log(y);
         else
             z=(y.^la-1)/(la*G^(la-1));
@@ -199,7 +199,7 @@ if rank(X)==p && rank([X w])==p+1      % Full rank
     zAw=z'*Aw;
     wAw=w'*Aw;
     
-    if wAw <1e-12;
+    if wAw <1e-12
         Sz_square=NaN;
         Tl=NaN;
         b=NaN;
@@ -211,7 +211,7 @@ if rank(X)==p && rank([X w])==p+1      % Full rank
         Sz=sqrt(r-zAw^2/wAw); % See Atkinson (1985) p. 98 @
         Sz_square=Sz^2/(n-p-1);
         
-        if abs(real(Sz)) > 0.0000001;
+        if abs(real(Sz)) > 0.0000001
             % Compute t-statistic
             Tl=zAw*sqrt(n-p-1)/(Sz*sqrt(wAw));
             % Compute p-value of t-statistic
@@ -238,7 +238,7 @@ out.pval=pval;
 
 %% Added variable plot
 
-if plots==1;
+if plots==1
     if ~isempty(units)
         sel=setdiff(1:length(y),units);
         [outsel]=addt(y(sel),X(sel,2:end),w(sel),'plots',0);

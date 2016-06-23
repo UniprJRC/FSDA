@@ -19,14 +19,14 @@ function [out]=FSRfan(y,X,varargin)
 %   intercept   :   Indicator for constant term. Scalar.
 %                       If 1, a model with constant term will be fitted
 %                   (default), if 0, no constant term will be included.
-%                   Example - 'intercept',1 
+%                   Example - 'intercept',1
 %                   Data Types - double
 %       nocheck :   Check input arguments. Scalar.
 %                   If nocheck is equal to 1 no check is performed
 %                   on matrix y and matrix X. Notice that y and X are left
 %                   unchanged. In other words the additional column of ones
 %                   for the intercept is not added. As default nocheck=0.
-%                   Example - 'nocheck',1 
+%                   Example - 'nocheck',1
 %                   Data Types - double
 %           la  :   values of the transformation parameter for which it is
 %                   necessary to compute the score test. Vector.
@@ -46,26 +46,26 @@ function [out]=FSRfan(y,X,varargin)
 %                   extracted. They will be (n choose p). Remark: if the
 %                   number of all possible subset is <1000 the default is
 %                   to extract all subsets otherwise just 1000.
-%                   Example - 'nsamp',1000 
+%                   Example - 'nsamp',1000
 %                   Data Types - double
 %       lms     :   Criterion to use to find the initlal
 %                 subset to initialize the search. Scalar.
 %                   If lms=1 (default) Least Median of Squares is
 %                   computed, else Least trimmed of Squares is computed.
-%                 Example - 'lms',1 
+%                 Example - 'lms',1
 %                 Data Types - double
-%       init    :   Search initialization. Scalar. 
+%       init    :   Search initialization. Scalar.
 %                   It specifies the initial subset size to start
 %                   monitoring the value of the score test, if init is not
 %                   specified it will be set equal to:
 %                    p+1, if the sample size is smaller than 40;
 %                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                    Example - 'init',100 starts monitoring from step m=100 
+%                    Example - 'init',100 starts monitoring from step m=100
 %                    Data Types - double
 %       plots   :  Plot on the screen. Scalar.
 %                   If plots=1 the fan plot is produced
-%                   else (default) no plot is produced. 
-%                   Example - 'plots',1 
+%                   else (default) no plot is produced.
+%                   Example - 'plots',1
 %                   Data Types - double
 %                   REMARK: all the following options work only if plots=1
 %
@@ -112,7 +112,7 @@ function [out]=FSRfan(y,X,varargin)
 %                   Data Types - double
 %    SizeAxesNum:   Scalar which controls the size of the numbers of the
 %                   axes. Scalar.
-%                   Default value is 10. 
+%                   Default value is 10.
 %                  Example - 'SizeAxesNum',12
 %                  Data Types - double
 %         msg   : Level of output to display. Scalar.
@@ -122,7 +122,7 @@ function [out]=FSRfan(y,X,varargin)
 %                   displayed on the screen about estimated time to compute
 %                   the LMS (LTS) for each value of lamabda else no message
 %                   is displayed on the screen
-%                  Example - 'msg',1 
+%                  Example - 'msg',1
 %                  Data Types - double
 %       tag     :   handle of the plot which is about to be created.
 %                   Character.
@@ -151,7 +151,7 @@ function [out]=FSRfan(y,X,varargin)
 %  out.Un     = cell of size length(la).
 %               out.Un{i} is a n-init) x 11 matrix which contains the unit(s) included in
 %               the subset at each step in the search associated with
-%               la(i). 
+%               la(i).
 %               REMARK: in every step the new subset is compared with the old subset. Un
 %               contains the unit(s) present in the new subset but not in
 %               the old one Un(1,:) for example contains the unit included
@@ -192,7 +192,7 @@ function [out]=FSRfan(y,X,varargin)
     XX=load('wool.txt');
     y=XX(:,end);
     X=XX(:,1:end-1);
-    % Function FSRfan stores the score test statistic. 
+    % Function FSRfan stores the score test statistic.
     % In this case we use the five most common values of lambda are considered
     [out]=FSRfan(y,X);
     fanplot(out);
@@ -208,7 +208,7 @@ function [out]=FSRfan(y,X,varargin)
 
 %{
     % Example specifying $\lambda$.
-    % Produce a fan plot for each value of $\lambda$ inside vector la. 
+    % Produce a fan plot for each value of $\lambda$ inside vector la.
     % Extract in matrix Un the units which entered the search in each step
     la=[-1 -0.5 0 0.5];
     [out]=FSRfan(y,X,'la',la,'plots',1);
@@ -237,7 +237,7 @@ function [out]=FSRfan(y,X,varargin)
 
 %{
     %% Fan plot using fidelity cards data.
-    % In the example, la is the vector contanining the most common values 
+    % In the example, la is the vector contanining the most common values
     % of the transformation parameter.
     % Store the score test statistics for the specified values of lambda
     % and automatically produce the fan plot
@@ -256,7 +256,7 @@ function [out]=FSRfan(y,X,varargin)
    %transformation parameter at the end of the search in earlier steps it
     %lies very close to the upper rejection region. The best value of the
     %transformation parameter seems to be the one associated with l=0.4
-    %which is always the confidence bands but at the end of search, due to 
+    %which is always the confidence bands but at the end of search, due to
   %the presence of particular observations it goes below the lower rejection line.
 %}
 
@@ -302,7 +302,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -330,10 +330,9 @@ end
 
 la=options.la;
 init=options.init;
-if  init <p+1;
-    mess=sprintf(['Attention : init should be larger than p+1. \n',...
+if  init <p+1
+    fprintf(['Attention : init should be larger than p+1. \n',...
         'It is set to p+2.']);
-    disp(mess);
     init=p+2;
 end
 
@@ -364,10 +363,10 @@ seq100=100*(1:1:ceil(n/100));
 binit=zeros(p,lla);
 
 % loop over the values of \lambda
-for i=1:lla;
+for i=1:lla
     
     % Construct transformed z according to power tansformation
-    if abs(la(i))<1e-8;
+    if abs(la(i))<1e-8
         z=log(y);
     else
         z=y.^la(i);
@@ -398,10 +397,10 @@ for i=1:lla;
         warning('FSRfan:message','The provided initial subset does not form full rank matrix');
         % FS loop will not be performed
     else
-        for mm=ini0:n;
+        for mm=ini0:n
             % if n>200 show every 100 steps the fwd search index
-            if msg==1 && n>200;
-                if length(intersect(mm,seq100))==1;
+            if msg==1 && n>200
+                if length(intersect(mm,seq100))==1
                     disp(['m=' int2str(mm)]);
                 end
             end
@@ -434,7 +433,7 @@ for i=1:lla;
             r(:,2)=e.^2;
             
             
-            if mm<n;
+            if mm<n
                 
                 % store units forming old subset in vector oldbsb
                 oldbsb=bsb;
@@ -450,7 +449,7 @@ for i=1:lla;
                 yb=y(bsb);    % subset of y
                 zb=z(bsb);    % subset of z
                 
-                if mm>=init;
+                if mm>=init
                     unit=setdiff(bsb,oldbsb);
                     if length(unit)<=10
                         Unlai(mm-init+1,2:(length(unit)+1))=unit;
@@ -489,9 +488,9 @@ if plo==1
     slin={'-';'--';':';'-.'};
     slin=repmat(slin,ceil(lla/4),1);
     
-        set(plot1,{'LineStyle'},slin(1:lla));
-
-        % set the x and y axis
+    set(plot1,{'LineStyle'},slin(1:lla));
+    
+    % set the x and y axis
     xlimx=options.xlimx;
     ylimy=options.ylimy;
     

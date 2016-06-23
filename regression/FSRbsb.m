@@ -236,12 +236,12 @@ end
 if nargin > 3
     % We now overwrite inside structure options the default values with
     % those chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
 
-if bsb==0;
+if bsb==0
     Ra=1; nwhile=1;
     while and(Ra,nwhile<100)
         bsb=randsample(n,p);
@@ -262,20 +262,17 @@ ini0=length(bsb);
 
 % check init
 init=options.init;
-if init <p;
-    mess=sprintf(['Attention : init should be larger than p-1. \n',...
+if init <p
+     fprintf(['Attention : init should be larger than p-1. \n',...
         'It is set to p.']);
-    disp(mess);
     init=p;
-elseif init<ini0;
-    mess=sprintf(['Attention : init should be >= length of supplied subset. \n',...
+elseif init<ini0
+    fprintf(['Attention : init should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
-    disp(mess);
     init=ini0;
-elseif init>=n;
-    mess=sprintf(['Attention : init should be smaller than n. \n',...
+elseif init>=n
+    fprintf(['Attention : init should be smaller than n. \n',...
         'It is set to n-1.']);
-    disp(mess);
     init=n-1;
 end
 
@@ -334,16 +331,16 @@ else
     % search every time a subset is stored inside matrix BB ij icreases by one
     ij=1;
     
-    for mm = ini0:n;
+    for mm = ini0:n
         % if n>200 show every 100 steps the fwd search index
         if n>200
-            if length(intersect(mm,seq100))==1;
+            if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
         end
         
         % Store units belonging to the subset
-        if (mm>=init);
+        if (mm>=init)
             if intersect(mm,bsbsteps)==mm
                 BB(bsb,ij)=bsb;
                 ij=ij+1;
@@ -365,7 +362,7 @@ else
         
         r(:,2)=e.^2;
         
-        if mm<n;
+        if mm<n
             
             % store units forming old subset in vector oldbsb
             oldbsb=bsb;
@@ -380,7 +377,7 @@ else
             Xb=X(bsb,:);  % subset of X
             yb=y(bsb);    % subset of y
             
-            if mm>=init;
+            if mm>=init
                 unit=setdiff(bsb,oldbsb);
                 % If the interchange involves more than 10 units, store only the
                 % first 10.

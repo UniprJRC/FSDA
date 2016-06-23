@@ -269,7 +269,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -334,7 +334,7 @@ Uni = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 j=0;
 % A different forward search for each variable which is excluded
-for i=vars;
+for i=vars
 
     j=j+1;
 
@@ -357,17 +357,17 @@ for i=vars;
     wb=w(bsb); % Subset of vector w (excluded explanatory variable)
 
     % Initialize the fwd search (excluding variable w)
-    for mm=ini0:n;
+    for mm=ini0:n
         % if n>200 show every 100 steps the fwd search index
-        if n>200;
-            if length(intersect(mm,seq100))==1;
+        if n>200
+            if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
         end
 
         b=Xb\yb;
 
-        if (mm>=init);
+        if (mm>=init)
             % compute added t test
             [outADDT]=addt(yb,Xb,wb,'intercept',0);
             % Store added tstat
@@ -382,7 +382,7 @@ for i=vars;
         % Second column of matrix r contains squared residuals
         r(:,2)=e.^2;
 
-        if mm<n;
+        if mm<n
 
             % store units forming old subset in vector oldbsb
             oldbsb=bsb;
@@ -399,7 +399,7 @@ for i=vars;
 
 
             % if mm>=init it is necessary to store the required quantities
-            if mm>=init;
+            if mm>=init
                 unit=setdiff(bsb,oldbsb);
                 % If the interchange involves more than 10 units, store only the
                 % first 10.
@@ -488,24 +488,24 @@ if plo==1
     for i=1:length(quant)
 
         % Superimpose chosen envelopes
-        if quant(i)>=0.005 && quant(i) <=0.995;
+        if quant(i)>=0.005 && quant(i) <=0.995
             line(Tdel(:,1),Tdelenv(:,i),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
         else
             line(Tdel(:,1),tinv(quant(i),Tdel(:,1)-p),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
         end
 
         [figx, figy] = dsxy2figxy(gca, xcoord,Tdelenv(Tdel(:,1)==xcoord,i));
-        if isempty(figy) || figy<0;
+        if isempty(figy) || figy<0
             figy=0;
         end
-        if isempty(figx) || figx<0;
+        if isempty(figx) || figx<0
             figx=0;
         end
 
-        if isempty(figy) || figy>1;
+        if isempty(figy) || figy>1
             figy=1;
         end
-        if isempty(figx) || figx>1;
+        if isempty(figx) || figx>1
             figx=1;
         end
         
