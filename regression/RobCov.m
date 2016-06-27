@@ -8,16 +8,16 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % confidence intervals. The covariance matrix of the estimated parameters
 % \[
 %   cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
-% \] 
-% consists of four parts: 
+% \]
+% consists of four parts:
 %1) $q$ a correction factor for the scale estimate;
-% 2) $\sigma$ the scale parameter. 
+% 2) $\sigma$ the scale parameter.
 % 3) $v$ a correction factor depending on the $\psi$ function which is
-% used; 
+% used;
 % 4) $V_X$= a matrix part. For OLS $V_X=X'X$. Given that in robust
 % regression we give a weight to each observation, the matrix $X'X$ should
 % be replaced by something like $X'WX$, where $W$ is a diagonal matrix
-% containing the weights assigned to each observation. 
+% containing the weights assigned to each observation.
 % The purpose of this function is to provide the user with different
 % options for the estimate of $cov(\hat \beta)$ where $\hat \beta$ is  a
 % vector of regression coefficients obtained using S or MM estimation and a
@@ -35,7 +35,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %             residuals $r_i/\hat \sigma$.
 %               Data Types - single | double
 % scaleest  : robust estimate of the scale. Scalar. Robust estimate of
-%             sigma ($\hat \sigma$). 
+%             sigma ($\hat \sigma$).
 %               Data Types - single | double
 %
 %  Optional input arguments:
@@ -43,7 +43,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), if 0, no constant
 %               term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
@@ -55,7 +55,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), if 0, no constant
 %               term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 %         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
@@ -84,7 +84,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions.
 %               See HArho.m and HApsi.m.
 %               The default is bisquare
-%                 Example - 'rhofunc','optimal' 
+%                 Example - 'rhofunc','optimal'
 %                 Data Types - double
 % rhofuncparam: Additional parameters for the specified rho function.
 %               Scalar or vector.
@@ -92,7 +92,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
 %               a, b and c (the default values are a=2, b=4, c=8)
-%                 Example - 'rhofuncparam',5 
+%                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %  Output:
 %
@@ -103,18 +103,18 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               matrix of regression coefficients. covrob implements
 %               equation (4.49) of p. 101 of Maronna et al. (2006)
 %               namely:
-%                \[ 
+%                \[
 %                \mbox{covrob} = cov( \hat \beta) = \hat \sigma^2 \hat v (X'X)^{-1}
 %                \]
-%                where 
+%                where
 %                \[
-%                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{\sum_{i=1}^n \psi'(r_i/\hat \sigma)^2} 
+%                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{\sum_{i=1}^n \psi'(r_i/\hat \sigma)^2}
 %                \]
 %  out.covrob1 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob1 implements
 %               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
-%               with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$ 
+%               with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$
 %               namely:
 %                \[
 %                 \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
@@ -174,7 +174,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % and Methods, Wiley, New York.
 % P.J. Huber and E.M. Ronchetti (2009), Robust Statistics, 2nd Edition,
 % Wiley New York.
-% Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data 
+% Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data
 % sets. Computational Statistics and Data Analysis, 54, pp. 3168-3173.
 % Koller, M. and W. A. Stahel (2011). Sharpening wald-type inference in
 % robust regression for small samples. Computational Statistics & Data
@@ -230,7 +230,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
     covrobS3=out.covrob3;
     covrobS4=out.covrob4;
 
-    % Compute robust S t-statistics 
+    % Compute robust S t-statistics
     tstatS=outS.beta./sqrt(diag(covrobS));
     tstatS1=outS.beta./sqrt(diag(covrobS1));
     tstatS2=outS.beta./sqrt(diag(covrobS2));
@@ -276,7 +276,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:RobCov:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -284,7 +284,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 3
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -303,7 +303,7 @@ eff = options.eff;              % nominal efficiency
 % Remark: one of them must be empty
 
 if  ~isempty(bdp) && ~isempty(eff)
-    error('Both bdp and eff cannot be specified')
+    error('FSDA:RobCov:WrongInputOpt','Both bdp and eff cannot be specified')
 end
 
 if  isempty(bdp) && isempty(eff)
@@ -341,23 +341,23 @@ if  ~isempty(bdp)
         end
         
         % Use (if possible) precalculated values of c,A,b,d and kc
-        if kdef == 4 && bdp==0.5;
+        if kdef == 4 && bdp==0.5
             c =2.158325031399727;
             A =1.627074124322223e-04;
             B =0.006991738279441;
             d =0.016982948780061;
             
-        elseif kdef == 4.5 && bdp==0.5;
+        elseif kdef == 4.5 && bdp==0.5
             c =2.010311082005501;
             A =0.008931591866092;
             B =0.051928487236632;
             d =0.132017481327058;
-        elseif kdef == 5 && bdp==0.5;
+        elseif kdef == 5 && bdp==0.5
             c =1.900709968805313;
             A =0.023186529890225;
             B =0.083526860351552;
             d =0.221246910095216;
-        elseif kdef == 4.5 && bdp==0.25;
+        elseif kdef == 4.5 && bdp==0.25
             c =2.679452645778656;
             A =0.464174145115400;
             B =0.588821276233494;
@@ -392,7 +392,7 @@ if  ~isempty(bdp)
         psifunc='HA';
     else
         
-        error('Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
+        error('FSDA:RobCov:WrongInputOpt','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
     end
 end
 
@@ -423,33 +423,33 @@ if  ~isempty(eff)
         end
         
         
-        if kdef == 4 && eff==0.85;
+        if kdef == 4 && eff==0.85
             c2 =3.212800979614258;
             A2 =0.570183575755717;
             B2 =0.696172437281084;
             d2 =1.205900263786317;
-        elseif kdef == 4.5 && eff==0.85;
+        elseif kdef == 4.5 && eff==0.85
             c2 =3.032387733459473;
             A2 =0.615717108822885;
             B2 = 0.723435958485131;
             d2 =1.321987605094910;
-        elseif kdef == 5 && eff==0.85;
+        elseif kdef == 5 && eff==0.85
             c2 =2.911890029907227;
             A2 =0.650228046997054;
             B2 =0.743433840145084;
             d2 =1.419320821762087;
             
-        elseif kdef == 4 && eff==0.95;
+        elseif kdef == 4 && eff==0.95
             c2 =4.331634521484375;
             A2 =0.754327484845243;
             B2 =0.846528826589308;
             d2 =1.480099129676819;
-        elseif kdef == 4.5 && eff==0.95;
+        elseif kdef == 4.5 && eff==0.95
             c2 =3.866390228271484;
             A2 =0.791281464739131;
             B2 =0.867016329355630;
             d2 =1.610621500015260;
-        elseif kdef == 5 && eff==0.95;
+        elseif kdef == 5 && eff==0.95
             c2 =3.629499435424805;
             A2 =0.818876452066880;
             B2 =0.882004888111327;
@@ -482,7 +482,7 @@ if  ~isempty(eff)
         c=[c,abc];
         psifunc='HA';
     else
-        error('Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
+        error('FSDA:RobCov:WrongInputOpt','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
         
     end
     
@@ -516,7 +516,7 @@ invXX=inv(XX);
 % Equation below 4.50 of Maronna et al. (2006)
 covrob=vhat*invXX; %#ok<MINV>
 
-%% Find covrob1 
+%% Find covrob1
 % See equation 7.81 of Huber and Ronchetti (2009) with X'X replaced by X'WX
 % (and sigma is estimated)
 
@@ -532,7 +532,7 @@ w1=sqrt(w);
 % Compute (X' W X) / mean(w)
 Xw=bsxfun(@times,X,w1);
 XWX=(Xw'*Xw)./mean(w);
-% Compute ( (X' W X) / mean(w))^-1 
+% Compute ( (X' W X) / mean(w))^-1
 invXWX=inv(XWX);
 
 % See equation 7.81 of Huber and Ronchetti (2009) with X'X replaced by X'WX
@@ -543,11 +543,11 @@ covrob1=Ksquare*vhat*invXWX;  %#ok<MINV>
 covrob2=Ksquare*vhat*invXX;
 
 %% Find covrob3
-% See equation 7.82 of Huber and Ronchetti (2009) 
+% See equation 7.82 of Huber and Ronchetti (2009)
 covrob3=K*(n/(n-p))*(scaleest^2)*(sumpsi2/sumpsider)*invXWX; %#ok<MINV>
 
 %% Find covrob4
-% See equation 7.83 of Huber and Ronchetti (2009) 
+% See equation 7.83 of Huber and Ronchetti (2009)
 covrob4=(1/(n-p))*(scaleest^2)*sumpsi2*(invXWX*XX*invXWX)/K; %#ok<MINV>
 
 % Find qhat see Maronna and Yohai CSDA 2010 p. 3170 equation (8)

@@ -336,7 +336,7 @@ end
 
 % Write in structure 'options', the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -449,20 +449,20 @@ elseif strcmp(rhofunc,'hyperbolic')
     rhofuncparam=kdef;
     
     % Use (if possible) precalculated values of c,A,b,d and kc
-    if kdef == 4 && bdp==0.5;
+    if kdef == 4 && bdp==0.5
         c1 =2.158325031399727;
         A1 =1.627074124322223e-04;
         B1 =0.006991738279441;
         d1 =0.016982948780061;
         kc1=0.010460153813287;
         
-    elseif kdef == 4.5 && bdp==0.5;
+    elseif kdef == 4.5 && bdp==0.5
         c1 =2.010311082005501;
         A1 =0.008931591866092;
         B1 =0.051928487236632;
         d1 =0.132017481327058;
         kc1=0.074478627985759;
-    elseif kdef == 5 && bdp==0.5;
+    elseif kdef == 5 && bdp==0.5
         c1 =1.900709968805313;
         A1 =0.023186529890225;
         B1 =0.083526860351552;
@@ -478,38 +478,38 @@ elseif strcmp(rhofunc,'hyperbolic')
         kc1=HYPrho(c1,[c1,kdef,A1,B1,d1])*bdp;
     end
     
-    if kdef == 4 && eff==0.85;
+    if kdef == 4 && eff==0.85
         c2 =3.212800979614258;
         A2 =0.570183575755717;
         B2 =0.696172437281084;
         d2 =1.205900263786317;
         kc2=0.439232837342420;
-    elseif kdef == 4.5 && eff==0.85;
+    elseif kdef == 4.5 && eff==0.85
         c2 =3.032387733459473;
         A2 =0.615717108822885;
         B2 = 0.723435958485131;
         d2 =1.321987605094910;
         kc2=0.448833150947462;
-    elseif kdef == 5 && eff==0.85;
+    elseif kdef == 5 && eff==0.85
         c2 =2.911890029907227;
         A2 =0.650228046997054;
         B2 =0.743433840145084;
         d2 =1.419320821762087;
         kc2=0.455326016919854;
         
-    elseif kdef == 4 && eff==0.95;
+    elseif kdef == 4 && eff==0.95
         c2 =4.331634521484375;
         A2 =0.754327484845243;
         B2 =0.846528826589308;
         d2 =1.480099129676819;
         kc2=0.473872135913024;
-    elseif kdef == 4.5 && eff==0.95;
+    elseif kdef == 4.5 && eff==0.95
         c2 =3.866390228271484;
         A2 =0.791281464739131;
         B2 =0.867016329355630;
         d2 =1.610621500015260;
         kc2=0.479388475649576;
-    elseif kdef == 5 && eff==0.95;
+    elseif kdef == 5 && eff==0.95
         c2 =3.629499435424805;
         A2 =0.818876452066880;
         B2 =0.882004888111327;
@@ -710,7 +710,7 @@ for i = 1:nselected
             besttauscales(ij) =newtau;
             bestsubset(ij,:) = index;
             bestbetas(ij,:) = betarw';
-            if ij==bestr;
+            if ij==bestr
                 [worsttau,worstind] = max(besttauscales);
                 worsts = bestscales(worstind);
                 % vector worstres will be the input of condition 2
@@ -780,7 +780,7 @@ out.residuals=(y-X*out.beta)/out.scale;
 
 % Store in output structure the number of singular subsets
 out.singsub=singsub;
-if singsub/nselected>0.1;
+if singsub/nselected>0.1
     disp('------------------------------')
     disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
 end
@@ -810,7 +810,7 @@ end
 
 
 if options.yxsave
-    if options.intercept==1;
+    if options.intercept==1
         % Store X (without the column of ones if there is an intercept)
         out.X=X(:,2:end);
     else
@@ -821,7 +821,7 @@ if options.yxsave
 end
 
 % Plot resindexplot with outliers highlighted
-if options.plots==1;
+if options.plots==1
     laby='Scaled tau residuals';
     resindexplot(out.residuals,'conflev',out.conflev,'laby',laby,'numlab',out.outliers);
 end

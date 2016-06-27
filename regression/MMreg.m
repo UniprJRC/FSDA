@@ -280,7 +280,7 @@ end
 
 if nargin > 2
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -376,7 +376,7 @@ if exist('rhofuncparam','var')
 end
 
 if options.yxsave
-    if options.intercept==1;
+    if options.intercept==1
         % Store X (without the column of ones if there is an intercept)
         out.X=X(:,2:end);
     else

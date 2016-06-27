@@ -365,7 +365,7 @@ if ~isempty(UserOptions)
     end
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
@@ -478,7 +478,7 @@ while cont==1 && iter<maxiter
     
     
     % Check if convergence has been achieved
-    if sum((dnew-dold).^2)/sum(dold.^2)>tol;
+    if sum((dnew-dold).^2)/sum(dold.^2)>tol
         cont=1;
         oldgamma=newgamma;
         dold=dnew;

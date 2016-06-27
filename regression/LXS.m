@@ -421,7 +421,7 @@ if nargin > 2
     end
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
@@ -452,12 +452,12 @@ if nargin > 2
     end
     
     % Check number of subsamples to extract
-    if options.nsamp>ncomb;
+    if options.nsamp>ncomb
          if options.msg==1
             disp('Number of subsets to extract greater than (n p). It is set to (n p)');
          end
         options.nsamp=0;
-    elseif  options.nsamp<0;
+    elseif  options.nsamp<0
         error('FSDA:LXS:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
 end
@@ -478,7 +478,7 @@ end
 
 lms=options.lms;            % if options.lms==1 then LMS, else LTS
 
-if ~isstruct(lms) && lms==2;
+if ~isstruct(lms) && lms==2
     lms=struct;
     refsteps=3;
     reftol=1e-6;
@@ -532,7 +532,7 @@ elseif isstruct(lms)
     lmsopt=2;
 else
     % lmsopt is associated with the message about total computing time
-    if lms==1;
+    if lms==1
         lmsopt=1;
     else
         lmsopt=0;
@@ -682,7 +682,7 @@ for i=1:nselected
     end
 end
 
-if brob==-99;
+if brob==-99
     error('FSDA:LXS:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
 else
 end
@@ -713,7 +713,7 @@ if isstruct(lms)
     sh0=sqrt(sh0/h);
 else
     
-    if lms==1;
+    if lms==1
         
         % Estimate of scale based on h-quantile of all squared residuals
         sh0=sqrt(rmin);
@@ -774,7 +774,7 @@ else
     
 end
 
-if abs(s0) > 1e-7;
+if abs(s0) > 1e-7
     
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
@@ -807,7 +807,7 @@ if abs(s0) > 1e-7;
     
     
     %% Reweighting part
-    if rew==1;
+    if rew==1
         
         % Find new estimate of beta using only observations which have
         % weight equal to 1. Notice that new brob overwrites old brob
@@ -909,20 +909,20 @@ out.h=h;
 % Store number of singular subsets
 out.singsub=singsub;
 if msg==1
-    if singsub/nselected>0.1;
+    if singsub/nselected>0.1
         disp('------------------------------')
         disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
     end
 end
 % Store information about the class of the object
-if lmsopt==1;
+if lmsopt==1
     out.class='LMS';
 else
     out.class='LTS';
 end
 
 if options.yxsave
-    if options.intercept==1;
+    if options.intercept==1
         % Store X (without the column of ones if there is an intercept)
         out.X=X(:,2:end);
     else
@@ -937,7 +937,7 @@ end
 % If plots is a structure, plot directly those chosen by the user;
 % elseif plots is 1 a plot or residuals against index number appears
 % else no plot is produced.
-if plots==1;
+if plots==1
     if lmsopt==1
         laby='Robust lms residuals';
     else

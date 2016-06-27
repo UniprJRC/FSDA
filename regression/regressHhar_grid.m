@@ -236,7 +236,7 @@ options=struct('intercept',1,'alpha',alpha,'nocheck',0,'plots',0);
 
 if nargin > 3
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end

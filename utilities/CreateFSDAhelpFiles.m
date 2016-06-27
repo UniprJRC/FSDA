@@ -123,7 +123,7 @@ if h
     disp('Succesful creation of pointer files')
 end
  
-%% Not if all was well let us do th setup.exe
+%% Now if all was well let us do the setup.exe
 disp('Congratulations the FSDA package is ready to be deployed')
 
 % Store all quantities inside structure outHELP

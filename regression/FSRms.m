@@ -448,7 +448,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -545,14 +545,14 @@ Excl='';
 %% Beginning of procedure (loop through all values of smallp)
 
 % Loop through all values of smallp
-for smallp=xlimp;
+for smallp=xlimp
     
     % Note discuss 
     outCp=FSRcp(y,X,smallp,'h',h,'nsamp',nsamp,'lms',lms,'init',init,'nocheck',1,...
         'labels',labels,'fin_step',fin_step(1),'first_k',first_k,'Excl',Excl,'ExclThresh',ExclThresh);
     
     % If outCp is an empty structure there no submodels of interest
-    if isempty(outCp);
+    if isempty(outCp)
         break;
     end
     
@@ -787,7 +787,7 @@ if plots
     
     % Define limits for x axis
     xlimx=options.xlimx;
-    if isempty(xlimx);
+    if isempty(xlimx)
         xlim([xl1 xl2]);
     else
         xlim(xlimx);

@@ -238,7 +238,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -287,49 +287,49 @@ elseif strcmp(rhofunc,'hyperbolic')
     rhofuncparam=kdef;
     
     
-    if kdef == 4 && eff==0.85;
+    if kdef == 4 && eff==0.85
         c2 =3.212800979614258;
         A2 =0.570183575755717;
         B2 =0.696172437281084;
         d2 =1.205900263786317;
-    elseif kdef == 4.5 && eff==0.85;
+    elseif kdef == 4.5 && eff==0.85
         c2 =3.032387733459473;
         A2 =0.615717108822885;
         B2 = 0.723435958485131;
         d2 =1.321987605094910;
-    elseif kdef == 5 && eff==0.85;
+    elseif kdef == 5 && eff==0.85
         c2 =2.911890029907227;
         A2 =0.650228046997054;
         B2 =0.743433840145084;
         d2 =1.419320821762087;
 
-    elseif kdef == 4 && eff==0.90;
+    elseif kdef == 4 && eff==0.90
         c2 =3.544333040714264;
         A2 =0.655651252372878;
         B2 =0.768170638356071;
         d2 =1.330560147762300;
-    elseif kdef == 4.5 && eff==0.90;
+    elseif kdef == 4.5 && eff==0.90
         c2 =3.313891947269440;
         A2 =0.697965573395585;
         B2 =0.792571144662011;
         d2 =1.452220833301545;
-    elseif kdef == 5 && eff==0.90;
+    elseif kdef == 5 && eff==0.90
         c2 =3.167660615756176;
         A2 =0.729727894789617;
         B2 =0.810404284656104;
         d2 =1.5553258180618305;
 
-    elseif kdef == 4 && eff==0.95;
+    elseif kdef == 4 && eff==0.95
         c2 =4.331634521484375;
         A2 =0.754327484845243;
         B2 =0.846528826589308;
         d2 =1.480099129676819;
-    elseif kdef == 4.5 && eff==0.95;
+    elseif kdef == 4.5 && eff==0.95
         c2 =3.866390228271484;
         A2 =0.791281464739131;
         B2 =0.867016329355630;
         d2 =1.610621500015260;
-    elseif kdef == 5 && eff==0.95;
+    elseif kdef == 5 && eff==0.95
         c2 =3.629499435424805;
         A2 =0.818876452066880;
         B2 =0.882004888111327;
@@ -435,7 +435,7 @@ end
 % Store X (without the column of ones if there is an intercept)
 if options.yxsave
     intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
-    if intcolumn==1;
+    if intcolumn==1
         X(:,intcolumn)=[];
         % Store X (without the column of ones if there is an intercept)
         out.X=X;
@@ -448,7 +448,7 @@ end
 
 
 % Plot of residual with outliers highlighted
-if options.plots==1;
+if options.plots==1
     laby='Robust MM residuals';
     resindexplot(out.residuals,'conflev',out.conflev,'laby',laby,'numlab',out.outliers);
 end

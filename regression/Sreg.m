@@ -302,7 +302,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -393,26 +393,26 @@ elseif strcmp(rhofunc,'hyperbolic')
     rhofuncparam=kdef;
     
     % Use (if possible) precalculated values of c,A,b,d and kc
-    if kdef == 4 && bdp==0.5;
+    if kdef == 4 && bdp==0.5
         c =2.158325031399727;
         A =1.627074124322223e-04;
         B =0.006991738279441;
         d =0.016982948780061;
         kc=0.010460153813287;
         
-    elseif kdef == 4.5 && bdp==0.5;
+    elseif kdef == 4.5 && bdp==0.5
         c =2.010311082005501;
         A =0.008931591866092;
         B =0.051928487236632;
         d =0.132017481327058;
         kc=0.074478627985759;
-    elseif kdef == 5 && bdp==0.5;
+    elseif kdef == 5 && bdp==0.5
         c =1.900709968805313;
         A =0.023186529890225;
         B =0.083526860351552;
         d =0.221246910095216;
         kc=0.116380290077336;
-    elseif kdef == 4.5 && bdp==0.25;
+    elseif kdef == 4.5 && bdp==0.25
         c =2.679452645778656;
         A =0.464174145115400;
         B =0.588821276233494;
@@ -621,7 +621,7 @@ out.residuals=(y-X*out.beta)/out.scale;
 
 % Store in output structure the number of singular subsets
 out.singsub=singsub;
-if singsub/nselected>0.1;
+if singsub/nselected>0.1
     disp('------------------------------')
     disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
 end
@@ -650,7 +650,7 @@ if exist('rhofuncparam','var')
 end
 
 if options.yxsave
-    if options.intercept==1;
+    if options.intercept==1
         % Store X (without the column of ones if there is an intercept)
         out.X=X(:,2:end);
     else
@@ -661,7 +661,7 @@ if options.yxsave
 end
 
 % Plot resindexplot with outliers highlighted
-if options.plots==1;
+if options.plots==1
     laby='Scaled S residuals';
     resindexplot(out.residuals,'conflev',out.conflev,'laby',laby,'numlab',out.outliers);
 end

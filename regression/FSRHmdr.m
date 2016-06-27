@@ -373,7 +373,7 @@ end
 if nargin > 4
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -392,7 +392,7 @@ if size(Z,1)~=n
 end
 
 
-if bsb==0;
+if bsb==0
     Ra=1; nwhile=1;
     while and(Ra,nwhile<100)
         bsb=randsample(n,p);
@@ -431,20 +431,17 @@ ini0=length(bsb);
 
 % check init
 init=options.init;
-if  init <p+1;
-    mess=sprintf(['Attention : init should be larger than p. \n',...
+if  init <p+1
+    fprintf(['Attention : init should be larger than p. \n',...
         'It is set to p+1.']);
-    disp(mess);
     init=p+1;
-elseif init<ini0;
-    mess=sprintf(['Attention : init should be >= length of supplied subset. \n',...
+elseif init<ini0
+    fprintf(['Attention : init should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
-    disp(mess);
     init=ini0;
-elseif init>=n;
-    mess=sprintf(['Attention : init1 should be smaller than n. \n',...
+elseif init>=n
+    fprintf(['Attention : init1 should be smaller than n. \n',...
         'It is set to n-1.']);
-    disp(mess);
     init=n-1;
 end
 
@@ -542,11 +539,11 @@ if (rank(Xb)~=p)
     mdr=NaN;
     % FS loop will not be performed
 else
-    for mm=ini0:n;
+    for mm=ini0:n
         
         % if n>200 show every 100 steps the fwd search index
-        if msg==1 && n>5000;
-            if length(intersect(mm,seq100))==1;
+        if msg==1 && n>5000
+            if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
         end
@@ -617,7 +614,7 @@ else
         
         r(:,2)=e.^2;
         
-        if (mm>=init);
+        if (mm>=init)
             
             % Store units belonging to the subset and weights
             if intersect(mm,bsbsteps)==mm
@@ -679,7 +676,7 @@ else
             end   %~RankProblem
         end     %mm>=init1
         
-        if mm<n;
+        if mm<n
             
             % store units forming old subset in vector oldbsb
             oldbsb=bsb;
@@ -702,7 +699,7 @@ else
             yb=y(bsb);    % subset of y     HHH   OK
             Zb=Z(bsb,:);  % subset of Z
             
-            if mm>=init;
+            if mm>=init
                 unit=setdiff(bsb,oldbsb);
                 
                 % If the interchange involves more than 10 units, store only the
@@ -718,7 +715,7 @@ else
                 end
             end
             
-            if mm < n-1;
+            if mm < n-1
                 if ~isempty(constr) && mm<n-length(constr)-1
                     % disp(mm)
                     ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean

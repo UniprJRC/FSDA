@@ -167,7 +167,7 @@ UserOptions = varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('Error:: number of supplied options is invalid. Probably values for some parameters are missing.');
+      error('FSDA:FSRmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if all the specified optional arguments were present
     % in structure options
@@ -176,13 +176,13 @@ if ~isempty(UserOptions)
     
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('Error:: in total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:FSRmdr:WrongInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for j=1:2:length(varargin);
+    for j=1:2:length(varargin)
         options.(varargin{j}) = varargin{j+1};
     end
 end

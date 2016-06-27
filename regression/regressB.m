@@ -416,7 +416,7 @@ if ~isempty(UserOptions)
     chkoptions(options,UserOptions)
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
@@ -431,7 +431,7 @@ nbsb=numel(bsb);
 Xbsb=X(bsb,:);
 ybsb=y(bsb,:);
 
-if nbsb>0 && nbsb<n1;
+if nbsb>0 && nbsb<n1
     aco=norminv(0.5*(1+nbsb/n1));
     corr=1-2*(n1./nbsb).*aco.*normpdf(aco);
     corr=sqrt(corr);

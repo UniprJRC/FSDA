@@ -118,7 +118,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -138,10 +138,10 @@ Lik=Sc;
 G=exp(mean(log(y)));
 
 % loop over the values of \lambda
-for i=1:lla;
+for i=1:lla
   
     % Define transformed and constructed variable
-    if abs(la(i))<1e-8;
+    if abs(la(i))<1e-8
         z=G*log(y);
         w=G*log(y).*(log(y)/2-log(G));
     else
