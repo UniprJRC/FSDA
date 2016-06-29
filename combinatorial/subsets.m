@@ -97,7 +97,7 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 
 seq=1:n;
 
-if nargin<4;
+if nargin<4
     ncomb=bc(n,p);
     
 end
@@ -152,16 +152,16 @@ else
     
     usepascal=0;
     
-    if ncomb>Tcomb && ncomb<T2comb;
+    if ncomb>Tcomb && ncomb<T2comb
         
         % Extract without replacement nsamp elements from ncomb
         rndsi=randsampleFS(ncomb,nsamp,2);
         
-        if ispc;
+        if ispc
             
             [~,sys]=memory;
             bytesavailable=sys.PhysicalMemory.Available;
-            if bytesavailable > 2*8*n^2;
+            if bytesavailable > 2*8*n^2
                 pascalM=pascal(n);
             else
                 pascalM=pascal(n);

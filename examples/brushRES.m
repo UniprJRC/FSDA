@@ -161,7 +161,7 @@ end
         fsiztitl=12; % Font size of title and of the label of the axes
         SizeAxesNum=12; % Font size of the numbers on the axes
         
-        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Forbes dataset'));
+        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Forbes dataset'))
             forbes=load('forbes.txt');
             y=forbes(:,2);
             X=forbes(:,1);

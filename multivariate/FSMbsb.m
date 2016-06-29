@@ -138,7 +138,11 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
     disp('Contaminated units')
     disp(seqcont)
     Ycont(seqcont,:)=Ycont(seqcont,:)+2.5;
+    % Analyse the units forming subset in step msel=195
+    msel=195;
     [~,BBsel]=FSMbsb(Ycont,0,'bsbsteps',msel);
+    disp(['Units outside subset at step m=' num2str(msel)])
+    disp(setdiff(1:n,BBsel))
 %}
 
 %{

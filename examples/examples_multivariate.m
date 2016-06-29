@@ -15,13 +15,13 @@ boxplot(Y,'labels',cnames,'LabelOrientation','inline');
 %Find in current plot the handles associated with the univariate outliers
 a=findobj(gca,'tag','Outliers');
 [n,v]=size(Y);
-for j=1:v;
+for j=1:v
     % Get the X and Y coordinates of the univariate outliers
     aYdata=get(a(j),'Ydata');
     aXdata=get(a(j),'Xdata');
     
     % Loop over the outliers inside variable v-j+1
-    for i=1:length(aYdata);
+    for i=1:length(aYdata)
         % Find the row number of the outliers
         ind=find(aYdata(i)==Y(:,end-j+1),n);
         % Add the label to the current plot
@@ -85,7 +85,7 @@ xplo=get(h(1),'XData')';
 
 nsimul=100;
 malasim=zeros(n,nsimul);
-for j=1:nsimul;
+for j=1:nsimul
     Ysim=randn(n,v);
     % In each simulation store scaled MD
     malasim(:,j)=sort(cor*mahal(Ysim,Ysim));
@@ -287,7 +287,7 @@ xplo=get(h(1),'XData')';
 
 nsimul=1000;
 malasim=zeros(n,nsimul);
-for j=1:nsimul;
+for j=1:nsimul
     Ysim=randn(n,v);
     % In each simulation store scaled MD
     malasim(:,j)=sort(cor*mahal(Ysim,Ysim));
@@ -398,7 +398,7 @@ plotsmle=struct;
 plotsmle.ylim=[-4 0];
 
 ii=1;
-for la=la0;
+for la=la0
     plotsmle.Tag=tagsmle{ii};
     FSMtra(Y,'plotsmle',plotsmle,'onelambda',1,'la0',la,'init',20);
     ii=ii+1;
@@ -426,10 +426,10 @@ plotslrt=struct;
 plotslrt.ylim=[0 21];
 
 ii=1;
-for la=la0;
+for la=la0
     plotsmle.Tag=tagsmle{ii};
     plotslrt.Tag=tagslrt{ii};
-    if lik==1;
+    if lik==1
         FSMtra(Y,'plotsmle',plotsmle,'plotslrt',plotslrt,'onelambda',1,'la0',la,'init',20);
     else
         FSMtra(Y,'plotslrt',plotslrt,'onelambda',1,'la0',la,'init',20);
@@ -800,7 +800,7 @@ Y=swiss_banknotes.data;
 % if corr=1 it is possible to monitor the elements of the correlation
 % matrix
 corr=0;
-if corr==1;
+if corr==1
     Y1=zscore(Y(1:100,:));
 else
     Y1=Y(1:100,:);
@@ -813,7 +813,7 @@ bs=fre(1:size(Y,2)+2,1);
 S2cov=out.S2cov;
 plot1=plot(S2cov(:,1),S2cov(:,2:end));
 xlabel('Subset size m')
-if corr==1;
+if corr==1
     ylabel('Elements of correlation matrix')
 else
     ylabel('Elements of covariance matrix')
@@ -846,13 +846,13 @@ boxplot(Y,'labels',cnames);
 %Find in current plot the handles associated with the univariate outliers
 a=findobj(gca,'tag','Outliers');
 [n,v]=size(Y);
-for j=1:v;
+for j=1:v
     % Get the X and Y coordinates of the univariate outliers
     aYdata=get(a(j),'Ydata');
     aXdata=get(a(j),'Xdata');
     
     % Loop over the outliers inside variable v-j+1
-    for i=1:length(aYdata);
+    for i=1:length(aYdata)
         % Find the row number of the outliers
         ind=find(aYdata(i)==Y(:,end-j+1),n);
         % Add the label to the current plot
@@ -927,7 +927,7 @@ Y=swiss_banknotes.data;
 % if corr=1 it is possible to monitor the elements of the correlation
 % matrix
 corr=0;
-if corr==1;
+if corr==1
     Y1=zscore(Y(101:200,:));
 else
     Y1=Y(101:200,:);
@@ -940,7 +940,7 @@ bs=fre(1:size(Y,2)+2,1);
 S2cov=out.S2cov;
 plot1=plot(S2cov(:,1),S2cov(:,2:end));
 xlabel('Subset size m')
-if corr==1;
+if corr==1
     ylabel('Elements of correlation matrix')
 else
     ylabel('Elements of covariance matrix')
@@ -986,13 +986,13 @@ boxplot(Y,'labels',cnames);
 %Find in current plot the handles associated with the univariate outliers
 a=findobj(gca,'tag','Outliers');
 [n,v]=size(Y);
-for j=1:v;
+for j=1:v
     % Get the X and Y coordinates of the univariate outliers
     aYdata=get(a(j),'Ydata');
     aXdata=get(a(j),'Xdata');
     
     % Loop over the outliers inside variable v-j+1
-    for i=1:length(aYdata);
+    for i=1:length(aYdata)
         % Find the row number of the outliers
         ind=find(aYdata(i)==Y(:,end-j+1),n);
         % Add the label to the current plot

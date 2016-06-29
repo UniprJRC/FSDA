@@ -147,7 +147,7 @@ end
 
     function brushFANex(~,eventdata)
         
-        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Wool dataset'));
+        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Wool dataset'))
             wool=load('wool.txt');
             y=wool(:,4);
             X=wool(:,1:3);

@@ -400,7 +400,7 @@ ylabel('R2');
 
 % Plots of the monitoring of "Estimates of beta coefficients"
 figure;
-for j=3:size(Bols,2);
+for j=3:size(Bols,2)
     subplot(2,4,j-2)
     plot(Bols(:,1),Bols(:,j))
     xlabel('Subset size m');
@@ -953,7 +953,7 @@ y1=y.^(0.4);
 [out]=FSReda(y1,X,out.bs);
 
 figure;
-for j=3:size(out.Bols,2);
+for j=3:size(out.Bols,2)
     subplot(2,2,j-2)
     plot(out.Bols(:,1),out.Bols(:,j))
     xlim([10 510])
@@ -1372,7 +1372,7 @@ y(1:30)=y(1:30)+5;
 [out]=FSReda(y,X,outLXS.bs);
 
 figure;
-for j=2:size(out.Bols,2);
+for j=2:size(out.Bols,2)
     subplot(2,4,j-1)
     plot(out.Bols(:,1),out.Bols(:,j))
     % xlim([10 510])

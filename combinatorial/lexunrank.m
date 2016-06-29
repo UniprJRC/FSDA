@@ -276,7 +276,7 @@ if nargin<4
         %         for x = kk:n-1
         %             if  bc(x,kk)> N_kk, break, end
         %         end
-        if kk == k;
+        if kk == k
             for x2 = kk:n-1
                 pas_col(x2+1) = pas_col(x2)*(x2+1)/(x2+1-kk);
             end

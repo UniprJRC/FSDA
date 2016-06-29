@@ -86,7 +86,7 @@ function y = randsampleFS(n,k,method)
 %}
 
 %% Beginning of code
-if nargin<3;
+if nargin<3
     method=1;
 end
 
