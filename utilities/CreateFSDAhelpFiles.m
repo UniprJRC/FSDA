@@ -120,7 +120,7 @@ web(outputOFHtmlHelpFile,'-browser');
 
  h=CreateFSDApointerFiles(FilesIncluded,OUT);
 if h
-    disp('Succesful creation of pointer files')
+    disp('Successful creation of pointer files')
 end
  
 %% Now if all was well let us do the setup.exe

@@ -1,14 +1,14 @@
 function outHELP=CreateFSDApointerFiles(InputCell,OUT)
-%CreateFSDApointerFiles create points to HTML help files
+%CreateFSDApointerFiles create HTML files which are just pointers to true HTML help files
 %
 % Given that:
 % 1) buildocsearchdb enables to create the database just for
-% the files which are inside hte helpfile location specified in the
+% the files which are inside the helpfile location specified in the
 % info.xml file
 % 2) all the entries which are found by buildocsearchdb are opened in the
 % frame of the right (iframe)
 % 3) FSDA team spent a lot of time to have proper HTML documentation which
-% is not relagated to the right panel,
+% is not relagated to the right panel
 % 4) true HTML documentation file of FSDA are inside (docroot)/FSDA otherwise
 % the lucene MATLAB search engine does not work.
 %
@@ -17,13 +17,16 @@ function outHELP=CreateFSDApointerFiles(InputCell,OUT)
 % and for each of them to create a corresponding pointer HTML file inside path
 % (FSDA root folder)/helpfiles/pointersHTML
 % which contains
-% a) the minimum necessary information to be indexed by lucene search enegine
+% a) the minimum necessary information to be indexed by lucene search engine
 % b) a response.redirect which links to the true HTML file which is
 % contained inside (docroot)/FSDA.
 %
 %
 %{
-    % Create personalized contents file which will be the input the
+    % Example of creation of pointer files.
+    % It is necessary to call first makecontentsfileFS.m and
+    % publishFSallFiles.m
+    % 1) Create personalized contents file which will be the input the
     % procedure CreateFSDApointerFiles.
     % Find full path of the main root where FSDA is installed
     FileName='addFSDA2path';
@@ -32,13 +35,15 @@ function outHELP=CreateFSDApointerFiles(InputCell,OUT)
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
-    % Create list of folders which must be presonlized contents file
+    % Create list of folders for which contents files has to be created
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
-    % Crete personalized contents file for main folder of FSDA
+    % Create personalized contents file for main folder of FSDA
     % and required subfolders.
     [InputCell,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false)
+    % Publish all files  
+    [FilesWithProblems,OUT]=publishFSallFiles(InputCell,'write2file',false,'evalCode',false);
     % Create HTML pointer files
-    CreateFSDApointerFiles(InputCell)
+    CreateFSDApointerFiles(InputCell,OUT)
 %}
 
 % Copyright 2008-2016.
@@ -57,7 +62,6 @@ for i=1:size(InputCell,1)
     DescrRef=OUT{i};
     [fileID,errMsg] = fopen([dirpathj filesep NameOutputFile],'w');
     if fileID < 0
-        outHELP=false;
         error(message('MATLAB:filebrowser:MakeContentsFileOpenError', errMsg))
     end
     % Create string to include the HTML pointer file
@@ -68,15 +72,10 @@ end
 outHELP=true;
 
 
-% open each file extract relevant information
-
-
-
 end
 
 function fstring=stringHTMLpointer(NameInputFile,DescriptionInputFile,DescrRef)
 NameInputFileHTML=['/FSDA/' NameInputFile '.html'];
-
 
 Description=DescrRef.description;
 MoreAbout=DescrRef.MoreAbout;
@@ -116,7 +115,7 @@ try
         '<P>' References '</P>'  ...
         '</html>'];
 catch
-    ddd=1;
+    error('FSDA:CreateFSDApointerFiles:noHTML',['It was impossible to create HTML file' NameInputFile])
 end
 
 end
