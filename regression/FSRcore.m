@@ -1313,7 +1313,7 @@ out.scale=scale;
         %labels and of the vertical line are set.
         
         % axis limits
-        xlim = get(evd.Axes,'XLim'); xmin = xlim(1); xmax=xlim(2);
+        xlimits = get(evd.Axes,'XLim'); xmin = xlimits(1); xmax=xlimits(2);
         
         % QUANTILES ANNOTATION: the handles
         hanno1 = findall(obj, 'Tag' , 'quantile_label');

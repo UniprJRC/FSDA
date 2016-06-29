@@ -165,7 +165,7 @@ end
     function brushROBex(~,eventdata)
         %% Examples inside GUI to show how interactive brushing works
         
-        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Forbes dataset'));
+        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Forbes dataset'))
             forbes=load('forbes.txt');
             y=forbes(:,2);
             X=forbes(:,1);
