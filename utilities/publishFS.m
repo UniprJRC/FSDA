@@ -60,6 +60,12 @@ function out=publishFS(file,varargin)
 %             outputDir. The default value of evalCode is true.
 %             Example - 'evalCode','false'
 %             Data Types - Boolean
+% write2file: Option to write HTML file. Logical. Option which specifies
+%             whether HTML file must be created or if just structure out
+%             must be created. The default value of write2file is true,
+%             that is html file is created
+%             Example - 'write2file','false'
+%             Data Types - Boolean
 %
 % Output:
 %
@@ -652,6 +658,7 @@ if ~ischar(file)
 end
 
 evalCode=true;
+write2file=true;
 Display='none';
 
 % % Use file separator of current operating system
@@ -673,7 +680,7 @@ imagesDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
 
 
 if nargin>1
-    options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir,'imagesDir',imagesDir);
+    options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir,'imagesDir',imagesDir,'write2file',true);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -691,7 +698,8 @@ if nargin>1
         
     end
     
-    evalCode=options.evalCode;
+    evalCode=options.evalCode;    
+    write2file=options.write2file;
     outputDir=options.outputDir;
     Display=options.Display;
     checkimageDir = strcmp(UserOptions,'imagesDir');
@@ -703,6 +711,7 @@ if nargin>1
         imagesDir=options.imagesDir;
     else
     end
+    
 end
 
 %% Open input .m file, put it in a string and do a series of preliminary operations
@@ -2895,6 +2904,8 @@ outstring=([titl metacontent2015b sitecont sintaxhtml sintaxclose description  .
 %insnav before insbarra has been deleted
 %insnav
 
+
+if write2file
 file1ID=fopen([outputDir fsep name '.html'],'w');
 
 if file1ID==-1
@@ -2910,6 +2921,7 @@ if file1ID==-1
     
     error('FSDA:publishFS:WrngOutFolder',errmsg);
     
+end
 end
 
 %% EXECUTE THE EXAMPLES WHICH START WITH SYMBOLS %%
@@ -3151,8 +3163,10 @@ end
 out.laste=laste;
 
 %% WRITE string outstring into final HTML file
+if write2file
 fprintf(file1ID,'%s',outstring);
 fclose('all');
+end
 
 %% Check if all name pairs arguments are commented inside the HTML
 % Check that (if varagin is present all optional arguments contained in
@@ -3340,8 +3354,8 @@ if evalCode ==1
         end
     end
     out.OutArgsStructMisMatch=OutArgsMisMatch(1:ik,:);
-    
 else
+    out.OutArgsStructMisMatch='';
 end
 if length(linkHTML)~=2
     out.linkHTMLMisMatch=true;
