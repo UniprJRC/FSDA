@@ -19,6 +19,8 @@ psw = psw4FSDA
 
 "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe" sign /f "E:\usr_MATLAB\FSDA_setup\CERT\key.pfx" /d "FSDA Toolbox" /du "http://www.riani.it" /t "http://timestamp.verisign.com/scripts/timestamp.dll" "FSDAtoolbox_for_MATLAB-setup.exe"
 
+testest
+
 
 
 
