@@ -989,27 +989,25 @@ out = Q;
             
             
             if nargin>11 && ~isempty(restrfactor)
-                S05=Sgen;
-                Sinv=Sgen;
-                detS=zeros(k,1);
-                Lambda_vk=Sgen';
-                
+                %S05  = Sgen;
+                %Sinv = Sgen;
+                detS      = zeros(k,1);
+                Lambda_vk = Sgen';
                 
                 % Apply the restrictions to matrix Lambda_vk
                 autovalues=restreigen(Lambda_vk,Pigen,restrfactor);
                 
-                Sgen=zeros(1,1,k);
-                Sinv=Sgen;
-                S05=Sgen;
+                Sgen  = zeros(1,1,k);
+                Sinv  = Sgen;
+                S05   = Sgen;
                 for j=1:k
                     %disp(j)
                     Sgen(1,1,j) = autovalues(j);
-                    S05(1,1,j) = sqrt(Sgen(1,1,j));
+                    S05(1,1,j)  = sqrt(Sgen(1,1,j));
                     Sinv(1,1,j) = Sgen(1,1,j)^(-1);
-                    detS(j)=autovalues(j);
-                    
+                    detS(j)     = autovalues(j);       
                 end
-                Sgen=reshape(Sgen,1,1,k);
+                Sgen = reshape(Sgen,1,1,k);
                 [li, di, const1]=ComputePars(1, k, Pigen, Mugen, Sgen, S05, Sinv, detS);
             else
                 Sgen=reshape(Sgen,1,1,k);

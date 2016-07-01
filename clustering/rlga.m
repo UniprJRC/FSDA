@@ -62,9 +62,9 @@ function out = rlga(X,k,alpha,varargin)
 %
 % References:
 %
-% García-Escudero, L. A., Gordaliza, A., San Martín, R., Van Aelst, S. and
+% Garc?a-Escudero, L. A., Gordaliza, A., San Mart?n, R., Van Aelst, S. and
 % Zamar, R. (2009), Robust linear clustering. Journal of the Royal
-% Statistical Society: Series B (Statistical Methodology), 71: 301–318.
+% Statistical Society: Series B (Statistical Methodology), 71: 301?318.
 % doi: 10.1111/j.1467-9868.2008.00682.x
 %
 %
@@ -342,8 +342,8 @@ end
     end
 
     function ROSS=rlgacalculateROSS(hpcoef, xsc, n, d, groups)
-        % This function calculates the total
-        % Residual Orthogonal Sum of Squares for a given grouping
+        % This function calculates the total Residual Orthogonal Sum of
+        % Squares for a given grouping
         z = bsxfun(@minus,xsc *(hpcoef(:,1:d)'), hpcoef(:,d+1)');
         dist = z.^2;
         

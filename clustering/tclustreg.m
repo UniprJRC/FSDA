@@ -602,11 +602,11 @@ else
     end
     
     % scatterplot
-    out = spmplot(YY,group,plo,'hist');
+    hout = spmplot(YY,group,plo,'hist');
     
     %group_l = cellstr([repmat('Group',k,1) , num2str((1:k)')]);
     %group_l = ['Trimmed units' ; group];
-    %[hleg, hobj, hout, mout] =legend((out(1,end,:)));
+    %[hleg, hobj, hout, mout] = legend((hout(1,end,:)));
 end
 
 %%  Set the output structure

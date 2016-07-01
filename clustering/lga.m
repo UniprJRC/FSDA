@@ -14,27 +14,27 @@ function out = lga(X,k,varargin)
 %  Optional input arguments:
 %
 %
-%     biter : Hyperplane number. Integer. number of different starting hyperplanes to try. 
-%               Example - 'biter',1 
+%     biter : Hyperplane number. Integer. number of different starting hyperplanes to try.
+%               Example - 'biter',1
 %               Data Types - double
 %     niter : Number of iterations. Positive integer. Number of iterations to attempt for convergence.
-%               Example - 'niter',1 
+%               Example - 'niter',1
 %               Data Types - double
-%   showall : Type of display. Logical. If true then display all the outcomes, not just the best one. 
-%               Example - 'showall','true' 
-%               Data Types - char 
+%   showall : Type of display. Logical. If true then display all the outcomes, not just the best one.
+%               Example - 'showall','true'
+%               Data Types - char
 %    stand  : Data standardization. Logical. If true standardize the X matrix with the standard
-%             deviation before fitting. 
-%               Example - 'stand','true' 
-%               Data Types - char 
+%             deviation before fitting.
+%               Example - 'stand','true'
+%               Data Types - char
 %    silent : Text ouptut. Logical. If true, produces no text output during processing. The
-%               default value is false. 
-%               Example - 'silent','true' 
-%               Data Types - char                           
+%               default value is false.
+%               Example - 'silent','true'
+%               Data Types - char
 %    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on the screen with the
 %             final allocation (and if size(X,2)==2 with the lines
-%             associated to the groups). 
-%               Example - 'plots',1 
+%             associated to the groups).
+%               Example - 'plots',1
 %               Data Types - double
 %
 %  Output:
@@ -57,9 +57,9 @@ function out = lga(X,k,varargin)
 %
 % References:
 %
-% Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) ‘Linear
-% Grouping Using Orthogonal Regression’, Computational Statistics and Data
-% Analysis 50, 1287–1312.
+% Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) ?Linear
+% Grouping Using Orthogonal Regression?, Computational Statistics and Data
+% Analysis 50, 1287?1312.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -191,7 +191,7 @@ if ~showall
     % associated to the first minimum
     [~,minoutindcol]=min(outputs(n+2,:));
     outputs=outputs(:,minoutindcol);
-      
+    
     % Below we check whether there is more than one minimum
     %{
         minout=min(outputs(n+2,:));
@@ -329,7 +329,7 @@ end
     end
 
 
-    function xbest=lgaCheckUnique(x)
+    function xbest = lgaCheckUnique(x)
         % function used above to check whether there is more than one minimum
         function zfin=CheckUniqueRand (z)
             zfin=sum(sum(z.^2))-0.5*(sum((sum(z,2)').^2)+ sum((sum(z,1)').^2));

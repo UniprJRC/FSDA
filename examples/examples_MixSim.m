@@ -157,7 +157,7 @@ S(:,:,2) = cov(Y(id==2,:));
 S(:,:,3) = cov(Y(id==3,:));
 
 % overlap
-[OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(K, p, Pi, Mu, S);
+[OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(K, p, Pi, Mu, S); %#ok<ASGLU>
 
 %% Example 1 of Section 3.3 plot (a), 500 observations generated from 5 groups with prespecified maximum and average overlap
 clearvars -except RandomDataFromR; close all;
@@ -348,10 +348,10 @@ K = max(id);
 %estimate mixture parameters
 t = tabulate(id);
 Pi = t(:,3);
-Mu = grpstats(Y,id,{'mean'});
+Mu = grpstats(Y,id,{'mean'}); %#ok<NASGU>
 S(:,:,1) = cov(Y(id==1,:));
 S(:,:,2) = cov(Y(id==2,:));
-S(:,:,3) = cov(Y(id==3,:));
+S(:,:,3) = cov(Y(id==3,:)); %#ok<NASGU>
 
 %pdplot, not yet implemented
 %pdplot(Pi, Mu, S);

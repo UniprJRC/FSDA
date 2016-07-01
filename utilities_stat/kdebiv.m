@@ -5,8 +5,8 @@ function F = kdebiv(X,varargin)
 %
 %<a href="matlab: docsearchFS('kdebiv')">Link to the help function</a>
 %
-% This function is introduced in FSDA for use with MATLAB releases older
-% than R2016a, when function ksdensity was only supporting one-dimensional
+% This function is introduced in FSDA to support MATLAB releases older
+% than R2016a, when function ksdensity was only addressing one-dimensional
 % data. For R2016a and subsequent releases, kdebiv uses ksdensity.
 %
 %  Required input arguments:
@@ -20,14 +20,15 @@ function F = kdebiv(X,varargin)
 %
 % Optional input arguments:
 %
-%   contourtype: Plot on the screen. String. Takes one of these string:
-%               - contourtype = 'contour' superimposes to the bivariate
-%                 scatterplot a contour plot.
-%               - contourtype = 'contourf' superimposes to the bivariate
-%                 scatterplot a filled contour plot. The colormap of the
-%                 filled contour is based on grey levels.
-%                 Data Types - char
-%                 Example - 'contourtype','contourf'
+%   contourtype: Plot on the screen. String. Takes one of these strings:
+%               - contourtype = 'contour' generates a contour plot.
+%               - contourtype = 'contourf' generates a filled contour plot. 
+%               - contourtype = 'surf' generates a surf plot.
+%               - contourtype = 'mesh' generates a mesh plot.
+%               Unless specified otherwise, the colormap of the plots is
+%               based on grey levels.
+%               Data Types - char
+%               Example - 'contourtype','contourf'
 %
 %   cmap:       Three-column matrix with colormap values in the range
 %               [0,1]. Matrix. A personalized colormap is used to plot 
@@ -63,32 +64,50 @@ function F = kdebiv(X,varargin)
 
 %{
       %% Density plots for a mixture of two normal distributions.
-      X1 = [0+.5*randn(100,1)   5+2.5*randn(100,1)];
-      X2 = [1.75+.25*randn(40,1) 8.75+1.25*randn(40,1)];
+      X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+      X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
       X = [X1 ; X2];
 
       % A filled contour plot obtained using colormap 'cmap' = 'summer'.
       F1 = kdebiv(X,'contourtype','contourf','cmap','summer');
+      title('A filled contour plot obtained using colormap ''summer''');
+
 %}
 
 %{
       %% A standard (not filled) contour plot obtained using colormap 'cmap' = 'hot'.
       figure;
       F2 = kdebiv(X,'cmap','hot');
+      title('A standard (not filled) contour plot obtained using colormap ''hot''');
 
       % A filled contour plot with personalized colormap: note the last
       % line of cmap (1 1 1), which is added to obtain a white background
       % in the low densit areas.
       figure;
-      cmap =   [0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ; 0, 0, 0.6 ;  0, 0, 0.8 ; 0, 0, 1.0 ; 1, 1, 1 ; 1, 1, 1 ];
-      F3 = kdebiv(X,'cmap',cmap);
-
-      % Superimpose data points to the last density plot.
-      hold on;
+      % Data points, with associated clickable legends.
       plot(X1(:,1),X1(:,2),'xr' , X2(:,1),X2(:,2),'oc');
+      clickableMultiLegend('group 1','group 2');
+      % superimpose the contour plot
+      hold on;
+      cmap =   [0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ; 0, 0, 0.6 ;  0, 0, 0.8 ; 0, 0, 1.0 ; 1, 1, 1 ];
+      F3 = kdebiv(X,'cmap',cmap);
+      title('A filled contour plot with personalized colormap and data point superimposed');
 
       % just to position the figures in "cascade".
       cascade;
+
+%}
+
+%{
+      % Just to test surf and mesh plots
+      figure;
+      F4 = kdebiv(X,'contourtype','surf');
+      figure;
+      F5 = kdebiv(X,'cmap',summer,'contourtype','surf');
+      figure;
+      F6 = kdebiv(X,'contourtype','mesh');
+      figure;
+      F7 = kdebiv(X,'cmap',summer,'contourtype','mesh');
 %}
 
 %% Input parameters checking
@@ -121,7 +140,7 @@ if ~isempty(UserOptions)
     end
     if isempty(cmap) || ...
             (~ischar(cmap) && ~((size(cmap,2) == 3 && (min(min(cmap))>=0 && max(max(cmap))<=1)))) ...
-             || ~(ischar(cmap) && max(strcmp(cmap,cmaptypes)))
+             || (~ischar(cmap) && max(strcmp(cmap,cmaptypes)))
         cmap        = 'gray';
     end
     
@@ -132,67 +151,71 @@ else
 end
 
 %% kernel smoothing estimation
+
+% rule of thumb for the number of bins
+nbins = round(8 * log(nn)/2); 
+nbins = [nbins , nbins];
+
 if verLessThan('matlab','9.0')
     % The kernel smoothing function is estimated from scratch if MATLAB
     % release is before R2016a
     
+    %{
     % Estimate the bandwidth using Scott's rule (optimal for normal
-    % distribution). It is a rule of thumb  suggested by Bowman and
-    % Azzalini (1997), p.31.
+    % distribution):
+    % bw = median(abs(xy-repmat(median(xy),nn,1)))/0.6745*(1/nn)^(1/6);
+    % It is a rule of thumb  suggested by Bowman and Azzalini (1997), p.31.
     sig      = mad(X,1,1) / 0.6745;
     bw       = sig * (4/((d+2)*nn))^(1/(d+4));
-    %bw = median(abs(xy-repmat(median(xy),nn,1)))/0.6745*(1/nn)^(1/6);
     
-    % rule of thumb for the number of bins
-    nbins = round(8 * log(nn))/2; %nbins = 50;
+    % bivariate c function
+    K  = @(sigma,x,y) exp(-(x^2+y^2)/2/norm(sigma) );
+    xx = linspace(min(X(:,1)),max(X(:,1)));
+    yy = linspace(min(X(:,2)),max(X(:,2)));
+    [dx,dy] = meshgrid(xx,yy);
+    weight  = K(bw,dx,dy)./sum(sum(K(bw,dx,dy)));
+    Ysmooth = conv2(X,weight,'same');
     
-    %             % bivariate Gaussian kernel function
-    %             K = @(sigma,x,y) exp(-(x.^2+y.^2)/2/sigma.^2 );
-    %             [dx,dy]=meshgrid(xx,yy);
-    %             weight = K(bw,dx,dy)/sum(sum(K(bw,dx,dy)));
-    %             Ysmooth = conv2(xy,weight,'same');
-    
-    % Compute a two-dimensional histogram
+    %}
+        
+    % Compute a two-dimensional histogram without using histc
+    %{
     xy_max   = max(X);
     xy_min   = min(X);
     xy_lim   = [-inf -inf inf inf];
     xy_max   = min([xy_max+3*bw ; xy_lim(3:4)]);
     xy_min   = max([xy_min-3*bw ; xy_lim(1:2)]);
-    ed1      = linspace(xy_min(1),xy_max(1),nbins+1);
-    ed2      = linspace(xy_min(2),xy_max(2),nbins+1);
-    
-    nbins   = [nbins , nbins];
-    
-    %%
-    % The histograms have 200 bins max in both directions.
-    %             minx  = min(xx,[],1);  maxx  = max(xx,[],1);
-    %             miny  = min(yy,[],1);  maxy  = max(yy,[],1);
-    %             nbins = [min(numel(unique(xx)),200) , min(numel(unique(yy)),200)];
-    %
-    %             ed1  = linspace(minx, maxx, nbins(1)+1);
-    %             ed2  = linspace(miny, maxy, nbins(2)+1);
-    %%
-    
+    ed1      = linspace(xy_min(1),xy_max(1),nbins(1)+1);
+    ed2      = linspace(xy_min(2),xy_max(2),nbins(1)+1);
+                
     xi1  = ed1(1:end-1) + .5*diff(ed1);
     ed1  = [-Inf ed1(2:end-1) Inf];
     
     xi2  = ed2(1:end-1) + .5*diff(ed2);
     ed2  = [-Inf ed2(2:end-1) Inf];
     
-    % The xy space is cut into rectangles and the number of
-    % observations in each rectangle is counted.
+    % Cut the xy space into cells and count the number of units in each cell.
     bin    = zeros(nn,2);
     [~,bin(:,2)] = histc(X(:,1),ed1);
     [~,bin(:,1)] = histc(X(:,2),ed2);
-    H  = accumarray(bin,1,nbins([2 1])) ./ nn;
     
+    H  = accumarray(bin,1,nbins([2 1])) ./ nn;
+    %}
+    
+    %Compute a two-dimensional histogram using hist3
+    [H,C] = hist3(X,nbins) ;%./ nn
+    
+    % position of the bin centers
+    xi1 = C{1,1};
+    xi2 = C{1,2};
+                
     % subfunction smooth1D smoothes the two-dimensional histogram.
     % lambda is a smoothing parameter. Smaller lambda values provide
     % smoother results.
     lambda = 10;
     G  = expsm(H ,nbins(2)/lambda);
-    F = expsm(G',nbins(1)/lambda)';
-    
+    F  = expsm(G',nbins(1)/lambda)';
+
 else
     % The MATLAB ksdensity follows. It is based on:
     %   A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
@@ -202,9 +225,17 @@ else
     xi2 = xi(:,2);
 end
 
-% Call subfunction computeGrid to interpolate the estimated
-% density on the grid xi1 and xi1. Uses meshgrid and griddata.
-[xq,yq,F] = computeGrid(xi1 , xi2 , F);
+% interpolate the estimated density on the grid xi1 and xi1, using meshgrid
+% and griddata.
+%[xq,yq,F] = computeGrid(xi1 , xi2 , F);
+
+xx = linspace(min(xi1),max(xi1),nbins(1));
+yy = linspace(min(xi2),max(xi2),nbins(2));
+% define a data grid
+[xq,yq] = meshgrid(xx,yy);
+% Interpolate the scattered data on the grid
+F = griddata(xi1,xi2,F,xq,yq);
+        
 
 %% Now plot the countour
 

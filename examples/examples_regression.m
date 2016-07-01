@@ -613,7 +613,7 @@ clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
 X=stack_loss(:,1:3);
-nameX={'x1=air flow', 'x2=cooling water inlet temperature' 'x3=10 × (acid concentration ?50)'};
+nameX={'x1=air flow', 'x2=cooling water inlet temperature' 'x3=10 ? (acid concentration ?50)'};
 namey={'y=Stack loss'};
 yXplot(y,X,'nameX',nameX,'namey',namey);
 
@@ -1460,10 +1460,10 @@ p=5;
 
 rng(1,'shr3cong');
 
-X=randn(n,p);
-y=randn(n,1);
-y(1:30)=y(1:30)+5;
-[out]=FSR(y,X);
+X = randn(n,p);
+y = randn(n,1);
+y(1:30) = y(1:30)+5;
+out     = FSR(y,X); %#ok<NASGU>
 
 %% CD: LTS and LMS
 clearvars;close all;
