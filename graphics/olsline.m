@@ -13,7 +13,7 @@ function h = olsline(varargin)
 %   in the scatter plot;
 %   - if the argument is a positive index i >= 1, OLSLINE fits a single line
 %   to the i-group in the scatter plot.
-%
+% 
 %   H = LSLINE returns the handle to the line object(s) in H.
 %
 % See also mdrplot.m, resplot.m

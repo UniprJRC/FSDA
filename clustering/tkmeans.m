@@ -232,7 +232,7 @@ refstepsdef=15;
 reftoldef=1e-14;
 
 % Default
-if nargin<3;
+if nargin<3
     alpha=0.05;
 end
 
@@ -274,17 +274,17 @@ end
 if nargin > 2
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
     % And check if the optional user parameters are reasonable.
     
     % Check number of subsamples to extract
-    if options.nsamp>ncomb;
+    if options.nsamp>ncomb
         disp('Number of subsets to extract greater than (n k). It is set to (n k)');
         options.nsamp=0;
-    elseif  options.nsamp<0;
+    elseif  options.nsamp<0
         error('FSDA:tkmeans:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
 end
@@ -381,7 +381,7 @@ for i=1:nselected
         % Calculus of matrix cini containing the new k centroids
         for j=1:k
             ni=sum(Ytri(:,v+1)==j);
-            if ni>1,
+            if ni>1
                 cini(j,:)=mean(Ytri(Ytri(:,v+1)==j,1:v));
             end
         end
@@ -397,14 +397,14 @@ for i=1:nselected
         %         disp(['Iteration ' num2str(t)])
         %         disp([oldobj-obj])
         
-        if iter==refsteps;
+        if iter==refsteps
             noconv=noconv+1;
         end
         
     end
     
     % Store the centroids and the value of the objective function
-    if obj<=vopt,
+    if obj<=vopt
         % vopt = value of the objective function in correspondence of the
         % best centroids
         vopt=obj;
@@ -431,7 +431,7 @@ for i=1:nselected
     
 end
 
-if noconv/nselected>0.1;
+if noconv/nselected>0.1
     disp('------------------------------')
     disp(['Warning: Number of subsets without convergence equal to ' num2str(100*noconv/nselected) '%'])
 end
@@ -519,10 +519,9 @@ end
 %     
 % end
 % Plot the groups in the scatter plot matrix
-if plots==1;
+if plots==1
     if v==1
-        
-        histFS(Y,length(Y),idx)
+        histFS(Y,length(Y),idx);
     elseif v==2
         colors = 'brcmykgbrcmykgbrcmykg';
         figure

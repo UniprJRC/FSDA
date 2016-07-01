@@ -673,7 +673,7 @@ if nargin>1
     chkoptions(options,UserOptions)
     
     
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -809,7 +809,7 @@ plot1=plot(x,MDvalues,'tag','data_res','LineWidth',standard.LineWidth);
 scol=standard.Color;
 
 if ~isempty(scol)
-    if size(scol,2)>1;
+    if size(scol,2)>1
         scol=scol';
     end
     scol=repmat(scol,ceil(n/length(scol)),1);
@@ -879,7 +879,7 @@ if ~isempty(options.fground)
         if max(steps)>n || min(steps)<x(1)
             mess=sprintf(['Warning: steps that you have chosen outside the range [m0 ... n]\n',...
                 'are re-assigned to m0 or to n']);
-            disp(mess);
+            fprintf('%s\n',mess);
             steps(steps<x(1)) = x(1);
             steps(steps>n) = n;
             steps = sort(unique(steps));
@@ -898,7 +898,7 @@ if ~isempty(options.fground)
         if max(funit)>n || min(funit)<1
             mess=sprintf(['Warning: units that you have chosen outside the range [1 ... n]\n',...
                 'are not considered']);
-            disp(mess);
+            fprintf('%s\n',mess);
             funit=funit(funit>0 & funit<=n);
         end
     else
@@ -1006,7 +1006,7 @@ if ~isempty(options.bground)
     if ~isempty(bthresh) && ischar(bthresh)
             error('FSDA:malfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
     else
-        if length(bthresh)>1;
+        if length(bthresh)>1
             units=seq(selmax>bthresh(2) | selmin<bthresh(1));
         elseif length(bthresh)==1
             units=seq(selmax>bthresh | selmin<-bthresh);
@@ -1245,7 +1245,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             disp([nbrush out.Y(nbrush,:) ]);
             
             % if persist='off', before highlighting the new selection
-            if strcmp(persist,'off');
+            if strcmp(persist,'off')
                 % set back to default style the previous selection
                 set(findobj(plot1,'tag','data_mal'),...
                     'Color',standard.Color{:},'LineStyle',standard.LineStyle{:},'LineWidth',standard.LineWidth);
@@ -1358,7 +1358,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 
                 % Condition || but==0 if but=0 then it is necessary to
                 % remove previous highlightments (even if persist='on')
-                if strcmp(persist,'off') || but==0;
+                if strcmp(persist,'off') || but==0
                     % If set of values has already been highlighted in the
                     % mmd plot, remove it
                     a=findobj(h,'Tag','brush_mmd');
@@ -1489,7 +1489,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 
                 % - and the 'but' variable is set if keyboard key was
                 % pressed
-                if ss==1;
+                if ss==1
                     but=2;
                 end
             else
@@ -1608,9 +1608,9 @@ end % close options.databrush
             
             if isempty(row)
                 output_txt{4,1} = ['Unit entered before step $m$=' num2str(Un(1,1))];
-            elseif length(row)<2;
+            elseif length(row)<2
                 output_txt{4,1} = ['Unit entered in step $m$=' num2str(Un(row,1))];
-            elseif length(row)==2;
+            elseif length(row)==2
                 output_txt{4,1} = ['Unit entered in step $m$=' num2str(Un(row(1),1)) ' and then in step $m$=' num2str(Un(row(2),1))];
             else
                 output_txt{4,1} = ['Unit entered in steps $m$=' num2str(Un(row(1),1)) ', $m$=' num2str(Un(row(2),1)) ' and $m$=' num2str(Un(row(3),1))];

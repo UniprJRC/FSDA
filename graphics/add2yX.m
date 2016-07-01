@@ -79,7 +79,7 @@ if nargin>0
         % Check if user options are valid options
         chkoptions(options,UserOptions)
     end
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -121,7 +121,8 @@ nAX = numel(AX);
 if nAX ==1
     if isempty(bivarfit) && ~isempty(multivarfit)
         bivarfit = multivarfit;
-    else multivarfit = '';
+    else
+        multivarfit = '';
     end
 end
 
@@ -131,7 +132,8 @@ end
 hPlotMatrixAxC = get(AX,'Children');
 if iscell(hPlotMatrixAxC)
     ngroups = size(hPlotMatrixAxC{1,1},1);
-else ngroups = size(hPlotMatrixAxC,1);
+else
+    ngroups = size(hPlotMatrixAxC,1);
 end
 
 % H: the handles of the groups within each panel are rearranged in a
@@ -291,7 +293,7 @@ for i = 1:length(AX)
             coef=regress(y,X);
             % indcoef = vector which contains the indexes of columns of X
             % except that which is about to be plotted
-            if intercept==1;
+            if intercept==1
                 indcoef = setdiff(1:p,i+1);
             else
                 indcoef = setdiff(1:p,i);

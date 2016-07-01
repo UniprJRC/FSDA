@@ -353,7 +353,7 @@ function [out]  = MixSim(k,v,varargin)
 %% User options
 
 % Default
-if nargin<2;
+if nargin<2
     error('FSDA:MixSim:Missingv','k=number of components and v = number of dimensions must be specified');
 end
 
@@ -406,12 +406,12 @@ if nargin > 2
     checkBarOmega = strcmp(UserOptions,'BarOmega');
     checkMaxOmega = strcmp(UserOptions,'MaxOmega');
     
-    if sum(checkBarOmega) && ~sum(checkMaxOmega);
+    if sum(checkBarOmega) && ~sum(checkMaxOmega)
         options.MaxOmega='';
     end
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
@@ -1847,7 +1847,7 @@ out = Q;
         else % homogeneous clusters
             
             VC=genSigma(v);
-            for kk=1:k;
+            for kk=1:k
                 S(:,:,kk)=VC;
             end
             
@@ -1872,7 +1872,7 @@ out = Q;
                 end
                 
                 R=V*L*(V');
-                for kk=1:k;
+                for kk=1:k
                     S(:,:,kk)=R;
                 end
             end

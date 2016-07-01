@@ -402,7 +402,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -645,7 +645,7 @@ for i = 1:nselected
     Sj = cov(Yj);           % covariance of subset
     
     % Check if the subset is in general position (rank<v)
-    if det(Sj)< tolMCD;
+    if det(Sj)< tolMCD
         singsub = singsub + 1;
         
         % The trial subsample is singular.
@@ -816,7 +816,7 @@ if singsub==nselected
     error('FSDA:mcd:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
 end
 
-if singsub/nselected>0.1;
+if singsub/nselected>0.1
     disp('------------------------------')
     disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nsamp) '%'])
 end

@@ -212,7 +212,7 @@ while ii < k
     % check if clusters ii and jj are homogeneous
     hom = 1;
     for kk=1:v
-        if abs(li(ii,jj,kk)-li(jj,ii,kk))> eps; %1e-14;            
+        if abs(li(ii,jj,kk)-li(jj,ii,kk))> eps %1e-14;            
             hom = 0;
             break
         end
@@ -331,7 +331,7 @@ while ii < k
             
             
             % if sum(lijne1)<v there are eigenvalues which are  = 1
-            if sum(lijne1)<v;
+            if sum(lijne1)<v
                 eigeq1=1;
                 lijeq1= (~lijne1);
             else
@@ -404,7 +404,7 @@ while ii < k
             dji=squeeze(di(jj,ii,:));
             ljine1=abs(lji-1)>toll;
             
-            if sum(ljine1)<v;
+            if sum(ljine1)<v
                 eigeq1=1;
                 ljieq1= (~ljine1);
             else
@@ -482,7 +482,7 @@ while ii < k
             lijne1=abs(lij-1)>toll;
             
             % if sum(lijne1)<v there are eigenvalues which are  = 1
-            if sum(lijne1)<v;
+            if sum(lijne1)<v
                 eigeq1=1;
                 lijeq1= (~lijne1);
             else
@@ -560,7 +560,7 @@ while ii < k
             dji=squeeze(di(jj,ii,:));
             ljine1=abs(lji-1)>toll;
             
-            if sum(ljine1)<v;
+            if sum(ljine1)<v
                 eigeq1=1;
                 ljieq1= (~ljine1);
             else

@@ -206,7 +206,7 @@ if ~isempty(UserOptions)
 end
 
 if nargin>2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end

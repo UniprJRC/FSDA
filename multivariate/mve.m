@@ -284,7 +284,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
@@ -296,10 +296,10 @@ if ~isempty(UserOptions)
     
     
     % Check number of subsamples to extract
-    if options.nsamp>ncomb;
+    if options.nsamp>ncomb
         disp('Number of subsets to extract greater than (n v+1). It is set to (n  +1)');
         options.nsamp=0;
-    elseif  options.nsamp<0;
+    elseif  options.nsamp<0
         error('FSDA:mve:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
 end
@@ -409,7 +409,7 @@ for i=1:nselected
         md=mahalFS(Y,mA,Cj);
         
       
-        if refsteps==0;
+        if refsteps==0
             % Order them
             mdsqsor=sort(md);
         else
@@ -474,7 +474,7 @@ for i=1:nselected
     
 end
 
-if volmin==Inf;
+if volmin==Inf
     error('FSDA:mve:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
 else
 end

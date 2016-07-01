@@ -106,7 +106,7 @@ options=struct('biter',biterdef,'niter',niterdef,'showall',false,...
     'stand',true,'silent',false,'plots',1);
 
 % Write in structure 'options' the options chosen by the user
-for i=1:2:length(varargin);
+for i=1:2:length(varargin)
     options.(varargin{i})=varargin{i+1};
 end
 

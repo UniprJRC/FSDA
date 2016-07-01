@@ -328,7 +328,7 @@ if ~isempty(UserOptions)
 end
 
 if nargin>1
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -414,7 +414,7 @@ FontSize =options.FontSize;
 SizeAxesNum=options.SizeAxesNum;
 
 init=mdr(1,1);
-if init-v==0;
+if init-v==0
     init=init+1;
 end
 
@@ -451,7 +451,7 @@ ylim(ylimy);
 xcoord=max([xlimx(1) init]);
 for i=1:length(quant)
     % Superimpose chosen envelopes
-    if quant(i)==0.5;
+    if quant(i)==0.5
         % Superimpose 50% envelope
         line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
     elseif quant(i)<=0.99
@@ -463,17 +463,17 @@ for i=1:length(quant)
     [figx, figy] = dsxy2figxy(gca, xcoord,gmin(gmin(:,1)==xcoord,i+1));
     kx=0; ky=0;
     
-    if isempty(figy) || figy<0;
+    if isempty(figy) || figy<0
         figy=0;
     else
-        if figy>1;
+        if figy>1
             figy=1;
         end
     end
-    if isempty(figx) || figx<0;
+    if isempty(figx) || figx<0
         figx=0;
     else
-        if figx>1;
+        if figx>1
             figx=1;
         end
     end
@@ -499,7 +499,7 @@ plot(mdr(sel,1),mdr(sel,2),'tag','data_mmd',...
 annotation(gcf,'textbox',[0.2 0.8 0.1 0.1],'EdgeColor','none','String',['Envelope based on ' num2str(envm) ' obs.'],'FontSize',FontSize);
 
 % If mplus1=1 add the line associated with (m+1) ordered MD
-if mplus1;
+if mplus1
     line(mdr(sel,1),mdr(sel,3),'LineWidth',lwd,'LineStyle',':','Color','cyan','tag','env');
 end
 
@@ -616,7 +616,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         plotedit on
         plotedit off
         
-        if strcmp(persist,'off');
+        if strcmp(persist,'off')
             % Remove from the current plot the yellow selection left by
             % selectdataFS, if present.
             a=findobj(gcf,'Tag','selected');
@@ -728,7 +728,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 
                 % Condition || but==0 if but=0 then it is necessary to
                 % remove previous highlightments (even if persist='on')
-                if strcmp(persist,'off') || but==0;
+                if strcmp(persist,'off') || but==0
                     % If set of values has already been highlighted in the
                     % mdr plot, remove it
                     a=findobj(h,'Tag','brush_res');
@@ -803,7 +803,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             %   close is recovered
             set(gcf,'CloseRequestFcn','closereq');
             % - and the 'but' variable is set if keyboard key was pressed
-            if ss==1;
+            if ss==1
                 but=2;
             end
         else

@@ -178,7 +178,7 @@ end
 
 stat=outms.stor;
 
-if size(stat,2)<8;
+if size(stat,2)<8
     error('FSDA:cdsplot:missingInputs', ...
         'Missing matrix containing: max, min, averages, or medians of Cp values.')
 end
@@ -219,7 +219,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 1
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -346,14 +346,14 @@ else
 end
 
 % Define limits for x axis
-if isempty(xlimx);
+if isempty(xlimx)
     xlim([xl1 xl2]);
 else
     xlim(xlimx);
 end
 
 
-if label;
+if label
     label=outms.LAB;
     % Add labels associated with the different selected models
     % 9th col of matrix stor contains overall maximum of Cp values
@@ -449,7 +449,7 @@ if ~isempty(cpbrush)
     plot(storFWD(:,1),storFWD(:,ib+1));
     
     % Add labels for the brushed searches
-    if ~isempty(label);
+    if ~isempty(label)
         % Add the proper forward envelopes based on the F distribution
         hold('on');
         text(repmat(n,length(ib),1),stat(ib,7),label(ib));

@@ -270,7 +270,7 @@ end
 %init1=options.init;
 if nargin > 2
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -279,7 +279,7 @@ scaled=options.scaled;
 
 % And check if the optional user parameters are reasonable.
 
-if bsb==0;
+if bsb==0
     Ra=1; nwhile=1;
     while and(Ra,nwhile<100)
         % Extract a random sample of size v+1
@@ -300,20 +300,20 @@ ini0=length(bsb);
 init1=options.init;
 msg=options.msg;
 
-if  init1 <v+1;
+if  init1 <v+1
     mess=sprintf(['Attention : init1 should be larger than v. \n',...
         'It is set to v+1.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=v+1;
-elseif init1<ini0;
+elseif init1<ini0
     mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=ini0;
-elseif init1>=n;
+elseif init1>=n
     mess=sprintf(['Attention : init1 should be smaller than n. \n',...
         'It is set to n-1.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=n-1;
 end
 
@@ -398,7 +398,7 @@ else
             mala(:,2)=mala(:,2)*(detcovYb^(1/(2*v)));
         end
         
-        if (mm>=init1);
+        if (mm>=init1)
             BB(bsb,mm-init1+1)=bsb;
             
             % Store the means
@@ -423,7 +423,7 @@ else
         
         zs=sortrows(mala,2);
         
-        if mm>=init1;
+        if mm>=init1
             % Store max and mmth ordered MD
             msr(mm-init1+1,2:3)= [max(mala(bsb,2)) zs(mm,2)];
         end
@@ -432,7 +432,7 @@ else
         if mm<n
             % eval('mm');
             
-            if (mm>=init1);
+            if (mm>=init1)
                 ncl=setdiff(seq,bsb);
                 sncl=sortrows(mala(ncl,2));
                 % store minMD and (m+1)th MD
@@ -451,7 +451,7 @@ else
             % the new subset
             bsb=zs(1:mm+1,1);
             
-            if (mm>=init1);
+            if (mm>=init1)
                 unit=setdiff(bsb,oldbsb);
                 if (length(unit)<=10)
                     Un(mm-init1+1,2:(length(unit)+1))=unit;

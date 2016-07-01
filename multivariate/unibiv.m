@@ -148,7 +148,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 1
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -158,7 +158,7 @@ plo=options.plots;
 textlab=options.textlab;
 robscale=options.robscale;
 
-if rf<=0 || rf>=1;
+if rf<=0 || rf>=1
     error('FSDA:unibiv:Wrongrf','The confidence threshold must be greater than 0 and smaller than 1')
 end;
 
@@ -189,10 +189,10 @@ madcoef=options.madcoef;
 
 seq=(1:n)';
 
-for il=1:v;      % il is linked to the rows
-    for jl=il:v;    % jl is linked to columns
+for il=1:v      % il is linked to the rows
+    for jl=il:v    % jl is linked to columns
         
-        if il==jl;
+        if il==jl
             
             % Ys = vector which contains standardized data
             y=Y(:,il);
@@ -214,7 +214,7 @@ for il=1:v;      % il is linked to the rows
             end
             
             
-            if robscale>4;
+            if robscale>4
                 % Sy is the unrobust standard deviation of y
                 Sy=sqrt((y-Ty)'*(y-Ty)/(n-1));
                 Ys=(y-Ty)/Sy;
@@ -249,7 +249,7 @@ for il=1:v;      % il is linked to the rows
             
             % plotting part
             % produce a vertical boxplot @
-            if plo==1;
+            if plo==1
                 axis(axis);
                 hbuf=subplot(v,v,jl+(il-1)*v);
                 abuf=get(hbuf,'Position');
@@ -298,7 +298,7 @@ for il=1:v;      % il is linked to the rows
             end
             
             
-            if robscale==1;
+            if robscale==1
                 us=abs(Xs+Ys);
                 vs=abs(Xs-Ys);
                 mus=(median(us))^2;
@@ -308,15 +308,15 @@ for il=1:v;      % il is linked to the rows
                     r=0;
                 end
                 
-            elseif robscale==2;
+            elseif robscale==2
                 % r is computed using ranks
                 r=corr(x,y,'type','Spearman');
-            elseif robscale==3;
+            elseif robscale==3
                 % r is based on the linear correlation
                 % between the "concordances" sign(x(i)-x(j))*sign(y(i)-y(j)), i<j, with
                 % an adjustment for ties.  This is often referred to as Kendall's tau-b.
                 r=corr(x,y,'type','Kendall');
-            elseif robscale==4;
+            elseif robscale==4
                 % r is based on the tetracoric correlation
                 r=sum(sign((x-Tx).*(y-Ty)))/n;
             else
@@ -332,9 +332,9 @@ for il=1:v;      % il is linked to the rows
             % their distributions have positive probability at 1 and -1.
             % If their value is equal to 1 or -1 then artificially put the value equal
             % to 0.999 or -0.999
-            if r==1;
+            if r==1
                 r=0.999;
-            elseif r==-1;
+            elseif r==-1
                 r=-0.999;
             end
             
@@ -408,8 +408,8 @@ for il=1:v;      % il is linked to the rows
             % biv is the 1 x n vector which contains potential bivariate outliers
             biv=zeros(1,n);
             
-            for jk=1:n;
-                if sqrt((new2(1,jk)+fuo)^2+new2(2,jk)^2)+sqrt((new2(1,jk)-fuo)^2+new2(2,jk)^2)>ch;
+            for jk=1:n
+                if sqrt((new2(1,jk)+fuo)^2+new2(2,jk)^2)+sqrt((new2(1,jk)-fuo)^2+new2(2,jk)^2)>ch
                     biv(1,jk)=biv(1,jk)+1;
                 else
                 end
@@ -418,7 +418,7 @@ for il=1:v;      % il is linked to the rows
             bivT=bivT+biv';
             
             % the following lines plot the hinge together with the fence
-            if plo==1;
+            if plo==1
                 axis(axis);
                 subplot(v,v,jl+(il-1)*v);
                 hold('on');
@@ -432,7 +432,7 @@ for il=1:v;      % il is linked to the rows
                 
                 % if textlab =1 labels are plotted for the units outside
                 % the confidence ellipses
-                if textlab==1;
+                if textlab==1
                     text(Xs(biv==1),Ys(biv==1),num2str(seq(biv==1)));
                 end
             end
@@ -446,7 +446,7 @@ end % endif of il=1:v
 
 fre=[seq univT bivT MDbiv];
 
-if plo==1;
+if plo==1
     hold('off')
 end
 end

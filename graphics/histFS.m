@@ -9,7 +9,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %                the elements which have to be binned
 %     nbins    : the number of bins. Scalar. The elements of of input vector y are binned
 %                into nbins equally spaced containers
-%     gy       : idenitifier vector. Vector. Vector of n numeric
+%     gy       : idenitifier vector. Vector. Vector of n numeric 
 %                identifiers for the group of each
 %                element in y. If there are k groups in y, unique(gy) = k.
 %

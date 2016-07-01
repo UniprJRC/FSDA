@@ -486,7 +486,7 @@ function [out]  = MixSimreg(k,p,varargin)
 %% User options
 
 % Default
-if nargin<2;
+if nargin<2
     error('FSDA:MixSimreg:Missingp','k=number of components and p = number of explanatory variables (includind intercept) must be specified');
 end
 
@@ -536,12 +536,12 @@ if nargin > 2
     checkBarOmega = strcmp(UserOptions,'BarOmega');
     checkMaxOmega = strcmp(UserOptions,'MaxOmega');
     
-    if sum(checkBarOmega) && ~sum(checkMaxOmega);
+    if sum(checkBarOmega) && ~sum(checkMaxOmega)
         options.MaxOmega='';
     end
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
@@ -640,7 +640,7 @@ if isstruct(Xdistrib)
                 str = sprintf(['\n'...
                     'Distribution is ''User'' but the matrix BarX containing the means\n'...
                     'of the p explanatory has not been given']);
-                disp(str)
+                sprintf('%s',str);
                 error('FSDA:MixSimreg:MissingField','Please also supply inside Xdistrib field BarX')
             end
             Xdistribdef.type='User';
@@ -742,7 +742,7 @@ if isstruct(betadistrib)
         
     elseif strcmp('User',betadistrib.type)
         d=find(strcmp('Beta',fbetadistrib),1);
-        if ~isempty(d);
+        if ~isempty(d)
             Beta= betadistrib.Beta;
         else
             error('FSDA:MixSimreg:MissingField','If betadistrib =''User'' then the user must provide input matrix Beta')

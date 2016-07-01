@@ -236,7 +236,7 @@ if ~isempty(UserOptions)
     end
     
     % Write in structure 'options' the options chosen by the user
-    for ii=1:2:length(varargin);
+    for ii=1:2:length(varargin)
         options.(varargin{ii})=varargin{ii+1};
     end
     
@@ -330,7 +330,7 @@ for j=1:k
         end
     elseif find(strcmp('User',Xdistrib.type))
         d=find(strcmp(fieldnames(Xdistrib),'X'),1);
-        if ~isempty(d);
+        if ~isempty(d)
             X= Xdistrib.X;
         else
             error('FSDA:simdatasetreg:MissingField','If string Xdistrib = ''User'' then the user must provide input matrix X')
@@ -378,7 +378,7 @@ if nnoise ~= 0
     rrr = rand(n + nout,  nnoise);
     
     % Xnoise = (U-L)*rrr+L;
-    if nnoise>length(U);
+    if nnoise>length(U)
         U=repmat(U,10);
         L=repmat(L,10);
     end

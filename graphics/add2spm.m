@@ -176,7 +176,7 @@ options=struct('labeladd','','userleg','');
 UserOptions=varargin(1:2:length(varargin));
 % Write in structure 'options' the options chosen by the user
 if ~isempty(UserOptions)
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -184,7 +184,7 @@ labeladd = options.labeladd;
 userleg  = options.userleg;
 
 % force to build default legends if there are no legends in the scatterplot
-if ~isappdata(AX(1,end),'LegendPeerHandle');
+if ~isappdata(AX(1,end),'LegendPeerHandle')
     userleg = '1';
 end
 
@@ -359,7 +359,7 @@ if strcmp('1',labeladd)
     v = size(AX,2);
     for i = 1:v
         for j = 1:v
-            if i ~=  j;
+            if i ~=  j
                 % Set AX(i) the current axes
                 set(fig,'CurrentAxes',AX(i,j));
                 % Add the id labels for the units in last group.

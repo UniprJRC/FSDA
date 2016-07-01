@@ -413,14 +413,14 @@ if nargin<1
 end
 
 % Check if the first argument is a structure or not
-if ~isstruct(y);
+if ~isstruct(y)
     [n,p]=size(X);
     onlyyX=1;
 else
     % If the first argument is a structure and the number of supplied
     % arguments is greater than 1 it is necessary to add to varargin the
     % second input (which is X)
-    if nargin>1;
+    if nargin>1
         varargin=[X varargin];
     end
     out=y;
@@ -429,7 +429,7 @@ else
     X=out.X;
     [n,p]=size(X);
     
-    if find(strcmp('RES',fieldnames(out)));
+    if find(strcmp('RES',fieldnames(out)))
         % The number of rows of matrix residual is associated with the number of
         % units. The number of columns is associated with the number of steps of
         % the fwd search.
@@ -450,7 +450,7 @@ numtext=cellstr(num2str(seq,'%d'));
 % Initialize line width
 linewidthStd = 0.5;
 
-if onlyyX==0;
+if onlyyX==0
     % x= vector which contains the subset size (numbers on the x axis)
     x=(n-nsteps+1):n;
     
@@ -492,7 +492,7 @@ if nargin>2 || (nargin>1 && onlyyX==0)
         chkoptions(options,UserOptions)
     end
     
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -571,13 +571,13 @@ steps=options.selstep;
 if max(steps)>n
     mess=sprintf(['One of the steps which has beeen chosen is greater than n. \n',...
         'It is deleted.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     steps=steps(steps<=n);
 end
 if min(steps)<x(1)
     mess=sprintf(['One of the steps which has beeen chosen is smaller than m0. \n',...
         'It is deleted.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     steps=steps(steps>=x(1));
 end
 
@@ -589,7 +589,7 @@ end
 
 units=options.selunit;
 
-if onlyyX;
+if onlyyX
     
     if ~isempty(options.databrush)
         disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
@@ -598,7 +598,7 @@ if onlyyX;
     if iscellstr(units)
         selunit=str2double(units);
         units=seq(y>selunit(2) | y<selunit(1));
-    elseif ischar(units)==1;
+    elseif ischar(units)==1
         % if units is a character than the user has specified a threshold
         % convert character to numeric
         thresh=str2double(units);
@@ -610,13 +610,13 @@ if onlyyX;
         if max(units)>n
             mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
                 'It is deleted.']);
-            disp(mess);
+            fprintf('%s\n',mess);
             units=units(units<=n);
         end
         if min(units)<1
             mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
                 'It is deleted.']);
-            disp(mess);
+            fprintf('%s\n',mess);
             units=units(units>0);
         end
     end
@@ -627,7 +627,7 @@ else
         selmax=max(residuals,[],2);
         selmin=min(residuals,[],2);
         units=seq(selmax>selunit(2) | selmin<selunit(1));
-    elseif ischar(units)==1;
+    elseif ischar(units)==1
         % if units is a character than the user has specified a threshold
         % convert character to numeric
         thresh=str2double(units);
@@ -639,13 +639,13 @@ else
         if max(units)>n
             mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
                 'It is deleted.']);
-            disp(mess);
+            fprintf('%s\n',mess);
             units=units(units<=n);
         end
         if min(units)<1
             mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
                 'It is deleted.']);
-            disp(mess);
+            fprintf('%s\n',mess);
             units=units(units>0);
         end
     end
@@ -679,7 +679,7 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
 
-if intcolumn==1;
+if intcolumn==1
     intercept = 1;
     p1=1:(p-numel(intcolumn));
     Xsel=X;
@@ -809,7 +809,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
         plotedit on
         plotedit off
         
-        if strcmp(persist,'off');
+        if strcmp(persist,'off')
             % Remove from the current plot what has alredy been selected
             a=findobj(gcf,'Tag','selected');
             delete(a);
@@ -837,9 +837,10 @@ if ~isempty(options.databrush) || iscell(options.databrush)
         
         set(get(0,'CurrentFigure'),'CloseRequestFcn','closereq'); %
         
-        if ss==1;
+        if ss==1
             but=2;
-        else but=1;
+        else
+            but=1;
         end
         
         %         button = get(fig, 'SelectionType');
@@ -871,7 +872,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
             
             %% - call selectdataFS
             
-            if ij>1;
+            if ij>1
                 legend(hLegend(length(AX)),'hide');
                 %               set(hLegend(length(AX)),'Location', 'EastOutside');
             end;
@@ -1100,7 +1101,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                             
                             % indcoef = vector which contains the indexes of columns of X
                             % except that which is about to be plotted
-                            if intercept==1;
+                            if intercept==1
                                 indcoef=setdiff(1:p,i+1);
                             else
                                 indcoef=setdiff(1:p,i);
@@ -1212,7 +1213,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                     set(gcf,'NextPlot','add');
                 end
                 hold on
-                if strcmp('on',persist);
+                if strcmp('on',persist)
                     %find the handles of the residual trajectories
                     a=get(gcf,'Children');
                     aa=get(a,'Children');
@@ -1305,7 +1306,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                     
                     % Condition || but==0 if but=0 then it is necessary to
                     % remove previous highlightments (even if persist='on')
-                    if strcmp(persist,'off') || but==0;
+                    if strcmp(persist,'off') || but==0
                         % If set of values has already been highlighted in the mdr plot,
                         % remove it
                         a=findobj(h,'Tag','brush_mdr');
@@ -1378,7 +1379,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                     ss=waitforbuttonpressFS;
                     set(get(0,'CurrentFigure'),'CloseRequestFcn','closereq');
                     disp('------------------------')
-                    if ss==1;
+                    if ss==1
                         but=2;
                     end
                 else

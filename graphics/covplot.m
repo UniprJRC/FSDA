@@ -299,7 +299,7 @@ if nargin>1
     % Check if user options are valid options
     chkoptions(options,UserOptions)
     
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -345,7 +345,7 @@ plot1=plot(S2cov(:,1),S2cov(:,2:end),'LineWidth',standard.LineWidth);
 scol=standard.Color;
 
 if ~isempty(scol)
-    if size(scol,2)>1;
+    if size(scol,2)>1
         scol=scol';
     end
     scol=repmat(scol,ceil(vv/length(scol)),1);
@@ -355,7 +355,7 @@ end
 % Apply Line Style
 slintyp=standard.LineStyle;
 if ~isempty(slintyp)
-    if size(slintyp,2)>1;
+    if size(slintyp,2)>1
         slintyp=slintyp';
     end
     slintyp=repmat(slintyp,ceil(vv/length(slintyp)),1);
@@ -413,7 +413,7 @@ if ~isempty(options.fground)
         if max(steps)>n || min(steps)<m0
             mess=sprintf(['Warning: steps that you have chosen outside the range [m0 ... n]\n',...
                 'are not considered']);
-            disp(mess);
+            fprintf('%s\n',mess);
             steps=steps(steps>=m0 & steps<=n);
         end
     end

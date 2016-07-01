@@ -198,7 +198,7 @@ if nargin > 6
     end
 
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 
@@ -414,7 +414,7 @@ for iter=1:niter
     % Now compute the value of the target function
     obj =0;
     for jk=1:k
-        if control==0,
+        if control==0
             yj=xmod(xmod(:,end)==jk,end-1);
             Xj=xmod(xmod(:,end)==jk,1:end-2);
             obj = obj + niini(jk)*log(niini(jk)/trimm2) +...
@@ -513,7 +513,7 @@ for jk=1:k
         % initialize figure
         if jk == 1
             fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
-            ah=gca(fh);
+            ah=gca(fh); %#ok<NASGU>
             hold on;
             xlabel('X');
             ylabel('y');
@@ -602,7 +602,7 @@ else
     end
     
     % scatterplot
-    hout = spmplot(YY,group,plo,'hist');
+    hout = spmplot(YY,group,plo,'hist'); %#ok<NASGU>
     
     %group_l = cellstr([repmat('Group',k,1) , num2str((1:k)')]);
     %group_l = ['Trimmed units' ; group];

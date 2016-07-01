@@ -441,7 +441,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -550,7 +550,7 @@ for i = 1:nselected
     index = C(i,:);
     Yj = Y(index,:);
     
-    if jpcorr==0;
+    if jpcorr==0
         % The most efficient way to find the vector associated to the direction
         % which is orthogonal to the vectors which form matrix subs
         % where subs is
@@ -923,7 +923,7 @@ end
 
 % Standardize direction of maximum outlyingness
 % for Juan and Prieto method
-if jpcorr~=0;
+if jpcorr~=0
     nor=sqrt(sum(maxdir.^2,2));
     maxdir = bsxfun(@rdivide, maxdir, nor);
 end
@@ -956,7 +956,7 @@ if margin >0
         marg=combsFS(seqv,j);
         normj=sqrt(j);
         
-        for im=1:size(marg,1);
+        for im=1:size(marg,1)
             % Ysel = extract just the columns of Y specified by marg(im,:)
             Yselori=Y(:,marg(im,:));
             
@@ -1058,7 +1058,7 @@ if margin >0
             if j>1
                 sizYselori=size(Yselori,2);
                 
-                for sign=1:fix(sizYselori/2);
+                for sign=1:fix(sizYselori/2)
                     
                     
                     onesign=ones(sizYselori,1);

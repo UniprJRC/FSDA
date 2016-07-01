@@ -439,7 +439,7 @@ end
 %init1=options.init;
 if nargin > 1
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     family=options.family;
@@ -463,15 +463,15 @@ end
 init1=options.init;
 msg=options.msg;
 
-if  init1 <v+1;
+if  init1 <v+1
     mess=sprintf(['Attention : init1 should be larger than v. \n',...
         'It is set to v+1.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=v+1;
-elseif init1>n;
+elseif init1>n
     mess=sprintf(['Attention : init1 should be smaller than n. \n',...
         'It is set to n.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=n;
 end
 
@@ -567,7 +567,7 @@ Unjj=cell(llaAround,1);
 Unjinit=cat(2,(init1+1:n)',NaN(n-init1,10));
 
 % jj loops over the columns of the datasets specified in ColToComp
-for jj=ColToComp;
+for jj=ColToComp
     
     % Yjj contains in column jj the original untransformd variable and in all the other
     % columns the variables transformed using la0.
@@ -635,9 +635,9 @@ for jj=ColToComp;
                 mala(:,2)=sqrt(((mm-1)*sum(u.^2)))';
                 
                 
-                if (mm>=init1);
+                if (mm>=init1)
                     
-                    if speed==1;
+                    if speed==1
                         lainit=laout;
                     end
                     
@@ -648,7 +648,7 @@ for jj=ColToComp;
                         % In order to find minimum it is possible to use MATLAB
                         % function fminsearch or function fminunc from the optimization
                         % toolbox
-                        if typemin==2;
+                        if typemin==2
                             [laout,fval,exitflag]  = fminunc(loglik,lainit,optmin);
                         else
                             [laout,fval,exitflag]  = fminsearch(loglik,lainit,optmin);
@@ -670,7 +670,7 @@ for jj=ColToComp;
                     
                     lrat=mm*(log(det(cov(Ytrb0)))-fval);
                     
-                    if lrat<0;
+                    if lrat<0
                         disp(['Warning: negative lrt, non convergence at step mm=' num2str(mm)])
                         disp(['Variable' colnames(jj) ' laAround=' num2str(lai) ])
                         
@@ -701,7 +701,7 @@ for jj=ColToComp;
                     % the new subset
                     bsb=zs(1:mm+1,1);
                     
-                    if (mm>=init1);
+                    if (mm>=init1)
                         unit=setdiff(bsb,oldbsb);
                         if (length(unit)<=10)
                             Unj(mm-init1+1,2:(length(unit)+1))=unit;
@@ -794,7 +794,7 @@ if ~isempty(plotslrt)
     elseif cColToComp==2
         nr=2;
         nc=1;
-    elseif cColToComp<=4;
+    elseif cColToComp<=4
         nr=2;
         nc=2;
     elseif cColToComp<=6
@@ -828,7 +828,7 @@ if ~isempty(plotslrt)
         if d>0
             ylimy=plotslrt.ylim;
         else
-            if signlr==1;
+            if signlr==1
                 ylimy=[-5 5];
             else
                 ylimy=[0 25];
@@ -888,7 +888,7 @@ if ~isempty(plotslrt)
     else
         
         xlimx='';
-        if signlr==1;
+        if signlr==1
             ylimy=[-5 5];
         else
             ylimy=[0 25];
@@ -918,7 +918,7 @@ if ~isempty(plotslrt)
     
     ij=1;
     
-    for jj=ColToComp;
+    for jj=ColToComp
         
         LIKrat=LRT{ij};
         subplot(nr,nc,ij)
@@ -935,7 +935,7 @@ if ~isempty(plotslrt)
         
         % Add labels at the end of the search only if they are inside the
         % limits
-        for i=1:llaAround;
+        for i=1:llaAround
             if LIKrat(end,i+1)>=ylimy(1) && LIKrat(end,i+1)<=ylimy(2)
                 text(n,LIKrat(end,i+1),num2str(laAround(i)),'FontSize',FontSize,'HorizontalAlignment','Left');
             end

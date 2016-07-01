@@ -367,7 +367,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -574,7 +574,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
     % 'intercept' will be used later for plotting.
     intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
     
-    if intcolumn==1 && size(X,2)>1;
+    if intcolumn==1 && size(X,2)>1
         intercept=1;
         p1=1:(p-numel(intcolumn));
         Xsel=X;
@@ -619,7 +619,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
         plotedit on
         plotedit off
         
-        if strcmp(persist,'off');
+        if strcmp(persist,'off')
             % then remove from the current plot what has alredy been
             % selected
             % Remove the yellow selection in this plot if present
@@ -631,7 +631,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
             %brushing and selections.
             sele1=[sele {'FlagColor' ColorOrd(ij,:)}];
         end
-        if it>1;
+        if it>1
             disp('To continue brushing, with the mouse select additional steps to brush in the FAN plot');
             disp('To stop brushing press any key');
         else
@@ -937,7 +937,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     
                     % if but=0 then it is necessary to remove previous
                     % highlightments (even if persist='on')
-                    if (strcmp(persist,'off') || but==0 );
+                    if (strcmp(persist,'off') || but==0 )
                         
                         % If set of values has already been highlighted in the
                         %monitoring residuals plot, remove it
@@ -1032,7 +1032,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     
                     % Condition || but==0 if but=0 then it is necessary to
                     % remove previous highlightments (even if persist='on')
-                    if strcmp(persist,'off') || but==0;
+                    if strcmp(persist,'off') || but==0
                         
                         % If set of values has already been highlighted in the
                         % mdr plot, remove it
@@ -1131,7 +1131,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 %   close is recovered
                 set(gcf,'CloseRequestFcn','closereq');
                 % - and the 'but' variable is set if keyboard key was pressed
-                if ss==1;
+                if ss==1
                     but=2;
                 end
             else

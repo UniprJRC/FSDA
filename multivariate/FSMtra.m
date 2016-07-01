@@ -593,7 +593,7 @@ end
 %init1=options.init;
 if nargin > 1
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     family=options.family;
@@ -608,15 +608,15 @@ familytra=str2func(Xnormfamily);
 init1=options.init;
 msg=options.msg;
 
-if  init1 <v+1;
+if  init1 <v+1
     mess=sprintf(['Attention : init1 should be larger than v. \n',...
         'It is set to v+1.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=v+1;
-elseif init1>n;
+elseif init1>n
     mess=sprintf(['Attention : init1 should be smaller than n. \n',...
         'It is set to n.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=n;
 end
 
@@ -714,7 +714,7 @@ end
 
 
 if ~isempty(prolik)
-    if ctra<=4;
+    if ctra<=4
         nr=2;
         nc=2;
     elseif ctra<=6
@@ -840,9 +840,9 @@ else
         mala(:,2)=sqrt(((mm-1)*sum(u.^2)))';
         
         
-        if (mm>=init1);
+        if (mm>=init1)
             
-            if speed==1;
+            if speed==1
                 lainit=laout+1e-4*randn(size(lainit));
             end
             
@@ -853,7 +853,7 @@ else
                 % In order to find minimum it is possible to use MATLAB
                 % function fminsearch or function fminunc from the optimization
                 % toolbox
-                if typemin==2;
+                if typemin==2
                     [laout,fval,exitflag]  = fminunc(loglik,lainit,optmin);
                 else
                     [laout,fval,exitflag]  = fminsearch(loglik,lainit,optmin);
@@ -871,7 +871,7 @@ else
             Exflag(mm-init1+1,2)=exitflag;
             
             % Store value of the likelihood ratio for H0
-            if onelambda==1;
+            if onelambda==1
                 % Store common maximum likelihood estimate of tranformation parameter
                 MLEtra(mm-init1+1,2)=laout;
                 Ytrb0=feval(familytra,Yb,ColToTra,la0*ones(length(ColToTra),1));
@@ -968,7 +968,7 @@ else
                         v=axis;
                         
                         
-                        if ij==1;
+                        if ij==1
                             %curax=gca;
                             yl=get(gca,'Ylim');
                         else
@@ -1028,7 +1028,7 @@ else
             % the new subset
             bsb=zs(1:mm+1,1);
             
-            if (mm>=init1);
+            if (mm>=init1)
                 unit=setdiff(bsb,oldbsb);
                 if (length(unit)<=10)
                     Un(mm-init1+1,2:(length(unit)+1))=unit;
@@ -1166,13 +1166,13 @@ else
         end
         
         v=axis;
-        if max(max(MLEtra(:,2:end)))>1;
+        if max(max(MLEtra(:,2:end)))>1
             line([v(1),v(2)],[1,1],'color','r','LineWidth',LineWidthEnv,'Tag','env');
         end
         minMLE=min(min(MLEtra(:,2:end)));
-        if minMLE<-1;
+        if minMLE<-1
             line([v(1),v(2)],[-1,-1],'color','r','LineWidth',LineWidthEnv,'Tag','env');
-        elseif minMLE<0;
+        elseif minMLE<0
             line([v(1),v(2)],[0,0],'color','r','LineWidth',LineWidthEnv,'Tag','env');
         end
         
@@ -1304,7 +1304,7 @@ end
     function dZ=likBoxCox(la)
         Z=Yb;
         
-        for j=1:ctra;
+        for j=1:ctra
             laj=la(j);
             cj=ColToTra(j);
             Gj=exp(mean(log(Yb(:,cj))));
@@ -1326,7 +1326,7 @@ end
     function dZ=likonelambdaBoxCox(la)
         Z=Yb;
         
-        for j=1:ctra;
+        for j=1:ctra
             cj=ColToTra(j);
             Gj=exp(mean(log(Yb(:,cj))));
             
@@ -1348,7 +1348,7 @@ end
         
         Z=Yb;
         
-        for j=1:ctra;
+        for j=1:ctra
             laj=la(j);
             cj=ColToTra(j);
             
@@ -1385,7 +1385,7 @@ end
     function dZ=likonelambdaYJ(la)
         Z=Yb;
         
-        for j=1:ctra;
+        for j=1:ctra
             cj=ColToTra(j);
             
             

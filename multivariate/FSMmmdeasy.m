@@ -198,14 +198,14 @@ end
 %init1=options.init;
 if nargin > 2
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
 
 % And check if the optional user parameters are reasonable.
 
-if bsb==0;
+if bsb==0
     Ra=1; nwhile=1;
     while and(Ra,nwhile<100)
         % Extract a random sample of size v+1
@@ -227,20 +227,20 @@ ini0=length(bsb);
 init1=options.init;
 msg=options.msg;
 
-if  init1 <v+1;
+if  init1 <v+1
     mess=sprintf(['Attention : init1 should be larger than v. \n',...
         'It is set to v+1.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=v+1;
-elseif init1<ini0;
+elseif init1<ini0
     mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=ini0;
-elseif init1>=n;
+elseif init1>=n
     mess=sprintf(['Attention : init1 should be smaller than n. \n',...
         'It is set to n-1.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=n-1;
 end
 
@@ -277,7 +277,7 @@ else
         % select subset
         Yb=Y(bsb,:);
         
-        if (mm>=init1) && nargout==3;
+        if (mm>=init1) && nargout==3
             BB(bsb,mm-init1+1)=bsb;
         end
         
@@ -302,7 +302,7 @@ else
         if mm<n
             % eval('mm');
             
-            if (mm>=init1);
+            if (mm>=init1)
                 ncl=setdiff(seq,bsb);
                 sncl=sortrows(mala(ncl,2));
                 % mmd contains minimum of Mahalanobis distances among
@@ -319,7 +319,7 @@ else
             % the new subset
             bsb=zs(1:mm+1,1);
             
-            if (mm>=init1);
+            if (mm>=init1)
                 unit=setdiff(bsb,oldbsb);
                 if (length(unit)<=10)
                     Un(mm-init1+1,2:(length(unit)+1))=unit;

@@ -515,7 +515,7 @@ if ~isempty(UserOptions)
     end
     
     % Write in structure 'options' the options chosen by the user
-    for ii=1:2:length(varargin);
+    for ii=1:2:length(varargin)
         options.(varargin{ii})=varargin{ii+1};
     end
     
@@ -727,7 +727,7 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
     Xout=zeros(noiseunits, v);
     ni=0;
     idtmp=zeros(sum(number),1);
-    for ii=1:length(number);
+    for ii=1:length(number)
         typeouti=typeout{ii};
         
         [Xouti, ~] = getOutliers(number(ii), Mu, S, alpha(ii), maxiter, typeouti, intervalout);
@@ -824,7 +824,7 @@ if isstruct(noisevars) || ~isempty(noisevars)
     else
         
         rrr=zeros(n + noiseunits, nvars);
-        for ii=1:length(number);
+        for ii=1:length(number)
             distributioni=distribution{ii};
             
             if strcmp(distributioni(1),'T') || strcmp(distributioni(1),'t')

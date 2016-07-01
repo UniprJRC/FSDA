@@ -431,7 +431,7 @@ if ~isempty(UserOptions)
     
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     chkbsbsteps = strcmp(UserOptions,'bsbsteps');
@@ -579,7 +579,7 @@ parfor (j = 1:nsimul , numpool)
         if usePCT == 1
             progbar.progress;  %#ok<PFBNS>
         else
-            if j==nsimul/2 || j==nsimul/4  || j==nsimul*0.75 || j==nsimul*0.9;
+            if j==nsimul/2 || j==nsimul/4  || j==nsimul*0.75 || j==nsimul*0.9
                 disp(['Simul nr. ' num2str(nsimul-j) ' n=' num2str(n)]);
                 % note that a parfor, used in sequential mode, iterates in
                 % the inverse order (this explains why we display

@@ -304,7 +304,7 @@ if ~isempty(UserOptions)
     chkoptions(options,UserOptions)
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
@@ -328,7 +328,7 @@ if iscell(numlab)
     ind=ind(n-numlab+1:n);
 else
     ind=numlab;
-    if size(ind,2)>1;
+    if size(ind,2)>1
         ind=ind';
     end
 end
@@ -553,7 +553,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     p=size(X,2);
     intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
     
-    if intcolumn==1;
+    if intcolumn==1
         intercept = 1;
         p1=1:(p-numel(intcolumn));
         Xsel=X;
@@ -737,7 +737,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 
                 % - and the 'but' variable is set if keyboard key was
                 % pressed
-                if ss==1;
+                if ss==1
                     but=2;
                 end
             else

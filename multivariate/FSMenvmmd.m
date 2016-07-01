@@ -171,7 +171,7 @@ end
 
 
 if nargin>2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -189,7 +189,7 @@ end
 %% Envelopes generation
 
 % Make sure that prob is a row vector.
-if size(prob,1)>1;
+if size(prob,1)>1
     prob=prob';
 end
 
@@ -204,7 +204,7 @@ lm=length(m);
 % mm = fwd search index replicated lp times.
 mm = repmat(m,1,lp);
 
-if exact;
+if exact
     % finv finds the inverse of the F distribution.
     quant=finv(repmat(prob,lm,1),2*(n-mm),2*(mm+1));
 else
@@ -222,7 +222,7 @@ cor=v*((mm+1)./mm).*(mm-1)./(mm-v);
 %cor=v*((mm.^2-1)./mm)./(mm-v);
 
 % Minsca = matrix of the scaled minMD envelopes in each step of the search.
-if exact;
+if exact
     MinSca= sqrt(cor.*finv(q,v, mm-v));
 else
     MinSca= sqrt(cor.*invcdff(q,repmat(v,size(mm)), mm-v));
@@ -231,7 +231,7 @@ end
 
 % Compute Tallis correction factor based on the chi^2 distribution
 % mm/n is the percentage of observations inside subset if scaled is not equal to 1.
-if scaled==1;
+if scaled==1
     corr=1;
 else
     a=chi2inv(mm/n,v);
@@ -288,14 +288,14 @@ while (converge==0 && k<=50)
     
     x1 = x0 - (p-f0)./df0 ;
     negative = sum(sum(not((x1 > tol2)))) ;
-    if negative>0;
+    if negative>0
         x1 = x1 + (x1<=tol2).*(x0.*(0.5 + 1.5.*(p< f0)) - x1) ;
     end;
     converge = max(max(abs(x0 - x1))) < tol & not(negative);
     x0 = x1;
     k = k + 1;
 end
-if not(converge);
+if not(converge)
     disp('Warning: INVCDFF has not converged, exact routine finv is used');
     x0=finv(1-p,n1,n2);
 end

@@ -289,7 +289,7 @@ if nargin>1
     
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
@@ -672,7 +672,7 @@ if ~isempty(databrush) || isstruct(databrush)
                 
                 % - and the 'but' variable is set if keyboard key was
                 % pressed
-                if ss==1;
+                if ss==1
                     but=2;
                 end
             else

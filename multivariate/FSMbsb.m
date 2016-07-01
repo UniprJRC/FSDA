@@ -217,13 +217,13 @@ if ~isempty(UserOptions)
     chkoptions(options,UserOptions)
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
 
 % And check if the optional user parameters are reasonable.
-if bsb==0;
+if bsb==0
     Ra=1; nwhile=1;
     while and(Ra,nwhile<100)
         % Extract a random sample of size v+1
@@ -291,20 +291,20 @@ ini0=length(bsb);
 init1=options.init;
 msg=options.msg;
 
-if  init1 <v+1;
+if  init1 <v+1
     mess=sprintf(['Attention : init1 should be larger than v. \n',...
         'It is set to v+1.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=v+1;
-elseif init1<ini0;
+elseif init1<ini0
     mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=ini0;
-elseif init1>=n;
+elseif init1>=n
     mess=sprintf(['Attention : init1 should be smaller than n. \n',...
         'It is set to n-1.']);
-    disp(mess);
+    fprintf('%s\n',mess);
     init1=n-1;
 end
 
@@ -357,17 +357,17 @@ else
     for mm = ini0:n
         
         % Extract units forming subset
-        if mm<=percn;
+        if mm<=percn
             Yb=Y(bsb,:);
         else
             Yb=Y(bsbT,:);
         end
         
         % If required, store units forming subset at each step
-        if (mm>=init1);
+        if (mm>=init1)
             
             if intersect(mm,bsbsteps)==mm
-                if mm<=percn;
+                if mm<=percn
                     BB(bsb,ij)=bsb;
                 else
                     BB(bsbT,ij)=seq(bsbT);
@@ -387,7 +387,7 @@ else
         % Ym=Y-one*ym;
         Ym = bsxfun(@minus,Y, ym);
         
-        if mm-lunit>v+1;
+        if mm-lunit>v+1
             
             % Find new S
             if lunit>1
@@ -472,7 +472,7 @@ else
             
             
         else % In the initial step of the search the inverse is computed directly
-            if mm>percn;
+            if mm>percn
                 S=inv(Ym(bsbT,:)'*Ym(bsbT,:));
                 [~,R]=qr(Ym(bsbT,:),0);
             else
@@ -502,7 +502,7 @@ else
             % outside subset
             MDmod=MD;
             
-            if mm>percn;
+            if mm>percn
                 MDmod(bsbT)=Inf;
             else
                 MDmod(bsb)=Inf;
@@ -522,7 +522,7 @@ else
             % MDltminbsb = n x 1 Boolean vector (if m>percn) or
             % int32 vector containing the units which certainly remain inside subset
             % i.e. those which have a true in MDltminT and belong to previous subset
-            if mm>percn;
+            if mm>percn
                 MDltminbsb=MDltminT & oldbsbT;
             else
                 MDltminbsb=MDltminT(oldbsb);
@@ -551,7 +551,7 @@ else
                 % correspondence of the unit which entered subset
                 bsbT(minMDindex)=true;
                 
-            elseif rankgap>1 && rankgap <=nrepmin;
+            elseif rankgap>1 && rankgap <=nrepmin
                 
                 % MDmod is the vector of Mahalanobis distance which will have
                 % a Inf in correspondence of the units of old subset which
@@ -564,7 +564,7 @@ else
                 % Note that bsbrini is defined using Boolean vector bsbT
                 % when mm is greater than percn otherwise it uses numerical
                 % vector bsb
-                if mm<=percn;
+                if mm<=percn
                     % bsbrini = vector containing the list of the units
                     % which certainly remain inside subset (i.e. those
                     % which have a MD smaller than minMD). In order to find
@@ -597,7 +597,7 @@ else
                 % m+1 and the rank of the min outside subset is equal to rankgap,
                 % than at most rankgap minima must be calculated to find
                 % the the (m+1)-th order statistic
-                for jj=1:rankgap;
+                for jj=1:rankgap
                     
                     [~,minMDindex(:)]=min(MDmod);
                     % minMDindex = index of the unit which is about to
@@ -608,7 +608,7 @@ else
                     % bsbradd If unit minMDindex did not belong to previous
                     % subset, than minMDindex is included in vector unitadd
                     if bsbT(minMDindex)
-                        if mm<=percn;
+                        if mm<=percn
                             bsbradd(zz)=minMDindex;
                             zz=zz+1;
                             % Delete from vector unitout (containing the
@@ -663,7 +663,7 @@ else
                 bsbT=MD<=ksor;
                 
                 if sum(bsbT)==mm+1
-                    if mm<=percn;
+                    if mm<=percn
                         bsb=seq(bsbT);
                     end
                 else
@@ -687,7 +687,7 @@ else
             
             lunit=length(unit);
             
-            if (mm>=init1);
+            if (mm>=init1)
                 if (lunit<=10)
                     Un(mm-init1+1,2:(lunit+1))=unit;
                 else
