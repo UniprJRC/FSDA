@@ -10,9 +10,9 @@ function out = rlga(X,k,alpha,varargin)
 %            n-by-p
 %       k   : number of clusters. Scalar. Scalar which specifies the number
 %             of clusters.
-%    alpha  : a numeric value between 0.5 and 1. Scalar. For the robust estimate of
-%             LGA, specifying the percentage of points in the best subset.
-%             alpha must be a number in the interval [0.5 1]   
+%    alpha  : a numeric value between 0 and 0.5. Scalar. For the robust estimate of
+%             LGA, specifying the percentage of points to be trimmed.
+%             alpha must be a number in the interval [0 0.5]   
 %
 %  Optional input arguments:
 %
@@ -131,7 +131,7 @@ if ~isempty(UserOptions)
     end
 end
 
-if alpha<0.5 || alpha>1
+if alpha>0.5
      error('FSDA:rlga:WrongAlpha','Error:: alpha must be in [0.5, 1]');
 end
 
