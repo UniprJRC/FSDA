@@ -133,9 +133,15 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %}
 
 %{
-    %Create contents file for folder 'D:\matlab\FSDA\utilities' and list
-    % just the files which contain string '%FScategory'
-    makecontentsfileFS('dirpath','D:\matlab\FSDA\utilities','FilterFileContent','%FScategory')
+    % Create personalized content file of selected subfolders.
+    % Create contents file for subfolder '(main root of FSDA)\utilities' and list
+    % just the files which contain string '%FScategory:'
+    FileName='addFSDA2path';
+    FullPath=which(FileName);
+    FSDAroot=FullPath(1:end-length(FileName)-3);
+    dirpathsel=[FSDAroot filesep 'utilities'];
+    %  Note that force is false and therefore just output cell is created.
+    out=makecontentsfileFS('dirpath',dirpathsel,'FilterFileContent','%FScategory:','force',false)
 %}
 
 %{
@@ -149,7 +155,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
-    % Create list of folders which must be presonlized contents file
+    % Create list of folders which must have a personalized contents file
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
@@ -216,13 +222,13 @@ Excluded=out;
 iExcluded=1;
 
 
-    % Find for all file in all required subfolder:
-    % maximal name length of a file
-    % maximal length of a file category
-    % maximal length of a file description
-    maxNameLenAll=0;
-    maxCategoryLenAll = 0;
-    maxDescriptionLenAll=0;
+% Find for all file in all required subfolder:
+% maximal name length of a file
+% maximal length of a file category
+% maximal length of a file description
+maxNameLenAll=0;
+maxCategoryLenAll = 0;
+maxDescriptionLenAll=0;
 
 
 for j=1:ldirpath
@@ -254,7 +260,7 @@ for j=1:ldirpath
     % Sort files in alphabetical order
     [~,sortIndex] = sort(lower({d.name}));
     d = d(sortIndex);
-
+    
     
     % For each particulat folder find:
     % maximal name length of a file
@@ -280,6 +286,7 @@ for j=1:ldirpath
             killIndex = i;
             noContentsFlag = 0;
         else
+            disp(d(i).name)
             [description,category]=get_H1lineandCategory(d(i).name,FilterFileContent);
             d(i).description=description;
             d(i).category=category;
@@ -293,23 +300,23 @@ for j=1:ldirpath
         end
     end
     
-        maxNameLenAll=max(maxNameLenAll,maxNameLen);
+    maxNameLenAll=max(maxNameLenAll,maxNameLen);
     maxCategoryLenAll = max(maxCategoryLenAll,maxCategoryLen);
     maxDescriptionLenAll=max(maxDescriptionLenAll,maxDescriptionLen);
-
+    
     
     d(killIndex) = [];
     
     maxNameLenStr = num2str(maxNameLen);
     maxCategoryLenStr = num2str(maxCategoryLen);
     maxDescriptionLenStr = num2str(maxDescriptionLen);
-
-        maxNameLenAllStr = num2str(maxNameLenAll);
+    
+    maxNameLenAllStr = num2str(maxNameLenAll);
     maxCategoryLenAllStr = num2str(maxCategoryLenAll);
     maxDescriptionLenAllStr = num2str(maxDescriptionLenAll);
-
+    
     dout=struct2cell(d)';
- 
+    
     % dout(:,1)= name of the file (with extension)
     % dout(:,2)= date (in local format)
     % dout(:,3)= size ()
@@ -334,7 +341,7 @@ for j=1:ldirpath
         d=d(boo);
     end
     
-    %Include inside dout output of jt-folder which has been analyzed
+    %Include inside dout output of j-th folder which has been analyzed
     if ~isempty(dout)
         out(iout:(iout+size(dout,1)-1),:)=dout;
         iout=iout+size(dout,1);
@@ -382,7 +389,6 @@ Excluded=Excluded(1:iExcluded-1,:);
 % sort output in alphabetical order
 [~,sortIndex] = sort(lower(out(:,6)));
 out = out(sortIndex,:);
-
 
 if ~isempty(printOutputCell)
     dirpathmain=pwd;
