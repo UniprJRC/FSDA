@@ -186,7 +186,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 Data Types - single | double
 %      startv1: how to initialize centroids and cov matrices. Scalar.
 %               If startv1 is 1 then initial
-%               centroids and and covariance matrices are based on (v+1)
+%               centroids and covariance matrices are based on (v+1)
 %               observations randomly chosen, else each centroid is
 %               initialized taking a random row of input data matrix and
 %               covariance matrices are initialized with identity matrices.
@@ -675,7 +675,7 @@ reftoldef=1e-5;
 tolrestreigen=1e-08;
 
 % Default
-if nargin<3;
+if nargin<3
     alpha=0.05;
 else
     if isempty(alpha)
@@ -732,17 +732,17 @@ end
 if nargin > 4
     
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
     % And check if the optional user parameters are reasonable.
     
     % Check number of subsamples to extract
-    if isscalar(options.nsamp) && options.nsamp>ncomb;
+    if isscalar(options.nsamp) && options.nsamp>ncomb
         disp('Number of subsets to extract greater than (n k). It is set to (n k)');
         options.nsamp=0;
-    elseif  options.nsamp<0;
+    elseif  options.nsamp<0
         error('FSDA:tclust:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
     
@@ -1326,7 +1326,7 @@ for i=1:nselected
         %                  disp([oldobj-obj]/abs(obj))
         %                  disp('monit')
         
-        if iter==refsteps;
+        if iter==refsteps
             noconv=noconv+1;
         end
         
@@ -1336,7 +1336,7 @@ for i=1:nselected
     fullsol(i)=obj;
     
     % Store the centroids and the value of the objective function
-    if obj>=vopt,
+    if obj>=vopt
         % vopt = value of the objective function in correspondence of the
         % best centroids
         vopt=obj;
@@ -1370,7 +1370,7 @@ for i=1:nselected
 end
 notconver=noconv/nselected;
 if msg==1
-    if notconver>0.1;
+    if notconver>0.1
         disp('------------------------------')
         disp(['Warning: Number of subsets without convergence equal to ' num2str(100*notconver) '%'])
     end
@@ -1435,7 +1435,7 @@ end
 % %%%%%
 
 % Find final trimmed and untrimmed units for final classification
-if mixt>=1; % ==2
+if mixt>=1 % ==2
     
     % Sort the n likelihood contributions
     % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
@@ -1536,7 +1536,7 @@ for j=1:k
         %             jj=100;
         %         end
         
-        if v>1;
+        if v>1
             values=sort(diag(values));
             eigun=values./values(1);
             % maximum value of r is v-1
@@ -1589,7 +1589,7 @@ end
 out.notconver=notconver;
 alp=alpha>0;
 if msg==1
-    if size(siz,1)<k+alp;
+    if size(siz,1)<k+alp
         disp(['Number of supplied clusters =' num2str(k)])
         disp(['Number of estimated clusters =' num2str(size(siz,1)-alp)])
         warning('FSDA:tclust:WrongKObtained','The total number of estimated clusters is smaller than the number supplied')
@@ -1607,7 +1607,7 @@ out.bs=bs;
 % Store value of the objective function (maximized trimmed log likelihood)
 out.obj=vopt;
 
-if out.obj==-1e+25;
+if out.obj==-1e+25
     warning('FSDA:tclust:NoConvergence','The result is artificially constrained due to restr.fact = 1')
 end
 
@@ -1689,7 +1689,7 @@ if (isscalar(plots) && plots > 0) || ...
             end
         end
         
-        % axis equal   % why ????
+        axis equal   %check
         
         hall      = findobj(gca, 'type', 'line');
         hellipses = findobj(gca, 'type', 'line','Marker','none');
