@@ -139,14 +139,14 @@ end
 
 %% Normalized Box Cox transformation of columns ColtoTra using la
 Ytra=Y;
-for j=1:length(ColtoTra);
+for j=1:length(ColtoTra)
     cj=ColtoTra(j);
     laj=la(j);
     Ycj=Y(:,cj);
     
-    if min(Ycj)<=0 && laj==1;
+    if min(Ycj)<=0 && laj==1
         % if min(Ycj)<=0 and la(cj)=1 then variable is not transformed
-    elseif min(Ycj)<=0 && cj ~=1;
+    elseif min(Ycj)<=0 && cj ~=1
         error('FSDA:normBoxCox:Wronglaj',['lambda=' num2str(laj) ' for column ' num2str(cj) ' but min(Ycj)=' num2str(min(Ycj))])
     else
         % If Jacobian ==true the transformation is normalized so that its

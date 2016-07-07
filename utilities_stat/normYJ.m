@@ -143,7 +143,7 @@ end
 
 %% Normalized Yeo-Johnson transformation of columns ColtoTra using la
 Ytra=Y;
-for j=1:length(ColtoTra);
+for j=1:length(ColtoTra)
     cj=ColtoTra(j);
     laj=la(j);
     Ycj=Y(:,cj);

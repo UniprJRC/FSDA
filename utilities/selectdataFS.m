@@ -444,7 +444,7 @@ while selectionflag
             
             % mouse click?
             ss=waitforbuttonpressFS;
-            if ss;
+            if ss
                 pointslist = -999;
                 break
             end
@@ -505,7 +505,7 @@ while selectionflag
             
             % mouse click?
             ss=waitforbuttonpressFS;
-            if ss;
+            if ss
                 pointslist = -999;
                 break
             end
@@ -582,7 +582,7 @@ while selectionflag
             
             % mouse click?
             ss=waitforbuttonpressFS;
-            if ss;
+            if ss
                 pointslist = -999;
                 break
             end
@@ -645,7 +645,7 @@ while selectionflag
             
             % mouse click?
             ss=waitforbuttonpressFS;
-            if ss;
+            if ss
                 pointslist = -999;
                 break
             end
@@ -758,7 +758,7 @@ while selectionflag
                     pointslist = cell(size(xdata)); % preallocated by DP
                     xselect = cell(size(xdata));    % preallocated by DP
                     yselect = cell(size(xdata));    % preallocated by DP
-                    for i = 1:numel(xdata);
+                    for i = 1:numel(xdata)
                         pointslist{i} = [];
                         xselect{i} = [];
                         yselect{i} = [];
@@ -796,7 +796,7 @@ if strcmpi(params.Action,'delete')
         set(hc,'xdata',xdata,'ydata',ydata)
     else
         % it was a cell array, so there were multiple sets.
-        for i = 1:numel(xdata);
+        for i = 1:numel(xdata)
             
             xdata{i}(pointslist{i}) = [];
             ydata{i}(pointslist{i}) = [];
@@ -819,7 +819,7 @@ if strcmpi(params.Return,'unselected')
         pointslist = cell(size(xdata));     % preallocated by DP
         xselect = cell(size(xdata));        % preallocated by DP
         yselect = cell(size(xdata));        % preallocated by DP
-        for i = 1:numel(xdata);
+        for i = 1:numel(xdata)
             pointslist{i} = setdiff((1:npoints(i))',pointslist{i});
             xselect{i} = xdata{i}(pointslist{i});
             yselect{i} = ydata{i}(pointslist{i});
@@ -863,7 +863,7 @@ end
             nsel = length(pointslist);
         else
             % it was a cell array, so there were multiple sets.
-            for j = 1:numel(pointslist);
+            for j = 1:numel(pointslist)
                 pointslist{j} = union(pointslist{j},pl{j});
                 pointslist{j} = pointslist{j}(:);
                 
@@ -1216,7 +1216,7 @@ else
     xsel = pl;
     ysel = pl;
     nsel = 0;
-    for i = 1:numel(xdata);
+    for i = 1:numel(xdata)
         pl{i} = find(inpolygon(xdata{i},ydata{i},xv,yv));
         nsel = nsel + length(pl{i});
         
@@ -1245,7 +1245,7 @@ else
     % there is more than one set of points
     Dmin = inf;
     pointslist = cell(size(xdata));
-    for i = 1:numel(xdata);
+    for i = 1:numel(xdata)
         D = sqrt(((xdata{i} - xy(1))/dx).^2 + ((ydata{i} - xy(2))/dy).^2);
         [mind,ind] = min(D(:));
         

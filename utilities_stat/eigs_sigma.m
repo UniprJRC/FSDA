@@ -61,7 +61,8 @@ lambda = eigs(A,size(A,1),sigma)
 %% Beginning of code
 if nargin<2
     msg = 0;
-else msg =1;
+else
+    msg =1;
 end
 
 % define different levels of tolerance for convergence

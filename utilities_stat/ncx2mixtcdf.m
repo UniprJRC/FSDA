@@ -201,7 +201,7 @@ end
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 4
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -439,7 +439,7 @@ varargout{2}=ifault;
             % if truncation(u)>accx then increase u up to when truncation(u)
             % becomes <= accx
             u=ut;
-            while truncation(u, 0.0) > accx;
+            while truncation(u, 0.0) > accx
                 
                 ut = ut * 4.0;
                 u=ut;

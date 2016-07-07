@@ -105,7 +105,7 @@ function rhoHA = HArho(u, ctuning)
 %% Beginning of code
 
 
-if length(ctuning)>1,
+if length(ctuning)>1
     
     if ((ctuning(2) < 0) || (ctuning(3) < ctuning(2)) || (ctuning(4) < ctuning(3)))
         error('FSDA:HArho:WrongAbc',[' Illegal choice of parameters in Hampel: ' ...

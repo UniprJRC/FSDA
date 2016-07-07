@@ -13,8 +13,8 @@ status = 0;
 selection = questdlg('Close this figure and all the other linked figures and exit brushing mode',...
     'Close figure',...
     'Yes','No','Yes');
-switch selection,
-    case 'Yes',
+switch selection
+    case 'Yes'
         delete(get(0,'CurrentFigure')); %delete(src);
         status = 1;
     case 'No'

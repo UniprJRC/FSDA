@@ -96,7 +96,7 @@ function w = HAwei(u, ctuning)
 %% Beginning of code
 
 
-if length(ctuning)>1,
+if length(ctuning)>1
     
     if ((ctuning(2) < 0) || (ctuning(3) < ctuning(2)) || (ctuning(4) < ctuning(3)))
         error('FSDA:HAwei:WrongAbc',[' Illegal choice of parameters in Hampel: ' ...

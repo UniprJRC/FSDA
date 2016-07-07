@@ -131,14 +131,14 @@ if ~isrow(mu)
     mu=mu';
 end
 
-if nargin<3 || isempty(conflev);
+if nargin<3 || isempty(conflev)
     c = chi2inv(0.95,2);
 else
     c = chi2inv(conflev,2);
 end
 
 % Use default black color
-if nargin<4 || isempty(Color);
+if nargin<4 || isempty(Color)
     Color = [ 0 0 0];
 end
 
@@ -151,7 +151,7 @@ Sigma(abs(Sigma(:))<1e-14)=0;
 [Gam,Lam] = eig(Sigma*c);
 
 % Make sure that Lam(1,1) is smaller than Lam(2,2);
-if Lam(1,1)>Lam(2,2);
+if Lam(1,1)>Lam(2,2)
     Gam=Gam(:,[2 1]);
     Lam1=zeros(2,2);
     Lam1(1,1)=Lam(2,2);
@@ -160,11 +160,11 @@ if Lam(1,1)>Lam(2,2);
 end
 
 %disp(Gam)
- for j=1:2;
-     if Gam(1,j)<0 && Gam(2,j)<0;
+ for j=1:2
+     if Gam(1,j)<0 && Gam(2,j)<0
         Gam(:,j)=-Gam(:,j);
      else   
-        if Gam(1,j)*Gam(2,j)<0;
+        if Gam(1,j)*Gam(2,j)<0
            if Gam(1,j)*Sigma(1,2)>0 
                Gam(:,j)=-Gam(:,j);
            end

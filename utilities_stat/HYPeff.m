@@ -101,8 +101,8 @@ function [c,A,B,d] = HYPeff(eff, v, k, traceiter)
 %% Beginning of code
 
 
-if (nargin >2),
-    if (k < 0) ,
+if (nargin >2)
+    if (k < 0) 
         error('FSDA:HYPeff:WrongK',[' Illegal choice of parameters in hyperbolic tangent estimator: ' ...
             num2str(k) ]')
     end

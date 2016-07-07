@@ -97,7 +97,7 @@ prob=[0.01 0.5 0.99];
 options=struct('init',inisearch,'prob',prob);
 
 if nargin>2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -112,7 +112,7 @@ end
 %% Bonferroni bound generation
 
 % Make sure that prob is a row vector.
-if size(prob,1)>1;
+if size(prob,1)>1
     prob=prob';
 end
 

@@ -89,8 +89,8 @@ function ctun = HAbdp(bdp,p,abc)
 %% Beginning of code
 
 
-if (nargin >2),
-    if ((abc(1) < 0) || (abc(2) < abc(1)) || (abc(3) < abc(2))),
+if (nargin >2)
+    if ((abc(1) < 0) || (abc(2) < abc(1)) || (abc(3) < abc(2)))
         error('FSDA:HAbdp:WrongAbc',[' illegal choice of parameters in Hampel: ' ...
             num2str(abc) ]')
         

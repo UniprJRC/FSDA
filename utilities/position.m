@@ -117,7 +117,7 @@ set(plmain,'WindowStyle','normal','OuterPosition',posmain);
 
 % ensure first that they are not docked, otherwise re-positioning will not work
 dockedfigs = findobj(openfigs,'flat','WindowStyle','docked');
-if ~isempty(dockedfigs),
+if ~isempty(dockedfigs)
     set(dockedfigs,'WindowStyle','normal');
 end
 
@@ -208,7 +208,7 @@ if nlkplots > 0
     end
     
     % set the new positions
-    switch nlkplots;
+    switch nlkplots
         case 1
             poslkplots = cat(2,left,[fb width scrheight/2-fb]);
             set(lkplots,'OuterPosition',poslkplots);
@@ -229,7 +229,7 @@ if ~isempty(demo)
 end
 
 notherfigs = length(otherfigs);
-switch notherfigs;
+switch notherfigs
     case 0
     case 1
         posotherfigs = [scrwidth-(scrwidth/3) scrheight-scrheight/3 scrwidth/3 scrheight/3];

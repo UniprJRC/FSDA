@@ -66,15 +66,15 @@ else
     tp = 'micro';
 end
 
-if ~strcmp(tp,'none') && ~strcmp(tp,'x') && ~strcmp(tp,'micro'),
-    if nargout == 1,
-        if nargin == 1,
+if ~strcmp(tp,'none') && ~strcmp(tp,'x') && ~strcmp(tp,'micro')
+    if nargout == 1
+        if nargin == 1
             out1 = trmginput(arg1);
         else
             out1 = trmginput;
         end
-    elseif nargout == 2 || nargout == 0,
-        if nargin == 1,
+    elseif nargout == 2 || nargout == 0
+        if nargin == 1
             [out1,out2] = trmginput(arg1);
         else
             [out1,out2] = trmginput;
@@ -82,8 +82,8 @@ if ~strcmp(tp,'none') && ~strcmp(tp,'x') && ~strcmp(tp,'micro'),
         if  nargout == 0
             out1 = [ out1 out2 ];
         end
-    elseif nargout == 3,
-        if nargin == 1,
+    elseif nargout == 3
+        if nargin == 1
             [out1,out2,out3] = trmginput(arg1);
         else
             [out1,out2,out3] = trmginput;

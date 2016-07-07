@@ -159,7 +159,7 @@ else
     c=sqrt(chi2inv(eff,v))+7;
     % step = width of the dichotomic search (it decreases by half at each
     % iteration).
-    if eff<0.92 && approxsheff==0;
+    if eff<0.92 && approxsheff==0
         step=5;
     else
         step=15;
@@ -172,7 +172,7 @@ else
     % alphsc = E[ \psi^2(x) x^2] /{(v(v+2)]^2}
     % betsc =  E [ \psi'(x) x^2+(v+1)  \psi^2(x) x ]/[v(v+2)]
     % res = [var (robust estimator of scale)] = alphsc/(betsc^2)
-    while abs(1-eff*varrobestsc)> eps;
+    while abs(1-eff*varrobestsc)> eps
         cs=c.^2/2;
         alphsc = gammainc(cs,(v+4)/2) ...
             -4*p4*gammainc(cs,(v+6)/2)./(c.^2)+...

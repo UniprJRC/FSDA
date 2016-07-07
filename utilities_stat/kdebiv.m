@@ -1,6 +1,4 @@
 function F = kdebiv(X,varargin)
-
-%function F = kdebiv(X,contourtype,cmap)
 %kdebiv computes (and optionally plots) a kernel smoothing estimate for bivariate data.
 %
 %<a href="matlab: docsearchFS('kdebiv')">Link to the help function</a>
@@ -123,7 +121,7 @@ end
 
 if nargin>1
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end

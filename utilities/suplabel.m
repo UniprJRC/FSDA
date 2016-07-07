@@ -90,7 +90,7 @@ function [ax,h]=suplabel(text,whichaxis,possuperaxes)
 %}
 
 %% Beginning of code
-if nargin < 1,
+if nargin < 1
     help(mfilename); 
     return 
 end
@@ -148,7 +148,7 @@ else
     error('FSDA:suplabel:WrongInput','String label must be any of ''x'', ''y'', ''yy'', or ''t''')
 end
 
-for k=1:length(currax), 
+for k=1:length(currax)
     axes(currax(k))
 end % restore all other axes
 
