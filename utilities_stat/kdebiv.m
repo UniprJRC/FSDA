@@ -20,7 +20,7 @@ function F = kdebiv(X,varargin)
 %
 %   contourtype: Plot on the screen. String. Takes one of these strings:
 %               - contourtype = 'contour' generates a contour plot.
-%               - contourtype = 'contourf' generates a filled contour plot. 
+%               - contourtype = 'contourf' generates a filled contour plot.
 %               - contourtype = 'surf' generates a surf plot.
 %               - contourtype = 'mesh' generates a mesh plot.
 %               Unless specified otherwise, the colormap of the plots is
@@ -29,7 +29,7 @@ function F = kdebiv(X,varargin)
 %               Example - 'contourtype','contourf'
 %
 %   cmap:       Three-column matrix with colormap values in the range
-%               [0,1]. Matrix. A personalized colormap is used to plot 
+%               [0,1]. Matrix. A personalized colormap is used to plot
 %               the contour.  Each row of 'plots' is an RGB triplet that
 %               defines one color.
 %                 Data Types - char | double
@@ -113,6 +113,10 @@ nnargin=nargin;
 vvarargin=varargin;
 [X, nn , d] = chkinputM(X,nnargin,vvarargin);
 
+if d ~= 2
+   error('FSDA:kdebiv:WrongInput','This function applies to bivariate data only!');
+end
+
 options     = struct('contourtype','contour','cmap','gray');
 UserOptions = varargin(1:2:length(varargin));
 if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
@@ -138,20 +142,25 @@ if ~isempty(UserOptions)
     end
     if isempty(cmap) || ...
             (~ischar(cmap) && ~((size(cmap,2) == 3 && (min(min(cmap))>=0 && max(max(cmap))<=1)))) ...
-             || (~ischar(cmap) && max(strcmp(cmap,cmaptypes)))
+            || (~ischar(cmap) && max(strcmp(cmap,cmaptypes)))
         cmap        = 'gray';
     end
     
     plot_contour = 1;
-
+    
 else
     plot_contour = 0;
 end
 
 %% kernel smoothing estimation
 
-% rule of thumb for the number of bins
-nbins = round(8 * log(nn)/2); 
+% estimate the number of bins using Freedman?Diaconis-like rule:
+nbins = binsnum(X,'sqrt');
+
+% Standard methods seem to underestimate the number of bins. 
+% We multiply by 3 the suggested value. This has to be verified.
+nbins = min(3*nbins , nn/2);
+
 nbins = [nbins , nbins];
 
 if verLessThan('matlab','9.0')
@@ -175,7 +184,7 @@ if verLessThan('matlab','9.0')
     Ysmooth = conv2(X,weight,'same');
     
     %}
-        
+    
     % Compute a two-dimensional histogram without using histc
     %{
     xy_max   = max(X);
@@ -206,14 +215,14 @@ if verLessThan('matlab','9.0')
     % position of the bin centers
     xi1 = C{1,1};
     xi2 = C{1,2};
-                
+    
     % subfunction smooth1D smoothes the two-dimensional histogram.
     % lambda is a smoothing parameter. Smaller lambda values provide
     % smoother results.
     lambda = 10;
     G  = expsm(H ,nbins(2)/lambda);
     F  = expsm(G',nbins(1)/lambda)';
-
+    
 else
     % The MATLAB ksdensity follows. It is based on:
     %   A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
@@ -233,7 +242,7 @@ yy = linspace(min(xi2),max(xi2),nbins(2));
 [xq,yq] = meshgrid(xx,yy);
 % Interpolate the scattered data on the grid
 F = griddata(xi1,xi2,F,xq,yq);
-        
+
 
 %% Now plot the countour
 
@@ -263,6 +272,86 @@ if plot_contour
 end
 
 %% subfunctions needed for the density estimate if before R2016a
+
+    function [nbin] = binsnum(A,rule)
+        % binsnum estimates the "optimal" number of bins for a two
+        % dimensional histogram or for kernel density estimation.
+        % A is the data matrix and 'rule', if given, is the rule to be
+        % applied (default is Freedman?Diaconis).
+        %{
+            rng(123,'twister');     
+            N = 250;    
+            A = random('normal',0,1,[N,2]);  % Generate a N-by-2 matrix with N(0,1)
+            A(:,2) = A(:,2) * 5;             % Make the second dimension more variable
+
+            [nbins_sqrtN] = binsnum(A,'sqrt');
+            [nbins_str]   = binsnum(A,'sturges');
+            [nbins_fd_1]  = binsnum(A,'fd');
+            [nbins_fd_2]  = binsnum(A,'fdn');
+        
+            % Plot the results / Make bivariate histograms
+            figure(1);
+            subplot(2,2,1);
+            hist3(A,[ nbins_sqrtN nbins_sqrtN] );
+            title('Square Root rule');
+
+            subplot(2,2,2);
+            hist3(A,[ nbins_str nbins_str] );
+            title('Sturges formula rule');
+
+            subplot(2,2,3);
+            hist3(A,[ nbins_fd_1 nbins_fd_1]);
+            title('Freedman?Diaconis-like rule');
+
+            subplot(2,2,4);
+            hist3(A,[ nbins_fd_2 nbins_fd_2]);
+            title('Freedman?Diaconis rule on the norms');
+        %}
+        
+        
+        if nargin < 2 || (nargin == 2 && (ischar(rule) && sum(strcmp(rule,{'sqrt','sturges','fd','fdn'}))))
+            rule = 'sqrt';
+        end
+        
+        N = size(A,1);
+        
+        switch rule
+            case 'sqrt'
+                % The sqrt(N) rule:
+                nbin = floor(sqrt(N));
+                
+            case 'sturges'
+                % The Sturges formula:
+                nbin = ceil(log2(N) +1);
+                
+            case 'fd'
+                % The Freedman?Diaconis-like choice:
+                IQRs = iqr(A);              % Get the IQ ranges across each dimension
+                Hs = 2* IQRs* N^(-1/3);     % Get the bandwidths across each dimension
+                Ranges = range(A);          % Get the range of values across each dimension
+                % Get the suggested number of bins along each dimension
+                nbins_dim1 = ceil(Ranges(1)/Hs(1)); % 12 here
+                nbins_dim2 = ceil(Ranges(2)/Hs(2)); % 15 here
+                % Get the maximum of the two
+                nbin = max( [nbins_dim1, nbins_dim2]);
+                
+            case 'fdn'
+                % The Freedman?Diaconis choice on the norms
+                Norms = sqrt(sum(A.^2,2));        % Get the norm of each point in th 2-D sample
+                H_norms = 2* iqr(Norms)* N^(-1/3);% Get the "norm" bandwidth
+                nbin = ceil(range(Norms)/ H_norms);   % Get number of bins
+                
+            case 'tobeverified'
+                % rule of thumb for the number of bins
+                nbin = round(8 * log(N)/2);
+                
+            otherwise
+                % If nothing is provided, the sqrt(N) rule is used:
+                nbin = floor(sqrt(N));
+                
+        end
+        
+    end
 
     function [xq,yq,z] = computeGrid(x1,x2,fout)
         % computeGrid is a subfunction used to interpolate function

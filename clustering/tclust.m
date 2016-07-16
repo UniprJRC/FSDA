@@ -1655,9 +1655,13 @@ if (isscalar(plots) && plots > 0) || ...
     
     if v==1
         
+        % Univariate case: plot the histogram
         histFS(Y,length(Y),idx);
         
     elseif v==2
+        
+        % Bivariate plot, optionally with confidence ellipses or density
+        % countours
         
         idx=out.idx;
         colors = 'brcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykg';
