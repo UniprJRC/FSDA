@@ -1,11 +1,11 @@
 function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
-%tclustreg performs robust clustering in regression 
+%tclustreg performs robust linear grouping analysis
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%         y : Response variable. Vector. 
+%         y : Response variable. Vector.
 %             A vector with n elements that contains the response variable.
 %             y can be either a row or a column vector.
 %             Data Types - single|double
@@ -18,16 +18,16 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %             automatically be excluded from the computations.
 %             Data Types - single|double
 %
-%         k : Number of clusters. Scalar. 
+%         k : Number of clusters. Scalar.
 %             This is a guess on the number of data groups.
 %             Data Types - single|double
 %
-% restrfact : Scatter constraint. Scalar. 
+% restrfact : Scatter constraint. Scalar.
 %            This is a constant c controlling the differences among
 %            group scatters. The value 1 is the strongest restriction.
 %            Data Types - single|double
 %
-%   alpha1 : Trimming level. Scalar. 
+%   alpha1 : Trimming level. Scalar.
 %            alpha1 is a value between 0 and 0.5 or an  integer specifying
 %            the number of observations which have to be trimmed. If
 %            alpha=0 there is no trimming. More in detail, if 0<alpha1<1
@@ -36,7 +36,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            based on h=n-floor(alpha1).
 %            Data Types - single|double
 %
-%   alpha2 : Second-level trimming. Scalar. 
+%   alpha2 : Second-level trimming. Scalar.
 %            alpha2 is a value between 0 and 0.5, usually smaller than
 %            alpha1. If alpha2=0 there is no second-level trimming.
 %            Data Types - single|double
@@ -47,45 +47,131 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %intercept : Indicator for constant term. Scalar. If 1, a model with
 %            constant term will be fitted (default), if 0, no constant
 %            term will be included.
-%            Example - 'intercept',1 
+%            Example - 'intercept',1
 %            Data Types - double
 %
-%    niter : Number of random starts. Scalar. An integer for the number 
+%    niter : Number of random starts. Scalar. An integer for the number
 %            of iterations to attempt for convergence.
-%            Example - niter = 20 
+%            Example - niter = 20
 %            Data Types - double
-%
-%    Kiter : Number of concentrarion steps. Scalar. An integer for the 
-%            number of concentration steps. 
-%            Example - niter = 10 
-%            Data Types - double
-%
+%   mixt   : mixture modelling or crisp assignmen. Scalar.
+%            Option mixt specifies whether mixture modelling or crisp
+%            assignment has to be used:
+%            mixt = 2 is for mixture modelling;
+%            mixt = 0 is for crisp assignment.
+%            In mixture modelling, the likelihood is given by.......
+%            In crisp assignment, the likelihood is given by .......
+%            Example - 'mixt',0
+%            Data Types - single | double
+%    nsamp : number of subsamples to extract.
+%            Scalar or matrix.
+%            If nsamp is a scalar it contains the number of subsamples
+%            which will be extracted.
+%            If nsamp=0 all subsets will be extracted.
+%            Remark - if the number of all possible subset is <300 the
+%            default is to extract all subsets, otherwise just 300.
+%            If nsamp is a matrix it contains in the rows the indexes of
+%            the subsets which have to be extracted. nsamp in this case can
+%            be conveniently generated  by function subsets.
+%            nsamp can have k columns or k*(v+1) columns. If nsamp has k
+%            columns the k initial regression parameters in each iteration
+%            i are given by X(nsamp(i,:),:) and the variances are equal to
+%            the identity.
+%            If nsamp has k*(v+1) columns the initial centroids and
+%            covariance matrices in iteration i are computed as follows
+%               X1=X(nsamp(i,:),:)
+%               mean(X1(1:v+1,:)) contains the initial centroid for group 1
+%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
+%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
+%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
+%               ...
+%               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
+%               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
+%               REMARK - if nsamp is not a scalar option option below
+%               startv1 is ignored. More precisely if nsamp has k columns
+%               startv1=0 elseif nsamp has k*(v+1) columns option startv1=1.
+%             Example - 'nsamp',1000
+%             Data Types - double
+%      startv1: how to initialize regression parameters. Scalar.
+%               If startv1 is 1 then initial
+%               regression parameters are based on (v+1)
+%               observations randomly chosen, else each regression is
+%               initialized taking a random row of input data matrix.
+%               Remark 1- in order to start with a routine which is in the
+%               required parameter space, eigenvalue restrictions are
+%               immediately applied. The default value of startv1 is 1.
+%               Remark 2 - option startv1 is used just if nsamp is a scalar
+%               (see for more details the help associated with nsamp)
+%                 Example - 'startv1',1
+%                 Data Types - single | double
+% Ksteps:  Number of refining iterations. Scalar. Number of refining
+%               iterations in each subsample.  Default is 10.
+%               Ksteps = 0 means "raw-subsampling" without iterations.
+%                 Example - 'Ksteps',15
+%                 Data Types - single | double
 %    plots : Plot on the screen. Scalar. A flag to control the
 %            generation of the plots.
 %            If plots=1 a plot is showed on the screen with the
 %            final allocation (and if size(X,2)==2 with the lines
 %            associated to the groups)
-%            Example - 'plots',1 
+%            Example - 'plots',1
 %            Data Types - double
+%   wtrim: Application of observation weights. Scalar. A flag to control the
+%            application of weights on the observations. Default value 1.
+%            Example - 'wtrim',1
+%            Data Types - double
+%      we: Vector of observation weights. Vector. A vector of size nX1 containing
+%           the weights to apply to each observation. Default value: vector ov ones.
+%            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
+%            Data Types - double
+%eps_beta: minimum accepted difference between regression coefficients in
+%           the initial subsets. Scalar. If the observation in the initial subsets are
+%           collinear, it can happen that the number of groups identified is less than
+%           p. To avoide this behavior, eps_beta>0 allows to start the refining steps
+%           of the tclust algorithm from subsets chosen in a better way.
+%           Default value: 0.
+%            Example - 'eps_beta',0.01
+%            Data Types - double
+%        msg  : Level of output to display. Scalar.
+%               Scalar which controls whether to display or not messages
+%               on the screen. If msg==1 (default) messages are displayed
+%               on the screen about estimated time to compute the estimator
+%               or the number of subsets in which there was no convergence
+%               else no message is displayed on the screen
+%                 Example - 'msg',1
+%                 Data Types - single | double
 %
 %  Output:
 %
 %  out :  structure containing the following fields
 %
-%   out.bopt        = $p-1 \times k$ matrix containing the regression
-%                     parameters.
-%   out.sigmaopt    = $k$ row vector containing the estimated group
-%                     variances.
-%   out.numopt      = $k$ column vector containing the number of
-%                     observations in each cluster after the second
-%                     trimming.
-%   out.vopt        = Scalar. The value of the target function.
-%   out.asig1       = $n$ vector containing the cluster assigments after 
-%                     first trimming ('0' means a trimmed observation).
-%   out.asig2       = $n$ vector containing the final cluster assigments 
-%                     after second trimming ('0' means a trimmed
-%                     observation).
-%
+%   out.bopt          = $p-1 \times k$ matrix containing the regression
+%                       parameters.
+%   out.sigmaopt0     = $k$ row vector containing the estimated group
+%                       variances.
+%   out.sigmaopt_cons = $k$ row vector containing the estimated group
+%                       variances corrected with  asymptotic consistency factor
+%   out.sigmaopt_pisonare  = $k$ row vector containing the estimated group
+%                            variances corrected with  asymptotic consistency factor
+%                            and small sample correction factor of Pison et al.
+%   out.numopt        = $k$ column vector containing the number of
+%                       observations in each cluster
+%                       after the second trimming.                                         .
+%   out.vopt          = Scalar. The value of the target function.
+%   out.asig1         = $n$ vector containing the cluster assigments after
+%                       first trimming ('0' means a trimmed observation).
+%   out.asig2         = $n$ vector containing the final cluster assigments
+%                       after second trimming ('0' means a trimmed
+%                       observation).
+%   out.postprob      = $n$ vector containing the final posterior probability
+%   out.count1_ng_lt_k  =  number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
+%   out.count1_eq_lt_k  = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
+%   out.count2_ng_lt_k  = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
+%   out.count2_eq_lt_k  = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
+%   out.nselected       = number of initial subsets actually
+%                         extracted. If eps_beta is not specified or if it is set to
+%                         zero, out.nselected = nsamp; otherwise out.nselected > nsamp
+%  out.selj_all         = initial subsets extracted
 %
 % See also: tclust, tkmeans, estepFS
 %
@@ -97,91 +183,264 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2015.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help page for this function</a>
-% Last modified 11-06-2016
+% Last modified 06-Feb-2015
 %
 %
 %
 % Examples:
 %
 %{
-    X=load('X.txt');
-    out=lga(X,3);
+%% tclustreg of X data using number of groups k=2, restriction factor 50, alpha1 = 0.01, alpha2 = 0.01.
+    X   = load('X.txt');
+    out = lga(X,3);
 
     y1=X(:,end);
     X1=X(:,1:end-1);
 
-    out=tclustreg(y1,X1,3,5,0.1,0.1);
+    k = 3 ; restrfact = 5; alpha1 = 0.1 ; alpha2 = 0.1;
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2);
+
+    k = 2 ; restrfact = 50; alpha1 = 0.01 ; alpha2 = 0.01;
+    we = abs(X1/sum(X1));
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',1,'we',we,'wtrim',1,'mixt',2,'plots',0);
 %}
 %{
     load fishery;
     X=fishery.data;
     % some jittering is necessary because duplicated units are not treated
     % in tclustreg: this needs to be addressed
-    X=X+0.000001*randn(677,2);
+    X = X + 10^(-8) * abs(randn(677,2));
+
     out=lga(X,3);
-    out=rlga(X,3,0.5);
+    clickableMultiLegend('1','2','3','data1','data2','data3');
+    axis manual;
 
-    y1=X(:,end);
-    X1=X(:,1:end-1);
+    alpha = 0.06;
+    out=rlga(X,3,1-alpha);
+    clickableMultiLegend('0','1','2','3','data1','data2','data3');
+    axis manual;
 
-    out=tclustreg(y1,X1,3,5,0.01,0.01,'intercept',0);
+
+    y1 = X(:,end);
+    X1 = X(:,1:end-1);
+    k = 3 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2);
 %}
 
 %{
-    % Generate mixture of regression using MixSimReg, with an average
-    % overlapping at centroids =0,001. Use all default options.
+    %% Generate mixture of regression using MixSimReg, with an average
+    % overlapping at centroids =0.01. Use all default options.
     p=3;
     k=2;
     Q=MixSimreg(k,p,'BarOmega',0.001);
     n=400;
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X(:,2:end)],id);
     out=tclustreg(y,X,2,50,0.01,0.01,'intercept',1);
+
+%}
+%{
+    % Generate mixture of regression using MixSimReg, with an average
+    % overlapping at centroids =0.01. Use all default options.
+    p=3;
+    k=2;
+    Q=MixSimreg(k,p,'BarOmega',0.001);
+    n=400;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+     we=X(:,2)/sum(X(:,2));
+    out=tclustreg(y,X,2,50,0.01,0.01,'intercept',1,'we',we,'wtrim',1,'mixt',2);
 
 %}
 
 
-%% Input parameters checking
+%% Check if optimization toolbox is installed in current computer
+% to be done in next releases: introduce an optimizer
 
+typemin = exist('fminunc','file');
+if typemin ~=2
+    error('FSDA:tclustreg:MissingOptToolbox','This function requires the optimization toolbox');
+end
+
+
+%% initializations
+
+warning('off');
+
+% internal, used for debugging purposes
+debug_mode=0;
+
+% 'oversamp' is a factor (which depends on the number of groups 'k') used
+% to generate more samples in order to face the possibility that some
+% subsets contain collinear obs.
+% To obtain nsamp = 300 samples, 300*oversamp samples will be generated
+oversamp = 10*k;
+
+%number of times that, after the first level of trimming, in a group there
+%are not enought observations to compute the sigma
+count1_ng_lt_k = 0;
+
+%number of times that, after the second level of trimming, in a group there
+%are not enought observations to compute the sigma
+count2_ng_lt_k= 0;
+
+%number of times that, after the first level of trimming, in a group there
+%are enought observations to compute the sigma
+count1_ng_eq_k = 0;
+
+%number of times that, after the second level of trimming, in a group there
+%are enought observations to compute the sigma
+count2_ng_eq_k= 0;
+
+% tolerance for restriction factor
+tolrestreigen = 1e-08;
+
+%Initialization for the objective function (optimized during the random
+%starts) through a very small value
+vopt = -1e+20;
+
+% this is just for rotating colors in the plots
+clrdef = 'bkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrc';
+
+% repmat from Release 8.2 is faster than bsxfun
+verMatlab = verLessThan('matlab','8.2.0');
+if verMatlab ==1
+    userepmat=0;
+else
+    userepmat=1;
+end
+
+%% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
-%% Few internal parameters and basic checks
+% check restrfact option
+if nargin < 4 || isempty(restrfact) || ~isnumeric(restrfact)
+    restrfact = 12;
+end
+
+% NO CHECKS ON alpha1 and alpha2 !!  Introduce here. DOME
+
+% startv1def = default value of startv1 = 1
+% initialization using covariance matrices based on v+1 units
+startv1def = 1;
+
+if nargin>6
+    % Check whether option nsamp exists
+    chknsamp = strcmp(varargin,'nsamp');
+    
+    % if the sum below is greater than 0 option nsamp exists
+    if sum(chknsamp)>0
+        nsamp=cell2mat(varargin(find(chknsamp)+1));
+        
+        % Check if options nsamp is a scalar
+        if ~isscalar(nsamp)
+            % if nsamp is not a scalar, it is a matrix which contains in
+            % the rows the indexes of the subsets which have to be
+            % extracted
+            C=nsamp;
+            [nsampdef,ncolC]=size(C);
+            % The number of rows of nsamp (matrix C) is the number of
+            % subsets which have to be extracted
+            nselected=nsampdef;
+            % If the number of columns of nsamp (matrix C) is equal to v
+            % then the procedure is initialized using identity matrices
+            % else using covariance matrices based on the (v+1)*k units
+            if ncolC==p
+                startv1=0;
+            elseif ncolC==k*(p)%prima era p+1
+                startv1=1;
+            else
+                disp('If nsamp is not a scalar it must have v or k*(v+1) columns')
+                disp('Please generate nsamp using')
+                disp('nsamp=subsets(number_desired_subsets,n,k) or')
+                disp('nsamp=subsets(number_desired_subsets,n,(v+1)*k)')
+                error('FSDA:tclust:WrongNsamp','Wrong number of columns in matrix nsamp')
+            end
+            NoPriorSubsets=0;
+        else
+            % If nsamp is a scalar it simply contains the number of subsets
+            % which have to be extracted. In this case NoPriorSubsets=1
+            NoPriorSubsets=1;
+            
+            % In this case (nsamp is a scalar) we check whether the user
+            % has supplied option startv1
+            chkstartv1 = strcmp(varargin,'startv1');
+            if sum(chkstartv1)>0
+                startv1= cell2mat(varargin(find(chkstartv1)+1));
+            else
+                startv1=startv1def;
+            end
+        end
+    else
+        % If option nsamp is no supplied then for sure there are no prior
+        % subsets
+        NoPriorSubsets=1;
+        
+        % In this case (options nsamp does not exist) we check whether the
+        % user has supplied option startv1
+        chkstartv1 = strcmp(varargin,'startv1');
+        if sum(chkstartv1)>0
+            startv1= cell2mat(varargin(find(chkstartv1)+1));
+        else
+            startv1=startv1def;
+        end
+    end
+else
+    % if nargin ==6 for use the user has not supplied prior subsets.
+    % Default value of startv1 is used
+    NoPriorSubsets=1;
+    startv1=startv1def;
+end
+
+% If the user has not specified prior subsets (nsamp is not a scalar) than
+% according the value of startv1 we have a different value of ncomb
+if NoPriorSubsets ==1
+    % Remark: startv1 must be immediately checked because the calculation of
+    % ncomb is immediately affected.
+    
+    if startv1
+        ncomb=bc(n,k*(p+1));
+    else
+        % If the number of all possible subsets is <300 the default is to
+        % extract all subsets otherwise just 300.
+        % Notice that we use bc, a fast version of nchoosek. One may also
+        % use the approximation
+        % floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5)
+        ncomb=bc(n,k);
+    end
+    nsampdef=min(300,ncomb);
+end
+
+%% Defaults for optional arguments
 
 % default number of random starts
 niterdef = 20;
 
 % default number of concentration starts
-Ksteps  = 10;
+Kstepsdef  = 10;
 
-%Initialize the objective function (optimized during the random starts)
-%through a very small value
-vopt = -1e+20;
+%default value for we
+wedef = ones(n,1);
 
-% this is just for rotating colors in the plots
-clrdef='bkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrc';
-
-% Check if optimization toolbox is installed in current computer
-typemin=exist('fminunc','file');
-
-if typemin ~=2
-    error('FSDA:tclustreg:MissingOptToolbox','This function requires the optimization toolbox')
-end
+%default model (mixture or classification likelihood)
+mixtdef = 2;
 
 %% User options
 
-options=struct('intercept',1,'niter',niterdef,'Ksteps',Ksteps,...
-    'plots',1,'output',false);
+options = struct('intercept',1,'mixt',mixtdef,...
+    'nsamp',nsampdef,'niter',niterdef,'Ksteps',Kstepsdef,...
+    'startv1',startv1def,'we',wedef,'wtrim',1,'eps_beta',0,...
+    'msg',0,'plots',1);
 
 if nargin > 6
     
-    UserOptions=varargin(1:2:length(varargin));
-    if ~isempty(UserOptions)  
+    UserOptions = varargin(1:2:length(varargin));
+    
+    if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:tclustreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
@@ -196,506 +455,1121 @@ if nargin > 6
             error('FSDA:tclustreg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
     end
-
+    
     % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin)
-        options.(varargin{i})=varargin{i+1};
+    for i = 1:2:length(varargin)
+        options.(varargin{i}) = varargin{i+1};
     end
-
+    
+    % And check if the optional user parameters are reasonable.
+    
+    % Check number of subsamples to extract
+    if isscalar(options.nsamp) && options.nsamp>ncomb
+        disp('Number of subsets to extract greater than (n k). It is set to (n k)');
+        options.nsamp=0;
+    elseif  options.nsamp<0
+        error('FSDA:tclust:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
+    end
+    
+    % Check restriction factor
+    if restrfact<1
+        disp('Restriction factor smaller than 1. It is set to 1 (maximum contraint==>spherical groups)');
+        restrfact=1;
+    end
+    
 end
-% Graph summarizing the results, yes/no; For p=2 the plot is specific for
-% tclustreg. Otherwise spmplot is used
-plots       = options.plots;
+
+%% set user's options
+
+msg = options.msg;
+
+% Graph summarizing the results
+plots = options.plots;
 
 % Intercept, yes/no
-intercept   = options.intercept;
+intercept = options.intercept;
+
+% Number of subsets to extract
+nsamp = options.nsamp;
+
+% Concentration steps
+Ksteps = options.Ksteps;
+
+we         = options.we;
+wtrim      = options.wtrim;
+eps_beta   = options.eps_beta;
+
+%option determining the model to use
+mixt = options.mixt;
+if msg == 1
+    switch mixt
+        case 0
+            %ClaLik + Crisp
+            disp('ClaLik + Crisp');
+        case 1
+            % each unit is assigned to a group and then we take the h
+            % best maxima
+            %ClaLik + PostProb
+            disp('ClaLik + PostProb');
+        case 2
+            % we take the units with the h largest contributions to the
+            % likelihood
+            %MixLik + PostProb
+            disp('MixLik + PostProb');
+    end
+end
+
+%% Additional variables depending on user options
 
 % Number of variables without considering the constant term. It is used for
 % deciding the type of plot.
-if intercept == 1 
+if intercept == 1
     v = p-1;
 else
     v = p;
 end
 
-% lines below are obsolete: replaced by chkinputR
-% if intercept==1
-%     X=[ones(n,1) X];
-% else
-%     p=p-1;
-% end
-% 
-% y=X(:,end);
-% X=X(:,1:end-1);
-
-% Concentration steps
-Ksteps      = options.Ksteps;
-
-% Random starts
-niter       = options.niter;
-
 % First level trimming
-notrim      = floor(n*(1-alpha1));
-trimm       = n-notrim;
+if alpha1<1
+    notrim = floor(n*(1-alpha1));
+else
+    notrim = n-floor(alpha1);
+end
+trimm = n-notrim;
 
 % Total trimming after second trimming
-trimm2 = floor(n*(1-alpha1)*(1-alpha2));
+if alpha1<1
+    if alpha2<1
+        trimm2 = floor(n*(1-alpha1)*(1-alpha2));
+    elseif alpha2>=1
+        trimm2 = floor(n*(1-alpha1)*(1-alpha2/n));
+    end
+elseif alpha1>=1
+    if alpha2 >= 1
+        trimm2 = floor(n-floor(alpha1)-floor(alpha2));
+    elseif alpha2 < 1
+        trimm2 = floor(n*(1-alpha1/n)*(1-alpha2));
+    end
+end
 
-%% Initialize vector and matrices
+%% Combinatorial part to extract the subsamples (if not already supplied by the user)
 
-ll          = zeros(n,k);
-ni          = ones(1,k);
-sigmaopt    = ni;
-bopt        = zeros(k,p);
-numopt      = 1:k;
+% THIS ART IS NOT CLEAR (IN ANY CASE SHOULD BE SIMPLIFIES): CHECK DOME
+if NoPriorSubsets
+    if startv1 && k*(v+1) < n
+        for ns =1:nsamp*oversamp
+            %Exclude subsets with collinear observations. In this case, a
+            %larger number of subsets is generated.
+            C(ns,:) = datasample(1:n,k*(p),'weights',we,'Replace',false); %was p+1
+        end
+        nselected = length(C)/oversamp;
+    else
+        for ns =1:nsamp*oversamp
+            %Exclude subsets with collinear observations. In this case, a
+            %larger number of subsets is generated.
+            C(ns,:) = datasample(1:n,k,'weights',we,'Replace',false);
+        end
+        nselected  = length(C)/oversamp;
+        niinistart = repmat(floor(notrim/k),k,1);
+    end
+end
+
+%% Initialize structures
+
+ll         = zeros(n,k);
+ll_old     = zeros(n,k);
+ni         = ones(1,k);
+sigmaopt   = ni;
+bopt       = zeros(p,k);
+numopt     = 1:k;
+fact2      = zeros(n,k);
+fact3      = zeros(n,k);
 
 %%  Random starts
 
-for iter=1:niter
-    
-    if options.output==true
-        disp(['Iteration' num2str(iter)])
+count      = 0;
+count_elim = 0;
+iter       = 0;
+sigmaini   = ones(1,k);
+comb_beta  = combnk(1:k,2);
+diff       = NaN(intercept+1,size(comb_beta,1));
+selj_good_groups = NaN(nselected,k*p);
+selj_elim_groups = NaN(nselected,k*p);
+
+while iter < nselected
+    iter  = iter+1;
+    count = count+1;
+    if msg == 1
+        disp(['Iteration' num2str(count)])
     end
     
-    % Initial sigmas
-    sigmaini =ones(1,k);
-    
-    % Initial n's
-    niini = floor(n*(1-alpha1)*sigmaini/k);
-    
-    % Initialize betas
-    % bini is the matrix which will contains the estimate of \hat beta for
-    % each group. Column 1 refers to first group, ... , Column k refers to
-    % kth group
-    nameYY =zeros(p,k);
-    
-    % Search for k*p random points avoiding group degeneracies for the x's
-    
-    subs=randsampleFS(n,k*p);
-    % subs=[138, 17,  68,   3,  41,  32];
-    
-    Xb = X(subs,:);
-    yb = y(subs);
-    
-    % Check that all submatrices of the groups are full rank
-    
-    degen = 100;
-    while degen == 100
-        degen=1;
-        for j=1:k
-            if  abs(det(  Xb((1+(j-1)*p):(j*p),1:p) )) < eps
-                degen = 100;
+    if startv1
+        
+        nameYY = zeros(p,k);
+        % rng(1234);
+        randk=rand(k,1);
+        if alpha1<1
+            niini=floor(fix(n*(1-alpha1))*randk/sum(randk));
+        else
+            niini=floor(fix(n - floor(alpha1))*randk/sum(randk));
+        end
+        while sum(niini == 0) >0
+            randk=rand(k,1);
+            % Initialize niini with with random numbers from uniform
+            if alpha1<1
+                niini=floor(fix(n*(1-alpha1))*randk/sum(randk));
+            else
+                niini=floor(fix(n -floor(alpha1))*randk/sum(randk));
             end
         end
-        if degen==1
-            break
+        if debug_mode==1
+            X_all=0;
+            y_all=0;
+            id_gr_all=0;
         end
+        for j = 1:k
+            ilow   = (j-1)*(p)+1; %was p+1
+            iup    = j*(p);       %was p+1
+            index  = C(iter,:);
+            selj   = index(ilow:iup);
+            selj_good_groups(count,ilow:iup) = selj;
+            Xb     = X(selj,:);
+            yb     = y(selj,:);
+            ni(j)  = length(yb);
+            nameYY(:,j) = Xb\yb;
+            % now find residuals
+            residuals = yb-Xb*nameYY(:,j);
+            % Update sigmas through the mean square residuals
+            if size(selj,2) > p
+                sigmaini(j) = sum(residuals.^2)/ni(j);
+            else
+                sigmaini(j) =var(y);
+            end
+            if debug_mode == 1
+                X_all     = [X_all ; Xb(:,intercept+1)]; %#ok<AGROW>
+                y_all     = [y_all ; yb];                %#ok<AGROW>
+                id_gr     = repmat(j,length(yb'),1);
+                id_gr_all = [id_gr_all; id_gr];          %#ok<AGROW>
+            end
+        end
+        sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
+        if debug_mode==1
+            figure;
+            scatter(X(:,intercept+1),y);
+            hold on;
+            gscatter(X_all,y_all,id_gr_all);
+        end
+    else
+        
+        % initialization of niini with equal proportions
+        % niini=niinistart;
+        
+        % extract a subset of size v
+        index = C(count,:);
+        Xb = X(index,:);
+        yb = y(index);
+        
+        for j=1:k
+            Xbj = Xb((1+(j-1)*p):(j*p),:);
+            ybj = yb((1+(j-1)*p):(j*p));
+            nameYY(:,j) = Xbj\ybj;
+        end
+        % sigmaini will contain the covariance matrices in each iteration
+        sigmaini=ones(1,k);
     end
     
-    % Initial betas are obtained solving a linear system
-    for j=1:k
-        Xbj=Xb((1+(j-1)*p):(j*p),:);
-        ybj=yb((1+(j-1)*p):(j*p));
-        nameYY(:,j) =Xbj\ybj;
+    %to be generalized to a generic k = 2 3 4 5 6 ...
+    for par = 1:intercept + 1
+        for gr = 1:size(comb_beta,1)
+            diff(par,gr) = nameYY(par,comb_beta(gr,1)) - nameYY(par,comb_beta(gr,2));
+        end
+    end
+    mindiff = min(abs(diff),[],2);
+    %if both intercept and slope
+    if sum(abs(mindiff) > eps_beta) >0
+        good_initial_subs = 1;
+    else
+        count_elim = count_elim + 1;
+        good_initial_subs = 0;
+        selj_elim_groups(count_elim,:) = selj_good_groups(count,:);
+        count = count-1;
+        nselected = nselected+1;
     end
     
-    %% Concentration steps
-    
-    indold = zeros(n,1)-1;
-    for t=1:Ksteps
+    if good_initial_subs == 1
         
-        % Discriminant functions for the assignments
-        for jk=1:k
-            ll(:,jk) = (niini(jk)/n)*normpdf(y-X*nameYY(:,jk),0,sqrt(sigmaini(jk)));
-        end
-        
-        
-        % In this part we select the untrimmed units. They are those which
-        % have the n(1-alpha) largest values among the maxima of each row
-        % of matrix ll.
-        % vector disc of length(n) contains the (weighted) contribution of
-        % each unit to the log likelihood.
-        [disc,indll]= max(ll,[],2);
-        
-        % Sort the n likelihood contributions
-        % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
-        [~,qq]=sort(disc,'descend');
-        
-        % qq = vector of size h which contains the indexes associated with the largest n(1-alpha)
-        % (weighted) likelihood contributions
-        qq=qq(1:n-trimm);
-        
-        % Ytri = n(1-alpha)-by-v matrix associated with the units
-        % which have the largest n(1-alpha) likelihood contributions
-        Xtri=X(qq,:);
-        ytri=y(qq,:);
-        indtri=indll(qq);
-        
-        % xmod = matrix with length(qq) rows which contains
-        % 1st-pth column  explanatory variables
-        % (p+1)-th column response
-        xmod=[Xtri , ytri , indtri];
-        
-        % If any cluster is void or with fewer than p+1 elements we stop the concentration steps (control != 0)...
-        for jj=1:k
-            ni(jj) = sum(indtri==jj);
-        end
-        
-        control = sum( ni <= p+2 );  % Domenico : was p+1
-        
-        if control==0
+        %% Concentration steps
+        indold = zeros(n,1)-1;
+        for t = 1:Ksteps
+            % Discriminant functions for the assignments
+            for jk = 1:k
+                fact2(:,jk) = normpdf(y-X*nameYY(:,jk),0,sqrt(sigmaini(jk)));
+                %FRT :  logmvnpdfFS dovrebbe produrre gli stessi risultati di
+                %normpdf, ma non e' cosi'. TO BE CLARIFIED: DOME
+                fact3(:,jk) = logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));%,zeros(n,v),eye(v),n,v,0);
+            end
+            %if there are extreme (contaminated) observations and the
+            %groups are almost collinear (small sigmaini), it can happen
+            %that the area computed by the normpdf is zero for all the k
+            %groups. In this case we contaminate the k values close to zero
+            %in such a way that these points are randomly assigned to one
+            %of the k groups
+            if sum(sum( (abs(log(fact2)-fact3) > 10^(-12)) )) > 0
+                % disp('ll');
+                % WHAT IS THIS??? DOME
+            end
+            extreme_obs = find(sum(fact2,2)==0);
+            for jk = 1:k
+                fact2(extreme_obs,jk) = fact2(extreme_obs,jk)+0.0000000001*abs(rand(length(extreme_obs),1));
+                fact3(extreme_obs,jk) = fact3(extreme_obs,jk)+0.0000000001*abs(rand(length(extreme_obs),1));
+                ll_old(:,jk) = log((niini(jk)/sum(niini))  * fact2(:,jk));
+                ll(:,jk)     = log((niini(jk)/sum(niini))) + fact3(:,jk);
+            end
+            
+            if mixt == 2
+                
+                [~,postprob,disc] = estepFS(ll);
+                
+                if wtrim == 0
+                    % Sort the n likelihood contributions
+                    % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
+                    [~,qq] = sort(disc,'descend');
+                    
+                    % qq = vector of size h which contains the indexes associated with the largest n(1-alpha)
+                    % (weighted) likelihood contributions
+                    qqunassigned = qq((n-trimm+1):n);
+                    qq           = qq(1:n-trimm);
+                    if debug_mode == 1
+                        allobs=ones(200,1);
+                        allobs(qqunassigned) = 0;
+                        figure;gscatter(X,y,allobs)
+                        
+                        hold on;
+                        line([0 1],[0 nameYY(1)])
+                        line([0 1],[0 nameYY(2)])
+                    end
+                elseif wtrim ==1
+                    
+                    dsf = sum(ll,2);
+                    [ ~, id] =sort((dsf));
+                    cumsumyy = cumsum(we(id));
+                    if alpha1<1
+                        qqunassigned_small = cumsumyy < alpha1*sum(we(id));
+                    else
+                        qqunassigned_small = cumsumyy < alpha1/n*sum(we(id));
+                    end
+                    qqunassigned = id(qqunassigned_small);
+                    qq = setdiff((1:n)',qqunassigned);
+                    
+                end
+                % ytri and Xtri = n(1-alpha)-by-v matrix associated with the units
+                % which have the largest n(1-alpha) likelihood contributions
+                Xtri = X(qq,:);
+                ytri = y(qq,:);
+                postprob(qqunassigned,:) = 0;
+                postprobtri = postprob(qq,:);
+                
+                % M-step update of niini
+                % niini = numerator of component probabilities
+                niini=(nansum(postprob))';
+                
+                %the next lines are needed to assign each observation to the group with
+                %the highest posterior probability
+                [~,indmax]= max(postprob,[],2);
+                indtri=indmax(qq);
+                xmod=[Xtri , ytri , indtri];
+                postprobmod = [postprobtri, indtri ];
+                for jj=1:k
+                    ni(jj) = sum(indtri==jj);
+                    %update the beta
+                    nameYY(:,jj) =  (bsxfun(@times,Xtri, sqrt(postprobtri(:,jj)))) \ (bsxfun(@times,ytri ,sqrt(postprobtri(:,jj))));
+                end
+                
+            elseif mixt == 0
+                
+                % Select the untrimmed units, i.e. those having the
+                % n*(1-alpha) largest values among the maxima of each row
+                % of matrix ll.
+                % vector disc of length(n) contains the (weighted)
+                % contribution of each unit to the log likelihood.
+                
+                if wtrim ==0
+                    [disc,indmax] = max(ll,[],2);
+                    % Sort the n likelihood contributions
+                    % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
+                    [~,qq] = sort(disc,'descend');
+                    
+                    % qq = vector of size h which contains the indexes
+                    % associated with the largest n(1-alpha) (weighted)
+                    % likelihood contributions
+                    %qqunassigned = qq((n-trimm+1):n);
+                    qq = qq(1:n-trimm);
+                elseif wtrim ==1
+                    %qqunassigned_bk = qqunassigned;
+                    %qq_bk = qq;
+                    %dsf is the same of disc. Here it is reported for
+                    %reason of comprarability with R code.
+                    [dsf,indmax] = max(ll,[],2);
+                    [ ~, id] =sort(dsf);
+                    cumsumyy = cumsum(we(id));
+                    if alpha1 <1
+                        qqunassigned_small = cumsumyy < alpha1*sum(we(id));
+                    else
+                        qqunassigned_small = cumsumyy < alpha1/n*sum(we(id));
+                    end
+                    qqunassigned = id(qqunassigned_small);
+                    qq = setdiff((1:n)',qqunassigned);
+                end
+                
+                % Ytri = n(1-alpha)-by-v matrix associated with the units
+                % which have the largest n(1-alpha) likelihood contributions
+                Xtri = X(qq,:);
+                ytri = y(qq,:);
+                indtri = indmax(qq);
+                
+                % xmod = matrix with length(qq) rows which contains
+                % 1st-pth column  explanatory variables
+                % (p+1)-th column response
+                xmod = [Xtri , ytri , indtri];
+                for jj=1:k
+                    ni(jj) = sum(indtri==jj);
+                end
+            end
+            % If a cluster is empty or contains less than p+1 elements,
+            % stop the concentration steps (empty_g != 0).
             
             % new k regression parameters and new sigmas
             xmodtemp    = zeros(n,p+2);
             indxmodtemp = 0;
-            
-            for jk=1:k
-                % xmodj Data points in each group
-                xmodj = xmod(xmod(:,end)==jk,:);
-                
-                % Perform the second trimming
-                
-                % qqs contains contains the indexes of untrimmed units for
-                % group j
-                if alpha2==0
-                    qqs = 1:ni(jk);
-                else
-                    % Find the units with the smallest h distances.
-                    % Apply mcd on the x space (without the intercept if
-                    % present).
-                    % REMARK: This is by far the computationally most 
-                    % expensive instruction of tclustreg. More precisely,
-                    % the dominant expensive function inside mcd is IRWLSmcd.
-                    if intercept
-                        RAW = mcd(xmodj(:,2:p),'bdp',alpha2,'msg',0);
-                    else
-                        RAW = mcd(xmodj(:,1:p),'bdp',alpha2,'msg',0);
-                    end
-                    [~,indmdsor]=sort(RAW.md);
-                    qqs=indmdsor(1:floor(ni(jk)*(1-alpha2)));
-                end
-                
-                % Update betas through ordinary least squares regression
-                xxx = xmodj(qqs,1:p);
-                yyy = xmodj(qqs,p+1);
-                ni(jk) = length(yyy);
-                breg = xxx\yyy;
-                nameYY(:,jk) = breg;
-                
-                % now find residuals
-                residuals=yyy-xxx*breg;
-                % Update sigmas through the mean square residuals
-                sigmaini(jk) =sum(residuals.^2)/ni(jk);
-                
-                % Update weights
-                niini(jk) = ni(jk);
-                xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:)=xmodj(qqs,:);
-                indxmodtemp=indxmodtemp+ni(jk);
+            % EMPTY_G INICATES THE EMPTY OR THE NON-EMPTY?? DOME
+            empty_g = ~( ni <= p + 1 );
+            %count number of times the number of groups is lt k
+            if sum(empty_g) == k
+                count1_ng_eq_k = count1_ng_eq_k + 1;
+            else
+                count1_ng_lt_k = count1_ng_lt_k + 1;
             end
             
-            % New xmod
+            %% second level of trimming
+            jk = 0;
+            for iii = empty_g
+                jk = jk+1;
+                %check if a group is populated
+                if iii ==1
+                    xmodj = xmod(xmod(:,end)==jk,:);
+                    if mixt == 2
+                        postprobmodj = postprobmod(postprobmod(:,end)==jk,:);
+                    end
+                    % Perform the second trimming
+                    
+                    % qqs contains contains the indexes of untrimmed units for
+                    % group j
+                    if alpha2 == 0
+                        qqs = 1:ni(jk);
+                    else
+                        % Find the units with the smallest h distances.
+                        % Apply mcd on the x space (without the intercept
+                        % if present).
+                        % REMARK: This is by far the computationally most
+                        % expensive instruction of tclustreg. More
+                        % precisely, the dominant expensive function inside
+                        % mcd is IRWLSmcd.
+                        if intercept
+                            if alpha2 < 1
+                                RAW = mcd(xmodj(:,2:p),'bdp',alpha2,'msg',0);
+                            elseif alpha2 >= 1
+                                RAW = mcd(xmodj(:,2:p),'bdp',alpha2/n,'msg',0);
+                            end
+                        else
+                            if alpha2 < 1
+                                RAW = mcd(xmodj(:,1:p),'bdp',alpha2,'msg',0);
+                            elseif alpha2 >= 1
+                                RAW = mcd(xmodj(:,1:p),'bdp',alpha2/n,'msg',0);
+                            end
+                        end
+                        [~,indmdsor] = sort(RAW.md);
+                        if alpha2 < 1
+                            qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
+                        else
+                            qqs = indmdsor(1:floor(ni(jk) - alpha2));
+                        end
+                    end
+                    
+                    % Update betas through ordinary least squares regression
+                    xxx = xmodj(qqs,1:p);
+                    yyy = xmodj(qqs,p+1);
+                    ni(jk) = length(yyy);
+                    if mixt == 0
+                        breg = xxx\yyy;
+                    elseif mixt == 2
+                        postprobmodj_jk = sqrt(postprobmodj(qqs,jk));
+                        breg =  (bsxfun(@times,xxx, postprobmodj_jk)) \ (bsxfun(@times,yyy ,postprobmodj_jk));
+                    end
+                    nameYY(:,jk) = breg;
+                    % now find residuals
+                    residuals = yyy-xxx*breg;
+                    % Update sigmas through the mean square residuals
+                    if mixt == 0
+                        sigmaini(jk) = sum(residuals.^2)/ni(jk);
+                    elseif mixt == 2
+                        sigmaini(jk) = sum((residuals .* postprobmodj_jk).^2)/(sum((postprobmodj_jk).^2));
+                    end
+                    if sigmaini(jk) <0.001
+                        % disp('ll');
+                        % WHAT IS THIS? DOME
+                    end
+                    
+                    xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
+                    indxmodtemp = indxmodtemp+ni(jk);
+                else
+                    
+                    % xmodj Data points in each group
+                    xmodj = [];
+                    if mixt == 2
+                        postprobmodj = [];
+                    end
+                    % Perform the second trimming
+                    
+                    % qqs contains contains the indexes of untrimmed units
+                    % for group j
+                    if alpha2 == 0
+                        qqs = [];
+                    else
+                        qqs = [];
+                    end
+                    
+                    % Update betas through ordinary least squares regression
+                    xxx = [];
+                    yyy = [];
+                    ni(jk) = 0;
+                    if mixt == 0
+                        breg = NaN;
+                    elseif mixt == 2
+                        breg =  NaN;
+                    end
+                    nameYY(:,jk) = breg;
+                    xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
+                    indxmodtemp = indxmodtemp+ni(jk);
+                    % New xmod
+                    % If the scatters do not satisfy the restriction then a
+                    % quadratic programming problem is solved
+                    sigmaini(jk) = NaN;
+                    %count the number of times in a group there are enough
+                    %observations to compute the sigma
+                    count1_ng_eq_k = count1_ng_eq_k + 1;
+                end
+            end
+            sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
+            if debug_mode == 1
+                figure;
+                gscatter(xmod(:,1),xmod(:,2),xmod(:,3));
+                hold on;
+                line([0 max(xmod(:,1))],[0 nameYY(1)*max(xmod(:,1))])
+                line([0 max(xmod(:,1))],[0 nameYY(2)*max(xmod(:,1))])
+                %variance(jk) = var(residuals);
+                % disp(sigmaini);
+                
+                hold off;
+            end
+            %if a group is emty, beta and sigma are computed as mean of the
+            %other groups
+            for j=1:k
+                if isnan(sigmaini(j))
+                    sigmaini(j) = nanmean(sigmaini);
+                end
+                if isnan(nameYY(:,j))
+                    nameYY(:,j) = nanmean(nameYY,2);
+                end
+            end
             xmod = xmodtemp(1:indxmodtemp,:);
             
-            % If the scatters do not satisfy the restriction then a
-            % quadratic programming problem is solved
-            sigmaini = (quadi(sigmaini.^(-1), restrfact)).^(-1);
-        end
-           
-        % Stop if two consecutive concentration steps have the same result
-        if indll == indold
-            break
-        else
-            indold = indll;
-        end
-    end
-    
-    %% Concentration steps concluded
-    
-    % Now compute the value of the target function
-    obj =0;
-    for jk=1:k
-        if control==0
-            yj=xmod(xmod(:,end)==jk,end-1);
-            Xj=xmod(xmod(:,end)==jk,1:end-2);
-            obj = obj + niini(jk)*log(niini(jk)/trimm2) +...
-                  sum(log(normpdf(yj-Xj*nameYY(:,jk),0,sqrt(sigmaini(jk)))));
-        else
-            obj=obj-10^10;
-        end
-    end
-    
-    % Change the 'optimal' target value and 'optimal' parameters if an
-    % increase in the target value is achieved
-    if (obj >= vopt)
-        vopt = obj;
-        bopt = nameYY;
-        numopt = niini;
-        sigmaopt = sigmaini;
-    end
-    disp(['iter ' num2str(iter)]);
-end
-
-%% Prepares the output structure and some variables for the plots
-
-% Assignment vectors:
-% - asig.1 will contain the clusters after the first trimming
-% - asig.2 will contain the clusters after after the second trimming
-asig1 = zeros(n,1);
-asig2 = asig1;
-
-% log-likelihoods for each unit and group
-for jk=1:k
-    ll(:,jk) = (numopt(jk)/n)*normpdf(y-X*bopt(:,jk),0,sqrt(sigmaopt(jk)));
-end
-
-% indll: for each unit, group with best log-likelihood
-[dist,indll] = max(ll,[],2);
-
-% Sort the n likelihood contributions;
-[val,qq] = sort(dist,'descend');
-
-% qq is updated to be a vector of size h which contains the indexes
-% associated with the largest n(1-alpha) (weighted) likelihood
-% contributions
-qq  = qq(1:n-trimm);
-
-% boolean vectors indicating the good and outlying units
-val = val(n-trimm);
-b_good = (dist>=val);
-b_outl = (dist <val);
-
-% asig1: grouping variable for good units
-for jk=1:k
-    asig1((indll==jk) & b_good) = jk;
-end
-
-xmod = [X(qq,:) y(qq) indll(qq)];
-
-xxx0_all = [];
-yyy0_all = [];
-
-% go over the groups
-for jk=1:k
-    
-    booljk=xmod(:,end)==jk;
-    qqk = qq(booljk);
-    ni(jk) = sum(booljk);
-    xmodjk = xmod(booljk,:);
-    
-    if alpha2==0
-        qqs = 1:ni(jk);
-    else
-        if intercept
-            RAW = mcd(xmodjk(:,2:p),'bdp',alpha2,'msg',0);
-        else
-            RAW = mcd(xmodjk(:,1:p),'bdp',alpha2,'msg',0);
-        end
-        [~,indmdsor] = sort(RAW.md);
-        qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
-    end
-    
-    % good units of the current group
-    xxx = xmodjk(qqs,1:end-2);
-    yyy = xmodjk(qqs,end-1);
-    
-    % second level trimming units of the current group
-    qqsn=setdiff(1:ni(jk),qqs);
-    xxx0 = xmodjk(qqsn,1:end-2);
-    yyy0 = xmodjk(qqsn,end-1);
-    
-    % collect all second level trimming units in a same group, for plotting
-    xxx0_all = [xxx0_all ; xxx0(:,end)]; %#ok<AGROW>
-    yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
-    
-    % plot good units allocated to the current group
-    if (plots && v < 2) 
-        
-        % initialize figure
-        if jk == 1
-            fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
-            ah=gca(fh); %#ok<NASGU>
-            hold on;
-            xlabel('X');
-            ylabel('y');
-            title('TclustReg clustering','Fontsize',14);
-            %print(fh,[graphs 'PCvariance.png'],'-dpng');
-            %close(fh);
-        end
-        
-        group_label = ['Group ' num2str(jk)];
-        plot(xxx(:,end),yyy,'.w','DisplayName',group_label);
-        % units of each component (pch=k+2)
-        text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)),...
-            'DisplayName',group_label , ...
-            'HorizontalAlignment','center',...
-            'VerticalAlignment','middle',...
-            'Color',clrdef(jk));
-        % % second level trimming points
-        % % non worth having them by group
-        % plot(xxx0(:,end),yyy0,'*','color','c',...
-        % 'DisplayName','Level-2 trim');
-    end
-    
-    qqf = qqk(qqs);
-    asig2(qqf) = jk;
-    
-    % plot regression lines
-    if (plots && v < 2)
-        reg=xxx\yyy;
-        vv = [min(X(:,end)) max(X(:,end))];
-        if intercept==1
-            plot(vv,reg(1)+reg(2)*vv,...
-                'DisplayName',['fit of group '  num2str(jk)],...
-                'Color',clrdef(jk));
-        elseif intercept==0
-            plot(vv,reg*vv,...
-                'DisplayName',['fit of group '  num2str(jk)],...
-                'Color',clrdef(jk));
-        end
-    end
-    
-end
-
-if plots
-    
-    if v < 2
-    % Plot the group of outliers
-    plot(X(b_outl,end),y(b_outl),'o','color','r',...
-        'DisplayName','Trimmed units');
-    
-    % second level trimming points
-    plot(xxx0_all,yyy0_all,'*','color','c',...
-        'DisplayName','L2 trimmed units');
-    
-    % position the legends and make them clickable
-    lh=legend('show');
-    %set(lh,'FontSize',14);
-    axis('manual');
-    legstr = get(lh,'String');
-    clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
-    %[hleg, hobj, hout, mout] = clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
-    %Unfortunately custom markers for line objects are not possible in MATLAB
-    %set(hobj(10),'Marker','1','Color','k');
-    end
-
-else
-    % in this case p > 2 and a standard spmplot is used
-    
-    if intercept
-        YY = [X(:,2:end),y];
-    else
-        YY = [X,y];
-    end
-    
-    % axis labels
-    nameYY = cellstr([repmat('X',size(YY,2)-1,1) , num2str((1:size(YY,2)-1)')]);
-    nameYY = [nameYY ; 'y'];
-    nameYY = nameYY';
-    plo=struct;
-    plo.nameY=nameYY;
-    
-    % group names in the legend
-    group = cell(size(asig2,1),1);
-    group(asig2==0) = {'Trimmed units'};
-    for iii = 1:k
-        group(asig2==iii) = {['Group ' num2str(iii)]};
-    end
-    
-    % scatterplot
-    hout = spmplot(YY,group,plo,'hist'); %#ok<NASGU>
-    
-    %group_l = cellstr([repmat('Group',k,1) , num2str((1:k)')]);
-    %group_l = ['Trimmed units' ; group];
-    %[hleg, hobj, hout, mout] = legend((hout(1,end,:)));
-end
-
-%%  Set the output structure
-
-out             = struct;
-out.bopt        = bopt;
-out.sigmaopt    = sigmaopt;
-out.numopt      = numopt;
-out.vopt        = vopt;
-out.asig1       = asig1;
-out.asig2       = asig2;
-
-%   bopt        are the regression parameters
-%   sigmaopt    are the estimated group variances
-%   numopt      are the number of observations in each cluster after the
-%               second trimming
-%   vopt        is the value of the target function
-%   asig1       is the cluster assigments after first trimming ('0' means a
-%               trimmed observation)
-%   asig2       is the (-final-) cluster assigments after second trimming
-%               ('0' means a trimmed observation)
-
-%% subfunction quadi
-%  prepares the quantities to call the matlab quadratic programming routine
-%  quadprog
-    function gnew = quadi(gg,factor)
-        if size(gg,1)>1
-            gg=gg';
-        end
-        
-        % gnew will the new scatters
-        gnew = gg;
-        
-        if (length(gg)>1)
-            %Sort scatters
-            [ggsor,ggsorind] = sort(gg);
-            
-            % g(1) = smallest sigma
-            % ...
-            % g(end) = largest sigma
-            g = ggsor;
-            
-            maximun = 10^5;
-            
-            % Constant "c" defining the scatter constraint
-            factor = factor+0.0001;
-            
-            % nscat is the number of scatter parameters
-            nscat = length(g);
-            
-            Amat =zeros(nscat,nscat);
-            % rr = 1:nscat;
-            
-            for ii =1:(nscat-1)
-                Amat(ii,ii) = -1;
-                Amat(ii,ii+1) =1;
+            % Stop if two consecutive concentration steps have the same result
+            if indmax == indold
+                break
+            else
+                indold = indmax;
             end
             
-            % Definition of the quadratic problem
-            Amat(nscat,1) = factor;
-            Amat(nscat,nscat) = -1;
-            Vmat = diag([ones(nscat,1);zeros(nscat,1)]);
-            dvec = - [g,zeros(1,nscat)];
-            bvec = zeros(1,nscat);
-            uvecmax = maximun+zeros(1,2*nscat);
-            uvecmin = zeros(1,2*nscat);
+            %% Now compute the value of the target function
+            obj = 0;
+            empty_g = ~( ni <= p + 1 );
+            if mixt == 0
+                % Update weights
+                niini(jk) = ni(jk);
+                
+                jk = 0;
+                for iii = empty_g
+                    jk = jk+1;
+                    if iii ==1
+                        yj = xmod(xmod(:,end) == jk,end-1);
+                        Xj = xmod(xmod(:,end) == jk,1:end-2);
+                        %the following command should be executed at the
+                        %end of the for loop of the concentration steps.
+                        %However here it is executed all steps, because of
+                        %a break from the loop which is executed if two
+                        %consecutive concentration steps have the same
+                        %result
+                        % if t == Ksteps
+                        %                            obj_old = obj + niini(jk)*log(niini(jk)/trimm2) +...
+                        %                            sum(log(normpdf(yj-Xj*nameYY(:,jk),0,sqrt(sigmaini(jk)))));
+                        obj = obj + niini(jk)*log(niini(jk)/trimm2) +...
+                            sum(logmvnpdfFS(yj-Xj*nameYY(:,jk),0,(sigmaini(jk))));
+                        % end
+                    else
+                        %if a groupis missing, we do not compute the objective
+                        %function for it.
+                    end
+                end
+            elseif mixt == 2
+                %the following command should be executed at the end of
+                %the for loop of the concentration steps. However here
+                %it is executed all steps, because of a break from the
+                %loop which is executed if two consecutive
+                %concentration steps have the same result
+                %if t == Ksteps
+                log_lh=NaN(size(xmod,1),size(empty_g,2));
+                jk = 0;
+                %log_lh = [];
+                for iii = empty_g
+                    jk = jk+1;
+                    if iii ==1
+                        %                        log_lh_old(:,jk) =  log(niini(jk)/sum(niini))+(log(normpdf(xmod(:,intercept+2)-xmod(:,1:1+intercept)*nameYY(:,jk),0,sqrt(sigmaini(jk)))));
+                        log_lh(:,jk) =  log(niini(jk)/sum(niini))+(logmvnpdfFS(xmod(:,end-1)-xmod(:,1: (size(xmod,2)-2))*nameYY(:,jk),0,(sigmaini(jk))));
+                        
+                        
+                    else
+                        %if a groupis missing, we do not compute the objective
+                        %function for it.
+                        %obj = obj-10^10;
+                        log_lh(:,jk)=NaN(length(xmod),1);
+                    end
+                end
+                
+                group_missing = sum(isnan(log_lh),1)>0;
+                log_lh(:,group_missing)=[];
+                obj = estepFS(log_lh);
+                if ~isempty(group_missing)
+                    nameYY(:,group_missing) = NaN;
+                    sigmaini(group_missing) = NaN;
+                end
+                %end
+            end
             
-            Amat = [Amat,-1*eye(nscat)];
             
-            % Solve this quadratic problem
-            % a = quadprog(Vmat,dvec,[],[],Amat,bvec',uvecmin,uvecmax,g,'Algorithm','interior-point-convex');
-            
-            % FSDATOAPP:tclustreg:DF
-            % Remark: for compatibilty with old version of MATLAB we use
-            % intruction optimset. However recent versions of Matlab accept
-            % function optimoptions as follows
-            % option = optimoptions('quadprog','algorithm','interior-point-convex','Display','off');
-            option = optimset('OutputFcn','quadprog','algorithm','interior-point-convex','Display','off');
-            
-            a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],option);
-            %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','interior-point-convex','Display','iter');
-            %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','active-set');
-            
-            gnew =a(1:nscat);
-            
-            %Original order
-            gnew(ggsorind) = gnew;
-            
+            %% Concentration steps concluded
+        end
+        % Change the 'optimal' target value and 'optimal' parameters if an
+        % increase in the target value is achieved
+        %if sum(empty_g ) == k   %this check is commented in order to estimate
+        %the effect of eps_beta
+        if sum(sum(isnan(nameYY))) == 0
+            if (obj >= vopt)
+                vopt = obj;
+                bopt = nameYY;
+                numopt = niini;
+                sigmaopt = sigmaini;
+            end
+        end
+        %end
+        if msg == 1
+            disp(['iter ' num2str(count)]);
         end
     end
 end
-%FScategory:CLUS-RobClaREG
+if count < nsamp
+    out = struct;
+else
+    %% Prepares the output structure and some variables for the plots
+    
+    % Assignment vectors:
+    % - asig.1 will contain the clusters after the first trimming
+    % - asig.2 will contain the clusters after after the second trimming
+    asig1 = zeros(n,1);
+    asig2 = asig1;
+    
+    % log-likelihoods for each unit and group
+    empty_g = ~( numopt == 0 )';
+    jk = 0;
+    for iii = empty_g
+        jk = jk+1;
+        if iii ==1
+            ll_old(:,jk) = log((numopt(jk)/sum(numopt))*normpdf(y-X*bopt(:,jk),0,sqrt(sigmaopt(jk))));
+            ll(:,jk) = log((numopt(jk)/sum(numopt)) )+ logmvnpdfFS(y-X*bopt(:,jk),0,(sigmaopt(jk)));
+        else
+            ll(:,jk) = NaN;
+        end
+    end
+    %compute posterior probabilities. In principle it should be computed only
+    %for mixt==2, but since it is among the output of the function, it is
+    %computed also for mixt==1
+    [~,postprob,~] = estepFS(ll);
+    
+    %% determine observations to trim
+    
+    
+    % boolean vectors indicating the good and outlying units
+    if wtrim ==0
+        [dist,indmax] = max(ll,[],2);
+        % Sort the n likelihood contributions;
+        [val,qq] = sort(dist,'descend');
+        % qq is updated to be a vector of size h which contains the indexes
+        % associated with the largest n(1-alpha) (weighted) likelihood
+        % contributions
+        qq  = qq(1:n-trimm);
+        val = val(n-trimm);
+        b_good = (dist>=val);
+        b_outl = (dist <val);
+        
+    elseif wtrim ==1
+        [dist,indmax] = max(ll,[],2);
+        [ val, qq] =sort(dist,'descend');
+        qq_acend = qq(end:-1:1);
+        cumsumyy = cumsum(we(qq_acend));
+        if alpha1 <1
+            qqunassigned_small = cumsumyy < alpha1*sum(we(qq_acend));
+        else
+            qqunassigned_small = cumsumyy < alpha1/n*sum(we(qq_acend));
+        end
+        qqunassigned = qq_acend(qqunassigned_small);
+        qq = setdiff((1:n)',qqunassigned);
+        val = val(n-length(qqunassigned));
+        b_good = (dist>=val);
+        b_outl = (dist <val);
+        %b_outl_unasigned = b_outl(qqunassigned_small==1);
+        %b_outl_asigned = b_outl(qqunassigned_small==0);
+    end
+    
+    % asig1: grouping variable for good units
+    for jk=1:k
+        asig1((indmax == jk) & b_good) = jk;
+    end
+    
+    xmod = [X(qq,:) y(qq) indmax(qq)];
+    
+    xxx0_all = [];
+    yyy0_all = [];
+    
+    % go over the groups
+    
+    for jk = 1:k
+        booljk = xmod(:,end) == jk;
+        ni(jk) = sum(booljk);
+    end
+    
+    empty_g = ~( ni <= p + 1 );
+    %count the number of times the number of groups is lt k
+    if sum(empty_g) == k
+        count2_ng_eq_k = count2_ng_eq_k + 1;
+    else
+        count2_ng_lt_k = count2_ng_lt_k + 1;
+    end
+    
+    jk = 0;
+    for iii = empty_g
+        jk = jk+1;
+        booljk = xmod(:,end) == jk;
+        %b_outl_asigned_jk = b_outl_asigned(booljk);
+        qqk = qq(booljk);
+        ni(jk) = sum(booljk);
+        %xmodjk = xmod(booljk & b_outl_asigned_jk,:);
+        xmodjk = xmod(booljk ,:);
+        if iii ==1
+            if alpha2 == 0
+                qqs = 1:ni(jk);
+            else
+                if intercept
+                    if alpha2 <1
+                        RAW = mcd(xmodjk(:,2:p),'bdp',alpha2,'msg',0);
+                    elseif alpha2 >= 1
+                        RAW = mcd(xmodjk(:,2:p),'bdp',alpha2/n,'msg',0);
+                    end
+                else
+                    if alpha2 <1
+                        RAW = mcd(xmodjk(:,1:p),'bdp',alpha2,'msg',0);
+                    elseif alpha2 >= 1
+                        RAW = mcd(xmodjk(:,1:p),'bdp',alpha2/n,'msg',0);
+                    end
+                end
+                [~,indmdsor] = sort(RAW.md);
+                qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
+            end
+            
+            % good units of the current group
+            xxx = xmodjk(qqs,1:end-2);
+            yyy = xmodjk(qqs,end-1);
+            
+            % second level trimming units of the current group
+            qqsn = setdiff(1:ni(jk),qqs);
+            xxx0 = xmodjk(qqsn,1:end-2);
+            yyy0 = xmodjk(qqsn,end-1);
+            
+            % collect all second level trimming units in a same group, for plotting
+            xxx0_all = [xxx0_all ; xxx0(:,end)]; %#ok<AGROW>
+            yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
+            
+            %computation of beta, residuals and sigma according to the
+            %assignements just computed.
+            %         if reweighting_step ==1
+            %             %number of non-trimmed observation in each group
+            %             numopt(jk) = length(yyy);
+            %             %compute the optimal beta and sigmaini
+            %             if mixt == 0
+            %                 bopt(:,jk) = xxx\yyy;
+            %                 % now find residuals
+            %                 residuals = yyy-xxx*bopt(:,jk);
+            %                 % Update sigmas through the mean square residuals
+            %                 sigmaopt(jk) = sum(residuals.^2)/numopt(jk);
+            %
+            %             elseif mixt == 2
+            %                 postprob_jk = sqrt(postprobtri(qqs,jk));
+            %                 bopt(:,jk) =  (bsxfun(@times,xxx, postprob_jk)) \ (bsxfun(@times,yyy ,postprob_jk));
+            %                 % now find residuals
+            %                 residuals = yyy - xxx*bopt(:,jk);
+            %                 % Update sigmas through the mean square residuals
+            %                 sigmaopt(jk) = sum(residuals.^2)/numopt(jk);
+            %             end
+            %         end
+            qqf = qqk(qqs);
+            asig2(qqf) = jk;
+        end
+        
+        %% plots
+        
+        % The following plots are for the bi-variate case (v=1)
+        if (plots && v < 2)
+            
+            % initialize figure
+            if jk == 1
+                fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
+                gca(fh);
+                hold on;
+                xlabel('X');
+                ylabel('y');
+                title('TclustReg clustering','Fontsize',14);
+                %print(fh,[graphs 'PCvariance.png'],'-dpng');
+                %close(fh);
+            end
+            
+            % plot good units allocated to the current group
+            group_label = ['Group ' num2str(jk)];
+            plot(xxx(:,end),yyy,'.w','DisplayName',group_label);
+            text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)),...
+                'DisplayName',group_label , ...
+                'HorizontalAlignment','center',...
+                'VerticalAlignment','middle',...
+                'Color',clrdef(jk));
+            
+            % second level trimming points are not plotted by group
+            % plot(xxx0(:,end),yyy0,'*','color','c','DisplayName','Level-2 trim');
+            
+            % plot regression lines
+            vv = [min(X(:,end)) max(X(:,end))];
+            if intercept==1
+                plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
+                    'DisplayName',['fit of group '  num2str(jk)],...
+                    'Color',clrdef(jk));
+            elseif intercept==0
+                plot(vv,bopt(:,jk)*vv,...
+                    'DisplayName',['fit of group '  num2str(jk)],...
+                    'Color',clrdef(jk));
+            end
+            
+        end
+        
+    end
+    
+    if plots
+        
+        if v < 2
+                 
+            % Plot the group of outliers
+            plot(X(b_outl,end),y(b_outl),'o','color','r',...
+                'DisplayName','Trimmed units');
+            
+            % second level trimming points
+            plot(xxx0_all,yyy0_all,'*','color','c',...
+                'DisplayName','L2 trimmed units');
+            
+            % position the legends and make them clickable
+            lh=legend('show');
+            %set(lh,'FontSize',14);
+            axis('manual');
+            legstr = get(lh,'String');
+            clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
+            %[hleg, hobj, hout, mout] = clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
+            %Unfortunately custom markers for line objects are not possible in MATLAB
+            %set(hobj(10),'Marker','1','Color','k');
+            
+        else
+            % in this case p > 2 and a standard spmplot is used
+            
+            if intercept
+                YY = [X(:,2:end),y];
+            else
+                YY = [X,y];
+            end
+            
+            % axis labels
+            nameYY = cellstr([repmat('X',size(YY,2)-1,1) , num2str((1:size(YY,2)-1)')]);
+            nameYY = [nameYY ; 'y'];
+            nameYY = nameYY';
+            plo=struct;
+            plo.nameY=nameYY;
+            
+            % group names in the legend
+            group = cell(size(asig2,1),1);
+            group(asig2==0) = {'Trimmed units'};
+            for iii = 1:k
+                group(asig2==iii) = {['Group ' num2str(iii)]};
+            end
+            
+            % scatterplot
+            spmplot(YY,group,plo,'hist');
+            
+            %group_l = cellstr([repmat('Group',k,1) , num2str((1:k)')]);
+            %group_l = ['Trimmed units' ; group];
+            %[hleg, hobj, hout, mout] =legend((out(1,end,:)));
+        end
+    end
+    
+    % If the scatters do not satisfy the restriction then a quadratic
+    % programming problem is solved
+    
+    if sum(isnan(sigmaopt)) == 0
+        sigmaopt_0 = restreigen(sigmaopt,ni',restrfact,tolrestreigen,userepmat);
+        % the old (inefficient) approach was to use a quadratic programming
+        % optimization, using function quadi
+        %sigmaopt_0 = (quadi(sigmaopt.^(-1), restrfact)).^(-1);
+    else
+        % in principle this condition should never be satisfied. Consider
+        % removing this statement.
+        % PLEASE CHECK!! DOME
+        disp('condition on sigmaopt that should never be satisfied: check!!!');
+        %sigmaopt_not_nan = sigmaopt;
+        sigmaopt_0 = nan(k,1);
+        i_not_nan  = zeros(k,1);
+        i_nan      = zeros(k,1);
+        %loop on all groups to identify positions with nan and not nan
+        for gr = 1:k
+            if isnan(sigmaopt(gr))
+                % i_nan = [i_nan gr]; FT
+                i_nan(gr) = 1;
+                %sigmaopt_not_nan(gr) = [];
+            else
+                % i_not_nan = [i_not_nan gr]; FT
+                i_not_nan(gr) = 1;
+            end
+        end
+        i_not_nan = find(i_not_nan);
+        i_nan     = find(i_nan);
+        
+        %sigmaopt_0_not_nan is a subset of sigmaopt_0 which does not contain nan
+        %sigmaopt_0_not_nan = (quadi(sigmaopt_not_nan.^(-1), restrfact)).^(-1);
+        sigmaopt_0_not_nan = restreigen(sigmaopt(i_not_nan)',ni(i_not_nan)',restrfact,tolrestreigen,userepmat);
+        sigmaopt_0_not_nan = sigmaopt_0_not_nan';
+        %sigmaopt_0 contains sigmaopt_0_not_nan and nan in the correct positions
+        l=0;
+        for gr = i_not_nan
+            l=l+1;
+            sigmaopt_0 (gr) = sigmaopt_0_not_nan(l);
+        end
+    end
+    
+    %Apply consistency factor based on the variance of the truncated normal
+    %distribution.
+    % hh = sum(numopt) number of non trimmed observations, after first and
+    % second level trimming.
+    % 1-hh/n=trimming percentage
+    hh = sum(numopt);
+    % Compute variance of the truncated normal distribution.
+    vt = norminv(0.5*(1+hh/n));
+    %factor=1/sqrt(1-(2*vt.*normpdf(vt))./(2*normcdf(vt)-1));
+    factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
+    % Note that factor=sqrt(factor1)
+    %     v=1;
+    %     a=chi2inv(hh/n,1);
+    %     factor1=(hh/n)/(chi2cdf(a,1+2));
+    % Apply the asymptotic consistency factor to the preliminary scale estimate
+    if ~isnan(factor)
+        sigmaopt_cons=sigmaopt_0*factor;
+        % Apply small sample correction factor of Pison et al.
+        sigmaopt_pison=sigmaopt_cons*sqrt(corfactorRAW(1,n,hh/n));
+    else
+        sigmaopt_cons=sigmaopt_0;
+        sigmaopt_pison=sigmaopt_cons;
+    end
+    
+    %%  Set the output structure
+    
+    out                = struct;
+    out.bopt           = bopt;
+    out.sigmaopt_0     = sigmaopt_0;
+    out.sigmaopt_cons  = sigmaopt_cons;
+    out.sigmaopt_pison = sigmaopt_pison;
+    out.numopt         = numopt;
+    out.vopt           = vopt;
+    out.asig1          = asig1;
+    out.asig2          = asig2;
+    out.postprob       = postprob;
+    out.count1_ng_lt_k = count1_ng_lt_k;
+    out.count2_ng_lt_k = count2_ng_lt_k;
+    out.count1_ng_eq_k = count1_ng_eq_k;
+    out.count2_ng_eq_k = count2_ng_eq_k;
+    out.extra_inisubs  = nselected - nsampdef;
+    out.selj_good      = selj_good_groups;
+    out.selj_elim      = selj_elim_groups(1:count_elim,:);
+    out.selj_all       = [selj_elim_groups(1:count_elim,:); selj_good_groups];
+    
+    %   bopt           = regression parameters
+    %   sigmaopt0      = estimated group variances
+    %   sigmaopt_cons  = estimated group variances corrected with  asymptotic consistency factor
+    %   sigmaopt_pison = estimated group variances corrected with  asymptotic consistency factor and small sample correction factor of Pison et al.
+    %   numopt         = number of observations in each cluster after the second trimming
+    %   vopt           = value of the target function
+    %   asig1          = cluster assigments after first trimming ('0' means a trimmed observation)
+    %   asig2          = (-final-) cluster assigments after second trimming ('0' means a trimmed observation)
+    %   postprob       = posterior probability
+    %   count1_ng_lt_k = number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
+    %   count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
+    %   count2_ng_lt_k = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
+    %   count2_eq_lt_k = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
+    %   extra_inisubs  = ADD DESCRIPTION!! DOME
+    %   out.selj_good  = ADD DESCRIPTION!! DOME
+    %   out.selj_elim  = ADD DESCRIPTION!! DOME
+    %   out.selj_all   = ADD DESCRIPTION!! DOME
+    
+end
+
+%% Subfunctions
+
+% corfactorRAW function
+    function rawcorfac = corfactorRAW(p,n,alpha)
+        
+        if p > 2
+            coeffqpkwad875=[-0.455179464070565,1.11192541278794,2;-0.294241208320834,1.09649329149811,3]';
+            coeffqpkwad500=[-1.42764571687802,1.26263336932151,2;-1.06141115981725,1.28907991440387,3]';
+            y1_500=1+(coeffqpkwad500(1,1)*1)/p^coeffqpkwad500(2,1);
+            y2_500=1+(coeffqpkwad500(1,2)*1)/p^coeffqpkwad500(2,2);
+            y1_875=1+(coeffqpkwad875(1,1)*1)/p^coeffqpkwad875(2,1);
+            y2_875=1+(coeffqpkwad875(1,2)*1)/p^coeffqpkwad875(2,2);
+            y1_500=log(1-y1_500);
+            y2_500=log(1-y2_500);
+            y_500=[y1_500;y2_500];
+            A_500=[1,log(1/(coeffqpkwad500(3,1)*p^2));1,log(1/(coeffqpkwad500(3,2)*p^2))];
+            coeffic_500=A_500\y_500;
+            y1_875=log(1-y1_875);
+            y2_875=log(1-y2_875);
+            y_875=[y1_875;y2_875];
+            A_875=[1,log(1/(coeffqpkwad875(3,1)*p^2));1,log(1/(coeffqpkwad875(3,2)*p^2))];
+            coeffic_875=A_875\y_875;
+            fp_500_n=1-(exp(coeffic_500(1))*1)/n^coeffic_500(2);
+            fp_875_n=1-(exp(coeffic_875(1))*1)/n^coeffic_875(2);
+        else
+            if p == 2
+                fp_500_n=1-(exp(0.673292623522027)*1)/n^0.691365864961895;
+                fp_875_n=1-(exp(0.446537815635445)*1)/n^1.06690782995919;
+            end
+            if p == 1
+                fp_500_n=1-(exp(0.262024211897096)*1)/n^0.604756680630497;
+                fp_875_n=1-(exp(-0.351584646688712)*1)/n^1.01646567502486;
+            end
+        end
+        if 0.5 <= alpha && alpha <= 0.875
+            fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
+        end
+        if 0.875 < alpha && alpha < 1
+            fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
+        end
+        if alpha < 0.5
+            fp_alpha_n = 1;
+            if msg==1
+                disp('Warning: problem in subfunction corfactorRAW')
+                disp('alpha < 0.5')
+            end
+        end
+        rawcorfac=1/fp_alpha_n;
+        if rawcorfac <=0 || rawcorfac>50
+            rawcorfac=1;
+            if msg==1
+                disp('Warning: problem in subfunction corfactorRAW')
+                disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
+                disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
+                disp('This may happen when n is very small and p is large')
+            end
+        end
+    end
+
+% Subfunction quadi prepares the quantities to call the matlab
+% quadratic programming routine quadprog. It was used to constrain the
+% scatters which do not satisfy the desired restriction. Now the
+% function is replaced by the more efficient restreigen.m
+%
+%     function gnew = quadi(gg,factor)
+%         if size(gg,1)>1
+%             gg=gg';
+%         end
+%
+%         % gnew will the new scatters
+%         gnew = gg;
+%
+%         if (length(gg)>1)
+%             %Sort scatters
+%             [ggsor,ggsorind] = sort(gg);
+%
+%             % g(1) = smallest sigma
+%             % ...
+%             % g(end) = largest sigma
+%             g = ggsor;
+%
+%             maximun = 10^5;
+%
+%             % Constant "c" defining the scatter constraint
+%             factor = factor+0.0001;
+%
+%             % nscat is the number of scatter parameters
+%             nscat = length(g);
+%
+%             Amat =zeros(nscat,nscat);
+%             % rr = 1:nscat;
+%
+%             for ii =1:(nscat-1)
+%                 Amat(ii,ii) = -1;
+%                 Amat(ii,ii+1) =1;
+%             end
+%
+%             % Definition of the quadratic problem
+%             Amat(nscat,1) = factor;
+%             Amat(nscat,nscat) = -1;
+%             Vmat = diag([ones(nscat,1);zeros(nscat,1)]);
+%             dvec = - [g,zeros(1,nscat)];
+%             bvec = zeros(1,nscat);
+%             uvecmax = maximun+zeros(1,2*nscat);
+%             uvecmin = zeros(1,2*nscat);
+%
+%             Amat = [Amat,-1*eye(nscat)];
+%
+%             % Solve this quadratic problem
+%             % a = quadprog(Vmat,dvec,[],[],Amat,bvec',uvecmin,uvecmax,g,'Algorithm','interior-point-convex');
+%
+%             % FSDATOAPP:tclustreg:DF
+%             % Remark: for compatibilty with old version of MATLAB we use
+%             % intruction optimset. However recent versions of Matlab accept
+%             % function optimoptions as follows
+%             % option = optimoptions('quadprog','algorithm','interior-point-convex','Display','off');
+%             option = optimset('OutputFcn','quadprog','algorithm','interior-point-convex','Display','off');
+%
+%             a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],option);
+%             %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','interior-point-convex','Display','iter');
+%             %a = quadprog(Vmat,dvec,[],[],Amat,bvec,uvecmin,uvecmax,[],'algorithm','active-set');
+%
+%             gnew =a(1:nscat);
+%
+%             %Original order
+%             gnew(ggsorind) = gnew;
+%
+%         end
+%     end
+% end
+
+end
+

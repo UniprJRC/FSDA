@@ -1,4 +1,7 @@
 function out = rlga(X,k,alpha,varargin)
+
+% VERIFICARE LINEE 134 -- 136 ALPHA NON TORNA PER NIENTE !!!!!!!!   
+
 %rlga performs robust linear grouping analysis
 %
 %
