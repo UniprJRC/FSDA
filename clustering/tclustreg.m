@@ -145,33 +145,33 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %
 %  out :  structure containing the following fields
 %
-%   out.bopt          = $p-1 \times k$ matrix containing the regression
-%                       parameters.
-%   out.sigmaopt0     = $k$ row vector containing the estimated group
-%                       variances.
-%   out.sigmaopt_cons = $k$ row vector containing the estimated group
-%                       variances corrected with  asymptotic consistency factor
-%   out.sigmaopt_pisonare  = $k$ row vector containing the estimated group
+%   out.bopt           = $p-1 \times k$ matrix containing the regression
+%                        parameters.
+%   out.sigmaopt0      = $k$ row vector containing the estimated group
+%                        variances.
+%   out.sigmaopt_cons  = $k$ row vector containing the estimated group
+%                        variances corrected with  asymptotic consistency factor
+%   out.sigmaopt_pison = $k$ row vector containing the estimated group
 %                            variances corrected with  asymptotic consistency factor
 %                            and small sample correction factor of Pison et al.
-%   out.numopt        = $k$ column vector containing the number of
-%                       observations in each cluster
-%                       after the second trimming.                                         .
-%   out.vopt          = Scalar. The value of the target function.
-%   out.asig1         = $n$ vector containing the cluster assigments after
-%                       first trimming ('0' means a trimmed observation).
-%   out.asig2         = $n$ vector containing the final cluster assigments
-%                       after second trimming ('0' means a trimmed
-%                       observation).
-%   out.postprob      = $n$ vector containing the final posterior probability
-%   out.count1_ng_lt_k  =  number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
-%   out.count1_eq_lt_k  = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
-%   out.count2_ng_lt_k  = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
-%   out.count2_eq_lt_k  = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
-%   out.nselected       = number of initial subsets actually
-%                         extracted. If eps_beta is not specified or if it is set to
-%                         zero, out.nselected = nsamp; otherwise out.nselected > nsamp
-%  out.selj_all         = initial subsets extracted
+%   out.numopt         = $k$ column vector containing the number of
+%                        observations in each cluster
+%                        after the second trimming.                                         .
+%   out.vopt           = Scalar. The value of the target function.
+%   out.asig1          = $n$ vector containing the cluster assigments after
+%                        first trimming ('0' means a trimmed observation).
+%   out.asig2          = $n$ vector containing the final cluster assigments
+%                        after second trimming ('0' means a trimmed
+%                        observation).
+%   out.postprob       = $n$ vector containing the final posterior probability
+%   out.count1_ng_lt_k = number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
+%   out.count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
+%   out.count2_ng_lt_k = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
+%   out.count2_eq_lt_k = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
+%   out.nselected      = number of initial subsets actually
+%                        extracted. If eps_beta is not specified or if it is set to
+%                        zero, out.nselected = nsamp; otherwise out.nselected > nsamp
+%  out.selj_all        = initial subsets extracted
 %
 % See also: tclust, tkmeans, estepFS
 %
@@ -1105,8 +1105,7 @@ else
     [~,postprob,~] = estepFS(ll);
     
     %% determine observations to trim
-    
-    
+
     % boolean vectors indicating the good and outlying units
     if wtrim ==0
         [dist,indmax] = max(ll,[],2);
@@ -1139,18 +1138,23 @@ else
         %b_outl_asigned = b_outl(qqunassigned_small==0);
     end
     
-    % asig1: grouping variable for good units
+    % asig1: grouping variable for good units, with 0 for trimmed units
     for jk=1:k
         asig1((indmax == jk) & b_good) = jk;
     end
     
+    % xmod: contains the good units and, in the last column, their group assignment
     xmod = [X(qq,:) y(qq) indmax(qq)];
     
-    xxx0_all = [];
-    yyy0_all = [];
+    % used for collecting sencond level trimming points, used for plotting
+    %xxx0_all = [];
+    %yyy0_all = [];
     
+    % IS THIS PART BELOW MADE JUST TO COUNT the number of times the number
+    % of groups is lt k? IF YES, SHOULD THIS BE MOVED AT THE END OF THE
+    % LOOP BELOW, AFTER SECOND LEVEL TRIMMING?
+    % DOME BEGIN
     % go over the groups
-    
     for jk = 1:k
         booljk = xmod(:,end) == jk;
         ni(jk) = sum(booljk);
@@ -1163,6 +1167,9 @@ else
     else
         count2_ng_lt_k = count2_ng_lt_k + 1;
     end
+    % DOME END
+    
+    %% determine second level trimming points
     
     jk = 0;
     for iii = empty_g
@@ -1194,19 +1201,20 @@ else
                 qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
             end
             
-            % good units of the current group
-            xxx = xmodjk(qqs,1:end-2);
-            yyy = xmodjk(qqs,end-1);
-            
+            % good units of the current group (used for plotting inside loop)
+            %xxx = xmodjk(qqs,1:end-2);
+            %yyy = xmodjk(qqs,end-1);
+            %
             % second level trimming units of the current group
-            qqsn = setdiff(1:ni(jk),qqs);
-            xxx0 = xmodjk(qqsn,1:end-2);
-            yyy0 = xmodjk(qqsn,end-1);
-            
+            %qqsn = setdiff(1:ni(jk),qqs);
+            %xxx0 = xmodjk(qqsn,1:end-2);
+            %yyy0 = xmodjk(qqsn,end-1);
+            %
             % collect all second level trimming units in a same group, for plotting
-            xxx0_all = [xxx0_all ; xxx0(:,end)]; %#ok<AGROW>
-            yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
+            %xxx0_all = [xxx0_all ; xxx0(:,end)]; %#ok<AGROW>
+            %yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
             
+            % CAN THIS SECTION BELOW BE REMOVED? DOME
             %computation of beta, residuals and sigma according to the
             %assignements just computed.
             %         if reweighting_step ==1
@@ -1229,64 +1237,110 @@ else
             %                 sigmaopt(jk) = sum(residuals.^2)/numopt(jk);
             %             end
             %         end
+            % CAN THIS SECTION ABOVE BE REMOVED? DOME
+            
             qqf = qqk(qqs);
             asig2(qqf) = jk;
         end
         
-        %% plots
-        
-        % The following plots are for the bi-variate case (v=1)
-        if (plots && v < 2)
-            
-            % initialize figure
-            if jk == 1
-                fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
-                gca(fh);
-                hold on;
-                xlabel('X');
-                ylabel('y');
-                title('TclustReg clustering','Fontsize',14);
-                %print(fh,[graphs 'PCvariance.png'],'-dpng');
-                %close(fh);
-            end
-            
-            % plot good units allocated to the current group
-            group_label = ['Group ' num2str(jk)];
-            plot(xxx(:,end),yyy,'.w','DisplayName',group_label);
-            text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)),...
-                'DisplayName',group_label , ...
-                'HorizontalAlignment','center',...
-                'VerticalAlignment','middle',...
-                'Color',clrdef(jk));
-            
-            % second level trimming points are not plotted by group
-            % plot(xxx0(:,end),yyy0,'*','color','c','DisplayName','Level-2 trim');
-            
-            % plot regression lines
-            vv = [min(X(:,end)) max(X(:,end))];
-            if intercept==1
-                plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
-                    'DisplayName',['fit of group '  num2str(jk)],...
-                    'Color',clrdef(jk));
-            elseif intercept==0
-                plot(vv,bopt(:,jk)*vv,...
-                    'DisplayName',['fit of group '  num2str(jk)],...
-                    'Color',clrdef(jk));
-            end
-            
-        end
+        % plots    MOVED OUTSIDE THE LOOP, TOGETHER WITH OTHER PLOTS
+        %
+        %         % The following plots are for the bi-variate case (v=1)
+        %         if (plots && v < 2)
+        %
+        %             % initialize figure
+        %             if jk == 1
+        %                 fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
+        %                 gca(fh);
+        %                 hold on;
+        %                 xlabel('X');
+        %                 ylabel('y');
+        %                 title('TclustReg clustering','Fontsize',14);
+        %                 %print(fh,[graphs 'PCvariance.png'],'-dpng');
+        %                 %close(fh);
+        %             end
+        %
+        %             % plot good units allocated to the current group
+        %             group_label = ['Group ' num2str(jk)];
+        %             plot(xxx(:,end),yyy,'.w','DisplayName',group_label);
+        %             text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)),...
+        %                 'DisplayName',group_label , ...
+        %                 'HorizontalAlignment','center',...
+        %                 'VerticalAlignment','middle',...
+        %                 'Color',clrdef(jk));
+        %
+        %             % second level trimming points are not plotted by group
+        %             % plot(xxx0(:,end),yyy0,'*','color','c','DisplayName','Level-2 trim');
+        %
+        %             % plot regression lines
+        %             vv = [min(X(:,end)) max(X(:,end))];
+        %             if intercept==1
+        %                 plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
+        %                     'DisplayName',['fit of group '  num2str(jk)],...
+        %                     'Color',clrdef(jk));
+        %             elseif intercept==0
+        %                 plot(vv,bopt(:,jk)*vv,...
+        %                     'DisplayName',['fit of group '  num2str(jk)],...
+        %                     'Color',clrdef(jk));
+        %             end
+        %
+        %         end
         
     end
     
+    %% Generate plots
+    
     if plots
         
+        % The following plots are for the bi-variate case (i.e. v=1)
         if v < 2
-                 
-            % Plot the group of outliers
+            
+            % initialize figure
+            fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
+            gca(fh);
+            hold on;
+            xlabel('X');
+            ylabel('y');
+            title('TclustReg clustering','Fontsize',14);
+            
+            jk = 0;
+            for iii = empty_g
+                jk = jk+1;
+                group_label = ['Group ' num2str(jk)];
+                
+                % plot of the good units allocated to the current group.
+                % Indices are taken after the second level trimming.
+                % Trimmed points are not plotted by group.
+                ucg = find(asig2==jk);                
+                plot(X(ucg,end),y(ucg),'.w','DisplayName',group_label);
+                text(X(ucg,end),y(ucg),num2str(jk*ones(length(ucg),1)),...
+                    'DisplayName',group_label , ...
+                    'HorizontalAlignment','center',...
+                    'VerticalAlignment','middle',...
+                    'Color',clrdef(jk));
+                                
+                % plot regression lines
+                vv = [min(X(:,end)) max(X(:,end))];
+                if intercept==1
+                    plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
+                        'DisplayName',[group_label ' fit'],...
+                        'Color',clrdef(jk));
+                elseif intercept==0
+                    plot(vv,bopt(:,jk)*vv,...
+                        'DisplayName',[group_label ' fit'],...
+                        'Color',clrdef(jk));
+                end                
+            end           
+            
+            % Plot the outliers (trimmed points)
+            b_outl = (asig1==0);
             plot(X(b_outl,end),y(b_outl),'o','color','r',...
                 'DisplayName','Trimmed units');
             
             % second level trimming points
+            b_outl_2 = ~(asig1==asig2);
+            xxx0_all = X(b_outl_2,end); 
+            yyy0_all = y(b_outl_2);
             plot(xxx0_all,yyy0_all,'*','color','c',...
                 'DisplayName','L2 trimmed units');
             
@@ -1301,6 +1355,7 @@ else
             %set(hobj(10),'Marker','1','Color','k');
             
         else
+            
             % in this case p > 2 and a standard spmplot is used
             
             if intercept
