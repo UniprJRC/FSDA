@@ -135,7 +135,7 @@ if ~isempty(UserOptions)
 end
 
 if alpha>0.5
-     error('FSDA:rlga:WrongAlpha','Error:: alpha must be in [0.5, 1]');
+     error('FSDA:rlga:WrongAlpha','Error:: alpha must be in [0, 0.5]');
 end
 
 biter=options.biter;
@@ -341,7 +341,7 @@ end
         
         dist = (y * (coeff(:,1:d)')-ones(n,1)*(coeff(:,d+1)') ).^2;
         [distmin,indmin]=min(dist,[],2);
-        indmin( distmin > quantile(distmin, alpha) ) = 0;
+         indmin( distmin > quantile(distmin, 1 - alpha) ) = 0; 
     end
 
     function ROSS=rlgacalculateROSS(hpcoef, xsc, n, d, groups)
