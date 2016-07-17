@@ -121,7 +121,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            Example - 'wtrim',1
 %            Data Types - double
 %      we: Vector of observation weights. Vector. A vector of size nX1 containing
-%           the weights to apply to each observation. Default value: vector ov ones.
+%           the weights to apply to each observation. Default value: vector of ones.
 %            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
 %            Data Types - double
 %eps_beta: minimum accepted difference between regression coefficients in
@@ -232,6 +232,11 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %}
 
 %{
+    we=X(:,2)/sum(X(:,2));
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2,'we',we,'wtrim',1);
+%}
+
+%{
     %% Generate mixture of regression using MixSimReg, with an average
     % overlapping at centroids =0.01. Use all default options.
     p=3;
@@ -322,7 +327,14 @@ if nargin < 4 || isempty(restrfact) || ~isnumeric(restrfact)
     restrfact = 12;
 end
 
-% NO CHECKS ON alpha1 and alpha2 !!  Introduce here. DOME
+% checks on alpha1 and alpha2
+if alpha1>0.5
+     error('FSDA:tclustreg:WrongAlpha1','Error:: alpha1 must be in [0, 0.5]');
+end
+
+if alpha2>0.5
+     error('FSDA:tclustreg:WrongAlpha2','Error:: alpha2 must be in [0, 0.5]');
+end
 
 % startv1def = default value of startv1 = 1
 % initialization using covariance matrices based on v+1 units
@@ -396,6 +408,7 @@ else
     startv1=startv1def;
 end
 
+
 % If the user has not specified prior subsets (nsamp is not a scalar) than
 % according the value of startv1 we have a different value of ncomb
 if NoPriorSubsets ==1
@@ -414,7 +427,6 @@ if NoPriorSubsets ==1
     end
     nsampdef=min(300,ncomb);
 end
-
 %% Defaults for optional arguments
 
 % default number of random starts
@@ -430,6 +442,11 @@ wedef = ones(n,1);
 mixtdef = 2;
 
 %% User options
+
+% PERCHE' OBBLIGARE L'UTENTE AD AVERE SIA WTRIM CHE WE? WTRIM POTREBBE
+% ESSERE UN PARAMETRO INTERNO DETERMINATO SULLA BASE DI WE. SE WE E' IL
+% VETTORE INIZIALE DI 1, WTRIM = 0 (INVECE SOTTO IL DEFAULT E' 1),
+% ALTRIMENTI WTRIM = 1. MI SFUGGE QUALCOSA?
 
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'niter',niterdef,'Ksteps',Kstepsdef,...
@@ -554,23 +571,32 @@ end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
 
-% THIS ART IS NOT CLEAR (IN ANY CASE SHOULD BE SIMPLIFIES): CHECK DOME
+
+%case with no prior subsets
 if NoPriorSubsets
+    %if stratv1 =1 the initial subsets are formed by k*(p) observations
     if startv1 && k*(v+1) < n
+        % the number of initial subsets to be generated is nsamp*oversamp.
+        % The input parameter nsamp is multiplied by a factor (oversamp) in
+        % order to face the possibility that some subsets contain groups
+        % which  are very closed one to the other and therefore have to be
+        % eliminated and substituted with other subsets.
         for ns =1:nsamp*oversamp
-            %Exclude subsets with collinear observations. In this case, a
-            %larger number of subsets is generated.
             C(ns,:) = datasample(1:n,k*(p),'weights',we,'Replace',false); %was p+1
         end
         nselected = length(C)/oversamp;
+    %if stratv1 =0 the initial subsets are formed by k observations
     else
         for ns =1:nsamp*oversamp
-            %Exclude subsets with collinear observations. In this case, a
-            %larger number of subsets is generated.
+            % the number of initial subsets to be generated is nsamp*oversamp.
+            % The input parameter nsamp is multiplied by a factor (oversamp) in
+            % order to face the possibility that some subsets contain groups
+            % which  are very closed one to the other and therefore have to be
+            % eliminated and substituted with other subsets.
             C(ns,:) = datasample(1:n,k,'weights',we,'Replace',false);
         end
         nselected  = length(C)/oversamp;
-        niinistart = repmat(floor(notrim/k),k,1);
+        %niinistart = repmat(floor(notrim/k),k,1);
     end
 end
 
@@ -582,7 +608,6 @@ ni         = ones(1,k);
 sigmaopt   = ni;
 bopt       = zeros(p,k);
 numopt     = 1:k;
-fact2      = zeros(n,k);
 fact3      = zeros(n,k);
 
 %%  Random starts
@@ -599,8 +624,10 @@ selj_elim_groups = NaN(nselected,k*p);
 while iter < nselected
     iter  = iter+1;
     count = count+1;
+    % display the count of the number of all selected samples. In
+    % line 1096 it is diplayed the number of only valid samples.
     if msg == 1
-        disp(['Iteration' num2str(count)])
+        disp(['Iteration ' num2str(count)])
     end
     
     if startv1
@@ -703,10 +730,9 @@ while iter < nselected
         for t = 1:Ksteps
             % Discriminant functions for the assignments
             for jk = 1:k
-                fact2(:,jk) = normpdf(y-X*nameYY(:,jk),0,sqrt(sigmaini(jk)));
-                %FRT :  logmvnpdfFS dovrebbe produrre gli stessi risultati di
-                %normpdf, ma non e' cosi'. TO BE CLARIFIED: DOME
                 fact3(:,jk) = logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));%,zeros(n,v),eye(v),n,v,0);
+                %alternative way to compute the normal probability density function
+                %fact2(:,jk) = normpdf(y-X*nameYY(:,jk),0,sqrt(sigmaini(jk)));
             end
             %if there are extreme (contaminated) observations and the
             %groups are almost collinear (small sigmaini), it can happen
@@ -714,15 +740,9 @@ while iter < nselected
             %groups. In this case we contaminate the k values close to zero
             %in such a way that these points are randomly assigned to one
             %of the k groups
-            if sum(sum( (abs(log(fact2)-fact3) > 10^(-12)) )) > 0
-                % disp('ll');
-                % WHAT IS THIS??? DOME
-            end
             extreme_obs = find(sum(fact2,2)==0);
             for jk = 1:k
-                fact2(extreme_obs,jk) = fact2(extreme_obs,jk)+0.0000000001*abs(rand(length(extreme_obs),1));
                 fact3(extreme_obs,jk) = fact3(extreme_obs,jk)+0.0000000001*abs(rand(length(extreme_obs),1));
-                ll_old(:,jk) = log((niini(jk)/sum(niini))  * fact2(:,jk));
                 ll(:,jk)     = log((niini(jk)/sum(niini))) + fact3(:,jk);
             end
             
@@ -836,15 +856,14 @@ while iter < nselected
                 end
             end
             % If a cluster is empty or contains less than p+1 elements,
-            % stop the concentration steps (empty_g != 0).
+            % stop the concentration steps (not_empty_g != 0).
             
             % new k regression parameters and new sigmas
             xmodtemp    = zeros(n,p+2);
             indxmodtemp = 0;
-            % EMPTY_G INICATES THE EMPTY OR THE NON-EMPTY?? DOME
-            empty_g = ~( ni <= p + 1 );
+            not_empty_g = ~( ni <= p + 1 );
             %count number of times the number of groups is lt k
-            if sum(empty_g) == k
+            if sum(not_empty_g) == k
                 count1_ng_eq_k = count1_ng_eq_k + 1;
             else
                 count1_ng_lt_k = count1_ng_lt_k + 1;
@@ -852,7 +871,7 @@ while iter < nselected
             
             %% second level of trimming
             jk = 0;
-            for iii = empty_g
+            for iii = not_empty_g
                 jk = jk+1;
                 %check if a group is populated
                 if iii ==1
@@ -913,10 +932,6 @@ while iter < nselected
                         sigmaini(jk) = sum(residuals.^2)/ni(jk);
                     elseif mixt == 2
                         sigmaini(jk) = sum((residuals .* postprobmodj_jk).^2)/(sum((postprobmodj_jk).^2));
-                    end
-                    if sigmaini(jk) <0.001
-                        % disp('ll');
-                        % WHAT IS THIS? DOME
                     end
                     
                     xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
@@ -992,13 +1007,13 @@ while iter < nselected
             
             %% Now compute the value of the target function
             obj = 0;
-            empty_g = ~( ni <= p + 1 );
+            not_empty_g = ~( ni <= p + 1 );
             if mixt == 0
                 % Update weights
                 niini(jk) = ni(jk);
                 
                 jk = 0;
-                for iii = empty_g
+                for iii = not_empty_g
                     jk = jk+1;
                     if iii ==1
                         yj = xmod(xmod(:,end) == jk,end-1);
@@ -1027,21 +1042,24 @@ while iter < nselected
                 %loop which is executed if two consecutive
                 %concentration steps have the same result
                 %if t == Ksteps
-                log_lh=NaN(size(xmod,1),size(empty_g,2));
+                log_lh=NaN(size(xmod,1),size(not_empty_g,2));
                 jk = 0;
                 %log_lh = [];
-                for iii = empty_g
+                for iii = not_empty_g
                     jk = jk+1;
                     if iii ==1
-                        %                        log_lh_old(:,jk) =  log(niini(jk)/sum(niini))+(log(normpdf(xmod(:,intercept+2)-xmod(:,1:1+intercept)*nameYY(:,jk),0,sqrt(sigmaini(jk)))));
-                        log_lh(:,jk) =  log(niini(jk)/sum(niini))+(logmvnpdfFS(xmod(:,end-1)-xmod(:,1: (size(xmod,2)-2))*nameYY(:,jk),0,(sigmaini(jk))));
+                        log_lh(:,jk) = ...
+                            log(niini(jk)/sum(niini)) + (logmvnpdfFS(...
+                            xmod(:,end-1) - ...
+                            xmod(:,1:(size(xmod,2)-2)) * ...
+                            nameYY(:,jk),0,(sigmaini(jk)) ) );
                         
                         
                     else
                         %if a groupis missing, we do not compute the objective
                         %function for it.
                         %obj = obj-10^10;
-                        log_lh(:,jk)=NaN(length(xmod),1);
+                        log_lh(:,jk) = NaN(length(xmod),1);
                     end
                 end
                 
@@ -1055,13 +1073,12 @@ while iter < nselected
                 %end
             end
             
-            
-            %% Concentration steps concluded
-        end
-        % Change the 'optimal' target value and 'optimal' parameters if an
-        % increase in the target value is achieved
-        %if sum(empty_g ) == k   %this check is commented in order to estimate
-        %the effect of eps_beta
+        end % End of concentration steps 
+
+        %% Change the 'optimal' target value and 'optimal' parameters 
+        % This is done if an increase in the target value is achieved
+        
+        %if sum(not_empty_g ) == k   %this check is commented in order to estimate the effect of eps_beta
         if sum(sum(isnan(nameYY))) == 0
             if (obj >= vopt)
                 vopt = obj;
@@ -1071,11 +1088,15 @@ while iter < nselected
             end
         end
         %end
+        
+        % display the count of the number of valid selected samples. In
+        % line 629 it is diplayed the number of alla samples, valid and not
+        % valid.
         if msg == 1
             disp(['iter ' num2str(count)]);
         end
     end
-end
+end % end of loop over the nsamp subsets
 if count < nsamp
     out = struct;
 else
@@ -1088,12 +1109,11 @@ else
     asig2 = asig1;
     
     % log-likelihoods for each unit and group
-    empty_g = ~( numopt == 0 )';
+    not_empty_g = ~( numopt == 0 )';
     jk = 0;
-    for iii = empty_g
+    for iii = not_empty_g
         jk = jk+1;
         if iii ==1
-            ll_old(:,jk) = log((numopt(jk)/sum(numopt))*normpdf(y-X*bopt(:,jk),0,sqrt(sigmaopt(jk))));
             ll(:,jk) = log((numopt(jk)/sum(numopt)) )+ logmvnpdfFS(y-X*bopt(:,jk),0,(sigmaopt(jk)));
         else
             ll(:,jk) = NaN;
@@ -1104,7 +1124,7 @@ else
     %computed also for mixt==1
     [~,postprob,~] = estepFS(ll);
     
-    %% determine observations to trim
+    %% Determine observations to trim
 
     % boolean vectors indicating the good and outlying units
     if wtrim ==0
@@ -1160,9 +1180,9 @@ else
         ni(jk) = sum(booljk);
     end
     
-    empty_g = ~( ni <= p + 1 );
+    not_empty_g = ~( ni <= p + 1 );
     %count the number of times the number of groups is lt k
-    if sum(empty_g) == k
+    if sum(not_empty_g) == k
         count2_ng_eq_k = count2_ng_eq_k + 1;
     else
         count2_ng_lt_k = count2_ng_lt_k + 1;
@@ -1172,7 +1192,7 @@ else
     %% determine second level trimming points
     
     jk = 0;
-    for iii = empty_g
+    for iii = not_empty_g
         jk = jk+1;
         booljk = xmod(:,end) == jk;
         %b_outl_asigned_jk = b_outl_asigned(booljk);
@@ -1213,32 +1233,7 @@ else
             % collect all second level trimming units in a same group, for plotting
             %xxx0_all = [xxx0_all ; xxx0(:,end)]; %#ok<AGROW>
             %yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
-            
-            % CAN THIS SECTION BELOW BE REMOVED? DOME
-            %computation of beta, residuals and sigma according to the
-            %assignements just computed.
-            %         if reweighting_step ==1
-            %             %number of non-trimmed observation in each group
-            %             numopt(jk) = length(yyy);
-            %             %compute the optimal beta and sigmaini
-            %             if mixt == 0
-            %                 bopt(:,jk) = xxx\yyy;
-            %                 % now find residuals
-            %                 residuals = yyy-xxx*bopt(:,jk);
-            %                 % Update sigmas through the mean square residuals
-            %                 sigmaopt(jk) = sum(residuals.^2)/numopt(jk);
-            %
-            %             elseif mixt == 2
-            %                 postprob_jk = sqrt(postprobtri(qqs,jk));
-            %                 bopt(:,jk) =  (bsxfun(@times,xxx, postprob_jk)) \ (bsxfun(@times,yyy ,postprob_jk));
-            %                 % now find residuals
-            %                 residuals = yyy - xxx*bopt(:,jk);
-            %                 % Update sigmas through the mean square residuals
-            %                 sigmaopt(jk) = sum(residuals.^2)/numopt(jk);
-            %             end
-            %         end
-            % CAN THIS SECTION ABOVE BE REMOVED? DOME
-            
+                        
             qqf = qqk(qqs);
             asig2(qqf) = jk;
         end
@@ -1304,14 +1299,14 @@ else
             title('TclustReg clustering','Fontsize',14);
             
             jk = 0;
-            for iii = empty_g
+            for iii = not_empty_g
                 jk = jk+1;
                 group_label = ['Group ' num2str(jk)];
                 
                 % plot of the good units allocated to the current group.
                 % Indices are taken after the second level trimming.
                 % Trimmed points are not plotted by group.
-                ucg = find(asig2==jk);                
+                ucg = find(asig2==jk);
                 plot(X(ucg,end),y(ucg),'.w','DisplayName',group_label);
                 text(X(ucg,end),y(ucg),num2str(jk*ones(length(ucg),1)),...
                     'DisplayName',group_label , ...
@@ -1395,39 +1390,6 @@ else
         % the old (inefficient) approach was to use a quadratic programming
         % optimization, using function quadi
         %sigmaopt_0 = (quadi(sigmaopt.^(-1), restrfact)).^(-1);
-    else
-        % in principle this condition should never be satisfied. Consider
-        % removing this statement.
-        % PLEASE CHECK!! DOME
-        disp('condition on sigmaopt that should never be satisfied: check!!!');
-        %sigmaopt_not_nan = sigmaopt;
-        sigmaopt_0 = nan(k,1);
-        i_not_nan  = zeros(k,1);
-        i_nan      = zeros(k,1);
-        %loop on all groups to identify positions with nan and not nan
-        for gr = 1:k
-            if isnan(sigmaopt(gr))
-                % i_nan = [i_nan gr]; FT
-                i_nan(gr) = 1;
-                %sigmaopt_not_nan(gr) = [];
-            else
-                % i_not_nan = [i_not_nan gr]; FT
-                i_not_nan(gr) = 1;
-            end
-        end
-        i_not_nan = find(i_not_nan);
-        i_nan     = find(i_nan);
-        
-        %sigmaopt_0_not_nan is a subset of sigmaopt_0 which does not contain nan
-        %sigmaopt_0_not_nan = (quadi(sigmaopt_not_nan.^(-1), restrfact)).^(-1);
-        sigmaopt_0_not_nan = restreigen(sigmaopt(i_not_nan)',ni(i_not_nan)',restrfact,tolrestreigen,userepmat);
-        sigmaopt_0_not_nan = sigmaopt_0_not_nan';
-        %sigmaopt_0 contains sigmaopt_0_not_nan and nan in the correct positions
-        l=0;
-        for gr = i_not_nan
-            l=l+1;
-            sigmaopt_0 (gr) = sigmaopt_0_not_nan(l);
-        end
     end
     
     %Apply consistency factor based on the variance of the truncated normal
@@ -1488,10 +1450,10 @@ else
     %   count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
     %   count2_ng_lt_k = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
     %   count2_eq_lt_k = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
-    %   extra_inisubs  = ADD DESCRIPTION!! DOME
-    %   out.selj_good  = ADD DESCRIPTION!! DOME
-    %   out.selj_elim  = ADD DESCRIPTION!! DOME
-    %   out.selj_all   = ADD DESCRIPTION!! DOME
+    %   extra_inisubs  = number of subsets generated above the number specified by the user (nsamp) because of small difference between pairwise regression parameters 
+    %   out.selj_good  = list of valid subsets and observations inside them 
+    %   out.selj_elim  =  list of not-valid subsets and observations inside them 
+    %   out.selj_all   =  list of all subsets (valid and not) and observations inside them 
     
 end
 
