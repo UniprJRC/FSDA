@@ -219,7 +219,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     clickableMultiLegend('1','2','3','data1','data2','data3');
     axis manual;
 
-    alpha = 0.06;
+    alpha = 0.5;
     out=rlga(X,3,1-alpha);
     clickableMultiLegend('0','1','2','3','data1','data2','data3');
     axis manual;
@@ -740,7 +740,7 @@ while iter < nselected
             %groups. In this case we contaminate the k values close to zero
             %in such a way that these points are randomly assigned to one
             %of the k groups
-            extreme_obs = find(sum(fact2,2)==0);
+            extreme_obs = find(sum(fact3,2)==0);
             for jk = 1:k
                 fact3(extreme_obs,jk) = fact3(extreme_obs,jk)+0.0000000001*abs(rand(length(extreme_obs),1));
                 ll(:,jk)     = log((niini(jk)/sum(niini))) + fact3(:,jk);
