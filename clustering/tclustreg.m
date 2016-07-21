@@ -233,7 +233,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     k = 3 ; restrfact = 5; alpha1 = 0.1 ; alpha2 = 0.1;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2);
 
-    k = 2 ; restrfact = 50; alpha1 = 0.01 ; alpha2 = 0.01;
+    k = 2 ; restrfact = 10; alpha1 = 0.005 ; alpha2 = 0.001;
     we = abs(X1/sum(X1));
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',1,'we',we,'wtrim',1,'mixt',2,'plots',0);
 %}
@@ -256,13 +256,26 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 
     y1 = X(:,end);
     X1 = X(:,1:end-1);
-    k = 4 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
+    k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2);
 %}
 
 %{
-    we=X(:,2)/sum(X(:,2));
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2,'we',we,'wtrim',1);
+    XX = X1;
+    XX = sqrt(X1);
+    XX = X1.^(1/3);
+    we = XX/sum(XX);
+    
+    mixt = 0; wtrim = 1;
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
+
+    mixt = 2; wtrim = 1;
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
+
+
+    mixt = 0; wtrim = 2; we = [];
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
 %}
 
 %{
@@ -566,11 +579,12 @@ switch wtrim
         %we must be a column vector);
         we = we(:);
         
-        if sum(we == wedef)==0
+        if sum(we == wedef)==n
             disp('Warning: when "wtrim" is 1, trimming is done by weighting');
             disp('         the observations using values specified in vector "we";');
             disp('         you left "we" to the default (i.e. a vector of ones,');
-            disp('         giving equal weights to all observations).');
+            disp('         giving equal weights to all observations);');
+            disp('         we set them to a vector of 1/n, to sum to 1.');
         end
         % weights must be positive; if negative, values are translated so
         % that the minimum is 0
@@ -579,14 +593,16 @@ switch wtrim
             disp('Warning: one or more of your weights are negative;');
             disp('         we added the minimum to all weights.');
         end
-        % weights must be normalized, to be in the range [0 1].
+        % weights cannot be all equal to 0.
         if max(we) == 0
-            we = wedef;
+            we = wedef/n;
             disp('Warning: your weights are all zero;');
-            disp('         we set them to a vector of ones.');
-        else
-            we = we./max(we);
+            disp('         we set them to a vector of 1/n, to sum to 1.');
         end
+        
+        % weights must be normalized so that to sum to 1
+        we = we/sum(we);
+        
     case 2
         if sum(we ~= wedef)>0
             disp('Warning: when "wtrim" is 2, trimming is done by weighting');
@@ -843,153 +859,154 @@ while iter < nselected
                 ll(:,jk) = log((niini(jk)/sum(niini))) + fact3(:,jk);
             end
             
-                
             
-                % trimming when there is no observation weighting
-                if wtrim == 0  || wtrim == 2 || wtrim == 3 || wtrim == 4
-                    
-                    if mixt == 2   
-                        [~,postprob,disc] = estepFS(ll);               
-                    elseif mixt ==0                
-                        [disc,indmax] = max(ll,[],2);                        
-                    end
-
-                    % Sort the n likelihood contributions
-                    % qq contains the largest n*(1-alpha)
-                    % likelihood contributions
-                    [~,qq] = sort(disc,'descend');
-                    
-                    % qq = vector of size h which contains the indexes
-                    % associated with the largest n(1-alpha)
-                    % likelihood contributions
-                    qqunassigned = qq((n-trimm+1):n);
-                    qq           = qq(1:n-trimm);
-                    
-                % trimming with user weighting
-                elseif wtrim ==1
-                    
-                    if mixt ==2
-                            [~,postprob,disc] = estepFS(ll); 
-                            dsf = sum(ll,2);
-                    elseif mixt == 0
-                            [dsf,indmax] = max(ll,[],2);
-                    end
-                    [ ~, id] =sort((dsf));
-                    cumsumyy = cumsum(we(id));
-                    if alpha1<1
-                        qqunassigned_small = cumsumyy < alpha1*sum(we(id));
-                    else
-                        qqunassigned_small = cumsumyy < alpha1/n*sum(we(id));
-                    end
-                    qqunassigned = id(qqunassigned_small);
-                    qq = setdiff((1:n)',qqunassigned);
-                end
-                
-                % ytri and Xtri = n(1-alpha)-by-v matrix associated with
-                % the units which have the largest n(1-alpha) likelihood
-                % contributions
-                Xtri = X(qq,:);
-                ytri = y(qq,:);
-                wetri = we(qq,:);
+            
+            % trimming when there is no observation weighting
+            if wtrim == 0  || wtrim == 2 || wtrim == 3 || wtrim == 4
                 
                 if mixt == 2
-                    postprob(qqunassigned,:) = 0;
-                    postprobtri = postprob(qq,:);
-
-                    % M-step update of niini
-                    % niini = numerator of component probabilities
-                    niini=(nansum(postprob))';
-
-                    %the next lines are needed to assign each observation to
-                    %the group with the largest posterior probability
-                    [~,indmax]= max(postprob,[],2);
+                    [~,postprob,disc] = estepFS(ll);
+                elseif mixt ==0
+                    [disc,indmax] = max(ll,[],2);
                 end
                 
-                indtri=indmax(qq);
-                xmod=[Xtri , ytri , indtri];
+                % Sort the n likelihood contributions
+                % qq contains the largest n*(1-alpha)
+                % likelihood contributions
+                [~,qq] = sort(disc,'descend');
                 
+                % qq = vector of size h which contains the indexes
+                % associated with the largest n(1-alpha)
+                % likelihood contributions
+                qqunassigned = qq((n-trimm+1):n);
+                qq           = qq(1:n-trimm);
                 
-                % size of the groups
+                % trimming with user weighting
+            elseif wtrim ==1
+                
+                if mixt ==2
+                    [~,postprob,disc] = estepFS(ll);
+                    dsf = sum(ll,2);
+                elseif mixt == 0
+                    [dsf,indmax] = max(ll,[],2);
+                end
+                [ ~, id] =sort((dsf));
+                cumsumyy = cumsum(we(id));
+                if alpha1<1
+                    qqunassigned_small = cumsumyy < alpha1*sum(we(id));
+                else
+                    qqunassigned_small = cumsumyy < alpha1/n*sum(we(id));
+                end
+                qqunassigned = id(qqunassigned_small);
+                qq = setdiff((1:n)',qqunassigned);
+            end
+            
+            % ytri and Xtri = n(1-alpha)-by-v matrix associated with
+            % the units which have the largest n(1-alpha) likelihood
+            % contributions
+            Xtri = X(qq,:);
+            ytri = y(qq,:);
+            wetri = we(qq,:);
+            
+            if mixt == 2
+                postprob(qqunassigned,:) = 0;
+                postprobtri = postprob(qq,:);
+                
+                % M-step update of niini
+                % niini = numerator of component probabilities
+                niini=(nansum(postprob))';
+                
+                %the next lines are needed to assign each observation to
+                %the group with the largest posterior probability
+                [~,indmax]= max(postprob,[],2);
+            end
+            
+            indtri=indmax(qq);
+            xmod=[Xtri , ytri , indtri];
+            
+            
+            % size of the groups
+            for jj=1:k
+                ni(jj) = sum(indtri==jj);
+            end
+            
+            
+            % Update of posterior probabilities via observation
+            % weighting (option wtrim = 1,2,3). Needed to compute beta
+            % coefficients
+            
+            % if wtrim == 0, no observation weighting is done
+            if wtrim == 0
+                if mixt == 2
+                    weight = postprobtri;
+                elseif mixt == 0
+                    weight = repmat(wetri,1,k);
+                end
+            end
+            
+            % if wtrim == 1, the weights are the posterior
+            % probabilities multiplied by the user weights
+            if wtrim == 1
+                if mixt == 2
+                    weight = postprobtri .* repmat(wetri,1,k);
+                elseif mixt == 0
+                    weight =   repmat(wetri,1,k);
+                end
+            end
+            
+            % if wtrim == 2 || wtrim == 3, the weights are the
+            % posterior probabilities multiplied by the kernel density
+            % or bernoulli weights estimated on a component basis,
+            % which requires an additional loop over groups
+            if wtrim == 2 || wtrim == 3
+                
+                % initialize weight with posterior probabilities
+                if mixt == 2
+                    weight = postprobtri;
+                elseif mixt == 0
+                    weight =  repmat(wetri,1,k);
+                end
+                
                 for jj=1:k
-                    ni(jj) = sum(indtri==jj);
-                end
-                
-                
-                % Update of posterior probabilities via observation
-                % weighting (option wtrim = 1,2,3). Needed to compute beta
-                % coefficients
-                
-                % if wtrim == 0, no observation weighting is done
-                if wtrim == 0
-                    if mixt == 2
-                        weight = postprobtri;
-                    elseif mixt == 0
-                        weight = repmat(wetri,1,k);
-                    end
-                end
-                
-                % if wtrim == 1, the weights are the posterior
-                % probabilities multiplied by the user weights
-                if wtrim == 1
-                    if mixt == 2
-                        weight = postprobtri .* wetri;
-                    elseif mixt == 0
-                        weight =   repmat(wetri,1,k);
-                    end
-                end
-                
-                % if wtrim == 2 || wtrim == 3, the weights are the
-                % posterior probabilities multiplied by the kernel density
-                % or bernoulli weights estimated on a component basis,
-                % which requires an additional loop over groups
-                if wtrim == 2 || wtrim == 3
-                    % initialize weight with posterior probabilities
-                    if mixt == 2
-                        weight = postprobtri;
-                    elseif mixt == 0
-                        weight =  repmat(wetri,1,k);
-                    end    
-                    for jj=1:k
-                        % find indices of units in group jj
-                        ijj = find(indtri==jj); 
-                        % empty group case 
-                        if isempty(ijj)
-                            wetri = [];
-                            %we = ones(n-trimm+1,1);
+                    % find indices of units in group jj
+                    ijj = find(indtri==jj);
+                    
+                    % weight vector is updated only if the group is not
+                    % empty
+                    if ~isempty(ijj)
+                        % retention probabilities based on density
+                        % estimated on the component predicted values
+                        % of the previous step
+                        yhattri = Xtri(ijj,:)*nameYY(:,jj);
+                        [Wt , pretain] = wthin(yhattri);
+                        if wtrim == 2
+                            wetri = pretain;
                         else
-                            % retention probabilities based on density
-                            % estimated on the component predicted values
-                            % of the previous step
-                            yhattri = Xtri(ijj,:)*nameYY(:,jj);
-                            [Wt , pretain] = wthin(yhattri);
-                            if wtrim == 2
-                                wetri = pretain;
-                            else
-                                wetri = Wt;
-                            end
+                            wetri = Wt;
                         end
                         weight(ijj,jj) = weight(ijj,jj) .* wetri;
                     end
                 end
-                
-                % rescale weights so that the sum of elements in each raw
-                % sum to one
-                if wtrim > 0 && wtrim < 4
-                    weightsum = sum(weight,2);
-                    weight = bsxfun(@rdivide,weight,weightsum);
-                end
-                
-                weightmod = [weight, indtri ];
-                % Update the beta coefficients, possibly considering
-                % the observation weighting vector we, according to the
-                % wtrim option
-%                 for jj=1:k
-%                     nameYY(:,jj) = ...
-%                         bsxfun(@times,Xtri, sqrt(weight(:,jj))) \ ...
-%                         bsxfun(@times,ytri ,sqrt(weight(:,jj)));
-%                 end
-                
-                
+            end
+            
+            % rescale weights so that the sum of elements in each raw
+            % sum to one
+            if wtrim > 0 && wtrim < 4
+                weightsum = sum(weight,2);
+                weight = bsxfun(@rdivide,weight,weightsum);
+            end
+            
+            weightmod = [weight, indtri ];
+            % Update the beta coefficients, possibly considering
+            % the observation weighting vector we, according to the
+            % wtrim option
+            %                 for jj=1:k
+            %                     nameYY(:,jj) = ...
+            %                         bsxfun(@times,Xtri, sqrt(weight(:,jj))) \ ...
+            %                         bsxfun(@times,ytri ,sqrt(weight(:,jj)));
+            %                 end
+            
+            
             % If a cluster is empty or contains less than p+1 elements,
             % stop the concentration steps (not_empty_g != 0).
             
@@ -1053,20 +1070,20 @@ while iter < nselected
                     xxx = xmodj(qqs,1:p);
                     yyy = xmodj(qqs,p+1);
                     ni(jk) = length(yyy);
-                        
+                    
                     weightmodj_jk = sqrt(weightmodj(qqs,jk));
                     breg =  (bsxfun(@times,xxx, weightmodj_jk)) \ (bsxfun(@times,yyy ,weightmodj_jk));
-
+                    
                     nameYY(:,jk) = breg;
                     % now find residuals
                     residuals = yyy-xxx*breg;
                     % Update sigmas through the mean square residuals
-                     sigmaini(jk) = sum((residuals .* weightmodj_jk).^2)/(sum((weightmodj_jk).^2));
-
+                    sigmaini(jk) = sum((residuals .* weightmodj_jk).^2)/(sum((weightmodj_jk).^2));
+                    
                     
                     xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
                     indxmodtemp = indxmodtemp+ni(jk);
-
+                    
                 else
                     
                     % xmodj Data points in each group
@@ -1112,7 +1129,7 @@ while iter < nselected
                 line([0 max(xmod(:,2))],[nameYY(1,1) , nameYY(1,1) + nameYY(2,1)*max(xmod(:,2))])
                 hold on;line([0 max(xmod(:,2))],[nameYY(1,2) , nameYY(1,2) + nameYY(2,2)*max(xmod(:,2))])
                 hold on;line([0 max(xmod(:,2))],[nameYY(1,3) , nameYY(1,3) + nameYY(2,3)*max(xmod(:,2))])
-
+                
                 %variance(jk) = var(residuals);
                 % disp(sigmaini);
                 
@@ -1430,29 +1447,31 @@ else
             jk = 0;
             for iii = not_empty_g
                 jk = jk+1;
-                group_label = ['Group ' num2str(jk)];
-                
-                % plot of the good units allocated to the current group.
-                % Indices are taken after the second level trimming.
-                % Trimmed points are not plotted by group.
-                ucg = find(asig2==jk);
-                plot(X(ucg,end),y(ucg),'.w','DisplayName',group_label);
-                text(X(ucg,end),y(ucg),num2str(jk*ones(length(ucg),1)),...
-                    'DisplayName',group_label , ...
-                    'HorizontalAlignment','center',...
-                    'VerticalAlignment','middle',...
-                    'Color',clrdef(jk));
-                
-                % plot regression lines
-                vv = [min(X(:,end)) max(X(:,end))];
-                if intercept==1
-                    plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
-                        'DisplayName',[group_label ' fit'],...
+                if iii>0
+                    group_label = ['Group ' num2str(jk)];
+                    
+                    % plot of the good units allocated to the current group.
+                    % Indices are taken after the second level trimming.
+                    % Trimmed points are not plotted by group.
+                    ucg = find(asig2==jk);
+                    plot(X(ucg,end),y(ucg),'.w','DisplayName',group_label);
+                    text(X(ucg,end),y(ucg),num2str(jk*ones(length(ucg),1)),...
+                        'DisplayName',group_label , ...
+                        'HorizontalAlignment','center',...
+                        'VerticalAlignment','middle',...
                         'Color',clrdef(jk));
-                elseif intercept==0
-                    plot(vv,bopt(:,jk)*vv,...
-                        'DisplayName',[group_label ' fit'],...
-                        'Color',clrdef(jk));
+                    
+                    % plot regression lines
+                    vv = [min(X(:,end)) max(X(:,end))];
+                    if intercept==1
+                        plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
+                            'DisplayName',[group_label ' fit'],...
+                            'Color',clrdef(jk));
+                    elseif intercept==0
+                        plot(vv,bopt(:,jk)*vv,...
+                            'DisplayName',[group_label ' fit'],...
+                            'Color',clrdef(jk));
+                    end
                 end
             end
             
