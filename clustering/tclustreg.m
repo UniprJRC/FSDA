@@ -266,6 +266,12 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     XX = X1.^(1/3);
     we = XX/sum(XX);
     
+    mixt = 0; wtrim = 0;
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
+    mixt = 2; wtrim = 0;
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
     mixt = 0; wtrim = 1;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
@@ -274,6 +280,15 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 
 
     mixt = 0; wtrim = 2; we = [];
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
+  mixt = 2; wtrim = 2; we = [];
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
+    mixt = 0; wtrim = 3; we = [];
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
+  mixt = 2; wtrim = 3; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
 %}
@@ -1124,12 +1139,22 @@ while iter < nselected
             sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
             if debug_mode == 1
                 figure;
-                gscatter(xmod(:,2),xmod(:,3),xmod(:,4));
+                gscatter(xmod(:,intercept+1),xmod(:,intercept+2),xmod(:,intercept+3));
                 hold on;
-                line([0 max(xmod(:,2))],[nameYY(1,1) , nameYY(1,1) + nameYY(2,1)*max(xmod(:,2))])
-                hold on;line([0 max(xmod(:,2))],[nameYY(1,2) , nameYY(1,2) + nameYY(2,2)*max(xmod(:,2))])
-                hold on;line([0 max(xmod(:,2))],[nameYY(1,3) , nameYY(1,3) + nameYY(2,3)*max(xmod(:,2))])
-                
+                if intercept == 1
+                    line([0 max(xmod(:,2))],[nameYY(1,1) , nameYY(1,1) + nameYY(2,1)*max(xmod(:,2))])
+                    hold on;
+                    line([0 max(xmod(:,2))],[nameYY(1,2) , nameYY(1,2) + nameYY(2,2)*max(xmod(:,2))])
+                    hold on;
+                    line([0 max(xmod(:,2))],[nameYY(1,3) , nameYY(1,3) + nameYY(2,3)*max(xmod(:,2))])
+                elseif intercept == 0
+                    line([0 max(xmod(:,2))],[0 , nameYY(1)*max(xmod(:,2))])
+                    hold on;
+                    line([0 max(xmod(:,2))],[0 , nameYY(2)*max(xmod(:,2))])
+                    hold on;
+                    line([0 max(xmod(:,2))],[0 , nameYY(3)*max(xmod(:,2))])
+
+                end
                 %variance(jk) = var(residuals);
                 % disp(sigmaini);
                 
@@ -1227,7 +1252,7 @@ while iter < nselected
         %% Change the 'optimal' target value and 'optimal' parameters
         % This is done if an increase in the target value is achieved
         
-        %if sum(not_empty_g ) == k   %this check is commented in order to estimate the effect of eps_beta
+        if sum(not_empty_g ) == k   %this check is commented in order to estimate the effect of eps_beta
         if sum(sum(isnan(nameYY))) == 0
             if (obj >= vopt)
                 vopt = obj;
@@ -1236,7 +1261,7 @@ while iter < nselected
                 sigmaopt = sigmaini;
             end
         end
-        %end
+        end
         
         % display the count of the number of valid selected samples. In
         % line 629 it is diplayed the number of alla samples, valid and not
@@ -1280,10 +1305,11 @@ else
     % Sort the n likelihood contributions;
     [val,qq] = sort(dist,'descend');
     
-    if wtrim ==0
-        % qq is updated to be a vector of size h which contains the indexes
-        % associated with the largest n(1-alpha) (weighted) likelihood
-        % contributions
+    % trimming when there is no observation weighting
+     if wtrim == 0  || wtrim == 2 || wtrim == 3 || wtrim == 4
+    % qq is updated to be a vector of size h which contains the indexes
+    % associated with the largest n(1-alpha) (weighted) likelihood
+    % contributions
         qq  = qq(1:n-trimm);
         val = val(n-trimm);
         
