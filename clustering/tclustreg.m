@@ -59,8 +59,8 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            assignment has to be used:
 %            mixt = 2 is for mixture modelling;
 %            mixt = 0 is for crisp assignment.
-%            In mixture modelling, the likelihood is given by.......
-%            In crisp assignment, the likelihood is given by .......
+%            In mixture modelling, the likelihood is given by INSERT FORMULA DOME
+%            In crisp assignment, the  likelihood is given by INSERT FORMULA DOME
 %            Example - 'mixt',0
 %            Data Types - single | double
 %    nsamp : number of subsamples to extract.
@@ -92,18 +92,17 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %               startv1=0 elseif nsamp has k*(v+1) columns option startv1=1.
 %             Example - 'nsamp',1000
 %             Data Types - double
-%      startv1: how to initialize regression parameters. Scalar.
-%               If startv1 is 1 then initial
-%               regression parameters are based on (v+1)
-%               observations randomly chosen, else each regression is
-%               initialized taking a random row of input data matrix.
-%               Remark 1- in order to start with a routine which is in the
-%               required parameter space, eigenvalue restrictions are
-%               immediately applied. The default value of startv1 is 1.
-%               Remark 2 - option startv1 is used just if nsamp is a scalar
-%               (see for more details the help associated with nsamp)
-%                 Example - 'startv1',1
-%                 Data Types - single | double
+%  startv1: how to initialize regression parameters. Scalar.
+%           If startv1 is 1 then initial regression parameters are based on
+%           (v+1) observations randomly chosen, else each regression is
+%           initialized taking a random row of input data matrix. Remark 1-
+%           in order to start with a routine which is in the required
+%           parameter space, eigenvalue restrictions are immediately
+%           applied. The default value of startv1 is 1. Remark 2 - option
+%           startv1 is used just if nsamp is a scalar (see for more details
+%           the help associated with nsamp)
+%           Example - 'startv1',1
+%           Data Types - single | double
 % Ksteps:  Number of refining iterations. Scalar. Number of refining
 %               iterations in each subsample.  Default is 10.
 %               Ksteps = 0 means "raw-subsampling" without iterations.
@@ -116,12 +115,38 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            associated to the groups)
 %            Example - 'plots',1
 %            Data Types - double
-%   wtrim: Application of observation weights. Scalar. A flag to control the
-%            application of weights on the observations. Default value 1.
+%   wtrim: Application of weights. Scalar. A flag taking values [0, 1, 2, 3, 4]
+%          to control the application of weights on the observations.
+%          -  If \texttt{wtrim}=0 (no weights) and \texttt{mixt}=0, the
+%             algorithm reduces to the standard tclustreg algorithm.
+%          -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
+%             probability $D\_i$ of equation 7 of Garcia et al. 2010 is
+%             computing by maximizing the log-likelihood contributions of
+%             the mixture model of each observation.
+%          -  If \texttt{wtrim} = 1, trimming is done by weighting the
+%             observations using values specified in vector \texttt{we}.
+%             In this case, vector \texttt{we} must be supplied by the
+%             user. For instance, \texttt{we} = $X$.
+%          -  If \texttt{wtrim} = 2, trimming is again done by weighting
+%             the observations using values specified in vector \texttt{we}.
+%             In this case, vector \texttt{we} is computed from the data as
+%             a function of the density estimate $\mbox{pdfe}$.
+%            Specifically, the weight of each observation is the
+%            probability of retaining the observation, computed as
+%            \[\mbox{pretain}_{i g} = 1 - \mbox{pdfe}_{ig}/\max_{ig}(\mbox{pdfe}_{ig})\]
+%         -  If \texttt{wtrim} = 3, trimming is again done by weighting the
+%            observations using values specified in vector \texttt{we}. In
+%            this case, each element $we_i$ of vector \texttt{we} is a
+%            Bernoulli random variable with probability of success
+%            $\mbox{pdfe}_{ig}$. In the clustering framework this is done
+%            under the constraint that no group is empty.
+%         -  If \texttt{wtrim} = 4, trimming is done with the tandem approach
+%            of Cerioli and Perrotta (2014).
 %            Example - 'wtrim',1
 %            Data Types - double
-%      we: Vector of observation weights. Vector. A vector of size nX1 containing
-%           the weights to apply to each observation. Default value: vector of ones.
+%      we: Vector of observation weights. Vector. A vector of size nX1
+%          containing the weights to apply to each observation. Default
+%          value: vector of ones.
 %            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
 %            Data Types - double
 %eps_beta: minimum accepted difference between regression coefficients in
@@ -182,6 +207,10 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 % of Statistics, Vol.36, 1324-1345. Technical Report available at
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
+% Cerioli, A. and Perrotta, D. (2014). "Robust Clustering Around Regression
+% Lines with High Densoty Regions". Advances in Data Analysis and
+% Classification, Volume 8, Issue 1, p. 5-26.
+%
 %
 % Copyright 2008-2015.
 % Written by FSDA team
@@ -219,7 +248,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     clickableMultiLegend('1','2','3','data1','data2','data3');
     axis manual;
 
-    alpha = 0.5;
+    alpha = 0.95;
     out=rlga(X,3,1-alpha);
     clickableMultiLegend('0','1','2','3','data1','data2','data3');
     axis manual;
@@ -227,7 +256,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 
     y1 = X(:,end);
     X1 = X(:,1:end-1);
-    k = 3 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
+    k = 4 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2);
 %}
 
@@ -329,11 +358,11 @@ end
 
 % checks on alpha1 and alpha2
 if alpha1>0.5
-     error('FSDA:tclustreg:WrongAlpha1','Error:: alpha1 must be in [0, 0.5]');
+    error('FSDA:tclustreg:WrongAlpha1','Error:: alpha1 must be in [0, 0.5]');
 end
 
 if alpha2>0.5
-     error('FSDA:tclustreg:WrongAlpha2','Error:: alpha2 must be in [0, 0.5]');
+    error('FSDA:tclustreg:WrongAlpha2','Error:: alpha2 must be in [0, 0.5]');
 end
 
 % startv1def = default value of startv1 = 1
@@ -435,22 +464,25 @@ niterdef = 20;
 % default number of concentration starts
 Kstepsdef  = 10;
 
+%default value for wtrim
+wtrimdef = 0;
+
 %default value for we
 wedef = ones(n,1);
 
 %default model (mixture or classification likelihood)
 mixtdef = 2;
 
-%% User options
+% default for threshold controlling the distance between regression lines
+% in the initialization phase. Zero threshold means that there is no
+% control on the initial fits.
+eps_beta_def = 0;
 
-% PERCHE' OBBLIGARE L'UTENTE AD AVERE SIA WTRIM CHE WE? WTRIM POTREBBE
-% ESSERE UN PARAMETRO INTERNO DETERMINATO SULLA BASE DI WE. SE WE E' IL
-% VETTORE INIZIALE DI 1, WTRIM = 0 (INVECE SOTTO IL DEFAULT E' 1),
-% ALTRIMENTI WTRIM = 1. MI SFUGGE QUALCOSA?
+%% User options
 
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'niter',niterdef,'Ksteps',Kstepsdef,...
-    'startv1',startv1def,'we',wedef,'wtrim',1,'eps_beta',0,...
+    'startv1',startv1def,'we',wedef,'wtrim',wtrimdef,'eps_beta',eps_beta_def,...
     'msg',0,'plots',1);
 
 if nargin > 6
@@ -512,9 +544,73 @@ nsamp = options.nsamp;
 % Concentration steps
 Ksteps = options.Ksteps;
 
-we         = options.we;
-wtrim      = options.wtrim;
+% Threshold controlling the distance between regression lines in the
+% initialization phase
 eps_beta   = options.eps_beta;
+
+% the weights vector
+we         = options.we;
+
+% flag to control the type of weighting scheme
+wtrim      = options.wtrim;
+
+switch wtrim
+    case 0
+        if sum(we ~= wedef)>0
+            disp('Warning: when "wtrim" is 0, "we" is set to a vector of ones');
+            disp('         to give equal weights to all observations;');
+            disp('         your vector "we" will not be considered.');
+            we = wedef;
+        end
+    case 1
+        %we must be a column vector);
+        we = we(:);
+        
+        if sum(we == wedef)==0
+            disp('Warning: when "wtrim" is 1, trimming is done by weighting');
+            disp('         the observations using values specified in vector "we";');
+            disp('         you left "we" to the default (i.e. a vector of ones,');
+            disp('         giving equal weights to all observations).');
+        end
+        % weights must be positive; if negative, values are translated so
+        % that the minimum is 0
+        if sum(we<0)>0
+            we = we - min(we);
+            disp('Warning: one or more of your weights are negative;');
+            disp('         we added the minimum to all weights.');
+        end
+        % weights must be normalized, to be in the range [0 1].
+        if max(we) == 0
+            we = wedef;
+            disp('Warning: your weights are all zero;');
+            disp('         we set them to a vector of ones.');
+        else
+            we = we./max(we);
+        end
+    case 2
+        if sum(we ~= wedef)>0
+            disp('Warning: when "wtrim" is 2, trimming is done by weighting');
+            disp('         the observations according to the data density estimate;');
+            disp('         your vector "we" will not be considered.');
+            we = wedef;
+        end
+    case 3
+        if sum(we ~= wedef)>0
+            disp('Warning: when "wtrim" is 3, trimming is done by weighting');
+            disp('         the observations with a Bernoulli random vector,');
+            disp('         with probability of success depending on the data density estimate;');
+            disp('         your vector "we" will not be considered.');
+            we = wedef;
+        end
+    case 4
+        if sum(we ~= wedef)>0
+            disp('Warning: when "wtrim" is 4, tclust is applied after thinning');
+            disp('         observations with a Bernoulli random vector,');
+            disp('         with probability of success depending on the data density estimate;');
+            disp('         your vector "we" will not be considered.');
+            we = wedef;
+        end
+end
 
 %option determining the model to use
 mixt = options.mixt;
@@ -585,7 +681,7 @@ if NoPriorSubsets
             C(ns,:) = datasample(1:n,k*(p),'weights',we,'Replace',false); %was p+1
         end
         nselected = length(C)/oversamp;
-    %if stratv1 =0 the initial subsets are formed by k observations
+        %if stratv1 =0 the initial subsets are formed by k observations
     else
         for ns =1:nsamp*oversamp
             % the number of initial subsets to be generated is nsamp*oversamp.
@@ -742,35 +838,42 @@ while iter < nselected
             %of the k groups
             extreme_obs = find(sum(fact3,2)==0);
             for jk = 1:k
-                fact3(extreme_obs,jk) = fact3(extreme_obs,jk)+0.0000000001*abs(rand(length(extreme_obs),1));
-                ll(:,jk)     = log((niini(jk)/sum(niini))) + fact3(:,jk);
+                fact3(extreme_obs,jk) = ...
+                    fact3(extreme_obs,jk)+0.0000000001*abs(rand(length(extreme_obs),1));
+                ll(:,jk) = log((niini(jk)/sum(niini))) + fact3(:,jk);
             end
             
-            if mixt == 2
                 
-                [~,postprob,disc] = estepFS(ll);
-                
-                if wtrim == 0
+            
+                % trimming when there is no observation weighting
+                if wtrim == 0  || wtrim == 2 || wtrim == 3 || wtrim == 4
+                    
+                    if mixt == 2   
+                        [~,postprob,disc] = estepFS(ll);               
+                    elseif mixt ==0                
+                        [disc,indmax] = max(ll,[],2);                        
+                    end
+
                     % Sort the n likelihood contributions
-                    % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
+                    % qq contains the largest n*(1-alpha)
+                    % likelihood contributions
                     [~,qq] = sort(disc,'descend');
                     
-                    % qq = vector of size h which contains the indexes associated with the largest n(1-alpha)
-                    % (weighted) likelihood contributions
+                    % qq = vector of size h which contains the indexes
+                    % associated with the largest n(1-alpha)
+                    % likelihood contributions
                     qqunassigned = qq((n-trimm+1):n);
                     qq           = qq(1:n-trimm);
-                    if debug_mode == 1
-                        allobs=ones(200,1);
-                        allobs(qqunassigned) = 0;
-                        figure;gscatter(X,y,allobs)
-                        
-                        hold on;
-                        line([0 1],[0 nameYY(1)])
-                        line([0 1],[0 nameYY(2)])
-                    end
+                    
+                % trimming with user weighting
                 elseif wtrim ==1
                     
-                    dsf = sum(ll,2);
+                    if mixt ==2
+                            [~,postprob,disc] = estepFS(ll); 
+                            dsf = sum(ll,2);
+                    elseif mixt == 0
+                            [dsf,indmax] = max(ll,[],2);
+                    end
                     [ ~, id] =sort((dsf));
                     cumsumyy = cumsum(we(id));
                     if alpha1<1
@@ -780,81 +883,113 @@ while iter < nselected
                     end
                     qqunassigned = id(qqunassigned_small);
                     qq = setdiff((1:n)',qqunassigned);
-                    
                 end
-                % ytri and Xtri = n(1-alpha)-by-v matrix associated with the units
-                % which have the largest n(1-alpha) likelihood contributions
+                
+                % ytri and Xtri = n(1-alpha)-by-v matrix associated with
+                % the units which have the largest n(1-alpha) likelihood
+                % contributions
                 Xtri = X(qq,:);
                 ytri = y(qq,:);
-                postprob(qqunassigned,:) = 0;
-                postprobtri = postprob(qq,:);
+                wetri = we(qq,:);
                 
-                % M-step update of niini
-                % niini = numerator of component probabilities
-                niini=(nansum(postprob))';
+                if mixt == 2
+                    postprob(qqunassigned,:) = 0;
+                    postprobtri = postprob(qq,:);
+
+                    % M-step update of niini
+                    % niini = numerator of component probabilities
+                    niini=(nansum(postprob))';
+
+                    %the next lines are needed to assign each observation to
+                    %the group with the largest posterior probability
+                    [~,indmax]= max(postprob,[],2);
+                end
                 
-                %the next lines are needed to assign each observation to the group with
-                %the highest posterior probability
-                [~,indmax]= max(postprob,[],2);
                 indtri=indmax(qq);
                 xmod=[Xtri , ytri , indtri];
-                postprobmod = [postprobtri, indtri ];
+                
+                
+                % size of the groups
                 for jj=1:k
                     ni(jj) = sum(indtri==jj);
-                    %update the beta
-                    nameYY(:,jj) =  (bsxfun(@times,Xtri, sqrt(postprobtri(:,jj)))) \ (bsxfun(@times,ytri ,sqrt(postprobtri(:,jj))));
                 end
                 
-            elseif mixt == 0
                 
-                % Select the untrimmed units, i.e. those having the
-                % n*(1-alpha) largest values among the maxima of each row
-                % of matrix ll.
-                % vector disc of length(n) contains the (weighted)
-                % contribution of each unit to the log likelihood.
+                % Update of posterior probabilities via observation
+                % weighting (option wtrim = 1,2,3). Needed to compute beta
+                % coefficients
                 
-                if wtrim ==0
-                    [disc,indmax] = max(ll,[],2);
-                    % Sort the n likelihood contributions
-                    % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
-                    [~,qq] = sort(disc,'descend');
-                    
-                    % qq = vector of size h which contains the indexes
-                    % associated with the largest n(1-alpha) (weighted)
-                    % likelihood contributions
-                    %qqunassigned = qq((n-trimm+1):n);
-                    qq = qq(1:n-trimm);
-                elseif wtrim ==1
-                    %qqunassigned_bk = qqunassigned;
-                    %qq_bk = qq;
-                    %dsf is the same of disc. Here it is reported for
-                    %reason of comprarability with R code.
-                    [dsf,indmax] = max(ll,[],2);
-                    [ ~, id] =sort(dsf);
-                    cumsumyy = cumsum(we(id));
-                    if alpha1 <1
-                        qqunassigned_small = cumsumyy < alpha1*sum(we(id));
-                    else
-                        qqunassigned_small = cumsumyy < alpha1/n*sum(we(id));
+                % if wtrim == 0, no observation weighting is done
+                if wtrim == 0
+                    if mixt == 2
+                        weight = postprobtri;
+                    elseif mixt == 0
+                        weight = repmat(wetri,1,k);
                     end
-                    qqunassigned = id(qqunassigned_small);
-                    qq = setdiff((1:n)',qqunassigned);
                 end
                 
-                % Ytri = n(1-alpha)-by-v matrix associated with the units
-                % which have the largest n(1-alpha) likelihood contributions
-                Xtri = X(qq,:);
-                ytri = y(qq,:);
-                indtri = indmax(qq);
-                
-                % xmod = matrix with length(qq) rows which contains
-                % 1st-pth column  explanatory variables
-                % (p+1)-th column response
-                xmod = [Xtri , ytri , indtri];
-                for jj=1:k
-                    ni(jj) = sum(indtri==jj);
+                % if wtrim == 1, the weights are the posterior
+                % probabilities multiplied by the user weights
+                if wtrim == 1
+                    if mixt == 2
+                        weight = postprobtri .* wetri;
+                    elseif mixt == 0
+                        weight =   repmat(wetri,1,k);
+                    end
                 end
-            end
+                
+                % if wtrim == 2 || wtrim == 3, the weights are the
+                % posterior probabilities multiplied by the kernel density
+                % or bernoulli weights estimated on a component basis,
+                % which requires an additional loop over groups
+                if wtrim == 2 || wtrim == 3
+                    % initialize weight with posterior probabilities
+                    if mixt == 2
+                        weight = postprobtri;
+                    elseif mixt == 0
+                        weight =  repmat(wetri,1,k);
+                    end    
+                    for jj=1:k
+                        % find indices of units in group jj
+                        ijj = find(indtri==jj); 
+                        % empty group case 
+                        if isempty(ijj)
+                            wetri = [];
+                            %we = ones(n-trimm+1,1);
+                        else
+                            % retention probabilities based on density
+                            % estimated on the component predicted values
+                            % of the previous step
+                            yhattri = Xtri(ijj,:)*nameYY(:,jj);
+                            [Wt , pretain] = wthin(yhattri);
+                            if wtrim == 2
+                                wetri = pretain;
+                            else
+                                wetri = Wt;
+                            end
+                        end
+                        weight(ijj,jj) = weight(ijj,jj) .* wetri;
+                    end
+                end
+                
+                % rescale weights so that the sum of elements in each raw
+                % sum to one
+                if wtrim > 0 && wtrim < 4
+                    weightsum = sum(weight,2);
+                    weight = bsxfun(@rdivide,weight,weightsum);
+                end
+                
+                weightmod = [weight, indtri ];
+                % Update the beta coefficients, possibly considering
+                % the observation weighting vector we, according to the
+                % wtrim option
+%                 for jj=1:k
+%                     nameYY(:,jj) = ...
+%                         bsxfun(@times,Xtri, sqrt(weight(:,jj))) \ ...
+%                         bsxfun(@times,ytri ,sqrt(weight(:,jj)));
+%                 end
+                
+                
             % If a cluster is empty or contains less than p+1 elements,
             % stop the concentration steps (not_empty_g != 0).
             
@@ -873,12 +1008,12 @@ while iter < nselected
             jk = 0;
             for iii = not_empty_g
                 jk = jk+1;
+                
                 %check if a group is populated
-                if iii ==1
+                if iii == 1
                     xmodj = xmod(xmod(:,end)==jk,:);
-                    if mixt == 2
-                        postprobmodj = postprobmod(postprobmod(:,end)==jk,:);
-                    end
+                    
+                    weightmodj = weightmod(weightmod(:,end) == jk,:);
                     % Perform the second trimming
                     
                     % qqs contains contains the indexes of untrimmed units for
@@ -914,34 +1049,31 @@ while iter < nselected
                         end
                     end
                     
-                    % Update betas through ordinary least squares regression
+                    %% Update betas through ordinary least squares regression
                     xxx = xmodj(qqs,1:p);
                     yyy = xmodj(qqs,p+1);
                     ni(jk) = length(yyy);
-                    if mixt == 0
-                        breg = xxx\yyy;
-                    elseif mixt == 2
-                        postprobmodj_jk = sqrt(postprobmodj(qqs,jk));
-                        breg =  (bsxfun(@times,xxx, postprobmodj_jk)) \ (bsxfun(@times,yyy ,postprobmodj_jk));
-                    end
+                        
+                    weightmodj_jk = sqrt(weightmodj(qqs,jk));
+                    breg =  (bsxfun(@times,xxx, weightmodj_jk)) \ (bsxfun(@times,yyy ,weightmodj_jk));
+
                     nameYY(:,jk) = breg;
                     % now find residuals
                     residuals = yyy-xxx*breg;
                     % Update sigmas through the mean square residuals
-                    if mixt == 0
-                        sigmaini(jk) = sum(residuals.^2)/ni(jk);
-                    elseif mixt == 2
-                        sigmaini(jk) = sum((residuals .* postprobmodj_jk).^2)/(sum((postprobmodj_jk).^2));
-                    end
+                     sigmaini(jk) = sum((residuals .* weightmodj_jk).^2)/(sum((weightmodj_jk).^2));
+
                     
                     xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
                     indxmodtemp = indxmodtemp+ni(jk);
+
                 else
                     
                     % xmodj Data points in each group
                     xmodj = [];
                     if mixt == 2
                         postprobmodj = [];
+                        weightmodj = [];
                     end
                     % Perform the second trimming
                     
@@ -957,11 +1089,7 @@ while iter < nselected
                     xxx = [];
                     yyy = [];
                     ni(jk) = 0;
-                    if mixt == 0
-                        breg = NaN;
-                    elseif mixt == 2
-                        breg =  NaN;
-                    end
+                    breg = NaN;
                     nameYY(:,jk) = breg;
                     xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
                     indxmodtemp = indxmodtemp+ni(jk);
@@ -973,14 +1101,18 @@ while iter < nselected
                     %observations to compute the sigma
                     count1_ng_eq_k = count1_ng_eq_k + 1;
                 end
+                
             end
+            
             sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
             if debug_mode == 1
                 figure;
-                gscatter(xmod(:,1),xmod(:,2),xmod(:,3));
+                gscatter(xmod(:,2),xmod(:,3),xmod(:,4));
                 hold on;
-                line([0 max(xmod(:,1))],[0 nameYY(1)*max(xmod(:,1))])
-                line([0 max(xmod(:,1))],[0 nameYY(2)*max(xmod(:,1))])
+                line([0 max(xmod(:,2))],[nameYY(1,1) , nameYY(1,1) + nameYY(2,1)*max(xmod(:,2))])
+                hold on;line([0 max(xmod(:,2))],[nameYY(1,2) , nameYY(1,2) + nameYY(2,2)*max(xmod(:,2))])
+                hold on;line([0 max(xmod(:,2))],[nameYY(1,3) , nameYY(1,3) + nameYY(2,3)*max(xmod(:,2))])
+
                 %variance(jk) = var(residuals);
                 % disp(sigmaini);
                 
@@ -1073,9 +1205,9 @@ while iter < nselected
                 %end
             end
             
-        end % End of concentration steps 
-
-        %% Change the 'optimal' target value and 'optimal' parameters 
+        end % End of concentration steps
+        
+        %% Change the 'optimal' target value and 'optimal' parameters
         % This is done if an increase in the target value is achieved
         
         %if sum(not_empty_g ) == k   %this check is commented in order to estimate the effect of eps_beta
@@ -1113,7 +1245,7 @@ else
     jk = 0;
     for iii = not_empty_g
         jk = jk+1;
-        if iii ==1
+        if iii == 1
             ll(:,jk) = log((numopt(jk)/sum(numopt)) )+ logmvnpdfFS(y-X*bopt(:,jk),0,(sigmaopt(jk)));
         else
             ll(:,jk) = NaN;
@@ -1125,23 +1257,20 @@ else
     [~,postprob,~] = estepFS(ll);
     
     %% Determine observations to trim
-
+    
     % boolean vectors indicating the good and outlying units
+    [dist,indmax] = max(ll,[],2);
+    % Sort the n likelihood contributions;
+    [val,qq] = sort(dist,'descend');
+    
     if wtrim ==0
-        [dist,indmax] = max(ll,[],2);
-        % Sort the n likelihood contributions;
-        [val,qq] = sort(dist,'descend');
         % qq is updated to be a vector of size h which contains the indexes
         % associated with the largest n(1-alpha) (weighted) likelihood
         % contributions
         qq  = qq(1:n-trimm);
         val = val(n-trimm);
-        b_good = (dist>=val);
-        b_outl = (dist <val);
         
     elseif wtrim ==1
-        [dist,indmax] = max(ll,[],2);
-        [ val, qq] =sort(dist,'descend');
         qq_acend = qq(end:-1:1);
         cumsumyy = cumsum(we(qq_acend));
         if alpha1 <1
@@ -1152,11 +1281,11 @@ else
         qqunassigned = qq_acend(qqunassigned_small);
         qq = setdiff((1:n)',qqunassigned);
         val = val(n-length(qqunassigned));
-        b_good = (dist>=val);
-        b_outl = (dist <val);
         %b_outl_unasigned = b_outl(qqunassigned_small==1);
         %b_outl_asigned = b_outl(qqunassigned_small==0);
     end
+    b_good = (dist>=val);
+    b_outl = (dist <val);
     
     % asig1: grouping variable for good units, with 0 for trimmed units
     for jk=1:k
@@ -1233,7 +1362,7 @@ else
             % collect all second level trimming units in a same group, for plotting
             %xxx0_all = [xxx0_all ; xxx0(:,end)]; %#ok<AGROW>
             %yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
-                        
+            
             qqf = qqk(qqs);
             asig2(qqf) = jk;
         end
@@ -1313,7 +1442,7 @@ else
                     'HorizontalAlignment','center',...
                     'VerticalAlignment','middle',...
                     'Color',clrdef(jk));
-                                
+                
                 % plot regression lines
                 vv = [min(X(:,end)) max(X(:,end))];
                 if intercept==1
@@ -1324,8 +1453,8 @@ else
                     plot(vv,bopt(:,jk)*vv,...
                         'DisplayName',[group_label ' fit'],...
                         'Color',clrdef(jk));
-                end                
-            end           
+                end
+            end
             
             % Plot the outliers (trimmed points)
             b_outl = (asig1==0);
@@ -1334,7 +1463,7 @@ else
             
             % second level trimming points
             b_outl_2 = ~(asig1==asig2);
-            xxx0_all = X(b_outl_2,end); 
+            xxx0_all = X(b_outl_2,end);
             yyy0_all = y(b_outl_2);
             plot(xxx0_all,yyy0_all,'*','color','c',...
                 'DisplayName','L2 trimmed units');
@@ -1450,10 +1579,10 @@ else
     %   count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
     %   count2_ng_lt_k = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
     %   count2_eq_lt_k = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
-    %   extra_inisubs  = number of subsets generated above the number specified by the user (nsamp) because of small difference between pairwise regression parameters 
-    %   out.selj_good  = list of valid subsets and observations inside them 
-    %   out.selj_elim  =  list of not-valid subsets and observations inside them 
-    %   out.selj_all   =  list of all subsets (valid and not) and observations inside them 
+    %   extra_inisubs  = number of subsets generated above the number specified by the user (nsamp) because of small difference between pairwise regression parameters
+    %   out.selj_good  = list of valid subsets and observations inside them
+    %   out.selj_elim  =  list of not-valid subsets and observations inside them
+    %   out.selj_all   =  list of all subsets (valid and not) and observations inside them
     
 end
 
