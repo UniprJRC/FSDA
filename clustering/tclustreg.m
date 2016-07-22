@@ -1004,12 +1004,12 @@ while iter < nselected
                 end
             end
             
-            % rescale weights so that the sum of elements in each raw
-            % sum to one
-            if wtrim > 0 && wtrim < 4
-                weightsum = sum(weight,2);
-                weight = bsxfun(@rdivide,weight,weightsum);
-            end
+%             % rescale weights so that the sum of elements in each raw
+%             % sum to one
+%             if wtrim > 0 && wtrim < 4
+%                 weightsum = sum(weight,2);
+%                 weight = bsxfun(@rdivide,weight,weightsum);
+%             end
             
             weightmod = [weight, indtri ];
             % Update the beta coefficients, possibly considering
@@ -1085,6 +1085,13 @@ while iter < nselected
                     xxx = xmodj(qqs,1:p);
                     yyy = xmodj(qqs,p+1);
                     ni(jk) = length(yyy);
+                    
+                     % rescale weights so that the sum of elements in each raw
+                    % sum to one
+                    if wtrim > 0 && wtrim < 4
+                        weightsum = sum(weightmodj(qqs,jk),1);
+                        weightmodj(qqs,jk) = bsxfun(@rdivide,weightmodj(qqs,jk),weightsum);
+                    end
                     
                     weightmodj_jk = sqrt(weightmodj(qqs,jk));
                     breg =  (bsxfun(@times,xxx, weightmodj_jk)) \ (bsxfun(@times,yyy ,weightmodj_jk));
