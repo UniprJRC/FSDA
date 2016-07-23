@@ -280,17 +280,16 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     mixt = 2; wtrim = 1;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
-
     mixt = 0; wtrim = 2; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
-  mixt = 2; wtrim = 2; we = [];
+    mixt = 2; wtrim = 2; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 0; wtrim = 3; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
-  mixt = 2; wtrim = 3; we = [];
+    mixt = 2; wtrim = 3; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
 %}
@@ -331,8 +330,7 @@ end
 
 %% initializations
 
-warning('off');
-
+warning('off'); %#ok<WNOFF>
 
 % 'oversamp' is a factor (which depends on the number of groups 'k') used
 % to generate more samples in order to face the possibility that some
@@ -388,7 +386,6 @@ end
 if alpha1<0
     error('FSDA:tclust:WrongAlpha','alpha1 must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
 end
-
 
 if alpha2<0
     error('FSDA:tclust:WrongAlpha','alpha2 must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
@@ -465,7 +462,6 @@ else
     NoPriorSubsets=1;
     startv1=startv1def;
 end
-
 
 % If the user has not specified prior subsets (nsamp is not a scalar) than
 % according the value of startv1 we have a different value of ncomb
@@ -698,7 +694,6 @@ elseif alpha1>=1
 end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
-
 
 %case with no prior subsets
 if NoPriorSubsets
@@ -967,11 +962,15 @@ while iter < nselected
                     weight =  repmat(wetri,1,k);
                 end
                 
-                 if wtrim == 3
+                if wtrim == 3
                     %save the thinned observations
-                    XWt=[];
-                    yWt=[];
-                 end
+                    %                     XWt=[];
+                    %                     yWt=[];
+                    XWt=nan(n,p);
+                    yWt=nan(n,1);
+                    ii = 0;
+                end
+                 
                 for jj=1:k
                     % find indices of units in group jj
                     ijj = find(indtri==jj);
@@ -988,12 +987,20 @@ while iter < nselected
                             wetri = pretain;
                         else
                             wetri = Wt;
+                            nthinned = sum(Wt == 0);
                             %save the thinned observations
-                            XWt =  [XWt ;Xtri(Wt == 0)];
-                            yWt   = [yWt ; ytri(Wt == 0)];
+                            %                             XWt = [XWt ; Xtri(Wt == 0)];
+                            %                             yWt = [yWt ; ytri(Wt == 0)];
+                            XWt(ii+1:ii+nthinned,:) = Xtri(Wt == 0);
+                            yWt(ii+1:ii+nthinned)   = ytri(Wt == 0);
+                            ii = ii + nthinned;
                         end
                         weight(ijj,jj) = weight(ijj,jj) .* wetri;
                     end
+                end
+                if wtrim == 3
+                    XWt(isnan(XWt),:) = [];
+                    yWt(isnan(yWt))   = [];  
                 end
             end
             
@@ -1323,49 +1330,6 @@ else
             asig2(qqf) = jk;
         end
         
-        % plots    MOVED OUTSIDE THE LOOP, TOGETHER WITH OTHER PLOTS
-        %
-        %         % The following plots are for the bi-variate case (v=1)
-        %         if (plots && v < 2)
-        %
-        %             % initialize figure
-        %             if jk == 1
-        %                 fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
-        %                 gca(fh);
-        %                 hold on;
-        %                 xlabel('X');
-        %                 ylabel('y');
-        %                 title('TclustReg clustering','Fontsize',14);
-        %                 %print(fh,[graphs 'PCvariance.png'],'-dpng');
-        %                 %close(fh);
-        %             end
-        %
-        %             % plot good units allocated to the current group
-        %             group_label = ['Group ' num2str(jk)];
-        %             plot(xxx(:,end),yyy,'.w','DisplayName',group_label);
-        %             text(xxx(:,end),yyy,num2str(jk*ones(length(yyy),1)),...
-        %                 'DisplayName',group_label , ...
-        %                 'HorizontalAlignment','center',...
-        %                 'VerticalAlignment','middle',...
-        %                 'Color',clrdef(jk));
-        %
-        %             % second level trimming points are not plotted by group
-        %             % plot(xxx0(:,end),yyy0,'*','color','c','DisplayName','Level-2 trim');
-        %
-        %             % plot regression lines
-        %             vv = [min(X(:,end)) max(X(:,end))];
-        %             if intercept==1
-        %                 plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
-        %                     'DisplayName',['fit of group '  num2str(jk)],...
-        %                     'Color',clrdef(jk));
-        %             elseif intercept==0
-        %                 plot(vv,bopt(:,jk)*vv,...
-        %                     'DisplayName',['fit of group '  num2str(jk)],...
-        %                     'Color',clrdef(jk));
-        %             end
-        %
-        %         end
-        
     end
     
     %% Generate plots
@@ -1383,6 +1347,7 @@ else
             ylabel('y');
             title('TclustReg clustering','Fontsize',14);
             
+    
             jk = 0;
             for iii = not_empty_g
                 jk = jk+1;
@@ -1413,14 +1378,7 @@ else
                     end
                 end
             end
-            %plot the thinned units
-           if wtrim == 3
-               text(XWtopt,yWtopt,num2str(0*ones(length(XWtopt),1)),...
-                        'DisplayName','thinned obs' , ...
-                        'HorizontalAlignment','center',...
-                        'VerticalAlignment','middle',...
-                        'Color',clrdef(jk +1));
-           end
+
             % Plot the outliers (trimmed points)
             b_outl = (asig1==0);
             plot(X(b_outl,end),y(b_outl),'o','color','r',...
@@ -1432,6 +1390,18 @@ else
             yyy0_all = y(b_outl_2);
             plot(xxx0_all,yyy0_all,'*','color','c',...
                 'DisplayName','L2 trimmed units');
+            
+           %plot the thinned units  %
+           if wtrim == 3
+                % misteriously text does not show the legend.
+                %                text(XWtopt,yWtopt,num2str(0*ones(length(XWtopt),1)),...
+                %                         'DisplayName','Thinned units' , ...
+                %                         'HorizontalAlignment','center',...
+                %                         'VerticalAlignment','middle',...
+                %                         'Color',clrdef(sum(not_empty_g)+1));
+               plot(XWtopt,yWtopt,'.','color',clrdef(sum(not_empty_g)+1),...
+                'DisplayName',['Thinned units (' num2str(length(yWtopt)) ')']);
+           end
 
             % position the legends and make them clickable
             lh=legend('show');
