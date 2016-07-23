@@ -59,8 +59,10 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            assignment has to be used:
 %            mixt = 2 is for mixture modelling;
 %            mixt = 0 is for crisp assignment.
-%            In mixture modelling, the likelihood is given by INSERT FORMULA DOME
-%            In crisp assignment, the  likelihood is given by INSERT FORMULA DOME
+%            In mixture modelling, the likelihood is given by 
+%           \prod_{i=1}^n \left[ \sum_{j=1}^k \pi_j \phi (x_i;\theta_j)  \right].
+%            In crisp assignment, the  likelihood is given by 
+%           \prod_{j=1}^k  \prod_{i\in R_j} \phi (x_i;\theta_j)
 %            Example - 'mixt',0
 %            Data Types - single | double
 %    nsamp : number of subsamples to extract.
@@ -331,8 +333,6 @@ end
 
 warning('off');
 
-% internal, used for debugging purposes
-debug_mode=0;
 
 % 'oversamp' is a factor (which depends on the number of groups 'k') used
 % to generate more samples in order to face the possibility that some
@@ -385,12 +385,13 @@ if nargin < 4 || isempty(restrfact) || ~isnumeric(restrfact)
 end
 
 % checks on alpha1 and alpha2
-if alpha1>0.5
-    error('FSDA:tclustreg:WrongAlpha1','Error:: alpha1 must be in [0, 0.5]');
+if alpha1<0
+    error('FSDA:tclust:WrongAlpha','alpha1 must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
 end
 
-if alpha2>0.5
-    error('FSDA:tclustreg:WrongAlpha2','Error:: alpha2 must be in [0, 0.5]');
+
+if alpha2<0
+    error('FSDA:tclust:WrongAlpha','alpha2 must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
 end
 
 % startv1def = default value of startv1 = 1
@@ -730,7 +731,6 @@ end
 %% Initialize structures
 
 ll         = zeros(n,k);
-ll_old     = zeros(n,k);
 ni         = ones(1,k);
 sigmaopt   = ni;
 bopt       = zeros(p,k);
@@ -749,10 +749,14 @@ selj_good_groups = NaN(nselected,k*p);
 selj_elim_groups = NaN(nselected,k*p);
 
 while iter < nselected
+    %iter =  iteration number including the steps where the subset is
+    %refused because the regression lines are too closed one to the other
     iter  = iter+1;
+    
+    %count =  iteration number not including the steps where the subset is
+    %refused because the regression lines are too closed one to the other
     count = count+1;
-    % display the count of the number of all selected samples. In
-    % line 1096 it is diplayed the number of only valid samples.
+    
     if msg == 1
         disp(['Iteration ' num2str(count)])
     end
@@ -760,6 +764,7 @@ while iter < nselected
     if startv1
         
         nameYY = zeros(p,k);
+        % in order to fix the seed decomment the following command
         % rng(1234);
         randk=rand(k,1);
         if alpha1<1
@@ -776,14 +781,9 @@ while iter < nselected
                 niini=floor(fix(n -floor(alpha1))*randk/sum(randk));
             end
         end
-        if debug_mode==1
-            X_all=0;
-            y_all=0;
-            id_gr_all=0;
-        end
         for j = 1:k
-            ilow   = (j-1)*(p)+1; %was p+1
-            iup    = j*(p);       %was p+1
+            ilow   = (j-1)*(p)+1;
+            iup    = j*(p);
             index  = C(iter,:);
             selj   = index(ilow:iup);
             selj_good_groups(count,ilow:iup) = selj;
@@ -791,7 +791,7 @@ while iter < nselected
             yb     = y(selj,:);
             ni(j)  = length(yb);
             nameYY(:,j) = Xb\yb;
-            % now find residuals
+            %Update residuals
             residuals = yb-Xb*nameYY(:,j);
             % Update sigmas through the mean square residuals
             if size(selj,2) > p
@@ -799,24 +799,9 @@ while iter < nselected
             else
                 sigmaini(j) =var(y);
             end
-            if debug_mode == 1
-                X_all     = [X_all ; Xb(:,intercept+1)]; %#ok<AGROW>
-                y_all     = [y_all ; yb];                %#ok<AGROW>
-                id_gr     = repmat(j,length(yb'),1);
-                id_gr_all = [id_gr_all; id_gr];          %#ok<AGROW>
-            end
         end
         sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
-        if debug_mode==1
-            figure;
-            scatter(X(:,intercept+1),y);
-            hold on;
-            gscatter(X_all,y_all,id_gr_all);
-        end
     else
-        
-        % initialization of niini with equal proportions
-        % niini=niinistart;
         
         % extract a subset of size v
         index = C(count,:);
@@ -832,14 +817,17 @@ while iter < nselected
         sigmaini=ones(1,k);
     end
     
-    %to be generalized to a generic k = 2 3 4 5 6 ...
+    %compute the differences between pairwise regression parameters
     for par = 1:intercept + 1
         for gr = 1:size(comb_beta,1)
             diff(par,gr) = nameYY(par,comb_beta(gr,1)) - nameYY(par,comb_beta(gr,2));
         end
     end
+    
+    %if the differences between regression parameters is lower than a
+    %threshold eps_beta the subset will not be considered and substitute
+    %with a new generated one
     mindiff = min(abs(diff),[],2);
-    %if both intercept and slope
     if sum(abs(mindiff) > eps_beta) >0
         good_initial_subs = 1;
     else
@@ -874,8 +862,6 @@ while iter < nselected
                 ll(:,jk) = log((niini(jk)/sum(niini))) + fact3(:,jk);
             end
             
-            
-            
             % trimming when there is no observation weighting
             if wtrim == 0  || wtrim == 2 || wtrim == 3 || wtrim == 4
                 
@@ -906,6 +892,7 @@ while iter < nselected
                     [dsf,indmax] = max(ll,[],2);
                 end
                 [ ~, id] =sort((dsf));
+                
                 cumsumyy = cumsum(we(id));
                 if alpha1<1
                     qqunassigned_small = cumsumyy < alpha1*sum(we(id));
@@ -939,12 +926,10 @@ while iter < nselected
             indtri=indmax(qq);
             xmod=[Xtri , ytri , indtri];
             
-            
             % size of the groups
             for jj=1:k
                 ni(jj) = sum(indtri==jj);
             end
-            
             
             % Update of posterior probabilities via observation
             % weighting (option wtrim = 1,2,3). Needed to compute beta
@@ -982,6 +967,11 @@ while iter < nselected
                     weight =  repmat(wetri,1,k);
                 end
                 
+                 if wtrim == 3
+                    %save the thinned observations
+                    XWt=[];
+                    yWt=[];
+                 end
                 for jj=1:k
                     % find indices of units in group jj
                     ijj = find(indtri==jj);
@@ -998,29 +988,16 @@ while iter < nselected
                             wetri = pretain;
                         else
                             wetri = Wt;
+                            %save the thinned observations
+                            XWt =  [XWt ;Xtri(Wt == 0)];
+                            yWt   = [yWt ; ytri(Wt == 0)];
                         end
                         weight(ijj,jj) = weight(ijj,jj) .* wetri;
                     end
                 end
             end
             
-%             % rescale weights so that the sum of elements in each raw
-%             % sum to one
-%             if wtrim > 0 && wtrim < 4
-%                 weightsum = sum(weight,2);
-%                 weight = bsxfun(@rdivide,weight,weightsum);
-%             end
-            
             weightmod = [weight, indtri ];
-            % Update the beta coefficients, possibly considering
-            % the observation weighting vector we, according to the
-            % wtrim option
-            %                 for jj=1:k
-            %                     nameYY(:,jj) = ...
-            %                         bsxfun(@times,Xtri, sqrt(weight(:,jj))) \ ...
-            %                         bsxfun(@times,ytri ,sqrt(weight(:,jj)));
-            %                 end
-            
             
             % If a cluster is empty or contains less than p+1 elements,
             % stop the concentration steps (not_empty_g != 0).
@@ -1029,6 +1006,7 @@ while iter < nselected
             xmodtemp    = zeros(n,p+2);
             indxmodtemp = 0;
             not_empty_g = ~( ni <= p + 1 );
+            
             %count number of times the number of groups is lt k
             if sum(not_empty_g) == k
                 count1_ng_eq_k = count1_ng_eq_k + 1;
@@ -1085,56 +1063,34 @@ while iter < nselected
                     xxx = xmodj(qqs,1:p);
                     yyy = xmodj(qqs,p+1);
                     ni(jk) = length(yyy);
-                    
-                     % rescale weights so that the sum of elements in each raw
-                    % sum to one
-                    if wtrim > 0 && wtrim < 4
-                        weightsum = sum(weightmodj(qqs,jk),1);
-                        weightmodj(qqs,jk) = bsxfun(@rdivide,weightmodj(qqs,jk),weightsum);
-                    end
-                    
+                                        
                     weightmodj_jk = sqrt(weightmodj(qqs,jk));
                     breg =  (bsxfun(@times,xxx, weightmodj_jk)) \ (bsxfun(@times,yyy ,weightmodj_jk));
                     
                     nameYY(:,jk) = breg;
-                    % now find residuals
+                    % Update residuals
                     residuals = yyy-xxx*breg;
                     % Update sigmas through the mean square residuals
                     sigmaini(jk) = sum((residuals .* weightmodj_jk).^2)/(sum((weightmodj_jk).^2));
-                    
-                    
+                                    
                     xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
                     indxmodtemp = indxmodtemp+ni(jk);
                     
                 else
                     
-                    % xmodj Data points in each group
                     xmodj = [];
-                    if mixt == 2
-                        postprobmodj = [];
-                        weightmodj = [];
-                    end
-                    % Perform the second trimming
-                    
-                    % qqs contains contains the indexes of untrimmed units
-                    % for group j
+
                     if alpha2 == 0
                         qqs = [];
                     else
                         qqs = [];
                     end
                     
-                    % Update betas through ordinary least squares regression
-                    xxx = [];
-                    yyy = [];
                     ni(jk) = 0;
                     breg = NaN;
                     nameYY(:,jk) = breg;
                     xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
                     indxmodtemp = indxmodtemp+ni(jk);
-                    % New xmod
-                    % If the scatters do not satisfy the restriction then a
-                    % quadratic programming problem is solved
                     sigmaini(jk) = NaN;
                     %count the number of times in a group there are enough
                     %observations to compute the sigma
@@ -1144,31 +1100,10 @@ while iter < nselected
             end
             
             sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
-            if debug_mode == 1
-                figure;
-                gscatter(xmod(:,intercept+1),xmod(:,intercept+2),xmod(:,intercept+3));
-                hold on;
-                if intercept == 1
-                    line([0 max(xmod(:,2))],[nameYY(1,1) , nameYY(1,1) + nameYY(2,1)*max(xmod(:,2))])
-                    hold on;
-                    line([0 max(xmod(:,2))],[nameYY(1,2) , nameYY(1,2) + nameYY(2,2)*max(xmod(:,2))])
-                    hold on;
-                    line([0 max(xmod(:,2))],[nameYY(1,3) , nameYY(1,3) + nameYY(2,3)*max(xmod(:,2))])
-                elseif intercept == 0
-                    line([0 max(xmod(:,2))],[0 , nameYY(1)*max(xmod(:,2))])
-                    hold on;
-                    line([0 max(xmod(:,2))],[0 , nameYY(2)*max(xmod(:,2))])
-                    hold on;
-                    line([0 max(xmod(:,2))],[0 , nameYY(3)*max(xmod(:,2))])
 
-                end
-                %variance(jk) = var(residuals);
-                % disp(sigmaini);
-                
-                hold off;
-            end
-            %if a group is emty, beta and sigma are computed as mean of the
-            %other groups
+            %for computing the objective function, if a group is emty, beta and sigma are computed as mean of the
+            %other groups. In order to be passed to the next refining step, after having computed the objective function,
+            %they will be set at NaN.
             for j=1:k
                 if isnan(sigmaini(j))
                     sigmaini(j) = nanmean(sigmaini);
@@ -1201,16 +1136,13 @@ while iter < nselected
                         Xj = xmod(xmod(:,end) == jk,1:end-2);
                         %the following command should be executed at the
                         %end of the for loop of the concentration steps.
-                        %However here it is executed all steps, because of
-                        %a break from the loop which is executed if two
+                        %However here it is executed in all steps, because of
+                        %the above break from the loop, which is executed if two
                         %consecutive concentration steps have the same
                         %result
-                        % if t == Ksteps
-                        %                            obj_old = obj + niini(jk)*log(niini(jk)/trimm2) +...
-                        %                            sum(log(normpdf(yj-Xj*nameYY(:,jk),0,sqrt(sigmaini(jk)))));
+                        
                         obj = obj + niini(jk)*log(niini(jk)/trimm2) +...
                             sum(logmvnpdfFS(yj-Xj*nameYY(:,jk),0,(sigmaini(jk))));
-                        % end
                     else
                         %if a groupis missing, we do not compute the objective
                         %function for it.
@@ -1219,12 +1151,12 @@ while iter < nselected
             elseif mixt == 2
                 %the following command should be executed at the end of
                 %the for loop of the concentration steps. However here
-                %it is executed all steps, because of a break from the
-                %loop which is executed if two consecutive
+                %it is executed in all steps, because of the above break from the
+                %loop, which is executed if two consecutive
                 %concentration steps have the same result
-                %if t == Ksteps
+
                 log_lh=NaN(size(xmod,1),size(not_empty_g,2));
-                jk = 0;
+
                 %log_lh = [];
                 for iii = not_empty_g
                     jk = jk+1;
@@ -1233,13 +1165,10 @@ while iter < nselected
                             log(niini(jk)/sum(niini)) + (logmvnpdfFS(...
                             xmod(:,end-1) - ...
                             xmod(:,1:(size(xmod,2)-2)) * ...
-                            nameYY(:,jk),0,(sigmaini(jk)) ) );
-                        
-                        
+                            nameYY(:,jk),0,(sigmaini(jk)) ) );                 
                     else
                         %if a groupis missing, we do not compute the objective
                         %function for it.
-                        %obj = obj-10^10;
                         log_lh(:,jk) = NaN(length(xmod),1);
                     end
                 end
@@ -1251,36 +1180,35 @@ while iter < nselected
                     nameYY(:,group_missing) = NaN;
                     sigmaini(group_missing) = NaN;
                 end
-                %end
             end
             
         end % End of concentration steps
         
         %% Change the 'optimal' target value and 'optimal' parameters
         % This is done if an increase in the target value is achieved
-        
-        if sum(not_empty_g ) == k   %this check is commented in order to estimate the effect of eps_beta
-        if sum(sum(isnan(nameYY))) == 0
-            if (obj >= vopt)
-                vopt = obj;
-                bopt = nameYY;
-                numopt = niini;
-                sigmaopt = sigmaini;
+        %this check has to be commented in order to estimate the effect of eps_beta
+        if sum(not_empty_g ) == k   
+            if sum(sum(isnan(nameYY))) == 0
+                if (obj >= vopt)
+                    vopt = obj;
+                    bopt = nameYY;
+                    numopt = niini;
+                    sigmaopt = sigmaini;
+                    if wtrim == 3
+                        %save the thinned observations
+                        XWtopt = XWt;
+                        yWtopt = yWt;
+                    end
+                end
             end
-        end
-        end
-        
-        % display the count of the number of valid selected samples. In
-        % line 629 it is diplayed the number of alla samples, valid and not
-        % valid.
-        if msg == 1
-            disp(['iter ' num2str(count)]);
         end
     end
 end % end of loop over the nsamp subsets
+
 if count < nsamp
     out = struct;
 else
+    
     %% Prepares the output structure and some variables for the plots
     
     % Assignment vectors:
@@ -1331,11 +1259,9 @@ else
         qqunassigned = qq_acend(qqunassigned_small);
         qq = setdiff((1:n)',qqunassigned);
         val = val(n-length(qqunassigned));
-        %b_outl_unasigned = b_outl(qqunassigned_small==1);
-        %b_outl_asigned = b_outl(qqunassigned_small==0);
     end
     b_good = (dist>=val);
-    b_outl = (dist <val);
+    %b_outl = (dist <val);
     
     % asig1: grouping variable for good units, with 0 for trimmed units
     for jk=1:k
@@ -1344,10 +1270,6 @@ else
     
     % xmod: contains the good units and, in the last column, their group assignment
     xmod = [X(qq,:) y(qq) indmax(qq)];
-    
-    % used for collecting sencond level trimming points, used for plotting
-    %xxx0_all = [];
-    %yyy0_all = [];
     
     % IS THIS PART BELOW MADE JUST TO COUNT the number of times the number
     % of groups is lt k? IF YES, SHOULD THIS BE MOVED AT THE END OF THE
@@ -1366,7 +1288,6 @@ else
     else
         count2_ng_lt_k = count2_ng_lt_k + 1;
     end
-    % DOME END
     
     %% determine second level trimming points
     
@@ -1374,10 +1295,8 @@ else
     for iii = not_empty_g
         jk = jk+1;
         booljk = xmod(:,end) == jk;
-        %b_outl_asigned_jk = b_outl_asigned(booljk);
         qqk = qq(booljk);
         ni(jk) = sum(booljk);
-        %xmodjk = xmod(booljk & b_outl_asigned_jk,:);
         xmodjk = xmod(booljk ,:);
         if iii ==1
             if alpha2 == 0
@@ -1399,20 +1318,7 @@ else
                 [~,indmdsor] = sort(RAW.md);
                 qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
             end
-            
-            % good units of the current group (used for plotting inside loop)
-            %xxx = xmodjk(qqs,1:end-2);
-            %yyy = xmodjk(qqs,end-1);
-            %
-            % second level trimming units of the current group
-            %qqsn = setdiff(1:ni(jk),qqs);
-            %xxx0 = xmodjk(qqsn,1:end-2);
-            %yyy0 = xmodjk(qqsn,end-1);
-            %
-            % collect all second level trimming units in a same group, for plotting
-            %xxx0_all = [xxx0_all ; xxx0(:,end)]; %#ok<AGROW>
-            %yyy0_all = [yyy0_all ; yyy0];        %#ok<AGROW>
-            
+                        
             qqf = qqk(qqs);
             asig2(qqf) = jk;
         end
@@ -1507,7 +1413,14 @@ else
                     end
                 end
             end
-            
+            %plot the thinned units
+           if wtrim == 3
+               text(XWtopt,yWtopt,num2str(0*ones(length(XWtopt),1)),...
+                        'DisplayName','thinned obs' , ...
+                        'HorizontalAlignment','center',...
+                        'VerticalAlignment','middle',...
+                        'Color',clrdef(jk +1));
+           end
             % Plot the outliers (trimmed points)
             b_outl = (asig1==0);
             plot(X(b_outl,end),y(b_outl),'o','color','r',...
@@ -1519,7 +1432,7 @@ else
             yyy0_all = y(b_outl_2);
             plot(xxx0_all,yyy0_all,'*','color','c',...
                 'DisplayName','L2 trimmed units');
-            
+
             % position the legends and make them clickable
             lh=legend('show');
             %set(lh,'FontSize',14);
