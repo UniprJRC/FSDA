@@ -32,6 +32,7 @@ function addFSDA2path(FSroot)
 % \combinatorial;
 % \utilities;
 % \utilities_stat;
+% \utilities_help;
 % \examples;
 % \FSDAdemos
 %
@@ -83,6 +84,7 @@ f=filesep;
         FSroot f 'datasets' f 'multivariate_regression;' FSroot f 'datasets' f 'clustering;'...
         FSroot f 'combinatorial;', ...
         FSroot f 'utilities;' FSroot f 'utilities_stat;' ...
+        FSroot f 'utilities;' FSroot f 'utilities_help;' ...
         FSroot f 'examples;' FSroot f 'FSDAdemos'];
 
     path(addp,path);
