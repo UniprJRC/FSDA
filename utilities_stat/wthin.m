@@ -56,10 +56,13 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 
 %}
 
+n = size(X,1);
 %Compute the density along the predicted values
-support = [ (min(X)-0.1) , (max(X)+0.1) ];
-%support = 'unbounded';
-[pdfe,xout,u]  = ksdensity(X,X,'Function','pdf','Support',support);
+support = [ (min(X)) , (max(X)+0.1) ];
+%support = 'positive';
+bandwidth_normal = 1.06  * std(X) * n^{-1/5};  % normal reference rule
+%bandwidth_robust = 0.786 * iqr(X) * n^{-1/5}; % normal reference rule
+[pdfe,xout,u]  = ksdensity(X,X,'Function','pdf','Support',support,'bandwidth',bandwidth_normal);
 varargout{2} = u;
 varargout{3} = xout;
 
