@@ -54,26 +54,54 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 
     plot(x,y,'.');
 
+    [Wt,pretain,varargout] = wthin(y);
+
+    plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
+    clickableMultiLegend('Retained','Thinned');
+
 %}
 
 n = size(X,1);
+
+% retention method: 
+% retain_method = 'comp2one' (i.e. 1 - pdfe/max(pdfe))
+% retain_method = 'inverse'  (i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
+retain_method = 'inverse';
+
+% bandwidth selection
+bandwidth = 'normal';
+switch bandwidth
+    case 'normal'
+        bw = 1.06  * std(X) * n^(-1/5);  % normal reference rule
+    case 'robust'
+        bw = 0.786 * iqr(X) * n^{-1/5};  % normal reference rule
+    otherwise
+        bw = 1.06  * std(X) * n^(-1/5);  % normal reference rule
+end
+
 %Compute the density along the predicted values
-support = [ (min(X)) , (max(X)+0.1) ];
+minX = min(X); maxX = max(X); e = (maxX-minX)/10^(6);
+support = [ (min(X)-e) , (max(X)+e) ];
+
 %support = 'positive';
-bandwidth_normal = 1.06  * std(X) * n^{-1/5};  % normal reference rule
-%bandwidth_robust = 0.786 * iqr(X) * n^{-1/5}; % normal reference rule
-[pdfe,xout,u]  = ksdensity(X,X,'Function','pdf','Support',support,'bandwidth',bandwidth_normal);
+[pdfe,xout,u]  = ksdensity(X,X,'Function','pdf','Support',support,'bandwidth',bw);
 varargout{2} = u;
 varargout{3} = xout;
 
 % substitute the zero sampling probability with a very small value
 pdfe(pdfe<=0)=0.00001;
 
-% Vector of retention probabilities: convert the density values into the
-% inverse values, in order to apply a sampling probability that is
-% inversely proportional to the density
-pretain = 1 - pdfe/max(pdfe);
-%pretain = (1 ./ pdfe) / max((1 ./ pdfe));
+% convert the density values into the vector of retention probabilities;
+% sampling probability should be inversely proportional to the density, but
+% different functions are possible
+switch retain_method
+    case 'comp2one'
+        % complement to 1 
+        pretain = 1 - pdfe/max(pdfe);
+    case 'inverse'
+        % inverse
+        pretain = (1 ./ pdfe) / max((1 ./ pdfe));
+end
 
 % Thinning: Xt is the retained vector; Wt are the indices of the retained
 % points in the original data X.
