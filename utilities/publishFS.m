@@ -92,8 +92,12 @@ function out=publishFS(file,varargin)
 %                 6th column = Data type
 %                 7th column = string contaning '1' if the argument is
 %                 required and '0' if it is optional
+%                 8th column = this column is empty unless 3rd column
+%                 contains the word structure. If this is the case the 8th
+%                 column will contain a cell with two columns containing
+%                 the Values/Description of the associated structure.
 % out.OptArgs   = Optional input arguments specified as name/values pairs. Cell.
-%                 Cell of size r-by-6 containing information about
+%                 Cell of size r-by-7 containing information about
 %                 and optional input argument specified as name/values pairs.
 %                 1st column = name.
 %                 2nd column = short description.
@@ -104,6 +108,10 @@ function out=publishFS(file,varargin)
 %                 included in the 4th column.
 %                 5th column = example (if present).
 %                 6th column = Data type (ex. Single |Double).
+%                 7th column = this column is empty unless 3rd column
+%                 contains the word structure. If this is the case the 7th
+%                 column will contain a cell with two columns containing
+%                 the Values/Description of the associated structure.
 % out.OutArgs   = Required and Optional input arguments. Cell.
 %                 Cell of size k-by-7 containing information about required
 %                 and optional input argument.
@@ -799,7 +807,7 @@ end
 % [iniCR,finCR]=regexp(fstringselOpt,'%\s*\w*\s*:\s*\r');
 
 
-% listOptArgs = list which contains all optional arguments
+% listOptArgs = list which contains all optional arguments (8 columns)
 % The first column will contain the names (just one word)
 % The second column will contain the title of the option (the first
 % sentence which finishes with a full stop sign)
@@ -810,8 +818,11 @@ end
 % The fifth column will contain the example what starts just after
 % string  Example -
 % The sixth column will contain the example what starts just after
-% string  Data Types -
-listOptArgs=cell(length(ini),7);
+% string  Data Types - (i.e.: char, double....)
+% If the third column contains the string struct then the content of
+% value/description of the struct input argument will appear in the seventh
+% column else the seventh column will be empty
+listOptArgs=cell(length(ini),8);
 
 ij=1;
 for i=1:length(ini)
@@ -1766,7 +1777,8 @@ reqargs='';
 % string  Data Types -
 % The seventh col will contain '1' or '0' according to the fact that the
 % associated argument is required or optional
-listInpArgs=cell(nTOTargin,7);
+
+listInpArgs=cell(nTOTargin,8);
 for i=1:nTOTargin
     
     % Name of the input argument (just one word)
@@ -1899,10 +1911,12 @@ for i=1:nTOTargin
             %TODO5
         end
         
-        descrlongHTML=formatHTMLstructure(descrlong,inpi);
+        [descrlongHTML,listStructureArgs]=formatHTMLstructure(descrlong,inpi);
         listInpArgs{i,4}=descrlongHTML;
         listInpArgs{i,7}=descrlong;
         
+            listInpArgs{i,8}=listStructureArgs;
+
         jins=6;
     else
         
@@ -2070,8 +2084,9 @@ else
             longdesc=listOptArgs{i,4};
             
             %    [inistructfield,finstructfield]=regexp(longdesc,'\s{8,18}\w*\s{0,8}=');
-            longdescription=formatHTMLstructure(longdesc,nameoptarg);
-            
+            [longdescription,listStructureArgs]=formatHTMLstructure(longdesc,nameoptarg);
+            listOptArgs{i,8}=listStructureArgs;
+          
         else
             longdescriptionHTML=formatHTMLwithMATHJAX(listOptArgs{i,4});
             
@@ -2695,9 +2710,9 @@ listInpArgs(1:nREQargin,7)={'1'};
 out.InpArgs=listInpArgs;
 
 % Save optional input arguments of the kind name/pairs
-if size(listOptArgs,2)==7
+if size(listOptArgs,2)==8
     listOptArgs(:,5)=listOptArgs(:,7);
-    listOptArgs=listOptArgs(:,1:6);
+    listOptArgs=listOptArgs(:,[1:6 8]);
 end
 out.OptArgs=listOptArgs;
 % Save output arguments
@@ -3669,6 +3684,7 @@ if ~isempty(ini)
     descrioutput=[upper(descrioutput(1)) descrioutput(2:end)];
 else
     descrioutput=formatHTMLwithMATHJAX(descriinput);
+    listStructureArgs='';
 end
 
 end
