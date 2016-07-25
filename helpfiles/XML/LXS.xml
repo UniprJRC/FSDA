@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->LXS</Title>
+   <Purpose><!--This is the second line of the .m file-->LXS computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>A vector with n elements that contains the response&#xD;
+               variable</ShortDesc>
+         <TypeInd>It can be both a row of column vector</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors')&#xD;
+               of dimension (n x p-1)</ShortDesc>
+         <TypeInd>Rows of X represent observations, and&#xD;
+               columns represent variables</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default),&#xD;
+               if 0, no constant term will be included.&#xD;
+               </LongDesc>
+         <Example> 'intercept',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>h</Name>
+         <ShortDesc>The number of observations that have determined the least&#xD;
+                 trimmed squares estimator</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>The number of observations that have determined the least&#xD;
+               trimmed squares estimator. h is an integer greater than p&#xD;
+               (number of columns of matrix X including the intercept but&#xD;
+               smaller then n. If the purpose is outlier detection than h&#xD;
+               does not have to be smaller than [0.5*(n+p+1)] (default&#xD;
+               value). On the other hand if the purpose is to find&#xD;
+               subgroups of homogeneous observations h can be smaller than&#xD;
+               [0.5*(n+p+1)]. If h &amp;lt;p+1 an error will be given.&#xD;
+                 </LongDesc>
+         <Example> 'h',round(n*0,75) &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bdp</Name>
+         <ShortDesc>breakdown point</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It measures the fraction of outliers&#xD;
+               the algorithm should&#xD;
+               resist. In this case any value greater than 0 but smaller&#xD;
+               or equal than 0.5 will do fine. If on the other hand the&#xD;
+               purpose is subgroups detection then bdp can be greater than&#xD;
+               0.5. In any case however n*(1-bdp) must be greater than&#xD;
+               p. If this condition is not fulfilled an error will be&#xD;
+               given. Please specify h or bdp not both.&#xD;
+                 </LongDesc>
+         <Example> 'bdp',0.4&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nsamp</Name>
+         <ShortDesc>Number of subsamples which will be extracted to find the&#xD;
+               robust estimator</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be extracted. They will be (n choose p).         &#xD;
+                 %               Remark: if the number of all possible subset is &amp;lt;1000 the&#xD;
+               default is to extract all subsets, otherwise just 1000 if&#xD;
+               fastLTS is used (lms=2 or lms is a structure) or 3000 for&#xD;
+               standard LTS or LMS.&#xD;
+</LongDesc>
+         <Example> 'nsamp',0&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lms</Name>
+         <ShortDesc>Criterion to use to find the initlal&#xD;
+                 subset to initialize the search</ShortDesc>
+         <TypeInd>Scalar, vector or structure</TypeInd>
+         <LongDesc>If lms is a scalar = 1 (default) Least Median of Squares is&#xD;
+                       computed,&#xD;
+               else if lms is a scalar = 2 fast lts with the all default options is used&#xD;
+               else if lms is a scalar different from 1 and 2 standard lts&#xD;
+                       is used (without concentration steps)&#xD;
+               else if lms is a struct fast lts (with concentration steps) is used.&#xD;
+                  In this case the user can control the following options:&#xD;
+                  lms.refsteps : scalar defining number of refining iterations in each&#xD;
+                               subsample (default = 3). refsteps = 0 means&#xD;
+                               "raw-subsampling" without iterations. &#xD;
+                   lms.reftol  : scalar. Default value of tolerance for the refining steps&#xD;
+                               The default value is 1e-6.&#xD;
+                   lms.bestr   : scalar defining number of "best betas" to remember from the&#xD;
+                               subsamples. These will be later iterated until convergence&#xD;
+                               (default=5).&#xD;
+             lms.refstepsbestr : scalar defining number of refining iterations for each&#xD;
+                               best subset (default = 50).&#xD;
+              lms.reftolbestr  : scalar. Default value of tolerance for the refining steps&#xD;
+                               for each of the best subsets&#xD;
+                               The default value is 1e-8.&#xD;
+                 </LongDesc>
+         <Example> 'lms',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rew</Name>
+         <ShortDesc>LXS reweighted</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If rew=1 the reweighted version of LTS (LMS) is&#xD;
+               used and the output quantities refer to the reweighted&#xD;
+               version&#xD;
+               else no reweighting is performed (default).&#xD;
+                 </LongDesc>
+         <Example> 'rew',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>Confidence level which is&#xD;
+               used to declare units as outliers</ShortDesc>
+         <TypeInd>Scalar&#xD;
+               Usually conflev=0</TypeInd>
+         <LongDesc>95, 0.975 0.99 (individual alpha)&#xD;
+               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).&#xD;
+               Default value is 0.975&#xD;
+                 </LongDesc>
+         <Example> 'conflev',0.99&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>If plots = 1, a plot which shows the&#xD;
+               robust residuals against index number is shown on the&#xD;
+               screen. The confidence level which is used to draw the&#xD;
+               horizontal lines associated with the bands for the&#xD;
+               residuals is as specified in input option conflev. If&#xD;
+               conflev is missing a nominal 0.975 confidence interval will&#xD;
+               be used.&#xD;
+                 </LongDesc>
+         <Example> 'plots',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>It controls whether to display or not messages on the screen</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If msg==1 (default) messages are displayed&#xD;
+               on the screen about estimated time to compute the estimator&#xD;
+               and the warnings about&#xD;
+               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and&#xD;
+               'MATLAB:nearlySingularMatrix' are set to off&#xD;
+               else no message is displayed on the screen&#xD;
+               </LongDesc>
+         <Example> 'msg',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
+               matrix y and matrix X. Notice that y and X are left&#xD;
+               unchanged. In other words the additioanl column of ones for&#xD;
+               the intercept is not added. As default nocheck=0. The&#xD;
+               controls on h, bdp and nsamp still remain.&#xD;
+               </LongDesc>
+         <Example> 'nocheck',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nomes</Name>
+         <ShortDesc>It controls whether to display or not on the screen&#xD;
+               messages about estimated  time to compute LMS (LTS)</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nomes is equal to 1 no message about estimated&#xD;
+               time to compute LMS (LTS) is displayed, else if nomes is&#xD;
+               equal to 0 (default), a message about estimated time is&#xD;
+               displayed.&#xD;
+               </LongDesc>
+         <Example> 'nomes',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>yxsave</Name>
+         <ShortDesc>the response vector y and data matrix X are saved into the output&#xD;
+                structure out</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Default is 0, i.e. no saving is done.&#xD;
+                      </LongDesc>
+         <Example> 'yxsave',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>rew</Value>
+               <Description>Scalar if out.rew=1 all subsequent output refers to&#xD;
+                       reweighted else no reweighting is done.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>beta</Value>
+               <Description>Vector of beta LTS (LMS) coefficient estimates,&#xD;
+                       including the intercept when options.intercept=1.&#xD;
+                       out.beta=[intercept slopes].</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>bs</Value>
+               <Description>p x 1 vector containing the units forming subset&#xD;
+                       associated with bLMS (bLTS).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>residuals</Value>
+               <Description>Vector containing the standardized residuals from&#xD;
+                       the regression.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>scale</Value>
+               <Description>Scale estimate of the residuals.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>weights</Value>
+               <Description>Vector like y containing weights. The elements of&#xD;
+                       this vector are 0 or 1.&#xD;
+                       These weights identify the h observations which are&#xD;
+                       used to compute the final LTS (LMS) estimate.&#xD;
+                       sum(out.weights)=h if there is not a perfect fit&#xD;
+                       otherwise sum(out.weights) can be greater than h</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>h</Value>
+               <Description>The number of observations that have determined the&#xD;
+                       LTS (LMS) estimator, i.e. the value of h.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outliers</Value>
+               <Description>vector containing the list of the units declared&#xD;
+                       as outliers using confidence level specified in&#xD;
+                       input scalar conflev</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>conflev</Value>
+               <Description>confidence level which is used to declare outliers.&#xD;
+                       Remark: scalar out.conflev will be used&#xD;
+                       to draw the horizontal lines (confidence bands) in the plots</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>singsub</Value>
+               <Description>Number of subsets wihtout full rank. Notice that if&#xD;
+                       this number is greater than 0.1*(number of&#xD;
+                       subsamples) a warning is produced on the screen</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'LTS', LTSfast (or LMS).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>y</Value>
+               <Description>response vector Y. The field is present if option&#xD;
+                       yxsave is set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>data matrix X. The field is present if option&#xD;
+                       yxsave is set to 1.</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>C        : Indexes of the extracted subsamples.</TypeInd>
+         <LongDesc>&#xD;
+                       Matrix containing the indexes of the subsamples &#xD;
+                       extracted for computing the estimate (the so called&#xD;
+                       elemental sets). For example, if C(3,:)=[2 5 20],&#xD;
+                       implies that the third extracted subsample is&#xD;
+                       formed by units 2, 5 and 20.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection.&#xD;
+   Wiley.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSReda</Item>
+      <Item>Sreg</Item>
+      <Item>MMreg</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>LXS with default input and output.</Title>
+         <Desc>&#xD;
+     Compute LMS estimator without reweighting, add intercept to matrix X&#xD;
+     and do not produce plots.&#xD;</Desc>
+         <MATLABcode>
+    n=200;&#xD;
+    p=3;&#xD;
+    randn('state', 123456);&#xD;
+    X=randn(n,p);&#xD;
+    y=randn(n,1);&#xD;
+    y(1:5)=y(1:5)+6;&#xD;
+    [out]=LXS(y,X);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>LXS with optional arguments.</Title>
+         <Desc>&#xD;
+     Compute LMS estimator, reweight and plot the residuals.&#xD;</Desc>
+         <MATLABcode>
+    n=200;&#xD;
+    p=3;&#xD;
+    randn('state', 123456);&#xD;
+    X=randn(n,p);&#xD;
+    y=randn(n,1);&#xD;
+    y(1:5)=y(1:5)+6;&#xD;
+    [out]=LXS(y,X,'rew',1,'plots',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>LXS with optional output.</Title>
+         <Desc>&#xD;
+     Generating the C matrix containing the indices of the subsamples &#xD;
+     extracted for computing the estimate (the so called elemental sets).                  &#xD;</Desc>
+         <MATLABcode>
+    n=200;&#xD;
+    p=3;&#xD;
+    randn('state', 123456);&#xD;
+    X=randn(n,p);&#xD;
+    y=randn(n,1);&#xD;
+    y(1:5)=y(1:5)+6;&#xD;
+    [out,C]=LXS(y,X);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Reweighted LTS estimator.</Title>
+         <Desc>&#xD;
+     Compute reweighted LTS estimator and produce the plot of&#xD;
+     residuals.&#xD;</Desc>
+         <MATLABcode>
+    n=200;&#xD;
+    p=3;&#xD;
+    randn('state', 123456);&#xD;
+    X=randn(n,p);&#xD;
+    y=randn(n,1);&#xD;
+    y(1:5)=y(1:5)+6;&#xD;
+    [out]=LXS(y,X,'rew',1,'lms',0,'plots',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Specifying the number of subsamples.</Title>
+         <Desc>&#xD;
+     Compute LMS estimator, without plots using 20000 subsamples.&#xD;</Desc>
+         <MATLABcode>
+    n=200;&#xD;
+    p=3;&#xD;
+    randn('state', 123456);&#xD;
+    X=randn(n,p);&#xD;
+    y=randn(n,1);&#xD;
+    y(1:5)=y(1:5)+6;&#xD;
+    [out]=LXS(y,X,'nsamp',20000);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Specifying a confidence level.</Title>
+         <Desc>&#xD;
+     Compute reweighted LMS and use a confidence level for outlier&#xD;
+     detection equal to 0.999.&#xD;</Desc>
+         <MATLABcode>
+    n=200;&#xD;
+    p=3;&#xD;
+    randn('state', 123456);&#xD;
+    X=randn(n,p);&#xD;
+    y=randn(n,1);&#xD;
+    y(1:5)=y(1:5)+6;&#xD;
+    [out]=LXS(y,X,'rew',1,'conflev',0.999);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Using fast options.</Title>
+         <Desc>&#xD;
+     Compute LTS using fast options&#xD;
+     detection equal to 0.999.&#xD;</Desc>
+         <MATLABcode>
+    lms=struct;&#xD;
+    % Do 5 refining steps for each elemental subset&#xD;
+    lms.refsteps=5;&#xD;
+    % Store the best 10 subsets&#xD;
+    lms.bestr=10;&#xD;
+    n=200;&#xD;
+    p=3;&#xD;
+    randn('state', 123456);&#xD;
+    X=randn(n,p);&#xD;
+    y=randn(n,1);&#xD;
+    y(1:5)=y(1:5)+6;&#xD;
+    [out]=LXS(y,X,'lms',lms,'plots',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>We compare the output of different procedures:  only the reweighted&#xD;
+     LTS seems to detect half of the outlier with a Bonferroni&#xD;
+    significance level.</Title>
+         <Desc/>
+         <MATLABcode>
+    close all;&#xD;
+    state=100;&#xD;
+    randn('state', state);&#xD;
+    n=100;&#xD;
+    X=randn(n,3);&#xD;
+    bet=[3;4;5];&#xD;
+    y=3*randn(n,1)+X*bet;&#xD;
+    y(1:20)=y(1:20)+13;&#xD;
+&#xD;
+    % Define nominal confidence level&#xD;
+    conflev=[0.99,1-0.01/length(y)];&#xD;
+    % Define number of subsets &#xD;
+    nsamp=3000;&#xD;
+    % Define the main title of the plots&#xD;
+    titl='';&#xD;
+&#xD;
+    % LMS with no rewighting&#xD;
+    [outLMS]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1));&#xD;
+    h=subplot(2,2,1)&#xD;
+    laby='Scaled LMS residuals'; &#xD;
+    resindexplot(outLMS.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev)&#xD;
+&#xD;
+    % LTS with no rewighting&#xD;
+    h=subplot(2,2,2);&#xD;
+    [outLTS]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1),'lms',0);&#xD;
+    laby='Scaled LTS residuals'; &#xD;
+    resindexplot(outLTS.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev);&#xD;
+&#xD;
+    % LMS with reweighting&#xD;
+    [outLMSr]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1),'rew',1);&#xD;
+    h=subplot(2,2,3);&#xD;
+    laby='Scaled reweighted LMS residuals'; &#xD;
+    resindexplot(outLMSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev)&#xD;
+&#xD;
+    % LTS with reweighting&#xD;
+    [outLTSr]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1),'rew',1,'lms',0);&#xD;
+    h=subplot(2,2,4);&#xD;
+    laby='Scaled reweighted LTS residuals'; &#xD;
+    resindexplot(outLTSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev);&#xD;
+    % By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier. &#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

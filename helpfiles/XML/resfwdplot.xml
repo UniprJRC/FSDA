@@ -1,0 +1,1042 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->resfwdplot</Title>
+   <Purpose><!--This is the second line of the .m file-->resfwdplot plots the trajectories of the scaled (squared) residuals monitored</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc>Structure containing monitoring of scaled residuals</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>Structure containing the following fields.&#xD;
+   out.RES =   matrix containing the residuals monitored in each step of&#xD;
+               the forward search. Every row is associated with a residual&#xD;
+               (unit). This matrix can be created using function FSReda.&#xD;
+   out.Un  =   matrix containing the order of entry in the subset of each&#xD;
+               unit (required only when datatooltip is true or databrush&#xD;
+               is not empty).&#xD;
+     out.y  =   a vector containing the response (required only when option&#xD;
+               databrush is not empty).&#xD;
+     out.X  =   a matrix containing the explanatory variables (required only&#xD;
+               when option databrush is not empty).&#xD;
+   out.Bols =   (n-init+1) x (p+1) matrix containing the estimated beta&#xD;
+               coefficients monitored in each step of the forward search&#xD;
+               (required only when option databrush is not empty and&#xD;
+               suboption multivarfit is not empty).</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>RES</Value>
+               <Description>matrix containing the residuals monitored in each step of&#xD;
+               the forward search. Every row is associated with a residual&#xD;
+               (unit). This matrix can be created using function FSReda.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Un</Value>
+               <Description>matrix containing the order of entry in the subset of each&#xD;
+               unit (required only when datatooltip is true or databrush&#xD;
+               is not empty).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>y</Value>
+               <Description>a vector containing the response (required only when option&#xD;
+               databrush is not empty).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>a matrix containing the explanatory variables (required only&#xD;
+               when option databrush is not empty).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Bols</Value>
+               <Description>(n-init+1) x (p+1) matrix containing the estimated beta&#xD;
+               coefficients monitored in each step of the forward search&#xD;
+               (required only when option databrush is not empty and&#xD;
+               suboption multivarfit is not empty).</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>standard</Name>
+         <ShortDesc>appearance of the plot&#xD;
+                   in terms of xlim, ylim, axes labels and their font size&#xD;
+                   style, color of the lines, etc</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>Structure standard contains the following fields&#xD;
+                   standard.SizeAxesNum  = scalar specifying the fontsize of the&#xD;
+                       axes numbers. Default value is 10.&#xD;
+                   standard.xlim = two elements vector with minimum and maximum of&#xD;
+                       the x axis. Default value is '' (automatic scale).&#xD;
+                   standard.ylim = two elements vector with minimum and maximum of&#xD;
+                       the y axis. Default value is '' (automatic scale).&#xD;
+                   standard.titl = a label for the title (default: '').&#xD;
+                   standard.labx = a label for the x-axis (default: 'Subset size m').&#xD;
+                   standard.laby = a label for the y-axis (default:'Scaled residuals'&#xD;
+                       or 'Scaled squared residuals').&#xD;
+                  standard. SizeAxesLab = Scalar specifying the fontsize of the&#xD;
+                       labels of the axes. Default value is 12.&#xD;
+                   standard.xvalues = vector. x axis values.  &#xD;
+                       Numeric vector of length(size(out.RES,2)) controlling the x&#xD;
+                       axis coordinates. The default value of xvalues is&#xD;
+                       size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)&#xD;
+                   standard.LineWidth = scalar specifying line width for the&#xD;
+                       trajectories.&#xD;
+                   standard.Color = cell array of strings containing the colors to&#xD;
+                       be used for the highlighted units.&#xD;
+                       If length(Color)=1 the same color will be used for&#xD;
+                       all units.&#xD;
+                       If length(Color)=2 half of the trajectories will&#xD;
+                       appear with Color{1} and the other half with&#xD;
+                       Color{2}. And so on with 3 cell elements, etc.&#xD;
+                   standard.LineStyle = cell containing the line types.&#xD;
+&#xD;
+                   The default values of structure standard are:&#xD;
+                   standard.SizeAxesNum=10&#xD;
+                   standard.SizeAxesLab=12&#xD;
+                   standard.xlim='' (Automatic scale)&#xD;
+                   standard.ylim='' (Automatic scale)&#xD;
+                   standard.titl='' (empty title)&#xD;
+                   standard.labx='Subset size m'&#xD;
+                   standard.laby='Scaled residuals'&#xD;
+                   standard.LineWidth=1&#xD;
+                   standard.Color={'b'}&#xD;
+                   standard.LineStyle={'-'}&#xD;
+                   standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)&#xD;
+                   </LongDesc>
+         <Example> 'standard.LineWidth','1'&#xD;
+                   </Example>
+         <DataType>struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>SizeAxesNum</Value>
+               <Description>scalar specifying the fontsize of the&#xD;
+                       axes numbers. Default value is 10.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>xlim</Value>
+               <Description>two elements vector with minimum and maximum of&#xD;
+                       the x axis. Default value is '' (automatic scale).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ylim</Value>
+               <Description>two elements vector with minimum and maximum of&#xD;
+                       the y axis. Default value is '' (automatic scale).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>titl</Value>
+               <Description>a label for the title (default: '').</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>labx</Value>
+               <Description>a label for the x-axis (default: 'Subset size m').</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>laby</Value>
+               <Description>a label for the y-axis (default:'Scaled residuals'&#xD;
+                       or 'Scaled squared residuals').&#xD;
+                  standard. SizeAxesLab = Scalar specifying the fontsize of the&#xD;
+                       labels of the axes. Default value is 12.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>xvalues</Value>
+               <Description>vector. x axis values.  &#xD;
+                       Numeric vector of length(size(out.RES,2)) controlling the x&#xD;
+                       axis coordinates. The default value of xvalues is&#xD;
+                       size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidth</Value>
+               <Description>scalar specifying line width for the&#xD;
+                       trajectories.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Color</Value>
+               <Description>cell array of strings containing the colors to&#xD;
+                       be used for the highlighted units.&#xD;
+                       If length(Color)=1 the same color will be used for&#xD;
+                       all units.&#xD;
+                       If length(Color)=2 half of the trajectories will&#xD;
+                       appear with Color{1} and the other half with&#xD;
+                       Color{2}. And so on with 3 cell elements, etc.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineStyle</Value>
+               <Description>cell containing the line types.&#xD;
+&#xD;
+                   The default values of structure standard are:&#xD;
+                   standard.SizeAxesNum=10</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>SizeAxesLab</Value>
+               <Description>12&#xD;
+                   standard.xlim='' (Automatic scale)&#xD;
+                   standard.ylim='' (Automatic scale)&#xD;
+                   standard.titl='' (empty title)&#xD;
+                   standard.labx='Subset size m'&#xD;
+                   standard.laby='Scaled residuals'&#xD;
+                   standard.LineWidth=1&#xD;
+                   standard.Color={'b'}&#xD;
+                   standard.LineStyle={'-'}&#xD;
+                   standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>fground</Name>
+         <ShortDesc>trajectories in foregroud</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>Structure which controls which trajectories&#xD;
+                   are highlighted and how&#xD;
+                   they are plotted to be distinguishable from the others.&#xD;
+                   It is possible to control the label, the width, the&#xD;
+                   color, the line type and the marker of the highlighted&#xD;
+                   units. The structure fground contains the following&#xD;
+                   fields:&#xD;
+                   fground.fthresh = (alternative to funit) numeric vector of&#xD;
+                       length 1 or 2 which specifies the highlighted&#xD;
+                       trajectories.&#xD;
+                       If length(fthresh)=1 the highlighted trajectories&#xD;
+                       are those of units that throughtout the search had&#xD;
+                       at leat once a residual greater (in absolute value)&#xD;
+                       than thresh. The default value of fthresh is 2.5.&#xD;
+                       If length(fthresh)=2 the highlighted trajectories&#xD;
+                       are those of units that throughtout the search had&#xD;
+                       a residual at leat once bigger than fthresh(2) or&#xD;
+                       smaller than fthresh(1).&#xD;
+                   fground.funit = (alternative to fthresh) vector containing the&#xD;
+                       list of the units to be highlighted. If funit is&#xD;
+                       supplied, fthresh is ignored.&#xD;
+                   fground.flabstep = numeric vector which specifies the steps of&#xD;
+                       the search where to put labels for the highlighted&#xD;
+                       trajectories (units). The default is to put the&#xD;
+                       labels at the initial and final steps of the search.&#xD;
+                       flabstep='' means no label.&#xD;
+                   fground.LineWidth = scalar specifying line width for the&#xD;
+                       highlighted trajectories (units). Default is 1.&#xD;
+                   fground.Color = cell array of strings containing the colors to&#xD;
+                       be used for the highlighted trajectories (units).&#xD;
+                       If length(scolor)==1 the same color will be used for&#xD;
+                       all highlighted units Remark: if for example&#xD;
+                       length(scolor)=2 and there are 6 highlighted units,&#xD;
+                       3 highlighted trajectories appear with&#xD;
+                       selunitcolor{1} and 3 highlighted trajectories with&#xD;
+                       selunitcolor{2}&#xD;
+                   fground.LineStyle = cell containing the line type of the highlighted&#xD;
+                       trajectories.&#xD;
+                   fground.fmark  = scalar controlling whether to plot highlighted&#xD;
+                       trajectories as markers.&#xD;
+                       if 1 each line is plotted using a different marker&#xD;
+                       else no marker is used (default).&#xD;
+                fground.FontSize = scalar controlling font size of the labels of&#xD;
+                       the trajectories in foreground.&#xD;
+&#xD;
+                   The default values of structure fground are:&#xD;
+                    fground.fthresh=2.5&#xD;
+                    fground.flabstep=[m0 n]&#xD;
+                    fground.LineWidth=1&#xD;
+                    fground.LineStyle={'-'}&#xD;
+                    fground.FontSize=12&#xD;
+&#xD;
+                   %                   Remark: if fground='' no unit is highlighted and no&#xD;
+                   label is inserted into the plot.&#xD;
+&#xD;
+</LongDesc>
+         <Example> 'fground.LineWidth','1'&#xD;
+                   </Example>
+         <DataType>struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>fthresh</Value>
+               <Description>(alternative to funit) numeric vector of&#xD;
+                       length 1 or 2 which specifies the highlighted&#xD;
+                       trajectories.&#xD;
+                       If length(fthresh)=1 the highlighted trajectories&#xD;
+                       are those of units that throughtout the search had&#xD;
+                       at leat once a residual greater (in absolute value)&#xD;
+                       than thresh. The default value of fthresh is 2.5.&#xD;
+                       If length(fthresh)=2 the highlighted trajectories&#xD;
+                       are those of units that throughtout the search had&#xD;
+                       a residual at leat once bigger than fthresh(2) or&#xD;
+                       smaller than fthresh(1).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>funit</Value>
+               <Description>(alternative to fthresh) vector containing the&#xD;
+                       list of the units to be highlighted. If funit is&#xD;
+                       supplied, fthresh is ignored.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>flabstep</Value>
+               <Description>numeric vector which specifies the steps of&#xD;
+                       the search where to put labels for the highlighted&#xD;
+                       trajectories (units). The default is to put the&#xD;
+                       labels at the initial and final steps of the search.&#xD;
+                       flabstep='' means no label.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidth</Value>
+               <Description>scalar specifying line width for the&#xD;
+                       highlighted trajectories (units). Default is 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Color</Value>
+               <Description>cell array of strings containing the colors to&#xD;
+                       be used for the highlighted trajectories (units).&#xD;
+                       If length(scolor)==1 the same color will be used for&#xD;
+                       all highlighted units Remark: if for example&#xD;
+                       length(scolor)=2 and there are 6 highlighted units,&#xD;
+                       3 highlighted trajectories appear with&#xD;
+                       selunitcolor{1} and 3 highlighted trajectories with&#xD;
+                       selunitcolor{2}</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineStyle</Value>
+               <Description>cell containing the line type of the highlighted&#xD;
+                       trajectories.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>fmark</Value>
+               <Description>scalar controlling whether to plot highlighted&#xD;
+                       trajectories as markers.&#xD;
+                       if 1 each line is plotted using a different marker&#xD;
+                       else no marker is used (default).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>FontSize</Value>
+               <Description>scalar controlling font size of the labels of&#xD;
+                       the trajectories in foreground.&#xD;
+&#xD;
+                   The default values of structure fground are:&#xD;
+                    fground.fthresh=2.5&#xD;
+                    fground.flabstep=[m0 n]&#xD;
+                    fground.LineWidth=1&#xD;
+                    fground.LineStyle={'-'}&#xD;
+                    fground.FontSize=12&#xD;
+&#xD;
+                   %                   Remark: if fground='' no unit is highlighted and no&#xD;
+                   label is inserted into the plot.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>bground</Name>
+         <ShortDesc>characterictics of the trajectories in background</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>Structure which specifies the trajectories in background,&#xD;
+                   i.e. the trajectories corresponding to "unimmportant"&#xD;
+                   units in the central part of the data. The structure&#xD;
+                   also specifies the style used in the plot to give them&#xD;
+                   less emphasis, so that to not distract the eye of the&#xD;
+                   analyst from the trajectories of the relevant units.&#xD;
+                   The structure contains the following fields:&#xD;
+                   bground.bthresh = numeric vector of length 1 or 2 which&#xD;
+                       specifies how to define the unimmportant trajectories.&#xD;
+                       Unimmportant trajectories will be plotted using a&#xD;
+                       colormap, in greysh or will be hidden.&#xD;
+                       - If length(thresh)=1 the irrelevant units are&#xD;
+                         those which always had a residual smaller&#xD;
+                         (in absolute value) than thresh.&#xD;
+                       - If length(bthresh)=2 the irrelevant units&#xD;
+                         are those which always had a residual greater&#xD;
+                         than bthresh(1) and smaller than bthresh(2).&#xD;
+                       The default is:&#xD;
+                           bthresh=2.5 if n&amp;gt;100 and bthresh=-inf if n&amp;lt;=100&#xD;
+                       i.e. to treat all trajectories as important if&#xD;
+                       n&amp;lt;=100 and, if n&amp;gt;100, to reduce emphasis only to&#xD;
+                       trajectories having in all steps of the search a&#xD;
+                       value of scaled residual smaller than 2.5.&#xD;
+                   bground.bstyle = specifies how to plot the unimportant&#xD;
+                       trajectories as defined in option bthresh.&#xD;
+                       'faint': unimportant trajectories are plotted using&#xD;
+                           a colormap.&#xD;
+                       'hide': unimportant trajectories are hidden.&#xD;
+                       'greysh': unimportant trajectories are displayed in&#xD;
+                           a faint grey.&#xD;
+                       When n&amp;gt;100 the default option is 'faint'.&#xD;
+                       When n&amp;lt;=100 and bthresh = -Inf option bstyle is&#xD;
+                       ignored.&#xD;
+                   %                   Remark: bground='' is equivalent to bground.thresh=-Inf&#xD;
+                   that is all trajectories are considered relevant.&#xD;
+&#xD;
+</LongDesc>
+         <Example> 'bground.bstyle','faint'&#xD;
+                   </Example>
+         <DataType>struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>bthresh</Value>
+               <Description>numeric vector of length 1 or 2 which&#xD;
+                       specifies how to define the unimmportant trajectories.&#xD;
+                       Unimmportant trajectories will be plotted using a&#xD;
+                       colormap, in greysh or will be hidden.&#xD;
+                       - If length(thresh)=1 the irrelevant units are&#xD;
+                         those which always had a residual smaller&#xD;
+                         (in absolute value) than thresh.&#xD;
+                       - If length(bthresh)=2 the irrelevant units&#xD;
+                         are those which always had a residual greater&#xD;
+                         than bthresh(1) and smaller than bthresh(2).&#xD;
+                       The default is:&#xD;
+                           bthresh=2.5 if n&amp;gt;100 and bthresh=-inf if n&amp;lt;=100&#xD;
+                       i.e. to treat all trajectories as important if&#xD;
+                       n&amp;lt;=100 and, if n&amp;gt;100, to reduce emphasis only to&#xD;
+                       trajectories having in all steps of the search a&#xD;
+                       value of scaled residual smaller than 2.5.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>bstyle</Value>
+               <Description>specifies how to plot the unimportant&#xD;
+                       trajectories as defined in option bthresh.&#xD;
+                       'faint': unimportant trajectories are plotted using&#xD;
+                           a colormap.&#xD;
+                       'hide': unimportant trajectories are hidden.&#xD;
+                       'greysh': unimportant trajectories are displayed in&#xD;
+                           a faint grey.&#xD;
+                       When n&amp;gt;100 the default option is 'faint'.&#xD;
+                       When n&amp;lt;=100 and bthresh = -Inf option bstyle is&#xD;
+                       ignored.&#xD;
+                   %                   Remark: bground='' is equivalent to</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>thresh</Value>
+               <Description>-Inf&#xD;
+                   that is all trajectories are considered relevant.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>tag</Name>
+         <ShortDesc>Personalized plot tag</ShortDesc>
+         <TypeInd>String</TypeInd>
+         <LongDesc>String which identifies&#xD;
+                   the handle of the plot which&#xD;
+                   is about to be created. The default is to use tag&#xD;
+                   'pl_resfwd'. Note that if the program finds a plot which&#xD;
+                   has a tag equal to the one specified by the user, then&#xD;
+                   the output of the new plot overwrites the existing one&#xD;
+                   in the same window else a new window is created.&#xD;
+                   </LongDesc>
+         <Example> 'tag','myplot'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>datatooltip</Name>
+         <ShortDesc>interactive clicking</ShortDesc>
+         <TypeInd>Empty value (default) or&#xD;
+                   structure</TypeInd>
+         <LongDesc>The default is datatooltip=''.&#xD;
+                   It is inactive if it is an empty value. The default is&#xD;
+                   datatooltip = 1, i.e. the user can select with the&#xD;
+                   mouse an individual residual trajectory in order to&#xD;
+                   have information about the corresponding unit, the&#xD;
+                   associated label and the step of the search in which&#xD;
+                   the unit enters in the subset.&#xD;
+                   If datatooltip is a structure, the fields&#xD;
+                   DisplayStyle and SnapToDataVertex&#xD;
+                   control the data cursor features&#xD;
+                   (see the MATLAB function datacursormode or the examples&#xD;
+                   below). Default values are datatooltip.DisplayStyle =&#xD;
+                   'Window' and datatooltip.SnapToDataVertex = 'on'.&#xD;
+                   By default, the residual trajectory selected with the&#xD;
+                   mouse is highlighted in red. A different color can be&#xD;
+                   specified as RGB vector in the structure field&#xD;
+                   LineColor (a RGB vector can be conveniently chosen&#xD;
+                   with our MATLAB class FSColor, see documentation).&#xD;
+                   By setting the field&#xD;
+                   datatooltip.SubsetLinesColor,&#xD;
+                   it is also possible to highlight the trajectories of&#xD;
+                   units that are in the subset at a given step of the&#xD;
+                   search.&#xD;
+                   This can be done (repeatedly) with a left mouse click&#xD;
+                   in proximity of the step of interest. A right mouse&#xD;
+                   click will terminate the selection by marking with a&#xD;
+                   up-arrow the step corresponding to the highlighted&#xD;
+                   lines. The highlighted lines by default are in blue,&#xD;
+                   but different colors can be specified as RGB vectors in&#xD;
+                   the field SubsetLinesColor. By default SubsetLinesColor&#xD;
+                   = '', i.e. the modality is not active. Any&#xD;
+                   initialization for SubsetLinesColor which cannot be&#xD;
+                   interpreted as RGB vector will be converted to blue,&#xD;
+                   i.e. SubsetLinesColor will be forced to be [0 0 1].&#xD;
+                   </LongDesc>
+         <Example> 'datatooltip',''&#xD;
+                   </Example>
+         <DataType>empty value, scalar or struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>DisplayStyle</Value>
+               <Description>'Window' and</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>SnapToDataVertex</Value>
+               <Description>'on'.&#xD;
+                   By default, the residual trajectory selected with the&#xD;
+                   mouse is highlighted in red. A different color can be&#xD;
+                   specified as RGB vector in the structure field&#xD;
+                   LineColor (a RGB vector can be conveniently chosen&#xD;
+                   with our MATLAB class FSColor, see documentation).&#xD;
+                   By setting the field&#xD;
+                   datatooltip.SubsetLinesColor,&#xD;
+                   it is also possible to highlight the trajectories of&#xD;
+                   units that are in the subset at a given step of the&#xD;
+                   search.&#xD;
+                   This can be done (repeatedly) with a left mouse click&#xD;
+                   in proximity of the step of interest. A right mouse&#xD;
+                   click will terminate the selection by marking with a&#xD;
+                   up-arrow the step corresponding to the highlighted&#xD;
+                   lines. The highlighted lines by default are in blue,&#xD;
+                   but different colors can be specified as RGB vectors in&#xD;
+                   the field SubsetLinesColor. By default SubsetLinesColor&#xD;
+                   = '', i.e. the modality is not active. Any&#xD;
+                   initialization for SubsetLinesColor which cannot be&#xD;
+                   interpreted as RGB vector will be converted to blue,&#xD;
+                   i.e. SubsetLinesColor will be forced to be [0 0 1].</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>label</Name>
+         <ShortDesc>row labels</ShortDesc>
+         <TypeInd>Cell of strings</TypeInd>
+         <LongDesc>Cell containing the labels of the units (optional&#xD;
+                   argument used when datatooltip=1. If this field is not&#xD;
+                   present labels row1, ..., rown will be automatically&#xD;
+                   created and included in the pop up datatooltip window)&#xD;
+                   </LongDesc>
+         <Example> 'label',{'Smith','Johnson','Robert','Stallone'}&#xD;
+                   </Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>databrush</Name>
+         <ShortDesc>interactive mouse brushing</ShortDesc>
+         <TypeInd>Empty value, scalar or structure</TypeInd>
+         <LongDesc>If databrush is an empty value (default), no brushing&#xD;
+                   is done.&#xD;
+                   The activation of this option (databrush is a scalar or&#xD;
+                   a cell) enables the user  to select a set of&#xD;
+                   trajectories in the current plot and to see them&#xD;
+                   highlighted in the y|X plot, i.e. a matrix of scatter&#xD;
+                   plots of y against each column of X, grouped according&#xD;
+                   to the selection(s) done by brushing. If the plot y|X&#xD;
+                   does not exist it is automatically created.&#xD;
+                   In addition, brushed units are automatically highlighted in the&#xD;
+                   minimum deletion residual plot if it is already open.&#xD;
+                   The extension to the following plots will be available&#xD;
+                   in future versions of the toolbox:&#xD;
+                   - monitoring leverage plot;&#xD;
+                   - maximum studentized residual;&#xD;
+                   - s^2 and R^2;&#xD;
+                   - Cook distance and modified Cook distance;&#xD;
+                   - deletion t statistics.&#xD;
+                   Note that the window style of the other figures is set&#xD;
+                   equal to that which contains the monitoring residual&#xD;
+                   plot. In other words, if the monitoring residual plot&#xD;
+                   is docked all the other figures will be docked too&#xD;
+                   DATABRUSH IS A SCALAR&#xD;
+                   If databrush is a scalar the default selection tool is&#xD;
+                   a rectangular brush and it is possible to brush only&#xD;
+                   once (that is persist='').&#xD;
+                   DATABRUSH IS A STRUCTURE.&#xD;
+                   If databrush is a structure, it is possible to use all&#xD;
+                   optional arguments of function selectdataFS.m and the&#xD;
+                   following optional argument:&#xD;
+                   - persist. Persist is an empty value or a scalar&#xD;
+                     containing the strings 'on' or 'off'.&#xD;
+                     The default value of persist is '', that is brushing&#xD;
+                     is allowed only once.&#xD;
+                     If persist is 'on' or 'off' brushing can be done as&#xD;
+                     many time as the user requires.&#xD;
+                     If persist='on' then the unit(s) currently brushed&#xD;
+                     are added to those previously brushed. it is&#xD;
+                     possible, every time a new brushing is done, to use a&#xD;
+                     different color for the brushed units.&#xD;
+                     If persist='off' every time a new brush is performed&#xD;
+                     units previously brushed are removed.&#xD;
+                   - bivarfit. This option adds one or more least&#xD;
+                     square lines based on SIMPLE REGRESSION to the plots&#xD;
+                     of y|X, depending on the selected groups.&#xD;
+                     bivarfit = ''&#xD;
+                       is the default: no line is fitted.&#xD;
+                     bivarfit = '1'&#xD;
+                       fits a single ols line to all points of each&#xD;
+                       bivariate plot in the scatter matrix y|X.&#xD;
+                     bivarfit = '2'&#xD;
+                       fits two ols lines: one to all points and another&#xD;
+                       to the last selected group. This is useful when&#xD;
+                       there are only two groups, of which one refers to a&#xD;
+                       set of potential outliers.&#xD;
+                     bivarfit = '0'&#xD;
+                       fits one ols line for each selected group. This is&#xD;
+                       useful for the purpose of fitting mixtures of&#xD;
+                       regression lines.&#xD;
+                     bivarfit = 'i1' or 'i2' or 'i3' etc.&#xD;
+                       fits a ols line to a specific group, the one with&#xD;
+                       index 'i' equal to 1, 2, 3 etc.&#xD;
+                   - multivarfit: This option adds one or more least square&#xD;
+                       lines, based on MULTIVARIATE REGRESSION of y on X,&#xD;
+                       to the plots of y|Xi.&#xD;
+                     multivarfit = ''&#xD;
+                       is the default: no line is fitted.&#xD;
+                     multivarfit = '1'&#xD;
+                       fits a single ols line to all points of each&#xD;
+                       bivariate plot in the scatter matrix y|X.&#xD;
+                       The line added to the scatter plot y|Xi&#xD;
+                       is avconst +Ci*Xi, where Ci is the&#xD;
+                       coefficient of Xi in the multivariate regression&#xD;
+                       and avconst is the effect of all the other&#xD;
+                       explanatory variables different from Xi evaluated&#xD;
+                       at their centroid (that is $\overline{y}'C$)).&#xD;
+                     multivarfit = '2'&#xD;
+                       exactly equal to multivarfit ='1' but this time we&#xD;
+                       add the line based on the group of unselected&#xD;
+                       observations.&#xD;
+                   - labeladd. If this option is '1', we label the units&#xD;
+                     of the last selected group with the unit row index in&#xD;
+                     matrices X and y. The default value is labeladd='',&#xD;
+                     i.e. no label is added.&#xD;
+                   </LongDesc>
+         <Example> 'databrush',1&#xD;
+                   </Example>
+         <DataType>single | double | struct</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nameX</Name>
+         <ShortDesc>labels of the explanatory variables</ShortDesc>
+         <TypeInd>Cell</TypeInd>
+         <LongDesc>Cell array of&#xD;
+                   strings of length p containing the labels&#xD;
+                   of the variables of the regression dataset. If it is&#xD;
+                   empty the sequence X1, ..., Xp will be created&#xD;
+                   automatically&#xD;
+                   </LongDesc>
+         <Example> 'nameX',{'var1', var2, 'var3'}&#xD;
+                   </Example>
+         <DataType>cell of strings</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>namey</Name>
+         <ShortDesc>response label</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>Character containing the label of the response&#xD;
+                   </LongDesc>
+         <Example> 'namey','response'&#xD;
+                   </Example>
+         <DataType>character</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>display or save used options</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which controls whether to display or to save&#xD;
+                   as output the options inside structures standard,&#xD;
+                   fground and bground which have been used to draw the&#xD;
+                   plot.&#xD;
+                   plotopt=resfwdplot(out,'msg',1) enables to save inside&#xD;
+                   cell  plotopt the options which have been used to draw&#xD;
+                   the three types of trajectories (standard, foreground&#xD;
+                   and background).&#xD;
+                   plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt&#xD;
+                   the options which have been used and prints them on the&#xD;
+                   screen.&#xD;
+                   </LongDesc>
+         <Example> 'msg',1&#xD;
+                   </Example>
+         <DataType>single or double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>plotopt</Name>
+         <ShortDesc> Cell array&#xD;
+               of strings</ShortDesc>
+         <TypeInd>options which have been used to create the plot.</TypeInd>
+         <LongDesc> Store all options which have been used to&#xD;
+               generate the plot inside cell plotopt.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,&#xD;
+   Springer Verlag, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>malfwdplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Monitoring residuals plot with all the default options.</Title>
+         <Desc>&#xD;
+     generate input structure for the resfwdplot&#xD;</Desc>
+         <MATLABcode>
+    n=100;&#xD;
+    y=randn(n,1);&#xD;
+    X=randn(n,4);&#xD;
+    [out]=LXS(y,X,'nsamp',1000);&#xD;
+    [out]=FSReda(y,X,out.bs);&#xD;
+    % Produce  resfwdplot&#xD;
+    resfwdplot(out);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of some options inside structure standard.</Title>
+         <Desc>&#xD;
+     Initialize structure standard&#xD;
+     Specify the steps in which labels have to be put&#xD;</Desc>
+         <MATLABcode>
+    standard=struct;&#xD;
+    standard.LineStyle={'-';'-.';':'};&#xD;
+    % Specify the line width&#xD;
+    standard.LineWidth=0.5;&#xD;
+    resfwdplot(out,'standard',standard)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of the use of some options inside structure fground.</Title>
+         <Desc>&#xD;
+     Initialize structure fground&#xD;</Desc>
+         <MATLABcode>
+    fground = struct;&#xD;
+    % Specify which trajectories have to be highlighted&#xD;
+    fground.funit=[2 5 20 23 35 45];&#xD;
+    % Specify the steps in which labels have to be put&#xD;
+    n=length(y);&#xD;
+    fground.flabstep=[n/2 n*0.75 n+0.5];;&#xD;
+    % Specify the line width of the highlighted trajectories&#xD;
+    fground.LineWidth=3;&#xD;
+    % Produce a monitoring residuals plot in which labels are put for units&#xD;
+    % [2 5 20 23 35 45] in steps [n/2 n*0.75 n+0.5] of the search&#xD;
+    resfwdplot(out,'fground',fground)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of some options inside structure bground.</Title>
+         <Desc/>
+         <MATLABcode>
+    bground = struct;&#xD;
+    % Specify a threshold to define the "background" trajectories&#xD;
+    bground.bthresh=2;&#xD;
+    % Trajectories whose residual is always between -btresh and +bthresh&#xD;
+    % are shown as specified in bground.bstyle&#xD;
+    bground.bstyle='hide';&#xD;
+    resfwdplot(out,'bground',bground)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of option datatooltip.</Title>
+         <Desc>&#xD;
+     Gives the user the possibility of clicking on the different points&#xD;
+     and have information about the unit selected, the step of entry&#xD;
+     into the subset and the associated label.&#xD;</Desc>
+         <MATLABcode>
+    datatooltip = struct;&#xD;
+    % In this example the style of the datatooltip is 'datatip'. Click on a&#xD;
+    % trajectory when the resfwdplot is displayed.&#xD;
+    %&#xD;
+    datatooltip.DisplayStyle = 'datatip';&#xD;
+    resfwdplot(out,'datatooltip',datatooltip);&#xD;
+    %&#xD;
+    % Now we use the default style, which is 'window'.&#xD;
+    datatooltip.DisplayStyle = 'window';&#xD;
+    resfwdplot(out,'datatooltip',datatooltip);&#xD;
+&#xD;
+    % Here we specify the RGB color used to highlight the selected trajectory.&#xD;
+    % Note that we can obtain the RGB vector with our MATLAB class FSColors.&#xD;
+    %&#xD;
+    datatooltip = struct;&#xD;
+&#xD;
+    datatooltip.LineColor = FSColors.yellowish.RGB;&#xD;
+    resfwdplot(out,'datatooltip',datatooltip);&#xD;
+    % now LineColor is not a valid RGB vector, but red (default) will be used&#xD;
+    datatooltip.LineColor = [123 41 12 32 1];&#xD;
+    resfwdplot(out,'datatooltip',datatooltip);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
+     Another example of the use of option datatooltip.</Title>
+         <Desc>&#xD;
+     The user can highlight the trajectories of the units that are in&#xD;
+     the subset at a given step with a mouse click in proximity&#xD;
+     of that step. A right click will terminate the exercise.&#xD;
+     To activate this modality, we set the field SubsetLinesColor,&#xD;
+     which specifies the color used to highlight the trajectories.&#xD;</Desc>
+         <MATLABcode>
+    datatooltip = struct;&#xD;
+    datatooltip.SubsetLinesColor = FSColors.purplish.RGB;&#xD;
+    resfwdplot(out,'datatooltip',datatooltip);&#xD;
+&#xD;
+    % Here we show that the modality is also activated when&#xD;
+    % SubsetLinesColor is not a valid RGB vector.&#xD;
+    % In this case the default highlight color (blue) is used.&#xD;
+    datatooltip = struct;&#xD;
+    datatooltip.SubsetLinesColor = 999;&#xD;
+    resfwdplot(out,'datatooltip',datatooltip);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 2.&lt;/i&gt;
+       Example of the use of option databrush.</Title>
+         <Desc>&#xD;
+       (brushing is done only once using a rectangular selection tool)&#xD;</Desc>
+         <MATLABcode>
+    resfwdplot(out,'databrush',1)&#xD;
+    %   An equivalent statement is&#xD;
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    resfwdplot(out,'databrush',databrush);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 3.&lt;/i&gt;
+       Example of the use of brush using a rectangular selection tool.</Title>
+         <Desc> &#xD;
+     Use a cyan colour.&#xD;</Desc>
+         <MATLABcode>
+    resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 4.&lt;/i&gt;
+     Example of the use of brush using multiple selection circular tools.</Title>
+         <Desc/>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Brush';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 5.&lt;/i&gt;
+       Example of the use of brush using lasso selection tool and fleur pointer.</Title>
+         <Desc/>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='lasso';&#xD;
+    databrush.Pointer='fleur';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 6.&lt;/i&gt;
+     Example of the use of rectangular brush.</Title>
+         <Desc>&#xD;
+      We havesuperimposed labels&#xD;
+       for the brushed units and persistent labels in the plot which has&#xD;
+       been brushed.&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='off';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 7.&lt;/i&gt;
+     Example of persistent brushing.</Title>
+         <Desc>&#xD;
+       Example of the use of persistent non cumulative brush. Every time a&#xD;
+       brushing action is performed previous highlightments are removed&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='off';&#xD;
+    databrush.persist='off';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 8.&lt;/i&gt;
+     Example of persistent cumulative brush.</Title>
+         <Desc>&#xD;
+       Example of the use of persistent cumulative brush. Every time a&#xD;
+       brushing action is performed current highlightments are added to&#xD;
+       previous highlightments&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='on';&#xD;
+    databrush.persist='on';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 9.&lt;/i&gt;
+     Example of persistent cumulative brush with ols line.</Title>
+         <Desc>&#xD;
+       The same as before, but also fit one ols line to each selected group&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='on';&#xD;
+    databrush.persist='on';&#xD;
+    databrush.bivarfit='0';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 10.&lt;/i&gt;
+     Example of persistent cumulative brush with a single ols line.</Title>
+         <Desc>&#xD;
+       The same but now fit a single ols line to all data.&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='off';&#xD;
+    databrush.persist='on';&#xD;
+    databrush.bivarfit='1';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 11.&lt;/i&gt;
+     Example of persistent cumulative brush with two ols lines.</Title>
+         <Desc>&#xD;
+       The same but now fit a first ols line to all data and a second line&#xD;
+       on the group of observations which remain unselected.&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='off';&#xD;
+    databrush.persist='on';&#xD;
+    databrush.bivarfit='2';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 12.&lt;/i&gt;
+     Example of persistent cumulative brush with ols line for a particular group.</Title>
+         <Desc>&#xD;
+       The same but now fit a single ols line to the group with index 4.&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='off';&#xD;
+    databrush.persist='on';&#xD;
+    databrush.bivarfit='i4';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 13.&lt;/i&gt;
+     Example of persistent cumulative brush with personalized line.</Title>
+         <Desc>&#xD;
+       The same but now add the line mean(y)+Ci*Xi.&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='off';&#xD;
+    databrush.persist='on';&#xD;
+    databrush.multivarfit='1';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 14.&lt;/i&gt;
+     Example of persistent cumulative brush with option multivarfit.</Title>
+         <Desc>&#xD;
+     Example of use of option databrush suboptions multivarfit 2, persist on&#xD;</Desc>
+         <MATLABcode>
+    load('multiple_regression.txt');&#xD;
+    y=multiple_regression(:,4);&#xD;
+    X=multiple_regression(:,1:3);&#xD;
+    [out]=LXS(y,X,'nsamp',10000);&#xD;
+    [out]=FSReda(y,X,out.bs);&#xD;
+    out1=out;&#xD;
+    out1.RES=out.RES.^2;&#xD;
+    mdrplot(out,'ylimy',[1 5]);&#xD;
+&#xD;
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='off';&#xD;
+    databrush.persist='on';&#xD;
+    databrush.multivarfit='2';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 15.&lt;/i&gt;
+     Brushing in the loyalty cards data example.</Title>
+         <Desc>&#xD;
+     Fidelity cards data&#xD;</Desc>
+         <MATLABcode>
+    XX=load('loyalty.txt');&#xD;
+    namey='Sales'&#xD;
+    y=XX(:,end);&#xD;
+    y=y.^0.4;&#xD;
+    nameX={'Number of visits', 'Age', 'Number of persons in the family'};&#xD;
+&#xD;
+    X=XX(:,1:end-1);&#xD;
+    [out]=LXS(y,X,'nsamp',10000);&#xD;
+    [out]=FSReda(y,X,out.bs);&#xD;
+    mdrplot(out,'ylimy',[1.6 4.5],'xlimx',[420 510],'lwd',2,'FontSize',16,'SizeAxesNum',16,'lwdenv',2);&#xD;
+    mdrplot(out,'ylimy',[1.6 4.5],'envm',489,'xlimx',[420 510],'lwd',2,'FontSize',16,'SizeAxesNum',16,'lwdenv',2);&#xD;
+&#xD;
+    databrush=struct;&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    databrush.Label='on';&#xD;
+    databrush.RemoveLabels='on';&#xD;
+    databrush.persist='on';&#xD;
+    databrush.multivarfit='2';&#xD;
+    resfwdplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the  use of option msg.</Title>
+         <Desc>&#xD;
+     Fidelity cards data&#xD;</Desc>
+         <MATLABcode>
+    XX=load('loyalty.txt');&#xD;
+    namey='Sales'&#xD;
+    y=XX(:,end);&#xD;
+    y=y.^0.4;&#xD;
+    X=XX(:,1:end-1);&#xD;
+    [out]=LXS(y,X,'nsamp',10000);&#xD;
+    [out]=FSReda(y,X,out.bs);&#xD;
+    plotopt=resfwdplot(out,'msg',2)&#xD;
+    % In order to reuse the options which have been stored inside plotopt&#xD;
+    % use the following sintax&#xD;
+    % resfwdplot(out,plotopt{:})&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of use of option xvalues inside structure standard.</Title>
+         <Desc/>
+         <MATLABcode>
+    XX=load('loyalty.txt');&#xD;
+    namey='Sales'&#xD;
+    y=XX(:,end);&#xD;
+    y=y.^0.4;&#xD;
+    X=XX(:,1:end-1);&#xD;
+    [out]=LXS(y,X,'nsamp',10000);&#xD;
+    [out]=FSReda(y,X,out.bs);&#xD;
+    standard=struct;&#xD;
+    % xlabels start from 400&#xD;
+    standard.xvalues=400:1:(size(out.RES,2)+400-1);&#xD;
+    resfwdplot(out,'standard',standard)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

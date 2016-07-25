@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->cabc</Title>
+   <Purpose><!--This is the second line of the .m file-->cabc closes all open figures except the one in foreground (the current)</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION--></InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>close</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    x = 0:pi/1000:2*pi;&#xD;
+    plot(x,sin(x));&#xD;
+    figure&#xD;
+    plot(x,cos(x));&#xD;
+    figure&#xD;
+    plot(x,atan(x))&#xD;
+    cascade&#xD;
+    % Now highlight a figure and then digit&#xD;
+    cabc&#xD;
+    % All the other figures but the one which has been selected will be&#xD;
+    % closed&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    brushRES&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

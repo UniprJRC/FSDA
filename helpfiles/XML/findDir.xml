@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->findDir</Title>
+   <Purpose><!--This is the second line of the .m file--> findDir finds recursively all directories in root.</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>root</Name>
+         <ShortDesc>Root directory</ShortDesc>
+         <TypeInd>String</TypeInd>
+         <LongDesc>Case sensitive string that can indicate&#xD;
+               relative or absolute path. Use '.' for current directory.&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>string</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>InclDir</Name>
+         <ShortDesc>Include directory pattern(s)</ShortDesc>
+         <TypeInd>String or cell arrays of&#xD;
+               strings</TypeInd>
+         <LongDesc>User can use wildcards. Do not use regular expression,&#xD;
+               for examples 'abc' and 'ab*de*'. File separator (i.e. '\' in&#xD;
+               Windows or '/' in Unix) is not allowed. Case-sensitive.&#xD;
+               This filter is skipped if InclDir='', InclDir={},&#xD;
+               InclDir='*' or if one of the element of the cell array&#xD;
+               InclDir is '*'. Default: InclDir={''}.&#xD;
+               </LongDesc>
+         <Example> 'InclDir','dirname'&#xD;
+               </Example>
+         <DataType>(cell array of) string</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ExclDir</Name>
+         <ShortDesc>Exclude directory pattern(s)</ShortDesc>
+         <TypeInd>String or cell arrays of&#xD;
+               strings</TypeInd>
+         <LongDesc>User can use wildcards. Do not&#xD;
+               use regular expression. Examples: 'abc' and 'ab*de*'. Use ''&#xD;
+               or {} to skip this stage. File separator (i.e. '\' in&#xD;
+               Windows or '/' in Unix) is not allowed. Case-sensitive. Default: ExclDir={''}.&#xD;
+               </LongDesc>
+         <Example> 'ExclDir','dirname'&#xD;
+               </Example>
+         <DataType>(cell array of) string</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>list</Name>
+         <ShortDesc> Cell array of strings</ShortDesc>
+         <TypeInd>All subdirectories.</TypeInd>
+         <LongDesc> List of all&#xD;
+               subdirectories under root directory, sorted in alphabetical&#xD;
+               and ascending order. Always return absolute path.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>findFile</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>findDir with all default options.</Title>
+         <Desc/>
+         <MATLABcode>
+    FullPath=which('findDir');&#xD;
+    root=FullPath(1:end-length('findDir.m')-1);&#xD;
+    list = findDir(root)&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of InclDir.</Title>
+         <Desc> find all subfolders inside matlab help&#xD;
+     documentaion which contain the string optim&#xD;</Desc>
+         <MATLABcode>
+    pathdocroot=docroot;&#xD;
+    FoldersWithOptim=findFile(pathdocroot,'InclDir','*optim*');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>findDir with optional arguments.</Title>
+         <Desc/>
+         <MATLABcode>
+    FullPath=which('findDir');&#xD;
+    root=FullPath(1:end-length('findDir.m')-1);&#xD;
+    list = findDir(root,'InclDir','datasets')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>findDir with optional arguments 'InclDir' and 'ExclDir'.</Title>
+         <Desc/>
+         <MATLABcode>
+    FileName='addFSDA2path';&#xD;
+    FullPath=which(FileName);&#xD;
+    root=FullPath(1:end-length(FileName)-3);&#xD;
+    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...&#xD;
+    'examples' 'utilities' 'utilities_stat'};&#xD;
+    ExclDir={'privateFS'  'datasets'};&#xD;
+    list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

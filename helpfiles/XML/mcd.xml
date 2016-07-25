@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->mcd</Title>
+   <Purpose><!--This is the second line of the .m file-->mcd computes Minimum Covariance Determinant</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Data matrix containing n observations on v variables</ShortDesc>
+         <TypeInd>Rows of Y represent observations, and columns represent variables</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed,&#xD;
+       since observations (rows) with missing or infinite values will&#xD;
+       be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>bdp</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Breakdown point</TypeInd>
+         <LongDesc>(Number between 0&#xD;
+               and 0.5). The default value is 0.5.&#xD;
+               </LongDesc>
+         <Example> 'bdp',1/4 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nsamp</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Number of subsamples of size v which have&#xD;
+               to be extracted (if not given, default = 1000)</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> 'nsamp',10000 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>refsteps</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Number of refining iterations in each&#xD;
+               subsample (default = 3)</TypeInd>
+         <LongDesc>refsteps = 0 means "raw-subsampling" without iterations.&#xD;
+               </LongDesc>
+         <Example> 'refsteps',10 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>reftol</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Tolerance for the refining steps</TypeInd>
+         <LongDesc>The default value is 1e-6;&#xD;
+               </LongDesc>
+         <Example> 'reftol',1e-8 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>refstepsbestr</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Number of refining iterations for each&#xD;
+               best subset (default = 50)</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> 'refstepsbestr',10 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>reftolbestr</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Value of tolerance for the refining steps&#xD;
+               for each of the best subsets</TypeInd>
+         <LongDesc>The default value is 1e-8;&#xD;
+               </LongDesc>
+         <Example> 'reftolbestr',1e-8&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bestr</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Number of "best locations" to remember from&#xD;
+               the subsamples</TypeInd>
+         <LongDesc>These will be later iterated until&#xD;
+               convergence (default=5)&#xD;
+               </LongDesc>
+         <Example> 'bestr',10&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Number between 0 and 1 containing confidence level which is&#xD;
+               used to declare units as outliers</TypeInd>
+         <LongDesc>Usually conflev=0.95, 0.975 0.99 (individual alpha)&#xD;
+               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).&#xD;
+               Default value is 0.975&#xD;
+               </LongDesc>
+         <Example> 'conflev',0.99&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflevrew</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Number between 0 and 1 containing confidence level which is&#xD;
+               used to do the reweighting step</TypeInd>
+         <LongDesc>Default value is the one specified in previous option conflev&#xD;
+               </LongDesc>
+         <Example> 'conflevrew',0.99&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>betathresh</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Distribution to use</TypeInd>
+         <LongDesc>If betathresh = 1 the distribution which is used to&#xD;
+               declare units as outliers is a mixture of Rocke scaled F&#xD;
+               distribution and beta else (default) traditional chi^2&#xD;
+               distribution is used.&#xD;
+               </LongDesc>
+         <Example> 'betathresh',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>If nocheck is equal to 1 no check is performed on&#xD;
+               matrix Y</TypeInd>
+         <LongDesc>As default nocheck=0.&#xD;
+               </LongDesc>
+         <Example> 'nocheck',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>If plots is a structure or scalar equal to 1, generates: &#xD;
+               (1) a plot of Mahalanobis distances against index number. The&#xD;
+               confidence level used to draw the confidence bands for&#xD;
+               the MD is given by the input option conflev. If conflev is&#xD;
+               not specified a nominal 0.975 confidence interval will be&#xD;
+               used.&#xD;
+               (2) a scatter plot matrix with the outliers highlighted. &#xD;
+               If plots is a structure it may contain the following fields&#xD;
+                   plots.labeladd = if this option is '1', the outliers in the&#xD;
+                       spm are labelled with their unit row index. The&#xD;
+                       default value is labeladd='', i.e. no label is&#xD;
+                       added.&#xD;
+                   plots.nameY = cell array of strings containing the labels of&#xD;
+                       the variables. As default value, the labels which&#xD;
+                       are added are Y1, ...Yv.&#xD;
+               </LongDesc>
+         <Example> 'plots',1&#xD;
+               </Example>
+         <DataType>double or structure</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>labeladd</Value>
+               <Description>if this option is '1', the outliers in the&#xD;
+                       spm are labelled with their unit row index. The&#xD;
+                       default value is labeladd='', i.e. no label is&#xD;
+                       added.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>nameY</Value>
+               <Description>cell array of strings containing the labels of&#xD;
+                       the variables. As default value, the labels which&#xD;
+                       are added are Y1, ...Yv.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Display or not messages&#xD;
+               on the screen</TypeInd>
+         <LongDesc>If msg==1 (default) messages are displayed&#xD;
+               on the screen about estimated time to compute the final&#xD;
+               estimator else no message is displayed on the screen.&#xD;
+               </LongDesc>
+         <Example> 'msg',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tolMCD</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Tolerance to declare a subset as singular</TypeInd>
+         <LongDesc>The&#xD;
+               default value of tolMCD is exp(-50*v).&#xD;
+               </LongDesc>
+         <Example> 'tolMCD',1e-20&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ysaveRAW</Name>
+         <ShortDesc>scalar that is set to 1 to request that the data matrix Y&#xD;
+               is saved into the output structure RAW</ShortDesc>
+         <TypeInd>This feature is&#xD;
+               meant at simplifying the use of function malindexplot</TypeInd>
+         <LongDesc>Default is 0, i.e. no saving is done.&#xD;
+               </LongDesc>
+         <Example> 'ysaveRAW',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ysaveREW</Name>
+         <ShortDesc>scalar that is set to 1 to request that the data matrix Y&#xD;
+               is saved into the output structure REW</ShortDesc>
+         <TypeInd>This feature is&#xD;
+               meant at simplifying the use of function malindexplot</TypeInd>
+         <LongDesc>Default is 0, i.e. no saving is done.&#xD;
+               </LongDesc>
+         <Example> 'ysaveREW',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>RAW</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>h</Value>
+               <Description>scalar. The number of observations that have&#xD;
+                    determined the MCD estimator</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>loc</Value>
+               <Description>1 x v  vector containing raw MCD location of the data</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>cov</Value>
+               <Description>robust MCD estimate of&#xD;
+                    covariance matrix. It is the raw MCD covariance matrix&#xD;
+                    (multiplied by a finite sample correction factor and&#xD;
+                    an asymptotic consistency factor).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>cor</Value>
+               <Description>The raw MCD correlation matrix</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>obj</Value>
+               <Description>The determinant of the raw MCD covariance matrix.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>bs</Value>
+               <Description>(v+1) x 1 vector containing the units forming best&#xD;
+                    subset associated with MCD estimate of location.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>md</Value>
+               <Description>n x 1 vector containing the estimates of the robust&#xD;
+                    Mahalanobis distances (in squared units). This vector&#xD;
+                    contains the distances of each observation from the&#xD;
+                    raw MCD location of the data, relative to the raw MCD&#xD;
+                    scatter matrix RAW.cov</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outliers</Value>
+               <Description>A vector containing the list of the units declared as&#xD;
+                    outliers using confidence level specified in input&#xD;
+                    scalar conflev</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>conflev</Value>
+               <Description>Confidence level that was used to declare outliers</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>singsub</Value>
+               <Description>Number of subsets without full rank. Notice that&#xD;
+                    out.singsub &amp;gt; 0.1*(number of subsamples) produces a&#xD;
+                    warning</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>weights</Value>
+               <Description>n x 1 vector containing the estimates of the weights.&#xD;
+                    Weights assume values 0 or 1. Weight is 1 if the&#xD;
+                    associated observation has been used to compute&#xD;
+                    centroid and covariance matrix. These weights&#xD;
+                    determine which observations are used to compute the&#xD;
+                    final MCD estimates. Unless there is a perfect fit&#xD;
+                    sum(RAW.weights)=h</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>plane</Value>
+               <Description>In case of an exact fit, RAW.plane contains the&#xD;
+                    coefficients of a (hyper)plane&#xD;
+                    a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0&#xD;
+                    containing at least h observations, where (m_1,...,m_p)&#xD;
+                    is the MCD location of these observations.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Y</Value>
+               <Description>Data matrix Y. The field is present if option&#xD;
+                    ysaveRAW was set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'mcd'</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+      <Item>
+         <Name>REW</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>loc</Value>
+               <Description>The robust location of the data, obtained after&#xD;
+                    reweighting, if the raw MCD is not singular.&#xD;
+                    Otherwise the raw MCD center is given here.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>cov</Value>
+               <Description>The robust covariance matrix, obtained after&#xD;
+                    reweighting and multiplying with a finite sample&#xD;
+                    correction factor and an asymptotic consistency&#xD;
+                    factor, if the raw MCD is not singular.  Otherwise the&#xD;
+                    raw MCD covariance matrix is given here.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>cor</Value>
+               <Description>The robust correlation matrix, obtained after reweighting</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>md</Value>
+               <Description>n x 1 vector containing the estimates of the robust&#xD;
+                    Mahalanobis distances (in squared units). This vector&#xD;
+                    contains the distances of each observation from the&#xD;
+                    reweighted MCD location of the data, relative to the&#xD;
+                    reweighted MCD scatter of the data These distances&#xD;
+                    allow us to easily identify the outliers. If the&#xD;
+                    reweighted MCD is singular, RAW.md is given here.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outliers</Value>
+               <Description>A vector containing the list of the units declared as&#xD;
+                    outliers after reweighting.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>weights</Value>
+               <Description>n x 1 vector containing the estimates of the weights.&#xD;
+                    Weights assume values 0 or 1. Weight is 0 if the&#xD;
+                    associated observation has been declared outlier.&#xD;
+                    These weights determine which observations are used to&#xD;
+                    compute the final MCD estimates.&#xD;
+                    Remark: if the reweighted MCD is singular, RAW.weights&#xD;
+                    is given here.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>method</Value>
+               <Description>In case of an exact fit, REW.method contains a&#xD;
+                    character string containing information about the&#xD;
+                    method and about singular subsamples (if any).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>plane</Value>
+               <Description>In case of an exact fit, REW.plane contains the&#xD;
+                    coefficients of a (hyper)plane&#xD;
+                    a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0&#xD;
+                    containing at least h observations, where (m_1,...,m_p)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Y</Value>
+               <Description>Data matrix Y. The field is present if option&#xD;
+                    ysaveREW was set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'mcdr'</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc>C     : matrix of size nsamp-by-v </ShortDesc>
+         <TypeInd>Indices&#xD;
+                    of the subsamples extracted for&#xD;
+                    computing the estimate.</TypeInd>
+         <LongDesc> </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+ MCD computes the MCD estimator of a multivariate data set.  This&#xD;
+ estimator is given by the subset of h observations with smallest&#xD;
+ covariance determinant.  The MCD location estimate is then the mean of&#xD;
+ those h points, and the MCD scatter estimate is their covariance matrix.&#xD;
+ The default value of h is roughly 0.5n (where n is the total number of&#xD;
+ observations), but the user may choose each value between n/2 and n.&#xD;
+&#xD;
+ The MCD method is intended for continuous Gaussian variables, and assumes&#xD;
+ that the number of observations n is at least 5 times the number of&#xD;
+ variables p. If p is too large relative to n, it is better to use options&#xD;
+ betathresh=1 (that is to use a threshold based on beta distribution (for&#xD;
+ the units which determine the centroid and the covariance matrix) and F&#xD;
+ distribution (for the units which are excluded from the computation of&#xD;
+ centroid and covariance matrix)&#xD;
+&#xD;
+ The MCD method was introduced in:&#xD;
+&#xD;
+   Rousseeuw, P.J. (1984), "Least Median of Squares Regression,"&#xD;
+   Journal of the American Statistical Association, Vol. 79, pp. 871-881.&#xD;
+&#xD;
+   The program below uses the technique of concentration steps described in&#xD;
+&#xD;
+   Rousseeuw, P.J. and Van Driessen, K. (1999), "A Fast Algorithm for the&#xD;
+   Minimum Covariance Determinant Estimator," Technometrics, 41, pp. 212-223.&#xD;
+&#xD;
+ The MCD is a robust method in the sense that the estimates are not unduly&#xD;
+ influenced by outliers in the data, even if there are many outliers.&#xD;
+ Due to the MCD's robustness, we can detect outliers by their large&#xD;
+ robust distances. The latter are defined like the usual Mahalanobis&#xD;
+ distance, but based on the MCD location estimate and scatter matrix&#xD;
+ (instead of the nonrobust sample mean and covariance matrix).&#xD;
+&#xD;
+&#xD;
+ Remark: when more than h observations lie on a (hyper)plane, (perfect fit&#xD;
+ case) the program still yields the MCD location and scatter matrix, the&#xD;
+ latter being singular (as it should be), as well as the equation of the&#xD;
+ hyperplane.&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION-->&#xD;
+&#xD;
+ This function follows the lines of MATLAB/R code developed during the&#xD;
+ years by many authors. In particular, parts of the code rely on the LIBRA&#xD;
+ mcd implementation of Hubert and Verboven. For more details, see:&#xD;
+ http://wis.kuleuven.be/stat/robust/LIBRA.html,&#xD;
+ http://www.econ.kuleuven.be/public/NDBAE06/programs/&#xD;
+ and the R library Robustbase http://robustbase.r-forge.r-project.org/&#xD;
+ The core of our routines, e.g. the resampling approach, however, has been&#xD;
+ completely redesigned, with considerable increase of the computational&#xD;
+ performance. Note that, for the moment, FSDA does not adopt the 'divide&#xD;
+ and conquer' partitioning method proposed by Rousseeuw and Van Driessen&#xD;
+ to speed up computations for large datasets. This partitioning method is&#xD;
+ applied in the R and LIBRA implementations of the mcd.&#xD;
+&#xD;
+ </Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
+ and Methods, Wiley, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>mve</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>mcd with all default options.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=200;&#xD;
+    v=3;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+    RAW=mcd(Ycont);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>mcd with optional arguments.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=200;&#xD;
+    v=3;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+    RAW=mcd(Ycont,'plots',1);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>mcd monitoring the reweighted estimates.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=200;&#xD;
+    v=3;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+    [RAW,REW]=mcd(Ycont);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>mcd monitoring the exctracted subsamples.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=200;&#xD;
+    v=3;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+    [RAW,REW,C]=mcd(Ycont);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>mcd applied to the aircraft data (default plots).</Title>
+         <Desc> &#xD;
+     See Pison et al. 2002, Metrika.&#xD;</Desc>
+         <MATLABcode>
+    X = load('aircraft.txt');&#xD;
+    Y = X(:,1:end-1);&#xD;
+    [RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>mcd applied to the aircraft data (plots using the scale of Pison et al).</Title>
+         <Desc>&#xD;
+     See Pison et al. 2002, Metrika. &#xD;</Desc>
+         <MATLABcode>
+    X = load('aircraft.txt');&#xD;
+    Y = X(:,1:end-1);&#xD;
+    [RAW,REW] = mcd(Y,'bdp',0.25,'ysaveRAW',1);&#xD;
+&#xD;
+    v=size(Y,2);&#xD;
+    % Compare the following figure with panel (b) of Fig. 8 of Pison et al.&#xD;
+    ylimy=[0 36];&#xD;
+    malindexplot(RAW.md,v,'conflev',0.975,'laby','robust distances','numlab',RAW.outliers,'ylimy',ylimy);&#xD;
+    title('Corrected MCD')&#xD;
+&#xD;
+    % Compare the following figure with panel (4) of Fig. 8 of Pison et al.&#xD;
+    ylimy=[0 36];&#xD;
+    malindexplot(REW.md,v,'conflev',0.975,'laby','robust distances','numlab',REW.outliers,'ylimy',ylimy);&#xD;
+    title('Corrected reweighted MCD')&#xD;
+&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

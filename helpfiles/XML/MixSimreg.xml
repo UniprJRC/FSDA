@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->MixSimreg</Title>
+   <Purpose><!--This is the second line of the .m file-->MixSimreg generates k regression hyperplanes in p dimensions with given overlap</Purpose>
+   <Description><!--Description section-->MixSimreg(k,p) generates k groups in p dimensions. It is possible to&#xD;
+  control the average and maximum or standard deviation of overlapping.&#xD;
+&#xD;
+  Notation and background.&#xD;
+&#xD;
+  Given two generic clusters $i$ and $j$ with $i \ne j=1,...,k$, indexed by&#xD;
+  $\phi(x,\mu_i,\sigma_i^2)$ and $\phi(x,\mu_j, \sigma_j^2)$ with probabilities of&#xD;
+  occurrence $\pi_i$ and $\pi_j$, the misclassification probability with&#xD;
+  respect to cluster i (denoted with w_{j|i}) is defined as &#xD;
+  \[ Pr[\pi_i \phi(x,\mu_i,\sigma_i^2) &amp;lt; \pi_j \phi(x,\mu_j,\sigma_j^2)] \]&#xD;
+  where, in the regression context, $\mu_i={\overline x}_i' \beta_i$ and&#xD;
+  $\mu_j= \overline x_j' \beta_j$. We assume that the length of vectors $x_i$,&#xD;
+  $x_j$, $\beta_i$, and $\beta_j$ is $p$ (number of explanatory variables&#xD;
+  including or excluding intercept). In our implmentation, the&#xD;
+  distribution of the elements of vectors $\beta_i$ ($\beta_j$) can be 'Normal'&#xD;
+  (with parameters $\mu$ and $\sigma$), 'HalfNormal' (with parameter $\sigma$) or&#xD;
+  uniform (with parameters $a$ and $b$). Same thing for the distribution of&#xD;
+  the elements of $x_i$ ($x_j$). However, while the parameters of the&#xD;
+  distributions are the same for all elements of $\beta$ in all groups, the&#xD;
+  parameters of the diwtribution of the elements of vectors $x_i$ ($x_j$) can&#xD;
+  vary for each group and each explanatory variable. In other words, it is&#xD;
+  possible to specify (say) that the distribution of the second&#xD;
+  explanatory variable in the first group is $U(2, 3)$ while the distribution&#xD;
+  of the third explanatory variable in the second group is $U(2, 10)$.&#xD;
+&#xD;
+  The matrix containing the misclassification probabilities $w_{j|i}$ is&#xD;
+  called OmegaMap.&#xD;
+  The probability of overlapping between groups i and j is given by&#xD;
+      \[      w_{j|i} + w_{i|j}    \qquad       i,j=1,2, ..., k      \]&#xD;
+  The diagonal elements of OmegaMap are equal to 1.&#xD;
+  The average overlap (BarOmega, in the code) is defined as the sum of the&#xD;
+  off diagonal elements of OmegaMap (containing the misclassification&#xD;
+  probabilities) divided by $k*(k-1)/2$.&#xD;
+  The maximum overlap (MaxOmega, in the code) is defined as:&#xD;
+     \[       \max (w_{j|i} + w_{i|j})  \qquad i \ne j=1,2, ..., k   \]&#xD;
+  The probability of overlapping $w_{j|i}$ is nothing but the cdf of a linear&#xD;
+  combination of non central  $\chi^2$ distributions with 1 degree of freedom&#xD;
+  + a linear combination of $N(0,1)$ evaluated in a point $c$.&#xD;
+  The coefficients of the linear combinations of non central $\chi^2$ and&#xD;
+  N(0,1) depend on the eigenvalues and eigenvectors of matrix&#xD;
+  $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.&#xD;
+  Point c depends on the same eigenvalues and eigenvectors of matrix&#xD;
+  $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the determinants&#xD;
+  $|\Sigma_i|$ and $|\Sigma_j|$. This probability is computed using routine&#xD;
+  ncx2mixtcdf</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>Number of groups (components)</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Desired number of groups.&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>int16|int32|int64|single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>p</Name>
+         <ShortDesc>Number of explanatory variables for each regression&#xD;
+               hyperplane (including intercept)</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Desired number of variables.&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>int16|int32|int64|single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>BarOmega</Name>
+         <ShortDesc>Requested average overlap</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Value of desired average&#xD;
+               overlap. The default value is ''&#xD;
+               </LongDesc>
+         <Example> 'BarOmega',0.05 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>MaxOmega</Name>
+         <ShortDesc>Requested maximum overlap</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Value of desired maximum&#xD;
+               overlap. If BarOmega is empty the default value of MaxOmega&#xD;
+               is 0.15.&#xD;
+               </LongDesc>
+         <Example> 'MaxOmega',0.05 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>StdOmega</Name>
+         <ShortDesc>Requested std of overlap</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Value of desired standard&#xD;
+               deviation of overlap.&#xD;
+               Remark 1: The probability of overlapping between two&#xD;
+               clusters i and j (i \ne j=1, 2, ..., k), called pij, is&#xD;
+               defined as the sum of the two misclassification&#xD;
+               probabilities pij=w_{j|i} + w_{i|j}&#xD;
+&#xD;
+               Remark 2: it is possible to specify up to two values among&#xD;
+               BarOmega MaxOmega and StdOmega.&#xD;
+               </LongDesc>
+         <Example> 'StdOmega',0.05 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>hom</Name>
+         <ShortDesc>Equal Sigmas</ShortDesc>
+         <TypeInd>Scalar boolean</TypeInd>
+         <LongDesc>Scalar boolean which specifies if the desired clusters have&#xD;
+               to be heterogeneous or homogeneous:&#xD;
+               hom=false (default) ==&amp;gt; heterogeneous,&#xD;
+               hom=true            ==&amp;gt; homogeneous \Sigma_1 = ... = \Sigma_k&#xD;
+               </LongDesc>
+         <Example> 'hom',false &#xD;
+               </Example>
+         <DataType>boolean</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>restrfactor</Name>
+         <ShortDesc>restriction factor</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar in the interval [1 \infty] which specifies the&#xD;
+               maximum ratio to allow between the largest \sigma^2 and&#xD;
+               the smallest \sigma^2 which are generated. If, for example,&#xD;
+               restrfactor=10, after generating the covariance matrices we&#xD;
+               check that the ratio&#xD;
+                     \sigma^2_i/sigma^2_j i \ne j=1, ..., k&#xD;
+               is not larger than restrfactor. In order to apply this&#xD;
+               restriction (which is typical of tclust.m, we call routine&#xD;
+               restreigen.m)&#xD;
+               </LongDesc>
+         <Example> 'restrfactor',8 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>PiLow</Name>
+         <ShortDesc>Smallest miximg proportion</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Value of the smallest mixing proportion (if 'PiLow'&#xD;
+               is not reachable with respect to k, equal proportions are&#xD;
+               taken; PiLow = 1.0 implies equal proportions by default).&#xD;
+               PiLow must be a number in the interval (0 1]&#xD;
+               </LongDesc>
+         <Example> 'PiLow',0.1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Xdistrib</Name>
+         <ShortDesc>scalar or structure which specifies the distribution to use&#xD;
+               for each explanatory variable and each group</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>Once chosen,&#xD;
+               the distribution is fixed for each explanatory variable and&#xD;
+               each group; however, the parameters of the chosen&#xD;
+               distribution may vary across variables and groups. For&#xD;
+               example, once decided that the distibution of the X is&#xD;
+               uniform, the second variable of the first group can be&#xD;
+               defined in [a21 b21] while the third variable of the second&#xD;
+               group can be defined in [a32 b32].&#xD;
+               - If Xdistrib = 1 the default is to assume that the explanatory&#xD;
+                 variables come from U(0, 1) and that the first explanatory&#xD;
+                 variable is a constant term (the intercept).&#xD;
+               - If Xdistrib is a structure, it may contain information about&#xD;
+                 the distribution (in the fieldname 'type') and the&#xD;
+                 parameters of the distribution. The following options are&#xD;
+                 admitted for Xdistrib:&#xD;
+                 &amp;gt; Xdistrib.intercept = scalar equal to 1 if intercept is&#xD;
+                   present. The default value of Xdistrib.intercept is 1.&#xD;
+                   The other fields of Xdistrib depend on the distribution&#xD;
+                   which is chosen.&#xD;
+                 NORMAL DISTRIBUTION N(mu, sigma)&#xD;
+                 &amp;gt; Xdistrib.type = 'Normal';&#xD;
+                 &amp;gt; Xdistrib.mu   = matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters mu&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.mu is 0.5*ones(p-1, k).&#xD;
+                 &amp;gt; Xdistrib.sigma = matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters&#xD;
+                       sigma for each explanatory variable and each group.&#xD;
+                       The default value of Xdistrib.sigma is ones(p-1,k).&#xD;
+                 UNIFORM DISTRIBUTION U(a, b)&#xD;
+                 &amp;gt; Xdistrib.type ='Uniform';&#xD;
+                 &amp;gt; Xdistrib.a    = matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters&#xD;
+                       a (the lower limits) for each explanatory variable&#xD;
+                       and each group. The default value of Xdistrib.a is&#xD;
+                       zeros(p-1, k).&#xD;
+                 &amp;gt; Xdistrib.b = matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters b&#xD;
+                       (the upper limits) for each explanatory variable&#xD;
+                       and each group. The default value of Xdistrib.b is&#xD;
+                       ones(p-1, k).&#xD;
+                 HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|&#xD;
+                 &amp;gt; Xdistrib.type='HalfNormal';&#xD;
+                 &amp;gt; Xdistrib.sigma = matrix of size (p-1)-by-k if&#xD;
+                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)&#xD;
+                   containing the parameters sigma for each explanatory variable&#xD;
+                   and each group. The default value of Xdistrib.sigma is&#xD;
+                   ones(p-1, k).&#xD;
+                 OTHER DISTRIBUTION&#xD;
+                 &amp;gt;  Xdistrib.type='User'.&#xD;
+                   If Xdistrib.type='User' the user must directly provide&#xD;
+                   means of the p explanatory variables for each group.&#xD;
+                   So, if distrib.type is 'User', we expect there is a field&#xD;
+                   called Xbar.&#xD;
+                 &amp;gt; Xdistrib.BarX= (p-1)-by k (if intercept is present)&#xD;
+                   or p-by-k (if intercept is not present) containing the&#xD;
+                   means of the p explanatory variables for each group.&#xD;
+                 </LongDesc>
+         <Example> 'Xdistrib',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>intercept</Value>
+               <Description>scalar equal to 1 if intercept is&#xD;
+                   present. The default value of Xdistrib.intercept is 1.&#xD;
+                   The other fields of Xdistrib depend on the distribution&#xD;
+                   which is chosen.&#xD;
+                 NORMAL DISTRIBUTION N(mu, sigma)&#xD;
+                 &amp;gt;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>type</Value>
+               <Description>'Normal';&#xD;
+                 &amp;gt;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>mu</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters mu&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.mu is 0.5*ones(p-1, k).&#xD;
+                 &amp;gt;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigma</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters&#xD;
+                       sigma for each explanatory variable and each group.&#xD;
+                       The default value of Xdistrib.sigma is ones(p-1,k).&#xD;
+                 UNIFORM DISTRIBUTION U(a, b)&#xD;
+                 &amp;gt; Xdistrib.type ='Uniform';&#xD;
+                 &amp;gt;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>a</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters&#xD;
+                       a (the lower limits) for each explanatory variable&#xD;
+                       and each group. The default value of Xdistrib.a is&#xD;
+                       zeros(p-1, k).&#xD;
+                 &amp;gt;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>b</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters b&#xD;
+                       (the upper limits) for each explanatory variable&#xD;
+                       and each group. The default value of Xdistrib.b is&#xD;
+                       ones(p-1, k).&#xD;
+                 HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|&#xD;
+                 &amp;gt; Xdistrib.type='HalfNormal';&#xD;
+                 &amp;gt; Xdistrib.sigma = matrix of size (p-1)-by-k if&#xD;
+                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)&#xD;
+                   containing the parameters sigma for each explanatory variable&#xD;
+                   and each group. The default value of Xdistrib.sigma is&#xD;
+                   ones(p-1, k).&#xD;
+                 OTHER DISTRIBUTION&#xD;
+                 &amp;gt;  Xdistrib.type='User'.&#xD;
+                   If Xdistrib.type='User' the user must directly provide&#xD;
+                   means of the p explanatory variables for each group.&#xD;
+                   So, if distrib.type is 'User', we expect there is a field&#xD;
+                   called Xbar.&#xD;
+                 &amp;gt;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>BarX</Value>
+               <Description>(p-1)-by k (if intercept is present)&#xD;
+                   or p-by-k (if intercept is not present) containing the&#xD;
+                   means of the p explanatory variables for each group.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>betadistrib</Name>
+         <ShortDesc>scalar or structure which specifies the distribution to use&#xD;
+               for each element of the vectors of regression coefficients</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>Once chosen, the distribution together with its parameters&#xD;
+               is fixed for each element of beta, across each group.&#xD;
+               - If betadistrib = 1 the default is to assume that the vector&#xD;
+                 of regression coefficients come from N(0, 1).&#xD;
+               - If betadistrib is a structure it may contain information&#xD;
+                 about the distribution (in the fieldname type) and the&#xD;
+                 parameters of the distribution.&#xD;
+                 The following options are admitted for betadistrib:&#xD;
+               NORMAL DISTRIBUTION N(mu, sigma)&#xD;
+                   betadistrib.type='Normal';&#xD;
+                   betadistrib.mu = scalar, containing parameter mu for the&#xD;
+                       distribution of each element of beta across each&#xD;
+                       group. The default value of betadistrib.mu is 0&#xD;
+                   betadistrib.sigma = scalar, containing parameter sigma for&#xD;
+                       the distribution of each element of beta across&#xD;
+                       each group. The default value of betadistrib.sigma&#xD;
+                       is 1&#xD;
+                   UNIFORM DISTRIBUTION U(a, b)&#xD;
+                   &amp;gt; betadistrib.type='Uniform';&#xD;
+                   &amp;gt; betadistrib.a = scalar, containing parameter a for the&#xD;
+                     distribution of each element of beta across each&#xD;
+                     group. The default value of betadistrib.a is 0&#xD;
+                   &amp;gt; betadistrib.b = scalar, containing parameter b for&#xD;
+                     the distribution of each element of beta across&#xD;
+                     each group. The default value of betadistrib.b is 1.&#xD;
+                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|&#xD;
+                   &amp;gt; betadistrib.type='HalfNormal';&#xD;
+                   &amp;gt; betadistrib.sigma = scalar containing parameter sigma&#xD;
+                       for the distribution of each element of beta across&#xD;
+                       each group. The default value of betadistrib.sigma&#xD;
+                       is 1&#xD;
+                   USER DISTRIBUTION&#xD;
+                   &amp;gt; betadistribtion.type='User';&#xD;
+                     If betadistribtion.type='User' the user must directly&#xD;
+                     provide the values of the beta coefficients.&#xD;
+                     So, if betadistribtion.type is 'User', we expect there&#xD;
+                     is a field called Beta.&#xD;
+                   &amp;gt; betadistribution.Beta = matrix of size (p-1)-by k&#xD;
+                     (if intercept is present) or p-by-k (if intercept is&#xD;
+                     not present) containing the vectors of regression&#xD;
+                     coefficients for the k groups.&#xD;
+                 </LongDesc>
+         <Example> 'betadistrib',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>type</Value>
+               <Description>'Normal';</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>mu</Value>
+               <Description>scalar, containing parameter mu for the&#xD;
+                       distribution of each element of beta across each&#xD;
+                       group. The default value of betadistrib.mu is 0</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigma</Value>
+               <Description>scalar, containing parameter sigma for&#xD;
+                       the distribution of each element of beta across&#xD;
+                       each group. The default value of betadistrib.sigma&#xD;
+                       is 1&#xD;
+                   UNIFORM DISTRIBUTION U(a, b)&#xD;
+                   &amp;gt; betadistrib.type='Uniform';&#xD;
+                   &amp;gt;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>a</Value>
+               <Description>scalar, containing parameter a for the&#xD;
+                     distribution of each element of beta across each&#xD;
+                     group. The default value of betadistrib.a is 0&#xD;
+                   &amp;gt;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>b</Value>
+               <Description>scalar, containing parameter b for&#xD;
+                     the distribution of each element of beta across&#xD;
+                     each group. The default value of betadistrib.b is 1.&#xD;
+                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|&#xD;
+                   &amp;gt; betadistrib.type='HalfNormal';&#xD;
+                   &amp;gt; betadistrib.sigma = scalar containing parameter sigma&#xD;
+                       for the distribution of each element of beta across&#xD;
+                       each group. The default value of betadistrib.sigma&#xD;
+                       is 1&#xD;
+                   USER DISTRIBUTION&#xD;
+                   &amp;gt; betadistribtion.type='User';&#xD;
+                     If betadistribtion.type='User' the user must directly&#xD;
+                     provide the values of the beta coefficients.&#xD;
+                     So, if betadistribtion.type is 'User', we expect there&#xD;
+                     is a field called Beta.&#xD;
+                   &amp;gt; betadistribution.Beta = matrix of size (p-1)-by k&#xD;
+                     (if intercept is present) or p-by-k (if intercept is&#xD;
+                     not present) containing the vectors of regression&#xD;
+                     coefficients for the k groups.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>resN</Name>
+         <ShortDesc>maximum number of mixture re-simulations to find a&#xD;
+               simulation setting with prespecified level of overlapping</ShortDesc>
+         <TypeInd>Integer</TypeInd>
+         <LongDesc>The default value of resN is 100.&#xD;
+                 </LongDesc>
+         <Example> 'resN',3 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tol</Name>
+         <ShortDesc>vector of length 2</ShortDesc>
+         <TypeInd>Vector&#xD;
+               - tol(1) (which will be called tolmap) specifies&#xD;
+                 the tolerance between the requested and empirical&#xD;
+                 misclassification probabilities (default is 1e-06)&#xD;
+               - tol(2) (which will be called tolnxc2) specifies the&#xD;
+                 tolerance to use in routine ncx2mixtcdf (which computes&#xD;
+                 the cdf of linear combinations of non central chi2&#xD;
+                 distributions)</TypeInd>
+         <LongDesc>The default value of tol(2) 1e-06.&#xD;
+                 </LongDesc>
+         <Example> 'tol',[0.01 0.02] &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lim</Name>
+         <ShortDesc>maximum number of integration terms to use inside routine&#xD;
+               ncx2mixtcdf</ShortDesc>
+         <TypeInd>Integer</TypeInd>
+         <LongDesc>Default is 1e06.&#xD;
+                 %               REMARK: Parameters tolncx2=tol(2) and lim are used by&#xD;
+               function ncx2mixtcdf.m which computes the cdf of a linear&#xD;
+               combination of non central chi2 r.v.. This is the&#xD;
+               probability of misclassification.&#xD;
+</LongDesc>
+         <Example> 'lim',0.001 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Display</Name>
+         <ShortDesc>Level of display</ShortDesc>
+         <TypeInd>Logical</TypeInd>
+         <LongDesc>- 'off' displays no output.&#xD;
+               - 'notify' (default) displays output if requested&#xD;
+                  overlap cannot be reached in a particular simulation.&#xD;
+               - 'iter' displays output at each iteration of each&#xD;
+                 simulation.&#xD;
+                        </LongDesc>
+         <Example> 'Display','off' &#xD;
+                 </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>OmegaMap</Value>
+               <Description>matrix of misclassification probabilities (k-by-k);&#xD;
+                      OmegaMap(i,j) = w_{j|i} is the probability that X,&#xD;
+                      coming from the i-th component (group), is classified&#xD;
+                      to the j-th component.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>BarOmega</Value>
+               <Description>scalar. Value of average overlap. BarOmega is computed&#xD;
+                      as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MaxOmega</Value>
+               <Description>scalar. Value of maximum overlap. MaxOmega is the&#xD;
+                      maximum of OmegaMap(i,j)+OmegaMap(j,i)&#xD;
+                      (i ~= j)=1, 2, ..., k. In other words, MaxOmega=&#xD;
+                      OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>StdOmega</Value>
+               <Description>scalar. Value of standard deviation (std) of overlap.&#xD;
+                      StdOmega is the standard deviation of the k*(k-1)/2&#xD;
+                      probabilities of overlapping</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>rcMax</Value>
+               <Description>vector of length 2. It containes the row and column&#xD;
+                      numbers associated with the pair of components&#xD;
+                      producing maximum overlap 'MaxOmega'&#xD;
+              fail  = scalar, flag value. 0 indicates a successful mixture&#xD;
+                      generation, 1 represents failure.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Pi</Value>
+               <Description>vector of length k containing the mixing proportions.&#xD;
+                      Clearly, sum(out.Pi)=1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Beta</Value>
+               <Description>p-by-k matrix containing (in each column) the&#xD;
+                      regression coefficients for each group.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Mu</Value>
+               <Description>vector of length k, consisting of components' mean vectors&#xD;
+                      for each regression hyperplane.&#xD;
+                      out.Mu(1)=BarX'Beta(:,1) ... out.Mu(p)=BarX'Beta(:,k)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>S</Value>
+               <Description>k-by-1 vector containing the variances for the k&#xD;
+                      groups</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance&#xD;
+   of finite mixture modeling and clustering algorithms, The Journal of&#xD;
+   Computational and Graphical Statistics, 2:19, 354-376. (to refer to&#xD;
+   this publication we will use "MM2010 JCGS")</Item>
+      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package&#xD;
+   for Simulating Data to Study Performance of Clustering Algorithms,&#xD;
+   Journal of Statistical Software, 51:12, 1-25.</Item>
+      <Item>Davies, R. (1980), The distribution of a linear combination of&#xD;
+   chi-square random variables, Applied Statistics, 29, 323-333.&#xD;
+&#xD;
+   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.</Item>
+      <Item>(2008), "A General Trimming Approach to Robust Cluster Analysis". Annals&#xD;
+   of Statistics, Vol.36, 1324-1345. Technical Report available at&#xD;
+   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf&#xD;
+&#xD;
+   Reference below documents the problem of the ill-conditioning of the&#xD;
+   eigenvalue-eigenvector computation.&#xD;
+&#xD;
+   Numerische Mathematik, 19. August 1969, Volume 13, Issue 4, pp 293-304&#xD;
+   Balancing a matrix for calculation of eigenvalues and eigenvectors&#xD;
+   Dr. B. N. Parlett, Dr. C. Reinsch&#xD;
+&#xD;
+  Parlett, B. N. and C. Reinsch, Balancing a Matrix for Calculation of&#xD;
+  Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear&#xD;
+  Algebra, 1971,pp. 315-326.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>tkmeans</Item>
+      <Item>tclust</Item>
+      <Item>tclustreg</Item>
+      <Item>lga</Item>
+      <Item>rlga</Item>
+      <Item>ncx2mixtcdf</Item>
+      <Item>restreigen</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example 1: Mixture of regression with prefixed average overlap.</Title>
+         <Desc>&#xD;
+     Generate mixture of regression using an average overlapping at&#xD;
+     centroids =0.01. Use all default options&#xD;
+     1) Beta is generated according to random normal for each group with&#xD;
+     mu=0 and sigma=1&#xD;
+     2) X in each dimension and each group is generated according to U(0, 1)&#xD;
+     3) regression hyperplanes contain intercepts&#xD;</Desc>
+         <MATLABcode>
+    p=5;&#xD;
+    k=3;&#xD;
+    Q=MixSimreg(k,p,'BarOmega',0.01);&#xD;
+    n=200;&#xD;
+    % Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to&#xD;
+    % 1.0000    1.0000    1.0000&#xD;
+    % 0.5000    0.5000    0.5000&#xD;
+    % 0.5000    0.5000    0.5000&#xD;
+    % 0.5000    0.5000    0.5000&#xD;
+    % 0.5000    0.5000    0.5000&#xD;
+    % Probabilities of overlapping are evaluated at&#xD;
+    % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)&#xD;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);&#xD;
+    spmplot([y X(:,2:end)],id)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example 2: Mixture of regression with prefixed average overlap.</Title>
+         <Desc>&#xD;
+     Generate mixture of regression hyperplanes using an average overlapping at&#xD;
+     centroids =0.01.&#xD;
+     1) we use all the default options for Beta (random normal for each group with&#xD;
+     mu=0.5 and sigma=1)&#xD;
+     2) X in the second dimension for the third group is generated according to U(1, 3)&#xD;</Desc>
+         <MATLABcode>
+    rng(10,'twister')&#xD;
+    % Specify the distribution of the explanatory variables&#xD;
+    Xdistrib=struct;&#xD;
+    Xdistrib.type='Uniform';&#xD;
+    Xdistrib.a=zeros(p-1,k);&#xD;
+    Xdistrib.a(2,3)=1;&#xD;
+    Xdistrib.b=ones(p-1,k);&#xD;
+    Xdistrib.b(2,3)=3;&#xD;
+    % 3) regression hyperplanes contain intercepts&#xD;
+    Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib);&#xD;
+    n=200;&#xD;
+    % Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to&#xD;
+    %     1.0000    1.0000    1.0000&#xD;
+    %     0.5000    0.5000    0.5000&#xD;
+    %     0.5000    0.5000    2.0000&#xD;
+    %     0.5000    0.5000    0.5000&#xD;
+    %     0.5000    0.5000    0.5000&#xD;
+    % Probabilitties of overlapping are evaluated at&#xD;
+    % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)&#xD;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);&#xD;
+    spmplot([y X(:,2:end)],id)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example 3: Mixture of regression with prefixed average overlap.</Title>
+         <Desc>&#xD;
+     Exactly as before but now the distribution of beta is N(0 6)&#xD;</Desc>
+         <MATLABcode>
+    rng(10,'twister')&#xD;
+    p=5;&#xD;
+    k=3;&#xD;
+    % Specify the distribution of the explanatory variables&#xD;
+    Xdistrib=struct;&#xD;
+    Xdistrib.type='Uniform';&#xD;
+    Xdistrib.a=zeros(p-1,k);&#xD;
+    Xdistrib.a(2,3)=1;&#xD;
+    Xdistrib.b=ones(p-1,k);&#xD;
+    Xdistrib.b(2,3)=3;&#xD;
+    % Specify the distribution of the beta coefficients&#xD;
+    betadistrib=struct;&#xD;
+    betadistrib.type='Normal';&#xD;
+    betadistrib.sigma=6;&#xD;
+    Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);&#xD;
+    n=200;&#xD;
+    % Probabilitties of overlapping are evaluated at&#xD;
+    % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)&#xD;
+    % Q.betadistrib in this case is equal to&#xD;
+    %      type: 'Normal'&#xD;
+    %     sigma: 6&#xD;
+    %        mu: 0.5000&#xD;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);&#xD;
+    spmplot([y X(:,2:end)],id)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example 4: Internation trade data example.</Title>
+         <Desc>&#xD;
+     All slopes are positive (beta generated using half normal) p=1 and there&#xD;
+     is no intercept&#xD;</Desc>
+         <MATLABcode>
+    rng(10,'twister')&#xD;
+    p=1;&#xD;
+    k=5;&#xD;
+    Xdistrib=struct;&#xD;
+    Xdistrib.intercept=0;&#xD;
+    Xdistrib.type='Uniform';&#xD;
+    Xdistrib.a=zeros(p,k);&#xD;
+    Xdistrib.b=10*ones(p,k);&#xD;
+&#xD;
+    betadistrib=struct;&#xD;
+    betadistrib.type='HalfNormal';&#xD;
+    betadistrib.sigma=6;&#xD;
+    Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);&#xD;
+    n=200;&#xD;
+&#xD;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);&#xD;
+    spmplot([y X],id)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example 5:  Another international trade data example.</Title>
+         <Desc>&#xD;
+     Here the strips of certain groups are limited up to certain values&#xD;
+     There is no intercept.&#xD;
+     In this example we compare high and low overlap among regression hyperplanes&#xD;</Desc>
+         <MATLABcode>
+    p=1;&#xD;
+    k=4;&#xD;
+    Xdistrib=struct;&#xD;
+    Xdistrib.intercept=0;&#xD;
+    Xdistrib.type='Uniform';&#xD;
+    Xdistrib.a=zeros(p,k);&#xD;
+    Xdistrib.b=[4 2 10 5];&#xD;
+&#xD;
+    betadistrib=struct;&#xD;
+    betadistrib.type='HalfNormal';&#xD;
+    betadistrib.sigma=6;&#xD;
+    n=200;&#xD;
+&#xD;
+    % Strong overlap BarOmega=0.2&#xD;
+    close all&#xD;
+    rng(10,'twister')&#xD;
+    Q=MixSimreg(k,p,'BarOmega',0.2,'Xdistrib',Xdistrib,'betadistrib',betadistrib);&#xD;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);&#xD;
+    spmplot([y X],id)&#xD;
+    set(gcf,'Name','Strong overlap')&#xD;
+    &#xD;
+    % Small overlap BarOmega=0.01&#xD;
+    figure&#xD;
+    rng(10,'twister')&#xD;
+    Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);&#xD;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);&#xD;
+    spmplot([y X],id)&#xD;
+    set(gcf,'Name','Small overlap')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

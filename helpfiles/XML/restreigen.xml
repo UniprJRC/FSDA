@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->restreigen</Title>
+   <Purpose><!--This is the second line of the .m file-->restreigen computes eigenvalues restriction (without Dykstra algorithm)</Purpose>
+   <Description><!--Description section-->restreigen restricts the eigenvalues according to the constraint&#xD;
+   specified in scalar restr. This function is called in every&#xD;
+   concentration step of function tclust and can also be used inside&#xD;
+   function MixSim to generate groups with a prespecified level of&#xD;
+   overlapping</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>eigenvalues</Name>
+         <ShortDesc>Eigenvalues</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>v x k matrix containing the eigenvalues of the covariance matrices of the k groups&#xD;
+            v= number of variables of the dataset which has to be clustered</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>niini</Name>
+         <ShortDesc>Cluster size</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>k x 1 vector containing the size of the k clusters</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>restr</Name>
+         <ShortDesc>Restriction factor</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar containing the restr parameter in tclust program.&#xD;
+            More in detail, parameter restr defines the cluster's shape&#xD;
+            restrictions, which are applied on all clusters during each&#xD;
+            iteration.&#xD;
+            Setting restr to 1, yields the strongest restriction,&#xD;
+            forcing all eigenvalues/determinants to be equal and so the&#xD;
+            method looks for similarly scattered (respectively spherical)&#xD;
+            clusters.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tol</Name>
+         <ShortDesc>tolerance</ShortDesc>
+         <TypeInd>Scalar defining the tolerance of the procedure</TypeInd>
+         <LongDesc>The default value is 1e-8&#xD;
+               </LongDesc>
+         <Example>&lt;code&gt;'tol',[1e-18] &#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>userepmat</Name>
+         <ShortDesc>use builtin repmat</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If userepmat is true function repmat is used instead&#xD;
+             of bsxfun inside the procedure. Remark: repmat is built in&#xD;
+             from MATLAB 2013b so it is faster to use repmat if the&#xD;
+             current version of MATLAB is &amp;gt;2013a&#xD;
+               </LongDesc>
+         <Example>&lt;code&gt;'userepmat',1 &#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>Restricted eigenvalues.</TypeInd>
+         <LongDesc> v-by-k matrix &#xD;
+                       containing restricted eigenvalues. &#xD;
+                       The ratio between two possible elements in matrix&#xD;
+                       out is not greater than restr</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Fritz H. Garcia-Escudero, L.A. and Mayo-Iscar, A. (2012), A fast&#xD;
+ algorithm for robust constrained clustering. Available at&#xD;
+ http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>tclust</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example using all default options.</Title>
+         <Desc>&#xD;
+    Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4&#xD;
+    First column of matrix eigenvalues contains the eigenvalues of the first group&#xD;
+    Second column of matrix eigenvalues contains the eigenvalues of the second group&#xD;
+    Thrid column of matrix eigenvalues contains the eigenvalues of the third group&#xD;
+    Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group&#xD;</Desc>
+         <MATLABcode>
+   rng(10,'twister')&#xD;
+   eigenvalues=abs(10*randn(3,4));&#xD;
+   % niini is the vector containing the sizes of the 4 groups&#xD;
+   niini=[30;40;20;10];&#xD;
+   out=restreigen(eigenvalues,niini,1.1)&#xD;
+   disp('Input matrix of unrestricted eigenvalues')&#xD;
+   disp(eigenvalues)&#xD;
+   disp('Output matrix of restricted eigenvalues')&#xD;
+   disp(out)&#xD;
+   disp('Ratio between largest and smallest unrestricted eigenvalues')&#xD;
+   disp(max(max(eigenvalues))/min(min(eigenvalues)))&#xD;
+   disp('Ratio between largest and smallest restricted eigenvalues')&#xD;
+   disp(max(max(out))/min(min(out)))&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Second example of eigenvalue restriction.</Title>
+         <Desc/>
+         <MATLABcode>
+    eigenvalues=abs(randn(3,4));&#xD;
+    eigenvalues(:,3)=0;&#xD;
+    restreigen(eigenvalues,niini,1.1)&#xD;
+    eigenvalues(:,3)=1;&#xD;
+    restreigen(eigenvalues,niini,1.1)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Trimmed k-means using geyser data.</Title>
+         <Desc>&#xD;
+     3 groups and trimming level of 3%&#xD;</Desc>
+         <MATLABcode>
+    Y=load('geyser2.txt');&#xD;
+    out=tkmeans(Y,3,0.03,'plots',1)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

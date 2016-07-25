@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->OPTrho</Title>
+   <Purpose><!--This is the second line of the .m file-->OPTrho computes rho function for optimal weight function</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>u</Name>
+         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>n x 1&#xD;
+               vector containing residuals or Mahalanobis distances&#xD;
+               for the n units of the sample</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning parameter</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar greater than 0 which&#xD;
+               controls the robustness/efficiency of the estimator&#xD;
+               (beta in regression or mu in the location case ...)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>rhoOPT</Name>
+         <ShortDesc> Vector</ShortDesc>
+         <TypeInd>residuals after rho filter.</TypeInd>
+         <LongDesc> n x 1 vector which contains the Tukey's biweight rho&#xD;
+                associated to the residuals or Mahalanobis distances for&#xD;
+                the n units of the sample&#xD;
+               Function OPTrho transforms vector u as follows &#xD;
+&#xD;
+               |  (1/3.25*c^2) x^2/2                                                     |x|&amp;lt;=2c&#xD;
+               |   &#xD;
+   \rho(x,c) = |  (1/3.25) * (1.792 - 0.972 * (x/c)^2 + 0.432 * (x/c)^4 - 0.052 * (x/c)^6 + 0.002 * (x/c)^8)    2c&amp;lt;=|x|&amp;lt;=3c&#xD;
+               |&#xD;
+               |   1                                                                      |x|&amp;gt;3c                              &#xD;
+&#xD;
+ &#xD;
+&#xD;
+  Remark: Yohai and Zamar (1997)  showed that the $\rho$ function given above&#xD;
+  is optimal in the following highly desirable sense: the final M estimate&#xD;
+  has a breakdown point of one-half and minimizes the maximum bias under&#xD;
+  contamination distributions (locally for small fraction of&#xD;
+  contamination), subject to achieving a desidered nominal asymptotic&#xD;
+  efficiency when the data are Gaussian.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
+ and Methods, Wiley, New York.</Item>
+      <Item>RIANI M., CERIOLI A., TORTI F. (2014). On consistency factors and&#xD;
+ efficiency of robust S-estimators TEST, Volume 23, Issue 2, pp. 356-387.&#xD;
+ DOI: 10.1007/s11749-014-0357-7</Item>
+      <Item>YOHAI V.J., ZAMAR R.H. (1997) Optimal locally robust M-estimates of&#xD;
+ regression. J Plan Stat Inference 64, pp. 309– 323</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>HYPrho</Item>
+      <Item>HArho</Item>
+      <Item>TBrho</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+&#xD;
+x=-6:0.01:6;&#xD;
+rhoOPT=OPTrho(x,2);&#xD;
+plot(x,rhoOPT)&#xD;
+xlabel('x','Interpreter','Latex')&#xD;
+ylabel('$\rho (x)$','Interpreter','Latex')&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

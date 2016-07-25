@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSMinvmmd</Title>
+   <Purpose><!--This is the second line of the .m file-->FSMinvmmd converts values of minimum Mahalanobis distance into confidence levels</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>mmd</Name>
+         <ShortDesc>Distances</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n-m0 x 2 matrix. &#xD;
+                1st col = fwd search index; &#xD;
+                2nd col = minimum Mahalanobis distance.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>v</Name>
+         <ShortDesc>Number of variables</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Number of variables of the underlying dataset. &#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>It specifies the size of the sample</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If it is not specified&#xD;
+               it is set equal to mmd(end,1)+1.&#xD;
+                 </LongDesc>
+         <Example> 'n',5&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>If plots = 1, a plot which shows the&#xD;
+               confidence level of mmd in each step is shown on the&#xD;
+               screen. Three horizontal lines associated respectively with&#xD;
+               values 0.01, 0.5 and 0.99  are added to the plot. &#xD;
+               If plots is a structure, it may contain the following fields: &#xD;
+                   plots.conflev = vector containing horizontal lines associated&#xD;
+                       with confidence levels; &#xD;
+                   plots.conflevlab = scalar if it is equal 1 labels associated with&#xD;
+                       horizontal lines are shown on the screen; &#xD;
+                   plots.xlim = minimum and maximum on the x axis; &#xD;
+                   plots.ylim = minimum and maximum on the y axis; &#xD;
+                   plots.LineWidth = Line width of the trajectory of mmd in&#xD;
+                   normal coordinates; &#xD;
+                   plots.LineStyle = Line style of the&#xD;
+                   trajectory of mle of transformation parameters; &#xD;
+                   plots.LineWidthEnv = Line width of the horizontal lines; &#xD;
+                   plots.Tag = tag of the plot (default is pl_mmdinv); &#xD;
+                   plots.FontSize = font size of the text labels which identify&#xD;
+                   the trajectories&#xD;
+                 </LongDesc>
+         <Example> 'plots',1&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>conflev</Value>
+               <Description>vector containing horizontal lines associated&#xD;
+                       with confidence levels;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>conflevlab</Value>
+               <Description>scalar if it is equal 1 labels associated with&#xD;
+                       horizontal lines are shown on the screen;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>xlim</Value>
+               <Description>minimum and maximum on the x axis;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ylim</Value>
+               <Description>minimum and maximum on the y axis;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidth</Value>
+               <Description>Line width of the trajectory of mmd in&#xD;
+                   normal coordinates;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineStyle</Value>
+               <Description>Line style of the&#xD;
+                   trajectory of mle of transformation parameters;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidthEnv</Value>
+               <Description>Line width of the horizontal lines;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Tag</Value>
+               <Description>tag of the plot (default is pl_mmdinv);</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>FontSize</Value>
+               <Description>font size of the text labels which identify&#xD;
+                   the trajectories</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>mmdinv</Name>
+         <ShortDesc> &#xD;
+               (n-m0) x 3 matrix (same rows of input matrix mmd)</ShortDesc>
+         <TypeInd>confidence levels plotted in normal coordinates.</TypeInd>
+         <LongDesc>&#xD;
+               It contains information about requested&#xD;
+               confidence levels plotted in normal coordinates.&#xD;
+               1st col = fwd search index from m0 to n-1; &#xD;
+               2nd col = confidence level of each value of mmd; &#xD;
+               3rd col = confidence level in normal coordinates. &#xD;
+                    50 per cent conf level becomes norminv(0.50)=0; &#xD;
+                    99 per cent conf level becomes norminv(0.99)=2.33.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+Let $d^2_i(m )$ and  $d_{\mbox{min}}(m)$ be respectively the deletion&#xD;
+distance for unit $i$ based&#xD;
+ on a subset of size $m$ and $d_{\mbox{min}}(m)$ the min. Mahalanobis&#xD;
+ distance in the forward search at step m. Testing for outliers requires a&#xD;
+ reference distribution for $d^2_i(m )$ in and hence for&#xD;
+ $d_{\mbox{min}}(m)$ in (\ref{min}). When $\Sigma$ is estimated from all&#xD;
+ $n$ observations, the squared statistics  have an $F$ distribution.&#xD;
+ However, the estimate $\hat{\Sigma}(m)$ in the search uses the central&#xD;
+ $m$ out of $n$ observations, so that the variability is underestimated.&#xD;
+ The consistency factor $c(m,n)$ given below&#xD;
+ \[&#xD;
+  c(m,n)=\frac{n}{m} C_{v+2} \{C_{v}^{-1} (m/n) \}&#xD;
+ \]&#xD;
+ where $C_r$ is the c.d.f. of the $\chi^2$ distribution on $r$ degrees of&#xD;
+ freedom, allows for estimation from this truncated distribution,  providing an&#xD;
+  approximately unbiased estimate of $\Sigma$.&#xD;
+ &#xD;
+ We can treat the distribution of the rescaled deletion Mahalanobis distance&#xD;
+ $c(m,n)d_{\mbox{min}}^2(m)$ as a squared deletion distance on $m-1$&#xD;
+ degrees of freedom, whose distribution is (Atkinson Riani and Cerioli,&#xD;
+ 2004; pp. 43-44)&#xD;
+ \begin{equation}\label{F}&#xD;
+   \frac{m^2-1}{m(m-v)} F_{v,m-v},&#xD;
+ \end{equation}&#xD;
+ &#xD;
+ The distribution of the rescaled min Mahalanobis distance&#xD;
+  $c(m,n) d_{\mbox{min}}^2(m)$&#xD;
+ of a subset of size $m$ constructed in such a way that&#xD;
+  the centroid and covariance matrix of the subset are taken using the&#xD;
+  units having the $m$ smallest Mahalanobis distances can be treated as&#xD;
+  the distribution of the $(m+1)$th order statistic from ($F_{v,m-v}$).&#xD;
+ &#xD;
+ The results of order statistics $Y_{(1)}$, $Y_{(2)}$, $\cdots$,  $Y_{(n)}$ from a sample of size $n$ from a distribution with CDF $G(y)$, state that&#xD;
+ \begin{equation}&#xD;
+ \label{orderstat}&#xD;
+  P\{Y_{(m+1)} \le y \}  =  P \left\{ F_{2(n-m),2(m+1)} &amp;gt;  \frac{1-G(y)}{G(y)} \times&#xD;
+  \frac{m+1}{n-m} \right\}&#xD;
+  \end{equation}&#xD;
+ Given that in our case $G(y)$ is the CDF of the  $F_{v,m-v}$ we can rewrite this equation  as&#xD;
+ &#xD;
+ \begin{eqnarray*}&#xD;
+   &amp;&amp;  P\{d_{\mbox{ min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \} = \\&#xD;
+    &amp;&amp; 1-  F_{2(n-m),2(m+1)} \left( \left( \frac{1}{  F_{v,m-v} \left( \frac{m(m-v)}{m^2-1 } c(m,n) d_{\mbox{min}}^2(m) \right)  }-1 \right) \frac{m+1}{n-m} \right)&#xD;
+ \end{eqnarray*}&#xD;
+ where $F_{a,b}(y)$ is the CDF of the $F$ distribution with $a$ and $b$ degrees of freedom evaluated in $y$.&#xD;
+ The value of the min. Mahalanobis distance transformed in normal coordinates computed by this routine is&#xD;
+ nothing but&#xD;
+ \[&#xD;
+ \Phi^{-1} \left(  P\left\{ d_{\mbox{min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \right\}    \right)&#xD;
+ \]&#xD;
+ where $\Phi^{-1}$ is the inverse of the CDF of the standard normal distribution.&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson, A.C. and Riani, M. (2006). Distribution theory and&#xD;
+   simulations for tests of outliers in regression. Journal of&#xD;
+   Computational and Graphical Statistics, Vol. 15, pp. 460-476</Item>
+      <Item>Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward&#xD;
+   search for testing multiple outliers in regression, Advances in Data&#xD;
+   Analysis and Classification, Vol. 1, pp. 123-141.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSMenvmmd</Item>
+      <Item>FSM</Item>
+      <Item>FSMeda</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSMinvmmd with all default options.</Title>
+         <Desc>&#xD;
+     After creating 99 per cent confidence envelopes based on 1000&#xD;
+     observations and 5 variables are created, their confidence level &#xD;
+     is calculated with FSMinvmmd.&#xD;</Desc>
+         <MATLABcode>
+      v=5;&#xD;
+      mmdenv=FSMenvmmd(1000,v,'prob',0.99);&#xD;
+      mmdinv=FSMinvmmd(mmdenv,v);&#xD;
+    % mmdinv is a matrix which in the second colum contains&#xD;
+    % all values equal to 0.99.&#xD;
+     &#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSMinvmmd with optional arguments.</Title>
+         <Desc>&#xD;
+     Example of finding confidence level of mmd. Forgery Swiss Banknotes data. &#xD;</Desc>
+         <MATLABcode>
+    load('swiss_banknotes');&#xD;
+    Y=swiss_banknotes.data;&#xD;
+    Y=Y(101:200,:);&#xD;
+    % The line below shows the plot of mmd&#xD;
+    [out]=FSM(Y,'plots',1);&#xD;
+&#xD;
+    % The line below transforms the values of mmd into observed confidence&#xD;
+    % levels and shows the output in a plot in normal coordinates using all&#xD;
+    % default options&#xD;
+    plots=struct;&#xD;
+    plots.conflev=[0.01 0.5 0.99 0.999 0.9999 0.99999];&#xD;
+    mmdinv=FSMinvmmd(out.mmd,size(Y,2),'plots',plots);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Resuperimposing envelopes and normal coordinates.</Title>
+         <Desc>&#xD;
+     Comparison of resuperimposing envelopes using mmd coordinates and normal&#xD;
+     coordinates. Forgery Swiss Banknotes data. &#xD;</Desc>
+         <MATLABcode>
+    load('swiss_banknotes');&#xD;
+    Y=swiss_banknotes.data;&#xD;
+    Y=Y(101:200,:);&#xD;
+    % The line below shows the plot of mmd&#xD;
+    [out]=FSM(Y,'plots',2);&#xD;
+&#xD;
+    n0=83:86;&#xD;
+    quantplo=[0.01 0.5 0.99 0.999 0.9999 0.99999];&#xD;
+    ninv=norminv(quantplo);&#xD;
+    lwdenv=2;&#xD;
+    supn0=max(n0);&#xD;
+&#xD;
+    ij=0;&#xD;
+    for jn0=n0;&#xD;
+        ij=ij+1;&#xD;
+        MMDinv = FSMinvmmd(out.mmd,size(Y,2),'n',jn0);&#xD;
+        % Resuperimposed envelope in normal coordinates&#xD;
+        subplot(2,2,ij)&#xD;
+        plot(MMDinv(:,1),MMDinv(:,3),'LineWidth',2)&#xD;
+        xlim([out.mmd(1,1) supn0])&#xD;
+        v=axis;&#xD;
+        line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');&#xD;
+        text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));&#xD;
+        title(['Resuperimposed envelope n=' num2str(jn0)]);&#xD;
+    end&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

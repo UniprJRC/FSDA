@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRinvmdr</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRinvmdr converts values of minimum deletion residual into confidence levels</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>mdr</Name>
+         <ShortDesc>Minimum deletion residuals</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n-m0 x 2 matrix containing: &#xD;
+          1st col = fwd search index; &#xD;
+          2nd col = minimum deletion residual .</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>p</Name>
+         <ShortDesc>Number of explanatory variables</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Number of explanatory variables of the underlying dataset&#xD;
+           (including the intercept if present)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>size of the sample</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If it is not specified&#xD;
+               it is set equal to mdr(end,1)+1&#xD;
+               </LongDesc>
+         <Example> 'n',10&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>It specify whether it is necessary to&#xD;
+               plot in normal coordinates the value of mdr&#xD;
+               If plots = 1, a plot which shows the&#xD;
+               confidence level of mdr in each step is shown on the&#xD;
+               screen.&#xD;
+               Remark. three horizontal lines associated respectively with&#xD;
+               values  0.01 0.5 and 0.99  are added to the plot&#xD;
+               If plots is a structure the user can specify the following options&#xD;
+                   conflev = vector containing horizontal lines associated&#xD;
+                       with confidence levels&#xD;
+                   conflevlab = scalar if it is equal 1 labels associated with&#xD;
+                       horizontal lines are shown on the screen&#xD;
+                   xlim = minimum and maximum on the x axis&#xD;
+                   ylim = minimum and maximum on the y axis&#xD;
+                   LineWidth = Line width of the trajectory of mdr in&#xD;
+                   normal coordinates&#xD;
+                   LineStyle = Line style of the&#xD;
+                   trajectory of mle of transformation parameters&#xD;
+                   LineWidthEnv = Line width of the horizontal lines&#xD;
+                   Tag = tag of the plot (default is pl_mdrinv)&#xD;
+                   FontSize = font size of the text labels which identify&#xD;
+                   the trajectories&#xD;
+                 </LongDesc>
+         <Example> 'plots',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>MDRinv</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>Confidence levels.</TypeInd>
+         <LongDesc> Matrix with n-m0 rows (same rows&#xD;
+               of input matrix mdr) and 3 columns: &#xD;
+               1st col = fwd search index from m0 to n-1. &#xD;
+               2nd col = confidence level of each value of mdr. &#xD;
+               3rd col = confidence level in normal coordinates: 50 conf&#xD;
+               level becomes norminv(0.50)=0; 99 conf level becomes norminv(0.99)=2.33.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson, A.C. and Riani, M. (2006). Distribution theory and&#xD;
+   simulations for tests of outliers in regression. Journal of&#xD;
+   Computational and Graphical Statistics, Vol. 15, pp. 460-476</Item>
+      <Item>Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward&#xD;
+   search for testing multiple outliers in regression, Advances in Data&#xD;
+   Analysis and Classification, Vol. 1, pp. 123-141.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSRenvmdr</Item>
+      <Item>LXS</Item>
+      <Item>FSREDA</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSRinvmdr with all default options.</Title>
+         <Desc>&#xD;
+     Example of finding the confidence level of MDRenv, where MDRenv is&#xD;
+     the matrix of 99 per cent confidence envelopes based on 1000&#xD;
+     observations and 5 explanatory variables.&#xD;
+     MDinv is a matrix which in the second column contains&#xD;
+     all values equal to 0.99&#xD;</Desc>
+         <MATLABcode>
+    p=5;&#xD;
+    MDRenv=FSRenvmdr(1000,p,'prob',0.99);&#xD;
+    MDRinv=FSRinvmdr(MDRenv,p);      &#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSRinvmdr with optional arguments.</Title>
+         <Desc>&#xD;
+     Example of finding confidence level of mdr for untransformed wool&#xD;
+     data.&#xD;
+     In the example, the values of mdr are plotted and then transformed &#xD;
+     into observed confidence levels.&#xD;
+     The output is plotted in normal coordinates.&#xD;</Desc>
+         <MATLABcode>
+&#xD;
+    load('wool.txt','wool');&#xD;
+    y=wool(:,4);&#xD;
+    X=wool(:,1:3);&#xD;
+    % The line below shows the plot of mdr&#xD;
+    [out]=FSR(y,X,'nsamp',0,'plots',1);&#xD;
+    MDRinv=FSRinvmdr(out.mdr,size(X,2)+1,'plots',1);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Resuperimposing envelopes.</Title>
+         <Desc>&#xD;
+     Comparison of resuperimposing envelopes using mdr coordinates and normal&#xD;
+     coordinates again on wool data.&#xD;</Desc>
+         <MATLABcode>
+    load('wool.txt','wool');&#xD;
+    y=wool(:,4);&#xD;
+    X=wool(:,1:3);&#xD;
+    % The line below shows the plot of mdr&#xD;
+    [out]=FSR(y,X,'nsamp',0,'plots',2);&#xD;
+&#xD;
+    n0=16:19;&#xD;
+    quantplo=[0.01 0.5 0.99 0.999 0.9999 0.99999];&#xD;
+    ninv=norminv(quantplo);&#xD;
+    lwdenv=2;&#xD;
+    ij=0;&#xD;
+    supn0=max(n0);&#xD;
+&#xD;
+    for jn0=n0;&#xD;
+        ij=ij+1;&#xD;
+        MDRinv = FSRinvmdr(out.mdr,4,'n',jn0);&#xD;
+        % Resuperimposed envelope in normal coordinates&#xD;
+        subplot(2,2,ij)&#xD;
+        plot(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)&#xD;
+        xlim([0 supn0])&#xD;
+        v=axis;&#xD;
+        line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');&#xD;
+        text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));&#xD;
+        % line(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)&#xD;
+        title(['Resuperimposed envelope n=' num2str(jn0)]);&#xD;
+    end&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example with Hospital Data.</Title>
+         <Desc>&#xD;
+     Comparison of resuperimposing envelopes using mdr coordinates and normal&#xD;
+     coordinates at particular steps.&#xD;</Desc>
+         <MATLABcode>
+    load('hospital.txt');&#xD;
+    y=hospital(:,5);&#xD;
+    X=hospital(:,1:4);&#xD;
+    % exploratory analysis through the yXplot&#xD;
+    out=FSR(y,X,'nsamp',20000,'plots',2,'lms',0);&#xD;
+&#xD;
+    n0=[54 58 62 63];&#xD;
+    quantplo=[0.01 0.5 0.99 0.999 0.9999 0.99999];&#xD;
+    ninv=norminv(quantplo);&#xD;
+    lwdenv=2;&#xD;
+    supn0=max(n0);&#xD;
+&#xD;
+    figure;&#xD;
+    ij=0;&#xD;
+    for jn0=n0;&#xD;
+        ij=ij+1;&#xD;
+        [MDRinv] = FSRinvmdr(out.mdr,5,'n',jn0);&#xD;
+        % Plot for each step of the fwd search the values of mdr translated in&#xD;
+        % Plot for each step of the fwd search the values of mdr translated in&#xD;
+        % terms of normal quantiles&#xD;
+        subplot(2,2,ij)&#xD;
+        plot(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)&#xD;
+        xlim([0 supn0])&#xD;
+        v=axis;&#xD;
+        line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');&#xD;
+        text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));&#xD;
+        line(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)&#xD;
+        title(['Resuperimposed envelope n=' num2str(jn0)]);&#xD;
+    end&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

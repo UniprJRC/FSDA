@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRfan</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRfan monitors the values of the score test statistic for each lambda</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>A vector with n elements that contains the response variable</ShortDesc>
+         <TypeInd>y can&#xD;
+       be both a row of column vector</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of&#xD;
+       dimension (n x p-1)</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns&#xD;
+       represent variables</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values&#xD;
+       (Inf's) are allowed, since observations (rows) with missing or&#xD;
+       infinite values will automatically be excluded from the&#xD;
+       computations. NOTICE THAT THE INTERCEPT MUST ALWAYS BE INCLUDED.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted&#xD;
+                   (default), if 0, no constant term will be included.&#xD;
+                   </LongDesc>
+         <Example> 'intercept',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed&#xD;
+                   on matrix y and matrix X. Notice that y and X are left&#xD;
+                   unchanged. In other words the additional column of ones&#xD;
+                   for the intercept is not added. As default nocheck=0.&#xD;
+                   </LongDesc>
+         <Example> 'nocheck',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>la</Name>
+         <ShortDesc>values of the transformation parameter for which it is&#xD;
+                   necessary to compute the score test</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Default value of lambda is la=[-1 -0.5 0 0.5 1]; that&#xD;
+                   is the five most common values of lambda&#xD;
+                   </LongDesc>
+         <Example> 'la',[-1 -0.5]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>h</Name>
+         <ShortDesc>The number of observations that have determined the&#xD;
+                   least trimmed (median of) squares estimator</ShortDesc>
+         <TypeInd>Integer</TypeInd>
+         <LongDesc>Generally h is an integer greater or equal than&#xD;
+                   [(n+size(X,2)+1)/2] but smaller then n&#xD;
+                   </LongDesc>
+         <Example> 'h',5&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nsamp</Name>
+         <ShortDesc>Number of subsamples which will be extracted to find&#xD;
+                   the robust estimator</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be&#xD;
+                   extracted. They will be (n choose p). Remark: if the&#xD;
+                   number of all possible subset is &amp;lt;1000 the default is&#xD;
+                   to extract all subsets otherwise just 1000.&#xD;
+                   </LongDesc>
+         <Example> 'nsamp',1000&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lms</Name>
+         <ShortDesc>Criterion to use to find the initlal&#xD;
+                 subset to initialize the search</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If lms=1 (default) Least Median of Squares is&#xD;
+                   computed, else Least trimmed of Squares is computed.&#xD;
+                 </LongDesc>
+         <Example> 'lms',1&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It specifies the initial subset size to start&#xD;
+                   monitoring the value of the score test, if init is not&#xD;
+                   specified it will be set equal to:&#xD;
+                    p+1, if the sample size is smaller than 40;&#xD;
+                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
+                    </LongDesc>
+         <Example> 'init',100 starts monitoring from step m=100&#xD;
+                    </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If plots=1 the fan plot is produced&#xD;
+                   else (default) no plot is produced.&#xD;
+                   %                   REMARK: all the following options work only if plots=1&#xD;
+&#xD;
+</LongDesc>
+         <Example> 'plots',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>confidence level for the bands</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>default is 0.99 that is&#xD;
+                   we plot two horizontal lines in correspondence of value&#xD;
+                   -2.58 and 2.58&#xD;
+                   </LongDesc>
+         <Example> 'conflev',0.95&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>titl</Name>
+         <ShortDesc>a label for the title</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>default: 'Fan plot'&#xD;
+                   </LongDesc>
+         <Example> 'titl','my title'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labx</Name>
+         <ShortDesc>a label for the x-axis</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>default: 'Subset size m'&#xD;
+                   </LongDesc>
+         <Example> 'labx','my labx'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>laby</Name>
+         <ShortDesc>a label for the y-axis</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>default:'Score test statistic'&#xD;
+                   </LongDesc>
+         <Example> 'laby','my laby'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>xlimx</Name>
+         <ShortDesc>Minimum and maximum of the x axis</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Default value is [init n]&#xD;
+                   </LongDesc>
+         <Example> 'xlimx',[0 1]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ylimy</Name>
+         <ShortDesc>Minimum and maximum of the y axis</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Default value for ylimy(1)=max(min(score_test),-20).&#xD;
+                   Default value for ylimy(2)=min(max(score_test),20).&#xD;
+                   </LongDesc>
+         <Example> 'ylimx',[0 1]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lwd</Name>
+         <ShortDesc>linewidth of the curves which&#xD;
+                   contain the score test</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Default line width=2.&#xD;
+                   </LongDesc>
+         <Example> 'lwd',5&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lwdenv</Name>
+         <ShortDesc>width of the lines associated&#xD;
+                   with the envelopes</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Default is lwdenv=1.&#xD;
+                   </LongDesc>
+         <Example> 'lwdenv',5&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>FontSize</Name>
+         <ShortDesc>font size of the labels of  the axes</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Default value is 12.&#xD;
+                   </LongDesc>
+         <Example> 'FontSize',20&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>SizeAxesNum</Name>
+         <ShortDesc>Scalar which controls the size of the numbers of the&#xD;
+                   axes</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Default value is 10.&#xD;
+                  </LongDesc>
+         <Example> 'SizeAxesNum',12&#xD;
+                  </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>scalar which controls whether to display or not&#xD;
+                   messages on the screen. Scalar.&#xD;
+                   If msg==1 (default) messages are&#xD;
+                   displayed on the screen about estimated time to compute&#xD;
+                   the LMS (LTS) for each value of lamabda else no message&#xD;
+                   is displayed on the screen&#xD;
+                  </LongDesc>
+         <Example> 'msg',1&#xD;
+                  </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tag</Name>
+         <ShortDesc>handle of the plot which is about to be created</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>The default is to use tag 'pl_fan'. Notice that if the program finds a plot which&#xD;
+                   has a tag equal to the one specified by the user, then&#xD;
+                   the output of the new plot overwrites the existing one&#xD;
+                   in the same window else a new window is created&#xD;
+                   </LongDesc>
+         <Example> 'tag','mytag'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>Score</Value>
+               <Description>(n-init) x length(la)+1 matrix containing the values of the&#xD;
+               score test for each value of the transformation parameter&#xD;
+               1st col = fwd search index&#xD;
+               2nd col = value of the score test in each step of the&#xD;
+               fwd search for la(1)&#xD;
+               ...........&#xD;
+               end col = value of the score test in each step of the fwd&#xD;
+               search for la(end)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>la</Value>
+               <Description>vector containing the values of lambda for which fan plot&#xD;
+               is constructed</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>bs</Value>
+               <Description>matrix of size p x length(la) containing the units forming&#xD;
+               the initial subset for each value of lambda</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Un</Value>
+               <Description>cell of size length(la).&#xD;
+               out.Un{i} is a n-init) x 11 matrix which contains the unit(s) included in&#xD;
+               the subset at each step in the search associated with&#xD;
+               la(i).&#xD;
+               REMARK: in every step the new subset is compared with the old subset. Un&#xD;
+               contains the unit(s) present in the new subset but not in&#xD;
+               the old one Un(1,:) for example contains the unit included&#xD;
+               in step init+1 ... Un(end,2) contains the units included in the&#xD;
+               final step of the search</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>y</Value>
+               <Description>A vector with n elements that contains the response&#xD;
+               variable which has been used</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>Data matrix of explanatory variables&#xD;
+               which has been used (it also contains the column of ones if&#xD;
+               input option intercept was missing or equal to 1)</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,&#xD;
+   Springer Verlag, New York.</Item>
+      <Item>Atkinson, A.C. and Riani, M. (2002a). Tests in the fan plot for robust,&#xD;
+   diagnostic transformations in regression, Chemometrics and Intelligent&#xD;
+   Laboratory Systems, Vol. 60, pp. 87-100.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION--></SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSRfan with all default options.</Title>
+         <Desc>&#xD;
+     Store values of the score test statistic&#xD;
+     for the five most common values of $\lambda$.&#xD;
+     Produce also a fan plot and display it on the screen.&#xD;
+     Common part to all examples: load wool dataset.&#xD;</Desc>
+         <MATLABcode>
+    XX=load('wool.txt');&#xD;
+    y=XX(:,end);&#xD;
+    X=XX(:,1:end-1);&#xD;
+    % Function FSRfan stores the score test statistic.&#xD;
+    % In this case we use the five most common values of lambda are considered&#xD;
+    [out]=FSRfan(y,X);&#xD;
+    fanplot(out);&#xD;
+    %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>FSRfan with optional arguments.</Title>
+         <Desc>&#xD;
+     Produce a personalized fan plot with required font sizes&#xD;
+     for labels and axes.&#xD;</Desc>
+         <MATLABcode>
+    [out]=FSRfan(y,X,'plots',1,'FontSize',16,'SizeAxesNum',16);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example specifying $\lambda$.</Title>
+         <Desc>&#xD;
+     Produce a fan plot for each value of $\lambda$ inside vector la.&#xD;
+     Extract in matrix Un the units which entered the search in each step&#xD;</Desc>
+         <MATLABcode>
+    la=[-1 -0.5 0 0.5];&#xD;
+    [out]=FSRfan(y,X,'la',la,'plots',1);&#xD;
+    Unsel=cell2mat(out.Un);&#xD;
+    lla=length(la);&#xD;
+    nr=size(Unsel,1)/lla;&#xD;
+    Un=[Unsel(1:nr,1) reshape(Unsel(:,2),nr,lla)];&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example specifying the confidence level and the initial&#xD;
+     starting point for monitoring.</Title>
+         <Desc>&#xD;
+     Construct fan plot specifying the confidence level and the initial&#xD;
+     starting point for monitoring.&#xD;</Desc>
+         <MATLABcode>
+    [out]=FSRfan(y,X,'init',size(X,2)+2,'nsamp',0,'conflev',0.95,'plots',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example with starting point based on LTS.</Title>
+         <Desc>&#xD;
+     Extraction of all subsamples, construct&#xD;
+     fan plot specifying the confidence level and the initial starting&#xD;
+     point for monitoring based on p+2 observations strong line width for&#xD;
+     lines associated with the confidence bands.&#xD;</Desc>
+         <MATLABcode>
+    [out]=FSRfan(y,X,'init',size(X,2)+2,'nsamp',0,'lms',0,'lwdenv',3,'plots',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Fan plot using fidelity cards data.</Title>
+         <Desc>&#xD;
+     In the example, la is the vector contanining the most common values&#xD;
+     of the transformation parameter.&#xD;
+     Store the score test statistics for the specified values of lambda&#xD;
+     and automatically produce the fan plot&#xD;</Desc>
+         <MATLABcode>
+    XX=load('loyalty.txt');&#xD;
+    namey='Sales'&#xD;
+    y=XX(:,end);&#xD;
+    nameX={'Number of visits', 'Age', 'Number of persons in the family'};&#xD;
+    X=XX(:,1:end-1);&#xD;
+    % la = vector contanining the most common values of the transformation&#xD;
+    % parameter&#xD;
+    la=[0 1/3 0.4 0.5];&#xD;
+    % Store the score test statistics for the specified values of lambda&#xD;
+    % and automatically produce the fan plot&#xD;
+    [out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'plots',1,'lwd',3);&#xD;
+   %The fan plot shows the even if the third root is the best value of the&#xD;
+   %transformation parameter at the end of the search in earlier steps it&#xD;
+    %lies very close to the upper rejection region. The best value of the&#xD;
+    %transformation parameter seems to be the one associated with l=0.4&#xD;
+    %which is always the confidence bands but at the end of search, due to&#xD;
+  %the presence of particular observations it goes below the lower rejection line.&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

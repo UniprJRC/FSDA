@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->RobCov</Title>
+   <Purpose><!--This is the second line of the .m file-->robCov computes covariance matrix of robust regression coefficients</Purpose>
+   <Description><!--Description section-->Under some regularity conditions, robust (S and MM) estimates are&#xD;
+ asymptotically normal, thereby allowing for Wald-type tests and&#xD;
+ confidence intervals. The covariance matrix of the estimated parameters&#xD;
+ \[&#xD;
+   cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}&#xD;
+ \]&#xD;
+ consists of four parts:&#xD;
+1) $q$ a correction factor for the scale estimate;&#xD;
+ 2) $\sigma$ the scale parameter.&#xD;
+ 3) $v$ a correction factor depending on the $\psi$ function which is&#xD;
+ used;&#xD;
+ 4) $V_X$= a matrix part. For OLS $V_X=X'X$. Given that in robust&#xD;
+ regression we give a weight to each observation, the matrix $X'X$ should&#xD;
+ be replaced by something like $X'WX$, where $W$ is a diagonal matrix&#xD;
+ containing the weights assigned to each observation.&#xD;
+ The purpose of this function is to provide the user with different&#xD;
+ options for the estimate of $cov(\hat \beta)$ where $\hat \beta$ is  a&#xD;
+ vector of regression coefficients obtained using S or MM estimation and a&#xD;
+ particular $\rho$ function.</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors')&#xD;
+            of dimension (n x p-1)</ShortDesc>
+         <TypeInd>Rows of X represent observations, and&#xD;
+            columns represent variables</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>scaledres</Name>
+         <ShortDesc>Scaled residuals.Vector</ShortDesc>
+         <TypeInd>n-times-1 vector containing scaled&#xD;
+             residuals $r_i/\hat \sigma$</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>scaleest</Name>
+         <ShortDesc>robust estimate of the scale</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Robust estimate of&#xD;
+             sigma ($\hat \sigma$).&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, a model with&#xD;
+               constant term will be fitted (default), if 0, no constant&#xD;
+               term will be included.&#xD;
+               </LongDesc>
+         <Example> 'intercept',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>eff</Name>
+         <ShortDesc>nominal efficiency</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar defining nominal efficiency (i.e. a number between&#xD;
+                 0.5 and 0.99). The default value is 0.95&#xD;
+                 Asymptotic nominal efficiency is:&#xD;
+                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$&#xD;
+                 </LongDesc>
+         <Example> 'eff',0.99&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, a model with&#xD;
+               constant term will be fitted (default), if 0, no constant&#xD;
+               term will be included.&#xD;
+               </LongDesc>
+         <Example> 'intercept',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bdp</Name>
+         <ShortDesc>breakdown point</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It measures the fraction of outliers&#xD;
+               the algorithm should resist. In this case any value greater&#xD;
+               than 0 but smaller or equal than 0.5 will do fine.&#xD;
+               Note that given bdp nominal&#xD;
+               efficiency is automatically determined.&#xD;
+                 %               REMARK: just one between bdp and eff must be specified. If&#xD;
+               both of them are specified an error is produced. If both of&#xD;
+               them are not specified the defulat is tu use the tuning&#xD;
+               constant associated to a nominal efficiency of 0.95.&#xD;
+</LongDesc>
+         <Example> 'bdp',0.4&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rhofunc</Name>
+         <ShortDesc>rho function</ShortDesc>
+         <TypeInd>String</TypeInd>
+         <LongDesc>String which specifies the rho function which must be used to&#xD;
+               weight the residuals. Possible values are&#xD;
+               'bisquare'&#xD;
+               'optimal'&#xD;
+               'hyperbolic'&#xD;
+               'hampel'.&#xD;
+               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.&#xD;
+               See TBrho.m and TBpsi.m.&#xD;
+               'optimal' uses optimal $\rho$ and $\psi$ functions.&#xD;
+               See OPTrho.m and OPTpsi.m.&#xD;
+               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.&#xD;
+               See HYPrho.m and HYPpsi.m.&#xD;
+               'hampel' uses Hampel $\rho$ and $\psi$ functions.&#xD;
+               See HArho.m and HApsi.m.&#xD;
+               The default is bisquare&#xD;
+                 </LongDesc>
+         <Example> 'rhofunc','optimal'&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rhofuncparam</Name>
+         <ShortDesc>Additional parameters for the specified rho function</ShortDesc>
+         <TypeInd>Scalar or vector</TypeInd>
+         <LongDesc>For hyperbolic rho function it is possible to set up the&#xD;
+               value of k = sup CVC (the default value of k is 4.5).&#xD;
+               For Hampel rho function it is possible to define parameters&#xD;
+               a, b and c (the default values are a=2, b=4, c=8)&#xD;
+                 </LongDesc>
+         <Example> 'rhofuncparam',5&#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>covrob</Value>
+               <Description>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix&#xD;
+               containing asymptotic variance covariance&#xD;
+               matrix of regression coefficients. covrob implements&#xD;
+               equation (4.49) of p. 101 of Maronna et al. (2006)&#xD;
+               namely:&#xD;
+                \[&#xD;
+                \mbox{covrob} = cov( \hat \beta) = \hat \sigma^2 \hat v (X'X)^{-1}&#xD;
+                \]&#xD;
+                where&#xD;
+                \[&#xD;
+                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{\sum_{i=1}^n \psi'(r_i/\hat \sigma)^2}&#xD;
+                \]</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>covrob1</Value>
+               <Description>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix&#xD;
+               containing asymptotic variance covariance&#xD;
+               matrix of regression coefficients. covrob1 implements&#xD;
+               equation (7.81) of p. 171 of Huber and Ronchetti (2009)&#xD;
+               with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$&#xD;
+               namely:&#xD;
+                \[&#xD;
+                 \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};&#xD;
+                \]&#xD;
+                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n&#xD;
+                 \psi'(r_i/\hat \sigma))^2}$ ;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>covrob2</Value>
+               <Description>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix&#xD;
+               containing asymptotic variance covariance&#xD;
+               matrix of regression coefficients. covrob1 implements&#xD;
+               equation (7.81) of p. 171 of Huber and Ronchetti (2009)&#xD;
+               with $X'X$ and $K^2$&#xD;
+               namely:&#xD;
+                \[&#xD;
+                 \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};&#xD;
+                \]&#xD;
+                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n&#xD;
+                 \psi'(r_i/\hat \sigma))^2}$ ;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>covrob3</Value>
+               <Description>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix&#xD;
+               containing asymptotic variance covariance&#xD;
+               matrix of regression coefficients. covrob implements&#xD;
+               equation (7.82) of p. 171 of of Huber and Ronchetti (2009).&#xD;
+               namely:&#xD;
+                \[&#xD;
+                \mbox{covrob3} =  K  \hat v  (X' W X)^{-1};&#xD;
+                \]&#xD;
+                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n&#xD;
+                 \psi'(r_i/\hat \sigma))^2}$ ;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>covrob4</Value>
+               <Description>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix&#xD;
+               containing asymptotic variance covariance&#xD;
+               matrix of regression coefficients. covrob implements&#xD;
+               equation (7.83) of p. 171 of of Huber and Ronchetti (2009).&#xD;
+               namely:&#xD;
+                \[&#xD;
+                 \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2  (X' W X)^{-1} X'X (X' W X)^{-1};&#xD;
+                \]</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>q</Value>
+               <Description>scalar. Correction for scale estimate (see Maronna and Yohai&#xD;
+               CSDA 2010). It is defined as&#xD;
+               \[&#xD;
+               q=1+\frac{p}{2n} \frac{a}{b \times c}&#xD;
+               \]&#xD;
+               where&#xD;
+               \[&#xD;
+               a = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2&#xD;
+               \]&#xD;
+               \[&#xD;
+               b = \frac{1}{n} \sum_{i=1}^n (\psi'(r_i/\hat \sigma))^2&#xD;
+               \]&#xD;
+               \[&#xD;
+               c = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma)) r_i/\hat \sigma)&#xD;
+               \]</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
+ and Methods, Wiley, New York.</Item>
+      <Item>P.J. Huber and E.M. Ronchetti (2009), Robust Statistics, 2nd Edition,&#xD;
+ Wiley New York.</Item>
+      <Item>Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data&#xD;
+ sets. Computational Statistics and Data Analysis, 54, pp. 3168-3173.</Item>
+      <Item>Koller, M. and W. A. Stahel (2011). Sharpening wald-type inference in&#xD;
+ robust regression for small samples. Computational Statistics &amp; Data&#xD;
+ Analysis 55(8), pp. 2504-2515.</Item>
+      <Item>Croux, C., G. Dhaene, and D. Hoorelbeke (2003). Robust standard errors&#xD;
+ for robust estimators. Technical report, Dept. of Applied Economics, K.U.&#xD;
+ Leuven.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>Sreg</Item>
+      <Item>MMreg</Item>
+      <Item>Taureg</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Compare the 5 estimates of cov matrix.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=200;&#xD;
+    p=3;&#xD;
+    state1=123456;&#xD;
+    randn('state', state1);&#xD;
+    X=randn(n,p);&#xD;
+    y=randn(n,1);&#xD;
+    kk=10;&#xD;
+    ycont = y;&#xD;
+    ycont(1:kk)=ycont(1:kk)+7;&#xD;
+    [outS]=Sreg(ycont,X);&#xD;
+    rhofunc='optimal';&#xD;
+    bdp=0.5;&#xD;
+    out=RobCov(X,outS.residuals,outS.scale);&#xD;
+    disp('Compare 5 estimates of cov(\hat beta)')&#xD;
+    disp(out.covrob)&#xD;
+    disp('--------')&#xD;
+    disp(out.covrob1)&#xD;
+    disp('--------')&#xD;
+    disp(out.covrob2)&#xD;
+    disp('--------')&#xD;
+    disp(out.covrob3)&#xD;
+    disp('--------')&#xD;
+    disp(out.covrob4)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    rhofunc='optimal';&#xD;
+    bdp=0.5;&#xD;
+    out=RobCov(X,outS.residuals,outS.scale,'rhofunc',rhofunc,'bdp',0.5);&#xD;
+    covrobS=out.covrob;&#xD;
+    covrobS1=out.covrob1;&#xD;
+    covrobS2=out.covrob2;&#xD;
+    covrobS3=out.covrob3;&#xD;
+    covrobS4=out.covrob4;&#xD;
+&#xD;
+    % Compute robust S t-statistics&#xD;
+    tstatS=outS.beta./sqrt(diag(covrobS));&#xD;
+    tstatS1=outS.beta./sqrt(diag(covrobS1));&#xD;
+    tstatS2=outS.beta./sqrt(diag(covrobS2));&#xD;
+    tstatS3=outS.beta./sqrt(diag(covrobS3));&#xD;
+    tstatS4=outS.beta./sqrt(diag(covrobS4));&#xD;
+&#xD;
+    eff=0.95;&#xD;
+    outMM=MMregcore(ycont,X,outS.beta,outS.scale);&#xD;
+    out=RobCov(X,outMM.residuals,outS.scale,'rhofunc',rhofunc,'eff',eff);&#xD;
+    covrobMM=out.covrob;&#xD;
+    covrobMM1=out.covrob1;&#xD;
+    covrobMM2=out.covrob2;&#xD;
+    covrobMM3=out.covrob3;&#xD;
+    covrobMM4=out.covrob4;&#xD;
+    tstatMM=outMM.beta./sqrt(diag(covrobMM));&#xD;
+    tstatMM1=outMM.beta./sqrt(diag(covrobMM1));&#xD;
+    tstatMM2=outMM.beta./sqrt(diag(covrobMM2));&#xD;
+    tstatMM3=outMM.beta./sqrt(diag(covrobMM3));&#xD;
+    tstatMM4=outMM.beta./sqrt(diag(covrobMM4));&#xD;
+    disp('tstat from S')&#xD;
+    disp([tstatS tstatS1 tstatS2 tstatS3 tstatS4])&#xD;
+    disp('--------')&#xD;
+    disp('tstat from MM')&#xD;
+    disp([tstatMM tstatMM1 tstatMM2 tstatMM3 tstatMM4])&#xD;
+    qhat=out.q;&#xD;
+    disp('tstat from MM after correction for sigma')&#xD;
+    disp([tstatMM/qhat tstatMM1/qhat tstatMM2/qhat tstatMM3/qhat tstatMM4/qhat])&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

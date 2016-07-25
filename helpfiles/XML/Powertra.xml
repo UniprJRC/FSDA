@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->Powertra</Title>
+   <Purpose><!--This is the second line of the .m file-->Powertra computes power transformation (Box-Cox or  Yeo-Johnson)</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
+               Y represent observations, and columns represent variables.&#xD;
+               Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>la</Name>
+         <ShortDesc>transformation parameters</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>k x 1 vector containing set of transformation&#xD;
+               parameters for the k ColtoTra.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>family</Name>
+         <ShortDesc>family of transformations</ShortDesc>
+         <TypeInd>String</TypeInd>
+         <LongDesc>String which identifies&#xD;
+               the family of transformations which&#xD;
+               must be used. Possible values are 'BoxCox' (default) or&#xD;
+               'YeoJohnson' (string YeoJohnson can be abbreviated with YJ)&#xD;
+               or 'basicpower'&#xD;
+               The Box-Cox family of power transformations equals&#xD;
+               (y^{\lambda}-1)/\ambda for \lambda not equal to zero, and&#xD;
+               log(y)&#xD;
+               if \lambda = 0.&#xD;
+               The YJ (YeoJohnson) transformation is the Box-Cox&#xD;
+               transformation of y+1 for nonnegative values, and of |y|+1 with&#xD;
+               parameter 2-\lambda for y negative.&#xD;
+               The basic power transformation returns y^{\lambda} if \lambda is not&#xD;
+               zero, and log(\lambda) otherwise.&#xD;
+                   %               Remark: BoxCox and the basic power family can be used just&#xD;
+               if input y is positive. YeoJohnson family of&#xD;
+               transformations does not have this limitation.&#xD;
+</LongDesc>
+         <Example> 'family','BoxCox'&#xD;
+                   </Example>
+         <DataType>string</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Jacobian</Name>
+         <ShortDesc>Requested Jacobian of transformed values</ShortDesc>
+         <TypeInd>true (default) or&#xD;
+               false</TypeInd>
+         <LongDesc>If true (default) the transformation is normalized&#xD;
+               to have Jacobian equal to 1&#xD;
+                   </LongDesc>
+         <Example> 'Jacobian',true&#xD;
+                   </Example>
+         <DataType>string</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ColtoTra</Name>
+         <ShortDesc>Variable to transform</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>k x 1 integer vector&#xD;
+               specifying the variables which must be&#xD;
+               transformed. If it is missing and length(la)=v all&#xD;
+               variables are transformed&#xD;
+                   </LongDesc>
+         <Example> 'ColtoTra',[1 2 4]&#xD;
+                </Example>
+         <DataType>single|double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Ytra</Name>
+         <ShortDesc>n x v data matrix </ShortDesc>
+         <TypeInd>Transformed observations&#xD;
+             acoording to the family specified in&#xD;
+             The Yeo-Johnson transformation is the Box-Cox transformation&#xD;
+             of y+1 for nonnegative values, and of |y|+1 with parameter&#xD;
+             2-lambda for y negative.</TypeInd>
+         <LongDesc>&#xD;
+&#xD;
+&#xD;
+ Copyright 2008-2016.&#xD;
+ Written by FSDA team&#xD;
+&#xD;
+ Yeo, I.-K. and Johnson, R. (2000) A new family of power&#xD;
+ transformations to improve normality or symmetry. Biometrika, 87,&#xD;
+ 954-959.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>normBoxCox</Item>
+      <Item>normYJ</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    y=(1:5)';&#xD;
+    lambda=0&#xD;
+    y1=Powertra(y,0.2);&#xD;
+&#xD;
+    plot(y,y1)&#xD;
+    xlabel('Original values')&#xD;
+    ylabel('Transformed values')&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode/>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Comparison between Box-Cox and Yeo-Johnson transformation&#xD;
+    close all&#xD;
+    y=(-2:0.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    close all&#xD;
+    y=(-2:0.1:2)';&#xD;
+    n=length(y);&#xD;
+    la=-1:1:3;&#xD;
+    nla=length(la);&#xD;
+    YtraYJ=zeros(n,nla);&#xD;
+    YtraBC=nan(n,nla);&#xD;
+    posy=y&amp;gt;0;&#xD;
+    for j=1:nla&#xD;
+      YtraYJ(:,j)=Powertra(y,la(j),'family','YJ','Jacobian',false);&#xD;
+      YtraBC(posy,j)=Powertra(y(posy),la(j),'family','BoxCox','Jacobian',false);&#xD;
+    end&#xD;
+    subplot(1,2,1)&#xD;
+    plot(y,YtraYJ)&#xD;
+    for j=1:nla&#xD;
+        text(y(1), YtraYJ(1,j),['\lambda=' num2str(la(j))])&#xD;
+    end&#xD;
+&#xD;
+    xlabel('Original values')&#xD;
+    ylabel('Transformed values')&#xD;
+    title('Yeo-Johnson transformation')&#xD;
+&#xD;
+    subplot(1,2,2)&#xD;
+    plot(y,YtraBC)&#xD;
+    xlim([y(1) y(end)])&#xD;
+    for j=1:nla&#xD;
+        text(y(16), YtraBC(22,j),['\lambda=' num2str(la(j))])&#xD;
+    end&#xD;
+    xlabel('Original values')&#xD;
+    ylabel('Transformed values')&#xD;
+    title('Box-Cox transformation')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Mussels data.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('mussels.mat');&#xD;
+    Y=mussels.data;&#xD;
+    la=[0.5 0 0.5 0 0];&#xD;
+    % Transform all columns of matrix Y according to the values of la using&#xD;
+    % the basic power transformation&#xD;
+    Y=Powertra(Y,la,'family','basicpower');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

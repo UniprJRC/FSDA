@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->RandIndexFS</Title>
+   <Purpose><!--This is the second line of the .m file-->RandIndexFS calculates Rand type Indices to compare two partitions</Purpose>
+   <Description><!--Description section-->Suppose we want to compare two partitions summarized by the contingency&#xD;
+ table $T=[n_{ij}]$ where $i=1, 2, ..., r$ and $j=1,...,c$ and $n_{ij}$&#xD;
+ denotes the number of data points which are in cluster i in the first&#xD;
+ partition and in cluster j in the second partition. Let A denote the&#xD;
+ number of all pairs of data points which are either put into the same&#xD;
+ cluster by both partitions or put into different clusters by both&#xD;
+ partitions. Conversely, let D denote the number of all pairs of data&#xD;
+ points that are put into one cluster in one partition, but into different&#xD;
+ clusters by the other partition. The partitions disagree for all pairs D&#xD;
+ and agree for all pairs A. A+D=totcomp= total number of comparisons.&#xD;
+ We can measure the agreement by the Rand index&#xD;
+ A/(A+D)=A/(totcomp) which is invariant with respect to permutations of the columns or&#xD;
+ rows of T. The index has to be corrected for agreement by chance if the&#xD;
+ sizes of the clusters are not uniform (which is usually the case). Since&#xD;
+ the Rand index lies between 0 and 1, the expected value of the Rand index&#xD;
+ (although not a constant value) must be greater than or equal to 0. On&#xD;
+ the other hand, the expected value of the adjusted Rand index has value&#xD;
+ zero and the maximum value of the adjusted Rand index is also 1. Hence,&#xD;
+ there is a wider range of values that the adjusted Rand index can take&#xD;
+ on, thus increasing the sensitivity of the index. The formula of the&#xD;
+ adjusted Rand index (AR) is given below&#xD;
+ \[&#xD;
+  AR= \frac{\mbox{RI- Expected value of RI}}{\mbox{Max Index  - Expected value of RI}}&#xD;
+ \]</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>c1</Name>
+         <ShortDesc>labels of first partition or contingency table</ShortDesc>
+         <TypeInd>A numeric or&#xD;
+          character vector containining the class labels of&#xD;
+          the first partition or a 2-dimensional numeric matrix which&#xD;
+          contains the cross-tabulation of cluster assignments</TypeInd>
+         <LongDesc>Data Types: single | double | char | logical</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c2</Name>
+         <ShortDesc>labels of second partition</ShortDesc>
+         <TypeInd>A numeric or character vector&#xD;
+          containining the class labels of&#xD;
+          the second partition</TypeInd>
+         <LongDesc>The length of vector c2 must be equal to&#xD;
+          the length of vector c1. This second input is required just if&#xD;
+          c1 is not a 2-dimensional numeric matrix.&#xD;
+          Data Types: single | double | char | logical</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>noisecluster</Name>
+         <ShortDesc>label or number associated to the 'noise class' or 'noise level'</ShortDesc>
+         <TypeInd>Scalar, numeric or character</TypeInd>
+         <LongDesc>Number or character label which&#xD;
+                 denotes the points which do not belong to any cluster.&#xD;
+                 These points are not takern into account for the&#xD;
+                 computation of the Rand type indexes&#xD;
+                 </LongDesc>
+         <Example>&lt;code&gt;0 (in this case the units which in of the&#xD;
+&lt;/code&gt;                 two partitions have 0 class are not taken into account in the&#xD;
+                 index calculations)</Example>
+         <DataType>double or character</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>AR</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>Adjusted Rand index.</TypeInd>
+         <LongDesc> A number between -1 and 1.&#xD;
+               The adjusted Rand index is the corrected-for-chance version&#xD;
+               of the Rand index.</LongDesc>
+      </Item>
+      <Item>
+         <Name>RI</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>Rand index (unadjusted).</TypeInd>
+         <LongDesc> A number between 0 and 1.&#xD;
+               Rand index computes the fraction of pairs of objects for&#xD;
+               which both classification methods agree.&#xD;
+               RI ranges from 0 (no pair classified in the same way under&#xD;
+               both clusterings) to 1 (identical clusterings).</LongDesc>
+      </Item>
+      <Item>
+         <Name>MI</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>Mirkin's index.</TypeInd>
+         <LongDesc> A number between 0 and 1.&#xD;
+               Mirkin's index computes the percentage of pairs of objects for&#xD;
+               which both classification methods disagree. MI=1-RI.</LongDesc>
+      </Item>
+      <Item>
+         <Name>HI</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>Hubert index.</TypeInd>
+         <LongDesc>  A number between -1 and 1.&#xD;
+               HI index is equal to the fraction of pairs of objects for&#xD;
+               which both classification methods agree minus the&#xD;
+               fraction of pairs of objects for which both&#xD;
+               classification methods disagree. HI= RI-MI.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION-->&#xD;
+&#xD;
+ This function follows the lines of MATLAB code developed by&#xD;
+ David Corney (2000) 	D.Corney@cs.ucl.ac.uk&#xD;
+&#xD;
+&#xD;
+ </Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>L. Hubert and P. Arabie (1985) "Comparing Partitions" Journal of&#xD;
+ Classification 2:193-218</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>crosstab</Item>
+      <Item>tclust</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>RandindexFS with the contingency table as input.</Title>
+         <Desc/>
+         <MATLABcode>
+    T=[1 1 0;&#xD;
+    1 2 1;&#xD;
+    0 0 4];&#xD;
+    ARI=RandIndexFS(T);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>RandindexFS with the two vectors as input.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+&#xD;
+    % RandindexFS with the two vectors as input.&#xD;
+     c=[1 1;&#xD;
+        1 2&#xD;
+        2 1;&#xD;
+        2 2 ;&#xD;
+        2 2;&#xD;
+        2 3;&#xD;
+        3 3;&#xD;
+        3 3;&#xD;
+        3 3;&#xD;
+        3 3];&#xD;
+    % c1= numeric vector containing the labels of the first partition&#xD;
+    c1=c(:,1);&#xD;
+    % c1= numeric vector containing the labels of the second partition&#xD;
+    c2=c(:,2);&#xD;
+    ARI=RandIndexFS(c1,c2);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Computation of ARI, RI, MI and HI.</Title>
+         <Desc/>
+         <MATLABcode>
+   [ARI,RI,MI,HI]=RandIndexFS(c1,c2);&#xD;
+    disp('Adjusted Rand index')&#xD;
+    disp(ARI)&#xD;
+    disp('Rand index (RI)')&#xD;
+    disp(RI)&#xD;
+    disp('Mirkin index = 1-RI')&#xD;
+    disp(MI)&#xD;
+    disp('Hubert index = RI-MI ')&#xD;
+    disp(HI)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Compare ARI for iris data (true classification against tclust classification).</Title>
+         <Desc/>
+         <MATLABcode>
+        load fisheriris&#xD;
+        % first partition c1 is the true partition&#xD;
+        c1=species&#xD;
+        % second partition c2 is the output of tclust clustering procedure&#xD;
+        out=tclust(meas,3,0,100,'msg',0);&#xD;
+        c2=out.idx;&#xD;
+        [ARI,RI,MI,HI]=RandIndexFS(c1,c2);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Compare ARI for iris data (exclude unassigned units from tclust).</Title>
+         <Desc/>
+         <MATLABcode>
+        load fisheriris&#xD;
+        % first partition c1 is the true partition&#xD;
+        c1=species&#xD;
+        % second partition c2 is the output of tclust clustering procedure&#xD;
+        out=tclust(meas,3,0.1,100,'msg',0);&#xD;
+        c2=out.idx;&#xD;
+        % Units inside c2 which contain number 0 are referred to trimmed observations&#xD;
+        noisecluster=0;&#xD;
+        [ARI,RI,MI,HI]=RandIndexFS(c1,c2,noisecluster);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

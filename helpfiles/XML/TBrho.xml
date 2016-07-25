@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->TBrho</Title>
+   <Purpose><!--This is the second line of the .m file-->TBrho computes rho function for Tukey's biweight</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>u</Name>
+         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>n x 1&#xD;
+               vector containing residuals or Mahalanobis distances&#xD;
+               for the n units of the sample</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning parameter</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar greater than 0 which&#xD;
+               controls the robustness/efficiency of the estimator&#xD;
+               (beta in regression or mu in the location case ...)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>rhoTB</Name>
+         <ShortDesc>n x 1 vector </ShortDesc>
+         <TypeInd>Tukey's biweight rho&#xD;
+                associated to the residuals or Mahalanobis distances for&#xD;
+                the n units of the sample.</TypeInd>
+         <LongDesc> </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+&#xD;
+ function TBrho transforms vector u as follows &#xD;
+ \[&#xD;
+ TBrho(u)= \left\{&#xD;
+    \begin{array}{cc}&#xD;
+  (c^2/6) \left\{ 1-[1-(u/c)^2]^3 \right\}  &amp;  |u/c| \leq 1  \\&#xD;
+  (c^2/6)                      &amp;  |u/c| &amp;gt;1   \\&#xD;
+ \end{array}&#xD;
+    \right.&#xD;
+  \]&#xD;
+  &#xD;
+ See equation (2.37) p. 29 of Maronna et al. (2006).&#xD;
+ Remark: equation (2.37) is written in standardized terms in such a way&#xD;
+ that $\rho(c)=1$, so it is the previous expression divided by $(c^2/6)$&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
+ and Methods, Wiley, New York.</Item>
+      <Item>Riani M., Cerioli A., Torti F. (2014). On consistency factors and&#xD;
+ efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.&#xD;
+ http://dx.doi.org/10.1007/s11749-014-0357-7</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>HYPrho</Item>
+      <Item>HArho</Item>
+      <Item>OPTrho</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    close all&#xD;
+    x=-6:0.01:6;&#xD;
+    rhoTB=TBrho(x,2);&#xD;
+    plot(x,rhoTB,'LineWidth',2)&#xD;
+    xlabel('$u$','Interpreter','Latex')&#xD;
+    ylabel('$\rho (u,2)$','Interpreter','Latex')&#xD;
+    text(x(1)-0.8,rhoTB(1),'c^2/6')&#xD;
+    text(x(end)+0.2,rhoTB(end),'c^2/6')&#xD;
+    title('$\rho (u,c)$','Interpreter','Latex')&#xD;
+    hold('on')&#xD;
+    c=2;&#xD;
+    stem(c,c^2/6,'LineStyle',':','LineWidth',1)&#xD;
+    stem(-c,c^2/6,'LineStyle',':','LineWidth',1)&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Compare two rho functions for 2 different values of c.</Title>
+         <Desc>  &#xD;
+     In the first we fix the bdp (value of efficiency is automatically given),&#xD;
+     while in the second we find the efficiency (the value of bdp is&#xD;
+     automatically given)&#xD;</Desc>
+         <MATLABcode>
+    close all&#xD;
+    x=-6:0.01:6;&#xD;
+    lwd=2;&#xD;
+    hold('on')&#xD;
+    c=TBbdp(0.5,1);&#xD;
+    rhoTB=TBrho(x,c);&#xD;
+    rhoTB=rhoTB/max(rhoTB);&#xD;
+    plot(x,rhoTB,'LineStyle','-','LineWidth',lwd)&#xD;
+    c=TBeff(0.95,1);&#xD;
+    rhoTB=TBrho(x,c);&#xD;
+    rhoTB=rhoTB/max(rhoTB);&#xD;
+    plot(x,rhoTB,'LineStyle','-.','LineWidth',lwd)&#xD;
+    xlabel('$x$','Interpreter','Latex','FontSize',16)&#xD;
+    ylabel('TB. Normalized $\rho_c(x)$','Interpreter','Latex','FontSize',20)&#xD;
+    legend({'$c_{(bdp=0.5 \mapsto eff=0.29)}$', '$c_{(eff=0.95 \mapsto bdp=0.12)}$'},'Interpreter','Latex','Location','SouthEast','FontSize',16)&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->randsampleFS</Title>
+   <Purpose><!--This is the second line of the .m file-->randsampleFS generates a random sample of k elements from the integers 1 to n (k&amp;lt;=n)</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>A vector of numbers will be selected from the integers 1 to n</ShortDesc>
+         <TypeInd>Scalar, a positive integer</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>The number of elements to be selected</ShortDesc>
+         <TypeInd>Non negative integer</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>method</Name>
+         <ShortDesc>The method used to extract the numbers (default is method = 1)</ShortDesc>
+         <TypeInd>Scalar, from 1 to 3 determining the method to be used</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>&lt;code&gt;randsampleFS(100,10,2)&#xD;
+&lt;/code&gt;</Example>
+         <DataType>single|double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc> &#xD;
+           For method 1 and 2, the elements  extracted are unique; For&#xD;
+           method 3, there is no guarantee that the elements extracted are&#xD;
+           unique</ShortDesc>
+         <TypeInd>A column vector of k values sampled at random from the integers 1:n.</TypeInd>
+         <LongDesc>&#xD;
+           Data Types - single|double.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+   if method=1 (default option) the program proceeds as follows: &#xD;
+   if  $4*k &amp;gt;n$ the programs does a random permutation of the population&#xD;
+   and returns the first nsel elements else if $4*k&amp;lt;=n$ (that is if the&#xD;
+   desired sample is small compared to all combinations, the program&#xD;
+   repeatedly samples with replacement until there are nsel unique values.&#xD;
+&#xD;
+   if method=2 Systematic sampling is used where the starting point is&#xD;
+   random and the step is also random.&#xD;
+&#xD;
+   if method=3 random sampling based on the old but well known Linear&#xD;
+   Congruential Generator (LCG) method is used. In this case there is no&#xD;
+   guarantee to get unique numbers.&#xD;
+&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>For Method 1. Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables&#xD;
+   for biological, agricultural and medical research (3rd ed.). London,&#xD;
+   Oliver &amp; Boyd, pp. 26-27.</Item>
+      <Item>For Method 2. Cochran, William G. (1977). Sampling techniques (Third ed.). Wiley.&#xD;
+&#xD;
+   For Method 3. D. E. Knuth. The Art of Computer Programming, Volume 2: Seminumerical&#xD;
+   Algorithms, Third Edition. Addison-Wesley, 1997. Section 3.2.1: The&#xD;
+   Linear Congruential Method, pp. 10-26.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>randsample</Item>
+      <Item>shuffling</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>randsampleFS with default options.</Title>
+         <Desc>&#xD;
+     default method (1) is used.&#xD;</Desc>
+         <MATLABcode>
+    randsampleFS(100,10) &#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>randsampleFS with optional argument set to method (2).</Title>
+         <Desc/>
+         <MATLABcode>
+    method = 2;&#xD;
+    randsampleFS(100,10,method) &#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>randsampleFS with optional arguments set to method (3).</Title>
+         <Desc/>
+         <MATLABcode>
+    method = 3;&#xD;
+    % Here, being nsel so big wrt nsamp, it is likely to obtain repetitions.&#xD;
+    randsampleFS(100,10,method)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

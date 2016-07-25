@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSMeda</Title>
+   <Purpose><!--This is the second line of the .m file-->FSMeda performs forward search in multivariate analysis with exploratory data analysis purposes</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Variables</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v&#xD;
+               variables. Rows of Y represent observations, and columns represent&#xD;
+               variables. Missing values (NaN's) and infinite values&#xD;
+               (Inf's) are allowed, since observations (rows) with missing&#xD;
+               or infinite values will automatically be excluded from the&#xD;
+               computations.&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsb</Name>
+         <ShortDesc>Units forming subset</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>List of units forming the initial subset. &#xD;
+               If bsb=0 (default) then the procedure starts with v units randomly&#xD;
+               chosen else if bsb is not 0 the search will start with&#xD;
+               m0=length(bsb).&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Point where to start monitoring required diagnostics</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Note that if bsb is supplied, init&amp;gt;=length(bsb). If init is not&#xD;
+              specified it will be set equal to floor(n*0.6).&#xD;
+                 </LongDesc>
+         <Example> 'init',50 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>It specify whether it is necessary to produce the plots of the&#xD;
+               monitoring of minMD</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If plots=1, a plot of the monitoring of minMD among&#xD;
+               the units not belonging to the subset is produced on the&#xD;
+               screen with 1 per cent, 50 per cent and 99 per cent confidence bands&#xD;
+               else (default), all plots are suppressed.&#xD;
+               </LongDesc>
+         <Example> 'plots',0&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>It controls whether to display or not messages&#xD;
+               about great interchange on the screen</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If msg==1 (default) messages are displyed on the screen&#xD;
+               else no message is displayed on the screen.&#xD;
+                 </LongDesc>
+         <Example> 'msg',0 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>scaled</Name>
+         <ShortDesc>It controls whether to monitor scaled Mahalanobis distances</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If scaled=1 scaled Mahalanobis distances are&#xD;
+               monitored during the search.&#xD;
+                 </LongDesc>
+         <Example> 'scaled',0 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>It controls whether to perform checks on matrix Y</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
+               matrix Y. As default nocheck=0.&#xD;
+                  </LongDesc>
+         <Example> 'nocheck',1&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>MAL</Value>
+               <Description>n x (n-init+1) = matrix containing the monitoring of&#xD;
+               Mahalanobis distances. &#xD;
+               1st row = distance for first unit; &#xD;
+               ...; &#xD;
+               nth row = distance for nth unit.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>BB</Value>
+               <Description>n x (n-init+1) matrix containing the information about the units belonging&#xD;
+               to the subset at each step of the forward search.&#xD;
+               1st col = indexes of the units forming subset in the&#xD;
+               initial step; &#xD;
+               ...; &#xD;
+               last column = units forming subset in the final step (all&#xD;
+               units).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>mmd</Value>
+               <Description>n-init x 3 matrix which contains the monitoring of minimum&#xD;
+               MD or (m+1)th ordered MD  at each step of&#xD;
+               the forward search.&#xD;
+               1st col = fwd search index (from init to n-1); &#xD;
+               2nd col = minimum MD; &#xD;
+               3rd col = (m+1)th-ordered MD.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>msr</Value>
+               <Description>n-init+1 x 3 = matrix which contains the monitoring of&#xD;
+               maximum MD or mth ordered MD. &#xD;
+               1st col = fwd search index (from init to n); &#xD;
+               2nd col = maximum MD; &#xD;
+               3rd col = mth-ordered MD.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>gap</Value>
+               <Description>n-init+1 x 3 = matrix which contains the monitoring of&#xD;
+               the gap (difference between minMD outside subset and max.&#xD;
+               inside). &#xD;
+               1st col = fwd search index (from init to n); &#xD;
+               2nd col = min MD - max MD; &#xD;
+               3rd col = (m+1)th ordered MD - mth ordered distance.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>loc</Value>
+               <Description>(n-init+1) x (v+1) matrix containing the monitoring of&#xD;
+               estimated of the means for each variable in each step of&#xD;
+               the forward search.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>S2cov</Value>
+               <Description>(n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring&#xD;
+               of the elements of the covariance matrix in each step&#xD;
+               of the forward search. &#xD;
+               1st col = fwd search index (from init to n); &#xD;
+               2nd col = monitoring of S(1,1); &#xD;
+               3rd col = monitoring of S(1,2); &#xD;
+               ...; &#xD;
+               end col = monitoring of S(v,v).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>detS</Value>
+               <Description>(n-init+1) x (2) matrix containing the monitoring of&#xD;
+               the determinant of the covariance matrix&#xD;
+               in each step of the forward search.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Un</Value>
+               <Description>(n-init) x 11 Matrix which contains the unit(s)&#xD;
+               included in the subset at each step of the fwd search. &#xD;
+               REMARK: in every step the new subset is compared with the&#xD;
+               old subset. Un contains the unit(s) present in the new&#xD;
+               subset but not in the old one Un(1,2) for example contains&#xD;
+               the unit included in step init+1 Un(end,2) contains the&#xD;
+               units included in the final step of the search</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Y</Value>
+               <Description>Original data input matrix</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the&#xD;
+   forward search Springer Verlag, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSMmmd</Item>
+      <Item>FSM</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSMeda with all default options.</Title>
+         <Desc>&#xD;
+     Run the FS on a simulated dataset by choosing an initial subset&#xD;
+     formed by the three observations with the smallest Mahalanobis&#xD;
+     Distance.&#xD;</Desc>
+         <MATLABcode>
+    n=100;&#xD;
+    v=3;&#xD;
+    m0=3;&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+    [fre]=unibiv(Y);&#xD;
+    %create an initial subset with the 3 observations with the lowest&#xD;
+    %Mahalanobis Distance&#xD;
+    fre=sortrows(fre,4);&#xD;
+    bs=fre(1:m0,1);&#xD;
+    [out]=FSMeda(Ycont,bs);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSMeda with optional arguments.</Title>
+         <Desc>&#xD;
+     Monitoring the evolution of minimum Mahlanobis distance.&#xD;</Desc>
+         <MATLABcode>
+    n=100;&#xD;
+    v=3;&#xD;
+    m0=3;&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+    [fre]=unibiv(Y);&#xD;
+    %create an initial subset with the 3 observations with the lowest&#xD;
+    %Mahalanobis Distance&#xD;
+    fre=sortrows(fre,4);&#xD;
+    bs=fre(1:m0,1);&#xD;
+    [out]=FSMeda(Ycont,bs,'plots',1);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example with the Swiss bank notes data.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('swiss_banknotes')&#xD;
+    Y=swiss_banknotes.data;&#xD;
+    [fre]=unibiv(Y);&#xD;
+    %create an initial subset with the 3 observations with the lowest&#xD;
+    %Mahalanobis Distance&#xD;
+    fre=sortrows(fre,4);&#xD;
+    m0=20;&#xD;
+    bs=fre(1:m0,1);&#xD;
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example with the Emilia Romagna data.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    [fre]=unibiv(Y);&#xD;
+    %create an initial subset with the 30 observations with the lowest&#xD;
+    %Mahalanobis Distance&#xD;
+    fre=sortrows(fre,4);&#xD;
+    m0=30;&#xD;
+    bs=fre(1:m0,1);&#xD;
+    [out]=FSMeda(Y,bs,'init',100);&#xD;
+    % Minimum Mahalanobis distance&#xD;
+    % Compare the plot with Figure 1.12 p. 21, ARC (2004)&#xD;
+    mmdplot(out,'ylimy',[6 14])&#xD;
+    % Analysis of the last 16 units to enter the forward search&#xD;
+    % Compare the results with Table 1.3 p. 21&#xD;
+    disp(out.Un(end-15:end,:));&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example with the Emilia Romagna data (all variables).</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    % Replace zeros with min values for variables specified in sel&#xD;
+    sel=[6 10 12 13 19 21];&#xD;
+    for i=sel&#xD;
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));&#xD;
+    end&#xD;
+    % Modify variables y16 y23 y25 y26&#xD;
+    sel=[16 23 25 26];&#xD;
+    sel=[25 26];&#xD;
+    Y1=Y;&#xD;
+    Y1(:,sel)=100-Y1(:,sel);&#xD;
+                        &#xD;
+    la0demo=[0.5,0.25,0,1,0.25,0,0,0.25,0.5];&#xD;
+    la0weal=[0.25,0.5,0.5,1,1,0.5,-1/3,0.25,0.25,-1];&#xD;
+    la0work=[0.25,0,1,0,0,0.25,1,1,1];&#xD;
+    la0C2=[la0demo(1:5) la0work(1:4) la0demo(6:9) la0weal la0work(5:9)];&#xD;
+    Y1tr=normBoxCox(Y1,1:28,la0C2);&#xD;
+    [fre]=unibiv(Y1tr);&#xD;
+    %create an initial subset with the 30 observations with the lowest&#xD;
+    %Mahalanobis Distance&#xD;
+    fre=sortrows(fre,4);&#xD;
+    m0=30;&#xD;
+    bs=fre(1:m0,1);&#xD;
+    [out]=FSMeda(Y1tr,bs,'init',100,'scaled',1);&#xD;
+    % Minimum Mahalanobis distance&#xD;
+    [out]=FSMeda(Y1tr,bs,'init',100);&#xD;
+    mmdplot(out,'ylimy',[5 26])&#xD;
+    &#xD;
+    standard=struct;&#xD;
+    standard.ylim=[4 17];&#xD;
+    malfwdplot(out,'standard',standard);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

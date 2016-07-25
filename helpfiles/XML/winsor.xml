@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->winsor</Title>
+   <Purpose><!--This is the second line of the .m file-->winsor returns a winsorized copy of input </Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Input array</ShortDesc>
+         <TypeInd>Vector | matrix | 3D array</TypeInd>
+         <LongDesc>Input array, specified as a vector, matrix, or 3D  array.&#xD;
+           </LongDesc>
+         <Example> </Example>
+         <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>p</Name>
+         <ShortDesc>Percentiles to use to winsorize</ShortDesc>
+         <TypeInd>Vector of length 2 with elements in the interval [0 100]</TypeInd>
+         <LongDesc>Vector of length(2) containing cut-off percentiles (left,&#xD;
+           right). Note that p(2) must be greater than p(1).&#xD;
+           </LongDesc>
+         <Example> </Example>
+         <DataType>single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>dim</Name>
+         <ShortDesc>Dimension to operate along</ShortDesc>
+         <TypeInd>Positive integer scalar</TypeInd>
+         <LongDesc>If no value is specified, then the default is the first&#xD;
+           array dimension whose size does not equal 1. In other words, if&#xD;
+           the input is a row (column) vector it winsorizes this row&#xD;
+           (column) vector. If the input is a nxp matrix it winsorizes the&#xD;
+           columns. If the input is a 3D arrary of size nxpxq it&#xD;
+           winsorizes each column of each slice of the 3D array.&#xD;
+           </LongDesc>
+         <Example>&lt;code&gt;2 &#xD;
+&lt;/code&gt;</Example>
+         <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Xwins</Name>
+         <ShortDesc> Array of the same size of X</ShortDesc>
+         <TypeInd>X winsorized.</TypeInd>
+         <LongDesc> In array Xwins all&#xD;
+           entries smaller than the p(1) quantile have been replaced by&#xD;
+           this value and likewise for all entries larger than the p(2)&#xD;
+           quantile. Row, or columns are winsorized depending on optional&#xD;
+           input scalar dim.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
+ and Methods, Wiley, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>trimmean</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Winsorize each column of matrix X.</Title>
+         <Desc>&#xD;
+    rng('default')  Reinitialize the random number generator to its startup configuration&#xD;</Desc>
+         <MATLABcode>
+    rng(100)&#xD;
+    X = randn(100,5);&#xD;
+    % Contaminate 5th and 10th row of matrix X&#xD;
+    X(5,:)=5;&#xD;
+    X(10,:)=-6;&#xD;
+    p=[1 99];&#xD;
+    Y = winsor(X,p);&#xD;
+    subplot(2,1,1)&#xD;
+    boxplot(X)&#xD;
+    title('Original data')&#xD;
+    subplot(2,1,2)&#xD;
+    boxplot(Y)&#xD;
+    title('Winsorized data')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Winsorize each row of 3D array X.</Title>
+         <Desc/>
+         <MATLABcode>
+    rng(100)&#xD;
+    X = randn(20,100,3);&#xD;
+    Y = winsor(X,p,2);&#xD;
+    disp('Number of unique elements in second rows of first slice of 3D array X')&#xD;
+    disp(length(unique(Y(2,:,1)')))&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->mdrplot</Title>
+   <Purpose><!--This is the second line of the .m file-->mdrplot plots the trajectory of minimum deletion residual (mdr)</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc>Structure containing monitoring of mdr</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>Structure containing the following fields.&#xD;
+    out.mdr =  minimum deletion residual. A matrix containing the monitoring of minimum deletion&#xD;
+               residual in each step of the forward search. The first&#xD;
+               column of mdr must contain the fwd search index&#xD;
+               This matrix can be created using function FSReda&#xD;
+               (compulsory argument)&#xD;
+       out.Un  =   order of entry of each unit. Matrix containing the order of entry of each unit&#xD;
+               (necessary if datatooltip is true or databrush is not empty)&#xD;
+       out.y   =   response. Vector containing the response (necessary only if&#xD;
+               option databrush is not empty)&#xD;
+       out.X   =   Regressors. A matrix containing the explanatory variables&#xD;
+               (necessary only if option databrush is not empty)&#xD;
+     out.Bols  =   Monitoring of beta coefficients. (n-init+1) x (p+1) matrix containing the monitoring of&#xD;
+               estimated beta coefficients in each step of the forward search&#xD;
+               (necessary only if option databrush is not empty and&#xD;
+               suboption multivarfit is not empty)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>mdr</Value>
+               <Description>minimum deletion residual. A matrix containing the monitoring of minimum deletion&#xD;
+               residual in each step of the forward search. The first&#xD;
+               column of mdr must contain the fwd search index&#xD;
+               This matrix can be created using function FSReda&#xD;
+               (compulsory argument)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Un</Value>
+               <Description>order of entry of each unit. Matrix containing the order of entry of each unit&#xD;
+               (necessary if datatooltip is true or databrush is not empty)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>y</Value>
+               <Description>response. Vector containing the response (necessary only if&#xD;
+               option databrush is not empty)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>Regressors. A matrix containing the explanatory variables&#xD;
+               (necessary only if option databrush is not empty)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Bols</Value>
+               <Description>Monitoring of beta coefficients. (n-init+1) x (p+1) matrix containing the monitoring of&#xD;
+               estimated beta coefficients in each step of the forward search&#xD;
+               (necessary only if option databrush is not empty and&#xD;
+               suboption multivarfit is not empty)</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>quant</Name>
+         <ShortDesc>Quantiles for which envelopes have&#xD;
+                   to be computed</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>The default is to produce 1%, 50% and&#xD;
+                   99% envelopes. In other words the default is&#xD;
+                   quant=[0.01;0.5;0.99];&#xD;
+                   </LongDesc>
+         <Example> 'quant',[0.05;0.5;0.95]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>exact</Name>
+         <ShortDesc>Exact of approximate cdf for envelope calculation</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If it is equal to 1 the calculation of the&#xD;
+                   quantiles of the T and F distribution is based on&#xD;
+                   functions finv and tinv from the Matlab statistics&#xD;
+                   toolbox, otherwise the calculations of the former&#xD;
+                   quantiles is based on functions invcdff and invcdft.&#xD;
+                   The solution has a tolerance of 1e-8 (change variable&#xD;
+                   tol in files invcdff.m and invcdft.m if required.&#xD;
+                   %                   Remark: the use of functions tinv and finv is more&#xD;
+                   precise but requires more time. The default value of&#xD;
+                   exact is 0 (approximate solution).&#xD;
+</LongDesc>
+         <Example> 'exact',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>sign</Name>
+         <ShortDesc>mdr with sign</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If it is equal 1 (default) we distinguish steps&#xD;
+                   for which minimum deletion residual was associated with&#xD;
+                   positive or negative value of the residual. Steps&#xD;
+                   associated with positive values of mdr are plotted in&#xD;
+                   black, while other steps are plotted in red&#xD;
+                   </LongDesc>
+         <Example> 'sign',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>mplus1</Name>
+         <ShortDesc>plot of (m+1)th order statistic</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar, which specifies if it is necessary to plot the&#xD;
+                   curve associated with (m+1)th order statistic&#xD;
+                   </LongDesc>
+         <Example> 'mplus1',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>envm</Name>
+         <ShortDesc>sample size for drawing enevlopes</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which specifies the size of the sample which is&#xD;
+                   used to superimpose the envelope. The default is to add&#xD;
+                   an envelope based on all the observations (size n&#xD;
+                   envelope).&#xD;
+                   </LongDesc>
+         <Example> 'envm',100&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>xlimx</Name>
+         <ShortDesc>min and max for x axis</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>vector with two elements controlling minimum and&#xD;
+                   maximum on the x axis. Default value is mdr(1,1)-3 and&#xD;
+                   mdr(end,1)*1.3&#xD;
+                   </LongDesc>
+         <Example> 'xlimx',[20 100]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ylimy</Name>
+         <ShortDesc>min and max for x axis</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector with two elements controlling minimum and&#xD;
+                   maximum on the y axis. Default value is min(mdr(:,2))&#xD;
+                   and max(mdr(:,2));&#xD;
+                   </LongDesc>
+         <Example> 'ylimy',[2 6]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lwdenv</Name>
+         <ShortDesc>Line width</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which controls the width of the lines associated&#xD;
+                   with the envelopes. Default is lwdenv=1&#xD;
+                   </LongDesc>
+         <Example> 'lwdenv',2&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tag</Name>
+         <ShortDesc>plot handle</ShortDesc>
+         <TypeInd>String</TypeInd>
+         <LongDesc>String which identifies the handle of the plot which&#xD;
+                   is about to be created. The default is to use tag&#xD;
+                   'pl_mdr'. Notice that if the program finds a plot which&#xD;
+                   has a tag equal to the one specified by the user, then&#xD;
+                   the output of the new plot overwrites the existing one&#xD;
+                   in the same window else a new window is created&#xD;
+                   </LongDesc>
+         <Example> 'tag','mymdr'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>datatooltip</Name>
+         <ShortDesc>interactive clicking</ShortDesc>
+         <TypeInd>Empty value (default) or&#xD;
+                   structure</TypeInd>
+         <LongDesc>If datatooltip is not empty the user can use the mouse&#xD;
+                   in order to have information about the unit selected,&#xD;
+                   the step in which the unit enters the search and the&#xD;
+                   associated label. If datatooltip is a structure, it is&#xD;
+                   possible to control the aspect of the data cursor (see&#xD;
+                   function datacursormode for more details or the&#xD;
+                   examples below). The default options of the structure&#xD;
+                   are DisplayStyle='Window' and SnapToDataVertex='on'&#xD;
+                   </LongDesc>
+         <Example> 'datatooltip',''&#xD;
+                   </Example>
+         <DataType>empty value, numeric or structure</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>label</Name>
+         <ShortDesc>row labels</ShortDesc>
+         <TypeInd>Cell of strings</TypeInd>
+         <LongDesc>Cell containing the labels&#xD;
+                   of the units (optional argument used when&#xD;
+                   datatooltip=1. If this field is not present labels&#xD;
+                   row1, ..., rown will be automatically created and&#xD;
+                   included in the pop up datatooltip window)&#xD;
+                   </LongDesc>
+         <Example> 'label',{'Smith','Johnson','Robert','Stallone'}&#xD;
+                   </Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>databrush</Name>
+         <ShortDesc>interactive mouse brushing</ShortDesc>
+         <TypeInd>Empty value (default),&#xD;
+                   scalar or structure</TypeInd>
+         <LongDesc>DATABRUSH IS AN EMPTY VALUE. &#xD;
+                   If databrush is an empty&#xD;
+                   value (default), no brushing is done. The activation of&#xD;
+                   this option (databrush is a scalar or a structure) enables&#xD;
+                   the user  to select a set of trajectories in the&#xD;
+                   current plot and to see them highlighted in the y|X&#xD;
+                   plot (notice that if the plot y|X does not exist it is&#xD;
+                   automatically created). In addition, brushed units can&#xD;
+                   be highlighted in the monitoring residual plot&#xD;
+                   The window style of the&#xD;
+                   other figures is set equal to that which contains the&#xD;
+                   monitoring residual plot. In other words, if the&#xD;
+                   monitoring residual plot is docked all the other&#xD;
+                   figures will be docked too.&#xD;
+                  DATABRUSH IS A SCALAR.&#xD;
+                   If databrush is a scalar the default selection tool is a&#xD;
+                   rectangular brush and it is possible to brush only once&#xD;
+                   (that is persist='').&#xD;
+                  DATABRUSH IS A STRUCTURE. &#xD;
+                   If databrush is a structure, it is&#xD;
+                   possible to use all optional arguments&#xD;
+                   of function selectdataFS.m and the following optional&#xD;
+                   argument:&#xD;
+                  persist. Persist is an empty value or a scalar&#xD;
+                   containing the strings 'on' or 'off' If persist = 'on'&#xD;
+                   or 'off' brusing can be done as many time as the user&#xD;
+                   requires. If persist='on' then the unit(s) currently&#xD;
+                   brushed are added to those previously brushed. If&#xD;
+                   persist='off' every time a new brush is performed units&#xD;
+                   previously brushed are removed. The default value of&#xD;
+                   persist is '' that is brushing is allowed only once. If&#xD;
+                   persist is 'on' it is possible, every time a new&#xD;
+                   brushing is done, to use a different color for the&#xD;
+                   brushed units&#xD;
+                  bivarfit. This option is to add one or more least&#xD;
+                     square lines to the plots of y|X, depending on the&#xD;
+                     selected groups. bivarfit = ''&#xD;
+                       is the default: no line is fitted.&#xD;
+                     bivarfit = '1'&#xD;
+                       fits a single ols line to all points of each&#xD;
+                       bivariate plot in the scatter matrix y|X.&#xD;
+                     bivarfit = '2'&#xD;
+                       fits two ols lines: one to all points and another&#xD;
+                       to the last selected group. This is useful when&#xD;
+                       there are only two groups, of which one refers to a&#xD;
+                       set of potential outliers.&#xD;
+                     bivarfit = '0'&#xD;
+                       fits one ols line for each selected group. This is&#xD;
+                       useful for the purpose of fitting mixtures of&#xD;
+                       regression lines.&#xD;
+                     bivarfit = 'i1' or 'i2' or 'i3' etc.&#xD;
+                       fits a ols line to a specific group, the one with&#xD;
+                       index 'i' equal to 1, 2, 3 etc.&#xD;
+                   multivarfit. If this option is '1', we add to each scatter&#xD;
+                     plot of y|X a line based on the fitted hyperplane&#xD;
+                     coefficients. The line added to the scatter plot y|Xi&#xD;
+                     is mean(y)+Ci*Xi, being Ci the coefficient of Xi. The&#xD;
+                     default value of multivarfit is '', i.e. no line is&#xD;
+                     added.&#xD;
+                   labeladd. If this option is '1', we label the units&#xD;
+                     of the last selected group with the unit row index in&#xD;
+                     matrices X and y. The default value is labeladd='',&#xD;
+                     i.e. no label is added.&#xD;
+                   </LongDesc>
+         <Example> 'databrush',1&#xD;
+                   </Example>
+         <DataType>single | double | struct</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>FontSize</Name>
+         <ShortDesc>Size of axes labels</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which controls the&#xD;
+                   fontsize of the labels of the axes. Default value is 12&#xD;
+                   </LongDesc>
+         <Example> 'FontSize',14&#xD;
+                   </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>SizeAxesNum</Name>
+         <ShortDesc>Size of axes numbers</ShortDesc>
+         <TypeInd>Scalar which controls the fontsize of the numbers of&#xD;
+                   the axes</TypeInd>
+         <LongDesc>Default value is 10&#xD;
+                   </LongDesc>
+         <Example> 'SizeAxesNum',14&#xD;
+                   </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nameX</Name>
+         <ShortDesc>Regressors names</ShortDesc>
+         <TypeInd>Cell array of strings</TypeInd>
+         <LongDesc>Cell array of strings of length p containing the labels&#xD;
+                   of the varibles of the regression dataset. If it is empty&#xD;
+                 	(default) the sequence X1, ..., Xp will be created&#xD;
+                   automatically&#xD;
+                   </LongDesc>
+         <Example> 'nameX',{'Age','Income','Married','Profession'}&#xD;
+                   </Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>namey</Name>
+         <ShortDesc>response label</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>Character containing the label of the response&#xD;
+                   </LongDesc>
+         <Example> 'namey','response label'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lwd</Name>
+         <ShortDesc>Curves line width</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which controls linewidth of the curve which&#xD;
+                   contains the monitoring of minimum deletion residual.&#xD;
+                   Default line width=2&#xD;
+                   </LongDesc>
+         <Example> 'lwd',3&#xD;
+                   </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>titl</Name>
+         <ShortDesc>main title</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>A label for the title (default: '')&#xD;
+                   </LongDesc>
+         <Example> 'namey','Plot title'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labx</Name>
+         <ShortDesc>x axis title</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>A label for the x-axis (default: 'Subset size m')&#xD;
+                   </LongDesc>
+         <Example> 'labx','Subset size m'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>laby</Name>
+         <ShortDesc>y axis title</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>A label for the y-axis (default: 'Minimum deletion residual')&#xD;
+                   </LongDesc>
+         <Example> 'laby','mdr'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,&#xD;
+   Springer Verlag, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>resfwdplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of the use of function mdrplot with all the default options.</Title>
+         <Desc>&#xD;
+    Steps common to all the examples&#xD;</Desc>
+         <MATLABcode>
+    load('loyalty.txt','loyalty');&#xD;
+    y=loyalty(:,4);&#xD;
+    X=loyalty(:,1:3);&#xD;
+    [outLXS]=LXS(y,X,'nsamp',1000);&#xD;
+    [out]=FSReda(y,X,outLXS.bs);&#xD;
+    mdrplot(out);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of function mdrplot with personalized envelopes.</Title>
+         <Desc/>
+         <MATLABcode>
+    mdrplot(out,'quant',[0.99;0.9999]);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>datatooltip passed as scalar.</Title>
+         <Desc>&#xD;
+    Example of the use of function mdrplot with datatooltip passed as&#xD;
+    scalar (that is using default options for datacursor (i.e.&#xD;
+    DisplayStyle =window)&#xD;</Desc>
+         <MATLABcode>
+     mdrplot(out,'datatooltip',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Datatooltip passed as structure.</Title>
+         <Desc/>
+         <MATLABcode>
+    clear tooltip&#xD;
+    tooltip.SnapToDataVertex='on'&#xD;
+    tooltip.DisplayStyle='datatip'&#xD;
+    mdrplot(out,'datatooltip',tooltip);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Use of option sign.</Title>
+         <Desc>&#xD;
+    Example of the information which can be extracted from option sign=1&#xD;
+    (default). If the data come from a distribution which has positive&#xD;
+    asymmetry generally the last part of the search is associated with&#xD;
+    positive values of the minimum residual among the units belonging to&#xD;
+    subset The example below shows that the last 60 steps of the curve are&#xD;
+    associated with a black curve (positive value of mdr)&#xD;
+&#xD;</Desc>
+         <MATLABcode>
+    state = 137; state1=4567;&#xD;
+    rand('state', state);&#xD;
+    randn('state', state1);&#xD;
+    X=randn(200,3);&#xD;
+    y=chi2rnd(8,200,1);&#xD;
+    [outLXS]=LXS(y,X,'nsamp',1000);&#xD;
+    [out]=FSReda(y,X,outLXS.bs);&#xD;
+    mdrplot(out,'sign',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of option envm.</Title>
+         <Desc>&#xD;
+   In this case the resuperimposed envelope is based on n-2 observations&#xD;</Desc>
+         <MATLABcode>
+   mdrplot(out,'envm',length(out.y)-2);&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
+     Input option databrush passed as scalar.</Title>
+         <Desc>&#xD;
+    Example of the use of function mdrplot with databrush&#xD;</Desc>
+         <MATLABcode>
+     mdrplot(out,'databrush',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 2.&lt;/i&gt;
+     Input option databrush passed as structure.</Title>
+         <Desc>&#xD;
+    Example where databrush is a structure&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct&#xD;
+    databrush.selectionmode='Lasso'&#xD;
+     mdrplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 3.&lt;/i&gt;
+     Input option databrush passed as structure and brush mode.</Title>
+         <Desc>&#xD;
+    Example of the use of brush using brush mode&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct&#xD;
+    databrush.selectionmode='Brush'&#xD;
+    databrush.Label='on';&#xD;
+    mdrplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 4.&lt;/i&gt;
+     Persistent cumulative brush 1.</Title>
+         <Desc>&#xD;
+    Example of the use of persistent non cumulative brush. Every time a&#xD;
+    brushing action is performed previous highlightments are removed&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct&#xD;
+    databrush.persist='off'&#xD;
+    databrush.RemoveLabels='off';&#xD;
+    mdrplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 5.&lt;/i&gt;
+     Persistent cumulative brush 2.</Title>
+         <Desc>&#xD;
+    Example of the use of persistent cumulative brush. Every time a&#xD;
+    brushing action is performed current highlightments are added to&#xD;
+    previous highlightments&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct&#xD;
+    databrush.persist='on';&#xD;
+    databrush.selectionmode='Rect'&#xD;
+    mdrplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

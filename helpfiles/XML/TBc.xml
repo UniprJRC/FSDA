@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->TBc</Title>
+   <Purpose><!--This is the second line of the .m file-->TBc computes breakdown point and efficiency associated with constant c for Tukey's biweight</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning constant c</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar greater than 0 which&#xD;
+               controls the robustness/efficiency of the estimator</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>v</Name>
+         <ShortDesc>number of response variables</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Number of variables of&#xD;
+               the  dataset (for regression v=1)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>shapeeff</Name>
+         <ShortDesc>location or shape efficiency</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If shapeeff=1, the efficiency is referred to the shape else&#xD;
+              (default) is referred to the location estimator&#xD;
+               </LongDesc>
+         <Example>&lt;code&gt;1 &#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>bdp</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>bdp.</TypeInd>
+         <LongDesc> Breakdown point associated to the supplied&#xD;
+                 value of c</LongDesc>
+      </Item>
+      <Item>
+         <Name>eff</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>eff.</TypeInd>
+         <LongDesc> Efficiency associated to the supplied&#xD;
+                 value of c&#xD;
+                 Remark: if c is a vector bdp and eff will also be vectors&#xD;
+                 with the same size of c. For example bdp(3) and eff(3)&#xD;
+                 are associated to c(3) ....</LongDesc>
+      </Item>
+      <Item>
+         <Name>approxsheff</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>Approximate value of efficiency.</TypeInd>
+         <LongDesc> &#xD;
+                 Approximate value of efficiency in case input&#xD;
+                 option shapeeff=1 and v&amp;gt;1.&#xD;
+                 This output is left for comparability with the value&#xD;
+                 which comes out from R library robustbase.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),&#xD;
+ The Change-of-Variance Curve and Optimal Redescending M-Estimators,&#xD;
+ Journal of the American Statistical Association , Vol. 76, No. 375,&#xD;
+ pp. 643-648 (HRR)</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>HYPc</Item>
+      <Item>HAc</Item>
+      <Item>OPTc</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Tbc with just one output argument.</Title>
+         <Desc/>
+         <MATLABcode>
+    [bdp]=TBc(2,1)&#xD;
+    disp('Break down point')&#xD;
+    disp(bdp)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Tbc with 2 output arguments.</Title>
+         <Desc/>
+         <MATLABcode>
+    [bdp,eff]=TBc(2,1)&#xD;
+    disp('Break down point and efficienty')&#xD;
+    disp(bdp)&#xD;
+    disp(eff)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Find also approximate value of scale efficienty (for R comparability).</Title>
+         <Desc/>
+         <MATLABcode>
+    [bdp,eff,approxeff]=TBc(2,2,1)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Breakdown point and efficiency.</Title>
+         <Desc>&#xD;
+    Analysis of breakdown point and asymptotic efficiency&#xD;
+    at the normal distribution as a function of c in regression.&#xD;</Desc>
+         <MATLABcode>
+    c=1:0.01:6;&#xD;
+    [bdp,eff]=TBc(c,1);&#xD;
+    subplot(2,1,1)&#xD;
+    plot(c,bdp)&#xD;
+    xlabel('c','Interpreter','Latex','FontSize',16)&#xD;
+    ylabel('Breakdown point','Interpreter','none')&#xD;
+    subplot(2,1,2)&#xD;
+    plot(c,eff)&#xD;
+    xlabel('c','Interpreter','Latex','FontSize',16)&#xD;
+    ylabel('Asymptotic efficiency','Interpreter','none')&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->tkmeans</Title>
+   <Purpose><!--This is the second line of the .m file-->tkmeans computes trimmed k-means</Purpose>
+   <Description><!--Description section-->tkmeans(Y, k, alpha) partitions the points in the n-by-v data matrix Y&#xD;
+   into k clusters.  This partition minimizes the trimmed sum, over all&#xD;
+   clusters, of the within-cluster sums of point-to-cluster-centroid&#xD;
+   distances.  Rows of Y correspond to points, columns correspond to&#xD;
+   variables. tkmeans returns inside structure out an n-by-1 vector IDX&#xD;
+   containing the cluster indices of each point.  By default, tkmeans uses&#xD;
+   (squared) Euclidean distances.</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>Data matrix containining n observations on v&#xD;
+     variables.&#xD;
+        Rows of Y represent observations, and columns&#xD;
+        represent variables.&#xD;
+        Missing values (NaN's) and infinite values (Inf's) are allowed,&#xD;
+        since observations (rows) with missing or infinite values will&#xD;
+        automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>number of groups</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>alpha</Name>
+         <ShortDesc>global trimming level</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>alpha is a scalar between 0 and 0.5. If&#xD;
+        alpha=0 tkmeans reduces to kmeans</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>nsamp</Name>
+         <ShortDesc>Number of subsamples which will be extracted to find the&#xD;
+               partition</ShortDesc>
+         <TypeInd>Integer</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be extracted.&#xD;
+               They will be (n choose k).&#xD;
+                 %               Remark: if the number of all possible subset is &amp;lt;300 the&#xD;
+               default is to extract all subsets, otherwise just 300&#xD;
+</LongDesc>
+         <Example> 'nsamp',0 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>refsteps</Name>
+         <ShortDesc>number of refining iterations in each&#xD;
+               subsample (default = 15)</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> 'refsteps',20 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>reftol</Name>
+         <ShortDesc>Default value of tolerance for the refining steps</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>The default value is 1e-14.&#xD;
+                 </LongDesc>
+         <Example> 'reftol',0.0001 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>weights</Name>
+         <ShortDesc>cluster weights</ShortDesc>
+         <TypeInd>Integer</TypeInd>
+         <LongDesc>A dummy scalar, specifying whether cluster weights&#xD;
+               (1) shall be considered in the concentration and&#xD;
+               assignment steps. If weights=1 in the assignment&#xD;
+               step to the squared Euclidean distance of unit i to group j&#xD;
+               log n_j is substracted. The default is no cluster weights.&#xD;
+                 </LongDesc>
+         <Example> 'weights',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>plots generation</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>If plots = 1, a plot with the classification is&#xD;
+               shown on the screen.&#xD;
+                 </LongDesc>
+         <Example> 'plots',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>scalar which controls whether to display or not messages&#xD;
+               on the screen</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If msg==1 (default) messages are displayed&#xD;
+               on the screen about estimated time to compute the estimator&#xD;
+               else no message is displayed on the screen.&#xD;
+                 </LongDesc>
+         <Example> 'msg',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>If nocheck is equal to 1 no check is performed on&#xD;
+               matrix Y</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>As default nocheck=0. &#xD;
+                 </LongDesc>
+         <Example> 'nocheck',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nomes</Name>
+         <ShortDesc>estimated time</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nomes is equal to 1 no message about estimated&#xD;
+               time to compute tkemans is displayed, else if nomes is&#xD;
+               equal to 0 (default), a message about estimated time is&#xD;
+               displayed.&#xD;
+                 </LongDesc>
+         <Example> 'nomes',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Ysave</Name>
+         <ShortDesc>saving Y</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the input matrix Y&#xD;
+               is saved into the output structure out. Default is 0, i.e.&#xD;
+               no saving is done.&#xD;
+                        </LongDesc>
+         <Example> 'Ysave',1 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>weights</Value>
+               <Description>(1/k, ...., 1/k) else if input option&#xD;
+                       weights &amp;lt;&amp;gt; 1 out.weights=(n1/n, ..., nk/n)&#xD;
+               out.h : scalar. Number of observations that have determined the&#xD;
+                       centroids (number of untrimmed units).&#xD;
+             out.obj : scalar. Value of the objective function which is minimized &#xD;
+                       (value of the best returned solution).&#xD;
+              out.Y  : original data matrix Y. The field is present if option&#xD;
+                       Ysave is set to 1.</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc> Cell</ShortDesc>
+         <TypeInd>C       :   subsamples extracted.</TypeInd>
+         <LongDesc> .</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>(2008), "A General Trimming Approach to Robust Cluster Analysis". Annals&#xD;
+ of Statistics, Vol.36, 1324-1345. Technical Report available at&#xD;
+ www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>kmeans</Item>
+      <Item>tclust</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Trimmed k-means using geyser data (1).</Title>
+         <Desc>&#xD;
+     3 groups and trimming level of 3%&#xD;</Desc>
+         <MATLABcode>
+    Y=load('geyser2.txt');&#xD;
+    out=tkmeans(Y,3,0.03,'plots',1)&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Trimmed k-means using geyser data (2).</Title>
+         <Desc>&#xD;
+     option weights =1&#xD;</Desc>
+         <MATLABcode>
+    Y=load('geyser2.txt');&#xD;
+    out=tkmeans(Y,3,0.03,'plots',1,'weights',1)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Trimmed k-means using M5data.</Title>
+         <Desc>&#xD;
+     Weights =1&#xD;</Desc>
+         <MATLABcode>
+    Y=load('M5data.txt');&#xD;
+    out=tkmeans(Y(:,1:2),3,0,'plots',1)&#xD;
+    out=tkmeans(Y(:,1:2),5,0.1,'plots',1)&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Trimmed k-means using structured noise.</Title>
+         <Desc>&#xD;
+     The data have been generated using the following R instructions&#xD;
+        set.seed (0)&#xD;
+        v &amp;lt;- runif (100, -2 * pi, 2 * pi)&#xD;
+        noise &amp;lt;- cbind (100 + 25 * sin (v), 10 + 5 * v)&#xD;
+    &#xD;
+    &#xD;
+        x &amp;lt;- rbind (&#xD;
+            rmvnorm (360, c (0.0,  0), matrix (c (1,  0,  0, 1), ncol = 2)),&#xD;
+            rmvnorm (540, c (5.0, 10), matrix (c (6, -2, -2, 6), ncol = 2)),&#xD;
+            noise)&#xD;
+&#xD;
+&#xD;
+    &#xD;</Desc>
+         <MATLABcode>
+    Y=load('structurednoise.txt');&#xD;
+    out=tkmeans(Y(:,1:2),2,0.1,'plots',1)&#xD;
+    out=tkmeans(Y(:,1:2),5,0.15,'plots',1)&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Trimmed k-means using mixture100 data.</Title>
+         <Desc>&#xD;
+     The data have been generated using the following R instructions&#xD;
+         set.seed (100)&#xD;
+         mixt &amp;lt;- rbind (rmvnorm (360, c (  0,  0), matrix (c (1,  0,  0,  1), ncol = 2)),&#xD;
+                    rmvnorm (540, c (  5, 10), matrix (c (6, -2, -2,  6), ncol = 2)),&#xD;
+                    rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))&#xD;
+&#xD;
+&#xD;
+     &#xD;</Desc>
+         <MATLABcode>
+    Y=load('mixture100.txt');&#xD;
+    out=tkmeans(Y(:,1:2),3,0,'plots',1)&#xD;
+    out=tkmeans(Y(:,1:2),2,0.05,'plots',1)&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

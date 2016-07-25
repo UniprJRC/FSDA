@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRmdrrs</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRmdrrs performs random start monitoring of minimum deletion residual</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Response variable, specified as&#xD;
+               a vector of length n, where n is the number of&#xD;
+               observations. Each entry in y is the response for the&#xD;
+               corresponding row of X.&#xD;
+               Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>Matrix of explanatory&#xD;
+               variables (also called 'regressors') of dimension n x (p-1)&#xD;
+               where p denotes the number of explanatory variables&#xD;
+               including the intercept.&#xD;
+               Rows of X represent observations, and columns represent&#xD;
+               variables. By default, there is a constant term in the&#xD;
+               model, unless you explicitly remove it using input option&#xD;
+               intercept, so do not include a column of 1s in X. Missing&#xD;
+               values (NaN's) and infinite values (Inf's) are allowed,&#xD;
+               since observations (rows) with missing or infinite values&#xD;
+               will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It specifies the point where to initialize the search and&#xD;
+               start monitoring required diagnostics. If it is not&#xD;
+               specified it is set equal to:&#xD;
+                   p+1, if the sample size is smaller than 40;&#xD;
+                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
+               </LongDesc>
+         <Example> 'init',100 starts monitoring from step m=100&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, a model with&#xD;
+               constant term will be fitted (default), if 0, no constant&#xD;
+               term will be included.&#xD;
+               </LongDesc>
+         <Example> 'intercept',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsbsteps</Name>
+         <ShortDesc>Save the units forming subsets</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>It specifies for&#xD;
+               which steps of the fwd search it&#xD;
+               is necessary to save the units forming subsets. If bsbsteps&#xD;
+               is 0 we store the units forming subset in all steps. The&#xD;
+               default is store the units forming subset in all steps if&#xD;
+               n&amp;lt;=5000, else to store the units forming subset at steps&#xD;
+               init and steps which are multiple of 100. For example, as&#xD;
+               default, if n=753 and init=6,&#xD;
+               units forming subset are stored for&#xD;
+               m=init, 100, 200, 300, 400, 500 and 600.&#xD;
+               %               REMARK: vector bsbsteps must contain numbers from init to&#xD;
+               n. if min(bsbsteps)&amp;lt;init a warning message will appear on&#xD;
+               the screen.&#xD;
+</LongDesc>
+         <Example> 'bsbsteps',[100 200] stores the unis forming&#xD;
+               subset in steps 100 and 200.&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nsimul</Name>
+         <ShortDesc>number of random starts</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>The default value is200.&#xD;
+               </LongDesc>
+         <Example> 'nsimul',300&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
+               matrix y and matrix X. Notice that y and X are left&#xD;
+               unchanged. In other words the additioanl column of ones for&#xD;
+               the intercept is not added. As default nocheck=0. The&#xD;
+               controls on h, alpha and nsamp still remain&#xD;
+               </LongDesc>
+         <Example> 'nocheck',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>constr</Name>
+         <ShortDesc>Constrained search</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>r x 1 vector which contains the list of units which are&#xD;
+               forced to join the search in the last r steps. The default&#xD;
+               is constr=''.  No constraint is imposed&#xD;
+               </LongDesc>
+         <Example> 'constr',[1:10] forces the first 10 units to join&#xD;
+               the subset in the last 10 steps&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If equal to one a plot of&#xD;
+               random starts minimum deletion residual appears  on the&#xD;
+               screen with 1%, 50% and 99% confidence bands else (default)&#xD;
+               no plot is shown.&#xD;
+               %               Remark: the plot which is produced is very simple. In order&#xD;
+               to control a series of options in this plot and in order to&#xD;
+               connect it dynamically to the other forward plots it is&#xD;
+               necessary to use function mdrrsplot.&#xD;
+</LongDesc>
+         <Example> 'plots',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>numpool</Name>
+         <ShortDesc>use parallel computing and parfor</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If numpool &amp;gt; 1, the routine automatically checks&#xD;
+               if the Parallel Computing Toolbox is installed and&#xD;
+               distributes the random starts over numpool parallel&#xD;
+               processes. If numpool &amp;lt;= 1, the random starts are run&#xD;
+               sequentially. By default, numpool is set equal to the&#xD;
+               number of physical cores available in the CPU (this choice&#xD;
+               may be inconvenient if other applications are running&#xD;
+               concurrently). The same happens if the numpool value&#xD;
+               chosen by the user exceeds the available number of cores.&#xD;
+               REMARK 1: up to R2013b, there was a limitation on the&#xD;
+               maximum number of cores that could be addressed by the&#xD;
+               parallel processing toolbox (8 and, more recently, 12).&#xD;
+               From R2014a, it is possible to run a local cluster of more&#xD;
+               than 12 workers.&#xD;
+               REMARK 2: Unless you adjust the cluster profile, the&#xD;
+               default maximum number of workers is the same as the&#xD;
+               number of computational (physical) cores on the machine.&#xD;
+               REMARK 3: In modern computers the number of logical cores&#xD;
+               is larger than the number of physical cores. By default,&#xD;
+               MATLAB is not using all logical cores because, normally,&#xD;
+               hyper-threading is enabled and some cores are reserved to&#xD;
+               this feature.&#xD;
+               REMARK 4: It is because of Remarks 3 that we have chosen as&#xD;
+               default value for numpool the number of physical cores&#xD;
+               rather than the number of logical ones. The user can&#xD;
+               increase the number of parallel pool workers allocated to&#xD;
+               the multiple start monitoring by:&#xD;
+               - setting the NumWorkers option in the local cluster profile&#xD;
+                 settings to the number of logical cores (Remark 2). To do&#xD;
+                 so go on the menu "Home|Parallel|Manage Cluster Profile"&#xD;
+                 and set the desired "Number of workers to start on your&#xD;
+                 local machine".&#xD;
+               - setting numpool to the desired number of workers;&#xD;
+               Therefore, *if a parallel pool is not already open*,&#xD;
+               UserOption numpool (if set) overwrites the number of&#xD;
+               workers set in the local/current profile. Similarly, the&#xD;
+               number of workers in the local/current profile overwrites&#xD;
+               default value of 'numpool' obtained as feature('numCores')&#xD;
+               (i.e. the number of physical cores).&#xD;
+               </LongDesc>
+         <Example> 'numpool',8&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>cleanpool</Name>
+         <ShortDesc>clean pool after execution</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>cleanpool is 1 if the parallel pool has to be cleaned after&#xD;
+               the execution of the random starts. Otherwise it is 0.&#xD;
+               The default value of cleanpool is 1.&#xD;
+               Clearly this option has an effect just if previous option&#xD;
+               numpool is &amp;gt; 1.&#xD;
+               </LongDesc>
+         <Example> 'clarnpool',false&#xD;
+               </Example>
+         <DataType>boolean</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which controls whether to display or not messages&#xD;
+               about random start progress. More precisely, if previous&#xD;
+               option numpool&amp;gt;1, then a progress bar is displayed, on&#xD;
+               the other hand a message will be displayed on the screen&#xD;
+               when 10%, 25%, 50%, 75% and 90% of the random starts have&#xD;
+               been accomplished&#xD;
+               In order to create the progress bar when nparpool&amp;gt;1&#xD;
+               the program writes on a temporary .txt file in the folder&#xD;
+               where the user is working. Therefore it is necessary to&#xD;
+               work in a folder where the user has write permission. If this&#xD;
+               is not the case and the user (say) is working without write&#xD;
+               permission in folder C:\Program Files\MATLAB the following&#xD;
+               message will appear on the screen:&#xD;
+                   Error using ProgressBar (line 57)&#xD;
+                   Do you have write permissions for C:\Program Files\MATLAB?&#xD;
+                 </LongDesc>
+         <Example> 'msg',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>mdrrs</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>random start minimum deletion residual.</TypeInd>
+         <LongDesc>&#xD;
+               (n-init)-by-(nsimul+1) matrix which contains the monitoring&#xD;
+               of minimum deletion residual at each step of the forward&#xD;
+               search for each random start.&#xD;
+               1st col = fwd search index (from init to n-1).&#xD;
+               2nd col = minimum deletion residual for random start 1.&#xD;
+               ...&#xD;
+               nsimul+1 col = minimum deletion residual for random start nsimul.</LongDesc>
+      </Item>
+      <Item>
+         <Name>BBrs</Name>
+         <ShortDesc> 3D array</ShortDesc>
+         <TypeInd>units belonging to subset.</TypeInd>
+         <LongDesc>&#xD;
+               3D array which contains the units belonging to the subset&#xD;
+               at the steps specified by input option bsbsteps.&#xD;
+               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.&#xD;
+               In this case BBrs(:,:,j) with j=1, 2, ..., nsimul&#xD;
+               has the following structure:&#xD;
+               1-st row has number 1 in correspondence of the steps in&#xD;
+                   which unit 1 is included inside subset and a missing&#xD;
+                   value for the other steps;&#xD;
+               ......&#xD;
+               (n-1)-th row has number n-1 in correspondence of the steps&#xD;
+                   in which unit n-1 is included inside subset and a&#xD;
+                   missing value for the other steps;&#xD;
+               n-th row has the number n in correspondence of the steps in&#xD;
+                   which unit n is included inside subset and a missing&#xD;
+                   value for the other steps.&#xD;
+               If, on the other hand, bsbsteps is a vector which specifies&#xD;
+               the steps of the search in which it is necessary to store&#xD;
+               subset, BBrs has size n-by-length(bsbsteps)-by-nsimul.&#xD;
+               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has&#xD;
+               the same structure as before, but now contains just&#xD;
+               length(bsbsteps) columns.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson A.C., Riani M., and Cerioli A. (2006). Random Start Forward&#xD;
+   Searches with Envelopes for Detecting Clusters in Multivariate Data.&#xD;
+   In: ZANI S., CERIOLI A., RIANI M., VICHI M. EDS. Data Analysis,&#xD;
+   Classification and the Forward Search. (pp. 163-172). ISBN:&#xD;
+   3-540-35977-x. BERLIN: Springer Verlag (GERMANY).</Item>
+      <Item>Atkinson A.C., Riani M., (2007),Exploratory Tools for Clustering&#xD;
+   Multivariate Data. COMPUTATIONAL STATISTICS &amp; DATA ANALYSIS. vol. 52,&#xD;
+   pp. 272-285 ISSN: 0167-9473. doi:10.1016/j.csda.2006.12.034</Item>
+      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D., Torti F. (2008).&#xD;
+   Fitting Mixtures of Regression Lines with the Forward Search. In:&#xD;
+   Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS.&#xD;
+   (pp. 271-286). IOS Press, Amsterdam (The Netherlands).</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSRmdr</Item>
+      <Item>FSMmmdrs</Item>
+      <Item>FSMmmd</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    close all&#xD;
+    rng('default')&#xD;
+    rng(2);&#xD;
+    b1=[1 1];&#xD;
+    b2=[1 2.6];&#xD;
+    n1=40;&#xD;
+    n2=50;&#xD;
+    s1=0.1;&#xD;
+    s2=0.1;&#xD;
+    X1=rand(n1,1);&#xD;
+    X2=rand(n2,1);&#xD;
+    y1=randn(n1,1)*s1+b1(1)+b1(2)*X1;&#xD;
+    y2=randn(n2,1)*s2+b2(1)+b2(2)*X2;&#xD;
+    hold('on')&#xD;
+    plot(X1,y1,'o');&#xD;
+    plot(X2,y2,'o');&#xD;
+    title('Two simulated regression lines')&#xD;
+    y=[y1;y2];&#xD;
+    X=[X1;X2];&#xD;
+    figure&#xD;
+    % parfor of Parallel Computing Toolbox is used (if present in current computer)&#xD;
+    % and pool is not cleaned after % the execution of the random starts&#xD;
+    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);&#xD;
+    disp('The two peaks in the trajectories of minimum deletion residual (mdr).')&#xD;
+    disp('clearly show the presence of two groups.')&#xD;
+    disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Same example as before but now the values of n1 and n2 (size of the&#xD;
+     two groups) have been increased.</Title>
+         <Desc> In this case it is possible to see&#xD;
+     that there are two trajectories of minimum deletion residual which go&#xD;
+     outside the envelopes in the central part of the search.&#xD;
+     In this case the two groups have roughly the same size (n1=140 and n2=150)&#xD;</Desc>
+         <MATLABcode>
+    close all&#xD;
+    rng(2);&#xD;
+    b1=[1 1];&#xD;
+    b2=[1 2.6];&#xD;
+    n1=140;&#xD;
+    n2=150;&#xD;
+    s1=0.1;&#xD;
+    s2=0.1;&#xD;
+    X1=rand(n1,1);&#xD;
+    X2=rand(n2,1);&#xD;
+    y1=randn(n1,1)*s1+b1(1)+b1(2)*X1;&#xD;
+    y2=randn(n2,1)*s2+b2(1)+b2(2)*X2;&#xD;
+    hold('on')&#xD;
+    plot(X1,y1,'o');&#xD;
+    plot(X2,y2,'o');&#xD;
+    title('Two simulated regression lines')&#xD;
+    y=[y1;y2];&#xD;
+    X=[X1;X2];&#xD;
+    figure&#xD;
+    % parfor of Parallel Computing Toolbox is used (if present in current&#xD;
+    % computer) and pool is not cleaned after&#xD;
+    % the execution of the random starts&#xD;
+    % The number of workers which is used is the one specified&#xD;
+    % in the local/current profile&#xD;
+    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);&#xD;
+    disp('The two peaks in the trajectories of minimum deletion residual (mdr).')&#xD;
+    disp('clearly show the presence of two groups.')&#xD;
+    disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Same example as before but now there is one group which has a size&#xD;
+     much greater than the other (n1=60 and n2=150).</Title>
+         <Desc> In this case it is&#xD;
+     possible to see that there is a trajectory of minimum deletion&#xD;
+     residual which goes outside the envelope in steps 60-110. This&#xD;
+     corresponds to the searches initialized using the units coming from&#xD;
+     the smaller group. Note that due to the partial overlapping after the&#xD;
+     peak in steps 60-110 there is a gradual decrease. When m is around&#xD;
+     160, most of the units from this group tend to get out of the subset.&#xD;
+     Therefore the value of mdr becomes much smaller than it should be.&#xD;
+     Please note the dip around step m=165, which is due to entrance of the&#xD;
+     units of the second larger group. This trajectory just after the dip&#xD;
+     collapses into the trajectory which starts from the second group.&#xD;
+     Around steps 90-110 it is also possible to see two trajectories&#xD;
+     inside the bands which collaps into one around m=120. Please use&#xD;
+     mdrrsplot with option databrush in order to explore the units&#xD;
+     belonging to subset. Here we limit ourselves to notice that around m&#xD;
+     =180 all the units from second group are included into subset (plus&#xD;
+     some of group 1 given that the two groups partially overlap). Also&#xD;
+     notice once again the decrease in the unique trajectory of minimum&#xD;
+     deletion residual after m around 180 which is due to the entry of the&#xD;
+     units of the first smaller group.&#xD;</Desc>
+         <MATLABcode>
+    close all&#xD;
+    rng(2);&#xD;
+    b1=[1 1];&#xD;
+    b2=[1 2.6];&#xD;
+    n1=60;&#xD;
+    n2=150;&#xD;
+    s1=0.1;&#xD;
+    s2=0.1;&#xD;
+    X1=rand(n1,1);&#xD;
+    X2=rand(n2,1);&#xD;
+    y1=randn(n1,1)*s1+b1(1)+b1(2)*X1;&#xD;
+    y2=randn(n2,1)*s2+b2(1)+b2(2)*X2;&#xD;
+    hold('on')&#xD;
+    plot(X1,y1,'o');&#xD;
+    plot(X2,y2,'o');&#xD;
+    title('Two simulated regression lines')&#xD;
+    y=[y1;y2];&#xD;
+    X=[X1;X2];&#xD;
+    figure&#xD;
+    % parfor of Parallel Computing Toolbox is used (if present in current&#xD;
+    % computer). Parallel pool is closed after the execution of the random starts&#xD;
+    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Random start for fishery dataset: two regression structures,&#xD;
+     difficult to identify because of a dense area.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('fishery.txt');&#xD;
+    y=fishery(:,2);&#xD;
+    X=fishery(:,1);&#xD;
+    % parfor of Parallel Computing Toolbox is used (if installed)&#xD;
+    figure&#xD;
+    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Random start for fishery dataset: just store information about the&#xD;
+     units forming subset for each random start at specified steps&#xD;
+    load('fishery.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    load('fishery.txt');&#xD;
+    y=fishery(:,2);&#xD;
+    X=fishery(:,1);&#xD;
+    % parfor of Parallel Computing Toolbox is used (if present in current&#xD;
+    % computer)&#xD;
+    figure&#xD;
+    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'bsbsteps',[10 300 600]);&#xD;
+    % sum(~isnan(BBrs(:,1,1)))&#xD;
+    %&#xD;
+    % ans =&#xD;
+    %&#xD;
+    %     10&#xD;
+    %&#xD;
+    % sum(~isnan(BBrs(:,2,1)))&#xD;
+    %&#xD;
+    % ans =&#xD;
+    %&#xD;
+    %    300&#xD;
+    %&#xD;
+    % sum(~isnan(BBrs(:,3,1)))&#xD;
+    %&#xD;
+    % ans =&#xD;
+    %&#xD;
+    %    600&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Random start for fishery dataset: two regression structures,&#xD;
+     difficult to identify because of a dense area.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('fishery.txt');&#xD;
+    y=fishery(:,2);&#xD;
+    X=fishery(:,1);&#xD;
+    % traditional for loop is used&#xD;
+    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'numpool',0);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

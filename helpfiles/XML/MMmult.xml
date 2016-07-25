@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->MMmult</Title>
+   <Purpose><!--This is the second line of the .m file-->MMmult computes MM estimators in multivariate analysis with auxiliary S-scale</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
+               Y represent observations, and columns represent variables.&#xD;
+               Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>InitialEst</Name>
+         <ShortDesc>starting values of the MM-estimator</ShortDesc>
+         <TypeInd>[] (default) or structure</TypeInd>
+         <LongDesc>InitialEst must contain the following fields:&#xD;
+                   InitialEst.loc0 =  1 x v vector (estimate of the centroid)&#xD;
+                   InitialEst.shape0 = v x v matrix (estimate of the shape matrix)&#xD;
+                   InitialEst.auxscale = scalar (estimate of the scale parameter).&#xD;
+                  If InitialEst is empty (default)&#xD;
+                  program uses S estimators. In this last case it is&#xD;
+                   possible to specify the options given in function Smult.&#xD;
+               </LongDesc>
+         <Example> 'InitialEst',[] &#xD;
+               </Example>
+         <DataType>struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>loc0</Value>
+               <Description>1 x v vector (estimate of the centroid)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>shape0</Value>
+               <Description>v x v matrix (estimate of the shape matrix)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>auxscale</Value>
+               <Description>scalar (estimate of the scale parameter).&#xD;
+                  If InitialEst is empty (default)&#xD;
+                  program uses S estimators. In this last case it is&#xD;
+                   possible to specify the options given in function Smult.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>Soptions</Name>
+         <ShortDesc>options if initial estimator is S and InitialEst is empty</ShortDesc>
+         <TypeInd>Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,&#xD;
+               Sreftolbestr, Sminsctol, Sbestr</TypeInd>
+         <LongDesc>See function Smult.m for more details on these options.&#xD;
+               It is necessary to add to the S options the letter&#xD;
+               S at the beginning. For example, if you want to use the&#xD;
+               optimal rho function the supplied option is&#xD;
+               'Srhofunc','optimal'. For example, if you want to use 3000&#xD;
+               subsets, the supplied option is 'Snsamp',3000&#xD;
+               </LongDesc>
+         <Example> 'Snsamp',1000 &#xD;
+               </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Sbdp</Name>
+         <ShortDesc>breakdown point</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It measures the fraction of outliers&#xD;
+               the algorithm should resist. In this case any value greater&#xD;
+               than 0 but smaller or equal than 0.5 will do fine (default=0.5).&#xD;
+               Note that given bdp nominal&#xD;
+               efficiency is automatically determined.&#xD;
+                 </LongDesc>
+         <Example> 'Sbdp',0.4&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Sbestr</Name>
+         <ShortDesc>number of "best betas" to remember</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar defining number of "best betas" to remember from the&#xD;
+               subsamples. These will be later iterated until convergence&#xD;
+               (default=5)&#xD;
+                 </LongDesc>
+         <Example> 'Sbestr',10 &#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Sminsctol</Name>
+         <ShortDesc>tolerance for the iterative&#xD;
+               procedure for finding the minimum value of the scale</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Value of tolerance for the iterative&#xD;
+               procedure for finding the minimum value of the scale&#xD;
+               for each subset and each of the best subsets&#xD;
+               (It is used by subroutine minscale.m)&#xD;
+               The default value is 1e-7;&#xD;
+                 </LongDesc>
+         <Example> 'Sminsctol',1e-7 &#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Snsamp</Name>
+         <ShortDesc>Number of subsamples which will be extracted to find the&#xD;
+                 robust estimator</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be extracted.&#xD;
+                 They will be (n choose p).&#xD;
+                 If the number of all possible subset is &amp;lt;1000 the&#xD;
+                 default is to extract all subsets otherwise just 1000.&#xD;
+                 </LongDesc>
+         <Example> 'Snsamp',1000 &#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Srefsteps</Name>
+         <ShortDesc>Number of refining iterations</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Number of refining iterationsin each&#xD;
+               subsample (default = 3).&#xD;
+               refsteps = 0 means "raw-subsampling" without iterations.&#xD;
+                 </LongDesc>
+         <Example> 'Srefsteps',0 &#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Sreftol</Name>
+         <ShortDesc>scalar</ShortDesc>
+         <TypeInd>Default value of tolerance for the refining steps</TypeInd>
+         <LongDesc>The default value is 1e-6;&#xD;
+                 </LongDesc>
+         <Example> 'Sreftol',1e-8&#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Srefstepsbestr</Name>
+         <ShortDesc>number of refining iterations for each best subset</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar defining number of refining iterations for each&#xD;
+               best subset (default = 50).&#xD;
+                 </LongDesc>
+         <Example> 'Srefstepsbestr',10 &#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Sreftolbestr</Name>
+         <ShortDesc>Tolerance for the refining steps</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Tolerance for the refining steps&#xD;
+               for each of the best subsets&#xD;
+               The default value is 1e-8;&#xD;
+                 </LongDesc>
+         <Example> 'Sreftolbestr',1e-10 &#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>eff</Name>
+         <ShortDesc>nominal efficiency</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar defining nominal efficiency (i.e. a number between&#xD;
+                 0.5 and 0.99). The default value is 0.95&#xD;
+                 Asymptotic nominal efficiency is:&#xD;
+                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$&#xD;
+                 </LongDesc>
+         <Example> 'eff',0.99&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>effshape</Name>
+         <ShortDesc>locacation or scale effiicency</ShortDesc>
+         <TypeInd>dummy scalar</TypeInd>
+         <LongDesc>If effshape=1 efficiency refers to shape &#xD;
+                efficiency else (default) efficiency refers to location&#xD;
+                 </LongDesc>
+         <Example> 'effshape',1&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>refsteps</Name>
+         <ShortDesc>Maximum iterations</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar defining maximum number of iterations in the MM&#xD;
+                 loop. Default value is 100.&#xD;
+                 </LongDesc>
+         <Example> 'refsteps',10&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tol</Name>
+         <ShortDesc>Tolerance</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar controlling tolerance in the MM loop.&#xD;
+                 Default value is 1e-7&#xD;
+                 </LongDesc>
+         <Example> 'tol',1e-10&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>Confidence level which is&#xD;
+               used to declare units as outliers</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Usually conflev=0.95, 0.975 0.99 (individual alpha)&#xD;
+               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).&#xD;
+               Default value is 0.975&#xD;
+                 </LongDesc>
+         <Example> 'conflev',0.99&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>If plots is a structure or scalar equal to 1, generates: &#xD;
+               (1) a plot of Mahalanobis distances against index number. The&#xD;
+               confidence level used to draw the confidence bands for&#xD;
+               the MD is given by the input option conflev. If conflev is&#xD;
+               not specified a nominal 0.975 confidence interval will be&#xD;
+               used.&#xD;
+               (2) a scatter plot matrix with the outliers highlighted. &#xD;
+               If plots is a structure it may contain the following fields&#xD;
+                   plots.labeladd = if this option is '1', the outliers in the&#xD;
+                       spm are labelled with their unit row index. The&#xD;
+                       default value is labeladd='', i.e. no label is&#xD;
+                       added.&#xD;
+                   plots.nameY = cell array of strings containing the labels of&#xD;
+                       the variables. As default value, the labels which &#xD;
+                       are added are Y1, ...Yv.&#xD;
+                 </LongDesc>
+         <Example> 'plots',0 &#xD;
+                 </Example>
+         <DataType>single | double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>labeladd</Value>
+               <Description>if this option is '1', the outliers in the&#xD;
+                       spm are labelled with their unit row index. The&#xD;
+                       default value is labeladd='', i.e. no label is&#xD;
+                       added.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>nameY</Value>
+               <Description>cell array of strings containing the labels of&#xD;
+                       the variables. As default value, the labels which &#xD;
+                       are added are Y1, ...Yv.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nocheck is equal to 1&#xD;
+                 no check is performed on&#xD;
+                 matrix Y. As default nocheck=0.&#xD;
+               </LongDesc>
+         <Example> 'nocheck',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ysave</Name>
+         <ShortDesc>input data matrix Y is saved into the output&#xD;
+                structure out</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the data matrix Y&#xD;
+               is saved into the output structure out. This feature is&#xD;
+               meant at simplifying the use of function malindexplot.&#xD;
+               Default is 0, i.e. no saving is done.&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType> </DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>loc</Value>
+               <Description>1 x v vector with MM estimate of location</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>shape</Value>
+               <Description>v x v matrix with MM estimate of the shape matrix</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>cov</Value>
+               <Description>v x v matrix with MM estimate of the covariance matrix&#xD;
+                     Remark: covariance = auxscale^2 * shape</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>weights</Value>
+               <Description>n x 1 vector. Weights assigned to each observation</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outliers</Value>
+               <Description>1 x k vectors containing the outliers which&#xD;
+                           have been found</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Sloc</Value>
+               <Description>1 x v vector with S estimate of location</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Sshape</Value>
+               <Description>v x v matrix with S estimate of the shape matrix</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Scov</Value>
+               <Description>v x v matrix with S estimate of the covariance matrix</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>auxscale</Value>
+               <Description>scalar, S estimate of the scale</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Y</Value>
+               <Description>Data matrix Y. The field is present if option ysave&#xD;
+                    is set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>conflev</Value>
+               <Description>scalar, confidence level which has been used</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>md</Value>
+               <Description>n x 1 vector containing robust Mahalanobis distances</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'MM'</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc>C        : matrix </ShortDesc>
+         <TypeInd>Indices of the subsamples &#xD;
+                       extracted for computing the estimate (the so called&#xD;
+                       elemental sets).</TypeInd>
+         <LongDesc> </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION-->&#xD;
+&#xD;
+ This function follows the lines of MATLAB/R code developed during the&#xD;
+ years by many authors.&#xD;
+ For more details see http://www.econ.kuleuven.be/public/NDBAE06/programs/&#xD;
+ and the R library robustbase http://robustbase.r-forge.r-project.org/&#xD;
+ The core of these routines, e.g. the resampling approach, however, has&#xD;
+ been completely redesigned, with considerable increase of the&#xD;
+ computational performance.&#xD;
+&#xD;
+ </Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory&#xD;
+ and Methods, Wiley,New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>Smult</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>MMmult with all default options.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('swiss_banknotes');&#xD;
+    Y=swiss_banknotes.data;&#xD;
+    Y=Y(1:100,:);&#xD;
+    [n,v]=size(Y);&#xD;
+    conflev=[0.95 0.99 1-0.01/n];&#xD;
+    [outMM]=MMmult(Y);&#xD;
+    malindexplot(outMM,v,'conflev',conflev);&#xD;
+    ylabel('MM estimator') &#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>MMmult with optional arguments.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('swiss_banknotes');&#xD;
+    Y=swiss_banknotes.data;&#xD;
+    Y=Y(1:100,:);&#xD;
+    [outMM]=MMmult(Y,'plots',1);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>MMmult with exctracted subsamples.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('swiss_banknotes');&#xD;
+    Y=swiss_banknotes.data;&#xD;
+    Y=Y(1:100,:);&#xD;
+    [outMM,C]=MMmult(Y);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

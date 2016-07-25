@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->zscoreFS</Title>
+   <Purpose><!--This is the second line of the .m file-->zscoreFS computes (robust) standardized z scores</Purpose>
+   <Description><!--Description section-->X can be a vector of length(n) or data matrix containing n observations on v&#xD;
+       variables or 3D array of size n-by-v-by-r.&#xD;
+   Z = zscoreFS(X) returns a centered, scaled version of X, with the same size&#xD;
+   as X. For vector input X, Z is the vector of z-scores&#xD;
+&#xD;
+      (X-median(X)) ./ mad(X).&#xD;
+&#xD;
+   Z=zscoreFS(X,loc,scale) returns a centered, scaled version of X, the&#xD;
+   same size as X using location and scale are specified in input&#xD;
+   parameters 'loc' and 'scale'. For vector input X, Z is the vector of&#xD;
+   z-scores&#xD;
+&#xD;
+      (X-location(X)) ./ scale(X).&#xD;
+&#xD;
+&#xD;
+&#xD;
+&#xD;
+   Z=zscoreFS(X,loc,scale) computes robust standardized zscores using the&#xD;
+   estimates of location and scale specified in loc and scale strings. If&#xD;
+   X is a 2D matrix, zscores are computed using loc and scale along each&#xD;
+   column of X. If X is a 3D array zscores are&#xD;
+   computed using the location and scale along the first&#xD;
+   non-singleton dimension. For example if X is n-by-v-by-r (with n&amp;gt;1) and&#xD;
+   loc='median'; n-by-r medians are computed for each of the n rows of X&#xD;
+   and each third dimension r.&#xD;
+&#xD;
+&#xD;
+   Z=zscoreFS(X,loc) computes standardized zscores using the&#xD;
+   estimates of location specified in loc and the mad as measure of&#xD;
+   dispersion.&#xD;
+&#xD;
+&#xD;
+   [Z,mu,sigma] = zscoreFS(X) also returns median(X) in mu and mad in&#xD;
+   sigma.&#xD;
+&#xD;
+   [Z,mu,sigma] = zscoreFS(X,loc,scale) also returns the estimates of location&#xD;
+   in mu and of scale in sigma as specified in loc and scale strings.&#xD;
+&#xD;
+   Z=zscoreFS(X,loc,scale,dim) computes robust standardized zscores along&#xD;
+   the dimension dim of X using the estimates of location and scale&#xD;
+   specified in loc and scale strings. dim standardizes X by working along&#xD;
+   the dimension dim of X. For example if X is a two dimensional matrix&#xD;
+   dim=2 (default) standardizes the columns of X else if dim=1&#xD;
+   standardizes the rows. If X is a three dimensional dim = 1 standardizes&#xD;
+   the columns, dim =2 standardizes the rows and dim =3 standardizes the&#xD;
+   third dimension.&#xD;
+&#xD;
+   zscoreFS is an extension of function zscore of statistic toolbox&#xD;
+   because it enables to specify alternative measures of location and&#xD;
+   scale.</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Input data</ShortDesc>
+         <TypeInd>Vector or Matrix or 3D array</TypeInd>
+         <LongDesc>Vector  of&#xD;
+               length n or data matrix containing n&#xD;
+               observations on v variables or 3D array of size&#xD;
+               n-by-v-by-r.&#xD;
+               Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>loc</Name>
+         <ShortDesc>location measure to use</ShortDesc>
+         <TypeInd>'median' (default) or 'mean'</TypeInd>
+         <LongDesc>String which specifies the location measure to use. The default&#xD;
+         value is 'median'. &#xD;
+               </LongDesc>
+         <Example>&lt;code&gt;'median'&#xD;
+&lt;/code&gt;</Example>
+         <DataType>character</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>scale</Name>
+         <ShortDesc>scale measure to use</ShortDesc>
+         <TypeInd>'mad' (default) or 'Qn' or 'Sn' or 'std' or&#xD;
+         moddmadp'</TypeInd>
+         <LongDesc>String which specifies the dispersion measure to use&#xD;
+           'mad' is the default. Traditional mad is Me(|x_i-Me(X)|)/norminv(3/4);&#xD;
+           'Qn' first quartile of interpoint distances |x_i-x_j|. See function Qn.m;  &#xD;
+           'Sn' robust Gini's average difference index. See function Sn.m;&#xD;
+           'std' Unbiased standard deviations. See function std.m; &#xD;
+           'modmadp'. Modified mad where the last letter(s) p of string modmap&#xD;
+                 is (are) a number converted to string necessary to&#xD;
+                 compute the modified MAD. &#xD;
+       Modified MAD = (order statistic ceil((n+p-1)/2) of |x_i-Me(X)|&#xD;
+                 + order statistic floor((n+p-1)/2+1) of |x_i-Me(X)|)&#xD;
+                 / (2* \sigma) where \sigma= norminv(0.5*((n+p-1)/(2*n)+1))&#xD;
+                  Note that p is different from v (columns of X if X is a&#xD;
+                  matrix) and must be supplied by the user.&#xD;
+                   For example if p=5 then the user can supply the string 'modmad5'&#xD;
+                   as follows.  p=5; modmadp=['modmap' num2str(p)];&#xD;
+               </LongDesc>
+         <Example>&lt;code&gt;'mad'&#xD;
+&lt;/code&gt;</Example>
+         <DataType>character</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>dim</Name>
+         <ShortDesc>Dimension to operate along</ShortDesc>
+         <TypeInd>Positive integer scalar</TypeInd>
+         <LongDesc>Dimension to operate along, specified as a positive integer&#xD;
+           scalar. If no value is specified, then the default is the first&#xD;
+           array dimension whose size does not equal 1.&#xD;
+               </LongDesc>
+         <Example>&lt;code&gt;2&#xD;
+&lt;/code&gt;</Example>
+         <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Z</Name>
+         <ShortDesc> Array with the same dimension as input X</ShortDesc>
+         <TypeInd>centered, scaled version of X.</TypeInd>
+         <LongDesc>&#xD;
+           Array with the same size as X using location and scale are specified in input&#xD;
+           parameters 'loc' and 'scale'. For vector input X, Z is the vector of&#xD;
+            z-scores&#xD;
+           (X-location(X)) ./ scale(X).</LongDesc>
+      </Item>
+      <Item>
+         <Name>mu</Name>
+         <ShortDesc> Scalar, vector or matrix depending on the size of input matrix X</ShortDesc>
+         <TypeInd>location estimate.</TypeInd>
+         <LongDesc>&#xD;
+           Estimates of location specified in loc input string.</LongDesc>
+      </Item>
+      <Item>
+         <Name>sigma</Name>
+         <ShortDesc> Scalar, vector or matrix depending on the size of input matrix X</ShortDesc>
+         <TypeInd>scale estimate.</TypeInd>
+         <LongDesc>&#xD;
+           Estimates of scale specified in scale input string.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>zscore</Item>
+      <Item>MCD</Item>
+      <Item>Smult</Item>
+      <Item>MMmult</Item>
+      <Item>FSM</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Scale using medians and mads.</Title>
+         <Desc>&#xD;
+     zscoreFS with all default options (that is remove the medians and&#xD;
+     divide by mads)&#xD;</Desc>
+         <MATLABcode>
+    n=200;&#xD;
+    v=3;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+10;&#xD;
+    [out]=zscoreFS(Ycont);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Scale using mean and mads.</Title>
+         <Desc>&#xD;
+     Computes standardized zscores using mean and mads&#xD;
+     estimates of location the medians and the measure of dispersion&#xD;
+     specified in scale&#xD;</Desc>
+         <MATLABcode>
+    loc='mean'&#xD;
+    X=randn(10,2);&#xD;
+    Z=zscoreFS(X,loc,'mad'); &#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Remove the medians and divide by Qn.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=200;&#xD;
+    v=1;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+10;&#xD;
+    [out]=zscoreFS(Ycont,[],'Qn');&#xD;
+    % Alternatively it is possible to use the following sintax&#xD;
+    [out]=zscoreFS(Ycont,'median','Qn');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Examples with 3D arrays.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=200;&#xD;
+    v=3;&#xD;
+    q=5;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,v,q);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:,:)=Ycont(1:5,:,:)+10;&#xD;
+    [out1,Mu,Sigma]=zscoreFS(Ycont,[],'Sn',1);&#xD;
+    % [out,Mu1,Sigma1]=zscoreFS(Ycont,[],'Sn',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Report also location and scale measures which have have been used.</Title>
+         <Desc>&#xD;
+     zscoreFS produces the same output as function zscore of statistics&#xD;
+     toolbox if centroid is arithmetic mean and scale measure is the&#xD;
+     standard deviation&#xD;</Desc>
+         <MATLABcode>
+    X=randn(10,3,6);&#xD;
+    [Z,mu,sig]=zscoreFS(X,'mean','std',3);&#xD;
+    [Z1,mu1,sig1]=zscore(X,[],3);&#xD;
+    if isequal(Z,Z1) + isequal(mu,mu1) + isequal(sig,sig) ==3&#xD;
+        disp('Everything is equal')&#xD;
+    else&#xD;
+        disp('Equality not reached')&#xD;
+    end&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>3D arrays with dim=1, dim=2 and dim=3.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=200;&#xD;
+    v=3;&#xD;
+    q=5;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,v,q);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:,:)=Ycont(1:5,:,:)+10;&#xD;
+    scale='Qn';&#xD;
+    loc='mean';&#xD;
+    dim=2; % work along rows&#xD;
+    [Z,Mu1,Sigma1]=zscoreFS(Ycont,loc,scale,dim);&#xD;
+    isequal(Z(3,:,2)',zscoreFS(Ycont(3,:,2),loc,scale))&#xD;
+&#xD;
+    scale='Qn';&#xD;
+    loc='median';&#xD;
+    dim=1; % work along columns&#xD;
+    [Z,Mu1,Sigma1]=zscoreFS(Ycont,loc,scale,dim);&#xD;
+    isequal(Z(:,2,4),zscoreFS(Ycont(:,2,4),loc,scale))&#xD;
+&#xD;
+    scale='Sn';&#xD;
+    loc='median';&#xD;
+    dim=3; % work along third dimension&#xD;
+    [Z,Mu1,Sigma1]=zscoreFS(Ycont,loc,scale,dim);&#xD;
+    isequal(squeeze(Z(7,2,:)),zscoreFS(squeeze(Ycont(7,2,:)),loc,scale))&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of use of modmad as a scale measure.</Title>
+         <Desc/>
+         <MATLABcode>
+    p=3;&#xD;
+    X=randn(100,p);&#xD;
+    loc='median';&#xD;
+    scale=['modmad' num2str(p)];&#xD;
+    % Project the data using v vectors   &#xD;
+    v=10;&#xD;
+    proj=randn(p,v);&#xD;
+    Y=X*proj;&#xD;
+    % Standardize the n projected points using median and modified MAD&#xD;
+    % Note that Y has v columns but the original matrix X has p columns&#xD;
+    [Z,Mu1,Sigma1]=zscoreFS(Y,loc,scale);   &#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

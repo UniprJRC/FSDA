@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->findFile</Title>
+   <Purpose><!--This is the second line of the .m file--> findFile finds recursively all files in root.</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>root</Name>
+         <ShortDesc>Root directory</ShortDesc>
+         <TypeInd>String</TypeInd>
+         <LongDesc>Case sensitive string that can indicate&#xD;
+               relative or absolute path. Use '.' for current directory.&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>string</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>InclDir</Name>
+         <ShortDesc>Include directory pattern(s)</ShortDesc>
+         <TypeInd>String or cell arrays of&#xD;
+               strings</TypeInd>
+         <LongDesc>User can use wildcards. Do not use regular expression,&#xD;
+               for examples 'abc' and 'ab*de*'. File separator (i.e. '\' in&#xD;
+               Windows or '/' in Unix) is not allowed. Case-sensitive.&#xD;
+               This filter is skipped if InclDir='', InclDir={},&#xD;
+               InclDir='*' or if one of the element of the cell array&#xD;
+               InclDir is '*'. Default: InclDir={''}.&#xD;
+               </LongDesc>
+         <Example> 'InclDir','dirname'&#xD;
+               </Example>
+         <DataType>(cell array of) string</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ExclDir</Name>
+         <ShortDesc>Exclude directory pattern(s)</ShortDesc>
+         <TypeInd>String or cell arrays of&#xD;
+               strings</TypeInd>
+         <LongDesc>User can use wildcards. Do not&#xD;
+               use regular expression. Examples: 'abc' and 'ab*de*'. Use ''&#xD;
+               or {} to skip this stage. File separator (i.e. '\' in&#xD;
+               Windows or '/' in Unix) is not allowed. Case-sensitive. Default: ExclDir={''}.&#xD;
+               </LongDesc>
+         <Example> 'ExclDir','dirname'&#xD;
+               </Example>
+         <DataType>(cell array of) string</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>InclFiles</Name>
+         <ShortDesc>Include file pattern(s)</ShortDesc>
+         <TypeInd>String or cell arrays of&#xD;
+               strings</TypeInd>
+         <LongDesc>User can use wildcards. Do not use regular expression.&#xD;
+               Use '*' to include all files. Note that '*' and '*.*' give&#xD;
+               the same behaviour and return all files. File separator&#xD;
+               (i.e. '\' in Windows or '/' in Unix) is not allowed.&#xD;
+               Case-sensitive. Default: InclFile={'*'}.&#xD;
+               </LongDesc>
+         <Example> 'InclFiles','filename'&#xD;
+               </Example>
+         <DataType>(cell array of) string</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ExclFiles</Name>
+         <ShortDesc>Exclude file pattern(s)</ShortDesc>
+         <TypeInd>String or cell arrays of&#xD;
+               strings</TypeInd>
+         <LongDesc>User can use wildcards. Do not use regular expression.&#xD;
+               Use '' or {} to skip this check. File separator (i.e. '\'&#xD;
+               in Windows or '/' in Unix) is not allowed.&#xD;
+               Case-sensitive. Default: ExclFiles={''}.&#xD;
+               </LongDesc>
+         <Example> 'ExclFiles','filename'&#xD;
+               </Example>
+         <DataType>(cell array of) string</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>list</Name>
+         <ShortDesc> Cell array of strings</ShortDesc>
+         <TypeInd>All files.</TypeInd>
+         <LongDesc> List of all&#xD;
+               files matched under root directory, sorted in alphabetical&#xD;
+               and ascending order. Always return absolute path.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>findDir</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>findFile with all default options.</Title>
+         <Desc>&#xD;
+    find the location of findFile.m&#xD;</Desc>
+         <MATLABcode>
+    FullPath=which('findFile');&#xD;
+    %extract the directory containing findFile.m&#xD;
+    root=FullPath(1:end-length('findFile.m')-1);&#xD;
+    %list the content of the directory containing findFile.m&#xD;
+    list = findFile(root)&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>findFile with optional arguments.</Title>
+         <Desc>&#xD;
+    find the location of findFile.m&#xD;</Desc>
+         <MATLABcode>
+    FullPath=which('findFile');&#xD;
+    %extract the root directory of FSDA&#xD;
+    root=FullPath(1:strfind(FullPath,'FSDA')+3);&#xD;
+    %list the content of the directory under FSDA named 'graphics'&#xD;
+    list = findFile(root,'InclDir','graphics')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>list the content of the directory under FSDA named 'graphics'&#xD;
+     and exclude all those which start with res&#xD;
+    find the location of findFile.</Title>
+         <Desc>m&#xD;</Desc>
+         <MATLABcode>
+    FullPath=which('findFile');&#xD;
+    %extract the root directory of FSDA&#xD;
+    root=FullPath(1:strfind(FullPath,'FSDA')+3);&#xD;
+    list = findFile(root,'InclDir','graphics','ExclFiles','res*')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>find the location of help file gplotmatrix.</Title>
+         <Desc>html.&#xD;</Desc>
+         <MATLABcode>
+    pathdocroot=docroot;&#xD;
+    pathExtHelpFile=findFile(pathdocroot,'InclFiles','gplotmatrixee.html');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

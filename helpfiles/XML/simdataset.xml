@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->simdataset</Title>
+   <Purpose><!--This is the second line of the .m file-->simdataset simulates and-or contaminates a dataset given the parameters of a finite mixture model with Gaussian components</Purpose>
+   <Description><!--Description section-->simdataset(n, Pi, Mu, S) generates a matrix of size $n$-by-$p$&#xD;
+   containing $n$ observations $p$ dimensions from $k$ groups. More&#xD;
+   precisely, this function produces a dataset of n observations from a&#xD;
+   mixture model with parameters 'Pi' (mixing proportions), 'Mu' (mean&#xD;
+   vectors), and 'S' (covariance matrices). Mixture component sample sizes&#xD;
+   are produced as a realization from a multinomial distribution with&#xD;
+   probabilities given by the mixing proportions. For example, if n=200,&#xD;
+   k=4 and Pi=[0.25, 0.25, 0.25, 0.25] function Nk1=mnrnd( n-k, Pi) is&#xD;
+   used to generate k integers (whose sum is n-k) from the multinomial&#xD;
+   distribution with parameters n-k and Pi. The size of the groups is&#xD;
+   given by Nk1+1. The first Nk1(1)+1  observations are generated using&#xD;
+   centroid Mu(1,:) and covariance S(:,:,1), ..., the last Nk1(k)+1&#xD;
+   observations are generated using centroid Mu(k,:) and covariance&#xD;
+   S(:,:,k).&#xD;
+&#xD;
+   DETAILS.&#xD;
+&#xD;
+   To make a dataset more challenging for clustering, a user might want to&#xD;
+   simulate noise variables or outliers. The optional parameter&#xD;
+   'noiseunits' controls the number and the type of outliers which must be&#xD;
+   added. The optional parameter 'noisevars' controls the number and the&#xD;
+   type of noise variables which must be added (it is possible to control&#xD;
+   the distribution, the interval and the number). Finally, the user can&#xD;
+   apply an inverse Box-Cox transformation providing a vector of&#xD;
+   coefficients 'lambda'. The value 1 implies that no transformation is&#xD;
+   needed for the corresponding coordinate. It is also possible to add&#xD;
+   outliers to an existing dataset by simply suppling as first argument&#xD;
+   the matrix of existing data.</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>sample size or input matrix</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar or matrix of size n-by-v. If n is a scalar it&#xD;
+               is interpreted as the sample size of the dataset which must&#xD;
+               be simulated. On the other hand, if n is a n-by-v it is&#xD;
+               interpreted as a matrix of size n-by-v which has to be&#xD;
+               contaminated with optional input arguments 'noiseunits' and&#xD;
+               'noisevars'.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Pi</Name>
+         <ShortDesc>Mixing proportions</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector of size k containing mixing&#xD;
+       proportions. The sum of the elements of Pi is 1.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Mu</Name>
+         <ShortDesc>centroids</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>Matrix of size k-by-v containing (in the rows) the centroids of the&#xD;
+       k groups.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>S</Name>
+         <ShortDesc>Covariance matrices</ShortDesc>
+         <TypeInd>3D array</TypeInd>
+         <LongDesc>3D array of size v-by-v-by-k&#xD;
+       containing covariance matrices of the&#xD;
+       k groups.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>noiseunits</Name>
+         <ShortDesc>number of type of outlying observations</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>Missing value, scalar or structure. &#xD;
+                This input parameter specifies the number&#xD;
+                and type of outlying observations. The default value of&#xD;
+                noiseunits is 0.&#xD;
+                - If noiseunits is a scalar t different from 0, then t&#xD;
+                  units from the uniform distribution in the interval&#xD;
+                  min(X) max(X) are generated in such a way that their&#xD;
+                  squared Mahalanobis distance from the centroids of each&#xD;
+                  existing group is larger then the quantile 1-0.999 of&#xD;
+                  the Chi^2 distribution with p degrees of freedom. In&#xD;
+                  order to generate these units the maximum number&#xD;
+                  of attempts is equal to 10000.&#xD;
+                - If noiseunits is a structure it may contain the following&#xD;
+                  fields:&#xD;
+                  number = scalar, or vector of length f. The sum of the&#xD;
+                       elements of vector 'number' is equal to the total&#xD;
+                       number of outliers which are simulated.&#xD;
+                  alpha = scalar or vector of legth f containing the&#xD;
+                       level(s) of simulated outliers. The default value&#xD;
+                       of alpha is 0.001.&#xD;
+                  maxiter = maximum number of trials to simulate outliers.&#xD;
+                       The default value of maxiter is 10000.&#xD;
+                  interval= missing value or vector of length 2 or matrix&#xD;
+                         of size 2-by-v which controls the min and max of&#xD;
+                         the generated outliers for each dimension.&#xD;
+                         If interval is empty (default), the outliers&#xD;
+                         are simulated in the interval min(X) max(X).&#xD;
+                         If interval is a vector of length(2), outliers for&#xD;
+                         each variables are simulated in the range&#xD;
+                         interval(1) and interval(2).&#xD;
+                         If interval is a 2-by-v matrix outliers are&#xD;
+                         simulated in:&#xD;
+                         interval(1,1) interval (2,1) for variable 1&#xD;
+                         ...&#xD;
+                         interval(1,v) interval (2,v) for variable v&#xD;
+                  typeout = list of length f containing the type of&#xD;
+                       outliers which must be simulated. Possible values&#xD;
+                       for typeout are:&#xD;
+                       * unif (or uniform), if the outliers must be&#xD;
+                         generated using the uniform distribution;&#xD;
+                       * norm (or normal), if the outliers must be&#xD;
+                         generated using the normal distribution;&#xD;
+                       * Chisquarez, if the outliers must be generated&#xD;
+                         using the Chi2 distribution with z degrees of&#xD;
+                         freedom;&#xD;
+                       * Tz or tz, if the outliers must be generated using&#xD;
+                         the Student T distribution with z degrees of&#xD;
+                         freedom;&#xD;
+                       * pointmass, if the outliers are concentrated on a&#xD;
+                         particular point;&#xD;
+                       * componentwise, if the outliers must have the same&#xD;
+                         coordinates of the existing rows of matrix X apart&#xD;
+                         from a single coordinate (which will be to the&#xD;
+                         min or max in that particular dimension or to the&#xD;
+                         min or max specified in interval).&#xD;
+                For example, the code:&#xD;
+                   noiseunits=struct;&#xD;
+                   noiseunits.number=[100 100];&#xD;
+                   noiseunits.typeout={'uniform' 'componentwise'};&#xD;
+                   noiseunits.interval=[-2 2];&#xD;
+                adds 200 outliers, the first 100 generated using&#xD;
+                a uniform distribution and the last 100 using&#xD;
+                componentwise scheme. Outliers are generated in the&#xD;
+                interval [-2 2] for each variable.&#xD;
+               </LongDesc>
+         <Example> 'noiseunits', 10&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>number</Value>
+               <Description>[100 100];</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>typeout</Value>
+               <Description>{'uniform' 'componentwise'};</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>interval</Value>
+               <Description>[-2 2];&#xD;
+                adds 200 outliers, the first 100 generated using&#xD;
+                a uniform distribution and the last 100 using&#xD;
+                componentwise scheme. Outliers are generated in the&#xD;
+                interval [-2 2] for each variable.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>noisevars</Name>
+         <ShortDesc>Type of noise variables</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>Empty value, scalar or structure.&#xD;
+                - If noisevars is not specified or is an empty value&#xD;
+                  (default) no noise variable is added to the matrix of&#xD;
+                  simulated data.&#xD;
+                - If noisevars is a scalar equal to r, then r new noise&#xD;
+                  variables are added to the matrix of simulated data&#xD;
+                  using the uniform distribution in the range [min(X)&#xD;
+                  max(X)].&#xD;
+                - If noisevars is a structure it may contain the following&#xD;
+                  fields:&#xD;
+                  noisevars.number= a scalar or a vector of length f. The sum of&#xD;
+                       elements of vector 'number' is equal to the total&#xD;
+                       number of noise variables to be addded.&#xD;
+                  noisevars.distribution= string or cell array of strings of length&#xD;
+                       f which specifies the distribution to be used to&#xD;
+                       simulate the noise variables.&#xD;
+                       If field distribution is not present then the&#xD;
+                       uniform distribution is used to simulate the noise&#xD;
+                       variables.&#xD;
+                       String 'distribution' can be one of the following&#xD;
+                       values:&#xD;
+                       * uniform = uniform distribution&#xD;
+                       * normal  = normal distribution&#xD;
+                       * t or T followed by a number which controls the&#xD;
+                         degrees of freedom. For example, t6 specifies to&#xD;
+                         generate the data according to a Student T with 6&#xD;
+                         degrees of freedom.&#xD;
+                       * chisquare followed by a number which controls the&#xD;
+                         degreess of freedom. For example, chisquare8&#xD;
+                         specifies to generate the data according to a Chi&#xD;
+                         square distribution with 8 degrees of freedom.&#xD;
+                  noisevars.interval= string or vector of length 2 or matrix of size&#xD;
+                         2-by-f (where f is the number of noise variables)&#xD;
+                         which controls for each element of vector&#xD;
+                         'number' or each element of cell 'distribution',&#xD;
+                         the min and max of the noise variables. For&#xD;
+                         example, interval(1,3) and interval(2,3) are&#xD;
+                         respectively the minimum and maximum values of&#xD;
+                         simulated the data for the third noise variable&#xD;
+                         If interval is empty (default), the noise variables&#xD;
+                         are simulated uniformly between the smallest and&#xD;
+                         the largest coordinates of mean vectors.&#xD;
+                         If interval is 'minmax' the noise varaibles are&#xD;
+                         simulated uniformly between the smallest and the&#xD;
+                         largest coordinates of the simulated data matrix.&#xD;
+                For example, the code:&#xD;
+                   noisevars=struct;&#xD;
+                   noisevars.number=[3 2];&#xD;
+                   noisevars.distribution={'Chisquare5' 'T3'};&#xD;
+                   noisevars.interval='minmax';&#xD;
+                adds 5 noise variables, the first 3 generated using&#xD;
+                the Chi2 with 5 degrees of freedom and the last two&#xD;
+                using the Student t with 3 degrees of freedom. Noise&#xD;
+                variables are generated in the interval min(X) max(X).&#xD;
+               </LongDesc>
+         <Example> 'noisevars', 5&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>number</Value>
+               <Description>a scalar or a vector of length f. The sum of&#xD;
+                       elements of vector 'number' is equal to the total&#xD;
+                       number of noise variables to be addded.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>distribution</Value>
+               <Description>string or cell array of strings of length&#xD;
+                       f which specifies the distribution to be used to&#xD;
+                       simulate the noise variables.&#xD;
+                       If field distribution is not present then the&#xD;
+                       uniform distribution is used to simulate the noise&#xD;
+                       variables.&#xD;
+                       String 'distribution' can be one of the following&#xD;
+                       values:&#xD;
+                       * uniform = uniform distribution&#xD;
+                       * normal  = normal distribution&#xD;
+                       * t or T followed by a number which controls the&#xD;
+                         degrees of freedom. For example, t6 specifies to&#xD;
+                         generate the data according to a Student T with 6&#xD;
+                         degrees of freedom.&#xD;
+                       * chisquare followed by a number which controls the&#xD;
+                         degreess of freedom. For example, chisquare8&#xD;
+                         specifies to generate the data according to a Chi&#xD;
+                         square distribution with 8 degrees of freedom.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>interval</Value>
+               <Description>string or vector of length 2 or matrix of size&#xD;
+                         2-by-f (where f is the number of noise variables)&#xD;
+                         which controls for each element of vector&#xD;
+                         'number' or each element of cell 'distribution',&#xD;
+                         the min and max of the noise variables. For&#xD;
+                         example, interval(1,3) and interval(2,3) are&#xD;
+                         respectively the minimum and maximum values of&#xD;
+                         simulated the data for the third noise variable&#xD;
+                         If interval is empty (default), the noise variables&#xD;
+                         are simulated uniformly between the smallest and&#xD;
+                         the largest coordinates of mean vectors.&#xD;
+                         If interval is 'minmax' the noise varaibles are&#xD;
+                         simulated uniformly between the smallest and the&#xD;
+                         largest coordinates of the simulated data matrix.&#xD;
+                For example, the code:&#xD;
+                   noisevars=struct;&#xD;
+                   noisevars.number=[3 2];&#xD;
+                   noisevars.distribution={'Chisquare5' 'T3'};&#xD;
+                   noisevars.interval='minmax';&#xD;
+                adds 5 noise variables, the first 3 generated using&#xD;
+                the Chi2 with 5 degrees of freedom and the last two&#xD;
+                using the Student t with 3 degrees of freedom. Noise&#xD;
+                variables are generated in the interval min(X) max(X).</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>lambda</Name>
+         <ShortDesc>Transformation coefficients</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector of length v containing inverse Box-Cox&#xD;
+                transformation coefficients. The value false (default)&#xD;
+                implies that no transformation is applied to any variable.&#xD;
+               </LongDesc>
+         <Example> 'lambda',[1 1 0];&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>R_seed</Name>
+         <ShortDesc>random numbers from R language</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar &amp;gt; 0 for the seed to be used to generate random numbers&#xD;
+               in a R instance. This is used to check consistency of the&#xD;
+               results obtained with the R package MixSim. See file&#xD;
+               Connect_Matlab_with_R_HELP.m to know how to connect MATLAB&#xD;
+               with R.  This option requires the installation of the&#xD;
+               R-(D)COM Interface. Default is 0, i.e. random numbers are&#xD;
+               generated by matlab.&#xD;
+               </LongDesc>
+         <Example> 'R_seed',1;&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>Simulated dataset.</TypeInd>
+         <LongDesc> Simulated dataset of size (n + noiseunits)-by-(v + noisevars).&#xD;
+                Noise coordinates are provided in the last noisevars columns.</LongDesc>
+      </Item>
+      <Item>
+         <Name>id</Name>
+         <ShortDesc> Vector</ShortDesc>
+         <TypeInd>Classification vector.</TypeInd>
+         <LongDesc> Classification vector of&#xD;
+                length n + noiseunits. Negative&#xD;
+                numbers represents the groups associated to the&#xD;
+                contaminated units.&#xD;
+&#xD;
+           REMARK: If noiseunits outliers could not be generated a warning&#xD;
+                   is produced. In this case matrix X and vector id will&#xD;
+                   have less than n + noiseunits rows.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maitra, R. and Melnykov, V. (2010). Simulating data to study performance&#xD;
+   of finite mixture modeling and clustering algorithms, The Journal of&#xD;
+   Computational and Graphical Statistics, 2:19, 354-376. (to refer to&#xD;
+   this publication we will use "MM2010 JCGS")</Item>
+      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package&#xD;
+   for Simulating Data to Study Performance of Clustering Algorithms,&#xD;
+   Journal of Statistical Software, 51:12, 1-25.</Item>
+      <Item>Davies, R. (1980) The distribution of a linear combination of&#xD;
+   chi-square random variables, Applied Statistics, 29, 323-333.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>MixSim</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of mixture generation.</Title>
+         <Desc/>
+         <MATLABcode>
+    out = MixSim(4,2,'BarOmega',0.01);&#xD;
+    n=60;&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);&#xD;
+&#xD;
+    %  Simulate dataset with 10 outliers&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',10);&#xD;
+&#xD;
+    %  Simulate dataset with 100 outliers&#xD;
+    out = MixSim(4,3,'BarOmega',0.1);&#xD;
+    n=300;&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',100);&#xD;
+    spmplot(X,id);&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Generate 4 groups in 2 dimensions.</Title>
+         <Desc/>
+         <MATLABcode>
+    rng('default')&#xD;
+    rng(100)&#xD;
+    out = MixSim(4,2,'BarOmega',0.01);&#xD;
+    n=300;&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups without noise and outliers')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Generate 4 groups in 2 dimensions and add outliers from uniform distribution.</Title>
+         <Desc/>
+         <MATLABcode>
+    rng('default')&#xD;
+    rng(100)&#xD;
+    out = MixSim(4,2,'BarOmega',0.01);&#xD;
+    n=300;n=300;&#xD;
+    noisevars=0;&#xD;
+    noiseunits=3000;&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from uniform')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Add outliers generated from Chi2 with 5 degrees of freedom.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=0;&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=3000;&#xD;
+    % Add asymmetric very concentrated noise&#xD;
+    noiseunits.typeout={'Chisquare5'};&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from $\chi^2_5$','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers generated from Chi2 with 40 degrees of freedom.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=0;&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=3000;&#xD;
+    % Add asymmetric concentrated noise&#xD;
+    noiseunits.typeout={'Chisquare40'};&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers generated from normal distribution.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=0;&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=3000;&#xD;
+    % Add normal noise&#xD;
+    noiseunits.typeout={'normal'};&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from normal distribution','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers generated from Student T with 5 degrees of freedom.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=0;&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=3000;&#xD;
+    % Add outliers from T5&#xD;
+    noiseunits.typeout={'T5'};&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from Student T with 5 degrees if freedom','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add componentwise contamination.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars='';&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=3000;&#xD;
+    % Add asymmetric concentrated noise&#xD;
+    noiseunits.typeout={'componentwise'};&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with component wise outliers','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers generated from Chisquare and T distribution.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=0;&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=5000*ones(2,1);&#xD;
+    noiseunits.typeout={'Chisquare3','T20'};&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers from Chisquare and T distribution and use a personalized value of alpha.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=0;&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=5000*ones(2,1);&#xD;
+    noiseunits.typeout={'Chisquare3','T20'};&#xD;
+    noiseunits.alpha=0.2;&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers from Chi2 and point mass contamination and add one noise variable.</Title>
+         <Desc/>
+         <MATLABcode>
+    noisevars=struct;&#xD;
+    noisevars.number=1;&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=[100 100];&#xD;
+    noiseunits.typeout={'pointmass' 'Chisquare5'};&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of personalized interval to generate outliers.</Title>
+         <Desc/>
+         <MATLABcode>
+    noiseunits=struct;&#xD;
+    noiseunits.number=1000;&#xD;
+    noiseunits.typeout={'uniform'};&#xD;
+    % Generate outliers in the interval [-1 1] for the first variable and&#xD;
+    % interval [1 2] for the second variable&#xD;
+    noiseunits.interval=[-1 1;&#xD;
+                         1 2];&#xD;
+    % Finally add a noise variable&#xD;
+    noisevars=struct;&#xD;
+    noisevars.number=1;&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of personalized interval to generate outliers (1).</Title>
+         <Desc>&#xD;
+     Generate 1000 outliers from uniform in the interval [-2 3] and&#xD;
+     1000 units using componentwise contamination in the interval [-2 3]&#xD;</Desc>
+         <MATLABcode>
+    noiseunits=struct;&#xD;
+    noiseunits.number=[1000 1000];&#xD;
+    noiseunits.typeout={'uniform' 'componentwise'};&#xD;
+    noiseunits.interval=[-2 3];&#xD;
+&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups with outliers componentwise and from uniform in interval [-2 3]','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Add 5 noise variables.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=struct;&#xD;
+    noisevars.number=[2 3];&#xD;
+    noisevars.distribution={'Chisquare3','T20'};&#xD;
+    noiseunits='';&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id,[],'box');&#xD;
+    title('4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add 3 noise variables.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=struct;&#xD;
+    noisevars.number=[1 2];&#xD;
+    noisevars.distribution={'Chisquare3','T2'};&#xD;
+    noiseunits='';&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add 3 noise variables and use 'minmax' interval.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=struct;&#xD;
+    noisevars.number=[1 2];&#xD;
+    noisevars.distribution={'Chisquare3','T20'};&#xD;
+    noisevars.interval='minmax';&#xD;
+    noiseunits='';&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups in 2 dims with 3 noise variables with ''minimax'' interval','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add 3 noise variables and use a personalized interval for each variable.</Title>
+         <Desc/>
+         <MATLABcode>
+    n=300;&#xD;
+    noisevars=struct;&#xD;
+    noisevars.number=[1 2];&#xD;
+    noisevars.distribution={'Chisquare3','T20'};&#xD;
+    noiseunits='';&#xD;
+    % In this example we supply min and max for each noise variable&#xD;
+    v1=sum(noisevars.number);&#xD;
+    noisevars.interval=[3*ones(1,v1); 10*ones(1,v1)];&#xD;
+    [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(X,id);&#xD;
+    title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add noise to an existing dataset.</Title>
+         <Desc>&#xD;
+      Add outliers generated from uniform distribution to the IRIS dataset&#xD;</Desc>
+         <MATLABcode>
+    load fisheriris;&#xD;
+    Y=meas;&#xD;
+    Mu=grpstats(Y,species);&#xD;
+&#xD;
+    S=zeros(4,4,3);&#xD;
+    S(:,:,1)=cov(Y(1:50,:));&#xD;
+    S(:,:,2)=cov(Y(51:100,:));&#xD;
+    S(:,:,3)=cov(Y(101:150,:));&#xD;
+&#xD;
+    pigen=ones(3,1)/3;&#xD;
+    % Add 100 outliers and specify a very small value of alpha&#xD;
+    noisevars=0;&#xD;
+    noiseunits=struct;&#xD;
+    noiseunits.number=100;&#xD;
+    noiseunits.alpha=0.000001;&#xD;
+    % In this case the first argument which is supplied to simdataset is&#xD;
+    % the original matrix X&#xD;
+    [Ywithnoise,id]=simdataset(Y, pigen, Mu, S,'noisevars',noisevars,'noiseunits',noiseunits);&#xD;
+    spmplot(Ywithnoise,id,[],'box');&#xD;
+    title('4 groups with outliers from uniform')&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

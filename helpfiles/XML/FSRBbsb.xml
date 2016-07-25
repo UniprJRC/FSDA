@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRBbsb</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRBbsb returns the units belonging to the subset in each step of the Bayesian forward search</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>A vector with n elements that contains the response variable</ShortDesc>
+         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Data matrix of explanatory variables (also called&#xD;
+               'regressors') of dimension (n x p-1)</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns represent&#xD;
+               variables</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values&#xD;
+               (Inf's) are allowed, since observations (rows) with missing&#xD;
+               or infinite values will automatically be excluded from the&#xD;
+               computations.&#xD;
+&#xD;
+&#xD;
+               PRIOR INFORMATION&#xD;
+               $\beta$ is assumed to have a normal distribution with&#xD;
+               mean $\beta_0$ and (conditional on $\tau_0$) covariance&#xD;
+               $(1/\tau_0) (X_0'X_0)^{-1}$.&#xD;
+               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>beta0</Name>
+         <ShortDesc>Prior mean of $\beta$</ShortDesc>
+         <TypeInd>p-times-1 vector</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>R</Name>
+         <ShortDesc>Matrix associated with covariance matrix of $\beta$</ShortDesc>
+         <TypeInd>p-times-p&#xD;
+               positive definite matrix</TypeInd>
+         <LongDesc>It can be interpreted as $X_0'X_0$ where $X_0$ is a n0 x p&#xD;
+               matrix coming from previous experiments (assuming that the&#xD;
+               intercept is included in the model)&#xD;
+&#xD;
+               The prior distribution of $\tau_0$ is a gamma distribution with&#xD;
+               parameters $a_0$ and $b_0$, that is&#xD;
+               &#xD;
+                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)&#xD;
+                       \qquad   E(\tau_0)= a_0/b_0               \]</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tau0</Name>
+         <ShortDesc>Prior estimate of tau</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>n0</Name>
+         <ShortDesc>Number of previous experiments</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Sometimes it helps&#xD;
+               to think of the prior information as coming from n0&#xD;
+               previous experiments. Therefore we assume that matrix X0&#xD;
+               (which defines R), was made up of n0 observations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>bsb</Name>
+         <ShortDesc>units forming initial subset</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>m x 1 vector containing the units forming initial subset. The&#xD;
+               default value of bsb is '' (empty value), that is we&#xD;
+               initialize the search just using prior information.&#xD;
+                 </LongDesc>
+         <Example> 'bsb',[3,6,9]&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It specifies the point where to start monitoring&#xD;
+               required diagnostics. If it is not specified it is set&#xD;
+               equal to:&#xD;
+                   p+1, if the sample size is smaller than 40;&#xD;
+                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
+               The minimum value of init is 0. In this case in the first&#xD;
+               step we start monitoring at step m=0 (step just based on&#xD;
+               prior information)&#xD;
+               </LongDesc>
+         <Example> 'init',100 starts monitoring from step m=100&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default),&#xD;
+               if 0, no constant term will be included.&#xD;
+               </LongDesc>
+         <Example> 'intercept',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If plots=1 the monitoring units plot is displayed on the&#xD;
+               screen. The default value of plots is 0 (that is no plot&#xD;
+               is produced on the screen).&#xD;
+               </LongDesc>
+         <Example> 'plots',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsbsteps</Name>
+         <ShortDesc>steps of the fwd search where to save the units forming subset</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>If bsbsteps is 0 we store the units forming &#xD;
+               subset in all steps. The default is store the units forming&#xD;
+               subset in all steps if n&amp;lt;5000, else to store the units&#xD;
+               forming subset at steps init and steps which are multiple&#xD;
+               of 100. For example, if n=753 and init=6, units forming&#xD;
+               subset are stored for m=init, 100, 200, 300, 400, 500 and&#xD;
+               600. &#xD;
+               </LongDesc>
+         <Example> 'bsbsteps',[10,20,30]&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
+               matrix y and matrix X. Notice that y and X are left&#xD;
+               unchanged. In other words the additional column of ones for&#xD;
+               the intercept is not added. As default nocheck=0.&#xD;
+               </LongDesc>
+         <Example> 'nocheck',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It controls whether to display or not messages&#xD;
+               about great interchange on the screen&#xD;
+               If msg==1 (default) messages are displayed on the screen&#xD;
+               else no message is displayed on the screen&#xD;
+               </LongDesc>
+         <Example> 'msg',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Un</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>Units included in each step.</TypeInd>
+         <LongDesc>&#xD;
+               (n-init) x 11 Matrix which contains the unit(s) included&#xD;
+               in the subset at each step of the search.&#xD;
+               REMARK: in every step the new subset is compared with the&#xD;
+               old subset. Un contains the unit(s) present in the new&#xD;
+               subset but not in the old one.&#xD;
+               Un(1,2) for example contains the unit included in step&#xD;
+               init+1.&#xD;
+               Un(end,2) contains the units included in the final step&#xD;
+               of the search.</LongDesc>
+      </Item>
+      <Item>
+         <Name>BB</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>Units belonging to subset in each step.</TypeInd>
+         <LongDesc>&#xD;
+               n x (n-init+1) matrix which contains the units belonging to the&#xD;
+               subset at each step of the forward search.&#xD;
+               1st col = index forming subset in the initial step&#xD;
+               ...&#xD;
+               last column = units forming subset in the final step &#xD;
+               (i.e. all units).</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and&#xD;
+ Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
+      <Item>Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian&#xD;
+ Regression for Fraud Detection, submitted</Item>
+      <Item>Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian&#xD;
+ Regression, submitted</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSRbsb</Item>
+      <Item>FSRHbsb</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSRBbsb with all default options.</Title>
+         <Desc>&#xD;
+     Common part to all examples: load Houses Price Dataset.&#xD;</Desc>
+         <MATLABcode>
+    load hprice.txt;&#xD;
+    &#xD;
+    % setup parameters&#xD;
+    n=size(hprice,1);&#xD;
+    y=hprice(:,1);&#xD;
+    X=hprice(:,2:5);&#xD;
+    n0=5;&#xD;
+&#xD;
+    % set \beta components&#xD;
+    beta0=0*ones(5,1);&#xD;
+    beta0(2,1)=10;&#xD;
+    beta0(3,1)=5000;&#xD;
+    beta0(4,1)=10000;&#xD;
+    beta0(5,1)=10000;&#xD;
+&#xD;
+    % $\tau$&#xD;
+    s02=1/4.0e-8;&#xD;
+    tau0=1/s02;&#xD;
+&#xD;
+    % R prior settings&#xD;
+    R=2.4*eye(5);&#xD;
+    R(2,2)=6e-7;&#xD;
+    R(3,3)=.15;&#xD;
+    R(4,4)=.6;&#xD;
+    R(5,5)=.6;&#xD;
+    R=inv(R);&#xD;
+    Unchk=FSRBbsb(y,X,beta0, R, tau0, n0);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSRaddt with optional arguments.</Title>
+         <Desc>&#xD;
+     Display the monitoring units plot. Suppress all messages about&#xD;
+     interchange with option msg.&#xD;</Desc>
+         <MATLABcode>
+    load hprice.txt;&#xD;
+    &#xD;
+    % setup parameters&#xD;
+    n=size(hprice,1);&#xD;
+    y=hprice(:,1);&#xD;
+    X=hprice(:,2:5);&#xD;
+    n0=5;&#xD;
+&#xD;
+    % set \beta components&#xD;
+    beta0=0*ones(5,1);&#xD;
+    beta0(2,1)=10;&#xD;
+    beta0(3,1)=5000;&#xD;
+    beta0(4,1)=10000;&#xD;
+    beta0(5,1)=10000;&#xD;
+&#xD;
+    % $\tau$&#xD;
+    s02=1/4.0e-8;&#xD;
+    tau0=1/s02;&#xD;
+&#xD;
+    % R prior settings&#xD;
+    R=2.4*eye(5);&#xD;
+    R(2,2)=6e-7;&#xD;
+    R(3,3)=.15;&#xD;
+    R(4,4)=.6;&#xD;
+    R(5,5)=.6;&#xD;
+    R=inv(R);&#xD;
+    [~,Un,BB]=FSRBmdr(y,X,beta0, R, tau0, n0);&#xD;
+    [Unchk,BBchk]=FSRBbsb(y,X,beta0,R,tau0,n0,'plots',1,'msg',0);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Monitoring the units belonging to subset in each step.</Title>
+         <Desc/>
+         <MATLABcode>
+    load hprice.txt;&#xD;
+    &#xD;
+    % setup parameters&#xD;
+    n=size(hprice,1);&#xD;
+    y=hprice(:,1);&#xD;
+    X=hprice(:,2:5);&#xD;
+    n0=5;&#xD;
+&#xD;
+    % set \beta components&#xD;
+    beta0=0*ones(5,1);&#xD;
+    beta0(2,1)=10;&#xD;
+    beta0(3,1)=5000;&#xD;
+    beta0(4,1)=10000;&#xD;
+    beta0(5,1)=10000;&#xD;
+&#xD;
+    % $\tau$&#xD;
+    s02=1/4.0e-8;&#xD;
+    tau0=1/s02;&#xD;
+&#xD;
+    % R prior settings&#xD;
+    R=2.4*eye(5);&#xD;
+    R(2,2)=6e-7;&#xD;
+    R(3,3)=.15;&#xD;
+    R(4,4)=.6;&#xD;
+    R(5,5)=.6;&#xD;
+    R=inv(R);&#xD;
+    [~,Un,BB]=FSRBmdr(y,X,beta0, R, tau0, n0);&#xD;
+    [Unchk,BBchk]=FSRBbsb(y,X,beta0, R, tau0, n0);&#xD;
+    % Test for equality BB and BBchk&#xD;
+    disp(isequaln(BB,BBchk))&#xD;
+    % Test for equality Un and Unchk&#xD;
+    disp(isequaln(Un,Unchk))&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->resindexplot</Title>
+   <Purpose><!--This is the second line of the .m file-->resindexplot plots the residuals from a regression analysis versus index number or any other variable</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>residuals</Name>
+         <ShortDesc>residuals to plot</ShortDesc>
+         <TypeInd>Numeric vector or structure</TypeInd>
+         <LongDesc>If&#xD;
+               residuals is a vector it contains the n residuals.&#xD;
+               If residuals is a structure it contains the following fields&#xD;
+               residuals.residuals = vector of residuals (compulsory&#xD;
+               field)&#xD;
+               residuals.y = response (compulsory field if interactive&#xD;
+               brushing is used)&#xD;
+               residuals.X = n-by-p matrix containing explanatory&#xD;
+               variables(compulsory field if interactive&#xD;
+               brushing is used)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>residuals</Value>
+               <Description>vector of residuals (compulsory&#xD;
+               field)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>y</Value>
+               <Description>response (compulsory field if interactive&#xD;
+               brushing is used)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>n-by-p matrix containing explanatory&#xD;
+               variables(compulsory field if interactive&#xD;
+               brushing is used)</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>h</Name>
+         <ShortDesc>the axis handle of a figure where to send the resindexplot</ShortDesc>
+         <TypeInd>This can be used to host the resindexplot in a subplot of a&#xD;
+                   complex figure formed by different panels (for example a panel&#xD;
+                   with residuals from a classical ols estimator and another&#xD;
+                   with residuals from a robust regression: see example&#xD;
+                   below)</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>'h',h1 where h1=subplot(2,1,1)&#xD;
+                   </Example>
+         <DataType>Axes object (supplied as a scalar)</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>x</Name>
+         <ShortDesc>the vector to be plotted on the x-axis</ShortDesc>
+         <TypeInd>Numeric vector</TypeInd>
+         <LongDesc>As default the sequence 1:length(residuals) will be&#xD;
+                   used&#xD;
+                   </LongDesc>
+         <Example>'x',1:100&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labx</Name>
+         <ShortDesc>a label for the x-axis</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>(default: '')&#xD;
+                   </LongDesc>
+         <Example>'labx','row index'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>laby</Name>
+         <ShortDesc>a label for the y-axis</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>(default: '')&#xD;
+                   </LongDesc>
+         <Example>'laby','scaled residuals'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>title</Name>
+         <ShortDesc>a label containing the title of the plot</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>Default value is&#xD;
+                   'Index plot of residuals'&#xD;
+                   </LongDesc>
+         <Example>'title','scaled residuals'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>numlab</Name>
+         <ShortDesc>number of points to be identified in plots</ShortDesc>
+         <TypeInd>[] | cell ({5} default) | numeric vector</TypeInd>
+         <LongDesc>If numlab is a cell containing scalar k, the units&#xD;
+                   with the k largest residuals are labelled in the plots.&#xD;
+                   If numlab is a vector, the units inside vector numlab are&#xD;
+                   labelled in the plots.&#xD;
+                   The default value of numlab is {5}. that is units with the 5&#xD;
+                   largest residuals are labelled.&#xD;
+                   For no labelling leave it empty&#xD;
+                   </LongDesc>
+         <Example>'numlab',[3,10,35]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>confidence interval for the horizontal bands</ShortDesc>
+         <TypeInd>Numeric&#xD;
+                   vector</TypeInd>
+         <LongDesc>It can be a vector of different confidence level&#xD;
+                   values.&#xD;
+                   %                   Remark: confidence interval is based on the chi^2 distribution&#xD;
+</LongDesc>
+         <Example>'conflev',[0.95,0.99,0.999]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>FontSize</Name>
+         <ShortDesc>Scalar which controls the fontsize of the labels of the&#xD;
+                   axes</ShortDesc>
+         <TypeInd>Default value is 12</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>'Fontsize',10&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>SizeAxesNum</Name>
+         <ShortDesc>Scalar which controls the fontsize of the numbers of&#xD;
+                   the axes</ShortDesc>
+         <TypeInd>Default value is 10</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>'SizeAxesNum',10&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ylimy</Name>
+         <ShortDesc>Vector with two elements which controla minimum and maximum&#xD;
+                   value of the y axis</ShortDesc>
+         <TypeInd>Default is '', automatic scale</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>'SizeAxesNum',10&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>xlimx</Name>
+         <ShortDesc>Vector with two elements controlling minimum and maximum&#xD;
+                   on the x axis</ShortDesc>
+         <TypeInd>Default value is '' (automatic scale)</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>'SizeAxesNum',10&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lwdenv</Name>
+         <ShortDesc>width of the lines associated&#xD;
+                   with the envelopes</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Default is lwdenv=1.&#xD;
+                   </LongDesc>
+         <Example>'SizeAxesNum',10&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>MarkerSize</Name>
+         <ShortDesc>size of the marker in points</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>The default value for MarkerSize is 6 points (1 point =&#xD;
+                   1/72 inch).&#xD;
+                   </LongDesc>
+         <Example>'SizeAxesNum',10&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>MarkerFaceColor</Name>
+         <ShortDesc>Marker fill color</ShortDesc>
+         <TypeInd>'none' | 'auto' | RGB triplet | color string</TypeInd>
+         <LongDesc>Fill color for markers that are closed shapes&#xD;
+                   (circle, square, diamond, pentagram, hexagram, and the&#xD;
+                   four triangles).&#xD;
+                   </LongDesc>
+         <Example>'MarkerFaceColor','b'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>databrush</Name>
+         <ShortDesc>interactive mouse brushing</ShortDesc>
+         <TypeInd>Empty value, scalar or structure</TypeInd>
+         <LongDesc>If databrush is an empty value (default), no brushing&#xD;
+                   is done.&#xD;
+                   The activation of this option (databrush is a scalar or&#xD;
+                   a cell) enables the user  to select a set of&#xD;
+                   trajectories in the current plot and to see them&#xD;
+                   highlighted in the y|X plot, i.e. a matrix of scatter&#xD;
+                   plots of y against each column of X, grouped according&#xD;
+                   to the selection(s) done by brushing. If the plot y|X&#xD;
+                   does not exist, it is automatically created.&#xD;
+                   Please, note that the window style of the other figures is set&#xD;
+                   equal to that which contains the monitoring residual&#xD;
+                   plot. In other words, if the monitoring residual plot&#xD;
+                   is docked all the other figures will be docked too&#xD;
+                   DATABRUSH IS A SCALAR.&#xD;
+                   If databrush is a scalar the default selection tool is&#xD;
+                   a rectangular brush and it is possible to brush only&#xD;
+                   once (that is persist='').&#xD;
+                   DATABRUSH IS A STRUCTURE.&#xD;
+                   If databrush is a structure, it is possible to use all&#xD;
+                   optional arguments of function selectdataFS.m and the&#xD;
+                   following fields&#xD;
+                   - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar&#xD;
+                     containing the strings 'on' or 'off'.&#xD;
+                     The default value of persist is '', that is brushing&#xD;
+                     is allowed only once.&#xD;
+                     If persist is 'on' or 'off' brushing can be done as&#xD;
+                     many time as the user requires.&#xD;
+                     If persist='on' then the unit(s) currently brushed&#xD;
+                     are added to those previously brushed. it is&#xD;
+                     possible, every time a new brushing is done, to use a&#xD;
+                     different color for the brushed units.&#xD;
+                     If persist='off' every time a new brush is performed&#xD;
+                     units previously brushed are removed.&#xD;
+                   - databrush.labeladd = add labels of brushed units.&#xD;
+                     Character. [] (default) | '1'. &#xD;
+                     If databrush.labeladd='1', we label the units&#xD;
+                     of the last selected group with the unit row index in&#xD;
+                     matrices X and y. The default value is labeladd='',&#xD;
+                     i.e. no label is added.&#xD;
+                   - databrush.bivarfit = this option adds one or more least&#xD;
+                     square lines based on SIMPLE REGRESSION to the plots&#xD;
+                     of y|X, depending on the selected groups.&#xD;
+                     bivarfit = ''&#xD;
+                       is the default: no line is fitted.&#xD;
+                     bivarfit = '1'&#xD;
+                       fits a single ols line to all points of each&#xD;
+                       bivariate plot in the scatter matrix y|X.&#xD;
+                     bivarfit = '2'&#xD;
+                       fits two ols lines: one to all points and another&#xD;
+                       to the last selected group. This is useful when&#xD;
+                       there are only two groups, of which one refers to a&#xD;
+                       set of potential outliers.&#xD;
+                     bivarfit = '0'&#xD;
+                       fits one ols line for each selected group. This is&#xD;
+                       useful for the purpose of fitting mixtures of&#xD;
+                       regression lines.&#xD;
+                     bivarfit = 'i1' or 'i2' or 'i3' etc.&#xD;
+                       fits a ols line to a specific group, the one with&#xD;
+                       index 'i' equal to 1, 2, 3 etc.&#xD;
+                   - databrush. multivarfit = this option adds one or more least square&#xD;
+                       lines, based on MULTIVARIATE REGRESSION of y on X,&#xD;
+                       to the plots of y|Xi.&#xD;
+                     multivarfit = ''&#xD;
+                       is the default: no line is fitted.&#xD;
+                     multivarfit = '1'&#xD;
+                       fits a single ols line to all points of each&#xD;
+                       bivariate plot in the scatter matrix y|X.&#xD;
+                       The line added to the scatter plot y|Xi&#xD;
+                       is avconst +Ci*Xi, where Ci is the&#xD;
+                       coefficient of Xi in the multivariate regression&#xD;
+                       and avconst is the effect of all the other&#xD;
+                       explanatory variables different from Xi evaluated&#xD;
+                       at their centroid (that is overline{y}'C))&#xD;
+                     multivarfit = '2'&#xD;
+                       exactly equal to multivarfit ='1' but this time we&#xD;
+                       add the line based on the group of unselected&#xD;
+                       observations.&#xD;
+                   - databrush.labeladd = if this option is '1', we label the units&#xD;
+                     of the last selected group with the unit row index in&#xD;
+                     matrices X and y. The default value is labeladd='',&#xD;
+                     i.e. no label is added.&#xD;
+                   </LongDesc>
+         <Example> 'databrush',1&#xD;
+                   </Example>
+         <DataType>single | double | struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>persist</Value>
+               <Description>repeated brushng enabled. Persist is an empty value or a scalar&#xD;
+                     containing the strings 'on' or 'off'.&#xD;
+                     The default value of persist is '', that is brushing&#xD;
+                     is allowed only once.&#xD;
+                     If persist is 'on' or 'off' brushing can be done as&#xD;
+                     many time as the user requires.&#xD;
+                     If persist='on' then the unit(s) currently brushed&#xD;
+                     are added to those previously brushed. it is&#xD;
+                     possible, every time a new brushing is done, to use a&#xD;
+                     different color for the brushed units.&#xD;
+                     If persist='off' every time a new brush is performed&#xD;
+                     units previously brushed are removed.&#xD;
+                   </Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>labeladd</Value>
+               <Description>add labels of brushed units.&#xD;
+                     Character. [] (default) | '1'. &#xD;
+                     If databrush.labeladd='1', we label the units&#xD;
+                     of the last selected group with the unit row index in&#xD;
+                     matrices X and y. The default value is labeladd='',&#xD;
+                     i.e. no label is added.&#xD;
+                   </Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>bivarfit</Value>
+               <Description>this option adds one or more least&#xD;
+                     square lines based on SIMPLE REGRESSION to the plots&#xD;
+                     of y|X, depending on the selected groups.&#xD;
+                     bivarfit = ''&#xD;
+                       is the default: no line is fitted.&#xD;
+                     bivarfit = '1'&#xD;
+                       fits a single ols line to all points of each&#xD;
+                       bivariate plot in the scatter matrix y|X.&#xD;
+                     bivarfit = '2'&#xD;
+                       fits two ols lines: one to all points and another&#xD;
+                       to the last selected group. This is useful when&#xD;
+                       there are only two groups, of which one refers to a&#xD;
+                       set of potential outliers.&#xD;
+                     bivarfit = '0'&#xD;
+                       fits one ols line for each selected group. This is&#xD;
+                       useful for the purpose of fitting mixtures of&#xD;
+                       regression lines.&#xD;
+                     bivarfit = 'i1' or 'i2' or 'i3' etc.&#xD;
+                       fits a ols line to a specific group, the one with&#xD;
+                       index 'i' equal to 1, 2, 3 etc.&#xD;
+                   - databrush. multivarfit = this option adds one or more least square&#xD;
+                       lines, based on MULTIVARIATE REGRESSION of y on X,&#xD;
+                       to the plots of y|Xi.&#xD;
+                     multivarfit = ''&#xD;
+                       is the default: no line is fitted.&#xD;
+                     multivarfit = '1'&#xD;
+                       fits a single ols line to all points of each&#xD;
+                       bivariate plot in the scatter matrix y|X.&#xD;
+                       The line added to the scatter plot y|Xi&#xD;
+                       is avconst +Ci*Xi, where Ci is the&#xD;
+                       coefficient of Xi in the multivariate regression&#xD;
+                       and avconst is the effect of all the other&#xD;
+                       explanatory variables different from Xi evaluated&#xD;
+                       at their centroid (that is overline{y}'C))&#xD;
+                     multivarfit = '2'&#xD;
+                       exactly equal to multivarfit ='1' but this time we&#xD;
+                       add the line based on the group of unselected&#xD;
+                       observations.&#xD;
+                   - databrush.labeladd = if this option is '1', we label the units&#xD;
+                     of the last selected group with the unit row index in&#xD;
+                     matrices X and y. The default value is labeladd='',&#xD;
+                     i.e. no label is added.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>nameX</Name>
+         <ShortDesc>regressor labels</ShortDesc>
+         <TypeInd>Cell array of strings of length p containing the labels&#xD;
+                   of the variables of the regression dataset</TypeInd>
+         <LongDesc>If it is&#xD;
+                   empty (default) the sequence X1, ..., Xp will be created&#xD;
+                   automatically&#xD;
+                   </LongDesc>
+         <Example> 'nameX',{'Age','Income','Married','Profession'}&#xD;
+                   </Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>namey</Name>
+         <ShortDesc>response label</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>Character containing the&#xD;
+                   label of the response. If it is&#xD;
+                   empty (default) label 'y' will be used.&#xD;
+                   </LongDesc>
+         <Example> 'namey','response'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tag</Name>
+         <ShortDesc>Figure tag</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>Tag of the figure which will host the malindexplot. The&#xD;
+                   default tag is pl_resindex&#xD;
+                   </LongDesc>
+         <Example> 'tag','indexPlot'&#xD;
+                   </Example>
+         <DataType>character</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection.&#xD;
+   Wiley.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>resfwdplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    load('stack_loss.txt');&#xD;
+    y=stack_loss(:,4);&#xD;
+    X=stack_loss(:,1:3);&#xD;
+    % Define confidence level&#xD;
+    conflev=[0.95,0.99];&#xD;
+    figure;&#xD;
+    h1=subplot(2,1,1);&#xD;
+    % Compute studentized residuals (deletion residuals)&#xD;
+    stats=regstats(y,X,'linear',{'standres','studres'});&#xD;
+    resindexplot(stats.studres,'h',h1,'conflev',conflev,'labx','Index number','laby','Deletion residuals');&#xD;
+&#xD;
+    % Compute robust residuals&#xD;
+    [out]=LXS(y,X,'nsamp',0,'rew',1,'lms',0);&#xD;
+    h2=subplot(2,1,2);&#xD;
+    resindexplot(out.residuals,'h',h2,'conflev',conflev,'labx','Index number','laby','Robust LTS reweighted residuals');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    [out]=LXS(y,X,'nsamp',0,'rew',1,'lms',0);&#xD;
+    bonfconf = 1-0.01/size(y,1);    % 99% Bonferronised&#xD;
+    resindexplot(out.residuals,'conflev',[0.95,0.99,bonfconf],'labx','Index number','laby','Robust LTS reweighted residuals');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
+    databrush=struct;&#xD;
+    databrush.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    databrush.selectionmode='Brush'; % Brush selection&#xD;
+    databrush.persist='on'; % Enable repeated mouse selections&#xD;
+    databrush.Label='on'; % Write labels of the units while selecting&#xD;
+    databrush.RemoveLabels='on'; % Remove labels after selection&#xD;
+    databrush.RemoveTool    = 'on'; % Remove yellow tool after selection&#xD;
+    databrush.RemoveFlagged = 'on'; % Remove filled red color for selected points after selection&#xD;
+&#xD;
+    [out]=LXS(y,X,'rew',1,'lms',0,'yxsave',1);&#xD;
+    resindexplot(out,'databrush',databrush)&#xD;
+&#xD;
+    [outFS]=FSReda(y,X,out.bs);&#xD;
+    resfwdplot(outFS,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of usage of option numlab&#xD;
+     Write the row number for the units which have the 3 largest&#xD;
+     residuals (in absolute value)&#xD;
+    [out]=LXS(y,X,'nsamp',1000);&#xD;
+    resindexplot(out.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    [out]=LXS(y,X,'nsamp',1000);&#xD;
+    resindexplot(out.residuals,'numlab',{3});&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->logmvnpdfFS</Title>
+   <Purpose><!--This is the second line of the .m file-->logmvnpdfFS produces log of Multivariate normal probability density function (pdf)</Purpose>
+   <Description><!--Description section-->This function is a much faster version than (log of) Matlab function&#xD;
+ mvnpdf.  If this function is called without optional arguments than it&#xD;
+ uses matlab function bsxfun to compute&#xD;
+ the deviations form the means and no mex function.&#xD;
+ If this function is called with the four optional input&#xD;
+ arguments X0, eyed, n and d a mex function based on C code is directly used. &#xD;
+ Additional details follow: in order to compute the kernel of the quadratic form&#xD;
+ at the exponent logmvnpdfFS creates an identity of size length(Mu) and&#xD;
+ similarly needs to compute length(Mu). These two quantites can be&#xD;
+ precalculated and supplied as input parameters. If logmvnpdfFS has to be&#xD;
+ called thousands of times (as it happens for example in each iteration&#xD;
+ of all procedures of cluster analysis based mixtures of multivariate&#xD;
+ gaussian distributions). The same argument above applies to scalars n&#xD;
+ and d which are directly passed to the compiled mex function</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Input data</ShortDesc>
+         <TypeInd>Scalar, Vector or matrix</TypeInd>
+         <LongDesc>n x d data matrix; n observations and d variables. Rows of&#xD;
+               Y represent observations, and columns represent variables or coordinates.&#xD;
+               The (log of the) probability density of the multivariate&#xD;
+               normal distribution will be evaluated at each row of the&#xD;
+               n-by-d matrix Y&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Mu</Name>
+         <ShortDesc>mean mu of the multivariate normal distribution</ShortDesc>
+         <TypeInd>1-by-d vector</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Sigma</Name>
+         <ShortDesc>covariance matrix of the multivariate normal distribution</ShortDesc>
+         <TypeInd>d-by-d matrix</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X0</Name>
+         <ShortDesc>matrix of the same size of X which passes to C function a container</ShortDesc>
+         <TypeInd>Note that options X0, eyed, n, and d must be supplied&#xD;
+               together</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>&lt;code&gt;'X0',X&#xD;
+&lt;/code&gt;</Example>
+         <DataType>single|double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>eyed</Name>
+         <ShortDesc>identity matrix of size length(Mu) wchich passes to C function a container</ShortDesc>
+         <TypeInd>Note that options X0, eyed, n, and d must be supplied&#xD;
+               together</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>&lt;code&gt;'eyed',eye(v)&#xD;
+&lt;/code&gt;</Example>
+         <DataType>single|double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>scalar which passes to C function size(X,1)</ShortDesc>
+         <TypeInd>Note that options X0, eyed, n, and d must be supplied&#xD;
+               together</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>&lt;code&gt;'eyed',eye(v)&#xD;
+&lt;/code&gt;</Example>
+         <DataType>single|double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>d</Name>
+         <ShortDesc>scalar which passes to C function length(Mu)</ShortDesc>
+         <TypeInd>Note that options X0, eyed, n, and d must be supplied&#xD;
+               together</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example>&lt;code&gt;'eyed',eye(v)&#xD;
+&lt;/code&gt;</Example>
+         <DataType>single|double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which controls whether to display or not messages&#xD;
+               on the screen. If msg==1 (default) messages are displayed&#xD;
+               on the screen when cholesky of Sigma is impossibile &#xD;
+               else no message is displayed on the screen. When Clolesky&#xD;
+               of Sigma is impossible -Inf output is returned.&#xD;
+                 </LongDesc>
+         <Example>&lt;code&gt;'msg',1&#xD;
+&lt;/code&gt;</Example>
+         <DataType>single | double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc> Vector</ShortDesc>
+         <TypeInd>log-density of the multivariate normal.</TypeInd>
+         <LongDesc> Vector with length&#xD;
+               equal to n which returns the log-density of the multivariate normal&#xD;
+               distribution with mean Mu and covariance Sigma, evaluated at each row&#xD;
+               of X.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>mvnpdf</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Comparison with mvnpdf.</Title>
+         <Desc>&#xD;
+      In this example we check the agreement of the results with MATLAB&#xD;
+      function mvnpdf.&#xD;</Desc>
+         <MATLABcode>
+     n=20000;&#xD;
+     v=2;&#xD;
+     X=randn(n,v);&#xD;
+     mu = [1 -1]; Sigma = [.9 .4; .4 .3];&#xD;
+     y = logmvnpdfFS(X, mu, Sigma);&#xD;
+     y1=log(mvnpdf(X,mu,Sigma));&#xD;
+     max(abs(y-y1))&#xD;
+     % 2.842e-14&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Remark: Options X0, eyed, n, and d must be used together.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+   % Remark: Options X0, eyed, n, and d must be used together.&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of option msg.</Title>
+         <Desc/>
+         <MATLABcode>
+    msg=0;&#xD;
+    X0=X;&#xD;
+    eyed=eye(v);&#xD;
+    y = logmvnpdfFS(X,mu,Sigma,X0,eyed,n,v,msg);&#xD;
+    %  enables to control the display of the error message on the cov matrix&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>TIME COMPARISON USING TIC TOC.</Title>
+         <Desc>&#xD;
+     In the examples below we compare the speed of the different solutions&#xD;
+     logmvnpdfFS with mex function and logmvnpdfFS without mex function&#xD;
+&#xD;
+     In this code computation time is based on tic toc combined with a series&#xD;
+     of replications&#xD;
+&#xD;
+     nn = sample size&#xD;
+     vv = number of variables&#xD;</Desc>
+         <MATLABcode>
+    nn=[100 200 500 1000 5000 10000 50000 100000];&#xD;
+    vv=[2 5 10 20];&#xD;
+&#xD;
+    % rep =number of replications&#xD;
+    rep = 1000;&#xD;
+&#xD;
+    ttMat=nan(length(nn) , length(vv));&#xD;
+    ttFSwithMex=ttMat;&#xD;
+    ttFSnoMex=ttMat;&#xD;
+&#xD;
+&#xD;
+    Mat=0; tMat=0;&#xD;
+    FSwithmex=0; tFSwithMex=0;&#xD;
+    FSnoMex=0; tFSnoMex=0;&#xD;
+&#xD;
+&#xD;
+    in = 1; iv=1;&#xD;
+    for n = nn&#xD;
+        for v = vv&#xD;
+&#xD;
+            X0 = zeros(n,v);&#xD;
+            eyed=eye(v);&#xD;
+&#xD;
+            for i=1:rep&#xD;
+&#xD;
+                X = randn(n,v);&#xD;
+                Mu = randn(1,v);&#xD;
+                Sigma=cov(X);&#xD;
+&#xD;
+                %  Matlab function mvnpdf, (black line in plot)&#xD;
+                Mat = tic;&#xD;
+                y0 = mvnpdf(X, Mu, Sigma);&#xD;
+                y0=log(y0);&#xD;
+                tMat = tMat + toc(Mat);&#xD;
+&#xD;
+                % logmvnpdfFS using mex file for mean deviations, (blue line in plot)&#xD;
+                FSwithmex = tic;&#xD;
+                yD = logmvnpdfFS(X, Mu, Sigma,X0,eyed,n,v);&#xD;
+                tFSwithMex = tFSwithMex + toc(FSwithmex);&#xD;
+&#xD;
+                % logmvnpdfFS and no mex file for mean deviations. (red line in plot)&#xD;
+                FSnoMex = tic;&#xD;
+                yI = logmvnpdfFS(X, Mu, Sigma);&#xD;
+                tFSnoMex = tFSnoMex + toc(FSnoMex);&#xD;
+&#xD;
+&#xD;
+                if (sum(sum(abs(y0-yD))))&amp;gt;10^-6  || (sum(sum(abs(y0-yI)))) &amp;gt;10^-6&#xD;
+                   error('FSDA:logmvnpdfFS:ShouldBeEq','Difference in results: stop');&#xD;
+                end&#xD;
+&#xD;
+            end&#xD;
+&#xD;
+            ttMat(in,iv) = tMat;&#xD;
+            ttFSwithMex(in,iv) = tFSwithMex;&#xD;
+            ttFSnoMex(in,iv) = tFSnoMex;&#xD;
+&#xD;
+            Mat=0; tMat=0;&#xD;
+            FSwithmex=0; tFSwithMex=0;&#xD;
+            FSnoMex=0; tFSnoMex=0;&#xD;
+&#xD;
+&#xD;
+            disp(['n=' num2str(n) ' -- v=' num2str(v)]);&#xD;
+            iv = iv+1;&#xD;
+&#xD;
+        end&#xD;
+        in = in+1;&#xD;
+        iv = 1;&#xD;
+    end&#xD;
+&#xD;
+&#xD;
+    % Plotting part&#xD;
+    a=ver;&#xD;
+    a=a.Release;&#xD;
+    aa=1;&#xD;
+    bb=8;&#xD;
+&#xD;
+    for ij=1:length(vv);&#xD;
+        subplot(length(vv)/2,2,ij)&#xD;
+        hold('on')&#xD;
+        plot(nn(aa:bb)',ttMat(aa:bb,ij),'k');&#xD;
+        plot(nn(aa:bb)',ttFSwithMex(aa:bb,ij),'b')&#xD;
+        plot(nn(aa:bb)',ttFSnoMex(aa:bb,ij),'r');&#xD;
+&#xD;
+        if ij==1&#xD;
+            title(['v (number of variables)=' num2str(vv(ij)) ' version' a])&#xD;
+        else&#xD;
+            title(['v=' num2str(vv(ij))])&#xD;
+        end&#xD;
+        ylabel('Seconds')&#xD;
+        xlabel('Number of observations')&#xD;
+        if ij==4&#xD;
+            legend('mvnpdf','FS+mex','FS','location','NorthWest')&#xD;
+        end&#xD;
+    end&#xD;
+&#xD;
+    hold off;&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>TIME COMPARISON USING TIMEIT FUNCTION.</Title>
+         <Desc>&#xD;
+     Remark: timeit function is present from  MATLAB 2013b&#xD;
+&#xD;</Desc>
+         <MATLABcode>
+    if verLessThan('matlab', '8.2.0')&#xD;
+        warning('FSDA:logmvnpdfFS:MatlabTooOld','This example needs routine timeit which has been introduced in Matlab 2013b')&#xD;
+        warning('FSDA:logmvnpdfFS:MatlabTooOld','You have a version of Matlab which is &amp;lt; 2013b and you cannot run this example')&#xD;
+    else&#xD;
+        % nn = sample size&#xD;
+        % vv = number of variables&#xD;
+        nn=[100 200 500 1000 5000 10000 50000 100000];&#xD;
+        vv=[2 5 10 20];&#xD;
+&#xD;
+        ttMat=nan(length(nn) , length(vv));&#xD;
+        ttFSwithMex=ttMat;&#xD;
+        ttFSnoMex=ttMat;&#xD;
+&#xD;
+        in = 1; iv=1;&#xD;
+        for n = nn&#xD;
+            for v = vv&#xD;
+&#xD;
+                X0 = zeros(n,v);&#xD;
+                eyed=eye(v);&#xD;
+&#xD;
+&#xD;
+                X = randn(n,v);&#xD;
+                Mu = randn(1,v);&#xD;
+                Sigma=cov(X);&#xD;
+&#xD;
+                %  Matlab function mvnpdf&#xD;
+                yMat = @() log(mvnpdf(X, Mu, Sigma));&#xD;
+                tMat = timeit(yMat);&#xD;
+&#xD;
+&#xD;
+                % logmvnpdfFS using mex file for mean deviations.&#xD;
+                yFSwithMex = @() logmvnpdfFS(X, Mu, Sigma,X0,eyed,n,v);&#xD;
+                tFSwithMex = timeit(yFSwithMex);&#xD;
+&#xD;
+                % logmvnpdfFS and no mex file for mean deviations.&#xD;
+                yFSnoMex = @() logmvnpdfFS(X, Mu, Sigma);&#xD;
+                tFSnoMex = timeit(yFSnoMex);&#xD;
+&#xD;
+                ttMat(in,iv) = tMat;&#xD;
+                ttFSwithMex(in,iv) = tFSwithMex;&#xD;
+                ttFSnoMex(in,iv) = tFSnoMex;&#xD;
+&#xD;
+                disp(['n=' num2str(n) ' -- v=' num2str(v)]);&#xD;
+                iv = iv+1;&#xD;
+&#xD;
+            end&#xD;
+            in = in+1;&#xD;
+            iv = 1;&#xD;
+        end&#xD;
+&#xD;
+&#xD;
+        % Plotting part&#xD;
+        a=ver;&#xD;
+        a=a.Release;&#xD;
+        aa=1;&#xD;
+        bb=length(nn);&#xD;
+&#xD;
+        for ij=1:length(vv);&#xD;
+            subplot(length(vv)/2,2,ij)&#xD;
+            hold('on')&#xD;
+            plot(nn(aa:bb)',ttMat(aa:bb,ij),'k');&#xD;
+            plot(nn(aa:bb)',ttFSwithMex(aa:bb,ij),'b')&#xD;
+            plot(nn(aa:bb)',ttFSnoMex(aa:bb,ij),'r');&#xD;
+&#xD;
+            if ij==1&#xD;
+                title(['v (number of variables) =' num2str(vv(ij)) ' version' a])&#xD;
+            else&#xD;
+                title(['v=' num2str(vv(ij))])&#xD;
+            end&#xD;
+            xlabel('Number of observations')&#xD;
+            ylabel('Seconds')&#xD;
+&#xD;
+            if ij==4&#xD;
+                legend('mvnpdf','FS+mex','FS','location','NorthWest')&#xD;
+            end&#xD;
+&#xD;
+        end&#xD;
+&#xD;
+        hold off;&#xD;
+    end&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->combsFS</Title>
+   <Purpose><!--This is the second line of the .m file-->combsFS is an iterative algorithm equivalent to the MATLAB combs.m</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>v</Name>
+         <ShortDesc>A vector with n elements</ShortDesc>
+         <TypeInd>It contains the response variable</TypeInd>
+         <LongDesc>It can be both a row of column vector.&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>m</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>It specifies the size of the combinations</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>P</Name>
+         <ShortDesc> Matrix containing the&#xD;
+               m-combinations in the rows</ShortDesc>
+         <TypeInd>m-combinations without repetition taken in lexicographic&#xD;
+               order from the vector v.</TypeInd>
+         <LongDesc>&#xD;
+               Data Types - single|double</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Knuth, Donald E. (1997). The Art of Computer Programming, Volume 1:&#xD;
+    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52--74. ISBN&#xD;
+    0-201-89683-4.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>nchoosek</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>combsFS used to generate all possible combinations of size 3 of elements 5, 8, 9, 10, 11.</Title>
+         <Desc/>
+         <MATLABcode>
+    combsFS([5 8:11],3)&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

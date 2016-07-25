@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->HUrho</Title>
+   <Purpose><!--This is the second line of the .m file-->HUrho computes rho function for Huber</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>u</Name>
+         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>n x 1&#xD;
+               vector containing residuals or Mahalanobis distances&#xD;
+               for the n units of the sample</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning parameter</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar greater than 0 which&#xD;
+               controls the robustness/efficiency of the estimator&#xD;
+               (beta in regression or mu in the location case ...)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>rhoHU</Name>
+         <ShortDesc>n x 1 vector </ShortDesc>
+         <TypeInd>Huber rho&#xD;
+                associated to the residuals or Mahalanobis distances for&#xD;
+                the n units of the sample.</TypeInd>
+         <LongDesc> </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+&#xD;
+ function HUrho transforms vector u as follows &#xD;
+ \[&#xD;
+ HUrho(u)= \left\{&#xD;
+    \begin{array}{cc}&#xD;
+  (u^2/2)    &amp;  |u/c| \leq 1  \\&#xD;
+  c|u| -c^2/2               &amp;  |u/c| &amp;gt;1   \\&#xD;
+ \end{array}&#xD;
+    \right.&#xD;
+  \]&#xD;
+  &#xD;
+ See equation (2.27) p. 26 of Maronna et al. (2006).&#xD;
+ Remark: equation (2.26) is written in standardized terms in such a way&#xD;
+ that $\rho(c)=1$, so it is the previous expression multiplied by $2$&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
+ and Methods, Wiley, New York.</Item>
+      <Item>Riani M., Cerioli A., Torti F. (2014). On consistency factors and&#xD;
+ efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.&#xD;
+ http://dx.doi.org/10.1007/s11749-014-0357-7</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>TBrho</Item>
+      <Item>HYPrho</Item>
+      <Item>HArho</Item>
+      <Item>OPTrho</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Plot Huber rho function.</Title>
+         <Desc/>
+         <MATLABcode>
+    close all&#xD;
+    x=-3:0.001:3;&#xD;
+    c=1.345;&#xD;
+    rhoHU=HUrho(x,c);&#xD;
+    plot(x,rhoHU,'LineStyle','-','LineWidth',2)&#xD;
+    xlabel('$u$','Interpreter','Latex')&#xD;
+    ylabel('$\rho (u,1.345)$','Interpreter','Latex')&#xD;
+    text(-c,0,'-c=-1.345')&#xD;
+    text(c,0,'c=1.345')&#xD;
+    hold('on')&#xD;
+    plot(x,x.^2/2,'LineStyle',':','LineWidth',1.5)&#xD;
+    stem(c,c^2/2)&#xD;
+    stem(-c,c^2/2)&#xD;
+&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Huber rhos function for two values of c.</Title>
+         <Desc/>
+         <MATLABcode>
+    x=-6:0.01:6;&#xD;
+    c=1.345;&#xD;
+    rhoHU=HUrho(x,c);&#xD;
+    plot(x,rhoHU)&#xD;
+    xlabel('u','Interpreter','Latex')&#xD;
+    ylabel('$\rho (x,1.345)$','Interpreter','Latex')&#xD;
+    text(-c,0,'-c')&#xD;
+    text(c,0,'c')&#xD;
+    title('$\rho (u,c)$ with $c=1,345$ and $c=2$','Interpreter','Latex')&#xD;
+    hold('on')&#xD;
+    rhoHU=HUrho(x,2);&#xD;
+    plot(x,rhoHU,'-.')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

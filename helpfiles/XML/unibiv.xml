@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->unibiv</Title>
+   <Purpose><!--This is the second line of the .m file-->unibiv has the purpose of detecting univariate and bivariate outliers</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
+               Y represent observations, and columns represent variables.&#xD;
+               Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>rf</Name>
+         <ShortDesc>It specifies the confidence&#xD;
+                  level of the robust bivariate ellipses</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>0&amp;lt;rf&amp;lt;1.&#xD;
+                  The default value is 0.95 that is the outer contour in presence of normality&#xD;
+                  for each ellipse should leave outside 5% of the values.&#xD;
+                 </LongDesc>
+         <Example> 'rf',0.99 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>robscale</Name>
+         <ShortDesc>It specifies the indexes to use&#xD;
+                   to compute the dispersion of each variable and the&#xD;
+                   correlation among each pair of variables</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>robscale=1 (default): the program uses the median correlation&#xD;
+                   and the MAD as estimate of the dispersion of each variable; &#xD;
+                   robscale=2: the correlation coefficient among ranks is used&#xD;
+                   (Spearman's rho) and the MAD as estimate of the dispersion&#xD;
+                   of each variable; &#xD;
+                   robscale=3: the correlation coefficient is based on Kendall's tau b&#xD;
+                   and the MAD as estimate of the dispersion of each&#xD;
+                   variable; &#xD;
+                   robscale=4: tetracoric correlation coefficient is used and the MAD&#xD;
+                   as estimate of the dispersion of each variable; &#xD;
+                   otherwise the correlation and the dispersion of the variables are&#xD;
+                   computed using the traditional (non robust) formulae&#xD;
+                   around the univariate medians.&#xD;
+                 </LongDesc>
+         <Example> 'robscale',2 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>It specify whether it is necessary to produce a plot&#xD;
+                   with univariate standardized boxplots on the&#xD;
+                   main diagonal and bivariate confidence ellipses out of&#xD;
+                   the main diagonal</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If plots is equal to 1 a plot&#xD;
+                   which contains univariate standardized boxplots on the&#xD;
+                   main diagonal and bivariate confidence ellipses out of&#xD;
+                   the main diagonal is produced on the screen. If plots is&#xD;
+                   &amp;lt;&amp;gt; 1 no plot is produced. As default no plot is&#xD;
+                   produced.&#xD;
+                 </LongDesc>
+         <Example> 'plots',2 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>textlab</Name>
+         <ShortDesc>It controls the labels in the plots</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If textlab=1 and&#xD;
+                   plots=1 the labels associated&#xD;
+                   to the units which are univariate outliers or which are&#xD;
+                   outside the confidence levels of the contours are&#xD;
+                   displayed on the screen.&#xD;
+                 </LongDesc>
+         <Example> 'textlab',0&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tag</Name>
+         <ShortDesc>It identifies the handle of the plot which&#xD;
+                   is about to be created</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>The default is to use tag&#xD;
+                   'pl_unibiv'. Notice that if the program finds a plot which&#xD;
+                   has a tag equal to the one specified by the user, then&#xD;
+                   the output of the new plot overwrites the existing one&#xD;
+                   in the same window else a new window is created.&#xD;
+                 </LongDesc>
+         <Example> 'tag','new_tag'&#xD;
+                 </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>madcoef</Name>
+         <ShortDesc>Coefficient which is used to scale MAD&#xD;
+                   coefficient to have a robust estimate of dispersion</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>The&#xD;
+                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1. &#xD;
+                 %                   Remark: if mad =median(y-median(y))=0 then the interquartile&#xD;
+                   range is used. If also the interquartile range is 0&#xD;
+                   than the MD (mean absolute deviation) is used.  In&#xD;
+                   other words MD=mean(abs(y-mean(Y))&#xD;
+&#xD;
+&#xD;
+</LongDesc>
+         <Example> 'madcoef',2 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>fre</Name>
+         <ShortDesc>n x 4 matrix </ShortDesc>
+         <TypeInd>Details about the univariate and&#xD;
+           bivariate outliers.</TypeInd>
+         <LongDesc>&#xD;
+           1st col = index of the units; &#xD;
+           2nd col = number of times unit has been declared&#xD;
+           univariate outliers; &#xD;
+           3rd col = number of times unit has been declared&#xD;
+           bivariate outlier; &#xD;
+           4th col = pseudo MD as sum of bivariate MD.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Riani, M., Zani S. (1997). An iterative method for the detection of&#xD;
+       multivariate outliers, Metron, vol. LV, pp. 101-117.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSMmmd</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>unibiv with all default options.</Title>
+         <Desc>&#xD;
+     Run this code to see the output shown in the help file&#xD;</Desc>
+         <MATLABcode>
+    n=500;&#xD;
+    p=5;&#xD;
+    randn('state', 123456);&#xD;
+    Y=randn(n,p);&#xD;
+    [out]=unibiv(Y);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>unibiv with optional arguments.</Title>
+         <Desc>&#xD;
+     Stack loss data.&#xD;</Desc>
+         <MATLABcode>
+    Y=load('stack_loss.txt');&#xD;
+    % Show robust confidence ellipses&#xD;
+    out=unibiv(Y,'plots',1,'textlab',1);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

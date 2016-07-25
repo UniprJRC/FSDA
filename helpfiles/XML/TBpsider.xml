@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->TBpsider</Title>
+   <Purpose><!--This is the second line of the .m file-->TBpsider computes derivative of psi function (second derivative of rho function) for Tukey's biweight  </Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>u</Name>
+         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>n x 1&#xD;
+               vector containing residuals or Mahalanobis distances&#xD;
+               for the n units of the sample</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning parameters</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar greater than 0 which&#xD;
+               controls the robustness/efficiency of the estimator&#xD;
+               (beta in regression or mu in the location case ...)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>psider</Name>
+         <ShortDesc> Vector</ShortDesc>
+         <TypeInd>derivative of psi function.</TypeInd>
+         <LongDesc> &#xD;
+                n x 1 vector which contains the values of the derivative&#xD;
+                of the Tukey biweight psi function associated to the&#xD;
+                residuals or Mahalanobis distances for the n units of the&#xD;
+                sample.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+ Function TBpsider transforms vector x as follows &#xD;
+ \[&#xD;
+ TBpsider(x)=&#xD;
+ \left\{&#xD;
+    \begin{array}{cc}&#xD;
+  1- (x/c)^2 * [6- 5 (x/c)^2]                          &amp;  \mbox{if  }  |x/c|&amp;lt;=1 &#xD;
+    0            &amp;                      |x/c|&amp;gt;1 \\       &#xD;
+ \end{array}&#xD;
+    \right.&#xD;
+  \] &#xD;
+&#xD;
+ Remark: Tukey's biweight  psi-function is almost linear around $u = 0$ in accordance with&#xD;
+ Winsor's principle that all distributions are normal in the middle.&#xD;
+ This means that  $\psi (u)/u$ is approximately constant over the linear region of $\psi$,&#xD;
+ so the points in that region tend to get equal weight.&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
+ and Methods, Wiley, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>HUpsider</Item>
+      <Item>HYPpsider</Item>
+      <Item>HApsider</Item>
+      <Item>OPTpsider</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Plot the derivative of Tukey's biweght psi function.</Title>
+         <Desc/>
+         <MATLABcode>
+    x=-6:0.01:6;&#xD;
+    psiHUder=HUpsider(x,2);&#xD;
+    plot(x,psiHUder)&#xD;
+    xlabel('x','Interpreter','Latex')&#xD;
+    ylabel('$\psi''(x)$','Interpreter','Latex')&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

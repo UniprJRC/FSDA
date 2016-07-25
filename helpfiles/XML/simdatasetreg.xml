@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->simdatasetreg</Title>
+   <Purpose><!--This is the second line of the .m file-->simdatasetReg simulates a regression dataset given the parameters of a mixture regression model</Purpose>
+   <Description><!--Description section-->[y,X,id]=simdatasetreg(n, Pi, Beta, S) generates a regression dataset&#xD;
+   of size n from a mixture model with parameters 'Pi' (mixing&#xD;
+   proportions), 'Beta' (matrix of regression coefficients), and 'S'&#xD;
+   (vector of variances of the distributions of the points around each&#xD;
+   regression hyperplane). Component sample sizes are produced as a&#xD;
+   realization from a multinomial distribution with probabilities given by&#xD;
+   mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,&#xD;
+   0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integer&#xD;
+   numbers (whose sum is n-k) from the multinominal distribution with&#xD;
+   parameters n-k and Pi. The size of the groups is given by Nk1+1. The&#xD;
+   first Nk1(1)+1  observations are generated using vector of regression&#xD;
+   coefficients Beta(:,1) and variance S(1), ..., and the X simulated as&#xD;
+   specified in structure Xdistrib, the last Nk1(k)+1 observations are&#xD;
+   generated using using vector of regression coefficients Beta(:,k),&#xD;
+   variance S(k) and the X simulated as specified in structure Xdistrib</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>sample size  of the dataset</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Pi</Name>
+         <ShortDesc>vector of length k defining mixing proportions</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>\sum_{j=1}^k Pi=1</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Beta</Name>
+         <ShortDesc>p-by-k matrix containing (in the columns) regression&#xD;
+               coefficients for the k groups</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>S</Name>
+         <ShortDesc>vector of length k containing the variances of the k&#xD;
+               regression hyperplanes</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Xdistrib</Name>
+         <ShortDesc>information about how to generate&#xD;
+               each explanatory variable inside each group</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>The following options are admitted for Xdistrib&#xD;
+                   Xdistrib.intercept = scalar equal to 1 if intercept is&#xD;
+                       present. The default value of Xdistrib.intercept is 1.&#xD;
+               The other fields of Xdistrib depend on the distribution&#xD;
+               which is chosen.&#xD;
+               NORMAL DISTRIBUTION N(mu, sigma)&#xD;
+                   Xdistrib.type='normal';&#xD;
+                   Xdistrib.mu = matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters mu&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.mu is zeros(p-1, k).&#xD;
+                   Xdistrib.sigma = matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters&#xD;
+                       sigma for each explanatory variable and each group.&#xD;
+                       The default value of Xdistrib.sigma is ones(p-1, k)&#xD;
+               UNIFORM DISTRIBUTION U(a, b)&#xD;
+                   Xdistrib.type='uniform';&#xD;
+                   Xdistrib.a = matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters a&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.a is zeros(p-1, k).&#xD;
+                   Xdistrib.b = matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters b&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.b is ones(p-1, k).&#xD;
+               HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|&#xD;
+                   Xdistrib.type='halfnormal';&#xD;
+                   Xdistrib.sigma = matrix of size (p-1)-by-k if&#xD;
+                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)&#xD;
+                   containing the parameters sigma for each explanatory variable&#xD;
+                   and each group. The default value of Xdistrib.sigma is&#xD;
+                   ones(p-1, k).&#xD;
+TODO:simdatasetReg:OTHER_DISTRIB&#xD;
+                   Xdistrib.type='user'.&#xD;
+                   Xdistrib.X = matrix with at least n rows and p-1 (if&#xD;
+                   intercept is present) or p (if intercept is not&#xD;
+                   present) columns containing the values of the&#xD;
+                   explanatory variables for the k groups.&#xD;
+                   Xdistrib.id =identifier vector which labes the rows of&#xD;
+                   matrix Xdistrib.X</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>intercept</Value>
+               <Description>scalar equal to 1 if intercept is&#xD;
+                       present. The default value of Xdistrib.intercept is 1.&#xD;
+               The other fields of Xdistrib depend on the distribution&#xD;
+               which is chosen.&#xD;
+               NORMAL DISTRIBUTION N(mu, sigma)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>type</Value>
+               <Description>'normal';</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>mu</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters mu&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.mu is zeros(p-1, k).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigma</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters&#xD;
+                       sigma for each explanatory variable and each group.&#xD;
+                       The default value of Xdistrib.sigma is ones(p-1, k)&#xD;
+               UNIFORM DISTRIBUTION U(a, b)&#xD;
+                   Xdistrib.type='uniform';</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>a</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters a&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.a is zeros(p-1, k).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>b</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters b&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.b is ones(p-1, k).&#xD;
+               HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|&#xD;
+                   Xdistrib.type='halfnormal';&#xD;
+                   Xdistrib.sigma = matrix of size (p-1)-by-k if&#xD;
+                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)&#xD;
+                   containing the parameters sigma for each explanatory variable&#xD;
+                   and each group. The default value of Xdistrib.sigma is&#xD;
+                   ones(p-1, k).&#xD;
+TODO:simdatasetReg:OTHER_DISTRIB&#xD;
+                   Xdistrib.type='user'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>matrix with at least n rows and p-1 (if&#xD;
+                   intercept is present) or p (if intercept is not&#xD;
+                   present) columns containing the values of the&#xD;
+                   explanatory variables for the k groups.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>id</Value>
+               <Description>identifier vector which labes the rows of&#xD;
+                   matrix Xdistrib.X</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>nnoise</Name>
+         <ShortDesc>desired number of noise variables</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> 'nnoise',2;&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nout</Name>
+         <ShortDesc>number of observations outside (1 - 'alpha') ellipsoidal contours for the&#xD;
+                   weighted component distributions</ShortDesc>
+         <TypeInd>Integer</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> 'nout',5;&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>alpha</Name>
+         <ShortDesc>confidence level</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> 'alpha',0.01;&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>int</Name>
+         <ShortDesc>interval</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>If int is specified, noise will be&#xD;
+                   simulated from a Uniform distribution on the interval 'int'. Otherwise,&#xD;
+                   noise will be simulated uniformly between the smallest and largest&#xD;
+                   coordinates of mean vectors.&#xD;
+               </LongDesc>
+         <Example> 'int',[1 2];&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>maxiter</Name>
+         <ShortDesc>maximum number of iterations</ShortDesc>
+         <TypeInd>Integer</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> 'maxiter',100;&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lambda</Name>
+         <ShortDesc>Transformation coefficients</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector of length v containing inverse Box-Cox&#xD;
+                transformation coefficients. The value false (default)&#xD;
+                implies that no transformation is applied to any variable.&#xD;
+               </LongDesc>
+         <Example> 'lambda',[1 1 0];&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>R_seed</Name>
+         <ShortDesc>random numbers from R language</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar &amp;gt; 0 for the seed to be used to generate random numbers&#xD;
+               in a R instance. This is used to check consistency of the&#xD;
+               results obtained with the R package MixSim. See file&#xD;
+               Connect_Matlab_with_R_HELP.m to know how to connect MATLAB&#xD;
+               with R.  This option requires the installation of the&#xD;
+               R-(D)COM Interface. Default is 0, i.e. random numbers are&#xD;
+               generated by matlab.&#xD;
+               </LongDesc>
+         <Example> 'R_seed',1;&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc> Vector</ShortDesc>
+         <TypeInd>Response variable.</TypeInd>
+         <LongDesc> &#xD;
+               Vector of dimension (n+nout)-by-1  containing the values of the&#xD;
+                responses for the k groups.</LongDesc>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>Explanatory variables.</TypeInd>
+         <LongDesc> Matrix of size (n + nout)-by-(p + nnoise) containinng the&#xD;
+                values of the explanatory variables for the k groups. &#xD;
+                Noise coordinates are provided in the last nnoise columns.</LongDesc>
+      </Item>
+      <Item>
+         <Name>id</Name>
+         <ShortDesc> Vector</ShortDesc>
+         <TypeInd>classification vector.</TypeInd>
+         <LongDesc> Classification vector of length n + nout; 0 represents an&#xD;
+                outlier.&#xD;
+&#xD;
+            REMARK: If nout outliers could not be generated a warning is&#xD;
+                produced. In this case matrix X and vector id will have&#xD;
+                just n rows.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+ To make a dataset more challenging for clustering, a user might want to&#xD;
+ simulate noise variables or outliers. Parameter 'nnoise' specifies the&#xD;
+ desired number of noise variables. If an interval 'int' is specified,&#xD;
+ noise will be simulated from a Uniform distribution on the interval given&#xD;
+ by 'int'. Otherwise, noise will be simulated uniformly between the&#xD;
+ smallest and largest coordinates of mean vectors. 'nout' specifies the&#xD;
+ number of observations outside (1 - 'alpha') ellipsoidal contours for the&#xD;
+ weighted component distributions. Outliers are simulated on a hypercube&#xD;
+ specified by the interval 'int'. A user can apply an inverse Box-Cox&#xD;
+ transformation of y providing a coefficient 'lambda'. The value 1&#xD;
+ implies that no transformation is needed for the response.&#xD;
+&#xD;
+&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maitra, R. and Melnykov, V. (2010). Simulating data to study performance&#xD;
+   of finite mixture modeling and clustering algorithms, The Journal of&#xD;
+   Computational and Graphical Statistics, 2:19, 354-376. (to refer to&#xD;
+   this publication we will use "MM2010 JCGS")</Item>
+      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package&#xD;
+   for Simulating Data to Study Performance of Clustering Algorithms,&#xD;
+   Journal of Statistical Software, 51:12, 1-25.</Item>
+      <Item>Davies, R. (1980) The distribution of a linear combination of&#xD;
+   chi-square random variables, Applied Statistics, 29, 323-333.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>MixSim</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example 1&#xD;
+     Generate mixture of regression using an average overlapping at&#xD;
+     centroids =0.01.</Title>
+         <Desc> Use all default options&#xD;
+     1) Beta is generated according to random normal for each group with&#xD;
+     mu=0 and sigma=1&#xD;
+     2) X in each dimension and each group is generated according to U(0, 1)&#xD;
+     3) regression hyperplanes contain intercepts&#xD;</Desc>
+         <MATLABcode>
+    p=5;&#xD;
+    k=3;&#xD;
+    Q=MixSimreg(k,p,'BarOmega',0.01);&#xD;
+    n=200;&#xD;
+    % Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to&#xD;
+    % 1.0000    1.0000    1.0000&#xD;
+    % 0.5000    0.5000    0.5000&#xD;
+    % 0.5000    0.5000    0.5000&#xD;
+    % 0.5000    0.5000    0.5000&#xD;
+    % 0.5000    0.5000    0.5000&#xD;
+    % Probabilities of overlapping are evaluated at&#xD;
+    % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)&#xD;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);&#xD;
+    spmplot([y X(:,2:end)],id)&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

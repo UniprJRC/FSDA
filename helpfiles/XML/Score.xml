@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->Score</Title>
+   <Purpose><!--This is the second line of the .m file-->Score computes the score test for transformation</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>A vector with n elements that contains the response variable</ShortDesc>
+         <TypeInd>y can&#xD;
+       be both a row of column vector</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of&#xD;
+       dimension (n x p-1)</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns&#xD;
+       represent variables</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed,&#xD;
+       since observations (rows) with missing or infinite values will&#xD;
+       automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, a model with&#xD;
+               constant term will be fitted (default), if 0, no constant&#xD;
+               term will be included.&#xD;
+               </LongDesc>
+         <Example> 'intercept',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>la</Name>
+         <ShortDesc>It specifies for which values of the&#xD;
+                 transformation parameter it is necessary to compute the&#xD;
+                 score test</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Default value of lambda is la=[-1 -0.5 0 0.5 1]; that&#xD;
+                 is the five most common values of lambda&#xD;
+               </LongDesc>
+         <Example> 'la',[0 0.5]&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Lik</Name>
+         <ShortDesc>likelihood for the augmented model</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1 the value of the likelihood for the augmented model will be produced&#xD;
+                 else (default) only the value of the score test will be given&#xD;
+               </LongDesc>
+         <Example> 'Lik',0&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
+                 matrix y and matrix X. Notice that y and X are left&#xD;
+                 unchanged. In other words the additional column of ones&#xD;
+                 for the intercept is not added. As default nocheck=0.&#xD;
+               </LongDesc>
+         <Example> 'nocheck',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>outSC</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>Score</Value>
+               <Description>score test. Scalar. t test for additional&#xD;
+                            constructed variable</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Lik</Value>
+               <Description>value of the likelihood. Scalar. This output&#xD;
+                           is produced just if input value Lik =1</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson Riani (2000), equation (2.30) for the expression&#xD;
+ for score test statistic.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION--></SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Score with all default options.</Title>
+         <Desc>&#xD;
+     Wool data.&#xD;</Desc>
+         <MATLABcode>
+    XX=load('wool.txt');&#xD;
+    y=XX(:,end);&#xD;
+    X=XX(:,1:end-1);&#xD;
+    % Score test using the five most common values of lambda&#xD;
+    [outSc]=Score(y,X);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Score with optional arguments.</Title>
+         <Desc>&#xD;
+     Loyalty cards data.&#xD;</Desc>
+         <MATLABcode>
+    load('loyalty.txt');&#xD;
+    y=loyalty(:,4);&#xD;
+    X=loyalty(:,1:3);&#xD;
+    % la = vector containing the values of the transformation&#xD;
+    % parameters which have to be tested&#xD;
+    la=[0.25 1/3 0.4 0.5];&#xD;
+    [outSc]=Score(y,X,'la',la,'intercept',0);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode/>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

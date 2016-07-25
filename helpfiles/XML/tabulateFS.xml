@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->tabulateFS</Title>
+   <Purpose><!--This is the second line of the .m file-->Create frequency table of unique values of x, excluding possible 0 counts</Purpose>
+   <Description><!--Description section-->tbl = tabulateFS(x) takes a vector x and returns a matrix, tbl. The&#xD;
+   first column of table contains the unique values of x.  The second is&#xD;
+   the number of instances of each value.  The last column contains the&#xD;
+   percentage of each value.  This function differs from MATLAB function&#xD;
+   tabulate because it excludes 0 counts.&#xD;
+   Remark: tabulateFS with no output arguments returns a formatted table&#xD;
+   in the command window.</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>x</Name>
+         <ShortDesc>vector for which frequency table has to be calculated</ShortDesc>
+         <TypeInd>vector of numeric data or  categorical variable, character&#xD;
+               array, or cell array of strings of length n</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>double | single| categorical variable | character&#xD;
+               array, | cell array of strings</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>tbl</Name>
+         <ShortDesc>&#xD;
+           Matrix of size unique(x)-by-3</ShortDesc>
+         <TypeInd>frequency table of data in vector x.</TypeInd>
+         <LongDesc>&#xD;
+           Information in tbl is arranged as follows:&#xD;
+               1st column -- The unique values of x;&#xD;
+               2nd column -- The number of instances of each value;&#xD;
+               3rd column -- The percentage of each value.&#xD;
+           If x is a categorical variable, character array, or cell array of&#xD;
+           strings, tbl is a cell array.&#xD;
+&#xD;
+  Remark: tabulateFS with no output arguments returns a formatted table&#xD;
+          in the command window.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>tabulate</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Tabulate Fisher iris data.</Title>
+         <Desc/>
+         <MATLABcode>
+    load fisheriris;&#xD;
+    tbl=tabulateFS(species);&#xD;
+    disp(tbl)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Explore the difference between tabulate and tabulateFS.</Title>
+         <Desc>&#xD;
+     Run this code to see the output shown in the help file&#xD;</Desc>
+         <MATLABcode>
+    rng('default') % Reinitialize the random number generator to its startup configuration&#xD;
+    rng(100)&#xD;
+    x=randi([1 10],100,1);&#xD;
+    x(100)=30;&#xD;
+    % Output of tabulate&#xD;
+    disp('Output of MATLAB function tabulate')&#xD;
+    disp(tabulate(x));&#xD;
+    % Output of tabulateFS&#xD;
+    disp('Output of FSDA function tabulateFS')&#xD;
+    disp(tabulateFS(x));&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

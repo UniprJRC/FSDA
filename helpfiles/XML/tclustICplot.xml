@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->tclustICplot</Title>
+   <Purpose><!--This is the second line of the .m file-->tclustICplot plots information criterion as a function of c and k</Purpose>
+   <Description><!--Description section-->tclustICplot takes as input the output of function tclustIC (that is a&#xD;
+   series of matrices which contain the values of the information criteria&#xD;
+   BIC/ICL/CLA for different values of k and c) and plots them as function&#xD;
+   of c or of k. The plot enables interaction in the sense that, if option&#xD;
+   databrush has been activated, it is possible to click on a point in the&#xD;
+   plot and to see the associated classification in the scatter plot&#xD;
+   matrix.</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>IC</Name>
+         <ShortDesc>Information criterion to use</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>It contains the following fields.&#xD;
+                IC.CLACLA = matrix of size length(kk)-times&#xD;
+                   length(cc) containinig the values of the penalized&#xD;
+                   classification likelihood (CLA).&#xD;
+                   This field is linked with&#xD;
+                   out.IDXCLA.&#xD;
+                IC.IDXCLA = cell of size length(kk)-times&#xD;
+                   length(cc). Each element of the cell is a vector of&#xD;
+                   length n containinig the assignment of each unit using&#xD;
+                   the classification model.&#xD;
+                Remark: fields CLACLA and IDXCLA are linked together.&#xD;
+                   CLACLA and IDXCLA are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'CLACLA' or 'ALL'&#xD;
+                IC.MIXMIX = matrix of size length(kk)-times&#xD;
+                   length(cc) containinig the value of the penalized&#xD;
+                   mixture likelihood (BIC). This field is linked with&#xD;
+                   out.IDXMIX.&#xD;
+                IC.MIXCLA = matrix of size length(kk)-times&#xD;
+                   length(cc) containinig the value of the ICL. This field&#xD;
+                   is linked with out.IDXMIX.&#xD;
+                IC.IDXMIX = cell of size length(kk)-times&#xD;
+                   length(cc). Each element of the cell is a vector of&#xD;
+                   length n containinig the assignment of each unit using&#xD;
+                   the mixture model.&#xD;
+                Remark 1: fields MIXMIX and IDXMIX are linked together.&#xD;
+                   MIXMIX and IDXMIX are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'CLACLA' or 'ALL'.&#xD;
+                Remark 2: fields MIXCLA and IDXMIX are linked together.&#xD;
+                   MIXCLA and IDXMIX are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'MIXCLA' or 'ALL'.&#xD;
+                IC.kk = vector containing the values of k (number of&#xD;
+                   components) which have been considered.&#xD;
+                IC.cc = vector containing the values of c (values of the&#xD;
+                   restriction factor) which have been considered.&#xD;
+                IC.Y =  original n-times-v data matrix on which the IC&#xD;
+                   (Information criterion) has&#xD;
+                    been computed&#xD;
+                IC.nameY=  cell of length(size(Y,2)) containing the names&#xD;
+                   of the variables of original matrix Y&#xD;
+&#xD;
+                 </LongDesc>
+         <Example> </Example>
+         <DataType>struct</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>CLACLA</Value>
+               <Description>matrix of size length(kk)-times&#xD;
+                   length(cc) containinig the values of the penalized&#xD;
+                   classification likelihood (CLA).&#xD;
+                   This field is linked with&#xD;
+                   out.IDXCLA.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>IDXCLA</Value>
+               <Description>cell of size length(kk)-times&#xD;
+                   length(cc). Each element of the cell is a vector of&#xD;
+                   length n containinig the assignment of each unit using&#xD;
+                   the classification model.&#xD;
+                Remark: fields CLACLA and IDXCLA are linked together.&#xD;
+                   CLACLA and IDXCLA are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'CLACLA' or 'ALL'</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MIXMIX</Value>
+               <Description>matrix of size length(kk)-times&#xD;
+                   length(cc) containinig the value of the penalized&#xD;
+                   mixture likelihood (BIC). This field is linked with&#xD;
+                   out.IDXMIX.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MIXCLA</Value>
+               <Description>matrix of size length(kk)-times&#xD;
+                   length(cc) containinig the value of the ICL. This field&#xD;
+                   is linked with out.IDXMIX.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>IDXMIX</Value>
+               <Description>cell of size length(kk)-times&#xD;
+                   length(cc). Each element of the cell is a vector of&#xD;
+                   length n containinig the assignment of each unit using&#xD;
+                   the mixture model.&#xD;
+                Remark 1: fields MIXMIX and IDXMIX are linked together.&#xD;
+                   MIXMIX and IDXMIX are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'CLACLA' or 'ALL'.&#xD;
+                Remark 2: fields MIXCLA and IDXMIX are linked together.&#xD;
+                   MIXCLA and IDXMIX are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'MIXCLA' or 'ALL'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>kk</Value>
+               <Description>vector containing the values of k (number of&#xD;
+                   components) which have been considered.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>cc</Value>
+               <Description>vector containing the values of c (values of the&#xD;
+                   restriction factor) which have been considered.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Y</Value>
+               <Description>original n-times-v data matrix on which the IC&#xD;
+                   (Information criterion) has&#xD;
+                    been computed</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>nameY</Value>
+               <Description>cell of length(size(Y,2)) containing the names&#xD;
+                   of the variables of original matrix Y</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>whichIC</Name>
+         <ShortDesc>character which specifies the information criterion to use&#xD;
+               in the plot</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>Possible values for whichIC are:&#xD;
+               'CLACLA' = in this case best solutions are referred to&#xD;
+                   the classification likelihood.&#xD;
+               'MIXMIX'  = in this case in this case best solutions are&#xD;
+                   referred to the mixture likelihood (BIC).&#xD;
+               'MIXCLA'  = in this case in this case best solutions are&#xD;
+                   referred to ICL.&#xD;
+               'ALL'  = in this case best solutions both three solutions using&#xD;
+                     classification and mixture likelihood are produced.&#xD;
+                   In output structure out all the three matrices&#xD;
+                   out.MIXMIXbs, out.CLACLAbs and out.MIXCLAbs are given.&#xD;
+               The default value of 'whichIC' is 'ALL'&#xD;
+                 </LongDesc>
+         <Example> 'whichIC','ALL'&#xD;
+                 </Example>
+         <DataType>character</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tag</Name>
+         <ShortDesc>Personalized tag</ShortDesc>
+         <TypeInd>String</TypeInd>
+         <LongDesc>String which identifies the&#xD;
+                   handle of the plot which is about to be created. The&#xD;
+                   default is to use tag 'pl_IC'.&#xD;
+                   Note that if the program finds a plot which has a tag&#xD;
+                   equal to the one specified by the user, then the output&#xD;
+                   of the new plot overwrites the existing one in the same&#xD;
+                   window else a new window is created.&#xD;
+                   </LongDesc>
+         <Example> 'tag','myplot'&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>datatooltip</Name>
+         <ShortDesc>interactive clicking</ShortDesc>
+         <TypeInd>Empty value (default) or&#xD;
+                   structure</TypeInd>
+         <LongDesc>The default is datatooltip=''.&#xD;
+                   If datatooltip = 1, the user can select with the&#xD;
+                   mouse a solution in order to&#xD;
+                   have the following information:&#xD;
+                   1) value of k which has been selected&#xD;
+                   2) value of c which has been selected&#xD;
+                   3) values of the information criterion&#xD;
+                   4) frequency distribution of the associated&#xD;
+                   classification&#xD;
+                   If datatooltip is a structure it may contain the&#xD;
+                   following the fields&#xD;
+                   datatooltip.DisplayStyle = Determines how the data&#xD;
+                       cursor displays. datatip | window.&#xD;
+                       - datatip displays data cursor&#xD;
+                       information in a small yellow text box attached to a&#xD;
+                       black square marker at a data point you interactively&#xD;
+                       select.&#xD;
+                       - window displays data cursor information for the&#xD;
+                       data point you interactively select in a floating&#xD;
+                       window within the figure.&#xD;
+                   datatooltip.SnapToDataVertex=  Specifies whether the&#xD;
+                       data cursor snaps to the nearest data value or is&#xD;
+                       located at the actual pointer position.  on | off.&#xD;
+                       - on data cursor snaps to the nearest data value&#xD;
+                       - off data cursor is located at the actual pointer&#xD;
+                       position.&#xD;
+                   (see the MATLAB function datacursormode or the examples&#xD;
+                   below). Default values are datatooltip.DisplayStyle =&#xD;
+                   'Window' and datatooltip.SnapToDataVertex = 'on'.&#xD;
+                   </LongDesc>
+         <Example> 'datatooltip',''&#xD;
+                   </Example>
+         <DataType>scalar double or struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>DisplayStyle</Value>
+               <Description>Determines how the data&#xD;
+                       cursor displays. datatip | window.&#xD;
+                       - datatip displays data cursor&#xD;
+                       information in a small yellow text box attached to a&#xD;
+                       black square marker at a data point you interactively&#xD;
+                       select.&#xD;
+                       - window displays data cursor information for the&#xD;
+                       data point you interactively select in a floating&#xD;
+                       window within the figure.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>SnapToDataVertex</Value>
+               <Description>Specifies whether the&#xD;
+                       data cursor snaps to the nearest data value or is&#xD;
+                       located at the actual pointer position.  on | off.&#xD;
+                       - on data cursor snaps to the nearest data value&#xD;
+                       - off data cursor is located at the actual pointer&#xD;
+                       position.&#xD;
+                   (see the MATLAB function datacursormode or the examples&#xD;
+                   below). Default values are datatooltip.DisplayStyle =&#xD;
+                   'Window' and datatooltip.SnapToDataVertex = 'on'.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>databrush</Name>
+         <ShortDesc>interactive mouse brushing</ShortDesc>
+         <TypeInd>empty value, scalar or structure</TypeInd>
+         <LongDesc>If databrush is an empty value (default), no brushing&#xD;
+                   is done.&#xD;
+                   The activation of this option (databrush is a scalar or&#xD;
+                   a structure) enables the user  to select a set of&#xD;
+                   values of IC in the current plot and to see the&#xD;
+                   corresponding classification highlighted in the scatter&#xD;
+                   plot matrix (spm).&#xD;
+                   If spm does not exist it is automatically created.&#xD;
+                   Please, note that the window style of the other figures is set&#xD;
+                   equal to that which contains the IC&#xD;
+                   plot. In other words, if the IC plot&#xD;
+                   is docked all the other figures will be docked too.&#xD;
+                   DATABRUSH IS A SCALAR.&#xD;
+                   If databrush is a scalar the default selection tool is&#xD;
+                   a rectangular brush and it is possible to brush only&#xD;
+                   once (that is persist='').&#xD;
+                   DATABRUSH IS A STRUCTURE.&#xD;
+                   If databrush is a structure, it is possible to use all&#xD;
+                   optional arguments of function selectdataFS.m and the&#xD;
+                   following fields&#xD;
+                   - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar&#xD;
+                     containing the strings 'on' or 'off'.&#xD;
+                     The default value of persist is '', that is brushing&#xD;
+                     is allowed only once.&#xD;
+                     If persist is 'on' or 'off' brushing can be done as&#xD;
+                     many time as the user requires.&#xD;
+                     If persist='on' then the unit(s) currently brushed&#xD;
+                     are added to those previously brushed. it is&#xD;
+                     possible, every time a new brushing is done, to use a&#xD;
+                     different color for the brushed solutions.&#xD;
+                     If persist='off' every time a new brush is performed&#xD;
+                     units previously brushed are removed.&#xD;
+                   - databrush.Label = add labels (i.e. x=value of k and&#xD;
+                      y=values of IC) of brushed solutions in the ICplot.&#xD;
+                     Character. [] (default) | '1'.&#xD;
+                   - dispopt = string which controls how to fill the&#xD;
+                      diagonals in the scatterplot matrix of the brushed&#xD;
+                      solutions. Set dispopt to 'hist' (default) to plot&#xD;
+                      histograms, or 'box' to plot boxplots.&#xD;
+                   </LongDesc>
+         <Example> 'databrush',1&#xD;
+                   </Example>
+         <DataType>single | double | struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>persist</Value>
+               <Description>repeated brushng enabled. Persist is an empty value or a scalar&#xD;
+                     containing the strings 'on' or 'off'.&#xD;
+                     The default value of persist is '', that is brushing&#xD;
+                     is allowed only once.&#xD;
+                     If persist is 'on' or 'off' brushing can be done as&#xD;
+                     many time as the user requires.&#xD;
+                     If persist='on' then the unit(s) currently brushed&#xD;
+                     are added to those previously brushed. it is&#xD;
+                     possible, every time a new brushing is done, to use a&#xD;
+                     different color for the brushed solutions.&#xD;
+                     If persist='off' every time a new brush is performed&#xD;
+                     units previously brushed are removed.&#xD;
+                   </Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Label</Value>
+               <Description>add labels (i.e. x=value of k and&#xD;
+                      y=values of IC) of brushed solutions in the ICplot.&#xD;
+                     Character. [] (default) | '1'.&#xD;
+                   - dispopt = string which controls how to fill the&#xD;
+                      diagonals in the scatterplot matrix of the brushed&#xD;
+                      solutions. Set dispopt to 'hist' (default) to plot&#xD;
+                      histograms, or 'box' to plot boxplots.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>nameY</Name>
+         <ShortDesc>variable labels</ShortDesc>
+         <TypeInd>Cell array</TypeInd>
+         <LongDesc>Cell array of strings&#xD;
+                   containing the labels of the&#xD;
+                   variables. As default value, the labels which are added&#xD;
+                   are Y1, ..., Yv.&#xD;
+                   </LongDesc>
+         <Example> 'nameY',{'myY1', 'myY2'}&#xD;
+                   </Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016). Finding&#xD;
+ the Number of Groups in Model-Based Clustering via Constrained&#xD;
+ Likelihoods, submitted.</Item>
+      <Item>L. Hubert and P. Arabie (1985). Comparing Partitions, Journal of&#xD;
+ Classification 2:193-218</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>tclustIC</Item>
+      <Item>tclust</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Plot BIC, ICL and CLA for for Geyser data with all default options.</Title>
+         <Desc/>
+         <MATLABcode>
+    Y=load('geyser2.txt');&#xD;
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);&#xD;
+    tclustICplot(out)&#xD;
+&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of option datatooltip (all default options).</Title>
+         <Desc>&#xD;
+       Gives the user the possibility of clicking on the different points&#xD;
+       and have information about&#xD;
+       1) value of k which has been selected&#xD;
+       2) value of c which has been selected&#xD;
+       3) values of the information criterion&#xD;
+       4) frequency distribution of the associated classification&#xD;</Desc>
+         <MATLABcode>
+    tclustICplot(out,'datatooltip',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of the use of option datatooltip (personalized options).</Title>
+         <Desc>&#xD;
+     Gives the user the possibility of clicking on the different points&#xD;
+     and have information about the selected, the step of entry&#xD;
+     into the subset and the associated label.&#xD;</Desc>
+         <MATLABcode>
+    datatooltip = struct;&#xD;
+    % In this example the style of the datatooltip is 'datatip'. Click on a&#xD;
+    % point when the ICplot is displayed.&#xD;
+    %&#xD;
+    datatooltip.DisplayStyle = 'datatip';&#xD;
+    tclustICplot(out,'datatooltip',datatooltip);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Simultaneous datatooltip with all 3 plots (MIXMIX, MIXCLA and CLACLA).</Title>
+         <Desc/>
+         <MATLABcode>
+    tclustICplot(out,'whichIC','ALL')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
+     databrushing from the ICplot.</Title>
+         <Desc>&#xD;
+     Use all default options for databrush (brush just once)&#xD;</Desc>
+         <MATLABcode>
+    tclustICplot(out,'databrush',1)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 2.&lt;/i&gt;
+     Repeated databrushing from the ICplot.</Title>
+         <Desc>&#xD;
+     enable repeated brushing and show boxplots of groups inside diag of spm&#xD;</Desc>
+         <MATLABcode>
+    databrush=struct;&#xD;
+    % Set the shape of the brush&#xD;
+    databrush.selectionmode='Rect';&#xD;
+    % Enable repeated brushing&#xD;
+    databrush.persist='on';&#xD;
+    % Include x and y coordinates of brushed solutions inside ICplot&#xD;
+    databrush.Label='on';&#xD;
+    % Remove x and y coordinated just after btushing&#xD;
+    databrush.RemoveLabels='on';&#xD;
+    % show boxplots of the groups instead of histograms on the main&#xD;
+    % diagonal of the spm&#xD;
+    databrush.dispopt='box';&#xD;
+    tclustICplot(out,'databrush',databrush)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

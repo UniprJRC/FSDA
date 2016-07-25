@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->normBoxCox</Title>
+   <Purpose><!--This is the second line of the .m file-->normBoxCox computes (normalized) Box-Cox transformation</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
+               Y represent observations, and columns represent variables.&#xD;
+               Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ColtoTra</Name>
+         <ShortDesc>Variable to transform</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>k x 1 integer vector&#xD;
+               specifying the variables which must be&#xD;
+               transformed. If it is missing and length(la)=v all&#xD;
+               variables are transformed&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>la</Name>
+         <ShortDesc>transformation parameters</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>k x 1 vector containing set of transformation&#xD;
+               parameters for the k ColtoTra.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Jacobian</Name>
+         <ShortDesc>Requested Jacobian of transformed values</ShortDesc>
+         <TypeInd>true (default) or&#xD;
+               false</TypeInd>
+         <LongDesc>If true (default) the transformation is normalized&#xD;
+               to have Jacobian equal to 1</LongDesc>
+         <Example> </Example>
+         <DataType> </DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Ytra</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>transformed data matrix.</TypeInd>
+         <LongDesc> n x v data matrix containing&#xD;
+               transformed observations&#xD;
+             When $\lambda \ne 0$&#xD;
+             if jacobian=true:&#xD;
+             $ytra = (y^\lambda-1)/ (G^{(\lambda-1)} \lambda)$;&#xD;
+             else if jacobian=false:&#xD;
+             $ytra = (y^\lambda-1)/ \lambda$;&#xD;
+             where $G$ is the geometric mean of the observations.&#xD;
+             When $\lambda = 0$&#xD;
+             if jacobian=true:&#xD;
+             $ytra = G log(y)$;&#xD;
+             else if jacobian=false:&#xD;
+             $ytra = log(y)$;&#xD;
+             where $G$ is the geometric mean of the observations.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Box, G. E. P. &amp; Cox, D. R. (1964). An analysis of transformations (with&#xD;
+Discussion). J. R. Statist. Soc. B 26, 211-252</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>normYJ</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    close all&#xD;
+    y=(-2:0.1:2)';&#xD;
+    n=length(y);&#xD;
+    la=-1:1:3;&#xD;
+    nla=length(la);&#xD;
+    YtraYJ=zeros(n,nla);&#xD;
+    YtraBC=nan(n,nla);&#xD;
+    posy=y&amp;gt;0;&#xD;
+    for j=1:nla&#xD;
+      YtraYJ(:,j)=normYJ(y,1,la(j),false);&#xD;
+&#xD;
+      YtraBC(posy,j)=normBoxCox(y(posy),1,la(j),false);&#xD;
+    end&#xD;
+    subplot(1,2,1)&#xD;
+    plot(y,YtraYJ)&#xD;
+    for j=1:nla&#xD;
+        text(y(1), YtraYJ(1,j),['\lambda=' num2str(la(j))])&#xD;
+    end&#xD;
+&#xD;
+    xlabel('Original values')&#xD;
+    ylabel('Transformed values')&#xD;
+    title('Yeo-Johnson transformation')&#xD;
+&#xD;
+    subplot(1,2,2)&#xD;
+    plot(y,YtraBC)&#xD;
+    xlim([y(1) y(end)])&#xD;
+    for j=1:nla&#xD;
+        text(y(16), YtraBC(22,j),['\lambda=' num2str(la(j))])&#xD;
+    end&#xD;
+    xlabel('Original values')&#xD;
+    ylabel('Transformed values')&#xD;
+    title('Box-Cox transformation')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Mussels data.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('mussels.mat');&#xD;
+    Y=mussels.data;&#xD;
+    la=[0.5 0 0.5 0 0];&#xD;
+    % Transform all columns of matrix Y according to the values of la&#xD;
+    Y=normBoxCox(Y,[],la);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

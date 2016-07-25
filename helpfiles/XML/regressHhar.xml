@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->regressHhar</Title>
+   <Purpose><!--This is the second line of the .m file-->regressH fits a multiple linear regression model with Harvey heteroskedasticity</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable.&#xD;
+               It can be either a row or column vector.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables in the regression equation</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>Data matrix of explanatory variables (also called 'regressors')&#xD;
+               of dimension (n x p-1). Rows of X represent observations, and&#xD;
+               columns represent variables.&#xD;
+               By default, there is a constant term in the model, unless&#xD;
+               you explicitly remove it using option intercept, so do not&#xD;
+               include a column of 1s in X.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Z</Name>
+         <ShortDesc>Predictor variables in the skedastic equation</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n x r matrix or vector of length r.&#xD;
+               If Z is a n x r matrix it contains the r variables which&#xD;
+               form the scedastic function as follows: &#xD;
+               \[&#xD;
+               \sigma^2_i = exp(\gamma_0 + \gamma_1 Z_{i1} + ...+&#xD;
+               \gamma_{r} Z_{ir}). &#xD;
+               \]&#xD;
+               If Z is a vector of length r it contains the indexes of the&#xD;
+               columns of matrix X which form the scedastic function as&#xD;
+               follows&#xD;
+               \[&#xD;
+               \sigma^2_i = exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+&#xD;
+               \gamma_{r} X(i,Z(r)))&#xD;
+               \]&#xD;
+               Therefore, if for example the explanatory variables&#xD;
+               responsible for heteroscedisticity are columns 3 and 5&#xD;
+               of matrix X, it is possible to use both the sintax&#xD;
+                    regressH(y,X,X(:,[3 5]))&#xD;
+               or the sintax&#xD;
+                    regressH(y,X,[3 5]). &#xD;
+&#xD;
+               Remark: Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default),&#xD;
+               if 0, no constant term will be included.&#xD;
+               </LongDesc>
+         <Example> 'intercept',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>initialbeta</Name>
+         <ShortDesc>initial estimate of beta</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>p x 1 vector. If initialbeta is not supplied (default) standard least&#xD;
+               squares is used to find initial estimate of beta&#xD;
+               </LongDesc>
+         <Example> 'initialbeta',[3.6 8.1]&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>initialgamma</Name>
+         <ShortDesc>initial estimate of gamma</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>vector of length (r+1). If initialgamma is not supplied (default)  initial estimate&#xD;
+               of gamma is nothing but the OLS estimate in a regression&#xD;
+               where the response is given by squared residuals and the&#xD;
+               regressors are specified in input object Z (this regression&#xD;
+               also contains a constant term).&#xD;
+               </LongDesc>
+         <Example> 'initialgamma',[0.6 2.8]&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>maxiter</Name>
+         <ShortDesc>Maximum number of iterations to find model paramters</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If not defined, maxiter is fixed to 200. Remark: in order&#xD;
+               to obtain the FGLS estimator (two step estimator) it is&#xD;
+               enough to put maxiter=1.&#xD;
+               </LongDesc>
+         <Example> 'maxiter',8&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tol</Name>
+         <ShortDesc>The tolerance for controlling convergence</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If not defined, tol is fixed to 1e-8. Convergence is&#xD;
+               obtained if $||d_{old}-d_{new}||/||d_{new}||&amp;lt;1e-8$ where d is the&#xD;
+               vector of length p+r+1 which contains regression and scedastic&#xD;
+               coefficients $d=(\beta' \gamma')'$; while $d_{old}$ and $d_{new}$ are&#xD;
+               the values of d in iterations t and t+1 t=1,2, ..., maxiter&#xD;
+               </LongDesc>
+         <Example> 'tol',0.0001&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msgiter</Name>
+         <ShortDesc>Level of output to display</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If msgiter=1 it is possible to see the estimates of&#xD;
+               the regression and scedastic parameters together with their&#xD;
+               standard errors and the values of Wald, LM and&#xD;
+               Likelihood ratio test, and the value of the maximized&#xD;
+               loglikelihood. If msgiter&amp;gt;1 it is also possible to see&#xD;
+               monitor the estimates of the coefficients in each step of&#xD;
+               the iteration. If msgiter&amp;lt;1 nothing is displayed on the&#xD;
+               screen&#xD;
+               </LongDesc>
+         <Example> 'msgiter',0&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
+               matrix y and matrix X. Notice that y and X are left&#xD;
+               unchanged. In other words the additional column of ones for&#xD;
+               the intercept is not added. As default nocheck=0.&#xD;
+               </LongDesc>
+         <Example> 'nocheck',1&#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>Beta</Value>
+               <Description>p-by-3 matrix containing: &#xD;
+                       1st col = Estimates of regression coefficients; &#xD;
+                       2nd col = Standard errors of the estimates of regr&#xD;
+                       coeff; &#xD;
+                       3rd col = t-tests of the estimates of regr coeff.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Gamma</Value>
+               <Description>(r+1)-by-3 matrix containing: &#xD;
+                       1st col = Estimates of scedastic coefficients; &#xD;
+                       2nd col = Standard errors of the estimates of&#xD;
+                       scedastic coeff; &#xD;
+                       3rd col = t tests of the estimates of scedastic&#xD;
+                       coeff. &#xD;
+                       Remark: the first row of matrix out.Gamma is&#xD;
+                       referred to the estimate of \( \sigma^2 \). In&#xD;
+                       other words &#xD;
+                       \[ &#xD;
+                       \hat \sigma^2= \exp(\gamma_1) &#xD;
+                       \]</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>WA</Value>
+               <Description>scalar. Wald test</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LR</Value>
+               <Description>scalar. Likelihood ratio test</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LM</Value>
+               <Description>scalar. Lagrange multiplier test</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LogL</Value>
+               <Description>scalar. Complete maximized log likelihood</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+   This routine implements Harvey’s (1976) model of&#xD;
+   multiplicative heteroscedasticity which is a very flexible, general&#xD;
+   model that includes most of the useful formulations as special cases.&#xD;
+   The general formulation is: &#xD;
+   &#xD;
+       $\sigma^2_i =\sigma^2 \exp(z_i \alpha)$&#xD;
+   &#xD;
+   Let $z_i$ include a constant term so that \( z_i'=(1 \; q_i) \) where \( q_i \) is the&#xD;
+   original set of variables which are supposed to explain&#xD;
+   heteroscedasticity. This routine automatically adds a column of 1 to&#xD;
+   input matrix Z (therefore Z does not have to include a constant term).&#xD;
+   Now let &#xD;
+   \[  &#xD;
+   \gamma'=[\log \sigma^2 \alpha'] = [ \gamma_0, \ldots, \gamma_r]. &#xD;
+   \] &#xD;
+   Then the model is simply&#xD;
+   \[&#xD;
+   \sigma^2_i = \exp(\gamma' z_i)&#xD;
+   \]&#xD;
+   Once the full parameter vector is estimated \( \exp( \gamma_0)\) provides the&#xD;
+   estimator for \( \sigma^2 \). &#xD;
+&#xD;
+  The model is:  &#xD;
+               \[&#xD;
+                 y=X \times\beta+ \epsilon,  \qquad &#xD;
+                 \epsilon \sim N(0, \;  \Sigma)&#xD;
+               \]&#xD;
+               \[&#xD;
+                   \Sigma=diag(\sigma_1^2, ..., \sigma_n^2)    \qquad&#xD;
+                   \sigma_i^2=\exp(z_i^T \times \gamma)        \qquad&#xD;
+                   var(\epsilon_i)=\sigma_i^2                  \qquad&#xD;
+                   i=1, ..., n    &#xD;
+               \]                                                      &#xD;
+               $\beta$ = p-by-1 vector which contains regression&#xD;
+               parameters.                                                 &#xD;
+               $\gamma$ = (r+1)-times-1 vector $\gamma_0, \ldots,&#xD;
+               \gamma_r$ (or written in MATLAB language $(\gamma(1),&#xD;
+               \ldots, \gamma(r+1))$) which contains skedastic parameters.&#xD;
+               $X$ = n-by-p matrix containing explanatory variables in the&#xD;
+               mean equation (including the constant term if present).&#xD;
+               $Z$ = n-by-(r+1) matrix containing the explanatory&#xD;
+               variables in the skedastic equation. $Z= (z_1^T, \ldots,&#xD;
+               z_n^T)^T$ &#xD;
+               $z_i^T=(1, z_{i,1}, \ldots, z_{i,r})$ (or written in MATLAB&#xD;
+               language  $z_i=(z(1), \ldots, z(r+1)$).&#xD;
+               REMARK1: given that the first element of $z_i$ is equal to 1&#xD;
+               $\sigma_i^2$ can be written as&#xD;
+               \[&#xD;
+               \sigma_i^2 = \sigma^2 \times \exp(z_i(2:r+1)*\gamma(2:r+1))&#xD;
+                          = \exp(\gamma(1))*\exp(z_i(2:r+1)*\gamma(2:r+1))&#xD;
+               \]&#xD;
+               that is, once the full parameter vector $\gamma$ containing&#xD;
+               the skedastic parameters is estimated $\exp( \gamma(1))$&#xD;
+               provides the estimator for $\sigma^2$. &#xD;
+               REMARK2: if $Z=log(X)$ then&#xD;
+               \[&#xD;
+                            \sigma^2_i= \exp(z_i^T \times \gamma) =&#xD;
+                           \prod_{j=1}^p x_{ij}^{\gamma_j}     \qquad  &#xD;
+                            j=1, ..., p&#xD;
+               \]&#xD;
+               REMARK3: if there is just one explanatory variable (say $x&#xD;
+               =(x_1 \ldots, x_n)$) which is responsible for&#xD;
+               heteroskedasticity and the model is&#xD;
+               \[&#xD;
+               \sigma^2_i=( \sigma^2 \times x_i^\alpha)&#xD;
+               \]&#xD;
+               then it is necessary to supply $Z$ as $Z=log(x)$. In this&#xD;
+               case, given that the program automatically adds a column of&#xD;
+               ones to $Z$&#xD;
+               \[&#xD;
+                  \exp(Z(i,1) \times \gamma(1) +Z(i,2) \times \gamma(2))=&#xD;
+                  \exp(\gamma(1))*x_i^{\gamma(2)}&#xD;
+               \]&#xD;
+               therefore the $\exp$ of the first element of vector&#xD;
+               $\gamma$ (namely exp(gamma(1))) is the estimate of&#xD;
+               $\sigma^2$ while the second element of vector $\gamma$&#xD;
+               (namely gamma(2)) is the estimate of $\alpha$&#xD;
+&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1&#xD;
+   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282).&#xD;
+   Prentice Hall.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>regressHart</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>regressHhar with all default options.</Title>
+         <Desc>&#xD;
+     Monthly credit card expenditure for 100 individuals.&#xD;
+     Results in structure "OUT" coincides with "Maximum Likelihood&#xD;
+     Estimates" of table 11.3, page 235, 5th edition of Greene (1987).&#xD;
+     Results in structure "OLS" coincide with "Ordinary Leat Squares&#xD;
+     Estimates" of table 11.3, page 235, 5th edition of Greene (1987).&#xD;</Desc>
+         <MATLABcode>
+ &#xD;
+    load('TableF91_Greene');&#xD;
+    data=TableF91_Greene.data;&#xD;
+    n=size(data,1);&#xD;
+&#xD;
+    % Linear regression of monthly expenditure on a constant, age, income&#xD;
+    % its square and a dummy variable for home ownership using the 72&#xD;
+    % observations for which expenditure was nonzero produces the residuals&#xD;
+    % plotted below&#xD;
+&#xD;
+    X=zeros(n,4);&#xD;
+    X(:,1)=data(:,3);%age&#xD;
+    X(:,2)=data(:,6);% Own rent (dummy variable)&#xD;
+    X(:,3)=data(:,4);% Income&#xD;
+    X(:,4)=(data(:,4)).^2; %Income  square&#xD;
+    y=data(:,5); % Monthly expenditure&#xD;
+&#xD;
+    % Select the 72 observations for which expenditure was nonzero&#xD;
+    sel=y&amp;gt;0;&#xD;
+    X=X(sel,:);&#xD;
+    y=y(sel);&#xD;
+    whichstats={'r','tstat'};&#xD;
+    OLS=regstats(y,X,'linear',whichstats);&#xD;
+    r=OLS.r;&#xD;
+&#xD;
+    disp('Ordinary Least Squares Estimates')&#xD;
+    LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];&#xD;
+    disp(LSest)&#xD;
+    disp('Multiplicative Heteroskedasticity Model')&#xD;
+    % The variables which enter the scedastic function are Income and&#xD;
+    % Income square (that is columns 3 and 4 of matrix X)&#xD;
+    out=regressHhar(y,X,[3 4]);&#xD;
+&#xD;
+    % Plot OLS residuals against Income (This is nothing but Figure 11.1 of&#xD;
+    % Green (5th edition) p. 216)&#xD;
+    plot(X(:,4),r,'o')&#xD;
+    xlabel('Income')&#xD;
+    ylabel('OLS residuals')&#xD;
+    grid on&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>regressHhar with optional arguments.</Title>
+         <Desc>&#xD;
+     The data in Appendix Table F6.1 were used in a study of efficiency in&#xD;
+     production of airline services in Greene (2007a).&#xD;
+     See p. 557 of Green (7th edition).&#xD;
+     Results in structure "out.Beta" coincide with those of&#xD;
+     table 14.3 page 557, 7th edition of Greene (2007).&#xD;
+     (line of the table which starts with MLE)&#xD;</Desc>
+         <MATLABcode>
+&#xD;
+    load('TableF61_Greene');&#xD;
+    Y=TableF61_Greene.data;&#xD;
+&#xD;
+    Q=log(Y(:,4));&#xD;
+    Pfuel=log(Y(:,5));&#xD;
+    Loadfactor=Y(:,6);&#xD;
+    n=size(Y,1);&#xD;
+    X=[Q Q.^2 Pfuel];&#xD;
+    y=log(Y(:,3));&#xD;
+&#xD;
+    whichstats={'beta', 'r','tstat'};&#xD;
+    OLS=regstats(y,X,'linear',whichstats);&#xD;
+&#xD;
+    disp('Ordinary Least Squares Estimates')&#xD;
+    LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];&#xD;
+    disp(LSest)&#xD;
+&#xD;
+    % Estimate a multiplicative heteroscedastic model and print the&#xD;
+    % estimates of regression and scedastic parameters together with LM, LR&#xD;
+    % and Wald test&#xD;
+    out=regressHhar(y,X,Loadfactor,'msgiter',1,'test',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>FGLS estimator.</Title>
+         <Desc>&#xD;
+     Estimate a multiplicative heteroscedastic model using just one iteration&#xD;
+     that is find FGLS estimator (two step estimator).&#xD;
+     Data are monthly credit card expenditure for 100 individuals.&#xD;
+     Results in structure "out" coincide with estimates of row&#xD;
+     "$\sigma^2_i=\sigma^2 \exp(z' \alpha)$" in table 11.2, page 231, 5th edition of&#xD;
+     Greene (1987).&#xD;
+    &#xD;</Desc>
+         <MATLABcode>
+    load('TableF91_Greene');&#xD;
+    data=TableF91_Greene.data;&#xD;
+  &#xD;
+    n=size(data,1);&#xD;
+&#xD;
+    % Linear regression of monthly expenditure on a constant, age, income and&#xD;
+    % its square and a dummy variable for home ownership using the 72&#xD;
+    % observations for which expenditure was nonzero produces the residuals&#xD;
+    % plotted plotted below&#xD;
+&#xD;
+    X=zeros(n,4);&#xD;
+    X(:,1)=data(:,3);%age&#xD;
+    X(:,2)=data(:,6);% Own rent (dummy variable)&#xD;
+    X(:,3)=data(:,4);% Income&#xD;
+    X(:,4)=(data(:,4)).^2; %Income  square&#xD;
+    y=data(:,5); % Monthly expenditure&#xD;
+&#xD;
+    % Select the 72 observations for which expenditure was nonzero&#xD;
+    sel=y&amp;gt;0;&#xD;
+    X=X(sel,:);&#xD;
+    y=y(sel);&#xD;
+    out=regressHhar(y,X,[3 4],'msgiter',1,'maxiter',1);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

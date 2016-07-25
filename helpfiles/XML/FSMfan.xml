@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSMfan</Title>
+   <Purpose><!--This is the second line of the .m file-->FSMfan computes confirmatory lrt of a suggested transformation</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data</ShortDesc>
+         <TypeInd>Matrix</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
+               Y represent observations, and columns represent variables.&#xD;
+               Missing values (NaN's) and infinite values (Inf's) are&#xD;
+               allowed, since observations (rows) with missing or infinite&#xD;
+               values will automatically be excluded from the&#xD;
+               computations.&#xD;
+                </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>la0</Name>
+         <ShortDesc>Transformation parameters</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector of length v=size(Y,2) specifying a reasonable set&#xD;
+               of transformations for the columns of the multivariate data set.&#xD;
+               </LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>family</Name>
+         <ShortDesc>string which identifies the family of transformations which&#xD;
+               must be used</ShortDesc>
+         <TypeInd>Character</TypeInd>
+         <LongDesc>Possible values are 'BoxCox' (default) or&#xD;
+               'YJ'.&#xD;
+               The Box-Cox family of power transformations equals&#xD;
+               $(y^{\lambda}-1)/\lambda$ for $\lambda \neq 0$, and&#xD;
+               $log(y)$ if $\lambda = 0$.&#xD;
+               The Yeo-Johnson (YJ) transformation is the Box-Cox&#xD;
+               transformation of y+1 for nonnegative values, and of |y|+1 with&#xD;
+               parameter $2-\lambda$ for y negative.&#xD;
+               The basic power transformation returns $y^{\lambda}$ if&#xD;
+               $\lambda \neq 0$ and $log(\lambda)$ otherwise.&#xD;
+               Remark. BoxCox and the basic power family can be used just&#xD;
+               if input y is positive. YeoJohnson family of&#xD;
+               transformations does not have this limitation.&#xD;
+               </LongDesc>
+         <Example> 'family','YJ' &#xD;
+               </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rf</Name>
+         <ShortDesc>confidence level for bivariate ellipses</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Default is&#xD;
+               0.9.&#xD;
+                 </LongDesc>
+         <Example> 'rf',0.99 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Point where to start monitoring required diagnostics</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Note that if bsb is supplied init&amp;gt;=length(bsb). If&#xD;
+                 init is not specified it will be set equal to&#xD;
+                 floor(n*0.6).&#xD;
+                 </LongDesc>
+         <Example> 'init',50 &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ColToComp</Name>
+         <ShortDesc>variables for which likelihood ratio tests have to be produced</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>It is a k x 1 integer vector. For&#xD;
+               example, if ColToComp = [2 4], the signed likelihood ratio tests&#xD;
+               are produced for the second and the fourth column of matrix Y. If&#xD;
+               col.to.compare = '' then all variables (columns of matrix Y) are&#xD;
+               considered.&#xD;
+                 </LongDesc>
+         <Example> 'ColToComp',[1 3] &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>laAround</Name>
+         <ShortDesc>It specifies for which values&#xD;
+               of lambda to compute the likelihood ratio test</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It is a  r x 1 vector. If this argument is&#xD;
+               omitted, the function produces for each variable specified in&#xD;
+               ColToComp the likelihood ratio tests associated to the five most&#xD;
+               common values of lambda [-1, -0.5, 0, 0.5, 1].&#xD;
+                 </LongDesc>
+         <Example> 'laAround',[1 0] &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>optmin</Name>
+         <ShortDesc>It contains the options dealing with the&#xD;
+               maximization algorithm</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>Use optimset to set these options.&#xD;
+               Notice that the maximization algorithm which is used is&#xD;
+               fminunc if the optimization toolbox is present else is&#xD;
+               fminsearch.&#xD;
+                 </LongDesc>
+         <Example>'optmin.Display','off' &#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>speed</Name>
+         <ShortDesc>It indicates the initial value of&#xD;
+               the maximization procedure</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If speed=1 (default) the initial value at step m of&#xD;
+               the maximization procedure (fminunc or fminsearch) is the&#xD;
+               final value at step m-1 else it is la0.&#xD;
+                 </LongDesc>
+         <Example> 'speed',0&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>colnames</Name>
+         <ShortDesc>the names of the variables of the dataset</ShortDesc>
+         <TypeInd>Cell array of strings</TypeInd>
+         <LongDesc>Cell array of strings of length v containing the names of&#xD;
+               the variables of the dataset. If colnames is empty then the&#xD;
+               sequence 1:v is created to label the variables.&#xD;
+                 </LongDesc>
+         <Example> 'colnames',{'1' '2' '3' '4' '5' '10' '11' '12' '13'}&#xD;
+                 </Example>
+         <DataType>Cell array of strings.</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>signlr</Name>
+         <ShortDesc>plots of signed square root&#xD;
+               likelihood ratios</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If signlr = 1 (default) plots of signed square root&#xD;
+               likelihood ratios are produced, else likelihood ratios are&#xD;
+               produced.&#xD;
+                 </LongDesc>
+         <Example> 'signlr',0&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plotslrt</Name>
+         <ShortDesc>It specifies whether it is necessary to&#xD;
+               plot the (signed square root) likelihood ratio test</ShortDesc>
+         <TypeInd>Scalar or structure</TypeInd>
+         <LongDesc>If plotslrt is a scalar, the plot of the monitoring of&#xD;
+               likelihood ratio test is produced on the screen with all&#xD;
+               default options.&#xD;
+               If plotslrt is a strucure, it may contain the following fields: &#xD;
+                   plotslrt.xlim     = minimum and maximum on the x axis; &#xD;
+                   plotslrt.ylim     = minimum and maximum on the y axis; &#xD;
+                   plotslrt.LineWidth= Line width of the trajectory of lrt of&#xD;
+                                       transformation parameters; &#xD;
+                   plotslrt.conflev  = vector which defines the confidence&#xD;
+                                       levels of the horizontal line for&#xD;
+                                       the likelihood ratio test (default&#xD;
+                                       is conflev=[0.95 0.99]);&#xD;
+                   plotslrt.LineWidthEnv= Line width of the horizontal lines; &#xD;
+                   plotslrt.Tag      = tag of the plot (default is pl_lrt). &#xD;
+                 Example -'plotslrt',1&#xD;
+                 Data Types - double&#xD;
+                 </LongDesc>
+         <Example> </Example>
+         <DataType>double&#xD;
+                 Example - 'plotslrt',struct&#xD;
+                 Data Types - double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>xlim</Value>
+               <Description>minimum and maximum on the x axis;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ylim</Value>
+               <Description>minimum and maximum on the y axis;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidth</Value>
+               <Description>Line width of the trajectory of lrt of&#xD;
+                                       transformation parameters;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>conflev</Value>
+               <Description>vector which defines the confidence&#xD;
+                                       levels of the horizontal line for&#xD;
+                                       the likelihood ratio test (default&#xD;
+                                       is conflev=[0.95 0.99]);</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidthEnv</Value>
+               <Description>Line width of the horizontal lines;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Tag</Value>
+               <Description>tag of the plot (default is pl_lrt). &#xD;
+                 Example -'plotslrt',1&#xD;
+                 Data Types - double</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>It controls whether to display or not messages&#xD;
+               about great interchange on the screen</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If msg==1 (default) messages are displyed on the screen&#xD;
+               else no message is displayed on the screen.&#xD;
+                  </LongDesc>
+         <Example> 'msg',0&#xD;
+                 </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc>
+            <ItemCell>
+               <Value>LRT</Value>
+               <Description>Cell of length ColtoComp. Each element of the cell contains the&#xD;
+               a matrix of size n-init+1 x length(laAround)+1 which&#xD;
+               contains the monitoring of (signed square root) likelihood&#xD;
+               ratio for testing H0:\lambda_j=la0_j when all the other&#xD;
+               variables are transformed as specified in vector la0.&#xD;
+               More precisely each&#xD;
+               matrix of size n-init+1 x length(laAround)+1 presents the&#xD;
+               following structure:&#xD;
+               1st col = fwd search index (from init to n);&#xD;
+               2nd col = value of the (signed sqrt) likelihood ratio for&#xD;
+               testing laj=laAround(1);&#xD;
+               ...&#xD;
+               length(laAround)+1 col = value of the (signed sqrt) likelihood ratio for&#xD;
+               testing laj=laAround(end).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Exflag</Value>
+               <Description>Cell of length ColtoComp. Each element of the cell contains the&#xD;
+               a matrix of size n-init+1 x length(laAround)+1 which&#xD;
+               contains the monitoring of the&#xD;
+               integer identifying the reason why the maximization&#xD;
+               algorithm terminated. See help page fminunc of the&#xD;
+               optimization toolbox  for the list of values of exitflag&#xD;
+               and the corresponding reasons the algorithm terminated.&#xD;
+               More precisely each&#xD;
+               matrix of size n-init+1 x length(laAround)+1 presents the&#xD;
+               following structure: &#xD;
+               1st col = fwd search index (from init to n); &#xD;
+               2nd col = integer identifying the reason the algorithm terminated&#xD;
+               when testing laj=laAround(1); &#xD;
+               ...&#xD;
+               length(laAround)+1 col = integer identifying the reason the algorithm terminated&#xD;
+               when testing laj=laAround(end).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Un</Value>
+               <Description>Cell of length ColtoComp. Each element of the cell contains the&#xD;
+               a (sub)cell of size length(laAround). Each element of the (sub)cell&#xD;
+               contains a  n-init+1 x 11 which informs the order of entry of the units&#xD;
+               For example Unj=Un{i}{j} refers to ColtoComp(i) and laAround(j)&#xD;
+               Unj is a (n-init) x 11 matrix which contains the unit(s)&#xD;
+               included in the subset at each step of the fwd search. &#xD;
+               REMARK: in every step the new subset is compared with the&#xD;
+               old subset. Un contains the unit(s) present in the new&#xD;
+               subset but not in the old one Unj(1,2) for example contains&#xD;
+               the unit included in step init+1 Unj(end,2) contains the&#xD;
+               units included in the final step of the search</Description>
+            </ItemCell>
+         </LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the&#xD;
+   forward search Springer Verlag, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSMtra</Item>
+      <Item>FSM</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSMfan with all default options.</Title>
+         <Desc>&#xD;
+     First example with Mussels data.&#xD;</Desc>
+         <MATLABcode>
+    load('mussels.mat');&#xD;
+    Y=mussels.data;&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y,[0.5 0 0.5 0 0]);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>FSMfan with optional arguments.</Title>
+         <Desc>&#xD;
+     Example with Mussels data.&#xD;</Desc>
+         <MATLABcode>
+    load('mussels.mat');&#xD;
+    Y=mussels.data;&#xD;
+    % FS based on with H_0:\lambda=[1 0.5 1 0 1/3]&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-6.2 6.2];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y,[0.5 0 0.5 0 0],'laAround',[-1 -0.5 0 1/3 0.5 1],'init',58,'plotslrt',plotslrt);&#xD;
+    % Compare this plot with Figure 4.24 p. 182 of ARC (2004)&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>EmiliaRomagna data (demographic variables).</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    % Replace zeros with min values for variables specified in sel&#xD;
+    sel=[6 10 12 13 19 21];&#xD;
+    for i=sel&#xD;
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));&#xD;
+    end&#xD;
+    % Extract demographic variables&#xD;
+    Y1=Y(:,[1 2 3 4 5 10 11 12 13]);&#xD;
+    colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'};&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-8.2 8.2];&#xD;
+    la0=[0 0.25 0 0.5 0.5 0 0 0.5 0.25];&#xD;
+    ColToComp=[1 3 5 9];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames);&#xD;
+    % Compare the plot Figure 4.35 p. 192 of ARC (2004)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data (modified wealth variables), example 1.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    % Replace zeros with min values for variables specified in sel&#xD;
+    sel=[6 10 12 13 19 21];&#xD;
+    for i=sel&#xD;
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));&#xD;
+    end&#xD;
+    % Modify wealth variables&#xD;
+    Y(:,16)=100-Y(:,16);&#xD;
+    Y(:,23)=100-Y(:,23);&#xD;
+    % Extract wealth variables&#xD;
+    Y1=Y(:,[14:23]);&#xD;
+    colnames={'14' '15' '16' '17' '18' '19' '20' '21' '22' '23'};&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-8.2 8.2];&#xD;
+    la0=[0 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];&#xD;
+    ColToComp=[1 7];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames);&#xD;
+    % Compare the plot with the two upper panels of Figure 4.38 p. 188 of ARC (2004)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data (modified wealth variables), example 2.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    % Replace zeros with min values for variables specified in sel&#xD;
+    sel=[6 10 12 13 19 21];&#xD;
+    for i=sel&#xD;
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));&#xD;
+    end&#xD;
+    % Modify wealth variables&#xD;
+    Y(:,16)=100-Y(:,16);&#xD;
+    Y(:,23)=100-Y(:,23);&#xD;
+    % Extract wealth variables&#xD;
+    Y1=Y(:,[14:23]);&#xD;
+    colnames={'14' '15' '16' '17' '18' '19' '20' '21' '22' '23'};&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-7 7];&#xD;
+    la0=[0 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];&#xD;
+    ColToComp=[3 9];&#xD;
+    laAround=[0 0.25 1/3 0.5];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y1,la0,'laAround',laAround,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames);&#xD;
+    % Compare the plot with the two bottom panels of Figure 4.39 p. 195 of ARC (2004)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data with Yeo and Johnson parametric family.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+&#xD;
+    % Modify wealth variables&#xD;
+    Y(:,16)=100-Y(:,16);&#xD;
+    Y(:,23)=100-Y(:,23);&#xD;
+    % Extract wealth variables&#xD;
+    Y1=Y(:,[14:23]);&#xD;
+    colnames={'14' '15' '16' '17' '18' '19' '20' '21' '22' '23'};&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-7 7];&#xD;
+    la0=[0 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];&#xD;
+    ColToComp=[3 9];&#xD;
+    laAround=[0 0.25 1/3 0.5];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y1,la0,'laAround',laAround,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames,'family','YJ');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data (modified work variables), example 1.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    % Replace zeros with min values for variables specified in sel&#xD;
+    sel=[6 10 12 13 19 21 25 26];&#xD;
+    for i=sel&#xD;
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));&#xD;
+    end&#xD;
+    % Extract work variables&#xD;
+    Y1=Y(:,[6:9 24:28]);&#xD;
+    colnames={'y6' 'y7' 'y8' 'y9' 'y24' 'y25' 'y26' 'y27' 'y28'};&#xD;
+    la0=[0.25,0,2,-1,0,1.5,0.5,1,1];&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-8.2 8.2];&#xD;
+    ColToComp=[1:4];&#xD;
+    laAround=[-1 -0.5 0 0.25 0.5 1 2];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'colnames',colnames);&#xD;
+    % Compare the plot with Figure 4.43 p. 198 of ARC (2004)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data (modified work variables), example 2.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    % Replace zeros with min values for variables specified in sel&#xD;
+    sel=[6 10 12 13 19 21];&#xD;
+    for i=sel&#xD;
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));&#xD;
+    end&#xD;
+    % Modify variables 25 and 26&#xD;
+    Y(:,25)=100-Y(:,25);&#xD;
+    Y(:,26)=100-Y(:,26);&#xD;
+    % Extract work variables&#xD;
+    Y1=Y(:,[6:9 24:28]);&#xD;
+    colnames={'y6' 'y7' 'y8' 'y9' 'y24' 'y25' 'y26' 'y27' 'y28'};&#xD;
+    la0=[0.25,0,2,-1,0,0,1.5,1,1];&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-8.2 8.2];&#xD;
+    ColToComp=[6 7];&#xD;
+    laAround=[-1 -0.5 0 0.25 0.5 1 1.5 2];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'colnames',colnames);&#xD;
+    % Compare the plot with Figure 4.44 p. 199 of ARC (2004)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data (all variables).</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    % Replace zeros with min values for variables specified in sel&#xD;
+    sel=[6 10 12 13 19 21];&#xD;
+    for i=sel&#xD;
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));&#xD;
+    end&#xD;
+    % Modify variables y16 y23 y25 y26&#xD;
+    sel=[16 23 25 26];&#xD;
+    Y(:,sel)=100-Y(:,sel);&#xD;
+                        &#xD;
+    colnames={'y6' 'y7' 'y8' 'y9' 'y24' 'y25' 'y26' 'y27' 'y28'};&#xD;
+    la0demo=[0,0.25,0,0.5,0.5,0,0,0.5,0.25];&#xD;
+    la0weal=[0,1,0.25,1,1,0.5,-0.5,0.25,0.25,-1];&#xD;
+    la0work=[0.25,0,2,-1,0,0,1,1,1];&#xD;
+    la0C1=[la0demo(1:5) la0work(1:4) la0demo(6:9) la0weal la0work(5:9)];&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-8.2 8.2];&#xD;
+    ColToComp=[8 9 14 25];&#xD;
+    laAround=[-1 -0.5 0 0.25 0.5 1 1.5 2];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y,la0C1,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'init',100);&#xD;
+    % Compare the plot with Figure 4.45 p. 199 of ARC (2004)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data (all variables) with Yeo and Johnson parametric&#xD;
+     family.</Title>
+         <Desc/>
+         <MATLABcode>
+    load('emilia2001')&#xD;
+    Y=emilia2001.data;&#xD;
+    % Replace zeros with min values for variables specified in sel&#xD;
+    sel=[6 10 12 13 19 21];&#xD;
+    for i=sel&#xD;
+        Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));&#xD;
+    end&#xD;
+    % Modify variables y16 y23 y25 y26&#xD;
+    sel=[16 23 25 26];&#xD;
+    Y(:,sel)=100-Y(:,sel);&#xD;
+                        &#xD;
+    colnames={'y6' 'y7' 'y8' 'y9' 'y24' 'y25' 'y26' 'y27' 'y28'};&#xD;
+    la0demo=[0,0.25,0,0.5,0.5,0,0,0.5,0.25];&#xD;
+    la0weal=[0,1,0.25,1,1,0.5,-0.5,0.25,0.25,-1];&#xD;
+    la0work=[0.25,0,2,-1,0,0,1,1,1];&#xD;
+    la0C1=[la0demo(1:5) la0work(1:4) la0demo(6:9) la0weal la0work(5:9)];&#xD;
+    plotslrt=struct;&#xD;
+    plotslrt.ylim=[-8.2 8.2];&#xD;
+    ColToComp=[8 9 14 25];&#xD;
+    laAround=[-1 -0.5 0 0.25 0.5 1 1.5 2];&#xD;
+    warning('off','optim:fminunc:SwitchingMethod');&#xD;
+    [out]=FSMfan(Y,la0C1,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'init',100,'family','YJ');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

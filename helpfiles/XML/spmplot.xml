@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->spmplot</Title>
+   <Purpose><!--This is the second line of the .m file-->spmplot produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>data matrix (2D array) containing n observations on v variables&#xD;
+         or a structure 'out' coming from function FSMeda</ShortDesc>
+         <TypeInd>Matrix or&#xD;
+         structure</TypeInd>
+         <LongDesc>Optional input arguments if Y is a 2D array:&#xD;
+&#xD;
+     If Y is a 2D array, varargin can be either a sequence of name/value&#xD;
+     pairs, detailed below, or one of the following explicit assignments:&#xD;
+&#xD;
+       spmplot(Y,group);&#xD;
+&#xD;
+       spmplot(Y,group,plo);&#xD;
+&#xD;
+       spmplot(Y,group,plo,dispopt);&#xD;
+&#xD;
+     where group, plo and dispopt have the meaning described below.&#xD;
+&#xD;
+     If varargin{1} is a n-elements vector, then it is interpreted&#xD;
+     as a grouping variable vector 'group'. In this case, it can only be&#xD;
+     followed by 'plo' and 'dispopt'. Otherwise, the program expects a&#xD;
+     sequence of name/value pairs.&#xD;
+&#xD;
+  List of optional input arguments if input Y is a matrix:&#xD;
+&#xD;
+  group: vector with n elements. It is a grouping variable that determines&#xD;
+         the marker and color assigned to each point. It can be a categorical&#xD;
+         variable, vector, string matrix, or cell array of strings.&#xD;
+         Remark: if 'group' is used to distinguish a set of outliers from&#xD;
+         a set of good units, the id number for the outliers should be the&#xD;
+         larger (see optional field 'labeladd' of option 'plo' for details).&#xD;
+&#xD;
+&#xD;
+    plo: empty value, scalar of structure which controls the names which&#xD;
+         are displayed in the margins of the scatter-plot matrix and the&#xD;
+         labels of the legend.&#xD;
+&#xD;
+         If plo is the empty vector [], then nameY and labeladd are&#xD;
+           both set to the empty string '' (default), and no label and&#xD;
+           no name is added to the plot.&#xD;
+&#xD;
+         If plo = 1 the names Y1,..., Yv are added to the margins of the&#xD;
+           the scatter plot matrix else nothing is added.&#xD;
+&#xD;
+         If plo is a structure it may contain the following fields:&#xD;
+         - labeladd: if it is '1', the elements belonging to the max(group)&#xD;
+                in the spm are labelled with their unit row index.&#xD;
+                The default value is labeladd = '', i.e. no label is added.&#xD;
+         - nameY: cell array of strings containing the labels of the&#xD;
+                variables. As default value, the labels which are added&#xD;
+                are Y1, ..., Yv.&#xD;
+         - clr: a string of color specifications. By default, the colors&#xD;
+                are 'brkmgcy'.&#xD;
+         - sym: a string or a cell of marker specifications. For example,&#xD;
+                if sym = 'o+x', the first group will be plotted with a&#xD;
+                circle, the second with a plus, and the third with a 'x'.&#xD;
+                This is obtained with the assignment plo.sym = 'o+x'&#xD;
+                or equivalently with plo.sym = {'o' '+' 'x'}.&#xD;
+                By default the sequence of marker types is:&#xD;
+                '+';'o';'*';'x';'s';'d';'^';'v';'&amp;gt;';'&amp;lt;';'p';'h';'.'&#xD;
+         - siz: scalar, a marker size to use for all plots. By default the&#xD;
+                marker size depends on the number of plots and the size of&#xD;
+                the figure window. Default is siz = '' (empty value).&#xD;
+       - doleg: a string to control whether legends are created or not.&#xD;
+                Set doleg to 'on' (default) or 'off'.&#xD;
+&#xD;
+ dispopt: string which controls how to fill the diagonals in a plot of&#xD;
+       Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to&#xD;
+       'hist' (default) to plot histograms, or 'box' to plot boxplots.&#xD;
+&#xD;
+       REMARK 1: the style which is used for univariate boxplots is&#xD;
+       'traditional' if the number of groups is &amp;lt;=5, else it is 'compact'.&#xD;
+&#xD;
+       REMARK 2: to set dispopt without changing the defaults for plo use,&#xD;
+       e.g., spmplot(Y,group,[],'box');&#xD;
+&#xD;
+&#xD;
+  Y is a structure.&#xD;
+&#xD;
+  If first input Y is a structure (generally created by function FSMeda),&#xD;
+  then this structure must have the following fields:&#xD;
+&#xD;
+       REQUIRED FIELD IN INPUT STRUCTURE Y.&#xD;
+&#xD;
+       Y.Y   = a data matrix of size n-by-v.&#xD;
+&#xD;
+               If the input structure Y contains just the data matrix, a&#xD;
+               standard static scatter plot matrix will be created.&#xD;
+&#xD;
+               On the other hand, if Y also contains information on&#xD;
+               statistics monitored along a search, then the scatter plots&#xD;
+               will be linked with other (forward) plots with interaction&#xD;
+               possibilities, enabled via brushing and datatooltip. More&#xD;
+               precisely, with option databrush it is possible to create&#xD;
+               an automatic interaction with the other plots, while with&#xD;
+               option datatooltip it is possible to retrieve information&#xD;
+               about a particular unit once selected with the mouse).&#xD;
+&#xD;
+       OPTIONAL FIELDS IN INPUT STRUCTURE Y.&#xD;
+&#xD;
+       Y.MAL = matrix containing the Mahalanobis distances monitored in each&#xD;
+               step of the forward search. Every row is associated with a&#xD;
+               unit (this is a necessary field if the user wants to brush&#xD;
+               the scatter plot matrix).&#xD;
+       Y.Un  = matrix containing the order of entry of each unit&#xD;
+               (necessary if datatooltip is true or databrush is not&#xD;
+               empty).&#xD;
+       Y.label = cell of length n containing the labels of the units&#xD;
+               (optional argument used when datatooltip=1. If this&#xD;
+               field is not present labels row1, ..., rown will be&#xD;
+               automatically created and included in the pop up&#xD;
+               datatooltip window)&#xD;
+&#xD;
+       The options which follow can only be used if the first argument&#xD;
+       of spmplot is a structure containing information about the fwd&#xD;
+       search (i.e. the fields MAL, Un and eventually label)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>datatooltip</Name>
+         <ShortDesc>interactive clicking</ShortDesc>
+         <TypeInd>Empty value (default) or&#xD;
+                   structure</TypeInd>
+         <LongDesc>If datatooltip is not empty the user can use the mouse&#xD;
+                   in order to have information about the unit selected,&#xD;
+                   the step in which the unit enters the search and the&#xD;
+                   associated label.&#xD;
+                   If datatooltip is a structure, it is possible to&#xD;
+                   control the aspect of the data cursor (see function&#xD;
+                   datacursormode for more details or the examples below).&#xD;
+                   The default options of the structure are&#xD;
+                   DisplayStyle='Window' and SnapToDataVertex='on'.&#xD;
+                   </LongDesc>
+         <Example> 'datatooltip',''&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>databrush</Name>
+         <ShortDesc>interactive mouse brushing</ShortDesc>
+         <TypeInd>Empty value (default),&#xD;
+                   scalar or structure</TypeInd>
+         <LongDesc>DATABRUSH IS AN EMPTY VALUE&#xD;
+                   If databrush is an empty value (default), no brushing&#xD;
+                   is done.&#xD;
+                   The activation of this option (databrush is a scalar or&#xD;
+                   a cell) enables the user  to select a set of&#xD;
+                   observations in the current plot and to see them&#xD;
+                   highlighted in the malfwdplot, i.e. the plot of the&#xD;
+                   trajectories of all observations, grouped according&#xD;
+                   to the selection(s) done by brushing. If the malfwdplot&#xD;
+                   does not exist it is automatically created.&#xD;
+                   In addition, brushed units can be highlighted in the&#xD;
+                   other following plots (only if they are already open):&#xD;
+                   - minimum Mahalanobis distance plot;&#xD;
+                   Remark. the window style of the other figures is set&#xD;
+                   equal to that which contains the spmplot. In other&#xD;
+                   words, if the scatterplot matrix plot is docked all the&#xD;
+                   other figures will be docked too&#xD;
+                   DATABRUSH IS A SCALAR&#xD;
+                   If databrush is a scalar the default selection tool is&#xD;
+                   a rectangular brush and it is possible to brush only&#xD;
+                   once (that is persist='')&#xD;
+                   DATABRUSH IS A CELL&#xD;
+                   If databrush is a cell, it is possible to use all&#xD;
+                   optional arguments of function selectdataFS.m and the&#xD;
+                   following optional argument:&#xD;
+                   - persist. Persist is an empty value or a scalar&#xD;
+                     containing the strings 'on' or 'off'.&#xD;
+                     The default value of persist is '', that is brushing&#xD;
+                     is allowed only once.&#xD;
+                     If persist is 'on' or 'off' brushing can be done as&#xD;
+                     many time as the user requires.&#xD;
+                     If persist='on' then the unit(s) currently brushed&#xD;
+                     are added to those previously brushed. It is&#xD;
+                     possible, every time a new brushing is done, to use a&#xD;
+                     different color for the brushed units.&#xD;
+                     If persist='off' every time a new brush is performed&#xD;
+                     units previously brushed are removed.&#xD;
+                   - labeladd. If this option is '1', we label the units&#xD;
+                     of the last selected group with the unit row index in&#xD;
+                     matrices X and y. The default value is labeladd='',&#xD;
+                     i.e. no label is added.&#xD;
+                   </LongDesc>
+         <Example> 'databrush',1&#xD;
+                   </Example>
+         <DataType>single | double | struct&#xD;
+&#xD;
+       The options which follow work in connection with previous option&#xD;
+       databrush and produce their effect on the monitoring MD plot&#xD;
+       (malfwdplot)</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>subsize</Name>
+         <ShortDesc>x axis control in malfwdplot</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>numeric vector containing the subset size with length&#xD;
+                   equal to the number of columns of matrix Y.MAL.&#xD;
+                   If it is not specified it will be set equal to&#xD;
+                   size(Y.MAL,1)-size(Y.MAL,2)+1:size(Y.MAL,1)&#xD;
+                   </LongDesc>
+         <Example> 'subsize',10:100&#xD;
+                   </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>selstep</Name>
+         <ShortDesc>add text labels of brushed units in malfwdplot</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Numeric vector&#xD;
+                   which specifies for which steps of the&#xD;
+                   forward search textlabels are added in the monitoring&#xD;
+                   MD plot after a brushing action in the spmplot.&#xD;
+                   The default is to write the labels at the initial and&#xD;
+                   final step. The default is selstep=[m0 n] where m0 and&#xD;
+                   n are respectively the first and final step of the&#xD;
+                   search.&#xD;
+                   </LongDesc>
+         <Example> 'selstep',100&#xD;
+                   </Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>H</Name>
+         <ShortDesc> 3D array</ShortDesc>
+         <TypeInd>array of handles H to the plotted points.</TypeInd>
+         <LongDesc> See&#xD;
+                   gplotmatrix for further details</LongDesc>
+      </Item>
+      <Item>
+         <Name>AX</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>handles to the individual subaxes.</TypeInd>
+         <LongDesc> See&#xD;
+                   gplotmatrix for further details</LongDesc>
+      </Item>
+      <Item>
+         <Name>BigAx</Name>
+         <ShortDesc>&#xD;
+                   Scalar</ShortDesc>
+         <TypeInd>handle to big (invisible) axes framing the subaxes.</TypeInd>
+         <LongDesc> See gplotmatrix for further details</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+   spmplot has the same output of gplotmatrix in the statistics toolbox:&#xD;
+   [H,AX,BigAx] = spmplot(...) returns an array of handles H to the&#xD;
+   plotted points; a matrix AX of handles to the individual subaxes; and a&#xD;
+   handle BIGAX to big (invisible) axes framing the subaxes.  The third&#xD;
+   dimension of H corresponds to groups in G. AX contains one extra row of&#xD;
+   handles to invisible axes in which the histograms are plotted. BigAx is&#xD;
+   left as the CurrentAxes so that a subsequent TITLE, XLABEL, or YLABEL&#xD;
+   will be centered with respect to the matrix of axes.&#xD;
+&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>gplotmatrix</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Call of spmplot without name/value pairs.</Title>
+         <Desc>&#xD;
+     Iris data: scatter plot matrix with univariate boxplots on the main&#xD;
+     diagonal&#xD;</Desc>
+         <MATLABcode>
+    load fisheriris;&#xD;
+    plo=struct;&#xD;
+    plo.nameY={'SL','SW','PL','PW'};&#xD;
+    spmplot(meas,species,plo,'hist');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Call of spmplot with name/value pairs.</Title>
+         <Desc>&#xD;
+     Iris data: scatter plot matrix with univariate boxplots on the main&#xD;
+     diagonal&#xD;</Desc>
+         <MATLABcode>
+    load fisheriris;&#xD;
+    plo=struct;&#xD;
+    plo.nameY={'SL','SW','PL','PW'};&#xD;
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box');&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+    load fisheriris;&#xD;
+    plo=struct;&#xD;
+    plo.nameY={'SL','SW','PL','PW'}; % Name of the variables&#xD;
+    plo.clr='kbr'; % Colors of the groups&#xD;
+    plo.sym={'+' '+' 'v'}; % Symbols of the groups (inside a cell)&#xD;
+    % Symbols can also be specified as characters&#xD;
+    % plo.sym='++v'; % Symbols of the groups&#xD;
+    plo.siz=3.4; % Symbol size&#xD;
+    plo.doleg='off'; % Remove the legend&#xD;
+    spmplot(meas,species,plo,'box');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of spmpot called by routine FSM.</Title>
+         <Desc>&#xD;
+     Generate contaminated data.&#xD;</Desc>
+         <MATLABcode>
+    state=100;&#xD;
+    randn('state', state);&#xD;
+    n=200;&#xD;
+    Y=randn(n,3);&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+&#xD;
+    % spmplot is called automatically by all outlier detection methods, e.g. FSM&#xD;
+    [out]=FSM(Ycont,'plots',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Now test the direct use of FSM.</Title>
+         <Desc> Set two groups, e.g. those obtained&#xD;
+     from FSM&#xD;
+     Generate contaminated data&#xD;</Desc>
+         <MATLABcode>
+    state=100;&#xD;
+    randn('state', state);&#xD;
+    n=200;&#xD;
+    Y=randn(n,3);&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+   &#xD;
+    close all;&#xD;
+    [out]=FSM(Ycont,'plots',1);&#xD;
+&#xD;
+    group = zeros(n,1);&#xD;
+    group(out.outliers)=1;&#xD;
+    plo=struct;&#xD;
+    plo.labeladd='1'; % option plo.labeladd is used to label the outliers&#xD;
+&#xD;
+    % By default, the legend identifies the groups with the identifiers&#xD;
+    % given in vector 'group'.&#xD;
+    spmplot(Ycont,group,plo,'box');&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>spm with personalized tags.</Title>
+         <Desc>&#xD;
+     With two groups, and if the Tag of the figure contains the word&#xD;
+     'outlier', the legend will identify one group for outliers and the&#xD;
+     other for normal units. The largest number in the 'group' variable&#xD;
+     identifies the group of outliers.&#xD;</Desc>
+         <MATLABcode>
+    figure('tag','This is a scatterplot with ouTliErs');&#xD;
+    spmplot(Ycont,group);&#xD;
+&#xD;
+    % If the Tag of the Figure contains the string 'group', then the&#xD;
+    % legend identifies the groups with 'Group 1', Group 2', etc.&#xD;
+    figure('tag','This scatterplot contains groups');&#xD;
+    spmplot(Ycont,group,plo,'box');&#xD;
+&#xD;
+    % If the tag figure includes the word 'brush', the legend will identify&#xD;
+    % one group for 'Unbrushed units' and the others for 'Brushed units 1',&#xD;
+    % 'Brushed units 2', etc.&#xD;
+    figure('Tag','Scatterplot with brushed units');&#xD;
+    spmplot(Ycont,group,plo);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>An example with 5 groups.</Title>
+         <Desc/>
+         <MATLABcode>
+    rng('default')&#xD;
+    rng(2); n1=100;&#xD;
+    n2=80;&#xD;
+    n3=50;&#xD;
+    n4=80;&#xD;
+    n5=70;&#xD;
+    v=5;&#xD;
+    Y1=randn(n1,v)+5;&#xD;
+    Y2=randn(n2,v)+3;&#xD;
+    Y3=rand(n3,v)-2;&#xD;
+    Y4=rand(n4,v)+2;&#xD;
+    Y5=rand(n5,v);&#xD;
+&#xD;
+    group=ones(n1+n2+n3+n4+n5,1);&#xD;
+    group(n1+1:n1+n2)=2;&#xD;
+    group(n1+n2+1:n1+n2+n3)=3;&#xD;
+    group(n1+n2+n3+1:n1+n2+n3+n4)=4;&#xD;
+    group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;&#xD;
+&#xD;
+&#xD;
+    Y=[Y1;Y2;Y3;Y4;Y5];&#xD;
+    spmplot(Y,group,[],'box');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>spmplot called with name/pairs.</Title>
+         <Desc>&#xD;
+     In all previous examples spmplot was called without the&#xD;
+     name/value pairs arguments&#xD;
+     The example which follow make use of the name/value pairs arguments&#xD;</Desc>
+         <MATLABcode>
+    load fisheriris;&#xD;
+    plo=struct;&#xD;
+    plo.nameY={'SL','SW','PL','PW'}; % Name of the variables&#xD;
+    plo.clr='kbr'; % Colors of the groups&#xD;
+    plo.sym={'+' '+' 'v'}; % Symbols of the groups (inside a cell)&#xD;
+    % Symbols can also be specified as characters&#xD;
+    % plo.sym='++v'; % Symbols of the groups&#xD;
+    plo.siz=3.4; % Symbol size&#xD;
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of use of option datatooltip.</Title>
+         <Desc>&#xD;
+     First input argument is a structure.&#xD;</Desc>
+         <MATLABcode>
+    n=100;&#xD;
+    v=3;&#xD;
+    m0=3;&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:10,:)=5;&#xD;
+    [fre]=unibiv(Ycont);&#xD;
+    %create an initial subset with the 3 observations with the lowest&#xD;
+    %Mahalanobis Distance&#xD;
+    fre=sortrows(fre,4);&#xD;
+    bs=fre(1:m0,1);&#xD;
+    [out]=FSMeda(Ycont,bs,'plots',1);&#xD;
+    % mmdplot(out);&#xD;
+    figure&#xD;
+    plo=struct;&#xD;
+    plo.labeladd='1';&#xD;
+    spmplot(out,'datatooltip',1)&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;</Title>
+         <Desc>&#xD;
+     Example when first input argument is a structure.&#xD;
+     Example of use of option databrush&#xD;</Desc>
+         <MATLABcode>
+    close all&#xD;
+    rng(841,'shr3cong');&#xD;
+    n=100;&#xD;
+    v=3;&#xD;
+    m0=v+1;&#xD;
+    Y=randn(n,v);&#xD;
+    % Contaminated data&#xD;
+    Ycont=Y;&#xD;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
+    [fre]=unibiv(Y);&#xD;
+    %create an initial subset with the 3 observations with the lowest&#xD;
+    %Mahalanobis Distance&#xD;
+    fre=sortrows(fre,4);&#xD;
+    bs=fre(1:m0,1);&#xD;
+    [out]=FSMeda(Ycont,bs,'plots',1);&#xD;
+    % mmdplot(out);&#xD;
+    figure&#xD;
+    plo=struct;&#xD;
+    plo.labeladd='1';&#xD;
+    % Please note the difference between plo.labeladd='1' and option labeladd&#xD;
+    % '1' inside databrush.&#xD;
+    % plo.labeladd enables the user to label the units in the scatterplot&#xD;
+    % matrix once selected. Option labeladd '1' inside databrush enables to add&#xD;
+    % the labels of the selected units in the linked plots&#xD;
+    spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect','labeladd','1'},'plo',plo,'dispopt','hist')&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

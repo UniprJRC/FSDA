@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->ellipse</Title>
+   <Purpose><!--This is the second line of the .m file-->ellipse generates an ellipse given mu (location vector) and Sigma (scatter matrix)</Purpose>
+   <Description><!--Description section-->The ellipse is generated using the equation:&#xD;
+&#xD;
+    $(x-\mu)' \Sigma^{-1} (x-\mu) = c_{conflev}^2$&#xD;
+&#xD;
+    The length of the ith principal semiaxis $(i=1, 2)$ is $c \lambda_i$ where&#xD;
+    $\lambda_i$ is an eigenvalue of $\Sigma$.</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>mu</Name>
+         <ShortDesc>Center of the ellipse</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector with two elements associated with the center of the&#xD;
+         ellipse</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Sigma</Name>
+         <ShortDesc>2 x 2 symmetric positive definite matrix</ShortDesc>
+         <TypeInd>Inverse of the matrix&#xD;
+         of the quadratic form which defines the equation of the ellipse&#xD;
+         Sigma is interpretable as the covariance matrix of the original&#xD;
+         data points</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>confidence level</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Confidence level which control the size of the ellipse.&#xD;
+                         If conflev is not specified the value &#xD;
+                         chi2inv(0.95,2) is used&#xD;
+                 </LongDesc>
+         <Example>&lt;code&gt;0.99 &#xD;
+&lt;/code&gt;</Example>
+         <DataType>single | double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Color</Name>
+         <ShortDesc>LineColor of the ellipse</ShortDesc>
+         <TypeInd>String or 3 elements numeric vector</TypeInd>
+         <LongDesc>Line color, specified as an RGB triplet, a color&#xD;
+                        string, or 'none'. If you specify the Color as&#xD;
+                        'none', then the line is invisible.&#xD;
+                        An RGB triplet is a three-element row vector whose&#xD;
+                        elements specify the intensities of the red,&#xD;
+                        green, and blue components of the color. The&#xD;
+                        intensities must be in the range [0,1], for&#xD;
+                        example, [0.4 0.6 0.7]. &#xD;
+                 </LongDesc>
+         <Example>&lt;code&gt;'r'&#xD;
+&lt;/code&gt;</Example>
+         <DataType>[0 0 1] (default) | RGB triplet | color string | 'none'</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Ell</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>x and y coordinates of the ellipse.</TypeInd>
+         <LongDesc>&#xD;
+                 630-by-2 matrix containing the x and y coordinate of the&#xD;
+                 ellipse.&#xD;
+                 1st column = x coordinates;&#xD;
+                 2nd column = y coordinates.</LongDesc>
+      </Item>
+      <Item>
+         <Name>he</Name>
+         <ShortDesc> matlab.graphics.chart.primitive.Line</ShortDesc>
+         <TypeInd>vector of chart line objects.</TypeInd>
+         <LongDesc>&#xD;
+                 A column vector of chart line objects. It can be used to&#xD;
+                 modify properties of a specific chart line of the plot&#xD;
+                 containing the ellipse after it is created. For a list of&#xD;
+                 properties, see Chart Line Properties.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>MARDIA, K. V., J. T. KENT, J. M. BIBBY (1979). Multivariate Analysis. Academic&#xD;
+   Press, London-New York-Toronto-Sydney-San Francisco.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>ellipsoid</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example using all default options.</Title>
+         <Desc/>
+         <MATLABcode>
+    rho=-2;&#xD;
+    A=[4 rho; rho 3 ];&#xD;
+    mu=[1.5 1];&#xD;
+    ellipse(mu,A);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Draw the ellipse using a blue color line.</Title>
+         <Desc/>
+         <MATLABcode>
+    close all&#xD;
+    rho=-2;&#xD;
+    A=[4 rho; rho 3 ];&#xD;
+    mu=[1.5 1];&#xD;
+    Color=[0 0 1];&#xD;
+    ellipse(mu,A,[],Color);&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Draw an ellipse and fill it with yellow color.</Title>
+         <Desc/>
+         <MATLABcode>
+    close all &#xD;
+    rho=-2;&#xD;
+    A=[4 rho; rho 3 ];&#xD;
+    mu=[1.5 1];&#xD;
+    Ell=ellipse(mu,A);&#xD;
+    patch(Ell(:,1),Ell(:,2),'y'); &#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Generate 1000 bivariate normal data and add the ellipse which&#xD;
+     contains approximately 990 of them.</Title>
+         <Desc/>
+         <MATLABcode>
+    rng('default')&#xD;
+    rng(20)     % For reproducibility&#xD;
+    % Define mu and Sigma&#xD;
+    mu = [2,3];&#xD;
+    Sigma = [1,1.5;1.5,3];&#xD;
+    Y = mvnrnd(mu,Sigma,1000);&#xD;
+    figure&#xD;
+    hold on; &#xD;
+    plot(Y(:,1),Y(:,2),'o');&#xD;
+    % add an ellipse to these points&#xD;
+    Ell=ellipse(mu,Sigma,0.99);&#xD;
+    axis equal&#xD;
+    % Count number of points inside the ellipse&#xD;
+    disp('Number of points inside the ellipse')&#xD;
+    disp(sum(inpolygon(Y(:,1),Y(:,2),Ell(:,1),Ell(:,2))))&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

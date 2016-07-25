@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->HUpsider</Title>
+   <Purpose><!--This is the second line of the .m file-->HUpsider computes derivative of psi function (second derivative of rho function) for Tukey's biweight  </Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>u</Name>
+         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>n x 1 vector containing &#xD;
+               for the n units of the sample scaled residuals or&#xD;
+               Mahalanobis distances</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning constant</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>scalar greater than 0 which controls the robustness/efficiency of the estimator &#xD;
+               (beta in regression or mu in the location case ...)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>psider</Name>
+         <ShortDesc> Vector</ShortDesc>
+         <TypeInd>derivative of psi function.</TypeInd>
+         <LongDesc> &#xD;
+                n x 1 vector which contains the values of the derivative&#xD;
+                of the Huber psi function associated to the&#xD;
+                residuals or Mahalanobis distances for the n units of the&#xD;
+                sample.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+ Function HUpsider transforms vector x as follows &#xD;
+ HUpsider(x)=&#xD;
+&#xD;
+ \[&#xD;
+ HUpsider(u)= \left\{&#xD;
+    \begin{array}{cc}&#xD;
+  1                            &amp;  \mbox{if  }  |u/c| \leq 1 \\&#xD;
+  0                            &amp;  |u/c|&amp;gt;1   \\&#xD;
+ \end{array}&#xD;
+    \right.&#xD;
+  \]&#xD;
+&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
+ and Methods, Wiley, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>TBpsider</Item>
+      <Item>HYPpsider</Item>
+      <Item>OPTpsider</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+&#xD;
+    x=-6:0.01:6;&#xD;
+    psiHUder=HUpsider(x,2);&#xD;
+    plot(x,psiHUder)&#xD;
+    xlabel('x','Interpreter','Latex')&#xD;
+    ylabel('$\psi''(x)$','Interpreter','Latex')&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

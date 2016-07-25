@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->Sn</Title>
+   <Purpose><!--This is the second line of the .m file-->Sn robust estimator of scale (robust version of Gini's average difference)</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Input array</ShortDesc>
+         <TypeInd>Vector | matrix | 3D array</TypeInd>
+         <LongDesc>Input array, specified as a vector, matrix, or 3D  array.&#xD;
+           For vectors, Qn(X) is the scale estimator of the elements in X. For&#xD;
+           matrices, Qn(X) is a row vector containing the scale estimator&#xD;
+           value of each column.  For 3D arrays, Qn(X) is the robust scale&#xD;
+           estimator of the elements along the first non-singleton dimension&#xD;
+           of X.&#xD;
+           </LongDesc>
+         <Example> </Example>
+         <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>dim</Name>
+         <ShortDesc>Dimension to operate along</ShortDesc>
+         <TypeInd>Positive integer scalar</TypeInd>
+         <LongDesc>Dimension to operate along, specified as a positive integer&#xD;
+           scalar. If no value is specified, then the default is the first&#xD;
+           array dimension whose size does not equal 1.&#xD;
+           </LongDesc>
+         <Example> </Example>
+         <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc> Scalar | Vector or 3D array</ShortDesc>
+         <TypeInd>robust estimator of scale.</TypeInd>
+         <LongDesc> &#xD;
+            Sn(X,dim) takes the robust estimator of scale along the&#xD;
+            dimension dim of X.</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+   For vectors, Sn(X) is the scale estimator of the elements in X. For&#xD;
+   matrices, Sn(X) is a row vector containing the scale estimator value of&#xD;
+   each column.  For 3D arrays, Sn(X) is the robust scale estimator of the&#xD;
+   elements along the first non-singleton dimension of X.&#xD;
+&#xD;
+   Sn(X,dim) takes the robust estimator along the dimension dim of X.&#xD;
+&#xD;
+   $Sn= cn \times c \times med_i { med_j |x_i-x_j|}$, $i=1,2, ...n$, $j=1, 2, ..., n$.&#xD;
+   For each $i$ we compute the median of $|x_i-x_j|$, $j=1, 2, ..., n$.&#xD;
+   This yields $n$ numbers, the median of which gives the final estimate of&#xD;
+   $S_n$. This estimator is the robust version of Gini's average difference,&#xD;
+   which one would obtain when replacing medians by averages&#xD;
+   More in detail $Sn = cn \times c \times lomed_i { highmed_j&#xD;
+   |x_i-x_j|}$, $i=1,2, ...n$, $j=1, 2, ..., n$, where $lomed$ (low&#xD;
+   median) is $[(n+1)/2]$-th order statistic out of $n$ numbers) and&#xD;
+   $himed$ (high median) is the $([n/2]+1)$-th order statistic out of the&#xD;
+   $n$ numbers. $c$ is the so called asymptotic consistency factor and is&#xD;
+   equal to 1.1926 while $cn$ is a finite sample correction factor to make&#xD;
+   the estimator unbiased.&#xD;
+ &#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute deviation,&#xD;
+ Journal of American Statistical Association 88, 1273-1283</Item>
+      <Item>Croux C. and Rousseeuw P.J.(1992)  Time-efficient algorithms for two&#xD;
+ highly robust estimators of scale, in Computational Statistics, Volume 1,&#xD;
+ eds. Y . Dodge and J. Whittaker, Heidelberg: Physika-Verlag, 41 1-428.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>Qn</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Sn with all default otpions.</Title>
+         <Desc/>
+         <MATLABcode>
+    X = [1 2 4 4  7;&#xD;
+         3 4 6 6  8;&#xD;
+         5 6 8 8  10;&#xD;
+         5 7 10 12 1500];&#xD;
+    y1=Sn(X)&#xD;
+    y2=Sn(X,2)&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

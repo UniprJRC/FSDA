@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->HYPc</Title>
+   <Purpose><!--This is the second line of the .m file-->HYPc computes breakdown point and efficiency associated with constant chyperbolic tangent estimator (for a given value of k=sup CVC)</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning constant c</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar greater than 0 which&#xD;
+               controls the robustness/efficiency of the estimator</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>v</Name>
+         <ShortDesc>number of response variables</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Number of variables of&#xD;
+               the  dataset (for regression p=1)&#xD;
+               UP TO NOW v=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE&#xD;
+               ANALYSIS</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>supremum of the change of variance curve&#xD;
+              $supCVC(psi,x) x \in R$</ShortDesc>
+         <TypeInd>Default value is k=4</TypeInd>
+         <LongDesc>5&#xD;
+               </LongDesc>
+         <Example> 'k',4 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>shapeeff</Name>
+         <ShortDesc>location or shape efficiency</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If 1, the efficiency is referred to the shape else (default)&#xD;
+              is referred to the location. TODO:Hac:shapeeff  &#xD;
+               </LongDesc>
+         <Example> 'shapeeff',1 &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>param</Name>
+         <ShortDesc>parameters A, B and d</ShortDesc>
+         <TypeInd>Vector with 3 elements</TypeInd>
+         <LongDesc>Vector of length 3 specifying the parameters A, B and d of the&#xD;
+              weight function of the hyperbolic tangent estimator.&#xD;
+              param(1)=A param(2)=B param(3)=d&#xD;
+              If these values are not supplied they will be automatically&#xD;
+              calculated calling routine HYPck&#xD;
+               </LongDesc>
+         <Example> 'param',[0.0035;0.0317;0.0827] &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>bdp</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>bdp.</TypeInd>
+         <LongDesc> Breakdown point associated to the supplied&#xD;
+                 value of c</LongDesc>
+      </Item>
+      <Item>
+         <Name>eff</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>eff.</TypeInd>
+         <LongDesc> Efficiency associated to the supplied&#xD;
+                 value of c</LongDesc>
+      </Item>
+      <Item>
+         <Name>A</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>parameter A of hyperbolic tangent estimator.</TypeInd>
+         <LongDesc>&#xD;
+         For more details see the  methodological details inside "More&#xD;
+         About" below</LongDesc>
+      </Item>
+      <Item>
+         <Name>B</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>parameter B of hyperbolic tangent estimator.</TypeInd>
+         <LongDesc>&#xD;
+         For more details see the  methodological details inside "More&#xD;
+         About" below</LongDesc>
+      </Item>
+      <Item>
+         <Name>d</Name>
+         <ShortDesc> Scalar</ShortDesc>
+         <TypeInd>parameter d of hyperbolic tangent estimator.</TypeInd>
+         <LongDesc>&#xD;
+         For more details see the  methodological details inside "More&#xD;
+         About" below</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->
+  \[&#xD;
+   HYPpsi(u) =&#xD;
+ \left\{&#xD;
+   \begin{array}{cc}&#xD;
+  	 u &amp;        |u| \leq  d \\&#xD;
+                  \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &amp;&#xD;
+ 		         	                 d \leq |u| &amp;lt;  c, \\&#xD;
+                 0 &amp;                      |u| \geq c.&#xD;
+ \end{array}&#xD;
+    \right.&#xD;
+  \]&#xD;
+  	It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \times normpdf(c) &amp;lt;1$&#xD;
+&#xD;
+&#xD;
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),&#xD;
+ The Change-of-Variance Curve and Optimal Redescending M-Estimators,&#xD;
+ Journal of the American Statistical Association , Vol. 76, No. 375,&#xD;
+ pp. 643-648 (HRR)</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>TBc</Item>
+      <Item>HAc</Item>
+      <Item>OPTc</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Analysis of breakdown point and asymptotic efficiency&#xD;
+    at the normal distribution as a function of c in regression.</Title>
+         <Desc/>
+         <MATLABcode>
+    cc=2:0.1:6;&#xD;
+    % BDPEFF = matrix which will contain&#xD;
+    % 1st column = value of c&#xD;
+    % 2nd column = breakdown point (bdp)&#xD;
+    % 3rd column = asympotic nominal efficiency (eff)&#xD;
+    % 4th column = value of parameter A&#xD;
+    % 5th column = value of parameter B&#xD;
+    % 6th column = value of parameter d&#xD;
+    BDPEFF=[cc' zeros(length(cc),5)];&#xD;
+&#xD;
+    % Fixed value of k (sup CVC) which must be used&#xD;
+    kdef=4.5;&#xD;
+&#xD;
+    jk=1;&#xD;
+    for c=cc&#xD;
+        [bdp,eff,A,B,d]=HYPc(c,1,'k',kdef);&#xD;
+        BDPEFF(jk,2:end)=[bdp, eff, A, B, d];&#xD;
+        jk=jk+1;&#xD;
+    end&#xD;
+&#xD;
+&#xD;
+    nr=2;&#xD;
+    nc=2;&#xD;
+    subplot(nr,nc,1)&#xD;
+    plot(BDPEFF(:,1),BDPEFF(:,2))&#xD;
+    xlabel('c','Interpreter','Latex','FontSize',16)&#xD;
+    ylabel('Breakdown point','Interpreter','none')&#xD;
+&#xD;
+    subplot(nr,nc,2)&#xD;
+    plot(BDPEFF(:,1),BDPEFF(:,3))&#xD;
+    xlabel('c','Interpreter','Latex','FontSize',16)&#xD;
+    ylabel('Asymptotic efficiency','Interpreter','none')&#xD;
+&#xD;
+    subplot(nr,nc,3)&#xD;
+    plot(BDPEFF(:,1),BDPEFF(:,4:5))&#xD;
+    xlabel('c','Interpreter','Latex','FontSize',16)&#xD;
+    ylabel('A and B','Interpreter','none')&#xD;
+&#xD;
+    subplot(nr,nc,4)&#xD;
+    plot(BDPEFF(:,1),BDPEFF(:,6))&#xD;
+    xlabel('c','Interpreter','Latex','FontSize',16)&#xD;
+    ylabel('d','Interpreter','none')&#xD;
+&#xD;
+    suplabel(['Constant k=' num2str(kdef)],'t');&#xD;
+&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

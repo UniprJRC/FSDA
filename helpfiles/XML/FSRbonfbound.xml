@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRbonfbound</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRbonfbound computes Bonferroni bounds for each step of the search (in linear regression)</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>number of observations</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Number of observations on which&#xD;
+       the envelopes are based.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>p</Name>
+         <ShortDesc>number of explanatory variables (including the intercept if&#xD;
+    present)</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Number of expl. variables on which&#xD;
+       the envelopes are based.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>It specifies the point where to initialize the search&#xD;
+                       and start monitoring minimum deletion residual. if init is not&#xD;
+                       specified it will be set equal to :&#xD;
+                       p+1, if the sample size is smaller than 40;&#xD;
+                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
+                       </LongDesc>
+         <Example> 'init',100 starts monitoring from step m=100&#xD;
+                       </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>prob</Name>
+         <ShortDesc>quantiles for which envelopes have&#xD;
+               to be computed</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>1 x k vector containing quantiles for which envelopes have&#xD;
+               to be computed. The default is to produce 1%, 50% and 99%&#xD;
+               envelopes.&#xD;
+               </LongDesc>
+         <Example> 'prob',[0.01 0.99] &#xD;
+               </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Bbound</Name>
+         <ShortDesc> Matrix</ShortDesc>
+         <TypeInd>Bonferroni forward envelopes of mdr.</TypeInd>
+         <LongDesc>&#xD;
+               Matrix with n-m0+1 rows and length(prob)+1 columns:&#xD;
+               1st col = fwd search index from m0 to n-1,&#xD;
+               2nd col = bound for quantile prob[1],&#xD;
+               3rd col = bound for quantile prob[2],&#xD;
+               ...,&#xD;
+               (k+1) col = bound for quantile prob[k].</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson, A.C. and Riani, M. (2006). Distribution theory and&#xD;
+   simulations for tests of outliers in regression. Journal of&#xD;
+   Computational and Graphical Statistics, Vol. 15, pp. 460–476</Item>
+      <Item>Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward&#xD;
+   search for testing multiple outliers in regression, Advances in Data&#xD;
+   Analysis and Classification, Vol. 1, pp. 123–141.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSRenvmdr</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>mdr with Bonferroni envelopes.</Title>
+         <Desc>&#xD;
+     Example of creation of 1, 50 and 99 per cent envelopes based on 1000&#xD;
+     observations and 5 explanatory variables using exact method&#xD;</Desc>
+         <MATLABcode>
+    MDRenv = FSRenvmdr(1000,5,'exact',1,'init',10);&#xD;
+    Bbound = FSRbonfbound(1000,5,'init',10);&#xD;
+    plot(MDRenv(:,1),MDRenv(:,2:end),Bbound(:,1),Bbound(:,2:end));&#xD;</MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>mdr with personalized Bonferroni envelopes.</Title>
+         <Desc>&#xD;
+     Example of creation of 1, 50, 99  and 99.9 per cent envelopes based on 1000&#xD;
+     observations and 5 explanatory variables using exact method&#xD;</Desc>
+         <MATLABcode>
+    MDRenv = FSRenvmdr(1000,5,'exact',1,'init',10,'prob',[0.01 0.5 0.99 0.999]);&#xD;
+    Bbound = FSRbonfbound(1000,5,'init',10,'prob',[0.01 0.5 0.99 0.999]);&#xD;
+    plot(MDRenv(:,1),MDRenv(:,2:5),Bbound(:,1),Bbound(:,2:5));&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

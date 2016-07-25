@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->cdsplot</Title>
+   <Purpose><!--This is the second line of the .m file-->cdsplot produces the candlestick plot for robust model selection in linear regression</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>outms</Name>
+         <ShortDesc>plot data</ShortDesc>
+         <TypeInd>Structure</TypeInd>
+         <LongDesc>Structure containing the following fields&#xD;
+        outms.stor = k x 9 matrix containing statistics which are used to create&#xD;
+               the candles. &#xD;
+               1st col: max Cp values; &#xD;
+               2nd col: min Cp values; &#xD;
+               3rd col: averages Cp values; &#xD;
+               4nd col: median Cp values; &#xD;
+               5th col: x coordinates (or size of&#xD;
+               submodel); &#xD;
+               6th col: number of explanatory variables of the submodel; &#xD;
+               7th col: y coordinate of final Cp; &#xD;
+               8th col: units entering the final step of the search; &#xD;
+               9th col: maximum Cp value during the search (This is&#xD;
+               information is used to print the labels on top of each&#xD;
+               model). &#xD;
+        outms.outl = r x 4 matrix containing information about 'influential&#xD;
+               units' or empty matrix. &#xD;
+               Influential units in this context are defined as the units&#xD;
+               which enter the subset in the final part of the search and&#xD;
+               bring the value of the Cp below the minimum or&#xD;
+               above the maximum value of the central part of the search. &#xD;
+               1st col: x coordinates; &#xD;
+               2nd col: y coordinates; &#xD;
+               3rd col: step of entry into subset; &#xD;
+               4nd col: unit number. &#xD;
+               If matrix outl contains more columns they are ignored. &#xD;
+         outms.siz = vector of length 2 containing information about n (number of&#xD;
+               units of the sample and bigP, number of explanatory variables,&#xD;
+               including the constant, in the full model). This&#xD;
+               information is necessary to compute the envelopes.&#xD;
+      </LongDesc>
+         <Example> </Example>
+         <DataType>struct</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>stor</Value>
+               <Description>k x 9 matrix containing statistics which are used to create&#xD;
+               the candles. &#xD;
+               1st col: max Cp values; &#xD;
+               2nd col: min Cp values; &#xD;
+               3rd col: averages Cp values; &#xD;
+               4nd col: median Cp values; &#xD;
+               5th col: x coordinates (or size of&#xD;
+               submodel); &#xD;
+               6th col: number of explanatory variables of the submodel; &#xD;
+               7th col: y coordinate of final Cp; &#xD;
+               8th col: units entering the final step of the search; &#xD;
+               9th col: maximum Cp value during the search (This is&#xD;
+               information is used to print the labels on top of each&#xD;
+               model).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outl</Value>
+               <Description>r x 4 matrix containing information about 'influential&#xD;
+               units' or empty matrix. &#xD;
+               Influential units in this context are defined as the units&#xD;
+               which enter the subset in the final part of the search and&#xD;
+               bring the value of the Cp below the minimum or&#xD;
+               above the maximum value of the central part of the search. &#xD;
+               1st col: x coordinates; &#xD;
+               2nd col: y coordinates; &#xD;
+               3rd col: step of entry into subset; &#xD;
+               4nd col: unit number. &#xD;
+               If matrix outl contains more columns they are ignored.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>siz</Value>
+               <Description>vector of length 2 containing information about n (number of&#xD;
+               units of the sample and bigP, number of explanatory variables,&#xD;
+               including the constant, in the full model). This&#xD;
+               information is necessary to compute the envelopes.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>CandleWidth</Name>
+         <ShortDesc>width</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar defining the width of the boxes which represent central part of the&#xD;
+              candles. The default width is 0.05.&#xD;
+                   </LongDesc>
+         <Example> 'CandleWidth',0.1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>color</Name>
+         <ShortDesc>Color</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Three elements color vector, [R G B], or a string specifying the&#xD;
+              color name. MATLAB supplies a default color if none is specified&#xD;
+              or if it is empty. The default color differs depending on the&#xD;
+              background color of the figure window. See COLORSPEC in the&#xD;
+              MATLAB Reference Guide for color names.&#xD;
+                   </LongDesc>
+         <Example> 'color',[0.1 0.2 0.5]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>LineWidth</Name>
+         <ShortDesc>Line Width</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Line Width (in points) for the vertical lines outside the boxes of the&#xD;
+              candles. The default LineWidth is 0.5 points.&#xD;
+                   </LongDesc>
+         <Example> 'LineWidth',0.3&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ylimy</Name>
+         <ShortDesc>y axis scale</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector with two elements controlling minimum and maximum&#xD;
+              on the y axis. Default value is [-2 50] (automatic scale).&#xD;
+                   </LongDesc>
+         <Example> 'ylimy',[0 100]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>xlimx</Name>
+         <ShortDesc>x axis scale</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector with two elements controlling minimum and maximum&#xD;
+              on the x axis. Default value is '' (automatic scale).&#xD;
+                   </LongDesc>
+         <Example> 'xlimx',[0 100]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>label</Name>
+         <ShortDesc>Labels of the selected models</ShortDesc>
+         <TypeInd>Cell array of strings</TypeInd>
+         <LongDesc>Cell array of strings of length k (number of rows of matrix stat)&#xD;
+              containing the labels of the selected models. Default value is ''&#xD;
+              that is no label is plotted on the screen.&#xD;
+                   </LongDesc>
+         <Example> 'label',{'a' 'b' 'c'}&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>quant</Name>
+         <ShortDesc>Quantiles</ShortDesc>
+         <TypeInd>Vector</TypeInd>
+         <LongDesc>Vector containing quantiles for the horizontal lines&#xD;
+              associated witht the confidence bands of Cp. &#xD;
+              The default is to plot 2.5% and&#xD;
+              97.5% envelopes. In other words the default is&#xD;
+              quant=[0.025;0.975].&#xD;
+                   </LongDesc>
+         <Example> 'quant',[0.01 0.025 0.975 0.99]&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lablast</Name>
+         <ShortDesc>Label for the last unit entered</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which specifies whether to add the label of the unit&#xD;
+              which enters the final step of the search close to its&#xD;
+              symbol. If lablast=1 label is added else (default) no label&#xD;
+              is added.&#xD;
+                   </LongDesc>
+         <Example> 'lablast',0&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>laboutl</Name>
+         <ShortDesc>Label for the influential units</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which specifies whether to add the labels of the&#xD;
+              'influential units'&#xD;
+              if laboutl=1 the unit number is added close to its symbol.&#xD;
+              if laboutl=2 the unit number together with the entry step is&#xD;
+              added close to its symbol else (default) no label is added.&#xD;
+                   </LongDesc>
+         <Example> 'laboutl',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labbold</Name>
+         <ShortDesc>Models to highliht</ShortDesc>
+         <TypeInd>Cell array of strings</TypeInd>
+         <LongDesc>Cell array of strings which specifies the models which have&#xD;
+              to be highlighted (the linewidth of the vertical lines&#xD;
+              outside the boxes of the models specified in labbold is&#xD;
+              considerably increased). As default labbold=''.&#xD;
+                   </LongDesc>
+         <Example> 'labbold',{'a' 'b'}&#xD;
+                   </Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labenv</Name>
+         <ShortDesc>Quantiles labels</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>If labelv=1 labels of the quantiles used to generate the&#xD;
+               horizontal lines associated with the envelopes are added,&#xD;
+               else if labelv=0 (default) no label is added.  &#xD;
+                   </LongDesc>
+         <Example> 'labenv',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>barend</Name>
+         <ShortDesc>Adding horizontal lines</ShortDesc>
+         <TypeInd>Scalar</TypeInd>
+         <LongDesc>Scalar which specifies whether to add small horizontal lines&#xD;
+              at the end of the vertical lines representing the whiskers.&#xD;
+              If barend=1 horizontal lines are added else (default) no&#xD;
+              additional line is drawn. &#xD;
+                   </LongDesc>
+         <Example> 'barend',1&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>cpbrush</Name>
+         <ShortDesc>Brushing</ShortDesc>
+         <TypeInd>Empty value or matrix</TypeInd>
+         <LongDesc>If cpbrush is an empty value (default), no brushing is done.&#xD;
+              The activation of this option (cpbrush is a scalar) enables&#xD;
+              the user  to select a set of candles in the candlestick plot&#xD;
+              and to monitor the corresponding forward searches in a new&#xD;
+              plot. &#xD;
+              If cpbrush is not an empty value the user has&#xD;
+              to supply the matrix which in the first column contains the&#xD;
+              fwd search index and in the other k columns the values of Cp&#xD;
+              associated with the k models displayed in the candlestick&#xD;
+              plot.&#xD;
+                   </LongDesc>
+         <Example> 'cpbrush',''&#xD;
+                   </Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Riani and Atkinson (2010), Robust model selection with flexible trimming,&#xD;
+       Computational Statistics and Data Analysis (in press).</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION--></SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>cdsplot with all default options.</Title>
+         <Desc>&#xD;
+     Load Ozone data (reduced data)&#xD;</Desc>
+         <MATLABcode>
+    X=load('ozone.txt');&#xD;
+    % Tranform the response using logs&#xD;
+    X(:,end)=log(X(:,end));&#xD;
+    % Add a time trend&#xD;
+    X=[(-40:39)' X];&#xD;
+    % Define y&#xD;
+    y=X(:,end);&#xD;
+    % Define X&#xD;
+    X=X(:,1:end-1);&#xD;
+    labels={'Time','1','2','3','4','5','6','7','8'};&#xD;
+    % Robust model selection using Cp&#xD;
+    [Cpms]=FSRms(y,X,'labels',labels);&#xD;
+    % Candlestick plot&#xD;
+    cdsplot(Cpms);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
+     cdsplot with optional arguments.</Title>
+         <Desc>        &#xD;
+     Load Ozone data (full data)&#xD;</Desc>
+         <MATLABcode>
+    X=load('ozone_330_obs.txt');&#xD;
+    y=log(X(:,9));&#xD;
+    Time1=[(1:165)';(165:-1:1)'];&#xD;
+    X=[Time1 X(:,1:8)];&#xD;
+    labels={'Time','1','2','3','4','5','6','7','8'};&#xD;
+    outms=FSRms(y,X,'labels',labels,'smallpint',5:6);&#xD;
+    cdsplot(outms,'cpbrush',1,'laboutl',1);&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>
