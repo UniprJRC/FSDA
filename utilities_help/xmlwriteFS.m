@@ -4,7 +4,7 @@ function [docNode,docNodechr]=xmlwriteFS(out, varargin)
 % Required input arguments:
 %
 %    out:     structure created by publishFS or by GUI which contains
-%                   the  following fields 
+%                   the  following fields
 %                   out.titl =........
 %                   out.purpose =........
 %
@@ -93,13 +93,15 @@ for i=1:size(out.InpArgs,1)
             if iscell(out.InpArgs{i,j})
                 InpArgsCell=out.InpArgs{i,j};
                 for ii=1:size(InpArgsCell,1)
-                    entry_nodeCell = docNode.createElement('ItemCell');
-                    for jj=1:2
-                        name_nodeCell = docNode.createElement(StructArgsNames{jj});
-                        name_nodeCell.appendChild(docNode.createTextNode((InpArgsCell{ii,jj})));
-                        entry_nodeCell.appendChild(name_nodeCell);
+                    if ~isempty(InpArgsCell{ii,1}) || ~isempty(InpArgsCell{ii,2})
+                        entry_nodeCell = docNode.createElement('ItemCell');
+                        for jj=1:2
+                            name_nodeCell = docNode.createElement(StructArgsNames{jj});
+                            name_nodeCell.appendChild(docNode.createTextNode((InpArgsCell{ii,jj})));
+                            entry_nodeCell.appendChild(name_nodeCell);
+                        end
+                        name_node.appendChild(entry_nodeCell);
                     end
-                    name_node.appendChild(entry_nodeCell);
                 end
             else
                 name_node.appendChild(docNode.createTextNode((out.InpArgs{i,j})));
@@ -128,13 +130,13 @@ for i=1:size(out.OptArgs,1)
                 OptArgsCell=out.OptArgs{i,j};
                 for ii=1:size(OptArgsCell,1)
                     if ~isempty(OptArgsCell{ii,1}) || ~isempty(OptArgsCell{ii,2})
-                    entry_nodeCell = docNode.createElement('ItemCell');
-                    for jj=1:2
-                        name_nodeCell = docNode.createElement(StructArgsNames{jj});
-                        name_nodeCell.appendChild(docNode.createTextNode((OptArgsCell{ii,jj})));
-                        entry_nodeCell.appendChild(name_nodeCell);
-                    end
-                    name_node.appendChild(entry_nodeCell);
+                        entry_nodeCell = docNode.createElement('ItemCell');
+                        for jj=1:2
+                            name_nodeCell = docNode.createElement(StructArgsNames{jj});
+                            name_nodeCell.appendChild(docNode.createTextNode((OptArgsCell{ii,jj})));
+                            entry_nodeCell.appendChild(name_nodeCell);
+                        end
+                        name_node.appendChild(entry_nodeCell);
                     end
                 end
             else
@@ -276,7 +278,7 @@ Name=out.titl;
 fsep=filesep;
 fullpathFileName=[FSDAroot fsep 'helpfiles' fsep 'XML' fsep Name '.xml'];
 if write2file
-    xmlwrite(fullpathFileName,docNode)
+    xmlwrite(fullpathFileName,docNode);
 end
 docNodechr=xmlwrite(docNode);
 end

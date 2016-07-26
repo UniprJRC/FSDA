@@ -44,6 +44,7 @@ for i=1:size(InpArgs,1)
                 end
             end
             data=CellItem;
+%         elseif size(dom.Children(index).Children(2*i+1).Children(2*j).Children,2)==0
         else
             data=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
         end
