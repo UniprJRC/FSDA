@@ -75,10 +75,11 @@ docNode.getDocumentElement.appendChild(Preamble);
 % Create description section
 Preamble=docNode.createElement('Description');
 Preamble.appendChild(docNode.createComment('Description section'));
-Preambletxt=docNode.createTextNode(out.description);
+% Preambletxt=docNode.createTextNode(out.description{:});
+Preambletxt=docNode.createTextNode(sprintf('%s\n',out.description{:}));
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
-
+% [{'\n';'\n'} out.description]
 
 %Create InpArgs section
 InpArgsNames={'Name' 'ShortDesc' 'TypeInd' 'LongDesc' 'Example' 'DataType' 'ReqArg' 'Struct'};
@@ -189,14 +190,15 @@ docNode.getDocumentElement.appendChild(OutArgs);
 % Create More About section
 Preamble=docNode.createElement('MoreAbout');
 Preamble.appendChild(docNode.createComment('MORE ABOUT SECTION'));
-Preambletxt=docNode.createTextNode(out.MoreAbout);
+Preambletxt=docNode.createTextNode(sprintf('%s\n',out.MoreAbout{:}));
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 
 % Create Acknowledgements section
 Preamble=docNode.createElement('Acknowledgements');
 Preamble.appendChild(docNode.createComment('ACKNOWLEDGEMENTS SECTION'));
-Preambletxt=docNode.createTextNode(out.Acknowledgements);
+Preambletxt=docNode.createTextNode(sprintf('%s\n',out.Acknowledgements{:}));
+
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 
@@ -207,7 +209,6 @@ for i=1:length(out.References)
     entry_node = docNode.createElement('Item');
     entry_node.appendChild(docNode.createTextNode((out.References{i})));
     References.appendChild(entry_node);
-    
 end
 docNode.getDocumentElement.appendChild(References);
 
@@ -236,8 +237,20 @@ for i=1:size(out.Ex,1)
         if ~isempty(out.Ex{i,j})
             if j==4
                 name_node.appendChild(docNode.createTextNode(num2str(out.Ex{i,j})));
+                
+                %                 try
+                %
+                %                 name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.Ex{i,j})));
+                %                 catch
+                %                     ddd=1;
+                %                 end
             else
-                name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
+                if iscell(out.Ex{i,j}) && j~=1
+                name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.Ex{i,j}{:}))));
+                else
+                name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.Ex{i,j})));
+                end
+                
             end
         else
             name_node.appendChild(docNode.createTextNode(' '));
@@ -283,3 +296,4 @@ end
 docNodechr=xmlwrite(docNode);
 end
 
+% http://stackoverflow.com/questions/35510368/python-remove-xd-from-xml
