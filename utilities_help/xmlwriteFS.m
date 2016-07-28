@@ -247,8 +247,10 @@ for i=1:size(out.Ex,1)
             else
                 if iscell(out.Ex{i,j}) && j~=1
                 name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.Ex{i,j}{:}))));
-                else
+                elseif j~=1
                 name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.Ex{i,j})));
+                else
+                name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
                 end
                 
             end
