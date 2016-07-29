@@ -4,13 +4,13 @@ function [Y , retain]= rthin(X, P, varargin)
 %<a href="matlab: docsearchFS('rthin')">Link to the help page for this function</a>
 % Last modified 06-Feb-2016
 %
-% Acknowledgements: This function was ported to matlab from the R spatstat
-% package, developed by Adrian Baddeley (Adrian.Baddeley@curtin.edu.au),
-% Rolf Turner (r.turner@auckland.ac.nz) and Ege Rubak (rubak@math.aau.dk)
-% for the statistical analysis of spatial point patterns. The algorithm for
-% random thinning was changed in spatstat version 1.42-3. Our matlab
-% porting is based on a previous version. See the rthin documentation in
-% spatstat for more details.
+% This function was ported to matlab from the R spatstat package, developed
+% by Adrian Baddeley (Adrian.Baddeley@curtin.edu.au), Rolf Turner
+% (r.turner@auckland.ac.nz) and Ege Rubak (rubak@math.aau.dk) for the
+% statistical analysis of spatial point patterns. The algorithm for random
+% thinning was changed in spatstat version 1.42-3. Our matlab porting is
+% based on a earlier version. See the rthin documentation in spatstat for
+% more details.
 %
 % In a random thinning operation, each point of the pattern X is randomly
 % either deleted or retained (i.e. not deleted). The result is a point
@@ -75,24 +75,43 @@ function [Y , retain]= rthin(X, P, varargin)
         data=[randn(500,2);randn(500,1)+3.5, randn(500,1);];
         x = data(:,1); 
         y = data(:,2); 
-        [bandwidth,density,xx,yy]  = kde2d(data);
-        [density2,xout,bandwidth2] = ksdensity(data);
+        [density,xout,bandwidth] = ksdensity(data);
+        [density2,xout2,bandwidth2] = kdebiv(data,'pdfmethod','fsda');
+        xx = xout(:,1);
+        yy = xout(:,2);
         zz = density;
+
         figure;
-        contour3(xx,yy,density,50), hold on
+        [xq,yq] = meshgrid(xx,yy);
+        density = griddata(xx,yy,density,xq,yq);
+        contour3(xq,yq,density,50), hold on
         plot(x,y,'r.','MarkerSize',5)
+
         F = TriScatteredInterp(xx(:),yy(:),zz(:));
         pdfe = F(x,y);
         pretain = 1 - pdfe/max(pdfe);
         [Xt Xti]= rthin([x y],pretain);
-        figure;
-        contour3(xx,yy,density,50), hold on
-        plot(x(Xti),y(Xti),'b.','MarkerSize',5)
 
+        [tdensity,txout,tbandwidth] = ksdensity(Xt);
+        txx = txout(:,1);
+        tyy = txout(:,2);
+        tzz = tdensity;
+
+        figure;
+        [txq,tyq] = meshgrid(txx,tyy);
+        tdensity = griddata(txx,tyy,tdensity,txq,tyq);
+        contour3(txq,tyq,tdensity,50), hold on
+        plot(x(Xti),y(Xti),'b.','MarkerSize',5)
 
 %}
 
 n = length(X);
+
+% if the retention probabilities are not provided by the user, retain
+% with uniform probability 1/n
+if nargin < 2
+    P = 1/n;
+end
 
 if isnumeric(P)
     % vector of retention probabilities
