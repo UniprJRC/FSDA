@@ -15,6 +15,19 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %
 %  Optional input arguments:
 %
+%   bandwidth :  bandwidth value. Scalar. The bandwidth used to estimate
+%                the density. It can be one of the following: 'scott' ,
+%                'normal', 'robust'.
+%               Data Types - char
+%               Example - 'method','robust'
+%
+%   retainby  :  retention method. String. The function used to retain the
+%                observations. It can be 
+%                'comp2one',  i.e. 1 - pdfe/max(pdfe))
+%                'inverse',    i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
+%               Data Types - char
+%               Example - 'method','comp2one'
+%
 %
 %  Output:
 %
