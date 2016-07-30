@@ -154,7 +154,7 @@ end
 docNode.getDocumentElement.appendChild(OptArgs);
 
 %Create OutArgs section
-OutArgsNames={'Name' 'ShortDesc' 'TypeInd' 'LongDesc'};
+OutArgsNames={'Name' 'ShortDesc' 'TypeInd' 'LongDesc' 'Structure'};
 
 OutArgs = docNode.createElement('OutArgs');
 OutArgs.appendChild(docNode.createComment('OUTPUT ARGUMENT SECTION'));
@@ -238,19 +238,13 @@ for i=1:size(out.Ex,1)
             if j==4
                 name_node.appendChild(docNode.createTextNode(num2str(out.Ex{i,j})));
                 
-                %                 try
-                %
-                %                 name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.Ex{i,j})));
-                %                 catch
-                %                     ddd=1;
-                %                 end
             else
                 if iscell(out.Ex{i,j}) && j~=1
-                name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.Ex{i,j}{:}))));
+                    name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.Ex{i,j}{:}))));
                 elseif j~=1
-                name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.Ex{i,j})));
+                    name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.Ex{i,j})));
                 else
-                name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
+                    name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
                 end
                 
             end
@@ -275,7 +269,15 @@ for i=1:size(out.ExtraEx,1)
             if j==4
                 name_node.appendChild(docNode.createTextNode(num2str(out.ExtraEx{i,j})));
             else
-                name_node.appendChild(docNode.createTextNode(out.ExtraEx{i,j}));
+                if iscell(out.ExtraEx{i,j}) && j~=1
+                    name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.ExtraEx{i,j}{:}))));
+                elseif j~=1
+                    name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.ExtraEx{i,j})));
+                else
+                    name_node.appendChild(docNode.createTextNode(out.ExtraEx{i,j}));
+                end
+                
+                % name_node.appendChild(docNode.createTextNode(out.ExtraEx{i,j}));
             end
         else
             name_node.appendChild(docNode.createTextNode(' '));

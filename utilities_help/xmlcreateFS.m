@@ -152,7 +152,7 @@ end
 docNode.getDocumentElement.appendChild(OptArgs);
 
 %Create OutArgs section
-OutArgsNames={'Name' 'ShortDesc' 'TypeInd' 'LongDesc'};
+OutArgsNames={'Name' 'ShortDesc' 'TypeInd' 'LongDesc' 'Struct'};
 
 OutArgs = docNode.createElement('OutArgs');
 OutArgs.appendChild(docNode.createComment('OUTPUT ARGUMENT SECTION'));

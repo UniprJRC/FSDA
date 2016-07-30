@@ -101,27 +101,26 @@ function out=publishFS(file,varargin)
 %                 and optional input argument specified as name/values pairs.
 %                 1st column = name.
 %                 2nd column = short description.
-%                 3rd column = type indication (Scalar, matrix, ...).
-%                 4th column = string containing long description. If the
-%                 optional input argument is a struct, columns 2 and 3 will be empty and all
-%                 information about the fields of the structure will be
-%                 included in the 4th column.
+%                 3rd column = type indication (Scalar, matrix, strucutre, ...).
+%                 4th column = string containing long description. 
 %                 5th column = example (if present).
 %                 6th column = Data type (ex. Single |Double).
 %                 7th column = this column is empty unless 3rd column
 %                 contains the word structure. If this is the case the 7th
 %                 column will contain a cell with two columns containing
 %                 the Values/Description of the associated structure.
-% out.OutArgs   = Required and Optional input arguments. Cell.
-%                 Cell of size k-by-7 containing information about required
-%                 and optional input argument.
+% out.OutArgs   = Required and Optional (varaargout) output arguments. Cell.
+%                 Cell of size k-by-5 containing information about output
+%                 and varargout output argument.
 %                 1st column = name.
 %                 2nd column = short description.
-%                 3rd column = type indication (Scalar, matrix, ...).
-%                 4th column = string containing long description. If an
-%                 output argument is a struct, columns 2 and 3 will be
-%                 empty and all information about the fields of the
-%                 structure will be included in the 4th column.
+%                 3rd column = type indication (Scalar, matrix, strucutre, ...).
+%                 4th column = string containing long description.
+%                 5th column =  this column is empty unless output argument
+%                 is a structure. If an output argument is a struct,
+%                 columns 2, 3 and 4 will be empty and all information
+%                 about the fields of the structure will be included in the
+%                 5th column.
 % out.MoreAbout = More About. String. String containing what in the HTML
 %                 file will appear under the section "More About".
 %out.Acknowledgements = Acknowledgements. String. String containing what in the HTML
@@ -2151,7 +2150,7 @@ end
 fstringsel=fstring(outsel(1):end);
 
 % cell which will contain the details of output arguments
-listOutArgs=cell(length(listargouts),4);
+listOutArgs=cell(length(listargouts),5);
 listOutArgs(:,1)=listargouts;
 
 if nargout>0
@@ -2274,7 +2273,7 @@ if nargout>0
         if ~isempty(checkifstructure)
             
             [descrioutput,listStructureArgs]=formatHTMLstructure(descrioutput,outi);
-            listOutArgs{i,4}=listStructureArgs;
+            listOutArgs{i,5}=listStructureArgs;
             % preamble='A structure containing the following fields:';
             preamble='Structure';
             
@@ -3278,8 +3277,8 @@ if evalCode ==1
     for i=1:size(listOutArgs,1)
         % If the fourth column of listOutArgs is a cell then we are dealing
         % with a structure
-        if iscell(listOutArgs{i,4})
-            cellOut=listOutArgs{i,4};
+        if iscell(listOutArgs{i,5})
+            cellOut=listOutArgs{i,5};
             OutputDescribed=cellOut(:,1);
             listouti=listOutArgs{i,1};
             

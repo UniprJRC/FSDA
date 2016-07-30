@@ -31,7 +31,6 @@ InpArgs=cell((length(dom.Children(index).Children)-2)/2,8);
 for i=1:size(InpArgs,1)
     for j=1:8
         %InpArgs{i,j}=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
-        
         if j==8 && size(dom.Children(index).Children(2*i+1).Children(2*j).Children,2)>1
             itemCell=dom.Children(index).Children(2*i+1).Children(2*j).Children;
             % In this case the fourth column of OutArgs is a cell which
@@ -44,9 +43,13 @@ for i=1:size(InpArgs,1)
                 end
             end
             data=CellItem;
-%         elseif size(dom.Children(index).Children(2*i+1).Children(2*j).Children,2)==0
+            %         elseif size(dom.Children(index).Children(2*i+1).Children(2*j).Children,2)==0
         else
-            data=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+            if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children)
+                data=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+            else
+                data='';
+            end
         end
         
         if ~isempty(strtrim(data))
@@ -89,12 +92,15 @@ out.OptArgs=OptArgs;
 % Extract OutArgs
 % Create cell which will contain OutArgs
 index=12;
-OutArgs=cell((length(dom.Children(index).Children)-2)/2,4);
+OutArgs=cell((length(dom.Children(index).Children)-2)/2,5);
 for i=1:size(OutArgs,1)
-    for j=1:4
-        if j==4 && isempty(OutArgs{i,2}) &&  isempty(OutArgs{i,3})
-            itemCell=dom.Children(index).Children(2*i+1).Children(2*j).Children;
-            % In this case the fourth column of OutArgs is a cell which
+    for j=1:5
+        if j==5
+        itemCell=dom.Children(index).Children(2*i+1).Children(2*j).Children;
+        end
+        if j==5 && size(itemCell,2)>1
+            
+            % In this case the fifth column of OutArgs is a cell which
             % contains name (1st column) and description (2nd column)
             lCellItem=(length(itemCell)-1)/2;
             CellItem=cell(lCellItem,2);
@@ -105,7 +111,11 @@ for i=1:size(OutArgs,1)
             end
             data=CellItem;
         else
-            data=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+            if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children)
+                data=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+            else
+                data='';
+            end
         end
         if ~isempty(strtrim(data))
             OutArgs{i,j}=data;
