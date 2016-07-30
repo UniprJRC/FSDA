@@ -363,7 +363,7 @@ vopt = -1e+20;
 
 % this is just for rotating colors in the plots
 clrdef = 'bkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrcbkmgyrc';
-symdef = '+*sd';
+symdef = '+*sd^v><pho*';
 % repmat from Release 8.2 is faster than bsxfun
 verMatlab = verLessThan('matlab','8.2.0');
 if verMatlab ==1
