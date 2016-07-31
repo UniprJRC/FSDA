@@ -730,6 +730,7 @@ ni         = ones(1,k);
 sigmaopt   = ni;
 bopt       = zeros(p,k);
 numopt     = 1:k;
+weopt = ones(n,1);
 fact3      = zeros(n,k);
 
 %%  Random starts
