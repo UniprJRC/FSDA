@@ -1,4 +1,4 @@
-function [Y , retain]= rthin(X, P, varargin)
+function [Y , retain]= rthin(X, P)
 %RTHIN applies independent random thinning to a point pattern.
 %
 %<a href="matlab: docsearchFS('rthin')">Link to the help page for this function</a>
@@ -12,18 +12,19 @@ function [Y , retain]= rthin(X, P, varargin)
 % based on a earlier version. See the rthin documentation in spatstat for
 % more details.
 %
-% In a random thinning operation, each point of the pattern X is randomly
-% either deleted or retained (i.e. not deleted). The result is a point
-% pattern, consisting of those points of X that were retained. Independent
-% random thinning means that the retention/deletion of each point is
-% independent of other points.
+% In a random thinning operation, each point of X is randomly either
+% deleted or retained (i.e. not deleted). The result is a point pattern,
+% consisting of those points of X that were retained. Independent random
+% thinning means that the retention/deletion of each point is independent
+% of other points.
 %
 %  Required input arguments:
 %
-%       X   : Vector representing a point pattern that will be thinned.
+%       X   : Vector with the data to be thinned. Data can represent a
+%             point pattern. 
 %
 %       P   : Vector giving the retention probabilities, i.e. the probability
-%             that each point in X will be retained. It may be:
+%             that each point in X will be retained. It can be:
 %             -  a single number, so that each point will be retained with
 %                the same probability P;
 %             -  a vector of numbers, so that the ith point of X will be
@@ -43,8 +44,12 @@ function [Y , retain]= rthin(X, P, varargin)
 %  Optional input arguments:
 %
 %
-%
 %  Output:
+%
+%    Y    :  the retained data units. Vector. In practice, Y = X(retain,:).
+%
+%  retain :  the indices of the retained points in the original data X.
+%            Vector. The ith point of X is retained with probability P(i).
 %
 %
 %  Optional Output:
@@ -70,39 +75,57 @@ function [Y , retain]= rthin(X, P, varargin)
 % Examples:
 %
 %{
-    % xxxx 
-    % Compute ...
-        data=[randn(500,2);randn(500,1)+3.5, randn(500,1);];
-        x = data(:,1); 
-        y = data(:,2); 
-        [density,xout,bandwidth] = ksdensity(data);
-        [density2,xout2,bandwidth2] = kdebiv(data,'pdfmethod','fsda');
-        xx = xout(:,1);
-        yy = xout(:,2);
-        zz = density;
+    % Random thinning on a mixture of normal distribution.
+    % Data
+    data=[randn(500,2);randn(500,1)+3.5, randn(500,1);];
+    x = data(:,1); 
+    y = data(:,2); 
+    % Data density
+    [density,xout,bandwidth] = ksdensity(data);
+    %[density,xout,bandwidth] = kdebiv(data,'pdfmethod','fsda');
+    xx = xout(:,1);
+    yy = xout(:,2);
+    zz = density;
 
-        figure;
-        [xq,yq] = meshgrid(xx,yy);
-        density = griddata(xx,yy,density,xq,yq);
-        contour3(xq,yq,density,50), hold on
-        plot(x,y,'r.','MarkerSize',5)
+    % plot of data and density
+    figure;
+    [xq,yq] = meshgrid(xx,yy);
+    density = griddata(xx,yy,density,xq,yq);
+    contour3(xq,yq,density,50), hold on
+    plot(x,y,'r.','MarkerSize',5)
+    title(['plot of original data (' num2str(numel(y)) ' units) with density contour']);
 
-        F = TriScatteredInterp(xx(:),yy(:),zz(:));
-        pdfe = F(x,y);
-        pretain = 1 - pdfe/max(pdfe);
-        [Xt Xti]= rthin([x y],pretain);
+    %Interpolate the density and apply thinning using retention
+    %probabilities equal to 1 - pdfe/max(pdfe)
+    F = TriScatteredInterp(xx(:),yy(:),zz(:));
+    pdfe = F(x,y);
+    pretain = 1 - pdfe/max(pdfe);
+    [Xt , Xti]= rthin([x y],pretain);
 
-        [tdensity,txout,tbandwidth] = ksdensity(Xt);
-        txx = txout(:,1);
-        tyy = txout(:,2);
-        tzz = tdensity;
+    % now estimate the density on the retained units
+    [tdensity,txout,tbandwidth] = ksdensity(Xt);
+    txx = txout(:,1);
+    tyy = txout(:,2);
+    tzz = tdensity;
 
-        figure;
-        [txq,tyq] = meshgrid(txx,tyy);
-        tdensity = griddata(txx,tyy,tdensity,txq,tyq);
-        contour3(txq,tyq,tdensity,50), hold on
-        plot(x(Xti),y(Xti),'b.','MarkerSize',5)
+    % and plot the retained units with their density superimposed
+    figure;
+    [txq,tyq] = meshgrid(txx,tyy);
+    tdensity = griddata(txx,tyy,tdensity,txq,tyq);
+    contour3(txq,tyq,tdensity,50), hold on
+    plot(x(Xti),y(Xti),'b.','MarkerSize',5);
+    title(['plot of retained data (' num2str(numel(y(Xti))) ' units) with density contour']);
 
+%}
+
+%{
+    % rthin retention probabilities 
+    [largep ii] = sort(pretain);
+    figure;
+    plot(x,y,'r.','MarkerSize',5);
+    hold on;
+    plot(x(ii(1:100)),y(ii(1:100)),'bx','MarkerSize',5);
+    title('Plot of the 100 units with larger retention probabilities');
 %}
 
 n = length(X);

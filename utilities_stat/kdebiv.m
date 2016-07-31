@@ -3,12 +3,12 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %
 %<a href="matlab: docsearchFS('kdebiv')">Link to the help function</a>
 %
-% This function is introduced in FSDA to support MATLAB releases older
-% than R2016a, when function ksdensity was only addressing one-dimensional
-% data. For R2016a and subsequent releases, kdebiv uses ksdensity.
-% Otherwise, the function computes a nonparametric estimate of the
-% probability density function based on a normal kernel and using a
-% bandwidth estimated as a function of the number of points in X.
+% This function is introduced in FSDA to support MATLAB releases older than
+% R2016a, when function ksdensity was only addressing one-dimensional data.
+% For R2016a and subsequent releases, kdebiv uses ksdensity. Otherwise, the
+% function computes a nonparametric estimate of the probability density
+% function based on a normal kernel and using a bandwidth estimated as a
+% function of the number of points in X.
 %
 %  Required input arguments:
 %
@@ -35,19 +35,24 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %               [0,1]. Matrix. A personalized colormap is used to plot
 %               the contour.  Each row of 'plots' is an RGB triplet that
 %               defines one color.
-%                 Data Types - char | double
-%                 Example - 'cmap','gray'
-%                 Example - 'cmap',[0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ]
+%               Data Types - char | double
+%               Example - 'cmap','gray'
+%               Example - 'cmap',[0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ]
 %
-%   method:     Density estimation method. It can be either 'matlab' or 'fsda'.
-%               'matlab' (default) uses the default approach implemented in
-%               the MATLAB ksdensity function.
-%               'fsda' computes a faster nonparametric estimate of the
-%               probability density function based on a normal kernel and
-%               using a bandwidth estimated as a function of the number of
-%               points in X.
+%   pdfmethod:  Density estimation method. Supported options are 'matlab' 
+%               and 'fsda'. 
+%               - 'matlab' (default) uses the default approach implemented
+%                  in the MATLAB ksdensity function, using a normal kernel. 
+%               - 'fsda' computes a nonparametric estimate of the 
+%                 probability density function based on a normal kernel 
+%                 and using a bandwidth estimated as a function of the 
+%                 number of points in X.
+%               Independently from the choice of the user, the function
+%               switches automatically to 'fsda' in case the user is using
+%               releases older than R2016a, when function ksdensity was
+%               only addressing one-dimensional data.
 %               Data Types - char
-%               Example - 'method','fsda'
+%               Example - 'pdfmethod','fsda'
 %
 %  Output:
 %
@@ -87,6 +92,8 @@ function [F,Xi,bw] = kdebiv(X,varargin)
       % A filled contour plot obtained using colormap 'cmap' = 'summer'.
       [F1,Xi,bw] = kdebiv(X,'contourtype','contourf','cmap','summer');
       title('A filled contour plot obtained using colormap ''summer''');
+      hold on
+      plot(X(:,1),X(:,2),'rx')
 
 %}
 
@@ -124,6 +131,50 @@ function [F,Xi,bw] = kdebiv(X,varargin)
       F6 = kdebiv(X,'contourtype','mesh');
       figure;
       F7 = kdebiv(X,'cmap',summer,'contourtype','mesh');
+%}
+
+%{
+      %% Test option 'method'.
+      [F,Xi,bw]      = kdebiv(X,'pdfmethod','fsda');
+      disp(['fsda: estimated bandwidth over x axis is ' num2str(bw(1))]);
+      disp(['fsda: estimated bandwidth over y axis is ' num2str(bw(2))]);
+      if ~verLessThan('matlab','9.0')
+        [F2,Xi2,bw2] = kdebiv(X,'pdfmethod','matlab');
+        disp(['matlab (ksdensity): estimated bandwidth over x axis is ' num2str(bw2(1))]);
+        disp(['matlab (ksdensity): estimated bandwidth over y axis is ' num2str(bw2(2))]);
+      end
+%}
+
+%{
+    % test option 'method', with plots.
+    close all;
+
+    figure
+    [F2,Xi2,bw2] = kdebiv(X,'cmap','gray','pdfmethod','fsda');
+    hold on
+    plot(X(:,1),X(:,2),'rx');
+    title('pdfmethod = fsda');
+
+    figure
+    [F3,Xi3,bw3] = kdebiv(X,'cmap','gray','pdfmethod','matlab');
+    hold on
+    plot(X(:,1),X(:,2),'rx')
+    title('pdfmethod = matalb');
+
+    figure
+    [F4,Xi4,bw4] = kdebiv(X,'cmap','gray','pdfmethod','quick_and_dirty');
+    hold on
+    plot(X(:,1),X(:,2),'rx')
+    title('pdfmethod = quick and dirty (remark: to be fixed)');
+
+    figure
+    [F5,Xi5,bw5] = kdebiv(X,'cmap','gray','pdfmethod','independence');
+    hold on
+    plot(X(:,1),X(:,2),'rx')
+    title('pdfmethod = independence');
+
+    cascade;
+
 %}
 
 %{
@@ -236,8 +287,8 @@ switch method
         
         %[F,xi,bw] = ksdensity(X,'Support','unbounded');
         [F,xi,bw] = mvksdensity(X);
-        xi1 = xi(:,1);
-        xi2 = xi(:,2);
+        xx1 = xi(:,1);
+        xx2 = xi(:,2);
         
     case 'fsda'
         
@@ -248,42 +299,33 @@ switch method
         % data points
         x1 = X(:,1);
         x2 = X(:,2);
-        
+           
         % generate a vector of 100 evenly spaced points between x1 and x2
-        xi1 = linspace(min(x1),max(x1));
-        xi2 = linspace(min(x2),max(x2));
+        xx1 = linspace(min(x1),max(x1));
+        xx2 = linspace(min(x2),max(x2));
+
+        m1 = length(xx1);
+        m2 = length(xx2);
+
+        % A bandwidth estimate over original data X(:,1) (x direction)
+        bw(1) = bwe(xx1);
+        % A bandwidth estimate over original data X(:,2) (y direction)
+        bw(2) = bwe(xx2);
+
+        % prepare a rectangular grid over xi1 and xi2
+        %[ggridx2,ggridx1] = meshgrid(xx2,xx1);
+        [ggridx1,ggridx2] = meshgrid(xx1,xx2);
+        ggridx1 = repmat(ggridx1, [1,1,nn]);
+        ggridx2 = repmat(ggridx2, [1,1,nn]);
         
-        m1 = length(xi1);
-        m2 = length(xi2);
-        
-        % Choose bandwidths optimally for Gaussian kernel
-        % bandwidth on x
-        sig1 = median(abs(xi1-median(xi1))) / 0.6745;
-        if sig1 <= 0, sig1 = max(xi1) - min(xi1); end
-        if sig1 > 0
-            bw(1) = sig1 * (1/nn)^(1/6);
-        else
-            bw(1) = 1;
-        end
-        % bandwidth on y
-        sig2 = median(abs(xi2-median(xi2))) / 0.6745;
-        if sig2 <= 0, sig2 = max(xi2) - min(xi2); end
-        if sig2 > 0
-            bw(2) = sig2 * (1/nn)^(1/6);
-        else
-            bw(2) = 1;
-        end
-        
-        % Compute the kernel density estimate
-        [ggridx2,ggridx1] = meshgrid(xi2,xi1);
-        xx1 = repmat(ggridx1, [1,1,nn]);
-        xx2 = repmat(ggridx2, [1,1,nn]);
+        % mean estimates over xi1 and xi2
         mu1(1,1,:) = x1;
         mu1 = repmat(mu1,[m1,m2,1]);
         mu2(1,1,:) = x2;
         mu2 = repmat(mu2,[m1,m2,1]);
-        
-        F = sum(normpdf(xx1,mu1,bw(1)) .* normpdf(xx2,mu2,bw(2)), 3) / nn;
+
+        % Normal density estimate over the grid
+        F = sum(normpdf(ggridx1,mu1,bw(1)) .* normpdf(ggridx2,mu2,bw(2)), 3) / nn;
         
     case 'independence'
         % Calculate combined x-y pdf under assumption of independence
@@ -293,8 +335,8 @@ switch method
         x2 = X(:,2);
         
         % indepennt estimates of the density
-        [pdfx1 , xi1]= ksdensity(x1);
-        [pdfx2 , xi2]= ksdensity(x2);
+        [pdfx1 , xx1]= ksdensity(x1);
+        [pdfx2 , xx2]= ksdensity(x2);
         
         % Create 2-d grid of function values
         [pdfxx1,pdfxx2] = meshgrid(pdfx1,pdfx2);
@@ -312,8 +354,8 @@ switch method
         [H,C] = hist3(X,nbins) ;%./ nn
         
         % position of the bin centers
-        xi1 = C{1,1};
-        xi2 = C{1,2};
+        xx1 = C{1,1};
+        xx2 = C{1,2};
         
         % subfunction smooth1D smoothes the two-dimensional histogram.
         % lambda is a smoothing parameter. Smaller lambda values provide
@@ -325,30 +367,41 @@ switch method
         bw = [];
 end
 
-
 % equally-spaced points where the normal kernel function has been evaluated
-Xi = [xi1(:) , xi2(:)];
+Xi = [xx1(:) , xx2(:)];
 
 %% Now plot the countour
 
 if plot_contour
     
-    % interpolate the estimated density on the grid xi1 and xi1, using meshgrid
-    % and griddata.
+    % interpolate the estimated density on the grid xi1 and xi1, using
+    % meshgrid and griddata.
+
+    % control of the axis limits
+    xmin = min(X(:,1)); xmax = max(X(:,1));
+    ymin = min(X(:,2)); ymax = max(X(:,2));
+    deltax = (xmax - xmin) / 10;     
+    deltay = (ymax - ymin) / 10;
 
     % generate a vector of 100 evenly spaced points between x1 and x2
-    xx = linspace(min(xi1),max(xi1));
-    yy = linspace(min(xi2),max(xi2));
+    %xx = linspace(min(xx1),max(xx1));
+    %yy = linspace(min(xx2),max(xx2));
+    
+    % generate a vector of 100 evenly spaced points between the data limits
+    xx = linspace(xmin-deltax,xmax+deltax);
+    yy = linspace(ymin-deltay,ymax+deltay);
+    
     % define a data grid on the evenly spaced points
     [xq,yq] = meshgrid(xx,yy);
     % Interpolate the scattered data on the grid
-    F = griddata(xi1,xi2,F,xq,yq);
+    F = griddata(xx1,xx2,F,xq,yq);
 
     % For plotting reasons, we do not want zero values
     FF = F;
     FF(FF==0) = min(FF(FF~=0));
     
     mymap = colormap(cmap);
+    
     switch(contourtype)
         case 'surf'
             % undocumented: produces a surface plot
@@ -366,11 +419,6 @@ if plot_contour
     % colormap
     colormap(mymap);
     
-    % control of the axis limits
-    xmin = min(X(:,1)); xmax = max(X(:,1));
-    ymin = min(X(:,2)); ymax = max(X(:,2));
-    xlim([xmin , xmax]);
-    ylim([ymin , ymax]);
 end
 
 %% subfunctions needed for the density estimate if before R2016a

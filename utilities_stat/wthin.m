@@ -1,43 +1,44 @@
 function [Wt,pretain,varargout] = wthin(X,varargin)
-%WTHIN Estimates thinning weights on the basis of kernel density estimate
+%WTHIN applies thinning to a uni/bi-dimensional dataset
 %
 %<a href="matlab: docsearchFS('wthin')">Link to the help page for this function</a>
 % Last modified 06-Feb-2016
 %
-%   Computes a probability density estimate of the sample in the N-by-D
-%   matrix X, at the values in X or, optionally, in XI given as varargin.
+%   Computes retention probabilities and bernoulli (0/1) weights on the
+%   basis of data density estimate.
 %
 %  Required input arguments:
 %
-%   X: vector or 2-column matrix with the uni/bi-variate data sample on which a
-%      probability density estimate is computed. Matrix.
-%      Data Types - single | double.
+%   X :          Input data. Vector or 2-column matrix. The structure
+%                contains the uni/bi-variate data to be thinned on the
+%                basis of a probability density estimate.
+%
 %
 %  Optional input arguments:
 %
 %   bandwidth :  bandwidth value. Scalar. The bandwidth used to estimate
-%                the density. It can be one of the following: 'scott' ,
-%                'normal', 'robust'.
-%               Data Types - char
-%               Example - 'method','robust'
+%                the density. It can be estimated from the data using
+%                function bwe.
+%                Data Types - scalar
+%                Example - bandwidth,0.35
 %
 %   retainby  :  retention method. String. The function used to retain the
-%                observations. It can be 
-%                'comp2one',  i.e. 1 - pdfe/max(pdfe))
-%                'inverse',    i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
-%               Data Types - char
-%               Example - 'method','comp2one'
+%                observations. It can be:
+%                - 'comp2one', i.e. 1 - pdfe/max(pdfe))
+%                - 'inverse' (default),  i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
+%                Data Types - char
+%                Example - 'method','comp2one'
 %
 %
 %  Output:
 %
-%   Wt :        vector of Bernoulli weights. Vector. It is 1 for retained
+%   Wt :        vector of Bernoulli weights. Vector. Contains 1 for retained
 %               units and 0 for thinned units.
 %               Data Types - single | double.
 %
-%   pretain :   vector of retention probabilities. Vector. The retention
-%               probabilities are estimated using a gaussian kernel using
-%               function ksdensity.
+%   pretain :   vector of retention probabilities. Vector. These are the
+%               probabilities that each point in X will be retained,
+%               estimated using a gaussian kernel using function ksdensity.
 %               Data Types - single | double.
 %
 %  Optional Output:
@@ -45,7 +46,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %   Xt :        vector of retained units. Vector. It is X(Wt,:).
 %               Data Types - single | double.
 %
-%  See also ksdensity, mvksdensity
+%  See also ksdensity, mvksdensity, bwe
 %
 %
 % References:
@@ -65,33 +66,35 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 % Examples:
 %
 %{
-    % Uni-dimensional thinning.
-    % Dataset of regression structures formed by a dense group of 1000 units
-    % and another of 100 units. Thinning in along the direction of the
-    % predicted values.
+    % univariate thinning.
+    % The dataset is bi-dimensional and contain two collinear groups with
+    % regression structure. One group is dense, with 1000 units; the second
+    % has 100 units. Thinning in done according to the density of the values
+    % predicted by the OLS fit.
     x1 = randn(1000,1);
-    %x1 = x1.^2;
     x2 = 8 + randn(100,1);
-    %x2 = x2.^2;
     x = [x1 ; x2];
     y = 5*x + 0.9*randn(1100,1);
-    plot(x,y,'.');
+    b = [ones(1100,1) , x] \ y;
+    yhat = [ones(1100,1) , x] * b;
+    plot(x,y,'.',x,yhat,'--');
 
     % thinning over the predicted values
-    [Wt,pretain] = wthin(y);
+    [Wt,pretain] = wthin(yhat, 'retainby','comp2one');
 
     plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
     axis manual
     clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(~Wt))]);
+
 %}
 
 %{
     % Bi-dimensional thinning.
-    % Dataset as before, but thinning is done on the bi-variate space.
+    % Same dataset, but thinning is done on the original bi-variate data.
    
     plot(x,y,'.');
 
-    % thinning over the predicted values
+    % thinning over the original bi-variate data
     [Wt2,pretain2] = wthin([x,y]);
 
     plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');
@@ -99,69 +102,95 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);
 %}
 
+%{
+    % Use of 'retainby' option.
+    % Since the thinning on the original bi-variate data with the default
+    % retention method ('inverse') removes too many units, let's try with
+    % the less conservative 'comp2one' option.
+   
+    plot(x,y,'.');
+
+    % thinning over the original bi-variate data
+    [Wt2,pretain2] = wthin([x,y], 'retainby','comp2one');
+
+    plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');
+    axis manual
+    clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);
+    title('"comp2one" thinning over the original bi-variate data');
+    
+%}
+
+%{
+    % Optional output Xt.
+    % Same dataset, the retained data are also returned using varagout option.
+   
+    % thinning over the original bi-variate data
+    [Wt2,pretain2,RetUnits] = wthin([x,y]);
+    RetUnits
+%}
+
+
 %% options
 
-options     = struct('retainby','inverse','bandwidth','scott');
-UserOptions = varargin(1:2:length(varargin));
-if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
-    error('FSDA:kdebiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
-end
-
-if nargin>1
-    % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin)
-        options.(varargin{i})=varargin{i+1};
-    end
-end
-
-% retention method: it can be
-% 'comp2one' (i.e. 1 - pdfe/max(pdfe))
-% 'inverse'  (i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
-retainby    = options.retainby;
-
-% the bandwidth used to estimate the density
-bandwidth   = options.bandwidth;
-
-
-if ~isempty(UserOptions)
+% for reasons of performance options are checked only if necessary
+if nargin > 1
     
+    options     = struct('retainby','inverse','bandwidth',0);
+    UserOptions = varargin(1:2:length(varargin));
+    if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
+        error('FSDA:kdebiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    end
+    
+    if nargin>1
+        % Write in structure 'options' the options chosen by the user
+        for i=1:2:length(varargin)
+            options.(varargin{i})=varargin{i+1};
+        end
+    end
+    
+    % retention method: it can be
+    % 'comp2one' (i.e. 1 - pdfe/max(pdfe))
+    % 'inverse'  (i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
+    retainby    = options.retainby;
+    
+    % the bandwidth used to estimate the density
+    bandwidth   = options.bandwidth;
+    
+    if ~isempty(UserOptions)
         retainby_types  = {'inverse' , 'comp2one'};
-        bandwidth_types = {'scott' , 'normal', 'robust'};
-        
         if  isempty(retainby) || ~(ischar(retainby) && max(strcmp(retainby,retainby_types)))
             retainby = 'inverse';
         end
-        if  isempty(bandwidth) || ~(ischar(bandwidth) && max(strcmp(bandwidth,bandwidth_types)))
-            bandwidth = 'scott';
+        if  ~isscalar(bandwidth)
+            bandwidth = 0;
         end
-
-end
-
-%% bandwidth selection: Remark: ksdensity uses by default Scott's rule
-[n,d] = size(X);
-switch bandwidth
-    case 'scott'
-        sig = mad(X,1,1) / 0.6745;           % Robust estimate of sigma
-        bw  = sig * (4/((d+2)*n))^(1/(d+4)); % Scott's rule, optimal for normal distribution
-    case 'normal'
-        bw = 1.06  * std(X) * n^(-1/5);  % normal reference rule
-    case 'robust'
-        bw = 0.786 * iqr(X) * n^{-1/5};  % robustified normal reference rule
-    otherwise
-        bw = 1.06  * std(X) * n^(-1/5);  % normal reference rule
+    end
+    
+else
+    bandwidth = 0;
+    retainby  = 0;
 end
 
 %% Compute the density along the predicted values
 
+[~,d] = size(X);
+
 if d > 1
     support = 'unbounded';
 else
-    %support = 'positive';
     minX = min(X); maxX = max(X); e = (maxX-minX)/10^(6);
     support = [ (min(X)-e) , (max(X)+e) ];
 end
 
-[pdfe,xout,u]  = ksdensity(X,X,'Function','pdf','Support',support,'bandwidth',bw);
+% for some reason, ksdensity is faster if bandwidth is not provided. The
+% 'if' statement is only for performance reasons.
+if bandwidth == 0
+    % bandwidth selection: Remark: ksdensity uses by default Scott's rule.
+    [pdfe,xout,u]  = ksdensity(X,X,'Support',support);
+else
+    [pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
+end
+
 varargout{2} = u;
 varargout{3} = xout;
 
@@ -170,14 +199,21 @@ pdfe(pdfe<=0)=0.00001;
 
 % convert the density values into the vector of retention probabilities;
 % sampling probability should be inversely proportional to the density, but
-% different functions are possible
-switch retainby
-    case 'comp2one'
-        % complement to 1
-        pretain = 1 - pdfe/max(pdfe);
-    case 'inverse'
-        % inverse
-        pretain = (1 ./ pdfe) / max((1 ./ pdfe));
+% different functions are possible.
+if retainby == 0
+    % in this case the user has not provided optional arguments and accept
+    % all defaults. For performance reasons, the 'switch' statement is
+    % skipped and the default 'inverse' function is applied.
+    pretain = (1 ./ pdfe) / max((1 ./ pdfe));
+else
+    switch retainby
+        case 'comp2one'
+            % complement to 1
+            pretain = 1 - pdfe/max(pdfe);
+        case 'inverse'
+            % inverse
+            pretain = (1 ./ pdfe) / max((1 ./ pdfe));
+    end
 end
 
 % Thinning: Xt is the retained vector; Wt are the indices of the retained
