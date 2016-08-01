@@ -61,14 +61,19 @@ docNode = com.mathworks.xml.XMLUtils.createDocument('HelpXML');
 % Create file name section
 Preamble=docNode.createElement('Title');
 Preamble.appendChild(docNode.createComment('This is simply the filename'));
-Preambletxt=docNode.createTextNode(out.titl);
+Preambletxt=docNode.createTextNode(sprintf('%s\n',out.titl));
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 
 % Create purpose section
 Preamble=docNode.createElement('Purpose');
 Preamble.appendChild(docNode.createComment('This is the second line of the .m file'));
-Preambletxt=docNode.createTextNode(out.purpose);
+if iscell(out.purpose)
+Preambletxt=docNode.createTextNode(sprintf('%s\n',out.purpose{:}));
+else
+Preambletxt=docNode.createTextNode(sprintf('%s\n',out.purpose));
+end
+
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 
@@ -76,7 +81,12 @@ docNode.getDocumentElement.appendChild(Preamble);
 Preamble=docNode.createElement('Description');
 Preamble.appendChild(docNode.createComment('Description section'));
 % Preambletxt=docNode.createTextNode(out.description{:});
+if iscell(out.description)
 Preambletxt=docNode.createTextNode(sprintf('%s\n',out.description{:}));
+else
+Preambletxt=docNode.createTextNode(sprintf('%s\n',out.description));  
+end
+
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 % [{'\n';'\n'} out.description]
@@ -187,22 +197,30 @@ for i=1:size(out.OutArgs,1)
 end
 docNode.getDocumentElement.appendChild(OutArgs);
 
-% Create More About section
+%% Create More About section
 Preamble=docNode.createElement('MoreAbout');
 Preamble.appendChild(docNode.createComment('MORE ABOUT SECTION'));
+if iscell(out.MoreAbout)
 Preambletxt=docNode.createTextNode(sprintf('%s\n',out.MoreAbout{:}));
+else
+ Preambletxt=docNode.createTextNode(sprintf('%s\n',out.MoreAbout));
+end   
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 
-% Create Acknowledgements section
+%% Create Acknowledgements section
 Preamble=docNode.createElement('Acknowledgements');
 Preamble.appendChild(docNode.createComment('ACKNOWLEDGEMENTS SECTION'));
+if iscell(out.Acknowledgements)
 Preambletxt=docNode.createTextNode(sprintf('%s\n',out.Acknowledgements{:}));
+else
+Preambletxt=docNode.createTextNode(sprintf('%s\n',out.Acknowledgements));  
+end
 
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 
-%Create References section
+%% Create References section
 References = docNode.createElement('References');
 References.appendChild(docNode.createComment('REFERENCES SECTION'));
 for i=1:length(out.References)
@@ -212,7 +230,7 @@ for i=1:length(out.References)
 end
 docNode.getDocumentElement.appendChild(References);
 
-%Create SeeAlso section
+%% Create SeeAlso section
 SeeAlso = docNode.createElement('SeeAlso');
 SeeAlso.appendChild(docNode.createComment('SEE ALSO SECTION'));
 
@@ -226,7 +244,7 @@ end
 docNode.getDocumentElement.appendChild(SeeAlso);
 
 
-%Create Example section
+%% Create Example section
 ExNames={'Title' 'Desc' 'MATLABcode' 'Exec'};
 Ex = docNode.createElement('Ex');
 Ex.appendChild(docNode.createComment('EXAMPLES SECTION'));
@@ -257,7 +275,7 @@ for i=1:size(out.Ex,1)
 end
 docNode.getDocumentElement.appendChild(Ex);
 
-%Create Extra Example section
+%% Create Extra Example section
 ExtraExNames={'Title' 'Desc' 'MATLABcode' 'Exec'};
 ExtraEx = docNode.createElement('ExtraEx');
 ExtraEx.appendChild(docNode.createComment('EXTRA EXAMPLES SECTION'));

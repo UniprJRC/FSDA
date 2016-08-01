@@ -79,7 +79,13 @@ for i=1:size(OptArgs,1)
             end
             data=CellItem;
         else
-            data=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+            % try and catch here is necessary because if the field is empty
+            % then data path does not exist.
+            try
+                data=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+            catch
+                data='';
+            end
         end
         if ~isempty(strtrim(data))
             OptArgs{i,j}=data;
