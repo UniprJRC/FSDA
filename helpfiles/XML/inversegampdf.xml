@@ -74,6 +74,7 @@
          <LongDesc>&#xD;
                $y=f_{IG}(x | a,b)$ is the value of the pdf of the inverse&#xD;
                gamma distribution evaluated at x.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

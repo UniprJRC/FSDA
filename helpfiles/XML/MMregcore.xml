@@ -217,7 +217,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>beta</Value>
                <Description>p x 1 vector. Estimate of beta coefficients after &#xD;
@@ -256,7 +257,7 @@
                <Description>data matrix X. The field is present if option &#xD;
                 yxsave is set to 1.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

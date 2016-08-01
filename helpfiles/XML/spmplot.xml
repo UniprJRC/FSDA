@@ -244,6 +244,7 @@
          <TypeInd>array of handles H to the plotted points.</TypeInd>
          <LongDesc> See&#xD;
                    gplotmatrix for further details</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>AX</Name>
@@ -251,6 +252,7 @@
          <TypeInd>handles to the individual subaxes.</TypeInd>
          <LongDesc> See&#xD;
                    gplotmatrix for further details</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>BigAx</Name>
@@ -258,6 +260,7 @@
                    Scalar</ShortDesc>
          <TypeInd>handle to big (invisible) axes framing the subaxes.</TypeInd>
          <LongDesc> See gplotmatrix for further details</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

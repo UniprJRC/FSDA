@@ -127,6 +127,7 @@
                equal to n which returns the log-density of the multivariate normal&#xD;
                distribution with mean Mu and covariance Sigma, evaluated at each row&#xD;
                of X.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

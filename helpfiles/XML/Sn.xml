@@ -43,6 +43,7 @@
          <LongDesc> &#xD;
             Sn(X,dim) takes the robust estimator of scale along the&#xD;
             dimension dim of X.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

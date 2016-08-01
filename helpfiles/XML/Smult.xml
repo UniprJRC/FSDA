@@ -228,7 +228,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>loc</Value>
                <Description>1 x v  vector containing S estimate of location</Description>
@@ -286,7 +287,7 @@
                <Value>class</Value>
                <Description>'S'</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -295,6 +296,7 @@
                        extracted for computing the estimate (the so called&#xD;
                        elemental sets).</TypeInd>
          <LongDesc> </LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

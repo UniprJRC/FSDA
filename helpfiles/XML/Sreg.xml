@@ -272,7 +272,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>beta</Value>
                <Description>vector containing the S estimator of regression&#xD;
@@ -343,7 +344,7 @@
                <Description>data matrix X. The field is present if option&#xD;
                        yxsave is set to 1.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -352,6 +353,7 @@
                        extracted for computing the estimate (the so called&#xD;
                        elemental sets).</TypeInd>
          <LongDesc> </LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

@@ -247,7 +247,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>LRT</Value>
                <Description>Cell of length ColtoComp. Each element of the cell contains the&#xD;
@@ -298,7 +299,7 @@
                the unit included in step init+1 Unj(end,2) contains the&#xD;
                units included in the final step of the search</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

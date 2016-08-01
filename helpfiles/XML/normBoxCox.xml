@@ -79,6 +79,7 @@
              else if jacobian=false:&#xD;
              $ytra = log(y)$;&#xD;
              where $G$ is the geometric mean of the observations.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

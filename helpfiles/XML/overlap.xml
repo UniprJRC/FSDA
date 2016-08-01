@@ -110,6 +110,7 @@
                The probability of overlapping (called pij) between groups&#xD;
                i and j is given by&#xD;
                   $pij=pji= w_j|i + w_i|j    \qquad      i,j=1,2, ..., k$.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>BarOmega</Name>
@@ -117,6 +118,7 @@
          <TypeInd>Average overlap.</TypeInd>
          <LongDesc> Scalar associated with average overlap. BarOmega is computed as&#xD;
                sum(sum(OmegaMap))-k)/(0.5*k(k-1).</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>MaxOmega</Name>
@@ -125,6 +127,7 @@
          <LongDesc> Scalar associated with maximum overlap. MaxOmega is the&#xD;
                maximum of OmegaMap(i,j)+OmegaMap(j,i)&#xD;
                (i ~= j)=1, 2, ..., k.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>StdOmega</Name>
@@ -133,6 +136,7 @@
          <LongDesc> Scalar assocaited with standard deviation of overlap (that&#xD;
                is the standard deviation of the 0.5*k(k-1) pij&#xD;
                (probabilities of overlapping)</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>rcMax</Name>
@@ -142,6 +146,7 @@
                associated with the pair of components producing the&#xD;
                highest overlap (largest off diagonal element of matrix&#xD;
                OmegaMap)</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

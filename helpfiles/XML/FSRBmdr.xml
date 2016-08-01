@@ -208,6 +208,7 @@
          <LongDesc>&#xD;
                1st col = fwd search index (from 0 to n-1).&#xD;
                2nd col = minimum deletion residual.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>Un</Name>
@@ -222,6 +223,7 @@
                init+1.&#xD;
                Un(end,2) contains the units included in the final step&#xD;
                of the search.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>BB</Name>
@@ -233,6 +235,7 @@
                ...;&#xD;
                last column = units forming subset in the final step&#xD;
                (i.e. all units).</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>BBayes</Name>
@@ -242,6 +245,7 @@
                (n-init+1) x (p+1) matrix containing the monitoring o&#xD;
                posterior mean of $\beta$ (regression coefficents)&#xD;
                $\beta_1 = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>S2Bayes</Name>
@@ -256,6 +260,7 @@
                $\sigma^2$).&#xD;
                3rd col = monitoring $\tau_1$ (posterior estimate of&#xD;
                $\tau$).</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

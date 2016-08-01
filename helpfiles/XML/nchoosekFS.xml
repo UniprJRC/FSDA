@@ -35,6 +35,7 @@
            vector of length $n.</TypeInd>
          <LongDesc>&#xD;
            Data Types - single|double</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

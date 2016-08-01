@@ -39,6 +39,7 @@
             objects. When a coefficient is large, results may be inexact.&#xD;
             The result is only accurate to 15 digits for double-precision&#xD;
             inputs in 32bits computers.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

@@ -176,7 +176,8 @@
          <Name>RAW</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>loc</Value>
                <Description>1 x v  vector containing raw MCD location of the data</Description>
@@ -244,13 +245,14 @@
                <Value>class</Value>
                <Description>'mve'</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>REW</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>loc</Value>
                <Description>The robust location of the data, obtained after reweighting, if&#xD;
@@ -290,7 +292,7 @@
                <Value>class</Value>
                <Description>'mve'</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -299,6 +301,7 @@
                     of the subsamples extracted for&#xD;
                     computing the estimate.</TypeInd>
          <LongDesc> </LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

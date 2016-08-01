@@ -6,257 +6,50 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Input data</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
-               Y represent observations, and columns represent variables.&#xD;
-               Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations.&#xD;
-                </LongDesc>
-         <Example> </Example>
-         <DataType>single|double</DataType>
+         <ShortDesc>Input dataaaa
+</ShortDesc>
+         <TypeInd>Matrix
+</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of
+               Y represent observations, and columns represent variables.
+               Missing values (NaN's) and infinite values (Inf's) are
+               allowed, since observations (rows) with missing or infinite
+               values will automatically be excluded from the
+               computations.
+                
+</LongDesc>
+         <Example/>
+         <DataType>single|double
+
+
+</DataType>
          <ReqArg>1</ReqArg>
-         <Struct> </Struct>
+         <Struct>
+            <ItemCell>
+               <Value>aa</Value>
+               <Description>bb</Description>
+            </ItemCell>
+         </Struct>
       </Item>
    </InpArgs>
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
-         <Name>m0</Name>
-         <ShortDesc>Initial subset size or vector which contains the list of the units forming&#xD;
-                 initial subset</ShortDesc>
-         <TypeInd>Scalar or vector</TypeInd>
-         <LongDesc>The default is to start the search with v+1 units which&#xD;
-                 consisting of those observations which are not outlying&#xD;
-                 on any scatterplot, found as the intersection of all&#xD;
-                 points lying within a robust contour containing a&#xD;
-                 specified portion of the data (Riani and Zani 1997) and&#xD;
-                 inside the univariate boxplot. Remark: if m0 is a vector&#xD;
-                 option below crit is ignored.&#xD;
-                 </LongDesc>
-         <Example> 'm0',5 &#xD;
-                 </Example>
-         <DataType>double</DataType>
-         <Struct> </Struct>
-      </Item>
-      <Item>
-         <Name>crit</Name>
-         <ShortDesc>It specified the criterion to be used to&#xD;
-                 initialize the search</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>if crit='md' the units which form initial subset are&#xD;
-                  those which have the smallest m0 pseudo Mahalanobis&#xD;
-                  distances computed using procedure unibiv (bivariate&#xD;
-                  robust ellipses).&#xD;
-                 if crit='biv' sorting is done first in&#xD;
-                  terms of times units fell outside robust bivariate&#xD;
-                  ellipses and then in terms of pseudoMD. In other words,&#xD;
-                  the units forming initial subset are chosen first among&#xD;
-                  the set of those which never fell outside robust&#xD;
-                  bivariate ellipses then among those which fell only once&#xD;
-                  outside bivariate ellipses ... up to reach m0.&#xD;
-                 if crit='uni' sorting is done first in&#xD;
-                  terms of times units fell outside univariate boxplots&#xD;
-                  and then in terms of pseudoMD. In other words,&#xD;
-                  the units forming initial subset are chosen first among&#xD;
-                  the set of those which never fell outside&#xD;
-                  univariate boxplots then among those which fell only once&#xD;
-                  outside univariate boxplots... up to reach m0.&#xD;
-               %                 Remark: as the user can see the starting point of the&#xD;
-                 search is not going to affect at all the results of the&#xD;
-                 analysis. The user can explore this point with his own&#xD;
-                 datasets.&#xD;
-%                 Remark: if crit='biv' the user can also supply in scalar rf&#xD;
-                 (see below) the confidence level of the bivariate&#xD;
-                 ellipses. &#xD;
-</LongDesc>
-         <Example> 'crit','md' &#xD;
-               </Example>
-         <DataType>char</DataType>
-         <Struct> </Struct>
-      </Item>
-      <Item>
-         <Name>rf</Name>
-         <ShortDesc>confidence level for bivariate ellipses</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>The default is&#xD;
-                 0.95. This option is useful only if crit='biv'.&#xD;
-                 </LongDesc>
-         <Example> 'rf',0.9 &#xD;
-                 </Example>
-         <DataType>double</DataType>
-         <Struct> </Struct>
-      </Item>
-      <Item>
-         <Name>init</Name>
-         <ShortDesc>Point where to start monitoring required diagnostics</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Note that if bsb is suppliedinit&amp;gt;=length(bsb). If init is not&#xD;
-                 specified it will be set equal to floor(n*0.6).&#xD;
-                 </LongDesc>
-         <Example> 'init',50 &#xD;
-                 </Example>
-         <DataType>double</DataType>
-         <Struct> </Struct>
-      </Item>
-      <Item>
-         <Name>plots</Name>
-         <ShortDesc>plot of minimum Mahalanobis distance</ShortDesc>
-         <TypeInd>Scalar or structure</TypeInd>
-         <LongDesc>If plots is a missing value or is a scalar equal to 0 no&#xD;
-                 plot is produced.&#xD;
-                 If plots is a scalar equal to 1 (default) the plot&#xD;
-                 of minimum MD with envelopes based on n observations and&#xD;
-                 the scatterplot matrix with the outliers highlighted is&#xD;
-                 produced.&#xD;
-                 If plots is a scalar equal to 2 the additional plots of&#xD;
-                 envelope resuperimposition are&#xD;
-                 produced.&#xD;
-                 If plots is a structure it may contain the following fields: &#xD;
-                   plots.ylim = vector with two elements controlling minimum and maximum&#xD;
-                       on the y axis. Default value is '' (automatic&#xD;
-                       scale); &#xD;
-                   plots.xlim = vector with two elements controlling minimum and maximum&#xD;
-                       on the x axis. Default value is '' (automatic&#xD;
-                       scale); &#xD;
-                   plots.resuper = vector which specifies for which steps it is&#xD;
-                       necessary to show the plots of resuperimposed envelopes&#xD;
-                       if resuper is not supplied a plot of each step in which the&#xD;
-                       envelope is resuperimposed is shown. Example if resuper =[85 87]&#xD;
-                       plots of resuperimposedenvelopes are shown at steps&#xD;
-                       m=85 and m=87; &#xD;
-                   plots.ncoord = scalar. If ncoord=1 plots are shown in normal&#xD;
-                       coordinates else (default) plots are shown in&#xD;
-                       traditional mmd coordinates; &#xD;
-                   plots.labeladd = If this option is '1', the outliers in the&#xD;
-                       spm are labelled with the unit row index. The&#xD;
-                       default value is labeladd='', i.e. no label is&#xD;
-                       added; &#xD;
-                   plots.nameY = cell array of strings containing the labels of&#xD;
-                       the variables. As default value, the labels which are&#xD;
-                       added are Y1, ...Yv; &#xD;
-                   plots.lwd =  Scalar which controls line width of the curve which&#xD;
-                       contains the monitoring of minimum Mahalanobis&#xD;
-                       distance. Default line of lwd=2.&#xD;
-                   plots.lwdenv = Scalar which controls linewidth of the&#xD;
-                       envelopes. Default value of lwdenv=2. &#xD;
-               </LongDesc>
-         <Example> 'plots',2&#xD;
-               </Example>
-         <DataType>double</DataType>
-         <Struct>
-            <ItemCell>
-               <Value>ylim</Value>
-               <Description>vector with two elements controlling minimum and maximum&#xD;
-                       on the y axis. Default value is '' (automatic&#xD;
-                       scale);</Description>
-            </ItemCell>
-            <ItemCell>
-               <Value>xlim</Value>
-               <Description>vector with two elements controlling minimum and maximum&#xD;
-                       on the x axis. Default value is '' (automatic&#xD;
-                       scale);</Description>
-            </ItemCell>
-            <ItemCell>
-               <Value>resuper</Value>
-               <Description>vector which specifies for which steps it is&#xD;
-                       necessary to show the plots of resuperimposed envelopes&#xD;
-                       if resuper is not supplied a plot of each step in which the&#xD;
-                       envelope is resuperimposed is shown. Example if resuper =[85 87]&#xD;
-                       plots of resuperimposedenvelopes are shown at steps&#xD;
-                       m=85 and m=87;</Description>
-            </ItemCell>
-            <ItemCell>
-               <Value>ncoord</Value>
-               <Description>scalar. If ncoord=1 plots are shown in normal&#xD;
-                       coordinates else (default) plots are shown in&#xD;
-                       traditional mmd coordinates;</Description>
-            </ItemCell>
-            <ItemCell>
-               <Value>labeladd</Value>
-               <Description>If this option is '1', the outliers in the&#xD;
-                       spm are labelled with the unit row index. The&#xD;
-                       default value is labeladd='', i.e. no label is&#xD;
-                       added;</Description>
-            </ItemCell>
-            <ItemCell>
-               <Value>nameY</Value>
-               <Description>cell array of strings containing the labels of&#xD;
-                       the variables. As default value, the labels which are&#xD;
-                       added are Y1, ...Yv;</Description>
-            </ItemCell>
-            <ItemCell>
-               <Value>lwd</Value>
-               <Description>Scalar which controls line width of the curve which&#xD;
-                       contains the monitoring of minimum Mahalanobis&#xD;
-                       distance. Default line of lwd=2.</Description>
-            </ItemCell>
-            <ItemCell>
-               <Value>lwdenv</Value>
-               <Description>Scalar which controls linewidth of the&#xD;
-                       envelopes. Default value of lwdenv=2.</Description>
-            </ItemCell>
-         </Struct>
-      </Item>
-      <Item>
-         <Name>bonflev</Name>
-         <ShortDesc>option that might be used to identify extreme outliers&#xD;
-                 when the distribution of the data is strongly non normal</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>In these circumstances, the general signal detection rule based on&#xD;
-                 consecutive exceedances cannot be used. In this case&#xD;
-                 bonflev can be:&#xD;
-                 - a scalar smaller than 1, which specifies the confidence&#xD;
-                   level for a signal and a stopping rule based on the&#xD;
-                   comparison of the minimum deletion residual with a&#xD;
-                   Bonferroni bound. For example if bonflev=0.99 the&#xD;
-                   procedure stops when the trajectory exceeds for the&#xD;
-                   first time the 99% bonferroni bound.&#xD;
-                 - A scalar value greater than 1.. In this case the&#xD;
-                   procedure stops when the residual trajectory exceeds&#xD;
-                   for the first time this value.&#xD;
-                 Default value is ' ', which means to rely on general rules&#xD;
-                 based on consecutive exceedances.&#xD;
-                 </LongDesc>
-         <Example> 'bonflev',0.7&#xD;
-                 </Example>
-         <DataType>double</DataType>
-         <Struct> </Struct>
-      </Item>
-      <Item>
-         <Name>msg</Name>
-         <ShortDesc>It controls whether to display or not messages&#xD;
-                 on the screen</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If msg==1 (default) messages about the progression of the&#xD;
-                 search are displayed on the screen otherwise only error&#xD;
-                 messages will be displayed.&#xD;
-                 </LongDesc>
-         <Example> 'msg',0 &#xD;
-                 </Example>
-         <DataType>double</DataType>
-         <Struct> </Struct>
-      </Item>
-      <Item>
-         <Name>nocheck</Name>
-         <ShortDesc>It controls whether to perform checks on matrix Y</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is performed.&#xD;
-                 As default nocheck=0.&#xD;
-                 </LongDesc>
-         <Example> 'nocheck',1&#xD;
-                 </Example>
-         <DataType>double</DataType>
+         <Name>aaa</Name>
+         <ShortDesc/>
+         <TypeInd/>
+         <LongDesc/>
+         <Example/>
+         <DataType/>
          <Struct> </Struct>
       </Item>
    </OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>out</Name>
-         <ShortDesc> </ShortDesc>
-         <TypeInd> </TypeInd>
-         <LongDesc>
+         <ShortDesc/>
+         <TypeInd/>
+         <LongDesc/>
+         <Structure>
             <ItemCell>
                <Value>outliers</Value>
                <Description>k x 1 vector containing the list of the units declared as&#xD;
@@ -301,19 +94,19 @@
                contains the distances of each observation from the&#xD;
                location of the data, relative to the scatter matrix cov.</Description>
             </ItemCell>
-         </LongDesc>
+         </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown&#xD;
-       number of multivariate outliers. Journal of the Royal Statistical&#xD;
-       Society Series B, Vol. 71, pp. 201-221.</Item>
-      <Item>Cerioli A., Farcomeni A. Riani M., (2014). Strong consistency and&#xD;
-       robustness of the Forward Search estimator of multivariate location&#xD;
-       and scatter, Journal of Multivariate Analysis, Vol. 126, &#xD;
-       pp. 167-183, http://dx.doi.org/10.1016/j.jmva.2013.12.010.</Item>
+      <Item>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown</Item>
+      <Item>       number of multivariate outliers. Journal of the Royal Statistical</Item>
+      <Item>       Society Series B, Vol. 71, pp. 201-221.</Item>
+      <Item>Cerioli A., Farcomeni A. Riani M., (2014). Strong consistency and</Item>
+      <Item>       robustness of the Forward Search estimator of multivariate location</Item>
+      <Item>       and scatter, Journal of Multivariate Analysis, Vol. 126, </Item>
+      <Item>       pp. 167-183, http://dx.doi.org/10.1016/j.jmva.2013.12.010.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMeda</Item>
@@ -325,20 +118,24 @@
          <Title>FSM with all default options.</Title>
          <Desc/>
          <MATLABcode>
-    n=200;&#xD;
-    v=3;&#xD;
-    randn('state', 123456);&#xD;
-    Y=randn(n,v);&#xD;
-    % Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    [out]=FSM(Ycont);&#xD;</MATLABcode>
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [out]=FSM(Ycont);
+</MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>FSM with optional arguments.</Title>
          <Desc>&#xD;
-     FSM with plots showing envelope superimposition.&#xD;</Desc>
+     FSM with plots showing envelope superimposition.&#xD;
+
+
+</Desc>
          <MATLABcode>
     n=200;&#xD;
     v=3;&#xD;
@@ -347,7 +144,10 @@
     % Contaminated data&#xD;
     Ycont=Y;&#xD;
     Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    [out]=FSM(Ycont,'plots',2);&#xD;</MATLABcode>
+    [out]=FSM(Ycont,'plots',2);&#xD;
+
+
+</MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
@@ -357,32 +157,36 @@
      coordinates.</Title>
          <Desc/>
          <MATLABcode>
-    n=200;&#xD;
-    v=3;&#xD;
-    randn('state', 123456);&#xD;
-    Y=randn(n,v);&#xD;
-    % Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    plots=struct;&#xD;
-    plots.ncoord=1;&#xD;
-    [out]=FSM(Ycont,'plots',plots);&#xD;</MATLABcode>
+    n=200;
+    v=3;
+    randn('state', 123456);
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    plots=struct;
+    plots.ncoord=1;
+    [out]=FSM(Ycont,'plots',plots);
+</MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Monitor the exceedances from m=200 without showing plots.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
     n=1000;&#xD;
     v=10;&#xD;
     Y=randn(n,v);&#xD;
-    [out]=FSM(Y,'init',200,'plots',0);&#xD;</MATLABcode>
+    [out]=FSM(Y,'init',200,'plots',0);&#xD;
+
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Choosing an initial subset formed by the three observations with &#xD;
      the smallest Mahalanobis Distance.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
     n=100;&#xD;
     v=3;&#xD;
@@ -390,12 +194,15 @@
     % Contaminated data&#xD;
     Ycont=Y;&#xD;
     Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    [out]=FSM(Ycont,'m0',5,'crit','md');&#xD;</MATLABcode>
+    [out]=FSM(Ycont,'m0',5,'crit','md');&#xD;
+
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Forgery Swiss banknotes examples.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
     load('swiss_banknotes');&#xD;
 &#xD;
@@ -409,7 +216,10 @@
 &#xD;
     % Monitor the exceedances of Minimum Mahalanobis Distance using normal coordinates for mmd.&#xD;
     plots.ncoord=1;&#xD;
-    [out]=FSM(swiss_banknotes.data(101:200,:),'plots',plots);&#xD;</MATLABcode>
+    [out]=FSM(swiss_banknotes.data(101:200,:),'plots',plots);&#xD;
+
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

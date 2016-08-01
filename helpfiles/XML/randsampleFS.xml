@@ -47,6 +47,7 @@
          <TypeInd>A column vector of k values sampled at random from the integers 1:n.</TypeInd>
          <LongDesc>&#xD;
            Data Types - single|double.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

@@ -76,6 +76,7 @@
          <TypeInd>The indeces of the subsets which need to be extracted.</TypeInd>
          <LongDesc> &#xD;
                Data Types - single|double</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>nselected</Name>
@@ -83,6 +84,7 @@
          <TypeInd>Number of rows of matrix C.</TypeInd>
          <LongDesc>&#xD;
                Data Types - single|double</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

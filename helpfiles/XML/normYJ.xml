@@ -70,6 +70,7 @@
              The Yeo-Johnson transformation is the Box-Cox transformation&#xD;
              of y+1 for nonnegative values, and of |y|+1 with parameter&#xD;
              2-lambda for y negative.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

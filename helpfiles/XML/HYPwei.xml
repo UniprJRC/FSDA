@@ -49,6 +49,7 @@
                 n x 1 vector contains the hyperbolic weights associated to&#xD;
                 the scaled residuals or Mahalanobis distances for the n&#xD;
                 units of the sample</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

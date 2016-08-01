@@ -111,6 +111,7 @@
          <TypeInd>Value of cdf.</TypeInd>
          <LongDesc> $qfval=F_Q(x | df, delta, sigma)$ is the value of the cdf of the mixture&#xD;
                evaluated at x</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -130,6 +131,7 @@
                    ifault=3 invalid parameters (df or non centr parameters&#xD;
                                smaller than 0 or lmin=lmax=sigma=0)&#xD;
                    ifault=4 unable to locate integration parameters</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

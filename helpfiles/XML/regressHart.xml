@@ -171,7 +171,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>Beta</Value>
                <Description>p-by-3 matrix containing: &#xD;
@@ -213,7 +214,7 @@
 &#xD;
    DETAILS. This routine implements art heteroscedasticity</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->  The model is: &#xD;

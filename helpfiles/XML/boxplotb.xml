@@ -152,7 +152,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>outliers</Value>
                <Description>vector containing the list of the units which lie outside the&#xD;
@@ -178,7 +179,7 @@
                 The last  two columns refer to the (x,y) coordinates  of the&#xD;
                 outer spline.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

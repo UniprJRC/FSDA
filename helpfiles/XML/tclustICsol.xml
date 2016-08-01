@@ -206,7 +206,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>MIXMIXbs</Value>
                <Description>cell of size NumberOfBestSolutions-times-5 which contains&#xD;
@@ -268,7 +269,7 @@
                Remark: field out.MIXCLAbsari is present only if 'whichIC'&#xD;
                is 'ALL' or 'whichIC' is 'CLACLA'</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

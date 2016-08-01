@@ -250,7 +250,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>Pi</Value>
                <Description>vector of length k containing mixing proportions.&#xD;
@@ -303,7 +304,7 @@
                <Description>scalar, flag value. 0 represents successful mixture&#xD;
                       generation, 1 represents failure.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

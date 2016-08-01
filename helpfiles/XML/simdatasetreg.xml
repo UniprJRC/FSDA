@@ -278,6 +278,7 @@ TODO:simdatasetReg:OTHER_DISTRIB&#xD;
          <LongDesc> &#xD;
                Vector of dimension (n+nout)-by-1  containing the values of the&#xD;
                 responses for the k groups.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>X</Name>
@@ -286,6 +287,7 @@ TODO:simdatasetReg:OTHER_DISTRIB&#xD;
          <LongDesc> Matrix of size (n + nout)-by-(p + nnoise) containinng the&#xD;
                 values of the explanatory variables for the k groups. &#xD;
                 Noise coordinates are provided in the last nnoise columns.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>id</Name>
@@ -297,6 +299,7 @@ TODO:simdatasetReg:OTHER_DISTRIB&#xD;
             REMARK: If nout outliers could not be generated a warning is&#xD;
                 produced. In this case matrix X and vector id will have&#xD;
                 just n rows.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

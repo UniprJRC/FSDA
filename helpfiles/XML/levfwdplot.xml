@@ -581,6 +581,7 @@
          <TypeInd>options which have been used to create the plot.</TypeInd>
          <LongDesc> Store all options which have been used to&#xD;
                generate the plot inside cell plotopt.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

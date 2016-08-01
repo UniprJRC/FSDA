@@ -28,6 +28,7 @@
          <LongDesc>&#xD;
                 1 if function 'funstr' exists, 0 otherwise.&#xD;
                 Data Types - Logical</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>location</Name>
@@ -36,6 +37,7 @@
          <LongDesc>  The location of the function, &#xD;
                 which is empty if 'funstr'  does not exist. &#xD;
                 Data Types - String</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

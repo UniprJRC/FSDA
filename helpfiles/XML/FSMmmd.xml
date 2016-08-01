@@ -122,6 +122,7 @@
          <LongDesc>&#xD;
                1st col = fwd search index (from init to n-1);&#xD;
                2nd col = minimum Mahalanobis distance.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>Un</Name>
@@ -136,6 +137,7 @@
                init+1.&#xD;
                Un(end,2) contains the units included in the final step&#xD;
                of the search.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -144,6 +146,7 @@
                each step of the search.</TypeInd>
          <LongDesc> Each row is associated to a unit&#xD;
                while each colum is associated to a step of the fwd search.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

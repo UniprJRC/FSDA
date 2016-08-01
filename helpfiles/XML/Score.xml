@@ -90,7 +90,8 @@
          <Name>outSC</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>Score</Value>
                <Description>score test. Scalar. t test for additional&#xD;
@@ -101,7 +102,7 @@
                <Description>value of the likelihood. Scalar. This output&#xD;
                            is produced just if input value Lik =1</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

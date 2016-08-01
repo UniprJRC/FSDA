@@ -259,7 +259,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>Tdel</Value>
                <Description>(n-init+1) x (p+1) matrix containing the monitoring of&#xD;
@@ -292,7 +293,7 @@
                the unit included in step init+1 ... Un(end,2) contains the&#xD;
                units included in the final step of the search</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

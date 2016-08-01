@@ -85,6 +85,7 @@
                2nd col = confidence level of each value of mdr. &#xD;
                3rd col = confidence level in normal coordinates: 50 conf&#xD;
                level becomes norminv(0.50)=0; 99 conf level becomes norminv(0.99)=2.33.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

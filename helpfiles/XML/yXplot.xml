@@ -326,6 +326,7 @@
          <TypeInd>handle to the figure.</TypeInd>
          <LongDesc> Handle to the&#xD;
         yXplot.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

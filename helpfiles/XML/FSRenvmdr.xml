@@ -95,6 +95,7 @@
  Subfunctions: tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS. &#xD;
 &#xD;
  Other function dependencies: none.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

@@ -54,6 +54,7 @@
   contamination distributions (locally for small fraction of&#xD;
   contamination), subject to achieving a desidered nominal asymptotic&#xD;
   efficiency when the data are Gaussian.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

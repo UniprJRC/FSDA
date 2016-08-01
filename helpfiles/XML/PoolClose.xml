@@ -91,6 +91,7 @@
                    Contains the execution time of the statements between&#xD;
                    PoolPrepare and PoolClose.&#xD;
                    Data Types - double</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

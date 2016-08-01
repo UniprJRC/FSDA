@@ -117,6 +117,7 @@
          <LongDesc>&#xD;
        Robust M estimate of scale. &#xD;
        This routine is called by Taureg.m and Sreg.m</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

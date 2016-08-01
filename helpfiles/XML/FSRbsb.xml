@@ -136,6 +136,7 @@
                init+1.&#xD;
                Un(end,2) contains the units included in the final step&#xD;
                of the search.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>BB</Name>
@@ -154,6 +155,7 @@
                ......;&#xD;
                Row n of matrix BB is referred to unit n;&#xD;
                Units not belonging to subset are denoted with NaN.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

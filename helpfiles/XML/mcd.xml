@@ -249,7 +249,8 @@
          <Name>RAW</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>h</Value>
                <Description>scalar. The number of observations that have&#xD;
@@ -330,13 +331,14 @@
                <Value>class</Value>
                <Description>'mcd'</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>REW</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>loc</Value>
                <Description>The robust location of the data, obtained after&#xD;
@@ -402,7 +404,7 @@
                <Value>class</Value>
                <Description>'mcdr'</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -411,6 +413,7 @@
                     of the subsamples extracted for&#xD;
                     computing the estimate.</TypeInd>
          <LongDesc> </LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

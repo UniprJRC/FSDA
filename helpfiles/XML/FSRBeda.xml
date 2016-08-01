@@ -174,7 +174,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>RES</Value>
                <Description>Scaled residuals. Matrix.&#xD;
@@ -352,7 +353,7 @@
                <Value>class</Value>
                <Description>string FSRBeda.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

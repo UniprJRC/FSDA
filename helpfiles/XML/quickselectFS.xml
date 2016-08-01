@@ -50,6 +50,7 @@
          <ShortDesc> Scalar</ShortDesc>
          <TypeInd>k-th order statistic.</TypeInd>
          <LongDesc> Element in A that is larger than exactly k - 1 other elements of A.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

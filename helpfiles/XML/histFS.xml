@@ -100,12 +100,14 @@
                  For example ng(2,3) contains the number of elements&#xD;
                  belonging to the third group included into the second&#xD;
                  container.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>hb</Name>
          <ShortDesc>Bar array handles. Vector. A vector </ShortDesc>
          <TypeInd>Handles to the barseries objects.</TypeInd>
          <LongDesc> </LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

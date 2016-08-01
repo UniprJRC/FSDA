@@ -49,6 +49,7 @@
                 n x 1 vector which contains the values of hyperbolic&#xD;
                 psi(u)*u function associated to the residuals or Mahalanobis&#xD;
                 distances for the n units of the sample.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

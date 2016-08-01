@@ -137,6 +137,7 @@
            parameters 'loc' and 'scale'. For vector input X, Z is the vector of&#xD;
             z-scores&#xD;
            (X-location(X)) ./ scale(X).</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>mu</Name>
@@ -144,6 +145,7 @@
          <TypeInd>location estimate.</TypeInd>
          <LongDesc>&#xD;
            Estimates of location specified in loc input string.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>sigma</Name>
@@ -151,6 +153,7 @@
          <TypeInd>scale estimate.</TypeInd>
          <LongDesc>&#xD;
            Estimates of scale specified in scale input string.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

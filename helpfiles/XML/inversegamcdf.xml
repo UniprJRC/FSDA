@@ -78,6 +78,7 @@
          <LongDesc> $y=\int_0^x f_{IG}(t | a,b) dt$ is the&#xD;
                value of the cdf of the inverse gamma distribution&#xD;
                evaluated at x</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

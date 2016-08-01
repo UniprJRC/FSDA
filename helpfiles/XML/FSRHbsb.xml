@@ -238,6 +238,7 @@
                init+1.&#xD;
                Un(end,2) contains the units included in the final step&#xD;
                of the search.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>BB</Name>
@@ -250,6 +251,7 @@
                ...&#xD;
                last column = units forming subset in the final step (i.e.&#xD;
                all units).</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

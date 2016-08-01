@@ -438,7 +438,8 @@
          <Name>outCp</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>MAL</Value>
                <Description>(n-init+1) x (k+1) matrix.&#xD;
@@ -501,7 +502,7 @@
                    is a cell array of strings which which contains as&#xD;
                    strings the list of models which are inacceptable.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

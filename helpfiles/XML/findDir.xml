@@ -59,6 +59,7 @@
          <LongDesc> List of all&#xD;
                subdirectories under root directory, sorted in alphabetical&#xD;
                and ascending order. Always return absolute path.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

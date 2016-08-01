@@ -126,7 +126,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>RES</Value>
                <Description>n x (n-init+1) = matrix containing the monitoring of&#xD;
@@ -274,7 +275,7 @@
                <Value>class</Value>
                <Description>string FSReda.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

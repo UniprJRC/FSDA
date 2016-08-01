@@ -238,7 +238,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>rew</Value>
                <Description>Scalar if out.rew=1 all subsequent output refers to&#xD;
@@ -310,7 +311,7 @@
                <Description>data matrix X. The field is present if option&#xD;
                        yxsave is set to 1.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -322,6 +323,7 @@
                        elemental sets). For example, if C(3,:)=[2 5 20],&#xD;
                        implies that the third extracted subsample is&#xD;
                        formed by units 2, 5 and 20.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

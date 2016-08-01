@@ -155,6 +155,7 @@
                 Emprirical threshold which can be used in order&#xD;
                 to have a test with en empirical size close to the nominal&#xD;
                 size (1 individual or simultaneous)</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

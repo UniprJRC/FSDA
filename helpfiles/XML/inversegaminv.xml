@@ -80,6 +80,7 @@
                inverse of the inverse-gamma cdf with shape parameters in a&#xD;
                and scale parameters in b for the corresponding&#xD;
                probabilities in p.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

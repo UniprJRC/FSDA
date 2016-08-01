@@ -81,6 +81,7 @@
          <LongDesc> A number between -1 and 1.&#xD;
                The adjusted Rand index is the corrected-for-chance version&#xD;
                of the Rand index.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>RI</Name>
@@ -91,6 +92,7 @@
                which both classification methods agree.&#xD;
                RI ranges from 0 (no pair classified in the same way under&#xD;
                both clusterings) to 1 (identical clusterings).</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>MI</Name>
@@ -99,6 +101,7 @@
          <LongDesc> A number between 0 and 1.&#xD;
                Mirkin's index computes the percentage of pairs of objects for&#xD;
                which both classification methods disagree. MI=1-RI.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>HI</Name>
@@ -109,6 +112,7 @@
                which both classification methods agree minus the&#xD;
                fraction of pairs of objects for which both&#xD;
                classification methods disagree. HI= RI-MI.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

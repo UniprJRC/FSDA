@@ -200,6 +200,7 @@
                produce a singular matrix. In this case mdr is a column&#xD;
                vector which contains the list of units for which matrix X&#xD;
                is non singular.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>Un</Name>
@@ -215,6 +216,7 @@
                init+1.&#xD;
                Un(end,2) contains the units included in the final step&#xD;
                of the search.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>BB</Name>
@@ -237,6 +239,7 @@
                    value for the other steps&#xD;
                The size of matrix BB is n x (n-init+1) if option input&#xD;
                bsbsteps is 0 else the size is n-by-length(bsbsteps).</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>Bols</Name>
@@ -246,6 +249,7 @@
                (n-init+1) x (p+1) matrix containing the monitoring of&#xD;
                estimated beta coefficients in each step of the forward&#xD;
                search.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>S2</Name>
@@ -255,6 +259,7 @@
                (n-init+1) x 3 matrix containing the monitoring of S2 (2nd&#xD;
                column)and R2 (third column) in each step of the forward&#xD;
                search.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

@@ -71,6 +71,7 @@
                3rd col = bound for quantile prob[2],&#xD;
                ...,&#xD;
                (k+1) col = bound for quantile prob[k].</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

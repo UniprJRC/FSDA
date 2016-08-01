@@ -104,6 +104,7 @@
                3rd col = envelope for quantile prob[2]; &#xD;
                ...; &#xD;
                (k+1) col = envelope for quantile prob[k].</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

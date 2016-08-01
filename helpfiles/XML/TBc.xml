@@ -48,6 +48,7 @@
          <TypeInd>bdp.</TypeInd>
          <LongDesc> Breakdown point associated to the supplied&#xD;
                  value of c</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>eff</Name>
@@ -58,6 +59,7 @@
                  Remark: if c is a vector bdp and eff will also be vectors&#xD;
                  with the same size of c. For example bdp(3) and eff(3)&#xD;
                  are associated to c(3) ....</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>approxsheff</Name>
@@ -68,6 +70,7 @@
                  option shapeeff=1 and v&amp;gt;1.&#xD;
                  This output is left for comparability with the value&#xD;
                  which comes out from R library robustbase.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

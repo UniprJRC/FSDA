@@ -355,7 +355,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>ListOut</Value>
                <Description>k x 1 vector containing the list of the units declared as&#xD;
@@ -408,7 +409,7 @@
                steps. out.constr is a vector which contains the list of&#xD;
                units which produced a singular X matrix</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

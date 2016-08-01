@@ -84,6 +84,7 @@
                        containing restricted eigenvalues. &#xD;
                        The ratio between two possible elements in matrix&#xD;
                        out is not greater than restr</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

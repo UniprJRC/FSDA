@@ -172,7 +172,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>weights</Value>
                <Description>(1/k, ...., 1/k) else if input option&#xD;
@@ -184,13 +185,14 @@
               out.Y  : original data matrix Y. The field is present if option&#xD;
                        Ysave is set to 1.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
          <ShortDesc> Cell</ShortDesc>
          <TypeInd>C       :   subsamples extracted.</TypeInd>
          <LongDesc> .</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

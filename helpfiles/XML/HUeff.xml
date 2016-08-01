@@ -51,6 +51,7 @@
          <TypeInd>Requested tuning constant.</TypeInd>
          <LongDesc> Tuning constatnt of Tukey Biweigh rho&#xD;
          function associated to requested value of efficiency</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

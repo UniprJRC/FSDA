@@ -39,6 +39,7 @@
                 n x 1 vector containing the Huber weights&#xD;
                 associated to the scaled residuals or Mahalanobis&#xD;
                 distances for the n units of the sample.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

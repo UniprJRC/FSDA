@@ -201,6 +201,7 @@
                2nd col = minimum Mahalanobis distance for random start 1;&#xD;
                ...;&#xD;
                nsimul+1 col = minimum deletion residual for random start nsimul.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>BBrs</Name>
@@ -228,6 +229,7 @@
                In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has&#xD;
                the same structure as before, but now contains just&#xD;
                length(bsbsteps) columns.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

@@ -48,6 +48,7 @@
          <TypeInd>bdp.</TypeInd>
          <LongDesc> Breakdown point associated to the supplied&#xD;
                  value of c</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>eff</Name>
@@ -55,6 +56,7 @@
          <TypeInd>eff.</TypeInd>
          <LongDesc> Efficiency associated to the supplied&#xD;
                  value of c</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>approxsheff</Name>
@@ -65,6 +67,7 @@
                  option shapeeff=1 and v&amp;gt;1.&#xD;
                  This output is left for comparability with the value&#xD;
                  which comes out from R library robustbase.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

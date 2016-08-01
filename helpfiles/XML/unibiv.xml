@@ -144,6 +144,7 @@
            3rd col = number of times unit has been declared&#xD;
            bivariate outlier; &#xD;
            4th col = pseudo MD as sum of bivariate MD.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

@@ -62,6 +62,7 @@
                    They may differ from the request of the user, depending &#xD;
                    on the computer configuration.&#xD;
                    Data Types - double</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>tstart</Name>
@@ -73,6 +74,7 @@
                    monitor the overall execution time of the statements&#xD;
                    embedded between PoolPrepare and PoolClose.&#xD;
                    Data Types - double</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>progbar</Name>
@@ -84,6 +86,7 @@
                    Data Types - struct | double&#xD;
 &#xD;
  Optional Output:</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>usePCT</Name>
@@ -95,6 +98,7 @@
                    returns the result of the check to PoolClose, to avoid&#xD;
                    additional unnecessary checks.&#xD;
                    Data Types - integer | logical</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>usematlabpool</Name>
@@ -106,6 +110,7 @@
                    depending on the MATLAB version installed. From R2013b&#xD;
                    'parpool' is used. Earlier releases use 'usematlabpool'.&#xD;
                    Data Types - integer | logical</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

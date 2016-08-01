@@ -23,6 +23,7 @@
          <TypeInd>A permutation of the set of elements in x.</TypeInd>
          <LongDesc> &#xD;
        Data Types - single|double</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

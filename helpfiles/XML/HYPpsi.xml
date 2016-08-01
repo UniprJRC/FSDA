@@ -48,6 +48,7 @@
          <LongDesc>Values of hyperbolic psi&#xD;
                 function associated to the residuals or Mahalanobis&#xD;
                 distances for the n units of the sample</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

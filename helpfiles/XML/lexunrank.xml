@@ -64,6 +64,7 @@
            of the combinations or, equivalently, of position bc(n,k)-N in&#xD;
            the lexicographic order of the same combinations.&#xD;
            Data Types - single|double</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>calls</Name>
@@ -72,6 +73,7 @@
          <LongDesc> The number of binomial coefficients used to compute the&#xD;
            $k$-combination. &#xD;
            Data Types - single|double</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

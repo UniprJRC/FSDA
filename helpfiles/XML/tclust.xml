@@ -2,25 +2,30 @@
 <HelpXML>
    <Title><!--This is simply the filename-->tclust</Title>
    <Purpose><!--This is the second line of the .m file-->tclust computes trimmed clustering with restricitons on the eigenvalues</Purpose>
-   <Description><!--Description section-->tclust partitions the points in the n-by-v data matrix Y&#xD;
-   into k clusters.  This partition minimizes the trimmed sum, over all&#xD;
-   clusters, of the within-cluster sums of point-to-cluster-centroid&#xD;
-   distances.  Rows of Y correspond to points, columns correspond to&#xD;
-   variables. tclust returns inside structure out an n-by-1 vector idx&#xD;
-   containing the cluster indices of each point.  By default, tclust uses&#xD;
-   (squared), possibly constrained, Mahalanobis distances.</Description>
+   <Description><!--Description section-->tclust partitions the points in the n-by-v data matrix Y
+   into k clusters.  This partition minimizes the trimmed sum, over all
+   clusters, of the within-cluster sums of point-to-cluster-centroid
+   distances.  Rows of Y correspond to points, columns correspond to
+   variables. tclust returns inside structure out an n-by-1 vector idx
+   containing the cluster indices of each point.  By default, tclust uses
+   (squared), possibly constrained, Mahalanobis distances.
+</Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Data matrix containining n observations on v variables&#xD;
-               Rows of Y represent observations, and columns&#xD;
-               represent variables</ShortDesc>
-         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed,&#xD;
-               since observations (rows) with missing or infinite values will&#xD;
-               automatically be excluded from the computations</TypeInd>
-         <LongDesc> </LongDesc>
-         <Example> </Example>
-         <DataType>single| double</DataType>
+         <ShortDesc>Data matrix containining n observations on v variables
+               Rows of Y represent observations, and columns
+               represent variables
+</ShortDesc>
+         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed,
+               since observations (rows) with missing or infinite values will
+               automatically be excluded from the computations
+</TypeInd>
+         <LongDesc/>
+         <Example/>
+         <DataType>single| double
+
+</DataType>
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
@@ -35,74 +40,77 @@
          <Struct> </Struct>
       </Item>
       <Item>
-         <Name>alpha</Name>
-         <ShortDesc>global trimming level</ShortDesc>
-         <TypeInd>alpha is a scalar between 0 and 0.5&#xD;
-               or an integer specifying the number of observations which have to&#xD;
-               be trimmed</TypeInd>
-         <LongDesc>If alpha=0 tclust reduces to traditional model&#xD;
-               based or mixture clustering (mclust): see Matlab function&#xD;
-               gmdistribution.&#xD;
-               More in detail, if 0&amp;lt; alpha &amp;lt;1 clustering is based on&#xD;
-                h=fix(n*(1-alpha)) observations&#xD;
-               Else if alpha is an integer greater than 1 clustering is&#xD;
-               based on h=n-floor(alpha);</LongDesc>
+         <Name>restrfactor</Name>
+         <ShortDesc>Data matrix containining n observations on v variables
+               Rows of Y represent observations, and columns
+               represent variables
+
+</ShortDesc>
+         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed,
+               since observations (rows) with missing or infinite values will
+               automatically be excluded from the computations
+</TypeInd>
+         <LongDesc> </LongDesc>
          <Example> </Example>
-         <DataType>single| double</DataType>
+         <DataType>single| double
+
+</DataType>
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
       <Item>
-         <Name>restrfactor</Name>
-         <ShortDesc>positive scalar which constrains the allowed differences&#xD;
-               among group scatters</ShortDesc>
-         <TypeInd>Larger values imply larger differences of&#xD;
-               group scatters</TypeInd>
-         <LongDesc>On the other hand a value of 1 specifies the&#xD;
-               strongest restriction forcing all eigenvalues/determinants&#xD;
-               to be equal and so the method looks for similarly scattered&#xD;
-               (respectively spherical) clusters</LongDesc>
-         <Example> </Example>
-         <DataType>single| double</DataType>
-         <ReqArg>1</ReqArg>
+         <Name>aaa</Name>
+         <ShortDesc/>
+         <TypeInd/>
+         <LongDesc/>
+         <Example/>
+         <DataType/>
+         <ReqArg>0</ReqArg>
          <Struct> </Struct>
       </Item>
    </InpArgs>
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>nsamp</Name>
-         <ShortDesc>number of subsamples to extract</ShortDesc>
-         <TypeInd>Scalar or matrix</TypeInd>
-         <LongDesc>If nsamp is a scalar it contains the number of subsamples&#xD;
-               which will be extracted. If nsamp=0&#xD;
-               all subsets will be extracted.&#xD;
-               Remark - if the number of all possible subset is &amp;lt;300 the&#xD;
-               default is to extract all subsets, otherwise just 300&#xD;
-               If nsamp is a matrix it contains in the rows the indexes of&#xD;
-               the subsets which have to be extracted. nsamp in this case&#xD;
-               can be conveniently generated  by function subsets. nsamp can&#xD;
-               have k columns or k*(v+1) columns. If nsamp has k columns&#xD;
-               the k initial centroids each iteration i are given by&#xD;
-               X(nsamp(i,:),:) and the covariance matrices are equal to the&#xD;
-               identity.&#xD;
-               If nsamp has k*(v+1) columns the initial centroids and covariance&#xD;
-               matrices in iteration i are computed as follows&#xD;
-               X1=X(nsamp(i,:),:)&#xD;
-               mean(X1(1:v+1,:)) contains the initial centroid for group 1&#xD;
-               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1&#xD;
-               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2&#xD;
-               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1&#xD;
-               ...&#xD;
-               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k&#xD;
-               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k&#xD;
-               REMARK - if nsamp is not a scalar option option below&#xD;
-               startv1 is ignored. More precisely if nsamp has k columns&#xD;
-               startv1=0 elseif nsamp has k*(v+1) columns option startv1&#xD;
-               =1.&#xD;
-                 </LongDesc>
+         <ShortDesc>number of subsamples to extract
+</ShortDesc>
+         <TypeInd>Scalar or matrix
+</TypeInd>
+         <LongDesc>If nsamp is a scalar it contains the number of subsamples
+               which will be extracted. If nsamp=0
+               all subsets will be extracted.
+               Remark - if the number of all possible subset is &amp;lt;300 the
+               default is to extract all subsets, otherwise just 300
+               If nsamp is a matrix it contains in the rows the indexes of
+               the subsets which have to be extracted. nsamp in this case
+               can be conveniently generated  by function subsets. nsamp can
+               have k columns or k*(v+1) columns. If nsamp has k columns
+               the k initial centroids each iteration i are given by
+               X(nsamp(i,:),:) and the covariance matrices are equal to the
+               identity.
+               If nsamp has k*(v+1) columns the initial centroids and covariance
+               matrices in iteration i are computed as follows
+               X1=X(nsamp(i,:),:)
+               mean(X1(1:v+1,:)) contains the initial centroid for group 1
+               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
+               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
+               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
+               ...
+               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
+               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
+               REMARK - if nsamp is not a scalar option option below
+               startv1 is ignored. More precisely if nsamp has k columns
+               startv1=0 elseif nsamp has k*(v+1) columns option startv1
+               =1.
+                 
+</LongDesc>
          <Example> 'nsamp',1000&#xD;
-                 </Example>
-         <DataType>double</DataType>
+                 
+
+</Example>
+         <DataType>double
+
+</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
@@ -320,9 +328,10 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>out</Name>
-         <ShortDesc> </ShortDesc>
-         <TypeInd> </TypeInd>
-         <LongDesc>
+         <ShortDesc/>
+         <TypeInd/>
+         <LongDesc/>
+         <Structure>
             <ItemCell>
                <Value>muopt</Value>
                <Description>k-by-v matrix containing cluster centroid locations.&#xD;
@@ -429,7 +438,7 @@
                <Description>original data matrix Y. The field is present if option&#xD;
                        Ysave is set to 1.</Description>
             </ItemCell>
-         </LongDesc>
+         </Structure>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -439,28 +448,29 @@
                     Matrix of size nsamp-by-(v+1)*k containing (in the&#xD;
                     rows) the indices of the subsamples extracted for&#xD;
                     computing the estimate.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->
-&#xD;
- This iterative algorithm initializes k clusters randomly and&#xD;
- performs "concentration steps" in order to improve the current cluster&#xD;
- assignment. The number of maximum concentration steps to be performed is&#xD;
- given by input parameter refsteps. For approximately obtaining the global&#xD;
- optimum, the system is initialized nsamp times and concentration steps&#xD;
- are performed until convergence or refsteps is reached. When processing&#xD;
- more complex data sets higher values of nsamp and refsteps have to be&#xD;
- specified (obviously implying extra computation time). However, if more&#xD;
- then 10 per cent of the iterations do not converge, a warning message is&#xD;
- issued, indicating that nsamp has to be increased.&#xD;
-&#xD;
+
+ This iterative algorithm initializes k clusters randomly and
+ performs "concentration steps" in order to improve the current cluster
+ assignment. The number of maximum concentration steps to be performed is
+ given by input parameter refsteps. For approximately obtaining the global
+ optimum, the system is initialized nsamp times and concentration steps
+ are performed until convergence or refsteps is reached. When processing
+ more complex data sets higher values of nsamp and refsteps have to be
+ specified (obviously implying extra computation time). However, if more
+ then 10 per cent of the iterations do not converge, a warning message is
+ issued, indicating that nsamp has to be increased.
+
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008),&#xD;
- "A General Trimming Approach to Robust Cluster Analysis". Annals&#xD;
- of Statistics, Vol.36, 1324-1345. Technical Report available at&#xD;
- http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</Item>
+      <Item>Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008),</Item>
+      <Item> "A General Trimming Approach to Robust Cluster Analysis". Annals</Item>
+      <Item> of Statistics, Vol.36, 1324-1345. Technical Report available at</Item>
+      <Item> http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>tkmeans</Item>
@@ -471,8 +481,9 @@
          <Title>tclust of geyser data using k=3, alpha=0.1 and  restrfactor=10000.</Title>
          <Desc/>
          <MATLABcode>
-    Y=load('geyser2.txt');&#xD;
-    out=tclust(Y,3,0.1,10000);&#xD;</MATLABcode>
+    Y=load('geyser2.txt');
+    out=tclust(Y,3,0.1,10000);
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
@@ -491,7 +502,9 @@
     % tclust of geyser with classification plot and filled contour plots.&#xD;
     out=tclust(Y,3,0.1,10000,'plots','contourf');&#xD;
 &#xD;
-    cascade&#xD;</MATLABcode>
+    cascade&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
@@ -502,32 +515,36 @@
     nsamp=20;&#xD;
     [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);&#xD;
     % MatrixContSubsets is a matrix containing in the rows the indexes of&#xD;
-    % the nsamp subsets which have been extracted&#xD;</MATLABcode>
+    % the nsamp subsets which have been extracted&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>tclust of geyser data (output comparison).</Title>
-         <Desc>&#xD;
-     We compare the output using three different values of&#xD;
-     restriction factor.&#xD;</Desc>
+         <Desc>
+     We compare the output using three different values of
+     restriction factor.
+</Desc>
          <MATLABcode>
-    close all&#xD;
-    Y=load('geyser2.txt');&#xD;
-    restrfactor=10000;&#xD;
-    % nsamp = number of subsamples which will be extracted&#xD;
-    nsamp=500;&#xD;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'plots',1);&#xD;
-    title(['Restriction factor =' num2str(restrfactor)])&#xD;
-    restrfactor=10;&#xD;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);&#xD;
-    title(['Restriction factor =' num2str(restrfactor)])&#xD;
-    % trimmed k-means solution restrfactor=1&#xD;
-    restrfactor=1;&#xD;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);&#xD;
-    title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])&#xD;
-    cascade&#xD;</MATLABcode>
+    close all
+    Y=load('geyser2.txt');
+    restrfactor=10000;
+    % nsamp = number of subsamples which will be extracted
+    nsamp=500;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'plots',1);
+    title(['Restriction factor =' num2str(restrfactor)])
+    restrfactor=10;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
+    title(['Restriction factor =' num2str(restrfactor)])
+    % trimmed k-means solution restrfactor=1
+    restrfactor=1;
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
+    title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])
+    cascade
+</MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
@@ -538,7 +555,9 @@
       overlapped with another one. A 10 per cent background noise is added uniformly&#xD;
       distributed in a rectangle containing the three normal components and not&#xD;
       very overlapped with the three mixture components. A precise description&#xD;
-      of the M5 data set can be found in Garcia-Escudero et al. (2008).&#xD;</Desc>
+      of the M5 data set can be found in Garcia-Escudero et al. (2008).&#xD;
+
+</Desc>
          <MATLABcode>
     Y=load('M5data.txt');&#xD;
     % plot(Y(:,1),Y(:,2),'o')&#xD;
@@ -549,7 +568,9 @@
     out=tclust(Y(:,1:2),3,0,10,'nsamp',100,'plots',1)&#xD;
     out=tclust(Y(:,1:2),3,0.1,1,'nsamp',1000,'plots',1,'equalweights',1)&#xD;
     out=tclust(Y(:,1:2),3,0.1,1000,'nsamp',100,'plots',1)&#xD;
-&#xD;</MATLABcode>
+&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
@@ -564,11 +585,15 @@
             rmvnorm (360, c (0.0,  0), matrix (c (1,  0,  0, 1), ncol = 2)),&#xD;
             rmvnorm (540, c (5.0, 10), matrix (c (6, -2, -2, 6), ncol = 2)),&#xD;
             noise)&#xD;
-&#xD;</Desc>
+&#xD;
+
+</Desc>
          <MATLABcode>
     Y=load('structurednoise.txt');&#xD;
     out=tclust(Y(:,1:2),2,0.1,100,'plots',1)&#xD;
-    out=tclust(Y(:,1:2),5,0.15,1,'plots',1)&#xD;</MATLABcode>
+    out=tclust(Y(:,1:2),5,0.15,1,'plots',1)&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
@@ -579,11 +604,15 @@
          mixt &amp;lt;- rbind (rmvnorm (360, c (  0,  0), matrix (c (1,  0,  0,  1), ncol = 2)),&#xD;
                     rmvnorm (540, c (  5, 10), matrix (c (6, -2, -2,  6), ncol = 2)),&#xD;
                     rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))&#xD;
-&#xD;</Desc>
+&#xD;
+
+</Desc>
          <MATLABcode>
     Y=load('mixture100.txt');&#xD;
     out=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)&#xD;
-    out=tclust(Y(:,1:2),3,0.05,1,'refsteps',20,'plots',1)&#xD;</MATLABcode>
+    out=tclust(Y(:,1:2),3,0.05,1,'refsteps',20,'plots',1)&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
@@ -598,13 +627,17 @@
     out2=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',1)&#xD;
     % Tclust with mixture models (selection of untrimmed units according to&#xD;
     % densities weighted by estimates of the probability of the components)&#xD;
-    out3=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',2)&#xD;</MATLABcode>
+    out3=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',2)&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>tclust using simulated data.</Title>
          <Desc>&#xD;
-     5 groups and 5 variables&#xD;</Desc>
+     5 groups and 5 variables&#xD;
+
+</Desc>
          <MATLABcode>
     n1=100;&#xD;
     n2=80;&#xD;
@@ -626,7 +659,9 @@
 &#xD;
 &#xD;
     Y=[Y1;Y2;Y3;Y4;Y5];&#xD;
-    out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1)&#xD;</MATLABcode>
+    out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1)&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
@@ -666,7 +701,9 @@
     plot(MIXCLA(:,1),MIXCLA(:,2))&#xD;
     xlabel('Number of groups')&#xD;
     ylabel('MIXCLA (ICL)')&#xD;
-    xlim([1 maxk])&#xD;</MATLABcode>
+    xlim([1 maxk])&#xD;
+
+</MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
@@ -724,7 +761,9 @@
     subplot(1,3,3)&#xD;
     plot(MIXCLA(:,1),MIXCLA(:,2))&#xD;
     xlabel('Number of groups')&#xD;
-    ylabel('MIXCLA (ICL)')&#xD;</MATLABcode>
+    ylabel('MIXCLA (ICL)')&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
@@ -733,7 +772,9 @@
          <MATLABcode>
     load('swiss_banknotes');&#xD;
     Y=swiss_banknotes.data;&#xD;
-    out=tclust(Y,3,0.1,10,'restr','deter','refsteps',20,'plots',1)&#xD;</MATLABcode>
+    out=tclust(Y,3,0.1,10,'restr','deter','refsteps',20,'plots',1)&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
@@ -741,7 +782,9 @@
          <Desc/>
          <MATLABcode>
     Y=load('geyser2.txt');&#xD;
-    out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)&#xD;</MATLABcode>
+    out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)&#xD;
+
+</MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

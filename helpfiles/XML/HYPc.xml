@@ -77,6 +77,7 @@
          <TypeInd>bdp.</TypeInd>
          <LongDesc> Breakdown point associated to the supplied&#xD;
                  value of c</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>eff</Name>
@@ -84,6 +85,7 @@
          <TypeInd>eff.</TypeInd>
          <LongDesc> Efficiency associated to the supplied&#xD;
                  value of c</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>A</Name>
@@ -92,6 +94,7 @@
          <LongDesc>&#xD;
          For more details see the  methodological details inside "More&#xD;
          About" below</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>B</Name>
@@ -100,6 +103,7 @@
          <LongDesc>&#xD;
          For more details see the  methodological details inside "More&#xD;
          About" below</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>d</Name>
@@ -108,6 +112,7 @@
          <LongDesc>&#xD;
          For more details see the  methodological details inside "More&#xD;
          About" below</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

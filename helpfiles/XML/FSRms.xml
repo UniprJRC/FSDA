@@ -344,7 +344,8 @@
          <Name>outms</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>stor</Value>
                <Description>k x 9 matrix containing statistics which can be used to create the candles&#xD;
@@ -404,7 +405,7 @@
                    MAL ... last element of LAB is associated with last&#xD;
                    column of matrix MAL</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

@@ -163,7 +163,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>covrob</Value>
                <Description>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix&#xD;
@@ -249,7 +250,7 @@
                c = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma)) r_i/\hat \sigma)&#xD;
                \]</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

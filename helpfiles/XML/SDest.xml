@@ -361,7 +361,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>maxdir</Value>
                <Description>n x v matrix which contains the direction maximizing&#xD;
@@ -430,7 +431,7 @@
                <Value>class</Value>
                <Description>'SD'</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -439,6 +440,7 @@
              subsamples extracted for computing the SD estimate.</TypeInd>
          <LongDesc>&#xD;
              jpcorr=0,2, 3, ... (see input option jpcorr)</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->              A "robust standardized" projection&#xD;

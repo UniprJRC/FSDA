@@ -22,6 +22,7 @@
          <TypeInd>HLEG : handle to legend.</TypeInd>
          <LongDesc> This is the handle to&#xD;
             legend on the current axes or empty if none exists.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

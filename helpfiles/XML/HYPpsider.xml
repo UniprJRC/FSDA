@@ -48,6 +48,7 @@
                 psi'(u) function associated to the residuals or Mahalanobis&#xD;
                 distances for the n units of the sample.</TypeInd>
          <LongDesc> </LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

@@ -78,6 +78,7 @@
                  ellipse.&#xD;
                  1st column = x coordinates;&#xD;
                  2nd column = y coordinates.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>he</Name>
@@ -88,6 +89,7 @@
                  modify properties of a specific chart line of the plot&#xD;
                  containing the ellipse after it is created. For a list of&#xD;
                  properties, see Chart Line Properties.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

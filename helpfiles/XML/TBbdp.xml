@@ -36,6 +36,7 @@
          <TypeInd>Requested tuning constant.</TypeInd>
          <LongDesc> Tuning constatnt of Tukey Biweight&#xD;
          function associated to requested breakdown point</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

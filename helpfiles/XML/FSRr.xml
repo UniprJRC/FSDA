@@ -120,7 +120,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>outliers</Value>
                <Description>k x 1 vector containing the list of the units declared&#xD;
@@ -150,7 +151,7 @@
                    Second column = p-values (computed using as reference&#xD;
                    distribution the Student t)</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
       <Item>
          <Name>varargout</Name>
@@ -162,6 +163,7 @@
                   length(xnew)&#xD;
            yci  = Confidence intervals. A two-column matrix with each row providing&#xD;
                   one interval.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

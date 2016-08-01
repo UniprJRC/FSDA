@@ -218,7 +218,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>beta1</Value>
                <Description>p x 1 vector containing posterior mean (conditional on&#xD;
@@ -355,7 +356,7 @@
                not.&#xD;
                Warning: modelprob can be computed just if n1&amp;gt;=p</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--> The density of the gamma distribution (which we denote with $G(a,b)$) with parameters $a$ and $b$ is&#xD;

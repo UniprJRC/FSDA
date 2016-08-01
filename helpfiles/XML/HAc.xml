@@ -65,6 +65,7 @@
          <TypeInd>bdp.</TypeInd>
          <LongDesc> Breakdown point associated to the supplied&#xD;
                  value of c for Hampel rho function</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>eff</Name>
@@ -72,6 +73,7 @@
          <TypeInd>eff.</TypeInd>
          <LongDesc> Efficiency associated to the supplied&#xD;
                  value of c for Hampel rho function</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->

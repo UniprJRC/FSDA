@@ -329,6 +329,7 @@
          <TypeInd>Simulated dataset.</TypeInd>
          <LongDesc> Simulated dataset of size (n + noiseunits)-by-(v + noisevars).&#xD;
                 Noise coordinates are provided in the last noisevars columns.</LongDesc>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>id</Name>
@@ -342,6 +343,7 @@
            REMARK: If noiseunits outliers could not be generated a warning&#xD;
                    is produced. In this case matrix X and vector id will&#xD;
                    have less than n + noiseunits rows.</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

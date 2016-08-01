@@ -479,7 +479,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>OmegaMap</Value>
                <Description>matrix of misclassification probabilities (k-by-k);&#xD;
@@ -534,7 +535,7 @@
                <Description>k-by-1 vector containing the variances for the k&#xD;
                       groups</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

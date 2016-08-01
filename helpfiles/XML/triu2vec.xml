@@ -89,6 +89,7 @@
  &#xD;
                  A1 = A(:);&#xD;
                  y  = A1(y);          the elements above diagonal of matrix A</LongDesc>
+         <Struct> </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

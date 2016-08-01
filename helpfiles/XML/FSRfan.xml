@@ -293,7 +293,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>Score</Value>
                <Description>(n-init) x length(la)+1 matrix containing the values of the&#xD;
@@ -338,7 +339,7 @@
                which has been used (it also contains the column of ones if&#xD;
                input option intercept was missing or equal to 1)</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>

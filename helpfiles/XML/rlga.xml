@@ -115,7 +115,8 @@
          <Name>out</Name>
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
-         <LongDesc>
+         <LongDesc> </LongDesc>
+         <Struct>
             <ItemCell>
                <Value>cluster</Value>
                <Description>vector containing the cluster memberships.</Description>
@@ -160,7 +161,7 @@
                <Value>class</Value>
                <Description>'rlga'.</Description>
             </ItemCell>
-         </LongDesc>
+         </Struct>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
