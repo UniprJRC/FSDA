@@ -164,8 +164,24 @@ if nargin > 1
         if  ~isscalar(bandwidth)
             bandwidth = 0;
         end
+        if bandwidth > 0
+            % if the user has chosen a bandwidth, we may want to provide 
+            % a support too. For the moment we leave it unbounded, which is
+            % the default of ksdensity.
+            support = 'unbounded';
+            %Remark: if we want to provide the support for the density
+            %estimation, then the support should include the data values
+            %interval. The quantity 'e' that exceeds the interval should
+            %not be too small, otherwise (if bandwidth/2 is larger than
+            %'e') the estimates of the pdf at the extreme data values risk
+            %to be completely wrong. We have empirically observed this
+            %effect using the following support values, with factor = 6 and
+            %factor = 2:
+            % factor = 2; %factor = 6;
+            % minX = min(X); maxX = max(X); e = (maxX-minX)/10^(factor);
+            % support = [ (min(X)-e) , (max(X)+e) ];
+        end
     end
-    
 else
     bandwidth = 0;
     retainby  = 0;
@@ -173,22 +189,51 @@ end
 
 %% Compute the density along the predicted values
 
-[~,d] = size(X);
+[n,d] = size(X);
 
+% The if statements below, which control the application of function
+% ksdensity, are to optimize the time execution of the density estimation.
+% We have empirically observed that:
+% 1. ksdensity is faster if bandwidth is not provided (counter-intuitive,
+%    but due to the effect of the options checks).
+% 2. ksdensity is slower if it is evaluated at specified values provided in
+%    the second input argument, say 'E' in ksdensity(X,E,'Support',support).
+% 3. By default, when the evaluation vector E is not provided, ksdensity
+%    evaluates the pdf on 100 points (if d=1), independently of the size of
+%    the input (estimation) vector X. If the evaluation points are much
+%    more than 100, then ksdensity becomes extremely slower. For this
+%    reason, we estimate the pdf on the points in X, we interpolate the
+%    pdf, and finally evaluate the interpolated function on the points in
+%    E. In our specific case, where E is equal to X, we leave ksdensity to
+%    compute the pdf on a default sample of 100 points taken or estimated
+%    from X; then, we interpolate and evaluate the pdf on the full X
+%    sample. For a sample of 1000 units, we reduce the time execution of
+%    one order of magnitude (from ~14 to ~1.5 seconds).
 if d > 1
-    support = 'unbounded';
+    % for the moment no optimization is done (points 2 and 3 not addressed).
+    if bandwidth == 0
+        % Remark: by default ksdensity estimates the bandwidt with Scott's rule.
+        [pdfe,xout,u]  = ksdensity(X,X);
+    else
+        [pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
+    end
 else
-    minX = min(X); maxX = max(X); e = (maxX-minX)/10^(6);
-    support = [ (min(X)-e) , (max(X)+e) ];
-end
-
-% for some reason, ksdensity is faster if bandwidth is not provided. The
-% 'if' statement is only for performance reasons.
-if bandwidth == 0
-    % bandwidth selection: Remark: ksdensity uses by default Scott's rule.
-    [pdfe,xout,u]  = ksdensity(X,X,'Support',support);
-else
-    [pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
+    % This is the univariate case. We address points 2 and 3.
+    % Estimate of the pdf on the default 100 points adopted by ksdensity.
+    if bandwidth == 0
+        [pdfedef,xout1,u]  = ksdensity(X);
+    else
+        [pdfedef,xout1,u]  = ksdensity(X,'Support',support,'bandwidth',bandwidth);
+    end
+    % if the evaluation points are less that the estimation (data
+    % input) points, we interpolate the 100 estimated pdf values.
+    if size(pdfedef,1) < n
+        % the estimation points in our case are those in X. More in general
+        % one could use a linearly spaced vector xq:
+        %xq = linspace((min(X)-e) , (max(X)+e) , n);
+        pdfe = interp1(xout1,pdfedef,X);
+        xout = X;
+    end
 end
 
 varargout{2} = u;
