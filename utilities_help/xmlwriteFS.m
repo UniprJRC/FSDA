@@ -61,7 +61,7 @@ docNode = com.mathworks.xml.XMLUtils.createDocument('HelpXML');
 % Create file name section
 Preamble=docNode.createElement('Title');
 Preamble.appendChild(docNode.createComment('This is simply the filename'));
-Preambletxt=docNode.createTextNode(sprintf('%s\n',out.titl));
+Preambletxt=docNode.createTextNode(out.titl);
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 
@@ -311,7 +311,7 @@ docNode.getDocumentElement.appendChild(ExtraEx);
 Name=out.titl;
 
 fsep=filesep;
-fullpathFileName=[FSDAroot fsep 'helpfiles' fsep 'XML' fsep Name '.xml'];
+fullpathFileName=[FSDAroot fsep 'helpfiles' fsep 'XML' fsep strtrim(Name) '.xml'];
 if write2file
     xmlwrite(fullpathFileName,docNode);
 end
