@@ -318,6 +318,27 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 
 %}
 
+%%  computational issues to be addressed in future releases
+
+% MATLAB function datasample. For the moment, we have copied the function
+% in folder FSDA/combinatorial, renamed it as datasampleFS, and removed the
+% computationally expensive option parameters checks. Unfortunately, we had
+% to copy in the same folder the mex file wswor, also renamed as wsworFS.
+% The function should be re-written along the linels of 
+%      Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
+%      Sampling Without Replacement", SIAM Journal of Computing,
+%      9(1):111-113.
+
+% FSDA function wthin uses the MATLAB function ksdensity. The calls to 
+% ksdensity have been optimized. The only possibility to further reduce
+% time execution is to replace ksdensity with a better kernel density estimator.
+
+% In the plots, the use of text to highlight the groups with their index is
+% terribly slow (more than 10 seconds to generate a scatter of 7000 units.
+% ClickableMultiLegend and legend are also slow. 
+
+% FSDA function restreigen could be improved. In some cases it is one of
+% the most expensive functions.
 
 %% Check if optimization toolbox is installed in current computer
 % to be done in next releases: introduce an optimizer
@@ -331,12 +352,6 @@ end
 %% initializations
 
 warning('off'); %#ok<WNOFF>
-
-% 'oversamp' is a factor (which depends on the number of groups 'k') used
-% to generate more samples in order to face the possibility that some
-% subsets contain collinear obs.
-% To obtain nsamp = 300 samples, 300*oversamp samples will be generated
-oversamp = 10*k;
 
 %number of times that, after the first level of trimming, in a group there
 %are not enought observations to compute the sigma
@@ -573,6 +588,19 @@ Ksteps = options.Ksteps;
 % initialization phase
 eps_beta   = options.eps_beta;
 
+% 'oversamp' is a factor (which depends on the number of groups 'k') used
+% to generate more samples in order to face the possibility that some
+% subsets contain collinear obs and are therefore rejected.
+% To obtain nsamp = 300 samples, 300*oversamp samples will be generated.
+%If eps_beta = 0, i.e. selection of subsets is done indipendently from the
+%values of the regression parameters, there is no reason to
+%ovserample and therefore oversamp is equal to 1.
+if eps_beta>0
+    oversamp = 10*k;
+else
+    oversamp = 1;
+end
+
 % the weights vector
 we         = options.we;
 
@@ -695,32 +723,35 @@ end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
 
+% Note that we used function 'datasample' instead of our FSDA function
+% 'subsets' because we need weighted sampling.
+%      Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
+%      Sampling Without Replacement", SIAM Journal of Computing,
+%      9(1):111-113.
+            
 %case with no prior subsets
 if NoPriorSubsets
+
     %if stratv1 =1 the initial subsets are formed by k*(p) observations
     if startv1 && k*(v+1) < n
-        % the number of initial subsets to be generated is nsamp*oversamp.
-        % The input parameter nsamp is multiplied by a factor (oversamp) in
-        % order to face the possibility that some subsets contain groups
-        % which  are very closed one to the other and therefore have to be
-        % eliminated and substituted with other subsets.
-        for ns =1:nsamp*oversamp
-            C(ns,:) = datasample(1:n,k*(p),'weights',we,'Replace',false); %was p+1
-        end
-        nselected = length(C)/oversamp;
-        %if stratv1 =0 the initial subsets are formed by k observations
+        %if stratv1 =1 the initial subsets are formed by k*p observations
+        initial_subs_size = k*p;       
     else
-        for ns =1:nsamp*oversamp
-            % the number of initial subsets to be generated is nsamp*oversamp.
-            % The input parameter nsamp is multiplied by a factor (oversamp) in
-            % order to face the possibility that some subsets contain groups
-            % which  are very closed one to the other and therefore have to be
-            % eliminated and substituted with other subsets.
-            C(ns,:) = datasample(1:n,k,'weights',we,'Replace',false);
-        end
-        nselected  = length(C)/oversamp;
-        %niinistart = repmat(floor(notrim/k),k,1);
+        %if stratv1 =0 the initial subsets are formed by k observations
+        initial_subs_size = k;
     end
+     % the number of initial subsets to be generated is nsamp*oversamp.
+    % The input parameter nsamp is multiplied by a factor (oversamp) in
+    % order to face the possibility that some subsets contain groups
+    % which  are very closed one to the other and therefore have to be
+    % eliminated and substituted with other subsets.
+     for ns =1:nsamp*oversamp
+        %C(ns,:) = datasample(1:n,initial_subs_size,'weights',we,'Replace',false); 
+        C(ns,:) = datasampleFS(1:n,initial_subs_size,we); 
+     end
+    nselected  = length(C)/oversamp;
+    %niinistart = repmat(floor(notrim/k),k,1);
+    
 end
 
 %% Initialize structures
@@ -731,7 +762,6 @@ sigmaopt   = ni;
 bopt       = zeros(p,k);
 numopt     = 1:k;
 weopt = ones(n,1);
-fact3      = zeros(n,k);
 
 %%  Random starts
 
@@ -878,7 +908,7 @@ while iter < nselected
             % Sort the n likelihood contributions and save in qq the largest n*(1-alpha) likelihood
             % contributions
             [~,qq] = sort(disc,'ascend');
-            
+           
             
             %% first level trimming
             switch wtrim
@@ -900,11 +930,15 @@ while iter < nselected
                     cumsumyy = cumsum(we(qq));
                     if alpha1<1
                         qqunassigned_small = cumsumyy < alpha1*sum(we(qq));
+                        qq_small = cumsumyy >= alpha1*sum(we(qq));
                     else
                         qqunassigned_small = cumsumyy < alpha1/n*sum(we(qq));
+                        qq_small = cumsumyy >= alpha1/n*sum(we(qq));
                     end
                     qqunassigned = qq(qqunassigned_small);
-                    qq = setdiff((1:n)',qqunassigned);
+                    qq = qq(qq_small);
+                    % qq_small introduced because setdiff below is inefficient
+                    %qq = setdiff((1:n)',qqunassigned); 
             end
             
             % In case of mixture modeling:
@@ -933,13 +967,13 @@ while iter < nselected
             %histcount is more efficient but cannot be used because when one group is missing it
             %rdoes not report "0" but missing. Therefore the result is a vector of length less than
             %k.
-%             if verLessThan('matlab','8.4')
-%                 for jj=1:k
-%                     ni(jj) = sum(indtri==jj);
-%                 end
-%             else
-%                 ni = histcounts(indtri);
-%             end
+            %             if verLessThan('matlab','8.4')
+            %                 for jj=1:k
+            %                     ni(jj) = sum(indtri==jj);
+            %                 end
+            %             else
+            %                 ni = histcounts(indtri,k);
+            %             end
                 for jj=1:k
                     ni(jj) = sum(indtri==jj);
                 end
@@ -992,17 +1026,22 @@ while iter < nselected
                     for jj=1:k
                         % find indices of units in group jj                   
                         ijj = find(indtri==jj); 
-                        %indall = vector of length n containing the id 1,...,k of the group the observation belongs to or "-1" if the observations was trimmed               
-                        ijj_ori = find(indall == jj);
-                        % weight vector is updated only if the group has more than 10 observations
-                        % abd if the beta of the group is not zero
+                        %indall = vector of length n containing the id
+                        %1,...,k of the group the observation belongs to or
+                        %"-1" if the observations was trimmed
+                        ijj_ori = indall == jj; % was find( indall == jj)
+                        % weight vector is updated only if the group has
+                        % more than 10 observations and if the beta of the
+                        % group is not zero
                         if  numel(ijj)>10 && nameYY(end,jj)>0
                             % retention probabilities based on density estimated on the component
                             % predicted values of the previous step. The bernoulli weights
                             % (the first output argument of wthin, i.e. Wt) are not used.
                             Xtri_jj = Xtri(ijj,:);
                             yhattri = Xtri_jj*nameYY(:,jj);
+                            
                             [~ , pretain] = wthin(yhattri);
+                            
                             we(ijj_ori) = pretain;
                             weights(ijj,jj) = weights(ijj,jj) .* pretain;
                         end
@@ -1036,6 +1075,7 @@ while iter < nselected
                             % (the second output argument of wthin, i.e. pretain) are not used.
                             Xtri_jj = Xtri(ijj,:);
                             yhattri = Xtri_jj*nameYY(:,jj);
+                            
                             [Wt , ~] = wthin(yhattri);
                             
                             % the ids of the thinned observations. Values between [1 n]
