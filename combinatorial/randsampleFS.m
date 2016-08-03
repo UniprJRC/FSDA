@@ -6,29 +6,32 @@ function y = randsampleFS(n,k,method)
 %  Required input arguments:
 %
 %       n : A vector of numbers will be selected from the integers 1 to n.
-%           Scalar, a positive integer.            
+%           Scalar, a positive integer.
 %           Data Types - single|double
 %      k  : The number of elements to be selected. Non negative integer.
 %           Data Types - single|double
 %
 %  Optional input arguments:
 %
-%   method : The method used to extract the numbers (default is method = 1). 
-%            Scalar, from 1 to 3 determining the method to be used.
+%   method : The method used to extract the numbers (default is method = 1).
+%            - Scalar, from 1 to 3 determining the (random sample without
+%            replacement) method to be used.
+%            - Vector of weights: in such a case, Weighted Sampling Without
+%              Replacement is applied using that vector of weights.
 %            Example - randsampleFS(100,10,2)
 %            Data Types - single|double
 %
-%   Output: 
+%   Output:
 %
-%   y :     A column vector of k values sampled at random from the integers 1:n. 
+%   y :     A column vector of k values sampled at random from the integers 1:n.
 %           For method 1 and 2, the elements  extracted are unique; For
 %           method 3, there is no guarantee that the elements extracted are
 %           unique.
 %           Data Types - single|double.
-%   
+%
 % More About:
 %
-%   if method=1 (default option) the program proceeds as follows: 
+%   if method=1 (default option) the program proceeds as follows:
 %   if  $4*k >n$ the programs does a random permutation of the population
 %   and returns the first nsel elements else if $4*k<=n$ (that is if the
 %   desired sample is small compared to all combinations, the program
@@ -41,8 +44,15 @@ function y = randsampleFS(n,k,method)
 %   Congruential Generator (LCG) method is used. In this case there is no
 %   guarantee to get unique numbers.
 %
+%   if method is a vector of n weights, then Weighted Sampling Without
+%   Replacement is applied. Our implementation could be improved. 
+%   The best algorithm for Weighted Sampling Without Replacement, mentioned
+%   in the references, is applied by MATLAB function datasample, which is
+%   unfortunately very slow for the large amount of time spent on options
+%   checking.
 %
-% See also: randsample, shuffling
+%
+% See also: randsample, datasample, shuffling
 %
 % References:
 %
@@ -56,6 +66,9 @@ function y = randsampleFS(n,k,method)
 %   Algorithms, Third Edition. Addison-Wesley, 1997. Section 3.2.1: The
 %   Linear Congruential Method, pp. 10-26.
 %
+%   For Weighted Sampling Without Replacement. Wong, C. K. and M. C.
+%   Easton. An Efficient Method for Weighted Sampling Without Replacement.
+%   SIAM Journal of Computing 9(1), pp. 111–113, 1980.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -69,13 +82,13 @@ function y = randsampleFS(n,k,method)
 %{
     %% randsampleFS with default options.
     % default method (1) is used.
-    randsampleFS(100,10) 
+    randsampleFS(100,10)
 %}
 
-%{ 
+%{
     %% randsampleFS with optional argument set to method (2).
     method = 2;
-    randsampleFS(100,10,method) 
+    randsampleFS(100,10,method)
 %}
 
 %{
@@ -85,12 +98,65 @@ function y = randsampleFS(n,k,method)
     randsampleFS(100,10,method)
 %}
 
+%{
+    % randsampleFS Weighted Sampling Without Replacement
+    % extract 10 number from [-1000 -900] with normal distributed weights.
+     population = -1000:1:-900; 
+     k=10; 
+     wgts=sort(random('gamma',0.3,2,101,1),'descend'); 
+     n = numel(population);
+     y = randsampleFS(n,k,wgts);
+     sample  = population(y);
+     
+     plot(wgts,'.r')
+     hold on;
+     text(y,wgts(y),'X');
+     title('Weight distribution with the extracted numbers superimposed')
+%}
+
 %% Beginning of code
 if nargin<3
     method=1;
 end
 
+% Weighted Sampling Without Replacement
+% This is done if the third argument is provided as a vector of weights.
+if nargin == 3 && ~isscalar(method)
+    wgts = method;
+    method = 0;
+end
+
 switch method
+    
+    case 0
+        
+        % Weighted Sampling Without Replacement
+          
+        if k>n, error('k must be smaller than n'), end
+        if length(wgts)~=n,error('the length of the weight vector must be n'),end
+        
+        x = 1:n;
+        y = zeros(1,k);
+        p = wgts(:)' / sum(wgts);
+        for i=1:k
+            %the following three lines are equivalent (but faster than) 
+            %v(i)=randsample(x,1,true,wgts)
+            % i.e. return in yi a weighted sample, of 1 element only,
+            % taken with replacement from the set 1:n, using a vector of
+            % positive weights (probabilities) p whose length is n.
+            % The 'min' function is to avoid probabilities begger than 1 
+            % due to accumulation of roundoff errors (this was actually
+            % observed).
+            edges  = min([0 cumsum(p)],1);
+            [~ , yi] = histc(rand(1,1),edges);
+            y(i) = yi;
+
+            % now there is one element less in the sample, so the
+            % probabilities must be re-normalised.
+            p(x==yi)=0;
+            p = p / sum(p);
+        end
+        
     case 1
         
         if 4*k > n
