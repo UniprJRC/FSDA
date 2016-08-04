@@ -324,18 +324,18 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 % in folder FSDA/combinatorial, renamed it as datasampleFS, and removed the
 % computationally expensive option parameters checks. Unfortunately, we had
 % to copy in the same folder the mex file wswor, also renamed as wsworFS.
-% The function should be re-written along the linels of 
+% The function should be re-written along the linels of
 %      Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
 %      Sampling Without Replacement", SIAM Journal of Computing,
 %      9(1):111-113.
 
-% FSDA function wthin uses the MATLAB function ksdensity. The calls to 
+% FSDA function wthin uses the MATLAB function ksdensity. The calls to
 % ksdensity have been optimized. The only possibility to further reduce
 % time execution is to replace ksdensity with a better kernel density estimator.
 
 % In the plots, the use of text to highlight the groups with their index is
 % terribly slow (more than 10 seconds to generate a scatter of 7000 units.
-% ClickableMultiLegend and legend are also slow. 
+% ClickableMultiLegend and legend are also slow.
 
 % FSDA function restreigen could be improved. In some cases it is one of
 % the most expensive functions.
@@ -392,6 +392,31 @@ nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
+% check if wtrim option has been set by the user equal to 4. In such a case, the thinning step has
+% to be done at the very beginning, in particular before setting the number of samples nsamp.
+if nargin>6
+    chknwtrim = strcmp(varargin,'wtrim');
+    if sum(chknwtrim)>0  
+        if cell2mat(varargin(find(chknwtrim)+1)) == 4
+            interc = find(max(X,[],1)-min(X,[],1) == 0);
+            if p == numel(interc) +1
+                
+                %apply thinning on the full dataset if there is only one exploratory variable.
+                [Wt4,~] = wthin([X(:,interc+1),y], 'retainby','comp2one');
+                
+                % save original data
+                Xori = X;
+                yori = y;
+                % set retained data
+                X     = X(Wt4,:);
+                y      = y(Wt4);
+                %recompute n
+                n = size(y,1);
+            end
+        end
+    end
+end
+
 % check restrfact option
 if nargin < 4 || isempty(restrfact) || ~isnumeric(restrfact)
     restrfact = 12;
@@ -410,6 +435,7 @@ end
 % initialization using covariance matrices based on v+1 units
 startv1def = 1;
 
+% nsamp option: is it is not set by the user, it has to be properly initialized
 if nargin>6
     % Check whether option nsamp exists
     chknsamp = strcmp(varargin,'nsamp');
@@ -496,6 +522,7 @@ if NoPriorSubsets ==1
     end
     nsampdef=min(300,ncomb);
 end
+
 %% Defaults for optional arguments
 
 % default number of random starts
@@ -659,6 +686,9 @@ switch wtrim
             we = wedef;
         end
     case 4
+        if length(we) ~= length(wedef)
+            we = we(Wt4);
+        end
         if sum(we ~= wedef)>0
             disp('Warning: when "wtrim" is 4, tclust is applied after thinning');
             disp('         observations with a Bernoulli random vector,');
@@ -666,6 +696,7 @@ switch wtrim
             disp('         your vector "we" will not be considered.');
             we = wedef;
         end
+        
 end
 
 %option determining the model to use
@@ -728,27 +759,27 @@ end
 %      Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
 %      Sampling Without Replacement", SIAM Journal of Computing,
 %      9(1):111-113.
-            
+
 %case with no prior subsets
 if NoPriorSubsets
-
+    
     %if stratv1 =1 the initial subsets are formed by k*(p) observations
     if startv1 && k*(v+1) < n
         %if stratv1 =1 the initial subsets are formed by k*p observations
-        initial_subs_size = k*p;       
+        initial_subs_size = k*p;
     else
         %if stratv1 =0 the initial subsets are formed by k observations
         initial_subs_size = k;
     end
-     % the number of initial subsets to be generated is nsamp*oversamp.
+    % the number of initial subsets to be generated is nsamp*oversamp.
     % The input parameter nsamp is multiplied by a factor (oversamp) in
     % order to face the possibility that some subsets contain groups
     % which  are very closed one to the other and therefore have to be
     % eliminated and substituted with other subsets.
-     for ns =1:nsamp*oversamp
-        %C(ns,:) = datasample(1:n,initial_subs_size,'weights',we,'Replace',false); 
-        C(ns,:) = randsampleFS(n,initial_subs_size,we); 
-     end
+    for ns =1:nsamp*oversamp
+        %C(ns,:) = datasample(1:n,initial_subs_size,'weights',we,'Replace',false);
+        C(ns,:) = randsampleFS(n,initial_subs_size,we);
+    end
     nselected  = length(C)/oversamp;
     %niinistart = repmat(floor(notrim/k),k,1);
     
@@ -908,7 +939,7 @@ while iter < nselected
             % Sort the n likelihood contributions and save in qq the largest n*(1-alpha) likelihood
             % contributions
             [~,qq] = sort(disc,'ascend');
-           
+            
             
             %% first level trimming
             switch wtrim
@@ -938,7 +969,7 @@ while iter < nselected
                     qqunassigned = qq(qqunassigned_small);
                     qqassigned = qq(qq_small);
                     % qq_small introduced because setdiff below is inefficient
-                    %qq = setdiff((1:n)',qqunassigned); 
+                    %qq = setdiff((1:n)',qqunassigned);
             end
             
             % In case of mixture modeling:
@@ -974,9 +1005,9 @@ while iter < nselected
             %             else
             %                 ni = histcounts(indtri,k);
             %             end
-                for jj=1:k
-                    ni(jj) = sum(indtri==jj);
-                end
+            for jj=1:k
+                ni(jj) = sum(indtri==jj);
+            end
             
             %% Weights for the update of the model parameters
             
@@ -986,7 +1017,7 @@ while iter < nselected
             % mixture or classification -- ).
             switch wtrim
                 
-                case 0
+                case {0,4} 
                     %no observation weighting, therefore:
                     if mixt == 2
                         % for mixture likelihood, the weights are the posterior probabilities
@@ -1024,8 +1055,8 @@ while iter < nselected
                     indall = -ones(n,1);
                     indall(qqassigned) = indtri;
                     for jj=1:k
-                        % find indices of units in group jj                   
-                        ijj = find(indtri==jj); 
+                        % find indices of units in group jj
+                        ijj = find(indtri==jj);
                         %indall = vector of length n containing the id
                         %1,...,k of the group the observation belongs to or
                         %"-1" if the observations was trimmed
@@ -1059,7 +1090,7 @@ while iter < nselected
                     elseif mixt == 0
                         weights =  repmat(wetri,1,k);
                     end
-                    %indall = vector of length n containing the id 1,...,k of the group the observation belongs to or "-1" if the observations was trimmed 
+                    %indall = vector of length n containing the id 1,...,k of the group the observation belongs to or "-1" if the observations was trimmed
                     indall = -ones(n,1);
                     indall(qqassigned) = indtri;
                     ii = 0;
@@ -1095,8 +1126,6 @@ while iter < nselected
                         
                     end
                     
-                case 4
-                    % tandem thinning: to be implemented
             end
             
             weightmod = [weights, indtri ];
@@ -1117,7 +1146,7 @@ while iter < nselected
             else
                 count1_ng_lt_k = count1_ng_lt_k + 1;
             end
-
+            
             %% second level of trimming
             jk = 0;
             for iii = not_empty_g
@@ -1137,7 +1166,7 @@ while iter < nselected
                         qqs = 1:ni(jk);
                     else
                         % Find the units with the smallest h distances. Apply mcd on the x space
-                        % (without the intercept if present). 
+                        % (without the intercept if present).
                         % REMARK: This is by far the computationally most expensive instruction of
                         % tclustreg. More precisely, the dominant expensive function inside mcd is
                         % IRWLSmcd.
@@ -1417,7 +1446,7 @@ else
         xmodjk = xmod(booljk ,:);
         if iii ==1
             if alpha2 == 0
-                %qqs = not-trimmed observations after second level trimming 
+                %qqs = not-trimmed observations after second level trimming
                 qqs = 1:ni(jk);
             else
                 %apply mcd to each group
@@ -1435,7 +1464,7 @@ else
                     end
                 end
                 [~,indmdsor] = sort(RAW.md);
-                %qqs = not-trimmed observations after second level trimming 
+                %qqs = not-trimmed observations after second level trimming
                 qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
             end
             %ids of observations belonging to the current group after the second level trimming. Ids referer to all n observations.
@@ -1458,7 +1487,7 @@ else
             hold on;
             xlabel('X');
             ylabel('y');
-            title('TclustReg clustering','Fontsize',14);
+            title({ ['TclustReg clustering: ' 'mixt=' num2str(mixt) ' - wtrim=' num2str(wtrim)] },'Fontsize',12);
             
             
             jk = 0;
@@ -1506,6 +1535,7 @@ else
                         plot(X(ucg,end),y(ucg),symdef(jk),'color',clrdef(k+1),...
                             'DisplayName',['Thinned units (' num2str(length(ucg)) ')']);
                     end
+                    
                 end
             end
             
@@ -1521,7 +1551,12 @@ else
             plot(xxx0_all,yyy0_all,'*','color','c',...
                 'DisplayName',['L2 trimmed units (' num2str(length(yyy0_all)) ')']);
             
-            
+             if wtrim == 4 
+                 % in case of tandem thinning, plot the thinned points
+                 plot(Xori(~Wt4,end),yori(~Wt4),symdef(k+1),'color',clrdef(k+1),...
+                            'DisplayName',['Thinned units (' num2str(length(Wt4) - sum(Wt4)) ')']);
+             end
+
             % position the legends and make them clickable
             lh=legend('show');
             %set(lh,'FontSize',14);
