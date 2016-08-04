@@ -302,7 +302,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % then 10 per cent of the iterations do not converge, a warning message is
 % issued, indicating that nsamp has to be increased.
 %
-% See also tkmeans, estepFS.m
+% See also tkmeans, estepFS
 %
 % References:
 %
