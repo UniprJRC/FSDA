@@ -2628,7 +2628,7 @@ for i=1:nseealso
             error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
         else
             % Check if the reference is towards a file present in the FSDA toolbox
-            FSDAtoolboxfile=regexp(str,'FSDA', 'once');
+            FSDAtoolboxfile=regexpi(str,'FSDA', 'once');
             
             % Create the string which contains the 'destination' of the hyperlink
             % DestHyperLink is the 'destination' of the hyperlink
