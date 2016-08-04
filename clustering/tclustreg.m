@@ -641,7 +641,7 @@ switch wtrim
         end
         
         % weights must be normalized so that to sum to 1
-        we = we/sum(we);
+        we = we/nansum(we);
         
     case 2
         if sum(we ~= wedef)>0
@@ -747,7 +747,7 @@ if NoPriorSubsets
     % eliminated and substituted with other subsets.
      for ns =1:nsamp*oversamp
         %C(ns,:) = datasample(1:n,initial_subs_size,'weights',we,'Replace',false); 
-        C(ns,:) = datasampleFS(1:n,initial_subs_size,we); 
+        C(ns,:) = randsampleFS(n,initial_subs_size,we); 
      end
     nselected  = length(C)/oversamp;
     %niinistart = repmat(floor(notrim/k),k,1);
@@ -794,17 +794,17 @@ while iter < nselected
         % rng(1234);
         randk=rand(k,1);
         if alpha1<1
-            niini=floor(fix(n*(1-alpha1))*randk/sum(randk));
+            niini=floor(fix(n*(1-alpha1))*randk/nansum(randk));
         else
-            niini=floor(fix(n - floor(alpha1))*randk/sum(randk));
+            niini=floor(fix(n - floor(alpha1))*randk/nansum(randk));
         end
         while sum(niini == 0) >0
             randk=rand(k,1);
             % Initialize niini with with random numbers from uniform
             if alpha1<1
-                niini=floor(fix(n*(1-alpha1))*randk/sum(randk));
+                niini=floor(fix(n*(1-alpha1))*randk/nansum(randk));
             else
-                niini=floor(fix(n -floor(alpha1))*randk/sum(randk));
+                niini=floor(fix(n -floor(alpha1))*randk/nansum(randk));
             end
         end
         for j = 1:k
@@ -821,7 +821,7 @@ while iter < nselected
             residuals = yb-Xb*nameYY(:,j);
             % Update sigmas through the mean square residuals
             if size(selj,2) > p
-                sigmaini(j) = sum(residuals.^2)/ni(j);
+                sigmaini(j) = nansum(residuals.^2)/ni(j);
             else
                 sigmaini(j) =var(y);
             end
@@ -924,19 +924,19 @@ while iter < nselected
                     % qqunassigned is vector which contains the indices of the remaining trimmed
                     % observations
                     qqunassigned = qq(1:trimm);
-                    qq                    = qq(trimm + 1:n);
+                    qqassigned                    = qq(trimm + 1:n);
                 case {1,2,3};
                     % trimming with observation weighting, set by the user or density estimation
                     cumsumyy = cumsum(we(qq));
                     if alpha1<1
-                        qqunassigned_small = cumsumyy < alpha1*sum(we(qq));
-                        qq_small = cumsumyy >= alpha1*sum(we(qq));
+                        qqunassigned_small = cumsumyy < alpha1*nansum(we(qq));
+                        qq_small = cumsumyy >= alpha1*nansum(we(qq));
                     else
-                        qqunassigned_small = cumsumyy < alpha1/n*sum(we(qq));
-                        qq_small = cumsumyy >= alpha1/n*sum(we(qq));
+                        qqunassigned_small = cumsumyy < alpha1/n*nansum(we(qq));
+                        qq_small = cumsumyy >= alpha1/n*nansum(we(qq));
                     end
                     qqunassigned = qq(qqunassigned_small);
-                    qq = qq(qq_small);
+                    qqassigned = qq(qq_small);
                     % qq_small introduced because setdiff below is inefficient
                     %qq = setdiff((1:n)',qqunassigned); 
             end
@@ -944,7 +944,7 @@ while iter < nselected
             % In case of mixture modeling:
             if mixt == 2
                 % update the posterior probabilities
-                postprobtri = postprob(qq,:);
+                postprobtri = postprob(qqassigned,:);
                 postprob(qqunassigned,:) = 0;
                 
                 % M-step: update of niini, the numerator of component probabilities
@@ -956,11 +956,11 @@ while iter < nselected
             
             % data and observation weights vectors associated with the units which have the
             % largest n(1-alpha) likelihood contributions
-            Xtri    = X(qq,:);
-            ytri     = y(qq,:);
-            wetri  = we(qq,:);
+            Xtri    = X(qqassigned,:);
+            ytri     = y(qqassigned,:);
+            wetri  = we(qqassigned,:);
             
-            indtri  =  indmax(qq);
+            indtri  =  indmax(qqassigned);
             xmod = [Xtri , ytri , indtri];
             
             % size of the groups nj (could be named mixing proportions or group weights)
@@ -1022,7 +1022,7 @@ while iter < nselected
                     %indall = vector of length n containing the id 1,...,k of the group the
                     %observation belongs to or "-1" if the observations was trimmed
                     indall = -ones(n,1);
-                    indall(qq) = indtri;
+                    indall(qqassigned) = indtri;
                     for jj=1:k
                         % find indices of units in group jj                   
                         ijj = find(indtri==jj); 
@@ -1061,7 +1061,7 @@ while iter < nselected
                     end
                     %indall = vector of length n containing the id 1,...,k of the group the observation belongs to or "-1" if the observations was trimmed 
                     indall = -ones(n,1);
-                    indall(qq) = indtri;
+                    indall(qqassigned) = indtri;
                     ii = 0;
                     for jj=1:k
                         % find indices of units in group jj
@@ -1259,6 +1259,10 @@ while iter < nselected
                         %function for it.
                     end
                 end
+                
+                nameYY(:,~not_empty_g) = NaN;
+                sigmaini(~not_empty_g) = NaN;
+                
             elseif mixt == 2
                 %the following command should be executed at the end of
                 %the for loop of the concentration steps. However here
@@ -1353,7 +1357,7 @@ else
         % qq is updated to be a vector of size h which contains the indexes
         % associated with the largest n(1-alpha) (weighted) likelihood
         % contributions
-        qq  = qq(1:n-trimm);
+        qqassigned  = qq(1:n-trimm);
         val = val(n-trimm);
         
     elseif wtrim ==1 || wtrim == 2 || wtrim == 3
@@ -1365,7 +1369,7 @@ else
             qqunassigned_small = cumsumyy < alpha1/n*sum(weopt(qq_acend));
         end
         qqunassigned = qq_acend(qqunassigned_small);
-        qq = setdiff((1:n)',qqunassigned);
+        qqassigned = setdiff((1:n)',qqunassigned);
         val = val(n-length(qqunassigned));
     end
     b_good = (dist>=val);
@@ -1377,7 +1381,7 @@ else
     end
     
     % xmod: contains the good units and, in the last column, their group assignment
-    xmod = [X(qq,:) y(qq) indmax(qq)];
+    xmod = [X(qqassigned,:) y(qqassigned) indmax(qqassigned)];
     
     % IS THIS PART BELOW MADE JUST TO COUNT the number of times the number
     % of groups is lt k? IF YES, SHOULD THIS BE MOVED AT THE END OF THE
@@ -1406,7 +1410,7 @@ else
         %observations, not to all n observations.
         booljk = xmod(:,end) == jk;
         %ids of observations belonging to the current group. Ids referer to all n observations.
-        qqk = qq(booljk);
+        qqk = qqassigned(booljk);
         %number of observations in the current group
         ni(jk) = sum(booljk);
         %x and y of observations in the current group
