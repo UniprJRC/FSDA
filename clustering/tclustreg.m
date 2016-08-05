@@ -292,6 +292,11 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     mixt = 2; wtrim = 3; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    mixt = 0; wtrim = 4; we = [];
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
+    mixt = 2; wtrim = 4; we = [];
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 %}
 
 %{
@@ -402,7 +407,7 @@ if nargin>6
             if p == numel(interc) +1
                 
                 %apply thinning on the full dataset if there is only one exploratory variable.
-                [Wt4,~] = wthin([X(:,interc+1),y], 'retainby','comp2one');
+                [Wt4,~] = wthin([X(:,numel(interc)+1),y], 'retainby','comp2one');
                 
                 % save original data
                 Xori = X;
