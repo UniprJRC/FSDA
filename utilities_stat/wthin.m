@@ -256,8 +256,7 @@ varargout{2} = u;
 varargout{3} = xout;
 
 % substitute the zero sampling probability with a very small value
-pdfe(pdfe<=0)=0.00000001;
-pdfe(pdfe<0.00001)=0.00000001;
+pdfe(pdfe<0.00000001)=0.00000001;
 % convert the density values into the vector of retention probabilities;
 % sampling probability should be inversely proportional to the density, but
 % different functions are possible.
