@@ -1294,8 +1294,8 @@ while iter < nselected
                     end
                 end
                 
-                nameYY(:,~not_empty_g) = NaN;
-                sigmaini(~not_empty_g) = NaN;
+%                 nameYY(:,~not_empty_g) = NaN;
+%                 sigmaini(~not_empty_g) = NaN;
                 
             elseif mixt == 2
                 %the following command should be executed at the end of
@@ -1326,10 +1326,10 @@ while iter < nselected
                 group_missing = sum(isnan(log_lh),1)>0;
                 log_lh(:,group_missing)=[];
                 obj = estepFS(log_lh);
-                if ~isempty(group_missing)
-                    nameYY(:,group_missing) = NaN;
-                    sigmaini(group_missing) = NaN;
-                end
+%                 if ~isempty(group_missing)
+%                     nameYY(:,group_missing) = NaN;
+%                     sigmaini(group_missing) = NaN;
+%                 end
             end
             
         end % End of concentration steps
