@@ -358,6 +358,11 @@ if nout ~= 0
         
     else
         X =[X;Xout];
+        
+        miny = min(y); maxy = max(y);
+        yout = miny + (maxy-miny).*rand(nout,1); % added just to not produce an error. To be verified!! DOME
+        y =[y ; yout];  
+        
         id =[id;zeros(nout,1)];
     end
 end
@@ -402,10 +407,10 @@ if ~isempty(lambda)
     end
 end
 %% Inner functions
-% Xout with nout rows which contains the outliers
+% Xout with nout rows which contains the outliers.
 % fail = scalar. If fail =1 than it was not possible to generate the
 % outliers in the interval specified by input option int in maxiter trials
-% else fail =0
+% else fail = 0
     function [Xout,fail] = getOutliers(nout, Mu, S, alpha, maxiter,int)
         fail = 0;
         % maxiter = maximum number of iterations to generate outliers
@@ -443,7 +448,7 @@ end
             
             ij=0;
             for jj=1:k
-                if mahalFS(Xout(i,:),Mu(jj,:),S(:,:,jj)) <critval
+                if mahalFS(Xout(i,:),Mu(:,jj),S(:,:,jj)) <critval
                     ij=1;
                     break
                 end
