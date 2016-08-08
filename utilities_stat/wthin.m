@@ -243,20 +243,23 @@ else
     end
     % if the evaluation points are less that the estimation (data
     % input) points, we interpolate the 100 estimated pdf values.
-    if size(pdfedef,1) < n
+    if size(pdfedef,2) < n
         % the estimation points in our case are those in X. More in general
         % one could use a linearly spaced vector xq:
         %xq = linspace((min(X)-e) , (max(X)+e) , n);
         pdfe = interp1(xout1,pdfedef,X);
         xout = X;
+    else 
+        pdfe = pdfedef(1:n)';
+        xout = xout1(1:n)';
     end
 end
 
 varargout{2} = u;
 varargout{3} = xout;
 
-% substitute the zero sampling probability with a very small value
-pdfe(pdfe<0.00000001)=0.00000001;
+% replace the zero sampling probability with a very small value
+pdfe(pdfe<10^(-7))=10^(-7);
 % convert the density values into the vector of retention probabilities;
 % sampling probability should be inversely proportional to the density, but
 % different functions are possible.

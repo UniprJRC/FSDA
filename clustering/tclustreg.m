@@ -963,6 +963,11 @@ while iter < nselected
                     qqassigned                    = qq(trimm + 1:n);
                 case {1,2,3};
                     % trimming with observation weighting, set by the user or density estimation
+                    %if wtrim = 3 the weights should be re-initialized to one, to avoid the
+                    %continuous elimination of observations from the estimates.
+                    if wtrim == 3
+                        we = wedef;
+                    end
                     cumsumyy = cumsum(we(qq));
                     if alpha1<1
                         qqunassigned_small = cumsumyy < alpha1*nansum(we(qq));
@@ -1509,9 +1514,9 @@ else
                     else
                         ucg = find(asig2==jk);
                     end
-                    plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ')']);
+                    plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label]);
                     text(X(ucg,end),y(ucg),num2str(jk*ones(length(ucg),1)),...
-                        'DisplayName',[group_label ' (' num2str(length(ucg)) ')'], ...
+                        'DisplayName',[group_label ], ...
                         'HorizontalAlignment','center',...
                         'VerticalAlignment','middle',...
                         'Color',clrdef(jk));
@@ -1520,11 +1525,11 @@ else
                     vv = [min(X(:,end)) max(X(:,end))];
                     if intercept==1
                         plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
-                            'DisplayName',[group_label ' fit'],...
+                            'DisplayName',[group_label ': fit (' num2str(length(ucg)) ')'],...
                             'Color',clrdef(jk));
                     elseif intercept==0
                         plot(vv,bopt(:,jk)*vv,...
-                            'DisplayName',[group_label ' fit'],...
+                            'DisplayName',[group_label ': fit (' num2str(length(ucg)) ')'],...
                             'Color',clrdef(jk));
                     end
                     
@@ -1538,9 +1543,9 @@ else
                         %                         'Color',clrdef(k+1));
                         ucg = find(asig2==jk & weopt == 0);
                         plot(X(ucg,end),y(ucg),symdef(jk),'color',clrdef(k+1),...
-                            'DisplayName',['Thinned units (' num2str(length(ucg)) ')']);
+                            'DisplayName',['Group ' num2str(jk) ': thinned units (' num2str(length(ucg)) ')' ]);
                     end
-                    
+
                 end
             end
             
@@ -1603,6 +1608,8 @@ else
             %group_l = ['Trimmed units' ; group];
             %[hleg, hobj, hout, mout] =legend((out(1,end,:)));
         end
+    ylim([0 max(y)])
+    xlim([0 max(X)])
     end
     
     % If the scatters do not satisfy the restriction then a quadratic
