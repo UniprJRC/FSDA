@@ -84,6 +84,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 
     plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
     axis manual
+    title('univariate thinning over predicted ols values')
     clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(~Wt))]);
 
 %}
@@ -99,6 +100,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 
     plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');
     axis manual
+    title('bivariate thinning')
     clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);
 %}
 
@@ -146,6 +148,28 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     title('"comp2one" thinning on the fishery dataset');
 
 %}
+
+%{
+    % univariate thinning with less than 100 units.
+    % As the first examp[le above, but with less than 100 units in the data.
+    x1 = randn(85,1);
+    x2 = 8 + randn(10,1);
+    x = [x1 ; x2];
+    y = 5*x + 0.9*randn(95,1);
+    b = [ones(95,1) , x] \ y;
+    yhat = [ones(95,1) , x] * b;
+    plot(x,y,'.',x,yhat,'--');
+
+    % thinning over the predicted values
+    [Wt,pretain] = wthin(yhat, 'retainby','comp2one');
+
+    plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
+    axis manual
+    title('univariate thinning over ols values predicted on a small dataset')
+    clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(~Wt))]);
+
+%}
+
 %% options
 
 % for reasons of performance options are checked only if necessary
@@ -181,7 +205,7 @@ if nargin > 1
             bandwidth = 0;
         end
         if bandwidth > 0
-            % if the user has chosen a bandwidth, we may want to provide 
+            % if the user has chosen a bandwidth, we may want to provide
             % a support too. For the moment we leave it unbounded, which is
             % the default of ksdensity.
             support = 'unbounded';
@@ -205,7 +229,7 @@ end
 
 %% Compute the density along the predicted values
 
-[n,d] = size(X);
+[~,d] = size(X);
 
 % The if statements below, which control the application of function
 % ksdensity, are to optimize the time execution of the density estimation.
@@ -235,31 +259,27 @@ if d > 1
     end
 else
     % This is the univariate case. We address points 2 and 3.
-    % Estimate of the pdf on the default 100 points adopted by ksdensity.
+    % We do first an estimate of the pdf on the default 100 points adopted
+    % by ksdensity.
     if bandwidth == 0
         [pdfedef,xout1,u]  = ksdensity(X);
     else
         [pdfedef,xout1,u]  = ksdensity(X,'Support',support,'bandwidth',bandwidth);
     end
-    % if the evaluation points are less that the estimation (data
-    % input) points, we interpolate the 100 estimated pdf values.
-    if size(pdfedef,2) < n
-        % the estimation points in our case are those in X. More in general
-        % one could use a linearly spaced vector xq:
-        %xq = linspace((min(X)-e) , (max(X)+e) , n);
-        pdfe = interp1(xout1,pdfedef,X);
-        xout = X;
-    else 
-        pdfe = pdfedef(1:n)';
-        xout = xout1(1:n)';
-    end
+    % Then we interpolate the 100 estimated pdf values on the data input
+    % points. This is independent from the number of evaluation points,
+    % because we need an estimate of the pdf exactely on the data input
+    % points, not on other points chosen, e.g., as a linearly spaced vector
+    % xq = linspace((min(X)-e) , (max(X)+e) , n);
+    pdfe = interp1(xout1,pdfedef,X);
+    xout = X;
 end
 
 varargout{2} = u;
 varargout{3} = xout;
 
 % replace the zero sampling probability with a very small value
-pdfe(pdfe<10^(-7))=10^(-7);
+pdfe(pdfe<10^(-8))=10^(-8);
 % convert the density values into the vector of retention probabilities;
 % sampling probability should be inversely proportional to the density, but
 % different functions are possible.
