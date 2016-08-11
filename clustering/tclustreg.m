@@ -1002,6 +1002,7 @@ while iter < nselected
             wetri  = we(qqassigned,:);
             
             indtri  =  indmax(qqassigned);
+            indoutl  =  indmax(qqunassigned);
             xmod = [Xtri , ytri , indtri];
             
             % size of the groups nj (could be named mixing proportions or group weights)
@@ -1051,7 +1052,7 @@ while iter < nselected
                     % weights are the posterior probabilities multiplied by the density
                     
                     %initialize weight for trimming
-                    we = wedef ;
+                    %we = wedef ;
                     
                     if mixt == 2
                         % for mixture likelihood, the weights are the posterior probabilities
@@ -1064,6 +1065,15 @@ while iter < nselected
                     %observation belongs to or "-1" if the observations was trimmed
                     indall = -ones(n,1);
                     indall(qqassigned) = indtri;
+                    
+                    % the next 5 lines are written to assigne a weight to the trimmed observations. 
+                    % find indices of units in group jj
+                    indall_good_and_outl(qqassigned) = indtri;
+                    indall_good_and_outl(qqunassigned) = indoutl;
+                    %if it is not possible to  compute wthin in a group (because there are less than
+                    %10 obs or because beta is zero), we are set to the median of the other weights
+                    check_we_groups = zeros(k,1);
+                    id_obs_in_groups_no_weight = zeros(n,k);
                     for jj=1:k
                         % find indices of units in group jj
                         ijj = find(indtri==jj);
@@ -1074,7 +1084,38 @@ while iter < nselected
                         % weight vector is updated only if the group has
                         % more than 10 observations and if the beta of the
                         % group is not zero
-                        if  numel(ijj)>10 && nameYY(end,jj)>0
+                        
+                       % the next 20 lines are written to assigne a weight to the trimmed observations. 
+                       % find indices of units in group jj
+                        ijj_good_and_outl = find(indall_good_and_outl==jj);
+                        %indall_good_and_outl = vector of length n containing the id
+                        %1,...,k of the group the observation belongs to for both trimmed and not
+                        %trimmed observations
+                        ijj_ori_good_and_outl = indall_good_and_outl == jj; % was find( indall_good_and_outl == jj)
+                        % weight vector is updated only if the group has
+                        % more than 10 observations and if the beta of the
+                        % group is not zero
+
+                        
+                        if  numel(ijj_good_and_outl)>10 && nameYY(end,jj) ~= 0
+                            % retention probabilities based on density estimated on the component
+                            % predicted values of the previous step. The bernoulli weights
+                            % (the first output argument of wthin, i.e. Wt) are not used.
+                            
+                            X_jj = X(ijj_good_and_outl,:);
+                            yhat = X_jj*nameYY(:,jj);
+                            
+                            [~ , pretain] = wthin(yhat);
+                            
+                            we(ijj_ori_good_and_outl) = pretain;
+                        else
+                            check_we_groups(jj) = 1;
+                            id_obs_in_groups_no_weight(:,jj) = ijj_ori_good_and_outl';
+                        end
+
+                        
+                        
+                        if  numel(ijj)>10 && nameYY(end,jj) ~= 0
                             % retention probabilities based on density estimated on the component
                             % predicted values of the previous step. The bernoulli weights
                             % (the first output argument of wthin, i.e. Wt) are not used.
@@ -1085,7 +1126,27 @@ while iter < nselected
                             
                             we(ijj_ori) = pretain;
                             weights(ijj,jj) = weights(ijj,jj) .* pretain;
+                            
                         end
+                        
+                    end
+                     %if in some groups it was not possible to run wthin, the we fixed equal to the
+                     %median of the weights (we) of the other groups. In order to simplify the code, the
+                     %median is computed using the weights (we) different from one, which is the
+                     %default value. In this way we underestimate the median weight (we), in case
+                     %wthin assigne to some observations we=1
+                    if sum(check_we_groups) > 0
+                        median_we = nanmedian(we(we~=1)) ;
+                        pos_check_we_groups = find(check_we_groups==1);
+                         for jj=1:length(pos_check_we_groups)
+                             %if the number of observations in the group not analysed with wthin is
+                             %0 there isnecessity to assigne the median
+                             n_obs_current_gr = sum(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)));
+                             if n_obs_current_gr > 0
+                                 rep_median_we = repmat(median_we,n_obs_current_gr,1);
+                                 we(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)) == 1) = rep_median_we;
+                             end
+                          end
                     end
                     
                 case 3
@@ -1110,7 +1171,7 @@ while iter < nselected
                         ijj_ori = find(indall == jj);
                         % weight vector is updated only if the group has more than 10 observations
                         % abd if the beta of the group is not zero
-                        if  numel(ijj)>10 && nameYY(end,jj)>0
+                        if  numel(ijj)>10 && nameYY(end,jj) ~= 0
                             % Bernoulli weights based on density estimated on the component
                             % predicted values of the previous step. The retention probabilities
                             % (the second output argument of wthin, i.e. pretain) are not used.
@@ -1401,6 +1462,12 @@ else
         
     elseif wtrim ==1 || wtrim == 2 || wtrim == 3
         qq_acend = qq(end:-1:1);
+        %the following assignement is a tentative to solve the problem of the trimming level when
+        %wtrim = 3. If it works, it won't be necessary to save weopt in the concentration
+        %steps.
+        if wtrim == 3 
+            weopt = wedef;
+        end
         cumsumyy = cumsum(weopt(qq_acend));
         if alpha1 <1
             qqunassigned_small = cumsumyy < alpha1*sum(weopt(qq_acend));
