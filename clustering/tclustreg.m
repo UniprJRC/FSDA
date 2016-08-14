@@ -1336,12 +1336,12 @@ while iter < nselected
             obj = 0;
             not_empty_g = ~( ni <= p + 1 );
             if mixt == 0
-                % Update weights
-                niini(jk) = ni(jk);
                 
                 jk = 0;
                 for iii = not_empty_g
                     jk = jk+1;
+                    % Update weights
+                    %niini(jk) = ni(jk);%bug
                     if iii ==1
                         yj = xmod(xmod(:,end) == jk,end-1);
                         Xj = xmod(xmod(:,end) == jk,1:end-2);
@@ -1465,9 +1465,9 @@ else
         %the following assignement is a tentative to solve the problem of the trimming level when
         %wtrim = 3. If it works, it won't be necessary to save weopt in the concentration
         %steps.
-        if wtrim == 3 
-            weopt = wedef;
-        end
+%         if wtrim == 3 
+%             weopt = wedef;
+%         end
         cumsumyy = cumsum(weopt(qq_acend));
         if alpha1 <1
             qqunassigned_small = cumsumyy < alpha1*sum(weopt(qq_acend));
