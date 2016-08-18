@@ -1068,7 +1068,7 @@ while iter < nselected
                     
                     % the next 5 lines are written to assigne a weight to the trimmed observations. 
                     % find indices of units in group jj
-                    indall_good_and_outl(qqassigned) = indtri;
+                    indall_good_and_outl(qqassigned)   = indtri;
                     indall_good_and_outl(qqunassigned) = indoutl;
                     %if it is not possible to  compute wthin in a group (because there are less than
                     %10 obs or because beta is zero), we are set to the median of the other weights
@@ -1566,7 +1566,6 @@ else
             ylabel('y');
             title({ ['TclustReg clustering: ' 'mixt=' num2str(mixt) ' - wtrim=' num2str(wtrim)] },'Fontsize',12);
             
-            
             jk = 0;
             for iii = not_empty_g
                 jk = jk+1;
@@ -1581,9 +1580,9 @@ else
                     else
                         ucg = find(asig2==jk);
                     end
-                    plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label]);
+                    plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
                     text(X(ucg,end),y(ucg),num2str(jk*ones(length(ucg),1)),...
-                        'DisplayName',[group_label ], ...
+                        'DisplayName',group_label , ...
                         'HorizontalAlignment','center',...
                         'VerticalAlignment','middle',...
                         'Color',clrdef(jk));
@@ -1592,11 +1591,11 @@ else
                     vv = [min(X(:,end)) max(X(:,end))];
                     if intercept==1
                         plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
-                            'DisplayName',[group_label ': fit (' num2str(length(ucg)) ')'],...
+                            'DisplayName',[group_label ' fit' ],...
                             'Color',clrdef(jk));
                     elseif intercept==0
                         plot(vv,bopt(:,jk)*vv,...
-                            'DisplayName',[group_label ': fit (' num2str(length(ucg)) ')'],...
+                            'DisplayName',[group_label ' fit' ],...
                             'Color',clrdef(jk));
                     end
                     
@@ -1644,6 +1643,15 @@ else
             %Unfortunately custom markers for line objects are not possible in MATLAB
             %set(hobj(10),'Marker','1','Color','k');
             
+            % control of the axis limits
+            xmin = min(X(:,end)); xmax = max(X(:,end));
+            ymin = min(y); ymax = max(y);
+            deltax = (xmax - xmin) / 10;     
+            deltay = (ymax - ymin) / 10;
+            
+            xlim([xmin-deltax,xmax+deltax]);
+            ylim([ymin-deltay,ymax+deltay]);
+
         else
             
             % in this case p > 2 and a standard spmplot is used
@@ -1675,8 +1683,6 @@ else
             %group_l = ['Trimmed units' ; group];
             %[hleg, hobj, hout, mout] =legend((out(1,end,:)));
         end
-    ylim([0 max(y)])
-    xlim([0 max(X)])
     end
     
     % If the scatters do not satisfy the restriction then a quadratic
