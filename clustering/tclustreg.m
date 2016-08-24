@@ -357,7 +357,9 @@ end
 %% initializations
 
 warning('off'); %#ok<WNOFF>
-%thinning threshold
+
+%Thinning threshold. A group with less than thinning_th units is not
+%considered for thinning.
 thinning_th = 50;
 
 %number of times that, after the first level of trimming, in a group there
@@ -403,7 +405,7 @@ vvarargin=varargin;
 % to be done at the very beginning, in particular before setting the number of samples nsamp.
 if nargin>6
     chknwtrim = strcmp(varargin,'wtrim');
-    if sum(chknwtrim)>0  
+    if sum(chknwtrim)>0
         if cell2mat(varargin(find(chknwtrim)+1)) == 4
             interc = find(max(X,[],1)-min(X,[],1) == 0);
             if p == numel(interc) +1
@@ -955,14 +957,15 @@ while iter < nselected
                     
                     %[~,qq] = sort(disc,'descend');
                     %qqunassigned = qq((n-trimm+1):n);
-                    %qq                    = qq(1:n-trimm);
+                    %qq           = qq(1:n-trimm);
                     
                     % qq = vector which contains the indexes associated with the largest n(1-alpha)
                     % likelihood contributions
                     % qqunassigned is vector which contains the indices of the remaining trimmed
                     % observations
                     qqunassigned = qq(1:trimm);
-                    qqassigned                    = qq(trimm + 1:n);
+                    qqassigned   = qq(trimm + 1:n);
+                    
                 case {1,2,3};
                     % trimming with observation weighting, set by the user or density estimation
                     %if wtrim = 3 the weights should be re-initialized to one, to avoid the
@@ -1000,14 +1003,14 @@ while iter < nselected
             % data and observation weights vectors associated with the units which have the
             % largest n(1-alpha) likelihood contributions
             Xuntri    = X(qqassigned,:);
-            Xtri    = X(qqunassigned,:);
-            yuntri     = y(qqassigned,:);
-            ytri     = y(qqunassigned,:);
-            weuntri  = we(qqassigned,:);
-            wetri  = we(qqunassigned,:);
-            induntri  =  indmax(qqassigned);
-            indtri  =  indmax(qqunassigned);
-            xmod = [Xuntri , yuntri , induntri];
+            Xtri      = X(qqunassigned,:);
+            yuntri    = y(qqassigned,:);
+            ytri      = y(qqunassigned,:);
+            weuntri   = we(qqassigned,:);
+            wetri     = we(qqunassigned,:);
+            induntri  = indmax(qqassigned);
+            indtri    = indmax(qqunassigned);
+            xmod      = [Xuntri , yuntri , induntri];
             
             % size of the groups nj (could be named mixing proportions or group weights)
             %histcount is more efficient but cannot be used because when one group is missing it
@@ -1032,7 +1035,7 @@ while iter < nselected
             % mixture or classification -- ).
             switch wtrim
                 
-                case {0,4} 
+                case {0,4}
                     %no observation weighting, therefore:
                     if mixt == 2
                         % for mixture likelihood, the weights are the posterior probabilities
@@ -1066,7 +1069,7 @@ while iter < nselected
                         weights =  repmat(weuntri,1,k);
                     end
                     
-                    % the next lines are written to assigne a weight to the trimmed observations. 
+                    % the next lines are written to assigne a weight to the trimmed observations.
                     
                     %indall_good = vector of length n containing the id 1,...,k of the group the
                     %observation belongs to or "-1" if the observations was trimmed
@@ -1084,11 +1087,14 @@ while iter < nselected
                     Xsort_ll = ones(n,1+intercept);
                     Xsort_ll(1:length(qqassigned),1+intercept) = Xuntri;
                     Xsort_ll(length(qqassigned)+1:end,1+intercept) = Xtri;
-                    %if it is not possible to  compute wthin in a group (because there are less than
-                    %thinning_th obs or because beta is zero), we are set to the median of the other
-                    %weights. To do this we create a k-vector check_we_groups which contains k
-                    %zeros, if all the k groups can be computed by wthin; otherwise it contains
-                    %ones in correpondence of the groups which cannot be computed by wthin.
+                    %if it is not possible to  compute wthin in a group
+                    %(because there are less than thinning_th obs or
+                    %because beta is zero), we are set to the median of the
+                    %other weights. To do this we create a k-vector
+                    %check_we_groups which contains k zeros, if all the k
+                    %groups can be computed by wthin; otherwise it contains
+                    %ones in correpondence of the groups which cannot be
+                    %computed by wthin.
                     check_we_groups = zeros(k,1);
                     id_obs_in_groups_no_weight = zeros(n,k);
                     for jj=1:k
@@ -1096,25 +1102,28 @@ while iter < nselected
                         ijj = find(induntri==jj);
                         %ijj_ori = vector of length n containing indices of untrimmed units in group jj
                         ijj_ori = indall_good == jj; % was find( indall == jj)
-
-                       %ijj_ori_good_and_outl = vector of length n containing indices of trimmed and untrimmed units in group jj
-                       ijj_ori_good_and_outl = indall_good_and_outl == jj; % was find( indall_good_and_outl == jj)
-                       %ijj_ori_good = vector of length n containing indices of untrimmed units in group jj
-                       ijj_ori_good = indall_good == jj; % was find( indall_good_and_outl == jj)
-
-                       % find indices of trimmed and untrimmed units in group jj
+                        
+                        %ijj_ori_good_and_outl = vector of length n containing indices of trimmed and untrimmed units in group jj
+                        ijj_ori_good_and_outl = indall_good_and_outl == jj; % was find( indall_good_and_outl == jj)
+                        %ijj_ori_good = vector of length n containing indices of untrimmed units in group jj
+                        ijj_ori_good = indall_good == jj; % was find( indall_good_and_outl == jj)
+                        
+                        % find indices of trimmed and untrimmed units in group jj
                         ijj_good_and_outl = find(ijj_ori_good_and_outl);
-                       % find indices of untrimmed units in group jj
+                        % find indices of untrimmed units in group jj
                         ijj_good = find(ijj_ori_good);
                         
                         % weight vector is updated only if the group has
-                        % more than thinning_th observations and if the beta of the
-                        % group is not zero
-                        %computation of weiights for trimmed and non-trimmed units
+                        % more than thinning_th observations and if the
+                        % beta of the group is not zero
+                        
+                        %computation of weights for trimmed and non-trimmed units
                         if  numel(ijj_good_and_outl)>thinning_th && nameYY(end,jj) ~= 0
-                            % retention probabilities based on density estimated on the component
-                            % predicted values of the previous step. The bernoulli weights
-                            % (the first output argument of wthin, i.e. Wt) are not used.
+                            % retention probabilities based on density
+                            % estimated on the component predicted values
+                            % of the previous step. The bernoulli weights
+                            % (the first output argument of wthin, i.e. Wt)
+                            % are not used.
                             
                             X_jj = Xsort_ll(ijj_good_and_outl,:);
                             yhat = X_jj*nameYY(:,jj);
@@ -1128,8 +1137,9 @@ while iter < nselected
                             id_obs_in_groups_no_weight(:,jj) = ijj_ori_good_and_outl';
                         end
                         
-                        %computation of weights only for non-trimmed units. It is necessary to
-                        %compute weights only for untrimmed units.
+                        %computation of weights only for non-trimmed units.
+                        %It is necessary to compute weights only for
+                        %untrimmed units.
                         if  numel(ijj)>thinning_th && nameYY(end,jj) ~= 0
                             Xtri_jj = Xuntri(ijj,:);
                             yhattri = Xtri_jj*nameYY(:,jj);
@@ -1141,48 +1151,50 @@ while iter < nselected
                             %weights for the parameter estimation step. They
                             %are computed only for non-trimmed units.
                             weights(ijj,jj) = weights(ijj,jj) .* pretain2;
-                            
-                            
                         end
                         
-%                        %computation of weiights only for non-trimmed units
-%                         if  numel(ijj)>thinning_th && nameYY(end,jj) ~= 0
-%                             % retention probabilities based on density estimated on the component
-%                             % predicted values of the previous step. The bernoulli weights
-%                             % (the first output argument of wthin, i.e. Wt) are not used.
-%                             Xtri_jj = Xtri(ijj,:);
-%                             yhattri = Xtri_jj*nameYY(:,jj);
-%                             
-%                             [~ , pretain] = wthin(yhattri);
-%                             
-%                             we(ijj_ori) = pretain;
-%                             weights(ijj,jj) = weights(ijj,jj) .* pretain;
-%                             
-%                         end
-
+                        %                        %computation of weiights only for non-trimmed units
+                        %                         if  numel(ijj)>thinning_th && nameYY(end,jj) ~= 0
+                        %                             % retention probabilities based on density estimated on the component
+                        %                             % predicted values of the previous step. The bernoulli weights
+                        %                             % (the first output argument of wthin, i.e. Wt) are not used.
+                        %                             Xtri_jj = Xtri(ijj,:);
+                        %                             yhattri = Xtri_jj*nameYY(:,jj);
+                        %
+                        %                             [~ , pretain] = wthin(yhattri);
+                        %
+                        %                             we(ijj_ori) = pretain;
+                        %                             weights(ijj,jj) = weights(ijj,jj) .* pretain;
+                        %
+                        %                         end
+                        
                         
                     end
-                     %if in some groups it was not possible to run wthin, the we fixed equal to the
-                     %median of the weights (we) of the other groups. In order to simplify the code, the
-                     %median is computed using the weights (we) different from one, which is the
-                     %default value. In this way we underestimate the median weight (we), in case
-                     %wthin assigne to some observations we=1
+                    %if in some group it was not possible to run wthin,
+                    %then we is fixed equal to the median of the weights
+                    %(we) of the other groups. In order to simplify the
+                    %code, the median is computed using the weights (we)
+                    %different from one, which is the default value. In
+                    %this way we underestimate the median weight (we), in
+                    %case wthin assigns to some observations we=1
                     if sum(check_we_groups) > 0
                         median_we = nanmedian(we(we~=1)) ;
                         pos_check_we_groups = find(check_we_groups==1);
-                         for jj=1:length(pos_check_we_groups)
-                             %if the number of observations in the group not analysed with wthin is
-                             %0 there isnecessity to assigne the median
-                             n_obs_current_gr = sum(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)));
-                             if n_obs_current_gr > 0
-                                 rep_median_we = repmat(median_we,n_obs_current_gr,1);
-                                 we(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)) == 1) = rep_median_we;
-                             end
-                          end
+                        for jj=1:length(pos_check_we_groups)
+                            %if the number of observations in the group not
+                            %analysed with wthin is 0 there is necessity to
+                            %assign the median
+                            n_obs_current_gr = sum(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)));
+                            if n_obs_current_gr > 0
+                                rep_median_we = repmat(median_we,n_obs_current_gr,1);
+                                we(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)) == 1) = rep_median_we;
+                            end
+                        end
                     end
                     
                 case 3
-                    % weights are the posterior probabilities multiplied by the bernoulli weights
+                    % weights are the posterior probabilities multiplied by
+                    % the bernoulli weights
                     
                     %initialize weight for trimming
                     we = wedef ;
@@ -1193,7 +1205,9 @@ while iter < nselected
                     elseif mixt == 0
                         weights =  repmat(weuntri,1,k);
                     end
-                    %indall = vector of length n containing the id 1,...,k of the group the observation belongs to or "-1" if the observations was trimmed
+                    %indall = vector of length n containing the id 1,...,k
+                    %of the group the observation belongs to or "-1" if the
+                    %observations was trimmed
                     indall_good = -ones(n,1);
                     indall_good(qqassigned) = induntri;
                     ii = 0;
@@ -1201,12 +1215,16 @@ while iter < nselected
                         % find indices of units in group jj
                         ijj = find(induntri==jj);
                         ijj_ori = find(indall_good == jj);
-                        % weight vector is updated only if the group has more than thinning_th observations
-                        % abd if the beta of the group is not zero
+                        
+                        % weight vector is updated only if the group has
+                        % more than thinning_th observations abd if the
+                        % beta of the group is not zero
                         if  numel(ijj)> thinning_th && nameYY(end,jj) ~= 0
-                            % Bernoulli weights based on density estimated on the component
-                            % predicted values of the previous step. The retention probabilities
-                            % (the second output argument of wthin, i.e. pretain) are not used.
+                            % Bernoulli weights based on density estimated
+                            % on the component predicted values of the
+                            % previous step. The retention probabilities
+                            % (the second output argument of wthin, i.e.
+                            % pretain) are not used.
                             Xtri_jj = Xuntri(ijj,:);
                             yhattri = Xtri_jj*nameYY(:,jj);
                             
@@ -1214,11 +1232,13 @@ while iter < nselected
                             
                             % the ids of the thinned observations. Values between [1 n]
                             idWt0 = ijj_ori(Wt == 0);
-                            %update of the we vector, necessary for doing the trimming on all the observations in the next
-                            %step. we is n x 1.
+                            %update of the we vector, necessary for doing
+                            %the trimming on all the observations in the
+                            %next step. we is n x 1.
                             we(idWt0) = 0;
-                            %update of the weights vector, necessary for doing the regression
-                            %parameter estimation on the observations not trimmed and not thinned.
+                            %update of the weights vector, necessary for
+                            %doing the regression parameter estimation on
+                            %the observations not trimmed and not thinned.
                             %weight has size (n_not_trimmes x k)
                             weights(ijj,jj) = weights(ijj,jj) .* Wt;
                             
@@ -1233,12 +1253,15 @@ while iter < nselected
             
             weightmod = [weights, induntri ];
             
-            % initializations of xmodtemp which is a working matrix used for creating xmod (which
-            % contains the results of the second trimming for all the observations) from xmodjj
-            % (which contains the results of the second trimming for the current group).
+            % initializations of xmodtemp which is a working matrix used
+            % for creating xmod (which contains the results of the second
+            % trimming for all the observations) from xmodjj (which
+            % contains the results of the second trimming for the current
+            % group).
             xmodtemp    = zeros(n,p+2);
-            % initializations of indxmodtemp which is a working scalar used to identify the rows of
-            % xmodtemp, where to append the following group results.
+            % initializations of indxmodtemp which is a working scalar used
+            % to identify the rows of xmodtemp, where to append the
+            % following group results.
             indxmodtemp = 0;
             
             not_empty_g = ~( ni <= p + 1 );
@@ -1259,20 +1282,24 @@ while iter < nselected
                 if iii == 1
                     %extract x and y belonging to group iii
                     xmodj = xmod(xmod(:,end)==jk,:);
-                    %extract the weights (for beta estimation) of observations belonging to group iii
+                    
+                    %extract the weights (for beta estimation) of
+                    %observations belonging to group iii
                     weightmodj = weightmod(weightmod(:,end) == jk,:);
                     
                     
-                    % qqs contains contains the indexes of untrimmed units (after 2nd level
-                    % trimming)  for group j
+                    % qqs contains contains the indexes of untrimmed units
+                    % (after 2nd level trimming)  for group j
                     if alpha2 == 0
                         qqs = 1:ni(jk);
                     else
-                        % Find the units with the smallest h distances. Apply mcd on the x space
-                        % (without the intercept if present).
-                        % REMARK: This is by far the computationally most expensive instruction of
-                        % tclustreg. More precisely, the dominant expensive function inside mcd is
-                        % IRWLSmcd.
+                        % Find the units with the smallest h distances.
+                        % Apply mcd on the x space (without the intercept
+                        % if present).
+                        % REMARK: This is by far the computationally most
+                        % expensive instruction of tclustreg. More
+                        % precisely, the dominant expensive function inside
+                        % mcd is IRWLSmcd.
                         if intercept
                             if alpha2 < 1
                                 RAW = mcd(xmodj(:,2:p),'bdp',alpha2,'msg',0);
@@ -1287,7 +1314,7 @@ while iter < nselected
                             end
                         end
                         [~,indmdsor] = sort(RAW.md);
-                        %
+
                         if alpha2 < 1
                             qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
                         else
@@ -1301,8 +1328,8 @@ while iter < nselected
                     yyy = xmodj(qqs,p+1);
                     %dimension of group iii, after second level trimming.
                     ni(jk) = length(yyy);
-                    %weights (for beta estimation) of observations belonging to group iii, after
-                    %second level trimming.
+                    %weights (for beta estimation) of observations
+                    %belonging to group iii, after second level trimming.
                     weightmodj_jk = sqrt(weightmodj(qqs,jk));
                     %weighted regression for group iii, after second level trimming.
                     breg =  (bsxfun(@times,xxx, weightmodj_jk)) \ (bsxfun(@times,yyy ,weightmodj_jk));
@@ -1312,8 +1339,9 @@ while iter < nselected
                     residuals = yyy-xxx*breg;
                     % Update sigmas through the mean square residuals
                     sigmaini(jk) = sum((residuals .* weightmodj_jk).^2)/(sum((weightmodj_jk).^2));
-                    %xmodtemp is a working matrix necessary to concatenate the results of the second
-                    %level trimming of the current group, with all the other groups.
+                    %xmodtemp is a working matrix necessary to concatenate
+                    %the results of the second level trimming of the
+                    %current group, with all the other groups.
                     xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodj(qqs,:);
                     indxmodtemp = indxmodtemp+ni(jk);
                     
@@ -1377,23 +1405,23 @@ while iter < nselected
                     if iii ==1
                         yj = xmod(xmod(:,end) == jk,end-1);
                         Xj = xmod(xmod(:,end) == jk,1:end-2);
-                        %the following command should be executed at the
-                        %end of the for loop of the concentration steps.
-                        %However here it is executed in all steps, because of
-                        %the above break from the loop, which is executed if two
-                        %consecutive concentration steps have the same
-                        %result
+                        
+                        %The following line should be executed at the end
+                        %of the concentration steps loop. It is executed at
+                        %each step because of the break above, which is
+                        %executed if two consecutive concentration steps
+                        %have the same result
                         
                         obj = obj + niini(jk)*log(niini(jk)/trimm2) +...
                             sum(logmvnpdfFS(yj-Xj*nameYY(:,jk),0,(sigmaini(jk))));
                     else
-                        %if a groupis missing, we do not compute the objective
-                        %function for it.
+                        %if a group is missing, we do not compute its
+                        %objective function contribution.
                     end
                 end
                 
-%                 nameYY(:,~not_empty_g) = NaN;
-%                 sigmaini(~not_empty_g) = NaN;
+                %                 nameYY(:,~not_empty_g) = NaN;
+                %                 sigmaini(~not_empty_g) = NaN;
                 
             elseif mixt == 2
                 %the following command should be executed at the end of
@@ -1424,10 +1452,10 @@ while iter < nselected
                 group_missing = sum(isnan(log_lh),1)>0;
                 log_lh(:,group_missing)=[];
                 obj = estepFS(log_lh);
-%                 if ~isempty(group_missing)
-%                     nameYY(:,group_missing) = NaN;
-%                     sigmaini(group_missing) = NaN;
-%                 end
+                %                 if ~isempty(group_missing)
+                %                     nameYY(:,group_missing) = NaN;
+                %                     sigmaini(group_missing) = NaN;
+                %                 end
             end
             
         end % End of concentration steps
@@ -1494,12 +1522,12 @@ else
         
     elseif wtrim ==1 || wtrim == 2 || wtrim == 3
         qq_acend = qq(end:-1:1);
-        %the following assignement is a tentative to solve the problem of the trimming level when
-        %wtrim = 3. If it works, it won't be necessary to save weopt in the concentration
-        %steps.
-%         if wtrim == 3 
-%             weopt = wedef;
-%         end
+        %the following assignement is to try solving the problem of
+        %the trimming level when wtrim = 3. If it works, it won't be
+        %necessary to save weopt in the concentration steps.
+        %         if wtrim == 3
+        %             weopt = wedef;
+        %         end
         cumsumyy = cumsum(weopt(qq_acend));
         if alpha1 <1
             qqunassigned_small = cumsumyy < alpha1*sum(weopt(qq_acend));
@@ -1521,10 +1549,9 @@ else
     % xmod: contains the good units and, in the last column, their group assignment
     xmod = [X(qqassigned,:) y(qqassigned) indmax(qqassigned)];
     
-    % IS THIS PART BELOW MADE JUST TO COUNT the number of times the number
-    % of groups is lt k? IF YES, SHOULD THIS BE MOVED AT THE END OF THE
-    % LOOP BELOW, AFTER SECOND LEVEL TRIMMING?
-    % DOME BEGIN
+    % DOME. IS THIS PART BELOW MADE JUST TO COUNT the number of times the
+    % number of groups is lt k? IF YES, SHOULD THIS BE MOVED AT THE END OF
+    % THE LOOP BELOW, AFTER SECOND LEVEL TRIMMING?
     % go over the groups
     for jk = 1:k
         booljk = xmod(:,end) == jk;
@@ -1633,7 +1660,7 @@ else
                     
                     %plot the thinned units
                     if wtrim == 3
-                        % misteriously text does not show the legend.
+                        % misteriously text does not show a legend.
                         %                text(X(ucg,end),y(ucg),num2str(0*ones(length(ucg),1)),...
                         %                         'DisplayName','Thinned units' , ...
                         %                         'HorizontalAlignment','center',...
@@ -1643,7 +1670,7 @@ else
                         plot(X(ucg,end),y(ucg),symdef(jk),'color',clrdef(k+1),...
                             'DisplayName',['Group ' num2str(jk) ': thinned units (' num2str(length(ucg)) ')' ]);
                     end
-
+                    
                 end
             end
             
@@ -1652,41 +1679,39 @@ else
             plot(X(b_outl,end),y(b_outl),'o','color','r',...
                 'DisplayName',['Trimmed units (' num2str(length(y(b_outl))) ')']);
             
-            % second level trimming points
+            % Second level trimming points
             b_outl_2 = ~(asig1==asig2);
             xxx0_all = X(b_outl_2,end);
             yyy0_all = y(b_outl_2);
             plot(xxx0_all,yyy0_all,'*','color','c',...
                 'DisplayName',['L2 trimmed units (' num2str(length(yyy0_all)) ')']);
             
-             if wtrim == 4 
-                 % in case of tandem thinning, plot the thinned points
-                 plot(Xori(~Wt4,end),yori(~Wt4),symdef(k+1),'color',clrdef(k+1),...
-                            'DisplayName',['Thinned units (' num2str(length(Wt4) - sum(Wt4)) ')']);
-             end
-
-            % position the legends and make them clickable
+            if wtrim == 4
+                % in case of tandem thinning, plot the thinned points
+                plot(Xori(~Wt4,end),yori(~Wt4),symdef(k+1),'color',clrdef(k+1),...
+                    'DisplayName',['Thinned units (' num2str(length(Wt4) - sum(Wt4)) ')']);
+            end
+            
+            % Position the legends and make them clickable. For some reason
+            % clickableMultiLegend does not set properly the FontSize: to be fixed. 
             lh=legend('show');
-            %set(lh,'FontSize',14);
-            axis('manual');
             legstr = get(lh,'String');
             clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
-            %[hleg, hobj, hout, mout] = clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
-            %Unfortunately custom markers for line objects are not possible in MATLAB
-            %set(hobj(10),'Marker','1','Color','k');
+            
+            axis('manual');
             
             % control of the axis limits
             xmin = min(X(:,end)); xmax = max(X(:,end));
             ymin = min(y); ymax = max(y);
-            deltax = (xmax - xmin) / 10;     
+            deltax = (xmax - xmin) / 10;
             deltay = (ymax - ymin) / 10;
             
             xlim([xmin-deltax,xmax+deltax]);
             ylim([ymin-deltay,ymax+deltay]);
-
+            
         else
             
-            % in this case p > 2 and a standard spmplot is used
+            % In this case p > 2. A standard spmplot is used.
             
             if intercept
                 YY = [X(:,2:end),y];
