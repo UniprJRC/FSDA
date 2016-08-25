@@ -286,8 +286,9 @@ pdfe(pdfe<10^(-8))=10^(-8);
 if retainby == 0
     % in this case the user has not provided optional arguments and accept
     % all defaults. For performance reasons, the 'switch' statement is
-    % skipped and the default 'inverse' function is applied.
-    pretain = (1 ./ pdfe) / max((1 ./ pdfe));
+    % skipped and the default 'comp2one' function is applied.
+    %pretain = 1 - pdfe/max(pdfe);
+    pretain = 1 - pdfe/max(pdfe);
 else
     switch retainby
         case 'comp2one'

@@ -986,6 +986,8 @@ while iter < nselected
                     % qq_small introduced because setdiff below is inefficient
                     %qq = setdiff((1:n)',qqunassigned);
             end
+            qqunassigned = sort(qqunassigned);
+            qqassigned = sort(qqassigned);
             
             % In case of mixture modeling:
             if mixt == 2
@@ -1086,7 +1088,11 @@ while iter < nselected
                     %Xsort_ll is X sorted in ascending order of loglikelihood, as Xuntri etc.
                     Xsort_ll = ones(n,1+intercept);
                     Xsort_ll(1:length(qqassigned),1+intercept) = Xuntri;
-                    Xsort_ll(length(qqassigned)+1:end,1+intercept) = Xtri;
+                    Xsort_ll(length(qqassigned)+1:end,1+intercept) = Xtri; 
+                    %ysort_ll is y sorted in ascending order of loglikelihood, as yuntri etc.
+                    ysort_ll = ones(n,1);
+                    ysort_ll(1:length(qqassigned)) = yuntri;
+                    ysort_ll(length(qqassigned)+1:end) = ytri;
                     %if it is not possible to  compute wthin in a group
                     %(because there are less than thinning_th obs or
                     %because beta is zero), we are set to the median of the
@@ -1208,13 +1214,13 @@ while iter < nselected
                     %indall = vector of length n containing the id 1,...,k
                     %of the group the observation belongs to or "-1" if the
                     %observations was trimmed
-                    indall_good = -ones(n,1);
-                    indall_good(qqassigned) = induntri;
+                    indall = -ones(n,1);
+                    indall(qqassigned) = induntri;
                     ii = 0;
                     for jj=1:k
                         % find indices of units in group jj
                         ijj = find(induntri==jj);
-                        ijj_ori = find(indall_good == jj);
+                        ijj_ori = find(indall == jj);
                         
                         % weight vector is updated only if the group has
                         % more than thinning_th observations abd if the
@@ -1226,16 +1232,21 @@ while iter < nselected
                             % (the second output argument of wthin, i.e.
                             % pretain) are not used.
                             Xtri_jj = Xuntri(ijj,:);
+                            ytri_jj = yuntri(ijj,:);
                             yhattri = Xtri_jj*nameYY(:,jj);
                             
                             [Wt , ~] = wthin(yhattri);
-                            
-                            % the ids of the thinned observations. Values between [1 n]
-                            idWt0 = ijj_ori(Wt == 0);
-                            %update of the we vector, necessary for doing
+%                            figure;gscatter(Xtri_jj,ytri_jj,Wt)
+                            % the ids of the thinned observations. Values between [1 n_untrimmed]
+                            idWt0 = ijj(Wt == 0);
+                            %update of the we and wetri vector, necessary for doing
                             %the trimming on all the observations in the
-                            %next step. we is n x 1.
-                            we(idWt0) = 0;
+                            %next step. wetri is n_untrimmed x 1 we is n x 1.
+                            weuntri(idWt0) = 0;
+                            we(qqassigned)=weuntri;
+                                              
+%                            figure;gscatter(X,y,we)
+                            
                             %update of the weights vector, necessary for
                             %doing the regression parameter estimation on
                             %the observations not trimmed and not thinned.
@@ -1245,6 +1256,8 @@ while iter < nselected
                             % count the thinned observations
                             nthinned = sum(Wt == 0);
                             ii = ii + nthinned;
+                            
+
                         end
                         
                     end
