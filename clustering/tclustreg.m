@@ -1007,9 +1007,7 @@ while iter < nselected
             Xuntri    = X(qqassigned,:);
             Xtri      = X(qqunassigned,:);
             yuntri    = y(qqassigned,:);
-            ytri      = y(qqunassigned,:);
             weuntri   = we(qqassigned,:);
-            wetri     = we(qqunassigned,:);
             induntri  = indmax(qqassigned);
             indtri    = indmax(qqunassigned);
             xmod      = [Xuntri , yuntri , induntri];
@@ -1075,8 +1073,8 @@ while iter < nselected
                     
                     %indall_good = vector of length n containing the id 1,...,k of the group the
                     %observation belongs to or "-1" if the observations was trimmed
-                    indall_good = -ones(n,1);
-                    indall_good(qqassigned) = induntri;
+                    indall = -ones(n,1);
+                    indall(qqassigned) = induntri;
                     
                     % indall_good_and_outl  = vector of length n containing the id 1,...,k of the group the
                     %observation belongs to, for trimmed and untrimmed units.
@@ -1089,10 +1087,6 @@ while iter < nselected
                     Xsort_ll = ones(n,1+intercept);
                     Xsort_ll(1:length(qqassigned),1+intercept) = Xuntri;
                     Xsort_ll(length(qqassigned)+1:end,1+intercept) = Xtri; 
-                    %ysort_ll is y sorted in ascending order of loglikelihood, as yuntri etc.
-                    ysort_ll = ones(n,1);
-                    ysort_ll(1:length(qqassigned)) = yuntri;
-                    ysort_ll(length(qqassigned)+1:end) = ytri;
                     %if it is not possible to  compute wthin in a group
                     %(because there are less than thinning_th obs or
                     %because beta is zero), we are set to the median of the
@@ -1107,17 +1101,16 @@ while iter < nselected
                         % ijj: indices of untrimmed units in group jj
                         ijj = find(induntri==jj);
                         %ijj_ori = vector of length n containing indices of untrimmed units in group jj
-                        ijj_ori = indall_good == jj; % was find( indall == jj)
+                        ijj_ori = indall == jj; % was find( indall == jj)
                         
                         %ijj_ori_good_and_outl = vector of length n containing indices of trimmed and untrimmed units in group jj
                         ijj_ori_good_and_outl = indall_good_and_outl == jj; % was find( indall_good_and_outl == jj)
                         %ijj_ori_good = vector of length n containing indices of untrimmed units in group jj
-                        ijj_ori_good = indall_good == jj; % was find( indall_good_and_outl == jj)
-                        
+                        %ijj_ori_good = indall_good == jj; % was find( indall_good_and_outl == jj)
+
                         % find indices of trimmed and untrimmed units in group jj
                         ijj_good_and_outl = find(ijj_ori_good_and_outl);
-                        % find indices of untrimmed units in group jj
-                        ijj_good = find(ijj_ori_good);
+
                         
                         % weight vector is updated only if the group has
                         % more than thinning_th observations and if the
@@ -1214,14 +1207,13 @@ while iter < nselected
                     %indall = vector of length n containing the id 1,...,k
                     %of the group the observation belongs to or "-1" if the
                     %observations was trimmed
-                    indall = -ones(n,1);
-                    indall(qqassigned) = induntri;
+                    %indall = -ones(n,1);
+                    %indall(qqassigned) = induntri;
                     ii = 0;
                     for jj=1:k
                         % find indices of units in group jj
                         ijj = find(induntri==jj);
-                        ijj_ori = find(indall == jj);
-                        
+                        %ijj_ori = find(indall == jj);
                         % weight vector is updated only if the group has
                         % more than thinning_th observations abd if the
                         % beta of the group is not zero
@@ -1232,7 +1224,6 @@ while iter < nselected
                             % (the second output argument of wthin, i.e.
                             % pretain) are not used.
                             Xtri_jj = Xuntri(ijj,:);
-                            ytri_jj = yuntri(ijj,:);
                             yhattri = Xtri_jj*nameYY(:,jj);
                             
                             [Wt , ~] = wthin(yhattri);
