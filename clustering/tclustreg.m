@@ -930,7 +930,15 @@ while iter < nselected
             %In this case we force to exit from the concentration step
             not_empty_g = zeros(1,k);
             if sum(isnan(nameYY)) == k
-
+                if check_beta == 0
+                    count_elim = count_elim + 1;
+                    good_initial_subs = 0;
+                    selj_elim_groups(count_elim,:) = selj_good_groups(count,:);
+                    count = count-1;
+                    nselected = nselected+1;
+                    check_beta = 1;
+                end
+            else   
                 %% Log-likelihood
 
                 % Discriminant functions for the assignments
@@ -1524,16 +1532,7 @@ while iter < nselected
                     %                     sigmaini(group_missing) = NaN;
                     %                 end
                 end
-            else
-                if check_beta == 0
-                    count_elim = count_elim + 1;
-                    good_initial_subs = 0;
-                    selj_elim_groups(count_elim,:) = selj_good_groups(count,:);
-                    count = count-1;
-                    nselected = nselected+1;
-                    check_beta = 1;
-                end
-            end   
+            end
         end % End of concentration steps
         
         %% Change the 'optimal' target value and 'optimal' parameters
