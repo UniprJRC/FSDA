@@ -1750,9 +1750,9 @@ else
                     % Indices are taken after the second level trimming.
                     % Trimmed points are not plotted by group.
                     if wtrim ==3
-                        ucg = find(indmaxopt==jk & weopt == 1);
+                        ucg = find(indmaxopt==jk & weopt == 1 & trim1level_01opt ==1 & trim2level_01opt == 1);
                     else
-                        ucg = find(indmaxopt==jk);
+                        ucg = find(indmaxopt==jk &  trim1level_01opt ==1 & trim2level_01opt == 1);
                     end
                       %number of not trimmed and not thinned observations in each group
                     num_obs_in_gr_notrim_nothin = length(find(indmaxopt == jk & weopt == 1 & trim1level_01opt == 1 & trim2level_01opt == 1));
@@ -1794,7 +1794,7 @@ else
             end
             
             % Plot the outliers (trimmed points)
-            plot(X(trim1levelopt,end),y(trim1levelopt),'o','color','r','MarkerSize',13,...
+            plot(X(trim1levelopt,end),y(trim1levelopt),'o','color','r','MarkerSize',12,...
                 'DisplayName',['Trimmed units (' num2str(length(y(trim1levelopt))) ')']);
             
             % Second level trimming points
