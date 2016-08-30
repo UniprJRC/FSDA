@@ -1,4 +1,4 @@
-function [out] = tclustreg2(y,X,k,restrfact,alpha1,alpha2,varargin)
+function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %tclustreg performs robust linear grouping analysis
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help function</a>
@@ -799,36 +799,36 @@ check_obj_reached = 0;
 while check_obj_reached == 0
     %% Initialize structures
 
-    ll         = zeros(n,k);
-    ni         = ones(1,k);
-    sigmaopt   = ni;
-    bopt       = zeros(p,k);
-    numopt     = zeros(1,k);
-    weopt = ones(n,1);
-    trim1levelopt = ones(n,1);
-    trim2levelopt = ones(n,1);
-    indmaxopt = zeros(n,1);
-    not_empty_gopt = zeros(1,k);
+    ll                                       = zeros(n,k);
+    ni                                      = ones(1,k);
+    sigmaopt                         = ni;
+    bopt                                 = zeros(p,k);
+    numopt                            = zeros(1,k);
+    weopt                               = ones(n,1);
+    trim1levelopt                   = ones(n,1);
+    trim2levelopt                   = ones(n,1);
+    indmaxopt                        = zeros(n,1);
+    not_empty_gopt              = zeros(1,k);
     count1_ng_lt_kopt          = 0;
     count2_ng_lt_kopt          = 0;
     count1_ng_eq_kopt       = 0;
     count2_ng_eq_kopt       = 0;
     extra_inisubsopt             = nselected - nsampdef;
-    selj_goodopt                  = zeros(nselected,k);
-    selj_elimopt                    = zeros(nselected,k);
-    selj_allopt                       = zeros(nselected,k);
+    selj_goodopt                   = zeros(nselected,k);
+    selj_elimopt                     = zeros(nselected,k);
+    selj_allopt                        = zeros(nselected,k);
     if mixt ==2
-        postprobopt = zeros(n,k);
+        postprobopt                 = zeros(n,k);
     end
 
-    count      = 0;
-    count_elim = 0;
-    iter       = 0;
-    sigmaini   = ones(1,k);
-    comb_beta  = combnk(1:k,2);
-    diff       = NaN(intercept+1,size(comb_beta,1));
-    selj_good_groups = NaN(nselected,k*p);
-    selj_elim_groups = NaN(nselected,k*p);
+    count                                = 0;
+    count_elim                       = 0;
+    iter                                    = 0;
+    sigmaini                            = ones(1,k);
+    comb_beta                       = combnk(1:k,2);
+    diff                                     = NaN(intercept+1,size(comb_beta,1));
+    selj_good_groups            = NaN(nselected,k*p);
+    selj_elim_groups              = NaN(nselected,k*p);
     
     %%  Random starts
     while iter < nselected
@@ -1093,6 +1093,9 @@ while check_obj_reached == 0
                                 weightsuntri = repmat(weuntri,1,k);
                             end
 
+                            weuntri_unthinned = weuntri;
+                            weightsuntri_unthinned = weightsuntri;
+                            
                         case 1
                             % user weights applied to each observation;   the weights are the posterior
                             % probabilities multiplied by the user weights
@@ -1102,6 +1105,9 @@ while check_obj_reached == 0
                             elseif mixt == 0
                                 weightsuntri =   repmat(weuntri,1,k);
                             end
+                            
+                            weuntri_unthinned = weuntri;
+                            weightsuntri_unthinned = weightsuntri;
 
                         case 2
                             % weights are the posterior probabilities multiplied by the density
@@ -1239,6 +1245,8 @@ while check_obj_reached == 0
                                 end
                             end
 
+                            weuntri_unthinned = weuntri;
+                            weightsuntri_unthinned = weightsuntri;
                         case 3
 
                             % weights are the posterior probabilities multiplied by
@@ -1909,6 +1917,7 @@ else
     if mixt == 2
         out.postprobopt               = postprobopt;
     end
+    out.restrfact = restrfact;
     
     %   bopt           = regression parameters
     %   sigmaopt0      = estimated group variances
