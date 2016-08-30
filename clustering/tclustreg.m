@@ -746,20 +746,20 @@ else
 end
 trimm = n-notrim;
 
-% Total trimming after second trimming
-if alpha1<1
-    if alpha2<1
-        trimm2 = floor(n*(1-alpha1)*(1-alpha2));
-    elseif alpha2>=1
-        trimm2 = floor(n*(1-alpha1)*(1-alpha2/n));
-    end
-elseif alpha1>=1
-    if alpha2 >= 1
-        trimm2 = floor(n-floor(alpha1)-floor(alpha2));
-    elseif alpha2 < 1
-        trimm2 = floor(n*(1-alpha1/n)*(1-alpha2));
-    end
-end
+% % Total trimming after second trimming
+% if alpha1<1
+%     if alpha2<1
+%         trimm2 = floor(n*(1-alpha1)*(1-alpha2));
+%     elseif alpha2>=1
+%         trimm2 = floor(n*(1-alpha1)*(1-alpha2/n));
+%     end
+% elseif alpha1>=1
+%     if alpha2 >= 1
+%         trimm2 = floor(n-floor(alpha1)-floor(alpha2));
+%     elseif alpha2 < 1
+%         trimm2 = floor(n*(1-alpha1/n)*(1-alpha2));
+%     end
+% end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
 
@@ -935,7 +935,6 @@ while check_obj_reached == 0
                 if sum(isnan(nameYY)) == k
                     if check_beta == 0
                         count_elim = count_elim + 1;
-                        good_initial_subs = 0;
                         selj_elim_groups(count_elim,:) = selj_good_groups(count,:);
                         count = count-1;
                         nselected = nselected+1;
@@ -1040,13 +1039,13 @@ while check_obj_reached == 0
 
                     % data and observation weights vectors associated with the units which have the
                     % largest n(1-alpha) likelihood contributions
-                    Xuntri    = X(qqassigned,:);
-                    Xtri      = X(qqunassigned,:);
-                    yuntri    = y(qqassigned,:);
-                    weuntri   = we(qqassigned,:);
-                    induntri  = indmax(qqassigned);
-                    indtri    = indmax(qqunassigned);
-                    xmoduntri      = [Xuntri , yuntri , induntri];
+                    Xuntri              = X(qqassigned,:);
+                    Xtri                  = X(qqunassigned,:);
+                    yuntri               = y(qqassigned,:);
+                    weuntri            = we(qqassigned,:);
+                    induntri            = indmax(qqassigned);
+                    indtri                = indmax(qqunassigned);
+                    xmoduntri        = [Xuntri , yuntri , induntri];
 
                     % size of the groups nj (could be named mixing proportions or group weights)
                     %histcount is more efficient but cannot be used because when one group is missing it
@@ -1074,8 +1073,6 @@ while check_obj_reached == 0
                     % mixture or classification -- ).
 
                     xmoduntri_unthinned = xmoduntri;
-                    Xuntri_unthinned = Xuntri;
-                    yuntri_unthinned = yuntri;
                     induntri_unthinned = induntri;
                     weuntri_unthinned = weuntri;
                     if mixt == 2
@@ -1093,7 +1090,6 @@ while check_obj_reached == 0
                                 weightsuntri = repmat(weuntri,1,k);
                             end
 
-                            weuntri_unthinned = weuntri;
                             weightsuntri_unthinned = weightsuntri;
                             
                         case 1
@@ -1106,7 +1102,6 @@ while check_obj_reached == 0
                                 weightsuntri =   repmat(weuntri,1,k);
                             end
                             
-                            weuntri_unthinned = weuntri;
                             weightsuntri_unthinned = weightsuntri;
 
                         case 2
@@ -1245,7 +1240,6 @@ while check_obj_reached == 0
                                 end
                             end
 
-                            weuntri_unthinned = weuntri;
                             weightsuntri_unthinned = weightsuntri;
                         case 3
 
@@ -1310,19 +1304,14 @@ while check_obj_reached == 0
                                     %eliminate thinned observations
                                     ni(jj) = ni(jj) - nthinned;
 
-
-
                                 end
 
                             end
 
                             we(qqassigned)=weuntri;
                             xmoduntri_unthinned(weuntri_unthinned == 0,:)=[];
-                            Xuntri_unthinned(weuntri_unthinned == 0,:)=[];
-                            yuntri_unthinned(weuntri_unthinned == 0,:)= [];
                             induntri_unthinned(weuntri_unthinned == 0,:)= [];
                             weightsuntri_unthinned(weuntri_unthinned == 0,:)= [];
-                            weuntri_unthinned(weuntri_unthinned == 0) = [];
                             if mixt == 0
                                    niini =ni;
                             elseif mixt ==0
@@ -1332,7 +1321,6 @@ while check_obj_reached == 0
 
                     end
 
-                    weightmoduntri = [weightsuntri, induntri ];
                     weightmoduntri_unthinned = [weightsuntri_unthinned, induntri_unthinned ];
                     % initializations of xmodtemp which is a working matrix used
                     % for creating xmod (which contains the results of the second
@@ -1367,7 +1355,6 @@ while check_obj_reached == 0
                             xmodjuntri_unthinned = xmoduntri_unthinned(xmoduntri_unthinned(:,end)==jk,:);
                             %extract the weights (for beta estimation) of
                             %observations belonging to group iii
-                            weightmodjuntri = weightmoduntri(weightmoduntri(:,end) == jk,:);
                             weightmodjuntri_unthinned = weightmoduntri_unthinned(weightmoduntri_unthinned(:,end) == jk,:);
 
 
@@ -1435,7 +1422,6 @@ while check_obj_reached == 0
                         else
 
                             xmodjuntri_unthinned = xmoduntri_unthinned(xmoduntri_unthinned(:,end)==jk,:);
-                            xmodjuntri = [];
 
                             if alpha2 == 0
                                 qqs = [];
@@ -1554,16 +1540,16 @@ while check_obj_reached == 0
             if sum(not_empty_g ) == k
                 if sum(sum(isnan(nameYY))) == 0
                     if (obj >= vopt)
-                        check_obj_reached = 1;
-                        vopt = obj;
-                        bopt = nameYY;
-                        numopt = niini;
-                        sigmaopt = sigmaini;
-                        weopt = we;
-                        trim1levelopt = trim1level;
-                        trim2levelopt = trim2level;
-                        indmaxopt = indmax;
-                        not_empty_gopt = not_empty_g;
+                        check_obj_reached         = 1;
+                        vopt                                   = obj;
+                        bopt                                   = nameYY;
+                        numopt                              = niini;
+                        sigmaopt                           = sigmaini;
+                        weopt                                = we;
+                        trim1levelopt                     = trim1level;
+                        trim2levelopt                     = trim2level;
+                        indmaxopt                         = indmax;
+                        not_empty_gopt              = not_empty_g;
                         count1_ng_lt_kopt          = count1_ng_lt_k;
                         count2_ng_lt_kopt          = count2_ng_lt_k;
                         count1_ng_eq_kopt       = count1_ng_eq_k;
@@ -1591,134 +1577,6 @@ if count < nsamp
     out = struct;
 else
     
-%     %% Prepares the output structure and some variables for the plots
-%     
-%     % Assignment vectors:
-%     % - asig.1 will contain the clusters after the first trimming
-%     % - asig.2 will contain the clusters after after the second trimming
-%     asig1 = zeros(n,1);
-%     asig2 = asig1;
-%     
-%     % log-likelihoods for each unit and group
-%     not_empty_g = ~( numopt == 0 )';
-%     jk = 0;
-%     for iii = not_empty_g'
-%         jk = jk+1;
-%         if iii == 1
-%             ll(:,jk) = log((numopt(jk)/sum(numopt)) )+ logmvnpdfFS(y-X*bopt(:,jk),0,(sigmaopt(jk)));
-%         else
-%             ll(:,jk) = NaN;
-%         end
-%     end
-%     %compute posterior probabilities. In principle it should be computed only
-%     %for mixt==2, but since it is among the output of the function, it is
-%     %computed also for mixt==1
-%     [~,postprob,~] = estepFS(ll);
-%     
-%     %% Determine observations to trim
-%     
-%     % boolean vectors indicating the good and outlying units
-%     [dist,indmax] = max(ll,[],2);
-%     % Sort the n likelihood contributions;
-%     [val,qq] = sort(dist,'descend');
-%     
-%     % trimming when there is no observation weighting
-%     if wtrim == 0   || wtrim == 4
-%         % qq is updated to be a vector of size h which contains the indexes
-%         % associated with the largest n(1-alpha) (weighted) likelihood
-%         % contributions
-%         qqassigned  = qq(1:n-trimm);
-%         val = val(n-trimm);
-%         
-%     elseif wtrim ==1 || wtrim == 2 || wtrim == 3
-%         qq_acend = qq(end:-1:1);
-%         %the following assignement is to try solving the problem of
-%         %the trimming level when wtrim = 3. If it works, it won't be
-%         %necessary to save weopt in the concentration steps.
-%         %         if wtrim == 3
-%         %             weopt = wedef;
-%         %         end
-%         cumsumyy = cumsum(weopt(qq_acend));
-%         if alpha1 <1
-%             qqunassigned_small = cumsumyy < alpha1*sum(weopt(qq_acend));
-%         else
-%             qqunassigned_small = cumsumyy < alpha1/n*sum(weopt(qq_acend));
-%         end
-%         qqunassigned = qq_acend(qqunassigned_small);
-%         qqassigned = setdiff((1:n)',qqunassigned);
-%         val = val(n-length(qqunassigned));
-%     end
-%     b_good = (dist>=val);
-%     %b_outl = (dist <val);
-%     
-%     % asig1: grouping variable for good units, with 0 for trimmed units
-%     for jk=1:k
-%         asig1((indmax == jk) & b_good) = jk;
-%     end
-%     
-%     % xmod: contains the good units and, in the last column, their group assignment
-%     xmoduntri = [X(qqassigned,:) y(qqassigned) indmax(qqassigned)];
-%     
-%     % DOME. IS THIS PART BELOW MADE JUST TO COUNT the number of times the
-%     % number of groups is lt k? IF YES, SHOULD THIS BE MOVED AT THE END OF
-%     % THE LOOP BELOW, AFTER SECOND LEVEL TRIMMING?
-%     % go over the groups
-%     for jk = 1:k
-%         booljk = xmoduntri(:,end) == jk;
-%         ni(jk) = sum(booljk);
-%     end
-%     
-%     not_empty_g = ~( ni <= p + 1 );
-%     %count the number of times the number of groups is lt k
-%     if sum(not_empty_g) == k
-%         count2_ng_eq_k = count2_ng_eq_k + 1;
-%     else
-%         count2_ng_lt_k = count2_ng_lt_k + 1;
-%     end
-%     
-%     %% determine second level trimming points
-%     
-%     jk = 0;
-%     for iii = not_empty_g
-%         jk = jk+1;
-%         %ids of observations belonging to the current group. Ids referer to not-trimmed
-%         %observations, not to all n observations.
-%         booljk = xmoduntri(:,end) == jk;
-%         %ids of observations belonging to the current group. Ids referer to all n observations.
-%         qqk = qqassigned(booljk);
-%         %number of observations in the current group
-%         ni(jk) = sum(booljk);
-%         %x and y of observations in the current group
-%         xmodjk = xmoduntri(booljk ,:);
-%         if iii ==1
-%             if alpha2 == 0
-%                 %qqs = not-trimmed observations after second level trimming
-%                 qqs = 1:ni(jk);
-%             else
-%                 %apply mcd to each group
-%                 if intercept
-%                     if alpha2 <1
-%                         RAW = mcd(xmodjk(:,2:p),'bdp',alpha2,'msg',0);
-%                     elseif alpha2 >= 1
-%                         RAW = mcd(xmodjk(:,2:p),'bdp',alpha2/n,'msg',0);
-%                     end
-%                 else
-%                     if alpha2 <1
-%                         RAW = mcd(xmodjk(:,1:p),'bdp',alpha2,'msg',0);
-%                     elseif alpha2 >= 1
-%                         RAW = mcd(xmodjk(:,1:p),'bdp',alpha2/n,'msg',0);
-%                     end
-%                 end
-%                 [~,indmdsor] = sort(RAW.md);
-%                 %qqs = not-trimmed observations after second level trimming
-%                 qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
-%             end
-%             %ids of observations belonging to the current group after the second level trimming. Ids referer to all n observations.
-%             qqf = qqk(qqs);
-%             asig2(qqf) = jk;
-%         end
-%         
-%     end
     
     %% Generate plots
     
@@ -1754,8 +1612,6 @@ else
                     else
                         ucg = find(indmaxopt==jk &  trim1level_01opt ==1 & trim2level_01opt == 1);
                     end
-                      %number of not trimmed and not thinned observations in each group
-                    num_obs_in_gr_notrim_nothin = length(find(indmaxopt == jk & weopt == 1 & trim1level_01opt == 1 & trim2level_01opt == 1));
 
                     % misteriously text does not show a legend. This is why
                     % we add a (ficticious) plot instruction with white symbols 
@@ -1794,7 +1650,7 @@ else
             end
             
             % Plot the outliers (trimmed points)
-            plot(X(trim1levelopt,end),y(trim1levelopt),'o','color','r','MarkerSize',12,...
+            plot(X(trim1levelopt,end),y(trim1levelopt),'o','color','r','MarkerSize',8,...
                 'DisplayName',['Trimmed units (' num2str(length(y(trim1levelopt))) ')']);
             
             % Second level trimming points
@@ -1895,29 +1751,29 @@ else
     
     %%  Set the output structure
     
-    out                = struct;
-    out.bopt           = bopt;
-    out.sigmaopt_0     = sigmaopt_0;
-    out.sigmaopt_cons  = sigmaopt_cons;
-    out.sigmaopt_pison = sigmaopt_pison;
-    out.numopt         = numopt;
-    out.vopt           = vopt;
+    out                                   = struct;
+    out.bopt                          = bopt;
+    out.sigmaopt_0              = sigmaopt_0;
+    out.sigmaopt_cons        = sigmaopt_cons;
+    out.sigmaopt_pison       = sigmaopt_pison;
+    out.numopt                      = numopt;
+    out.vopt                            = vopt;
     out.asig_obs_to_group  = indmaxopt;
     out.weopt                         = weopt;
     out.trim1levelopt              = trim1level_01opt;
     out.trim2levelopt              = trim2level_01opt;
-    out.count1_ng_lt_k = count1_ng_lt_k;
-    out.count2_ng_lt_k = count2_ng_lt_k;
-    out.count1_ng_eq_k = count1_ng_eq_k;
-    out.count2_ng_eq_k = count2_ng_eq_k;
+    out.count1_ng_lt_k          = count1_ng_lt_kopt;
+    out.count2_ng_lt_k          = count2_ng_lt_kopt;
+    out.count1_ng_eq_k       = count1_ng_eq_kopt;
+    out.count2_ng_eq_k       = count2_ng_eq_kopt;
     out.extra_inisubs             = extra_inisubsopt;
     out.selj_good                  = selj_goodopt;
     out.selj_elim                    = selj_elimopt;
     out.selj_all                       = selj_allopt;
     if mixt == 2
-        out.postprobopt               = postprobopt;
+        out.postprobopt          = postprobopt;
     end
-    out.restrfact = restrfact;
+    out.restrfact                     = restrfact;
     
     %   bopt           = regression parameters
     %   sigmaopt0      = estimated group variances
