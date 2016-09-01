@@ -1134,8 +1134,8 @@ while check_obj_reached == 0
                             indall_good_and_outl(qqunassigned) = indtri;
                             %Xsort_ll is X sorted in ascending order of loglikelihood, as Xuntri etc.
                             Xsort_ll = ones(n,1+intercept);
-                            Xsort_ll(1:length(qqassigned),1+intercept) = Xuntri;
-                            Xsort_ll(length(qqassigned)+1:end,1+intercept) = Xtri; 
+                            Xsort_ll(1:length(qqassigned),1:1+intercept) = Xuntri;
+                            Xsort_ll(length(qqassigned)+1:end,1:1+intercept) = Xtri; 
                             %if it is not possible to  compute wthin in a group
                             %(because there are less than thinning_th obs or
                             %because beta is zero), we are set to the median of the
@@ -1351,8 +1351,9 @@ while check_obj_reached == 0
                         %check if a group is populated
                         if iii == 1
                             %extract x and y belonging to group iii
-
-                            xmodjuntri_unthinned = xmoduntri_unthinned(xmoduntri_unthinned(:,end)==jk,:);
+                            xmoduntri_unthinned_jk = xmoduntri_unthinned(:,end)==jk;
+                            id_jk = qqassigned(xmoduntri_unthinned_jk==1);
+                            xmodjuntri_unthinned = xmoduntri_unthinned(xmoduntri_unthinned_jk,:);
                             %extract the weights (for beta estimation) of
                             %observations belonging to group iii
                             weightmodjuntri_unthinned = weightmoduntri_unthinned(weightmoduntri_unthinned(:,end) == jk,:);
@@ -1392,8 +1393,9 @@ while check_obj_reached == 0
                                 end
 
                                 qqs_trim = setdiff(indmdsor, qqs);
+                                id_trim = id_jk(qqs_trim);
                                 %observations trimmed with the 2nd level trimming in original scale
-                                trim2level = [trim2level ; xmodj(qqs_trim , size(xmodj,2)-1)];
+                                trim2level = [trim2level ; id_trim];
                             end
 
                             %% new mixture parameters computed using OLS
@@ -1579,13 +1581,13 @@ else
     
     
     %% Generate plots
-    
+    %count the number of obs in each group without the trimmed and the thinned
+    trim1level_01opt = ones(n,1);
+    trim2level_01opt = ones(n,1);
+    trim1level_01opt(trim1levelopt) = 0;
+    trim2level_01opt(trim2levelopt) = 0;
     if plots
-        %count the number of obs in each group without the trimmed and the thinned
-        trim1level_01opt = ones(n,1);
-        trim2level_01opt = ones(n,1);
-        trim1level_01opt(trim1levelopt) = 0;
-        trim2level_01opt(trim2levelopt) = 0;
+
 
         % The following plots are for the bi-variate case (i.e. v=1)
         if v < 2
