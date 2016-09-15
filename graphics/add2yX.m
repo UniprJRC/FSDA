@@ -327,6 +327,8 @@ hLines = findobj(AX(end), 'type', 'line');
 eLegend=get(hLines, 'DisplayName');
 % Create clickable multilegend if there is more than one group in the spm
 if iscell(eLegend)
-    clickableMultiLegend(hLines, eLegend{:});
+    hleg = findobj(fig,'Tag','legend');
+    set(hleg,'Visible','off');
+    clickableMultiLegend(hLines, eLegend{:},'Location','northwest');
 end
 end
