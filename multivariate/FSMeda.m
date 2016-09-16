@@ -389,8 +389,8 @@ else
         
         % Remark: u=(Ym/R)' should be much faster than u=inv(R')*Ym';
         u=(Ym/R)';
-        % Compute square Mahalanobis distances
-        mala(:,2)=sqrt(((mm-1)*sum(u.^2)))';
+        % Compute squared Mahalanobis distances
+        mala(:,2)=sqrt(((mm-1)*sum(u.^2,1)))';
         
         if scaled==1
             covYb=cov(Yb);
