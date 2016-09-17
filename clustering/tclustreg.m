@@ -240,6 +240,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',1,'we',we,'wtrim',1,'mixt',2,'plots',0);
 %}
 %{
+    clear all; close all;
     load fishery;
     X=fishery.data;
     % some jittering is necessary because duplicated units are not treated
@@ -255,7 +256,6 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     clickableMultiLegend('0','1','2','3','data1','data2','data3');
     axis manual;
 
-
     y1 = X(:,end);
     X1 = X(:,1:end-1);
     k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
@@ -263,6 +263,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %}
 
 %{
+    close all;
     XX = X1;
     XX = sqrt(X1);
     XX = X1.^(1/3);
@@ -301,15 +302,21 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 
 %{
     %% Generate mixture of regression using MixSimReg, with an average
-    % overlapping at centroids =0.01. Use all default options.
+    % overlapping at centroids = 0.01. Use all default options.
+    rng(372,'twister');
     p=3;
     k=2;
     Q=MixSimreg(k,p,'BarOmega',0.001);
-    n=400;
+    n=500;
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    out=tclustreg(y,X,2,50,0.01,0.01,'intercept',1);
 
+    % plot the dataset
+    yXplot(y,X);
+
+    % run tclustreg
+    out=tclustreg(y,X,k,50,0.01,0.01,'intercept',1);
 %}
+
 %{
     % Generate mixture of regression using MixSimReg, with an average
     % overlapping at centroids =0.01. Use all default options.
@@ -318,7 +325,8 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     Q=MixSimreg(k,p,'BarOmega',0.001);
     n=400;
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-     we=X(:,2)/sum(X(:,2));
+
+    we=X(:,2)/sum(X(:,2));
     out=tclustreg(y,X,2,50,0.01,0.01,'intercept',1,'we',we,'wtrim',1,'mixt',2);
 
 %}
@@ -356,7 +364,7 @@ end
 
 %% initializations
 
-warning('off'); %#ok<WNOFF>
+warning('off'); 
 
 %Thinning threshold. A group with less than thinning_th units is not
 %considered for thinning.
@@ -401,8 +409,9 @@ nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
-% check if wtrim option has been set by the user equal to 4. In such a case, the thinning step has
-% to be done at the very beginning, in particular before setting the number of samples nsamp.
+% check if wtrim option has been set by the user equal to 4. In such a
+% case, the thinning step has to be done at the very beginning, before
+% setting the number of samples nsamp.
 if nargin>6
     chknwtrim = strcmp(varargin,'wtrim');
     if sum(chknwtrim)>0
@@ -417,8 +426,8 @@ if nargin>6
                 Xori = X;
                 yori = y;
                 % set retained data
-                X     = X(Wt4,:);
-                y      = y(Wt4);
+                X    = X(Wt4,:);
+                y    = y(Wt4);
                 %recompute n
                 n = size(y,1);
             end
@@ -547,7 +556,7 @@ wtrimdef = 0;
 wedef = ones(n,1);
 
 %default model (mixture or classification likelihood)
-mixtdef = 2;
+mixtdef = 0;
 
 % default for threshold controlling the distance between regression lines
 % in the initialization phase. Zero threshold means that there is no
@@ -736,6 +745,7 @@ if intercept == 1
     v = p-1;
 else
     v = p;
+    
 end
 
 % First level trimming
@@ -794,58 +804,57 @@ if NoPriorSubsets
     
 end
 
-
 check_obj_reached = 0;
 while check_obj_reached == 0
+    
     %% Initialize structures
-
-    ll                                       = zeros(n,k);
-    ni                                      = ones(1,k);
-    sigmaopt                         = ni;
-    bopt                                 = zeros(p,k);
-    numopt                            = zeros(1,k);
-    weopt                               = ones(n,1);
-    trim1levelopt                   = ones(n,1);
-    trim2levelopt                   = ones(n,1);
-    indmaxopt                        = zeros(n,1);
-    not_empty_gopt              = zeros(1,k);
-    count1_ng_lt_kopt          = 0;
-    count2_ng_lt_kopt          = 0;
-    count1_ng_eq_kopt       = 0;
-    count2_ng_eq_kopt       = 0;
-    extra_inisubsopt             = nselected - nsampdef;
-    selj_goodopt                   = zeros(nselected,k);
-    selj_elimopt                     = zeros(nselected,k);
-    selj_allopt                        = zeros(nselected,k);
+    
+    ll                  = zeros(n,k);
+    ni                  = ones(1,k);
+    sigmaopt            = ni;
+    bopt                = zeros(p,k);
+    numopt              = zeros(1,k);
+    weopt               = ones(n,1);
+    trim1levelopt       = ones(n,1); %units trimmed at first step
+    trim2levelopt       = ones(n,1); %units trimmed at second step
+    indmaxopt           = zeros(n,1);
+    not_empty_gopt      = zeros(1,k);
+    count1_ng_lt_kopt   = 0;
+    count2_ng_lt_kopt   = 0;
+    count1_ng_eq_kopt   = 0;
+    count2_ng_eq_kopt   = 0;
+    extra_inisubsopt    = nselected - nsampdef;
+    selj_goodopt        = zeros(nselected,k);
+    selj_elimopt        = zeros(nselected,k);
+    selj_allopt         = zeros(nselected,k);
+    count               = 0;
+    count_elim          = 0;
+    iter                = 0;
+    sigmaini            = ones(1,k);
+    comb_beta           = combnk(1:k,2);
+    diff                = NaN(intercept+1,size(comb_beta,1));
+    selj_good_groups    = NaN(nselected,k*p);
+    selj_elim_groups    = NaN(nselected,k*p);
     if mixt ==2
-        postprobopt                 = zeros(n,k);
+        postprobopt     = zeros(n,k);
     end
-
-    count                                = 0;
-    count_elim                       = 0;
-    iter                                    = 0;
-    sigmaini                            = ones(1,k);
-    comb_beta                       = combnk(1:k,2);
-    diff                                     = NaN(intercept+1,size(comb_beta,1));
-    selj_good_groups            = NaN(nselected,k*p);
-    selj_elim_groups              = NaN(nselected,k*p);
     
     %%  Random starts
     while iter < nselected
         %iter =  iteration number including the steps where the subset is
         %refused because the regression lines are too closed one to the other
         iter  = iter+1;
-
+        
         %count =  iteration number not including the steps where the subset is
         %refused because the regression lines are too closed one to the other
         count = count+1;
-
+        
         if msg == 1
             disp(['Iteration ' num2str(count)])
         end
-
+        
         if startv1
-
+            
             nameYY = zeros(p,k);
             % in order to fix the seed decomment the following command
             % rng(1234);
@@ -885,12 +894,12 @@ while check_obj_reached == 0
             end
             sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
         else
-
+            
             % extract a subset of size v
             index = C(count,:);
             Xb = X(index,:);
             yb = y(index);
-
+            
             for j=1:k
                 Xbj = Xb((1+(j-1)*p):(j*p),:);
                 ybj = yb((1+(j-1)*p):(j*p));
@@ -899,14 +908,14 @@ while check_obj_reached == 0
             % sigmaini will contain the covariance matrices in each iteration
             sigmaini=ones(1,k);
         end
-
+        
         %compute the differences between pairwise regression parameters
         for par = 1:intercept + 1
             for gr = 1:size(comb_beta,1)
                 diff(par,gr) = nameYY(par,comb_beta(gr,1)) - nameYY(par,comb_beta(gr,2));
             end
         end
-
+        
         %if the differences between regression parameters is lower than a
         %threshold eps_beta the subset will not be considered and substitute
         %with a new generated one
@@ -920,15 +929,15 @@ while check_obj_reached == 0
             count = count-1;
             nselected = nselected+1;
         end
-
+        
         if good_initial_subs == 1
-
+            
             % CONCENTRATION STEPS
-
+            
             indold = zeros(n,1)-1;
             check_beta = 0;
             for cstep = 1:Ksteps
-                %all beta coefficient are NAN when from a precedent concentration step, almost all obs
+                %all beta coefficient are NAN when from a previous concentration step, almost all obs
                 %have been assigned to the same group and the thinning was very strong, leaving few obs.
                 %In this case we force to exit from the concentration step
                 not_empty_g = zeros(1,k);
@@ -940,11 +949,11 @@ while check_obj_reached == 0
                         nselected = nselected+1;
                         check_beta = 1;
                     end
-
-                else   
-
+                    
+                else
+                    
                     %% Log-likelihood
-
+                    
                     % Discriminant functions for the assignments
                     for jk = 1:k
                         ll(:,jk) = log((niini(jk)/sum(niini))) + logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));
@@ -966,7 +975,7 @@ while check_obj_reached == 0
                     %                    end
                     %                    ll(:,jk) = log((niini(jk)/sum(niini))) + fact2(:,jk);
                     %                 end
-
+                    
                     %In the case of crisp assignement we compute the maximum value of the log-likelihood
                     %(disc) among the k groups, as in point 2.1 of appendix of Garcia Escudero et al.
                     %(2010). In the case of mixture modelling we need an estep to compute the log of the sum
@@ -976,29 +985,29 @@ while check_obj_reached == 0
                     elseif mixt == 0
                         [disc,indmax] = max(ll,[],2);
                     end
-
+                    
                     % Sort the n likelihood contributions and save in qq the largest n*(1-alpha) likelihood
                     % contributions
                     [~,qq] = sort(disc,'ascend');
-
-
+                    
+                    
                     %% first level trimming
                     switch wtrim
-                        case {0,4};
+                        case {0,4}
                             % standard case, without observation weighting
-
+                            
                             %[~,qq] = sort(disc,'descend');
                             %qqunassigned = qq((n-trimm+1):n);
                             %qq           = qq(1:n-trimm);
-
+                            
                             % qq = vector which contains the indexes associated with the largest n(1-alpha)
                             % likelihood contributions
                             % qqunassigned is vector which contains the indices of the remaining trimmed
                             % observations
                             qqunassigned = qq(1:trimm);
                             qqassigned   = qq(trimm + 1:n);
-
-                        case {1,2,3};
+                            
+                        case {1,2,3}
                             % trimming with observation weighting, set by the user or density estimation
                             %if wtrim = 3 the weights should be re-initialized to one, to avoid the
                             %continuous elimination of observations from the estimates.
@@ -1020,33 +1029,33 @@ while check_obj_reached == 0
                     end
                     qqunassigned = sort(qqunassigned);
                     qqassigned = sort(qqassigned);
-
-                    %observations trimmed with the 1st level trimming in original scale
+                    
+                    %index of units trimmed with the 1st level trimming in original scale
                     trim1level = qqunassigned;
-
+                    
                     % In case of mixture modeling:
                     if mixt == 2
                         % update the posterior probabilities
                         postprobuntri = postprob(qqassigned,:);
                         postprob(qqunassigned,:) = 0;
-
+                        
                         % M-step: update of niini, the numerator of component probabilities
                         niini=(nansum(postprob))';
-
+                        
                         % indmax assigns each observation to the group with the largest posterior probability
                         [~,indmax]= max(postprob,[],2);
                     end
-
+                    
                     % data and observation weights vectors associated with the units which have the
                     % largest n(1-alpha) likelihood contributions
-                    Xuntri              = X(qqassigned,:);
-                    Xtri                  = X(qqunassigned,:);
-                    yuntri               = y(qqassigned,:);
-                    weuntri            = we(qqassigned,:);
-                    induntri            = indmax(qqassigned);
-                    indtri                = indmax(qqunassigned);
-                    xmoduntri        = [Xuntri , yuntri , induntri];
-
+                    Xuntri      = X(qqassigned,:);
+                    Xtri        = X(qqunassigned,:);
+                    yuntri      = y(qqassigned,:);
+                    weuntri     = we(qqassigned,:);
+                    induntri    = indmax(qqassigned);
+                    indtri      = indmax(qqunassigned);
+                    xmoduntri   = [Xuntri , yuntri , induntri];
+                    
                     % size of the groups nj (could be named mixing proportions or group weights)
                     %histcount is more efficient but cannot be used because when one group is missing it
                     %rdoes not report "0" but missing. Therefore the result is a vector of length less than
@@ -1064,14 +1073,14 @@ while check_obj_reached == 0
                     if mixt == 0
                         niini = ni;
                     end
-
+                    
                     %% Weights for the update of the model parameters
-
+                    
                     % The following switch statement is to compute the vector of weights that enter in the
                     % update of the model parameters (remember that in computing the value of the target
                     % function, we use the standard (un-weighted) version of the likelihood functions --
                     % mixture or classification -- ).
-
+                    
                     xmoduntri_unthinned = xmoduntri;
                     induntri_unthinned = induntri;
                     weuntri_unthinned = weuntri;
@@ -1079,7 +1088,7 @@ while check_obj_reached == 0
                         postprobuntri_unthinned = postprobuntri;
                     end
                     switch wtrim
-
+                        
                         case {0,4}
                             %no observation weighting, therefore:
                             if mixt == 2
@@ -1089,13 +1098,13 @@ while check_obj_reached == 0
                                 % for crisp clustering the weights are a vector of ones
                                 weightsuntri = repmat(weuntri,1,k);
                             end
-
+                            
                             weightsuntri_unthinned = weightsuntri;
                             
                         case 1
                             % user weights applied to each observation;   the weights are the posterior
                             % probabilities multiplied by the user weights
-
+                            
                             if mixt == 2
                                 weightsuntri = postprobuntri .* repmat(weuntri,1,k);
                             elseif mixt == 0
@@ -1103,13 +1112,13 @@ while check_obj_reached == 0
                             end
                             
                             weightsuntri_unthinned = weightsuntri;
-
+                            
                         case 2
                             % weights are the posterior probabilities multiplied by the density
-
+                            
                             %initialize weight for trimming
                             %we = wedef ;
-
+                            
                             if mixt == 2
                                 % for mixture likelihood, the weights are the posterior probabilities
                                 weightsuntri = postprobuntri;
@@ -1117,14 +1126,14 @@ while check_obj_reached == 0
                                 % for crisp clustering the weights are ...
                                 weightsuntri =  repmat(weuntri,1,k);
                             end
-
+                            
                             % the next lines are written to assigne a weight to the trimmed observations.
-
+                            
                             %indall_good = vector of length n containing the id 1,...,k of the group the
                             %observation belongs to or "-1" if the observations was trimmed
                             indall = -ones(n,1);
                             indall(qqassigned) = induntri;
-
+                            
                             % indall_good_and_outl  = vector of length n containing the id 1,...,k of the group the
                             %observation belongs to, for trimmed and untrimmed units.
                             % indall_good  = vector of length n containing the id 1,...,k of the group the
@@ -1135,7 +1144,7 @@ while check_obj_reached == 0
                             %Xsort_ll is X sorted in ascending order of loglikelihood, as Xuntri etc.
                             Xsort_ll = ones(n,1+intercept);
                             Xsort_ll(1:length(qqassigned),1:1+intercept) = Xuntri;
-                            Xsort_ll(length(qqassigned)+1:end,1:1+intercept) = Xtri; 
+                            Xsort_ll(length(qqassigned)+1:end,1:1+intercept) = Xtri;
                             %if it is not possible to  compute wthin in a group
                             %(because there are less than thinning_th obs or
                             %because beta is zero), we are set to the median of the
@@ -1151,20 +1160,20 @@ while check_obj_reached == 0
                                 ijj = find(induntri==jj);
                                 %ijj_ori = vector of length n containing indices of untrimmed units in group jj
                                 ijj_ori = indall == jj; % was find( indall == jj)
-
+                                
                                 %ijj_ori_good_and_outl = vector of length n containing indices of trimmed and untrimmed units in group jj
                                 ijj_ori_good_and_outl = indall_good_and_outl == jj; % was find( indall_good_and_outl == jj)
                                 %ijj_ori_good = vector of length n containing indices of untrimmed units in group jj
                                 %ijj_ori_good = indall_good == jj; % was find( indall_good_and_outl == jj)
-
+                                
                                 % find indices of trimmed and untrimmed units in group jj
                                 ijj_good_and_outl = find(ijj_ori_good_and_outl);
-
-
+                                
+                                
                                 % weight vector is updated only if the group has
                                 % more than thinning_th observations and if the
                                 % beta of the group is not zero
-
+                                
                                 %computation of weights for trimmed and non-trimmed units
                                 if  numel(ijj_good_and_outl)>thinning_th && nameYY(end,jj) ~= 0
                                     % retention probabilities based on density
@@ -1172,35 +1181,35 @@ while check_obj_reached == 0
                                     % of the previous step. The bernoulli weights
                                     % (the first output argument of wthin, i.e. Wt)
                                     % are not used.
-
+                                    
                                     X_jj = Xsort_ll(ijj_good_and_outl,:);
                                     yhat = X_jj*nameYY(:,jj);
-
+                                    
                                     [~ , pretain1] = wthin(yhat);
-
+                                    
                                     we(ijj_ori_good_and_outl) = pretain1;
-
+                                    
                                 else
                                     check_we_groups(jj) = 1;
                                     id_obs_in_groups_no_weight(:,jj) = ijj_ori_good_and_outl';
                                 end
-
+                                
                                 %computation of weights only for non-trimmed units.
                                 %It is necessary to compute weights only for
                                 %untrimmed units.
                                 if  numel(ijj)>thinning_th && nameYY(end,jj) ~= 0
                                     Xuntri_jj = Xuntri(ijj,:);
                                     yhatuntri = Xuntri_jj*nameYY(:,jj);
-
+                                    
                                     [~ , pretain2] = wthin(yhatuntri);
-
+                                    
                                     we(ijj_ori) = pretain2;
-
+                                    
                                     %weights for the parameter estimation step. They
                                     %are computed only for non-trimmed units.
                                     weightsuntri(ijj,jj) = weightsuntri(ijj,jj) .* pretain2;
                                 end
-
+                                
                                 %                        %computation of weiights only for non-trimmed units
                                 %                         if  numel(ijj)>thinning_th && nameYY(end,jj) ~= 0
                                 %                             % retention probabilities based on density estimated on the component
@@ -1215,8 +1224,8 @@ while check_obj_reached == 0
                                 %                             weights(ijj,jj) = weights(ijj,jj) .* pretain;
                                 %
                                 %                         end
-
-
+                                
+                                
                             end
                             %if in some group it was not possible to run wthin,
                             %then we is fixed equal to the median of the weights
@@ -1239,16 +1248,16 @@ while check_obj_reached == 0
                                     end
                                 end
                             end
-
+                            
                             weightsuntri_unthinned = weightsuntri;
                         case 3
-
+                            
                             % weights are the posterior probabilities multiplied by
                             % the bernoulli weights
-
+                            
                             %initialize weight for trimming
                             we = wedef ;
-
+                            
                             % initialize weight vector with posterior probabilities
                             if mixt == 2
                                 weightsuntri = postprobuntri;
@@ -1262,8 +1271,8 @@ while check_obj_reached == 0
                             %indall = -ones(n,1);
                             %indall(qqassigned) = induntri;
                             ii = 0;
-
-
+                            
+                            
                             for jj=1:k
                                 % find indices of units in group jj
                                 ijj = find(induntri==jj);
@@ -1279,9 +1288,9 @@ while check_obj_reached == 0
                                     % pretain) are not used.
                                     Xuntri_jj = Xuntri(ijj,:);
                                     yhatuntri = Xuntri_jj*nameYY(:,jj);
-
+                                    
                                     [Wt , ~] = wthin(yhatuntri);
-        %                            figure;gscatter(Xtri_jj,ytri_jj,Wt)
+                                    %                            figure;gscatter(Xtri_jj,ytri_jj,Wt)
                                     % the ids of the thinned observations. Values between [1 n_untrimmed]
                                     idWt0 = ijj(Wt == 0);
                                     %update of the we and wetri vector, necessary for doing
@@ -1289,38 +1298,38 @@ while check_obj_reached == 0
                                     %next step. wetri is n_untrimmed x 1 we is n x 1.
                                     weuntri(idWt0) = 0;
                                     weuntri_unthinned =  weuntri;
-
-        %                            figure;gscatter(X,y,we)
-
+                                    
+                                    %                            figure;gscatter(X,y,we)
+                                    
                                     %update of the weights vector, necessary for
                                     %doing the regression parameter estimation on
                                     %the observations not trimmed and not thinned.
                                     %weight has size (n_not_trimmes x k)
                                     weightsuntri(ijj,jj) = weightsuntri(ijj,jj) .* Wt;
-
+                                    
                                     % count the thinned observations
                                     nthinned = sum(Wt == 0);
                                     ii = ii + nthinned;
                                     %eliminate thinned observations
                                     ni(jj) = ni(jj) - nthinned;
-
+                                    
                                 end
-
+                                
                             end
-
+                            
                             we(qqassigned)=weuntri;
                             xmoduntri_unthinned(weuntri_unthinned == 0,:)=[];
                             induntri_unthinned(weuntri_unthinned == 0,:)= [];
                             weightsuntri_unthinned(weuntri_unthinned == 0,:)= [];
                             if mixt == 0
-                                   niini =ni;
+                                niini =ni;
                             elseif mixt ==0
-                                    postprob(we==0) = 0;
-                                    postprobuntri_unthinned (weuntri==0) = 0;
-                            end           
-
+                                postprob(we==0) = 0;
+                                postprobuntri_unthinned (weuntri==0) = 0;
+                            end
+                            
                     end
-
+                    
                     weightmoduntri_unthinned = [weightsuntri_unthinned, induntri_unthinned ];
                     % initializations of xmodtemp which is a working matrix used
                     % for creating xmod (which contains the results of the second
@@ -1332,22 +1341,25 @@ while check_obj_reached == 0
                     % to identify the rows of xmodtemp, where to append the
                     % following group results.
                     indxmodtemp = 0;
-
+                    
                     not_empty_g = ~( ni <= p + 1 );
-
+                    
                     %count number of times the number of groups is lt k
                     if sum(not_empty_g) == k
                         count1_ng_eq_k = count1_ng_eq_k + 1;
                     else
                         count1_ng_lt_k = count1_ng_lt_k + 1;
                     end
-
+                    
                     %% second level of trimming
                     jk = 0;
-                    trim2level = [];
+                    
+                    % trim2level = global list of second level trimming units
+                    trim2level2  = [];
+                    trim2level = zeros(n,1); rowst2 = 0;
                     for iii = not_empty_g
                         jk = jk+1;
-
+                        
                         %check if a group is populated
                         if iii == 1
                             %extract x and y belonging to group iii
@@ -1357,47 +1369,72 @@ while check_obj_reached == 0
                             %extract the weights (for beta estimation) of
                             %observations belonging to group iii
                             weightmodjuntri_unthinned = weightmoduntri_unthinned(weightmoduntri_unthinned(:,end) == jk,:);
-
-
+                            
+                            
                             % qqs contains contains the indexes of untrimmed units
                             % (after 2nd level trimming)  for group j
                             if alpha2 == 0
                                 qqs = 1:ni(jk);
                             else
-                                % Find the units with the smallest h distances.
-                                % Apply mcd on the x space (without the intercept
-                                % if present).
-                                % REMARK: This is by far the computationally most
-                                % expensive instruction of tclustreg. More
-                                % precisely, the dominant expensive function inside
-                                % mcd is IRWLSmcd.
-                                if intercept
-                                    if alpha2 < 1
-                                        RAW = mcd(xmodjuntri_unthinned(:,2:p),'bdp',alpha2,'msg',0);
-                                    elseif alpha2 >= 1
-                                        RAW = mcd(xmodjuntri_unthinned(:,2:p),'bdp',alpha2/n,'msg',0);
-                                    end
-                                else
-                                    if alpha2 < 1
-                                        RAW = mcd(xmodjuntri_unthinned(:,1:p),'bdp',alpha2,'msg',0);
-                                    elseif alpha2 >= 1
-                                        RAW = mcd(xmodjuntri_unthinned(:,1:p),'bdp',alpha2/n,'msg',0);
-                                    end
-                                end
-                                [~,indmdsor] = sort(RAW.md);
-
+                                % Find the units with the smallest h distances. This is done by
+                                % applying the mcd on the X space (without the intercept if
+                                % present). This is a computationally expensive step, because of the
+                                % expensive resampling and refining steps (IRWLSmcd function).
+                                % However, since here the mcd is applied after the first trimming, 
+                                % the number of basic subsets (nsamp option) can be reasonably samll.
                                 if alpha2 < 1
-                                    qqs = indmdsor(1:floor(ni(jk)*(1-alpha2)));
+                                    alpha2b = alpha2;
                                 else
-                                    qqs = indmdsor(1:floor(ni(jk) - alpha2));
+                                    % i.e. if alpha2 >= 1
+                                    alpha2b = alpha2/n;
                                 end
-
-                                qqs_trim = setdiff(indmdsor, qqs);
+                                inliers  = xmodjuntri_unthinned(:,intercept+1:p);
+                                nsampmcd = min(100,bc(ni(jk),p)); % p = v + intercept
+                                RAW      = mcd(inliers,'bdp',alpha2b,...
+                                    'nsamp',nsampmcd,'refsteps',1,'refstepsbestr',5,'msg',0);
+                                %R2016a has introduced robustcov, which could be used here as below.
+                                %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
+                                %[~,~,mah,~,~] = robustcov(inliers,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
+                                %plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b'); 
+                                %close;
+                                [~,indmdsor] = sort(RAW.md);
+                                if alpha2 < 1
+                                    trimpoint = floor(ni(jk)*(1-alpha2));
+                                    qqs  = indmdsor(1:trimpoint);
+                                else
+                                    trimpoint = floor(ni(jk) - alpha2);
+                                    qqs  = indmdsor(1:trimpoint);
+                                end
+                                
+                                qqs_trim  = indmdsor(trimpoint+1:end);
+                                % line above is quivalent (but faster than) to the one below
+                                % qqs_trim  = setdiff(indmdsor, qqs);
+                                
+                                % Units trimmed with the 2nd level trimming in original scale
                                 id_trim = id_jk(qqs_trim);
-                                %observations trimmed with the 2nd level trimming in original scale
-                                trim2level = [trim2level ; id_trim];
+                                
+                                % Add id_trim to the global list of second level trimming units
+                                trim2level2  = [trim2level2 ; id_trim];  
+                                
+                                istart = rowst2+1; 
+                                iend   = istart+length(id_trim)-1;
+                                trim2level(istart:iend) = id_trim;
+                                rowst2 = iend;
+                                
+                                % Lines below are to find the second trimming points id_trim with
+                                % the Forward Search rather than the MCD, using function FSMbsb
+                                % (which analyses the units forming subset in step init). Function
+                                % FSMbsb is slower than mcd. Therfore we prefer using mcd.
+                                %{
+                                 [~,bb]  =  FSMbsb(inliers,0,'bsbsteps',trimpoint,'init',trimpoint,'nocheck',1);
+                                 seq     =  1:ni(jk);
+                                 id_trim =  id_jk(setdiff(seq,bb));
+                                
+                                 trim2level = [trim2level ; id_trim];
+                                %}
+                                
                             end
-
+                            
                             %% new mixture parameters computed using OLS
                             %x and y belonging to group iii, after second level trimming.
                             xxx = xmodjuntri_unthinned(qqs,1:p);
@@ -1420,17 +1457,17 @@ while check_obj_reached == 0
                             %current group, with all the other groups.
                             xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodjuntri_unthinned(qqs,:);
                             indxmodtemp = indxmodtemp+ni(jk);
-
+                            
                         else
-
+                            
                             xmodjuntri_unthinned = xmoduntri_unthinned(xmoduntri_unthinned(:,end)==jk,:);
-
+                            
                             if alpha2 == 0
                                 qqs = [];
                             else
                                 qqs = [];
                             end
-
+                            
                             ni(jk) = 0;
                             breg = NaN;
                             nameYY(:,jk) = breg;
@@ -1443,11 +1480,16 @@ while check_obj_reached == 0
                             %observations to compute the sigma
                             count1_ng_eq_k = count1_ng_eq_k + 1;
                         end
-
+                        
                     end
-
+                    
+                    trim2level(rowst2+1:end,:) = [];
+                    if sum(trim2level-trim2level2)>0
+                        disp('zobbbbb');
+                    end
+                    
                     sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
-
+                    
                     %for computing the objective function, if a group is emty, beta and sigma are computed as mean of the
                     %other groups. In order to be passed to the next refining step, after having computed the objective function,
                     %they will be set at NaN.
@@ -1460,19 +1502,19 @@ while check_obj_reached == 0
                         end
                     end
                     xmoduntri_unthinned = xmodtemp(1:indxmodtemp,:);
-
+                    
                     % Stop if two consecutive concentration steps have the same result
                     if indmax == indold
                         break
                     else
                         indold = indmax;
                     end
-
+                    
                     %% Compute the value of the target function
                     obj = 0;
                     not_empty_g = ~( ni <= p + 1 );
                     if mixt == 0
-
+                        
                         jk = 0;
                         for iii = not_empty_g
                             jk = jk+1;
@@ -1481,13 +1523,13 @@ while check_obj_reached == 0
                             if iii ==1
                                 yj = xmoduntri_unthinned(xmoduntri_unthinned(:,end) == jk,end-1);
                                 Xj = xmoduntri_unthinned(xmoduntri_unthinned(:,end) == jk,1:end-2);
-
+                                
                                 %The following line should be executed at the end
                                 %of the concentration steps loop. It is executed at
                                 %each step because of the break above, which is
                                 %executed if two consecutive concentration steps
                                 %have the same result
-
+                                
                                 obj = obj + niini(jk)*log(niini(jk)/sum(niini)) +...
                                     sum(logmvnpdfFS(yj-Xj*nameYY(:,jk),0,(sigmaini(jk))));
                             else
@@ -1495,19 +1537,19 @@ while check_obj_reached == 0
                                 %objective function contribution.
                             end
                         end
-
+                        
                         %                 nameYY(:,~not_empty_g) = NaN;
                         %                 sigmaini(~not_empty_g) = NaN;
-
+                        
                     elseif mixt == 2
                         %the following command should be executed at the end of
                         %the for loop of the concentration steps. However here
                         %it is executed in all steps, because of the above break from the
                         %loop, which is executed if two consecutive
                         %concentration steps have the same result
-
+                        
                         log_lh=NaN(size(xmoduntri_unthinned,1),size(not_empty_g,2));
-
+                        
                         %log_lh = [];
                         jk = 0;
                         for iii = not_empty_g
@@ -1524,7 +1566,7 @@ while check_obj_reached == 0
                                 log_lh(:,jk) = NaN(length(xmoduntri_unthinned),1);
                             end
                         end
-
+                        
                         group_missing = sum(isnan(log_lh),1)>0;
                         log_lh(:,group_missing)=[];
                         obj = estepFS(log_lh);
@@ -1535,60 +1577,153 @@ while check_obj_reached == 0
                     end
                 end
             end % End of concentration steps
-
+            
             %% Change the 'optimal' target value and 'optimal' parameters
             % This is done if an increase in the target value is achieved
             %this check has to be commented in order to estimate the effect of eps_beta
             if sum(not_empty_g ) == k
                 if sum(sum(isnan(nameYY))) == 0
                     if (obj >= vopt)
-                        check_obj_reached         = 1;
-                        vopt                                   = obj;
-                        bopt                                   = nameYY;
-                        numopt                              = niini;
-                        sigmaopt                           = sigmaini;
-                        weopt                                = we;
-                        trim1levelopt                     = trim1level;
-                        trim2levelopt                     = trim2level;
-                        indmaxopt                         = indmax;
-                        not_empty_gopt              = not_empty_g;
-                        count1_ng_lt_kopt          = count1_ng_lt_k;
-                        count2_ng_lt_kopt          = count2_ng_lt_k;
+                        check_obj_reached       = 1;
+                        vopt                    = obj;
+                        bopt                    = nameYY;
+                        numopt                  = niini;
+                        sigmaopt                = sigmaini;
+                        weopt                   = we;
+                        trim1levelopt           = trim1level;
+                        trim2levelopt           = trim2level;
+                        indmaxopt               = indmax;
+                        not_empty_gopt          = not_empty_g;
+                        count1_ng_lt_kopt       = count1_ng_lt_k;
+                        count2_ng_lt_kopt       = count2_ng_lt_k;
                         count1_ng_eq_kopt       = count1_ng_eq_k;
                         count2_ng_eq_kopt       = count2_ng_eq_k;
-                        extra_inisubsopt             = nselected - nsampdef;
-                        selj_goodopt                  = selj_good_groups;
-                        selj_elimopt                    = selj_elim_groups(1:count_elim,:);
-                        selj_allopt                       = [selj_elim_groups(1:count_elim,:); selj_good_groups];
-
+                        extra_inisubsopt        = nselected - nsampdef;
+                        selj_goodopt            = selj_good_groups;
+                        selj_elimopt            = selj_elim_groups(1:count_elim,:);
+                        selj_allopt             = [selj_elim_groups(1:count_elim,:); selj_good_groups];
+                        
                         if mixt ==2
                             postprobopt = postprob;
                         end
-
+                        
                     end
                 end
             end
         end
     end % end of loop over the nsamp subsets
+    
     if check_obj_reached == 0
         restrfact = restrfact*2;
         disp(['--------- restrfact has been duplicated to ' num2str(restrfact)]);
     end
 end
+
 if count < nsamp
+    
     out = struct;
+    
 else
     
+    %%  Compute quantities to be stored in the output structure or used in the plots
+
+    % Apply restriction if the scatters do not satisfy the user condition.
+    % Note that the old (inefficient) approach was to use a quadratic programming
+    % optimization, using function quadi, i.e. by running
+    % sigmaopt_0 = (quadi(sigmaopt.^(-1), restrfact)).^(-1);
+    if sum(isnan(sigmaopt)) == 0
+        sigmaopt_0 = restreigen(sigmaopt,ni',restrfact,tolrestreigen,userepmat);
+    end
+    
+    % Apply consistency factor based on the variance of the truncated normal distribution.
+    
+    % number of non trimmed observations, after first and second level trimming
+    hh = sum(numopt);
+    
+    % Compute variance of the truncated normal distribution 
+    % Note that 1-hh/n is the trimming percentage
+    vt = norminv(0.5*(1+hh/n));
+    
+    %factor=1/sqrt(1-(2*vt.*normpdf(vt))./(2*normcdf(vt)-1));
+    factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
+    % Note that factor=sqrt(factor1)
+    %     v=1;
+    %     a=chi2inv(hh/n,1);
+    %     factor1=(hh/n)/(chi2cdf(a,1+2));
+    
+    % Apply the asymptotic consistency factor to the preliminary scale estimate
+    if ~isnan(factor)
+        sigmaopt_cons=sigmaopt_0*factor;
+        % Apply small sample correction factor of Pison et al.
+        sigmaopt_pison=sigmaopt_cons*sqrt(corfactorRAW(1,n,hh/n));
+    else
+        sigmaopt_cons=sigmaopt_0;
+        sigmaopt_pison=sigmaopt_cons;
+    end
+    
+    % units classification: 0 if trimmed at the 1st step, 1 otherwise
+    trim1level_01opt = ones(n,1);
+    trim1level_01opt(trim1levelopt) = 0;
+    
+    % units classification: 0 if trimmed at the 2st step, 1 otherwise
+    trim2level_01opt = ones(n,1);
+    trim2level_01opt(trim2levelopt) = 0;
+
+    % final cluster assigments after first trimming ('0' means a trimmed observation)
+    asig1 = indmaxopt .* weopt .* trim1level_01opt ;
+    % final cluster assigments after first and second trimming ('0' means a trimmed observation)
+    asig2 = asig1 .* trim2level_01opt ;
+    
+    %%  Set the output structure
+        
+    out                     = struct;
+    out.bopt                = bopt;
+    out.sigmaopt_0          = sigmaopt_0;
+    out.sigmaopt_cons       = sigmaopt_cons;
+    out.sigmaopt_pison      = sigmaopt_pison;
+    out.numopt              = numopt;
+    out.vopt                = vopt;
+    out.weopt               = weopt;
+    out.asig1               = asig1;
+    out.asig2               = asig2;
+    out.asig_obs_to_group   = indmaxopt;
+    out.trim1levelopt       = trim1level_01opt;
+    out.trim2levelopt       = trim2level_01opt;
+    out.count1_ng_lt_k      = count1_ng_lt_kopt;
+    out.count2_ng_lt_k      = count2_ng_lt_kopt;
+    out.count1_ng_eq_k      = count1_ng_eq_kopt;
+    out.count2_ng_eq_k      = count2_ng_eq_kopt;
+    out.extra_inisubs       = extra_inisubsopt;
+    out.selj_good           = selj_goodopt;
+    out.selj_elim           = selj_elimopt;
+    out.selj_all            = selj_allopt;
+    if mixt == 2
+        out.postprobopt     = postprobopt;
+    end
+    out.restrfact           = restrfact;
+    
+    %   bopt           = regression parameters
+    %   sigmaopt0      = estimated group variances
+    %   sigmaopt_cons  = estimated group variances corrected with  asymptotic consistency factor
+    %   sigmaopt_pison = estimated group variances corrected with  asymptotic consistency factor and small sample correction factor of Pison et al.
+    %   numopt         = number of observations in each cluster after the second trimming
+    %   vopt           = value of the target function
+    %   asig1          = cluster assigments after first trimming ('0' means a trimmed observation)
+    %   asig2          = (-final-) cluster assigments after second trimming ('0' means a trimmed observation)
+    %   postprob       = posterior probability
+    %   count1_ng_lt_k = number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
+    %   count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
+    %   count2_ng_lt_k = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
+    %   count2_eq_lt_k = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
+    %   extra_inisubs  = number of subsets generated above the number specified by the user (nsamp) because of small difference between pairwise regression parameters
+    %   out.selj_good  = list of valid subsets and observations inside them
+    %   out.selj_elim  =  list of not-valid subsets and observations inside them
+    %   out.selj_all   =  list of all subsets (valid and not) and observations inside them
     
     %% Generate plots
-    %count the number of obs in each group without the trimmed and the thinned
-    trim1level_01opt = ones(n,1);
-    trim2level_01opt = ones(n,1);
-    trim1level_01opt(trim1levelopt) = 0;
-    trim2level_01opt(trim2levelopt) = 0;
+
     if plots
-
-
+        
         % The following plots are for the bi-variate case (i.e. v=1)
         if v < 2
             
@@ -1614,9 +1749,9 @@ else
                     else
                         ucg = find(indmaxopt==jk &  trim1level_01opt ==1 & trim2level_01opt == 1);
                     end
-
+                    
                     % misteriously text does not show a legend. This is why
-                    % we add a (ficticious) plot instruction with white symbols 
+                    % we add a (ficticious) plot instruction with white symbols
                     plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
                     text(X(ucg,end),y(ucg),num2str(jk*ones(length(ucg),1)),...
                         'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
@@ -1668,7 +1803,7 @@ else
             end
             
             % Position the legends and make them clickable. For some reason
-            % clickableMultiLegend does not set properly the FontSize: to be fixed. 
+            % clickableMultiLegend does not set properly the FontSize: to be fixed.
             lh=legend('show');
             legstr = get(lh,'String');
             clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
@@ -1710,90 +1845,10 @@ else
             
             % scatterplot
             spmplot(YY,group,plo,'hist');
-            
-            %group_l = cellstr([repmat('Group',k,1) , num2str((1:k)')]);
-            %group_l = ['Trimmed units' ; group];
-            %[hleg, hobj, hout, mout] =legend((out(1,end,:)));
+           
         end
+        
     end
-    
-    % If the scatters do not satisfy the restriction then a quadratic
-    % programming problem is solved
-    
-    if sum(isnan(sigmaopt)) == 0
-        sigmaopt_0 = restreigen(sigmaopt,ni',restrfact,tolrestreigen,userepmat);
-        % the old (inefficient) approach was to use a quadratic programming
-        % optimization, using function quadi
-        %sigmaopt_0 = (quadi(sigmaopt.^(-1), restrfact)).^(-1);
-    end
-    
-    %Apply consistency factor based on the variance of the truncated normal
-    %distribution.
-    % hh = sum(numopt) number of non trimmed observations, after first and
-    % second level trimming.
-    % 1-hh/n=trimming percentage
-    hh = sum(numopt);
-    % Compute variance of the truncated normal distribution.
-    vt = norminv(0.5*(1+hh/n));
-    %factor=1/sqrt(1-(2*vt.*normpdf(vt))./(2*normcdf(vt)-1));
-    factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
-    % Note that factor=sqrt(factor1)
-    %     v=1;
-    %     a=chi2inv(hh/n,1);
-    %     factor1=(hh/n)/(chi2cdf(a,1+2));
-    % Apply the asymptotic consistency factor to the preliminary scale estimate
-    if ~isnan(factor)
-        sigmaopt_cons=sigmaopt_0*factor;
-        % Apply small sample correction factor of Pison et al.
-        sigmaopt_pison=sigmaopt_cons*sqrt(corfactorRAW(1,n,hh/n));
-    else
-        sigmaopt_cons=sigmaopt_0;
-        sigmaopt_pison=sigmaopt_cons;
-    end
-    
-    %%  Set the output structure
-    
-    out                                   = struct;
-    out.bopt                          = bopt;
-    out.sigmaopt_0              = sigmaopt_0;
-    out.sigmaopt_cons        = sigmaopt_cons;
-    out.sigmaopt_pison       = sigmaopt_pison;
-    out.numopt                      = numopt;
-    out.vopt                            = vopt;
-    out.asig_obs_to_group  = indmaxopt;
-    out.weopt                         = weopt;
-    out.trim1levelopt              = trim1level_01opt;
-    out.trim2levelopt              = trim2level_01opt;
-    out.count1_ng_lt_k          = count1_ng_lt_kopt;
-    out.count2_ng_lt_k          = count2_ng_lt_kopt;
-    out.count1_ng_eq_k       = count1_ng_eq_kopt;
-    out.count2_ng_eq_k       = count2_ng_eq_kopt;
-    out.extra_inisubs             = extra_inisubsopt;
-    out.selj_good                  = selj_goodopt;
-    out.selj_elim                    = selj_elimopt;
-    out.selj_all                       = selj_allopt;
-    if mixt == 2
-        out.postprobopt          = postprobopt;
-    end
-    out.restrfact                     = restrfact;
-    
-    %   bopt           = regression parameters
-    %   sigmaopt0      = estimated group variances
-    %   sigmaopt_cons  = estimated group variances corrected with  asymptotic consistency factor
-    %   sigmaopt_pison = estimated group variances corrected with  asymptotic consistency factor and small sample correction factor of Pison et al.
-    %   numopt         = number of observations in each cluster after the second trimming
-    %   vopt           = value of the target function
-    %   asig1          = cluster assigments after first trimming ('0' means a trimmed observation)
-    %   asig2          = (-final-) cluster assigments after second trimming ('0' means a trimmed observation)
-    %   postprob       = posterior probability
-    %   count1_ng_lt_k = number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
-    %   count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
-    %   count2_ng_lt_k = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
-    %   count2_eq_lt_k = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
-    %   extra_inisubs  = number of subsets generated above the number specified by the user (nsamp) because of small difference between pairwise regression parameters
-    %   out.selj_good  = list of valid subsets and observations inside them
-    %   out.selj_elim  =  list of not-valid subsets and observations inside them
-    %   out.selj_all   =  list of all subsets (valid and not) and observations inside them
     
 end
 
