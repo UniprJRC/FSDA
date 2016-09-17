@@ -242,7 +242,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % References:
 %
 % Rousseeuw, P.J. and Van Driessen, K. 1999. A fast algorithm for the
-% minimum covariance determinant estimator. Technometrics, 41:212–223.
+% minimum covariance determinant estimator. Technometrics, 41:212?223.
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
 % and Methods, Wiley, New York.
 %
@@ -1076,11 +1076,11 @@ end
             
             [~,sortdist]=sort(mahaldist);
             
-            
-            obs_in_set=sort(sortdist(1:h));
-            newloc=mean(Y(obs_in_set,:));
-            newcov=cov(Y(obs_in_set,:));
-            obj=det(newcov);
+            %obs_in_set = sort(sortdist(1:h)) ;  % sort removed: it is not necessary
+            obs_in_set  = sortdist(1:h) ;    
+            newloc      = mean(Y(obs_in_set,:));
+            newcov      = cov(Y(obs_in_set,:));
+            obj         = det(newcov);
             
             % Compute MD
             mahaldist = sqrt(mahalFS(Y,newloc,newcov));
@@ -1093,10 +1093,12 @@ end
         weights=zeros(size(Y,1),1);
         weights(obs_in_set)=1;
         
-        outIRWLS.loc = newloc;
-        outIRWLS.cov = newcov;
-        outIRWLS.obj = obj;
-        outIRWLS.weights=weights;
+        outIRWLS = struct('loc',newloc,'cov',newcov,'obj',obj,'weights',weights);
+        % assignments below take twice the time of line above
+        %outIRWLS.loc = newloc;
+        %outIRWLS.cov = newcov;
+        %outIRWLS.obj = obj;
+        %outIRWLS.weights=weights;
     end
 
 %% displRAW function
