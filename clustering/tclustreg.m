@@ -225,20 +225,22 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 % Examples:
 %
 %{
-%% tclustreg of X data using number of groups k=2, restriction factor 50, alpha1 = 0.01, alpha2 = 0.01.
+    %% tclustreg of 'X data' (Gordaliza, Garc?a-Escudero & Mayo-Iscar, 2013).
+    % The dataset presents two parallel components without contamination.
     X   = load('X.txt');
-    out = lga(X,3);
-
     y1=X(:,end);
     X1=X(:,1:end-1);
 
-    k = 3 ; restrfact = 5; alpha1 = 0.1 ; alpha2 = 0.1;
+    k = 2 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2);
 
-    k = 2 ; restrfact = 10; alpha1 = 0.005 ; alpha2 = 0.001;
-    we = abs(X1/sum(X1));
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',1,'we',we,'wtrim',1,'mixt',2,'plots',0);
+    % Comparison with robust linear grouping
+    figure;
+    out = rlga(X,k,alpha2);
+    title('robust linear grouping on ''X data'' ');
+
 %}
+
 %{
     clear all; close all;
     load fishery;
@@ -364,7 +366,7 @@ end
 
 %% initializations
 
-warning('off'); 
+warning('off');
 
 %Thinning threshold. A group with less than thinning_th units is not
 %considered for thinning.
@@ -1290,7 +1292,7 @@ while check_obj_reached == 0
                                     yhatuntri = Xuntri_jj*nameYY(:,jj);
                                     
                                     [Wt , ~] = wthin(yhatuntri);
-                                    %                            figure;gscatter(Xtri_jj,ytri_jj,Wt)
+                                    %    figure;gscatter(Xtri_jj,ytri_jj,Wt)
                                     % the ids of the thinned observations. Values between [1 n_untrimmed]
                                     idWt0 = ijj(Wt == 0);
                                     %update of the we and wetri vector, necessary for doing
@@ -1299,7 +1301,7 @@ while check_obj_reached == 0
                                     weuntri(idWt0) = 0;
                                     weuntri_unthinned =  weuntri;
                                     
-                                    %                            figure;gscatter(X,y,we)
+                                    %   figure;gscatter(X,y,we)
                                     
                                     %update of the weights vector, necessary for
                                     %doing the regression parameter estimation on
@@ -1336,11 +1338,6 @@ while check_obj_reached == 0
                     % trimming for all the observations) from xmodjj (which
                     % contains the results of the second trimming for the current
                     % group).
-                    xmodtemp    = zeros(n,p+2);
-                    % initializations of indxmodtemp which is a working scalar used
-                    % to identify the rows of xmodtemp, where to append the
-                    % following group results.
-                    indxmodtemp = 0;
                     
                     not_empty_g = ~( ni <= p + 1 );
                     
@@ -1351,12 +1348,29 @@ while check_obj_reached == 0
                         count1_ng_lt_k = count1_ng_lt_k + 1;
                     end
                     
-                    %% second level of trimming
-                    jk = 0;
+                    %                     [xmoduntri_unthinned , trim2level ,  nameYY ,  sigmaini,  count1_ng_eq_k_xx] = ...
+                    %                         trimX(xmoduntri_unthinned, ...
+                    %                         intercept , ...
+                    %                         weightmoduntri_unthinned , ...
+                    %                         not_empty_g , ...
+                    %                         qqassigned , ...
+                    %                         ni ,...
+                    %                         alpha2 ) ;
+                    %
+                    %                     count1_ng_eq_k = count1_ng_eq_k + count1_ng_eq_k_xx;
                     
-                    % trim2level = global list of second level trimming units
-                    trim2level2  = [];
+                    %% second level of trimming
+                    
+                    % initializations of indxmodtemp which is a working scalar used to identify the
+                    % rows of xmodtemp, where to append the following group results.
+                    xmodtemp    = zeros(n,p+2);
+                    indxmodtemp = 0;
+                    
+                    % trim2level = global list of second level trimming units. It is initialized to
+                    % a larger structure of n records to avoid reallocation after each iteration,
+                    % which is inefficient.
                     trim2level = zeros(n,1); rowst2 = 0;
+                    jk = 0;
                     for iii = not_empty_g
                         jk = jk+1;
                         
@@ -1370,7 +1384,6 @@ while check_obj_reached == 0
                             %observations belonging to group iii
                             weightmodjuntri_unthinned = weightmoduntri_unthinned(weightmoduntri_unthinned(:,end) == jk,:);
                             
-                            
                             % qqs contains contains the indexes of untrimmed units
                             % (after 2nd level trimming)  for group j
                             if alpha2 == 0
@@ -1380,7 +1393,7 @@ while check_obj_reached == 0
                                 % applying the mcd on the X space (without the intercept if
                                 % present). This is a computationally expensive step, because of the
                                 % expensive resampling and refining steps (IRWLSmcd function).
-                                % However, since here the mcd is applied after the first trimming, 
+                                % However, since here the mcd is applied after the first trimming,
                                 % the number of basic subsets (nsamp option) can be reasonably samll.
                                 if alpha2 < 1
                                     alpha2b = alpha2;
@@ -1395,7 +1408,7 @@ while check_obj_reached == 0
                                 %R2016a has introduced robustcov, which could be used here as below.
                                 %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
                                 %[~,~,mah,~,~] = robustcov(inliers,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
-                                %plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b'); 
+                                %plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b');
                                 %close;
                                 [~,indmdsor] = sort(RAW.md);
                                 if alpha2 < 1
@@ -1414,9 +1427,7 @@ while check_obj_reached == 0
                                 id_trim = id_jk(qqs_trim);
                                 
                                 % Add id_trim to the global list of second level trimming units
-                                trim2level2  = [trim2level2 ; id_trim];  
-                                
-                                istart = rowst2+1; 
+                                istart = rowst2+1;
                                 iend   = istart+length(id_trim)-1;
                                 trim2level(istart:iend) = id_trim;
                                 rowst2 = iend;
@@ -1483,16 +1494,20 @@ while check_obj_reached == 0
                         
                     end
                     
+                    xmoduntri_unthinned = xmodtemp(1:indxmodtemp,:);
+                    
+                    % Remove the extra rows from the global list of second level trimming units
                     trim2level(rowst2+1:end,:) = [];
-                    if sum(trim2level-trim2level2)>0
-                        disp('zobbbbb');
-                    end
+                    
+                    
+                    
                     
                     sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
                     
-                    %for computing the objective function, if a group is emty, beta and sigma are computed as mean of the
-                    %other groups. In order to be passed to the next refining step, after having computed the objective function,
-                    %they will be set at NaN.
+                    %for computing the objective function, if a group is empty, beta and sigma are
+                    %computed as mean of the other groups. In order to be passed to the next
+                    %refining step, after having computed the objective function, they will be set
+                    %at NaN.
                     for j=1:k
                         if isnan(sigmaini(j))
                             sigmaini(j) = nanmean(sigmaini);
@@ -1501,7 +1516,6 @@ while check_obj_reached == 0
                             nameYY(:,j) = nanmean(nameYY,2);
                         end
                     end
-                    xmoduntri_unthinned = xmodtemp(1:indxmodtemp,:);
                     
                     % Stop if two consecutive concentration steps have the same result
                     if indmax == indold
@@ -1626,7 +1640,7 @@ if count < nsamp
 else
     
     %%  Compute quantities to be stored in the output structure or used in the plots
-
+    
     % Apply restriction if the scatters do not satisfy the user condition.
     % Note that the old (inefficient) approach was to use a quadratic programming
     % optimization, using function quadi, i.e. by running
@@ -1640,7 +1654,7 @@ else
     % number of non trimmed observations, after first and second level trimming
     hh = sum(numopt);
     
-    % Compute variance of the truncated normal distribution 
+    % Compute variance of the truncated normal distribution
     % Note that 1-hh/n is the trimming percentage
     vt = norminv(0.5*(1+hh/n));
     
@@ -1668,14 +1682,14 @@ else
     % units classification: 0 if trimmed at the 2st step, 1 otherwise
     trim2level_01opt = ones(n,1);
     trim2level_01opt(trim2levelopt) = 0;
-
+    
     % final cluster assigments after first trimming ('0' means a trimmed observation)
     asig1 = indmaxopt .* weopt .* trim1level_01opt ;
     % final cluster assigments after first and second trimming ('0' means a trimmed observation)
     asig2 = asig1 .* trim2level_01opt ;
     
     %%  Set the output structure
-        
+    
     out                     = struct;
     out.bopt                = bopt;
     out.sigmaopt_0          = sigmaopt_0;
@@ -1721,7 +1735,7 @@ else
     %   out.selj_all   =  list of all subsets (valid and not) and observations inside them
     
     %% Generate plots
-
+    
     if plots
         
         % The following plots are for the bi-variate case (i.e. v=1)
@@ -1845,7 +1859,7 @@ else
             
             % scatterplot
             spmplot(YY,group,plo,'hist');
-           
+            
         end
         
     end
@@ -1910,6 +1924,11 @@ end
             end
         end
     end
+
+
+
+
+
 
 % Subfunction quadi prepares the quantities to call the matlab
 % quadratic programming routine quadprog. It was used to constrain the
