@@ -12,14 +12,14 @@
  deleted or retained (i.e. not deleted). The result is a point pattern,
  consisting of those points of X that were retained. Independent random
  thinning means that the retention/deletion of each point is independent
- of other points.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="rthin.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Y"><code>Y</code></a>=rthin(<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_P"><code> P</code></a>)</code></span>Random thinning on a mixture of normal distribution.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="rthin.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_Y"><code>Y </code></a>,<a class="intrnllnk" href="#outputarg_retain"><code> retain</code></a>]=rthin(___)</code></span></p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Random thinning on a mixture of normal distribution.</li></span></a></span></h3><div class="collapse"><p>
+ of other points.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="rthin.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Y"><code>Y</code></a>=rthin(<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_P"><code> P</code></a>)</code></span>Random thinning on a mixture of normal distribution.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="rthin.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_Y"><code>Y </code></a>,<a class="intrnllnk" href="#outputarg_retain"><code> retain</code></a>]=rthin(___)</code></span></p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Random thinning on a mixture of normal distribution.</li></span></a></span></h3><div class="collapse"><p>
      Data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     data=[randn(500,2);randn(500,1)+3.5, randn(500,1);];
     x = data(:,1); 
     y = data(:,2); 
     % Data density
-    [density,xout,bandwidth] = ksdensity(data);
-    %[density,xout,bandwidth] = kdebiv(data,'pdfmethod','fsda');
+    %[density,xout,bandwidth]  = ksdensity(data);
+    [density,xout,bandwidth]   = kdebiv(data,'pdfmethod','fsda');
     xx = xout(:,1);
     yy = xout(:,2);
     zz = density;
@@ -40,7 +40,8 @@
     [Xt , Xti]= rthin([x y],pretain);
 
     % now estimate the density on the retained units
-    [tdensity,txout,tbandwidth] = ksdensity(Xt);
+    %[tdensity,txout,tbandwidth] = ksdensity(Xt);
+    [tdensity,txout,tbandwidth]  = kdebiv(Xt,'pdfmethod','fsda');
     txx = txout(:,1);
     tyy = txout(:,2);
     tzz = tdensity;
@@ -52,7 +53,7 @@
     contour3(txq,tyq,tdensity,50), hold on
     plot(x(Xti),y(Xti),'b.','MarkerSize',5);
     title(['plot of retained data (' num2str(numel(y(Xti))) ' units) with density contour']);
-</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+</pre></div></div><img vspace="5" hspace="5" src="images/rthin_01.png" alt=""> <img vspace="5" hspace="5" src="images/rthin_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     [largep ii] = sort(pretain);
     figure;
     plot(x,y,'r.','MarkerSize',5);
@@ -79,4 +80,4 @@
 
 
   Optional Output:</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
-      Techniques for Data Analysis," Oxford University Press.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/ksdensity.html'))" itemprop="url"><span itemprop="name"><code>ksdensity</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/mvksdensity.html'))" itemprop="url"><span itemprop="name"><code>mvksdensity</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+      Techniques for Data Analysis," Oxford University Press.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/ksdensity.html'))" itemprop="url"><span itemprop="name"><code>ksdensity</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
