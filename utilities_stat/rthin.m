@@ -55,7 +55,7 @@ function [Y , retain]= rthin(X, P)
 %  Optional Output:
 %
 %
-%  See also ksdensity, mvksdensity
+%  See also ksdensity
 %
 %
 % References:
@@ -75,14 +75,14 @@ function [Y , retain]= rthin(X, P)
 % Examples:
 %
 %{
-    % Random thinning on a mixture of normal distribution.
+    %% Random thinning on a mixture of normal distribution.
     % Data
     data=[randn(500,2);randn(500,1)+3.5, randn(500,1);];
     x = data(:,1); 
     y = data(:,2); 
     % Data density
-    [density,xout,bandwidth] = ksdensity(data);
-    %[density,xout,bandwidth] = kdebiv(data,'pdfmethod','fsda');
+    %[density,xout,bandwidth]  = ksdensity(data);
+    [density,xout,bandwidth]   = kdebiv(data,'pdfmethod','fsda');
     xx = xout(:,1);
     yy = xout(:,2);
     zz = density;
@@ -103,7 +103,8 @@ function [Y , retain]= rthin(X, P)
     [Xt , Xti]= rthin([x y],pretain);
 
     % now estimate the density on the retained units
-    [tdensity,txout,tbandwidth] = ksdensity(Xt);
+    %[tdensity,txout,tbandwidth] = ksdensity(Xt);
+    [tdensity,txout,tbandwidth]  = kdebiv(Xt,'pdfmethod','fsda');
     txx = txout(:,1);
     tyy = txout(:,2);
     tzz = tdensity;
@@ -119,7 +120,7 @@ function [Y , retain]= rthin(X, P)
 %}
 
 %{
-    % rthin retention probabilities 
+    %% rthin retention probabilities 
     [largep ii] = sort(pretain);
     figure;
     plot(x,y,'r.','MarkerSize',5);
