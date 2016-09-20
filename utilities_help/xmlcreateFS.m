@@ -59,6 +59,119 @@ StructArgsNames={'Value' 'Description'};
 % out=publishFS('tclust','evalCode',false,'write2file',false);
 out=publishFS(FileName,'evalCode',false,'write2file',false);
 
+if ~isempty(out.description)
+    out.description=removeExtraSpacesLF(out.description);
+end
+
+for j=2:4
+    Inpi=out.InpArgs(:,j);
+    for i=1:length(Inpi)
+        if ~isempty(Inpi{i})
+            Inpi{i}=removeExtraSpacesLF(Inpi{i});
+        end
+    end
+    out.InpArgs(:,j)=Inpi;
+end
+
+
+for j=2:4
+    Inpi=out.OptArgs(:,j);
+    for i=1:length(Inpi)
+        if ~isempty(Inpi{i})
+            Inpi{i}=removeExtraSpacesLF(Inpi{i});
+        end
+    end
+    out.OptArgs(:,j)=Inpi;
+end
+
+%%%%%%%%%%%%%%%%%
+OutArgs=out.OutArgs;
+for i=1:size(OutArgs,1)
+    
+    
+    if ~cellfun(@isempty,OutArgs(i,2)) && ~isempty(strtrim(OutArgs{i,2}))
+        % Short description
+        for j=2:4
+            Inpi=OutArgs{i,j};
+            if ~isempty(Inpi)
+                Inpi=removeExtraSpacesLF(Inpi);
+            end
+            out.OutArgs{i,j}=Inpi;
+        end
+    else
+        
+        % Table containing the detailes of the ith output arg which is a
+        % structure
+        outTable=OutArgs{i,5};
+        for ii=1:size(outTable,1)
+            % Short description
+            DescTab=outTable{ii,2};
+            outTable{ii,2}=removeExtraSpacesLF(DescTab);
+        end
+        out.OutArgs{i,5}=outTable;
+    end
+    
+end
+
+if ~isempty(out.MoreAbout)
+    out.MoreAbout=removeExtraSpacesLF(out.MoreAbout);
+end
+
+
+Inpi=out.References;
+for i=1:length(Inpi)
+    if ~isempty(Inpi{i})
+        Inpi{i}=removeExtraSpacesLF(Inpi{i});
+    end
+end
+out.References=Inpi;
+
+Ex3=out.Ex(:,3);
+
+for i=1:length(Ex3)
+    str=removeExtraSpacesLF(Ex3{i});
+    PosLinBreaks = [regexp(str,'\x0A') length(str)];
+    CellStackedStrings=cell(length(PosLinBreaks),1);
+    
+    
+    for ii=1:length(PosLinBreaks)
+        if ii>1
+            strsel=str(PosLinBreaks(ii-1)+1:PosLinBreaks(ii));
+            % findLFinstrsel=regexp((strsel),'\n', 'once');
+            CellStackedStrings{ii}=strsel;
+        else
+            strsel=str(1:PosLinBreaks(ii));
+            CellStackedStrings{ii}=strsel;
+        end
+    end
+    %     str=strjoin(strcat(CellStackedStrings,'0A123'),'');
+    %     str=regexprep(str,'0A123','\x0A');
+    
+    out.Ex{i,3}=CellStackedStrings; % str;
+end
+
+%%%%%%%%%%%%%
+
+
+% % Remove line feeds (CR) if line feed is not preceeded by symbol ;
+% % (semicolon) or : (colon)  or . (full stop)
+% [~,goodLF]=regexp(stri,'[\:\;\.]\s*[\n\r]');
+% allLF=regexp(stri,'[\n\r]');
+% LFtoremove=setdiff(allLF,goodLF);
+% stri(LFtoremove)=[];
+% % stri=regexprep(stri,'\s{2,}',' ');
+% %
+%  [a,b]=regexp(stri,'\s{2,200}');
+%  poslf=regexp(stri,'[\n\r]');
+% for i=length(a):-1:1
+%     if ~isempty(intersect(poslf,a(i)))
+%        stri(a(i)+1:b(i))=[];
+%     else
+%         stri(a(i)+1:b(i))=[];
+%     end
+% end
+
+
 docNode = com.mathworks.xml.XMLUtils.createDocument('HelpXML');
 
 % Create file name section
@@ -236,7 +349,16 @@ for i=1:size(out.Ex,1)
             if j==4
                 name_node.appendChild(docNode.createTextNode(num2str(out.Ex{i,j})));
             else
-                name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
+                if iscell(out.Ex{i,j})
+                    ExCell=out.Ex{i,j};
+                    for ii=1:size(ExCell,1)
+                        entry_nodeCell = docNode.createElement('ItemCell');
+                        entry_nodeCell.appendChild(docNode.createTextNode(strtrim(ExCell{ii})));
+                        name_node.appendChild(entry_nodeCell)
+                    end
+                else
+                    name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
+                end
             end
         else
             name_node.appendChild(docNode.createTextNode(' '));
