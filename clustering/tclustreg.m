@@ -374,19 +374,19 @@ thinning_th = 50;
 
 %number of times that, after the first level of trimming, in a group there
 %are not enought observations to compute the sigma
-count1_ng_lt_k = 0;
+numb_ref_steps_with_lt_k_gr_after_1st_tr = 0;
 
 %number of times that, after the second level of trimming, in a group there
 %are not enought observations to compute the sigma
-count2_ng_lt_k= 0;
+numb_ref_steps_with_lt_k_gr_after_2nd_tr = 0;
 
 %number of times that, after the first level of trimming, in a group there
 %are enought observations to compute the sigma
-count1_ng_eq_k = 0;
+numb_ref_steps_with_k_gr_after_1st_tr = 0;
 
 %number of times that, after the second level of trimming, in a group there
 %are enought observations to compute the sigma
-count2_ng_eq_k= 0;
+numb_ref_steps_with_k_gr_after_2nd_tr= 0;
 
 % tolerance for restriction factor
 tolrestreigen = 1e-08;
@@ -806,6 +806,7 @@ if NoPriorSubsets
     
 end
 
+numb_opt_sample_with_lt_k_gr = 0;
 check_obj_reached = 0;
 while check_obj_reached == 0
     
@@ -1343,9 +1344,9 @@ while check_obj_reached == 0
                     
                     %count number of times the number of groups is lt k
                     if sum(not_empty_g) == k
-                        count1_ng_eq_k = count1_ng_eq_k + 1;
+                        numb_ref_steps_with_k_gr_after_1st_tr = numb_ref_steps_with_k_gr_after_1st_tr + 1;
                     else
-                        count1_ng_lt_k = count1_ng_lt_k + 1;
+                        numb_ref_steps_with_lt_k_gr_after_1st_tr = numb_ref_steps_with_lt_k_gr_after_1st_tr + 1;
                     end
                     
                     %                     [xmoduntri_unthinned , trim2level ,  nameYY ,  sigmaini,  count1_ng_eq_k_xx] = ...
@@ -1489,7 +1490,7 @@ while check_obj_reached == 0
                             sigmaini(jk) = NaN;
                             %count the number of times in a group there are enough
                             %observations to compute the sigma
-                            count1_ng_eq_k = count1_ng_eq_k + 1;
+                            numb_ref_steps_with_k_gr_after_1st_tr = numb_ref_steps_with_k_gr_after_1st_tr + 1;
                         end
                         
                     end
@@ -1608,10 +1609,10 @@ while check_obj_reached == 0
                         trim2levelopt           = trim2level;
                         indmaxopt               = indmax;
                         not_empty_gopt          = not_empty_g;
-                        count1_ng_lt_kopt       = count1_ng_lt_k;
-                        count2_ng_lt_kopt       = count2_ng_lt_k;
-                        count1_ng_eq_kopt       = count1_ng_eq_k;
-                        count2_ng_eq_kopt       = count2_ng_eq_k;
+                        count1_ng_lt_kopt       = numb_ref_steps_with_lt_k_gr_after_1st_tr;
+                        count2_ng_lt_kopt       = numb_ref_steps_with_lt_k_gr_after_2nd_tr;
+                        count1_ng_eq_kopt       = numb_ref_steps_with_k_gr_after_1st_tr;
+                        count2_ng_eq_kopt       = numb_ref_steps_with_k_gr_after_2nd_tr;
                         extra_inisubsopt        = nselected - nsampdef;
                         selj_goodopt            = selj_good_groups;
                         selj_elimopt            = selj_elim_groups(1:count_elim,:);
@@ -1628,8 +1629,11 @@ while check_obj_reached == 0
     end % end of loop over the nsamp subsets
     
     if check_obj_reached == 0
-        restrfact = restrfact*2;
-        disp(['--------- restrfact has been duplicated to ' num2str(restrfact)]);
+        %restrfact = restrfact*2;
+        %disp(['--------- restrfact has been duplicated to ' num2str(restrfact)]);
+        disp('--------- current sample has less than k groups');
+        numb_opt_sample_with_lt_k_gr = numb_opt_sample_with_lt_k_gr+1;
+        
     end
 end
 
@@ -1707,6 +1711,7 @@ else
     out.count2_ng_lt_k      = count2_ng_lt_kopt;
     out.count1_ng_eq_k      = count1_ng_eq_kopt;
     out.count2_ng_eq_k      = count2_ng_eq_kopt;
+    out.numb_opt_sample_with_lt_k_gr = numb_opt_sample_with_lt_k_gr;
     out.extra_inisubs       = extra_inisubsopt;
     out.selj_good           = selj_goodopt;
     out.selj_elim           = selj_elimopt;
