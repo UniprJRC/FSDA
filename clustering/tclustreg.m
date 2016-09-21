@@ -65,6 +65,14 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %           \prod_{j=1}^k  \prod_{i\in R_j} \phi (x_i;\theta_j)
 %            Example - 'mixt',0
 %            Data Types - single | double
+%equalweights : cluster weights in the concentration and assignment steps.
+%               Logical. A logical value specifying whether cluster weights
+%               shall be considered in the concentration, assignment steps
+%               and computation of the likelihood.
+%               if equalweights = true we are (ideally) assuming equally
+%               sized groups by maximizing
+%                 Example - 'equalweights',true
+%                 Data Types - Logical
 %    nsamp : number of subsamples to extract.
 %            Scalar or matrix.
 %            If nsamp is a scalar it contains the number of subsamples
@@ -570,7 +578,7 @@ eps_beta_def = 0;
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'niter',niterdef,'Ksteps',Kstepsdef,...
     'startv1',startv1def,'we',wedef,'wtrim',wtrimdef,'eps_beta',eps_beta_def,...
-    'msg',0,'plots',1);
+    'msg',0,'plots',1,'equalweights',1);
 
 if nargin > 6
     
@@ -630,6 +638,9 @@ nsamp = options.nsamp;
 
 % Concentration steps
 Ksteps = options.Ksteps;
+
+% equalweights
+equalweights = options.equalweights;
 
 % Threshold controlling the distance between regression lines in the
 % initialization phase
@@ -956,11 +967,17 @@ while check_obj_reached == 0
                 else
                     
                     %% Log-likelihood
-                    
                     % Discriminant functions for the assignments
-                    for jk = 1:k
-                        ll(:,jk) = log((niini(jk)/sum(niini))) + logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));
+                    if equalweights == 1
+                         for jk = 1:k
+                            ll(:,jk) = log((1/k)) + logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));  
+                          end
+                    else
+                        for jk = 1:k
+                            ll(:,jk) = log((niini(jk)/sum(niini))) + logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));
+                        end
                     end
+                    
                     %to compute the normal probability density function with
                     %normpdf(y-X*nameYY(:,jk),0,sqrt(sigmaini(jk))) instead of logmvnpdfFS leads to
                     %imprecise results in the queue of the distribution. For example, if there are extreme
@@ -1544,9 +1561,13 @@ while check_obj_reached == 0
                                 %each step because of the break above, which is
                                 %executed if two consecutive concentration steps
                                 %have the same result
-                                
-                                obj = obj + niini(jk)*log(niini(jk)/sum(niini)) +...
+                                if equalweights ==1
+                                    obj = obj + log(1/k) +...
                                     sum(logmvnpdfFS(yj-Xj*nameYY(:,jk),0,(sigmaini(jk))));
+                                else
+                                    obj = obj + niini(jk)*log(niini(jk)/sum(niini)) +...
+                                    sum(logmvnpdfFS(yj-Xj*nameYY(:,jk),0,(sigmaini(jk))));
+                                end
                             else
                                 %if a group is missing, we do not compute its
                                 %objective function contribution.
@@ -1570,11 +1591,21 @@ while check_obj_reached == 0
                         for iii = not_empty_g
                             jk = jk+1;
                             if iii ==1
-                                log_lh(:,jk) = ...
-                                    log(niini(jk)/sum(niini)) + (logmvnpdfFS(...
+                                if equalweights ==1
+                                    log_lh(:,jk) = ...
+                                    log(1/k) + (logmvnpdfFS(...
                                     xmoduntri_unthinned(:,end-1) - ...
                                     xmoduntri_unthinned(:,1:(size(xmoduntri_unthinned,2)-2)) * ...
                                     nameYY(:,jk),0,(sigmaini(jk)) ) );
+
+                                else
+                                    log_lh(:,jk) = ...
+                                        log(niini(jk)/sum(niini)) + (logmvnpdfFS(...
+                                        xmoduntri_unthinned(:,end-1) - ...
+                                        xmoduntri_unthinned(:,1:(size(xmoduntri_unthinned,2)-2)) * ...
+                                        nameYY(:,jk),0,(sigmaini(jk)) ) );
+                                 end
+                                
                             else
                                 %if a groupis missing, we do not compute the objective
                                 %function for it.
