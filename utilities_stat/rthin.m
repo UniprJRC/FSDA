@@ -249,6 +249,7 @@ end
 % spatstat for more details.
 
 %{
+% Skip_example
 % this is the version ported into matlab
 
 rthin <- function(X, P, ...) {
@@ -303,6 +304,7 @@ rthin <- function(X, P, ...) {
 
 
 %{
+% Skip_example
 % this is a newer version: to be  checked for consistency with older one
 
 function (X, P, ..., nsim = 1, drop = TRUE) 

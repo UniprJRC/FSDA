@@ -30,7 +30,7 @@ END {
 /^%{/ {
 
 	if ((getline tmp) > 0) {
-	    if (index(tmp, "Interactive_example") > 0 || index(tmp, "example_producing_error") > 0) {
+	    if (index(tmp, "Interactive_example") > 0 || index(tmp, "example_producing_error") > 0 || index(tmp, "Skip_example")) {
 		    print tmp " - Example with special tag found. Skipping...";
 		} else {
 			trovato=1;
