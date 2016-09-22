@@ -14,7 +14,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %  Required input arguments:
 %
-%            Y: Data matrix containining n observations on v variables
+%            Y: Data matrix containing n observations on v variables.
 %               Rows of Y represent observations, and columns
 %               represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are allowed,
@@ -36,7 +36,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               group scatters. On the other hand a value of 1 specifies the
 %               strongest restriction forcing all eigenvalues/determinants
 %               to be equal and so the method looks for similarly scattered
-%               (respectively spherical) clusters
+%               (respectively spherical) clusters.
 %
 %  Optional input arguments:
 %
@@ -55,17 +55,17 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               X(nsamp(i,:),:) and the covariance matrices are equal to the
 %               identity.
 %               If nsamp has k*(v+1) columns the initial centroids and covariance
-%               matrices in iteration i are computed as follows
-%               X1=X(nsamp(i,:),:)
-%               mean(X1(1:v+1,:)) contains the initial centroid for group 1
-%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
-%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
-%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
-%               ...
-%               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
-%               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
+%               matrices in iteration i are computed as follows:
+%               X1=X(nsamp(i,:),:);
+%               mean(X1(1:v+1,:)) contains the initial centroid for group  1;  
+%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1;                
+%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2; 
+%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2;                
+%               ...;
+%               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k;
+%               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k.
 %               REMARK - if nsamp is not a scalar option option below
-%               startv1 is ignored. More precisely if nsamp has k columns
+%               startv1 is ignored. More precisely, if nsamp has k columns
 %               startv1=0 elseif nsamp has k*(v+1) columns option startv1
 %               =1.
 %                 Example - 'nsamp',1000
@@ -104,7 +104,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               term
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
-%       mixt  : mixture modelling or crisp assignmen. Scalar.
+%       mixt  : mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
@@ -114,7 +114,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               assignment.
 %                In mixture modelling the likelihood is given by
 %                \[
-%                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j).
+%                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
 %                \]
 %               while in crisp assignment the likelihood is given by
 %               \[
@@ -219,8 +219,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %         out:   structure which contains the following fields
 %
-%            out.muopt= k-by-v matrix containing cluster centroid locations.
-%                       Robust estimate of final centroids of the groups.
+%            out.muopt= k-by-v matrix containing cluster centroid
+%                       locations. Robust estimate of final centroids of
+%                       the groups.
 %         out.sigmaopt= v-by-v-by-k array containing estimated constrained
 %                       covariance for the k groups.
 %            out.idx  = n-by-1 vector containing assignment of each unit to

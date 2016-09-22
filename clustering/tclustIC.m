@@ -5,7 +5,7 @@ function out  = tclustIC(Y,varargin)
 %
 %   tclustIC (where the last two letters stand for 'Information Criterion')
 %   computes the values of BIC (MIXMIX), ICL (MIXCLA) or CLA (CLACLA), for
-%   different values of k (number of groups) and difference values of c
+%   different values of k (number of groups) and different values of c
 %   (restriction factor), for a prespecified level of trimming. If Parallel
 %   Computing toolbox is installed, parfor is used to compute tclust for
 %   different values of c. In order to minimize randomness, given k, the
@@ -13,7 +13,7 @@ function out  = tclustIC(Y,varargin)
 %
 %  Required input arguments:
 %
-%            Y: Data matrix containining n observations on v variables
+%            Y: Data matrix containing n observations on v variables
 %               Rows of Y represent observations, and columns represent
 %               variables. Observations (rows) with missing (NaN) or or
 %               infinite (Inf) values will automatically be excluded from
