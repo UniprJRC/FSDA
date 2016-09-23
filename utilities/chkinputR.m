@@ -153,7 +153,7 @@ else
         if isempty(chkint) || vvarargin{2*chkint}==1
             X = cat(2,ones(n,1),X);
         end
-    end;
+    end
     
     
     % constcols = scalar vector of the indices of possible constant columns.
