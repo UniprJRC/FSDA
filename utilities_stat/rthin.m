@@ -150,7 +150,7 @@ function [Y , retain]= rthin(X, P)
     plot(x,y,'r.','MarkerSize',8)
     xlim([0 300]); ylim([0 2000]);
     set(gca,'CameraPosition',[-216 -12425 0.0135]);
-    title({['Zoom on fishery data (' num2str(numel(y)) ' units) with density contour'] , 'Probability mass concentrated in an area close to the origin'},'FontSize',16);
+    title({['Zoom on fishery data (' num2str(numel(y)) ' units) with density contour'] , 'Probability mass concentrated close to the origin'},'FontSize',16);
 
     %Interpolate the density and apply thinning using retention
     %probabilities equal to 1 - pdfe/max(pdfe)

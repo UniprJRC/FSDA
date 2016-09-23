@@ -66,7 +66,8 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 % Examples:
 %
 %{
-    % univariate thinning.
+    % Univariate thinning.
+    clear all; close all;
     % The dataset is bi-dimensional and contain two collinear groups with
     % regression structure. One group is dense, with 1000 units; the second
     % has 100 units. Thinning in done according to the density of the values
@@ -82,8 +83,10 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     % thinning over the predicted values
     [Wt,pretain] = wthin(yhat, 'retainby','comp2one');
 
+    figure;
     plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
-    axis manual
+    drawnow;
+    axis manual;
     title('univariate thinning over predicted ols values')
     clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(~Wt))]);
 
@@ -99,7 +102,8 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     [Wt2,pretain2] = wthin([x,y]);
 
     plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');
-    axis manual
+    drawnow;
+    axis manual;
     title('bivariate thinning')
     clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);
 %}
@@ -250,12 +254,23 @@ end
 %    sample. For a sample of 1000 units, we reduce the time execution of
 %    one order of magnitude (from ~14 to ~1.5 seconds).
 if d > 1
-    % for the moment no optimization is done (points 2 and 3 not addressed).
-    if bandwidth == 0
-        % Remark: by default ksdensity estimates the bandwidt with Scott's rule.
-        [pdfe,xout,u]  = ksdensity(X,X);
+    if ~verLessThan('matlab','9.0')
+        % for the moment no optimization is done (points 2 and 3 not addressed).
+        if bandwidth == 0
+            % Remark: by default ksdensity estimates the bandwidt with Scott's rule.
+            [pdfe,xout,u]  = ksdensity(X,X);
+        else
+            [pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
+        end
     else
-        [pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
+            [pdfedef,xout1,u]  = kdebiv(X,'pdfmethod','fsda');
+            if verLessThan('matlab', '8.1')
+                Fpdfe = TriScatteredInterp(xout1(:,1),xout1(:,2),pdfedef); %#ok<DTRIINT>
+            else
+                Fpdfe = scatteredInterpolant(xout1(:,1),xout1(:,2),pdfedef);
+            end
+            pdfe  = Fpdfe(X(:,1),X(:,2));
+            xout = X;
     end
 else
     % This is the univariate case. We address points 2 and 3.
