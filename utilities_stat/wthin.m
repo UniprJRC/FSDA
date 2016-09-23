@@ -120,6 +120,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     [Wt2,pretain2] = wthin([x,y], 'retainby','comp2one');
 
     plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');
+    drawnow;
     axis manual
     clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);
     title('"comp2one" thinning over the original bi-variate data');
@@ -147,6 +148,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     [Wt3,pretain3,RetUnits3] = wthin(X ,'retainby','comp2one');
     figure;
     plot(X(Wt3,1),X(Wt3,2),'k.',X(~Wt3,1),X(~Wt3,2),'rx');
+    drawnow;
     axis manual
     clickableMultiLegend(['Retained: ' num2str(sum(Wt3))],['Thinned:   ' num2str(sum(~Wt3))]);
     title('"comp2one" thinning on the fishery dataset');
@@ -168,6 +170,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     [Wt,pretain] = wthin(yhat, 'retainby','comp2one');
 
     plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
+    drawnow;
     axis manual
     title('univariate thinning over ols values predicted on a small dataset')
     clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(~Wt))]);

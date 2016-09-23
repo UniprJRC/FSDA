@@ -21,6 +21,11 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %
 % Optional input arguments:
 %
+%  XI:          Evaluation points of the estimated density. 
+%               Matrix. In this case the density is estimated using X and evaluated on XI.
+%               Data Types - single | double.
+%               Example - 'XI',X
+%
 %   contourtype: Plot on the screen. String. Takes one of these strings:
 %               - contourtype = 'contour' generates a contour plot.
 %               - contourtype = 'contourf' generates a filled contour plot.
@@ -122,6 +127,8 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %}
 
 %{
+      close all;
+
       % Just to test surf and mesh plots.
       figure;
       F4 = kdebiv(X,'contourtype','surf');
@@ -131,6 +138,8 @@ function [F,Xi,bw] = kdebiv(X,varargin)
       F6 = kdebiv(X,'contourtype','mesh');
       figure;
       F7 = kdebiv(X,'cmap',summer,'contourtype','mesh');
+
+      cascade;
 %}
 
 %{
@@ -218,7 +227,7 @@ if d ~= 2
     error('FSDA:kdebiv:WrongInput','This function applies to bivariate data only!');
 end
 
-options     = struct('contourtype','contour','cmap','gray','pdfmethod','matlab');
+options     = struct('XI',[],'contourtype','contour','cmap','gray','pdfmethod','matlab');
 UserOptions = varargin(1:2:length(varargin));
 if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
     error('FSDA:kdebiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
@@ -234,6 +243,7 @@ end
 contourtype = options.contourtype;
 cmap        = options.cmap;
 pdfmethod   = options.pdfmethod;
+XI          = options.XI;
 
 if ~isempty(UserOptions)
     
@@ -285,8 +295,11 @@ switch method
         %   A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
         %   Techniques for Data Analysis," Oxford University Press.
         
-        %[F,xi,bw] = ksdensity(X,'Support','unbounded');
-        [F,xi,bw] = mvksdensity(X);
+        if isempty(XI)
+            [F,xi,bw] = mvksdensity(X);
+        else
+            [F,xi,bw] = mvksdensity(X,XI);
+        end
         xi1 = xi(:,1);
         xi2 = xi(:,2);
         
@@ -335,6 +348,16 @@ switch method
         xi1 = gx1(:);
         xi2 = gx2(:);
         F = F(:);
+
+        if ~isempty(XI) 
+            if verLessThan('matlab', '8.1')
+                    Fpdfe = TriScatteredInterp(xi1,xi2,F); %#ok<DTRIINT>
+            else
+                    Fpdfe = scatteredInterpolant(xi1,xi2,F);
+            end
+            F  = Fpdfe(XI(:,1),XI(:,2)); %DOME DOME
+        end
+
         
     case 'independence'
         % Calculate combined x-y pdf under assumption of independence
@@ -399,13 +422,9 @@ if plot_contour
     % control of the axis limits
     xmin = min(X(:,1)); xmax = max(X(:,1));
     ymin = min(X(:,2)); ymax = max(X(:,2));
-    deltax = (xmax - xmin) / 10;
-    deltay = (ymax - ymin) / 10;
-    
-    % generate a vector of 100 evenly spaced points between x1 and x2
-    %xx = linspace(min(xx1),max(xx1));
-    %yy = linspace(min(xx2),max(xx2));
-    
+    deltax = 0;%(xmax - xmin) / 10;
+    deltay = 0;%(ymax - ymin) / 10;
+        
     % generate a vector of 100 evenly spaced points between the data limits
     xx = linspace(xmin-deltax,xmax+deltax);
     yy = linspace(ymin-deltay,ymax+deltay);
@@ -413,7 +432,11 @@ if plot_contour
     % define a data grid on the evenly spaced points
     [xq,yq] = meshgrid(xx,yy);
     % Interpolate the scattered data on the grid
-    FF = griddata(xi1,xi2,F,xq,yq);
+    if isempty(XI) 
+       FF = griddata(xi1,xi2,F,xq,yq);
+    else
+       FF = griddata(XI(:,1),XI(:,2),F,xq,yq);
+    end
     
     % For plotting reasons, we do not want zero values
     FF(FF==0) = min(FF(FF~=0));
