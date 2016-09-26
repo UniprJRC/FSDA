@@ -8,5 +8,4 @@ fsep=filesep;
 fullpathFileName=[FSDAroot fsep 'helpfiles' fsep 'XML' fsep 'InputStructForHelpGUI'];
 save(fullpathFileName,'InputStructForHelpGUI')
 HelpGUI
-
 end
