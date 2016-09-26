@@ -80,7 +80,13 @@ function [varargout] = clickableMultiLegend(varargin)
     set(H(:,:,3),'DisplayName','group 3');
 
     % Get the new legend texts directly from the plot
-    legnew = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
+    % To take account a change in property names of the legend object in 2016b
+    if verLessThan('matlab','9.1')
+        legstring='LegendPeerHandle';
+    else
+        legstring='LayoutPeers';
+    end
+    legnew = get(getappdata(AX(1,end),legstring),'String');
 
     % Get the handles of the legend to update
     hLines  = findobj(AX(1,end), 'type', 'line');
