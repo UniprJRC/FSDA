@@ -102,7 +102,7 @@ OutArgs=cell((length(dom.Children(index).Children)-2)/2,5);
 for i=1:size(OutArgs,1)
     for j=1:5
         if j==5
-        itemCell=dom.Children(index).Children(2*i+1).Children(2*j).Children;
+            itemCell=dom.Children(index).Children(2*i+1).Children(2*j).Children;
         end
         if j==5 && size(itemCell,2)>1
             
@@ -166,24 +166,75 @@ index=22;
 Ex=cell((length(dom.Children(index).Children)-2)/2,4);
 for i=1:size(Ex,1)
     for j=1:4
-        if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children)
-            Ex{i,j}=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+        if j==2 || j==3
+            lenExij=(length(dom.Children(index).Children(2*i+1).Children(2*j).Children)-1)/2;
+            
+            if lenExij==0
+                Exij=[];
+            else
+                Exij=cell(lenExij,1);
+                
+                for jj=1:lenExij
+                    if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children(jj*2).Children)
+                        Exij{jj}=dom.Children(index).Children(2*i+1).Children(2*j).Children(jj*2).Children.Data;
+                    else
+                        Exij{jj}=[];
+                    end
+                end
+            end
+            Ex{i,j}=Exij;
+        else
+            if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children)
+                Ex{i,j}=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+            end
         end
-        
     end
 end
 out.Ex=Ex;
 
-% Extract ExtraEx
-% Create cell which will contain ExtraExamples
-indExtraEx=24;
-ExtraEx=cell((length(dom.Children(indExtraEx).Children)-2)/2,4);
+% Extract Ex
+% Create cell which will contain Examples
+index=24;
+ExtraEx=cell((length(dom.Children(index).Children)-2)/2,4);
 for i=1:size(ExtraEx,1)
     for j=1:4
-        if ~isempty(dom.Children(indExtraEx).Children(2*i+1).Children(2*j).Children)
-            ExtraEx{i,j}=dom.Children(indExtraEx).Children(2*i+1).Children(2*j).Children.Data;
+        if j==2 || j==3
+            lenExij=(length(dom.Children(index).Children(2*i+1).Children(2*j).Children)-1)/2;
+            
+            if lenExij==0
+                Exij=[];
+            else
+                Exij=cell(lenExij,1);
+                
+                for jj=1:lenExij
+                    if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children(jj*2).Children)
+                        Exij{jj}=dom.Children(index).Children(2*i+1).Children(2*j).Children(jj*2).Children.Data;
+                    else
+                        %    Exij{jj}=' ';
+                    end
+                end
+            end
+            ExtraEx{i,j}=Exij;
+        else
+            if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children)
+                ExtraEx{i,j}=dom.Children(index).Children(2*i+1).Children(2*j).Children.Data;
+            end
         end
     end
 end
+
+
+
+% % Extract ExtraEx
+% % Create cell which will contain ExtraExamples
+% indExtraEx=24;
+% ExtraEx=cell((length(dom.Children(indExtraEx).Children)-2)/2,4);
+% for i=1:size(ExtraEx,1)
+%     for j=1:4
+%         if ~isempty(dom.Children(indExtraEx).Children(2*i+1).Children(2*j).Children)
+%             ExtraEx{i,j}=dom.Children(indExtraEx).Children(2*i+1).Children(2*j).Children.Data;
+%         end
+%     end
+% end
 out.ExtraEx=ExtraEx;
 end

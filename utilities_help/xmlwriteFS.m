@@ -69,9 +69,9 @@ docNode.getDocumentElement.appendChild(Preamble);
 Preamble=docNode.createElement('Purpose');
 Preamble.appendChild(docNode.createComment('This is the second line of the .m file'));
 if iscell(out.purpose)
-Preambletxt=docNode.createTextNode(sprintf('%s\n',out.purpose{:}));
+    Preambletxt=docNode.createTextNode(sprintf('%s\n',out.purpose{:}));
 else
-Preambletxt=docNode.createTextNode(sprintf('%s\n',out.purpose));
+    Preambletxt=docNode.createTextNode(sprintf('%s\n',out.purpose));
 end
 
 Preamble.appendChild(Preambletxt);
@@ -82,9 +82,9 @@ Preamble=docNode.createElement('Description');
 Preamble.appendChild(docNode.createComment('Description section'));
 % Preambletxt=docNode.createTextNode(out.description{:});
 if iscell(out.description)
-Preambletxt=docNode.createTextNode(sprintf('%s\n',out.description{:}));
+    Preambletxt=docNode.createTextNode(sprintf('%s\n',out.description{:}));
 else
-Preambletxt=docNode.createTextNode(sprintf('%s\n',out.description));  
+    Preambletxt=docNode.createTextNode(sprintf('%s\n',out.description));
 end
 
 Preamble.appendChild(Preambletxt);
@@ -201,10 +201,10 @@ docNode.getDocumentElement.appendChild(OutArgs);
 Preamble=docNode.createElement('MoreAbout');
 Preamble.appendChild(docNode.createComment('MORE ABOUT SECTION'));
 if iscell(out.MoreAbout)
-Preambletxt=docNode.createTextNode(sprintf('%s\n',out.MoreAbout{:}));
+    Preambletxt=docNode.createTextNode(sprintf('%s\n',out.MoreAbout{:}));
 else
- Preambletxt=docNode.createTextNode(sprintf('%s\n',out.MoreAbout));
-end   
+    Preambletxt=docNode.createTextNode(sprintf('%s\n',out.MoreAbout));
+end
 Preamble.appendChild(Preambletxt);
 docNode.getDocumentElement.appendChild(Preamble);
 
@@ -212,9 +212,9 @@ docNode.getDocumentElement.appendChild(Preamble);
 Preamble=docNode.createElement('Acknowledgements');
 Preamble.appendChild(docNode.createComment('ACKNOWLEDGEMENTS SECTION'));
 if iscell(out.Acknowledgements)
-Preambletxt=docNode.createTextNode(sprintf('%s\n',out.Acknowledgements{:}));
+    Preambletxt=docNode.createTextNode(sprintf('%s\n',out.Acknowledgements{:}));
 else
-Preambletxt=docNode.createTextNode(sprintf('%s\n',out.Acknowledgements));  
+    Preambletxt=docNode.createTextNode(sprintf('%s\n',out.Acknowledgements));
 end
 
 Preamble.appendChild(Preambletxt);
@@ -257,14 +257,28 @@ for i=1:size(out.Ex,1)
                 name_node.appendChild(docNode.createTextNode(num2str(out.Ex{i,j})));
                 
             else
-                if iscell(out.Ex{i,j}) && j~=1
-                    name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.Ex{i,j}{:}))));
-                elseif j~=1
-                    name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.Ex{i,j})));
+                %                 if iscell(out.Ex{i,j}) && j~=1
+                %                     name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.Ex{i,j}{:}))));
+                %                 elseif j~=1
+                %                     name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.Ex{i,j})));
+                %                 else
+                %                     name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
+                %                 end
+                if iscell(out.Ex{i,j})
+                    ExCell=out.Ex{i,j};
+                    
+                    for ii=1:size(ExCell,1)
+                        entry_nodeCell = docNode.createElement('ItemCell');
+                        try
+                        entry_nodeCell.appendChild(docNode.createTextNode(strtrim(ExCell{ii})));
+                        catch
+                            ddd=1;
+                        end
+                        name_node.appendChild(entry_nodeCell)
+                    end
                 else
                     name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
                 end
-                
             end
         else
             name_node.appendChild(docNode.createTextNode(' '));
@@ -287,10 +301,20 @@ for i=1:size(out.ExtraEx,1)
             if j==4
                 name_node.appendChild(docNode.createTextNode(num2str(out.ExtraEx{i,j})));
             else
-                if iscell(out.ExtraEx{i,j}) && j~=1
-                    name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.ExtraEx{i,j}{:}))));
-                elseif j~=1
-                    name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.ExtraEx{i,j})));
+                %                 if iscell(out.ExtraEx{i,j}) && j~=1
+                %                     name_node.appendChild(docNode.createTextNode(sprintf('%s\n',(out.ExtraEx{i,j}{:}))));
+                %                 elseif j~=1
+                %                     name_node.appendChild(docNode.createTextNode(sprintf('%s\n',out.ExtraEx{i,j})));
+                %                 else
+                %                     name_node.appendChild(docNode.createTextNode(out.ExtraEx{i,j}));
+                %                 end
+                if iscell(out.ExtraEx{i,j})
+                    ExCell=out.ExtraEx{i,j};
+                    for ii=1:size(ExCell,1)
+                        entry_nodeCell = docNode.createElement('ItemCell');
+                        entry_nodeCell.appendChild(docNode.createTextNode(strtrim(ExCell{ii})));
+                        name_node.appendChild(entry_nodeCell)
+                    end
                 else
                     name_node.appendChild(docNode.createTextNode(out.ExtraEx{i,j}));
                 end
