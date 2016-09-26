@@ -877,11 +877,11 @@ for i=1:length(ini)
             error('FSDA:publishFS:WrongInp',['Sentence''' descrtosplit '''must contain at least two full stops'])
             % error('Wrong input')
         end
-        descrtitle=strtrim(descrtosplit(1:inifullstops(1)-1));
+        descrtitle=strtrim(descrtosplit(1:inifullstops(1)));
         listOptArgs{ij,2}=descrtitle;
         
         try
-            descrtype=strtrim(descrtosplit(inifullstops(1)+1:inifullstops(2)-1));
+            descrtype=strtrim(descrtosplit(inifullstops(1)+1:inifullstops(2)));
         catch
             %errmsg=[' Options found by the parser are:\n'  listOptArgs{:,1}];
             %disp(errmsg)
@@ -1862,7 +1862,7 @@ for i=1:nTOTargin
         error('FSDA:publishFS:WrongInp',['Input option: ''' inpi '''\n Sentence\n''' DescrInputToSplit '''\nmust contain at least two full stops'])
         % error('Wrong input')
     end
-    shortdesc=strtrim(DescrInputToSplit(1:inifullstops(1)-1));
+    shortdesc=strtrim(DescrInputToSplit(1:inifullstops(1)));
     % Store title of the i-th input argument
     %     % remove sign : if present at the beginning of the sentence
     if strcmp(shortdesc(1),':')
@@ -1871,7 +1871,7 @@ for i=1:nTOTargin
     listInpArgs{i,2}= shortdesc;
     
     try
-        descrtype=strtrim(DescrInputToSplit(inifullstops(1)+1:inifullstops(2)-1));
+        descrtype=strtrim(DescrInputToSplit(inifullstops(1)+1:inifullstops(2)));
     catch
         % warning('FSDA:publishFS:WrongInp',['Input: ' listInpArgs{i,1}])
         errmsg=['Input argument ' listInpArgs{i,1} ' Sentence ''' DescrInputToSplit ''' must contain at least two full stops followed by a white space'];
