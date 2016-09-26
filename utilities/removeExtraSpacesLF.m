@@ -1,16 +1,13 @@
 function newTxt = removeExtraSpacesLF(txt)
 %removeExtraSpacesLF removes extra spaces and selected carriage returns from input string
 %
-%
 %<a href="matlab: docsearchFS('removeExtraSpacesLF')">Link to the help function</a>
 %
-%
-%    given an input string containing a series of carriage returns (CR) and
-%    white spaces, it removes all carriage returns apart the cases below:
+%    Given an input string possibly containing a series of carriage returns (CR) and white spaces,
+%    removeExtraSpacesLF removes all carriage returns except those when:
 %           1) symbol ';'  is followed by one or more space and a CR; 
 %           2) symbol ':'  is followed by one or more space and a CR;
-%           2) symbol '.'  is followed by one or more space and a CR. 
-%
+%           3) symbol '.'  is followed by one or more space and a CR. 
 %
 %  Required input arguments:
 %
@@ -21,16 +18,14 @@ function newTxt = removeExtraSpacesLF(txt)
 %
 %  Output: 
 %
-%   newTxt : Output text. Characted. String without carriage returns (apart
-%            from those preceeded by symbols ':', ';' and '.') and without
-%            extra spaces.
+%   newTxt : Output text. Character. String without unwanted carriage returns and
+%            extra spaces, as in cases 1-3 above. 
 %
 %
 % See also: strtrim
 %
 %
 % References:
-%
 %
 %
 % Copyright 2008-2016.
@@ -46,19 +41,24 @@ function newTxt = removeExtraSpacesLF(txt)
 %{
     % Create a string with unnecesseray line feeds and without text justification.
     % Create an input string containing a series of unwanted features.
+    % The input string is extracted from the head of the FSDA function tclust.m.
     FileWithFullPath=which('tclust');
     filename=FileWithFullPath;
     fileID = fopen(char(filename), 'r');
-    % Insert the file into fstring
     fstring=fscanf(fileID,'%c');
+    % Starting and ending lines
     aa=regexp(fstring,'tclust partitions the points') ;
     bb=regexp(fstring,'constrained, Mahalanobis distances\.');
+    % String 
     str=fstring(aa:bb+35);
-    % Remove from string descri all percentage signs
+
+    % Remove from string all percentage signs
     posPercentageSigns=regexp(str,'%');
     str(posPercentageSigns)=[];
+
     str=[str 'x0ANow some wanted line feeds: x0A first item;   x0A   second item.'];
     str=regexprep(str,'x0A','\x0A');
+
     % Remove unnecessary spaces and extra line feeds from str but just keep
     % line break if before there was ':' or ';' or '.'
     a=removeExtraSpacesLF(str)
