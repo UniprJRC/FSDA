@@ -1,31 +1,36 @@
 function newTxt = removeExtraSpacesLF(txt)
 %removeExtraSpacesLF removes extra spaces and selected carriage returns from input string
 %
+%
 %<a href="matlab: docsearchFS('removeExtraSpacesLF')">Link to the help function</a>
+%
 %
 %    Given an input string possibly containing a series of carriage returns (CR) and white spaces,
 %    removeExtraSpacesLF removes all carriage returns except those when:
 %           1) symbol ';'  is followed by one or more space and a CR; 
 %           2) symbol ':'  is followed by one or more space and a CR;
-%           3) symbol '.'  is followed by one or more space and a CR. 
+%           3) symbol '.'  is followed by one or more space and a CR; 
+%           4) symbol '\[' is followed by one or more space and a CR; 
+%           5) symbol '\]' is preceeded by one or more space and a CR. 
 %
 %  Required input arguments:
 %
-%       txt : Input text. Character. String which has to be analysed. 
+%       txt : Input text. Character vector. String which has to be analysed. 
 %
 %  Optional input arguments:
 %
 %
 %  Output: 
 %
-%   newTxt : Output text. Character. String without unwanted carriage returns and
-%            extra spaces, as in cases 1-3 above. 
+%   newTxt : Output text. Character. String without unwanted carriage
+%            returns and extra spaces, as in cases 1-5 above. 
 %
 %
-% See also: strtrim
+% See also: strtrim, FormatText
 %
 %
 % References:
+%
 %
 %
 % Copyright 2008-2016.
@@ -64,10 +69,34 @@ function newTxt = removeExtraSpacesLF(txt)
     a=removeExtraSpacesLF(str)
 %}
 
+%{
+    % Create a string with a series of Latex equations.
+    % The input string is extracted from the FSDA function tclust.m.
+    FileWithFullPath=which('tclust');
+    filename=FileWithFullPath;
+    fileID = fopen(char(filename), 'r');
+    % Insert the file into fstring
+    fstring=fscanf(fileID,'%c');
+    aa=regexp(fstring,'\\\[','once') ;
+    bb=regexp(fstring,'\\\]','once');
+    str=fstring(aa-145:bb+560);
+    % Remove from string descri all percentage signs
+    posPercentageSigns=regexp(str,'%');
+    str(posPercentageSigns)=[];
+    
+    % str is the input string containing a series of Latex equations
+    a=removeExtraSpacesLF(str)
+%}
+
 %% Beginning of code
 
 % Find position of wanted line feed
 [~,goodLF]=regexp(txt,'[\:\;\.]\s*[\n\r]');
+[~,goodLF1]=regexp(txt,'\\\[\s*[\n\r]');
+[goodLF2,~]=regexp(txt,'[\n\r]\s*\\\]');
+[~,goodLF3]=regexp(txt,'\\\]\s*[\n\r]');
+goodLF=[goodLF goodLF1 goodLF2 goodLF3];
+
 allLF=regexp(txt,'[\n\r]');
 LFtoremove=setdiff(allLF,goodLF);
 % Remove unwanted line feeds
@@ -89,6 +118,9 @@ for i=length(a):-1:1
         txt(a(i)+1:b(i))=[];
     end
 end
-newTxt=txt;
+% Remove also unnecessary spaces at the beginning (if they are still
+% present)
+newTxt=strtrim(txt);
+
 end
 
