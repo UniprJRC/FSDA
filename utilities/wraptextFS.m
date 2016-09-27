@@ -6,7 +6,7 @@ function strFormatted = wraptextFS(str, varargin)
 %
 %
 % This function not only does text wrapping, but also enables us:
-% 1) to control left margin of the text
+% 1) to control left margin of the text;
 % 2) to control the maximum width of the text or the right margin;
 % 3) to add a (comment) sign at the beginning of each row of the wrapped text; 
 % 4) to indent the first line of the text.
@@ -83,7 +83,7 @@ function strFormatted = wraptextFS(str, varargin)
 %{
     %% wraptextFS with all default options.
     str='Paene insularum, Sirmio, insularumque ocelle, quascumque in liquentibus stagnis marique vasto fert uterque Neptunus, quam te libenter quamque laetus inviso, vix mi ipse credens Thuniam atque Bithunos liquisse campos et videre te in tuto. o quid solutis est beatius curis, cum mens onus reponit, ac peregrino labore fessi venimus larem ad nostrum, desideratoque acquiescimus lecto? hoc est quod unum est pro laboribus tantis. salve, o venusta Sirmio, atque ero gaude gaudente, vosque, o Lydiae lacus undae, ridete quidquid est domi cachinnorum.';
-    Newstr=wraptextFS(str);
+    Newstr=wraptextFS(str)
 %}
 
 %{
@@ -94,7 +94,7 @@ function strFormatted = wraptextFS(str, varargin)
 
 %{
     % Example of specification of startcolumn and text width.
-    % Start text in column 5, the maximum text widh is 40.
+    % Start text in column 5, the maximum text width is 40.
     Newstr=wraptextFS(str,'comment',true,'startcolumn',10,'width',40)
 %}
 
@@ -145,6 +145,7 @@ if nargin > 1
         chkoptions(options,UserOptions)
     end
     
+    % Assign to each option structure argument the corresponding value
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
@@ -235,6 +236,8 @@ CellStackedStrings=cell(length(PosSpaces),1);
 
 leftMargin= {repmat(' ',1,startcolumn-1-comment)};
 
+% Main code section: the loop populate CellStackedStrings{i} with lines of 
+% desired length
 while k <PosSpaces(end)
     if k==0 && firstline
         PosLinBreaks(i) = PosSpaces(find(PosSpaces<=k+width+startcolumn,1,'last'));
