@@ -7,11 +7,11 @@ function newTxt = removeExtraSpacesLF(txt)
 %
 %    Given an input string possibly containing a series of carriage returns (CR) and white spaces,
 %    removeExtraSpacesLF removes all carriage returns except those when:
-%           1) symbol ';'  is followed by one or more space and a CR; 
-%           2) symbol ':'  is followed by one or more space and a CR;
-%           3) symbol '.'  is followed by one or more space and a CR; 
-%           4) symbol '\[' is followed by one or more space and a CR; 
-%           5) symbol '\]' is preceeded by one or more space and a CR. 
+%           1) symbol ';'  is followed by one or more spaces and a CR; 
+%           2) symbol ':'  is followed by one or more spaces and a CR;
+%           3) symbol '.'  is followed by one or more spaces and a CR; 
+%           4) symbol '\[' is followed by one or more spaces and a CR; 
+%           5) symbol '\]' is preceeded by one or more spaces and a CR. 
 %
 %  Required input arguments:
 %
