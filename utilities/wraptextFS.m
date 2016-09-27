@@ -26,7 +26,7 @@ function strFormatted = wraptextFS(str, varargin)
 %               Data Types - double
 %    endcolumn :  Right margin of the text. Scalar (non negative integer).
 %               This option controls the right margin of the text.
-%               The default value of endcolumn is 65.
+%               The default value of endcolumn is 75.
 %               Example - 'endcolumn',50 
 %               Data Types - double
 %    width :  width of the text. Scalar (non negative integer).
