@@ -89,6 +89,9 @@ function newTxt = removeExtraSpacesLF(txt)
 %}
 
 %% Beginning of code
+% search for older Macs carriage returns (OS-9 and earlier) and replace
+% them with line feeds (unix and OS X and later)
+txt=regexprep(txt,'\x0D','\x0A');
 
 % Find position of wanted line feed
 [~,goodLF]=regexp(txt,'[\:\;\.]\s*[\n\r]');
