@@ -37,16 +37,16 @@ function strFormatted = wraptextFS(str, varargin)
 %               Remark: it is necessary just to give two values among,
 %               width, startcolumn and endcolumn because the third is
 %               automatically determined
-% firstline :  indentation for first line. Boolean. if firstline is true
+% firstline :  indentation for first line. Boolean. If firstline is true
 %              then the first line starts in column 3 and not in column
 %              startcolumn, while the text in all the other columns starts
-%              as specified by option startcolumn
+%              as specified by option startcolumn.
 %               The default value of firstline is false
 %               Example - 'firstline',true 
 %               Data Types - Boolean
-%   comment :  specify whether text is a Maltab comment. Boolean. if
+%   comment :  specify whether text is a Maltab comment. Boolean. If
 %              comment is true then the first character in each row will be
-%              the percentage sign (comment symbol in Matlab). The deafult
+%              the percentage sign (comment symbol in Matlab). The default
 %              value of comment is false
 %               Example - 'comment',true 
 %               Data Types - Boolean
