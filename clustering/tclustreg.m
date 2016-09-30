@@ -347,7 +347,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 % in folder FSDA/combinatorial, renamed it as datasampleFS, and removed the
 % computationally expensive option parameters checks. Unfortunately, we had
 % to copy in the same folder the mex file wswor, also renamed as wsworFS.
-% The function should be re-written along the linels of
+% The function should be re-written along the lines of
 %      Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
 %      Sampling Without Replacement", SIAM Journal of Computing,
 %      9(1):111-113.
