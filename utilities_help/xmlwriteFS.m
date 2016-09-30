@@ -270,7 +270,7 @@ for i=1:size(out.Ex,1)
                     for ii=1:size(ExCell,1)
                         entry_nodeCell = docNode.createElement('ItemCell');
                         try
-                        entry_nodeCell.appendChild(docNode.createTextNode(strtrim(ExCell{ii})));
+                        entry_nodeCell.appendChild(docNode.createTextNode(deblank(ExCell{ii})));
                         catch
                             ddd=1;
                         end
@@ -312,7 +312,11 @@ for i=1:size(out.ExtraEx,1)
                     ExCell=out.ExtraEx{i,j};
                     for ii=1:size(ExCell,1)
                         entry_nodeCell = docNode.createElement('ItemCell');
-                        entry_nodeCell.appendChild(docNode.createTextNode(strtrim(ExCell{ii})));
+                        try
+                            entry_nodeCell.appendChild(docNode.createTextNode(deblank(ExCell{ii})));
+                        catch
+                            ddd=1;
+                        end
                         name_node.appendChild(entry_nodeCell)
                     end
                 else

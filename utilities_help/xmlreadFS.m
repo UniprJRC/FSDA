@@ -178,7 +178,9 @@ for i=1:size(Ex,1)
                     if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children(jj*2).Children)
                         Exij{jj}=dom.Children(index).Children(2*i+1).Children(2*j).Children(jj*2).Children.Data;
                     else
-                        Exij{jj}=[];
+                     % Remark: dec2hex(regexprep(' ',' ',' \x0A'))  = 20 0A
+                       % Exij{jj}=[];
+                        Exij{jj}=regexprep(' ',' ',' \x0A');
                     end
                 end
             end
@@ -210,7 +212,9 @@ for i=1:size(ExtraEx,1)
                     if ~isempty(dom.Children(index).Children(2*i+1).Children(2*j).Children(jj*2).Children)
                         Exij{jj}=dom.Children(index).Children(2*i+1).Children(2*j).Children(jj*2).Children.Data;
                     else
-                        %    Exij{jj}=' ';
+                    % Remark: dec2hex(regexprep(' ',' ',' \x0A'))  = 20 0A
+                             Exij{jj}=regexprep(' ',' ',' \x0A');
+                            % Exij{jj}=[];
                     end
                 end
             end
