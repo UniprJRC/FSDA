@@ -10,7 +10,7 @@ function strFormatted = wraptextFS(str, varargin)
 % 2) to control the maximum width of the text or the right margin;
 % 3) to add a (comment) sign at the beginning of each row of the wrapped text; 
 % 4) to indent the first line of the text.
-%
+% 5) to personalize comments, left margin for comments 
 %
 %  Required input arguments:
 %
@@ -44,10 +44,18 @@ function strFormatted = wraptextFS(str, varargin)
 %               The default value of firstline is false
 %               Example - 'firstline',true 
 %               Data Types - Boolean
-%   comment :  specify whether text is a Maltab comment. Boolean. If
+%   comment :  specify whether text is a Maltab comment. Boolean or structure. If
 %              comment is true then the first character in each row will be
 %              the percentage sign (comment symbol in Matlab). The default
-%              value of comment is false
+%              value of comment is false. If comment is a structure it is
+%              possible to personalize the symbol to put in from of each
+%              row, and the left margin of the comment symbol. More
+%              precisely, if comment is a structure it may contain the
+%              following fields: 
+%               comment.commentsign = character(s) to be put at the beginning of
+%               each row. String which identifies comment sign.
+%               comment.startcolumn = starting column to include
+%               commentsign.
 %               Example - 'comment',true 
 %               Data Types - Boolean
 %
@@ -111,6 +119,19 @@ function strFormatted = wraptextFS(str, varargin)
     width = cms(1)-10;
     Newstr=wraptextFS(str,'comment',false,'startcolumn',startcolumn,'width',width)
 %}
+
+%{ 
+    % Example of input option comment supplied as structure.
+    % Symbol '$$$' is included at the beginning of each row in column 5.
+    % The width of the text is 60 and starts in column 12.
+    comment=struct;
+    comment.commentsign='$$$';
+    comment.startcolumn=5;
+    startcolumn=12;
+    width=60;
+    Newstr=wraptextFS(str,'comment',comment,'startcolumn',startcolumn,'width',width).
+%}
+
     
 %% Input parameters checking
 
@@ -133,7 +154,7 @@ comment=false;
 % Write in structure 'options' the options chosen by the user
 if nargin > 1
     options=struct('width',width,'startcolumn',startcolumn,'endcolumn',endcolumn,...
-        'firstline',firstline,'comment',comment);
+        'firstline',firstline,'comment',comment,'code',false);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -185,17 +206,38 @@ if nargin > 1
     
     firstline=options.firstline;
     comment=options.comment;
-    %     if endcolumn-startcolumn+1 ~=width
-    %         error('wrong numebr of cols specified')
-    %     end
 end
 
+if isstruct(comment)
+    fcomment=fieldnames(comment);
+
+    
+    d=find(strcmp('commentsign',fcomment));
+    if d>0
+        commentsign= comment.commentsign;
+    else
+        commentsign='%';
+    end
+  
+    % Check if field startcolumn is present
+    d=find(strcmp('startcolumn',fcomment));
+    if d>0
+        startcolumnsymbol= comment.startcolumn;
+        if startcolumnsymbol>1
+            commentsign=[repmat(' ',1,startcolumnsymbol-1) commentsign];
+        end
+    end
+
+else
+    
 if comment
     commentsign='%';
 else
     commentsign=[];
 end
+end
 
+code=options.code;
 
 % Add a space at the end of the string
 str=[str ' '];
@@ -214,7 +256,9 @@ if ~isempty(PosLF) && PosLF(end)==length(str)-1
 end
 
 PosSpaces = regexp(str,' ');
-
+% Include in the position of the spaces also the line feeds otherwise they
+% will be overlooked
+PosSpaces= sort([PosLF PosSpaces]);
 
 % Throw error if any words are longer than specified width:
 if any(diff(PosSpaces)>width)
@@ -233,16 +277,22 @@ PosLinBreaks=zeros(length(PosSpaces),1);
 %  its length will be much shorter
 CellStackedStrings=cell(length(PosSpaces),1);
 
+% Left margin for text
+leftMargin= {repmat(' ',1,startcolumn-1-length(commentsign))};
 
-leftMargin= {repmat(' ',1,startcolumn-1-comment)};
-
-% Main code section: the loop populate CellStackedStrings{i} with lines of 
-% desired length
+% Main code section: the loop below populates CellStackedStrings{i} with
+% lines of desired length
 while k <PosSpaces(end)
     if k==0 && firstline
         PosLinBreaks(i) = PosSpaces(find(PosSpaces<=k+width+startcolumn,1,'last'));
     else
-        PosLinBreaks(i) = PosSpaces(find(PosSpaces<=k+width,1,'last'));
+        Posps=PosSpaces(find(PosSpaces<=k+width,1,'last'));
+        if ~isempty(Posps)
+        
+        PosLinBreaks(i) = Posps;
+        else
+            PosLinBreaks(i)=length(str);
+        end
     end
     
     k = PosLinBreaks(i);
@@ -267,9 +317,11 @@ while k <PosSpaces(end)
             PosLinBreaks(i)=findLFinstrsel;
             k = PosLinBreaks(i);
             strsel=str(1:PosLinBreaks(i));
-            CellStackedStrings{i}=strsel;
+            % deblank just in case the last hex character of strsel is 0A
+            % type dec2hex(strsel) to see hexadecimal numbers of strsel
+            CellStackedStrings{i}=deblank(strsel);
         else
-            CellStackedStrings{i}=strsel;
+            CellStackedStrings{i}=deblank(strsel);
         end
     end
     i = i+1;
@@ -281,10 +333,18 @@ CellStackedStrings=CellStackedStrings(1:i-1);
 % Insert at the end of each row symbol 0A123 which will be replaced by
 % carriage return symbol \x0A
 if firstline==1
+    if code
+    str=strjoin(strcat(commentsign,leftMargin,(CellStackedStrings(2:end)),'0A123'),'');
+    else
     str=strjoin(strcat(commentsign,leftMargin,strtrim(CellStackedStrings(2:end)),'0A123'),'');
+    end
     str=[commentsign CellStackedStrings{1} '0A123' str];
 else
+    if code 
+    str=strjoin(strcat(commentsign,leftMargin,(CellStackedStrings),'0A123'),'');
+    else
     str=strjoin(strcat(commentsign,leftMargin,strtrim(CellStackedStrings),'0A123'),'');
+    end
 end
 
 % strFormatted = output formatted string
