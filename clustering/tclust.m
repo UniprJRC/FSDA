@@ -84,14 +84,15 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               shall be considered in the concentration, assignment steps
 %               and computation of the likelihood.
 %               if equalweights = true we are (ideally) assuming equally
-%               sized groups by maximizing
+%               sized groups by maximizing:
 %
 %
 %                 \[
 %                 \sum_{j=1}^k \sum_{ x_i \in group_j } \log f(x_i; m_j , S_j)
 %                 \]
 %
-%               else if equalweights = false (default) we allow for different group weights by maximizing
+%               else if equalweights = false (default) we allow for
+%               different group weights by maximizing:
 %
 %                 \[
 %                     \sum_{j=1}^k  \sum_{ x_i \in group_j }  \log \left[ \frac{n_j}{n}  f(x_i; m_j , S_j) \right]=
@@ -203,9 +204,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               deter implies restrictions on the determinant.
 %                 Example - 'restr','deter'
 %                 Data Types - char
-%       Ysave : Scalar that is set to 1 to request that the input matrix Y
-%               is saved into the output structure out. Default is 0, i.e.
-%               no saving is done.
+%       Ysave : Save original input matrix. Scalar. Set Ysave to 1 to request that the input matrix Y
+%               is saved into the output structure out. Default is 0, id
+%               est no saving is done.
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
