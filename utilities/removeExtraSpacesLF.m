@@ -95,10 +95,17 @@ txt=regexprep(txt,'\x0D','\x0A');
 
 % Find position of wanted line feed
 [~,goodLF]=regexp(txt,'[\:\;\.]\s*[\n\r]');
-[~,goodLF1]=regexp(txt,'\\\[\s*[\n\r]');
+% [goodLF1st,goodLF1]=regexp(txt,'\\\[\s*[\n\r]');
+% Find 'line feed' then 'a sequence of spaces' then '\[' then 'another
+% sequence of spaces' then 'another line feed'
+[openLatexEqIni,openLatexEqEnd]=regexp(txt,'\x0A\s*\\\[\s*\x0A');
+
 [goodLF2,~]=regexp(txt,'[\n\r]\s*\\\]');
 [~,goodLF3]=regexp(txt,'\\\]\s*[\n\r]');
-goodLF=[goodLF goodLF1 goodLF2 goodLF3];
+
+% [goodLF2,goodLF3]=regexp(txt,'\x0A\s*\\\]\s*\x0A');
+
+goodLF=[goodLF openLatexEqEnd goodLF2 goodLF3 openLatexEqIni];
 
 allLF=regexp(txt,'[\n\r]');
 LFtoremove=setdiff(allLF,goodLF);
