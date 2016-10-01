@@ -59,183 +59,198 @@ end
 % out=publishFS('tclust','evalCode',false,'write2file',false);
 out=publishFS(FileName,'evalCode',false,'write2file',false);
 
+%% Format and clean description
 if ~isempty(out.description)
     out.description=removeExtraSpacesLF(out.description);
 end
 
-for j=2:4
-    Inpi=out.InpArgs(:,j);
-    for i=1:length(Inpi)
-        if ~isempty(Inpi{i})
-            Inpi{i}=removeExtraSpacesLF(Inpi{i});
-        end
-    end
-    out.InpArgs(:,j)=Inpi;
-end
-
-
-for j=2:4
-    Inpi=out.OptArgs(:,j);
-    for i=1:length(Inpi)
-        if ~isempty(Inpi{i})
-            Inpi{i}=removeExtraSpacesLF(Inpi{i});
-        end
-    end
-    out.OptArgs(:,j)=Inpi;
-end
-
-%%%%%%%%%%%%%%%%%
-OutArgs=out.OutArgs;
-for i=1:size(OutArgs,1)
-    
-    
-    if ~cellfun(@isempty,OutArgs(i,2)) && ~isempty(strtrim(OutArgs{i,2}))
-        % Short description
-        for j=2:4
-            Inpi=OutArgs{i,j};
-            if ~isempty(Inpi)
-                Inpi=removeExtraSpacesLF(Inpi);
+%% Format and clean Input arguments
+if ~isempty(out.InpArgs)
+    for j=2:4
+        Inpi=out.InpArgs(:,j);
+        for i=1:length(Inpi)
+            if ~isempty(Inpi{i})
+                Inpi{i}=removeExtraSpacesLF(Inpi{i});
             end
-            out.OutArgs{i,j}=Inpi;
         end
-    else
-        
-        % Table containing the details of the ith output arg which is a
-        % structure
-        outTable=OutArgs{i,5};
-        for ii=1:size(outTable,1)
-            % Short description
-            DescTab=outTable{ii,2};
-            outTable{ii,2}=removeExtraSpacesLF(DescTab);
-        end
-        out.OutArgs{i,5}=outTable;
+        out.InpArgs(:,j)=Inpi;
     end
-    
 end
 
+%% Format and clean Optional arguments
+if ~isempty(out.OptArgs)
+    for j=2:5
+        Inpi=out.OptArgs(:,j);
+        for i=1:length(Inpi)
+            if ~isempty(Inpi{i})
+                Inpi{i}=removeExtraSpacesLF(Inpi{i});
+            end
+        end
+        out.OptArgs(:,j)=Inpi;
+    end
+end
+
+
+
+%% Format and clean output arguments
+OutArgs=out.OutArgs;
+if ~isempty(OutArgs)
+    
+    for i=1:size(OutArgs,1)
+        
+        
+        if ~cellfun(@isempty,OutArgs(i,2)) && ~isempty(strtrim(OutArgs{i,2}))
+            % Short description
+            for j=2:4
+                Inpi=OutArgs{i,j};
+                if ~isempty(Inpi)
+                    Inpi=removeExtraSpacesLF(Inpi);
+                end
+                out.OutArgs{i,j}=Inpi;
+            end
+        else
+            
+            % Table containing the details of the ith output arg which is a
+            % structure
+            outTable=OutArgs{i,5};
+            for ii=1:size(outTable,1)
+                % Short description
+                DescTab=outTable{ii,2};
+                outTable{ii,2}=removeExtraSpacesLF(DescTab);
+            end
+            out.OutArgs{i,5}=outTable;
+        end
+        
+    end
+end
+
+%% Format and clean More About
 if ~isempty(out.MoreAbout)
     out.MoreAbout=removeExtraSpacesLF(out.MoreAbout);
 end
 
-
+%% Format and clean references
 Inpi=out.References;
-for i=1:length(Inpi)
-    if ~isempty(Inpi{i})
-        Inpi{i}=removeExtraSpacesLF(Inpi{i});
+if ~isempty(Inpi)
+    for i=1:length(Inpi)
+        if ~isempty(Inpi{i})
+            Inpi{i}=removeExtraSpacesLF(Inpi{i});
+        end
     end
+    out.References=Inpi;
 end
-out.References=Inpi;
 
-%% Clean examples part
-
-for j=1:3
-    
-    Ex3=out.Ex(:,j);
-    
-    for i=1:length(Ex3)
+%% Format and clean examples
+if ~isempty(out.Ex)
+    for j=1:3
         
-        if j<=2
-            str=removeExtraSpacesLF(Ex3{i});
-        else
-            % Given that this is code just remove extra consecutive line
-            % feeds
-            str=regexprep(Ex3{i},'\x0D','\x0A');
-            str=regexprep(str,'\x0A*','\x0A');
-            checkfirstLF=regexp(str,'\x0A');
-            if checkfirstLF(1)==1
-                str=str(2:end);
-            end
-        end
-        if isempty(strtrim(str))
-            out.Ex{i,j}=[];
-        else
-            PosLinBreaks = [regexp(str,'\x0A') length(str)];
-            if j<=2
-                CellStackedStrings=cell(length(PosLinBreaks),1);
-                lP=length(PosLinBreaks);
-            else
-                CellStackedStrings=cell(length(PosLinBreaks)-1,1);
-                lP=length(PosLinBreaks)-1;
-            end
+        Ex3=out.Ex(:,j);
+        
+        for i=1:length(Ex3)
             
-            for ii=1:lP
-                if ii>1
-                    strsel=str(PosLinBreaks(ii-1)+1:PosLinBreaks(ii));
-                    % findLFinstrsel=regexp((strsel),'\n', 'once');
-                    CellStackedStrings{ii}=strtrim(strsel);
-                else
-                    strsel=str(1:PosLinBreaks(ii));
-                    CellStackedStrings{ii}=strtrim(strsel);
+            if j<=2
+                str=removeExtraSpacesLF(Ex3{i});
+            else
+                % Given that this is code just remove extra consecutive line
+                % feeds
+                str=regexprep(Ex3{i},'\x0D','\x0A');
+                str=regexprep(str,'\x0A*','\x0A');
+                checkfirstLF=regexp(str,'\x0A');
+                if checkfirstLF(1)==1
+                    str=str(2:end);
                 end
             end
-            
-            % if j==1 given that the title is just one sentence we store
-            % the content of the cell. In all the other cases we store the
-            % cell itself
-            if j==1
-                out.Ex{i,j}=CellStackedStrings{:};
+            if isempty(strtrim(str))
+                out.Ex{i,j}=[];
             else
-                out.Ex{i,j}=CellStackedStrings; % str;
+                PosLinBreaks = [regexp(str,'\x0A') length(str)];
+                if j<=2
+                    CellStackedStrings=cell(length(PosLinBreaks),1);
+                    lP=length(PosLinBreaks);
+                else
+                    CellStackedStrings=cell(length(PosLinBreaks)-1,1);
+                    lP=length(PosLinBreaks)-1;
+                end
+                
+                for ii=1:lP
+                    if ii>1
+                        strsel=str(PosLinBreaks(ii-1)+1:PosLinBreaks(ii));
+                        % findLFinstrsel=regexp((strsel),'\n', 'once');
+                        CellStackedStrings{ii}=strtrim(strsel);
+                    else
+                        strsel=str(1:PosLinBreaks(ii));
+                        CellStackedStrings{ii}=strtrim(strsel);
+                    end
+                end
+                
+                % if j==1 given that the title is just one sentence we store
+                % the content of the cell. In all the other cases we store the
+                % cell itself
+                if j==1
+                    out.Ex{i,j}=CellStackedStrings{:};
+                else
+                    out.Ex{i,j}=CellStackedStrings; % str;
+                end
             end
         end
     end
 end
 
-%% Clean Extra examples part
-
-for j=1:3
-    
-    Ex3=out.ExtraEx(:,j);
-    
-    for i=1:length(Ex3)
-        if j<=2
-            str=removeExtraSpacesLF(Ex3{i});
-        else
-            % Given that this is code just remove extra consecutive line
-            % feeds
-            str=regexprep(Ex3{i},'\x0D','\x0A');
-            str=regexprep(str,'\x0A*','\x0A');
-            checkfirstLF=regexp(str,'\x0A');
-            if checkfirstLF(1)==1
-                str=str(2:end);
-            end
-        end
-        if isempty(strtrim(str))
-            out.ExtraEx{i,j}=[];
-        else
-            
-            PosLinBreaks = [regexp(str,'\x0A') length(str)];
+%% Format and clean Extra examples
+if ~isempty(out.ExtraEx)
+    for j=1:3
+        
+        Ex3=out.ExtraEx(:,j);
+        
+        for i=1:length(Ex3)
             if j<=2
-                CellStackedStrings=cell(length(PosLinBreaks),1);
-                lP=length(PosLinBreaks);
+                str=removeExtraSpacesLF(Ex3{i});
             else
-                CellStackedStrings=cell(length(PosLinBreaks)-1,1);
-                lP=length(PosLinBreaks)-1;
-            end
-            
-            for ii=1:lP
-                if ii>1
-                    strsel=str(PosLinBreaks(ii-1)+1:PosLinBreaks(ii));
-                    % findLFinstrsel=regexp((strsel),'\n', 'once');
-                    CellStackedStrings{ii}=strtrim(strsel);
-                else
-                    strsel=str(1:PosLinBreaks(ii));
-                    CellStackedStrings{ii}=strtrim(strsel);
+                % Given that this is code just remove extra consecutive line
+                % feeds
+                str=regexprep(Ex3{i},'\x0D','\x0A');
+                str=regexprep(str,'\x0A*','\x0A');
+                checkfirstLF=regexp(str,'\x0A');
+                if checkfirstLF(1)==1
+                    str=str(2:end);
                 end
             end
-            
-            % if j==1 given that the title is just one sentence we store
-            % the content of the cell. In all the other cases we store the
-            % cell itself
-            if j==1
-                out.ExtraEx{i,j}=CellStackedStrings{:};
+            if isempty(strtrim(str))
+                out.ExtraEx{i,j}=[];
             else
-                out.ExtraEx{i,j}=CellStackedStrings; % str;
+                
+                PosLinBreaks = [regexp(str,'\x0A') length(str)];
+                if j<=2
+                    CellStackedStrings=cell(length(PosLinBreaks),1);
+                    lP=length(PosLinBreaks);
+                else
+                    CellStackedStrings=cell(length(PosLinBreaks)-1,1);
+                    lP=length(PosLinBreaks)-1;
+                end
+                
+                for ii=1:lP
+                    if ii>1
+                        strsel=str(PosLinBreaks(ii-1)+1:PosLinBreaks(ii));
+                        % findLFinstrsel=regexp((strsel),'\n', 'once');
+                        CellStackedStrings{ii}=strtrim(strsel);
+                    else
+                        strsel=str(1:PosLinBreaks(ii));
+                        CellStackedStrings{ii}=strtrim(strsel);
+                    end
+                end
+                
+                % if j==1 given that the title is just one sentence we store
+                % the content of the cell. In all the other cases we store the
+                % cell itself
+                if j==1
+                    out.ExtraEx{i,j}=CellStackedStrings{:};
+                else
+                    out.ExtraEx{i,j}=CellStackedStrings; % str;
+                end
             end
         end
     end
 end
-
 
 % Now after cleaning out structure write to xml
 [docNode,docNodechr]=xmlwriteFS(out,'write2file',write2file);
