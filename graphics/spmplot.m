@@ -120,6 +120,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       The options which follow can only be used if the first argument
 %       of spmplot is a structure containing information about the fwd
 %       search (i.e. the fields MAL, Un and eventually label)
+%                Data Types - single|double
 %
 %   Optional input arguments: (if the first argument of spmplot is a
 %                               structure)
@@ -259,7 +260,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %{
     % Iris data: scatter plot matrix with univariate boxplots on the main
     % diagonal and personalized options for symbols, colors and symbol
-    % size and no legend
+    % size and no legend.
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'}; % Name of the variables
@@ -274,7 +275,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %
 %{
-    % Example of spmpot called by routine FSM.
+    % Example of spmplot called by routine FSM.
     % Generate contaminated data.
     state=100;
     randn('state', state);
@@ -289,7 +290,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 %{
     % Now test the direct use of FSM. Set two groups, e.g. those obtained
-    % from FSM
+    % from FSM.
     % Generate contaminated data
     state=100;
     randn('state', state);

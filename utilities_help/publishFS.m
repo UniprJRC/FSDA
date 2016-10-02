@@ -850,6 +850,11 @@ for i=1:length(ini)
         
         posPercentageSigns=regexp(descradd,'\n%');
         descradd(posPercentageSigns+1)=[];
+        % Remove First character % if remained
+        if ~isempty(descradd) && strcmp(descradd(1),'%')
+            descradd=descradd(2:end);
+        end
+        
         % descradd=strtrim(descradd);
         listOptArgs{ij-1,4}=[listOptArgs{ij-1,4} descradd];
         % listOptArgs{i-1,2}=[listOptArgs{i-1,2}

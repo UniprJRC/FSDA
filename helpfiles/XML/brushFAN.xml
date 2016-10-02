@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->brushFAN</Title>
-   <Purpose><!--This is the second line of the .m file--> brushFAN displays a GUI which enables brushing in the fanplot</Purpose>
-   <Description><!--Description section-->brushFAN displays a GUI where it is possible to brush steps from the fan plot&#xD;
- and to see the corresponding units highlighted in other plots</Description>
+   <Purpose><!--This is the second line of the .m file--> brushFAN displays a GUI which enables brushing in the fanplot
+</Purpose>
+   <Description><!--Description section-->brushFAN displays a GUI where it is possible to brush steps from the fan plot and to see the corresponding units highlighted in other plots
+</Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>eventdata</Name>
-         <ShortDesc>scalar integer (from 1 to 3)</ShortDesc>
-         <TypeInd>Automatic code execution&#xD;
-              without user interaction</TypeInd>
-         <LongDesc>This option enables to perform in&#xD;
-              an automatic way the code associated with a particular&#xD;
-              radiobutton in the GUI &#xD;
-              </LongDesc>
+         <ShortDesc>scalar integer (from 1 to 3).</ShortDesc>
+         <TypeInd>Automatic code execution without user interaction.</TypeInd>
+         <LongDesc>This option enables to perform in an automatic way the code associated with a particular radiobutton in the GUI</LongDesc>
          <Example>&lt;code&gt;2 (the example associated&#xD;
 &lt;/code&gt;              with the second radiobutton will be automatically executed)</Example>
          <DataType>integer</DataType>
@@ -34,37 +31,39 @@
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
-     Display a GUI where it is possible to brush steps from the fan plot&#xD;
-     and to see the corresponding units highlighted in other plots.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt; Display a GUI where it is possible to brush steps from the fan plot and to see the corresponding units highlighted in other plots.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-    brushFAN&#xD;</MATLABcode>
+            <ItemCell>brushFAN</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Run examples associated with radiobuttons 1 to 4.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    for j=1:4&#xD;
-        brushFAN(j);&#xD;
-    end&#xD;</MATLABcode>
+            <ItemCell>for j=1:4</ItemCell>
+            <ItemCell>brushFAN(j);</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Run the example associated with radiobutton 2.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    brushFAN(2);&#xD;</MATLABcode>
+            <ItemCell>brushFAN(2);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Run the example associated with radiobutton 3.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    brushFAN(3);&#xD;</MATLABcode>
+            <ItemCell>brushFAN(3);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </ExtraEx>

@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->triu2vec</Title>
-   <Purpose><!--This is the second line of the .m file-->triu2vec extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix</Purpose>
+   <Purpose><!--This is the second line of the .m file-->triu2vec extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>A</Name>
-         <ShortDesc>scalar, or square matrix  of order r (r&amp;gt;1)</ShortDesc>
-         <TypeInd>Scalar or&#xD;
-               square matrix</TypeInd>
-         <LongDesc>If A is a non negative integer, it indicates the number of&#xD;
-               rows (columns) of a matrix whose linear indexes of the&#xD;
-               elements on and above diagonal have to be found. Then,&#xD;
-               triu2vec(A) returns the (A*(A-1)/2)+A linear indexes of the&#xD;
-               elements on and above diagonal.&#xD;
-&#xD;
-               If A is a square matrix of order r (r&amp;gt;1), then triu2vec(A)&#xD;
-               returns the elements on and above diagonal of matrix A in a&#xD;
-               vector of length (r*(r-1)/2)+r;</LongDesc>
+         <ShortDesc>scalar, or square matrix of order r (r&amp;gt;1).</ShortDesc>
+         <TypeInd>Scalar or square matrix.</TypeInd>
+         <LongDesc>If A is a non negative integer, it indicates the number of rows (columns) of a matrix whose linear indexes of the elements on and above diagonal have to be found. Then, triu2vec(A) returns the (A*(A-1)/2)+A linear indexes of the elements on and above diagonal.
+If A is a square matrix of order r (r&amp;gt;1), then triu2vec(A) returns the elements on and above diagonal of matrix A in a vector of length (r*(r-1)/2)+r;</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -25,16 +18,11 @@
       </Item>
       <Item>
          <Name>k</Name>
-         <ShortDesc>which diagonal</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Non negative integer given to return the elements on and&#xD;
-               above the k-th diagonal of A, being k=0 the main diagonal.&#xD;
-               Default is k = 0, i.e., the main diagonal is also returned.&#xD;
-               Negative integers are treated as 0, i.e. elements on and&#xD;
-               above the main diagonal are returned. No linear indices or&#xD;
-               elements are returned if the user provides an integer k&#xD;
-               larger than the order of the input matrix.&#xD;
-                 </LongDesc>
+         <ShortDesc>which diagonal.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Non negative integer given to return the elements on and above the k-th diagonal of A, being k=0 the main diagonal.
+Default is k = 0, i.e., the main diagonal is also returned.
+Negative integers are treated as 0, i.e. elements on and above the main diagonal are returned. No linear indices or elements are returned if the user provides an integer k larger than the order of the input matrix.</LongDesc>
          <Example>&lt;code&gt;'k',0&#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -46,57 +34,25 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>vector </ShortDesc>
-         <TypeInd>Linear indexes or the elements on and&#xD;
-             above the k-th diagonal.</TypeInd>
-         <LongDesc>&#xD;
-&#xD;
-                     For example if k =0 or number of input arguments ==1&#xD;
-             If input argument A is a scalar, y is a vector of length&#xD;
-             (A*(A-1)/2)+A containing the linear indexes of the&#xD;
-             elements on and above diagonal of a square matrix of order A.&#xD;
-&#xD;
-             If input argument A is a square matrix of order r (r&amp;gt;1), y&#xD;
-             is a vector of length (r*(r-1)/2)+r containing the elements&#xD;
-             on and above diagonal of matrix A.&#xD;
-&#xD;
-                   For example if k == 2&#xD;
-             If input argument A is a scalar, y is a vector of length&#xD;
-             (A*(A-1)/2)+A -A -(A-1) containing the linear indexes of the&#xD;
-             elements on and above the 2nd diagonal of a square matrix of&#xD;
-             order A.&#xD;
-&#xD;
-             If input argument A is a square matrix of order r (r&amp;gt;1), y&#xD;
-             is a vector of length (r*(r-1)/2)+r -r -(r-1) containing the&#xD;
-             elements on and above the 2nd diagonal of a square matrix of&#xD;
-             order A.&#xD;
-&#xD;
-&#xD;
-       Remark 1: if the elements on and above diagonal must be extracted&#xD;
-             repeatedly, it is convenient to find the linear indexes once&#xD;
-             and for all&#xD;
-&#xD;
-       Remark 2: the linear indices of the upper triangualar part of a&#xD;
-       square matrix A of size r can be also obtained with the following&#xD;
-       formulas and code:&#xD;
-&#xD;
-               ind=(1:(r*(r-1)/2))';&#xD;
- &#xD;
-                 j = round(floor(-.5 + .5 * sqrt(1 + 8 * (ind - 1))) + 2);&#xD;
-                 i = round(j .* (3 - j) / 2 + ind - 1);&#xD;
- &#xD;
-                 y = i + (j - 1).*r;  the linear indexes&#xD;
- &#xD;
-                 A1 = A(:);&#xD;
-                 y  = A1(y);          the elements above diagonal of matrix A</LongDesc>
-         <Struct> </Struct>
+         <ShortDesc>vector</ShortDesc>
+         <TypeInd>Linear indexes or the elements on and above the k-th diagonal.</TypeInd>
+         <LongDesc>For example if k =0 or number of input arguments ==1 If input argument A is a scalar, y is a vector of length (A*(A-1)/2)+A containing the linear indexes of the elements on and above diagonal of a square matrix of order A.
+If input argument A is a square matrix of order r (r&amp;gt;1), y is a vector of length (r*(r-1)/2)+r containing the elements on and above diagonal of matrix A.
+For example if k == 2 If input argument A is a scalar, y is a vector of length (A*(A-1)/2)+A -A -(A-1) containing the linear indexes of the elements on and above the 2nd diagonal of a square matrix of order A.
+If input argument A is a square matrix of order r (r&amp;gt;1), y is a vector of length (r*(r-1)/2)+r -r -(r-1) containing the elements on and above the 2nd diagonal of a square matrix of order A.
+Remark 1: if the elements on and above diagonal must be extracted repeatedly, it is convenient to find the linear indexes once and for all Remark 2: the linear indices of the upper triangualar part of a square matrix A of size r can be also obtained with the following formulas and code:
+ind=(1:(r*(r-1)/2))';
+j = round(floor(-.5 + .5 * sqrt(1 + 8 * (ind - 1))) + 2);
+i = round(j .* (3 - j) / 2 + ind - 1);
+y = i + (j - 1).*r; the linear indexes A1 = A(:);
+y = A1(y); the elements above diagonal of matrix A</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Harveille D. A. (1997). Matrix Algebra froma  statistician's perspective,&#xD;
- Springer, New York</Item>
+      <Item>Harveille D. A. (1997). Matrix Algebra froma statistician's perspective, Springer, New York</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>diag</Item>
@@ -104,51 +60,56 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Extract the elements above the main diagonal.</Title>
-         <Desc> &#xD;
-     The input is a square matrix of order 5.&#xD;</Desc>
+         <Desc>
+            <ItemCell>The input is a square matrix of order 5.</ItemCell>
+         </Desc>
          <MATLABcode>
-    A=magic(5);&#xD;
-    disp('Input matrix A')&#xD;
-    disp(A)&#xD;
-    disp('Extract the elements above the main diagonal of matrix A in a vector')&#xD;
-    k = 1;&#xD;
-    y=triu2vec(A,k);&#xD;
-    disp(y)&#xD;</MATLABcode>
+            <ItemCell>A=magic(5);</ItemCell>
+            <ItemCell>disp('Input matrix A')</ItemCell>
+            <ItemCell>disp(A)</ItemCell>
+            <ItemCell>disp('Extract the elements above the main diagonal of matrix A in a vector')</ItemCell>
+            <ItemCell>k = 1;</ItemCell>
+            <ItemCell>y=triu2vec(A,k);</ItemCell>
+            <ItemCell>disp(y)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Extract the elements on and above the main diagonal.</Title>
-         <Desc> &#xD;
-     The input is a square matrix of order 5.&#xD;</Desc>
+         <Desc>
+            <ItemCell>The input is a square matrix of order 5.</ItemCell>
+         </Desc>
          <MATLABcode>
-    A=magic(5);&#xD;
-    disp('Input matrix A')&#xD;
-    disp(A)&#xD;
-    disp('Extract the elements on and above diagonal of matrix A in a vector')&#xD;
-    y=triu2vec(A);&#xD;
-    disp(y)&#xD;</MATLABcode>
+            <ItemCell>A=magic(5);</ItemCell>
+            <ItemCell>disp('Input matrix A')</ItemCell>
+            <ItemCell>disp(A)</ItemCell>
+            <ItemCell>disp('Extract the elements on and above diagonal of matrix A in a vector')</ItemCell>
+            <ItemCell>y=triu2vec(A);</ItemCell>
+            <ItemCell>disp(y)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Find linear indexes.</Title>
-         <Desc>&#xD;
-     Finds the linear indexes of the elements on and above the main diagonal of a&#xD;
-     square matrix of order 5&#xD;</Desc>
+         <Desc>
+            <ItemCell>Finds the linear indexes of the elements on and above the main diagonal of a square matrix of order 5</ItemCell>
+         </Desc>
          <MATLABcode>
-    r=5;&#xD;
-    disp(['Input scalar is r=' num2str(r)])&#xD;
-    disp('Extract the linear indexes of the elements on and above diagonal')&#xD;
-    disp(['of a square matrix of size ' num2str(r) ' in a vector'])&#xD;
-    y=triu2vec(r);&#xD;
-    disp(['The linear indexes of the elements on and above diagonal of a square matrix of size ' num2str(r) ' are:'])&#xD;
-    disp(y)&#xD;
-    disp(['For example if A=invhilb(' num2str(r) ')'])&#xD;
-    A=invhilb(r)&#xD;
-    disp('The elements on and above diagonal of A are');&#xD;
-    A1=A(:);&#xD;
-    disp(A1(y))&#xD;</MATLABcode>
+            <ItemCell>r=5;</ItemCell>
+            <ItemCell>disp(['Input scalar is r=' num2str(r)])</ItemCell>
+            <ItemCell>disp('Extract the linear indexes of the elements on and above diagonal')</ItemCell>
+            <ItemCell>disp(['of a square matrix of size ' num2str(r) ' in a vector'])</ItemCell>
+            <ItemCell>y=triu2vec(r);</ItemCell>
+            <ItemCell>disp(['The linear indexes of the elements on and above diagonal of a square matrix of size ' num2str(r) ' are:'])</ItemCell>
+            <ItemCell>disp(y)</ItemCell>
+            <ItemCell>disp(['For example if A=invhilb(' num2str(r) ')'])</ItemCell>
+            <ItemCell>A=invhilb(r)</ItemCell>
+            <ItemCell>disp('The elements on and above diagonal of A are');</ItemCell>
+            <ItemCell>A1=A(:);</ItemCell>
+            <ItemCell>disp(A1(y))</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

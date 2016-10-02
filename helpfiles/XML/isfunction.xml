@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->isfunction</Title>
-   <Purpose><!--This is the second line of the .m file-->isfunction checks if a function exists. </Purpose>
-   <Description><!--Description section-->Returns 1 if the function 'funstr' exists, 0 otherwise. Also returns the&#xD;
- location of the function, which is empty if funstr does not exist. Works&#xD;
- for both MATLAB and third party functions, e.g. those in FSDA. REMARK:&#xD;
- does not work for built-in functions such as sin, cos, etc.</Description>
+   <Purpose><!--This is the second line of the .m file-->isfunction checks if a function exists. 
+</Purpose>
+   <Description><!--Description section-->Returns 1 if the function 'funstr' exists, 0 otherwise. Also returns the location of the function, which is empty if funstr does not exist. Works for both MATLAB and third party functions, e.g. those in FSDA. REMARK:
+does not work for built-in functions such as sin, cos, etc.
+</Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>funstr</Name>
-         <ShortDesc>Function name</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>The function to be checked.&#xD;
-                 </LongDesc>
+         <ShortDesc>Function name.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>The function to be checked.</LongDesc>
          <Example> </Example>
          <DataType>String</DataType>
          <ReqArg>1</ReqArg>
@@ -23,21 +22,19 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>check</Name>
-         <ShortDesc> Boolean {1,0}</ShortDesc>
+         <ShortDesc>Boolean {1,0}</ShortDesc>
          <TypeInd>Flag indicating the file existance.</TypeInd>
-         <LongDesc>&#xD;
-                1 if function 'funstr' exists, 0 otherwise.&#xD;
-                Data Types - Logical</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>1 if function 'funstr' exists, 0 otherwise.
+Data Types - Logical</LongDesc>
+         <Structure> </Structure>
       </Item>
       <Item>
          <Name>location</Name>
-         <ShortDesc> String</ShortDesc>
+         <ShortDesc>String</ShortDesc>
          <TypeInd>Function path.</TypeInd>
-         <LongDesc>  The location of the function, &#xD;
-                which is empty if 'funstr'  does not exist. &#xD;
-                Data Types - String</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>The location of the function, which is empty if 'funstr' does not exist.
+Data Types - String</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
@@ -50,16 +47,18 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>check if a function of the statistical toolbox exists.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    [check , location] = isfunction('regress')&#xD;</MATLABcode>
+            <ItemCell>[check , location] = isfunction('regress')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>check if a function of the FSDA toolbox exists.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    [check , location] = isfunction('FSR')&#xD;</MATLABcode>
+            <ItemCell>[check , location] = isfunction('FSR')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

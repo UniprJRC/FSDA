@@ -16,6 +16,7 @@ function resindexplot(residuals,varargin)
 %               residuals.X = n-by-p matrix containing explanatory
 %               variables(compulsory field if interactive
 %               brushing is used)
+%                Data Types - single|double
 %
 % Optional input arguments:
 %               h : the axis handle of a figure where to send the resindexplot.

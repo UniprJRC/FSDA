@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSRB</Title>
-   <Purpose><!--This is the second line of the .m file-->FSRB gives an automatic outlier detection procedure in Bayesian linear regression</Purpose>
+   <Purpose><!--This is the second line of the .m file-->FSRB gives an automatic outlier detection procedure in Bayesian linear regression
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>Response variable</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Response variable, specified as&#xD;
-               a vector of length n1, where n1 is the number of&#xD;
-               observations. Each entry in y is the response for the&#xD;
-               corresponding row of X.&#xD;
-               Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations.</LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Response variable, specified as a vector of length n1, where n1 is the number of observations. Each entry in y is the response for the corresponding row of X.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -23,22 +18,11 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Predictor variables</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>Matrix of explanatory variables (also called&#xD;
-               'regressors') of dimension n1 x (p-1) where p denotes the&#xD;
-               number of explanatory variables including the intercept.&#xD;
-               Rows of X represent observations, and columns represent&#xD;
-               variables. By default, there is a constant term in the&#xD;
-               model, unless you explicitly remove it using input option&#xD;
-               intercept, so do not include a column of 1s in X. Missing&#xD;
-               values (NaN's) and infinite values (Inf's) are allowed,&#xD;
-               since observations (rows) with missing or infinite values&#xD;
-               will automatically be excluded from the computations.&#xD;
-               Remark: note that here we use symbol n1 instead of&#xD;
-               traditional symbol n because we want to better separate&#xD;
-               sample information coming from n1 values to prior&#xD;
-               information coming from n0 previous experiments.</LongDesc>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n1 x (p-1) where p denotes the number of explanatory variables including the intercept.
+Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
+Remark: note that here we use symbol n1 instead of traditional symbol n because we want to better separate sample information coming from n1 values to prior information coming from n0 previous experiments.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -48,56 +32,33 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted&#xD;
-                       (default), if 0, no constant term will be included.&#xD;
-                        </LongDesc>
-         <Example> 'intercept',1&#xD;
-                       </Example>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bayes</Name>
-         <ShortDesc>Prior information</ShortDesc>
-         <TypeInd>Structure</TypeInd>
-         <LongDesc>It contains the following fields&#xD;
-               bayes.beta0=  p-times-1 vector containing prior mean of \beta&#xD;
-               bayes.R    =  p-times-p positive definite matrix which can be&#xD;
-                       interpreted as X0'X0 where X0 is a n0 x p matrix&#xD;
-                       coming from previous experiments (assuming that the&#xD;
-                       intercept is included in the model.&#xD;
-&#xD;
-               The prior distribution of $\tau_0$ is a gamma distribution with&#xD;
-               parameters $a_0$ and $b_0$, that is&#xD;
-               \[&#xD;
-                     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)&#xD;
-                       \qquad E(\tau_0) = a_0/b_0&#xD;
-               \]&#xD;
-               bayes.tau0 = scalar. Prior estimate of&#xD;
-                       \[ \tau=1/ \sigma^2 =a_0/b_0 \]&#xD;
-               bayes.n0   = scalar. Sometimes it helps to think of the prior&#xD;
-                      information as coming from n0 previous experiments.&#xD;
-                      Therefore we assume that matrix X0 (which defines&#xD;
-                      R), was made up of n0 observations.&#xD;
-              REMARK if structure bayes is not supplied the default&#xD;
-                      values which are used are.&#xD;
-                      beta0= zeros(p,1):  Vector of zeros.&#xD;
-                      R=eye(p):           Identity matrix.&#xD;
-                      tau0=1/1e+6:        Very large value for the&#xD;
-                                          prior variance, that is a very&#xD;
-                                          small value for tau0.&#xD;
-                      n0=1:               just one prior observation.&#xD;
-&#xD;
-               $\beta$ is assumed to have a normal distribution with&#xD;
-               mean $\beta_0$ and (conditional on $\tau_0$) covariance&#xD;
-               $(1/\tau_0) (X_0'X_0)^{-1}$.&#xD;
-               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$&#xD;
-&#xD;
-                     </LongDesc>
-         <Example> bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;&#xD;
-                     </Example>
+         <ShortDesc>Prior information.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>It contains the following fields bayes.beta0= p-times-1 vector containing prior mean of \beta bayes.R = p-times-p positive definite matrix which can be interpreted as X0'X0 where X0 is a n0 x p matrix coming from previous experiments (assuming that the intercept is included in the model.
+The prior distribution of $\tau_0$ is a gamma distribution with parameters $a_0$ and $b_0$, that is
+\[
+p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau) \qquad E(\tau_0) = a_0/b_0
+\]
+bayes.tau0 = scalar. Prior estimate of \[ \tau=1/ \sigma^2 =a_0/b_0 \]
+bayes.n0 = scalar. Sometimes it helps to think of the prior information as coming from n0 previous experiments.
+Therefore we assume that matrix X0 (which defines R), was made up of n0 observations.
+REMARK if structure bayes is not supplied the default values which are used are.
+beta0= zeros(p,1): Vector of zeros.
+R=eye(p): Identity matrix.
+tau0=1/1e+6: Very large value for the prior variance, that is a very small value for tau0.
+n0=1: just one prior observation.
+$\beta$ is assumed to have a normal distribution with mean $\beta_0$ and (conditional on $\tau_0$) covariance $(1/\tau_0) (X_0'X_0)^{-1}$.
+$\beta \sim N( \beta_0, (1/\tau_0) (X_0'X_0)^{-1} )$</LongDesc>
+         <Example>bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;</Example>
          <DataType>double</DataType>
          <Struct>
             <ItemCell>
@@ -147,205 +108,125 @@
       </Item>
       <Item>
          <Name>plots</Name>
-         <ShortDesc>Plot on the screen</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If plots=1 (default) the plot of minimum deletion&#xD;
-                 residual with envelopes based on n observations and the&#xD;
-                 scatterplot matrix with the outliers highlighted is&#xD;
-                 produced.&#xD;
-                 If plots=2 the user can also monitor the intermediate&#xD;
-                 plots based on envelope superimposition.&#xD;
-                 Else no plot is produced.&#xD;
-                 </LongDesc>
-         <Example> 'plots',1&#xD;
-                 </Example>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots=1 (default) the plot of minimum deletion residual with envelopes based on n observations and the scatterplot matrix with the outliers highlighted is produced.
+If plots=2 the user can also monitor the intermediate plots based on envelope superimposition.
+Else no plot is produced.</LongDesc>
+         <Example>'plots',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>init</Name>
-         <ShortDesc>Search initialization</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>scalar which specifies the initial subset size to start&#xD;
-                   monitoring exceedances of minimum deletion residual, if&#xD;
-                   init is not specified it set equal to:&#xD;
-                   p+1, if the sample size is smaller than 40;&#xD;
-                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
-                   </LongDesc>
-         <Example> 'init',100 starts monitoring from step m=100&#xD;
-                   </Example>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>scalar which specifies the initial subset size to start monitoring exceedances of minimum deletion residual, if init is not specified it set equal to:
+p+1, if the sample size is smaller than 40;
+min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Check input arguments</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
-                    matrix y and matrix X. Notice that y and X are left&#xD;
-                    unchanged. In other words the additional column of ones&#xD;
-                     for the intercept is not added. As default nocheck=0.&#xD;
-                   </LongDesc>
-         <Example> 'nocheck',1&#xD;
-                   </Example>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bivarfit</Name>
-         <ShortDesc>Superimpose bivariate least square lines</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>This option adds one or more least square lines, based on&#xD;
-                   SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.&#xD;
-                  bivarfit = ''&#xD;
-                   is the default: no line is fitted.&#xD;
-                  bivarfit = '1'&#xD;
-                   fits a single ols line to all points of each bivariate&#xD;
-                   plot in the scatter matrix y|X.&#xD;
-                  bivarfit = '2'&#xD;
-                   fits two ols lines: one to all points and another to&#xD;
-                   the group of the genuine observations. The group of the&#xD;
-                   potential outliers is not fitted.&#xD;
-                  bivarfit = '0'&#xD;
-                   fits one ols line to each group. This is useful for the&#xD;
-                   purpose of fitting mixtures of regression lines.&#xD;
-                  bivarfit = 'i1' or 'i2' or 'i3' etc.&#xD;
-                   fits an ols line to a specific group, the one with&#xD;
-                   index 'i' equal to 1, 2, 3 etc. Again, useful in case&#xD;
-                   of mixtures.&#xD;
-                 </LongDesc>
-         <Example> 'bivarfit',2&#xD;
-                 </Example>
+         <ShortDesc>Superimpose bivariate least square lines.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>This option adds one or more least square lines, based on SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
+bivarfit = '' is the default: no line is fitted.
+bivarfit = '1' fits a single ols line to all points of each bivariate plot in the scatter matrix y|X.
+bivarfit = '2' fits two ols lines: one to all points and another to the group of the genuine observations. The group of the potential outliers is not fitted.
+bivarfit = '0' fits one ols line to each group. This is useful for the purpose of fitting mixtures of regression lines.
+bivarfit = 'i1' or 'i2' or 'i3' etc.
+fits an ols line to a specific group, the one with index 'i' equal to 1, 2, 3 etc. Again, useful in case of mixtures.</LongDesc>
+         <Example>'bivarfit',2</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>multivarfit</Name>
-         <ShortDesc>Superimpose multivariate least square lines</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>This option adds one or more least square lines, based on&#xD;
-                   MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.&#xD;
-                 multivarfit = ''&#xD;
-                   is the default: no line is fitted.&#xD;
-                 multivarfit = '1'&#xD;
-                   fits a single ols line to all points of each bivariate&#xD;
-                   plot in the scatter matrix y|X. The line added to the&#xD;
-                   scatter plot y|Xi is avconst + Ci*Xi, where Ci is the&#xD;
-                   coefficient of Xi in the multivariate regression and&#xD;
-                   avconst is the effect of all the other explanatory&#xD;
-                   variables different from Xi evaluated at their centroid&#xD;
-                   (that is overline{y}'C))&#xD;
-                 multivarfit = '2'&#xD;
-                   equal to multivarfit ='1' but this time we also add the&#xD;
-                   line based on the group of unselected observations&#xD;
-                   (i.e. the normal units).&#xD;
-                 </LongDesc>
-         <Example> 'multivarfit','1'&#xD;
-                 </Example>
+         <ShortDesc>Superimpose multivariate least square lines.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>This option adds one or more least square lines, based on MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
+multivarfit = '' is the default: no line is fitted.
+multivarfit = '1' fits a single ols line to all points of each bivariate plot in the scatter matrix y|X. The line added to the scatter plot y|Xi is avconst + Ci*Xi, where Ci is the coefficient of Xi in the multivariate regression and avconst is the effect of all the other explanatory variables different from Xi evaluated at their centroid (that is overline{y}'C)) multivarfit = '2' equal to multivarfit ='1' but this time we also add the line based on the group of unselected observations (i.e. the normal units).</LongDesc>
+         <Example>'multivarfit','1'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>labeladd</Name>
-         <ShortDesc>Add outlier labels in plot</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>If this option is '1',  we label the outliers with the&#xD;
-                 unit row index in matrices X and y. The default value is&#xD;
-                 labeladd='', i.e. no label is added.&#xD;
-                 </LongDesc>
-         <Example> 'labeladd','1'&#xD;
-                 </Example>
+         <ShortDesc>Add outlier labels in plot.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>If this option is '1', we label the outliers with the unit row index in matrices X and y. The default value is labeladd='', i.e. no label is added.</LongDesc>
+         <Example>'labeladd','1'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nameX</Name>
-         <ShortDesc>Add variable labels in plot</ShortDesc>
-         <TypeInd>Cell array of strings</TypeInd>
-         <LongDesc>cell array of strings of length p containing the labels of&#xD;
-                 the variables of the regression dataset. If it is empty&#xD;
-                 (default) the sequence X1, ..., Xp will be created&#xD;
-                 automatically&#xD;
-                 </LongDesc>
-         <Example> 'nameX',{'NameVar1','NameVar2'}&#xD;
-                 </Example>
+         <ShortDesc>Add variable labels in plot.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>cell array of strings of length p containing the labels of the variables of the regression dataset. If it is empty (default) the sequence X1, ..., Xp will be created automatically</LongDesc>
+         <Example>'nameX',{'NameVar1','NameVar2'}</Example>
          <DataType>cell</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>namey</Name>
-         <ShortDesc>Add response label</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>character containing the label of the response&#xD;
-               </LongDesc>
-         <Example> 'namey','NameOfResponse'&#xD;
-               </Example>
+         <ShortDesc>Add response label.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>character containing the label of the response</LongDesc>
+         <Example>'namey','NameOfResponse'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ylim</Name>
-         <ShortDesc>Control y scale in plot</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>vector with two elements controlling minimum and maximum&#xD;
-                 on the y axis. Default value is '' (automatic scale)&#xD;
-               </LongDesc>
-         <Example> 'ylim','[0,10]' sets the minim value to 0 and the&#xD;
-               max to 10 on the y axis&#xD;
-               </Example>
+         <ShortDesc>Control y scale in plot.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>vector with two elements controlling minimum and maximum on the y axis. Default value is '' (automatic scale)</LongDesc>
+         <Example>'ylim','[0,10]' sets the minim value to 0 and the max to 10 on the y axis</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>xlim</Name>
-         <ShortDesc>Control x scale in plot</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>vector with two elements controlling minimum and maximum&#xD;
-                 on the x axis. Default value is '' (automatic scale)&#xD;
-               </LongDesc>
-         <Example> 'xlim','[0,10]' sets the minim value to 0 and the&#xD;
-               max to 10 on the x axis&#xD;
-               </Example>
+         <ShortDesc>Control x scale in plot.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>vector with two elements controlling minimum and maximum on the x axis. Default value is '' (automatic scale)</LongDesc>
+         <Example>'xlim','[0,10]' sets the minim value to 0 and the max to 10 on the x axis</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bonflev</Name>
-         <ShortDesc>Signal to use to identify outliers</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>option to be used if the distribution of the data is&#xD;
-                 strongly non normal and, thus, the general signal&#xD;
-                 detection rule based on consecutive exceedances cannot be&#xD;
-                 used. In this case bonflev can be:&#xD;
-                 - a scalar smaller than 1 which specifies the confidence&#xD;
-                   level for a signal and a stopping rule based on the&#xD;
-                   comparison of the minimum MD with a&#xD;
-                   Bonferroni bound. For example if bonflev=0.99 the&#xD;
-                   procedure stops when the trajectory exceeds for the&#xD;
-                   first time the 99% bonferroni bound.&#xD;
-                 - A scalar value greater than 1. In this case the&#xD;
-                   procedure stops when the residual trajectory exceeds&#xD;
-                   for the first time this value.&#xD;
-                 Default value is '', which means to rely on general rules&#xD;
-                 based on consecutive exceedances.&#xD;
-               </LongDesc>
-         <Example> 'bonflev',0.99&#xD;
-               </Example>
+         <ShortDesc>Signal to use to identify outliers.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>option to be used if the distribution of the data is strongly non normal and, thus, the general signal detection rule based on consecutive exceedances cannot be used. In this case bonflev can be:
+- a scalar smaller than 1 which specifies the confidence level for a signal and a stopping rule based on the comparison of the minimum MD with a Bonferroni bound. For example if bonflev=0.99 the procedure stops when the trajectory exceeds for the first time the 99% bonferroni bound.
+- A scalar value greater than 1. In this case the procedure stops when the residual trajectory exceeds for the first time this value.
+Default value is '', which means to rely on general rules based on consecutive exceedances.</LongDesc>
+         <Example>'bonflev',0.99</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>Level of output to display</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>scalar which controls whether to display or not messages&#xD;
-                 on the screen&#xD;
-                 If msg==1 (default) messages are displayed on the screen about&#xD;
-                   step in which signal took place and ....&#xD;
-                 else no message is displayed on the screen&#xD;
-               </LongDesc>
-         <Example> 'msg',1&#xD;
-               </Example>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>scalar which controls whether to display or not messages on the screen If msg==1 (default) messages are displayed on the screen about step in which signal took place and ....
+else no message is displayed on the screen</LongDesc>
+         <Example>'msg',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -356,71 +237,51 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>ListOut</Value>
-               <Description>k x 1 vector containing the list of the units declared as&#xD;
-               outliers or NaN if the sample is homogeneous</Description>
+               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous</Description>
             </ItemCell>
             <ItemCell>
                <Value>beta</Value>
-               <Description>p-by-1 vector containing the posterior mean of $\beta$&#xD;
-               (regression coefficents),&#xD;
-               $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step&#xD;
-               $n-k$</Description>
+               <Description>p-by-1 vector containing the posterior mean of $\beta$ (regression coefficents), $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step $n-k$</Description>
             </ItemCell>
             <ItemCell>
                <Value>scale</Value>
-               <Description>scalar. This is the reciprocal of the square root of the&#xD;
-               posterior estimate of $\tau$ in step $n-k$</Description>
+               <Description>scalar. This is the reciprocal of the square root of the posterior estimate of $\tau$ in step $n-k$</Description>
             </ItemCell>
             <ItemCell>
                <Value>mdr</Value>
-               <Description>(n-init) x 2 matrix: &#xD;
-               1st col = fwd search index; &#xD;
-               2nd col = value of Bayesian minimum deletion residual in&#xD;
-               each step of the fwd search.</Description>
+               <Description>(n-init) x 2 matrix:
+1st col = fwd search index;
+2nd col = value of Bayesian minimum deletion residual in each step of the fwd search.</Description>
             </ItemCell>
             <ItemCell>
                <Value>Un</Value>
-               <Description>(n-init) x 11 Matrix which contains the unit(s) included&#xD;
-               in the subset at each step of the fwd search.&#xD;
-               REMARK: in every step the new subset is compared with the&#xD;
-               old subset. Un contains the unit(s) present in the new&#xD;
-               subset but not in the old one.&#xD;
-               Un(1,2) for example contains the unit included in step&#xD;
-               init+1.&#xD;
-               Un(end,2) contains the units included in the final step&#xD;
-               of the search.</Description>
+               <Description>(n-init) x 11 Matrix which contains the unit(s) included in the subset at each step of the fwd search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.
+Un(1,2) for example contains the unit included in step init+1.
+Un(end,2) contains the units included in the final step of the search.</Description>
             </ItemCell>
             <ItemCell>
                <Value>nout</Value>
-               <Description>2 x 5 matrix containing the number of times mdr went out&#xD;
-               of particular quantiles.&#xD;
-               First row contains quantiles 1 99 99.9 99.99 99.999.&#xD;
-               Second row contains the frequency distribution.</Description>
+               <Description>2 x 5 matrix containing the number of times mdr went out of particular quantiles.
+First row contains quantiles 1 99 99.9 99.99 99.999.
+Second row contains the frequency distribution.</Description>
             </ItemCell>
             <ItemCell>
                <Value>constr</Value>
-               <Description>This output is produced only if the search found at a&#xD;
-               certain step a non singular matrix X. In this case the&#xD;
-               search runs in a constrained mode, that is including the&#xD;
-               units which produced a singular matrix in the last n-constr&#xD;
-               steps. out.constr is a vector which contains the list of&#xD;
-               units which produced a singular X matrix</Description>
+               <Description>This output is produced only if the search found at a certain step a non singular matrix X. In this case the search runs in a constrained mode, that is including the units which produced a singular matrix in the last n-constr steps. out.constr is a vector which contains the list of units which produced a singular X matrix</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and&#xD;
- Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
-      <Item>Riani M., Corbellini A., Atkinson A.C. (2016), Very Robust Bayesian&#xD;
- Regression for Fraud Detection, submitted</Item>
-      <Item>Atkinson A.C., Corbellini A., Riani M., (2016) Robust Bayesian&#xD;
- Regression, submitted</Item>
+      <Item>Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
+      <Item>Riani M., Corbellini A., Atkinson A.C. (2016), Very Robust Bayesian Regression for Fraud Detection, submitted</Item>
+      <Item>Atkinson A.C., Corbellini A., Riani M., (2016) Robust Bayesian Regression, submitted</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRBmdr</Item>
@@ -429,442 +290,391 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSRB with all default options.</Title>
-         <Desc>&#xD;
-     Common part to the first examples: load Houses Price Dataset.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Common part to the first examples: load Houses Price Dataset.</ItemCell>
+         </Desc>
          <MATLABcode>
-    load hprice.txt;&#xD;
-    n=size(hprice,1);&#xD;
-    y=hprice(:,1);&#xD;
-    X=hprice(:,2:5);&#xD;
-    out=FSRB(y,X);&#xD;</MATLABcode>
+            <ItemCell>load hprice.txt;</ItemCell>
+            <ItemCell>n=size(hprice,1);</ItemCell>
+            <ItemCell>y=hprice(:,1);</ItemCell>
+            <ItemCell>X=hprice(:,2:5);</ItemCell>
+            <ItemCell>out=FSRB(y,X);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>FSRB with optional arguments.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    load hprice.txt;&#xD;
-    n=size(hprice,1);&#xD;
-    y=hprice(:,1);&#xD;
-    X=hprice(:,2:5);&#xD;
-    % set \beta components&#xD;
-    beta0=0*ones(5,1);&#xD;
-    beta0(2,1)=10;&#xD;
-    beta0(3,1)=5000;&#xD;
-    beta0(4,1)=10000;&#xD;
-    beta0(5,1)=10000;&#xD;
-&#xD;
-    % \tau&#xD;
-    s02=1/4.0e-8;&#xD;
-    tau0=1/s02;&#xD;
-&#xD;
-    % R prior settings&#xD;
-    R=2.4*eye(5);&#xD;
-    R(2,2)=6e-7;&#xD;
-    R(3,3)=.15;&#xD;
-    R(4,4)=.6;&#xD;
-    R(5,5)=.6;&#xD;
-    R=inv(R);&#xD;
-&#xD;
-    % define a Bayes structure with previous data&#xD;
-    n0=5;&#xD;
-    bayes=struct;&#xD;
-    bayes.R=R;&#xD;
-    bayes.n0=n0;&#xD;
-    bayes.beta0=beta0;&#xD;
-    bayes.tau0=tau0;&#xD;
-    intercept=1;&#xD;
-&#xD;
-    % function call&#xD;
-    out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)&#xD;</MATLABcode>
+            <ItemCell>load hprice.txt;</ItemCell>
+            <ItemCell>n=size(hprice,1);</ItemCell>
+            <ItemCell>y=hprice(:,1);</ItemCell>
+            <ItemCell>X=hprice(:,2:5);</ItemCell>
+            <ItemCell>% set \beta components</ItemCell>
+            <ItemCell>beta0=0*ones(5,1);</ItemCell>
+            <ItemCell>beta0(2,1)=10;</ItemCell>
+            <ItemCell>beta0(3,1)=5000;</ItemCell>
+            <ItemCell>beta0(4,1)=10000;</ItemCell>
+            <ItemCell>beta0(5,1)=10000;</ItemCell>
+            <ItemCell>% \tau</ItemCell>
+            <ItemCell>s02=1/4.0e-8;</ItemCell>
+            <ItemCell>tau0=1/s02;</ItemCell>
+            <ItemCell>% R prior settings</ItemCell>
+            <ItemCell>R=2.4*eye(5);</ItemCell>
+            <ItemCell>R(2,2)=6e-7;</ItemCell>
+            <ItemCell>R(3,3)=.15;</ItemCell>
+            <ItemCell>R(4,4)=.6;</ItemCell>
+            <ItemCell>R(5,5)=.6;</ItemCell>
+            <ItemCell>R=inv(R);</ItemCell>
+            <ItemCell>% define a Bayes structure with previous data</ItemCell>
+            <ItemCell>n0=5;</ItemCell>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>bayes.n0=n0;</ItemCell>
+            <ItemCell>bayes.beta0=beta0;</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>intercept=1;</ItemCell>
+            <ItemCell>% function call</ItemCell>
+            <ItemCell>out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Example on Fishery dataset (analysis with intercept).</Title>
-         <Desc>&#xD;
-     nsamp is the number of subsamples to use in the frequentist analysis of first&#xD;
-     year, in order to find initial subset using LMS.&#xD;</Desc>
+         <Desc>
+            <ItemCell>nsamp is the number of subsamples to use in the frequentist analysis of first year, in order to find initial subset using LMS.</ItemCell>
+         </Desc>
          <MATLABcode>
-    close all&#xD;
-    nsamp=3000;&#xD;
-    % threshold to be used to increase susbet of good units&#xD;
-    threshold=300;&#xD;
-    bonflev=0.99; % Bonferroni confidence level to be used for first year&#xD;
-    bonflevB=0.99; % Bonferroni confidence level to be used for subsequent years&#xD;
-&#xD;
-    % Load 2002 Fishery dataset&#xD;
-    Fishery2002=load('Fishery2002.txt');&#xD;
-    y02=Fishery2002(:,3);&#xD;
-    X02=Fishery2002(:,2);&#xD;
-&#xD;
-    n02=length(y02);&#xD;
-    seq02=1:n02;&#xD;
-&#xD;
-    % frequentist Forward Search, 1st year&#xD;
-    [out02]=FSR(y02,X02,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);&#xD;
-&#xD;
-    % In what follows&#xD;
-    % g stands for good units&#xD;
-    % i stand for intermediate units (i.e. units whose raw residual is smaller&#xD;
-    % than threshold)&#xD;
-    % o stands for outliers&#xD;
-    % gi stands for good +intermediate units&#xD;
-&#xD;
-    % u02g = good units&#xD;
-    % n02g = number of good units&#xD;
-    u02g=setdiff(seq02,out02.ListOut);&#xD;
-    n02g=length(u02g);&#xD;
-&#xD;
-    X02g=[ones(length(u02g),1) X02(u02g,:)];&#xD;
-    y02g=y02(u02g);&#xD;
-    % b02g = regression coefficients just using g units&#xD;
-    b02g=X02g\y02g;&#xD;
-    % res02 = squared raw residuals for all units using b02g&#xD;
-    res02=(y02-[ones(length(X02),1) X02]*b02g).^2;&#xD;
-    res02o=res02(out02.ListOut);&#xD;
-    % sel= boolean vector which is true for the intermediate units&#xD;
-    % (units whose squared residual is below the threshold)&#xD;
-    sel=res02o&amp;lt;threshold^2;&#xD;
-    % u02i = vector containing intermediate units (that is outliers whose&#xD;
-    % residual is smaller than threshold)&#xD;
-    u02i=out02.ListOut(sel);&#xD;
-    % u02o = vector containing outliers whose residual is out of the threshold&#xD;
-    u02o=out02.ListOut(~sel);&#xD;
-    % u02gi = g + i units&#xD;
-    if ~isempty(u02i)&#xD;
-        u02gi=[u02g u02i];&#xD;
-    else&#xD;
-        u02gi=u02g;&#xD;
-    end&#xD;
-    % n02gi = number of good + intermediate units&#xD;
-    n02gi=length(u02gi);&#xD;
-&#xD;
-    % plotting section&#xD;
-    hold('off')&#xD;
-    % good units, plotted as (+)&#xD;
-    plot(X02(u02g)',y02(u02g)','Marker','+','LineStyle','none','Color','b')&#xD;
-    hold('on')&#xD;
-    % intermediate units plotted as (X)&#xD;
-    plot(X02(u02i)',y02(u02i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')&#xD;
-&#xD;
-    % outliers, plotted as (O)&#xD;
-    plot(X02(u02o)',y02(u02o)','Marker','o','LineStyle','none','Color','r')&#xD;
-    xlabel('Quantity');&#xD;
-    ylabel('Price');&#xD;
-    title('Frequentist - 2002');&#xD;
-&#xD;
-    % S202gi = estimated of sigma^2 using g+i units&#xD;
-    S202gi=sum(res02(u02gi))/(n02gi-2);&#xD;
-&#xD;
-&#xD;
-    % X02gi = X matrix referred to good + intermediate units&#xD;
-      X02gi=[ones(n02gi,1) X02(u02gi,:)];&#xD;
-    % y02gi = y vector referred to good + intermediate units&#xD;
-      y02gi=y02(u02gi);&#xD;
-&#xD;
-    % bayes = structure which contains prior information to be used in year&#xD;
-    % 2003&#xD;
-    bayes=struct;&#xD;
-    bayes.beta0=b02g; % beta prior is beta based on g units&#xD;
-    tau0=1/S202gi; % tau0 is based on g + i units&#xD;
-    bayes.tau0=tau0;&#xD;
-    R=X02g'*X02g; % R is based on g units&#xD;
-    bayes.n0=n02gi; % n0 is based on g + i units&#xD;
-    bayes.R=R;&#xD;
-&#xD;
-    % 2003&#xD;
-    % Load 2003 Fishery dataset&#xD;
-    Fishery2003=load('Fishery2003.txt');&#xD;
-    y03=Fishery2003(:,3);&#xD;
-    X03=Fishery2003(:,2);&#xD;
-    n03=length(y03);&#xD;
-    seq03=1:n03;&#xD;
-&#xD;
-    % Bayesian Forward Search, 2nd year&#xD;
-    out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflevB);&#xD;
-&#xD;
-    u03g=setdiff(seq03,out03.ListOut);&#xD;
-    n03g=length(u03g);&#xD;
-&#xD;
-    % compute beta coefficient for year 2003 just using good units&#xD;
-    X03g=[ones(n03g,1) X03(u03g,:)];&#xD;
-    y03g=y03(u03g);&#xD;
-    b03g=X03g\y03g;&#xD;
-&#xD;
-    res03=(y03-[ones(length(X03),1) X03]*b03g).^2;&#xD;
-    res03o=res03(out03.ListOut);&#xD;
-    sel=res03o&amp;lt;threshold^2;&#xD;
-    % u03i = units to add to the good units subset (intermediate units)&#xD;
-    u03i=out03.ListOut(sel);&#xD;
-    % u03o =  outliers out of the threshold&#xD;
-    u03o=out03.ListOut(~sel);&#xD;
-    if ~isempty(u03i)&#xD;
-        u03gi=[u03g u03i];&#xD;
-    else&#xD;
-        u03gi=u03g;&#xD;
-    end&#xD;
-    n03gi=length(u03gi);&#xD;
-    X03gi=[ones(n03gi,1) X03(u03gi,:)];&#xD;
-    y03gi=y03(u03gi,:);&#xD;
-&#xD;
-&#xD;
-    % plotting section&#xD;
-    hold('off')&#xD;
-    % good units, plotted as (+)&#xD;
-    plot(X03(u03g)',y03(u03g)','Marker','+','LineStyle','none','Color','b')&#xD;
-    hold('on')&#xD;
-    % units below the threshold, plotted as (X)&#xD;
-    plot(X03(u03i)',y03(u03i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')&#xD;
-&#xD;
-    % outliers, plotted as (O)&#xD;
-    plot(X03(u03o)',y03(u03o)','Marker','o','LineStyle','none','Color','r')&#xD;
-    set(gca,'FontSize',14)&#xD;
-    xlabel('QUANTITY in tons')&#xD;
-    ylabel('VALUE in 1000 euro')&#xD;
-    title('2003');&#xD;
-&#xD;
-    % Definition of bayes structure (based on 2002 and 2003)&#xD;
-    bayes=struct;&#xD;
-    X02gX03g=[X02g; X03g];&#xD;
-    y02gy03g=[y02g; y03g];&#xD;
-    n02gn03g=n02g+n03g;&#xD;
-    % b0203g prior estimate of beta for year 2004 is computed using good units&#xD;
-    % for years 2002 and 2003&#xD;
-    b0203g=X02gX03g\y02gy03g;&#xD;
-&#xD;
-    bayes.beta0=b0203g;&#xD;
-    % R is just referred to good units for years 2002 and 2003&#xD;
-    R=X02gX03g'*X02gX03g;&#xD;
-    bayes.R=R;&#xD;
-    % n0 is referred to g + i units in 2002 and 2003&#xD;
-    bayes.n0=n02gi+n03gi;&#xD;
-&#xD;
-    X02giX03gi=[X02gi; X03gi];&#xD;
-    y02giy03gi=[y02gi; y03gi];&#xD;
-    % n02gin03gi = number of g+i units in 2002 and 2003&#xD;
-    n02gin03gi=n02gi+n03gi;&#xD;
-&#xD;
-    % res = residuals for g+i units using b0203g&#xD;
-    res=y02giy03gi-X02giX03gi*b0203g;&#xD;
-    S203gi=sum(res.^2)/(n02gin03gi-2);&#xD;
-    % estimate of tau is based on g + i units&#xD;
-    tau0=1/S203gi;&#xD;
-    bayes.tau0=tau0;&#xD;
-&#xD;
-&#xD;
-    % Load 2004 Fishery dataset&#xD;
-    Fishery2004=load('Fishery2004.txt');&#xD;
-    y04=Fishery2004(:,3);&#xD;
-    X04=Fishery2004(:,2);&#xD;
-    n04=length(y04);&#xD;
-    seq04=1:n04;&#xD;
-&#xD;
-    % Bayesian Forward Search, 3rd year&#xD;
-    out04=FSRB(y04,X04,'bayes',bayes,'msg',0,'plots',1,'init',round(n04/2),'bonflev',bonflevB);&#xD;
-&#xD;
-    u04g=setdiff(seq04,out04.ListOut);&#xD;
-    n04g=length(u04g);&#xD;
-&#xD;
-    X04g=[ones(n04g,1) X04(u04g,:)];&#xD;
-    y04g=y04(u04g);&#xD;
-    % b04g = beta based on good units for year 2004&#xD;
-    b04g=X04g\y04g;&#xD;
-&#xD;
-    res04=(y04-[ones(length(X04),1) X04]*b04g).^2;&#xD;
-    % res04o squared residuals for the tentative outliers&#xD;
-    res04o=res04(out04.ListOut);&#xD;
-    % we keep statistical units below the threshold&#xD;
-    sel=res04o&amp;lt;threshold^2;&#xD;
-    % u04i = units to add to the good units subset (intermediate units)&#xD;
-    u04i=out04.ListOut(sel);&#xD;
-    % u04o = units outliers out of the threshold&#xD;
-    u04o=out04.ListOut(~sel);&#xD;
-    if ~isempty(u04i)&#xD;
-        u04gi=[u04g u04i];&#xD;
-    else&#xD;
-        u04gi=u04g;&#xD;
-    end&#xD;
-    n04gi=length(u04gi);&#xD;
-&#xD;
-    % plotting section&#xD;
-    hold('off')&#xD;
-    % good units, plotted as (+)&#xD;
-    plot(X04(u04g)',y04(u04g)','Marker','+','LineStyle','none','Color','b')&#xD;
-    hold('on')&#xD;
-    % units below the treshold, plotted as (X)&#xD;
-    plot(X04(u04i)',y04(u04i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')&#xD;
-&#xD;
-    % outliers, plotted as (O)&#xD;
-    plot(X04(u04o)',y04(u04o)','Marker','o','LineStyle','none','Color','r')&#xD;
-    set(gca,'FontSize',14)&#xD;
-    xlabel('QUANTITY in tons')&#xD;
-    ylabel('VALUE in 1000 euro')&#xD;
-&#xD;
-&#xD;
-    % frequentist Forward Search, 3rd year&#xD;
-    out04=FSR(y04,X04,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n04/2),'bonflev',bonflev);&#xD;
-    xlabel('QUANTITY in tons')&#xD;
-    ylabel('VALUE in 1000 euro')&#xD;
-    title('Frequentist - 2004');&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>nsamp=3000;</ItemCell>
+            <ItemCell>% threshold to be used to increase susbet of good units</ItemCell>
+            <ItemCell>threshold=300;</ItemCell>
+            <ItemCell>bonflev=0.99; % Bonferroni confidence level to be used for first year</ItemCell>
+            <ItemCell>bonflevB=0.99; % Bonferroni confidence level to be used for subsequent years</ItemCell>
+            <ItemCell>% Load 2002 Fishery dataset</ItemCell>
+            <ItemCell>Fishery2002=load('Fishery2002.txt');</ItemCell>
+            <ItemCell>y02=Fishery2002(:,3);</ItemCell>
+            <ItemCell>X02=Fishery2002(:,2);</ItemCell>
+            <ItemCell>n02=length(y02);</ItemCell>
+            <ItemCell>seq02=1:n02;</ItemCell>
+            <ItemCell>% frequentist Forward Search, 1st year</ItemCell>
+            <ItemCell>[out02]=FSR(y02,X02,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);</ItemCell>
+            <ItemCell>% In what follows</ItemCell>
+            <ItemCell>% g stands for good units</ItemCell>
+            <ItemCell>% i stand for intermediate units (i.e. units whose raw residual is smaller</ItemCell>
+            <ItemCell>% than threshold)</ItemCell>
+            <ItemCell>% o stands for outliers</ItemCell>
+            <ItemCell>% gi stands for good +intermediate units</ItemCell>
+            <ItemCell>% u02g = good units</ItemCell>
+            <ItemCell>% n02g = number of good units</ItemCell>
+            <ItemCell>u02g=setdiff(seq02,out02.ListOut);</ItemCell>
+            <ItemCell>n02g=length(u02g);</ItemCell>
+            <ItemCell>X02g=[ones(length(u02g),1) X02(u02g,:)];</ItemCell>
+            <ItemCell>y02g=y02(u02g);</ItemCell>
+            <ItemCell>% b02g = regression coefficients just using g units</ItemCell>
+            <ItemCell>b02g=X02g\y02g;</ItemCell>
+            <ItemCell>% res02 = squared raw residuals for all units using b02g</ItemCell>
+            <ItemCell>res02=(y02-[ones(length(X02),1) X02]*b02g).^2;</ItemCell>
+            <ItemCell>res02o=res02(out02.ListOut);</ItemCell>
+            <ItemCell>% sel= boolean vector which is true for the intermediate units</ItemCell>
+            <ItemCell>% (units whose squared residual is below the threshold)</ItemCell>
+            <ItemCell>sel=res02o&amp;lt;threshold^2;</ItemCell>
+            <ItemCell>% u02i = vector containing intermediate units (that is outliers whose</ItemCell>
+            <ItemCell>% residual is smaller than threshold)</ItemCell>
+            <ItemCell>u02i=out02.ListOut(sel);</ItemCell>
+            <ItemCell>% u02o = vector containing outliers whose residual is out of the threshold</ItemCell>
+            <ItemCell>u02o=out02.ListOut(~sel);</ItemCell>
+            <ItemCell>% u02gi = g + i units</ItemCell>
+            <ItemCell>if ~isempty(u02i)</ItemCell>
+            <ItemCell>u02gi=[u02g u02i];</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>u02gi=u02g;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% n02gi = number of good + intermediate units</ItemCell>
+            <ItemCell>n02gi=length(u02gi);</ItemCell>
+            <ItemCell>% plotting section</ItemCell>
+            <ItemCell>hold('off')</ItemCell>
+            <ItemCell>% good units, plotted as (+)</ItemCell>
+            <ItemCell>plot(X02(u02g)',y02(u02g)','Marker','+','LineStyle','none','Color','b')</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% intermediate units plotted as (X)</ItemCell>
+            <ItemCell>plot(X02(u02i)',y02(u02i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')</ItemCell>
+            <ItemCell>% outliers, plotted as (O)</ItemCell>
+            <ItemCell>plot(X02(u02o)',y02(u02o)','Marker','o','LineStyle','none','Color','r')</ItemCell>
+            <ItemCell>xlabel('Quantity');</ItemCell>
+            <ItemCell>ylabel('Price');</ItemCell>
+            <ItemCell>title('Frequentist - 2002');</ItemCell>
+            <ItemCell>% S202gi = estimated of sigma^2 using g+i units</ItemCell>
+            <ItemCell>S202gi=sum(res02(u02gi))/(n02gi-2);</ItemCell>
+            <ItemCell>% X02gi = X matrix referred to good + intermediate units</ItemCell>
+            <ItemCell>X02gi=[ones(n02gi,1) X02(u02gi,:)];</ItemCell>
+            <ItemCell>% y02gi = y vector referred to good + intermediate units</ItemCell>
+            <ItemCell>y02gi=y02(u02gi);</ItemCell>
+            <ItemCell>% bayes = structure which contains prior information to be used in year</ItemCell>
+            <ItemCell>% 2003</ItemCell>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>bayes.beta0=b02g; % beta prior is beta based on g units</ItemCell>
+            <ItemCell>tau0=1/S202gi; % tau0 is based on g + i units</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>R=X02g'*X02g; % R is based on g units</ItemCell>
+            <ItemCell>bayes.n0=n02gi; % n0 is based on g + i units</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>% 2003</ItemCell>
+            <ItemCell>% Load 2003 Fishery dataset</ItemCell>
+            <ItemCell>Fishery2003=load('Fishery2003.txt');</ItemCell>
+            <ItemCell>y03=Fishery2003(:,3);</ItemCell>
+            <ItemCell>X03=Fishery2003(:,2);</ItemCell>
+            <ItemCell>n03=length(y03);</ItemCell>
+            <ItemCell>seq03=1:n03;</ItemCell>
+            <ItemCell>% Bayesian Forward Search, 2nd year</ItemCell>
+            <ItemCell>out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflevB);</ItemCell>
+            <ItemCell>u03g=setdiff(seq03,out03.ListOut);</ItemCell>
+            <ItemCell>n03g=length(u03g);</ItemCell>
+            <ItemCell>% compute beta coefficient for year 2003 just using good units</ItemCell>
+            <ItemCell>X03g=[ones(n03g,1) X03(u03g,:)];</ItemCell>
+            <ItemCell>y03g=y03(u03g);</ItemCell>
+            <ItemCell>b03g=X03g\y03g;</ItemCell>
+            <ItemCell>res03=(y03-[ones(length(X03),1) X03]*b03g).^2;</ItemCell>
+            <ItemCell>res03o=res03(out03.ListOut);</ItemCell>
+            <ItemCell>sel=res03o&amp;lt;threshold^2;</ItemCell>
+            <ItemCell>% u03i = units to add to the good units subset (intermediate units)</ItemCell>
+            <ItemCell>u03i=out03.ListOut(sel);</ItemCell>
+            <ItemCell>% u03o =  outliers out of the threshold</ItemCell>
+            <ItemCell>u03o=out03.ListOut(~sel);</ItemCell>
+            <ItemCell>if ~isempty(u03i)</ItemCell>
+            <ItemCell>u03gi=[u03g u03i];</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>u03gi=u03g;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>n03gi=length(u03gi);</ItemCell>
+            <ItemCell>X03gi=[ones(n03gi,1) X03(u03gi,:)];</ItemCell>
+            <ItemCell>y03gi=y03(u03gi,:);</ItemCell>
+            <ItemCell>% plotting section</ItemCell>
+            <ItemCell>hold('off')</ItemCell>
+            <ItemCell>% good units, plotted as (+)</ItemCell>
+            <ItemCell>plot(X03(u03g)',y03(u03g)','Marker','+','LineStyle','none','Color','b')</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% units below the threshold, plotted as (X)</ItemCell>
+            <ItemCell>plot(X03(u03i)',y03(u03i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')</ItemCell>
+            <ItemCell>% outliers, plotted as (O)</ItemCell>
+            <ItemCell>plot(X03(u03o)',y03(u03o)','Marker','o','LineStyle','none','Color','r')</ItemCell>
+            <ItemCell>set(gca,'FontSize',14)</ItemCell>
+            <ItemCell>xlabel('QUANTITY in tons')</ItemCell>
+            <ItemCell>ylabel('VALUE in 1000 euro')</ItemCell>
+            <ItemCell>title('2003');</ItemCell>
+            <ItemCell>% Definition of bayes structure (based on 2002 and 2003)</ItemCell>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>X02gX03g=[X02g; X03g];</ItemCell>
+            <ItemCell>y02gy03g=[y02g; y03g];</ItemCell>
+            <ItemCell>n02gn03g=n02g+n03g;</ItemCell>
+            <ItemCell>% b0203g prior estimate of beta for year 2004 is computed using good units</ItemCell>
+            <ItemCell>% for years 2002 and 2003</ItemCell>
+            <ItemCell>b0203g=X02gX03g\y02gy03g;</ItemCell>
+            <ItemCell>bayes.beta0=b0203g;</ItemCell>
+            <ItemCell>% R is just referred to good units for years 2002 and 2003</ItemCell>
+            <ItemCell>R=X02gX03g'*X02gX03g;</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>% n0 is referred to g + i units in 2002 and 2003</ItemCell>
+            <ItemCell>bayes.n0=n02gi+n03gi;</ItemCell>
+            <ItemCell>X02giX03gi=[X02gi; X03gi];</ItemCell>
+            <ItemCell>y02giy03gi=[y02gi; y03gi];</ItemCell>
+            <ItemCell>% n02gin03gi = number of g+i units in 2002 and 2003</ItemCell>
+            <ItemCell>n02gin03gi=n02gi+n03gi;</ItemCell>
+            <ItemCell>% res = residuals for g+i units using b0203g</ItemCell>
+            <ItemCell>res=y02giy03gi-X02giX03gi*b0203g;</ItemCell>
+            <ItemCell>S203gi=sum(res.^2)/(n02gin03gi-2);</ItemCell>
+            <ItemCell>% estimate of tau is based on g + i units</ItemCell>
+            <ItemCell>tau0=1/S203gi;</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>% Load 2004 Fishery dataset</ItemCell>
+            <ItemCell>Fishery2004=load('Fishery2004.txt');</ItemCell>
+            <ItemCell>y04=Fishery2004(:,3);</ItemCell>
+            <ItemCell>X04=Fishery2004(:,2);</ItemCell>
+            <ItemCell>n04=length(y04);</ItemCell>
+            <ItemCell>seq04=1:n04;</ItemCell>
+            <ItemCell>% Bayesian Forward Search, 3rd year</ItemCell>
+            <ItemCell>out04=FSRB(y04,X04,'bayes',bayes,'msg',0,'plots',1,'init',round(n04/2),'bonflev',bonflevB);</ItemCell>
+            <ItemCell>u04g=setdiff(seq04,out04.ListOut);</ItemCell>
+            <ItemCell>n04g=length(u04g);</ItemCell>
+            <ItemCell>X04g=[ones(n04g,1) X04(u04g,:)];</ItemCell>
+            <ItemCell>y04g=y04(u04g);</ItemCell>
+            <ItemCell>% b04g = beta based on good units for year 2004</ItemCell>
+            <ItemCell>b04g=X04g\y04g;</ItemCell>
+            <ItemCell>res04=(y04-[ones(length(X04),1) X04]*b04g).^2;</ItemCell>
+            <ItemCell>% res04o squared residuals for the tentative outliers</ItemCell>
+            <ItemCell>res04o=res04(out04.ListOut);</ItemCell>
+            <ItemCell>% we keep statistical units below the threshold</ItemCell>
+            <ItemCell>sel=res04o&amp;lt;threshold^2;</ItemCell>
+            <ItemCell>% u04i = units to add to the good units subset (intermediate units)</ItemCell>
+            <ItemCell>u04i=out04.ListOut(sel);</ItemCell>
+            <ItemCell>% u04o = units outliers out of the threshold</ItemCell>
+            <ItemCell>u04o=out04.ListOut(~sel);</ItemCell>
+            <ItemCell>if ~isempty(u04i)</ItemCell>
+            <ItemCell>u04gi=[u04g u04i];</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>u04gi=u04g;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>n04gi=length(u04gi);</ItemCell>
+            <ItemCell>% plotting section</ItemCell>
+            <ItemCell>hold('off')</ItemCell>
+            <ItemCell>% good units, plotted as (+)</ItemCell>
+            <ItemCell>plot(X04(u04g)',y04(u04g)','Marker','+','LineStyle','none','Color','b')</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% units below the treshold, plotted as (X)</ItemCell>
+            <ItemCell>plot(X04(u04i)',y04(u04i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')</ItemCell>
+            <ItemCell>% outliers, plotted as (O)</ItemCell>
+            <ItemCell>plot(X04(u04o)',y04(u04o)','Marker','o','LineStyle','none','Color','r')</ItemCell>
+            <ItemCell>set(gca,'FontSize',14)</ItemCell>
+            <ItemCell>xlabel('QUANTITY in tons')</ItemCell>
+            <ItemCell>ylabel('VALUE in 1000 euro')</ItemCell>
+            <ItemCell>% frequentist Forward Search, 3rd year</ItemCell>
+            <ItemCell>out04=FSR(y04,X04,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n04/2),'bonflev',bonflev);</ItemCell>
+            <ItemCell>xlabel('QUANTITY in tons')</ItemCell>
+            <ItemCell>ylabel('VALUE in 1000 euro')</ItemCell>
+            <ItemCell>title('Frequentist - 2004');</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Example on Fishery dataset (analysis without the intercept).</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    close all&#xD;
-    % nsamp is the number of subsamples to use in the frequentist analysis of first&#xD;
-    % year, in order to find initial subset using LMS.&#xD;
-    nsamp=3000;&#xD;
-    % threshold to be used to increase susbet of good units&#xD;
-    threshold=300;&#xD;
-    bonflev=0.99; % Bonferroni confidence level&#xD;
-&#xD;
-    % Load 2002 Fishery dataset&#xD;
-    Fishery2002=load('Fishery2002.txt');&#xD;
-    y02=Fishery2002(:,3);&#xD;
-    X02=Fishery2002(:,2);&#xD;
-&#xD;
-    n02=length(y02);&#xD;
-    seq02=1:n02;&#xD;
-&#xD;
-    % frequentist Forward Search, 1st year (regression without intercept)&#xD;
-    [out02]=FSR(y02,X02,'intercept',0,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);&#xD;
-&#xD;
-    % In what follows&#xD;
-    % g stands for good units&#xD;
-    % i stand for intermediate units (i.e. units whose raw residual is smaller&#xD;
-    % than threshold)&#xD;
-    % o stands for outliers&#xD;
-    % gi stands for good +intermediate units&#xD;
-&#xD;
-    % u02g = good units&#xD;
-    % n02g = number of good units&#xD;
-    u02g=setdiff(seq02,out02.ListOut);&#xD;
-&#xD;
-    X02g=X02(u02g,:);&#xD;
-    y02g=y02(u02g);&#xD;
-    % b02g = regression coefficients just using g units&#xD;
-    % Note that b02g is a scalar because the intercept has not been added&#xD;
-    b02g=X02g\y02g;&#xD;
-    % res02 = squared raw residuals for all units using b02g&#xD;
-    res02=(y02-X02*b02g).^2;&#xD;
-    res02o=res02(out02.ListOut);&#xD;
-    % sel= boolean vector which is true for the intermediate units&#xD;
-    % (units whose squared residual is below the threshold)&#xD;
-    sel=res02o&amp;lt;threshold^2;&#xD;
-    % u02i = vector containing intermediate units (that is outliers whose&#xD;
-    % residual is smaller than threshold)&#xD;
-    u02i=out02.ListOut(sel);&#xD;
-    % u02gi = g + i units&#xD;
-    if ~isempty(u02i)&#xD;
-        u02gi=[u02g u02i];&#xD;
-    else&#xD;
-        u02gi=u02g;&#xD;
-    end&#xD;
-    % n02gi = number of good + intermediate units&#xD;
-    n02gi=length(u02gi);&#xD;
- &#xD;
-    % S202gi = estimated of sigma^2 using g+i units&#xD;
-    S202gi=sum(res02(u02gi))/(n02gi-1);&#xD;
-&#xD;
-    % bayes = structure which contains prior information to be used in year&#xD;
-    % 2003&#xD;
-    bayes=struct;&#xD;
-    bayes.beta0=b02g; % beta prior is beta based on g units&#xD;
-    tau0=1/S202gi; % tau0 is based on g + i units&#xD;
-    bayes.tau0=tau0;&#xD;
-    R=X02g'*X02g; % R is based on g units&#xD;
-    bayes.n0=n02gi; % n0 is based on g + i units&#xD;
-    bayes.R=R;&#xD;
-&#xD;
-    % 2003&#xD;
-    % Load 2003 Fishery dataset&#xD;
-    Fishery2003=load('Fishery2003.txt');&#xD;
-    y03=Fishery2003(:,3);&#xD;
-    X03=Fishery2003(:,2);&#xD;
-    n03=length(y03);&#xD;
-&#xD;
-    % Run Bayesian Forward Search for the 2nd year using the prior based on&#xD;
-    % the first year.&#xD;
-    out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);&#xD;</MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>% nsamp is the number of subsamples to use in the frequentist analysis of first</ItemCell>
+            <ItemCell>% year, in order to find initial subset using LMS.</ItemCell>
+            <ItemCell>nsamp=3000;</ItemCell>
+            <ItemCell>% threshold to be used to increase susbet of good units</ItemCell>
+            <ItemCell>threshold=300;</ItemCell>
+            <ItemCell>bonflev=0.99; % Bonferroni confidence level</ItemCell>
+            <ItemCell>% Load 2002 Fishery dataset</ItemCell>
+            <ItemCell>Fishery2002=load('Fishery2002.txt');</ItemCell>
+            <ItemCell>y02=Fishery2002(:,3);</ItemCell>
+            <ItemCell>X02=Fishery2002(:,2);</ItemCell>
+            <ItemCell>n02=length(y02);</ItemCell>
+            <ItemCell>seq02=1:n02;</ItemCell>
+            <ItemCell>% frequentist Forward Search, 1st year (regression without intercept)</ItemCell>
+            <ItemCell>[out02]=FSR(y02,X02,'intercept',0,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);</ItemCell>
+            <ItemCell>% In what follows</ItemCell>
+            <ItemCell>% g stands for good units</ItemCell>
+            <ItemCell>% i stand for intermediate units (i.e. units whose raw residual is smaller</ItemCell>
+            <ItemCell>% than threshold)</ItemCell>
+            <ItemCell>% o stands for outliers</ItemCell>
+            <ItemCell>% gi stands for good +intermediate units</ItemCell>
+            <ItemCell>% u02g = good units</ItemCell>
+            <ItemCell>% n02g = number of good units</ItemCell>
+            <ItemCell>u02g=setdiff(seq02,out02.ListOut);</ItemCell>
+            <ItemCell>X02g=X02(u02g,:);</ItemCell>
+            <ItemCell>y02g=y02(u02g);</ItemCell>
+            <ItemCell>% b02g = regression coefficients just using g units</ItemCell>
+            <ItemCell>% Note that b02g is a scalar because the intercept has not been added</ItemCell>
+            <ItemCell>b02g=X02g\y02g;</ItemCell>
+            <ItemCell>% res02 = squared raw residuals for all units using b02g</ItemCell>
+            <ItemCell>res02=(y02-X02*b02g).^2;</ItemCell>
+            <ItemCell>res02o=res02(out02.ListOut);</ItemCell>
+            <ItemCell>% sel= boolean vector which is true for the intermediate units</ItemCell>
+            <ItemCell>% (units whose squared residual is below the threshold)</ItemCell>
+            <ItemCell>sel=res02o&amp;lt;threshold^2;</ItemCell>
+            <ItemCell>% u02i = vector containing intermediate units (that is outliers whose</ItemCell>
+            <ItemCell>% residual is smaller than threshold)</ItemCell>
+            <ItemCell>u02i=out02.ListOut(sel);</ItemCell>
+            <ItemCell>% u02gi = g + i units</ItemCell>
+            <ItemCell>if ~isempty(u02i)</ItemCell>
+            <ItemCell>u02gi=[u02g u02i];</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>u02gi=u02g;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% n02gi = number of good + intermediate units</ItemCell>
+            <ItemCell>n02gi=length(u02gi);</ItemCell>
+            <ItemCell/>
+            <ItemCell>% S202gi = estimated of sigma^2 using g+i units</ItemCell>
+            <ItemCell>S202gi=sum(res02(u02gi))/(n02gi-1);</ItemCell>
+            <ItemCell>% bayes = structure which contains prior information to be used in year</ItemCell>
+            <ItemCell>% 2003</ItemCell>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>bayes.beta0=b02g; % beta prior is beta based on g units</ItemCell>
+            <ItemCell>tau0=1/S202gi; % tau0 is based on g + i units</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>R=X02g'*X02g; % R is based on g units</ItemCell>
+            <ItemCell>bayes.n0=n02gi; % n0 is based on g + i units</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>% 2003</ItemCell>
+            <ItemCell>% Load 2003 Fishery dataset</ItemCell>
+            <ItemCell>Fishery2003=load('Fishery2003.txt');</ItemCell>
+            <ItemCell>y03=Fishery2003(:,3);</ItemCell>
+            <ItemCell>X03=Fishery2003(:,2);</ItemCell>
+            <ItemCell>n03=length(y03);</ItemCell>
+            <ItemCell>% Run Bayesian Forward Search for the 2nd year using the prior based on</ItemCell>
+            <ItemCell>% the first year.</ItemCell>
+            <ItemCell>out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Outlier detection for Bank-Profit data.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    XX=load('BankProfit.txt');&#xD;
-    R=load('BankProfitR.txt');&#xD;
-&#xD;
-    X=XX(:,1:end-1);&#xD;
-    y=XX(:,end);&#xD;
-    % Load prior information&#xD;
-    beta0=zeros(10,1);&#xD;
-    beta0(1,1)=-0.5;&#xD;
-    beta0(2,1)=9.1;         % Number of products (NUMPRO)&#xD;
-    beta0(3,1)=0.001;       % direct revenues  (DIRREV)&#xD;
-    beta0(4,1)=0.0002;      % indirect revenues   (INDREV)&#xD;
-    beta0(5,1)=0.002;       %  savings accounts   SAVACC&#xD;
-    beta0(6,1)=0.12;        %  number of operations   NUMOPE&#xD;
-    beta0(7,1)=0.0004;      %  total amount of operations  TOTOPE&#xD;
-    beta0(8,1)=-0.0004;     %  Bancomat POS&#xD;
-    beta0(9,1)=1.3;         %  Number of cards   NUMCAR&#xD;
-    beta0(10,1)=0.00004;    %  Amount in cards   TOTCAR&#xD;
-&#xD;
-    % \tau&#xD;
-    s02=10000;&#xD;
-    tau0=1/s02;&#xD;
-&#xD;
-&#xD;
-    % number of obs in which prior was based&#xD;
-    n0=1500;&#xD;
-&#xD;
-    bayes=struct;&#xD;
-    bayes.R=R;&#xD;
-    bayes.n0=n0;&#xD;
-    bayes.beta0=beta0;&#xD;
-    bayes.tau0=tau0;&#xD;
-    intercept=1;&#xD;
-    n=length(y);&#xD;
-&#xD;
-    out=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...&#xD;
-    'init',round(n/2),'xlim',[1700 1905],'ylim',[2 4]);&#xD;
-&#xD;
-    %% Plot the outliers with a different symbol using a 3x3 layout&#xD;
-    selout=out.ListOut;&#xD;
-    selin=setdiff(1:n,selout);&#xD;
-&#xD;
-    close all&#xD;
-    % just in case user has additional function subtightplot&#xD;
-    % http://www.mathworks.com/matlabcentral/fileexchange/39664-subtightplot&#xD;
-    make_it_tight = true;&#xD;
-    if make_it_tight == true &amp;&amp; exist('subtightplot','file') ==2&#xD;
-        subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);&#xD;
-    else&#xD;
-        clear subplot;&#xD;
-    end&#xD;
-    % sel = panels in which yticks do not have to be removed&#xD;
-    sel=[1 4 7];&#xD;
-    miny=min(y);&#xD;
-    maxy=max(y);&#xD;
-    for j=1:9&#xD;
-        subplot(3,3,j)&#xD;
-        hold('on')&#xD;
-        plot(X(selin,j),y(selin),'+')&#xD;
-        plot(X(selout,j),y(selout),'ro')&#xD;
-&#xD;
-        ylim([miny maxy])&#xD;
-        xlim([min(X(:,j)) max(X(:,j))])&#xD;
-        if isempty(intersect(j,sel))&#xD;
-            set(gca,'YTickLabel','')&#xD;
-        end&#xD;
-        % Add on the plot the variable name&#xD;
-        text(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)&#xD;
-    end&#xD;</MATLABcode>
+            <ItemCell>XX=load('BankProfit.txt');</ItemCell>
+            <ItemCell>R=load('BankProfitR.txt');</ItemCell>
+            <ItemCell>X=XX(:,1:end-1);</ItemCell>
+            <ItemCell>y=XX(:,end);</ItemCell>
+            <ItemCell>% Load prior information</ItemCell>
+            <ItemCell>beta0=zeros(10,1);</ItemCell>
+            <ItemCell>beta0(1,1)=-0.5;</ItemCell>
+            <ItemCell>beta0(2,1)=9.1;         % Number of products (NUMPRO)</ItemCell>
+            <ItemCell>beta0(3,1)=0.001;       % direct revenues  (DIRREV)</ItemCell>
+            <ItemCell>beta0(4,1)=0.0002;      % indirect revenues   (INDREV)</ItemCell>
+            <ItemCell>beta0(5,1)=0.002;       %  savings accounts   SAVACC</ItemCell>
+            <ItemCell>beta0(6,1)=0.12;        %  number of operations   NUMOPE</ItemCell>
+            <ItemCell>beta0(7,1)=0.0004;      %  total amount of operations  TOTOPE</ItemCell>
+            <ItemCell>beta0(8,1)=-0.0004;     %  Bancomat POS</ItemCell>
+            <ItemCell>beta0(9,1)=1.3;         %  Number of cards   NUMCAR</ItemCell>
+            <ItemCell>beta0(10,1)=0.00004;    %  Amount in cards   TOTCAR</ItemCell>
+            <ItemCell>% \tau</ItemCell>
+            <ItemCell>s02=10000;</ItemCell>
+            <ItemCell>tau0=1/s02;</ItemCell>
+            <ItemCell>% number of obs in which prior was based</ItemCell>
+            <ItemCell>n0=1500;</ItemCell>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>bayes.n0=n0;</ItemCell>
+            <ItemCell>bayes.beta0=beta0;</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>intercept=1;</ItemCell>
+            <ItemCell>n=length(y);</ItemCell>
+            <ItemCell>out=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...</ItemCell>
+            <ItemCell>'init',round(n/2),'xlim',[1700 1905],'ylim',[2 4]);</ItemCell>
+            <ItemCell>%% Plot the outliers with a different symbol using a 3x3 layout</ItemCell>
+            <ItemCell>selout=out.ListOut;</ItemCell>
+            <ItemCell>selin=setdiff(1:n,selout);</ItemCell>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>% just in case user has additional function subtightplot</ItemCell>
+            <ItemCell>% http://www.mathworks.com/matlabcentral/fileexchange/39664-subtightplot</ItemCell>
+            <ItemCell>make_it_tight = true;</ItemCell>
+            <ItemCell>if make_it_tight == true &amp;&amp; exist('subtightplot','file') ==2</ItemCell>
+            <ItemCell>subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>clear subplot;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% sel = panels in which yticks do not have to be removed</ItemCell>
+            <ItemCell>sel=[1 4 7];</ItemCell>
+            <ItemCell>miny=min(y);</ItemCell>
+            <ItemCell>maxy=max(y);</ItemCell>
+            <ItemCell>for j=1:9</ItemCell>
+            <ItemCell>subplot(3,3,j)</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>plot(X(selin,j),y(selin),'+')</ItemCell>
+            <ItemCell>plot(X(selout,j),y(selout),'ro')</ItemCell>
+            <ItemCell>ylim([miny maxy])</ItemCell>
+            <ItemCell>xlim([min(X(:,j)) max(X(:,j))])</ItemCell>
+            <ItemCell>if isempty(intersect(j,sel))</ItemCell>
+            <ItemCell>set(gca,'YTickLabel','')</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Add on the plot the variable name</ItemCell>
+            <ItemCell>text(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </ExtraEx>

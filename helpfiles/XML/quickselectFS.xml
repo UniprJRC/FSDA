@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->quickselectFS</Title>
-   <Purpose><!--This is the second line of the .m file-->quickselectFS finds the k-th order statistic</Purpose>
+   <Purpose><!--This is the second line of the .m file-->quickselectFS finds the k-th order statistic
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>A</Name>
-         <ShortDesc>a set of unique numbers</ShortDesc>
-         <TypeInd>Vector</TypeInd>
+         <ShortDesc>a set of unique numbers.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
          <LongDesc>Vector containing a set of n (distinct) numbers.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
@@ -16,11 +17,9 @@
       </Item>
       <Item>
          <Name>k</Name>
-         <ShortDesc>order statistic index</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>An integer between 1 and n indicating the&#xD;
-       desired order statistic.&#xD;
-                 </LongDesc>
+         <ShortDesc>order statistic index.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>An integer between 1 and n indicating the desired order statistic.</LongDesc>
          <Example> </Example>
          <DataType>double</DataType>
          <ReqArg>1</ReqArg>
@@ -28,14 +27,9 @@
       </Item>
       <Item>
          <Name>kiniindex</Name>
-         <ShortDesc>Index of an element in A</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>The index of an element in A that is supposed to be "close"&#xD;
-      to the desired k-th order statistic. This information is used to&#xD;
-      choose the pivot so that the chance to fall into the worst case&#xD;
-      performance ($O(n^2)$) is minimized and the average case performance&#xD;
-      is maximized.&#xD;
-      </LongDesc>
+         <ShortDesc>Index of an element in A.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The index of an element in A that is supposed to be "close" to the desired k-th order statistic. This information is used to choose the pivot so that the chance to fall into the worst case performance ($O(n^2)$) is minimized and the average case performance is maximized.</LongDesc>
          <Example>&lt;code&gt;'kiniindex',1 &#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -47,17 +41,16 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>kE</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>k-th order statistic.</TypeInd>
-         <LongDesc> Element in A that is larger than exactly k - 1 other elements of A.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Element in A that is larger than exactly k - 1 other elements of A.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Riani M., Perrotta D. and Cerioli (2015), The Forward Search for&#xD;
-       Very Large Datasets, Journal of Statistical Software</Item>
+      <Item>Riani M., Perrotta D. and Cerioli (2015), The Forward Search for Very Large Datasets, Journal of Statistical Software</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMmmd</Item>
@@ -65,29 +58,31 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>quickselectFS with all default options.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    Y=randn(n,1);&#xD;
-    k=10;&#xD;
-    [out]=quickselectFS(Y,k);&#xD;
-    % Check the result&#xD;
-    sorY=sort(Y);&#xD;
-    disp(out-sorY(k))&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>Y=randn(n,1);</ItemCell>
+            <ItemCell>k=10;</ItemCell>
+            <ItemCell>[out]=quickselectFS(Y,k);</ItemCell>
+            <ItemCell>% Check the result</ItemCell>
+            <ItemCell>sorY=sort(Y);</ItemCell>
+            <ItemCell>disp(out-sorY(k))</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>quickselectFS with kiniindex supplied.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    Y=randn(n,1);&#xD;
-    k=10;&#xD;
-    % kiniindex is supplied &#xD;
-    [out]=quickselectFS(Y,k,20);&#xD;
-    % Check the result&#xD;
-    sorY=sort(Y);&#xD;
-    disp(out-sorY(k))&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>Y=randn(n,1);</ItemCell>
+            <ItemCell>k=10;</ItemCell>
+            <ItemCell>% kiniindex is supplied</ItemCell>
+            <ItemCell>[out]=quickselectFS(Y,k,20);</ItemCell>
+            <ItemCell>% Check the result</ItemCell>
+            <ItemCell>sorY=sort(Y);</ItemCell>
+            <ItemCell>disp(out-sorY(k))</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>

@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->regressH</Title>
-   <Purpose><!--This is the second line of the .m file-->regressH fits a multiple linear regression model with heteroskedasticity</Purpose>
+   <Purpose><!--This is the second line of the .m file-->regressH fits a multiple linear regression model with heteroskedasticity
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>Response variable</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Response variable, specified as&#xD;
-               a vector of length n, where n is the number of&#xD;
-               observations. Each entry in y is the response for the&#xD;
-               corresponding row of X.&#xD;
-               Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations.</LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Response variable, specified as a vector of length n, where n is the number of observations. Each entry in y is the response for the corresponding row of X.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -23,19 +18,9 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Predictor variables in the regression equation</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>Matrix of&#xD;
-               explanatory variables (also called 'regressors') of&#xD;
-               dimension n x (p-1) where p denotes the number of&#xD;
-               explanatory variables including the intercept. Rows of X&#xD;
-               represent observations, and columns represent variables. By&#xD;
-               default, there is a constant term in the model, unless you&#xD;
-               explicitly remove it using input option intercept, so do&#xD;
-               not include a column of 1s in X. Missing values (NaN's) and&#xD;
-               infinite values (Inf's) are allowed, since observations&#xD;
-               (rows) with missing or infinite values will automatically&#xD;
-               be excluded from the computations.</LongDesc>
+         <ShortDesc>Predictor variables in the regression equation.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n x (p-1) where p denotes the number of explanatory variables including the intercept. Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -43,19 +28,11 @@
       </Item>
       <Item>
          <Name>Z</Name>
-         <ShortDesc>Predictor variables in the skedastic equation</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>n x r matrix or vector of length r.&#xD;
-               If Z is a n x r matrix it contains the r variables which&#xD;
-               form the scedastic function .&#xD;
-               If Z is a vector of length r it contains the indexes of the&#xD;
-               columns of matrix X which form the scedastic function &#xD;
-               Therefore, if for example the explanatory variables&#xD;
-               responsible for heteroscedisticity are columns 3 and 5&#xD;
-               of matrix X, it is possible to use both the sintax&#xD;
-                    regressH(y,X,X(:,[3 5]))&#xD;
-               or the sintax&#xD;
-                    regressH(y,X,[3 5])</LongDesc>
+         <ShortDesc>Predictor variables in the skedastic equation.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x r matrix or vector of length r.
+If Z is a n x r matrix it contains the r variables which form the scedastic function .
+If Z is a vector of length r it contains the indexes of the columns of matrix X which form the scedastic function Therefore, if for example the explanatory variables responsible for heteroscedisticity are columns 3 and 5 of matrix X, it is possible to use both the sintax regressH(y,X,X(:,[3 5])) or the sintax regressH(y,X,[3 5])</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -65,115 +42,73 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>type</Name>
-         <ShortDesc>Parametric function to be used in the skedastic equation</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>If type is 'arc' (default) than the skedastic function is&#xD;
-               modelled as follows&#xD;
-               \[&#xD;
-               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +&#xD;
-                           \cdots + \gamma_{r} Z(i,r)))&#xD;
-               \]&#xD;
-               on the other hand, if type is 'har' then traditional&#xD;
-               formulation due to Harvey is used as follows&#xD;
-               \[&#xD;
-               \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +&#xD;
-                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1&#xD;
-                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))&#xD;
-               \]&#xD;
-               Remark. Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations.&#xD;
-               </LongDesc>
-         <Example> 'type','har' &#xD;
-               </Example>
+         <ShortDesc>Parametric function to be used in the skedastic equation.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>If type is 'arc' (default) than the skedastic function is modelled as follows
+\[
+\sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r)))
+\]
+on the other hand, if type is 'har' then traditional formulation due to Harvey is used as follows
+\[
+\sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r))
+\]
+Remark. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example>'type','har'</Example>
          <DataType>string</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default),&#xD;
-               if 0, no constant term will be included.&#xD;
-               </LongDesc>
-         <Example> 'intercept',1 &#xD;
-               </Example>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>initialbeta</Name>
-         <ShortDesc>initial estimate of beta</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>p x 1 vector. If initialbeta is not supplied (default) standard least&#xD;
-               squares is used to find initial estimate of beta&#xD;
-               </LongDesc>
-         <Example> 'initialbeta',[3 8] &#xD;
-               </Example>
+         <ShortDesc>initial estimate of beta.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>p x 1 vector. If initialbeta is not supplied (default) standard least squares is used to find initial estimate of beta</LongDesc>
+         <Example>'initialbeta',[3 8]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>initialgamma</Name>
-         <ShortDesc>initial estimate of gamma</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>vector of length (r+1). If initialgamma is not supplied (default)  initial estimate&#xD;
-               of gamma is nothing but the OLS estimate in a regression&#xD;
-               where the response is given by squared residuals and the&#xD;
-               regressors are specified in input object Z (this regression&#xD;
-               also contains a constant term).&#xD;
-               </LongDesc>
-         <Example> 'initialgamma',[0.6 2.8] &#xD;
-               </Example>
+         <ShortDesc>initial estimate of gamma.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>vector of length (r+1). If initialgamma is not supplied (default) initial estimate of gamma is nothing but the OLS estimate in a regression where the response is given by squared residuals and the regressors are specified in input object Z (this regression also contains a constant term).</LongDesc>
+         <Example>'initialgamma',[0.6 2.8]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>maxiter</Name>
-         <ShortDesc>Maximum number of iterations to find model paramters</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If not defined, maxiter is fixed to 200. Remark: in order&#xD;
-               to obtain the FGLS estimator (two step estimator) it is&#xD;
-               enough to put maxiter=1.&#xD;
-               </LongDesc>
-         <Example> 'maxiter',8 &#xD;
-               </Example>
+         <ShortDesc>Maximum number of iterations to find model paramters.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If not defined, maxiter is fixed to 200. Remark: in order to obtain the FGLS estimator (two step estimator) it is enough to put maxiter=1.</LongDesc>
+         <Example>'maxiter',8</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>tol</Name>
-         <ShortDesc>The tolerance for controlling convergence</ShortDesc>
-         <TypeInd>Scalar&#xD;
-               If not defined, tol is fixed to 1e-8</TypeInd>
-         <LongDesc>Convergence is&#xD;
-               obtained if \( ||d_{old}-d_{new}||/||d_{new}||&amp;lt;1e-8 \)&#xD;
-               where \( d \) is the vector of length p+r+1 which contains&#xD;
-               regression and scedastic coefficients \( d=(\beta' \;&#xD;
-               \gamma')' \); while \( d_{old} \) and \(d_{new} \) are the&#xD;
-               values of d in iterations t and t+1 t=1,2, ..., maxiter&#xD;
-               </LongDesc>
-         <Example> 'tol',0.0001 &#xD;
-               </Example>
+         <ShortDesc>The tolerance for controlling convergence.</ShortDesc>
+         <TypeInd>Scalar If not defined, tol is fixed to 1e-8.</TypeInd>
+         <LongDesc>Convergence is obtained if \( ||d_{old}-d_{new}||/||d_{new}||&amp;lt;1e-8 \) where \( d \) is the vector of length p+r+1 which contains regression and scedastic coefficients \( d=(\beta' \;
+\gamma')' \); while \( d_{old} \) and \(d_{new} \) are the values of d in iterations t and t+1 t=1,2, ..., maxiter</LongDesc>
+         <Example>'tol',0.0001</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>msgiter</Name>
-         <ShortDesc>Level of output to display</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If msgiter=1 it is possible to see the estimates of&#xD;
-               the regression and scedastic parameters together with their&#xD;
-               standard errors and the values of Wald, LM and&#xD;
-               Likelihood ratio test, and the value of the maximized&#xD;
-               loglikelihood. If msgiter&amp;gt;1 it is also possible to see&#xD;
-               monitor the estimates of the coefficients in each step of&#xD;
-               the iteration. If msgiter&amp;lt;1 nothing is displayed on the&#xD;
-               screen&#xD;
-               </LongDesc>
-         <Example> 'msgiter',0 &#xD;
-               </Example>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If msgiter=1 it is possible to see the estimates of the regression and scedastic parameters together with their standard errors and the values of Wald, LM and Likelihood ratio test, and the value of the maximized loglikelihood. If msgiter&amp;gt;1 it is also possible to see monitor the estimates of the coefficients in each step of the iteration. If msgiter&amp;lt;1 nothing is displayed on the screen</LongDesc>
+         <Example>'msgiter',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -184,23 +119,20 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>Beta</Value>
-               <Description>p-by-3 matrix containing: &#xD;
-                       1st col = Estimates of regression coefficients; &#xD;
-                       2nd col = Standard errors of the estimates of regr&#xD;
-                       coeff; &#xD;
-                       3rd col = t-tests of the estimates of regr coeff.</Description>
+               <Description>p-by-3 matrix containing:
+1st col = Estimates of regression coefficients;
+2nd col = Standard errors of the estimates of regr coeff;
+3rd col = t-tests of the estimates of regr coeff.</Description>
             </ItemCell>
             <ItemCell>
                <Value>Gamma</Value>
-               <Description>(r+1)-by-3 matrix containing: &#xD;
-                       1st col = Estimates of scedastic coefficients; &#xD;
-                       2nd col = Standard errors of the estimates of&#xD;
-                       scedastic coeff; &#xD;
-                       3rd col = t tests of the estimates of scedastic&#xD;
-                       coeff.</Description>
+               <Description>(r+1)-by-3 matrix containing:
+1st col = Estimates of scedastic coefficients;
+2nd col = Standard errors of the estimates of scedastic coeff;
+3rd col = t tests of the estimates of scedastic coeff.</Description>
             </ItemCell>
             <ItemCell>
                <Value>WA</Value>
@@ -216,20 +148,17 @@
             </ItemCell>
             <ItemCell>
                <Value>LogL</Value>
-               <Description>scalar. Complete maximized log likelihood using&#xD;
-                       'har' or 'art' heteroskedasticity</Description>
+               <Description>scalar. Complete maximized log likelihood using 'har' or 'art' heteroskedasticity</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1&#xD;
-   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282).&#xD;
-   Prentice Hall.</Item>
-      <Item>Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for&#xD;
-   heteroskedastic regression, submitted (ART)</Item>
+      <Item>Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1 pp. 232-235), (7th edition, section 9.7.1 pp. 280-282).
+Prentice Hall.</Item>
+      <Item>Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for heteroskedastic regression, submitted (ART)</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>regress</Item>
@@ -238,129 +167,115 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>regressH with all default options.</Title>
-         <Desc>&#xD;
-     The data in Appendix Table F6.1 were used in a study of efficiency in&#xD;
-     production of airline services in Greene (2007a).&#xD;
-     See p. 557 of Green (7th edition). &#xD;</Desc>
+         <Desc>
+            <ItemCell>The data in Appendix Table F6.1 were used in a study of efficiency in production of airline services in Greene (2007a).</ItemCell>
+            <ItemCell>See p. 557 of Green (7th edition).</ItemCell>
+         </Desc>
          <MATLABcode>
-    &#xD;
-    load('TableF61_Greene');&#xD;
-    Y=TableF61_Greene.data;&#xD;
-&#xD;
-    Q=log(Y(:,4));&#xD;
-    Pfuel=log(Y(:,5));&#xD;
-    Loadfactor=Y(:,6);&#xD;
-    n=size(Y,1);&#xD;
-    X=[Q Q.^2 Pfuel];&#xD;
-    y=log(Y(:,3));&#xD;
-    out=regressH(y,X,Loadfactor);&#xD;</MATLABcode>
+            <ItemCell/>
+            <ItemCell>load('TableF61_Greene');</ItemCell>
+            <ItemCell>Y=TableF61_Greene.data;</ItemCell>
+            <ItemCell>Q=log(Y(:,4));</ItemCell>
+            <ItemCell>Pfuel=log(Y(:,5));</ItemCell>
+            <ItemCell>Loadfactor=Y(:,6);</ItemCell>
+            <ItemCell>n=size(Y,1);</ItemCell>
+            <ItemCell>X=[Q Q.^2 Pfuel];</ItemCell>
+            <ItemCell>y=log(Y(:,3));</ItemCell>
+            <ItemCell>out=regressH(y,X,Loadfactor);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>regressH with optional arguments.</Title>
-         <Desc>&#xD;
-     Using the same data of the previous example and the traditional Harvey &#xD;
-     formulation for the skedastic function, we replicate in &#xD;
-     structure "out.Beta" the same results contained in table 9.2, &#xD;
-     page 282, 7th edition of Greene (2007) (lines "Iterated").&#xD;</Desc>
+         <Desc>
+            <ItemCell>Using the same data of the previous example and the traditional Harvey formulation for the skedastic function, we replicate in structure "out.Beta" the same results contained in table 9.2, page 282, 7th edition of Greene (2007) (lines "Iterated").</ItemCell>
+         </Desc>
          <MATLABcode>
-    load('TableF61_Greene');&#xD;
-    Y=TableF61_Greene.data;&#xD;
-&#xD;
-    Q=log(Y(:,4));&#xD;
-    Pfuel=log(Y(:,5));&#xD;
-    Loadfactor=Y(:,6);&#xD;
-    n=size(Y,1);&#xD;
-    X=[Q Q.^2 Pfuel];&#xD;
-    y=log(Y(:,3));&#xD;
-    out=regressH(y,X,Loadfactor,'type','har');&#xD;</MATLABcode>
+            <ItemCell>load('TableF61_Greene');</ItemCell>
+            <ItemCell>Y=TableF61_Greene.data;</ItemCell>
+            <ItemCell>Q=log(Y(:,4));</ItemCell>
+            <ItemCell>Pfuel=log(Y(:,5));</ItemCell>
+            <ItemCell>Loadfactor=Y(:,6);</ItemCell>
+            <ItemCell>n=size(Y,1);</ItemCell>
+            <ItemCell>X=[Q Q.^2 Pfuel];</ItemCell>
+            <ItemCell>y=log(Y(:,3));</ItemCell>
+            <ItemCell>out=regressH(y,X,Loadfactor,'type','har');</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Monthly credit card expenditure for 100 individuals.</Title>
-         <Desc>&#xD;
-     Results in structure "OUT" coincides with "Maximum Likelihood&#xD;
-     Estimates" of table 11.3, page 235, 5th edition of Greene (1987).&#xD;
-     Results in structure "OLS" coincide with "Ordinary Leat Squares&#xD;
-     Estimates" of table 11.3, page 235, 5th edition of Greene (1987).&#xD;
- &#xD;</Desc>
+         <Desc>
+            <ItemCell>Results in structure "OUT" coincides with "Maximum Likelihood Estimates" of table 11.3, page 235, 5th edition of Greene (1987).</ItemCell>
+            <ItemCell>Results in structure "OLS" coincide with "Ordinary Leat Squares Estimates" of table 11.3, page 235, 5th edition of Greene (1987).</ItemCell>
+         </Desc>
          <MATLABcode>
-    load('TableF91_Greene');&#xD;
-    data=TableF91_Greene.data;&#xD;
-    n=size(data,1);&#xD;
-&#xD;
-    % Linear regression of monthly expenditure on a constant, age, income&#xD;
-    % its square and a dummy variable for home ownership using the 72&#xD;
-    % observations for which expenditure was nonzero produces the residuals&#xD;
-    % plotted below&#xD;
-&#xD;
-    X=zeros(n,4);&#xD;
-    X(:,1)=data(:,3);%age&#xD;
-    X(:,2)=data(:,6);% Own rent (dummy variable)&#xD;
-    X(:,3)=data(:,4);% Income&#xD;
-    X(:,4)=(data(:,4)).^2; %Income  square&#xD;
-    y=data(:,5); % Monthly expenditure&#xD;
-&#xD;
-    % Select the 72 observations for which expenditure was nonzero&#xD;
-    sel=y&amp;gt;0;&#xD;
-    X=X(sel,:);&#xD;
-    y=y(sel);&#xD;
-    whichstats={'r','tstat'};&#xD;
-    OLS=regstats(y,X,'linear',whichstats);&#xD;
-    r=OLS.r;&#xD;
-&#xD;
-    disp('Ordinary Least Squares Estimates')&#xD;
-    LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];&#xD;
-    disp(LSest)&#xD;
-    disp('Multiplicative Heteroskedasticity Model')&#xD;
-    % The variables which enter the skedastic function are Income and&#xD;
-    % Income square (that is columns 3 and 4 of matrix X)&#xD;
-    out=regressH(y,X,[3 4],'msgiter',0,'type','har');&#xD;
-&#xD;
-    % Plot OLS residuals againt Income (This is nothing but Figure 11.1 of&#xD;
-    % Green (5th edition) p. 216)&#xD;
-    plot(X(:,4),r,'o')&#xD;
-    xlabel('Income')&#xD;
-    ylabel('OLS residuals')&#xD;
-    grid on&#xD;</MATLABcode>
+            <ItemCell>load('TableF91_Greene');</ItemCell>
+            <ItemCell>data=TableF91_Greene.data;</ItemCell>
+            <ItemCell>n=size(data,1);</ItemCell>
+            <ItemCell>% Linear regression of monthly expenditure on a constant, age, income</ItemCell>
+            <ItemCell>% its square and a dummy variable for home ownership using the 72</ItemCell>
+            <ItemCell>% observations for which expenditure was nonzero produces the residuals</ItemCell>
+            <ItemCell>% plotted below</ItemCell>
+            <ItemCell>X=zeros(n,4);</ItemCell>
+            <ItemCell>X(:,1)=data(:,3);%age</ItemCell>
+            <ItemCell>X(:,2)=data(:,6);% Own rent (dummy variable)</ItemCell>
+            <ItemCell>X(:,3)=data(:,4);% Income</ItemCell>
+            <ItemCell>X(:,4)=(data(:,4)).^2; %Income  square</ItemCell>
+            <ItemCell>y=data(:,5); % Monthly expenditure</ItemCell>
+            <ItemCell>% Select the 72 observations for which expenditure was nonzero</ItemCell>
+            <ItemCell>sel=y&amp;gt;0;</ItemCell>
+            <ItemCell>X=X(sel,:);</ItemCell>
+            <ItemCell>y=y(sel);</ItemCell>
+            <ItemCell>whichstats={'r','tstat'};</ItemCell>
+            <ItemCell>OLS=regstats(y,X,'linear',whichstats);</ItemCell>
+            <ItemCell>r=OLS.r;</ItemCell>
+            <ItemCell>disp('Ordinary Least Squares Estimates')</ItemCell>
+            <ItemCell>LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];</ItemCell>
+            <ItemCell>disp(LSest)</ItemCell>
+            <ItemCell>disp('Multiplicative Heteroskedasticity Model')</ItemCell>
+            <ItemCell>% The variables which enter the skedastic function are Income and</ItemCell>
+            <ItemCell>% Income square (that is columns 3 and 4 of matrix X)</ItemCell>
+            <ItemCell>out=regressH(y,X,[3 4],'msgiter',0,'type','har');</ItemCell>
+            <ItemCell>% Plot OLS residuals againt Income (This is nothing but Figure 11.1 of</ItemCell>
+            <ItemCell>% Green (5th edition) p. 216)</ItemCell>
+            <ItemCell>plot(X(:,4),r,'o')</ItemCell>
+            <ItemCell>xlabel('Income')</ItemCell>
+            <ItemCell>ylabel('OLS residuals')</ItemCell>
+            <ItemCell>grid on</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Comparing Harvey's and ART models.</Title>
-         <Desc>&#xD;
-     Data are monthly credit card expenditure for 100 individuals.&#xD;
-     Results in structure "out" coincides with estimates of row &#xD;
-     "\sigma^2*exp(z'*\alpha)" in table 11.2, page 231, 5th edition of&#xD;
-     Greene (1987).&#xD;
-    &#xD;</Desc>
+         <Desc>
+            <ItemCell>Data are monthly credit card expenditure for 100 individuals.</ItemCell>
+            <ItemCell>Results in structure "out" coincides with estimates of row "\sigma^2*exp(z'*\alpha)" in table 11.2, page 231, 5th edition of Greene (1987).</ItemCell>
+         </Desc>
          <MATLABcode>
-    load('TableF91_Greene');&#xD;
-    data=TableF91_Greene.data;&#xD;
-    n=size(data,1);&#xD;
-&#xD;
-    % Linear regression of monthly expenditure on a constant, age, income and&#xD;
-    % its square and a dummy variable for home ownership using the 72&#xD;
-    % observations for which expenditure was nonzero produces the residuals&#xD;
-    % plotted plotted below&#xD;
-&#xD;
-    X=zeros(n,4);&#xD;
-    X(:,1)=data(:,3);%age&#xD;
-    X(:,2)=data(:,6);% Own rent (dummy variable)&#xD;
-    X(:,3)=data(:,4);% Income&#xD;
-    X(:,4)=(data(:,4)).^2; %Income  square&#xD;
-    y=data(:,5); % Monthly expenditure&#xD;
-&#xD;
-    % Select the 72 observations for which expenditure was nonzero&#xD;
-    sel=y&amp;gt;0;&#xD;
-    X=X(sel,:);&#xD;
-    y=y(sel);&#xD;
-&#xD;
-    % Compare output from Harvey's model with the one of ART&#xD;
-    outHAR=regressH(y,X,[3 4],'msgiter',1,'type','har');&#xD;
-    outART=regressH(y,X,[3 4],'msgiter',1,'type','art');&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>load('TableF91_Greene');</ItemCell>
+            <ItemCell>data=TableF91_Greene.data;</ItemCell>
+            <ItemCell>n=size(data,1);</ItemCell>
+            <ItemCell>% Linear regression of monthly expenditure on a constant, age, income and</ItemCell>
+            <ItemCell>% its square and a dummy variable for home ownership using the 72</ItemCell>
+            <ItemCell>% observations for which expenditure was nonzero produces the residuals</ItemCell>
+            <ItemCell>% plotted plotted below</ItemCell>
+            <ItemCell>X=zeros(n,4);</ItemCell>
+            <ItemCell>X(:,1)=data(:,3);%age</ItemCell>
+            <ItemCell>X(:,2)=data(:,6);% Own rent (dummy variable)</ItemCell>
+            <ItemCell>X(:,3)=data(:,4);% Income</ItemCell>
+            <ItemCell>X(:,4)=(data(:,4)).^2; %Income  square</ItemCell>
+            <ItemCell>y=data(:,5); % Monthly expenditure</ItemCell>
+            <ItemCell>% Select the 72 observations for which expenditure was nonzero</ItemCell>
+            <ItemCell>sel=y&amp;gt;0;</ItemCell>
+            <ItemCell>X=X(sel,:);</ItemCell>
+            <ItemCell>y=y(sel);</ItemCell>
+            <ItemCell>% Compare output from Harvey's model with the one of ART</ItemCell>
+            <ItemCell>outHAR=regressH(y,X,[3 4],'msgiter',1,'type','har');</ItemCell>
+            <ItemCell>outART=regressH(y,X,[3 4],'msgiter',1,'type','art');</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </ExtraEx>

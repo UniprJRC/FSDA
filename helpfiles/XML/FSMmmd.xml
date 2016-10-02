@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSMmmd</Title>
-   <Purpose><!--This is the second line of the .m file-->FSMmmd monitors minMD</Purpose>
+   <Purpose><!--This is the second line of the .m file-->FSMmmd monitors minMD
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Input data</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
-               Y represent observations, and columns represent variables.&#xD;
-               Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations.&#xD;
-                </LongDesc>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -22,13 +18,10 @@
       </Item>
       <Item>
          <Name>bsb</Name>
-         <ShortDesc>Units forming subset</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>List of units forming the initial subset.&#xD;
-               If bsb=0 (default) then the procedure starts with p units randomly&#xD;
-               chosen else if bsb is not 0 the search will start with&#xD;
-               m0=length(bsb)&#xD;
-               </LongDesc>
+         <ShortDesc>Units forming subset.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>List of units forming the initial subset.
+If bsb=0 (default) then the procedure starts with p units randomly chosen else if bsb is not 0 the search will start with m0=length(bsb)</LongDesc>
          <Example> </Example>
          <DataType>single | double</DataType>
          <ReqArg>1</ReqArg>
@@ -38,77 +31,46 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>init</Name>
-         <ShortDesc>Point where to start monitoring&#xD;
-               required diagnostics</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Note that if bsb is supplied,&#xD;
-               init&amp;gt;=length(bsb). If init is not specified it will&#xD;
-               be set equal to floor(n*0.6).&#xD;
-                 </LongDesc>
-         <Example> 'init',50&#xD;
-                 </Example>
+         <ShortDesc>Point where to start monitoring required diagnostics.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Note that if bsb is supplied, init&amp;gt;=length(bsb). If init is not specified it will be set equal to floor(n*0.6).</LongDesc>
+         <Example>'init',50</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>plots</Name>
-         <ShortDesc>It specify whether it is necessary to produce the plots of minimum Mahalanobis&#xD;
-                 distance</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If plots=1, a plot of the monitoring of minMD among&#xD;
-               the units not belonging to the subset is produced on the&#xD;
-               screen with 1% 50% and 99% confidence bands&#xD;
-               else (default) no plot is produced.&#xD;
-                 </LongDesc>
-         <Example> 'plots',0&#xD;
-                 </Example>
+         <ShortDesc>It specify whether it is necessary to produce the plots of minimum Mahalanobis distance.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots=1, a plot of the monitoring of minMD among the units not belonging to the subset is produced on the screen with 1% 50% and 99% confidence bands else (default) no plot is produced.</LongDesc>
+         <Example>'plots',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>It controls whether to display or not messages&#xD;
-               about great interchange on the screen</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If msg==1 (default) messages are displyed on the screen&#xD;
-               else no message is displayed on the screen.&#xD;
-                 </LongDesc>
-         <Example> 'msg',0&#xD;
-                 </Example>
+         <ShortDesc>It controls whether to display or not messages about great interchange on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If msg==1 (default) messages are displyed on the screen else no message is displayed on the screen.</LongDesc>
+         <Example>'msg',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>It controls wether to perform checks on&#xD;
-               matrix Y</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is&#xD;
-               performed on matrix Y. As default nocheck=0.&#xD;
-                 </LongDesc>
-         <Example> 'nocheck',0&#xD;
-                 </Example>
+         <ShortDesc>It controls wether to perform checks on matrix Y.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix Y. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bsbsteps</Name>
-         <ShortDesc>Save the units forming subsets</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>It specifies for&#xD;
-               which steps of the fwd search it&#xD;
-               is necessary to save the units forming subsets. If bsbsteps&#xD;
-               is 0 we store the units forming subset in all steps. The&#xD;
-               default is store the units forming subset in all steps if&#xD;
-               n&amp;lt;=5000, else to store the units forming subset at steps&#xD;
-               init and steps which are multiple of 100. For example, as&#xD;
-               default, if n=7530 and init=6,&#xD;
-               units forming subset are stored for&#xD;
-               m=init, 100, 200, ..., 7500.&#xD;
-                </LongDesc>
-         <Example> 'bsbsteps',[100 200] stores the unis forming&#xD;
-               subset in steps 100 and 200.&#xD;
-               </Example>
+         <ShortDesc>Save the units forming subsets.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>It specifies for which steps of the fwd search it is necessary to save the units forming subsets. If bsbsteps is 0 we store the units forming subset in all steps. The default is store the units forming subset in all steps if n&amp;lt;=5000, else to store the units forming subset at steps init and steps which are multiple of 100. For example, as default, if n=7530 and init=6, units forming subset are stored for m=init, 100, 200, ..., 7500.</LongDesc>
+         <Example>'bsbsteps',[100 200] stores the unis forming subset in steps 100 and 200.</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -116,44 +78,33 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>mmd</Name>
-         <ShortDesc>(n-init) x 2 matrix </ShortDesc>
-         <TypeInd>Monitoring of minimum&#xD;
-               Mahalanobis distance each step of the forward search.</TypeInd>
-         <LongDesc>&#xD;
-               1st col = fwd search index (from init to n-1);&#xD;
-               2nd col = minimum Mahalanobis distance.</LongDesc>
-         <Struct> </Struct>
+         <ShortDesc>(n-init) x 2 matrix</ShortDesc>
+         <TypeInd>Monitoring of minimum Mahalanobis distance each step of the forward search.</TypeInd>
+         <LongDesc>1st col = fwd search index (from init to n-1);
+2nd col = minimum Mahalanobis distance.</LongDesc>
+         <Structure> </Structure>
       </Item>
       <Item>
          <Name>Un</Name>
-         <ShortDesc>(n-init) x 11 Matrix </ShortDesc>
-         <TypeInd>Unit(s) included&#xD;
-               in the subset at each step of the search.</TypeInd>
-         <LongDesc>&#xD;
-               REMARK: in every step the new subset is compared with the&#xD;
-               old subset. Un contains the unit(s) present in the new&#xD;
-               subset but not in the old one.&#xD;
-               Un(1,2) for example contains the unit included in step&#xD;
-               init+1.&#xD;
-               Un(end,2) contains the units included in the final step&#xD;
-               of the search.</LongDesc>
-         <Struct> </Struct>
+         <ShortDesc>(n-init) x 11 Matrix</ShortDesc>
+         <TypeInd>Unit(s) included in the subset at each step of the search.</TypeInd>
+         <LongDesc>REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.
+Un(1,2) for example contains the unit included in step init+1.
+Un(end,2) contains the units included in the final step of the search.</LongDesc>
+         <Structure> </Structure>
       </Item>
       <Item>
          <Name>varargout</Name>
-         <ShortDesc>BB :   n x (n-init+1) matrix </ShortDesc>
-         <TypeInd>Units belonging to subset in&#xD;
-               each step of the search.</TypeInd>
-         <LongDesc> Each row is associated to a unit&#xD;
-               while each colum is associated to a step of the fwd search.</LongDesc>
-         <Struct> </Struct>
+         <ShortDesc>BB : n x (n-init+1) matrix</ShortDesc>
+         <TypeInd>Units belonging to subset in each step of the search.</TypeInd>
+         <LongDesc>Each row is associated to a unit while each colum is associated to a step of the fwd search.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the&#xD;
-   forward search Springer Verlag, New York.</Item>
+      <Item>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the forward search Springer Verlag, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMenvmmd</Item>
@@ -164,88 +115,91 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Minimum Mahalanobis distance.</Title>
-         <Desc>&#xD;
-     Personalized initial subset (small n). Create an initial subset with&#xD;
-     the 4 observations which fell the smallest&#xD;
-     number of times outside the robust bivariate ellipses and with the&#xD;
-     lowest Mahalanobis Distance.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Personalized initial subset (small n). Create an initial subset with the 4 observations which fell the smallest number of times outside the robust bivariate ellipses and with the lowest Mahalanobis Distance.</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    v=3;&#xD;
-    m0=4;&#xD;
-    randn('state',123456);&#xD;
-    Y=randn(n,v);&#xD;
-    %Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    [fre]=unibiv(Y);&#xD;
-    fre=sortrows(fre,[3 4]);&#xD;
-    bs=fre(1:m0,1);&#xD;
-    mmd=FSMmmd(Ycont,bs);&#xD;
-    plot(mmd(:,1),mmd(:,2))&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>v=3;</ItemCell>
+            <ItemCell>m0=4;</ItemCell>
+            <ItemCell>randn('state',123456);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>%Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(1:5,:)=Ycont(1:5,:)+3;</ItemCell>
+            <ItemCell>[fre]=unibiv(Y);</ItemCell>
+            <ItemCell>fre=sortrows(fre,[3 4]);</ItemCell>
+            <ItemCell>bs=fre(1:m0,1);</ItemCell>
+            <ItemCell>mmd=FSMmmd(Ycont,bs);</ItemCell>
+            <ItemCell>plot(mmd(:,1),mmd(:,2))</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>FSMmmd with optional arguments.</Title>
-         <Desc>&#xD;
-     Plotting the bandwith of the minimum Mahalanobis distance&#xD;</Desc>
+         <Desc>
+            <ItemCell>Plotting the bandwith of the minimum Mahalanobis distance</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    v=3;&#xD;
-    m0=4;&#xD;
-    randn('state',123456);&#xD;
-    Y=randn(n,v);&#xD;
-    %Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    [fre]=unibiv(Y);&#xD;
-    fre=sortrows(fre,[3 4]);&#xD;
-    bs=fre(1:m0,1);&#xD;
-    [mmd]=FSMmmd(Ycont,bs,'plots',1);&#xD;
-    % The output is exactly the same as that of FSMmmdeasy&#xD;
-    % mmd1=FSMmmdeasy(Ycont,bs,'plots',1);&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>v=3;</ItemCell>
+            <ItemCell>m0=4;</ItemCell>
+            <ItemCell>randn('state',123456);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>%Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(1:5,:)=Ycont(1:5,:)+3;</ItemCell>
+            <ItemCell>[fre]=unibiv(Y);</ItemCell>
+            <ItemCell>fre=sortrows(fre,[3 4]);</ItemCell>
+            <ItemCell>bs=fre(1:m0,1);</ItemCell>
+            <ItemCell>[mmd]=FSMmmd(Ycont,bs,'plots',1);</ItemCell>
+            <ItemCell>% The output is exactly the same as that of FSMmmdeasy</ItemCell>
+            <ItemCell>% mmd1=FSMmmdeasy(Ycont,bs,'plots',1);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
-         <Title>Checking the unit(s) included in the subset at each step of the&#xD;
-     search.</Title>
-         <Desc>&#xD;
-     Un contains the unit(s) present in the new subset but not in the old one.&#xD;</Desc>
+         <Title>Checking the unit(s) included in the subset at each step of the search.</Title>
+         <Desc>
+            <ItemCell>Un contains the unit(s) present in the new subset but not in the old one.</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    v=3;&#xD;
-    m0=4;&#xD;
-    randn('state',123456);&#xD;
-    Y=randn(n,v);&#xD;
-    %Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    [fre]=unibiv(Y);&#xD;
-    fre=sortrows(fre,[3 4]);&#xD;
-    bs=fre(1:m0,1);&#xD;
-    [mmd,Un]=FSMmmd(Ycont,bs,'plots',1);&#xD;
-    % The output is exactly the same as that of FSMmmdeasy&#xD;
-    % [mmd1,Un]=FSMmmdeasy(Ycont,bs,'plots',1);&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>v=3;</ItemCell>
+            <ItemCell>m0=4;</ItemCell>
+            <ItemCell>randn('state',123456);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>%Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(1:5,:)=Ycont(1:5,:)+3;</ItemCell>
+            <ItemCell>[fre]=unibiv(Y);</ItemCell>
+            <ItemCell>fre=sortrows(fre,[3 4]);</ItemCell>
+            <ItemCell>bs=fre(1:m0,1);</ItemCell>
+            <ItemCell>[mmd,Un]=FSMmmd(Ycont,bs,'plots',1);</ItemCell>
+            <ItemCell>% The output is exactly the same as that of FSMmmdeasy</ItemCell>
+            <ItemCell>% [mmd1,Un]=FSMmmdeasy(Ycont,bs,'plots',1);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Checking the units belonging to subset in each step of the search.</Title>
-         <Desc>&#xD;
-     Personalized initial subset (large n). Each row of BB matrix&#xD;
-     is associated to a unit while each colum is associated to a step of the fwd search.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Personalized initial subset (large n). Each row of BB matrix is associated to a unit while each colum is associated to a step of the fwd search.</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=20000;&#xD;
-    v=3;&#xD;
-    m0=10;&#xD;
-    randn('state',123456);&#xD;
-    Y=randn(n,v);&#xD;
-    % 25 per cent of Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5000,:)=Ycont(1:5000,:)+3;&#xD;
-    [fre]=unibiv(Y);&#xD;
-    fre=sortrows(fre,[3 4]);&#xD;
-    bs=fre(1:m0,1);&#xD;
-    [mmd,Un,BB]=FSMmmd(Ycont,bs,'plots',1);&#xD;</MATLABcode>
+            <ItemCell>n=20000;</ItemCell>
+            <ItemCell>v=3;</ItemCell>
+            <ItemCell>m0=10;</ItemCell>
+            <ItemCell>randn('state',123456);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>% 25 per cent of Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(1:5000,:)=Ycont(1:5000,:)+3;</ItemCell>
+            <ItemCell>[fre]=unibiv(Y);</ItemCell>
+            <ItemCell>fre=sortrows(fre,[3 4]);</ItemCell>
+            <ItemCell>bs=fre(1:m0,1);</ItemCell>
+            <ItemCell>[mmd,Un,BB]=FSMmmd(Ycont,bs,'plots',1);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

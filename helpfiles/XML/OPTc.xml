@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->OPTc</Title>
-   <Purpose><!--This is the second line of the .m file-->OPTc computes breakdown point and efficiency associated with constant c for Optimal rho function</Purpose>
+   <Purpose><!--This is the second line of the .m file-->OPTc computes breakdown point and efficiency associated with constant c for Optimal rho function
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>c</Name>
-         <ShortDesc>tuning constant c</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar greater than 0 which&#xD;
-               controls the robustness/efficiency of the estimator</LongDesc>
+         <ShortDesc>tuning constant c.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,10 +17,9 @@
       </Item>
       <Item>
          <Name>v</Name>
-         <ShortDesc>number of response variables</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Number of variables of&#xD;
-               the  dataset (for regression v=1)</LongDesc>
+         <ShortDesc>number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of variables of the dataset (for regression v=1)</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -28,11 +27,9 @@
       </Item>
       <Item>
          <Name>shapeeff</Name>
-         <ShortDesc>location or shape efficiency</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If shapeeff=1, the efficiency is referred to the shape else&#xD;
-              (default) is referred to the location estimator&#xD;
-               </LongDesc>
+         <ShortDesc>location or shape efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If shapeeff=1, the efficiency is referred to the shape else (default) is referred to the location estimator</LongDesc>
          <Example>&lt;code&gt;'shapeeff',1 &#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -44,58 +41,40 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>bdp</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>bdp.</TypeInd>
-         <LongDesc> Breakdown point associated to the supplied&#xD;
-                 value of c</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Breakdown point associated to the supplied value of c</LongDesc>
+         <Structure> </Structure>
       </Item>
       <Item>
          <Name>eff</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>eff.</TypeInd>
-         <LongDesc> Efficiency associated to the supplied&#xD;
-                 value of c</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Efficiency associated to the supplied value of c</LongDesc>
+         <Structure> </Structure>
       </Item>
       <Item>
          <Name>approxsheff</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Approximate value of efficiency.</TypeInd>
-         <LongDesc> &#xD;
-                 Approximate value of efficiency in case input&#xD;
-                 option shapeeff=1 and v&amp;gt;1.&#xD;
-                 This output is left for comparability with the value&#xD;
-                 which comes out from R library robustbase.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Approximate value of efficiency in case input option shapeeff=1 and v&amp;gt;1.
+This output is left for comparability with the value which comes out from R library robustbase.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
-&#xD;
-    $\rho$ ($\psi$) function which is considered is standardized &#xD;
-    using intervals 0---(2/3)c , (2/3)c---c, &amp;gt;c.   &#xD;
-    $\rho$ function is&#xD;
-&#xD;
- \[&#xD;
- TBrho(u)= \left\{&#xD;
-    \begin{array}{lr}&#xD;
-     1.3846 \left(\frac{u}{c}\right)^2                      &amp;                                      |\frac{u}{c}| \leq  \frac{2}{3} \\&#xD;
-    0.5514-2.6917 \left(\frac{u}{c}\right)^2 +10.7668\left(\frac{u}{c}\right)^4-11.6640\left(\frac{u}{c}\right)^6+4.0375\left(\frac{u}{c}\right)^8   &amp; \qquad \frac{2}{3} \leq  |\frac{u}{c}|\leq  1 \\&#xD;
-    1                                                    &amp;                      |\frac{u}{c}|&amp;gt;1 \\&#xD;
- \end{array}&#xD;
-    \right.&#xD;
-  \]&#xD;
-                                                                      |t/c|&amp;gt;1                              &#xD;
-   Therefore, the input c for the (rho) psi function above corresponds to c/3&#xD;
-   in the rho (psi) function defined in the&#xD;
-   interval 0---2c, 2c---3c, &amp;gt;3c &#xD;
-&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->$\rho$ ($\psi$) function which is considered is standardized using intervals 0---(2/3)c , (2/3)c---c, &amp;gt;c.
+$\rho$ function is
+\[
+TBrho(u)= \left\{ \begin{array}{lr} 1.3846 \left(\frac{u}{c}\right)^2 &amp; |\frac{u}{c}| \leq \frac{2}{3} \\
+0.5514-2.6917 \left(\frac{u}{c}\right)^2 +10.7668\left(\frac{u}{c}\right)^4-11.6640\left(\frac{u}{c}\right)^6+4.0375\left(\frac{u}{c}\right)^8 &amp; \qquad \frac{2}{3} \leq |\frac{u}{c}|\leq 1 \\
+1 &amp; |\frac{u}{c}|&amp;gt;1 \\
+\end{array} \right.
+\]
+|t/c|&amp;gt;1 Therefore, the input c for the (rho) psi function above corresponds to c/3 in the rho (psi) function defined in the interval 0---2c, 2c---3c, &amp;gt;3c
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
- and Methods, Wiley, New York.                                                                          |t/c|&amp;gt;1</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York. |t/c|&amp;gt;1</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBc</Item>
@@ -107,29 +86,27 @@
          <Title>Breakdown vs efficiency.</Title>
          <Desc> </Desc>
          <MATLABcode>
-&#xD;
-    %% Breakdown vs efficiency.&#xD;
-    %Analysis of breakdown point and asymptotic efficiency&#xD;
-    %at the normal distribution as a function of c in regression.&#xD;
-    c=1:0.01:4;&#xD;
-    CC=[c' zeros(length(c),1)];&#xD;
-    jk=0;&#xD;
-    for j=c&#xD;
-        jk=jk+1;&#xD;
-         [bdp,eff]=OPTc(j,1);&#xD;
-        CC(jk,2:3)=[bdp,eff];&#xD;
-    end&#xD;
-&#xD;
-    &#xD;
-    subplot(2,1,1)&#xD;
-    plot(c',CC(:,2))&#xD;
-    xlabel('c','Interpreter','Latex','FontSize',16)&#xD;
-    ylabel('Breakdown point','Interpreter','none')&#xD;
-    subplot(2,1,2)&#xD;
-    plot(c',CC(:,3))&#xD;
-    xlabel('c','Interpreter','Latex','FontSize',16)&#xD;
-    ylabel('Asymptotic efficiency','Interpreter','none')&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>%% Breakdown vs efficiency.</ItemCell>
+            <ItemCell>%Analysis of breakdown point and asymptotic efficiency</ItemCell>
+            <ItemCell>%at the normal distribution as a function of c in regression.</ItemCell>
+            <ItemCell>c=1:0.01:4;</ItemCell>
+            <ItemCell>CC=[c' zeros(length(c),1)];</ItemCell>
+            <ItemCell>jk=0;</ItemCell>
+            <ItemCell>for j=c</ItemCell>
+            <ItemCell>jk=jk+1;</ItemCell>
+            <ItemCell>[bdp,eff]=OPTc(j,1);</ItemCell>
+            <ItemCell>CC(jk,2:3)=[bdp,eff];</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell/>
+            <ItemCell>subplot(2,1,1)</ItemCell>
+            <ItemCell>plot(c',CC(:,2))</ItemCell>
+            <ItemCell>xlabel('c','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('Breakdown point','Interpreter','none')</ItemCell>
+            <ItemCell>subplot(2,1,2)</ItemCell>
+            <ItemCell>plot(c',CC(:,3))</ItemCell>
+            <ItemCell>xlabel('c','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('Asymptotic efficiency','Interpreter','none')</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>

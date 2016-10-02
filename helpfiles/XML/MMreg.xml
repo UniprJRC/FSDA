@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->MMreg</Title>
-   <Purpose><!--This is the second line of the .m file-->MMreg computes MM estimator of regression coefficients</Purpose>
+   <Purpose><!--This is the second line of the .m file-->MMreg computes MM estimator of regression coefficients
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>Response variable</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>A vector with n elements that contains&#xD;
-       the response variable. y can be either a row or a column vector.</LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable. y can be either a row or a column vector.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,13 +17,9 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of&#xD;
-       dimension (n x p-1)</ShortDesc>
-         <TypeInd>Rows of X represent observations, and columns&#xD;
-       represent variables</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed,&#xD;
-       since observations (rows) with missing or infinite values will&#xD;
-       automatically be excluded from the computations.</LongDesc>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -33,30 +29,20 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, a model with&#xD;
-               constant term will be fitted (default), if 0, no constant&#xD;
-               term will be included.&#xD;
-               </LongDesc>
-         <Example> 'intercept',1 &#xD;
-               </Example>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>InitialEst</Name>
-         <ShortDesc>starting values of the MM-estimator</ShortDesc>
-         <TypeInd>[] (default) or structure</TypeInd>
-         <LongDesc>InitialEst must contain the following fields&#xD;
-               InitialEst.loc =  v x 1 vector (estimate of the centroid)&#xD;
-               InitialEst.scale = scalar (estimate of the scale parameter).&#xD;
-               If InitialEst is empty (default)&#xD;
-               program uses S estimators. In this last case it is&#xD;
-               possible to specify the options given in function Sreg.&#xD;
-               </LongDesc>
-         <Example> 'InitialEst',[] &#xD;
-               </Example>
+         <ShortDesc>starting values of the MM-estimator.</ShortDesc>
+         <TypeInd>[] (default) or structure.</TypeInd>
+         <LongDesc>InitialEst must contain the following fields InitialEst.loc = v x 1 vector (estimate of the centroid) InitialEst.scale = scalar (estimate of the scale parameter).
+If InitialEst is empty (default) program uses S estimators. In this last case it is possible to specify the options given in function Sreg.</LongDesc>
+         <Example>'InitialEst',[]</Example>
          <DataType>struct</DataType>
          <Struct>
             <ItemCell>
@@ -74,18 +60,11 @@
       </Item>
       <Item>
          <Name>Soptions</Name>
-         <ShortDesc>options if initial estimator is S and InitialEst is empty</ShortDesc>
-         <TypeInd>Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,&#xD;
-               Sreftolbestr, Sminsctol, Sbestr</TypeInd>
-         <LongDesc>See function Sreg.m for more details on these options.     &#xD;
-               It is necessary to add to the S options the letter&#xD;
-               S at the beginning. For example, if you want to use the&#xD;
-               optimal rho function the supplied option is&#xD;
-               'Srhofunc','optimal'. For example, if you want to use 3000&#xD;
-               subsets, the supplied option is 'Snsamp',3000&#xD;
-               </LongDesc>
-         <Example> 'Snsamp',1000 &#xD;
-               </Example>
+         <ShortDesc>options if initial estimator is S and InitialEst is empty.</ShortDesc>
+         <TypeInd>Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr, Sreftolbestr, Sminsctol, Sbestr.</TypeInd>
+         <LongDesc>See function Sreg.m for more details on these options.
+It is necessary to add to the S options the letter S at the beginning. For example, if you want to use the optimal rho function the supplied option is 'Srhofunc','optimal'. For example, if you want to use 3000 subsets, the supplied option is 'Snsamp',3000</LongDesc>
+         <Example>'Snsamp',1000</Example>
          <DataType>single | double&#xD;
                    &#xD;
 &#xD;
@@ -94,106 +73,76 @@
       </Item>
       <Item>
          <Name>eff</Name>
-         <ShortDesc>nominal efficiency</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar defining nominal efficiency (i.e. a number between&#xD;
-                 0.5 and 0.99). The default value is 0.95&#xD;
-                 Asymptotic nominal efficiency is:&#xD;
-                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$&#xD;
-                 </LongDesc>
-         <Example> 'eff',0.99&#xD;
-                 </Example>
+         <ShortDesc>nominal efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining nominal efficiency (i.e. a number between 0.5 and 0.99). The default value is 0.95 Asymptotic nominal efficiency is:
+$(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$</LongDesc>
+         <Example>'eff',0.99</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>effshape</Name>
-         <ShortDesc>location or scale effiicency</ShortDesc>
-         <TypeInd>dummy scalar</TypeInd>
-         <LongDesc>If effshape=1 efficiency refers to shape &#xD;
-                efficiency else (default) efficiency refers to location&#xD;
-                 </LongDesc>
-         <Example> 'effshape',1&#xD;
-                 </Example>
+         <ShortDesc>location or scale effiicency.</ShortDesc>
+         <TypeInd>dummy scalar.</TypeInd>
+         <LongDesc>If effshape=1 efficiency refers to shape efficiency else (default) efficiency refers to location</LongDesc>
+         <Example>'effshape',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>refsteps</Name>
-         <ShortDesc>Maximum iterations</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar defining maximum number of iterations in the MM&#xD;
-                 loop. Default value is 100.&#xD;
-                 </LongDesc>
-         <Example> 'refsteps',10&#xD;
-                 </Example>
+         <ShortDesc>Maximum iterations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining maximum number of iterations in the MM loop. Default value is 100.</LongDesc>
+         <Example>'refsteps',10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>tol</Name>
-         <ShortDesc>Tolerance</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar controlling tolerance in the MM loop.&#xD;
-                 Default value is 1e-7&#xD;
-                 </LongDesc>
-         <Example> 'tol',1e-10&#xD;
-                 </Example>
+         <ShortDesc>Tolerance.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar controlling tolerance in the MM loop.
+Default value is 1e-7</LongDesc>
+         <Example>'tol',1e-10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>conflev</Name>
-         <ShortDesc>Confidence level which is&#xD;
-               used to declare units as outliers</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Usually conflev=0.95, 0.975 0.99 (individual alpha)&#xD;
-               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).&#xD;
-               Default value is 0.975&#xD;
-                 </LongDesc>
-         <Example> 'conflev',0.99&#xD;
-                 </Example>
+         <ShortDesc>Confidence level which is used to declare units as outliers.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Usually conflev=0.95, 0.975 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+Default value is 0.975</LongDesc>
+         <Example>'conflev',0.99</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Check input arguments</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
-                 matrix y and matrix X. Notice that y and X are left&#xD;
-                 unchanged. In other words the additional column of ones&#xD;
-                 for the intercept is not added. As default nocheck=0.&#xD;
-               </LongDesc>
-         <Example> 'nocheck',1 &#xD;
-               </Example>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>plots</Name>
-         <ShortDesc>Plot on the screen</ShortDesc>
-         <TypeInd>Scalar or structure</TypeInd>
-         <LongDesc>If plots = 1, generates a plot with the robust residuals&#xD;
-               against index number. The confidence level used to draw the&#xD;
-               confidence bands for the residuals is given by the input&#xD;
-               option conflev. If conflev is not specified a nominal 0.975&#xD;
-               confidence interval will be used.&#xD;
-                 </LongDesc>
-         <Example> 'plots',0 &#xD;
-                 </Example>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar or structure.</TypeInd>
+         <LongDesc>If plots = 1, generates a plot with the robust residuals against index number. The confidence level used to draw the confidence bands for the residuals is given by the input option conflev. If conflev is not specified a nominal 0.975 confidence interval will be used.</LongDesc>
+         <Example>'plots',0</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>yxsave</Name>
-         <ShortDesc>the response vector y and data matrix X are saved into the output&#xD;
-                structure out</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Default is 0, i.e. no saving is done.&#xD;
-               </LongDesc>
-         <Example> 'yxsave',1 &#xD;
-               </Example>
+         <ShortDesc>the response vector y and data matrix X are saved into the output structure out.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default is 0, i.e. no saving is done.</LongDesc>
+         <Example>'yxsave',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -204,40 +153,26 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>beta</Value>
-               <Description>p x 1 vector containing MM estimate of &#xD;
-                           regression coefficients</Description>
+               <Description>p x 1 vector containing MM estimate of regression coefficients</Description>
             </ItemCell>
             <ItemCell>
                <Value>auxscale</Value>
-               <Description>scalar, S estimate of the scale (or supplied&#xD;
-                           external estimate of scale, if option InitialEst  &#xD;
-                           is not empty)</Description>
+               <Description>scalar, S estimate of the scale (or supplied external estimate of scale, if option InitialEst is not empty)</Description>
             </ItemCell>
             <ItemCell>
                <Value>residuals</Value>
-               <Description>n x 1 vector containing standardized MM&#xD;
-                           residuals&#xD;
-                           out.residuals=(y-X*out.beta)/out.auxscale</Description>
+               <Description>n x 1 vector containing standardized MM residuals out.residuals=(y-X*out.beta)/out.auxscale</Description>
             </ItemCell>
             <ItemCell>
                <Value>weights</Value>
-               <Description>n x 1 vector. Weights assigned to each observation&#xD;
-       out.Sbeta       :   p x 1 vector containing S estimate of regression&#xD;
-                           coefficients (or supplied initial external&#xD;
-                           estimate of regression coefficients, if option&#xD;
-                           InitialEst is not empty)</Description>
+               <Description>n x 1 vector. Weights assigned to each observation out.Sbeta : p x 1 vector containing S estimate of regression coefficients (or supplied initial external estimate of regression coefficients, if option InitialEst is not empty)</Description>
             </ItemCell>
             <ItemCell>
                <Value>Ssingsub</Value>
-               <Description>Number of subsets without full rank in the S &#xD;
-                           preliminary part. Notice that &#xD;
-                           out.singsub &amp;gt; 0.1*(number of subsamples) &#xD;
-                           produces a warning&#xD;
-       out.outliers    :   1 x k vectors containing the outliers which&#xD;
-                           have been found</Description>
+               <Description>Number of subsets without full rank in the S preliminary part. Notice that out.singsub &amp;gt; 0.1*(number of subsamples) produces a warning out.outliers : 1 x k vectors containing the outliers which have been found</Description>
             </ItemCell>
             <ItemCell>
                <Value>conflev</Value>
@@ -249,37 +184,28 @@
             </ItemCell>
             <ItemCell>
                <Value>rhofunc</Value>
-               <Description>string identifying the rho function which has been&#xD;
-                           used</Description>
+               <Description>string identifying the rho function which has been used</Description>
             </ItemCell>
             <ItemCell>
                <Value>rhofuncparam</Value>
-               <Description>vector which contains the additional parameters&#xD;
-                           for the specified rho function which have been&#xD;
-                           used. For hyperbolic rho function the value of&#xD;
-                           k =sup CVC. For Hampel rho function the parameters&#xD;
-                           a, b and c</Description>
+               <Description>vector which contains the additional parameters for the specified rho function which have been used. For hyperbolic rho function the value of k =sup CVC. For Hampel rho function the parameters a, b and c</Description>
             </ItemCell>
             <ItemCell>
                <Value>y</Value>
-               <Description>response vector Y. The field is present if option &#xD;
-                           yxsave is set to 1.</Description>
+               <Description>response vector Y. The field is present if option yxsave is set to 1.</Description>
             </ItemCell>
             <ItemCell>
                <Value>X</Value>
-               <Description>data matrix X. The field is present if option &#xD;
-                           yxsave is set to 1.</Description>
+               <Description>data matrix X. The field is present if option yxsave is set to 1.</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
       <Item>
          <Name>varargout</Name>
-         <ShortDesc>C        : matrix </ShortDesc>
-         <TypeInd>Indices of the subsamples &#xD;
-                       extracted for computing the estimate (the so called&#xD;
-                       elemental sets).</TypeInd>
+         <ShortDesc>C : matrix</ShortDesc>
+         <TypeInd>Indices of the subsamples extracted for computing the estimate (the so called elemental sets).</TypeInd>
          <LongDesc> </LongDesc>
-         <Struct> </Struct>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
@@ -293,10 +219,10 @@
  been completely redesigned, with considerable increase of the&#xD;
  computational performance.&#xD;
 &#xD;
- </Acknowledgements>
+ 
+</Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory&#xD;
- and Methods, Wiley,New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory and Methods, Wiley,New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>Sreg</Item>
@@ -304,69 +230,70 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>MMreg with all default options.</Title>
-         <Desc>&#xD;
-     Run this code to see the output shown in the help file&#xD;</Desc>
+         <Desc>
+            <ItemCell>Run this code to see the output shown in the help file</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    p=3;&#xD;
-    randn('state', 123456);&#xD;
-    X=randn(n,p);&#xD;
-    % Uncontaminated data&#xD;
-    y=randn(n,1);&#xD;
-    % Contaminated data&#xD;
-    ycont=y;&#xD;
-    ycont(1:5)=ycont(1:5)+6;&#xD;
-    [out]=MMreg(ycont,X);&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>ycont=y;</ItemCell>
+            <ItemCell>ycont(1:5)=ycont(1:5)+6;</ItemCell>
+            <ItemCell>[out]=MMreg(ycont,X);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>MMreg with optional input arguments.</Title>
-         <Desc>&#xD;
-     MMreg using the hyperbolic rho function &#xD;
-     Run this code to see the output shown in the help file&#xD;</Desc>
+         <Desc>
+            <ItemCell>MMreg using the hyperbolic rho function Run this code to see the output shown in the help file</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    p=3;&#xD;
-    randn('state', 123456);&#xD;
-    X=randn(n,p);&#xD;
-    % Uncontaminated data&#xD;
-    y=randn(n,1);&#xD;
-    % Contaminated data&#xD;
-    ycont=y;&#xD;
-    ycont(1:5)=ycont(1:5)+6;&#xD;
-    [out]=MMreg(ycont,X,'Srhofunc','optimal');&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>ycont=y;</ItemCell>
+            <ItemCell>ycont(1:5)=ycont(1:5)+6;</ItemCell>
+            <ItemCell>[out]=MMreg(ycont,X,'Srhofunc','optimal');</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Comparing the output of different MMreg runs.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    state=100;&#xD;
-    randn('state', state);&#xD;
-    n=100;&#xD;
-    X=randn(n,3);&#xD;
-    bet=[3;4;5];&#xD;
-    y=3*randn(n,1)+X*bet;&#xD;
-    y(1:20)=y(1:20)+13;&#xD;
-&#xD;
-    %For outlier detection we consider both the nominal individual 1%&#xD;
-    %significance level and the simultaneous Bonferroni confidence level.&#xD;
-&#xD;
-    % Define nominal confidence level&#xD;
-    conflev=[0.99,1-0.01/length(y)];&#xD;
-    % Define number of subsets &#xD;
-    nsamp=3000;&#xD;
-    % Define the main title of the plots&#xD;
-    titl='';&#xD;
-&#xD;
-    % MM  estimators &#xD;
-    [outMM]=MMreg(y,X,'conflev',conflev(1));&#xD;
-    laby='Scaled MM residuals'; &#xD;
-    resindexplot(outMM.residuals,'title',titl,'laby',laby,'numlab','','conflev',conflev)&#xD;
-    % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level. &#xD;
-    % By simply changing the seed to 543 (state=543), using a Bonferroni size&#xD;
-    %of 1%, no unit is declared as outlier and just half of them using the 99%&#xD;
-    %band.&#xD;</MATLABcode>
+            <ItemCell>state=100;</ItemCell>
+            <ItemCell>randn('state', state);</ItemCell>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>X=randn(n,3);</ItemCell>
+            <ItemCell>bet=[3;4;5];</ItemCell>
+            <ItemCell>y=3*randn(n,1)+X*bet;</ItemCell>
+            <ItemCell>y(1:20)=y(1:20)+13;</ItemCell>
+            <ItemCell>%For outlier detection we consider both the nominal individual 1%</ItemCell>
+            <ItemCell>%significance level and the simultaneous Bonferroni confidence level.</ItemCell>
+            <ItemCell>% Define nominal confidence level</ItemCell>
+            <ItemCell>conflev=[0.99,1-0.01/length(y)];</ItemCell>
+            <ItemCell>% Define number of subsets</ItemCell>
+            <ItemCell>nsamp=3000;</ItemCell>
+            <ItemCell>% Define the main title of the plots</ItemCell>
+            <ItemCell>titl='';</ItemCell>
+            <ItemCell>% MM  estimators</ItemCell>
+            <ItemCell>[outMM]=MMreg(y,X,'conflev',conflev(1));</ItemCell>
+            <ItemCell>laby='Scaled MM residuals';</ItemCell>
+            <ItemCell>resindexplot(outMM.residuals,'title',titl,'laby',laby,'numlab','','conflev',conflev)</ItemCell>
+            <ItemCell>% In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level.</ItemCell>
+            <ItemCell>% By simply changing the seed to 543 (state=543), using a Bonferroni size</ItemCell>
+            <ItemCell>%of 1%, no unit is declared as outlier and just half of them using the 99%</ItemCell>
+            <ItemCell>%band.</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>

@@ -30,7 +30,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               information coming from n0 previous experiments.
 %
 %
-%               PRIOR INFORMATION
+%               PRIOR INFORMATION.
 %               $\beta$ is assumed to have a normal distribution with
 %               mean $\beta_0$ and (conditional on $\tau_0$) covariance
 %               $(1/\tau_0) (X_0'X_0)^{-1}$.
@@ -44,7 +44,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               intercept is included in the model)
 %
 %               The prior distribution of $\tau_0$ is a gamma distribution with
-%               parameters $a_0$ and $b_0$, that is
+%               parameters $a_0$ and $b_0$, that is:
 %
 %                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
 %                       \qquad   E(\tau_0)= a_0/b_0               \]

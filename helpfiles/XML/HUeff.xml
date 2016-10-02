@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HUeff</Title>
-   <Purpose><!--This is the second line of the .m file-->HUeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator</Purpose>
+   <Purpose><!--This is the second line of the .m file-->HUeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>eff</Name>
-         <ShortDesc>required efficienty</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which contains the required efficiency (of location&#xD;
-               or scale estimator).&#xD;
-               </LongDesc>
+         <ShortDesc>required efficienty.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which contains the required efficiency (of location or scale estimator).</LongDesc>
          <Example> </Example>
          <DataType>single|double&#xD;
                Generally eff=0.85, 0.9 or 0.95</DataType>
@@ -19,11 +18,9 @@
       </Item>
       <Item>
          <Name>v</Name>
-         <ShortDesc>Number of response variables</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>e.g. in regression v=1&#xD;
-               Now it is implemented just for v=1&#xD;
-               </LongDesc>
+         <ShortDesc>Number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>e.g. in regression v=1 Now it is implemented just for v=1</LongDesc>
          <Example> </Example>
          <DataType>single|double|int32|int64</DataType>
          <ReqArg>1</ReqArg>
@@ -33,13 +30,10 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>shapeeff</Name>
-         <ShortDesc>Location or shape efficiency</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, the efficiency is referred to shape else (default)&#xD;
-              is referred to location&#xD;
-               </LongDesc>
-         <Example> 'shapeeff',1&#xD;
-               </Example>
+         <ShortDesc>Location or shape efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, the efficiency is referred to shape else (default) is referred to location</LongDesc>
+         <Example>'shapeeff',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -47,18 +41,16 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>ceff</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Requested tuning constant.</TypeInd>
-         <LongDesc> Tuning constatnt of Tukey Biweigh rho&#xD;
-         function associated to requested value of efficiency</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Tuning constatnt of Tukey Biweigh rho function associated to requested value of efficiency</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
- and Methods, Wiley, New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>OPTeff</Item>
@@ -68,29 +60,30 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Find c in regression for 95 per cent efficiency.</Title>
-         <Desc>&#xD;
-     The constant c associated to a nominal location efficiency of 95% in regression is&#xD;
-     c = 1.344997508513144&#xD;</Desc>
+         <Desc>
+            <ItemCell>The constant c associated to a nominal location efficiency of 95% in regression is c = 1.344997508513144</ItemCell>
+         </Desc>
          <MATLABcode>
-    c=HUeff(0.95,1)&#xD;</MATLABcode>
+            <ItemCell>c=HUeff(0.95,1)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-    eff=[0.70:0.0001:0.9999];&#xD;
-    cc=[eff' zeros(length(eff),1)];&#xD;
-&#xD;
-    for i=1:length(eff)&#xD;
-        % Use exact formula for finding the value of c associated to a fixed&#xD;
-        % level of shape efficiency&#xD;
-        cc(i,2)=TBeff(eff(i),1);&#xD;
-    end&#xD;
-    figure&#xD;
-    plot(cc(:,1),cc(:,2),'LineStyle','-','LineWidth',2)&#xD;
-    xlabel('Effciency')&#xD;
-    ylabel('Value of c')&#xD;</MATLABcode>
+            <ItemCell>eff=[0.70:0.0001:0.9999];</ItemCell>
+            <ItemCell>cc=[eff' zeros(length(eff),1)];</ItemCell>
+            <ItemCell>for i=1:length(eff)</ItemCell>
+            <ItemCell>% Use exact formula for finding the value of c associated to a fixed</ItemCell>
+            <ItemCell>% level of shape efficiency</ItemCell>
+            <ItemCell>cc(i,2)=TBeff(eff(i),1);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>plot(cc(:,1),cc(:,2),'LineStyle','-','LineWidth',2)</ItemCell>
+            <ItemCell>xlabel('Effciency')</ItemCell>
+            <ItemCell>ylabel('Value of c')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->MixSim</Title>
-   <Purpose><!--This is the second line of the .m file-->MixSim generates k clusters in v dimensions with given overlap</Purpose>
+   <Purpose><!--This is the second line of the .m file-->MixSim generates k clusters in v dimensions with given overlap
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>k</Name>
-         <ShortDesc>number of groups (components)</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Desired number of groups.&#xD;
-               </LongDesc>
+         <ShortDesc>number of groups (components).</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Desired number of groups.</LongDesc>
          <Example> </Example>
          <DataType>int16|int32|int64|single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,10 +17,9 @@
       </Item>
       <Item>
          <Name>v</Name>
-         <ShortDesc>number of dimensions (variables)</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Desired number of variables.&#xD;
-               </LongDesc>
+         <ShortDesc>number of dimensions (variables).</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Desired number of variables.</LongDesc>
          <Example> </Example>
          <DataType>int16|int32|int64|single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -30,217 +29,143 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>BarOmega</Name>
-         <ShortDesc>Requested average overlap</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Value of desired average&#xD;
-               overlap. The default value is ''&#xD;
-               </LongDesc>
-         <Example> 'BarOmega',0.05 &#xD;
-               </Example>
+         <ShortDesc>Requested average overlap.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Value of desired average overlap. The default value is ''</LongDesc>
+         <Example>'BarOmega',0.05</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>MaxOmega</Name>
-         <ShortDesc>Requested maximum overlap</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Value of desired maximum&#xD;
-               overlap. If BarOmega is empty the default value of MaxOmega&#xD;
-               is 0.15.&#xD;
-               </LongDesc>
-         <Example> 'MaxOmega',0.05 &#xD;
-               </Example>
+         <ShortDesc>Requested maximum overlap.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Value of desired maximum overlap. If BarOmega is empty the default value of MaxOmega is 0.15.</LongDesc>
+         <Example>'MaxOmega',0.05</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>StdOmega</Name>
-         <ShortDesc>Requested std of overlap</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Value of desired standard&#xD;
-               deviation of overlap.&#xD;
-               Remark1 - The probability of overlapping between two&#xD;
-               clusters $i$ and $j$, ($i \ne j =1, 2, ..., k$), called&#xD;
-               $p_{ij}$, is defined as the sum of the two misclassification&#xD;
-               probabilities&#xD;
-               $p_ij=w_{j|i} + w_{i|j}$&#xD;
-               Remark2- it is possible to specify up to two values among&#xD;
-               BarOmega MaxOmega and StdOmega.&#xD;
-               </LongDesc>
-         <Example> 'StdOmega',0.05 &#xD;
-               </Example>
+         <ShortDesc>Requested std of overlap.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Value of desired standard deviation of overlap.
+Remark1 - The probability of overlapping between two clusters $i$ and $j$, ($i \ne j =1, 2, ..., k$), called $p_{ij}$, is defined as the sum of the two misclassification probabilities $p_ij=w_{j|i} + w_{i|j}$ Remark2- it is possible to specify up to two values among BarOmega MaxOmega and StdOmega.</LongDesc>
+         <Example>'StdOmega',0.05</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>sph</Name>
-         <ShortDesc>Spherical covariances</ShortDesc>
-         <TypeInd>Scalar boolean</TypeInd>
-         <LongDesc>Scalar boolean which specifies covariance matrix structure:&#xD;
-               sph=false (default) ==&amp;gt; non-spherical;&#xD;
-               sph=true            ==&amp;gt; spherical = const*I.&#xD;
-               </LongDesc>
-         <Example> 'sph',false &#xD;
-               </Example>
+         <ShortDesc>Spherical covariances.</ShortDesc>
+         <TypeInd>Scalar boolean.</TypeInd>
+         <LongDesc>Scalar boolean which specifies covariance matrix structure:
+sph=false (default) ==&amp;gt; non-spherical;
+sph=true ==&amp;gt; spherical = const*I.</LongDesc>
+         <Example>'sph',false</Example>
          <DataType>boolean</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>hom</Name>
-         <ShortDesc>Equal Sigmas</ShortDesc>
-         <TypeInd>Scalar boolean</TypeInd>
-         <LongDesc>Scalar boolean which specifies heterogeneous or homogeneous&#xD;
-               clusters.&#xD;
-               hom=false (default) ==&amp;gt; heterogeneous;&#xD;
-               hom=true            ==&amp;gt; homogeneous $\Sigma_1 = ... =&#xD;
-               \Sigma_k$&#xD;
-               </LongDesc>
-         <Example> 'hom',false &#xD;
-               </Example>
+         <ShortDesc>Equal Sigmas.</ShortDesc>
+         <TypeInd>Scalar boolean.</TypeInd>
+         <LongDesc>Scalar boolean which specifies heterogeneous or homogeneous clusters.
+hom=false (default) ==&amp;gt; heterogeneous;
+hom=true ==&amp;gt; homogeneous $\Sigma_1 = ... = \Sigma_k$</LongDesc>
+         <Example>'hom',false</Example>
          <DataType>boolean</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ecc</Name>
-         <ShortDesc>maximum eccentricity</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar in the interval (0, 1] which defines maximum eccentricity.&#xD;
-               For example, if ecc=0.9 (default value), we require for&#xD;
-               each group that sqrt(1 - minL / maxL) &amp;lt;= 0.9 where minL and&#xD;
-               maxL are respectively the min and max eigenvalue of the cov&#xD;
-               matrix of a particular group&#xD;
-               </LongDesc>
-         <Example> 'ecc',0.8 &#xD;
-               </Example>
+         <ShortDesc>maximum eccentricity.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar in the interval (0, 1] which defines maximum eccentricity.
+For example, if ecc=0.9 (default value), we require for each group that sqrt(1 - minL / maxL) &amp;lt;= 0.9 where minL and maxL are respectively the min and max eigenvalue of the cov matrix of a particular group</LongDesc>
+         <Example>'ecc',0.8</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>restrfactor</Name>
-         <ShortDesc>eigenvalue restriction factor</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar in the interval [1 \infty] which specifies the&#xD;
-               maximum ratio to allow between the largest eigenvalue and&#xD;
-               the smallest eigenvalue of the k covariance matrices which&#xD;
-               are generated. The default value is ''. More in details if for example&#xD;
-               restrfactor=10 after generating the covariance matrices we&#xD;
-               check that the ratio&#xD;
-               \[&#xD;
-                 \frac{   \max_{l=1, \ldots, v} \max_{j=1, \ldots, k}  \lambda_l(\hat \Sigma_j)}{   \min_{l=1, \ldots, v} \min_{j=1, \ldots, k}  \lambda_l(\hat \Sigma_j)}.&#xD;
-               \]&#xD;
-               between the largest eigenvalue of the k cov matrices&#xD;
-               and the smallest eigenvalue of the k cov matrices is not&#xD;
-               larger than restrfactor. In order to apply this restriction&#xD;
-               (which is typical of tclust.m) we call routine restreigen.m&#xD;
-               </LongDesc>
-         <Example> 'restrfactor',8 &#xD;
-               </Example>
+         <ShortDesc>eigenvalue restriction factor.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar in the interval [1 \infty] which specifies the maximum ratio to allow between the largest eigenvalue and the smallest eigenvalue of the k covariance matrices which are generated. The default value is ''. More in details if for example restrfactor=10 after generating the covariance matrices we check that the ratio
+\[
+\frac{ \max_{l=1, \ldots, v} \max_{j=1, \ldots, k} \lambda_l(\hat \Sigma_j)}{ \min_{l=1, \ldots, v} \min_{j=1, \ldots, k} \lambda_l(\hat \Sigma_j)}.
+\]
+between the largest eigenvalue of the k cov matrices and the smallest eigenvalue of the k cov matrices is not larger than restrfactor. In order to apply this restriction (which is typical of tclust.m) we call routine restreigen.m</LongDesc>
+         <Example>'restrfactor',8</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>PiLow</Name>
-         <ShortDesc>Smallest miximg proportion</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Value of the smallest mixing proportion (if 'PiLow'&#xD;
-               is not reachable with respect to k, equal proportions are&#xD;
-               taken; PiLow = 1.0 implies equal proportions by default).&#xD;
-               PiLow must be a number in the interval (0 1]. Default value&#xD;
-               0.&#xD;
-               </LongDesc>
-         <Example> 'PiLow',0.1 &#xD;
-               </Example>
+         <ShortDesc>Smallest miximg proportion.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Value of the smallest mixing proportion (if 'PiLow' is not reachable with respect to k, equal proportions are taken; PiLow = 1.0 implies equal proportions by default).
+PiLow must be a number in the interval (0 1]. Default value 0.</LongDesc>
+         <Example>'PiLow',0.1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>int</Name>
-         <ShortDesc>Simulation interval of mean vectors</ShortDesc>
-         <TypeInd>vector of length 2</TypeInd>
-         <LongDesc>Mean vectors are simulated uniformly on a hypercube with&#xD;
-               sides specified by int = [lower.bound, upper.bound].&#xD;
-               The default value of int is [0 1].&#xD;
-               </LongDesc>
-         <Example> 'int',[0 2] &#xD;
-               </Example>
+         <ShortDesc>Simulation interval of mean vectors.</ShortDesc>
+         <TypeInd>vector of length 2.</TypeInd>
+         <LongDesc>Mean vectors are simulated uniformly on a hypercube with sides specified by int = [lower.bound, upper.bound].
+The default value of int is [0 1].</LongDesc>
+         <Example>'int',[0 2]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>resN</Name>
-         <ShortDesc>number of simulations</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Maximum number of mixture resimulations to find a&#xD;
-               similation setting with prespecified level of overlapping.&#xD;
-               The default value of resN is 100&#xD;
-               </LongDesc>
-         <Example> 'resN',20 &#xD;
-               </Example>
+         <ShortDesc>number of simulations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Maximum number of mixture resimulations to find a similation setting with prespecified level of overlapping.
+The default value of resN is 100</LongDesc>
+         <Example>'resN',20</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>tol</Name>
-         <ShortDesc>Tolerances</ShortDesc>
-         <TypeInd>Vector of length 2</TypeInd>
-         <LongDesc>tol(1) (which will be called tolmap) specifies&#xD;
-               the tolerance between the requested and empirical&#xD;
-               misclassification probabilities (default is 1e-06)&#xD;
-               tol(2) (which will be called tolnxc2) specifies the&#xD;
-               tolerance to use in routine ncx2mixtcdf.m (which computes cdf&#xD;
-               of linear combinations of non central chi2 distributions).&#xD;
-               The default value of tol(2) 1e-06.&#xD;
-               </LongDesc>
-         <Example> 'tol',[1e-06 1e-08] &#xD;
-               </Example>
+         <ShortDesc>Tolerances.</ShortDesc>
+         <TypeInd>Vector of length 2.</TypeInd>
+         <LongDesc>tol(1) (which will be called tolmap) specifies the tolerance between the requested and empirical misclassification probabilities (default is 1e-06) tol(2) (which will be called tolnxc2) specifies the tolerance to use in routine ncx2mixtcdf.m (which computes cdf of linear combinations of non central chi2 distributions).
+The default value of tol(2) 1e-06.</LongDesc>
+         <Example>'tol',[1e-06 1e-08]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>lim</Name>
-         <ShortDesc>Precision in the calculation of probabilities of overlapping</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Maximum number of integration terms to use inside routine&#xD;
-               ncx2mixtcdf.m. Default is 1e06.&#xD;
-               REMARK - Optional parameters tolncx2=tol(2) and lim will be&#xD;
-               used by function ncx2mixtcdf.m which computes the cdf of a&#xD;
-               linear combination of non central chi2 r.v.. This is the&#xD;
-               probability of misclassification&#xD;
-               </LongDesc>
-         <Example> 'lim',1e6 &#xD;
-               </Example>
+         <ShortDesc>Precision in the calculation of probabilities of overlapping.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Maximum number of integration terms to use inside routine ncx2mixtcdf.m. Default is 1e06.
+REMARK - Optional parameters tolncx2=tol(2) and lim will be used by function ncx2mixtcdf.m which computes the cdf of a linear combination of non central chi2 r.v.. This is the probability of misclassification</LongDesc>
+         <Example>'lim',1e6</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>Display</Name>
-         <ShortDesc>Level of display</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>'off' displays no output;&#xD;
-               'notify' (default) displays output if requested&#xD;
-               overlap cannot be reached in a particular simulation&#xD;
-               'iter' displays output at each iteration of each&#xD;
-               simulation&#xD;
-               </LongDesc>
-         <Example> 'Display','off' &#xD;
-               </Example>
+         <ShortDesc>Level of display.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>'off' displays no output;
+'notify' (default) displays output if requested overlap cannot be reached in a particular simulation 'iter' displays output at each iteration of each simulation</LongDesc>
+         <Example>'Display','off'</Example>
          <DataType>character</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>R_seed</Name>
-         <ShortDesc>use random numbers from R</ShortDesc>
-         <TypeInd>scalar</TypeInd>
-         <LongDesc>If scalar &amp;gt; 0 for the seed to be used to generate random numbers&#xD;
-               in a R instance. This is used to check consistency of the&#xD;
-               results obtained with the R package MixSim. See file&#xD;
-               Connect_Matlab_with_R_HELP.m to know how to connect MATLAB&#xD;
-               with R.  This option requires the installation of the&#xD;
-               R-(D)COM Interface. Default is 0, i.e. random numbers are&#xD;
-               generated by matlab.&#xD;
-                      </LongDesc>
-         <Example> 'R_seed',0 &#xD;
-               </Example>
+         <ShortDesc>use random numbers from R.</ShortDesc>
+         <TypeInd>scalar.</TypeInd>
+         <LongDesc>If scalar &amp;gt; 0 for the seed to be used to generate random numbers in a R instance. This is used to check consistency of the results obtained with the R package MixSim. See file Connect_Matlab_with_R_HELP.m to know how to connect MATLAB with R. This option requires the installation of the R-(D)COM Interface. Default is 0, i.e. random numbers are generated by matlab.</LongDesc>
+         <Example>'R_seed',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -251,121 +176,71 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>Pi</Value>
-               <Description>vector of length k containing mixing proportions.&#xD;
-                       sum(out.Pi)=1</Description>
+               <Description>vector of length k containing mixing proportions.
+sum(out.Pi)=1</Description>
             </ItemCell>
             <ItemCell>
                <Value>Mu</Value>
-               <Description>k-by-v matrix consisting of components' mean vectors&#xD;
-                      Each row of this matrix is a centroid of a group</Description>
+               <Description>k-by-v matrix consisting of components' mean vectors Each row of this matrix is a centroid of a group</Description>
             </ItemCell>
             <ItemCell>
                <Value>S</Value>
-               <Description>v-by-v-by-k array containing covariances for the k&#xD;
-                      groups</Description>
+               <Description>v-by-v-by-k array containing covariances for the k groups</Description>
             </ItemCell>
             <ItemCell>
                <Value>OmegaMap</Value>
-               <Description>matrix of misclassification probabilities (k-by-k);&#xD;
-                      OmegaMap(i,j) = w_{j|i} is the probability that X&#xD;
-                      coming from the i-th component (group) is classified&#xD;
-                      to the j-th component.</Description>
+               <Description>matrix of misclassification probabilities (k-by-k);
+OmegaMap(i,j) = w_{j|i} is the probability that X coming from the i-th component (group) is classified to the j-th component.</Description>
             </ItemCell>
             <ItemCell>
                <Value>BarOmega</Value>
-               <Description>scalar. Value of average overlap.&#xD;
-                      BarOmega is computed as&#xD;
-                      (sum(sum(OmegaMap))-k)/(0.5*k(k-1))</Description>
+               <Description>scalar. Value of average overlap.
+BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))</Description>
             </ItemCell>
             <ItemCell>
                <Value>MaxOmega</Value>
-               <Description>scalar. Value of maximum overlap. MaxOmega is the&#xD;
-                       maximum of OmegaMap(i,j)+OmegaMap(j,i)&#xD;
-                       (i ~= j)=1, 2, ..., k. In other words MaxOmega=&#xD;
-                      OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))</Description>
+               <Description>scalar. Value of maximum overlap. MaxOmega is the maximum of OmegaMap(i,j)+OmegaMap(j,i) (i ~= j)=1, 2, ..., k. In other words MaxOmega= OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))</Description>
             </ItemCell>
             <ItemCell>
                <Value>StdOmega</Value>
-               <Description>scalar. Value of standard deviation (std) of overlap.&#xD;
-                      StdOmega is the standard deviation of k*(k-1)/2&#xD;
-                      probabilities of overlapping</Description>
+               <Description>scalar. Value of standard deviation (std) of overlap.
+StdOmega is the standard deviation of k*(k-1)/2 probabilities of overlapping</Description>
             </ItemCell>
             <ItemCell>
                <Value>rcMax</Value>
-               <Description>vector of length 2. It containes the row and column&#xD;
-                      numbers associated with  the pair of components&#xD;
-                      producing maximum overlap 'MaxOmega'</Description>
+               <Description>vector of length 2. It containes the row and column numbers associated with the pair of components producing maximum overlap 'MaxOmega'</Description>
             </ItemCell>
             <ItemCell>
                <Value>fail</Value>
-               <Description>scalar, flag value. 0 represents successful mixture&#xD;
-                      generation, 1 represents failure.</Description>
+               <Description>scalar, flag value. 0 represents successful mixture generation, 1 represents failure.</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
-  MixSim(k,v) generates k groups in v dimensions. It is possible to&#xD;
-  control the average and maximum or standard deviation of overlapping.&#xD;
-&#xD;
-  Given two generic clusters $i$ and $j$ with $i \ne j =1, ..., k$,&#xD;
-  indexed by $\phi(x; \mu_i,\Sigma_i)$ and $\phi(x; \mu_j,\Sigma_j)$ with&#xD;
-  probabilities of occurrence $\pi_i$ and $\pi_j$, the misclassification&#xD;
-  probability with respect to cluster $i$ (that is conditionally on $x$&#xD;
-  belonging to cluster $i$,  which is called  $w_{j|i}$) is defined as&#xD;
-  $Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) &amp;lt; \pi_j \phi(x;\mu_j,\Sigma_j)]$.&#xD;
-  The matrix containing the misclassification probabilities $w_{j|i}$ is&#xD;
-  called OmegaMap&#xD;
-  The probability of overlapping between groups $i$ and $j$ is given by:&#xD;
-  \[&#xD;
-            w_{j|i} + w_{i|j}    \qquad      i,j=1,2, ..., k&#xD;
-  \]&#xD;
-  The diagonal elements of OmegaMap are equal to 1.&#xD;
-  The average overlap (which in the code is called below BarOmega) is&#xD;
-  defined as the sum of the off diagonal elements of OmegaMap (matrix of&#xD;
-  misclassification probabilities) divided by 0.5*k*(k-1)&#xD;
-  The maximum overlap (which in the code is called MaxOmega) is defined as&#xD;
-  $\max(w_{j|i} + w_{i|j}$),  $i \ne j=1,2, ..., k$.&#xD;
-  The probability of misclassification $w_{j|i}$ is nothing but the cdf of a linear&#xD;
-  combination of non central $\chi^2$ distributions with 1 degree of freedom&#xD;
-  + a linear combination of $N(0,1)$ evaluated in a&#xD;
-  point c.  The coefficients of the linear combinations of non central&#xD;
-  $\chi^2$ and $N(0,1)$ depend on the eigenvalues and eigenvectors of matrix&#xD;
-  $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.&#xD;
-  Point $c$ depends on the same eigenvalues and eigenvectors&#xD;
-  of matrix $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the&#xD;
-  determinants $|\Sigma_i|$ and $|\Sigma_j|$.&#xD;
-  This probability is computed using routine ncx2mixtcdf.m&#xD;
-&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->MixSim(k,v) generates k groups in v dimensions. It is possible to control the average and maximum or standard deviation of overlapping.
+Given two generic clusters $i$ and $j$ with $i \ne j =1, ..., k$, indexed by $\phi(x; \mu_i,\Sigma_i)$ and $\phi(x; \mu_j,\Sigma_j)$ with probabilities of occurrence $\pi_i$ and $\pi_j$, the misclassification probability with respect to cluster $i$ (that is conditionally on $x$ belonging to cluster $i$, which is called $w_{j|i}$) is defined as $Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) &amp;lt; \pi_j \phi(x;\mu_j,\Sigma_j)]$.
+The matrix containing the misclassification probabilities $w_{j|i}$ is called OmegaMap The probability of overlapping between groups $i$ and $j$ is given by:
+\[
+w_{j|i} + w_{i|j} \qquad i,j=1,2, ..., k
+\]
+The diagonal elements of OmegaMap are equal to 1.
+The average overlap (which in the code is called below BarOmega) is defined as the sum of the off diagonal elements of OmegaMap (matrix of misclassification probabilities) divided by 0.5*k*(k-1) The maximum overlap (which in the code is called MaxOmega) is defined as $\max(w_{j|i} + w_{i|j}$), $i \ne j=1,2, ..., k$.
+The probability of misclassification $w_{j|i}$ is nothing but the cdf of a linear combination of non central $\chi^2$ distributions with 1 degree of freedom + a linear combination of $N(0,1)$ evaluated in a point c. The coefficients of the linear combinations of non central $\chi^2$ and $N(0,1)$ depend on the eigenvalues and eigenvectors of matrix $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.
+Point $c$ depends on the same eigenvalues and eigenvectors of matrix $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the determinants $|\Sigma_i|$ and $|\Sigma_j|$.
+This probability is computed using routine ncx2mixtcdf.m
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maitra, R. and Melnykov, V. (2010). Simulating data to study performance&#xD;
-   of finite mixture modeling and clustering algorithms, The Journal of&#xD;
-   Computational and Graphical Statistics, 2:19, 354-376. (to refer to&#xD;
-   this publication we will use "MM2010 JCGS")</Item>
-      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package&#xD;
-   for Simulating Data to Study Performance of Clustering Algorithms,&#xD;
-   Journal of Statistical Software, 51:12, 1-25.</Item>
-      <Item>Davies, R. (1980) The distribution of a linear combination of&#xD;
-   chi-square random variables, Applied Statistics, 29, 323-333.</Item>
-      <Item>Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008),&#xD;
-   A General Trimming Approach to Robust Cluster Analysis. Annals&#xD;
-   of Statistics, Vol.36, 1324-1345. Technical Report available at&#xD;
-   http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf .&#xD;
-&#xD;
-   References below document the problem of the ill-conditioning of the&#xD;
-   eigenvalue-eigenvector computation.</Item>
-      <Item>B. N. Parlett,  C. Reinsch (1969). Balancing a matrix for calculation&#xD;
-   of eigenvalues and eigenvectors. Numerische Mathematik, 19.  Volume 13,&#xD;
-   Issue 4, pp 293-304</Item>
-      <Item>Parlett, B. N. and C. Reinsch (1971). Balancing a Matrix for Calculation of&#xD;
-  Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear&#xD;
-  Algebra, pp. 315-326.</Item>
+      <Item>Maitra, R. and Melnykov, V. (2010). Simulating data to study performance of finite mixture modeling and clustering algorithms, The Journal of Computational and Graphical Statistics, 2:19, 354-376. (to refer to this publication we will use "MM2010 JCGS")</Item>
+      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package for Simulating Data to Study Performance of Clustering Algorithms, Journal of Statistical Software, 51:12, 1-25.</Item>
+      <Item>Davies, R. (1980) The distribution of a linear combination of chi-square random variables, Applied Statistics, 29, 323-333.</Item>
+      <Item>Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008), A General Trimming Approach to Robust Cluster Analysis. Annals of Statistics, Vol.36, 1324-1345. Technical Report available at http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf .
+References below document the problem of the ill-conditioning of the eigenvalue-eigenvector computation.</Item>
+      <Item>B. N. Parlett, C. Reinsch (1969). Balancing a matrix for calculation of eigenvalues and eigenvectors. Numerische Mathematik, 19. Volume 13, Issue 4, pp 293-304</Item>
+      <Item>Parlett, B. N. and C. Reinsch (1971). Balancing a Matrix for Calculation of Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear Algebra, pp. 315-326.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>tkmeans</Item>
@@ -379,111 +254,108 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Generate 3 groups in 4 dimensions.</Title>
-         <Desc>&#xD;
-     Use a maximum overlap equal to 0.15.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Use a maximum overlap equal to 0.15.</ItemCell>
+         </Desc>
          <MATLABcode>
-    rng(10,'twister')&#xD;
-    out=MixSim(3,4)&#xD;
-    n=200;&#xD;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);&#xD;
-    spmplot(X,id)&#xD;</MATLABcode>
+            <ItemCell>rng(10,'twister')</ItemCell>
+            <ItemCell>out=MixSim(3,4)</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>[X,id]=simdataset(n, out.Pi, out.Mu, out.S);</ItemCell>
+            <ItemCell>spmplot(X,id)</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</Title>
-         <Desc>&#xD;
-     Use average overlap of 0.05 and&#xD;
-     maximum overlap equal to 0.15.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Use average overlap of 0.05 and maximum overlap equal to 0.15.</ItemCell>
+         </Desc>
          <MATLABcode>
-    k=4;&#xD;
-    v=5;&#xD;
-    BarOmega=0.05;&#xD;
-    out=MixSim(4,5,'BarOmega',BarOmega, 'MaxOmega',0.15)&#xD;
-&#xD;
-	% Check a posteriori the average overlap&#xD;
-    disp('Posterior average overlap')&#xD;
-    disp((sum(sum(out.OmegaMap))-k)/(0.5*k*(k-1)))&#xD;
-    &#xD;
-    % Check a posteriori the maximum overlap&#xD;
-    % Extract elements above the diagonal and sum them with the transpose&#xD;
-    % of the elements below the diagonal. The maximum of all these numbers&#xD;
-    % must be very close to the required maximum overlap&#xD;
-    cand=triu(out.OmegaMap,1)+(tril(out.OmegaMap,-1))'&#xD;
-    disp('Posterior average overlap')&#xD;
-    max(cand(:))&#xD;</MATLABcode>
+            <ItemCell>k=4;</ItemCell>
+            <ItemCell>v=5;</ItemCell>
+            <ItemCell>BarOmega=0.05;</ItemCell>
+            <ItemCell>out=MixSim(4,5,'BarOmega',BarOmega, 'MaxOmega',0.15)</ItemCell>
+            <ItemCell>% Check a posteriori the average overlap</ItemCell>
+            <ItemCell>disp('Posterior average overlap')</ItemCell>
+            <ItemCell>disp((sum(sum(out.OmegaMap))-k)/(0.5*k*(k-1)))</ItemCell>
+            <ItemCell/>
+            <ItemCell>% Check a posteriori the maximum overlap</ItemCell>
+            <ItemCell>% Extract elements above the diagonal and sum them with the transpose</ItemCell>
+            <ItemCell>% of the elements below the diagonal. The maximum of all these numbers</ItemCell>
+            <ItemCell>% must be very close to the required maximum overlap</ItemCell>
+            <ItemCell>cand=triu(out.OmegaMap,1)+(tril(out.OmegaMap,-1))'</ItemCell>
+            <ItemCell>disp('Posterior average overlap')</ItemCell>
+            <ItemCell>max(cand(:))</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Example of use of optional input option restrfactor.</Title>
-         <Desc> In the first case&#xD;
-     restrfactor is 1.1 and the clusters are roughly homogeneous. In the&#xD;
-     second case no constraint is imposed on the ratio of maximum and&#xD;
-     minimum eigevalue among clusters so elliptical shape clusters are&#xD;
-     allowed. In both cases the same random seed together with the same level&#xD;
-     of average and maximum overlapping is used&#xD;</Desc>
+         <Desc>
+            <ItemCell>In the first case restrfactor is 1.1 and the clusters are roughly homogeneous. In the second case no constraint is imposed on the ratio of maximum and minimum eigevalue among clusters so elliptical shape clusters are allowed. In both cases the same random seed together with the same level of average and maximum overlapping is used</ItemCell>
+         </Desc>
          <MATLABcode>
-    state1=2;&#xD;
-    randn('state', state1);&#xD;
-    rand('state', state1);&#xD;
-    out=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2, 'restrfactor',1.1);&#xD;
-    state1=2;&#xD;
-    randn('state', state1);&#xD;
-    rand('state', state1);&#xD;
-    out1=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2);&#xD;
-&#xD;
-    n=200;&#xD;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);&#xD;
-    spmplot(X,id,[],'box');&#xD;
-    set(gcf,'Name','restrfactor=1.1: almost homogeneous groups')&#xD;
-    title('\texttt{restrfactor=1.1}: almost homogeneous groups','fontsize',17,'interpreter','latex');&#xD;
-&#xD;
-    [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);&#xD;
-    figure;&#xD;
-    spmplot(X1,id1,[],'box')&#xD;
-    set(gcf,'Name','Heterogeneous groups')&#xD;
-    title('\texttt{restrfactor=`''}: heterogeneous groups','fontsize',17,'interpreter','latex')&#xD;
-    cascade&#xD;</MATLABcode>
+            <ItemCell>state1=2;</ItemCell>
+            <ItemCell>randn('state', state1);</ItemCell>
+            <ItemCell>rand('state', state1);</ItemCell>
+            <ItemCell>out=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2, 'restrfactor',1.1);</ItemCell>
+            <ItemCell>state1=2;</ItemCell>
+            <ItemCell>randn('state', state1);</ItemCell>
+            <ItemCell>rand('state', state1);</ItemCell>
+            <ItemCell>out1=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2);</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>[X,id]=simdataset(n, out.Pi, out.Mu, out.S);</ItemCell>
+            <ItemCell>spmplot(X,id,[],'box');</ItemCell>
+            <ItemCell>set(gcf,'Name','restrfactor=1.1: almost homogeneous groups')</ItemCell>
+            <ItemCell>title('\texttt{restrfactor=1.1}: almost homogeneous groups','fontsize',17,'interpreter','latex');</ItemCell>
+            <ItemCell>[X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>spmplot(X1,id1,[],'box')</ItemCell>
+            <ItemCell>set(gcf,'Name','Heterogeneous groups')</ItemCell>
+            <ItemCell>title('\texttt{restrfactor=`''}: heterogeneous groups','fontsize',17,'interpreter','latex')</ItemCell>
+            <ItemCell>cascade</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Control of average and standard deviation of overlap.</Title>
-         <Desc> Given an&#xD;
-     average value of overlap, we explore the differences between imposing a&#xD;
-     small or a large value of standard deviation of overlap.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Given an average value of overlap, we explore the differences between imposing a small or a large value of standard deviation of overlap.</ItemCell>
+         </Desc>
          <MATLABcode>
-    clc&#xD;
-    close all&#xD;
-    rng(10,'twister')&#xD;
-    k=4;&#xD;
-    v=5;&#xD;
-    n=200;&#xD;
-    BarOmega=0.10;&#xD;
-    StdOmega=0.15;&#xD;
-    out=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega,'resN',10, 'Display', 'iter');&#xD;
-    [X,id]=simdataset(n, out.Pi, out.Mu, out.S);&#xD;
-&#xD;
-    rng(10,'twister')&#xD;
-    StdOmega1=0.05;&#xD;
-    out1=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega1,'resN',10, 'Display', 'iter');&#xD;
-    [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);&#xD;
-    disp('Comparison using OmegaMap')&#xD;
-    disp('When StdOmega is large in this example groups 3 are 4 do show a strong overlap')&#xD;
-    disp('When StdOmega is large in this example groups 1, 2, 3 are quite separate')&#xD;
-    disp(out.OmegaMap)&#xD;
-    disp('When StdOmega is small the probabilities of overlapping are much more similar')&#xD;
-    disp(out1.OmegaMap)&#xD;
-&#xD;
-    disp('Comparison using interactive scatter plot matrices')&#xD;
-    spmplot(X,id,[],'box');&#xD;
-    set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])&#xD;
-    title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])&#xD;
-    figure&#xD;
-    spmplot(X1,id1,[],'box');&#xD;
-    set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])&#xD;
-    title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])&#xD;
-    cascade&#xD;</MATLABcode>
+            <ItemCell>clc</ItemCell>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>rng(10,'twister')</ItemCell>
+            <ItemCell>k=4;</ItemCell>
+            <ItemCell>v=5;</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>BarOmega=0.10;</ItemCell>
+            <ItemCell>StdOmega=0.15;</ItemCell>
+            <ItemCell>out=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega,'resN',10, 'Display', 'iter');</ItemCell>
+            <ItemCell>[X,id]=simdataset(n, out.Pi, out.Mu, out.S);</ItemCell>
+            <ItemCell>rng(10,'twister')</ItemCell>
+            <ItemCell>StdOmega1=0.05;</ItemCell>
+            <ItemCell>out1=MixSim(k,v,'BarOmega',BarOmega, 'StdOmega',StdOmega1,'resN',10, 'Display', 'iter');</ItemCell>
+            <ItemCell>[X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);</ItemCell>
+            <ItemCell>disp('Comparison using OmegaMap')</ItemCell>
+            <ItemCell>disp('When StdOmega is large in this example groups 3 are 4 do show a strong overlap')</ItemCell>
+            <ItemCell>disp('When StdOmega is large in this example groups 1, 2, 3 are quite separate')</ItemCell>
+            <ItemCell>disp(out.OmegaMap)</ItemCell>
+            <ItemCell>disp('When StdOmega is small the probabilities of overlapping are much more similar')</ItemCell>
+            <ItemCell>disp(out1.OmegaMap)</ItemCell>
+            <ItemCell>disp('Comparison using interactive scatter plot matrices')</ItemCell>
+            <ItemCell>spmplot(X,id,[],'box');</ItemCell>
+            <ItemCell>set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])</ItemCell>
+            <ItemCell>title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])</ItemCell>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>spmplot(X1,id1,[],'box');</ItemCell>
+            <ItemCell>set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])</ItemCell>
+            <ItemCell>title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])</ItemCell>
+            <ItemCell>cascade</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

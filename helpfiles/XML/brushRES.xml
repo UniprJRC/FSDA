@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->brushRES</Title>
-   <Purpose><!--This is the second line of the .m file-->brushRES displays a GUI which enables brushing in resfwdplot</Purpose>
-   <Description><!--Description section-->brushRES displays a GUI where it is possible to brush steps from the monitoring residuals plot&#xD;
- and to see the corresponding units highlighted in other plots</Description>
+   <Purpose><!--This is the second line of the .m file-->brushRES displays a GUI which enables brushing in resfwdplot
+</Purpose>
+   <Description><!--Description section-->brushRES displays a GUI where it is possible to brush steps from the monitoring residuals plot and to see the corresponding units highlighted in other plots
+</Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>eventdata</Name>
-         <ShortDesc>scalar integer (from 1 to 6)</ShortDesc>
-         <TypeInd>Automatic code execution&#xD;
-              without user interaction</TypeInd>
-         <LongDesc>This option enables to perform in&#xD;
-              an automatic way the code associated with a particular&#xD;
-              radiobutton in the GUI &#xD;
-              </LongDesc>
+         <ShortDesc>scalar integer (from 1 to 6).</ShortDesc>
+         <TypeInd>Automatic code execution without user interaction.</TypeInd>
+         <LongDesc>This option enables to perform in an automatic way the code associated with a particular radiobutton in the GUI</LongDesc>
          <Example>&lt;code&gt;2 (the example associated&#xD;
 &lt;/code&gt;              with the second radiobutton will be automatically executed)</Example>
          <DataType>integer</DataType>
@@ -34,31 +31,31 @@
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
-     Display a GUI where it is possible to brush steps from the monitoring&#xD;
-     residuals plot and to see the corresponding units highlighted in&#xD;
-     other plots.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt; Display a GUI where it is possible to brush steps from the monitoring residuals plot and to see the corresponding units highlighted in other plots.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-    brushRES&#xD;</MATLABcode>
+            <ItemCell>brushRES</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Run examples associated with radiobuttons 1 to 6.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    for j=1:6&#xD;
-        brushRES(j);&#xD;
-    end&#xD;</MATLABcode>
+            <ItemCell>for j=1:6</ItemCell>
+            <ItemCell>brushRES(j);</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Run the example associated with radiobutton 2.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    brushRES(2);&#xD;</MATLABcode>
+            <ItemCell>brushRES(2);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

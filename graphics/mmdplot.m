@@ -17,6 +17,7 @@ function mmdplot(out,varargin)
 %               (necessary if datatooltip is true or databrush is not empty)
 %       out.Y   =   the original n x v data matrix (necessary only if
 %               option databrush is not empty)
+%                Data Types - single|double
 %
 %
 % Optional input arguments:

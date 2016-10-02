@@ -29,6 +29,8 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
 %  Jacobian :   Requested Jacobian of transformed values. true (default) or
 %               false. If true (default) the transformation is normalized
 %               to have Jacobian equal to 1
+%                 Example - 'Jacobian',true
+%                 Data Types - Logical
 %
 % Output:
 %

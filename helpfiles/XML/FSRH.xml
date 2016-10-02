@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSRH</Title>
-   <Purpose><!--This is the second line of the .m file-->FSRH gives an automatic outlier detection procedure in heteroskedastic linear regression</Purpose>
+   <Purpose><!--This is the second line of the .m file-->FSRH gives an automatic outlier detection procedure in heteroskedastic linear regression
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>Response variable</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Response variable, specified as&#xD;
-               a vector of length n, where n is the number of&#xD;
-               observations. Each entry in y is the response for the&#xD;
-               corresponding row of X.&#xD;
-               Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations.</LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Response variable, specified as a vector of length n, where n is the number of observations. Each entry in y is the response for the corresponding row of X.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -23,18 +18,10 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Predictor variables in the regression equation</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>Matrix of explanatory variables (also called 'regressors')&#xD;
-               of dimension n x (p-1) where p denotes the number of&#xD;
-               explanatory variables including the intercept.&#xD;
-               Rows of X represent observations, and columns represent&#xD;
-               variables. By default, there is a constant term in the&#xD;
-               model, unless you explicitly remove it using input option&#xD;
-               intercept, so do not include a column of 1s in X. Missing&#xD;
-               values (NaN's) and infinite values (Inf's) are allowed,&#xD;
-               since observations (rows) with missing or infinite values&#xD;
-               will automatically be excluded from the computations.</LongDesc>
+         <ShortDesc>Predictor variables in the regression equation.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n x (p-1) where p denotes the number of explanatory variables including the intercept.
+Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -42,27 +29,20 @@
       </Item>
       <Item>
          <Name>Z</Name>
-         <ShortDesc>Predictor variables in the scedastic equation</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>n x r matrix or vector of length r.&#xD;
-               If Z is a n x r matrix it contains the r variables which&#xD;
-               form the scedastic function as follows (if input option art==1)&#xD;
-               \[&#xD;
-               \omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))&#xD;
-               \]&#xD;
-               If Z is a vector of length r it contains the indexes of the&#xD;
-               columns of matrix X which form the scedastic function as&#xD;
-               follows&#xD;
-               \[&#xD;
-               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+&#xD;
-               \gamma_{r} X(i,Z(r)))&#xD;
-               \]&#xD;
-               Therefore, if for example the explanatory variables&#xD;
-               responsible for heteroscedasticity are columns 3 and 5&#xD;
-               of matrix X, it is possible to use both the sintax:&#xD;
-                    FSRH(y,X,X(:,[3 5]))&#xD;
-               or the sintax:&#xD;
-                    FSRH(y,X,[3 5])</LongDesc>
+         <ShortDesc>Predictor variables in the scedastic equation.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x r matrix or vector of length r.
+If Z is a n x r matrix it contains the r variables which form the scedastic function as follows (if input option art==1)
+\[
+\omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+\]
+If Z is a vector of length r it contains the indexes of the columns of matrix X which form the scedastic function as follows
+\[
+\omega_i = 1 + exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+ \gamma_{r} X(i,Z(r)))
+\]
+Therefore, if for example the explanatory variables responsible for heteroscedasticity are columns 3 and 5 of matrix X, it is possible to use both the sintax:
+FSRH(y,X,X(:,[3 5])) or the sintax:
+FSRH(y,X,[3 5])</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -72,105 +52,59 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default),&#xD;
-                   if 0, no constant term will be included.&#xD;
-                   </LongDesc>
-         <Example> 'intercept',1 &#xD;
-                   </Example>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>modeltype</Name>
-         <ShortDesc>Parametric function to be used in the skedastic equation</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>If modeltype is 'arc' (default) than the skedastic function is&#xD;
-               modelled as follows&#xD;
-               \[&#xD;
-               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +&#xD;
-                           \cdots + \gamma_{r} Z(i,r)))&#xD;
-               \]&#xD;
-               on the other hand, if modeltype is 'har' then traditional&#xD;
-               formulation due to Harvey is used as follows&#xD;
-               \[&#xD;
-               \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +&#xD;
-                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1&#xD;
-                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))&#xD;
-               \]&#xD;
-               </LongDesc>
-         <Example> 'modeltype','har' &#xD;
-               </Example>
+         <ShortDesc>Parametric function to be used in the skedastic equation.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>If modeltype is 'arc' (default) than the skedastic function is modelled as follows
+\[
+\sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r)))
+\]
+on the other hand, if modeltype is 'har' then traditional formulation due to Harvey is used as follows
+\[
+\sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r))
+\]</LongDesc>
+         <Example>'modeltype','har'</Example>
          <DataType>string</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>h</Name>
-         <ShortDesc>The number of observations that have determined the least&#xD;
-                 trimmed squares estimator</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>h is an integer greater or&#xD;
-                 equal than p but smaller then n. Generally if the purpose&#xD;
-                 is outlier detection h=[0.5*(n+p+1)] (default value). h&#xD;
-                 can be smaller than this threshold if the purpose is to find&#xD;
-                 subgroups of homogeneous observations.&#xD;
-                 </LongDesc>
-         <Example> 'h',round(n*0,75) &#xD;
-                 </Example>
+         <ShortDesc>The number of observations that have determined the least trimmed squares estimator.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>h is an integer greater or equal than p but smaller then n. Generally if the purpose is outlier detection h=[0.5*(n+p+1)] (default value). h can be smaller than this threshold if the purpose is to find subgroups of homogeneous observations.</LongDesc>
+         <Example>'h',round(n*0,75)</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nsamp</Name>
-         <ShortDesc>Number of subsamples which will be extracted to find the&#xD;
-                 robust estimator</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nsamp=0 all subsets will be extracted.&#xD;
-                 They will be (n choose p).&#xD;
-                 %                 Remark: if the number of all possible subset is &amp;lt;1000 the&#xD;
-                 default is to extract all subsets otherwise just 1000.&#xD;
-</LongDesc>
-         <Example> 'nsamp',1000 &#xD;
-                 </Example>
+         <ShortDesc>Number of subsamples which will be extracted to find the robust estimator.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be extracted.
+They will be (n choose p).
+% Remark: if the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
+         <Example>'nsamp',1000</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>lms</Name>
-         <ShortDesc>Criterion to use to find the initlal&#xD;
-                 subset to initialize the search</ShortDesc>
-         <TypeInd>Scalar,  vector or structure</TypeInd>
-         <LongDesc>lms specifies the criterion to use to find the initlal&#xD;
-                 subset to initialize the search (LMS, LTS with&#xD;
-                 concentration steps, LTS without concentration steps&#xD;
-                 or subset supplied directly by the user).&#xD;
-                 The default value is 1 (Least Median of Squares&#xD;
-                 is computed to initialize the search). On the other hand,&#xD;
-                 if the user wants to initialze the search with LTS with&#xD;
-                 all the default options for concentration steps then&#xD;
-                 lms=2. If the user wants to use LTS without&#xD;
-                 concentration steps, lms can be a scalar different from 1&#xD;
-                 or 2. If lms is a struct it is possible to control a&#xD;
-                 series of options for concentration steps (for more&#xD;
-                 details see option lms inside LXS.m)&#xD;
-                 LXS.m. &#xD;
-                 If, on the other hand, the user wants to initialize the&#xD;
-                 search with a prespecified set of units there are two&#xD;
-                 possibilities: &#xD;
-                 1) lms can be a vector with length greater than 1 which &#xD;
-                 contains the list of units forming the initial subset. For&#xD;
-                 example, if the user wants to initialize the search&#xD;
-                 with units 4, 6 and 10 then lms=[4 6 10]. &#xD;
-                 2) lms is a struct which contains a field named bsb which&#xD;
-                 contains the list of units to initialize the search. For&#xD;
-                 example, in the case of simple regression through the&#xD;
-                 origin with just one explanatory variable, if the user&#xD;
-                 wants to initialize the search with unit 3 then&#xD;
-                 lms=struct; lms.bsb=3. &#xD;
-                 </LongDesc>
-         <Example> 'lms',1 &#xD;
-                 </Example>
+         <ShortDesc>Criterion to use to find the initlal subset to initialize the search.</ShortDesc>
+         <TypeInd>Scalar, vector or structure.</TypeInd>
+         <LongDesc>lms specifies the criterion to use to find the initlal subset to initialize the search (LMS, LTS with concentration steps, LTS without concentration steps or subset supplied directly by the user).
+The default value is 1 (Least Median of Squares is computed to initialize the search). On the other hand, if the user wants to initialze the search with LTS with all the default options for concentration steps then lms=2. If the user wants to use LTS without concentration steps, lms can be a scalar different from 1 or 2. If lms is a struct it is possible to control a series of options for concentration steps (for more details see option lms inside LXS.m) LXS.m.
+If, on the other hand, the user wants to initialize the search with a prespecified set of units there are two possibilities:
+1) lms can be a vector with length greater than 1 which contains the list of units forming the initial subset. For example, if the user wants to initialize the search with units 4, 6 and 10 then lms=[4 6 10].
+2) lms is a struct which contains a field named bsb which contains the list of units to initialize the search. For example, in the case of simple regression through the origin with just one explanatory variable, if the user wants to initialize the search with unit 3 then lms=struct; lms.bsb=3.</LongDesc>
+         <Example>'lms',1</Example>
          <DataType>double</DataType>
          <Struct>
             <ItemCell>
@@ -181,235 +115,142 @@
       </Item>
       <Item>
          <Name>plots</Name>
-         <ShortDesc>Plot on the screen</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If plots=1 (default) the plot of minimum deletion&#xD;
-                 residual with envelopes based on n observations and the&#xD;
-                 scatterplot matrix with the outliers highlighted is&#xD;
-                 produced.&#xD;
-                 If plots=2 the user can also monitor the intermediate&#xD;
-                 plots based on envelope superimposition.&#xD;
-                 else no plot is produced.&#xD;
-                 </LongDesc>
-         <Example> 'plots',1 &#xD;
-                 </Example>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots=1 (default) the plot of minimum deletion residual with envelopes based on n observations and the scatterplot matrix with the outliers highlighted is produced.
+If plots=2 the user can also monitor the intermediate plots based on envelope superimposition.
+else no plot is produced.</LongDesc>
+         <Example>'plots',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>init</Name>
-         <ShortDesc>Search initialization</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>It specifies the initial subset size to start&#xD;
-                 monitoring exceedances of minimum deletion residual, if&#xD;
-                 init is not specified it set equal to:&#xD;
-                   p+1, if the sample size is smaller than 40;&#xD;
-                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
-               </LongDesc>
-         <Example> 'init',100 starts monitoring from step m=100 &#xD;
-               </Example>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies the initial subset size to start monitoring exceedances of minimum deletion residual, if init is not specified it set equal to:
+p+1, if the sample size is smaller than 40;
+min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>gridsearch</Name>
-         <ShortDesc>Algorithm to be used</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If gridsearch ==1 grid search will be used else (default) the&#xD;
-               scoring algorith will be used.&#xD;
-               </LongDesc>
-         <Example> 'gridsearch',1 &#xD;
-               </Example>
+         <ShortDesc>Algorithm to be used.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If gridsearch ==1 grid search will be used else (default) the scoring algorith will be used.</LongDesc>
+         <Example>'gridsearch',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Check input arguments</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
-                 matrix y and matrix X. Notice that y and X are left&#xD;
-                 unchanged. In other words the additional column of ones&#xD;
-                 for the intercept is not added. As default nocheck=0.&#xD;
-               </LongDesc>
-         <Example> 'nocheck',1 &#xD;
-               </Example>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bivarfit</Name>
-         <ShortDesc>Superimpose bivariate least square lines</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>This option adds one or more least square lines, based on&#xD;
-                 SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.&#xD;
-                 bivarfit = ''&#xD;
-                   is the default: no line is fitted.&#xD;
-                 bivarfit = '1'&#xD;
-                   fits a single ols line to all points of each bivariate&#xD;
-                   plot in the scatter matrix y|X.&#xD;
-                 bivarfit = '2'&#xD;
-                   fits two ols lines: one to all points and another to&#xD;
-                   the group of the genuine observations. The group of the&#xD;
-                   potential outliers is not fitted.&#xD;
-                 bivarfit = '0'&#xD;
-                   fits one ols line to each group. This is useful for the&#xD;
-                   purpose of fitting mixtures of regression lines.&#xD;
-                 bivarfit = 'i1' or 'i2' or 'i3' etc.&#xD;
-                   fits an ols line to a specific group, the one with&#xD;
-                   index 'i' equal to 1, 2, 3 etc. Again, useful in case&#xD;
-                   of mixtures.&#xD;
-               </LongDesc>
-         <Example> 'bivarfit',2 &#xD;
-               </Example>
+         <ShortDesc>Superimpose bivariate least square lines.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>This option adds one or more least square lines, based on SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
+bivarfit = '' is the default: no line is fitted.
+bivarfit = '1' fits a single ols line to all points of each bivariate plot in the scatter matrix y|X.
+bivarfit = '2' fits two ols lines: one to all points and another to the group of the genuine observations. The group of the potential outliers is not fitted.
+bivarfit = '0' fits one ols line to each group. This is useful for the purpose of fitting mixtures of regression lines.
+bivarfit = 'i1' or 'i2' or 'i3' etc.
+fits an ols line to a specific group, the one with index 'i' equal to 1, 2, 3 etc. Again, useful in case of mixtures.</LongDesc>
+         <Example>'bivarfit',2</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>multivarfit</Name>
-         <ShortDesc>Superimpose multivariate least square lines</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>This option adds one or more least square lines, based on&#xD;
-                 MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.&#xD;
-                 multivarfit = ''&#xD;
-                   is the default: no line is fitted.&#xD;
-                 multivarfit = '1'&#xD;
-                   fits a single ols line to all points of each bivariate&#xD;
-                   plot in the scatter matrix y|X. The line added to the&#xD;
-                   scatter plot y|Xi is avconst + Ci*Xi, where Ci is the&#xD;
-                   coefficient of Xi in the multivariate regression and&#xD;
-                   avconst is the effect of all the other explanatory&#xD;
-                   variables different from Xi evaluated at their centroid&#xD;
-                   (that is overline{y}'C))&#xD;
-                 multivarfit = '2'&#xD;
-                   equal to multivarfit ='1' but this time we also add the&#xD;
-                   line based on the group of unselected observations&#xD;
-                   (i.e. the normal units).&#xD;
-               </LongDesc>
-         <Example> 'multivarfit','1' &#xD;
-               </Example>
+         <ShortDesc>Superimpose multivariate least square lines.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>This option adds one or more least square lines, based on MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
+multivarfit = '' is the default: no line is fitted.
+multivarfit = '1' fits a single ols line to all points of each bivariate plot in the scatter matrix y|X. The line added to the scatter plot y|Xi is avconst + Ci*Xi, where Ci is the coefficient of Xi in the multivariate regression and avconst is the effect of all the other explanatory variables different from Xi evaluated at their centroid (that is overline{y}'C)) multivarfit = '2' equal to multivarfit ='1' but this time we also add the line based on the group of unselected observations (i.e. the normal units).</LongDesc>
+         <Example>'multivarfit','1'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>labeladd</Name>
-         <ShortDesc>Add outlier labels in plot</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>If this option is '1',  we label the outliers with the&#xD;
-                 unit row index in matrices X and y. The default value is&#xD;
-                 labeladd='', i.e. no label is added.&#xD;
-               </LongDesc>
-         <Example> 'labeladd','1' &#xD;
-               </Example>
+         <ShortDesc>Add outlier labels in plot.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>If this option is '1', we label the outliers with the unit row index in matrices X and y. The default value is labeladd='', i.e. no label is added.</LongDesc>
+         <Example>'labeladd','1'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nameX</Name>
-         <ShortDesc>Add variable labels in plot</ShortDesc>
-         <TypeInd>Cell array of strings</TypeInd>
-         <LongDesc>labels of the variables of the regression dataset. If it is empty&#xD;
-                 (default) the sequence X1, ..., Xp will be created&#xD;
-                 automatically&#xD;
-               </LongDesc>
-         <Example> 'nameX',{'NameVar1','NameVar2'} &#xD;
-               </Example>
+         <ShortDesc>Add variable labels in plot.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>labels of the variables of the regression dataset. If it is empty (default) the sequence X1, ..., Xp will be created automatically</LongDesc>
+         <Example>'nameX',{'NameVar1','NameVar2'}</Example>
          <DataType>cell</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>namey</Name>
-         <ShortDesc>Add response label</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>label of the response&#xD;
-               </LongDesc>
-         <Example> 'namey','NameOfResponse' &#xD;
-               </Example>
+         <ShortDesc>Add response label.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>label of the response</LongDesc>
+         <Example>'namey','NameOfResponse'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ylim</Name>
-         <ShortDesc>Control y scale in plot</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>minimum and maximum&#xD;
-                 on the y axis. Default value is '' (automatic scale)&#xD;
-               </LongDesc>
-         <Example> 'ylim','[0,10]' sets the minim value to 0 and the&#xD;
-               max to 10 on the y axis&#xD;
-               </Example>
+         <ShortDesc>Control y scale in plot.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>minimum and maximum on the y axis. Default value is '' (automatic scale)</LongDesc>
+         <Example>'ylim','[0,10]' sets the minim value to 0 and the max to 10 on the y axis</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>xlim</Name>
-         <ShortDesc>Control x scale in plot</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>minimum and maximum&#xD;
-                 on the x axis. Default value is '' (automatic scale)&#xD;
-               </LongDesc>
-         <Example> 'xlim','[0,10]' sets the minim value to 0 and the&#xD;
-               max to 10 on the x axis&#xD;
-               </Example>
+         <ShortDesc>Control x scale in plot.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>minimum and maximum on the x axis. Default value is '' (automatic scale)</LongDesc>
+         <Example>'xlim','[0,10]' sets the minim value to 0 and the max to 10 on the x axis</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bonflev</Name>
-         <ShortDesc>Signal to use to identify outliers</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>option to be used if the distribution of the data is&#xD;
-                 strongly non normal and, thus, the general signal&#xD;
-                 detection rule based on consecutive exceedances cannot be&#xD;
-                 used. In this case bonflev can be:&#xD;
-                 - a scalar smaller than 1 which specifies the confidence&#xD;
-                   level for a signal and a stopping rule based on the&#xD;
-                   comparison of the minimum MD with a&#xD;
-                   Bonferroni bound. For example if bonflev=0.99 the&#xD;
-                   procedure stops when the trajectory exceeds for the&#xD;
-                   first time the 99% bonferroni bound.&#xD;
-                 - A scalar value greater than 1. In this case the&#xD;
-                   procedure stops when the residual trajectory exceeds&#xD;
-                   for the first time this value.&#xD;
-                 Default value is '', which means to rely on general rules&#xD;
-                 based on consecutive exceedances.&#xD;
-               </LongDesc>
-         <Example> 'bonflev',0.99&#xD;
-               </Example>
+         <ShortDesc>Signal to use to identify outliers.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>option to be used if the distribution of the data is strongly non normal and, thus, the general signal detection rule based on consecutive exceedances cannot be used. In this case bonflev can be:
+- a scalar smaller than 1 which specifies the confidence level for a signal and a stopping rule based on the comparison of the minimum MD with a Bonferroni bound. For example if bonflev=0.99 the procedure stops when the trajectory exceeds for the first time the 99% bonferroni bound.
+- A scalar value greater than 1. In this case the procedure stops when the residual trajectory exceeds for the first time this value.
+Default value is '', which means to rely on general rules based on consecutive exceedances.</LongDesc>
+         <Example>'bonflev',0.99</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>Level of output to display</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>It controls whether to display or not messages&#xD;
-                 on the screen&#xD;
-                 If msg==1 (default) messages are displayed on the screen about&#xD;
-                   step in which signal took place&#xD;
-                 else no message is displayed on the screen&#xD;
-               </LongDesc>
-         <Example> 'msg',1 &#xD;
-               </Example>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It controls whether to display or not messages on the screen If msg==1 (default) messages are displayed on the screen about step in which signal took place else no message is displayed on the screen</LongDesc>
+         <Example>'msg',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bsbmfullrank</Name>
-         <ShortDesc>Dealing with singluar X matrix</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>It tells how to behave in case subset at step m&#xD;
-                 (say bsbm) produces a non singular X. In other words,&#xD;
-                 this options controls what to do when rank(X(bsbm,:)) is&#xD;
-                 smaller then number of explanatory variables. If&#xD;
-                 bsbmfullrank =1 (default) these units (whose number is&#xD;
-                 say mnofullrank) are constrained to enter the search in&#xD;
-                 the final n-mnofullrank steps else the search continues&#xD;
-                 using as estimate of beta at step m the estimate of beta&#xD;
-                 found in the previous step.&#xD;
-               </LongDesc>
-         <Example> 'bsbmfullrank',1 &#xD;
-               </Example>
+         <ShortDesc>Dealing with singluar X matrix.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It tells how to behave in case subset at step m (say bsbm) produces a non singular X. In other words, this options controls what to do when rank(X(bsbm,:)) is smaller then number of explanatory variables. If bsbmfullrank =1 (default) these units (whose number is say mnofullrank) are constrained to enter the search in the final n-mnofullrank steps else the search continues using as estimate of beta at step m the estimate of beta found in the previous step.</LongDesc>
+         <Example>'bsbmfullrank',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -420,70 +261,53 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>ListOut</Value>
-               <Description>k x 1 vector containing the list of the units declared as&#xD;
-               outliers or NaN if the sample is homogeneous</Description>
+               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous</Description>
             </ItemCell>
             <ItemCell>
                <Value>beta</Value>
-               <Description>p-by-1 vector containing the estimated regression&#xD;
-               parameters (in step n-k).</Description>
+               <Description>p-by-1 vector containing the estimated regression parameters (in step n-k).</Description>
             </ItemCell>
             <ItemCell>
                <Value>hetero</Value>
-               <Description>r-by-1 vector containing the estimated parameters of the&#xD;
-               scedastic parameters (in step n-k)</Description>
+               <Description>r-by-1 vector containing the estimated parameters of the scedastic parameters (in step n-k)</Description>
             </ItemCell>
             <ItemCell>
                <Value>scale</Value>
-               <Description>scalar containing the estimate of the scale&#xD;
-                       (sigma).</Description>
+               <Description>scalar containing the estimate of the scale (sigma).</Description>
             </ItemCell>
             <ItemCell>
                <Value>mdr</Value>
-               <Description>(n-init) x 2 matrix: &#xD;
-               1st col = fwd search index; &#xD;
-               2nd col = value of minimum deletion residual in each step&#xD;
-               of the fwd search.</Description>
+               <Description>(n-init) x 2 matrix:
+1st col = fwd search index;
+2nd col = value of minimum deletion residual in each step of the fwd search.</Description>
             </ItemCell>
             <ItemCell>
                <Value>Un</Value>
-               <Description>(n-init) x 11 Matrix which contains the unit(s) included&#xD;
-               in the subset at each step of the fwd search.&#xD;
-               REMARK: in every step the new subset is compared with the&#xD;
-               old subset. Un contains the unit(s) present in the new&#xD;
-               subset but not in the old one.&#xD;
-               Un(1,2) for example contains the unit included in step&#xD;
-               init+1.&#xD;
-               Un(end,2) contains the units included in the final step&#xD;
-               of the search.</Description>
+               <Description>(n-init) x 11 Matrix which contains the unit(s) included in the subset at each step of the fwd search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.
+Un(1,2) for example contains the unit included in step init+1.
+Un(end,2) contains the units included in the final step of the search.</Description>
             </ItemCell>
             <ItemCell>
                <Value>nout</Value>
-               <Description>2 x 5 matrix containing the number of times mdr went out&#xD;
-               of particular quantiles.&#xD;
-               First row contains quantiles 1 99 99.9 99.99 99.999.&#xD;
-               Second row contains the frequency distribution.</Description>
+               <Description>2 x 5 matrix containing the number of times mdr went out of particular quantiles.
+First row contains quantiles 1 99 99.9 99.99 99.999.
+Second row contains the frequency distribution.</Description>
             </ItemCell>
             <ItemCell>
                <Value>constr</Value>
-               <Description>This output is produced only if the search found at a&#xD;
-               certain step a non singular matrix X. In this case the&#xD;
-               search run in a constrained mode, that is including the&#xD;
-               units which produced a singular matrix in the last n-constr&#xD;
-               steps. out.constr is a vector which contains the list of&#xD;
-               units which produced a singular X matrix</Description>
+               <Description>This output is produced only if the search found at a certain step a non singular matrix X. In this case the search run in a constrained mode, that is including the units which produced a singular matrix in the last n-constr steps. out.constr is a vector which contains the list of units which produced a singular X matrix</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for&#xD;
-   heteroskedastic regression, submitted (ART)</Item>
+      <Item>Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for heteroskedastic regression, submitted (ART)</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRHeda</Item>
@@ -492,30 +316,32 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSRH with all default options.</Title>
-         <Desc>&#xD;
-     Before running FSRH, data are plotted. &#xD;
-     Common part to all examples: load tradeH dataset.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Before running FSRH, data are plotted.</ItemCell>
+            <ItemCell>Common part to all examples: load tradeH dataset.</ItemCell>
+         </Desc>
          <MATLABcode>
-    XX=load('tradeH.txt');&#xD;
-    y=XX(:,2);&#xD;
-    X=XX(:,1);&#xD;
-    X=X./max(X);&#xD;
-    Z=log(X);&#xD;
-    plot(X,y,'o')&#xD;
-    fs=14;&#xD;
-    ylabel('Value','FontSize',fs)&#xD;
-    xlabel('Quantity','FontSize',fs)&#xD;
-    out=FSRH(y,X,Z);&#xD;</MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>plot(X,y,'o')</ItemCell>
+            <ItemCell>fs=14;</ItemCell>
+            <ItemCell>ylabel('Value','FontSize',fs)</ItemCell>
+            <ItemCell>xlabel('Quantity','FontSize',fs)</ItemCell>
+            <ItemCell>out=FSRH(y,X,Z);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>FSRH with optional arguments.</Title>
-         <Desc>&#xD;
-     Specifying the search initialization and controlling the y scale in&#xD;
-     plot. &#xD;</Desc>
+         <Desc>
+            <ItemCell>Specifying the search initialization and controlling the y scale in plot.</ItemCell>
+         </Desc>
          <MATLABcode>
-    out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
@@ -523,7 +349,7 @@
       <Item>
          <Title> </Title>
          <Desc> </Desc>
-         <MATLABcode/>
+         <MATLABcode> </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

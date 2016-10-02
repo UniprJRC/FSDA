@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->ncx2mixtcdf</Title>
-   <Purpose><!--This is the second line of the .m file-->ncx2mixtcdf cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))</Purpose>
-   <Description><!--Description section-->given random variable $Q$ defined as&#xD;
-&#xD;
-     \[  &#xD;
-     Q = \lambda_1 \chi^2_1 + \lambda_2 \chi_2 + ... + \lambda_k \chi_k +\sigma X_0&#xD;
-     \]&#xD;
-&#xD;
-     where $\chi^2_1, ..., \chi^2_k$ are $k$ non central chi squared random variables,&#xD;
-     with non centrality parameters $\delta_1, ..., \delta_k$ and degrees of&#xD;
-     freedom $df_1, ..., df_k$.&#xD;
-     and $X_0$ is a standard normal random variable, the purpose of this&#xD;
-     routine is to compute $F_Q(x | df, delta) = P(Q &amp;lt; x)$ , that is the&#xD;
-     cdf of $Q$ evaluated at $x$.&#xD;
-     --------------------------------</Description>
+   <Purpose><!--This is the second line of the .m file-->ncx2mixtcdf cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))
+</Purpose>
+   <Description><!--Description section-->given random variable $Q$ defined as
+\[
+Q = \lambda_1 \chi^2_1 + \lambda_2 \chi_2 + ... + \lambda_k \chi_k +\sigma X_0
+\]
+where $\chi^2_1, ..., \chi^2_k$ are $k$ non central chi squared random variables, with non centrality parameters $\delta_1, ..., \delta_k$ and degrees of freedom $df_1, ..., df_k$.
+and $X_0$ is a standard normal random variable, the purpose of this routine is to compute $F_Q(x | df, delta) = P(Q &amp;lt; x)$ , that is the cdf of $Q$ evaluated at $x$.
+--------------------------------
+</Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>c</Name>
-         <ShortDesc>value for which cdf has to be computed</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Value at&#xD;
-               which the cdf must be evaluated</LongDesc>
+         <ShortDesc>value for which cdf has to be computed.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Value at which the cdf must be evaluated</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -29,11 +24,9 @@
       </Item>
       <Item>
          <Name>n</Name>
-         <ShortDesc>degrees of freedom</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector of length k containing&#xD;
-               the degrees of freedom of the&#xD;
-               k non central chi2 distributions</LongDesc>
+         <ShortDesc>degrees of freedom.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector of length k containing the degrees of freedom of the k non central chi2 distributions</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -41,10 +34,9 @@
       </Item>
       <Item>
          <Name>lb</Name>
-         <ShortDesc>Coefficients of linear combination</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector of length k containing the coefficients of the&#xD;
-               linear combinations of the k non central chi2 distributions</LongDesc>
+         <ShortDesc>Coefficients of linear combination.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector of length k containing the coefficients of the linear combinations of the k non central chi2 distributions</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -52,11 +44,9 @@
       </Item>
       <Item>
          <Name>nc</Name>
-         <ShortDesc>Non centrality parameters</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector of length k&#xD;
-               containing the k non centrality parameters&#xD;
-               of the k non central chi2 distributions</LongDesc>
+         <ShortDesc>Non centrality parameters.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector of length k containing the k non centrality parameters of the k non central chi2 distributions</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -66,40 +56,29 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>sigma</Name>
-         <ShortDesc>standard deviation of N(0,1)</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Coefficient&#xD;
-               associated with standard deviation of the&#xD;
-               standard normal distribution which can be added to the linear&#xD;
-               combination of non central chi2 distributions&#xD;
-               The default value of sigma is 0&#xD;
-               </LongDesc>
-         <Example> 'sigma',1&#xD;
-               </Example>
+         <ShortDesc>standard deviation of N(0,1).</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Coefficient associated with standard deviation of the standard normal distribution which can be added to the linear combination of non central chi2 distributions The default value of sigma is 0</LongDesc>
+         <Example>'sigma',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>lim</Name>
-         <ShortDesc>Number of intergration terms</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which defines maximum number of integration terms.&#xD;
-               The default value of lim is 10000&#xD;
-               </LongDesc>
-         <Example> 'lim',100000&#xD;
-               </Example>
+         <ShortDesc>Number of intergration terms.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which defines maximum number of integration terms.
+The default value of lim is 10000</LongDesc>
+         <Example>'lim',100000</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>tol</Name>
-         <ShortDesc>Tolerance</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which controls the tolerance. The default value of&#xD;
-               tolerance is 1e-09&#xD;
-                </LongDesc>
-         <Example> 'tol',1e-10&#xD;
-               </Example>
+         <ShortDesc>Tolerance.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which controls the tolerance. The default value of tolerance is 1e-09</LongDesc>
+         <Example>'tol',1e-10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -107,40 +86,25 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>qfval</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Value of cdf.</TypeInd>
-         <LongDesc> $qfval=F_Q(x | df, delta, sigma)$ is the value of the cdf of the mixture&#xD;
-               evaluated at x</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>$qfval=F_Q(x | df, delta, sigma)$ is the value of the cdf of the mixture evaluated at x</LongDesc>
+         <Structure> </Structure>
       </Item>
       <Item>
          <Name>varargout</Name>
-         <ShortDesc>tracert     : vector of length 7 </ShortDesc>
+         <ShortDesc>tracert : vector of length 7</ShortDesc>
          <TypeInd>FULL STOP MISSING IN THE OUTPUT DESCRIPTION</TypeInd>
-         <LongDesc>Tracert(1) = absolute sum&#xD;
-                   tracert(2) = total number of integration terms&#xD;
-                   tracert(3) = number of integrations&#xD;
-                   tracert(4) = integration interval in final integration&#xD;
-                   tracert(5) = truncation point in initial integration&#xD;
-                   tracert(6) = standard deviation of initial convergence factor&#xD;
-                   tracert(7) = number of iterations needed to locate integration parameters&#xD;
-    ifault     :   scalar which informs about output of the procedure&#xD;
-                   ifault=0 everything went OK&#xD;
-                   ifault=1 required accuracy not achieved&#xD;
-                   ifault=2 round-off error possibly significant&#xD;
-                   ifault=3 invalid parameters (df or non centr parameters&#xD;
-                               smaller than 0 or lmin=lmax=sigma=0)&#xD;
-                   ifault=4 unable to locate integration parameters</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Tracert(1) = absolute sum tracert(2) = total number of integration terms tracert(3) = number of integrations tracert(4) = integration interval in final integration tracert(5) = truncation point in initial integration tracert(6) = standard deviation of initial convergence factor tracert(7) = number of iterations needed to locate integration parameters ifault : scalar which informs about output of the procedure ifault=0 everything went OK ifault=1 required accuracy not achieved ifault=2 round-off error possibly significant ifault=3 invalid parameters (df or non centr parameters smaller than 0 or lmin=lmax=sigma=0) ifault=4 unable to locate integration parameters</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Davies (1973), Numerical inversion of a characteristic function, vol.&#xD;
-   60, Biometrika, pp. 415-417</Item>
-      <Item>Davies (1980), The distribution of a linear combination of Chi^2&#xD;
-   Random variables, Applied Statistics vol. pp. 323-333</Item>
+      <Item>Davies (1973), Numerical inversion of a characteristic function, vol.
+60, Biometrika, pp. 415-417</Item>
+      <Item>Davies (1980), The distribution of a linear combination of Chi^2 Random variables, Applied Statistics vol. pp. 323-333</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMenvmmd</Item>
@@ -149,72 +113,72 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>cdf of two chi squared rv.</Title>
-         <Desc>&#xD;
-     Evaluate the cdf of the sum of two chi2 r.v. with degrees of freedom&#xD;
-     5 and 4 and coefficients of the linear combination 2 and 3 and non&#xD;
-     centrality parameters 1 and 6&#xD;</Desc>
+         <Desc>
+            <ItemCell>Evaluate the cdf of the sum of two chi2 r.v. with degrees of freedom 5 and 4 and coefficients of the linear combination 2 and 3 and non centrality parameters 1 and 6</ItemCell>
+         </Desc>
          <MATLABcode>
-    x=35;&#xD;
-    df=[5;4];&#xD;
-    lb=[2;3];&#xD;
-    nc=[1;6];&#xD;
-    [out]=ncx2mixtcdf(x,df,lb,nc);&#xD;</MATLABcode>
+            <ItemCell>x=35;</ItemCell>
+            <ItemCell>df=[5;4];</ItemCell>
+            <ItemCell>lb=[2;3];</ItemCell>
+            <ItemCell>nc=[1;6];</ItemCell>
+            <ItemCell>[out]=ncx2mixtcdf(x,df,lb,nc);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>cdf of the sum of two non central chi2.</Title>
-         <Desc>&#xD;
-     Evaluate the cdf of the sum of two chi2 r.v. with degrees of freedom&#xD;
-     5 and 4 and coefficients of the linear combination 2 and 3 and non&#xD;
-     centrality parameters 1 and 6. Evaluate the cdf in a series of values&#xD;
-     of x and plot the output&#xD;</Desc>
+         <Desc>
+            <ItemCell>Evaluate the cdf of the sum of two chi2 r.v. with degrees of freedom 5 and 4 and coefficients of the linear combination 2 and 3 and non centrality parameters 1 and 6. Evaluate the cdf in a series of values of x and plot the output</ItemCell>
+         </Desc>
          <MATLABcode>
-    df=[5;4];&#xD;
-    lb=[2;3];&#xD;
-    nc=[1;6];&#xD;
-    xx=0:1:100;&#xD;
-    cdfnc=zeros(length(xx),1);&#xD;
-    ij=1;&#xD;
-    for x=xx&#xD;
-        [out]=ncx2mixtcdf(x,df,lb,nc);&#xD;
-        cdfnc(ij)=out;&#xD;
-        ij=ij+1;&#xD;
-    end&#xD;
-    plot(xx',cdfnc)&#xD;
-    xlabel('x')&#xD;
-    ylabel('cdf of the mixture of non central X2')&#xD;</MATLABcode>
+            <ItemCell>df=[5;4];</ItemCell>
+            <ItemCell>lb=[2;3];</ItemCell>
+            <ItemCell>nc=[1;6];</ItemCell>
+            <ItemCell>xx=0:1:100;</ItemCell>
+            <ItemCell>cdfnc=zeros(length(xx),1);</ItemCell>
+            <ItemCell>ij=1;</ItemCell>
+            <ItemCell>for x=xx</ItemCell>
+            <ItemCell>[out]=ncx2mixtcdf(x,df,lb,nc);</ItemCell>
+            <ItemCell>cdfnc(ij)=out;</ItemCell>
+            <ItemCell>ij=ij+1;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>plot(xx',cdfnc)</ItemCell>
+            <ItemCell>xlabel('x')</ItemCell>
+            <ItemCell>ylabel('cdf of the mixture of non central X2')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Test tolerance.</Title>
-         <Desc>&#xD;
-     Example which tests the results using different tolerances and&#xD;
-     a different number of integration terms&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example which tests the results using different tolerances and a different number of integration terms</ItemCell>
+         </Desc>
          <MATLABcode>
-    df=[1;1];&#xD;
-    lb=[-0.965785811006555;-0.681122597105154];&#xD;
-    nc=[0.2;0.3];&#xD;
-    x=-2.386488889335108;&#xD;
-    [out]=ncx2mixtcdf(x,df,lb,nc);&#xD;
-    disp('Value of cdf using default number of integration terms and default tolerance')&#xD;
-    disp(out)&#xD;
-    disp('-------------------------')&#xD;
-    tol=1e-06;&#xD;
-    [out]=ncx2mixtcdf(x,df,lb,nc,'tol',tol);&#xD;
-    disp(['Value of cdf using tol =' num2str(tol) ' and default integration terms'])&#xD;
-    disp(out)&#xD;
-    disp('-------------------------')&#xD;
-    lim=1000000;&#xD;
-    [out]=ncx2mixtcdf(x,df,lb,nc,'lim',lim);&#xD;
-    disp(['Value of cdf using numb. integration terms =' num2str(lim) ' and default tolerance'])&#xD;
-    disp(out)&#xD;
-    disp('-------------------------')&#xD;
-    lim=100000000;&#xD;
-    tol=1e-13;&#xD;
-    disp(['Value of cdf using numb. integration terms =' num2str(lim) ' and tolerance=' num2str(tol)])&#xD;
-    disp('In this last case it takes some seconds')&#xD;
-    [out]=ncx2mixtcdf(x,df,lb,nc, 'lim',lim, 'tol',tol);&#xD;
-    disp(out)&#xD;</MATLABcode>
+            <ItemCell>df=[1;1];</ItemCell>
+            <ItemCell>lb=[-0.965785811006555;-0.681122597105154];</ItemCell>
+            <ItemCell>nc=[0.2;0.3];</ItemCell>
+            <ItemCell>x=-2.386488889335108;</ItemCell>
+            <ItemCell>[out]=ncx2mixtcdf(x,df,lb,nc);</ItemCell>
+            <ItemCell>disp('Value of cdf using default number of integration terms and default tolerance')</ItemCell>
+            <ItemCell>disp(out)</ItemCell>
+            <ItemCell>disp('-------------------------')</ItemCell>
+            <ItemCell>tol=1e-06;</ItemCell>
+            <ItemCell>[out]=ncx2mixtcdf(x,df,lb,nc,'tol',tol);</ItemCell>
+            <ItemCell>disp(['Value of cdf using tol =' num2str(tol) ' and default integration terms'])</ItemCell>
+            <ItemCell>disp(out)</ItemCell>
+            <ItemCell>disp('-------------------------')</ItemCell>
+            <ItemCell>lim=1000000;</ItemCell>
+            <ItemCell>[out]=ncx2mixtcdf(x,df,lb,nc,'lim',lim);</ItemCell>
+            <ItemCell>disp(['Value of cdf using numb. integration terms =' num2str(lim) ' and default tolerance'])</ItemCell>
+            <ItemCell>disp(out)</ItemCell>
+            <ItemCell>disp('-------------------------')</ItemCell>
+            <ItemCell>lim=100000000;</ItemCell>
+            <ItemCell>tol=1e-13;</ItemCell>
+            <ItemCell>disp(['Value of cdf using numb. integration terms =' num2str(lim) ' and tolerance=' num2str(tol)])</ItemCell>
+            <ItemCell>disp('In this last case it takes some seconds')</ItemCell>
+            <ItemCell>[out]=ncx2mixtcdf(x,df,lb,nc, 'lim',lim, 'tol',tol);</ItemCell>
+            <ItemCell>disp(out)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

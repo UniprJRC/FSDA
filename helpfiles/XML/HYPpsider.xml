@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HYPpsider</Title>
-   <Purpose><!--This is the second line of the .m file-->HYPpsider computes derivative of psi function for hyperbolic tangent estimator</Purpose>
+   <Purpose><!--This is the second line of the .m file-->HYPpsider computes derivative of psi function for hyperbolic tangent estimator
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>u</Name>
-         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>n x 1&#xD;
-               vector containing residuals or Mahalanobis distances&#xD;
-               for the n units of the sample</LongDesc>
+         <ShortDesc>scaled residuals or Mahalanobis distances.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>n x 1 vector containing residuals or Mahalanobis distances for the n units of the sample</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,21 +17,15 @@
       </Item>
       <Item>
          <Name>cktuning</Name>
-         <ShortDesc>tuning parameters</ShortDesc>
-         <TypeInd>Vector of length 2 or of length 5</TypeInd>
-         <LongDesc>cktuning specifies the value of the tuning&#xD;
-                constant c (scalar greater than 0 which controls the&#xD;
-                robustness/efficiency of the estimator)&#xD;
-                and the prefixed value k (sup of the&#xD;
-                change-of-variance sensitivity) and the values of&#xD;
-                parameters A, B and d.&#xD;
-                cktuning(1) = c;&#xD;
-                cktuning(2) = k = supCVC(psi,x) x \in R;&#xD;
-                cktuning(3)=A;&#xD;
-                cktuning(4)=B;&#xD;
-                cktuning(5)=d;&#xD;
-                Remark - if length(cktuning)==2 values of A, B and d will be&#xD;
-                computed automatically</LongDesc>
+         <ShortDesc>tuning parameters.</ShortDesc>
+         <TypeInd>Vector of length 2 or of length 5.</TypeInd>
+         <LongDesc>cktuning specifies the value of the tuning constant c (scalar greater than 0 which controls the robustness/efficiency of the estimator) and the prefixed value k (sup of the change-of-variance sensitivity) and the values of parameters A, B and d.
+cktuning(1) = c;
+cktuning(2) = k = supCVC(psi,x) x \in R;
+cktuning(3)=A;
+cktuning(4)=B;
+cktuning(5)=d;
+Remark - if length(cktuning)==2 values of A, B and d will be computed automatically</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -43,39 +36,24 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>psiHYPder</Name>
-         <ShortDesc>n x 1 vector </ShortDesc>
-         <TypeInd>Values of hyperbolic&#xD;
-                psi'(u) function associated to the residuals or Mahalanobis&#xD;
-                distances for the n units of the sample.</TypeInd>
+         <ShortDesc>n x 1 vector</ShortDesc>
+         <TypeInd>Values of hyperbolic psi'(u) function associated to the residuals or Mahalanobis distances for the n units of the sample.</TypeInd>
          <LongDesc> </LongDesc>
-         <Struct> </Struct>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
-&#xD;
- Function HYPpsi transforms vector u as follows&#xD;
-&#xD;
-  \[&#xD;
-   HYPpsider(u)=&#xD;
-   \left\{&#xD;
-    \begin{array}{cc}&#xD;
-    1		&amp;	                               |u| \leq  d, \\&#xD;
-     0.5 B (1-k)  \left( 1/\cosh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right)^2 \right) &amp;     d \leq |u| &amp;lt;  c, \\&#xD;
-                 0 &amp;                       |u| \geq c.&#xD;
- \end{array}&#xD;
-    \right.&#xD;
-  \]&#xD;
-  	It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c normpdf(c) &amp;lt;1$&#xD;
-&#xD;
-&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HYPpsi transforms vector u as follows
+\[
+HYPpsider(u)= \left\{ \begin{array}{cc} 1	&amp;	|u| \leq d, \\
+0.5 B (1-k) \left( 1/\cosh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right)^2 \right) &amp; d \leq |u| &amp;lt; c, \\
+0 &amp; |u| \geq c.
+\end{array} \right.
+\]
+It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c normpdf(c) &amp;lt;1$
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),&#xD;
- The Change-of-Variance Curve and Optimal Redescending M-Estimators,&#xD;
- Journal of the American Statistical Association , Vol. 76, No. 375,&#xD;
- pp. 643-648 (HRR)</Item>
+      <Item>Hampel,F.R., Rousseeuw P.J. and Ronchetti E.(1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBpsider</Item>
@@ -87,16 +65,15 @@
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-&#xD;
-    % Plot of derivative of hyperbolic psi function&#xD;
-    x=-9:0.1:9;&#xD;
-    ctuning=6;&#xD;
-    ktuning=4.5;&#xD;
-    psiHYPder=HYPpsider(x,[ctuning,ktuning]);&#xD;
-    plot(x,psiHYPder)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel(' Hyperbolic $\psi''(x) $','Interpreter','Latex')&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>% Plot of derivative of hyperbolic psi function</ItemCell>
+            <ItemCell>x=-9:0.1:9;</ItemCell>
+            <ItemCell>ctuning=6;</ItemCell>
+            <ItemCell>ktuning=4.5;</ItemCell>
+            <ItemCell>psiHYPder=HYPpsider(x,[ctuning,ktuning]);</ItemCell>
+            <ItemCell>plot(x,psiHYPder)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel(' Hyperbolic $\psi''(x) $','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
@@ -105,61 +82,56 @@
          <Title>bdp=0.</Title>
          <Desc> </Desc>
          <MATLABcode>
-    bdp=0.5;&#xD;
-    c=TBbdp(bdp,1);&#xD;
-    subplot(2,2,1)&#xD;
-    % 1st panel is Tukey biweight&#xD;
-    x=-4:0.01:4;&#xD;
-    psiTBder=TBpsider(x,c);&#xD;
-    plot(x,psiTBder)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel('$\psi''(x)$','Interpreter','Latex')&#xD;
-    title('Tukey biweight')&#xD;
-&#xD;
-&#xD;
-    subplot(2,2,2)&#xD;
-    % 2nd panel is optimal&#xD;
-    c=OPTbdp(bdp,1);&#xD;
-    c=c/3;&#xD;
-    % Remark: in this case it is necessary to multiply by 3.25*c^2 because the&#xD;
-    % optimal has been standardized in such a way that sup(rho(x))=1&#xD;
-    psiOPTder=(3.25*c^2)*OPTpsider(x,c);&#xD;
-    plot(x,psiOPTder)&#xD;
-    xlim([-4 4])&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel('$\psi''(x)$','Interpreter','Latex')&#xD;
-    title('Optimal')&#xD;
-&#xD;
-    subplot(2,2,3)&#xD;
-    % 3rd panel is Hampel&#xD;
-    % Obtain bottom panel of Figure 11.10 p. 375 of&#xD;
-    % Hoaglin et al. (1987)&#xD;
-    c=HAbdp(bdp,1);&#xD;
-    psiHA=HApsider(x,c);&#xD;
-    plot(x,psiHA)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel('$\psi''(x) $','Interpreter','Latex')&#xD;
-    title('Hampel')&#xD;
-&#xD;
-    subplot(2,2,4)&#xD;
-    % 4th panel is hyperbolic&#xD;
-    % c=HYPbdp(0.5,1);&#xD;
-    %ktuning=4.5;&#xD;
-    ktuning=4.5;&#xD;
-    % Precalculated values&#xD;
-    c = 2.010311082005501;&#xD;
-    A = 0.008931591866092;&#xD;
-    B = 0.051928487236632;&#xD;
-    d=  0.132017481327058;&#xD;
-    % Alternatively the values can be found using&#xD;
-    %[c,A,B,d]=HYPbdp(0.5,1,ktuning);&#xD;
-&#xD;
-    psiHYPder=HYPpsider(x,[c,ktuning,A,B,d]);&#xD;
-&#xD;
-    plot(x,psiHYPder)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel('$\psi''(x) $','Interpreter','Latex')&#xD;
-    title('Hyperbolic')&#xD;</MATLABcode>
+            <ItemCell>bdp=0.5;</ItemCell>
+            <ItemCell>c=TBbdp(bdp,1);</ItemCell>
+            <ItemCell>subplot(2,2,1)</ItemCell>
+            <ItemCell>% 1st panel is Tukey biweight</ItemCell>
+            <ItemCell>x=-4:0.01:4;</ItemCell>
+            <ItemCell>psiTBder=TBpsider(x,c);</ItemCell>
+            <ItemCell>plot(x,psiTBder)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$\psi''(x)$','Interpreter','Latex')</ItemCell>
+            <ItemCell>title('Tukey biweight')</ItemCell>
+            <ItemCell>subplot(2,2,2)</ItemCell>
+            <ItemCell>% 2nd panel is optimal</ItemCell>
+            <ItemCell>c=OPTbdp(bdp,1);</ItemCell>
+            <ItemCell>c=c/3;</ItemCell>
+            <ItemCell>% Remark: in this case it is necessary to multiply by 3.25*c^2 because the</ItemCell>
+            <ItemCell>% optimal has been standardized in such a way that sup(rho(x))=1</ItemCell>
+            <ItemCell>psiOPTder=(3.25*c^2)*OPTpsider(x,c);</ItemCell>
+            <ItemCell>plot(x,psiOPTder)</ItemCell>
+            <ItemCell>xlim([-4 4])</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$\psi''(x)$','Interpreter','Latex')</ItemCell>
+            <ItemCell>title('Optimal')</ItemCell>
+            <ItemCell>subplot(2,2,3)</ItemCell>
+            <ItemCell>% 3rd panel is Hampel</ItemCell>
+            <ItemCell>% Obtain bottom panel of Figure 11.10 p. 375 of</ItemCell>
+            <ItemCell>% Hoaglin et al. (1987)</ItemCell>
+            <ItemCell>c=HAbdp(bdp,1);</ItemCell>
+            <ItemCell>psiHA=HApsider(x,c);</ItemCell>
+            <ItemCell>plot(x,psiHA)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$\psi''(x) $','Interpreter','Latex')</ItemCell>
+            <ItemCell>title('Hampel')</ItemCell>
+            <ItemCell>subplot(2,2,4)</ItemCell>
+            <ItemCell>% 4th panel is hyperbolic</ItemCell>
+            <ItemCell>% c=HYPbdp(0.5,1);</ItemCell>
+            <ItemCell>%ktuning=4.5;</ItemCell>
+            <ItemCell>ktuning=4.5;</ItemCell>
+            <ItemCell>% Precalculated values</ItemCell>
+            <ItemCell>c = 2.010311082005501;</ItemCell>
+            <ItemCell>A = 0.008931591866092;</ItemCell>
+            <ItemCell>B = 0.051928487236632;</ItemCell>
+            <ItemCell>d=  0.132017481327058;</ItemCell>
+            <ItemCell>% Alternatively the values can be found using</ItemCell>
+            <ItemCell>%[c,A,B,d]=HYPbdp(0.5,1,ktuning);</ItemCell>
+            <ItemCell>psiHYPder=HYPpsider(x,[c,ktuning,A,B,d]);</ItemCell>
+            <ItemCell>plot(x,psiHYPder)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$\psi''(x) $','Interpreter','Latex')</ItemCell>
+            <ItemCell>title('Hyperbolic')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSRBeda</Title>
-   <Purpose><!--This is the second line of the .m file-->FSRBeda enables to monitor several quantities in each step of the Bayesian search</Purpose>
+   <Purpose><!--This is the second line of the .m file-->FSRBeda enables to monitor several quantities in each step of the Bayesian search
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variables</ShortDesc>
-         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations</TypeInd>
+         <ShortDesc>A vector with n elements that contains the response variables.</ShortDesc>
+         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</TypeInd>
          <LongDesc> </LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
@@ -19,19 +17,11 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors')&#xD;
-               of dimension (n x p-1)</ShortDesc>
-         <TypeInd>Rows of X represent observations, and&#xD;
-               columns represent variables</TypeInd>
-         <LongDesc>Missing values (NaN's) and&#xD;
-               infinite values (Inf's) are allowed, since observations&#xD;
-               (rows) with missing or infinite values will automatically&#xD;
-               be excluded from the computations.&#xD;
-               PRIOR INFORMATION&#xD;
-               $\beta$ is assumed to have a normal distribution with&#xD;
-               mean $\beta_0$ and (conditional on $\tau_0$) covariance&#xD;
-               $(1/\tau_0) (X_0'X_0)^{-1}$.&#xD;
-               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</LongDesc>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
+PRIOR INFORMATION $\beta$ is assumed to have a normal distribution with mean $\beta_0$ and (conditional on $\tau_0$) covariance $(1/\tau_0) (X_0'X_0)^{-1}$.
+$\beta \sim N( \beta_0, (1/\tau_0) (X_0'X_0)^{-1} )$</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -41,45 +31,26 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default),&#xD;
-                     if 0, no constant term will be included.&#xD;
-               </LongDesc>
-         <Example> 'intercept',1 &#xD;
-               </Example>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bayes</Name>
-         <ShortDesc>It specifies prior information</ShortDesc>
-         <TypeInd>Structure</TypeInd>
-         <LongDesc>A structure which specifies prior information.&#xD;
-               If structure bayes is not supplied the default values which&#xD;
-               are used are: beta0= zeros(p,1) (vector of zeros); R=eye(p) &#xD;
-               (Identity matrix); tau0=1/1e+6 (very large value for the&#xD;
-               prior variance, that is a very small value for tau0); n0=1 &#xD;
-               (just one prior observation). &#xD;
-               Strucure bayes contains the following fields:&#xD;
-               bayes.beta0 =  p-times-1 vector containing prior mean of $\beta$&#xD;
-               bayes.R  =     p-times-p positive definite matrix which can be&#xD;
-                              interepreted as $X_0'X_0$ where $X_0$ is a n0 x p matrix&#xD;
-                              coming from previous experiments (assuming that the&#xD;
-                              intercept is included in the model)&#xD;
-               bayes.tau0 =   scalar. Prior estimate of $\tau=1/ \sigma^2=a_0/b_0$. &#xD;
-                              The prior distribution of tau0 is a gamma distribution with&#xD;
-                              parameters a and b, that is&#xD;
-                              $p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0&#xD;
-                              \tau)$; &#xD;
-                              $E(\tau_0)= a_0/b_0$.&#xD;
-               bayes.n0 = scalar. Sometimes it helps to think of the prior&#xD;
-                      information as coming from n0 previous experiments.&#xD;
-                      Therefore we assume that matrix $X_0$ (which defines&#xD;
-                      R), was made up of n0 observations.&#xD;
-                  </LongDesc>
-         <Example> bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;&#xD;
-                  </Example>
+         <ShortDesc>It specifies prior information.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>A structure which specifies prior information.
+If structure bayes is not supplied the default values which are used are: beta0= zeros(p,1) (vector of zeros); R=eye(p) (Identity matrix); tau0=1/1e+6 (very large value for the prior variance, that is a very small value for tau0); n0=1 (just one prior observation).
+Strucure bayes contains the following fields:
+bayes.beta0 = p-times-1 vector containing prior mean of $\beta$ bayes.R = p-times-p positive definite matrix which can be interepreted as $X_0'X_0$ where $X_0$ is a n0 x p matrix coming from previous experiments (assuming that the intercept is included in the model) bayes.tau0 = scalar. Prior estimate of $\tau=1/ \sigma^2=a_0/b_0$.
+The prior distribution of tau0 is a gamma distribution with parameters a and b, that is $p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)$;
+$E(\tau_0)= a_0/b_0$.
+bayes.n0 = scalar. Sometimes it helps to think of the prior information as coming from n0 previous experiments.
+Therefore we assume that matrix $X_0$ (which defines R), was made up of n0 observations.</LongDesc>
+         <Example>bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;</Example>
          <DataType>double</DataType>
          <Struct>
             <ItemCell>
@@ -113,58 +84,39 @@
       </Item>
       <Item>
          <Name>bsb</Name>
-         <ShortDesc>list of units forming the initial subset</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>if bsb=0 then the procedure starts with p&#xD;
-               units randomly chosen else if bsb is not 0 the search will&#xD;
-               start with m0=length(bsb). The default value of bsb is ''&#xD;
-               that is in the first step just prior information is used.&#xD;
-               </LongDesc>
-         <Example> bsb=[2 5 1];&#xD;
-               </Example>
+         <ShortDesc>list of units forming the initial subset.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>if bsb=0 then the procedure starts with p units randomly chosen else if bsb is not 0 the search will start with m0=length(bsb). The default value of bsb is '' that is in the first step just prior information is used.</LongDesc>
+         <Example>bsb=[2 5 1];</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>init</Name>
-         <ShortDesc>Search initialization</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>scalar, specifies the point where to start monitoring&#xD;
-               required diagnostics. if init is not specified it will be&#xD;
-               set equal to :&#xD;
-                 p+1, if the sample size is smaller than 40;&#xD;
-                 min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
-                   </LongDesc>
-         <Example> 'init',100 starts monitoring from step m=100 &#xD;
-                   </Example>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>scalar, specifies the point where to start monitoring required diagnostics. if init is not specified it will be set equal to :
+p+1, if the sample size is smaller than 40;
+min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Check input arguments</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar. If nocheck is equal to 1 no check is performed on&#xD;
-               matrix y and matrix X. Notice that y and X are left&#xD;
-               unchanged. In other words the additional column of ones for&#xD;
-               the intercept is not added. As default nocheck=0. See&#xD;
-               routine chkinputRB.m for the details of the operations.&#xD;
-               </LongDesc>
-         <Example> 'nocheck',1 &#xD;
-               </Example>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar. If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0. See routine chkinputRB.m for the details of the operations.</LongDesc>
+         <Example>'nocheck',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>conflev</Name>
-         <ShortDesc>confidence levels to be used to compute HPDI</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>This input option is used just if input&#xD;
-               stats=1. The default value of conflev is [0.95 0.99] that&#xD;
-               is 95% and 99% HPDI confidence intervals are computed.&#xD;
-                </LongDesc>
-         <Example> 'conflev',[0.90 0.93] &#xD;
-               </Example>
+         <ShortDesc>confidence levels to be used to compute HPDI.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>This input option is used just if input stats=1. The default value of conflev is [0.95 0.99] that is 95% and 99% HPDI confidence intervals are computed.</LongDesc>
+         <Example>'conflev',[0.90 0.93]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -175,192 +127,149 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>RES</Value>
-               <Description>Scaled residuals. Matrix.&#xD;
-               n x (n-init+1) matrix containing the monitoring of&#xD;
-               scaled residuals. &#xD;
-               1st row = residual for first unit; &#xD;
-               ...; &#xD;
-               nth row = residual for nth unit.</Description>
+               <Description>Scaled residuals. Matrix.
+n x (n-init+1) matrix containing the monitoring of scaled residuals.
+1st row = residual for first unit;
+...;
+nth row = residual for nth unit.</Description>
             </ItemCell>
             <ItemCell>
                <Value>LEV</Value>
-               <Description>Leverage. Matrix.&#xD;
-               (n+1) x (n-init+1) = matrix containing the monitoring of&#xD;
-               leverage. &#xD;
-               1st row = leverage for first unit;&#xD;
-               ...; &#xD;
-               nth row = leverage for nth unit.</Description>
+               <Description>Leverage. Matrix.
+(n+1) x (n-init+1) = matrix containing the monitoring of leverage.
+1st row = leverage for first unit;
+...;
+nth row = leverage for nth unit.</Description>
             </ItemCell>
             <ItemCell>
                <Value>BB</Value>
-               <Description>n x (n-init+1) matrix containing the information about the units belonging&#xD;
-               to the subset at each step of the forward search. &#xD;
-               1st col = indexes of the units forming subset in the&#xD;
-               initial step; &#xD;
-               ...; &#xD;
-               last column = units forming subset in the final step (all&#xD;
-               units).</Description>
+               <Description>n x (n-init+1) matrix containing the information about the units belonging to the subset at each step of the forward search.
+1st col = indexes of the units forming subset in the initial step;
+...;
+last column = units forming subset in the final step (all units).</Description>
             </ItemCell>
             <ItemCell>
                <Value>mdrB</Value>
-               <Description>n-init x 3 matrix which contains the monitoring of Bayesian&#xD;
-               minimum deletion residual or (m+1)ordered residual  at each&#xD;
-               step of the forward search. &#xD;
-               1st col = fwd search index (from init to n-1); &#xD;
-               2nd col = minimum deletion residual; &#xD;
-               3rd col = (m+1)-ordered residual. &#xD;
-               Remark: these quantities are stored with sign, that is the&#xD;
-               min deletion residual is stored with negative sign if&#xD;
-               it corresponds to a negative residual.</Description>
+               <Description>n-init x 3 matrix which contains the monitoring of Bayesian minimum deletion residual or (m+1)ordered residual at each step of the forward search.
+1st col = fwd search index (from init to n-1);
+2nd col = minimum deletion residual;
+3rd col = (m+1)-ordered residual.
+Remark: these quantities are stored with sign, that is the min deletion residual is stored with negative sign if it corresponds to a negative residual.</Description>
             </ItemCell>
             <ItemCell>
                <Value>msrB</Value>
-               <Description>n-init+1 x 3 = matrix which contains the monitoring of&#xD;
-               maximum studentized residual or m-th ordered residual. &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = maximum studentized residual; &#xD;
-               3rd col = (m)-ordered studentized residual.</Description>
+               <Description>n-init+1 x 3 = matrix which contains the monitoring of maximum studentized residual or m-th ordered residual.
+1st col = fwd search index (from init to n);
+2nd col = maximum studentized residual;
+3rd col = (m)-ordered studentized residual.</Description>
             </ItemCell>
             <ItemCell>
                <Value>Coo</Value>
-               <Description>(n-init+1) x 2 matrix containing the monitoring of Cook or&#xD;
-               modified Cook distance in each step of the forward search. &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = monitoring of Cook distance.</Description>
+               <Description>(n-init+1) x 2 matrix containing the monitoring of Cook or modified Cook distance in each step of the forward search.
+1st col = fwd search index (from init to n);
+2nd col = monitoring of Cook distance.</Description>
             </ItemCell>
             <ItemCell>
                <Value>beta1</Value>
-               <Description>(n-init+1) x (p+1) matrix containing the monitoring of&#xD;
-               posterior mean of $\beta$ (regression coefficents)&#xD;
-               $\beta_1 = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$</Description>
+               <Description>(n-init+1) x (p+1) matrix containing the monitoring of posterior mean of $\beta$ (regression coefficents) $\beta_1 = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$</Description>
             </ItemCell>
             <ItemCell>
                <Value>Gam</Value>
-               <Description>(n-init+1) x 3 matrix containing: &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = shape parameter $a_1$ of the posterior gamma&#xD;
-               distribution of tau; &#xD;
-               3rd col = scale parameter $b_1$ of the posterior gamma&#xD;
-               distribution of tau. &#xD;
-               Remark: $a_1 = 0.5 (c*n0 + m)$ where m is subset size; &#xD;
-                       $b_1 = 0.5 * ( n0 / \tau_0 + (y-X*\beta_1)'y +(\beta_0-\beta_1)'*c*R*\beta_0 )$</Description>
+               <Description>(n-init+1) x 3 matrix containing:
+1st col = fwd search index (from init to n);
+2nd col = shape parameter $a_1$ of the posterior gamma distribution of tau;
+3rd col = scale parameter $b_1$ of the posterior gamma distribution of tau.
+Remark: $a_1 = 0.5 (c*n0 + m)$ where m is subset size;
+$b_1 = 0.5 * ( n0 / \tau_0 + (y-X*\beta_1)'y +(\beta_0-\beta_1)'*c*R*\beta_0 )$</Description>
             </ItemCell>
             <ItemCell>
                <Value>covbeta1</Value>
-               <Description>p x p x (n-init+1) 3D array containing posterior covariance matrix&#xD;
-               (conditional on $tau_1$) of $\beta$. &#xD;
-               $cov(\beta_1) = (1/tau_1) * (c*R + X'X)^{-1}$; &#xD;
-               where $tau_1$ is defined as $a_1/b_1$ (that is through the gamma&#xD;
-               parameters of the posterior distribution of $\tau$).&#xD;
-               The posterior distribution of $\tau$ is a gamma distribution&#xD;
-               with parameters $a_1$ and $b_1$.</Description>
+               <Description>p x p x (n-init+1) 3D array containing posterior covariance matrix (conditional on $tau_1$) of $\beta$.
+$cov(\beta_1) = (1/tau_1) * (c*R + X'X)^{-1}$;
+where $tau_1$ is defined as $a_1/b_1$ (that is through the gamma parameters of the posterior distribution of $\tau$).
+The posterior distribution of $\tau$ is a gamma distribution with parameters $a_1$ and $b_1$.</Description>
             </ItemCell>
             <ItemCell>
                <Value>S21</Value>
-               <Description>(n-init+1) x 3 matrix containing the monitoring of&#xD;
-               posterior estimate of $\sigma^2$ and $\tau$  &#xD;
-               in each step of the forward search. &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = monitoring of $\sigma^2_1$ (posterior estimate of&#xD;
-               $\sigma^2$); &#xD;
-               3rd col = monitoring $\tau_1$ (posterior estimate of&#xD;
-               $\tau$).</Description>
+               <Description>(n-init+1) x 3 matrix containing the monitoring of posterior estimate of $\sigma^2$ and $\tau$ in each step of the forward search.
+1st col = fwd search index (from init to n);
+2nd col = monitoring of $\sigma^2_1$ (posterior estimate of $\sigma^2$);
+3rd col = monitoring $\tau_1$ (posterior estimate of $\tau$).</Description>
             </ItemCell>
             <ItemCell>
                <Value>Bpval</Value>
-               <Description>(n-init+1) x (p+1) containing Bayesian p-values.&#xD;
-               p-value = $P(|t| &amp;gt; | \hat{\beta} / se(beta) |)$&#xD;
-               = prob. of beta different from 0. &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = p-value for first variable; &#xD;
-               ...; &#xD;
-               (p+1) col = p-value for p-th variable.</Description>
+               <Description>(n-init+1) x (p+1) containing Bayesian p-values.
+p-value = $P(|t| &amp;gt; | \hat{\beta} / se(beta) |)$ = prob. of beta different from 0.
+1st col = fwd search index (from init to n);
+2nd col = p-value for first variable;
+...;
+(p+1) col = p-value for p-th variable.</Description>
             </ItemCell>
             <ItemCell>
                <Value>beta1HPD</Value>
-               <Description>(n-init+1)-by-2-by-p 3D array.&#xD;
-               Bhpd(:,:,1) = lower and upper HPDI of first element of&#xD;
-               $\beta_1$ (posterior estimate of $\beta$); &#xD;
-               ...; &#xD;
-               Bhpd(:,:,p) = lower and upper HPDI of  last element&#xD;
-               of $\beta_1$  (posterior estimate of $\beta$).</Description>
+               <Description>(n-init+1)-by-2-by-p 3D array.
+Bhpd(:,:,1) = lower and upper HPDI of first element of $\beta_1$ (posterior estimate of $\beta$);
+...;
+Bhpd(:,:,p) = lower and upper HPDI of last element of $\beta_1$ (posterior estimate of $\beta$).</Description>
             </ItemCell>
             <ItemCell>
                <Value>tau1HPD</Value>
-               <Description>(n-init+1) x 3 containing HPDI for $\tau_1$. &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = lower value of HPDI; &#xD;
-               3rd col = upper value of HPDI;</Description>
+               <Description>(n-init+1) x 3 containing HPDI for $\tau_1$.
+1st col = fwd search index (from init to n);
+2nd col = lower value of HPDI;
+3rd col = upper value of HPDI;</Description>
             </ItemCell>
             <ItemCell>
                <Value>sigma21HPD</Value>
-               <Description>(n-init+1) x 3 containing HPDI for $\sigma^2_1$. &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = lower value of HPDI; &#xD;
-               3rd col = upper value of HPDI.</Description>
+               <Description>(n-init+1) x 3 containing HPDI for $\sigma^2_1$.
+1st col = fwd search index (from init to n);
+2nd col = lower value of HPDI;
+3rd col = upper value of HPDI.</Description>
             </ItemCell>
             <ItemCell>
                <Value>postodds</Value>
-               <Description>(n-init+1)-by-(p+1) matrix which contains posterior odds for $\beta_j=0$. &#xD;
-               For example the posterior odd of $\beta_0=0$ is p(y| model which contains&#xD;
-               all expl variables except the one associated with beta0) divided by&#xD;
-               p(y| model which contains all expl variables). &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = posterior odd for $beta_1$; &#xD;
-               ...; &#xD;
-               (p+1) col = posterior odd for $beta_p$.</Description>
+               <Description>(n-init+1)-by-(p+1) matrix which contains posterior odds for $\beta_j=0$.
+For example the posterior odd of $\beta_0=0$ is p(y| model which contains all expl variables except the one associated with beta0) divided by p(y| model which contains all expl variables).
+1st col = fwd search index (from init to n);
+2nd col = posterior odd for $beta_1$;
+...;
+(p+1) col = posterior odd for $beta_p$.</Description>
             </ItemCell>
             <ItemCell>
                <Value>modelprob</Value>
-               <Description>(n-init+1)-by-(p+1) matrix which contains&#xD;
-               posterior model probability of the model which excludes&#xD;
-               variable j. For example if modelprob(j)= 0.28, that is if&#xD;
-               the probability of the model which does not contain&#xD;
-               variable j is equal to 0.28, it means that there is a 28&#xD;
-               chance that beta_j=0 and a 72 chance that it is not. &#xD;
-               1st col = fwd search index (from init to n); &#xD;
-               2nd col = posterior model prob of the model which excludes&#xD;
-               $\beta_1$; &#xD;
-               ...; &#xD;
-               (p+1) col = posterior model prob of the model which&#xD;
-               excludes $beta_p$.</Description>
+               <Description>(n-init+1)-by-(p+1) matrix which contains posterior model probability of the model which excludes variable j. For example if modelprob(j)= 0.28, that is if the probability of the model which does not contain variable j is equal to 0.28, it means that there is a 28 chance that beta_j=0 and a 72 chance that it is not.
+1st col = fwd search index (from init to n);
+2nd col = posterior model prob of the model which excludes $\beta_1$;
+...;
+(p+1) col = posterior model prob of the model which excludes $beta_p$.</Description>
             </ItemCell>
             <ItemCell>
                <Value>Un</Value>
-               <Description>(n-init) x 11 matrix which contains the unit(s)&#xD;
-               included in the subset at each step of the fwd search. &#xD;
-               REMARK: in every step the new subset is compared with the&#xD;
-               old subset. Un contains the unit(s) present in the new&#xD;
-               subset but not in the old one Un(1,2) for example contains&#xD;
-               the unit included in step init+1 Un(end,2) contains the&#xD;
-               units included in the final step of the search.</Description>
+               <Description>(n-init) x 11 matrix which contains the unit(s) included in the subset at each step of the fwd search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one Un(1,2) for example contains the unit included in step init+1 Un(end,2) contains the units included in the final step of the search.</Description>
             </ItemCell>
             <ItemCell>
                <Value>y</Value>
-               <Description>A vector with n elements that contains the response&#xD;
-               variable which has been used.</Description>
+               <Description>A vector with n elements that contains the response variable which has been used.</Description>
             </ItemCell>
             <ItemCell>
                <Value>X</Value>
-               <Description>Data matrix of explanatory variables&#xD;
-               which has been used (it also contains the column of ones if&#xD;
-               input option intercept was missing or equal to 1).</Description>
+               <Description>Data matrix of explanatory variables which has been used (it also contains the column of ones if input option intercept was missing or equal to 1).</Description>
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
                <Description>string FSRBeda.</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson A.C., Corbellini A. and Riani M. (2015), Robust Bayesian&#xD;
-   Regression, submitted</Item>
+      <Item>Atkinson A.C., Corbellini A. and Riani M. (2015), Robust Bayesian Regression, submitted</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRB</Item>
@@ -370,448 +279,380 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSRBeda with all default options.</Title>
-         <Desc>&#xD;
-     Common part to all examples: load Houses Price Dataset.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Common part to all examples: load Houses Price Dataset.</ItemCell>
+         </Desc>
          <MATLABcode>
-    load hprice.txt;&#xD;
-    &#xD;
-    % setup parameters&#xD;
-    n=size(hprice,1);&#xD;
-    y=hprice(:,1);&#xD;
-    X=hprice(:,2:5);&#xD;
-    [out]=FSRBeda(y,X)&#xD;</MATLABcode>
+            <ItemCell>load hprice.txt;</ItemCell>
+            <ItemCell/>
+            <ItemCell>% setup parameters</ItemCell>
+            <ItemCell>n=size(hprice,1);</ItemCell>
+            <ItemCell>y=hprice(:,1);</ItemCell>
+            <ItemCell>X=hprice(:,2:5);</ItemCell>
+            <ItemCell>[out]=FSRBeda(y,X)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>FSRBeda with optional arguments.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    load hprice.txt;&#xD;
-    &#xD;
-    % setup parameters&#xD;
-    n=size(hprice,1);&#xD;
-    y=hprice(:,1);&#xD;
-    X=hprice(:,2:5);&#xD;
-    &#xD;
-    bayes=struct;&#xD;
-    n0=5;&#xD;
-    bayes.n0=n0;&#xD;
-&#xD;
-    % set \beta components&#xD;
-    beta0=0*ones(5,1);&#xD;
-    beta0(2,1)=10;&#xD;
-    beta0(3,1)=5000;&#xD;
-    beta0(4,1)=10000;&#xD;
-    beta0(5,1)=10000;&#xD;
-    bayes.beta0=beta0;&#xD;
-&#xD;
-    % \tau&#xD;
-    s02=1/4.0e-8;&#xD;
-    tau0=1/s02;&#xD;
-    bayes.tau0=tau0;&#xD;
-&#xD;
-    % R prior settings&#xD;
-    R=2.4*eye(5);&#xD;
-    R(2,2)=6e-7;&#xD;
-    R(3,3)=.15;&#xD;
-    R(4,4)=.6;&#xD;
-    R(5,5)=.6;&#xD;
-    R=inv(R);&#xD;
-    bayes.R=R;&#xD;
-    [out]=FSRBeda(y,X,'bayes',bayes)    &#xD;</MATLABcode>
+            <ItemCell>load hprice.txt;</ItemCell>
+            <ItemCell/>
+            <ItemCell>% setup parameters</ItemCell>
+            <ItemCell>n=size(hprice,1);</ItemCell>
+            <ItemCell>y=hprice(:,1);</ItemCell>
+            <ItemCell>X=hprice(:,2:5);</ItemCell>
+            <ItemCell/>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>n0=5;</ItemCell>
+            <ItemCell>bayes.n0=n0;</ItemCell>
+            <ItemCell>% set \beta components</ItemCell>
+            <ItemCell>beta0=0*ones(5,1);</ItemCell>
+            <ItemCell>beta0(2,1)=10;</ItemCell>
+            <ItemCell>beta0(3,1)=5000;</ItemCell>
+            <ItemCell>beta0(4,1)=10000;</ItemCell>
+            <ItemCell>beta0(5,1)=10000;</ItemCell>
+            <ItemCell>bayes.beta0=beta0;</ItemCell>
+            <ItemCell>% \tau</ItemCell>
+            <ItemCell>s02=1/4.0e-8;</ItemCell>
+            <ItemCell>tau0=1/s02;</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>% R prior settings</ItemCell>
+            <ItemCell>R=2.4*eye(5);</ItemCell>
+            <ItemCell>R(2,2)=6e-7;</ItemCell>
+            <ItemCell>R(3,3)=.15;</ItemCell>
+            <ItemCell>R(4,4)=.6;</ItemCell>
+            <ItemCell>R(5,5)=.6;</ItemCell>
+            <ItemCell>R=inv(R);</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>[out]=FSRBeda(y,X,'bayes',bayes)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Plot posterior estimates of beta and sigma2.</Title>
-         <Desc>&#xD;
-     Plot posterior estimates of beta and sigma2 in the interval (subset size) [20 125].&#xD;
-     In this example for the house price data we monitor the forward plots&#xD;
-     of the parameters of the linear model adding 95% and 99% HPD&#xD;
-     regions. The first 8 panels refer to the elements of $\beta_1$&#xD;
-     and the bottom right-hand panel refer to the estimate of sigma2.&#xD;
-     The horizontal lines correspond to prior values    &#xD;
-     The vertical lines refer to the step prior to the introduction of the first outlier&#xD;
-     init = point to start monitoring diagnostics along the FS&#xD;
-     run routine FSRB in order to find the outliers automatically&#xD;</Desc>
+         <Desc>
+            <ItemCell>Plot posterior estimates of beta and sigma2 in the interval (subset size) [20 125].</ItemCell>
+            <ItemCell>In this example for the house price data we monitor the forward plots of the parameters of the linear model adding 95% and 99% HPD regions. The first 8 panels refer to the elements of $\beta_1$ and the bottom right-hand panel refer to the estimate of sigma2.</ItemCell>
+            <ItemCell>The horizontal lines correspond to prior values The vertical lines refer to the step prior to the introduction of the first outlier init = point to start monitoring diagnostics along the FS run routine FSRB in order to find the outliers automatically</ItemCell>
+         </Desc>
          <MATLABcode>
-    load hprice.txt;&#xD;
-    &#xD;
-    % setup parameters&#xD;
-    n=size(hprice,1);&#xD;
-    y=hprice(:,1);&#xD;
-    X=hprice(:,2:5);&#xD;
-    &#xD;
-    bayes=struct;&#xD;
-    n0=5;&#xD;
-    bayes.n0=n0;&#xD;
-&#xD;
-    % set \beta components&#xD;
-    beta0=0*ones(5,1);&#xD;
-    beta0(2,1)=10;&#xD;
-    beta0(3,1)=5000;&#xD;
-    beta0(4,1)=10000;&#xD;
-    beta0(5,1)=10000;&#xD;
-    bayes.beta0=beta0;&#xD;
-&#xD;
-    % \tau&#xD;
-    s02=1/4.0e-8;&#xD;
-    tau0=1/s02;&#xD;
-    bayes.tau0=tau0;&#xD;
-&#xD;
-    % R prior settings&#xD;
-    R=2.4*eye(5);&#xD;
-    R(2,2)=6e-7;&#xD;
-    R(3,3)=.15;&#xD;
-    R(4,4)=.6;&#xD;
-    R(5,5)=.6;&#xD;
-    R=inv(R);&#xD;
-    bayes.R=R;       &#xD;
-    outBA=FSRB(y,X,'bayes',bayes', 'plots',0);&#xD;
-    dout=n-length(outBA.ListOut);&#xD;
-    &#xD;
-    % init = initial point to start monitoring&#xD;
-    init=20;&#xD;
-    xlimL=init; % lower value of xlim&#xD;
-    xlimU=125;  % upper value of xlim &#xD;
-&#xD;
-    outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);&#xD;
-&#xD;
-    % Set font size, line width and line style&#xD;
-    figure;&#xD;
-    lwd=2.5;&#xD;
-    FontSize=14;&#xD;
-    linst={'-','--',':','-.','--',':'};&#xD;
-&#xD;
-    for j=1:5&#xD;
-        my_subplot=subplot(3,2,j);&#xD;
-        hold('on')&#xD;
-        % plot 95% and 99% HPD  trajectories&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')&#xD;
-&#xD;
-        % plot posterior estimate of beta1_j&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')&#xD;
-&#xD;
-        % Add the horizontal line which corresponds to prior values&#xD;
-        xL = get(my_subplot,'XLim');&#xD;
-        line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-        % Set ylim&#xD;
-        ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);&#xD;
-        ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);&#xD;
-        ylim([ylimL ylimU])&#xD;
-&#xD;
-        % Add vertical line in correspondence of the step prior to the&#xD;
-        % entry of the first outlier&#xD;
-        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-        % Set xlim&#xD;
-        xlim([xlimL xlimU]);&#xD;
-&#xD;
-&#xD;
-        ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);&#xD;
-        set(gca,'FontSize',FontSize);&#xD;
-        if j&amp;gt;4&#xD;
-            xlabel('Subset size m','FontSize',FontSize);&#xD;
-        end&#xD;
-    end&#xD;
-&#xD;
-    % Subplot associated with the monitoring of sigma^2&#xD;
-    subplot(3,2,6);&#xD;
-    %figure()&#xD;
-    hold('on')&#xD;
-    % 99%&#xD;
-    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')&#xD;
-    % 95%&#xD;
-    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')&#xD;
-    % Plot 1\/tau1&#xD;
-    plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')&#xD;
-    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);&#xD;
-    set(gca,'FontSize',FontSize);&#xD;
-&#xD;
-    % Set ylim&#xD;
-    ylimU=max([outBAeda.sigma21HPD(:,5); s02]);&#xD;
-    ylimL=min([outBAeda.sigma21HPD(:,4); s02]);&#xD;
-    ylim([ylimL ylimU])&#xD;
-&#xD;
-    % Set xlim&#xD;
-    xlim([xlimL xlimU]);&#xD;
-    xL = get(my_subplot,'XLim');&#xD;
-&#xD;
-    % Add the horizontal line which corresponds to prior value of $\sigma^2$&#xD;
-    line(xL,[s02 s02],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-    % Add vertical line in correspondence of the step prior to the&#xD;
-    % entry of the first outlier&#xD;
-    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);&#xD;
-    xlabel('Subset size m','FontSize',FontSize);&#xD;
-&#xD;
-    % Add multiple title&#xD;
-    suplabel(['Housing data; forward plots in the interval ['...&#xD;
-        num2str(xlimL) ',' num2str(xlimU) ...&#xD;
-        ']  of HPD regions for \beta and \sigma^2'],'t')&#xD;</MATLABcode>
+            <ItemCell>load hprice.txt;</ItemCell>
+            <ItemCell/>
+            <ItemCell>% setup parameters</ItemCell>
+            <ItemCell>n=size(hprice,1);</ItemCell>
+            <ItemCell>y=hprice(:,1);</ItemCell>
+            <ItemCell>X=hprice(:,2:5);</ItemCell>
+            <ItemCell/>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>n0=5;</ItemCell>
+            <ItemCell>bayes.n0=n0;</ItemCell>
+            <ItemCell>% set \beta components</ItemCell>
+            <ItemCell>beta0=0*ones(5,1);</ItemCell>
+            <ItemCell>beta0(2,1)=10;</ItemCell>
+            <ItemCell>beta0(3,1)=5000;</ItemCell>
+            <ItemCell>beta0(4,1)=10000;</ItemCell>
+            <ItemCell>beta0(5,1)=10000;</ItemCell>
+            <ItemCell>bayes.beta0=beta0;</ItemCell>
+            <ItemCell>% \tau</ItemCell>
+            <ItemCell>s02=1/4.0e-8;</ItemCell>
+            <ItemCell>tau0=1/s02;</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>% R prior settings</ItemCell>
+            <ItemCell>R=2.4*eye(5);</ItemCell>
+            <ItemCell>R(2,2)=6e-7;</ItemCell>
+            <ItemCell>R(3,3)=.15;</ItemCell>
+            <ItemCell>R(4,4)=.6;</ItemCell>
+            <ItemCell>R(5,5)=.6;</ItemCell>
+            <ItemCell>R=inv(R);</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>outBA=FSRB(y,X,'bayes',bayes', 'plots',0);</ItemCell>
+            <ItemCell>dout=n-length(outBA.ListOut);</ItemCell>
+            <ItemCell/>
+            <ItemCell>% init = initial point to start monitoring</ItemCell>
+            <ItemCell>init=20;</ItemCell>
+            <ItemCell>xlimL=init; % lower value of xlim</ItemCell>
+            <ItemCell>xlimU=125;  % upper value of xlim</ItemCell>
+            <ItemCell>outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);</ItemCell>
+            <ItemCell>% Set font size, line width and line style</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>lwd=2.5;</ItemCell>
+            <ItemCell>FontSize=14;</ItemCell>
+            <ItemCell>linst={'-','--',':','-.','--',':'};</ItemCell>
+            <ItemCell>for j=1:5</ItemCell>
+            <ItemCell>my_subplot=subplot(3,2,j);</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% plot 95% and 99% HPD  trajectories</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>% plot posterior estimate of beta1_j</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>% Add the horizontal line which corresponds to prior values</ItemCell>
+            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>% Set ylim</ItemCell>
+            <ItemCell>ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
+            <ItemCell>ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
+            <ItemCell>ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>% entry of the first outlier</ItemCell>
+            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>% Set xlim</ItemCell>
+            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>if j&amp;gt;4</ItemCell>
+            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Subplot associated with the monitoring of sigma^2</ItemCell>
+            <ItemCell>subplot(3,2,6);</ItemCell>
+            <ItemCell>%figure()</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% 99%</ItemCell>
+            <ItemCell>plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>% 95%</ItemCell>
+            <ItemCell>plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>% Plot 1\/tau1</ItemCell>
+            <ItemCell>plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>% Set ylim</ItemCell>
+            <ItemCell>ylimU=max([outBAeda.sigma21HPD(:,5); s02]);</ItemCell>
+            <ItemCell>ylimL=min([outBAeda.sigma21HPD(:,4); s02]);</ItemCell>
+            <ItemCell>ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>% Set xlim</ItemCell>
+            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>% Add the horizontal line which corresponds to prior value of $\sigma^2$</ItemCell>
+            <ItemCell>line(xL,[s02 s02],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>% entry of the first outlier</ItemCell>
+            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>% Add multiple title</ItemCell>
+            <ItemCell>suplabel(['Housing data; forward plots in the interval ['...</ItemCell>
+            <ItemCell>num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
+            <ItemCell>']  of HPD regions for \beta and \sigma^2'],'t')</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Plot posterior estimates of beta and sigma2 in the last steps.</Title>
-         <Desc>&#xD;
-     Plot posterior estimates of beta and sigma2 in the interval (subset size) [250 n+1].&#xD;
-     In this example for the house price data we monitor the forward plots&#xD;
-     of the parameters of the linear model adding 95% and 99% HPD&#xD;
-     regions. The first 8 panels refer to the elements of $\beta_1$&#xD;
-     and the bottom right-hand panel refer to the estimate of sigma2.&#xD;
-     The horizontal lines correspond to prior values    &#xD;
-     The vertical lines refer to the step prior to the introduction of the first outlier&#xD;
-     init = point to start monitoring diagnostics along the FS&#xD;
-     run routine FSRB in order to find the outliers automatically&#xD;</Desc>
+         <Desc>
+            <ItemCell>Plot posterior estimates of beta and sigma2 in the interval (subset size) [250 n+1].</ItemCell>
+            <ItemCell>In this example for the house price data we monitor the forward plots of the parameters of the linear model adding 95% and 99% HPD regions. The first 8 panels refer to the elements of $\beta_1$ and the bottom right-hand panel refer to the estimate of sigma2.</ItemCell>
+            <ItemCell>The horizontal lines correspond to prior values The vertical lines refer to the step prior to the introduction of the first outlier init = point to start monitoring diagnostics along the FS run routine FSRB in order to find the outliers automatically</ItemCell>
+         </Desc>
          <MATLABcode>
-    load hprice.txt;&#xD;
-    &#xD;
-    % setup parameters&#xD;
-    n=size(hprice,1);&#xD;
-    y=hprice(:,1);&#xD;
-    X=hprice(:,2:5);&#xD;
-    &#xD;
-    bayes=struct;&#xD;
-    n0=5;&#xD;
-    bayes.n0=n0;&#xD;
-&#xD;
-    % set \beta components&#xD;
-    beta0=0*ones(5,1);&#xD;
-    beta0(2,1)=10;&#xD;
-    beta0(3,1)=5000;&#xD;
-    beta0(4,1)=10000;&#xD;
-    beta0(5,1)=10000;&#xD;
-    bayes.beta0=beta0;&#xD;
-&#xD;
-    % \tau&#xD;
-    s02=1/4.0e-8;&#xD;
-    tau0=1/s02;&#xD;
-    bayes.tau0=tau0;&#xD;
-&#xD;
-    % R prior settings&#xD;
-    R=2.4*eye(5);&#xD;
-    R(2,2)=6e-7;&#xD;
-    R(3,3)=.15;&#xD;
-    R(4,4)=.6;&#xD;
-    R(5,5)=.6;&#xD;
-    R=inv(R);&#xD;
-    bayes.R=R;&#xD;
-    outBA=FSRB(y,X,'bayes',bayes', 'plots',0);&#xD;
-    dout=n-length(outBA.ListOut);&#xD;
-    &#xD;
-    % init = initial point to start monitoring&#xD;
-    init=250;&#xD;
-    xlimL=init; % lower value fo xlim&#xD;
-    xlimU=n+1;  % upper value of xlim &#xD;
-&#xD;
-    outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);&#xD;
-&#xD;
-    % Set font size, line width and line style&#xD;
-    figure;&#xD;
-    lwd=2.5;&#xD;
-    FontSize=14;&#xD;
-    linst={'-','--',':','-.','--',':'};&#xD;
-&#xD;
-    for j=1:5&#xD;
-        my_subplot=subplot(3,2,j);&#xD;
-        hold('on')&#xD;
-        % plot 95% and 99% HPD  trajectories&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')&#xD;
-&#xD;
-        % plot posterior estimate of beta1_j&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')&#xD;
-&#xD;
-        % Add the horizontal line which corresponds to prior values&#xD;
-        xL = get(my_subplot,'XLim');&#xD;
-        line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-        % Add vertical line in correspondence of the step prior to the&#xD;
-        % entry of the first outlier&#xD;
-        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-        % Set ylim&#xD;
-        ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);&#xD;
-        ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);&#xD;
-        ylim([ylimL ylimU])&#xD;
-&#xD;
-        % Set xlim&#xD;
-        xlim([xlimL xlimU]);&#xD;
-&#xD;
-&#xD;
-        ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);&#xD;
-        set(gca,'FontSize',FontSize);&#xD;
-        if j&amp;gt;4&#xD;
-            xlabel('Subset size m','FontSize',FontSize);&#xD;
-        end&#xD;
-    end&#xD;
-&#xD;
-    % Subplot associated with the monitoring of sigma^2&#xD;
-    subplot(3,2,6);&#xD;
-    %figure()&#xD;
-    hold('on')&#xD;
-    % 99%&#xD;
-    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')&#xD;
-    % 95%&#xD;
-    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')&#xD;
-    % Plot 1/tau1&#xD;
-    plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')&#xD;
-    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);&#xD;
-    set(gca,'FontSize',FontSize);&#xD;
-&#xD;
-    % Set ylim&#xD;
-    ylimU=max([outBAeda.sigma21HPD(:,5); s02]);&#xD;
-    ylimL=min([outBAeda.sigma21HPD(:,4); s02]);&#xD;
-    ylim([ylimL ylimU])&#xD;
-&#xD;
-    % Set xlim&#xD;
-    xlim([xlimL xlimU]);&#xD;
-    xL = get(my_subplot,'XLim');&#xD;
-&#xD;
-    % Add the horizontal line which corresponds to prior value of $\sigma^2$&#xD;
-    line(xL,[s02 s02],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-    % Add vertical line in correspondence of the step prior to the&#xD;
-    % entry of the first outlier&#xD;
-    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);&#xD;
-    xlabel('Subset size m','FontSize',FontSize);&#xD;
-&#xD;
-    % Add multiple title&#xD;
-    suplabel(['Housing data; forward plots in the interval ['...&#xD;
-        num2str(xlimL) ',' num2str(xlimU) ...&#xD;
-        ']  of HPD regions for \beta and \sigma^2'],'t')&#xD;</MATLABcode>
+            <ItemCell>load hprice.txt;</ItemCell>
+            <ItemCell/>
+            <ItemCell>% setup parameters</ItemCell>
+            <ItemCell>n=size(hprice,1);</ItemCell>
+            <ItemCell>y=hprice(:,1);</ItemCell>
+            <ItemCell>X=hprice(:,2:5);</ItemCell>
+            <ItemCell/>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>n0=5;</ItemCell>
+            <ItemCell>bayes.n0=n0;</ItemCell>
+            <ItemCell>% set \beta components</ItemCell>
+            <ItemCell>beta0=0*ones(5,1);</ItemCell>
+            <ItemCell>beta0(2,1)=10;</ItemCell>
+            <ItemCell>beta0(3,1)=5000;</ItemCell>
+            <ItemCell>beta0(4,1)=10000;</ItemCell>
+            <ItemCell>beta0(5,1)=10000;</ItemCell>
+            <ItemCell>bayes.beta0=beta0;</ItemCell>
+            <ItemCell>% \tau</ItemCell>
+            <ItemCell>s02=1/4.0e-8;</ItemCell>
+            <ItemCell>tau0=1/s02;</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>% R prior settings</ItemCell>
+            <ItemCell>R=2.4*eye(5);</ItemCell>
+            <ItemCell>R(2,2)=6e-7;</ItemCell>
+            <ItemCell>R(3,3)=.15;</ItemCell>
+            <ItemCell>R(4,4)=.6;</ItemCell>
+            <ItemCell>R(5,5)=.6;</ItemCell>
+            <ItemCell>R=inv(R);</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>outBA=FSRB(y,X,'bayes',bayes', 'plots',0);</ItemCell>
+            <ItemCell>dout=n-length(outBA.ListOut);</ItemCell>
+            <ItemCell/>
+            <ItemCell>% init = initial point to start monitoring</ItemCell>
+            <ItemCell>init=250;</ItemCell>
+            <ItemCell>xlimL=init; % lower value fo xlim</ItemCell>
+            <ItemCell>xlimU=n+1;  % upper value of xlim</ItemCell>
+            <ItemCell>outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);</ItemCell>
+            <ItemCell>% Set font size, line width and line style</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>lwd=2.5;</ItemCell>
+            <ItemCell>FontSize=14;</ItemCell>
+            <ItemCell>linst={'-','--',':','-.','--',':'};</ItemCell>
+            <ItemCell>for j=1:5</ItemCell>
+            <ItemCell>my_subplot=subplot(3,2,j);</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% plot 95% and 99% HPD  trajectories</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>% plot posterior estimate of beta1_j</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>% Add the horizontal line which corresponds to prior values</ItemCell>
+            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>% entry of the first outlier</ItemCell>
+            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>% Set ylim</ItemCell>
+            <ItemCell>ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
+            <ItemCell>ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
+            <ItemCell>ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>% Set xlim</ItemCell>
+            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>if j&amp;gt;4</ItemCell>
+            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Subplot associated with the monitoring of sigma^2</ItemCell>
+            <ItemCell>subplot(3,2,6);</ItemCell>
+            <ItemCell>%figure()</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% 99%</ItemCell>
+            <ItemCell>plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>% 95%</ItemCell>
+            <ItemCell>plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>% Plot 1/tau1</ItemCell>
+            <ItemCell>plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>% Set ylim</ItemCell>
+            <ItemCell>ylimU=max([outBAeda.sigma21HPD(:,5); s02]);</ItemCell>
+            <ItemCell>ylimL=min([outBAeda.sigma21HPD(:,4); s02]);</ItemCell>
+            <ItemCell>ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>% Set xlim</ItemCell>
+            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>% Add the horizontal line which corresponds to prior value of $\sigma^2$</ItemCell>
+            <ItemCell>line(xL,[s02 s02],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>% entry of the first outlier</ItemCell>
+            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>% Add multiple title</ItemCell>
+            <ItemCell>suplabel(['Housing data; forward plots in the interval ['...</ItemCell>
+            <ItemCell>num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
+            <ItemCell>']  of HPD regions for \beta and \sigma^2'],'t')</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Plot of HPDI for BankProfit data.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    XX=load('BankProfit.txt');&#xD;
-    R=load('BankProfitR.txt');&#xD;
-&#xD;
-    X=XX(:,1:end-1);&#xD;
-    y=XX(:,end);&#xD;
-    % Load prior information&#xD;
-    beta0=zeros(10,1);&#xD;
-    beta0(1,1)=-0.5;        % &#xD;
-    beta0(2,1)=9.1;         % Number of products (NUMPRO)&#xD;
-    beta0(3,1)=0.001;       % direct revenues  (DIRREV)&#xD;
-    beta0(4,1)=0.0002;      % indirect revenues   (INDREV)&#xD;
-    beta0(5,1)=0.002;       %  savings accounts   SAVACC&#xD;
-    beta0(6,1)=0.12;        %  number of operations   NUMOPE&#xD;
-    beta0(7,1)=0.0004;      %  total amount of operations  TOTOPE&#xD;
-    beta0(8,1)=-0.0004;     %  Bancomat POS&#xD;
-    beta0(9,1)=1.3;         %  Number of cards   NUMCAR&#xD;
-    beta0(10,1)=0.00004;    %  Amount in cards   TOTCAR&#xD;
-&#xD;
-    % \tau&#xD;
-    s02=10000;&#xD;
-    tau0=1/s02;&#xD;
-&#xD;
-&#xD;
-    % number of obs in which prior was based&#xD;
-    n0=1500;&#xD;
-&#xD;
-    bayes=struct;&#xD;
-    bayes.R=R;&#xD;
-    bayes.n0=n0;&#xD;
-    bayes.beta0=beta0;&#xD;
-    bayes.tau0=tau0;&#xD;
-    n=length(y);&#xD;
-&#xD;
-    % run routine FSRB in order to find the outliers automatically&#xD;
-    outBA=FSRB(y,X,'bayes',bayes', 'plots',0);&#xD;
-    dout=n-length(outBA.ListOut);&#xD;
-&#xD;
-    % init = point to start monitoring diagnostics along the FS&#xD;
-    init=1700;&#xD;
-    xlimL=init;&#xD;
-    xlimU=n+1;&#xD;
-&#xD;
-    outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);&#xD;
-    % Set font size, line width and line style&#xD;
-    figure;&#xD;
-    lwd=2.5;&#xD;
-    FontSize=14;&#xD;
-    linst={'-','--',':','-.','--',':'};&#xD;
-    nr=4;&#xD;
-    nc=3;&#xD;
-    for j=1:length(beta0)&#xD;
-        my_subplot=subplot(nr,nc,j);&#xD;
-        hold('on')&#xD;
-        % plot 95% and 99% HPD  trajectories&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')&#xD;
-&#xD;
-        % plot posterior estimate of beta1_j&#xD;
-        plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')&#xD;
-&#xD;
-        % Add the horizontal line which corresponds to prior values&#xD;
-        xL = get(my_subplot,'XLim');&#xD;
-        line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-&#xD;
-        % Set ylim&#xD;
-        ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);&#xD;
-        ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);&#xD;
-        ylim([ylimL ylimU])&#xD;
-&#xD;
-        % Set xlim&#xD;
-        xlim([xlimL xlimU]);&#xD;
-&#xD;
-            % Add vertical line in correspondence of the step prior to the&#xD;
-        % entry of the first outlier&#xD;
-        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-        ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);&#xD;
-        set(gca,'FontSize',FontSize);&#xD;
-        if j&amp;gt;nr*(nc-1)&#xD;
-            xlabel('Subset size m','FontSize',FontSize);&#xD;
-        end&#xD;
-    end&#xD;
-&#xD;
-    % Subplot associated with the monitoring of sigma^2&#xD;
-    subplot(4,3,11);&#xD;
-    %figure()&#xD;
-    hold('on')&#xD;
-    % 99%&#xD;
-    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')&#xD;
-    % 95%&#xD;
-    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')&#xD;
-    % Plot 1\/tau1&#xD;
-    plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')&#xD;
-    ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);&#xD;
-    set(gca,'FontSize',FontSize);&#xD;
-&#xD;
-    % Set ylim&#xD;
-    ylimU=max([outBAeda.sigma21HPD(:,5); s02]);&#xD;
-    ylimL=min([outBAeda.sigma21HPD(:,4); s02]);&#xD;
-    ylim([ylimL ylimU])&#xD;
-&#xD;
-    ylimL=8000;&#xD;
-    ylimU=14000;&#xD;
-    ylim([ylimL ylimU])&#xD;
-&#xD;
-    % Set xlim&#xD;
-    xlim([xlimL xlimU]);&#xD;
-    xL = get(my_subplot,'XLim');&#xD;
-&#xD;
-    % Add the horizontal line which corresponds to prior value of $\sigma^2$&#xD;
-    line(xL,[s02 s02],'Color','r','LineWidth',lwd);&#xD;
-&#xD;
-    % Add vertical line in correspondence of the step prior to the&#xD;
-    % entry of the first outlier&#xD;
-    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);&#xD;
-    xlabel('Subset size m','FontSize',FontSize);&#xD;
-&#xD;
-&#xD;
-    % Add multiple title&#xD;
-    suplabel(['Bank profit data; forward plots in the interval ['...&#xD;
-        num2str(xlimL) ',' num2str(xlimU) ...&#xD;
-        ']  of HPD regions for \beta and \sigma^2'],'t')&#xD;</MATLABcode>
+            <ItemCell>XX=load('BankProfit.txt');</ItemCell>
+            <ItemCell>R=load('BankProfitR.txt');</ItemCell>
+            <ItemCell>X=XX(:,1:end-1);</ItemCell>
+            <ItemCell>y=XX(:,end);</ItemCell>
+            <ItemCell>% Load prior information</ItemCell>
+            <ItemCell>beta0=zeros(10,1);</ItemCell>
+            <ItemCell>beta0(1,1)=-0.5;        %</ItemCell>
+            <ItemCell>beta0(2,1)=9.1;         % Number of products (NUMPRO)</ItemCell>
+            <ItemCell>beta0(3,1)=0.001;       % direct revenues  (DIRREV)</ItemCell>
+            <ItemCell>beta0(4,1)=0.0002;      % indirect revenues   (INDREV)</ItemCell>
+            <ItemCell>beta0(5,1)=0.002;       %  savings accounts   SAVACC</ItemCell>
+            <ItemCell>beta0(6,1)=0.12;        %  number of operations   NUMOPE</ItemCell>
+            <ItemCell>beta0(7,1)=0.0004;      %  total amount of operations  TOTOPE</ItemCell>
+            <ItemCell>beta0(8,1)=-0.0004;     %  Bancomat POS</ItemCell>
+            <ItemCell>beta0(9,1)=1.3;         %  Number of cards   NUMCAR</ItemCell>
+            <ItemCell>beta0(10,1)=0.00004;    %  Amount in cards   TOTCAR</ItemCell>
+            <ItemCell>% \tau</ItemCell>
+            <ItemCell>s02=10000;</ItemCell>
+            <ItemCell>tau0=1/s02;</ItemCell>
+            <ItemCell>% number of obs in which prior was based</ItemCell>
+            <ItemCell>n0=1500;</ItemCell>
+            <ItemCell>bayes=struct;</ItemCell>
+            <ItemCell>bayes.R=R;</ItemCell>
+            <ItemCell>bayes.n0=n0;</ItemCell>
+            <ItemCell>bayes.beta0=beta0;</ItemCell>
+            <ItemCell>bayes.tau0=tau0;</ItemCell>
+            <ItemCell>n=length(y);</ItemCell>
+            <ItemCell>% run routine FSRB in order to find the outliers automatically</ItemCell>
+            <ItemCell>outBA=FSRB(y,X,'bayes',bayes', 'plots',0);</ItemCell>
+            <ItemCell>dout=n-length(outBA.ListOut);</ItemCell>
+            <ItemCell>% init = point to start monitoring diagnostics along the FS</ItemCell>
+            <ItemCell>init=1700;</ItemCell>
+            <ItemCell>xlimL=init;</ItemCell>
+            <ItemCell>xlimU=n+1;</ItemCell>
+            <ItemCell>outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);</ItemCell>
+            <ItemCell>% Set font size, line width and line style</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>lwd=2.5;</ItemCell>
+            <ItemCell>FontSize=14;</ItemCell>
+            <ItemCell>linst={'-','--',':','-.','--',':'};</ItemCell>
+            <ItemCell>nr=4;</ItemCell>
+            <ItemCell>nc=3;</ItemCell>
+            <ItemCell>for j=1:length(beta0)</ItemCell>
+            <ItemCell>my_subplot=subplot(nr,nc,j);</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% plot 95% and 99% HPD  trajectories</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>% plot posterior estimate of beta1_j</ItemCell>
+            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>% Add the horizontal line which corresponds to prior values</ItemCell>
+            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>% Set ylim</ItemCell>
+            <ItemCell>ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
+            <ItemCell>ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
+            <ItemCell>ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>% Set xlim</ItemCell>
+            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>% entry of the first outlier</ItemCell>
+            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>if j&amp;gt;nr*(nc-1)</ItemCell>
+            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Subplot associated with the monitoring of sigma^2</ItemCell>
+            <ItemCell>subplot(4,3,11);</ItemCell>
+            <ItemCell>%figure()</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>% 99%</ItemCell>
+            <ItemCell>plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>% 95%</ItemCell>
+            <ItemCell>plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>% Plot 1\/tau1</ItemCell>
+            <ItemCell>plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>% Set ylim</ItemCell>
+            <ItemCell>ylimU=max([outBAeda.sigma21HPD(:,5); s02]);</ItemCell>
+            <ItemCell>ylimL=min([outBAeda.sigma21HPD(:,4); s02]);</ItemCell>
+            <ItemCell>ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>ylimL=8000;</ItemCell>
+            <ItemCell>ylimU=14000;</ItemCell>
+            <ItemCell>ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>% Set xlim</ItemCell>
+            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>% Add the horizontal line which corresponds to prior value of $\sigma^2$</ItemCell>
+            <ItemCell>line(xL,[s02 s02],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>% entry of the first outlier</ItemCell>
+            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>% Add multiple title</ItemCell>
+            <ItemCell>suplabel(['Bank profit data; forward plots in the interval ['...</ItemCell>
+            <ItemCell>num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
+            <ItemCell>']  of HPD regions for \beta and \sigma^2'],'t')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

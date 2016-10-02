@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HYPpsix</Title>
-   <Purpose><!--This is the second line of the .m file-->HYPpsix computes psi function for hyperbolic tangent estimator times x</Purpose>
+   <Purpose><!--This is the second line of the .m file-->HYPpsix computes psi function for hyperbolic tangent estimator times x
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>u</Name>
-         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>n x 1&#xD;
-               vector containing residuals or Mahalanobis distances&#xD;
-               for the n units of the sample</LongDesc>
+         <ShortDesc>scaled residuals or Mahalanobis distances.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>n x 1 vector containing residuals or Mahalanobis distances for the n units of the sample</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,21 +17,15 @@
       </Item>
       <Item>
          <Name>cktuning</Name>
-         <ShortDesc>tuning parameters</ShortDesc>
-         <TypeInd>Vector of length 2 or of length 5</TypeInd>
-         <LongDesc>cktuning specifies the value of the tuning&#xD;
-                constant c (scalar greater than 0 which controls the&#xD;
-                robustness/efficiency of the estimator)&#xD;
-                and the prefixed value k (sup of the&#xD;
-                change-of-variance sensitivity) and the values of&#xD;
-                parameters A, B and d.&#xD;
-                cktuning(1) = c;&#xD;
-                cktuning(2) = k = supCVC(psi,x) x \in R;&#xD;
-                cktuning(3)=A;&#xD;
-                cktuning(4)=B;&#xD;
-                cktuning(5)=d;&#xD;
-                Remark - if length(cktuning)==2 values of A, B and d will be&#xD;
-                computed automatically</LongDesc>
+         <ShortDesc>tuning parameters.</ShortDesc>
+         <TypeInd>Vector of length 2 or of length 5.</TypeInd>
+         <LongDesc>cktuning specifies the value of the tuning constant c (scalar greater than 0 which controls the robustness/efficiency of the estimator) and the prefixed value k (sup of the change-of-variance sensitivity) and the values of parameters A, B and d.
+cktuning(1) = c;
+cktuning(2) = k = supCVC(psi,x) x \in R;
+cktuning(3)=A;
+cktuning(4)=B;
+cktuning(5)=d;
+Remark - if length(cktuning)==2 values of A, B and d will be computed automatically</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -43,40 +36,24 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>psiHYPx</Name>
-         <ShortDesc> Vector</ShortDesc>
+         <ShortDesc>Vector</ShortDesc>
          <TypeInd>psi(u)*u function.</TypeInd>
-         <LongDesc>&#xD;
-                n x 1 vector which contains the values of hyperbolic&#xD;
-                psi(u)*u function associated to the residuals or Mahalanobis&#xD;
-                distances for the n units of the sample.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>n x 1 vector which contains the values of hyperbolic psi(u)*u function associated to the residuals or Mahalanobis distances for the n units of the sample.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- Function HYPpsix transforms vector $u$ as follows&#xD;
- &#xD;
- \[&#xD;
-  HYPpsix(u) = &#xD;
-  \left\{&#xD;
-    \begin{array}{cc}&#xD;
-  	 u^2 &amp;        |u| \leq  d \\&#xD;
- &#xD;
- \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) u &amp;&#xD;
- 		         	                 d \leq |u| &amp;lt;  c, \\&#xD;
-                0 &amp;                      |u| \geq c.&#xD;
- \end{array}&#xD;
-    \right.&#xD;
-  \]&#xD;
-  	It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c normpdf(c) &amp;lt;1$&#xD;
-&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HYPpsix transforms vector $u$ as follows
+\[
+HYPpsix(u) = \left\{ \begin{array}{cc} u^2 &amp; |u| \leq d \\
+\sqrt{A (k - 1)} \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) u &amp; d \leq |u| &amp;lt; c, \\
+0 &amp; |u| \geq c.
+\end{array} \right.
+\]
+It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c normpdf(c) &amp;lt;1$
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),&#xD;
- The Change-of-Variance Curve and Optimal Redescending M-Estimators,&#xD;
- Journal of the American Statistical Association , Vol. 76, No. 375,&#xD;
- pp. 643-648 (HRR)</Item>
+      <Item>Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBpsix</Item>
@@ -88,16 +65,15 @@
          <Title>plot of psi(x)*x for Hyperbolic estimator.</Title>
          <Desc> </Desc>
          <MATLABcode>
-&#xD;
-    % plot of psi(x)*x for Hyperbolic estimator.&#xD;
-    x=-9:0.1:9;&#xD;
-    ctuning=6;&#xD;
-    ktuning=4.5;&#xD;
-    psiHYPx=HYPpsix(x,[ctuning,ktuning]);&#xD;
-    plot(x,psiHYPx)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel('$\psi (x) \times x$','Interpreter','Latex')&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>% plot of psi(x)*x for Hyperbolic estimator.</ItemCell>
+            <ItemCell>x=-9:0.1:9;</ItemCell>
+            <ItemCell>ctuning=6;</ItemCell>
+            <ItemCell>ktuning=4.5;</ItemCell>
+            <ItemCell>psiHYPx=HYPpsix(x,[ctuning,ktuning]);</ItemCell>
+            <ItemCell>plot(x,psiHYPx)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$\psi (x) \times x$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->cabc</Title>
-   <Purpose><!--This is the second line of the .m file-->cabc closes all open figures except the one in foreground (the current)</Purpose>
+   <Purpose><!--This is the second line of the .m file-->cabc closes all open figures except the one in foreground (the current)
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION--></InpArgs>
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
@@ -16,29 +17,31 @@
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot sin, cos and atan in the interval 0 2pi.</Title>
          <Desc> </Desc>
          <MATLABcode>
-    x = 0:pi/1000:2*pi;&#xD;
-    plot(x,sin(x));&#xD;
-    figure&#xD;
-    plot(x,cos(x));&#xD;
-    figure&#xD;
-    plot(x,atan(x))&#xD;
-    cascade&#xD;
-    % Now highlight a figure and then digit&#xD;
-    cabc&#xD;
-    % All the other figures but the one which has been selected will be&#xD;
-    % closed&#xD;</MATLABcode>
-         <Exec>0</Exec>
+            <ItemCell>x = 0:pi/1000:2*pi;</ItemCell>
+            <ItemCell>plot(x,sin(x));</ItemCell>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>plot(x,cos(x));</ItemCell>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>plot(x,atan(x))</ItemCell>
+            <ItemCell>cascade</ItemCell>
+            <ItemCell>% Now highlight a figure and then digit</ItemCell>
+            <ItemCell>cabc</ItemCell>
+            <ItemCell>% All the other figures but the one which has been selected will be</ItemCell>
+            <ItemCell>% closed</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Use of routine cabc inside GUI brushRES.</Title>
          <Desc> </Desc>
          <MATLABcode>
-    brushRES&#xD;</MATLABcode>
+            <ItemCell>brushRES</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

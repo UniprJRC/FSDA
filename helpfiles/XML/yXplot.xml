@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->yXplot</Title>
-   <Purpose><!--This is the second line of the .m file-->yXplot produces an interactive scatterplot of y against each variable of X in the input dataset.</Purpose>
+   <Purpose><!--This is the second line of the .m file-->yXplot produces an interactive scatterplot of y against each variable of X in the input dataset.
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>Response variable</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>A vector with n elements that contains&#xD;
-       the response variable. y can be either a row or a column vector.</LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable. y can be either a row or a column vector.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,31 +17,10 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of&#xD;
-       dimension</ShortDesc>
-         <TypeInd>Rows of X represent observations, and columns&#xD;
-       represent variables</TypeInd>
-         <LongDesc>or a structure out containing the following fields&#xD;
-&#xD;
-               yXplot(out,varargin)&#xD;
-&#xD;
-       y   =   a vector containing the response&#xD;
-       X   =   a matrix containing the explanatory variables&#xD;
-&#xD;
-               If out contains just the two above fields the yXplot will&#xD;
-               be immediately created. On the other hand, if out also&#xD;
-               contains information about the search, it is possible to&#xD;
-               exploit the brushing (i.e. the automatic&#xD;
-               interaction with the other plots) and datatooltip&#xD;
-               possibilities&#xD;
-&#xD;
-       RES =   matrix containing the residuals monitored in each&#xD;
-               step of the forward search. Every row is associated with a&#xD;
-               residual (unit).&#xD;
-               This matrix can be created using function FSReda&#xD;
-               (compulsory argument)&#xD;
-       Un  =   matrix containing the order of entry of each unit&#xD;
-               (necessary if datatooltip is true or databrush is not empty)</LongDesc>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension.</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
+         <LongDesc>or a structure out containing the following fields yXplot(out,varargin) y = a vector containing the response X = a matrix containing the explanatory variables If out contains just the two above fields the yXplot will be immediately created. On the other hand, if out also contains information about the search, it is possible to exploit the brushing (i.e. the automatic interaction with the other plots) and datatooltip possibilities RES = matrix containing the residuals monitored in each step of the forward search. Every row is associated with a residual (unit).
+This matrix can be created using function FSReda (compulsory argument) Un = matrix containing the order of entry of each unit (necessary if datatooltip is true or databrush is not empty)</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -51,114 +30,69 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>group</Name>
-         <ShortDesc>identifier vector</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector with n elements, grouping variable that&#xD;
-                   determines the marker and color assigned to each point.&#xD;
-                   It can be a categorical variable, vector, string&#xD;
-                   matrix, or cell array of strings.&#xD;
-               </LongDesc>
-         <Example> group, &#xD;
-               </Example>
+         <ShortDesc>identifier vector.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector with n elements, grouping variable that determines the marker and color assigned to each point.
+It can be a categorical variable, vector, string matrix, or cell array of strings.</LongDesc>
+         <Example>group,</Example>
          <DataType>single or double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nameX</Name>
-         <ShortDesc>explanatory variables names</ShortDesc>
-         <TypeInd>Cell</TypeInd>
-         <LongDesc>Cell array of strings of length p containing the labels&#xD;
-                   of the varibles of the regression dataset. If it is empty&#xD;
-                 	(default) the sequence X1, ..., Xp will be created&#xD;
-                   automatically&#xD;
-               </LongDesc>
-         <Example> group, &#xD;
-               </Example>
+         <ShortDesc>explanatory variables names.</ShortDesc>
+         <TypeInd>Cell.</TypeInd>
+         <LongDesc>Cell array of strings of length p containing the labels of the varibles of the regression dataset. If it is empty (default) the sequence X1, ..., Xp will be created automatically</LongDesc>
+         <Example>group,</Example>
          <DataType>single or double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>namey</Name>
-         <ShortDesc>response variable name</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>Character containing the label of the response&#xD;
-                   </LongDesc>
-         <Example> 'namey','response'&#xD;
-                   </Example>
+         <ShortDesc>response variable name.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Character containing the label of the response</LongDesc>
+         <Example>'namey','response'</Example>
          <DataType>character</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ylim</Name>
-         <ShortDesc>y limits</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>vector with two elements controlling&#xD;
-                   minimum and maximum on the y axis. Default value is ''&#xD;
-                   (automatic scale)&#xD;
-                   </LongDesc>
-         <Example> 'ylim',[0 4]&#xD;
-                   </Example>
+         <ShortDesc>y limits.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>vector with two elements controlling minimum and maximum on the y axis. Default value is '' (automatic scale)</LongDesc>
+         <Example>'ylim',[0 4]</Example>
          <DataType>single or double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>xlim</Name>
-         <ShortDesc>x limits</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>vector with two elements controlling minimum and maximum&#xD;
-                   on the x axis. Default value is '' (automatic scale)&#xD;
-                   </LongDesc>
-         <Example> 'xlim',[0 4]&#xD;
-                   </Example>
+         <ShortDesc>x limits.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>vector with two elements controlling minimum and maximum on the x axis. Default value is '' (automatic scale)</LongDesc>
+         <Example>'xlim',[0 4]</Example>
          <DataType>single or double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>tag</Name>
-         <ShortDesc>plot tag</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>string which identifies the handle of the plot which&#xD;
-                   is about to be created. The default is to use tag&#xD;
-                   'pl_yX'. Notice that if the program finds a plot which&#xD;
-                   has a tag equal to the one specified by the user, then&#xD;
-                   the output of the new plot overwrites the existing one&#xD;
-                   in the same window else a new window is created&#xD;
-                   </LongDesc>
-         <Example> 'tag','myplot'&#xD;
-                   </Example>
+         <ShortDesc>plot tag.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>string which identifies the handle of the plot which is about to be created. The default is to use tag 'pl_yX'. Notice that if the program finds a plot which has a tag equal to the one specified by the user, then the output of the new plot overwrites the existing one in the same window else a new window is created</LongDesc>
+         <Example>'tag','myplot'</Example>
          <DataType>character</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>selunit</Name>
-         <ShortDesc>unit labelling</ShortDesc>
-         <TypeInd>Cell array of strings, string, or numeric vector for&#xD;
-                   labelling units</TypeInd>
-         <LongDesc>If out is a structure the threshold is&#xD;
-                   associated with the trajectories of the residuals&#xD;
-                   monitored along the search else it refers to the values&#xD;
-                   of the response variable.&#xD;
-                   If it is a cell array of strings, only&#xD;
-                   the lines associated with the units that in at least&#xD;
-                   one step of the search had a residual smaller than&#xD;
-                   selunit{1} or greater than selline{2} will have a&#xD;
-                   textbox.&#xD;
-                   If it is a string it specifies the threshold&#xD;
-                   above which labels have to be put. For example&#xD;
-                   selunit='2.6' means that the text labels are written&#xD;
-                   only for the units which have in at least one step of&#xD;
-                   the search a value of the scaled residual greater than&#xD;
-                   2.6 in absolute value.&#xD;
-                   If it is a numeric vector it&#xD;
-                   contains the list of the units for which it is&#xD;
-                   necessary to put the text labels.&#xD;
-                   The default value of&#xD;
-                   selunit is string '2.5' if the input is a structure&#xD;
-                   else it is an empty value if if the input is matrices y&#xD;
-                   and X.&#xD;
-                   </LongDesc>
-         <Example> 'selunit','3'&#xD;
-                   </Example>
+         <ShortDesc>unit labelling.</ShortDesc>
+         <TypeInd>Cell array of strings, string, or numeric vector for labelling units.</TypeInd>
+         <LongDesc>If out is a structure the threshold is associated with the trajectories of the residuals monitored along the search else it refers to the values of the response variable.
+If it is a cell array of strings, only the lines associated with the units that in at least one step of the search had a residual smaller than selunit{1} or greater than selline{2} will have a textbox.
+If it is a string it specifies the threshold above which labels have to be put. For example selunit='2.6' means that the text labels are written only for the units which have in at least one step of the search a value of the scaled residual greater than 2.6 in absolute value.
+If it is a numeric vector it contains the list of the units for which it is necessary to put the text labels.
+The default value of selunit is string '2.5' if the input is a structure else it is an empty value if if the input is matrices y and X.</LongDesc>
+         <Example>'selunit','3'</Example>
          <DataType>numeric or character&#xD;
 &#xD;
 &#xD;
@@ -169,116 +103,53 @@
       </Item>
       <Item>
          <Name>datatooltip</Name>
-         <ShortDesc>personalized tooltip</ShortDesc>
-         <TypeInd>Empty value or structure</TypeInd>
-         <LongDesc>The default is datatooltip=''&#xD;
-                   If datatooltip is not empty the user can use the mouse&#xD;
-                   in order to have information about the unit selected,&#xD;
-                   the step in which the unit enters the search and the&#xD;
-                   associated label.&#xD;
-                   If datatooltip is a structure, it is possible to&#xD;
-                   control the aspect of the data cursor (see function&#xD;
-                   datacursormode for more details or the examples below).&#xD;
-                   The default options of the structure are&#xD;
-                   DisplayStyle='Window' and SnapToDataVertex='on'.&#xD;
-                   </LongDesc>
-         <Example> 'datatooltip',''&#xD;
-                   </Example>
+         <ShortDesc>personalized tooltip.</ShortDesc>
+         <TypeInd>Empty value or structure.</TypeInd>
+         <LongDesc>The default is datatooltip='' If datatooltip is not empty the user can use the mouse in order to have information about the unit selected, the step in which the unit enters the search and the associated label.
+If datatooltip is a structure, it is possible to control the aspect of the data cursor (see function datacursormode for more details or the examples below).
+The default options of the structure are DisplayStyle='Window' and SnapToDataVertex='on'.</LongDesc>
+         <Example>'datatooltip',''</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>label</Name>
-         <ShortDesc>uni labels</ShortDesc>
-         <TypeInd>Cell</TypeInd>
-         <LongDesc>Cell containing the labels of the units (optional&#xD;
-                   argument used when datatooltip=1. If this field is not&#xD;
-                   present labels row1, ..., rown will be automatically&#xD;
-                   created and included in the pop up datatooltip window)&#xD;
-                   </LongDesc>
-         <Example> 'label',{'Row 1' 'Row 2' 'Row 3'}&#xD;
-                   </Example>
+         <ShortDesc>uni labels.</ShortDesc>
+         <TypeInd>Cell.</TypeInd>
+         <LongDesc>Cell containing the labels of the units (optional argument used when datatooltip=1. If this field is not present labels row1, ..., rown will be automatically created and included in the pop up datatooltip window)</LongDesc>
+         <Example>'label',{'Row 1' 'Row 2' 'Row 3'}</Example>
          <DataType>cell</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>databrush</Name>
-         <ShortDesc>empty value, scalar or cell</ShortDesc>
-         <TypeInd>DATABRUSH IS AN EMPTY VALUE&#xD;
-                   If databrush is an empty value (default), no brushing&#xD;
-                   is done</TypeInd>
-         <LongDesc>The activation of this option (databrush is a scalar or&#xD;
-                   a cell) enables the user  to select a set of&#xD;
-                   observations in the current plot and to see them&#xD;
-                   highlighted in the resfwdplot, i.e. the plot of the&#xD;
-                   trajectories of all observations, grouped according&#xD;
-                   to the selection(s) done by brushing. If the resfwdplot&#xD;
-                   does not exist it is automatically created.&#xD;
-                   In addition, brushed units can be highlighted in the&#xD;
-                   other following plots (only if they are already open):&#xD;
-                   - minimum deletion residual plot;&#xD;
-                   - monitoring leverage plot;&#xD;
-                   - maximum studentized residual;&#xD;
-                   - s^2 and R^2;&#xD;
-                   - Cook distance and modified Cook distance;&#xD;
-                   - deletion t statistics.&#xD;
-                   Remark. The window style of the other figures is set&#xD;
-                   equal to that which contains the monitoring residual&#xD;
-                   plot. In other words, if the scatterplot matrix plot&#xD;
-                   is docked all the other figures will be docked too&#xD;
-                   DATABRUSH IS A SCALAR&#xD;
-                   If databrush is a scalar the default selection tool is&#xD;
-                   a rectangular brush and it is possible to brush only&#xD;
-                   once (that is persist='')&#xD;
-                   DATABRUSH IS A CELL&#xD;
-                   If databrush is a cell, it is possible to use all&#xD;
-                   optional arguments of function selectdataFS.m and the&#xD;
-                   following optional argument:&#xD;
-                   - persist. Persist is an empty value or a scalar&#xD;
-                     containing the strings 'on' or 'off'.&#xD;
-                     The default value of persist is '', that is brushing&#xD;
-                     is allowed only once.&#xD;
-                     If persist is 'on' or 'off' brushing can be done as&#xD;
-                     many time as the user requires.&#xD;
-                     If persist='on' then the unit(s) currently brushed&#xD;
-                     are added to those previously brushed. It is&#xD;
-                     possible, every time a new brushing is done, to use a&#xD;
-                     different color for the brushed units.&#xD;
-                     If persist='off' every time a new brush is performed&#xD;
-                     units previously brushed are removed.&#xD;
-                   - bivarfit. This option is to add one or more least&#xD;
-                     square lines to the plots of y|X, depending on the&#xD;
-                     selected groups.&#xD;
-                     bivarfit = ''&#xD;
-                       is the default: no line is fitted.&#xD;
-                     bivarfit = '1'&#xD;
-                       fits a single ols line to all points of each&#xD;
-                       bivariate plot in the scatter matrix y|X.&#xD;
-                     bivarfit = '2'&#xD;
-                       fits two ols lines: one to all points and another&#xD;
-                       to the last selected group. This is useful when&#xD;
-                       there are only two groups, of which one refers to a&#xD;
-                       set of potential outliers.&#xD;
-                     bivarfit = '0'&#xD;
-                       fits one ols line for each selected group. This is&#xD;
-                       useful for the purpose of fitting mixtures of&#xD;
-                       regression lines.&#xD;
-                     bivarfit = 'i1' or 'i2' or 'i3' etc.&#xD;
-                       fits a ols line to a specific group, the one with&#xD;
-                       index 'i' equal to 1, 2, 3 etc.&#xD;
-                   - multivarfit. If this option is '1', we add to each scatter&#xD;
-                     plot of y|X a line based on the fitted hyperplane&#xD;
-                     coefficients. The line added to the scatter plot y|Xi&#xD;
-                     is mean(y)+Ci*Xi, being Ci the coefficient of Xi.&#xD;
-                     The default value of multivarfit is '', i.e. no line is&#xD;
-                     added.&#xD;
-                   - labeladd. If this option is '1', we label the units&#xD;
-                     of the last selected group with the unit row index in&#xD;
-                     matrices X and y. The default value is labeladd='',&#xD;
-                     i.e. no label is added.&#xD;
-                   </LongDesc>
-         <Example> 'databrush',1&#xD;
-                   </Example>
+         <ShortDesc>empty value, scalar or cell.</ShortDesc>
+         <TypeInd>DATABRUSH IS AN EMPTY VALUE If databrush is an empty value (default), no brushing is done.</TypeInd>
+         <LongDesc>The activation of this option (databrush is a scalar or a cell) enables the user to select a set of observations in the current plot and to see them highlighted in the resfwdplot, i.e. the plot of the trajectories of all observations, grouped according to the selection(s) done by brushing. If the resfwdplot does not exist it is automatically created.
+In addition, brushed units can be highlighted in the other following plots (only if they are already open):
+- minimum deletion residual plot;
+- monitoring leverage plot;
+- maximum studentized residual;
+- s^2 and R^2;
+- Cook distance and modified Cook distance;
+- deletion t statistics.
+Remark. The window style of the other figures is set equal to that which contains the monitoring residual plot. In other words, if the scatterplot matrix plot is docked all the other figures will be docked too DATABRUSH IS A SCALAR If databrush is a scalar the default selection tool is a rectangular brush and it is possible to brush only once (that is persist='') DATABRUSH IS A CELL If databrush is a cell, it is possible to use all optional arguments of function selectdataFS.m and the following optional argument:
+- persist. Persist is an empty value or a scalar containing the strings 'on' or 'off'.
+The default value of persist is '', that is brushing is allowed only once.
+If persist is 'on' or 'off' brushing can be done as many time as the user requires.
+If persist='on' then the unit(s) currently brushed are added to those previously brushed. It is possible, every time a new brushing is done, to use a different color for the brushed units.
+If persist='off' every time a new brush is performed units previously brushed are removed.
+- bivarfit. This option is to add one or more least square lines to the plots of y|X, depending on the selected groups.
+bivarfit = '' is the default: no line is fitted.
+bivarfit = '1' fits a single ols line to all points of each bivariate plot in the scatter matrix y|X.
+bivarfit = '2' fits two ols lines: one to all points and another to the last selected group. This is useful when there are only two groups, of which one refers to a set of potential outliers.
+bivarfit = '0' fits one ols line for each selected group. This is useful for the purpose of fitting mixtures of regression lines.
+bivarfit = 'i1' or 'i2' or 'i3' etc.
+fits a ols line to a specific group, the one with index 'i' equal to 1, 2, 3 etc.
+- multivarfit. If this option is '1', we add to each scatter plot of y|X a line based on the fitted hyperplane coefficients. The line added to the scatter plot y|Xi is mean(y)+Ci*Xi, being Ci the coefficient of Xi.
+The default value of multivarfit is '', i.e. no line is added.
+- labeladd. If this option is '1', we label the units of the last selected group with the unit row index in matrices X and y. The default value is labeladd='', i.e. no label is added.</LongDesc>
+         <Example>'databrush',1</Example>
          <DataType>single | double | struct&#xD;
 &#xD;
        The options which follow work in connection with previous option&#xD;
@@ -287,34 +158,21 @@
       </Item>
       <Item>
          <Name>subsize</Name>
-         <ShortDesc>x axis control</ShortDesc>
-         <TypeInd>Numeric vector</TypeInd>
-         <LongDesc>Numeric vector&#xD;
-                   containing the subset size with length&#xD;
-                   equal to the number of columns of matrix residuals.&#xD;
-                   If it is not specified it will be set equal to&#xD;
-                   size(residuals,1)-size(residuals,2)+1:size(residuals,1)&#xD;
-                   </LongDesc>
-         <Example> 'subsize',10:100&#xD;
-                   </Example>
+         <ShortDesc>x axis control.</ShortDesc>
+         <TypeInd>Numeric vector.</TypeInd>
+         <LongDesc>Numeric vector containing the subset size with length equal to the number of columns of matrix residuals.
+If it is not specified it will be set equal to size(residuals,1)-size(residuals,2)+1:size(residuals,1)</LongDesc>
+         <Example>'subsize',10:100</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>selstep</Name>
-         <ShortDesc>text in selected steps</ShortDesc>
-         <TypeInd>Numeric vector</TypeInd>
-         <LongDesc>Numeric vector&#xD;
-                   which specifies for which steps of the&#xD;
-                   forward search textlabels are added in the monitoring&#xD;
-                   residual plot after a brushing action in the yXplot.&#xD;
-                   The default is to write the labels at the initial and&#xD;
-                   final step. The default is selstep=[m0 n] where m0 and&#xD;
-                   n are respectively the first and final step of the&#xD;
-                   search.&#xD;
-                   </LongDesc>
-         <Example> 'selstep',100&#xD;
-                   </Example>
+         <ShortDesc>text in selected steps.</ShortDesc>
+         <TypeInd>Numeric vector.</TypeInd>
+         <LongDesc>Numeric vector which specifies for which steps of the forward search textlabels are added in the monitoring residual plot after a brushing action in the yXplot.
+The default is to write the labels at the initial and final step. The default is selstep=[m0 n] where m0 and n are respectively the first and final step of the search.</LongDesc>
+         <Example>'selstep',100</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
@@ -322,11 +180,10 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>plot1</Name>
-         <ShortDesc> Graphic handle</ShortDesc>
+         <ShortDesc>Graphic handle</ShortDesc>
          <TypeInd>handle to the figure.</TypeInd>
-         <LongDesc> Handle to the&#xD;
-        yXplot.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Handle to the yXplot.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
@@ -341,193 +198,192 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>First example of yXplot.</Title>
-         <Desc>&#xD;
-     In the first example as input there are two matrices&#xD;
-     y and X respectively&#xD;
-     A simple yX plot is created&#xD;</Desc>
+         <Desc>
+            <ItemCell>In the first example as input there are two matrices y and X respectively A simple yX plot is created</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=100;&#xD;
-    p=3;&#xD;
-    X=randn(n,p);&#xD;
-    y=100+randn(n,1);&#xD;
-    % Example of the use of function yXplot with all the default options&#xD;
-    yXplot(y,X);&#xD;</MATLABcode>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=100+randn(n,1);</ItemCell>
+            <ItemCell>% Example of the use of function yXplot with all the default options</ItemCell>
+            <ItemCell>yXplot(y,X);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Example of the use of function yXplot with option group.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    n=100;&#xD;
-    p=3;&#xD;
-    X=randn(n,p);&#xD;
-    y=100+randn(n,1);&#xD;
-    sel=51:100;&#xD;
-    y(sel)=y(sel)+2;&#xD;
-    group=ones(n,1);&#xD;
-    group(sel)=2;&#xD;
-    yXplot(y,X,'group',group);&#xD;</MATLABcode>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=100+randn(n,1);</ItemCell>
+            <ItemCell>sel=51:100;</ItemCell>
+            <ItemCell>y(sel)=y(sel)+2;</ItemCell>
+            <ItemCell>group=ones(n,1);</ItemCell>
+            <ItemCell>group(sel)=2;</ItemCell>
+            <ItemCell>yXplot(y,X,'group',group);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Example of option selunit.</Title>
-         <Desc>&#xD;
-     Example of the use of function yXplot putting the text for the units&#xD;
-     which have a value of y smaller than 98 and greater than 102.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example of the use of function yXplot putting the text for the units which have a value of y smaller than 98 and greater than 102.</ItemCell>
+         </Desc>
          <MATLABcode>
-    yXplot(y,X,'selunit',{'98' '102'});&#xD;</MATLABcode>
+            <ItemCell>yXplot(y,X,'selunit',{'98' '102'});</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>yXplot with personalized labelling.</Title>
-         <Desc>&#xD;
-     Example of the use of function yXplot putting the text for the units&#xD;
-     which have a value of y smaller than 1% percentile and greater than&#xD;
-     99% percentile of y&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example of the use of function yXplot putting the text for the units which have a value of y smaller than 1% percentile and greater than 99% percentile of y</ItemCell>
+         </Desc>
          <MATLABcode>
-    selth={num2str(prctile(y,1)) num2str(prctile(y,99))};&#xD;
-    yXplot(y,X,'selunit',selth);&#xD;</MATLABcode>
+            <ItemCell>selth={num2str(prctile(y,1)) num2str(prctile(y,99))};</ItemCell>
+            <ItemCell>yXplot(y,X,'selunit',selth);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Example of use of yXplot when input is a structure.</Title>
-         <Desc>&#xD;
-     In the following example the input is a strucure which also contains&#xD;
-     information about the forward search.&#xD;</Desc>
+         <Desc>
+            <ItemCell>In the following example the input is a strucure which also contains information about the forward search.</ItemCell>
+         </Desc>
          <MATLABcode>
-    [out]=LXS(y,X,'nsamp',1000);&#xD;
-    [out]=FSReda(y,X,out.bs);&#xD;
-    % Example of the use of function yXplot with all the default options&#xD;
-    yXplot(out);&#xD;</MATLABcode>
+            <ItemCell>[out]=LXS(y,X,'nsamp',1000);</ItemCell>
+            <ItemCell>[out]=FSReda(y,X,out.bs);</ItemCell>
+            <ItemCell>% Example of the use of function yXplot with all the default options</ItemCell>
+            <ItemCell>yXplot(out);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
-       Example of the use of options selunit and selstep.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt; Example of the use of options selunit and selstep.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-    yXplot(out,'selunit',[2 5 20 23 35 45],'selstep',[20 22 27 36],...&#xD;
-            'databrush',{'persist','off','selectionmode' 'Rect'})&#xD;
-    %   produces a resfwdplot in which labels are put for units&#xD;
-    %   [2 5 20 23 35 45] in steps [20 22 27 36] of the search&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'selunit',[2 5 20 23 35 45],'selstep',[20 22 27 36],...</ItemCell>
+            <ItemCell>'databrush',{'persist','off','selectionmode' 'Rect'})</ItemCell>
+            <ItemCell>%   produces a resfwdplot in which labels are put for units</ItemCell>
+            <ItemCell>%   [2 5 20 23 35 45] in steps [20 22 27 36] of the search</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 2.&lt;/i&gt; &#xD;
-       Example of the use of options selstep, selunit, selunitbold and&#xD;
-       selunitcolor.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 2.&lt;/i&gt; Example of the use of options selstep, selunit, selunitbold and selunitcolor.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-   yXplot(out,'selstep',[40 21 80],'selunit','1.5',...&#xD;
-           'databrush',{'persist','off','selectionmode' 'Rect'})&#xD;
-&#xD;
-    %   produces a yXplot plot in which labels are put for units&#xD;
-    %   which have a residual greater and 1.5. When a set of units is brushed in the yXplot&#xD;
-    %   in the monitoring residuals plot the labels are added in steps selsteps&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'selstep',[40 21 80],'selunit','1.5',...</ItemCell>
+            <ItemCell>'databrush',{'persist','off','selectionmode' 'Rect'})</ItemCell>
+            <ItemCell>%   produces a yXplot plot in which labels are put for units</ItemCell>
+            <ItemCell>%   which have a residual greater and 1.5. When a set of units is brushed in the yXplot</ItemCell>
+            <ItemCell>%   in the monitoring residuals plot the labels are added in steps selsteps</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 3.&lt;/i&gt;
-       Example of the use of option selunit (notice that in this&#xD;
-       case selunit is a cell array of strings.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 3.&lt;/i&gt; Example of the use of option selunit (notice that in this case selunit is a cell array of strings.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-    yXplot(out,'selunit',{'-3';'2'},...&#xD;
-            'databrush',{'selectionmode' 'Rect'});&#xD;
-    %   highlight only the trajectories which in at least one step of the&#xD;
-    %   search had a value smaller than -3 or greater than 2 and label&#xD;
-    %   them at the beginning and at the end of the search.&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'selunit',{'-3';'2'},...</ItemCell>
+            <ItemCell>'databrush',{'selectionmode' 'Rect'});</ItemCell>
+            <ItemCell>%   highlight only the trajectories which in at least one step of the</ItemCell>
+            <ItemCell>%   search had a value smaller than -3 or greater than 2 and label</ItemCell>
+            <ItemCell>%   them at the beginning and at the end of the search.</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Example of the use of option datatooltip.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-   yXplot(out,'datatooltip',1);&#xD;
-    %   gives the possibility of clicking on the different points and have&#xD;
-    %   information about the unit selected, the step of entry into the&#xD;
-    %   subset and the associated label&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'datatooltip',1);</ItemCell>
+            <ItemCell>%   gives the possibility of clicking on the different points and have</ItemCell>
+            <ItemCell>%   information about the unit selected, the step of entry into the</ItemCell>
+            <ItemCell>%   subset and the associated label</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 4.&lt;/i&gt;
-       Example of the use of option databrush&#xD;
-       (brushing is done only once using a rectangular selection tool).</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 4.&lt;/i&gt; Example of the use of option databrush (brushing is done only once using a rectangular selection tool).</Title>
+         <Desc> </Desc>
          <MATLABcode>
-       yXplot(out,'databrush',1)&#xD;
-    %   An equivalent statement is&#xD;
-       yXplot(out,'databrush',{'selectionmode' 'Rect'})&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'databrush',1)</ItemCell>
+            <ItemCell>%   An equivalent statement is</ItemCell>
+            <ItemCell>yXplot(out,'databrush',{'selectionmode' 'Rect'})</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 5.&lt;/i&gt;
-       Example of the use of brush using a rectangular selection tool and&#xD;
-       a cyan colour.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 5.&lt;/i&gt; Example of the use of brush using a rectangular selection tool and a cyan colour.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-   yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 6.&lt;/i&gt;
-      Example of the use of brush using multiple selection circular tools.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 6.&lt;/i&gt; Example of the use of brush using multiple selection circular tools.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-    yXplot(out,'databrush',{'selectionmode' 'Brush'})&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'databrush',{'selectionmode' 'Brush'})</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 7.&lt;/i&gt;
-       Example of the use of brush using lasso selection tool and fleur pointer.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 7.&lt;/i&gt; Example of the use of brush using lasso selection tool and fleur pointer.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-    yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'})&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'})</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 8.&lt;/i&gt;
-       Example of the use of rectangular brush.</Title>
-         <Desc> Superimposed labels for&#xD;
-       the brushed units and persistent labels in the plot which has been&#xD;
-       brushed&#xD;</Desc>
+         <Title>&lt;i&gt;Interactive example 8.&lt;/i&gt; Example of the use of rectangular brush.</Title>
+         <Desc>
+            <ItemCell>Superimposed labels for the brushed units and persistent labels in the plot which has been brushed</ItemCell>
+         </Desc>
          <MATLABcode>
-    yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 9.&lt;/i&gt;
-     Example of persistent cumulative brushing (with persist off).</Title>
-         <Desc>&#xD;
-       Every time a brushing action is performed&#xD;
-       current highlightments replace previous highlightments&#xD;</Desc>
+         <Title>&lt;i&gt;Interactive example 9.&lt;/i&gt; Example of persistent cumulative brushing (with persist off).</Title>
+         <Desc>
+            <ItemCell>Every time a brushing action is performed current highlightments replace previous highlightments</ItemCell>
+         </Desc>
          <MATLABcode>
-    yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...&#xD;
-                            'Label' 'on' 'RemoveLabels' 'off'})&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...</ItemCell>
+            <ItemCell>'Label' 'on' 'RemoveLabels' 'off'})</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 10.&lt;/i&gt;
-     Example of persistent cumulative brushing (with persist on).</Title>
-         <Desc>&#xD;
-       Every time a brushing action is performed&#xD;
-       current highlightments are added to previous highlightments&#xD;</Desc>
+         <Title>&lt;i&gt;Interactive example 10.&lt;/i&gt; Example of persistent cumulative brushing (with persist on).</Title>
+         <Desc>
+            <ItemCell>Every time a brushing action is performed current highlightments are added to previous highlightments</ItemCell>
+         </Desc>
          <MATLABcode>
-    yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...&#xD;
-                            'Label' 'off' 'RemoveLabels' 'on'})&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...</ItemCell>
+            <ItemCell>'Label' 'off' 'RemoveLabels' 'on'})</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>&lt;i&gt;Interactive example 11.&lt;/i&gt;
-     Example of persistent cumulative brushing (with persist on and labeladd '1').</Title>
-         <Desc>&#xD;
-       Now option labeladd '1'. In this case the row numbers of the&#xD;
-       selected units is displayed in the monitoring residuals plot&#xD;</Desc>
+         <Title>&lt;i&gt;Interactive example 11.&lt;/i&gt; Example of persistent cumulative brushing (with persist on and labeladd '1').</Title>
+         <Desc>
+            <ItemCell>Now option labeladd '1'. In this case the row numbers of the selected units is displayed in the monitoring residuals plot</ItemCell>
+         </Desc>
          <MATLABcode>
-    yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...&#xD;
-                            'labeladd' '1'})&#xD;</MATLABcode>
+            <ItemCell>yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...</ItemCell>
+            <ItemCell>'labeladd' '1'})</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

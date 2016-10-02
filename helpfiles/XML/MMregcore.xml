@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->MMregcore</Title>
-   <Purpose><!--This is the second line of the .m file-->MMregcore computes MM regression estimators for a selected fixed scale.</Purpose>
+   <Purpose><!--This is the second line of the .m file-->MMregcore computes MM regression estimators for a selected fixed scale.
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>Response variable</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>A vector with n elements that contains&#xD;
-       the response variable. y can be either a row or a column vector.</LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable. y can be either a row or a column vector.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,13 +17,9 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of&#xD;
-       dimension (n x p-1)</ShortDesc>
-         <TypeInd>Rows of X represent observations, and columns&#xD;
-       represent variables</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed,&#xD;
-       since observations (rows) with missing or infinite values will&#xD;
-       automatically be excluded from the computations.</LongDesc>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -31,11 +27,9 @@
       </Item>
       <Item>
          <Name>b0</Name>
-         <ShortDesc>Initial estimate of beta</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector containing initial&#xD;
-               estimate of beta (generally an S estimate with high&#xD;
-               breakdown point (e.g. 0.5)</LongDesc>
+         <ShortDesc>Initial estimate of beta.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector containing initial estimate of beta (generally an S estimate with high breakdown point (e.g. 0.5)</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -43,10 +37,9 @@
       </Item>
       <Item>
          <Name>auxscale</Name>
-         <ShortDesc>scale estimate</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar containing estimate of the scale (generally an S&#xD;
-               estimate with high breakdown point (e.g. .5)</LongDesc>
+         <ShortDesc>scale estimate.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar containing estimate of the scale (generally an S estimate with high breakdown point (e.g. .5)</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -56,158 +49,108 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, a model with&#xD;
-               constant term will be fitted (default), if 0, no constant&#xD;
-               term will be included.&#xD;
-               </LongDesc>
-         <Example> 'intercept',1 &#xD;
-               </Example>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>eff</Name>
-         <ShortDesc>nominal efficiency</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar defining nominal efficiency (i.e. a number between&#xD;
-                 0.5 and 0.99). The default value is 0.95&#xD;
-                 Asymptotic nominal efficiency is:&#xD;
-                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$&#xD;
-                 </LongDesc>
-         <Example> 'eff',0.99&#xD;
-                 </Example>
+         <ShortDesc>nominal efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining nominal efficiency (i.e. a number between 0.5 and 0.99). The default value is 0.95 Asymptotic nominal efficiency is:
+$(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$</LongDesc>
+         <Example>'eff',0.99</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>effshape</Name>
-         <ShortDesc>locacation or scale effiicency</ShortDesc>
-         <TypeInd>dummy scalar</TypeInd>
-         <LongDesc>If effshape=1 efficiency refers to shape &#xD;
-                efficiency else (default) efficiency refers to location&#xD;
-                 </LongDesc>
-         <Example> 'effshape',1&#xD;
-                 </Example>
+         <ShortDesc>locacation or scale effiicency.</ShortDesc>
+         <TypeInd>dummy scalar.</TypeInd>
+         <LongDesc>If effshape=1 efficiency refers to shape efficiency else (default) efficiency refers to location</LongDesc>
+         <Example>'effshape',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>refsteps</Name>
-         <ShortDesc>Maximum iterations</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar defining maximum number of iterations in the MM&#xD;
-                 loop. Default value is 100.&#xD;
-                 </LongDesc>
-         <Example> 'refsteps',10&#xD;
-                 </Example>
+         <ShortDesc>Maximum iterations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining maximum number of iterations in the MM loop. Default value is 100.</LongDesc>
+         <Example>'refsteps',10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>reftol</Name>
-         <ShortDesc>Tolerance</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar controlling tolerance in the MM loop.&#xD;
-                 Default value is 1e-7&#xD;
-                 </LongDesc>
-         <Example> 'tol',1e-10&#xD;
-                 </Example>
+         <ShortDesc>Tolerance.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar controlling tolerance in the MM loop.
+Default value is 1e-7</LongDesc>
+         <Example>'tol',1e-10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>conflev</Name>
-         <ShortDesc>Confidence level which is&#xD;
-               used to declare units as outliers</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Usually conflev=0.95, 0.975 0.99 (individual alpha)&#xD;
-               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).&#xD;
-               Default value is 0.975&#xD;
-                 </LongDesc>
-         <Example> 'conflev',0.99&#xD;
-                 </Example>
+         <ShortDesc>Confidence level which is used to declare units as outliers.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Usually conflev=0.95, 0.975 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+Default value is 0.975</LongDesc>
+         <Example>'conflev',0.99</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>rhofunc</Name>
-         <ShortDesc>rho function</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>String which specifies the rho function which must be used to&#xD;
-               weight the residuals. Possible values are&#xD;
-               'bisquare'&#xD;
-               'optimal'&#xD;
-               'hyperbolic'&#xD;
-               'hampel'&#xD;
-               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.&#xD;
-               See TBrho and TBpsi&#xD;
-               'optimal' uses optimal $\rho$ and $\psi$ functions.&#xD;
-               See OPTrho and OPTpsi&#xD;
-               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.&#xD;
-               See HYPrho and HYPpsi&#xD;
-               'hampel' uses Hampel $\rho$ and $\psi$ functions.&#xD;
-               See HArho and HApsi&#xD;
-               The default is bisquare&#xD;
-                 </LongDesc>
-         <Example> 'rhofunc','optimal' &#xD;
-                 </Example>
+         <ShortDesc>rho function.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>String which specifies the rho function which must be used to weight the residuals. Possible values are 'bisquare' 'optimal' 'hyperbolic' 'hampel' 'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
+See TBrho and TBpsi 'optimal' uses optimal $\rho$ and $\psi$ functions.
+See OPTrho and OPTpsi 'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
+See HYPrho and HYPpsi 'hampel' uses Hampel $\rho$ and $\psi$ functions.
+See HArho and HApsi The default is bisquare</LongDesc>
+         <Example>'rhofunc','optimal'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>rhofuncparam</Name>
-         <ShortDesc>Additional parameters for the specified rho function</ShortDesc>
-         <TypeInd>Scalar or vector</TypeInd>
-         <LongDesc>For hyperbolic rho function it is possible to set up the&#xD;
-               value of k = sup CVC (the default value of k is 4.5).&#xD;
-               For Hampel rho function it is possible to define parameters&#xD;
-               a, b and c (the default values are a=2, b=4, c=8)&#xD;
-                 </LongDesc>
-         <Example> 'rhofuncparam',5 &#xD;
-                 </Example>
+         <ShortDesc>Additional parameters for the specified rho function.</ShortDesc>
+         <TypeInd>Scalar or vector.</TypeInd>
+         <LongDesc>For hyperbolic rho function it is possible to set up the value of k = sup CVC (the default value of k is 4.5).
+For Hampel rho function it is possible to define parameters a, b and c (the default values are a=2, b=4, c=8)</LongDesc>
+         <Example>'rhofuncparam',5</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Check input arguments</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
-                 matrix y and matrix X. Notice that y and X are left&#xD;
-                 unchanged. In other words the additional column of ones&#xD;
-                 for the intercept is not added. As default nocheck=0.&#xD;
-               </LongDesc>
-         <Example> 'nocheck',1 &#xD;
-               </Example>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>plots</Name>
-         <ShortDesc>Plot on the screen</ShortDesc>
-         <TypeInd>Scalar or structure</TypeInd>
-         <LongDesc>If plots = 1, generates a plot with the robust residuals&#xD;
-               against index number. The confidence level used to draw the&#xD;
-               confidence bands for the residuals is given by the input&#xD;
-               option conflev. If conflev is not specified a nominal 0.975&#xD;
-               confidence interval will be used.&#xD;
-                 </LongDesc>
-         <Example> 'plots',0 &#xD;
-                 </Example>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar or structure.</TypeInd>
+         <LongDesc>If plots = 1, generates a plot with the robust residuals against index number. The confidence level used to draw the confidence bands for the residuals is given by the input option conflev. If conflev is not specified a nominal 0.975 confidence interval will be used.</LongDesc>
+         <Example>'plots',0</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>yxsave</Name>
-         <ShortDesc>the response vector y and data matrix X are saved into the output&#xD;
-                structure out</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Default is 0, i.e. no saving is done.&#xD;
-               </LongDesc>
-         <Example> 'yxsave',1 &#xD;
-               </Example>
+         <ShortDesc>the response vector y and data matrix X are saved into the output structure out.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default is 0, i.e. no saving is done.</LongDesc>
+         <Example>'yxsave',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -218,22 +161,18 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>beta</Value>
-               <Description>p x 1 vector. Estimate of beta coefficients after &#xD;
-                 refsteps refining steps</Description>
+               <Description>p x 1 vector. Estimate of beta coefficients after refsteps refining steps</Description>
             </ItemCell>
             <ItemCell>
                <Value>residuals</Value>
-               <Description>n x 1 vector containing the estimates of the robust&#xD;
-                 scaled residuals</Description>
+               <Description>n x 1 vector containing the estimates of the robust scaled residuals</Description>
             </ItemCell>
             <ItemCell>
                <Value>outliers</Value>
-               <Description>A vector containing the list of the units declared as&#xD;
-                 outliers using confidence level specified in input&#xD;
-                 scalar conflev</Description>
+               <Description>A vector containing the list of the units declared as outliers using confidence level specified in input scalar conflev</Description>
             </ItemCell>
             <ItemCell>
                <Value>conflev</Value>
@@ -249,21 +188,16 @@
             </ItemCell>
             <ItemCell>
                <Value>y</Value>
-               <Description>response vector y. The field is present if option &#xD;
-                yxsave is set to 1.</Description>
+               <Description>response vector y. The field is present if option yxsave is set to 1.</Description>
             </ItemCell>
             <ItemCell>
                <Value>X</Value>
-               <Description>data matrix X. The field is present if option &#xD;
-                yxsave is set to 1.</Description>
+               <Description>data matrix X. The field is present if option yxsave is set to 1.</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- It does iterative reweighted least squares (IRWLS) steps from "initial&#xD;
- beta" (b0) keeping the estimate of the scale (auxscale) fixed.&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->It does iterative reweighted least squares (IRWLS) steps from "initial beta" (b0) keeping the estimate of the scale (auxscale) fixed.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION-->&#xD;
 &#xD;
@@ -275,10 +209,10 @@
  been completely redesigned, with considerable increase of the&#xD;
  computational performance.&#xD;
 &#xD;
- </Acknowledgements>
+ 
+</Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory&#xD;
- and Methods, Wiley, New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>Sreg</Item>
@@ -286,60 +220,64 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>MMregcore with all default options.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    p=3;&#xD;
-    state1=123456;&#xD;
-    randn('state', state1);&#xD;
-    X=randn(n,p);&#xD;
-    y=randn(n,1);&#xD;
-    kk=10;&#xD;
-    ycont = y;&#xD;
-    ycont(1:kk)=ycont(1:kk)+7;&#xD;
-    [outS]=Sreg(ycont,X);&#xD;
-    outMM=MMregcore(ycont,X,outS.beta,outS.scale)&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>state1=123456;</ItemCell>
+            <ItemCell>randn('state', state1);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>kk=10;</ItemCell>
+            <ItemCell>ycont = y;</ItemCell>
+            <ItemCell>ycont(1:kk)=ycont(1:kk)+7;</ItemCell>
+            <ItemCell>[outS]=Sreg(ycont,X);</ItemCell>
+            <ItemCell>outMM=MMregcore(ycont,X,outS.beta,outS.scale)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>MMregcore with optional input arguments.</Title>
-         <Desc>&#xD;
-     Determine, e.g., an S estimate and extract the required arguments for the MM estimate.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Determine, e.g., an S estimate and extract the required arguments for the MM estimate.</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    p=3;&#xD;
-    state1=123456;&#xD;
-    randn('state', state1);&#xD;
-    X=randn(n,p);&#xD;
-    y=randn(n,1);&#xD;
-    kk=10;&#xD;
-    ycont = y;&#xD;
-    ycont(1:kk)=ycont(1:kk)+7;&#xD;
-    [outS]=Sreg(ycont,X);&#xD;
-    outMM=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>state1=123456;</ItemCell>
+            <ItemCell>randn('state', state1);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>kk=10;</ItemCell>
+            <ItemCell>ycont = y;</ItemCell>
+            <ItemCell>ycont(1:kk)=ycont(1:kk)+7;</ItemCell>
+            <ItemCell>[outS]=Sreg(ycont,X);</ItemCell>
+            <ItemCell>outMM=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Weighting the residuals with a rho function.</Title>
-         <Desc>&#xD;
-     Determine, e.g., an S estimate and extract the required arguments for the MM estimate.&#xD;
-     This time use a Tukey biweight for S estimation and HA rho function&#xD;
-     for MM loop &#xD;</Desc>
+         <Desc>
+            <ItemCell>Determine, e.g., an S estimate and extract the required arguments for the MM estimate.</ItemCell>
+            <ItemCell>This time use a Tukey biweight for S estimation and HA rho function for MM loop</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    p=3;&#xD;
-    state1=123456;&#xD;
-    randn('state', state1);&#xD;
-    X=randn(n,p);&#xD;
-    y=randn(n,1);&#xD;
-    kk=10;&#xD;
-    ycont = y;&#xD;
-    ycont(1:kk)=ycont(1:kk)+7;&#xD;
-    [outS]=Sreg(ycont,X);&#xD;
-    rhofunc='hampel';&#xD;
-    outMM1=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofunc,'plots',1)&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>state1=123456;</ItemCell>
+            <ItemCell>randn('state', state1);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>kk=10;</ItemCell>
+            <ItemCell>ycont = y;</ItemCell>
+            <ItemCell>ycont(1:kk)=ycont(1:kk)+7;</ItemCell>
+            <ItemCell>[outS]=Sreg(ycont,X);</ItemCell>
+            <ItemCell>rhofunc='hampel';</ItemCell>
+            <ItemCell>outMM1=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofunc,'plots',1)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

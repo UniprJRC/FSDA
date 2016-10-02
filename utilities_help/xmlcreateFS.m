@@ -156,7 +156,8 @@ if ~isempty(out.Ex)
                 str=regexprep(Ex3{i},'\x0D','\x0A');
                 str=regexprep(str,'\x0A*','\x0A');
                 checkfirstLF=regexp(str,'\x0A');
-                if checkfirstLF(1)==1
+               
+                if ~isempty(checkfirstLF) && checkfirstLF(1)==1
                     str=str(2:end);
                 end
             end

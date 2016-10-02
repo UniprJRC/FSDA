@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HYPwei</Title>
-   <Purpose><!--This is the second line of the .m file-->HYPwei computes weight function psi(u)/u for hyperbolic tangent estimator</Purpose>
+   <Purpose><!--This is the second line of the .m file-->HYPwei computes weight function psi(u)/u for hyperbolic tangent estimator
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>u</Name>
-         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>n x 1&#xD;
-               vector containing residuals or Mahalanobis distances&#xD;
-               for the n units of the sample</LongDesc>
+         <ShortDesc>scaled residuals or Mahalanobis distances.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>n x 1 vector containing residuals or Mahalanobis distances for the n units of the sample</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,21 +17,15 @@
       </Item>
       <Item>
          <Name>cktuning</Name>
-         <ShortDesc>tuning parameters</ShortDesc>
-         <TypeInd>Vector of length 2 or of length 5</TypeInd>
-         <LongDesc>cktuning specifies  specifies the value of the tuning&#xD;
-                constant c (scalar greater than 0 which controls the&#xD;
-                robustness/efficiency of the estimator)&#xD;
-                and the prefixed value k (sup of the&#xD;
-                change-of-variance sensitivity) and the values of&#xD;
-                parameters A, B and d:&#xD;
-                cktuning(1) = c;&#xD;
-                cktuning(2) = k = supCVC(psi,x) x \in R;&#xD;
-                cktuning(3)=A;&#xD;
-                cktuning(4)=B;&#xD;
-                cktuning(5)=d;&#xD;
-                Remark: if length(cktuning)==2 values of A, B and d will be&#xD;
-                computed automatically</LongDesc>
+         <ShortDesc>tuning parameters.</ShortDesc>
+         <TypeInd>Vector of length 2 or of length 5.</TypeInd>
+         <LongDesc>cktuning specifies specifies the value of the tuning constant c (scalar greater than 0 which controls the robustness/efficiency of the estimator) and the prefixed value k (sup of the change-of-variance sensitivity) and the values of parameters A, B and d:
+cktuning(1) = c;
+cktuning(2) = k = supCVC(psi,x) x \in R;
+cktuning(3)=A;
+cktuning(4)=B;
+cktuning(5)=d;
+Remark: if length(cktuning)==2 values of A, B and d will be computed automatically</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -43,49 +36,30 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>w</Name>
-         <ShortDesc> Vector</ShortDesc>
+         <ShortDesc>Vector</ShortDesc>
          <TypeInd>hyperbolic weights.</TypeInd>
-         <LongDesc>&#xD;
-                n x 1 vector contains the hyperbolic weights associated to&#xD;
-                the scaled residuals or Mahalanobis distances for the n&#xD;
-                units of the sample</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>n x 1 vector contains the hyperbolic weights associated to the scaled residuals or Mahalanobis distances for the n units of the sample</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- Function HYPwei transforms vector u as follows&#xD;
-&#xD;
- \[&#xD;
- HYPwei(u) =&#xD;
- \left\{&#xD;
-    \begin{array}{cc}&#xD;
- 	1 &amp;	          |u| \leq d, \\&#xD;
-		         \sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)*(c-|u|)/2) .* sign(u)/u&#xD;
-		         	 &amp;                d \leq |u| &amp;lt;  c, \\&#xD;
-		    0	&amp;                 |u| \geq c. \\&#xD;
-   \end{array}&#xD;
-   \right.&#xD;
- \]&#xD;
- where $0 &amp;lt; d &amp;lt; c$ is such that&#xD;
- \[&#xD;
- d = \sqrt{[A(k-1)]}\tanh [\frac{1}{2}\sqrt{\frac{(k-1)B^2}{A}}(c - d)],&#xD;
- \]&#xD;
- $A$ and $B$ satisfy suitable conditions, and $k$ is related to the bound&#xD;
- in the Change of Variance Curve.&#xD;
-&#xD;
- More precisely, it is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 *normcdf(c)-1- 2*c*normpdf(c) &amp;lt;1$&#xD;
- Remark: hyperbolic  psi-function is linear around u = 0 in accordance with&#xD;
- Winsor's principle that all distributions are normal in the middle.&#xD;
- This means that  \psi (u)/u is approximately constant over the linear region of \psi,&#xD;
- so the points in that region tend to get equal weight.&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HYPwei transforms vector u as follows
+\[
+HYPwei(u) = \left\{ \begin{array}{cc} 1 &amp;	|u| \leq d, \\
+\sqrt(A * (k - 1)) * tanh(sqrt((k - 1) * B^2/A)*(c-|u|)/2) .* sign(u)/u	&amp; d \leq |u| &amp;lt; c, \\
+0	&amp; |u| \geq c. \\
+\end{array} \right.
+\]
+where $0 &amp;lt; d &amp;lt; c$ is such that
+\[
+d = \sqrt{[A(k-1)]}\tanh [\frac{1}{2}\sqrt{\frac{(k-1)B^2}{A}}(c - d)],
+\]
+$A$ and $B$ satisfy suitable conditions, and $k$ is related to the bound in the Change of Variance Curve.
+More precisely, it is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 *normcdf(c)-1- 2*c*normpdf(c) &amp;lt;1$ Remark: hyperbolic psi-function is linear around u = 0 in accordance with Winsor's principle that all distributions are normal in the middle.
+This means that \psi (u)/u is approximately constant over the linear region of \psi, so the points in that region tend to get equal weight.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981),&#xD;
- The Change-of-Variance Curve and Optimal Redescending M-Estimators,&#xD;
- Journal of the American Statistical Association , Vol. 76, No. 375,&#xD;
- pp. 643-648 (HRR)</Item>
+      <Item>Frank R. Hampel, Peter J. Rousseeuw and Elvezio Ronchetti (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBwei</Item>
@@ -97,15 +71,14 @@
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-&#xD;
-    x=-6:0.01:6;&#xD;
-    ctuning=4;&#xD;
-    ktuning=4.5;&#xD;
-    weiHYP=HYPwei(x,[ctuning,ktuning]);&#xD;
-    plot(x,weiHYP)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>x=-6:0.01:6;</ItemCell>
+            <ItemCell>ctuning=4;</ItemCell>
+            <ItemCell>ktuning=4.5;</ItemCell>
+            <ItemCell>weiHYP=HYPwei(x,[ctuning,ktuning]);</ItemCell>
+            <ItemCell>plot(x,weiHYP)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

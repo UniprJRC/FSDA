@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSRaddt</Title>
-   <Purpose><!--This is the second line of the .m file-->FSRaddt produces t deletion tests for each explanatory variable.</Purpose>
+   <Purpose><!--This is the second line of the .m file-->FSRaddt produces t deletion tests for each explanatory variable.
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variable</ShortDesc>
-         <TypeInd>y can&#xD;
-       be both a row of column vector</TypeInd>
+         <ShortDesc>A vector with n elements that contains the response variable.</ShortDesc>
+         <TypeInd>y can be both a row of column vector.</TypeInd>
          <LongDesc> </LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
@@ -17,13 +17,9 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of&#xD;
-       dimension (n x p-1)</ShortDesc>
-         <TypeInd>Rows of X represent observations, and columns&#xD;
-       represent variables</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed,&#xD;
-       since observations (rows) with missing or infinite values will&#xD;
-       automatically be excluded from the computations.</LongDesc>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -33,223 +29,165 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted&#xD;
-                       (default), if 0, no constant term will be included.&#xD;
-                        </LongDesc>
-         <Example> 'intercept',1 &#xD;
-                       </Example>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>h</Name>
-         <ShortDesc>The number of observations that have determined the&#xD;
-                       least trimmed squares estimator</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>h is an integer greater or&#xD;
-                       equal than [(n+size(X,2)+1)/2] but smaller then n&#xD;
-                       </LongDesc>
-         <Example> 'h',round(n*0,75) &#xD;
-                       </Example>
+         <ShortDesc>The number of observations that have determined the least trimmed squares estimator.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>h is an integer greater or equal than [(n+size(X,2)+1)/2] but smaller then n</LongDesc>
+         <Example>'h',round(n*0,75)</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nsamp</Name>
-         <ShortDesc>Number of subsamplse which will be extracted to find the&#xD;
-                       robust estimator</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nsamp=0 all subsets will be&#xD;
-                       extracted. They will be (n choose p). Remark: if the&#xD;
-                       number of all possible subset is &amp;lt;1000 the default is to&#xD;
-                       extract all subsets otherwise just 1000.&#xD;
-                       </LongDesc>
-         <Example> 'nsamp',1000 &#xD;
-                        </Example>
+         <ShortDesc>Number of subsamplse which will be extracted to find the robust estimator.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be extracted. They will be (n choose p). Remark: if the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
+         <Example>'nsamp',1000</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>lms</Name>
-         <ShortDesc>Criterion to use to find the initlal subset to&#xD;
-                       initialize the search</ShortDesc>
-         <TypeInd>Scalar,  vector or structure</TypeInd>
-         <LongDesc>If lms=1 (default) Least Median of Squares is&#xD;
-                       computed, else Least Trimmed of Squares is computed. else&#xD;
-                       (default) no plot is produced&#xD;
-                       </LongDesc>
-         <Example> 'lms',1 &#xD;
-                       </Example>
+         <ShortDesc>Criterion to use to find the initlal subset to initialize the search.</ShortDesc>
+         <TypeInd>Scalar, vector or structure.</TypeInd>
+         <LongDesc>If lms=1 (default) Least Median of Squares is computed, else Least Trimmed of Squares is computed. else (default) no plot is produced</LongDesc>
+         <Example>'lms',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>init</Name>
-         <ShortDesc>Search initialization</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which specifies the initial subset size to start&#xD;
-                       monitoring exceedances of minimum deletion residual, if&#xD;
-                       init is not specified it will be set equal to:&#xD;
-                       p+1, if the sample size is smaller than 40;&#xD;
-                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
-                       </LongDesc>
-         <Example> 'init',100 starts monitoring from step m=100 &#xD;
-                       </Example>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies the initial subset size to start monitoring exceedances of minimum deletion residual, if init is not specified it will be set equal to:
+p+1, if the sample size is smaller than 40;
+min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>plots</Name>
-         <ShortDesc>Plot on the screen</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If plots=1 a plot with forward deletion&#xD;
-                        t-statistics is produced&#xD;
-                        </LongDesc>
-         <Example> 'plots',1 &#xD;
-                        </Example>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots=1 a plot with forward deletion t-statistics is produced</LongDesc>
+         <Example>'plots',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nameX</Name>
-         <ShortDesc>Add variable labels in plot</ShortDesc>
-         <TypeInd>Cell array of strings</TypeInd>
-         <LongDesc>Cell array of strings of length p containing the labels of&#xD;
-                       the varibles of the regression dataset. If it is empty&#xD;
-                       (default) the sequence X1, ..., Xp will be created&#xD;
-                       automatically&#xD;
-                       </LongDesc>
-         <Example> 'nameX',{'NameVar1','NameVar2'} &#xD;
-                       </Example>
+         <ShortDesc>Add variable labels in plot.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>Cell array of strings of length p containing the labels of the varibles of the regression dataset. If it is empty (default) the sequence X1, ..., Xp will be created automatically</LongDesc>
+         <Example>'nameX',{'NameVar1','NameVar2'}</Example>
          <DataType>cell</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>lwdenv</Name>
-         <ShortDesc>Line width for envelopes</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Line width for envelopes based on student T (default is 2)&#xD;
-                        </LongDesc>
-         <Example> 'lwdenv',1 &#xD;
-                        </Example>
+         <ShortDesc>Line width for envelopes.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Line width for envelopes based on student T (default is 2)</LongDesc>
+         <Example>'lwdenv',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>quant</Name>
-         <ShortDesc>Confidence quantiles for the envelopes</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Confidence quantiles for the envelopes of deletion t&#xD;
-                        stat. Default is [0.005 0.995] (i.e. a 99% pointwise&#xD;
-                       confidence interval)&#xD;
-                        </LongDesc>
-         <Example> 'quant',[0.025 0.975]&#xD;
-                        </Example>
+         <ShortDesc>Confidence quantiles for the envelopes.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Confidence quantiles for the envelopes of deletion t stat. Default is [0.005 0.995] (i.e. a 99% pointwise confidence interval)</LongDesc>
+         <Example>'quant',[0.025 0.975]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>lwdt</Name>
-         <ShortDesc>Line width for deletion T stat</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>(default is 2)&#xD;
-                        </LongDesc>
-         <Example> 'lwdt',1 &#xD;
-                        </Example>
+         <ShortDesc>Line width for deletion T stat.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>(default is 2)</LongDesc>
+         <Example>'lwdt',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Check input arguments</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
-                       matrix y and matrix X. Notice that y and X are left&#xD;
-                       unchanged. In other words the additional column of ones&#xD;
-                       for the intercept is not added. As default nocheck=0.&#xD;
-                       </LongDesc>
-         <Example> 'nocheck',1 &#xD;
-                       </Example>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>titl</Name>
-         <ShortDesc>a label for the title</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>(default: '')&#xD;
-                       </LongDesc>
-         <Example> 'titl','Example' &#xD;
-                       </Example>
+         <ShortDesc>a label for the title.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>(default: '')</LongDesc>
+         <Example>'titl','Example'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>labx</Name>
-         <ShortDesc>a label for the x-axis</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>(default: 'Subset size m')&#xD;
-                       </LongDesc>
-         <Example> 'labx','Subset' &#xD;
-                       </Example>
+         <ShortDesc>a label for the x-axis.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>(default: 'Subset size m')</LongDesc>
+         <Example>'labx','Subset'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>laby</Name>
-         <ShortDesc>a label for the y-axis</ShortDesc>
-         <TypeInd>Character</TypeInd>
-         <LongDesc>(default: 'Deletion t statistics')&#xD;
-                       </LongDesc>
-         <Example> 'laby','statistics' &#xD;
-                       </Example>
+         <ShortDesc>a label for the y-axis.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>(default: 'Deletion t statistics')</LongDesc>
+         <Example>'laby','statistics'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>FontSize</Name>
-         <ShortDesc>the font size of the labels of&#xD;
-                       the axes and of the labels inside the plot</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Default value is 12&#xD;
-                       </LongDesc>
-         <Example> 'FontSize',11 &#xD;
-                       </Example>
+         <ShortDesc>the font size of the labels of the axes and of the labels inside the plot.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default value is 12</LongDesc>
+         <Example>'FontSize',11</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>SizeAxesNum</Name>
-         <ShortDesc>size of the numbers of the axes</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Default value is 10&#xD;
-                       </LongDesc>
-         <Example> 'SizeAxesNum',11 &#xD;
-                       </Example>
+         <ShortDesc>size of the numbers of the axes.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default value is 10</LongDesc>
+         <Example>'SizeAxesNum',11</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ylimy</Name>
-         <ShortDesc>minimum and maximum of the y axis</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Default value is '' (automatic scale)&#xD;
-                       </LongDesc>
-         <Example> 'ylimy',[0 1] &#xD;
-                       </Example>
+         <ShortDesc>minimum and maximum of the y axis.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Default value is '' (automatic scale)</LongDesc>
+         <Example>'ylimy',[0 1]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>xlimx</Name>
-         <ShortDesc>minimum and maximum of the x axis</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Default value is '' (automatic scale)&#xD;
-                       </LongDesc>
-         <Example> 'xlimy',[0 1] &#xD;
-                       </Example>
+         <ShortDesc>minimum and maximum of the x axis.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Default value is '' (automatic scale)</LongDesc>
+         <Example>'xlimy',[0 1]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -260,48 +198,30 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>Tdel</Value>
-               <Description>(n-init+1) x (p+1) matrix containing the monitoring of&#xD;
-               deletion t stat in each step of the forward search&#xD;
-               1st col = fwd search index (from init to n)&#xD;
-               2nd col = deletion t stat for first explanatory variable&#xD;
-               3rd col = deletion t stat for second explanatory variable&#xD;
-               ...&#xD;
-               (p+1)th col = deletion t stat for pth explanatory variable</Description>
+               <Description>(n-init+1) x (p+1) matrix containing the monitoring of deletion t stat in each step of the forward search 1st col = fwd search index (from init to n) 2nd col = deletion t stat for first explanatory variable 3rd col = deletion t stat for second explanatory variable ...
+(p+1)th col = deletion t stat for pth explanatory variable</Description>
             </ItemCell>
             <ItemCell>
                <Value>S2del</Value>
-               <Description>(n-init+1) x (p+1) matrix containing the monitoring of&#xD;
-               deletion t stat in each step of the forward search&#xD;
-               1st col = fwd search index (from init to n)&#xD;
-               2nd col = deletion t stat for first explanatory variable&#xD;
-               3rd col = deletion t stat for second explanatory variable&#xD;
-               ...&#xD;
-               (p+1)th col = deletion t stat for pth explanatory variable</Description>
+               <Description>(n-init+1) x (p+1) matrix containing the monitoring of deletion t stat in each step of the forward search 1st col = fwd search index (from init to n) 2nd col = deletion t stat for first explanatory variable 3rd col = deletion t stat for second explanatory variable ...
+(p+1)th col = deletion t stat for pth explanatory variable</Description>
             </ItemCell>
             <ItemCell>
                <Value>Una</Value>
-               <Description>cell of size p.&#xD;
-               out.Una{i} (i=1, ..., p) is a (n-init) x 11 matrix which&#xD;
-               contains the unit(s) included in the subset at each step in&#xD;
-               the search which excludes the ith explanatory variable. &#xD;
-               REMARK: in every step the new subset is compared with the&#xD;
-               old subset. Un contains the unit(s) present in the new&#xD;
-               subset but not in the old one Un(1,:) for example contains&#xD;
-               the unit included in step init+1 ... Un(end,2) contains the&#xD;
-               units included in the final step of the search</Description>
+               <Description>cell of size p.
+out.Una{i} (i=1, ..., p) is a (n-init) x 11 matrix which contains the unit(s) included in the subset at each step in the search which excludes the ith explanatory variable.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one Un(1,:) for example contains the unit included in step init+1 ... Un(end,2) contains the units included in the final step of the search</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson, A.C. and Riani, M. (2002b). Forward search added variable t&#xD;
-   tests and the effect of masked outliers on model selection. Biometrika,&#xD;
-   Vol. 89, pp. 939-946.</Item>
+      <Item>Atkinson, A.C. and Riani, M. (2002b). Forward search added variable t tests and the effect of masked outliers on model selection. Biometrika, Vol. 89, pp. 939-946.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>addt</Item>
@@ -309,82 +229,89 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSRaddt with all default options.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    p=3;&#xD;
-    randn('state', 123456);&#xD;
-    X=randn(n,p);&#xD;
-    % Uncontaminated data&#xD;
-    y=randn(n,1);&#xD;
-    [out]=FSRaddt(y,X);&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>[out]=FSRaddt(y,X);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>FSRaddt with optional arguments.</Title>
-         <Desc>&#xD;
-     We perform a variable selection on the 'famous' stack loss data using different transformation scales for the response.&#xD;</Desc>
+         <Desc>
+            <ItemCell>We perform a variable selection on the 'famous' stack loss data using different transformation scales for the response.</ItemCell>
+         </Desc>
          <MATLABcode>
-    load('stack_loss');&#xD;
-    y=stack_loss.data(:,4);&#xD;
-    X=stack_loss.data(:,1:3);&#xD;
-    %We start with a fan plot based on first-order model and the five most common values of ? (Figure below).&#xD;
-    [out]=FSRfan(y,X,'plots',1);&#xD;
-    %The fan plot shows that the square root transformation, ?= 0.5, is supported by all the data, with the absolute value of the statistic always less than 1.5. The evidence for all other transformations depends on which observations have been deleted: the log transformation is rejected when some of the suspected outliers are introduced into the data although it is acceptable for all the data: ?= 1 is rejected as soon as any of the suspected outliers are present.&#xD;
-    %Given that the transformation for the response which is chosen depends on the number of units declared as outliers we perform a variable selection using the original scale, the square root and the log transformation.&#xD;
-    %Robust variable selection using original untransformed values of the response&#xD;
-    % Monitoring of deletion t stat in the original scale&#xD;
-    [out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975]);&#xD;
-    %Robust variable selection using square root values&#xD;
-    % Monitoring of deletion t stat using transformed response based on the square root&#xD;
-    [out]=FSRaddt(y.^0.5,X,'plots',1,'quant',[0.025 0.975]);&#xD;
-    %Robust variable selection using log transformed values of the response&#xD;
-    % Monitoring of deletion t stat using log transformed values&#xD;
-    [out]=FSRaddt(log(y),X,'plots',1,'quant',[0.025 0.975]);&#xD;
-    %Conclusion: the forward analysis based on the deletion t statistics clearly reveals that variable X3, independently from the transformation which is chosen and the number of outliers which are declared, is NOT significant.&#xD;</MATLABcode>
+            <ItemCell>load('stack_loss');</ItemCell>
+            <ItemCell>y=stack_loss.data(:,4);</ItemCell>
+            <ItemCell>X=stack_loss.data(:,1:3);</ItemCell>
+            <ItemCell>%We start with a fan plot based on first-order model and the five most common values of ? (Figure below).</ItemCell>
+            <ItemCell>[out]=FSRfan(y,X,'plots',1);</ItemCell>
+            <ItemCell>%The fan plot shows that the square root transformation, ?= 0.5, is supported by all the data, with the absolute value of the statistic always less than 1.5. The evidence for all other transformations depends on which observations have been deleted: the log transformation is rejected when some of the suspected outliers are introduced into the data although it is acceptable for all the data: ?= 1 is rejected as soon as any of the suspected outliers are present.</ItemCell>
+            <ItemCell>%Given that the transformation for the response which is chosen depends on the number of units declared as outliers we perform a variable selection using the original scale, the square root and the log transformation.</ItemCell>
+            <ItemCell>%Robust variable selection using original untransformed values of the response</ItemCell>
+            <ItemCell>% Monitoring of deletion t stat in the original scale</ItemCell>
+            <ItemCell>[out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975]);</ItemCell>
+            <ItemCell>%Robust variable selection using square root values</ItemCell>
+            <ItemCell>% Monitoring of deletion t stat using transformed response based on the square root</ItemCell>
+            <ItemCell>[out]=FSRaddt(y.^0.5,X,'plots',1,'quant',[0.025 0.975]);</ItemCell>
+            <ItemCell>%Robust variable selection using log transformed values of the response</ItemCell>
+            <ItemCell>% Monitoring of deletion t stat using log transformed values</ItemCell>
+            <ItemCell>[out]=FSRaddt(log(y),X,'plots',1,'quant',[0.025 0.975]);</ItemCell>
+            <ItemCell>%Conclusion: the forward analysis based on the deletion t statistics clearly reveals that variable X3, independently from the transformation which is chosen and the number of outliers which are declared, is NOT significant.</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>FSRaddt with optional arguments.</Title>
-         <Desc>&#xD;
-     Example of use of FSRaddt with plot of deletion t with personalized line&#xD;
-     width for the envelopes and personalized confidence interval.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example of use of FSRaddt with plot of deletion t with personalized line width for the envelopes and personalized confidence interval.</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    p=3;&#xD;
-    X=randn(n,p);&#xD;
-    y=randn(n,1);&#xD;
-    kk=9;&#xD;
-    y(1:kk)=y(1:kk)+6;&#xD;
-    X(1:kk,:)=X(1:kk,:)+3;&#xD;
-    [out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975]);&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>kk=9;</ItemCell>
+            <ItemCell>y(1:kk)=y(1:kk)+6;</ItemCell>
+            <ItemCell>X(1:kk,:)=X(1:kk,:)+3;</ItemCell>
+            <ItemCell>[out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975]);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>FSRaddt with plots (transformed wool data).</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    load('wool');&#xD;
-    y=log(wool.data(:,end));&#xD;
-    X=wool.data(:,1:end-1);&#xD;
-    [out]=FSRaddt(y,X,'plots',1);&#xD;</MATLABcode>
+            <ItemCell>load('wool');</ItemCell>
+            <ItemCell>y=log(wool.data(:,end));</ItemCell>
+            <ItemCell>X=wool.data(:,1:end-1);</ItemCell>
+            <ItemCell>[out]=FSRaddt(y,X,'plots',1);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>FSRaddt with labels for the columns of matrix X.</Title>
-         <Desc>&#xD;
-     Line width equal to 3 for the curves representing envelopes; &#xD;
-     line width equal to 4 for the curves associated with deletion t stat.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Line width equal to 3 for the curves representing envelopes;</ItemCell>
+            <ItemCell>line width equal to 4 for the curves associated with deletion t stat.</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    p=3;&#xD;
-    randn('state', 123456);&#xD;
-    X=randn(n,p);&#xD;
-    % Uncontaminated data&#xD;
-    y=randn(n,1);&#xD;
-    [out]=FSRaddt(y,X,'plots',1,'nameX',{'F1','F2','F3'},'lwdenv',3,'lwdt',4);&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>[out]=FSRaddt(y,X,'plots',1,'nameX',{'F1','F2','F3'},'lwdenv',3,'lwdt',4);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </ExtraEx>

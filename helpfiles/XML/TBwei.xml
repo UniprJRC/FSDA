@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->TBwei</Title>
-   <Purpose><!--This is the second line of the .m file-->TBwei computes weight function psi(u)/u for Tukey's biweight  </Purpose>
+   <Purpose><!--This is the second line of the .m file-->TBwei computes weight function psi(u)/u for Tukey's biweight  
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>u</Name>
-         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>n x 1&#xD;
-               vector containing residuals or Mahalanobis distances&#xD;
-               for the n units of the sample</LongDesc>
+         <ShortDesc>scaled residuals or Mahalanobis distances.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>n x 1 vector containing residuals or Mahalanobis distances for the n units of the sample</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,11 +17,9 @@
       </Item>
       <Item>
          <Name>c</Name>
-         <ShortDesc>tuning parameters</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar greater than 0 which&#xD;
-               controls the robustness/efficiency of the estimator&#xD;
-               (beta in regression or mu in the location case ...)</LongDesc>
+         <ShortDesc>tuning parameters.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator (beta in regression or mu in the location case ...)</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -33,41 +30,26 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>w</Name>
-         <ShortDesc>n x 1 vector </ShortDesc>
-         <TypeInd>Tukey's biweight weights&#xD;
-                associated to the scaled residuals or Mahalanobis&#xD;
-                distances for the n units of the sample.</TypeInd>
+         <ShortDesc>n x 1 vector</ShortDesc>
+         <TypeInd>Tukey's biweight weights associated to the scaled residuals or Mahalanobis distances for the n units of the sample.</TypeInd>
          <LongDesc> </LongDesc>
-         <Struct> </Struct>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- Function TBwei transforms vector u as follows &#xD;
- \[&#xD;
- TBwei(u)= \left\{&#xD;
-    \begin{array}{cc}&#xD;
-  (c^2/6) psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 if |u/c| \leq 1 \\&#xD;
-  0                     &amp;  |u/c|&amp;gt;1   \\&#xD;
- \end{array}&#xD;
-    \right.&#xD;
-  \]&#xD;
-&#xD;
- See p. 30 of Maronna et al. (2006)&#xD;
-&#xD;
-&#xD;
- Remark: Tukey's biweight  psi-function is almost linear around u = 0 in accordance with&#xD;
- Winsor's principle that all distributions are normal in the middle.&#xD;
- This means that  $\psi (u)/u$ is approximately constant over the linear region of \psi,&#xD;
- so the points in that region tend to get equal weight.&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->Function TBwei transforms vector u as follows
+\[
+TBwei(u)= \left\{ \begin{array}{cc} (c^2/6) psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 if |u/c| \leq 1 \\
+0 &amp; |u/c|&amp;gt;1 \\
+\end{array} \right.
+\]
+See p. 30 of Maronna et al. (2006) Remark: Tukey's biweight psi-function is almost linear around u = 0 in accordance with Winsor's principle that all distributions are normal in the middle.
+This means that $\psi (u)/u$ is approximately constant over the linear region of \psi, so the points in that region tend to get equal weight.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
- and Methods, Wiley, New York.</Item>
-      <Item>Riani M., Cerioli A., Torti F. (2014). On consistency factors and&#xD;
- efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.&#xD;
- DOI: 10.1007/s11749-014-0357-7</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
+      <Item>Riani M., Cerioli A., Torti F. (2014). On consistency factors and efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
+DOI: 10.1007/s11749-014-0357-7</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>HYPwei</Item>
@@ -79,87 +61,82 @@
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-    x=-6:0.01:6;&#xD;
-    weiTB=TBwei(x,2);&#xD;
-    plot(x,weiTB)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>x=-6:0.01:6;</ItemCell>
+            <ItemCell>weiTB=TBwei(x,2);</ItemCell>
+            <ItemCell>plot(x,weiTB)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Compare four different weight functions.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    FontSize=14;&#xD;
-    x=-6:0.01:6;&#xD;
-    ylim1=-0.05;&#xD;
-    ylim2=1.05;&#xD;
-    xlim1=min(x);&#xD;
-    xlim2=max(x);&#xD;
-    LineWidth=2;&#xD;
-&#xD;
-    subplot(2,2,1)&#xD;
-    ceff095HU=HUeff(0.95,1);&#xD;
-    weiHU=HUwei(x,ceff095HU);&#xD;
-    plot(x,weiHU,'LineWidth',LineWidth)&#xD;
-    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)&#xD;
-    title('Huber','FontSize',FontSize)&#xD;
-    ylim([ylim1 ylim2])&#xD;
-    xlim([xlim1 xlim2])&#xD;
-&#xD;
-    subplot(2,2,2)&#xD;
-    ceff095HA=HAeff(0.95,1);&#xD;
-    weiHA=HAwei(x,ceff095HA);&#xD;
-    plot(x,weiHA,'LineWidth',LineWidth)&#xD;
-    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)&#xD;
-    title('Hampel','FontSize',FontSize)&#xD;
-    ylim([ylim1 ylim2])&#xD;
-    xlim([xlim1 xlim2])&#xD;
-&#xD;
-&#xD;
-    subplot(2,2,3)&#xD;
-    ceff095TB=TBeff(0.95,1);&#xD;
-    weiTB=TBwei(x,ceff095TB);&#xD;
-    plot(x,weiTB,'LineWidth',LineWidth)&#xD;
-    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)&#xD;
-    title('Tukey biweight','FontSize',FontSize)&#xD;
-    ylim([ylim1 ylim2])&#xD;
-    xlim([xlim1 xlim2])&#xD;
-&#xD;
-    subplot(2,2,4)&#xD;
-    ceff095HYP=HYPeff(0.95,1);&#xD;
-    ktuning=4.5;&#xD;
-    weiHYP=HYPwei(x,[ceff095HYP,ktuning]);&#xD;
-    plot(x,weiHYP,'LineWidth',LineWidth)&#xD;
-    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)&#xD;
-    title('Hyperbolic','FontSize',FontSize)&#xD;
-    ylim([ylim1 ylim2])&#xD;
-    xlim([xlim1 xlim2])&#xD;</MATLABcode>
+            <ItemCell>FontSize=14;</ItemCell>
+            <ItemCell>x=-6:0.01:6;</ItemCell>
+            <ItemCell>ylim1=-0.05;</ItemCell>
+            <ItemCell>ylim2=1.05;</ItemCell>
+            <ItemCell>xlim1=min(x);</ItemCell>
+            <ItemCell>xlim2=max(x);</ItemCell>
+            <ItemCell>LineWidth=2;</ItemCell>
+            <ItemCell>subplot(2,2,1)</ItemCell>
+            <ItemCell>ceff095HU=HUeff(0.95,1);</ItemCell>
+            <ItemCell>weiHU=HUwei(x,ceff095HU);</ItemCell>
+            <ItemCell>plot(x,weiHU,'LineWidth',LineWidth)</ItemCell>
+            <ItemCell>xlabel('$u$','Interpreter','Latex','FontSize',FontSize)</ItemCell>
+            <ItemCell>title('Huber','FontSize',FontSize)</ItemCell>
+            <ItemCell>ylim([ylim1 ylim2])</ItemCell>
+            <ItemCell>xlim([xlim1 xlim2])</ItemCell>
+            <ItemCell>subplot(2,2,2)</ItemCell>
+            <ItemCell>ceff095HA=HAeff(0.95,1);</ItemCell>
+            <ItemCell>weiHA=HAwei(x,ceff095HA);</ItemCell>
+            <ItemCell>plot(x,weiHA,'LineWidth',LineWidth)</ItemCell>
+            <ItemCell>xlabel('$u$','Interpreter','Latex','FontSize',FontSize)</ItemCell>
+            <ItemCell>title('Hampel','FontSize',FontSize)</ItemCell>
+            <ItemCell>ylim([ylim1 ylim2])</ItemCell>
+            <ItemCell>xlim([xlim1 xlim2])</ItemCell>
+            <ItemCell>subplot(2,2,3)</ItemCell>
+            <ItemCell>ceff095TB=TBeff(0.95,1);</ItemCell>
+            <ItemCell>weiTB=TBwei(x,ceff095TB);</ItemCell>
+            <ItemCell>plot(x,weiTB,'LineWidth',LineWidth)</ItemCell>
+            <ItemCell>xlabel('$u$','Interpreter','Latex','FontSize',FontSize)</ItemCell>
+            <ItemCell>title('Tukey biweight','FontSize',FontSize)</ItemCell>
+            <ItemCell>ylim([ylim1 ylim2])</ItemCell>
+            <ItemCell>xlim([xlim1 xlim2])</ItemCell>
+            <ItemCell>subplot(2,2,4)</ItemCell>
+            <ItemCell>ceff095HYP=HYPeff(0.95,1);</ItemCell>
+            <ItemCell>ktuning=4.5;</ItemCell>
+            <ItemCell>weiHYP=HYPwei(x,[ceff095HYP,ktuning]);</ItemCell>
+            <ItemCell>plot(x,weiHYP,'LineWidth',LineWidth)</ItemCell>
+            <ItemCell>xlabel('$u$','Interpreter','Latex','FontSize',FontSize)</ItemCell>
+            <ItemCell>title('Hyperbolic','FontSize',FontSize)</ItemCell>
+            <ItemCell>ylim([ylim1 ylim2])</ItemCell>
+            <ItemCell>xlim([xlim1 xlim2])</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Compare two weight functions for 2 different values of c.</Title>
-         <Desc> &#xD;
-     In the first we fix the bdp (value of&#xD;
-     efficiency is automatically given) , while in the second we find the&#xD;
-     efficiency (the value of bdp is automatically given)&#xD;</Desc>
+         <Desc>
+            <ItemCell>In the first we fix the bdp (value of efficiency is automatically given) , while in the second we find the efficiency (the value of bdp is automatically given)</ItemCell>
+         </Desc>
          <MATLABcode>
-    close all&#xD;
-    x=-6:0.01:6;&#xD;
-    lwd=2;&#xD;
-    hold('on')&#xD;
-    c=TBbdp(0.5,1);&#xD;
-    rhoTB=TBwei(x,c);&#xD;
-    plot(x,rhoTB,'LineStyle','-','LineWidth',lwd)&#xD;
-    c=TBeff(0.95,1);&#xD;
-    rhoTB=TBwei(x,c);&#xD;
-    plot(x,rhoTB,'LineStyle','-.','LineWidth',lwd)&#xD;
-&#xD;
-    xlabel('$x$','Interpreter','Latex','FontSize',16)&#xD;
-    ylabel('TB weight function $\psi_c(x)/x$','Interpreter','Latex','FontSize',20)&#xD;</MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>x=-6:0.01:6;</ItemCell>
+            <ItemCell>lwd=2;</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>c=TBbdp(0.5,1);</ItemCell>
+            <ItemCell>rhoTB=TBwei(x,c);</ItemCell>
+            <ItemCell>plot(x,rhoTB,'LineStyle','-','LineWidth',lwd)</ItemCell>
+            <ItemCell>c=TBeff(0.95,1);</ItemCell>
+            <ItemCell>rhoTB=TBwei(x,c);</ItemCell>
+            <ItemCell>plot(x,rhoTB,'LineStyle','-.','LineWidth',lwd)</ItemCell>
+            <ItemCell>xlabel('$x$','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('TB weight function $\psi_c(x)/x$','Interpreter','Latex','FontSize',20)</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </ExtraEx>

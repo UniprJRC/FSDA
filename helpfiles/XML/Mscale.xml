@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->Mscale</Title>
-   <Purpose><!--This is the second line of the .m file-->Mscale finds the M estimator of the scale</Purpose>
+   <Purpose><!--This is the second line of the .m file-->Mscale finds the M estimator of the scale
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>u</Name>
-         <ShortDesc>residuals or Mahalanobis distances</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>n x 1 vector which contains the scaled residuals or&#xD;
-               Mahalanobis distances&#xD;
-               </LongDesc>
+         <ShortDesc>residuals or Mahalanobis distances.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>n x 1 vector which contains the scaled residuals or Mahalanobis distances</LongDesc>
          <Example> </Example>
          <DataType>single | double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,28 +17,15 @@
       </Item>
       <Item>
          <Name>psifunc</Name>
-         <ShortDesc>rho (psi) function</ShortDesc>
-         <TypeInd>Structure</TypeInd>
-         <LongDesc>A structure specifying the class of rho (psi) function to use, the&#xD;
-               consistency factor, and the value associated with the&#xD;
-               Expectation of rho in correspondence of the consistency factor.&#xD;
-               psifunc must contain the following fields:&#xD;
-               psifunc.class = string identyfing the rho (psi) function to use.&#xD;
-                    Admissible values for class are 'bisquare' (TB),&#xD;
-                    'optimal', (OPT) 'hyperbolic' (HYP) and 'hampel' (HA)&#xD;
-               psifunc.c1 = consistency factor (and other parameters)&#xD;
-                   associated to required breakdown point or nominal&#xD;
-                   efficiency.&#xD;
-                   More precisely, psifunc.c1(1) contains consistency&#xD;
-                   factor associated to required breakdown point or&#xD;
-                   nominal efficiency psifunc.c1(2:end) contain other&#xD;
-                   parameters associated with the rho (psi) function. &#xD;
-                   For example, if psifunc.class='hampel', c1(2:4) must&#xD;
-                   contain parameters (a, b and c) of Hampel rho function.&#xD;
-               psifunc.kc1= Expectation of rho associated with c1 to get a&#xD;
-                    consistent estimator at the model distribution&#xD;
-                    kc1=E(rho)&#xD;
-               </LongDesc>
+         <ShortDesc>rho (psi) function.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>A structure specifying the class of rho (psi) function to use, the consistency factor, and the value associated with the Expectation of rho in correspondence of the consistency factor.
+psifunc must contain the following fields:
+psifunc.class = string identyfing the rho (psi) function to use.
+Admissible values for class are 'bisquare' (TB), 'optimal', (OPT) 'hyperbolic' (HYP) and 'hampel' (HA) psifunc.c1 = consistency factor (and other parameters) associated to required breakdown point or nominal efficiency.
+More precisely, psifunc.c1(1) contains consistency factor associated to required breakdown point or nominal efficiency psifunc.c1(2:end) contain other parameters associated with the rho (psi) function.
+For example, if psifunc.class='hampel', c1(2:4) must contain parameters (a, b and c) of Hampel rho function.
+psifunc.kc1= Expectation of rho associated with c1 to get a consistent estimator at the model distribution kc1=E(rho)</LongDesc>
          <Example>Example - psifunc.class='TB';psifunc.c1=1.5476;psifunc.kc1=0.1996&#xD;
                </Example>
          <DataType>struct</DataType>
@@ -73,10 +59,9 @@
       </Item>
       <Item>
          <Name>initialsc</Name>
-         <ShortDesc>scalar</ShortDesc>
-         <TypeInd>The initial estimate of the scale</TypeInd>
-         <LongDesc>If not defined, scaled MAD of vector |u| is used.&#xD;
-               </LongDesc>
+         <ShortDesc>scalar.</ShortDesc>
+         <TypeInd>The initial estimate of the scale.</TypeInd>
+         <LongDesc>If not defined, scaled MAD of vector |u| is used.</LongDesc>
          <Example>&lt;code&gt;'initialsc',0.34 &#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -85,10 +70,9 @@
       </Item>
       <Item>
          <Name>tol</Name>
-         <ShortDesc>scalar</ShortDesc>
-         <TypeInd>The tolerance for controlling convergence</TypeInd>
-         <LongDesc>If not defined, tol is fixed to 1e-7.&#xD;
-               </LongDesc>
+         <ShortDesc>scalar.</ShortDesc>
+         <TypeInd>The tolerance for controlling convergence.</TypeInd>
+         <LongDesc>If not defined, tol is fixed to 1e-7.</LongDesc>
          <Example>&lt;code&gt;'tol',1e-10 &#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -97,10 +81,9 @@
       </Item>
       <Item>
          <Name>maxiter</Name>
-         <ShortDesc>scalar</ShortDesc>
-         <TypeInd>Maximum number of iterations to find the scale</TypeInd>
-         <LongDesc>If not defined, maxiter is fixed to 200.&#xD;
-               </LongDesc>
+         <ShortDesc>scalar.</ShortDesc>
+         <TypeInd>Maximum number of iterations to find the scale.</TypeInd>
+         <LongDesc>If not defined, maxiter is fixed to 200.</LongDesc>
          <Example>&lt;code&gt;'maxiter',100 &#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -112,30 +95,23 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>sc</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>M-estimate of the scale.</TypeInd>
-         <LongDesc>&#xD;
-       Robust M estimate of scale. &#xD;
-       This routine is called by Taureg.m and Sreg.m</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Robust M estimate of scale.
+This routine is called by Taureg.m and Sreg.m</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- u = residuals or Mahalanobis distances&#xD;
- (note that u is kept fixed in each iteration).&#xD;
- Remark: the M estimator of scale must satisfy the following equation&#xD;
- \[&#xD;
-  (1/n) \sum_{i=1}^n \rho((u_i/c)/s) = kc&#xD;
- \]&#xD;
-&#xD;
- This routine computes the value of $s$ which satisfies the above&#xD;
- equation.&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->u = residuals or Mahalanobis distances (note that u is kept fixed in each iteration).
+Remark: the M estimator of scale must satisfy the following equation
+\[
+(1/n) \sum_{i=1}^n \rho((u_i/c)/s) = kc
+\]
+This routine computes the value of $s$ which satisfies the above equation.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley &#xD;
- (equation 7.119,  p. 176).</Item>
+      <Item>Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119, p. 176).</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>Mscale1</Item>
@@ -144,45 +120,47 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Example of M estimate of scale.</Title>
-         <Desc>&#xD;
-     M estimate of the scale using Tukey biweight rho function with a&#xD;
-     value of c associated to a breakdown point of 0.5.&#xD;</Desc>
+         <Desc>
+            <ItemCell>M estimate of the scale using Tukey biweight rho function with a value of c associated to a breakdown point of 0.5.</ItemCell>
+         </Desc>
          <MATLABcode>
-    psifunc=struct;&#xD;
-    psifunc.class='TB';&#xD;
-    bdp=0.5;&#xD;
-    c=TBbdp(bdp,1);&#xD;
-    % kc = E(rho) = sup(rho)*bdp&#xD;
-    kc=c^2/6*bdp;&#xD;
-    psifunc.c1=c;&#xD;
-    psifunc.kc1=kc;&#xD;
-    n=10000;&#xD;
-    shift=5;&#xD;
-    u=2*randn(n,1);&#xD;
-    u(1:10)=u(1:10)+shift;&#xD;
-    s=Mscale(u,psifunc)&#xD;</MATLABcode>
+            <ItemCell>psifunc=struct;</ItemCell>
+            <ItemCell>psifunc.class='TB';</ItemCell>
+            <ItemCell>bdp=0.5;</ItemCell>
+            <ItemCell>c=TBbdp(bdp,1);</ItemCell>
+            <ItemCell>% kc = E(rho) = sup(rho)*bdp</ItemCell>
+            <ItemCell>kc=c^2/6*bdp;</ItemCell>
+            <ItemCell>psifunc.c1=c;</ItemCell>
+            <ItemCell>psifunc.kc1=kc;</ItemCell>
+            <ItemCell>n=10000;</ItemCell>
+            <ItemCell>shift=5;</ItemCell>
+            <ItemCell>u=2*randn(n,1);</ItemCell>
+            <ItemCell>u(1:10)=u(1:10)+shift;</ItemCell>
+            <ItemCell>s=Mscale(u,psifunc)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Estimate of scale using Hampel rho function.</Title>
-         <Desc> &#xD;
-     M estimate of the scale using Hampel rho function with a&#xD;
-     value of c associated to a breakdown point of 0.5&#xD;</Desc>
+         <Desc>
+            <ItemCell>M estimate of the scale using Hampel rho function with a value of c associated to a breakdown point of 0.5</ItemCell>
+         </Desc>
          <MATLABcode>
-    psifunc=struct;&#xD;
-    psifunc.class='HA'&#xD;
-    abc=[1.5 3.5 8];&#xD;
-    bdp=0.5;&#xD;
-    c=HAbdp(bdp,1,abc);&#xD;
-    % kc = E(rho) = sup(rho)*bdp&#xD;
-    kc=HArho(c*abc(3),[c, abc])*bdp;&#xD;
-    psifunc.c1=[c abc];&#xD;
-    psifunc.kc1=kc;&#xD;
-    n=10000;&#xD;
-    shift=5;&#xD;
-    u=3*randn(n,1);&#xD;
-    u(1:10)=u(1:10)+shift;&#xD;
-    s=Mscale(u,psifunc)&#xD;</MATLABcode>
+            <ItemCell>psifunc=struct;</ItemCell>
+            <ItemCell>psifunc.class='HA'</ItemCell>
+            <ItemCell>abc=[1.5 3.5 8];</ItemCell>
+            <ItemCell>bdp=0.5;</ItemCell>
+            <ItemCell>c=HAbdp(bdp,1,abc);</ItemCell>
+            <ItemCell>% kc = E(rho) = sup(rho)*bdp</ItemCell>
+            <ItemCell>kc=HArho(c*abc(3),[c, abc])*bdp;</ItemCell>
+            <ItemCell>psifunc.c1=[c abc];</ItemCell>
+            <ItemCell>psifunc.kc1=kc;</ItemCell>
+            <ItemCell>n=10000;</ItemCell>
+            <ItemCell>shift=5;</ItemCell>
+            <ItemCell>u=3*randn(n,1);</ItemCell>
+            <ItemCell>u(1:10)=u(1:10)+shift;</ItemCell>
+            <ItemCell>s=Mscale(u,psifunc)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>

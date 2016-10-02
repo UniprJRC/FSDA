@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSMenvmmd</Title>
-   <Purpose><!--This is the second line of the .m file-->FSMenvmmd computes the theoretical envelopes of Minimum MD outside subset during the search</Purpose>
+   <Purpose><!--This is the second line of the .m file-->FSMenvmmd computes the theoretical envelopes of Minimum MD outside subset during the search
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>n</Name>
-         <ShortDesc>Number of observations</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Number of observations.&#xD;
-               </LongDesc>
+         <ShortDesc>Number of observations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of observations.</LongDesc>
          <Example> </Example>
          <DataType>single | double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,10 +17,9 @@
       </Item>
       <Item>
          <Name>v</Name>
-         <ShortDesc>Number of variables</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Number of variables.&#xD;
-               </LongDesc>
+         <ShortDesc>Number of variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of variables.</LongDesc>
          <Example> </Example>
          <DataType>single | double</DataType>
          <ReqArg>1</ReqArg>
@@ -30,58 +29,38 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>init</Name>
-         <ShortDesc>Point where to start monitoring required diagnostics</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Note that if bsb is supplied, init&amp;gt;=length(bsb). If init is not&#xD;
-              specified it will be set equal to floor(n*0.6).&#xD;
-                 </LongDesc>
-         <Example> 'init',50 &#xD;
-                 </Example>
+         <ShortDesc>Point where to start monitoring required diagnostics.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Note that if bsb is supplied, init&amp;gt;=length(bsb). If init is not specified it will be set equal to floor(n*0.6).</LongDesc>
+         <Example>'init',50</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>prob</Name>
-         <ShortDesc>quantiles for which envelopes have&#xD;
-               to be computed</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector containing 1 x k elements .&#xD;
-               The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.&#xD;
-                 </LongDesc>
-         <Example> 'prob',[0.05 0.95] &#xD;
-                 </Example>
+         <ShortDesc>quantiles for which envelopes have to be computed.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector containing 1 x k elements .
+The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</LongDesc>
+         <Example>'prob',[0.05 0.95]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>exact</Name>
-         <ShortDesc>It indicates how to calculate the quantiles of F&#xD;
-               distribution</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If it is equal to 1 (default)  is based on function&#xD;
-               finv and from the Matlab statistics toolbox, otherwise the&#xD;
-               calculations of the former quantiles is based on functions&#xD;
-               invcdff. The solution has a tolerance of 1e-8 (change&#xD;
-               variable tol in files invcdff.m)&#xD;
-               Remark. the use of function finv is more precise&#xD;
-               but requires more time.&#xD;
-                 </LongDesc>
-         <Example> 'exact',0 &#xD;
-                 </Example>
+         <ShortDesc>It indicates how to calculate the quantiles of F distribution.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If it is equal to 1 (default) is based on function finv and from the Matlab statistics toolbox, otherwise the calculations of the former quantiles is based on functions invcdff. The solution has a tolerance of 1e-8 (change variable tol in files invcdff.m) Remark. the use of function finv is more precise but requires more time.</LongDesc>
+         <Example>'exact',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>scaled</Name>
-         <ShortDesc>It indicates how to compute the envelopes</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If scaled=1 the envelopes are produced for&#xD;
-               scaled Mahalanobis distances (no consistency factor is&#xD;
-               applied) else the traditional consistency factor is applied&#xD;
-               (this is the default)&#xD;
-                 </LongDesc>
-         <Example> 'scaled',0 &#xD;
-                 </Example>
+         <ShortDesc>It indicates how to compute the envelopes.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If scaled=1 the envelopes are produced for scaled Mahalanobis distances (no consistency factor is applied) else the traditional consistency factor is applied (this is the default)</LongDesc>
+         <Example>'scaled',0</Example>
          <DataType>double&#xD;
 &#xD;
  Subfunctions.&#xD;
@@ -95,24 +74,20 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>MMDenv</Name>
-         <ShortDesc>n-m0+1 x length(prob)+1 columns </ShortDesc>
-         <TypeInd>Envelopes&#xD;
-               for the requested quantiles.</TypeInd>
-         <LongDesc>&#xD;
-               1st col = fwd search index from m0 to n-1; &#xD;
-               2nd col = envelope for quantile prob[1]; &#xD;
-               3rd col = envelope for quantile prob[2]; &#xD;
-               ...; &#xD;
-               (k+1) col = envelope for quantile prob[k].</LongDesc>
-         <Struct> </Struct>
+         <ShortDesc>n-m0+1 x length(prob)+1 columns</ShortDesc>
+         <TypeInd>Envelopes for the requested quantiles.</TypeInd>
+         <LongDesc>1st col = fwd search index from m0 to n-1;
+2nd col = envelope for quantile prob[1];
+3rd col = envelope for quantile prob[2];
+...;
+(k+1) col = envelope for quantile prob[k].</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown&#xD;
-       number of multivariate outliers. Journal of the Royal Statistical&#xD;
-       Society Series B, Vol. 71, pp. 201–221.</Item>
+      <Item>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown number of multivariate outliers. Journal of the Royal Statistical Society Series B, Vol. 71, pp. 201–221.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMenvmmd</Item>
@@ -121,79 +96,73 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSMenvmmd with all default options.</Title>
-         <Desc>&#xD;
-     Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000&#xD;
-     observations and 5 explanatory variables using exact method.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000 observations and 5 explanatory variables using exact method.</ItemCell>
+         </Desc>
          <MATLABcode>
-    MMDenv=FSMenvmmd(10000,5);&#xD;
-    plot(MMDenv(:,1),MMDenv(:,2:end))&#xD;</MATLABcode>
+            <ItemCell>MMDenv=FSMenvmmd(10000,5);</ItemCell>
+            <ItemCell>plot(MMDenv(:,1),MMDenv(:,2:end))</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>FSMenvmmd with otpional arguments.</Title>
-         <Desc>&#xD;
-     Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000&#xD;
-     observations and 5 explanatory variables. The envelopes are produced for&#xD;
-     scaled Mahalanobis distances (no consistency factor is applied)&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000 observations and 5 explanatory variables. The envelopes are produced for scaled Mahalanobis distances (no consistency factor is applied)</ItemCell>
+         </Desc>
          <MATLABcode>
-    MMDenv=FSMenvmmd(10000,5,'scaled',1);&#xD;
-    plot(MMDenv(:,1),MMDenv(:,2:end))&#xD;</MATLABcode>
+            <ItemCell>MMDenv=FSMenvmmd(10000,5,'scaled',1);</ItemCell>
+            <ItemCell>plot(MMDenv(:,1),MMDenv(:,2:end))</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Order statistics and simulations envelopes .</Title>
-         <Desc>&#xD;
-     In this example we compare the accuracy of the envelopes computed with &#xD;
-     order statistics with those which come from simulations. &#xD;
-&#xD;
-     Fix a seed &#xD;</Desc>
+         <Desc>
+            <ItemCell>In this example we compare the accuracy of the envelopes computed with order statistics with those which come from simulations.</ItemCell>
+            <ItemCell>Fix a seed</ItemCell>
+         </Desc>
          <MATLABcode>
-    state=1000;&#xD;
-&#xD;
-    mtstream = RandStream('shr3cong','Seed',state);&#xD;
-    RandStream.setGlobalStream(mtstream);&#xD;
-    defaultStream = RandStream.getGlobalStream();&#xD;
-    reset(defaultStream)&#xD;
-&#xD;
-    % If you run this example in a version older than 7.9 replace the previous&#xD;
-    % four lines with &#xD;
-    % randn('state', 1000);&#xD;
-    n=200;&#xD;
-    p=3;&#xD;
-&#xD;
-&#xD;
-    init=25;&#xD;
-    nsimul=1000;&#xD;
-    mmdStore=zeros(n-init,nsimul);&#xD;
-&#xD;
-    for j=1:nsimul&#xD;
-        Y=randn(n,p);&#xD;
-        [fre]=unibiv(Y);&#xD;
-        %create an initial subset with the 20 observations with the lowest&#xD;
-        %Mahalanobis Distance&#xD;
-        fre=sortrows(fre,4);&#xD;
-        bs=fre(1:25,1);&#xD;
-        mmd = FSMmmd(Y,bs,'init',init);&#xD;
-        mmdStore(:,j)=mmd(:,2);&#xD;
-    end&#xD;
-&#xD;
-    % Sort rows of matrix mmdStore&#xD;
-    mmdStore=sort(mmdStore,2);&#xD;
-&#xD;
-    % Create figure which compares empirical and theoretical forward envelopes&#xD;
-    % for minimum deletion residual&#xD;
-    figure;&#xD;
-    hold('on');&#xD;
-    quant=[0.01 0.5 0.99];&#xD;
-    sel=round(nsimul*quant);&#xD;
-    % Plot lines of empirical quantiles&#xD;
-    line(mmd(:,1),mmdStore(:,sel),'LineStyle','--','Color','g');&#xD;
-    % Plots lines of theoretical quantiles using order statistics&#xD;
-    mmdT=FSMenvmmd(n,p,'exact',1,'init',init);&#xD;
-    line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');&#xD;
-    xlabel('Subset size m');&#xD;</MATLABcode>
+            <ItemCell>state=1000;</ItemCell>
+            <ItemCell>mtstream = RandStream('shr3cong','Seed',state);</ItemCell>
+            <ItemCell>RandStream.setGlobalStream(mtstream);</ItemCell>
+            <ItemCell>defaultStream = RandStream.getGlobalStream();</ItemCell>
+            <ItemCell>reset(defaultStream)</ItemCell>
+            <ItemCell>% If you run this example in a version older than 7.9 replace the previous</ItemCell>
+            <ItemCell>% four lines with</ItemCell>
+            <ItemCell>% randn('state', 1000);</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>init=25;</ItemCell>
+            <ItemCell>nsimul=1000;</ItemCell>
+            <ItemCell>mmdStore=zeros(n-init,nsimul);</ItemCell>
+            <ItemCell>for j=1:nsimul</ItemCell>
+            <ItemCell>Y=randn(n,p);</ItemCell>
+            <ItemCell>[fre]=unibiv(Y);</ItemCell>
+            <ItemCell>%create an initial subset with the 20 observations with the lowest</ItemCell>
+            <ItemCell>%Mahalanobis Distance</ItemCell>
+            <ItemCell>fre=sortrows(fre,4);</ItemCell>
+            <ItemCell>bs=fre(1:25,1);</ItemCell>
+            <ItemCell>mmd = FSMmmd(Y,bs,'init',init);</ItemCell>
+            <ItemCell>mmdStore(:,j)=mmd(:,2);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Sort rows of matrix mmdStore</ItemCell>
+            <ItemCell>mmdStore=sort(mmdStore,2);</ItemCell>
+            <ItemCell>% Create figure which compares empirical and theoretical forward envelopes</ItemCell>
+            <ItemCell>% for minimum deletion residual</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>hold('on');</ItemCell>
+            <ItemCell>quant=[0.01 0.5 0.99];</ItemCell>
+            <ItemCell>sel=round(nsimul*quant);</ItemCell>
+            <ItemCell>% Plot lines of empirical quantiles</ItemCell>
+            <ItemCell>line(mmd(:,1),mmdStore(:,sel),'LineStyle','--','Color','g');</ItemCell>
+            <ItemCell>% Plots lines of theoretical quantiles using order statistics</ItemCell>
+            <ItemCell>mmdT=FSMenvmmd(n,p,'exact',1,'init',init);</ItemCell>
+            <ItemCell>line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');</ItemCell>
+            <ItemCell>xlabel('Subset size m');</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </ExtraEx>

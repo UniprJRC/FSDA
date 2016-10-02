@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->lga</Title>
-   <Purpose><!--This is the second line of the .m file-->lga performs linear grouping analysis</Purpose>
+   <Purpose><!--This is the second line of the .m file-->lga performs linear grouping analysis
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>X</Name>
-         <ShortDesc>input data matrix</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>Input data as matrix of size&#xD;
-            n-by-p</LongDesc>
+         <ShortDesc>input data matrix.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Input data as matrix of size n-by-p</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,10 +17,9 @@
       </Item>
       <Item>
          <Name>k</Name>
-         <ShortDesc>number of clusters</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which specifies the number&#xD;
-             of clusters.</LongDesc>
+         <ShortDesc>number of clusters.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies the number of clusters.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -30,71 +29,55 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>biter</Name>
-         <ShortDesc>Hyperplane number</ShortDesc>
-         <TypeInd>Integer</TypeInd>
-         <LongDesc>number of different starting hyperplanes to try.&#xD;
-               </LongDesc>
-         <Example> 'biter',1&#xD;
-               </Example>
+         <ShortDesc>Hyperplane number.</ShortDesc>
+         <TypeInd>Integer.</TypeInd>
+         <LongDesc>number of different starting hyperplanes to try.</LongDesc>
+         <Example>'biter',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>niter</Name>
-         <ShortDesc>Number of iterations</ShortDesc>
-         <TypeInd>Positive integer</TypeInd>
-         <LongDesc>Number of iterations to attempt for convergence.&#xD;
-               </LongDesc>
-         <Example> 'niter',1&#xD;
-               </Example>
+         <ShortDesc>Number of iterations.</ShortDesc>
+         <TypeInd>Positive integer.</TypeInd>
+         <LongDesc>Number of iterations to attempt for convergence.</LongDesc>
+         <Example>'niter',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>showall</Name>
-         <ShortDesc>Type of display</ShortDesc>
-         <TypeInd>Logical</TypeInd>
-         <LongDesc>If true then display all the outcomes, not just the best one.&#xD;
-               </LongDesc>
-         <Example> 'showall','true'&#xD;
-               </Example>
+         <ShortDesc>Type of display.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If true then display all the outcomes, not just the best one.</LongDesc>
+         <Example>'showall','true'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>stand</Name>
-         <ShortDesc>Data standardization</ShortDesc>
-         <TypeInd>Logical</TypeInd>
-         <LongDesc>If true standardize the X matrix with the standard&#xD;
-             deviation before fitting.&#xD;
-               </LongDesc>
-         <Example> 'stand','true'&#xD;
-               </Example>
+         <ShortDesc>Data standardization.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If true standardize the X matrix with the standard deviation before fitting.</LongDesc>
+         <Example>'stand','true'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>silent</Name>
-         <ShortDesc>Text ouptut</ShortDesc>
-         <TypeInd>Logical</TypeInd>
-         <LongDesc>If true, produces no text output during processing. The&#xD;
-               default value is false.&#xD;
-               </LongDesc>
-         <Example> 'silent','true'&#xD;
-               </Example>
+         <ShortDesc>Text ouptut.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If true, produces no text output during processing. The default value is false.</LongDesc>
+         <Example>'silent','true'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>plots</Name>
-         <ShortDesc>plot on the screen</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If plots=1 a plot is showed on the screen with the&#xD;
-             final allocation (and if size(X,2)==2 with the lines&#xD;
-             associated to the groups).&#xD;
-               </LongDesc>
-         <Example> 'plots',1&#xD;
-               </Example>
+         <ShortDesc>plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots=1 a plot is showed on the screen with the final allocation (and if size(X,2)==2 with the lines associated to the groups).</LongDesc>
+         <Example>'plots',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -105,7 +88,7 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>cluster</Value>
                <Description>vector containing the cluster memberships.</Description>
@@ -150,15 +133,13 @@
                <Value>class</Value>
                <Description>'lga'.</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) ?Linear&#xD;
- Grouping Using Orthogonal Regression?, Computational Statistics and Data&#xD;
- Analysis 50, 1287?1312.</Item>
+      <Item>Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) ?Linear Grouping Using Orthogonal Regression?, Computational Statistics and Data Analysis 50, 1287?1312.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>rlga</Item>
@@ -166,18 +147,20 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>lga with all default options.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    X=load('X.txt');&#xD;
-    out=lga(X,3);&#xD;</MATLABcode>
+            <ItemCell>X=load('X.txt');</ItemCell>
+            <ItemCell>out=lga(X,3);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>lga with all niter = 1000 and biter = 3000.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    X=load('X.txt');&#xD;
-    out=lga(X,4,'niter',1000,'biter',3000);&#xD;</MATLABcode>
+            <ItemCell>X=load('X.txt');</ItemCell>
+            <ItemCell>out=lga(X,4,'niter',1000,'biter',3000);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

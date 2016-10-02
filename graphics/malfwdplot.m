@@ -16,6 +16,7 @@ function plotopt=malfwdplot(out,varargin)
 %               (necessary if datatooltip is true or databrush is not empty)
 %       out.Y   =   n x v data matrix; n observations
 %               and v variables
+%                Data Types - single|double
 %
 %
 %  Optional input arguments:

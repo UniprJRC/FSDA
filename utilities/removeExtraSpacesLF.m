@@ -11,7 +11,9 @@ function newTxt = removeExtraSpacesLF(txt)
 %           2) symbol ':'  is followed by one or more spaces and a CR;
 %           3) symbol '.'  is followed by one or more spaces and a CR; 
 %           4) symbol '\[' is followed by one or more spaces and a CR; 
-%           5) symbol '\]' is preceeded by one or more spaces and a CR. 
+%           5) symbol '\]' is preceeded by one or more spaces and a CR.
+%           6) symbol '\\' is preceeded by one or more spaces and a CR.
+%
 %
 %  Required input arguments:
 %
@@ -94,7 +96,7 @@ function newTxt = removeExtraSpacesLF(txt)
 txt=regexprep(txt,'\x0D','\x0A');
 
 % Find position of wanted line feed
-[~,goodLF]=regexp(txt,'[\:\;\.]\s*[\n\r]');
+[~,goodLF]=regexp(txt,'[\:\;\.\\\\]\s*[\n\r]');
 % [goodLF1st,goodLF1]=regexp(txt,'\\\[\s*[\n\r]');
 % Find 'line feed' then 'a sequence of spaces' then '\[' then 'another
 % sequence of spaces' then 'another line feed'

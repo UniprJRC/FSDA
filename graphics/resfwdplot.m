@@ -22,9 +22,11 @@ function plotopt=resfwdplot(out,varargin)
 %               coefficients monitored in each step of the forward search
 %               (required only when option databrush is not empty and
 %               suboption multivarfit is not empty).
+%                Data Types - single|double
 %
 %
 %  Optional input arguments:
+%
 %           standard : appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
 %                   style, color of the lines, etc. Structure. 

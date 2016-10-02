@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->OPTeff</Title>
-   <Purpose><!--This is the second line of the .m file-->OPTeff finds the constant c which is associated to the requested efficiency</Purpose>
+   <Purpose><!--This is the second line of the .m file-->OPTeff finds the constant c which is associated to the requested efficiency
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>eff</Name>
-         <ShortDesc>required efficienty</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which contains the required efficiency (of location&#xD;
-               or scale estimator).&#xD;
-               Generally eff=0.85, 0.9 or 0.95&#xD;
-               </LongDesc>
+         <ShortDesc>required efficienty.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which contains the required efficiency (of location or scale estimator).
+Generally eff=0.85, 0.9 or 0.95</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -19,10 +18,9 @@
       </Item>
       <Item>
          <Name>v</Name>
-         <ShortDesc>Number of response variables</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>e.g. in regression p=1&#xD;
-               </LongDesc>
+         <ShortDesc>Number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>e.g. in regression p=1</LongDesc>
          <Example> </Example>
          <DataType>single|double|int32|int64</DataType>
          <ReqArg>1</ReqArg>
@@ -33,39 +31,25 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>ceff</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Requested tuning constant.</TypeInd>
-         <LongDesc> Tuning constatnt of optimal rho&#xD;
-         function associated to requested value of efficiency</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Tuning constatnt of optimal rho function associated to requested value of efficiency</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
-&#xD;
-    $\rho$ ($\psi$) function which is considered is standardized &#xD;
-    using intervals 0---(2/3)c , (2/3)c---c, &amp;gt;c.   &#xD;
-    $\rho$ function is&#xD;
-&#xD;
- \[&#xD;
- TBrho(u)= \left\{&#xD;
-    \begin{array}{lr}&#xD;
-     1.3846 \left(\frac{u}{c}\right)^2                      &amp;                                      |\frac{u}{c}| \leq  \frac{2}{3} \\&#xD;
-    0.5514-2.6917 \left(\frac{u}{c}\right)^2 +10.7668\left(\frac{u}{c}\right)^4-11.6640\left(\frac{u}{c}\right)^6+4.0375\left(\frac{u}{c}\right)^8   &amp; \qquad \frac{2}{3} \leq  |\frac{u}{c}|\leq  1 \\&#xD;
-    1                                                    &amp;                      |\frac{u}{c}|&amp;gt;1 \\&#xD;
- \end{array}&#xD;
-    \right.&#xD;
-  \]&#xD;
-                                                                      |t/c|&amp;gt;1                              &#xD;
-&#xD;
-   Therefore, to obtain the value of c for the (rho) psi function defined in the&#xD;
-   interval 0---2c, 2c---3c, &amp;gt;3c it is necessary to divide the output of&#xD;
-   function OPTeff by 3.&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->$\rho$ ($\psi$) function which is considered is standardized using intervals 0---(2/3)c , (2/3)c---c, &amp;gt;c.
+$\rho$ function is
+\[
+TBrho(u)= \left\{ \begin{array}{lr} 1.3846 \left(\frac{u}{c}\right)^2 &amp; |\frac{u}{c}| \leq \frac{2}{3} \\
+0.5514-2.6917 \left(\frac{u}{c}\right)^2 +10.7668\left(\frac{u}{c}\right)^4-11.6640\left(\frac{u}{c}\right)^6+4.0375\left(\frac{u}{c}\right)^8 &amp; \qquad \frac{2}{3} \leq |\frac{u}{c}|\leq 1 \\
+1 &amp; |\frac{u}{c}|&amp;gt;1 \\
+\end{array} \right.
+\]
+|t/c|&amp;gt;1 Therefore, to obtain the value of c for the (rho) psi function defined in the interval 0---2c, 2c---3c, &amp;gt;3c it is necessary to divide the output of function OPTeff by 3.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
- and Methods, Wiley, New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBeff</Item>
@@ -77,23 +61,26 @@
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-    c=OPTeff(0.95,1)&#xD;</MATLABcode>
+            <ItemCell>c=OPTeff(0.95,1)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Find the value of c for efficiency which goes from 0.</Title>
-         <Desc>75 to 0.99 with step 0.01&#xD;</Desc>
+         <Desc>
+            <ItemCell>75 to 0.99 with step 0.01</ItemCell>
+         </Desc>
          <MATLABcode>
-    ef=0.75:0.01:0.99;&#xD;
-    CC=[ef' zeros(length(ef),1)];&#xD;
-    jk=0;&#xD;
-    for j=ef&#xD;
-        jk=jk+1;&#xD;
-        CC(jk,2)=OPTeff(j,1)&#xD;
-    end&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>ef=0.75:0.01:0.99;</ItemCell>
+            <ItemCell>CC=[ef' zeros(length(ef),1)];</ItemCell>
+            <ItemCell>jk=0;</ItemCell>
+            <ItemCell>for j=ef</ItemCell>
+            <ItemCell>jk=jk+1;</ItemCell>
+            <ItemCell>CC(jk,2)=OPTeff(j,1)</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

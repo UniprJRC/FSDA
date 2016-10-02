@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->mahalFS</Title>
-   <Purpose><!--This is the second line of the .m file-->mahalFS computes Mahalanobis distances (in squared units) for each row of matrix Y </Purpose>
+   <Purpose><!--This is the second line of the .m file-->mahalFS computes Mahalanobis distances (in squared units) for each row of matrix Y 
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Input data</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
-               Y represent observations, and columns represent variables.&#xD;
-               Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations.&#xD;
-                </LongDesc>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -22,8 +18,8 @@
       </Item>
       <Item>
          <Name>MU</Name>
-         <ShortDesc>Centroid</ShortDesc>
-         <TypeInd>Vector</TypeInd>
+         <ShortDesc>Centroid.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
          <LongDesc>v x 1 vector containing centroid to use</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
@@ -32,8 +28,8 @@
       </Item>
       <Item>
          <Name>SIGMA</Name>
-         <ShortDesc>Covariance matrix</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
+         <ShortDesc>Covariance matrix.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
          <LongDesc>v x v matrix containing covariance matrix which must be used</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
@@ -45,15 +41,13 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>d</Name>
-         <ShortDesc> Vector</ShortDesc>
+         <ShortDesc>Vector</ShortDesc>
          <TypeInd>Mahalanobis distances.</TypeInd>
-         <LongDesc>&#xD;
-                n x 1 vector which contains the squared Mahalanobid distances.&#xD;
-   \[&#xD;
-      d(i) = (y_i-\mu)^T \times  \Sigma^{-1} \times (y_i-\mu), \qquad &#xD;
-      i=1, 2, \ldots, n&#xD;
-   \]</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>n x 1 vector which contains the squared Mahalanobid distances.
+\[
+d(i) = (y_i-\mu)^T \times \Sigma^{-1} \times (y_i-\mu), \qquad i=1, 2, \ldots, n
+\]</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
@@ -65,13 +59,14 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Example of computation of MD.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    Y=randn(10,2);&#xD;
-    MU=median(Y); &#xD;
-    SIGMA=[0.3 0.4; 0.4 1];&#xD;
-    % Compute MD using as centroid the medians and shape matrix SIGMA&#xD;
-    d=mahalFS(Y,MU,SIGMA);&#xD;</MATLABcode>
+            <ItemCell>Y=randn(10,2);</ItemCell>
+            <ItemCell>MU=median(Y);</ItemCell>
+            <ItemCell>SIGMA=[0.3 0.4; 0.4 1];</ItemCell>
+            <ItemCell>% Compute MD using as centroid the medians and shape matrix SIGMA</ItemCell>
+            <ItemCell>d=mahalFS(Y,MU,SIGMA);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HAeff</Title>
-   <Purpose><!--This is the second line of the .m file-->HAeff finds the tuning constant that guarrantees a requested asymptotic efficiency</Purpose>
+   <Purpose><!--This is the second line of the .m file-->HAeff finds the tuning constant that guarrantees a requested asymptotic efficiency
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>eff</Name>
-         <ShortDesc>efficiency</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which contains the required&#xD;
-               efficiency (of location or scale estimator).&#xD;
-               Generally eff=0.85, 0.9 or 0.95.</LongDesc>
+         <ShortDesc>efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which contains the required efficiency (of location or scale estimator).
+Generally eff=0.85, 0.9 or 0.95.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,12 +18,9 @@
       </Item>
       <Item>
          <Name>v</Name>
-         <ShortDesc>number of response variables</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Number of variables of&#xD;
-               the  dataset (for regression v=1)&#xD;
-               UP TO NOW v=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE&#xD;
-               ANALYSIS</LongDesc>
+         <ShortDesc>number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of variables of the dataset (for regression v=1) UP TO NOW v=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE ANALYSIS</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -31,12 +28,9 @@
       </Item>
       <Item>
          <Name>abc</Name>
-         <ShortDesc>parameters of Hampel estimator</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector of length 3&#xD;
-               which contains the parameters of Hampel estimator. If&#xD;
-               vector abc is not specified it is set equal to [2, 4, 8]&#xD;
-               </LongDesc>
+         <ShortDesc>parameters of Hampel estimator.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector of length 3 which contains the parameters of Hampel estimator. If vector abc is not specified it is set equal to [2, 4, 8]</LongDesc>
          <Example>&lt;code&gt;[1.5,3.5,8]&#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -48,41 +42,30 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>ceff</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Requested tuning constant.</TypeInd>
-         <LongDesc> Tuning constatnt of Hampel rho&#xD;
-         function associated to requested value of efficiency</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Tuning constatnt of Hampel rho function associated to requested value of efficiency</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- Function HApsi transforms vector u as follows.&#xD;
-  \[&#xD;
-  HApsi(u)  = \left\{   &#xD;
-  \begin{array}{cc}&#xD;
-    u &amp; |u| &amp;lt;= a                                       \\&#xD;
-    a \times sign(u) &amp; a &amp;lt;= |u| &amp;lt; b                    \\&#xD;
-    a \frac{c-|u|}{c-b} \times sign(u) &amp; b &amp;lt;= |u| &amp;lt;  c \\&#xD;
-    0 &amp; |u| &amp;gt;= c &#xD;
-  \end{array} \right.&#xD;
- \]&#xD;
-&#xD;
-             where $a$= ctun *param(1).&#xD;
-                   $b$= ctun *param(2).&#xD;
-                   $c$= ctun *param(3).&#xD;
-&#xD;
-             The default is&#xD;
-                   $a$= 2*ctun. &#xD;
-                   $b$= 4*ctun. &#xD;
-                   $c$= 8*ctun. &#xD;
-&#xD;
-	It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HApsi transforms vector u as follows.
+\[
+HApsi(u) = \left\{ \begin{array}{cc} u &amp; |u| &amp;lt;= a \\
+a \times sign(u) &amp; a &amp;lt;= |u| &amp;lt; b \\
+a \frac{c-|u|}{c-b} \times sign(u) &amp; b &amp;lt;= |u| &amp;lt; c \\
+0 &amp; |u| &amp;gt;= c \end{array} \right.
+\]
+where $a$= ctun *param(1).
+$b$= ctun *param(2).
+$c$= ctun *param(3).
+The default is $a$= 2*ctun.
+$b$= 4*ctun.
+$c$= 8*ctun.
+It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and&#xD;
- Exploratory Data Analysis Wiley, New York.</Item>
+      <Item>D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and Exploratory Data Analysis Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBeff</Item>
@@ -94,7 +77,8 @@
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-    c=HAeff(0.95,1)&#xD;</MATLABcode>
+            <ItemCell>c=HAeff(0.95,1)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>

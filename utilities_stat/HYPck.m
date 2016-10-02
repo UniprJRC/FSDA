@@ -14,8 +14,14 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 %  Optional input arguments:
 %
 %         A   : A parameter. Scalar. Starting value for parameter A
+%                 Example - 'A',0.85
+%                 Data Types - double
 %         B   : B parameter. Scalar. Starting value for parameter B
+%                 Example - 'B',0.9
+%                 Data Types - double
 %         d   : d parameter. scalar. Starting value for parameter d
+%                 Example - 'd',1,5
+%                 Data Types - double
 %
 %
 % Output:
@@ -52,23 +58,24 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 % References:
 %
 %
-% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
+% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E. (1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
 % Journal of the American Statistical Association , Vol. 76, No. 375,
-% pp. 643-648 (HRR)
+% pp. 643-648. This publication will be referred as 'HRR'
+%
+%
+% Copyright 2008-2016.
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('HYPck')">Link to the help page for this function</a>
 % Last modified 31-05-2016
 %
 %
-% Copyright 2008-2016.
-% Written by FSDA team
-%
 % Examples:
 %
 %{
-    % Reconstuct columns 3:6 of Table 2 of HRR
+    % Reconstuct columns 3:6 of Table 2 of HRR.
     cc=3:6;
     kk=4:0.5:5;
 

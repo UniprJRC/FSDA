@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->histFS</Title>
-   <Purpose><!--This is the second line of the .m file-->histFS plots a histogram with the elements in each bin grouped according to a vector of labels.</Purpose>
+   <Purpose><!--This is the second line of the .m file-->histFS plots a histogram with the elements in each bin grouped according to a vector of labels.
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>vector of n elements to bin</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector which contains&#xD;
-                the elements which have to be binned</LongDesc>
+         <ShortDesc>vector of n elements to bin.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector which contains the elements which have to be binned</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,10 +17,9 @@
       </Item>
       <Item>
          <Name>nbins</Name>
-         <ShortDesc>the number of bins</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>The elements of of input vector y are binned&#xD;
-                into nbins equally spaced containers</LongDesc>
+         <ShortDesc>the number of bins.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The elements of of input vector y are binned into nbins equally spaced containers</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -28,11 +27,9 @@
       </Item>
       <Item>
          <Name>gy</Name>
-         <ShortDesc>idenitifier vector</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector of n numeric &#xD;
-                identifiers for the group of each&#xD;
-                element in y. If there are k groups in y, unique(gy) = k.</LongDesc>
+         <ShortDesc>idenitifier vector.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector of n numeric identifiers for the group of each element in y. If there are k groups in y, unique(gy) = k.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -40,16 +37,13 @@
       </Item>
       <Item>
          <Name>gylab</Name>
-         <ShortDesc>legend labels</ShortDesc>
-         <TypeInd>String | cell of strings</TypeInd>
-         <LongDesc>Legend labels identifying the groups of each element in y.&#xD;
-                 length(gylab) = length(unique(gy)) must hold.&#xD;
-                 If not specified, gylab is set to '' and legends are not&#xD;
-                 displayed.&#xD;
-                 If gylab = {}, default legend labels are generated.&#xD;
-                 If gylab is a cell of strings of length 3, e.g. gylab =&#xD;
-                 {'G1' 'G2' 'G3'}, such strings are used for the legends.&#xD;
-               </LongDesc>
+         <ShortDesc>legend labels.</ShortDesc>
+         <TypeInd>String | cell of strings.</TypeInd>
+         <LongDesc>Legend labels identifying the groups of each element in y.
+length(gylab) = length(unique(gy)) must hold.
+If not specified, gylab is set to '' and legends are not displayed.
+If gylab = {}, default legend labels are generated.
+If gylab is a cell of strings of length 3, e.g. gylab = {'G1' 'G2' 'G3'}, such strings are used for the legends.</LongDesc>
          <Example>&lt;code&gt;{'G1' 'G2'}&#xD;
 &lt;/code&gt;</Example>
          <DataType>cell array of strings or char</DataType>
@@ -58,12 +52,9 @@
       </Item>
       <Item>
          <Name>ax</Name>
-         <ShortDesc>plots into ax instead of gca</ShortDesc>
-         <TypeInd>Axis handle</TypeInd>
-         <LongDesc>The axis handle&#xD;
-                 where to plot the grouped histogram (e.g. a traditional&#xD;
-                 histogram plot to be superimposed). Default is gca.&#xD;
-               </LongDesc>
+         <ShortDesc>plots into ax instead of gca.</ShortDesc>
+         <TypeInd>Axis handle.</TypeInd>
+         <LongDesc>The axis handle where to plot the grouped histogram (e.g. a traditional histogram plot to be superimposed). Default is gca.</LongDesc>
          <Example>&lt;code&gt;gca&#xD;
 &lt;/code&gt;</Example>
          <DataType>graphics handle</DataType>
@@ -72,14 +63,10 @@
       </Item>
       <Item>
          <Name>barcolors</Name>
-         <ShortDesc>colors of the bars</ShortDesc>
-         <TypeInd>char or matrix</TypeInd>
-         <LongDesc>Vector containing the strings of the colors to use (e.g.&#xD;
-                'rgy') or RGB matrix of the colors used for the groups&#xD;
-                (e.g. [1 0 0; 0 0 1]). If the number of colors supplies is&#xD;
-                smaller than the number of groups the program displays an&#xD;
-                error.&#xD;
-               </LongDesc>
+         <ShortDesc>colors of the bars.</ShortDesc>
+         <TypeInd>char or matrix.</TypeInd>
+         <LongDesc>Vector containing the strings of the colors to use (e.g.
+'rgy') or RGB matrix of the colors used for the groups (e.g. [1 0 0; 0 0 1]). If the number of colors supplies is smaller than the number of groups the program displays an error.</LongDesc>
          <Example>&lt;code&gt;rgy&#xD;
 &lt;/code&gt;</Example>
          <DataType>character or numeric matrix</DataType>
@@ -91,23 +78,18 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>ng</Name>
-         <ShortDesc>&#xD;
-                 Matrix</ShortDesc>
+         <ShortDesc>Matrix</ShortDesc>
          <TypeInd>number of elements in each container for each group.</TypeInd>
-         <LongDesc> A matrix with a column for each group and a row for&#xD;
-                 each bin. In ng, column i contains the the number&#xD;
-                 of elements of group i in each bin.&#xD;
-                 For example ng(2,3) contains the number of elements&#xD;
-                 belonging to the third group included into the second&#xD;
-                 container.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>A matrix with a column for each group and a row for each bin. In ng, column i contains the the number of elements of group i in each bin.
+For example ng(2,3) contains the number of elements belonging to the third group included into the second container.</LongDesc>
+         <Structure> </Structure>
       </Item>
       <Item>
          <Name>hb</Name>
-         <ShortDesc>Bar array handles. Vector. A vector </ShortDesc>
+         <ShortDesc>Bar array handles. Vector. A vector</ShortDesc>
          <TypeInd>Handles to the barseries objects.</TypeInd>
          <LongDesc> </LongDesc>
-         <Struct> </Struct>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
@@ -121,60 +103,65 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>An example with 4 groups.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-      y = randn(500,1);&#xD;
-      % four groups&#xD;
-      groups = randi(4,500,1);&#xD;
-      % number of bins&#xD;
-      nbins = 10;&#xD;
-      [ng, hb] = histFS(y,nbins,groups);&#xD;</MATLABcode>
+            <ItemCell>y = randn(500,1);</ItemCell>
+            <ItemCell>% four groups</ItemCell>
+            <ItemCell>groups = randi(4,500,1);</ItemCell>
+            <ItemCell>% number of bins</ItemCell>
+            <ItemCell>nbins = 10;</ItemCell>
+            <ItemCell>[ng, hb] = histFS(y,nbins,groups);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Example with default clickable legends.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-      [ng, hb] = histFS(y,nbins,groups,{});&#xD;</MATLABcode>
+            <ItemCell>[ng, hb] = histFS(y,nbins,groups,{});</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Example with personalised clickable legends.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-      myleg = {'my group 1' 'my group 2' 'my group 3' 'my group 4'};&#xD;
-      [ng, hb] = histFS(y,nbins,groups,myleg);&#xD;</MATLABcode>
+            <ItemCell>myleg = {'my group 1' 'my group 2' 'my group 3' 'my group 4'};</ItemCell>
+            <ItemCell>[ng, hb] = histFS(y,nbins,groups,myleg);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Apply to the grouped histogram the legends of a different plot.</Title>
-         <Desc>&#xD;
-       Create a scatterplot&#xD;</Desc>
+         <Desc>
+            <ItemCell>Create a scatterplot</ItemCell>
+         </Desc>
          <MATLABcode>
-      hs = gscatter(1:numel(y),y,groups);     &#xD;
-      hfs = gcf;                              % get the handle of the scatterplot&#xD;
-      has = get(hfs,'CurrentAxes');           % it is the same as has = gca&#xD;
-      hlegends  = get(has,'Children');        % get the legend entries&#xD;
-      getleg = get(hlegends,'DisplayName');   % get the names of the legend entries&#xD;
-      getcol = get(hlegends,'Color');         % get the color of the legend entries&#xD;
-      getcolm = cell2mat(getcol);             % arrange the RGB vectors into a matrix&#xD;
-&#xD;
-      figure;&#xD;
-      [ng, hb] = histFS(y,nbins,groups,getleg,gca,getcolm);&#xD;</MATLABcode>
+            <ItemCell>hs = gscatter(1:numel(y),y,groups);</ItemCell>
+            <ItemCell>hfs = gcf;                              % get the handle of the scatterplot</ItemCell>
+            <ItemCell>has = get(hfs,'CurrentAxes');           % it is the same as has = gca</ItemCell>
+            <ItemCell>hlegends  = get(has,'Children');        % get the legend entries</ItemCell>
+            <ItemCell>getleg = get(hlegends,'DisplayName');   % get the names of the legend entries</ItemCell>
+            <ItemCell>getcol = get(hlegends,'Color');         % get the color of the legend entries</ItemCell>
+            <ItemCell>getcolm = cell2mat(getcol);             % arrange the RGB vectors into a matrix</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>[ng, hb] = histFS(y,nbins,groups,getleg,gca,getcolm);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>An example of bar color supplied as string.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-      y = randn(500,1);&#xD;
-      % four groups&#xD;
-      groups = randi(4,500,1);&#xD;
-      % number of bins&#xD;
-      nbins = 10;&#xD;
-      % Bar colors supplied as character string&#xD;
-      col='rgyb';&#xD;
-      [ng, hb] = histFS(y,nbins,groups,[],[],col);&#xD;</MATLABcode>
+            <ItemCell>y = randn(500,1);</ItemCell>
+            <ItemCell>% four groups</ItemCell>
+            <ItemCell>groups = randi(4,500,1);</ItemCell>
+            <ItemCell>% number of bins</ItemCell>
+            <ItemCell>nbins = 10;</ItemCell>
+            <ItemCell>% Bar colors supplied as character string</ItemCell>
+            <ItemCell>col='rgyb';</ItemCell>
+            <ItemCell>[ng, hb] = histFS(y,nbins,groups,[],[],col);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

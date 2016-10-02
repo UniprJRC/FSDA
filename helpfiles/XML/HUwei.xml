@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HUwei</Title>
-   <Purpose><!--This is the second line of the .m file-->HUwei computes weight function psi(u)/u for Huber   </Purpose>
+   <Purpose><!--This is the second line of the .m file-->HUwei computes weight function psi(u)/u for Huber   
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>u</Name>
-         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>n x 1&#xD;
-               vector containing residuals or Mahalanobis distances&#xD;
-               for the n units of the sample</LongDesc>
+         <ShortDesc>scaled residuals or Mahalanobis distances.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>n x 1 vector containing residuals or Mahalanobis distances for the n units of the sample</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,11 +17,9 @@
       </Item>
       <Item>
          <Name>c</Name>
-         <ShortDesc>tuning parameters</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar greater than 0 which&#xD;
-               controls the robustness/efficiency of the estimator&#xD;
-               (beta in regression or mu in the location case ...)</LongDesc>
+         <ShortDesc>tuning parameters.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator (beta in regression or mu in the location case ...)</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -33,36 +30,25 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>wei</Name>
-         <ShortDesc> Vector</ShortDesc>
+         <ShortDesc>Vector</ShortDesc>
          <TypeInd>Weights vector.</TypeInd>
-         <LongDesc> &#xD;
-                n x 1 vector containing the Huber weights&#xD;
-                associated to the scaled residuals or Mahalanobis&#xD;
-                distances for the n units of the sample.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>n x 1 vector containing the Huber weights associated to the scaled residuals or Mahalanobis distances for the n units of the sample.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- Function HUwei transforms vector u as follows &#xD;
- \[&#xD;
- HUpsi(u)= \left\{&#xD;
-    \begin{array}{cc}&#xD;
-  1                            &amp;  \mbox{if  }  |u/c| \leq 1 \\&#xD;
-  c \times \frac{\mbox{sign}(u)}{u}      &amp;  |u/c|&amp;gt;1   \\&#xD;
- \end{array}&#xD;
-    \right.&#xD;
-  \]&#xD;
-&#xD;
- See equation (2.32) p. 28 of Maronna et al. (2006)&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HUwei transforms vector u as follows
+\[
+HUpsi(u)= \left\{ \begin{array}{cc} 1 &amp; \mbox{if } |u/c| \leq 1 \\
+c \times \frac{\mbox{sign}(u)}{u} &amp; |u/c|&amp;gt;1 \\
+\end{array} \right.
+\]
+See equation (2.32) p. 28 of Maronna et al. (2006)
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
- and Methods, Wiley, New York.</Item>
-      <Item>Riani M., Cerioli A., Torti F. (2014). On consistency factors and&#xD;
- efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.&#xD;
- DOI: 10.1007/s11749-014-0357-7</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
+      <Item>Riani M., Cerioli A., Torti F. (2014). On consistency factors and efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
+DOI: 10.1007/s11749-014-0357-7</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBwei</Item>
@@ -73,14 +59,14 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Plot Huber weights.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    x=-6:0.01:6;&#xD;
-    weiHU=HUwei(x,2);&#xD;
-    plot(x,weiHU)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>x=-6:0.01:6;</ItemCell>
+            <ItemCell>weiHU=HUwei(x,2);</ItemCell>
+            <ItemCell>plot(x,weiHU)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$W (x) =\psi(x)/x$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

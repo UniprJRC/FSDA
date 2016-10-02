@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->inversegampdf</Title>
-   <Purpose><!--This is the second line of the .m file-->inversegampdf computes inverse-gamma probability density function.</Purpose>
+   <Purpose><!--This is the second line of the .m file-->inversegampdf computes inverse-gamma probability density function.
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>x</Name>
-         <ShortDesc>Value at which the pdf must be evaluated</ShortDesc>
-         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and&#xD;
-               b</TypeInd>
-         <LongDesc>A scalar input functions as a constant matrix of the&#xD;
-               same size as the other input.&#xD;
-               See "More About:" for details about the inverse gamma&#xD;
-               distribution.&#xD;
-               </LongDesc>
+         <ShortDesc>Value at which the pdf must be evaluated.</ShortDesc>
+         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and b.</TypeInd>
+         <LongDesc>A scalar input functions as a constant matrix of the same size as the other input.
+See "More About:" for details about the inverse gamma distribution.</LongDesc>
          <Example> </Example>
          <DataType>single | double</DataType>
          <ReqArg>1</ReqArg>
@@ -21,13 +18,10 @@
       </Item>
       <Item>
          <Name>a</Name>
-         <ShortDesc>shape parameter of the inverse-gamma distribution</ShortDesc>
-         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and b</TypeInd>
-         <LongDesc>A scalar input functions as a constant matrix of the same&#xD;
-               size as the other input.&#xD;
-               See "More About:" for details about the inverse gamma&#xD;
-               distribution.&#xD;
-               </LongDesc>
+         <ShortDesc>shape parameter of the inverse-gamma distribution.</ShortDesc>
+         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and b.</TypeInd>
+         <LongDesc>A scalar input functions as a constant matrix of the same size as the other input.
+See "More About:" for details about the inverse gamma distribution.</LongDesc>
          <Example> </Example>
          <DataType>single | double</DataType>
          <ReqArg>1</ReqArg>
@@ -35,13 +29,10 @@
       </Item>
       <Item>
          <Name>b</Name>
-         <ShortDesc>scale parameter b of the inverse-gamma distribution</ShortDesc>
-         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and a</TypeInd>
-         <LongDesc>A scalar input functions as a constant matrix of the same&#xD;
-               size as the other input.&#xD;
-               See "More About:" for details about the inverse gamma&#xD;
-               distribution.&#xD;
-               </LongDesc>
+         <ShortDesc>scale parameter b of the inverse-gamma distribution.</ShortDesc>
+         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and a.</TypeInd>
+         <LongDesc>A scalar input functions as a constant matrix of the same size as the other input.
+See "More About:" for details about the inverse gamma distribution.</LongDesc>
          <Example> </Example>
          <DataType>single | double</DataType>
          <ReqArg>1</ReqArg>
@@ -49,14 +40,9 @@
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Check input arguments</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no&#xD;
-               check is performed and input and the density is evaluated&#xD;
-               directly through the expression&#xD;
-               y = (b.^a).*(x.^(-a-1)).*exp(-b./x)./gamma(a) &#xD;
-               else we use MATLAB function gampdf.&#xD;
-               </LongDesc>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed and input and the density is evaluated directly through the expression y = (b.^a).*(x.^(-a-1)).*exp(-b./x)./gamma(a) else we use MATLAB function gampdf.</LongDesc>
          <Example>&lt;code&gt;'nocheck',1&#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -68,48 +54,25 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc> Scalar, vector or matrix or &#xD;
-               3D array of the same size of input arguments x, a and b</ShortDesc>
+         <ShortDesc>Scalar, vector or matrix or 3D array of the same size of input arguments x, a and b</ShortDesc>
          <TypeInd>Inverse-gamma pdf value.</TypeInd>
-         <LongDesc>&#xD;
-               $y=f_{IG}(x | a,b)$ is the value of the pdf of the inverse&#xD;
-               gamma distribution evaluated at x.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>$y=f_{IG}(x | a,b)$ is the value of the pdf of the inverse gamma distribution evaluated at x.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- The density of the inverse gamma distribution defined over the support&#xD;
- $x&amp;gt;0$ with shape parameter $a$ and scale parameter $b$ is&#xD;
-  \[&#xD;
-  f_{IG}(x, a, b) \propto x^{-a -1} \exp (-b/x)&#xD;
-  \frac{b^a}{\Gamma(a)}&#xD;
-  \]&#xD;
-&#xD;
- inversegampdf computes the gamma pdf at each of the values in x using the&#xD;
- corresponding shape parameters in a and scale parameters in b. Parameters&#xD;
- x, a, and b can be vectors, matrices, or multidimensional arrays that all&#xD;
- have the same size. A scalar input is expanded to a constant array with&#xD;
- the same dimensions as the other inputs. The parameters in a and b must&#xD;
- all be positive and the values in x must be in the interval $[0,\infty)$.&#xD;
-&#xD;
- The chief use of the inverse gamma distribution is in Bayesian&#xD;
- statistics, where the distribution arises as the marginal posterior&#xD;
- distribution for the unknown variance of a normal distribution if an&#xD;
- uninformative prior is used; and as an analytically tractable conjugate&#xD;
- prior if an informative prior is required. See the last example below. &#xD;
-&#xD;
- Relation with the Gamma distribution.&#xD;
- If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution&#xD;
- with paramters $a$ and $1/b$.&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->The density of the inverse gamma distribution defined over the support $x&amp;gt;0$ with shape parameter $a$ and scale parameter $b$ is
+\[
+f_{IG}(x, a, b) \propto x^{-a -1} \exp (-b/x) \frac{b^a}{\Gamma(a)}
+\]
+inversegampdf computes the gamma pdf at each of the values in x using the corresponding shape parameters in a and scale parameters in b. Parameters x, a, and b can be vectors, matrices, or multidimensional arrays that all have the same size. A scalar input is expanded to a constant array with the same dimensions as the other inputs. The parameters in a and b must all be positive and the values in x must be in the interval $[0,\infty)$.
+The chief use of the inverse gamma distribution is in Bayesian statistics, where the distribution arises as the marginal posterior distribution for the unknown variance of a normal distribution if an uninformative prior is used; and as an analytically tractable conjugate prior if an informative prior is required. See the last example below.
+Relation with the Gamma distribution.
+If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with paramters $a$ and $1/b$.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Arnold Zellner (1971). An introduction to Bayesian Inference in&#xD;
- Econometrics, Wiley. See the appendix for a detailed description of the&#xD;
- inverse Gamma distribution.&#xD;
-&#xD;
- https://en.wikipedia.org/wiki/Inverse-gamma_distribution.</Item>
+      <Item>Arnold Zellner (1971). An introduction to Bayesian Inference in Econometrics, Wiley. See the appendix for a detailed description of the inverse Gamma distribution.
+https://en.wikipedia.org/wiki/Inverse-gamma_distribution.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>gampdf</Item>
@@ -117,79 +80,77 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Plot the pdf for 4 different combinations of parameter values.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    x=(0:0.001:3)';&#xD;
-    a=[1,2,3,3];&#xD;
-    b=[1,1,1,0.5];&#xD;
-    for j=1:4&#xD;
-        subplot(2,2,j);&#xD;
-        plot(x,inversegampdf(x,a(j),b(j)));&#xD;
-        xlabel('x');&#xD;
-        title(['PDF with a=' num2str(a(j)) ' b=' num2str(b(j))]);&#xD;
-    end&#xD;</MATLABcode>
+            <ItemCell>x=(0:0.001:3)';</ItemCell>
+            <ItemCell>a=[1,2,3,3];</ItemCell>
+            <ItemCell>b=[1,1,1,0.5];</ItemCell>
+            <ItemCell>for j=1:4</ItemCell>
+            <ItemCell>subplot(2,2,j);</ItemCell>
+            <ItemCell>plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
+            <ItemCell>xlabel('x');</ItemCell>
+            <ItemCell>title(['PDF with a=' num2str(a(j)) ' b=' num2str(b(j))]);</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Compare the results using option nocheck=1.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    x=(0:0.001:3)';&#xD;
-    a=[1,2,3,50,100,10000];&#xD;
-    b=[1,10,100,0.05,10,800];&#xD;
-    Y=zeros(length(x),length(a));&#xD;
-    Ychk=Y;&#xD;
-    for i=1:length(x)&#xD;
-        Y(i,:)   = inversegampdf(x(i),a,b);&#xD;
-        Ychk(i,:)= inversegampdf(x(i),a,b,1);&#xD;
-    end&#xD;
-    disp('Maximum absolute difference is:');&#xD;
-    disp(max(max(abs(Y-Ychk))));&#xD;</MATLABcode>
+            <ItemCell>x=(0:0.001:3)';</ItemCell>
+            <ItemCell>a=[1,2,3,50,100,10000];</ItemCell>
+            <ItemCell>b=[1,10,100,0.05,10,800];</ItemCell>
+            <ItemCell>Y=zeros(length(x),length(a));</ItemCell>
+            <ItemCell>Ychk=Y;</ItemCell>
+            <ItemCell>for i=1:length(x)</ItemCell>
+            <ItemCell>Y(i,:)   = inversegampdf(x(i),a,b);</ItemCell>
+            <ItemCell>Ychk(i,:)= inversegampdf(x(i),a,b,1);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>disp('Maximum absolute difference is:');</ItemCell>
+            <ItemCell>disp(max(max(abs(Y-Ychk))));</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Interpretation in Bayesian statistics.</Title>
-         <Desc>&#xD;
-      Interpretation of a inverse Gamma (conjugate) prior, used for &#xD;
-      estimating the posterior distribution of the unknown variance &#xD;
-      $\sigma{^2}$ of a normal $N(0,\sigma{^2})$.&#xD;
-    &#xD;
-     a set of values for $\sigma^2$&#xD;</Desc>
+         <Desc>
+            <ItemCell>Interpretation of a inverse Gamma (conjugate) prior, used for estimating the posterior distribution of the unknown variance $\sigma{^2}$ of a normal $N(0,\sigma{^2})$.</ItemCell>
+            <ItemCell>a set of values for $\sigma^2$</ItemCell>
+         </Desc>
          <MATLABcode>
-    x=(0:0.001:3)';&#xD;
-&#xD;
-    % Two panels with inverse Gamma distribution for different parameters&#xD;
-    % settings.&#xD;
-&#xD;
-    % Left panel:  fixed shape (1), increasing scale (1,2,4);&#xD;
-    % As the scale parameter increases, the mean of the distribution (more &#xD;
-    % and more skewed to the right) also increases. This suggests that an &#xD;
-    % inverse Gamma prior with a larger scale parameter incorporates a prior&#xD;
-    % belief in favour of a larger value for $\sigma^2$.&#xD;
-    a = [1, 1, 1]; &#xD;
-    b = [1, 2, 4];&#xD;
-    subplot(1,2,1);&#xD;
-    for j=1:3&#xD;
-        plot(x,inversegampdf(x,a(j),b(j)));&#xD;
-        hold on;&#xD;
-        xlabel('x (\sigma^2)');&#xD;
-    end&#xD;
-    title('PDF with a=[1, 1, 1] and b=[1, 2, 4]');&#xD;
-&#xD;
-    % Right panel: fixed scale (1), increasing shape (1,2,4);&#xD;
-    % As the shape parameter increases, the distribution becomes more and&#xD;
-    % more centered around the mean, producing a tighter set of prior beliefs.   &#xD;
-    b = [1, 1, 1]; &#xD;
-    a = [1, 2, 4];&#xD;
-    subplot(1,2,2);&#xD;
-    for j=1:3&#xD;
-        plot(x,inversegampdf(x,a(j),b(j)));&#xD;
-        hold on;&#xD;
-        xlabel('x (\sigma^2)');&#xD;
-    end&#xD;
-    title('PDF with a=[1, 2, 4] and b=[1, 1, 1]');&#xD;</MATLABcode>
+            <ItemCell>x=(0:0.001:3)';</ItemCell>
+            <ItemCell>% Two panels with inverse Gamma distribution for different parameters</ItemCell>
+            <ItemCell>% settings.</ItemCell>
+            <ItemCell>% Left panel:  fixed shape (1), increasing scale (1,2,4);</ItemCell>
+            <ItemCell>% As the scale parameter increases, the mean of the distribution (more</ItemCell>
+            <ItemCell>% and more skewed to the right) also increases. This suggests that an</ItemCell>
+            <ItemCell>% inverse Gamma prior with a larger scale parameter incorporates a prior</ItemCell>
+            <ItemCell>% belief in favour of a larger value for $\sigma^2$.</ItemCell>
+            <ItemCell>a = [1, 1, 1];</ItemCell>
+            <ItemCell>b = [1, 2, 4];</ItemCell>
+            <ItemCell>subplot(1,2,1);</ItemCell>
+            <ItemCell>for j=1:3</ItemCell>
+            <ItemCell>plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
+            <ItemCell>hold on;</ItemCell>
+            <ItemCell>xlabel('x (\sigma^2)');</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>title('PDF with a=[1, 1, 1] and b=[1, 2, 4]');</ItemCell>
+            <ItemCell>% Right panel: fixed scale (1), increasing shape (1,2,4);</ItemCell>
+            <ItemCell>% As the shape parameter increases, the distribution becomes more and</ItemCell>
+            <ItemCell>% more centered around the mean, producing a tighter set of prior beliefs.</ItemCell>
+            <ItemCell>b = [1, 1, 1];</ItemCell>
+            <ItemCell>a = [1, 2, 4];</ItemCell>
+            <ItemCell>subplot(1,2,2);</ItemCell>
+            <ItemCell>for j=1:3</ItemCell>
+            <ItemCell>plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
+            <ItemCell>hold on;</ItemCell>
+            <ItemCell>xlabel('x (\sigma^2)');</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>title('PDF with a=[1, 2, 4] and b=[1, 1, 1]');</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </ExtraEx>

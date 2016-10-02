@@ -36,6 +36,10 @@ function d = mahalFS(Y,MU,SIGMA)
 %
 % See also: mahal
 %
+%
+% References:
+%
+%
 % Copyright 2008-2016.
 % Written by FSDA team
 %

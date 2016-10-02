@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSRenvmdr</Title>
-   <Purpose><!--This is the second line of the .m file-->FSRenvmdr computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search</Purpose>
+   <Purpose><!--This is the second line of the .m file-->FSRenvmdr computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>n</Name>
-         <ShortDesc>number of observations</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Number of observations on which&#xD;
-       the envelopes are based.</LongDesc>
+         <ShortDesc>number of observations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of observations on which the envelopes are based.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,11 +17,9 @@
       </Item>
       <Item>
          <Name>p</Name>
-         <ShortDesc>number of explanatory variables (including the intercept if&#xD;
-    present)</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Number of expl. variables on which&#xD;
-       the envelopes are based.</LongDesc>
+         <ShortDesc>number of explanatory variables (including the intercept if present).</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of expl. variables on which the envelopes are based.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -31,50 +29,30 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>init</Name>
-         <ShortDesc>Search initialization</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which specifies the initial subset size to monitor&#xD;
-               minimum deletion residual, if init is not specified it will&#xD;
-               be set equal to&#xD;
-                   p+1, if the sample size is smaller than 40;&#xD;
-                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.&#xD;
-               </LongDesc>
-         <Example> 'init',100 starts monitoring from step m=100 &#xD;
-               </Example>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies the initial subset size to monitor minimum deletion residual, if init is not specified it will be set equal to p+1, if the sample size is smaller than 40;
+min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>prob</Name>
-         <ShortDesc>quantiles for which envelopes have&#xD;
-               to be computed</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>1 x k vector containing quantiles for which envelopes have&#xD;
-               to be computed. The default is to produce 1%, 50% and 99%&#xD;
-               envelopes.&#xD;
-               </LongDesc>
-         <Example> 'prob',[0.01 0.99] &#xD;
-               </Example>
+         <ShortDesc>quantiles for which envelopes have to be computed.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>1 x k vector containing quantiles for which envelopes have to be computed. The default is to produce 1%, 50% and 99% envelopes.</LongDesc>
+         <Example>'prob',[0.01 0.99]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>exact</Name>
-         <ShortDesc>Method for the calculation of the quantiles</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If it is equal to 1 (default) the calculation of the quantiles&#xD;
-               of the T and F distribution is based on functions finv and&#xD;
-               tinv from the Matlab statistics toolbox, otherwise the&#xD;
-               calculations of the former quantiles is based on functions&#xD;
-               finvFS and tinvFS. The solution has a tolerance of 1e-8&#xD;
-               (change variable tol in files finvFS.m and tinvFS.m if&#xD;
-               required.&#xD;
-               %               Remark: the use of functions tinv and finv is more precise&#xD;
-               but requires more time.&#xD;
-&#xD;
- </LongDesc>
-         <Example> 'exact',0&#xD;
-               </Example>
+         <ShortDesc>Method for the calculation of the quantiles.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If it is equal to 1 (default) the calculation of the quantiles of the T and F distribution is based on functions finv and tinv from the Matlab statistics toolbox, otherwise the calculations of the former quantiles is based on functions finvFS and tinvFS. The solution has a tolerance of 1e-8 (change variable tol in files finvFS.m and tinvFS.m if required.
+% Remark: the use of functions tinv and finv is more precise but requires more time.</LongDesc>
+         <Example>'exact',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -82,31 +60,23 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>MDRenv</Name>
-         <ShortDesc> Matrix</ShortDesc>
+         <ShortDesc>Matrix</ShortDesc>
          <TypeInd>forward envelopes of mdr.</TypeInd>
-         <LongDesc> Matrix with n-m0+1 rows&#xD;
-               and length(prob)+1 columns.&#xD;
-               1st col = fwd search index from m0 to n-1;&#xD;
-               2nd col = envelope for quantile prob(1);&#xD;
-               3rd col = envelope for quantile prob(2)&#xD;
-               ...&#xD;
-               (k+1) col = envelope for quantile prob(k).&#xD;
-&#xD;
- Subfunctions: tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS. &#xD;
-&#xD;
- Other function dependencies: none.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Matrix with n-m0+1 rows and length(prob)+1 columns.
+1st col = fwd search index from m0 to n-1;
+2nd col = envelope for quantile prob(1);
+3rd col = envelope for quantile prob(2) ...
+(k+1) col = envelope for quantile prob(k).
+Subfunctions: tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS.
+Other function dependencies: none.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson, A.C. and Riani, M. (2006). Distribution theory and&#xD;
-   simulations for tests of outliers in regression. Journal of&#xD;
-   Computational and Graphical Statistics, Vol. 15, pp. 460-476</Item>
-      <Item>Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward&#xD;
-   search for testing multiple outliers in regression, Advances in Data&#xD;
-   Analysis and Classification, Vol. 1, pp. 123-141.</Item>
+      <Item>Atkinson, A.C. and Riani, M. (2006). Distribution theory and simulations for tests of outliers in regression. Journal of Computational and Graphical Statistics, Vol. 15, pp. 460-476</Item>
+      <Item>Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward search for testing multiple outliers in regression, Advances in Data Analysis and Classification, Vol. 1, pp. 123-141.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>LXS</Item>
@@ -115,83 +85,79 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSRenvmdr with all default options.</Title>
-         <Desc>&#xD;
-     Example of creation of 1 per cent, 50 per cent and 99 per cent &#xD;
-     envelopes based on 1000 observations and 5 explanatory variables using &#xD;
-     exact method.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 1000 observations and 5 explanatory variables using exact method.</ItemCell>
+         </Desc>
          <MATLABcode>
-    MDRenv=FSRenvmdr(10000,5);&#xD;</MATLABcode>
+            <ItemCell>MDRenv=FSRenvmdr(10000,5);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>FSRenvmdr with optional argument.</Title>
-         <Desc>&#xD;
-     Example of creation of 1%, 50% and 99% &#xD;
-     envelopes based on 1000 observations and 5 explanatory variables &#xD;
-     using approximate method.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example of creation of 1%, 50% and 99% envelopes based on 1000 observations and 5 explanatory variables using approximate method.</ItemCell>
+         </Desc>
          <MATLABcode>
-    MDRenv1=FSRenvmdr(10000,5,'exact',0);&#xD;</MATLABcode>
+            <ItemCell>MDRenv1=FSRenvmdr(10000,5,'exact',0);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Example with plot of the envelopes.</Title>
-         <Desc>&#xD;
-     Example of creation of 1%, 50% and 99%&#xD;
-     envelopes based on 100 observations and 5 explanatory variables using &#xD;
-     exact method.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Example of creation of 1%, 50% and 99% envelopes based on 100 observations and 5 explanatory variables using exact method.</ItemCell>
+         </Desc>
          <MATLABcode>
-    Menv=FSRenvmdr(100,5,'exact',1);&#xD;
-    plot(Menv(:,1),Menv(:,2:4));&#xD;</MATLABcode>
+            <ItemCell>Menv=FSRenvmdr(100,5,'exact',1);</ItemCell>
+            <ItemCell>plot(Menv(:,1),Menv(:,2:4));</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Comparing the accuracy of the envelopes computed with order statistics with the simulated ones.</Title>
-         <Desc>&#xD;
-     Fix a seed &#xD;</Desc>
+         <Desc>
+            <ItemCell>Fix a seed</ItemCell>
+         </Desc>
          <MATLABcode>
-    state=1000;&#xD;
-    mtstream = RandStream('shr3cong','Seed',state);&#xD;
-    %RandStream.setDefaultStream(mtstream);&#xD;
-    RandStream.setGlobalStream(mtstream);&#xD;
-    %defaultStream = RandStream.getDefaultStream();&#xD;
-    defaultStream = RandStream.getGlobalStream();&#xD;
-    reset(defaultStream)&#xD;
-&#xD;
-    % If you run this example in a version older than 7.9 replace the previous four lines with &#xD;
-    % randn('state', 1000);&#xD;
-&#xD;
-    n=200;&#xD;
-    p=3;&#xD;
-    X=randn(n,p);&#xD;
-&#xD;
-    init=20;&#xD;
-    nsimul=1000;&#xD;
-    mdrStore=zeros(n-init,nsimul);&#xD;
-&#xD;
-    for j=1:nsimul&#xD;
-        y=randn(n,1);&#xD;
-        [out]=LXS(y,X,'nsamp',1000','msg',0);&#xD;
-        mdr = FSRmdr(y,X,out.bs,'init',init);&#xD;
-        mdrStore(:,j)=mdr(:,2);&#xD;
-    end&#xD;
-&#xD;
-    % Sort rows of matrix mdrStore&#xD;
-    mdrStore=sort(mdrStore,2);&#xD;
-&#xD;
-    % Create figure which compares empirical and theoretical forward envelopes&#xD;
-    % for minimum deletion residual&#xD;
-    figure;&#xD;
-    hold('on');&#xD;
-    quant=[0.01 0.5 0.99];&#xD;
-    sel=round(nsimul*quant);&#xD;
-    % Plot lines of empirical quantiles&#xD;
-    line(mdr(:,1),mdrStore(:,sel),'LineStyle','--','Color','g');&#xD;
-    % Plots lines of theoretical quantiles using order statistics&#xD;
-    mdrT=FSRenvmdr(n,p+1,'exact',1,'init',init);&#xD;
-    line(mdrT(:,1),mdrT(:,2:4),'LineStyle','-','Color','r');&#xD;
-    xlabel('Subset size m');&#xD;</MATLABcode>
+            <ItemCell>state=1000;</ItemCell>
+            <ItemCell>mtstream = RandStream('shr3cong','Seed',state);</ItemCell>
+            <ItemCell>%RandStream.setDefaultStream(mtstream);</ItemCell>
+            <ItemCell>RandStream.setGlobalStream(mtstream);</ItemCell>
+            <ItemCell>%defaultStream = RandStream.getDefaultStream();</ItemCell>
+            <ItemCell>defaultStream = RandStream.getGlobalStream();</ItemCell>
+            <ItemCell>reset(defaultStream)</ItemCell>
+            <ItemCell>% If you run this example in a version older than 7.9 replace the previous four lines with</ItemCell>
+            <ItemCell>% randn('state', 1000);</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>init=20;</ItemCell>
+            <ItemCell>nsimul=1000;</ItemCell>
+            <ItemCell>mdrStore=zeros(n-init,nsimul);</ItemCell>
+            <ItemCell>for j=1:nsimul</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>[out]=LXS(y,X,'nsamp',1000','msg',0);</ItemCell>
+            <ItemCell>mdr = FSRmdr(y,X,out.bs,'init',init);</ItemCell>
+            <ItemCell>mdrStore(:,j)=mdr(:,2);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Sort rows of matrix mdrStore</ItemCell>
+            <ItemCell>mdrStore=sort(mdrStore,2);</ItemCell>
+            <ItemCell>% Create figure which compares empirical and theoretical forward envelopes</ItemCell>
+            <ItemCell>% for minimum deletion residual</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>hold('on');</ItemCell>
+            <ItemCell>quant=[0.01 0.5 0.99];</ItemCell>
+            <ItemCell>sel=round(nsimul*quant);</ItemCell>
+            <ItemCell>% Plot lines of empirical quantiles</ItemCell>
+            <ItemCell>line(mdr(:,1),mdrStore(:,sel),'LineStyle','--','Color','g');</ItemCell>
+            <ItemCell>% Plots lines of theoretical quantiles using order statistics</ItemCell>
+            <ItemCell>mdrT=FSRenvmdr(n,p+1,'exact',1,'init',init);</ItemCell>
+            <ItemCell>line(mdrT(:,1),mdrT(:,2:4),'LineStyle','-','Color','r');</ItemCell>
+            <ItemCell>xlabel('Subset size m');</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </ExtraEx>

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HAbdp</Title>
-   <Purpose><!--This is the second line of the .m file-->HAbdp finds the constant c associated to the supplied breakdown point</Purpose>
+   <Purpose><!--This is the second line of the .m file-->HAbdp finds the constant c associated to the supplied breakdown point
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>bdp</Name>
-         <ShortDesc>breakdown point</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar defining breakdown point&#xD;
-               (i.e a number between 0 and 0.5)&#xD;
-               </LongDesc>
+         <ShortDesc>breakdown point.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining breakdown point (i.e a number between 0 and 0.5)</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,10 +17,9 @@
       </Item>
       <Item>
          <Name>p</Name>
-         <ShortDesc>number of response variables</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>e.g. in regression p=1&#xD;
-               </LongDesc>
+         <ShortDesc>number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>e.g. in regression p=1</LongDesc>
          <Example> </Example>
          <DataType>single|double|int32|int64</DataType>
          <ReqArg>1</ReqArg>
@@ -29,12 +27,9 @@
       </Item>
       <Item>
          <Name>abc</Name>
-         <ShortDesc>parameters of Hampel estimator</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>Vector of length 3&#xD;
-               which contains the parameters of Hampel estimator. If&#xD;
-               vector abc is not specified it is set equal to [2, 4, 8]&#xD;
-               </LongDesc>
+         <ShortDesc>parameters of Hampel estimator.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector of length 3 which contains the parameters of Hampel estimator. If vector abc is not specified it is set equal to [2, 4, 8]</LongDesc>
          <Example>&lt;code&gt;[1.5,3.5,8]&#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -46,41 +41,30 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>ctun</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Requested tuning constant.</TypeInd>
-         <LongDesc> Tuning constatnt of Hampel rho&#xD;
-         function associated to requested breakdown point</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Tuning constatnt of Hampel rho function associated to requested breakdown point</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- Function HApsi transforms vector u as follows.&#xD;
-  \[&#xD;
-  HApsi(u)  = \left\{   &#xD;
-  \begin{array}{cc}&#xD;
-    u &amp; |u| &amp;lt;= a                                       \\&#xD;
-    a \times sign(u) &amp; a &amp;lt;= |u| &amp;lt; b                    \\&#xD;
-    a \frac{c-|u|}{c-b} \times sign(u) &amp; b &amp;lt;= |u| &amp;lt;  c \\&#xD;
-    0 &amp; |u| &amp;gt;= c &#xD;
-  \end{array} \right.&#xD;
- \]&#xD;
-&#xD;
-             where $a$= ctun *param(1).&#xD;
-                   $b$= ctun *param(2).&#xD;
-                   $c$= ctun *param(3).&#xD;
-&#xD;
-             The default is&#xD;
-                   $a$= 2*ctun. &#xD;
-                   $b$= 4*ctun. &#xD;
-                   $c$= 8*ctun. &#xD;
-&#xD;
-	It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HApsi transforms vector u as follows.
+\[
+HApsi(u) = \left\{ \begin{array}{cc} u &amp; |u| &amp;lt;= a \\
+a \times sign(u) &amp; a &amp;lt;= |u| &amp;lt; b \\
+a \frac{c-|u|}{c-b} \times sign(u) &amp; b &amp;lt;= |u| &amp;lt; c \\
+0 &amp; |u| &amp;gt;= c \end{array} \right.
+\]
+where $a$= ctun *param(1).
+$b$= ctun *param(2).
+$c$= ctun *param(3).
+The default is $a$= 2*ctun.
+$b$= 4*ctun.
+$c$= 8*ctun.
+It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and&#xD;
- Exploratory Data Analysis Wiley, New York.</Item>
+      <Item>D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and Exploratory Data Analysis Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBbdp</Item>
@@ -90,21 +74,24 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Find constant c for bdp=0.5.</Title>
-         <Desc>&#xD;
-     The constant c associated to a breakdown point of 50 per cent in regression is&#xD;
-     0.198131771596856&#xD;</Desc>
+         <Desc>
+            <ItemCell>The constant c associated to a breakdown point of 50 per cent in regression is 0.198131771596856</ItemCell>
+         </Desc>
          <MATLABcode>
-    c=HAbdp(0.5,1);&#xD;
-    disp(c);&#xD;</MATLABcode>
+            <ItemCell>c=HAbdp(0.5,1);</ItemCell>
+            <ItemCell>disp(c);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Find constant c for bdp=0.5 when abc=[1.5 3.5 8].</Title>
-         <Desc>&#xD;
-     The constant c associated to a breakdown point of 50 per cent in regression is&#xD;</Desc>
+         <Desc>
+            <ItemCell>The constant c associated to a breakdown point of 50 per cent in regression is</ItemCell>
+         </Desc>
          <MATLABcode>
-    c=HAbdp(0.5,1,[1.5 3.5 8]);&#xD;
-    disp(c);&#xD;</MATLABcode>
+            <ItemCell>c=HAbdp(0.5,1,[1.5 3.5 8]);</ItemCell>
+            <ItemCell>disp(c);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>

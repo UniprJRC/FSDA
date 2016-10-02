@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->shuffling</Title>
-   <Purpose><!--This is the second line of the .m file-->shuffling does a random permutation of the elements of input vector</Purpose>
+   <Purpose><!--This is the second line of the .m file-->shuffling does a random permutation of the elements of input vector
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>x</Name>
-         <ShortDesc>A set of elements</ShortDesc>
-         <TypeInd>Vector of length t</TypeInd>
+         <ShortDesc>A set of elements.</ShortDesc>
+         <TypeInd>Vector of length t.</TypeInd>
          <LongDesc> </LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
@@ -19,28 +20,18 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>x</Name>
-         <ShortDesc> Vector of length t</ShortDesc>
+         <ShortDesc>Vector of length t</ShortDesc>
          <TypeInd>A permutation of the set of elements in x.</TypeInd>
-         <LongDesc> &#xD;
-       Data Types - single|double</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Data Types - single|double</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- If set $x$ has $t$ elements, the objective is to obtain each of the $t!$&#xD;
- pemutations with equal probability, especially when $t$ is large. To&#xD;
- achieve this goal, we use backward Knuth's shuffling, which is actually&#xD;
- based on the Fisher-Yates shuffle. Once compiled, Knuth solution is more&#xD;
- efficient than the natural MATLAB solution x(randperm(numel(x)).&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->If set $x$ has $t$ elements, the objective is to obtain each of the $t!$ pemutations with equal probability, especially when $t$ is large. To achieve this goal, we use backward Knuth's shuffling, which is actually based on the Fisher-Yates shuffle. Once compiled, Knuth solution is more efficient than the natural MATLAB solution x(randperm(numel(x)).
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Knuth, Donald E. (1969). The Art of Computer Programming volume 2,&#xD;
- Seminumerical algorithms, Reading, MA: Addison-Wesley, pp. 124-125.</Item>
-      <Item>Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables for biological,&#xD;
- agricultural and medical research (3rd ed.). London, Oliver &amp; Boyd. pp&#xD;
- 26-27.</Item>
+      <Item>Knuth, Donald E. (1969). The Art of Computer Programming volume 2, Seminumerical algorithms, Reading, MA: Addison-Wesley, pp. 124-125.</Item>
+      <Item>Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables for biological, agricultural and medical research (3rd ed.). London, Oliver &amp; Boyd. pp 26-27.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>randperm</Item>
@@ -48,40 +39,44 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>shuffling applied to a set of 20 elements.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    shuffling(1:20)&#xD;</MATLABcode>
+            <ItemCell>shuffling(1:20)</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>shuffling applied with parsimonious data type.</Title>
-         <Desc>&#xD;
-     shuffling applied to a set of 20 elements, but using a parsimonious&#xD;
-     data type; this is convenient if the vector is big.&#xD;</Desc>
+         <Desc>
+            <ItemCell>shuffling applied to a set of 20 elements, but using a parsimonious data type; this is convenient if the vector is big.</ItemCell>
+         </Desc>
          <MATLABcode>
-    shuffling(int8(1:20))&#xD;</MATLABcode>
+            <ItemCell>shuffling(int8(1:20))</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>check of the permutation produced by shuffling.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    x = 1:200000;&#xD;
-    numel(unique(shuffling(x)))&#xD;</MATLABcode>
+            <ItemCell>x = 1:200000;</ItemCell>
+            <ItemCell>numel(unique(shuffling(x)))</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>To profile against randperm, which uses sort.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    for i=1:5000&#xD;
-        x = randi(100000,10000,1);&#xD;
-        nn=numel(x);&#xD;
-        shuffling(x);&#xD;
-        x(randperm(nn));&#xD;
-    end&#xD;</MATLABcode>
+            <ItemCell>for i=1:5000</ItemCell>
+            <ItemCell>x = randi(100000,10000,1);</ItemCell>
+            <ItemCell>nn=numel(x);</ItemCell>
+            <ItemCell>shuffling(x);</ItemCell>
+            <ItemCell>x(randperm(nn));</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

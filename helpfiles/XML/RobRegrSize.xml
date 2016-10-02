@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->RobRegrSize</Title>
-   <Purpose><!--This is the second line of the .m file-->RobRegrSize provides proper threshold for robust estimators to obtain an empirical size close to 1 per cent nominal size</Purpose>
+   <Purpose><!--This is the second line of the .m file-->RobRegrSize provides proper threshold for robust estimators to obtain an empirical size close to 1 per cent nominal size
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>n</Name>
-         <ShortDesc>sample size</ShortDesc>
-         <TypeInd>Scalar integer</TypeInd>
-         <LongDesc>Number of units of the regression dataset. &#xD;
-               REMARK - simulations have been done for&#xD;
-               n=50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500.&#xD;
-               For other values of n the threhold are found by&#xD;
-               interpolation using the two closest values smaller or&#xD;
-               greater than the one which has been considered&#xD;
-               </LongDesc>
+         <ShortDesc>sample size.</ShortDesc>
+         <TypeInd>Scalar integer.</TypeInd>
+         <LongDesc>Number of units of the regression dataset.
+REMARK - simulations have been done for n=50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500.
+For other values of n the threhold are found by interpolation using the two closest values smaller or greater than the one which has been considered</LongDesc>
          <Example> </Example>
          <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
          <ReqArg>1</ReqArg>
@@ -22,14 +19,10 @@
       </Item>
       <Item>
          <Name>p</Name>
-         <ShortDesc>number of variables</ShortDesc>
-         <TypeInd>Scalar integer</TypeInd>
-         <LongDesc>Number of explanatory variables.&#xD;
-               REMARK - simulations have been done for p=2, 3, ..., 10. If&#xD;
-               the user supplies a value of p greater than 10 the&#xD;
-               correction factors are extrapolated by fitting a simple&#xD;
-               quadratic model in p.&#xD;
-               </LongDesc>
+         <ShortDesc>number of variables.</ShortDesc>
+         <TypeInd>Scalar integer.</TypeInd>
+         <LongDesc>Number of explanatory variables.
+REMARK - simulations have been done for p=2, 3, ..., 10. If the user supplies a value of p greater than 10 the correction factors are extrapolated by fitting a simple quadratic model in p.</LongDesc>
          <Example> </Example>
          <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
          <ReqArg>1</ReqArg>
@@ -37,16 +30,14 @@
       </Item>
       <Item>
          <Name>robest</Name>
-         <ShortDesc>robust estimator</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>String which identifies the robust estimator which is used&#xD;
-               Possibile values are:&#xD;
-                 'S'    S estimators;&#xD;
-                 'MM'   MM estimators;&#xD;
-                 'LTS'  Least trimmed squares estimator;&#xD;
-                 'LTSr' Least trimmed squares estimator reweighted.&#xD;
-               If robest is missing MM estimator is used&#xD;
-               </LongDesc>
+         <ShortDesc>robust estimator.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>String which identifies the robust estimator which is used Possibile values are:
+'S' S estimators;
+'MM' MM estimators;
+'LTS' Least trimmed squares estimator;
+'LTSr' Least trimmed squares estimator reweighted.
+If robest is missing MM estimator is used</LongDesc>
          <Example> </Example>
          <DataType>har</DataType>
          <ReqArg>1</ReqArg>
@@ -54,21 +45,14 @@
       </Item>
       <Item>
          <Name>rhofunc</Name>
-         <ShortDesc>Weight function</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>String which identifies the weight function which has been&#xD;
-               used for S or MM.&#xD;
-               Possibile values are&#xD;
-                'TB', for Tukey biweight rho function;&#xD;
-                'HA', for Hampel rho function;&#xD;
-                'HY', for hyperbolic rho function;&#xD;
-                'OP', for optimal rho function;&#xD;
-                'ST'  Soft trimming estimator (in this case an average&#xD;
-                        threshold based on the TB,HY,HA and OP is used)&#xD;
-                REMARK - this value is ignored if robest is LTS or LTSr&#xD;
-               If rhofunc is missing and robest is 'S' or 'MM', the&#xD;
-               default value of rhofunc is 'ST'.&#xD;
-               </LongDesc>
+         <ShortDesc>Weight function.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>String which identifies the weight function which has been used for S or MM.
+Possibile values are 'TB', for Tukey biweight rho function;
+'HA', for Hampel rho function;
+'HY', for hyperbolic rho function;
+'OP', for optimal rho function;
+'ST' Soft trimming estimator (in this case an average threshold based on the TB,HY,HA and OP is used) REMARK - this value is ignored if robest is LTS or LTSr If rhofunc is missing and robest is 'S' or 'MM', the default value of rhofunc is 'ST'.</LongDesc>
          <Example> </Example>
          <DataType>har</DataType>
          <ReqArg>1</ReqArg>
@@ -76,18 +60,10 @@
       </Item>
       <Item>
          <Name>bdp</Name>
-         <ShortDesc>breakdown point</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar between 0 and 0.5. If robest is S, LTS or LTSr&#xD;
-               and bdp is missing a value of 0.5 is used as default.&#xD;
-               REMARK - simulations have been done for bdp=0.25 and 0.50&#xD;
-               If the user supplies a value of bdp smaller than 0.25, the&#xD;
-               threhold found for bdp=0.25 is used.  In this case a&#xD;
-               warning is produced which alerts the user that the test is&#xD;
-               likely to be conservative. If on the other hand bdp is a&#xD;
-               value in the interval (0.25 0.5) an average&#xD;
-               between bdp=0.25 and bdp=0.5 is used (for a more refined&#xD;
-               correction please see input option Tallis)</LongDesc>
+         <ShortDesc>breakdown point.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar between 0 and 0.5. If robest is S, LTS or LTSr and bdp is missing a value of 0.5 is used as default.
+REMARK - simulations have been done for bdp=0.25 and 0.50 If the user supplies a value of bdp smaller than 0.25, the threhold found for bdp=0.25 is used. In this case a warning is produced which alerts the user that the test is likely to be conservative. If on the other hand bdp is a value in the interval (0.25 0.5) an average between bdp=0.25 and bdp=0.5 is used (for a more refined correction please see input option Tallis)</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -95,14 +71,9 @@
       </Item>
       <Item>
          <Name>eff</Name>
-         <ShortDesc>nominal efficiency</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar between between 0.5 and 1-epsilon (if robest is 'MM')&#xD;
-               REMARK - simulations have been done for eff = 0.85, 0.90 and&#xD;
-               0.95 If the user supplies a value of eff smaller than 0.85&#xD;
-               (greater than 0.95), the threshold found for eff=0.85&#xD;
-               (eff=0.95) is used.  In all the other cases an average&#xD;
-               is taken using the two closest values of eff</LongDesc>
+         <ShortDesc>nominal efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar between between 0.5 and 1-epsilon (if robest is 'MM') REMARK - simulations have been done for eff = 0.85, 0.90 and 0.95 If the user supplies a value of eff smaller than 0.85 (greater than 0.95), the threshold found for eff=0.85 (eff=0.95) is used. In all the other cases an average is taken using the two closest values of eff</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -110,11 +81,9 @@
       </Item>
       <Item>
          <Name>sizesim</Name>
-         <ShortDesc>simultaneous or individual size</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which specifies whether simultaneous (sizesim=1) or&#xD;
-               individual size is used. If sizesim is missing or equal to&#xD;
-               1 a simultaneous size is used.</LongDesc>
+         <ShortDesc>simultaneous or individual size.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies whether simultaneous (sizesim=1) or individual size is used. If sizesim is missing or equal to 1 a simultaneous size is used.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -122,23 +91,10 @@
       </Item>
       <Item>
          <Name>Tallis</Name>
-         <ShortDesc>need to intermpolate</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which has an effect just if bdp is not equal to 0.25&#xD;
-               or 0.5. If Tallis=1 the program computes the ratio between&#xD;
-               the asymptotic consitency factor using the breakdown point&#xD;
-               supplied by the user and the closest consistency factor&#xD;
-               associated to the breakdown point for which simulations&#xD;
-               exist. Therefore, if for example the supplied breakdown is&#xD;
-               smaller than 0.25 the program multiplies the empirical&#xD;
-               threshold using bdp=0.25 by a number smaller than 1.&#xD;
-               Similarly, if bdp&amp;gt;0.375 the program multiplies the&#xD;
-               empirical threshold using bdp=0.5 by a number smaller than&#xD;
-               1. If supplied bdp is very close to 0.25 or 0.5 we suggest&#xD;
-               to use this option otherwise it is better to take a&#xD;
-               simple average of the threholds associated to the two&#xD;
-               closest breakdown points for which simulations exist. The&#xD;
-               default value of Tallis is 0.</LongDesc>
+         <ShortDesc>need to intermpolate.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which has an effect just if bdp is not equal to 0.25 or 0.5. If Tallis=1 the program computes the ratio between the asymptotic consitency factor using the breakdown point supplied by the user and the closest consistency factor associated to the breakdown point for which simulations exist. Therefore, if for example the supplied breakdown is smaller than 0.25 the program multiplies the empirical threshold using bdp=0.25 by a number smaller than 1.
+Similarly, if bdp&amp;gt;0.375 the program multiplies the empirical threshold using bdp=0.5 by a number smaller than 1. If supplied bdp is very close to 0.25 or 0.5 we suggest to use this option otherwise it is better to take a simple average of the threholds associated to the two closest breakdown points for which simulations exist. The default value of Tallis is 0.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -149,63 +105,44 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>thresh</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Empirical threshold.</TypeInd>
-         <LongDesc>&#xD;
-                Emprirical threshold which can be used in order&#xD;
-                to have a test with en empirical size close to the nominal&#xD;
-                size (1 individual or simultaneous)</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Emprirical threshold which can be used in order to have a test with en empirical size close to the nominal size (1 individual or simultaneous)</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
-               We assume that the two input MAT files&#xD;
-               Ind_ThreshSm.mat and Sim_ThreshSm.mat are in the same&#xD;
-               folder or in the MATLAB path.&#xD;
-               Ind_ThreshSm.mat contains a 3D array with the thresholds in&#xD;
-               case an individual size is requested&#xD;
-               Sim_ThreshSm.mat contains a&#xD;
-               3D array with the thresholds in case a simultaneous size&#xD;
-               is requested&#xD;
-               The two 3D arrays have dimension 12-by-9-by-24&#xD;
-               The 12 rows are referred to the 12 sample sizes which have&#xD;
-               been considered namely n=50, 60, 70, 80, 90, 100, 150, 200,&#xD;
-               250, 300, 400, 500.&#xD;
-               The 9 colums are referred to the number of variables which&#xD;
-               have been considered namely p=2, 3, ..., 10.&#xD;
-               The third dimension is associated with the 24 estimators&#xD;
-               which have been used. The order of the estimators is:&#xD;
-                 ' 1'    'LTSbdp050' ;&#xD;
-                 ' 2'    'LTSbdp025' ;&#xD;
-                 ' 3'    'LTSrbdp050';&#xD;
-                 ' 4'    'LTSrbdp025';&#xD;
-                 ' 5'    'Sbdp025TB' ;&#xD;
-                 ' 6'    'Sbdp050TB' ;&#xD;
-                 ' 7'    'MMeff085TB';&#xD;
-                 ' 8'    'MMeff090TB';&#xD;
-                 ' 9'    'MMeff095TB';&#xD;
-                 '10'    'Sbdp025OP' ;&#xD;
-                 '11'    'Sbdp050OP' ;&#xD;
-                 '12'    'MMeff085OP';&#xD;
-                 '13'    'MMeff090OP';&#xD;
-                 '14'    'MMeff095OP';&#xD;
-                 '15'    'Sbdp025HY' ;&#xD;
-                 '16'    'Sbdp050HY' ;&#xD;
-                 '17'    'MMeff085HY';&#xD;
-                 '18'    'MMeff090HY';&#xD;
-                 '19'    'MMeff095HY';&#xD;
-                 '20'    'Sbdp025HA' ;&#xD;
-                 '21'    'Sbdp050HA' ;&#xD;
-                 '22'    'MMeff085HA';&#xD;
-                 '23'    'MMeff090HA';&#xD;
-                 '24'    'MMeff095HA'.&#xD;
-&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->We assume that the two input MAT files Ind_ThreshSm.mat and Sim_ThreshSm.mat are in the same folder or in the MATLAB path.
+Ind_ThreshSm.mat contains a 3D array with the thresholds in case an individual size is requested Sim_ThreshSm.mat contains a 3D array with the thresholds in case a simultaneous size is requested The two 3D arrays have dimension 12-by-9-by-24 The 12 rows are referred to the 12 sample sizes which have been considered namely n=50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500.
+The 9 colums are referred to the number of variables which have been considered namely p=2, 3, ..., 10.
+The third dimension is associated with the 24 estimators which have been used. The order of the estimators is:
+' 1' 'LTSbdp050' ;
+' 2' 'LTSbdp025' ;
+' 3' 'LTSrbdp050';
+' 4' 'LTSrbdp025';
+' 5' 'Sbdp025TB' ;
+' 6' 'Sbdp050TB' ;
+' 7' 'MMeff085TB';
+' 8' 'MMeff090TB';
+' 9' 'MMeff095TB';
+'10' 'Sbdp025OP' ;
+'11' 'Sbdp050OP' ;
+'12' 'MMeff085OP';
+'13' 'MMeff090OP';
+'14' 'MMeff095OP';
+'15' 'Sbdp025HY' ;
+'16' 'Sbdp050HY' ;
+'17' 'MMeff085HY';
+'18' 'MMeff090HY';
+'19' 'MMeff095HY';
+'20' 'Sbdp025HA' ;
+'21' 'Sbdp050HA' ;
+'22' 'MMeff085HA';
+'23' 'MMeff090HA';
+'24' 'MMeff095HA'.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Salini S., Cerioli A., Laurini F. and Riani M. (2014), Reliable Robust&#xD;
-   Regression Diagnostics, submitted.</Item>
+      <Item>Salini S., Cerioli A., Laurini F. and Riani M. (2014), Reliable Robust Regression Diagnostics, submitted.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>Sreg</Item>
@@ -215,71 +152,74 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>RobRgerSize with all defalut options.</Title>
-         <Desc>&#xD;
-     Find the threshold for MM estimator, Tukey biweight rho function with&#xD;
-     efficiency 0.87 (simultaneous size)&#xD;</Desc>
+         <Desc>
+            <ItemCell>Find the threshold for MM estimator, Tukey biweight rho function with efficiency 0.87 (simultaneous size)</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=232;&#xD;
-    p=10;&#xD;
-    bdp='';&#xD;
-    robest='MM';&#xD;
-    eff=0.87;&#xD;
-    rhofunc='TB';&#xD;
-    sizesim=1;&#xD;
-    thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim);&#xD;</MATLABcode>
+            <ItemCell>n=232;</ItemCell>
+            <ItemCell>p=10;</ItemCell>
+            <ItemCell>bdp='';</ItemCell>
+            <ItemCell>robest='MM';</ItemCell>
+            <ItemCell>eff=0.87;</ItemCell>
+            <ItemCell>rhofunc='TB';</ItemCell>
+            <ItemCell>sizesim=1;</ItemCell>
+            <ItemCell>thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Additional Example 1.</Title>
-         <Desc>&#xD;
-     Find the threshold for MM estimator, take an average threhold for all&#xD;
-     rho functions, and use efficiency 0.85 (simultaneous size)&#xD;</Desc>
+         <Desc>
+            <ItemCell>Find the threshold for MM estimator, take an average threhold for all rho functions, and use efficiency 0.85 (simultaneous size)</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=93;&#xD;
-    p=5;&#xD;
-    bdp='';&#xD;
-    eff=0.85;&#xD;
-    robest='MM';&#xD;
-    rhofunc='ST';&#xD;
-    sizesim=1;&#xD;
-    thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim);&#xD;</MATLABcode>
+            <ItemCell>n=93;</ItemCell>
+            <ItemCell>p=5;</ItemCell>
+            <ItemCell>bdp='';</ItemCell>
+            <ItemCell>eff=0.85;</ItemCell>
+            <ItemCell>robest='MM';</ItemCell>
+            <ItemCell>rhofunc='ST';</ItemCell>
+            <ItemCell>sizesim=1;</ItemCell>
+            <ItemCell>thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Additional Example 2.</Title>
-         <Desc>&#xD;
-     Find the threshold for LTS estimator, use Tallis correction to infer&#xD;
-     a threshold for bdp equal to 0.27 (simultaneous size)&#xD;</Desc>
+         <Desc>
+            <ItemCell>Find the threshold for LTS estimator, use Tallis correction to infer a threshold for bdp equal to 0.27 (simultaneous size)</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=72;&#xD;
-    p=10;&#xD;
-    bdp=0.27;&#xD;
-    robest='LTS';&#xD;
-    eff='';&#xD;
-    rhofunc='';&#xD;
-    sizesim=1;&#xD;
-    Tallis=1;&#xD;
-    thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis);&#xD;</MATLABcode>
+            <ItemCell>n=72;</ItemCell>
+            <ItemCell>p=10;</ItemCell>
+            <ItemCell>bdp=0.27;</ItemCell>
+            <ItemCell>robest='LTS';</ItemCell>
+            <ItemCell>eff='';</ItemCell>
+            <ItemCell>rhofunc='';</ItemCell>
+            <ItemCell>sizesim=1;</ItemCell>
+            <ItemCell>Tallis=1;</ItemCell>
+            <ItemCell>thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Additional Example 3.</Title>
-         <Desc>&#xD;
-     Find the threshold for S estimator and hyperbolic rho function, &#xD;
-     use Tallis correction to infer&#xD;
-     a threshold for bdp equal to 0.3 (simultaneous size)&#xD;</Desc>
+         <Desc>
+            <ItemCell>Find the threshold for S estimator and hyperbolic rho function, use Tallis correction to infer a threshold for bdp equal to 0.3 (simultaneous size)</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=100;&#xD;
-    p=5;&#xD;
-    bdp=0.3;&#xD;
-    robest='S';&#xD;
-    eff='';&#xD;
-    rhofunc='HY';&#xD;
-    sizesim=1;&#xD;
-    Tallis=1;&#xD;
-    thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis);&#xD;</MATLABcode>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>p=5;</ItemCell>
+            <ItemCell>bdp=0.3;</ItemCell>
+            <ItemCell>robest='S';</ItemCell>
+            <ItemCell>eff='';</ItemCell>
+            <ItemCell>rhofunc='HY';</ItemCell>
+            <ItemCell>sizesim=1;</ItemCell>
+            <ItemCell>Tallis=1;</ItemCell>
+            <ItemCell>thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

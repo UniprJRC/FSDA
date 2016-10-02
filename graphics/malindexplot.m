@@ -7,12 +7,14 @@ function malindexplot(md,v,varargin)
 % Required input arguments:
 %
 %   md : Mahalanobis distances. Vector or structure. Vector of Mahalanobis distances (in squared units) or a structure
-%       containing fields md and Y. In this second case ms is a structure with the followign fields: 
+%       containing fields md and Y. In this second case md is a structure with the following fields: 
 %        md.md = contains the Mahalanobis distances;
 %        md.Y = contains the original data matrix whose Mahalanobis
 %        distances have been computed.
+%                Data Types - single|double
 %  v : Number of variables. Scalar, the number of variables of the original
-%       data matrix. which have been used to construct md.
+%       data matrix which have been used to compute md.
+%                Data Types - single|double
 %
 % Optional input arguments:
 %
@@ -133,7 +135,7 @@ function malindexplot(md,v,varargin)
 %
 %
 %
-%       The options which follow work in connection with previous option
+%       REMARK: the options which follow work in connection with previous option
 %       databrush and produce their effect on the scatter plot matrix of the original data
 %
 %           nameY: variables labels of the original data matrix. Cell. Cell

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->cascade</Title>
-   <Purpose><!--This is the second line of the .m file-->cascade is a third party function used in FSDA demos and examples</Purpose>
-   <Description><!--Description section-->function cascade cascades existing figures so that they don't directly overlap&#xD;
-   cascade takes and returns no arguments.  This function will cascade as&#xD;
-   many figures as will fit the height/width of the screen.  If there are&#xD;
-   more figures than can cascade in a screen, those additional figures are&#xD;
-   left in their original position.</Description>
+   <Purpose><!--This is the second line of the .m file-->cascade is a third party function used in FSDA demos and examples
+</Purpose>
+   <Description><!--Description section-->function cascade cascades existing figures so that they don't directly overlap cascade takes and returns no arguments. This function will cascade as many figures as will fit the height/width of the screen. If there are more figures than can cascade in a screen, those additional figures are left in their original position.
+</Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION--></InpArgs>
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
@@ -21,22 +19,23 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Cascade multiple figures.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    close all;&#xD;
-    load('multiple_regression.txt');&#xD;
-    y=multiple_regression(:,4);&#xD;
-    X=multiple_regression(:,1:3);&#xD;
-    yXplot(y,X);&#xD;
-    [out]=LXS(y,X,'nsamp',10000);&#xD;
-    [out]=FSReda(y,X,out.bs);&#xD;
-    out1=out;&#xD;
-    out1.RES=out.RES.^2;&#xD;
-    resfwdplot(out1);&#xD;
-    levfwdplot(out1);&#xD;
-    resindexplot(out1.RES);&#xD;
-    plot(out.S2(:,1),out.S2(:,2)); title('Plot of R^2');&#xD;
-    cascade;&#xD;</MATLABcode>
+            <ItemCell>close all;</ItemCell>
+            <ItemCell>load('multiple_regression.txt');</ItemCell>
+            <ItemCell>y=multiple_regression(:,4);</ItemCell>
+            <ItemCell>X=multiple_regression(:,1:3);</ItemCell>
+            <ItemCell>yXplot(y,X);</ItemCell>
+            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[out]=FSReda(y,X,out.bs);</ItemCell>
+            <ItemCell>out1=out;</ItemCell>
+            <ItemCell>out1.RES=out.RES.^2;</ItemCell>
+            <ItemCell>resfwdplot(out1);</ItemCell>
+            <ItemCell>levfwdplot(out1);</ItemCell>
+            <ItemCell>resindexplot(out1.RES);</ItemCell>
+            <ItemCell>plot(out.S2(:,1),out.S2(:,2)); title('Plot of R^2');</ItemCell>
+            <ItemCell>cascade;</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

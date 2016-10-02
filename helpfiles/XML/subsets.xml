@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->subsets</Title>
-   <Purpose><!--This is the second line of the .m file-->subsets creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements</Purpose>
+   <Purpose><!--This is the second line of the .m file-->subsets creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>nsamp</Name>
-         <ShortDesc>Number of subsamples which have to be extracted</ShortDesc>
-         <TypeInd>Scalar;&#xD;
-               if nsamp=0 all subsets will be extracted; they will be (n&#xD;
-               choose p)</TypeInd>
+         <ShortDesc>Number of subsamples which have to be extracted.</ShortDesc>
+         <TypeInd>Scalar;
+if nsamp=0 all subsets will be extracted; they will be (n choose p).</TypeInd>
          <LongDesc> </LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
@@ -18,8 +18,8 @@
       </Item>
       <Item>
          <Name>n</Name>
-         <ShortDesc>Number of observations of the dataset</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
+         <ShortDesc>Number of observations of the dataset.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
          <LongDesc> </LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
@@ -28,13 +28,10 @@
       </Item>
       <Item>
          <Name>p</Name>
-         <ShortDesc>Size of the subsets</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>In regression with p &#xD;
-               explanatory variable the size of the elmental subsets is p; &#xD;
-               in multivariate analysis, in presence of v variables, &#xD;
-               the size of the elemental subsets is v+1.&#xD;
-               </LongDesc>
+         <ShortDesc>Size of the subsets.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>In regression with p explanatory variable the size of the elmental subsets is p;
+in multivariate analysis, in presence of v variables, the size of the elemental subsets is v+1.</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -42,10 +39,8 @@
       </Item>
       <Item>
          <Name>ncomb</Name>
-         <ShortDesc>scalar (n choose p)</ShortDesc>
-         <TypeInd>If the user has already computed this&#xD;
-               value it can supply it directly, otherwise the program will&#xD;
-               calculate it automatically</TypeInd>
+         <ShortDesc>scalar (n choose p).</ShortDesc>
+         <TypeInd>If the user has already computed this value it can supply it directly, otherwise the program will calculate it automatically.</TypeInd>
          <LongDesc> </LongDesc>
          <Example>&lt;code&gt;C=subsets(20,10,3,120)&#xD;
 &lt;/code&gt;</Example>
@@ -55,10 +50,8 @@
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>scalar which controls whether to display or not messages&#xD;
-               on the screen</ShortDesc>
-         <TypeInd>If msg=1 (default), messages are displayed&#xD;
-               on the screen about estimated time</TypeInd>
+         <ShortDesc>scalar which controls whether to display or not messages on the screen.</ShortDesc>
+         <TypeInd>If msg=1 (default), messages are displayed on the screen about estimated time.</TypeInd>
          <LongDesc> </LongDesc>
          <Example>&lt;code&gt;C=subsets(20,10,3,120,0)&#xD;
 &lt;/code&gt;</Example>
@@ -71,20 +64,17 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>C</Name>
-         <ShortDesc>&#xD;
-               Matrix with nselected rows and p columns (stored in int16 format)</ShortDesc>
+         <ShortDesc>Matrix with nselected rows and p columns (stored in int16 format)</ShortDesc>
          <TypeInd>The indeces of the subsets which need to be extracted.</TypeInd>
-         <LongDesc> &#xD;
-               Data Types - single|double</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Data Types - single|double</LongDesc>
+         <Structure> </Structure>
       </Item>
       <Item>
          <Name>nselected</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Number of rows of matrix C.</TypeInd>
-         <LongDesc>&#xD;
-               Data Types - single|double</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Data Types - single|double</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
@@ -98,48 +88,56 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Create a matrix wuth the indexes of 5 subsets when n=100, p=3.</Title>
-         <Desc>&#xD;
-        Only default arguments used.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Only default arguments used.</ItemCell>
+         </Desc>
          <MATLABcode>
-       C = subsets(5,100,3)&#xD;</MATLABcode>
+            <ItemCell>C = subsets(5,100,3)</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Create a matrix with the indexes of 5 subsets when n=100, p=3.</Title>
-         <Desc> &#xD;
-        Use information on the number of combinations.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Use information on the number of combinations.</ItemCell>
+         </Desc>
          <MATLABcode>
-        ncomb = bc(100,3);&#xD;
-        C = subsets(5,100,3,ncomb)&#xD;</MATLABcode>
+            <ItemCell>ncomb = bc(100,3);</ItemCell>
+            <ItemCell>C = subsets(5,100,3,ncomb)</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Create a matrix with the indexes of 5 subsets when n=100, p=3.</Title>
-         <Desc>&#xD;
-        Also inform about the time taken for the operation.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Also inform about the time taken for the operation.</ItemCell>
+         </Desc>
          <MATLABcode>
-       ncomb = bc(1000,5);&#xD;
-       C = subsets(500000,1000,5,ncomb,1);&#xD;</MATLABcode>
+            <ItemCell>ncomb = bc(1000,5);</ItemCell>
+            <ItemCell>C = subsets(500000,1000,5,ncomb,1);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Create a matrix with the indexes of 5 subsets when n=100, p=3.</Title>
-         <Desc>&#xD;
-        As the previous example, but in addition returns in nselected the&#xD;
-        number of combinations.&#xD;</Desc>
+         <Desc>
+            <ItemCell>As the previous example, but in addition returns in nselected the number of combinations.</ItemCell>
+         </Desc>
          <MATLABcode>
-       ncomb = bc(1000,5);&#xD;
-       [C , nselected] = subsets(500000,1000,5,ncomb,1);&#xD;</MATLABcode>
+            <ItemCell>ncomb = bc(1000,5);</ItemCell>
+            <ItemCell>[C , nselected] = subsets(500000,1000,5,ncomb,1);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Extract 80000 subsets and check they are unique.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-        C=subsets(80000,100,5);&#xD;
-        size(unique(C,'rows'))&#xD;</MATLABcode>
+            <ItemCell>C=subsets(80000,100,5);</ItemCell>
+            <ItemCell>size(unique(C,'rows'))</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

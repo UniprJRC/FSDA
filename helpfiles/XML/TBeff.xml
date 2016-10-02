@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->TBeff</Title>
-   <Purpose><!--This is the second line of the .m file-->Tbeff finds the constant c which is associated to the requested efficiency for Tukey's biweight</Purpose>
+   <Purpose><!--This is the second line of the .m file-->Tbeff finds the constant c which is associated to the requested efficiency for Tukey's biweight
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>eff</Name>
-         <ShortDesc>required efficienty</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which contains the required efficiency (of location&#xD;
-               or scale estimator).&#xD;
-               </LongDesc>
+         <ShortDesc>required efficienty.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which contains the required efficiency (of location or scale estimator).</LongDesc>
          <Example> </Example>
          <DataType>single|double&#xD;
                Generally eff=0.85, 0.9 or 0.95</DataType>
@@ -19,10 +18,9 @@
       </Item>
       <Item>
          <Name>v</Name>
-         <ShortDesc>Number of response variables</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>e.g. in regression p=1&#xD;
-               </LongDesc>
+         <ShortDesc>Number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>e.g. in regression p=1</LongDesc>
          <Example> </Example>
          <DataType>single|double|int32|int64</DataType>
          <ReqArg>1</ReqArg>
@@ -30,11 +28,9 @@
       </Item>
       <Item>
          <Name>shapeeff</Name>
-         <ShortDesc>Location or shape efficiency</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If 1, the efficiency is referred to shape else (default)&#xD;
-              is referred to location&#xD;
-               </LongDesc>
+         <ShortDesc>Location or shape efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, the efficiency is referred to shape else (default) is referred to location</LongDesc>
          <Example>&lt;code&gt;'shapeeff',1&#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -43,12 +39,9 @@
       </Item>
       <Item>
          <Name>approxsheff</Name>
-         <ShortDesc>approximate or exact calculations</ShortDesc>
-         <TypeInd>Dummy scalar</TypeInd>
-         <LongDesc>If 1, when p &amp;gt; 1 the approximate formula for scale&#xD;
-              efficiency is used else (default) the exact formula of the&#xD;
-              variance of the robust estimator of the scale is used&#xD;
-               </LongDesc>
+         <ShortDesc>approximate or exact calculations.</ShortDesc>
+         <TypeInd>Dummy scalar.</TypeInd>
+         <LongDesc>If 1, when p &amp;gt; 1 the approximate formula for scale efficiency is used else (default) the exact formula of the variance of the robust estimator of the scale is used</LongDesc>
          <Example>&lt;code&gt;'approxsheff',1&#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
@@ -60,18 +53,16 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>ceff</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Requested tuning constant.</TypeInd>
-         <LongDesc> Tuning constatnt of Tukey Biweigh rho&#xD;
-         function associated to requested value of efficiency</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Tuning constatnt of Tukey Biweigh rho function associated to requested value of efficiency</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
- and Methods, Wiley, New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>OPTeff</Item>
@@ -83,39 +74,40 @@
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-    c=TBeff(0.95,1)&#xD;
-    % for a fixed shape efficiency we have&#xD;
-    % c= 5.490249208447494&#xD;
-    c=TBeff(0.95,1,1)&#xD;</MATLABcode>
+            <ItemCell>c=TBeff(0.95,1)</ItemCell>
+            <ItemCell>% for a fixed shape efficiency we have</ItemCell>
+            <ItemCell>% c= 5.490249208447494</ItemCell>
+            <ItemCell>c=TBeff(0.95,1,1)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-    p=200;&#xD;
-    pp=1:1:p;&#xD;
-    % Initialize the matrix which stores the values of c for the two&#xD;
-    % methods&#xD;
-    cc=[pp' zeros(p,2)];&#xD;
-&#xD;
-    eff=0.75;&#xD;
-    % eff=0.99;&#xD;
-    for i=pp&#xD;
-        % Use exact formula for finding the value of c associated to a fixed&#xD;
-        % level of shape efficiency&#xD;
-        cc(i,2)=TBeff(eff,i,1);&#xD;
-        % Use approximate formula for finding the value of c associated to a fixed&#xD;
-        % level of shape efficiency&#xD;
-        cc(i,3)=TBeff(eff,i,1,1);&#xD;
-    end&#xD;
-    figure&#xD;
-    plot(cc(:,1),cc(:,2),'LineStyle','-','LineWidth',2)&#xD;
-    hold('on')&#xD;
-    plot(cc(:,1),cc(:,3),'LineStyle','-.','LineWidth',2)&#xD;
-    legend('True value of c', 'Approximate value of c','Location','best')&#xD;
-    xlabel('Number of variables')&#xD;
-    ylabel('Value of c')&#xD;</MATLABcode>
+            <ItemCell>p=200;</ItemCell>
+            <ItemCell>pp=1:1:p;</ItemCell>
+            <ItemCell>% Initialize the matrix which stores the values of c for the two</ItemCell>
+            <ItemCell>% methods</ItemCell>
+            <ItemCell>cc=[pp' zeros(p,2)];</ItemCell>
+            <ItemCell>eff=0.75;</ItemCell>
+            <ItemCell>% eff=0.99;</ItemCell>
+            <ItemCell>for i=pp</ItemCell>
+            <ItemCell>% Use exact formula for finding the value of c associated to a fixed</ItemCell>
+            <ItemCell>% level of shape efficiency</ItemCell>
+            <ItemCell>cc(i,2)=TBeff(eff,i,1);</ItemCell>
+            <ItemCell>% Use approximate formula for finding the value of c associated to a fixed</ItemCell>
+            <ItemCell>% level of shape efficiency</ItemCell>
+            <ItemCell>cc(i,3)=TBeff(eff,i,1,1);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>plot(cc(:,1),cc(:,2),'LineStyle','-','LineWidth',2)</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>plot(cc(:,1),cc(:,3),'LineStyle','-.','LineWidth',2)</ItemCell>
+            <ItemCell>legend('True value of c', 'Approximate value of c','Location','best')</ItemCell>
+            <ItemCell>xlabel('Number of variables')</ItemCell>
+            <ItemCell>ylabel('Value of c')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>

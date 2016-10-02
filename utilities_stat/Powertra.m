@@ -60,15 +60,17 @@ function Ytra=Powertra(Y,la,varargin)
 %             2-lambda for y negative.
 %
 %
-% Copyright 2008-2016.
-% Written by FSDA team
+% See also normBoxCox, normYJ
 %
+% References:
 % Yeo, I.-K. and Johnson, R. (2000) A new family of power
 % transformations to improve normality or symmetry. Biometrika, 87,
 % 954-959.
 %
 %
-% See also normBoxCox, normYJ
+%
+% Copyright 2008-2016.
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('Powertra')">Link to the help function</a>

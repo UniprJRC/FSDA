@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->brushROB</Title>
-   <Purpose><!--This is the second line of the .m file--> brushROB displays a GUI which enables brushing in resindexplot</Purpose>
-   <Description><!--Description section-->brushROB displays a GUI to brush units from the index plot of residuals&#xD;
-and see the corresponding units highlighted in the yXplot</Description>
+   <Purpose><!--This is the second line of the .m file--> brushROB displays a GUI which enables brushing in resindexplot
+</Purpose>
+   <Description><!--Description section-->brushROB displays a GUI to brush units from the index plot of residualsand see the corresponding units highlighted in the yXplot
+</Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>eventdata</Name>
-         <ShortDesc>scalar integer (from 1 to 6)</ShortDesc>
-         <TypeInd>Automatic code execution&#xD;
-              without user interaction</TypeInd>
-         <LongDesc>This option enables to perform in&#xD;
-              an automatic way the code associated with a particular&#xD;
-              radiobutton in the GUI &#xD;
-              </LongDesc>
+         <ShortDesc>scalar integer (from 1 to 6).</ShortDesc>
+         <TypeInd>Automatic code execution without user interaction.</TypeInd>
+         <LongDesc>This option enables to perform in an automatic way the code associated with a particular radiobutton in the GUI</LongDesc>
          <Example>&lt;code&gt;2 (the example associated&#xD;
 &lt;/code&gt;              with the second radiobutton will be automatically executed)</Example>
          <DataType>integer</DataType>
@@ -34,21 +31,21 @@ and see the corresponding units highlighted in the yXplot</Description>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;
-     Display a GUI to brush units from the index plot of residuals&#xD;
-     and see the corresponding units highlighted in the yXplot.</Title>
-         <Desc/>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt; Display a GUI to brush units from the index plot of residuals and see the corresponding units highlighted in the yXplot.</Title>
+         <Desc> </Desc>
          <MATLABcode>
-    brushROB&#xD;</MATLABcode>
+            <ItemCell>brushROB</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Run examples associated with radiobuttons 1 to 6.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    for j=1:6&#xD;
-        brushROB(j);&#xD;
-    end&#xD;</MATLABcode>
+            <ItemCell>for j=1:6</ItemCell>
+            <ItemCell>brushROB(j);</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>

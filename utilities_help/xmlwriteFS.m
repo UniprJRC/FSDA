@@ -274,7 +274,7 @@ for i=1:size(out.Ex,1)
                         catch
                             ddd=1;
                         end
-                        name_node.appendChild(entry_nodeCell)
+                        name_node.appendChild(entry_nodeCell);
                     end
                 else
                     name_node.appendChild(docNode.createTextNode(out.Ex{i,j}));
@@ -317,7 +317,7 @@ for i=1:size(out.ExtraEx,1)
                         catch
                             ddd=1;
                         end
-                        name_node.appendChild(entry_nodeCell)
+                        name_node.appendChild(entry_nodeCell);
                     end
                 else
                     name_node.appendChild(docNode.createTextNode(out.ExtraEx{i,j}));

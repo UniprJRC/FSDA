@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->Qn</Title>
-   <Purpose><!--This is the second line of the .m file-->Qn robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)</Purpose>
+   <Purpose><!--This is the second line of the .m file-->Qn robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>X</Name>
-         <ShortDesc>Input array</ShortDesc>
-         <TypeInd>Vector | matrix | 3D array</TypeInd>
-         <LongDesc>Input array, specified as a vector, matrix, or 3D  array.&#xD;
-           For vectors, Qn(X) is the scale estimator of the elements in X. For&#xD;
-           matrices, Qn(X) is a row vector containing the scale estimator&#xD;
-           value of each column.  For 3D arrays, Qn(X) is the robust scale&#xD;
-           estimator of the elements along the first non-singleton dimension&#xD;
-           of X.&#xD;
-           </LongDesc>
+         <ShortDesc>Input array.</ShortDesc>
+         <TypeInd>Vector | matrix | 3D array.</TypeInd>
+         <LongDesc>Input array, specified as a vector, matrix, or 3D array.
+For vectors, Qn(X) is the scale estimator of the elements in X. For matrices, Qn(X) is a row vector containing the scale estimator value of each column. For 3D arrays, Qn(X) is the robust scale estimator of the elements along the first non-singleton dimension of X.</LongDesc>
          <Example> </Example>
          <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
          <ReqArg>1</ReqArg>
@@ -22,12 +18,9 @@
       </Item>
       <Item>
          <Name>dim</Name>
-         <ShortDesc>Dimension to operate along</ShortDesc>
-         <TypeInd>Positive integer scalar</TypeInd>
-         <LongDesc>Dimension to operate along, specified as a positive integer&#xD;
-           scalar. If no value is specified, then the default is the first&#xD;
-           array dimension whose size does not equal 1.&#xD;
-           </LongDesc>
+         <ShortDesc>Dimension to operate along.</ShortDesc>
+         <TypeInd>Positive integer scalar.</TypeInd>
+         <LongDesc>Dimension to operate along, specified as a positive integer scalar. If no value is specified, then the default is the first array dimension whose size does not equal 1.</LongDesc>
          <Example> </Example>
          <DataType>ingle | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64</DataType>
          <ReqArg>1</ReqArg>
@@ -38,36 +31,19 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc> Scalar | Vector or 3D array</ShortDesc>
+         <ShortDesc>Scalar | Vector or 3D array</ShortDesc>
          <TypeInd>robust estimator of scale.</TypeInd>
-         <LongDesc> &#xD;
-            Qn(X,dim) takes the robust estimator of scale along the&#xD;
-            dimension dim of X.</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Qn(X,dim) takes the robust estimator of scale along the dimension dim of X.</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
-   $Q_n$ is the first quartile of the distances { $|x_i-x_j|$; $i &amp;lt;j$} Note that&#xD;
-   $Q_n$ does not need any location estimate. More in detail, let &#xD;
-   $d_{(1)} \leq d_{(2)} \leq ... \leq d_{(m)}$ the ordered values of the&#xD;
-   $m$&#xD;
-   differences $|x_i-x_j|$ with $i&amp;gt;j$ and $m = {n \choose 2}$. $Q_n=d_{(k)}$ where&#xD;
-   $k= {[n/2]+1 \choose 2}$. Since $k$ is approximately $m/4$, $Q_n$ is approximately&#xD;
-   the first quartile of the ordered distances $d_{(1)} \leq d_{(2)} \leq&#xD;
-   ... \leq d_{(m)}$. $Q_n$ is multiplyed by $c$ and $c_n$. &#xD;
-   $c$ is the so called&#xD;
-   asymptotic consistency factor and is equal to 2.2219 while $c_n$ is a&#xD;
-   finite sample correction factor to make the estimator unbiased.&#xD;
-&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->$Q_n$ is the first quartile of the distances { $|x_i-x_j|$; $i &amp;lt;j$} Note that $Q_n$ does not need any location estimate. More in detail, let $d_{(1)} \leq d_{(2)} \leq ... \leq d_{(m)}$ the ordered values of the $m$ differences $|x_i-x_j|$ with $i&amp;gt;j$ and $m = {n \choose 2}$. $Q_n=d_{(k)}$ where $k= {[n/2]+1 \choose 2}$. Since $k$ is approximately $m/4$, $Q_n$ is approximately the first quartile of the ordered distances $d_{(1)} \leq d_{(2)} \leq ... \leq d_{(m)}$. $Q_n$ is multiplyed by $c$ and $c_n$.
+$c$ is the so called asymptotic consistency factor and is equal to 2.2219 while $c_n$ is a finite sample correction factor to make the estimator unbiased.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute deviation,&#xD;
- Journal of American Statistical Association 88, 1273-1283</Item>
-      <Item>Croux C. and Rousseeuw P.J.(1992)  Time-efficient algorithms for two&#xD;
- highly robust estimators of scale, in Computational Statistics, Volume 1,&#xD;
- eds. Y . Dodge and J. Whittaker, Heidelberg: Physika-Verlag, 41 1-428.</Item>
+      <Item>Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute deviation, Journal of American Statistical Association 88, 1273-1283</Item>
+      <Item>Croux C. and Rousseeuw P.J.(1992) Time-efficient algorithms for two highly robust estimators of scale, in Computational Statistics, Volume 1, eds. Y . Dodge and J. Whittaker, Heidelberg: Physika-Verlag, 41 1-428.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>Sn</Item>
@@ -75,14 +51,15 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Qn with all default otpions.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    X = [1 2 4 4  7;&#xD;
-         3 4 6 6  8;&#xD;
-         5 6 8 8  10;&#xD;
-         5 7 10 12 1500];&#xD;
-    y1=Qn(X)&#xD;
-    y2=Qn(X,2)&#xD;</MATLABcode>
+            <ItemCell>X = [1 2 4 4  7;</ItemCell>
+            <ItemCell>3 4 6 6  8;</ItemCell>
+            <ItemCell>5 6 8 8  10;</ItemCell>
+            <ItemCell>5 7 10 12 1500];</ItemCell>
+            <ItemCell>y1=Qn(X)</ItemCell>
+            <ItemCell>y2=Qn(X,2)</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>

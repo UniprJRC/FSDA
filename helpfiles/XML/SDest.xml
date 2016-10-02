@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->SDest</Title>
-   <Purpose><!--This is the second line of the .m file-->SDest computes Stahel-Donoho robust estimator of dispersion-location</Purpose>
+   <Purpose><!--This is the second line of the .m file-->SDest computes Stahel-Donoho robust estimator of dispersion-location
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Input data</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>Data matrix containing n observations on v variables&#xD;
-       $Y=(y_1^T, ..., y_i^T, ..., y_n^T)^T$. &#xD;
-       $y_i^T$ of size 1-by-v is the ith row of matrix Y.&#xD;
-       Rows of Y represent observations, and columns&#xD;
-       represent variables.&#xD;
-       Missing values (NaN's) and infinite values (Inf's) are allowed,&#xD;
-       since observations (rows) with missing or infinite values will&#xD;
-       automatically be excluded from the computations.</LongDesc>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix containing n observations on v variables $Y=(y_1^T, ..., y_i^T, ..., y_n^T)^T$.
+$y_i^T$ of size 1-by-v is the ith row of matrix Y.
+Rows of Y represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -25,222 +22,137 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>nsamp</Name>
-         <ShortDesc>Number of random directions</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar defining number of random directions which have&#xD;
-                to be extracted (if not given, default = 1000)&#xD;
-                 </LongDesc>
-         <Example> 'nsamp',1000 &#xD;
-                 </Example>
+         <ShortDesc>Number of random directions.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining number of random directions which have to be extracted (if not given, default = 1000)</LongDesc>
+         <Example>'nsamp',1000</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>jpcorr</Name>
-         <ShortDesc>Subsamples additional size</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Integer value greater or equal 0. &#xD;
-                If jpcorr=0 subsamples of size v are extracted. Each&#xD;
-                subsample gives rise to only 1 direction (called dir). &#xD;
-                If jpcorr=1 subsamples of size v+1 are extracted and&#xD;
-                they give rise to (v+1) directions. &#xD;
-                If jpcorr = 2, 3, 4, ... subsamples of size v+jpcorr are&#xD;
-                extracted. We remove the jpcorr-1 units from the subset&#xD;
-                which have the largest jpcorr-1 Mahalanobis distances so&#xD;
-                we obtain a subsample of v+1 units which, as before, gives&#xD;
-                rise to (v+1) directions. &#xD;
-                In the particular case when&#xD;
-                jpcorr=2 we end up with Juan and Prieto suggestion, that&#xD;
-                is the unit which has the largest MD is removed from each&#xD;
-                subsample. The default value of jpcorr is 0.&#xD;
-                 </LongDesc>
-         <Example> 'jpcorr',1 &#xD;
-                 </Example>
+         <ShortDesc>Subsamples additional size.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Integer value greater or equal 0.
+If jpcorr=0 subsamples of size v are extracted. Each subsample gives rise to only 1 direction (called dir).
+If jpcorr=1 subsamples of size v+1 are extracted and they give rise to (v+1) directions.
+If jpcorr = 2, 3, 4, ... subsamples of size v+jpcorr are extracted. We remove the jpcorr-1 units from the subset which have the largest jpcorr-1 Mahalanobis distances so we obtain a subsample of v+1 units which, as before, gives rise to (v+1) directions.
+In the particular case when jpcorr=2 we end up with Juan and Prieto suggestion, that is the unit which has the largest MD is removed from each subsample. The default value of jpcorr is 0.</LongDesc>
+         <Example>'jpcorr',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>conflev</Name>
-         <ShortDesc>Confidence level which is&#xD;
-               used to declare units as outliers</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar between 0 and 1. &#xD;
-               Usually conflev=0.95, 0.975 0.99 (individual alpha)&#xD;
-               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).&#xD;
-               Default value is 0.975. &#xD;
-                 </LongDesc>
-         <Example> 'conflev',0.95 &#xD;
-                 </Example>
+         <ShortDesc>Confidence level which is used to declare units as outliers.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar between 0 and 1.
+Usually conflev=0.95, 0.975 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+Default value is 0.975.</LongDesc>
+         <Example>'conflev',0.95</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>margin</Name>
-         <ShortDesc>Marginal projections</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar which specifies if it is necessary to consider&#xD;
-               marginal projections. Scalar margin specifies up to which&#xD;
-               order marginal projections must be considered. For example&#xD;
-               margin = 2 implies that all possible univariate and&#xD;
-               bivariate marginal projections are considered. Default&#xD;
-               value is 0 (marginal projections are not considered).&#xD;
-                 %               Remark: note that if margin&amp;gt;0, data are&#xD;
-               preliminary standardized using medians and MADs.&#xD;
-</LongDesc>
-         <Example> 'margin',2 &#xD;
-                 </Example>
+         <ShortDesc>Marginal projections.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies if it is necessary to consider marginal projections. Scalar margin specifies up to which order marginal projections must be considered. For example margin = 2 implies that all possible univariate and bivariate marginal projections are considered. Default value is 0 (marginal projections are not considered).
+% Remark: note that if margin&amp;gt;0, data are preliminary standardized using medians and MADs.</LongDesc>
+         <Example>'margin',2</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>weight</Name>
-         <ShortDesc>Value to use in the weight function</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>Value to use in the weight function to transform&#xD;
-               the outlyingness measure of each observation into a weight.&#xD;
-               Possible values are 'huber', 'tukey', 'zch', and 'mcd'.&#xD;
-               Default is 'mcd'.&#xD;
-               If weight = 'mcd', the [n/2] observations with the smallest&#xD;
-               distance get weight 1. An asymptotic consistency factor is&#xD;
-               applied to the estimated covariance matrix.&#xD;
-               If weight = huber, the weights are determined according to&#xD;
-               the following formula&#xD;
-               $w(r) = \min(1, (r/c)^{-q})$ &#xD;
-               with: &#xD;
-               $c=\min(\sqrt{\chi^2_{v,0.5}},4)$ &#xD;
-               in Van Aelst, Vandervieren and&#xD;
-               Willems, "Stahel-Donoho Estimators with Cellwise Weights",&#xD;
-               (J STAT COMPUT SIM, 2011) (option c='hdim', see below); &#xD;
-               $c=\sqrt{\chi^2_{v,0.95}}$ in Todorov and Filzmoser, "An Object&#xD;
-               Oriented Framework for Robust Multivariate Analysis", (J OF&#xD;
-               STAT SOFTWARE, 2009) (option c='sdim', see below);&#xD;
-               q = scalar see below.&#xD;
-               If weight = 'tukey' the Tukey Biweight function is applied,&#xD;
-               where weights are given by:&#xD;
-               \[&#xD;
-                   w(r)= &#xD;
-                   \left\{&#xD;
-                   \begin{array}{c}&#xD;
-                    [1-(r/c)^2]^2 \qquad if \qquad |r| \leq c \\&#xD;
-                     0 \qquad \mbox{otherwise} &#xD;
-                   \end{array}&#xD;
-                  \right.&#xD;
-                 \]&#xD;
-               with constant $c$ computed to obtain a prefixed nominal&#xD;
-               breakdown point (bdp). &#xD;
-               If weight = 'zch', weights are computed according to Zuo,&#xD;
-               Cui and He's formula (Zuo, Cui and He, "ON THE STAHEL-DONOHO ESTIMATOR AND DEPTH-WEIGHTED&#xD;
-               MEANS OF MULTIVARIATE DATA", Annals of Statistics (2004)):&#xD;
-               &#xD;
-                 \[&#xD;
-                   w(PD)= &#xD;
-                   \left\{&#xD;
-                   \begin{array}{c}&#xD;
-                     (\exp\{-K(1-PD/C)^2\} - \exp\{-K\})/(1-\exp\{-K\}) \qquad\qquad if \qquad PD &amp;lt; c \\&#xD;
-                     1 \qquad \mbox{otherwise} &#xD;
-                   \end{array}&#xD;
-                  \right.&#xD;
-                 \]&#xD;
-&#xD;
-               where:&#xD;
-               - $PD$ is the Projection Depth: $PD = 1/(1+r)$&#xD;
-               ($r$=outlyingness measure);&#xD;
-               - $C=Median(PD)$;&#xD;
-               - $K$ is a positive tuning parameter.&#xD;
-                 </LongDesc>
-         <Example> 'weight','zch' &#xD;
-                 </Example>
+         <ShortDesc>Value to use in the weight function.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>Value to use in the weight function to transform the outlyingness measure of each observation into a weight.
+Possible values are 'huber', 'tukey', 'zch', and 'mcd'.
+Default is 'mcd'.
+If weight = 'mcd', the [n/2] observations with the smallest distance get weight 1. An asymptotic consistency factor is applied to the estimated covariance matrix.
+If weight = huber, the weights are determined according to the following formula $w(r) = \min(1, (r/c)^{-q})$ with:
+$c=\min(\sqrt{\chi^2_{v,0.5}},4)$ in Van Aelst, Vandervieren and Willems, "Stahel-Donoho Estimators with Cellwise Weights", (J STAT COMPUT SIM, 2011) (option c='hdim', see below);
+$c=\sqrt{\chi^2_{v,0.95}}$ in Todorov and Filzmoser, "An Object Oriented Framework for Robust Multivariate Analysis", (J OF STAT SOFTWARE, 2009) (option c='sdim', see below);
+q = scalar see below.
+If weight = 'tukey' the Tukey Biweight function is applied, where weights are given by:
+\[
+w(r)= \left\{ \begin{array}{c} [1-(r/c)^2]^2 \qquad if \qquad |r| \leq c \\
+0 \qquad \mbox{otherwise} \end{array} \right.
+\]
+with constant $c$ computed to obtain a prefixed nominal breakdown point (bdp).
+If weight = 'zch', weights are computed according to Zuo, Cui and He's formula (Zuo, Cui and He, "ON THE STAHEL-DONOHO ESTIMATOR AND DEPTH-WEIGHTED MEANS OF MULTIVARIATE DATA", Annals of Statistics (2004)):
+\[
+w(PD)= \left\{ \begin{array}{c} (\exp\{-K(1-PD/C)^2\} - \exp\{-K\})/(1-\exp\{-K\}) \qquad\qquad if \qquad PD &amp;lt; c \\
+1 \qquad \mbox{otherwise} \end{array} \right.
+\]
+where:
+- $PD$ is the Projection Depth: $PD = 1/(1+r)$ ($r$=outlyingness measure);
+- $C=Median(PD)$;
+- $K$ is a positive tuning parameter.</LongDesc>
+         <Example>'weight','zch'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>q</Name>
-         <ShortDesc>Constant to be used in the Huber weight function</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>The default value of q is 2 (see Maronna and Yohai, 1995).&#xD;
-                 </LongDesc>
-         <Example> 'q',2&#xD;
-                 </Example>
+         <ShortDesc>Constant to be used in the Huber weight function.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The default value of q is 2 (see Maronna and Yohai, 1995).</LongDesc>
+         <Example>'q',2</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>c</Name>
-         <ShortDesc>Scale parameter</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>If c='hdim' (high dimensions) the scale parameter c in the&#xD;
-               Huber weight function is given by:&#xD;
-               $c= min(\sqrt{\chi^2_{v,0.5}},4)$. If c='sdim' (small&#xD;
-               dimensions), parameter c is given by:&#xD;
-               $c=\sqrt{\chi^2_{v,0.95}}$. The default is 'hdim'.&#xD;
-                 </LongDesc>
-         <Example> 'c','hdim' &#xD;
-                 </Example>
+         <ShortDesc>Scale parameter.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>If c='hdim' (high dimensions) the scale parameter c in the Huber weight function is given by:
+$c= min(\sqrt{\chi^2_{v,0.5}},4)$. If c='sdim' (small dimensions), parameter c is given by:
+$c=\sqrt{\chi^2_{v,0.95}}$. The default is 'hdim'.</LongDesc>
+         <Example>'c','hdim'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nbp</Name>
-         <ShortDesc>Nominal breakdown point</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Nominal breakdown point to be fixed in the Tukey&#xD;
-               biweight function to obtain the thresold value c (0&amp;lt;nbp&amp;lt;1). The default&#xD;
-               value of npb is 0.5.&#xD;
-                 </LongDesc>
-         <Example> 'nbp',0.6&#xD;
-                 </Example>
+         <ShortDesc>Nominal breakdown point.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Nominal breakdown point to be fixed in the Tukey biweight function to obtain the thresold value c (0&amp;lt;nbp&amp;lt;1). The default value of npb is 0.5.</LongDesc>
+         <Example>'nbp',0.6</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>K</Name>
-         <ShortDesc>Constant to be used in Zuo, Cui and He's family of weights</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>The default of K is 3.&#xD;
-                 </LongDesc>
-         <Example> 'K',3&#xD;
-                 </Example>
+         <ShortDesc>Constant to be used in Zuo, Cui and He's family of weights.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The default of K is 3.</LongDesc>
+         <Example>'K',3</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Check input arguments</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is performed on&#xD;
-               matrix Y. As default nocheck=0.&#xD;
-                 </LongDesc>
-         <Example> 'nocheck',1&#xD;
-                 </Example>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix Y. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>plots</Name>
-         <ShortDesc>Plot on the screen</ShortDesc>
-         <TypeInd>Scalar or structure</TypeInd>
-         <LongDesc>If plots is a structure or scalar equal to 1, generates: &#xD;
-               (1) a plot of robust Mahalanobis distances against index number. The &#xD;
-               confidence level used to draw the confidence bands for&#xD;
-               the MD is given by the input option conflev. If conflev is&#xD;
-               not specified a nominal 0.975 confidence interval will be&#xD;
-               used. &#xD;
-               (2) a scatter plot matrix with the outliers highlighted. &#xD;
-               (3) a scatter plot of robust Mahalanobis distances against observation weights (i.e. the&#xD;
-               outlyingness measure transformed according to the weight&#xD;
-               function). &#xD;
-               If plots is a structure it may contain the following&#xD;
-               fields: &#xD;
-                   plots.labeladd = if this option is '1', the outliers in the&#xD;
-                       spm are labelled with their unit row index. The&#xD;
-                       default value is labeladd='', i.e. no label is&#xD;
-                       added.&#xD;
-                   plots.nameY = cell array of strings containing the labels of&#xD;
-                       the variables. As default value, the labels which are&#xD;
-                       added are Y1, ...Yv.&#xD;
-                 </LongDesc>
-         <Example> 'plots',1&#xD;
-                 </Example>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar or structure.</TypeInd>
+         <LongDesc>If plots is a structure or scalar equal to 1, generates:
+(1) a plot of robust Mahalanobis distances against index number. The confidence level used to draw the confidence bands for the MD is given by the input option conflev. If conflev is not specified a nominal 0.975 confidence interval will be used.
+(2) a scatter plot matrix with the outliers highlighted.
+(3) a scatter plot of robust Mahalanobis distances against observation weights (i.e. the outlyingness measure transformed according to the weight function).
+If plots is a structure it may contain the following fields:
+plots.labeladd = if this option is '1', the outliers in the spm are labelled with their unit row index. The default value is labeladd='', i.e. no label is added.
+plots.nameY = cell array of strings containing the labels of the variables. As default value, the labels which are added are Y1, ...Yv.</LongDesc>
+         <Example>'plots',1</Example>
          <DataType>single | double</DataType>
          <Struct>
             <ItemCell>
@@ -260,98 +172,58 @@
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>Level of output to display</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>scalar which controls whether to display or not messages&#xD;
-               on the screen If msg==1 (default) messages are displayed&#xD;
-               on the screen about estimated time to compute the final estimator&#xD;
-               else no message is displayed on the screen&#xD;
-                 </LongDesc>
-         <Example> 'msg',1&#xD;
-                 </Example>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>scalar which controls whether to display or not messages on the screen If msg==1 (default) messages are displayed on the screen about estimated time to compute the final estimator else no message is displayed on the screen</LongDesc>
+         <Example>'msg',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ysave</Name>
-         <ShortDesc>save input matrix Y</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar that is set to 1 to request that the data matrix Y&#xD;
-               is saved into the output structure out. This feature is&#xD;
-               meant at simplifying the use of function malindexplot.&#xD;
-               Default is 0, i.e. no saving is done.&#xD;
-                 </LongDesc>
-         <Example> 'ysave',1&#xD;
-                 </Example>
+         <ShortDesc>save input matrix Y.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the data matrix Y is saved into the output structure out. This feature is meant at simplifying the use of function malindexplot.
+Default is 0, i.e. no saving is done.</LongDesc>
+         <Example>'ysave',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>dirsave</Name>
-         <ShortDesc>save directions</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>scalar that is set to 1 to request that the all directions&#xD;
-               for all extracted subsets are saved. If dirsave=1 out&#xD;
-               structure will contain a field named Dir&#xD;
-                 </LongDesc>
-         <Example> 'dirsave',1&#xD;
-                 </Example>
+         <ShortDesc>save directions.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>scalar that is set to 1 to request that the all directions for all extracted subsets are saved. If dirsave=1 out structure will contain a field named Dir</LongDesc>
+         <Example>'dirsave',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>rstprojsave</Name>
-         <ShortDesc>save robust standardized projection scores</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar that is set to 1 to request that the robust&#xD;
-               standardized projection scores associated to each direction&#xD;
-               are saved for each subset. If projsave=1 out structure will&#xD;
-               contain a field named RstProj&#xD;
-                 </LongDesc>
-         <Example> 'rstprojsave',1&#xD;
-                 </Example>
+         <ShortDesc>save robust standardized projection scores.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the robust standardized projection scores associated to each direction are saved for each subset. If projsave=1 out structure will contain a field named RstProj</LongDesc>
+         <Example>'rstprojsave',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>projloc</Name>
-         <ShortDesc>Type of location</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>String with possible values 'median' (default) and 'mean'&#xD;
-               This option controls the type of location  (robust&#xD;
-               estimator of scale) to use for the projections for&#xD;
-               each subset. The projections are defined as $d^T \times y_i$&#xD;
-               where d is a v-by-1 vector containing a particular direction&#xD;
-              ($d^T$ is its transpose) (to make estimator location invariant).&#xD;
-                 </LongDesc>
-         <Example> 'projloc',1&#xD;
-                 </Example>
+         <ShortDesc>Type of location.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>String with possible values 'median' (default) and 'mean' This option controls the type of location (robust estimator of scale) to use for the projections for each subset. The projections are defined as $d^T \times y_i$ where d is a v-by-1 vector containing a particular direction ($d^T$ is its transpose) (to make estimator location invariant).</LongDesc>
+         <Example>'projloc',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>projscale</Name>
-         <ShortDesc>Type of standardization</ShortDesc>
-         <TypeInd>String</TypeInd>
-         <LongDesc>string with possible values&#xD;
-               'mad' (default), 'sn', 'qn' and 'std'.&#xD;
-               This option controls the type of standardization  (robust&#xD;
-               estimator of scale) to use for the centered projections for&#xD;
-               each subset (to make estimator scale invariant).&#xD;
-               'mad' uses median absolute deviations from the medians (see&#xD;
-               file mad.m of statistics toolbox for further details)&#xD;
-               'sn' uses a robust version of Gini's average difference&#xD;
-               (see file Sn.m of FSDA toolbox for further details)&#xD;
-               'qn' uses first quartile of interpoint distances&#xD;
-               $|x_i-x_j|$&#xD;
-               (see file Qn.m of FSDA toolbox for further details)&#xD;
-               'std' uses non robust standard deviations&#xD;
-               (see file std.m of statistics toolbox for further details)&#xD;
-               The two estimators 'sn' and 'qn' have been introduced by&#xD;
-               Rousseeuw and Croux (1993), JASA, as alternatives to MAD.&#xD;
-                 </LongDesc>
-         <Example> 'projscale',1&#xD;
-                 </Example>
+         <ShortDesc>Type of standardization.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>string with possible values 'mad' (default), 'sn', 'qn' and 'std'.
+This option controls the type of standardization (robust estimator of scale) to use for the centered projections for each subset (to make estimator scale invariant).
+'mad' uses median absolute deviations from the medians (see file mad.m of statistics toolbox for further details) 'sn' uses a robust version of Gini's average difference (see file Sn.m of FSDA toolbox for further details) 'qn' uses first quartile of interpoint distances $|x_i-x_j|$ (see file Qn.m of FSDA toolbox for further details) 'std' uses non robust standard deviations (see file std.m of statistics toolbox for further details) The two estimators 'sn' and 'qn' have been introduced by Rousseeuw and Croux (1993), JASA, as alternatives to MAD.</LongDesc>
+         <Example>'projscale',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
@@ -362,34 +234,26 @@
          <ShortDesc> </ShortDesc>
          <TypeInd> </TypeInd>
          <LongDesc> </LongDesc>
-         <Struct>
+         <Structure>
             <ItemCell>
                <Value>maxdir</Value>
-               <Description>n x v matrix which contains the direction maximizing&#xD;
-                    the robust standardized projection scores for each&#xD;
-                    unit of the sample (that is the direction which&#xD;
-                    produces the outlyingness measure for each&#xD;
-                    observation)</Description>
+               <Description>n x v matrix which contains the direction maximizing the robust standardized projection scores for each unit of the sample (that is the direction which produces the outlyingness measure for each observation)</Description>
             </ItemCell>
             <ItemCell>
                <Value>loc</Value>
-               <Description>1 x v  vector containing SD estimate of location</Description>
+               <Description>1 x v vector containing SD estimate of location</Description>
             </ItemCell>
             <ItemCell>
                <Value>cov</Value>
-               <Description>v x v matrix containing robust estimate of the&#xD;
-                    covariance matrix</Description>
+               <Description>v x v matrix containing robust estimate of the covariance matrix</Description>
             </ItemCell>
             <ItemCell>
                <Value>md</Value>
-               <Description>n x 1 vector containing the estimates of the robust&#xD;
-                    Mahalanobis distances (in squared units)</Description>
+               <Description>n x 1 vector containing the estimates of the robust Mahalanobis distances (in squared units)</Description>
             </ItemCell>
             <ItemCell>
                <Value>outliers</Value>
-               <Description>A vector containing the list of the units declared as&#xD;
-                    outliers using confidence level specified in input&#xD;
-                    scalar conflev</Description>
+               <Description>A vector containing the list of the units declared as outliers using confidence level specified in input scalar conflev</Description>
             </ItemCell>
             <ItemCell>
                <Value>conflev</Value>
@@ -397,77 +261,45 @@
             </ItemCell>
             <ItemCell>
                <Value>weights</Value>
-               <Description>n x 1 vector containing the estimates of the weights&#xD;
-                    Weights assume values between 0 and 1.&#xD;
-                    If input string weight is 'mcd' the weights are 0 or&#xD;
-                    1. More precisely the [n/2] associated with the&#xD;
-                    smallest [n/2] measure of outlyingness get weight 1</Description>
+               <Description>n x 1 vector containing the estimates of the weights Weights assume values between 0 and 1.
+If input string weight is 'mcd' the weights are 0 or 1. More precisely the [n/2] associated with the smallest [n/2] measure of outlyingness get weight 1</Description>
             </ItemCell>
             <ItemCell>
                <Value>Y</Value>
-               <Description>Data matrix Y. The field is present if option ysave&#xD;
-                    is set to 1.</Description>
+               <Description>Data matrix Y. The field is present if option ysave is set to 1.</Description>
             </ItemCell>
             <ItemCell>
                <Value>Dir</Value>
-               <Description>nsamp-by-v matrix or nsamp-by-v-by-(v+1) array which&#xD;
-                    contains for each subset the direction vectors. More in&#xD;
-                    details, if jpcorr=0 Dirsave is a nsamp-by-v matrix else&#xD;
-                    Dirsave is a 3D array of dimension nsamp-by-v-by-(v+1).&#xD;
-                    Remember that in this last case v+1 directions are&#xD;
-                    considered for each subset. The field is present only&#xD;
-                    if option dirsave is set to 1.</Description>
+               <Description>nsamp-by-v matrix or nsamp-by-v-by-(v+1) array which contains for each subset the direction vectors. More in details, if jpcorr=0 Dirsave is a nsamp-by-v matrix else Dirsave is a 3D array of dimension nsamp-by-v-by-(v+1).
+Remember that in this last case v+1 directions are considered for each subset. The field is present only if option dirsave is set to 1.</Description>
             </ItemCell>
             <ItemCell>
                <Value>RstProj</Value>
-               <Description>n-by-nsamp matrix or n-by-nsamp-by-(v+1) 3D array&#xD;
-                    which contains the robust standardized projection&#xD;
-                    scores for each unit of the sample for the nsamp&#xD;
-                    projections (or for the nsamp*(v+1) projections if&#xD;
-                    jpcorr&amp;gt;0). The field is present only if option&#xD;
-                    rstprojsave is set to 1.</Description>
+               <Description>n-by-nsamp matrix or n-by-nsamp-by-(v+1) 3D array which contains the robust standardized projection scores for each unit of the sample for the nsamp projections (or for the nsamp*(v+1) projections if jpcorr&amp;gt;0). The field is present only if option rstprojsave is set to 1.</Description>
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
                <Description>'SD'</Description>
             </ItemCell>
-         </Struct>
+         </Structure>
       </Item>
       <Item>
          <Name>varargout</Name>
-         <ShortDesc>C     : nsamp-by-v+jpcorr matrix </ShortDesc>
-         <TypeInd>Indices of the&#xD;
-             subsamples extracted for computing the SD estimate.</TypeInd>
-         <LongDesc>&#xD;
-             jpcorr=0,2, 3, ... (see input option jpcorr)</LongDesc>
-         <Struct> </Struct>
+         <ShortDesc>C : nsamp-by-v+jpcorr matrix</ShortDesc>
+         <TypeInd>Indices of the subsamples extracted for computing the SD estimate.</TypeInd>
+         <LongDesc>jpcorr=0,2, 3, ... (see input option jpcorr)</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->              A "robust standardized" projection&#xD;
-               score along direction vector d is defined as follows: &#xD;
-&#xD;
-               $Rstproj_i = \frac{d^T \times y_i -med_j(d^T \times y_j)}{MAD_j(d^T \times y_j)} \;\;\; i=1,\cdots,n$; &#xD;
-&#xD;
-              where $med_j(d^T \times y_j)$ and $MAD_j(d^T \times y_j)$ are respectively&#xD;
-              the median and the modified MAD  $j=1,2,\cdots,n$.&#xD;
-              With our two input options  projloc and projscale it is&#xD;
-              possible to use alternative estimators of location and scale&#xD;
-              to standardize $d^T \times y_i$: &#xD;
-&#xD;
-               $Rstproj_i = \frac{d^T \times y_i -projloc(d^T \times y_j)}{projscale(d^T \times y_j)} \;\;\; i=1,\cdots,n$; &#xD;
-&#xD;
-              The outlying measure for unit i ($outl_i$) is defined as: &#xD;
-&#xD;
-              $outl_i = sup_{d \in R^v} (Rstproj_i) \;\;\; i=1, \cdots, n$; &#xD;
-&#xD;
-              This outlyingness measure is based on the idea that for any&#xD;
-              multivariate outlier, one can always find a one-dimensional&#xD;
-              projection for which the observation is a univariate&#xD;
-              outlier. &#xD;
-              Remark: note that outl_i(d) = outl_i(c*d) where c&#xD;
-              is a positive scalar therefore it is not necessary to&#xD;
-              rescale d to unit norm.&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->A "robust standardized" projection score along direction vector d is defined as follows:
+$Rstproj_i = \frac{d^T \times y_i -med_j(d^T \times y_j)}{MAD_j(d^T \times y_j)} \;\;\; i=1,\cdots,n$;
+where $med_j(d^T \times y_j)$ and $MAD_j(d^T \times y_j)$ are respectively the median and the modified MAD $j=1,2,\cdots,n$.
+With our two input options projloc and projscale it is possible to use alternative estimators of location and scale to standardize $d^T \times y_i$:
+$Rstproj_i = \frac{d^T \times y_i -projloc(d^T \times y_j)}{projscale(d^T \times y_j)} \;\;\; i=1,\cdots,n$;
+The outlying measure for unit i ($outl_i$) is defined as:
+$outl_i = sup_{d \in R^v} (Rstproj_i) \;\;\; i=1, \cdots, n$;
+This outlyingness measure is based on the idea that for any multivariate outlier, one can always find a one-dimensional projection for which the observation is a univariate outlier.
+Remark: note that outl_i(d) = outl_i(c*d) where c is a positive scalar therefore it is not necessary to rescale d to unit norm.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--> &#xD;
 &#xD;
@@ -476,19 +308,14 @@
 &#xD;
 &#xD;
 &#xD;
- </Acknowledgements>
+ 
+</Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Stahel, W.A. (1981), "Breakdown of covariance estimators", Research&#xD;
-        Report 31, Fachgruppe f&amp;uuml;r Statistik, E.T.H. Z&amp;uuml;rich, Switzerland.</Item>
-      <Item>Donoho, D.L. (1982), "Breakdown Properties of Multivariate Location&#xD;
-        Estimators", Ph.D. dissertation, Harvard University.</Item>
-      <Item>Maronna, R.A. and Yohai, V.J. (1995), "The behavior of the Stahel-Donoho&#xD;
-         robust multivariate estimator", Journal of the American&#xD;
-         Statistical Association, 90, 329-341.</Item>
-      <Item>Juan J. and Prieto F.J. (1995) Journal of Computational and Graphical&#xD;
-         Statistics, 4, 319-334.</Item>
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory&#xD;
-         and Methods, Wiley,New York.</Item>
+      <Item>Stahel, W.A. (1981), "Breakdown of covariance estimators", Research Report 31, Fachgruppe f&amp;uuml;r Statistik, E.T.H. Z&amp;uuml;rich, Switzerland.</Item>
+      <Item>Donoho, D.L. (1982), "Breakdown Properties of Multivariate Location Estimators", Ph.D. dissertation, Harvard University.</Item>
+      <Item>Maronna, R.A. and Yohai, V.J. (1995), "The behavior of the Stahel-Donoho robust multivariate estimator", Journal of the American Statistical Association, 90, 329-341.</Item>
+      <Item>Juan J. and Prieto F.J. (1995) Journal of Computational and Graphical Statistics, 4, 319-334.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory and Methods, Wiley,New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>MCD</Item>
@@ -499,112 +326,115 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>SDest with all default options.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    v=3;&#xD;
-    randn('state', 123456);&#xD;
-    Y=randn(n,v);&#xD;
-    % Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    [out]=SDest(Ycont);&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>v=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(1:5,:)=Ycont(1:5,:)+3;</ItemCell>
+            <ItemCell>[out]=SDest(Ycont);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>SDest with optional arguments.</Title>
-         <Desc>&#xD;
-     SDest with v+1 directions for each subsample (jpcorr=1).&#xD;
-     Produce plot of robust Mahalanobis distances&#xD;</Desc>
+         <Desc>
+            <ItemCell>SDest with v+1 directions for each subsample (jpcorr=1).</ItemCell>
+            <ItemCell>Produce plot of robust Mahalanobis distances</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=50;&#xD;
-    v=5;&#xD;
-    randn('state', 1256);&#xD;
-    Y=randn(n,v);&#xD;
-    % Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5,:)=Ycont(1:5,:)+4;&#xD;
-    [out]=SDest(Ycont,'jpcorr',1,'plots',1);&#xD;</MATLABcode>
+            <ItemCell>n=50;</ItemCell>
+            <ItemCell>v=5;</ItemCell>
+            <ItemCell>randn('state', 1256);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(1:5,:)=Ycont(1:5,:)+4;</ItemCell>
+            <ItemCell>[out]=SDest(Ycont,'jpcorr',1,'plots',1);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>SDest with exctracted subsamples.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    n=200;&#xD;
-    v=3;&#xD;
-    randn('state', 123456);&#xD;
-    Y=randn(n,v);&#xD;
-    % Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;&#xD;
-    [out,C]=SDest(Ycont);&#xD;</MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>v=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(1:5,:)=Ycont(1:5,:)+3;</ItemCell>
+            <ItemCell>[out,C]=SDest(Ycont);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>SDest jpcorr equal to 1.</Title>
-         <Desc>&#xD;
-     v+1 directions for each subsample. Produce plot of robust Mahalanobis distances.&#xD;</Desc>
+         <Desc>
+            <ItemCell>v+1 directions for each subsample. Produce plot of robust Mahalanobis distances.</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=50;&#xD;
-    v=5;&#xD;
-    randn('state', 1256);&#xD;
-    Y=randn(n,v);&#xD;
-    % Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(2:20,3)=100;&#xD;
-    [out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);&#xD;</MATLABcode>
+            <ItemCell>n=50;</ItemCell>
+            <ItemCell>v=5;</ItemCell>
+            <ItemCell>randn('state', 1256);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(2:20,3)=100;</ItemCell>
+            <ItemCell>[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>SDest with with Juan and Prieto adjustment.</Title>
-         <Desc>&#xD;
-     jpcorr&amp;gt;1. Subsamples of size equal to v+5 are initially drawn (jpcorr=5).&#xD;
-     In each of them, the 4 units (=jpcorr-1) having the four&#xD;
-     largest MDs are then discarded from the subsample.&#xD;
-     For each subsample v+1 directions are computed.&#xD;
-     Produce plot of robust Mahalanobis distances.&#xD;</Desc>
+         <Desc>
+            <ItemCell>jpcorr&amp;gt;1. Subsamples of size equal to v+5 are initially drawn (jpcorr=5).</ItemCell>
+            <ItemCell>In each of them, the 4 units (=jpcorr-1) having the four largest MDs are then discarded from the subsample.</ItemCell>
+            <ItemCell>For each subsample v+1 directions are computed.</ItemCell>
+            <ItemCell>Produce plot of robust Mahalanobis distances.</ItemCell>
+         </Desc>
          <MATLABcode>
-    n=50;&#xD;
-    v=5;&#xD;
-    randn('state', 1256);&#xD;
-    Y=randn(n,v);&#xD;
-    % Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    Ycont(2:20,3)=5;&#xD;
-    [out]=SDest(Ycont,'jpcorr',5,'plots',1,'nsamp',100000);&#xD;
-&#xD;
-    %  SDest with directions and robust standardized projection scores saved&#xD;
-    [out]=SDest(Ycont,'jpcorr',0,'plots',1,'nsamp',1000,'dirsave',1,'rstprojsave',1);&#xD;
-&#xD;
-    % Compare the output of SD with the one produced by the fwd search&#xD;
-    outFS=FSM(Ycont,'init',20);&#xD;
-&#xD;
-    % SDest with different choices for the weight functions.&#xD;
-    n=100;&#xD;
-    v=5;&#xD;
-    randn('state', 1256);&#xD;
-    Y=randn(n,v);&#xD;
-    % Contaminated data&#xD;
-    Ycont=Y;&#xD;
-    rndind = randsample(n,10);&#xD;
-    Ycont(rndind,1)=20;&#xD;
-    [outhub]=SDest(Ycont,'jpcorr',2, 'weight','huber', 'plots',1);&#xD;
-    [outtuk]=SDest(Ycont,'jpcorr',2, 'weight','tukey', 'plots',1);&#xD;
-    [outtuk025]=SDest(Ycont,'jpcorr',2, 'weight','tukey', 'nbp',0.25, 'plots',1);&#xD;
-    [outzch]=SDest(Ycont,'jpcorr',2, 'weight','zch', 'plots',1);&#xD;
-    [outzchK50]=SDest(Ycont,'jpcorr',2, 'weight','zch', 'K',50, 'plots',1);&#xD;
-&#xD;
-    % SDest with alternatives to the MAD.&#xD;
-    n=50;&#xD;
-    v=5;&#xD;
-    randn('state', 1256);&#xD;
-    Y=randn(n,v);&#xD;
-    [outMAD]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000);&#xD;
-    [outSN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'sn');&#xD;
-    [outQN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'qn');&#xD;</MATLABcode>
+            <ItemCell>n=50;</ItemCell>
+            <ItemCell>v=5;</ItemCell>
+            <ItemCell>randn('state', 1256);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(2:20,3)=5;</ItemCell>
+            <ItemCell>[out]=SDest(Ycont,'jpcorr',5,'plots',1,'nsamp',100000);</ItemCell>
+            <ItemCell>%  SDest with directions and robust standardized projection scores saved</ItemCell>
+            <ItemCell>[out]=SDest(Ycont,'jpcorr',0,'plots',1,'nsamp',1000,'dirsave',1,'rstprojsave',1);</ItemCell>
+            <ItemCell>% Compare the output of SD with the one produced by the fwd search</ItemCell>
+            <ItemCell>outFS=FSM(Ycont,'init',20);</ItemCell>
+            <ItemCell>% SDest with different choices for the weight functions.</ItemCell>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>v=5;</ItemCell>
+            <ItemCell>randn('state', 1256);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>rndind = randsample(n,10);</ItemCell>
+            <ItemCell>Ycont(rndind,1)=20;</ItemCell>
+            <ItemCell>[outhub]=SDest(Ycont,'jpcorr',2, 'weight','huber', 'plots',1);</ItemCell>
+            <ItemCell>[outtuk]=SDest(Ycont,'jpcorr',2, 'weight','tukey', 'plots',1);</ItemCell>
+            <ItemCell>[outtuk025]=SDest(Ycont,'jpcorr',2, 'weight','tukey', 'nbp',0.25, 'plots',1);</ItemCell>
+            <ItemCell>[outzch]=SDest(Ycont,'jpcorr',2, 'weight','zch', 'plots',1);</ItemCell>
+            <ItemCell>[outzchK50]=SDest(Ycont,'jpcorr',2, 'weight','zch', 'K',50, 'plots',1);</ItemCell>
+            <ItemCell>% SDest with alternatives to the MAD.</ItemCell>
+            <ItemCell>n=50;</ItemCell>
+            <ItemCell>v=5;</ItemCell>
+            <ItemCell>randn('state', 1256);</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>[outMAD]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000);</ItemCell>
+            <ItemCell>[outSN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'sn');</ItemCell>
+            <ItemCell>[outQN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'qn');</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

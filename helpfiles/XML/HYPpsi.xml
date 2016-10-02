@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HYPpsi</Title>
-   <Purpose><!--This is the second line of the .m file-->HYPpsi computes psi function for hyperbolic tangent estimator</Purpose>
+   <Purpose><!--This is the second line of the .m file-->HYPpsi computes psi function for hyperbolic tangent estimator
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>u</Name>
-         <ShortDesc>scaled residuals or Mahalanobis distances</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>n x 1&#xD;
-               vector containing residuals or Mahalanobis distances&#xD;
-               for the n units of the sample</LongDesc>
+         <ShortDesc>scaled residuals or Mahalanobis distances.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>n x 1 vector containing residuals or Mahalanobis distances for the n units of the sample</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,21 +17,15 @@
       </Item>
       <Item>
          <Name>cktuning</Name>
-         <ShortDesc>tuning parameters</ShortDesc>
-         <TypeInd>Vector of length 2 or of length 5</TypeInd>
-         <LongDesc>cktuning specifies the value of the tuning&#xD;
-                constant c (scalar greater than 0 which controls the&#xD;
-                robustness/efficiency of the estimator)&#xD;
-                and the prefixed value k (sup of the&#xD;
-                change-of-variance sensitivity) and the values of&#xD;
-                parameters A, B and d.&#xD;
-                cktuning(1) = c;&#xD;
-                cktuning(2) = k = supCVC(psi,x) x \in R;&#xD;
-                cktuning(3)=A;&#xD;
-                cktuning(4)=B;&#xD;
-                cktuning(5)=d;&#xD;
-                Remark - if length(cktuning)==2 values of A, B and d will be&#xD;
-                computed automatically</LongDesc>
+         <ShortDesc>tuning parameters.</ShortDesc>
+         <TypeInd>Vector of length 2 or of length 5.</TypeInd>
+         <LongDesc>cktuning specifies the value of the tuning constant c (scalar greater than 0 which controls the robustness/efficiency of the estimator) and the prefixed value k (sup of the change-of-variance sensitivity) and the values of parameters A, B and d.
+cktuning(1) = c;
+cktuning(2) = k = supCVC(psi,x) x \in R;
+cktuning(3)=A;
+cktuning(4)=B;
+cktuning(5)=d;
+Remark - if length(cktuning)==2 values of A, B and d will be computed automatically</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -43,39 +36,25 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>psiHYP</Name>
-         <ShortDesc>n x 1 vector </ShortDesc>
+         <ShortDesc>n x 1 vector</ShortDesc>
          <TypeInd>FULL STOP MISSING IN THE OUTPUT DESCRIPTION</TypeInd>
-         <LongDesc>Values of hyperbolic psi&#xD;
-                function associated to the residuals or Mahalanobis&#xD;
-                distances for the n units of the sample</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Values of hyperbolic psi function associated to the residuals or Mahalanobis distances for the n units of the sample</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
- Function HYPpsi transforms vector u as follows&#xD;
-&#xD;
-  \[&#xD;
-   HYPpsi(u) = &#xD;
- \left\{&#xD;
-   \begin{array}{cc}&#xD;
-  	 u &amp;        |u| \leq  d \\&#xD;
-                  \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &amp;&#xD;
- 		         	                 d \leq |u| &amp;lt;  c, \\&#xD;
-                 0 &amp;                      |u| \geq c.&#xD;
- \end{array}&#xD;
-    \right.&#xD;
-  \]&#xD;
-  	It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \times normpdf(c) &amp;lt;1$&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HYPpsi transforms vector u as follows
+\[
+HYPpsi(u) = \left\{ \begin{array}{cc} u &amp; |u| \leq d \\
+\sqrt{A (k - 1)} \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &amp; d \leq |u| &amp;lt; c, \\
+0 &amp; |u| \geq c.
+\end{array} \right.
+\]
+It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \times normpdf(c) &amp;lt;1$
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Hampel F.R., Rousseeuw P.J. and Ronchetti E. (1981),&#xD;
- The Change-of-Variance Curve and Optimal Redescending M-Estimators,&#xD;
- Journal of the American Statistical Association , Vol. 76, No. 375,&#xD;
- pp. 643-648 (HRR)</Item>
-      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D.  (2014). Monitoring&#xD;
- Robust Regression. Electronic Journal of Statistics, Vol. 8 pp.  646-677</Item>
+      <Item>Hampel F.R., Rousseeuw P.J. and Ronchetti E. (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
+      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D. (2014). Monitoring Robust Regression. Electronic Journal of Statistics, Vol. 8 pp. 646-677</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBpsi</Item>
@@ -84,62 +63,62 @@
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Obtain Figure 2 of  p.</Title>
+         <Title>Obtain Figure 2 of p.</Title>
          <Desc> </Desc>
          <MATLABcode>
-&#xD;
-    % Obtain Figure 2 of  p. 645 of HRR.&#xD;
-    x=-9:0.1:9;&#xD;
-    ctuning=6;&#xD;
-    ktuning=4.5;&#xD;
-    psiHYP=HYPpsi(x,[ctuning,ktuning]);&#xD;
-    plot(x,psiHYP)&#xD;
-    xlabel('$u$','Interpreter','Latex')&#xD;
-    ylabel(' Hyperbolic $\psi(u,c=6,k=4.5) $','Interpreter','Latex')&#xD;
-    text(ctuning,-0.1,'c','FontSize',14)&#xD;
-    text(-ctuning,0.1,'-c','FontSize',14)&#xD;</MATLABcode>
+            <ItemCell>% Obtain Figure 2 of  p. 645 of HRR.</ItemCell>
+            <ItemCell>x=-9:0.1:9;</ItemCell>
+            <ItemCell>ctuning=6;</ItemCell>
+            <ItemCell>ktuning=4.5;</ItemCell>
+            <ItemCell>psiHYP=HYPpsi(x,[ctuning,ktuning]);</ItemCell>
+            <ItemCell>plot(x,psiHYP)</ItemCell>
+            <ItemCell>xlabel('$u$','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel(' Hyperbolic $\psi(u,c=6,k=4.5) $','Interpreter','Latex')</ItemCell>
+            <ItemCell>text(ctuning,-0.1,'c','FontSize',14)</ItemCell>
+            <ItemCell>text(-ctuning,0.1,'-c','FontSize',14)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
          <Title>Compare psi function for two values of parameter k.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    close all&#xD;
-    x=-9:0.1:9;&#xD;
-    ctuning=6;&#xD;
-    ktuning=5;&#xD;
-    psiHYP=HYPpsi(x,[ctuning,ktuning]);&#xD;
-    plot(x,psiHYP,'color','b')&#xD;
-    text(6,1.5,['k=' num2str(ktuning)],'Color','b','FontSize',14)&#xD;
-    xlabel('$u$','Interpreter','Latex','FontSize',14)&#xD;
-    ylabel(' Hyperbolic $\psi(u,c=6,k) $','Interpreter','Latex','FontSize',14)&#xD;
-    text(ctuning,-0.1,'c','FontSize',14)&#xD;
-    text(-ctuning,0.1,'-c','FontSize',14)&#xD;
-    hold('on')&#xD;
-    ktuning=4;&#xD;
-    psiHYP=HYPpsi(x,[ctuning,ktuning]);&#xD;
-    plot(x,psiHYP,'color','k')&#xD;
-    text(2,1.3,['k=' num2str(ktuning)],'Color','k','FontSize',14)&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>x=-9:0.1:9;</ItemCell>
+            <ItemCell>ctuning=6;</ItemCell>
+            <ItemCell>ktuning=5;</ItemCell>
+            <ItemCell>psiHYP=HYPpsi(x,[ctuning,ktuning]);</ItemCell>
+            <ItemCell>plot(x,psiHYP,'color','b')</ItemCell>
+            <ItemCell>text(6,1.5,['k=' num2str(ktuning)],'Color','b','FontSize',14)</ItemCell>
+            <ItemCell>xlabel('$u$','Interpreter','Latex','FontSize',14)</ItemCell>
+            <ItemCell>ylabel(' Hyperbolic $\psi(u,c=6,k) $','Interpreter','Latex','FontSize',14)</ItemCell>
+            <ItemCell>text(ctuning,-0.1,'c','FontSize',14)</ItemCell>
+            <ItemCell>text(-ctuning,0.1,'-c','FontSize',14)</ItemCell>
+            <ItemCell>hold('on')</ItemCell>
+            <ItemCell>ktuning=4;</ItemCell>
+            <ItemCell>psiHYP=HYPpsi(x,[ctuning,ktuning]);</ItemCell>
+            <ItemCell>plot(x,psiHYP,'color','k')</ItemCell>
+            <ItemCell>text(2,1.3,['k=' num2str(ktuning)],'Color','k','FontSize',14)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
          <Title>Parameters associated to a value of bdp=1/2.</Title>
-         <Desc/>
+         <Desc> </Desc>
          <MATLABcode>
-    c=2.158325031399727&#xD;
-    k=4;&#xD;
-    A=0.000162707412432;&#xD;
-    B=0.006991738279441   &#xD;
-    d=0.016982948780061&#xD;
-    x=-8:0.001:8;&#xD;
-    psiHYP=HYPpsi(x,[c,k,A,B,d]);&#xD;
-    plot(x,psiHYP)&#xD;
-    xlabel('x','Interpreter','Latex')&#xD;
-    ylabel(' Hyperbolic $\psi(x) $','Interpreter','Latex')&#xD;
-&#xD;</MATLABcode>
+            <ItemCell>c=2.158325031399727</ItemCell>
+            <ItemCell>k=4;</ItemCell>
+            <ItemCell>A=0.000162707412432;</ItemCell>
+            <ItemCell>B=0.006991738279441</ItemCell>
+            <ItemCell>d=0.016982948780061</ItemCell>
+            <ItemCell>x=-8:0.001:8;</ItemCell>
+            <ItemCell>psiHYP=HYPpsi(x,[c,k,A,B,d]);</ItemCell>
+            <ItemCell>plot(x,psiHYP)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel(' Hyperbolic $\psi(x) $','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </ExtraEx>

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->TBbdp</Title>
-   <Purpose><!--This is the second line of the .m file-->TBbdp finds the constant c associated to the supplied breakdown point for Tukey's biweight</Purpose>
+   <Purpose><!--This is the second line of the .m file-->TBbdp finds the constant c associated to the supplied breakdown point for Tukey's biweight
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>bdp</Name>
-         <ShortDesc>breakdown point</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>Scalar defining breakdown point&#xD;
-               (i.e a number between 0 and 0.5)&#xD;
-               </LongDesc>
+         <ShortDesc>breakdown point.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining breakdown point (i.e a number between 0 and 0.5)</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -18,10 +17,9 @@
       </Item>
       <Item>
          <Name>v</Name>
-         <ShortDesc>number of response variables</ShortDesc>
-         <TypeInd>Scalar</TypeInd>
-         <LongDesc>e.g. in regression p=1&#xD;
-               </LongDesc>
+         <ShortDesc>number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>e.g. in regression p=1</LongDesc>
          <Example> </Example>
          <DataType>single|double|int32|int64</DataType>
          <ReqArg>1</ReqArg>
@@ -32,18 +30,16 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>c</Name>
-         <ShortDesc> Scalar</ShortDesc>
+         <ShortDesc>Scalar</ShortDesc>
          <TypeInd>Requested tuning constant.</TypeInd>
-         <LongDesc> Tuning constatnt of Tukey Biweight&#xD;
-         function associated to requested breakdown point</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>Tuning constatnt of Tukey Biweight function associated to requested breakdown point</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory&#xD;
- and Methods, Wiley, New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>OPTbdp</Item>
@@ -55,7 +51,8 @@
          <Title> </Title>
          <Desc> </Desc>
          <MATLABcode>
-    c=TBbdp(0.5,1)&#xD;</MATLABcode>
+            <ItemCell>c=TBbdp(0.5,1)</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

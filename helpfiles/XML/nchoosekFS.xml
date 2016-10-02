@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->nchoosekFS</Title>
-   <Purpose><!--This is the second line of the .m file-->nchoosekFS returns the Binomial coefficient or matrix containing all combinations</Purpose>
+   <Purpose><!--This is the second line of the .m file-->nchoosekFS returns the Binomial coefficient or matrix containing all combinations
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>v</Name>
-         <ShortDesc>Vector of length n</ShortDesc>
-         <TypeInd>Integer or array of non-negative integers</TypeInd>
+         <ShortDesc>Vector of length n.</ShortDesc>
+         <TypeInd>Integer or array of non-negative integers.</TypeInd>
          <LongDesc> </LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
@@ -16,8 +17,8 @@
       </Item>
       <Item>
          <Name>k</Name>
-         <ShortDesc>Items to choose from the set of n elements</ShortDesc>
-         <TypeInd>Non negative integer</TypeInd>
+         <ShortDesc>Items to choose from the set of n elements.</ShortDesc>
+         <TypeInd>Non negative integer.</TypeInd>
          <LongDesc> </LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
@@ -29,32 +30,20 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>c</Name>
-         <ShortDesc> Binomial coefficient(s) or all combinations</ShortDesc>
-         <TypeInd>scalar $v!/k!(v-k)!$ if $v$ and $k$ are non-negative integers&#xD;
-           or matrix with $n!/k!(n-k)!$ rows and $k$ columns if $v$ is a&#xD;
-           vector of length $n.</TypeInd>
-         <LongDesc>&#xD;
-           Data Types - single|double</LongDesc>
-         <Struct> </Struct>
+         <ShortDesc>Binomial coefficient(s) or all combinations</ShortDesc>
+         <TypeInd>scalar $v!/k!(v-k)!$ if $v$ and $k$ are non-negative integers or matrix with $n!/k!(n-k)!$ rows and $k$ columns if $v$ is a vector of length $n.</TypeInd>
+         <LongDesc>Data Types - single|double</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
-   <MoreAbout><!--MORE ABOUT SECTION-->
-   This function is similar to nchoosek of Statistics Toolbox but it is&#xD;
-   much faster and makes a more efficient use of memory.&#xD;
-&#xD;
-   Returns the scalar $v!/k!(v-k)!$ if $v$ and $k$ are non-negative integers.&#xD;
-   This is the number of combinations of $v$ things taken $k$ at a time. In&#xD;
-   this case it makes use of function bc.&#xD;
-&#xD;
-   Produces a matrix with $n!/k!(n-k)!$ rows and $k$ columns if $v$ is a vector&#xD;
-   of length $n. Each row contains a combination of k elements taken&#xD;
-   without repetitions among n. In this case function combsFS is used.&#xD;
-&#xD;
+   <MoreAbout><!--MORE ABOUT SECTION-->This function is similar to nchoosek of Statistics Toolbox but it is much faster and makes a more efficient use of memory.
+Returns the scalar $v!/k!(v-k)!$ if $v$ and $k$ are non-negative integers.
+This is the number of combinations of $v$ things taken $k$ at a time. In this case it makes use of function bc.
+Produces a matrix with $n!/k!(n-k)!$ rows and $k$ columns if $v$ is a vector of length $n. Each row contains a combination of k elements taken without repetitions among n. In this case function combsFS is used.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Riordan, John (1958). An Introduction to Combinatorial Analysis, &#xD;
-    New York, NY: Wiley &amp; Sons.</Item>
+      <Item>Riordan, John (1958). An Introduction to Combinatorial Analysis, New York, NY: Wiley &amp; Sons.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>nchoosek</Item>
@@ -63,23 +52,22 @@
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Binomial coefficient(s) or all combinations.</Title>
-         <Desc>&#xD;
-      Profile generation of 2118760 combinations.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Profile generation of 2118760 combinations.</ItemCell>
+         </Desc>
          <MATLABcode>
-    v = 1:50; k = 4; &#xD;
-&#xD;
-    tic&#xD;
-    for i=1:10, nchoosekFS(v,k); end&#xD;
-    t_nchoosekFS = toc&#xD;
-&#xD;
-    tic&#xD;
-    for i=1:10, nchoosek(v,k); end&#xD;
-    t_nchoosek = toc&#xD;
-&#xD;
-    fprintf('nchoosekFS has been %5.2f times faster than nchoosek\n\n\n', t_nchoosek/t_nchoosekFS); &#xD;
-    fprintf('Try now again using k=5: in a 32 bit computer\n');&#xD;
-    fprintf('nchoosekFS will require about the same time (in order of magnitude)\n');&#xD;
-    fprintf('while nchoosek will start swaping into virtual memory.\n'); &#xD;</MATLABcode>
+            <ItemCell>v = 1:50; k = 4;</ItemCell>
+            <ItemCell>tic</ItemCell>
+            <ItemCell>for i=1:10, nchoosekFS(v,k); end</ItemCell>
+            <ItemCell>t_nchoosekFS = toc</ItemCell>
+            <ItemCell>tic</ItemCell>
+            <ItemCell>for i=1:10, nchoosek(v,k); end</ItemCell>
+            <ItemCell>t_nchoosek = toc</ItemCell>
+            <ItemCell>fprintf('nchoosekFS has been %5.2f times faster than nchoosek\n\n\n', t_nchoosek/t_nchoosekFS);</ItemCell>
+            <ItemCell>fprintf('Try now again using k=5: in a 32 bit computer\n');</ItemCell>
+            <ItemCell>fprintf('nchoosekFS will require about the same time (in order of magnitude)\n');</ItemCell>
+            <ItemCell>fprintf('while nchoosek will start swaping into virtual memory.\n');</ItemCell>
+         </MATLABcode>
          <Exec>1</Exec>
       </Item>
    </Ex>

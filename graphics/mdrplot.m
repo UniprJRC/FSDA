@@ -22,6 +22,7 @@ function mdrplot(out,varargin)
 %               estimated beta coefficients in each step of the forward search
 %               (necessary only if option databrush is not empty and
 %               suboption multivarfit is not empty)
+%                Data Types - single|double
 %
 %
 % Optional input arguments:

@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->basicPower</Title>
-   <Purpose><!--This is the second line of the .m file-->basicPower computes the basic power transformation</Purpose>
+   <Purpose><!--This is the second line of the .m file-->basicPower computes the basic power transformation
+</Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Input data</ShortDesc>
-         <TypeInd>Matrix</TypeInd>
-         <LongDesc>n x v data matrix; n observations and v variables. Rows of&#xD;
-               Y represent observations, and columns represent variables.&#xD;
-               Missing values (NaN's) and infinite values (Inf's) are&#xD;
-               allowed, since observations (rows) with missing or infinite&#xD;
-               values will automatically be excluded from the&#xD;
-               computations.&#xD;
-                </LongDesc>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -22,13 +18,9 @@
       </Item>
       <Item>
          <Name>ColtoTra</Name>
-         <ShortDesc>Variable to transform</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>k x 1 integer vector&#xD;
-               specifying the variables which must be&#xD;
-               transformed. If it is missing and length(la)=v all&#xD;
-               variables are transformed&#xD;
-                </LongDesc>
+         <ShortDesc>Variable to transform.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>k x 1 integer vector specifying the variables which must be transformed. If it is missing and length(la)=v all variables are transformed</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -36,11 +28,9 @@
       </Item>
       <Item>
          <Name>la</Name>
-         <ShortDesc>transformation parameters</ShortDesc>
-         <TypeInd>Vector</TypeInd>
-         <LongDesc>k x 1 vector containing set of transformation&#xD;
-               parameters for the k ColtoTra.&#xD;
-                </LongDesc>
+         <ShortDesc>transformation parameters.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>k x 1 vector containing set of transformation parameters for the k ColtoTra.</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -51,27 +41,23 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>Ytra</Name>
-         <ShortDesc> Matrix</ShortDesc>
+         <ShortDesc>Matrix</ShortDesc>
          <TypeInd>transformed data matrix.</TypeInd>
-         <LongDesc> n x v data matrix containing&#xD;
-               transformed observations&#xD;
-&#xD;
-             When $\lambda \ne 0$&#xD;
-             \[&#xD;
-               ytra = y^\lambda&#xD;
-             \]&#xD;
-             else&#xD;
-             \[ &#xD;
-               ytra = log(y) &#xD;
-             \]</LongDesc>
-         <Struct> </Struct>
+         <LongDesc>n x v data matrix containing transformed observations When $\lambda \ne 0$
+\[
+ytra = y^\lambda
+\]
+else
+\[
+ytra = log(y)
+\]</LongDesc>
+         <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Box, G. E. P. &amp; Cox, D. R. (1964). An analysis of transformations (with&#xD;
-Discussion). J. R. Statist. Soc. B 26, 211-252</Item>
+      <Item>Box, G. E. P. &amp; Cox, D. R. (1964). An analysis of transformations (withDiscussion). J. R. Statist. Soc. B 26, 211-252</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>normBoxCox</Item>
@@ -80,15 +66,17 @@ Discussion). J. R. Statist. Soc. B 26, 211-252</Item>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Example of transformation.</Title>
-         <Desc>&#xD;
-     Mussels data.&#xD;</Desc>
+         <Desc>
+            <ItemCell>Mussels data.</ItemCell>
+         </Desc>
          <MATLABcode>
-    load('mussels.mat');&#xD;
-    Y=mussels.data;&#xD;
-    la=[0.5 0 0.5 0 0];&#xD;
-    % Transform all columns of matrix Y according to the values of la using&#xD;
-    % basic power transformation&#xD;
-    Y1=basicPower(Y,[],la);&#xD;</MATLABcode>
+            <ItemCell>load('mussels.mat');</ItemCell>
+            <ItemCell>Y=mussels.data;</ItemCell>
+            <ItemCell>la=[0.5 0 0.5 0 0];</ItemCell>
+            <ItemCell>% Transform all columns of matrix Y according to the values of la using</ItemCell>
+            <ItemCell>% basic power transformation</ItemCell>
+            <ItemCell>Y1=basicPower(Y,[],la);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
