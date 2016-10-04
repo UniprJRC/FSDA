@@ -86,7 +86,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               if equalweights = true we are (ideally) assuming equally
 %               sized groups by maximizing:
 %
-%
 %                 \[
 %                 \sum_{j=1}^k \sum_{ x_i \in group_j } \log f(x_i; m_j , S_j)
 %                 \]
@@ -229,11 +228,12 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k. 0 indicates trimmed
 %                       observations.
-%            out.siz  = matrix of size k-by-3
-%                       1st col = sequence from 0 to k
-%                       2nd col = number of observations in each cluster
-%                       3rd col = percentage of observations in each cluster
-%                       Remark: 0 denotes unassigned units
+%            out.siz  = matrix of size k-by-3.
+%                       1st col = sequence from 0 to k;
+%                       2nd col = number of observations in each cluster;
+%                       3rd col = percentage of observations in each
+%                       cluster;
+%                       Remark: 0 denotes unassigned units.
 %            out.post = n-by-k matrix containing posterior probabilities
 %                       out.post(i,j) contains posterior probabilitiy of unit
 %                       i from component (cluster) j. For the trimmed units
@@ -304,7 +304,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % then 10 per cent of the iterations do not converge, a warning message is
 % issued, indicating that nsamp has to be increased.
 %
-% See also tkmeans, estepFS
+% See also: tkmeans, estepFS
 %
 % References:
 %
@@ -379,12 +379,13 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 
 %{
     %  tclust applied to the M5data.
-    %  A bivariate data set obtained from three normal bivariate distributions
-    %  with different scales and proportions 1:2:2. One of the components is very
-    %  overlapped with another one. A 10 per cent background noise is added uniformly
-    %  distributed in a rectangle containing the three normal components and not
-    %  very overlapped with the three mixture components. A precise description
-    %  of the M5 data set can be found in Garcia-Escudero et al. (2008).
+    %  A bivariate data set obtained from three normal bivariate
+    %  distributions with different scales and proportions 1:2:2. One of
+    %  the components is very overlapped with another one. A 10 per cent
+    %  background noise is added uniformly distributed in a rectangle
+    %  containing the three normal components and not very overlapped with
+    %  the three mixture components. A precise description of the M5 data
+    %  set can be found in Garcia-Escudero et al. (2008).
     Y=load('M5data.txt');
     % plot(Y(:,1),Y(:,2),'o')
     % Scatter plot matrix with univariate boxplot on the main diagonal
