@@ -8,31 +8,31 @@ function strFormatted = wraptextFS(str, varargin)
 % This function not only does text wrapping, but also enables us:
 % 1) to control left margin of the text;
 % 2) to control the maximum width of the text or the right margin;
-% 3) to add a (comment) sign at the beginning of each row of the wrapped text; 
+% 3) to add a (comment) sign at the beginning of each row of the wrapped text;
 % 4) to indent the first line of the text.
-% 5) to personalize comments, left margin for comments 
+% 5) to personalize comments, and left margin for comments
 %
 %  Required input arguments:
 %
-%       txt : Input text. Character vector. String which has to be analysed 
-%             and formatted. 
+%       str : Input text. Character vector. String which has to be analysed
+%             and formatted.
 %
 %  Optional input arguments:
 %
 %  startcolumn :  Left margin of the text. Scalar (non negative integer).
 %               This option controls the left margin of the text. The
 %               default value of startcolumn is 1.
-%               Example - 'startcolumn',10 
+%               Example - 'startcolumn',10
 %               Data Types - double
 %    endcolumn :  Right margin of the text. Scalar (non negative integer).
 %               This option controls the right margin of the text.
 %               The default value of endcolumn is 75.
-%               Example - 'endcolumn',50 
+%               Example - 'endcolumn',50
 %               Data Types - double
 %    width :  width of the text. Scalar (non negative integer).
 %               This option controls the width of the text.
 %               The default value of width is 65.
-%               Example - 'width',50 
+%               Example - 'width',50
 %               Data Types - double
 %               Remark: it is necessary just to give two values among,
 %               width, startcolumn and endcolumn because the third is
@@ -42,29 +42,38 @@ function strFormatted = wraptextFS(str, varargin)
 %              startcolumn, while the text in all the other columns starts
 %              as specified by option startcolumn.
 %               The default value of firstline is false
-%               Example - 'firstline',true 
+%               Example - 'firstline',true
 %               Data Types - Boolean
-%   comment :  specify whether text is a Maltab comment. Boolean or structure. If
+%   comment :  specify whether text is a Matlab comment. Boolean or structure. If
 %              comment is true then the first character in each row will be
 %              the percentage sign (comment symbol in Matlab). The default
 %              value of comment is false. If comment is a structure it is
 %              possible to personalize the symbol to put in from of each
 %              row, and the left margin of the comment symbol. More
 %              precisely, if comment is a structure it may contain the
-%              following fields: 
+%              following fields:
 %               comment.commentsign = character(s) to be put at the beginning of
 %               each row. String which identifies comment sign.
 %               comment.startcolumn = starting column to include
 %               commentsign.
-%               Example - 'comment',true 
+%               Example - 'comment',true
+%               Data Types - Boolean
+%      code :  specify whether text is a Matlab code (with comments).
+%              Boolean. If code than the extra space on the left is not
+%              trimmed. The default value of code is false. Option code
+%              must be set to true when we have to translate to .m file
+%              code which contains wanted indentation.
+%               Example - 'code',false
 %               Data Types - Boolean
 %
-%  Output: 
 %
-%   newTxt : Output text. Characted vector. Formatted string.
-%            Text starts in column specified by option startcolumn, the
-%            first line may have an indentation, and length of the text in
-%            each row cannot exceed the prespecified width
+%  Output:
+%
+%   strFormatted : Output text. Character. Formatted string.
+%                   Text starts in column specified by option startcolumn,
+%                   the first line may have an indentation, and length of
+%                   the text in each row cannot exceed the prespecified
+%                   width.
 %
 %
 % See also: strtrim, removeExtraSpacesLF
@@ -72,7 +81,7 @@ function strFormatted = wraptextFS(str, varargin)
 %
 % References:
 %
-% Acknowledgements: 
+% Acknowledgements:
 %
 %  This file had been inspired by function wraptext written by  Chad A. Greene of the University of Texas
 % https://www.mathworks.com/matlabcentral/fileexchange/53176-wraptext
@@ -112,7 +121,7 @@ function strFormatted = wraptextFS(str, varargin)
 %}
 
 
-%{ 
+%{
    % Use the width of command window.
     startcolumn=10;
     cms = get(0,'CommandWindowSize');
@@ -120,7 +129,7 @@ function strFormatted = wraptextFS(str, varargin)
     Newstr=wraptextFS(str,'comment',false,'startcolumn',startcolumn,'width',width)
 %}
 
-%{ 
+%{
     % Example of input option comment supplied as structure.
     % Symbol '$$$' is included at the beginning of each row in column 5.
     % The width of the text is 60 and starts in column 12.
@@ -129,10 +138,51 @@ function strFormatted = wraptextFS(str, varargin)
     comment.startcolumn=5;
     startcolumn=12;
     width=60;
-    Newstr=wraptextFS(str,'comment',comment,'startcolumn',startcolumn,'width',width).
+    Newstr=wraptextFS(str,'comment',comment,'startcolumn',startcolumn,'width',width);
 %}
 
-    
+%{ 
+    % Example of use of option code.
+    out=xmlreadFS('tclust');
+    ii=2;
+    startcolumnEx=5;
+    endcolumn=60;
+    Ex=out.Ex;
+    comment=struct;
+    comment.commentsign='%';
+    comment.startcolumn=startcolumnEx;
+    endcolumnEx=60;
+    i=2; jj=3;
+    Exi=strtrim(Ex{i,jj});
+    Exi{3,1}='%                        This is an example with extra spaces on the left which are trimmed';
+    Exi{10,1}='for i=1:10';
+    Exi{11,1}='    disp(i)';  
+    % In this case the extra space on the left is wanted and it is not deleted
+    Exi{12,1}='end';
+
+    Eximod=Exi;
+    for ii=1:size(Exi,1)
+        % We must check whether it is comment or not
+        % If it is a comment if the first character is symbol %
+        Exii=Exi{ii,1};
+        if ~isempty(Exii)
+            if strcmp(Exii(1),'%')
+                % In this case strtrim is invoked inside wraptextFS (code is
+                % false)
+                descriFormatted=wraptextFS( Exii(2:end),'startcolumn',startcolumnEx,'endcolumn',endcolumn,'firstline',false,'comment',comment,'code',false);
+            else
+                descriFormatted=wraptextFS( Exii,'startcolumn',startcolumnEx,'endcolumn',endcolumnEx,'firstline',false,'comment',false,'code',true);
+            end
+        end
+        Eximod{ii,1}=descriFormatted;
+    end
+
+    % Before formatting
+    disp(Exi)
+    % After formatting
+    disp([Eximod{:}])
+%}
+
 %% Input parameters checking
 
 if nargin < 1
@@ -150,6 +200,7 @@ startcolumn=1;
 endcolumn=75;
 firstline=false;
 comment=false;
+code=false;
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 1
@@ -206,11 +257,12 @@ if nargin > 1
     
     firstline=options.firstline;
     comment=options.comment;
+    code=options.code;
 end
 
 if isstruct(comment)
     fcomment=fieldnames(comment);
-
+    
     
     d=find(strcmp('commentsign',fcomment));
     if d>0
@@ -218,7 +270,7 @@ if isstruct(comment)
     else
         commentsign='%';
     end
-  
+    
     % Check if field startcolumn is present
     d=find(strcmp('startcolumn',fcomment));
     if d>0
@@ -227,17 +279,17 @@ if isstruct(comment)
             commentsign=[repmat(' ',1,startcolumnsymbol-1) commentsign];
         end
     end
-
+    
 else
     
-if comment
-    commentsign='%';
-else
-    commentsign=[];
-end
+    if comment
+        commentsign='%';
+    else
+        commentsign=[];
+    end
 end
 
-code=options.code;
+
 
 % Add a space at the end of the string
 str=[str ' '];
@@ -288,8 +340,8 @@ while k <PosSpaces(end)
     else
         Posps=PosSpaces(find(PosSpaces<=k+width,1,'last'));
         if ~isempty(Posps)
-        
-        PosLinBreaks(i) = Posps;
+            
+            PosLinBreaks(i) = Posps;
         else
             PosLinBreaks(i)=length(str);
         end
@@ -334,16 +386,16 @@ CellStackedStrings=CellStackedStrings(1:i-1);
 % carriage return symbol \x0A
 if firstline==1
     if code
-    str=strjoin(strcat(commentsign,leftMargin,(CellStackedStrings(2:end)),'0A123'),'');
+        str=strjoin(strcat(commentsign,leftMargin,(CellStackedStrings(2:end)),'0A123'),'');
     else
-    str=strjoin(strcat(commentsign,leftMargin,strtrim(CellStackedStrings(2:end)),'0A123'),'');
+        str=strjoin(strcat(commentsign,leftMargin,strtrim(CellStackedStrings(2:end)),'0A123'),'');
     end
     str=[commentsign CellStackedStrings{1} '0A123' str];
 else
-    if code 
-    str=strjoin(strcat(commentsign,leftMargin,(CellStackedStrings),'0A123'),'');
+    if code
+        str=strjoin(strcat(commentsign,leftMargin,(CellStackedStrings),'0A123'),'');
     else
-    str=strjoin(strcat(commentsign,leftMargin,strtrim(CellStackedStrings),'0A123'),'');
+        str=strjoin(strcat(commentsign,leftMargin,strtrim(CellStackedStrings),'0A123'),'');
     end
 end
 
@@ -351,4 +403,4 @@ end
 strFormatted=regexprep(str,'0A123','\x0A');
 
 end
-
+%FScategory:UTIGEN

@@ -11,14 +11,23 @@ function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 %
 % Optional input arguments:
 %
-% write2file: Option to write XML file. Logical. Option which specifies
-%             whether XML file must be created or if just structure docNode
-%             must be created. The default value of write2file is true,
-%             that is xml file is created in the following path
-%             (main root of FSDA) filesep helpfiles filesep XML
-%             where filesep means "\" or "/" according to the operating
-%             system
-%             Example - 'write2file','false'
+%  write2file:  Option to write XML file. Logical. Option which specifies
+%               whether XML file must be created or if just structure docNode
+%               must be created. The default value of write2file is true,
+%               that is xml file is created in the following path
+%               (main root of FSDA) filesep helpfiles filesep XML
+%               where filesep means "\" or "/" according to the operating
+%               system
+%               Example - 'write2file','false'
+%               Data Types - Boolean
+%StartColumnEx: Starting column for the code of the examples. Scalar.
+%               This option specifies which is the starting column of the
+%               examples. For example if it is equal to 7, the first six
+%               spaces are trimmed. The default value of StartColumnEx is
+%               5. This option is necessary to distinguish inside the code
+%               of the examples wanted and unwanted indentation.
+%               Example - 'StartColumnEx',5
+%               Data Types - double
 %
 % Output:
 %
@@ -28,11 +37,28 @@ function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 %               it appears in an XML file.
 %
 
+%<a href="matlab: docsearchFS('zscoreFS')">Link to the help function</a>
+% Last modified 14-06-2016
+%
+
+% Examples
+
+
+
+%{
+    %% Create DOM object starting from file tclust.
+    NameFile='tclust';
+    [docNode,docNodechr]=xmlcreateFS(NameFile,'write2file',false);
+%}
+
+
 %% Beginning of code
 write2file=true;
+StartColumnEx=5;
+
 
 if nargin>1
-    options=struct('write2file',write2file);
+    options=struct('write2file',write2file,'StartColumnEx',StartColumnEx);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -51,9 +77,8 @@ if nargin>1
     end
     
     write2file=options.write2file;
+    StartColumnEx=options.StartColumnEx;
 end
-
-%% Beginning of code
 
 
 % out=publishFS('tclust','evalCode',false,'write2file',false);
@@ -147,23 +172,30 @@ if ~isempty(out.Ex)
         Ex3=out.Ex(:,j);
         
         for i=1:length(Ex3)
-            
             if j<=2
                 str=removeExtraSpacesLF(Ex3{i});
             else
-                % Given that this is code just remove extra consecutive line
+                str=Ex3{i};
+                %                 % What is in the third column can be code or comment
+                %                 % If it is comment apply routine removeExtraSpacesLF
+                %                 if strcmp(str(1),'%')
+                %                     str=removeExtraSpacesLF(str);
+                %                 else
+                % if it is code just remove extra consecutive line
                 % feeds
-                str=regexprep(Ex3{i},'\x0D','\x0A');
+                str=regexprep(str,'\x0D','\x0A');
                 str=regexprep(str,'\x0A*','\x0A');
                 checkfirstLF=regexp(str,'\x0A');
-               
-                if ~isempty(checkfirstLF) && checkfirstLF(1)==1
+                if checkfirstLF(1)==1
                     str=str(2:end);
                 end
+                %                 end
             end
+            
             if isempty(strtrim(str))
                 out.Ex{i,j}=[];
             else
+                
                 PosLinBreaks = [regexp(str,'\x0A') length(str)];
                 if j<=2
                     CellStackedStrings=cell(length(PosLinBreaks),1);
@@ -173,14 +205,24 @@ if ~isempty(out.Ex)
                     lP=length(PosLinBreaks)-1;
                 end
                 
+                % Note that if j==3 do not do strtrim because there maybe
+                % requested code indentation
                 for ii=1:lP
                     if ii>1
                         strsel=str(PosLinBreaks(ii-1)+1:PosLinBreaks(ii));
                         % findLFinstrsel=regexp((strsel),'\n', 'once');
-                        CellStackedStrings{ii}=strtrim(strsel);
+                        if j<3
+                            CellStackedStrings{ii}=strtrim(strsel);
+                        else
+                            CellStackedStrings{ii}=strsel(StartColumnEx:end);
+                        end
                     else
                         strsel=str(1:PosLinBreaks(ii));
-                        CellStackedStrings{ii}=strtrim(strsel);
+                        if j<3
+                            CellStackedStrings{ii}=strtrim(strsel);
+                        else
+                            CellStackedStrings{ii}=strsel(StartColumnEx:end);
+                        end
                     end
                 end
                 
@@ -196,7 +238,6 @@ if ~isempty(out.Ex)
         end
     end
 end
-
 %% Format and clean Extra examples
 if ~isempty(out.ExtraEx)
     for j=1:3
@@ -207,16 +248,16 @@ if ~isempty(out.ExtraEx)
             if j<=2
                 str=removeExtraSpacesLF(Ex3{i});
             else
-                % Given that this is code just remove extra consecutive line
-                % feeds
-                str=regexprep(Ex3{i},'\x0D','\x0A');
+                str=Ex3{i};
+                str=regexprep(str,'\x0D','\x0A');
                 str=regexprep(str,'\x0A*','\x0A');
                 checkfirstLF=regexp(str,'\x0A');
                 if checkfirstLF(1)==1
                     str=str(2:end);
                 end
             end
-            if isempty(strtrim(str))
+         
+            if isempty(str)
                 out.ExtraEx{i,j}=[];
             else
                 
@@ -229,14 +270,24 @@ if ~isempty(out.ExtraEx)
                     lP=length(PosLinBreaks)-1;
                 end
                 
+                % Note that if j==3 do not do strtrim because there maybe
+                % requested code indentation
                 for ii=1:lP
                     if ii>1
                         strsel=str(PosLinBreaks(ii-1)+1:PosLinBreaks(ii));
                         % findLFinstrsel=regexp((strsel),'\n', 'once');
-                        CellStackedStrings{ii}=strtrim(strsel);
+                        if j<3
+                            CellStackedStrings{ii}=strtrim(strsel);
+                        else
+                            CellStackedStrings{ii}=strsel(StartColumnEx:end);
+                        end
                     else
                         strsel=str(1:PosLinBreaks(ii));
-                        CellStackedStrings{ii}=strtrim(strsel);
+                        if j<3
+                            CellStackedStrings{ii}=strtrim(strsel);
+                        else
+                            CellStackedStrings{ii}=strsel(StartColumnEx:end);
+                        end
                     end
                 end
                 
@@ -249,6 +300,7 @@ if ~isempty(out.ExtraEx)
                     out.ExtraEx{i,j}=CellStackedStrings; % str;
                 end
             end
+          
         end
     end
 end
@@ -257,4 +309,4 @@ end
 [docNode,docNodechr]=xmlwriteFS(out,'write2file',write2file);
 
 end
-
+%FScategory:UTIHELP

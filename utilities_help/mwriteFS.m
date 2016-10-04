@@ -6,16 +6,19 @@ function [outstring]=mwriteFS(out)
 %    out:     structure created by publishFS or by GUI which contains
 %
 
-startpos=20;
-startcolumn=22;
-startcolumn1=25;
-endcolumn=75;
-startcolumnEx=6;
-endcolumnEx=1000;
+% At the end open the output file and write it into a string outstring
+% fileID = fopen(fullpathFileName,'w');
+
+
+StartColumn=22;
+StartColOutArg=22;
+EndColumn=75;
+StartColumnEx=5;
+
+EndColumnEx=1000;
 comment=struct;
 comment.commentsign='%';
-comment.startcolumn=startcolumnEx;
-widthEx=65;
+comment.startcolumn=StartColumnEx;
 
 [FSDAroot]=fileparts(which('docsearchFS.m'));
 fsep=filesep;
@@ -26,25 +29,23 @@ fullpathFileName=[FSDAroot fsep 'helpfiles' fsep 'XML' fsep 'tmpHELP.m'];
 fileID = fopen(fullpathFileName,'w');
 
 fprintf(fileID,'%s',['%' out.purpose{:}]);
-% fileID = fopen('tmpHELP.m','a');
 fprintf(fileID,'\n%s','%');
 fprintf(fileID,'\n%s',['%<a href="matlab: docsearchFS(''' out.titl ''')">Link to the help function</a>']);
 fprintf(fileID,'\n%s','%');
-% fprintf(out.description)
 
 fprintf(fileID,'\n');
 for i=1:size(out.description,1)
-    % fprintf(fileID,'\n%s','% ');
-    % fprintf(fileID,'\n');
     if ~isempty(out.description{i})
         descri=out.description{i};
         descriFormatted=wraptextFS(descri,'startcolumn',3,'comment',true);
-        % fprintf(fileID, '%s',[descriFormatted,'\n']);
+        % Description formatted
         fprintf(fileID,'%s',descriFormatted);
     else
         fprintf(fileID,'%%\n');
     end
 end
+
+%% Required input arguments section
 fprintf(fileID,'%%\n');
 fprintf(fileID,'%s\n','%  Required Input Arguments:');
 fprintf(fileID,'%%\n');
@@ -56,19 +57,19 @@ for i=1:size(InpArgs,1)
     
     % Short description
     ShortDesc=strtrim(InpArgs{i,2});
-    descri=[repmat(' ',1,startpos-2-length(nameInpArgs)) nameInpArgs ': ' ShortDesc];
-    descriFormatted=wraptextFS(descri,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',true,'comment',true);
+    descri=[repmat(' ',1,StartColumn-4-length(nameInpArgs)) nameInpArgs ': ' ShortDesc];
+    descriFormatted=wraptextFS(descri,'startcolumn',StartColumn,'endcolumn',EndColumn,'firstline',true,'comment',true);
     fprintf(fileID,'%s',descriFormatted);
     
     % type indication (Scalar, matrix, ...)
     ShortDesc=strtrim(InpArgs{i,3});
-    descriFormatted=wraptextFS(ShortDesc,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',false,'comment',true);
+    descriFormatted=wraptextFS(ShortDesc,'startcolumn',StartColumn,'endcolumn',EndColumn,'firstline',false,'comment',true);
     fprintf(fileID,'%s',descriFormatted);
     
     % Long description
     if ~cellfun(@isempty,InpArgs(i,4)) && ~isempty(strtrim(InpArgs{i,4}))
         LongDesc=strtrim(InpArgs{i,4});
-        descriFormatted=wraptextFS(LongDesc,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',false,'comment',true);
+        descriFormatted=wraptextFS(LongDesc,'startcolumn',StartColumn,'endcolumn',EndColumn,'firstline',false,'comment',true);
         fprintf(fileID,'%s',descriFormatted);
     end
     
@@ -91,23 +92,23 @@ fprintf(fileID,'%%\n');
 fprintf(fileID,'%s\n','%  Optional input arguments:');
 fprintf(fileID,'%%\n');
 
-
+%% Optional arguments section
 OptArgs=out.OptArgs;
 for i=1:size(OptArgs,1)
     
-    nameInpArgs=OptArgs{i,1};
+    nameOptArgs=OptArgs{i,1};
     
     % Short description
     ShortDesc=OptArgs{i,2};
-    descri=[repmat(' ',1,startpos-2-length(nameInpArgs)) nameInpArgs ': ' ShortDesc];
-    descriFormatted=wraptextFS(descri,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',true,'comment',true);
+    descri=[repmat(' ',1,StartColumn-4-length(nameOptArgs)) nameOptArgs ': ' ShortDesc];
+    descriFormatted=wraptextFS(descri,'startcolumn',StartColumn,'endcolumn',EndColumn,'firstline',true,'comment',true);
     
     fprintf(fileID,'%s',descriFormatted);
     
     % type indication (Scalar, matrix, ...)
     ShortDesc=strtrim(OptArgs{i,3});
-    %    descriFormatted=wraptext2(ShortDesc,numWrappedCols,0);
-    descriFormatted=wraptextFS(ShortDesc,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',false,'comment',true);
+    %    Type indication formatted
+    descriFormatted=wraptextFS(ShortDesc,'startcolumn',StartColumn,'endcolumn',EndColumn,'firstline',false,'comment',true);
     
     fprintf(fileID,'%s',descriFormatted);
     
@@ -123,18 +124,15 @@ for i=1:size(OptArgs,1)
             AddRemark='';
         end
         
-        % descriFormatted=wraptext2(LongDesc,numWrappedCols,0);
-        descriFormatted=wraptextFS(LongDesc,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',false,'comment',true);
+        descriFormatted=wraptextFS(LongDesc,'startcolumn',StartColumn,'endcolumn',EndColumn,'firstline',false,'comment',true);
         fprintf(fileID,'%s',descriFormatted);
-        
-        
     end
     
     % Examples
     if ~cellfun(@isempty,OptArgs(i,5)) && ~isempty(strtrim(OptArgs{i,5}))
         Example=OptArgs{i,5};
         
-        leftMargin= {[repmat(' ',1,startpos) 'Example - ']};
+        leftMargin= {[repmat(' ',1,StartColumn-2) 'Example - ']};
         
         newstr=strjoin(strcat('%',leftMargin,strtrim(Example),'0A123'),'');
         newstr=regexprep(newstr,'0A123','\x0A');
@@ -147,7 +145,7 @@ for i=1:size(OptArgs,1)
     if ~cellfun(@isempty,OptArgs(i,6)) && ~isempty(strtrim(OptArgs{i,6}))
         DataType=OptArgs{i,6};
         
-        leftMargin= {[repmat(' ',1,startpos) 'Data Types - ']};
+        leftMargin= {[repmat(' ',1,StartColumn-2) 'Data Types - ']};
         
         newstr=strjoin(strcat('%',leftMargin,strtrim(DataType),'0A123'),'');
         newstr=regexprep(newstr,'0A123','\x0A');
@@ -156,9 +154,10 @@ for i=1:size(OptArgs,1)
         fprintf(fileID,'%s',newstr);
     end
     
+    % Add remark at at the end of the i-th optional argument if necessary
     if ~isempty(AddRemark)
         fprintf(fileID,'%%\n');
-        AddRemarkFormatted=wraptextFS(AddRemark,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',false,'comment',true);
+        AddRemarkFormatted=wraptextFS(AddRemark,'startcolumn',StartColumn,'endcolumn',EndColumn,'firstline',false,'comment',true);
         fprintf(fileID,'%s',AddRemarkFormatted);
         fprintf(fileID,'%%\n');
     end
@@ -171,7 +170,6 @@ fprintf(fileID,'%s\n','%   Output:');
 fprintf(fileID,'%%\n');
 
 OutArgs=out.OutArgs;
-StartColOutArg=19;
 
 for i=1:size(OutArgs,1)
     
@@ -185,26 +183,34 @@ for i=1:size(OutArgs,1)
             
             % type indication (Scalar, matrix, ...)
             ShortDesc=OutArgs{i,3};
-            descriFormatted=wraptextFS(ShortDesc,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',false,'comment',true);
             
-            % descriFormatted=wraptext2(ShortDesc,numWrappedCols,0);
+            % Find inside ShortDesc the : which separate name from
+            % description
+            poscolon=regexp(ShortDesc,'\:');
+            if ~isempty(poscolon)
+                nameOutArgs= strtrim(ShortDesc(1:poscolon-1));
+                ShortDesc= strtrim(ShortDesc(poscolon+1:end));
+            else
+                nameOutArgs='';
+            end
+            
+            descri=[repmat(' ',1,StartColOutArg-4-length(nameOutArgs)) nameOutArgs ': ' ShortDesc];
+            descriFormatted=wraptextFS(descri,'startcolumn',StartColOutArg,'endcolumn',EndColumn,'firstline',true,'comment',true);
+            
             fprintf(fileID,'%s',descriFormatted);
             
             % Long description
             if ~cellfun(@isempty,OutArgs(i,4)) && ~isempty(strtrim(OutArgs{i,4}))
                 LongDesc=OutArgs{i,4};
-                % descriFormatted=wraptext2(LongDesc,numWrappedCols,0);
-                descriFormatted=wraptextFS(LongDesc,'startcolumn',startcolumn1,'endcolumn',endcolumn,'firstline',false,'comment',true);
-                
+                descriFormatted=wraptextFS(LongDesc,'startcolumn',StartColOutArg,'endcolumn',EndColumn,'firstline',false,'comment',true);
                 fprintf(fileID,'%s',descriFormatted);
             end
         else
             nameOutArgs=OutArgs{i,1};
             % Short description
             ShortDesc=OutArgs{i,3};
-            descri=[repmat(' ',1,startpos-2-length(nameOutArgs)) nameOutArgs ': ' ShortDesc];
-            % descriFormatted=wraptext2(descri,numWrappedCols);
-            descriFormatted=wraptextFS(descri,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',true,'comment',true);
+            descri=[repmat(' ',1,StartColOutArg-4-length(nameOutArgs)) nameOutArgs ': ' ShortDesc];
+            descriFormatted=wraptextFS(descri,'startcolumn',StartColOutArg,'endcolumn',EndColumn,'firstline',true,'comment',true);
             
             fprintf(fileID,'%s',descriFormatted);
             
@@ -221,8 +227,8 @@ for i=1:size(OutArgs,1)
                 end
             end
             
-            % descriFormatted=wraptext2(ShortDesc,numWrappedCols,0);
-            descriFormatted=wraptextFS(ShortDesc,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',false,'comment',true);
+            % Short description formatted
+            descriFormatted=wraptextFS(ShortDesc,'startcolumn',StartColOutArg,'endcolumn',EndColumn,'firstline',false,'comment',true);
             
             fprintf(fileID,'%s',descriFormatted);
             
@@ -230,7 +236,7 @@ for i=1:size(OutArgs,1)
             if ~cellfun(@isempty,OutArgs(i,4)) && ~isempty(strtrim(OutArgs{i,4}))
                 LongDesc=OutArgs{i,4};
                 % descriFormatted=wraptext2(LongDesc,numWrappedCols,0);
-                descriFormatted=wraptextFS(LongDesc,'startcolumn',startcolumn,'endcolumn',endcolumn,'firstline',false,'comment',true);
+                descriFormatted=wraptextFS(LongDesc,'startcolumn',StartColOutArg,'endcolumn',EndColumn,'firstline',false,'comment',true);
                 
                 fprintf(fileID,'%s',descriFormatted);
             end
@@ -238,7 +244,7 @@ for i=1:size(OutArgs,1)
     else
         fprintf(fileID,'%%\n');
         nameOutArgs=OutArgs{i,1};
-        spacestoadd=repmat(' ',1,StartColOutArg-length(nameOutArgs));
+        spacestoadd=repmat(' ',1,StartColOutArg-4-length(nameOutArgs));
         fprintf(fileID,'%s',['%' spacestoadd nameOutArgs ': structure which contains the following fields']);
         fprintf(fileID,'\n%%\n');
         
@@ -247,9 +253,9 @@ for i=1:size(OutArgs,1)
             nameTab=outTable{ii,1};
             % Short description
             DescTab=outTable{ii,2};
-            descri=[repmat(' ',1,StartColOutArg-2-length(nameTab)-length(nameOutArgs)) nameOutArgs '.' nameTab '= ' DescTab];
+            descri=[repmat(' ',1,StartColOutArg-5-length(nameTab)-length(nameOutArgs)) nameOutArgs '.' nameTab '= ' DescTab];
             % descriFormatted=wraptext2(descri,75-StartColOutArg-1);
-            descriFormatted=wraptextFS(descri,'startcolumn',startcolumn1,'endcolumn',endcolumn,'firstline',true,'comment',true);
+            descriFormatted=wraptextFS(descri,'startcolumn',StartColOutArg,'endcolumn',EndColumn,'firstline',true,'comment',true);
             
             fprintf(fileID,'%s',descriFormatted);
         end
@@ -262,14 +268,11 @@ if ~isempty(out.MoreAbout)
     fprintf(fileID,'%s\n','%   More About:');
     fprintf(fileID,'%%\n');
     for i=1:size(out.MoreAbout,1)
-        % fprintf(fileID,'\n%s','% ');
-        % fprintf(fileID,'\n');
         if ~isempty(out.MoreAbout{i})
             descri=out.MoreAbout{i};
-            % descriFormatted=wraptext1(descri,75);
+            % More About text formatted
             descriFormatted=wraptextFS(descri,'startcolumn',3,'comment',true);
             
-            % fprintf(fileID, '%s',[descriFormatted,'\n']);
             fprintf(fileID,'%s',descriFormatted);
         else
             fprintf(fileID,'%%\n');
@@ -291,20 +294,19 @@ if ~isempty(out.References)
     fprintf(fileID,'%s\n','%   References:');
     fprintf(fileID,'%%\n');
     for i=1:size(out.References,1)
-        % fprintf(fileID,'\n%s','% ');
-        % fprintf(fileID,'\n');
         if ~isempty(out.References{i})
             descri=out.References{i};
-            % descriFormatted=wraptext1(descri,75);
+            % descriFormatted = formatted references
             descriFormatted=wraptextFS(descri,'startcolumn',3,'comment',true);
             
-            % fprintf(fileID, '%s',[descriFormatted,'\n']);
             fprintf(fileID,'%s',descriFormatted);
         else
             fprintf(fileID,'%%\n');
         end
     end
 end
+
+%% Copyright and last modified part
 out.LastModified='05-06-2016';
 fprintf(fileID,'%%\n');
 fprintf(fileID,'%%\n');
@@ -317,19 +319,24 @@ fprintf(fileID,'\n');
 fprintf(fileID,'%s\n','% Examples:');
 fprintf(fileID,'\n');
 
+%% Examples section
 Ex=out.Ex;
+
 
 for i=1:size(Ex,1)
     fprintf(fileID,'%s\n','%{');
     
     ExText=strtrim(Ex{i,1});
     if str2double(Ex{i,4})==1
-        Commentsign='%% ';
-    else
         Commentsign='% ';
+    else
+        Commentsign=' ';
     end
     
-    descriFormatted=wraptextFS([Commentsign ExText],'startcolumn',startcolumnEx,'endcolumn',endcolumnEx,'firstline',false,'comment',false);
+    % descriFormatted=wraptextFS([Commentsign ExText],'startcolumn',StartColumnEx,'endcolumn',EndColumnEx,'firstline',false,'comment',false);
+   
+     descriFormatted=wraptextFS( [Commentsign ExText],'startcolumn',StartColumnEx,'endcolumn',EndColumn+2,'firstline',false,'comment',comment, 'code',true);
+
     fprintf(fileID,'%s',descriFormatted);
     
     for jj=2:3
@@ -337,17 +344,18 @@ for i=1:size(Ex,1)
             Exi=strtrim(Ex{i,jj});
             for ii=1:size(Exi,1)
                 if jj==2
-                    descriFormatted=wraptextFS( Exi{ii,1},'startcolumn',startcolumnEx+3,'endcolumn',endcolumn,'firstline',false,'comment',comment);
+                    descriFormatted=wraptextFS( Exi{ii,1},'startcolumn',StartColumnEx+2,'endcolumn',EndColumn+2,'firstline',false,'comment',comment);
                 else
                     % if j==3 we must check whether it is comment or not
                     % it is a comment if the first character is symbol %
+                    
                     Exii=Exi{ii,1};
                     if ~isempty(Exii)
                         if strcmp(Exii(1),'%')
                             % descriFormatted=wraptextFS( Exii(2:end),'startcolumn',startcolumnEx,'endcolumn',endcolumn,'firstline',false,'comment',true,'code',false);
-                            descriFormatted=wraptextFS( Exii(2:end),'startcolumn',startcolumnEx,'endcolumn',endcolumn,'firstline',false,'comment',comment);
+                            descriFormatted=wraptextFS( Exii(2:end),'startcolumn',StartColumnEx,'endcolumn',EndColumn+2,'firstline',false,'comment',comment,'code', true);
                         else
-                            descriFormatted=wraptextFS( Exii,'startcolumn',startcolumnEx,'endcolumn',endcolumnEx,'firstline',false,'comment',false,'code',true);
+                            descriFormatted=wraptextFS( Exii,'startcolumn',StartColumnEx,'endcolumn',EndColumnEx,'firstline',false,'comment',false,'code',true);
                         end
                     end
                 end
@@ -357,7 +365,7 @@ for i=1:size(Ex,1)
     end
     fprintf(fileID,'%s\n\n','%}');
 end
-
+%% Extra examples section
 Ex=out.ExtraEx;
 
 for i=1:size(Ex,1)
@@ -365,20 +373,23 @@ for i=1:size(Ex,1)
     
     ExText=strtrim(Ex{i,1});
     if str2double(Ex{i,4})==1
-        Commentsign='%% ';
-    else
         Commentsign='% ';
+    else
+        Commentsign=' ';
     end
     
-    descriFormatted=wraptextFS([Commentsign ExText],'startcolumn',startcolumnEx,'endcolumn',endcolumnEx,'firstline',false,'comment',false);
+    % descriFormatted=wraptextFS([Commentsign ExText],'startcolumn',StartColumnEx,'endcolumn',EndColumnEx,'firstline',false,'comment',false);
+   
+     descriFormatted=wraptextFS( [Commentsign ExText],'startcolumn',StartColumnEx,'endcolumn',EndColumn+2,'firstline',false,'comment',comment, 'code',true);
+
     fprintf(fileID,'%s',descriFormatted);
     
     for jj=2:3
         if ~isempty(Ex{i,jj})
-            Exi=strtrim(Ex{i,jj});
+            Exi=Ex{i,jj};
             for ii=1:size(Exi,1)
                 if jj==2
-                    descriFormatted=wraptextFS( Exi{ii,1},'startcolumn',startcolumnEx+3,'endcolumn',endcolumn,'firstline',false,'comment',comment);
+                    descriFormatted=wraptextFS( strtrim(Exi{ii,1}),'startcolumn',StartColumnEx+2,'endcolumn',EndColumn+2,'firstline',false,'comment',comment);
                 else
                     % if j==3 we must check whether it is comment or not
                     % it is a comment if the first character is symbol %
@@ -387,9 +398,9 @@ for i=1:size(Ex,1)
                     if ~isempty(Exii)
                         if strcmp(Exii(1),'%')
                             % descriFormatted=wraptextFS( Exii(2:end),'startcolumn',startcolumnEx,'endcolumn',endcolumn,'firstline',false,'comment',true,'code',false);
-                            descriFormatted=wraptextFS( Exii(2:end),'startcolumn',startcolumnEx,'endcolumn',endcolumn,'firstline',false,'comment',comment);
+                            descriFormatted=wraptextFS( Exii(2:end),'startcolumn',StartColumnEx,'endcolumn',EndColumn+2,'firstline',false,'comment',comment,'code', true);
                         else
-                            descriFormatted=wraptextFS( Exii,'startcolumn',startcolumnEx,'endcolumn',endcolumnEx,'firstline',false,'comment',false,'code',true);
+                            descriFormatted=wraptextFS( Exii,'startcolumn',StartColumnEx,'endcolumn',EndColumnEx,'firstline',false,'comment',false,'code',true);
                         end
                     end
                 end
@@ -402,3 +413,4 @@ end
 
 fclose(fileID);
 end
+%FScategory:UTIHELP
