@@ -125,11 +125,11 @@ function out=publishFS(file,varargin)
 %                 file will appear under the section "More About".
 %out.Acknowledgements = Acknowledgements. String. String containing what in the HTML
 %                 file will appear under the section "Acknowledgements".
-%out.References = References. cell. Cell of length r containing the r
+%out.References = References. cell. Cell of length r containing the 
 %                 references.
-%   out.SeeAlso = References. cell. Cell of length s containing the s
+%   out.SeeAlso = References. cell. Cell of length s containing the 
 %                 references to linked files.
-%        out.Ex = Examples. cell. Cell of length t containing the t
+%        out.Ex = Examples. cell. Cell of length t containing the 
 %                 examples.
 %                 First column= title of the example;
 %                 Second column = detailed description;
