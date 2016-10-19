@@ -469,11 +469,9 @@ thresh=chi2inv(conflev,v);
 
 % The standardization of the data will now be performed.
 med=median(Y);
-% OLD mad=sort(abs(Y-repmat(med,n,1)));
-mad = sort(abs(bsxfun(@minus,Y, med)));
+madY = median(abs(bsxfun(@minus,Y, med)));
 
-mad=mad(h,:);
-ii=find(mad < eps, 1 );
+ii=find(madY < eps, 1 );
 if ~isempty(ii)
     % The h-th order statistic is zero for the ii-th variable. The array plane contains
     % all the observations which have the same value for the ii-th variable.
@@ -499,7 +497,7 @@ end
 % Standardization of the data with location estimate (median) and scale
 % estimate (mad)
 Y = bsxfun(@minus,Y, med);
-Y = bsxfun(@rdivide, Y, mad);
+Y = bsxfun(@rdivide, Y, madY);
 
 % The standardized classical estimates are now computed.
 clmean=mean(Y);
@@ -518,16 +516,15 @@ if v==1 && h~=n
     % residuals
     residuals2=(Y-RAW.loc).^2;
     
-    scale=RAW.cov./sqrt(consistencyfactor(h,n,v)*corfactorRAW(v,n,1-bdp));
     [sor,soridx]=sort(residuals2);
     
     weights=zeros(n,1);
     weights(soridx(1:h))=1;
     RAW.weights=weights;
     
-    RAW.obj=1/(h-1)*sum(sor(1:h))*prod(mad)^2;
+    RAW.obj=1/(h-1)*sum(sor(1:h))*prod(madY)^2;
+    md=residuals2/RAW.cov;
     
-    md=residuals2/(scale^2);
     weights=md<thresh;
     RAW.md=md;
     RAW.outliers=seq(md > thresh);
@@ -539,6 +536,7 @@ if v==1 && h~=n
     factor=consistencyfactor(sum(weights),n,v);
     factor=factor*corfactorREW(v,n,1-bdp);
     REW.cov=factor*REW.cov;
+    
     md=(Y-REW.loc).^2/REW.cov;
     
     REW.weights= md <= thresh;
@@ -546,8 +544,8 @@ if v==1 && h~=n
     REW.md=md';
     
     % Transform back to the original scale
-    [RAW.cov,RAW.loc]=trafo(RAW.cov,RAW.loc,med,mad);
-    [REW.cov,REW.loc]=trafo(REW.cov,REW.loc,med,mad);
+    [RAW.cov,RAW.loc]=trafo(RAW.cov,RAW.loc,med,madY);
+    [REW.cov,REW.loc]=trafo(REW.cov,REW.loc,med,madY);
     
     if msg
     disp(REW.method);
@@ -566,10 +564,10 @@ if det(clcov) < tolMCD
     
     correl=clcov./(sqrt(diag(clcov))*sqrt(diag(clcov))');
     
-    [clcov,clmean]=trafo(clcov,clmean,med,mad);
+    [clcov,clmean]=trafo(clcov,clmean,med,madY);
     [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,RAW.weights,...
         REW.weights] = displRAW(1,n,weights,n,v,clmean,clcov,...
-        'Minimum Covariance Determinant Estimator',z./mad');
+        'Minimum Covariance Determinant Estimator',z./madY');
     
     [REW.cor,RAW.cor]=deal(correl);
     return
@@ -597,23 +595,23 @@ if h==n
     
     
     if det(REW.cov) < tolMCD
-        [center,covar,z,correl,~,count]=exactfit(Y,NaN,med,mad,RAW.cor,REW.loc,REW.cov,n);
+        [center,covar,z,correl,~,count]=exactfit(Y,NaN,med,madY,RAW.cor,REW.loc,REW.cov,n);
         
         REW.plane=z;
         
         REW.method=displREW(count,n,v,center,covar,REW.method,z,RAW.cor,correl);
-        [RAW.cov,RAW.center]=trafo(RAW.cov,RAW.loc,med,mad);
-        [REW.cov,REW.center]=trafo(REW.cov,REW.loc,med,mad);
+        [RAW.cov,RAW.center]=trafo(RAW.cov,RAW.loc,med,madY);
+        [REW.cov,REW.center]=trafo(REW.cov,REW.loc,med,madY);
         REW.md=RAW.md;
     else
         md=mahalFS(Y,REW.loc,REW.cov);
         weights=md<thresh;
         
-        [RAW.cov,RAW.center]=trafo(RAW.cov,RAW.loc,med,mad);
-        [REW.cov,REW.center]=trafo(REW.cov,REW.loc,med,mad);
+        [RAW.cov,RAW.center]=trafo(RAW.cov,RAW.loc,med,madY);
+        [REW.cov,REW.center]=trafo(REW.cov,REW.loc,med,madY);
         REW.md=md;
     end
-    RAW.obj=RAW.obj*prod(mad)^2;
+    RAW.obj=RAW.obj*prod(madY)^2;
     REW.weights=weights;
     % disp(REW.method)
     
@@ -690,7 +688,7 @@ for i = 1:nselected
         
         if count >= h
             
-            [center,covar,eigvct,correl]=exactfit(Y,obsinplane,med,mad,eigvct);
+            [center,covar,eigvct,correl]=exactfit(Y,obsinplane,med,madY,eigvct);
             REW.plane=eigvct;
             weights(obsinplane)=1;
             [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,...
@@ -743,7 +741,7 @@ for i = 1:nselected
     % that lie on the hyperplane.
     if outIRWLS.obj < tolMCD
         
-        [center,covar,z,correl,obsinplane,count]=exactfit(Y,NaN,med,mad,NaN,...
+        [center,covar,z,correl,obsinplane,count]=exactfit(Y,NaN,med,madY,NaN,...
             meanvct,covmat,n);
         REW.plane=z;
         weights(obsinplane)=1;
@@ -853,11 +851,11 @@ RAW.bs=superbestsubset;
 factor=consistencyfactor(h,n,v);
 factor=factor*corfactorRAW(v,n,1-bdp);
 RAW.cov=factor*superbestcov;
-RAW.obj=superbestobj*prod(mad)^2;
+RAW.obj=superbestobj*prod(madY)^2;
 
 % Given that the data had been previously standardized
 % it is necessary to find covariance and location in the original scale
-[RAW.cov,RAW.loc]=trafo(RAW.cov,superbestloc,med,mad);
+[RAW.cov,RAW.loc]=trafo(RAW.cov,superbestloc,med,madY);
 
 % Compute correlation matrix
 RAW.cor=superbestcov./(sqrt(diag(superbestcov))*sqrt(diag(superbestcov))');
@@ -931,13 +929,13 @@ end
 REW.cov=factor*REW.cov;
 
 % Find cov and location reweighted estimates on the original scale
-[trcov,trcenter]=trafo(REW.cov,REW.loc,med,mad);
+[trcov,trcenter]=trafo(REW.cov,REW.loc,med,madY);
 
 REW.cor=REW.cov./(sqrt(diag(REW.cov))*sqrt(diag(REW.cov))');
 
 if det(trcov) < tolMCD
     
-    [center,covar,z,~,~,count]=exactfit(Y,NaN,med,mad,z,REW.loc,REW.cov,n);
+    [center,covar,z,~,~,count]=exactfit(Y,NaN,med,madY,z,REW.loc,REW.cov,n);
     REW.plane=z;
     
     correl=covar./(sqrt(diag(covar))*sqrt(diag(covar))');
@@ -1213,15 +1211,15 @@ end
         end
         
         sqmin=min(sq);
-        ii=find(sq==sqmin);
-        ndup=length(ii);
-        slutn(1:ndup)=ay(ii);
+        ijk=find(sq==sqmin);
+        ndup=length(ijk);
+        slutn(1:ndup)=ay(ijk);
         initmean=slutn(floor((ndup+1)/2))/h;
         
         
         factor=corfactorRAW(1,ncas,alpha);
         factor=factor*consistencyfactor(h,ncas,1);
-        initcov=factor*sqmin/h;
+        initcov=factor*sqmin/(h-1);
     end
 
     function rawconsfac=consistencyfactor(h,n,v)
