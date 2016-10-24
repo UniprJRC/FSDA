@@ -60,7 +60,7 @@ function P = combsFS(v,m)
  
 
 %% Beginning of code
-if nargin~=2, 
+if nargin~=2 
     error('FSDA:combsFS:WrongInputNum', 'Requires 2 input arguments.') 
 end
 
@@ -76,7 +76,8 @@ if n < 128
 elseif n < 32768
     precision = 'int16';
     v = int16(v);
-else precision = 'int32';
+else
+    precision = 'int32';
     v = int32(v);
 end
 
@@ -103,13 +104,12 @@ else
       [s1 , s2] = deal(toRow);
       % set the first n+1-m rows block of rows of colum i
       P(1:toRow , i) = i;
-      ip1 = i + 1; % do once here i+1 (needed in the internal loop)
       for j = i+1:i+n-m                 % internal loop
          s1 = s1*(np1+i-j-m)/(np1-j);
          fromRow = toRow + 1;
          toRow = fromRow + s1 - 1;
-         P(fromRow:toRow , ip1:m) = P(s2-s1+1:s2 , ip1:m);
-         P(fromRow:toRow , i) = j;
+         P(fromRow:toRow , i+1:m) = P(s2-s1+1:s2 , i+1:m);
+         P(fromRow:toRow , i) = j;    
       end
    end
    % find the true P if the vector of elements in v is not the default 1:n
