@@ -28,7 +28,7 @@ function P = combsFS(v,m)
 %
 % Optional input arguments:
 %
-% Output:    
+% Output:
 %
 %     P:        m-combinations without repetition taken in lexicographic
 %               order from the vector v. Matrix containing the
@@ -57,11 +57,11 @@ function P = combsFS(v,m)
     %% combsFS used to generate all possible combinations of size 3 of elements 5, 8, 9, 10, 11.
     combsFS([5 8:11],3)
 %}
- 
+
 
 %% Beginning of code
-if nargin~=2 
-    error('FSDA:combsFS:WrongInputNum', 'Requires 2 input arguments.') 
+if nargin~=2
+    error('FSDA:combsFS:WrongInputNum', 'Requires 2 input arguments.')
 end
 
 v = v(:).';     % Make sure v is a row vector.
@@ -90,30 +90,30 @@ elseif m == 1
 elseif(m == 0)
     P=[];
 else
-   %The binomial coefficient (n choose m) can be computed using
-   %prod(np1-m:n)/prod(1:m). For large number of combinations 
-   %our function 'bc' is better.
-   bcn = bc(n,m);
-   % initialise the matrix of all m-combinations 
-   P = zeros(bcn,m,precision);
-   np1 = n + 1;  % do once here n+1 (needed in the internal loop)
-   toRow = np1 - m; 
-   % set the first n+1-m rows of the last column
-   P(1:toRow , m) = (m:n)'; 
-   for i = m-1:-1:1                     % external loop over colums
-      [s1 , s2] = deal(toRow);
-      % set the first n+1-m rows block of rows of colum i
-      P(1:toRow , i) = i;
-      for j = i+1:i+n-m                 % internal loop
-         s1 = s1*(np1+i-j-m)/(np1-j);
-         fromRow = toRow + 1;
-         toRow = fromRow + s1 - 1;
-         P(fromRow:toRow , i+1:m) = P(s2-s1+1:s2 , i+1:m);
-         P(fromRow:toRow , i) = j;    
-      end
-   end
-   % find the true P if the vector of elements in v is not the default 1:n
-   if ~isequal(v,1:n) , P = v(P); end
+    %The binomial coefficient (n choose m) can be computed using
+    %prod(np1-m:n)/prod(1:m). For large number of combinations
+    %our function 'bc' is better.
+    bcn = bc(n,m);
+    % initialise the matrix of all m-combinations
+    P = zeros(bcn,m,precision);
+    np1 = n + 1;  % do once here n+1 (needed in the internal loop)
+    toRow = np1 - m;
+    % set the first n+1-m rows of the last column
+    P(1:toRow , m) = (m:n)';
+    for i = m-1:-1:1                     % external loop over colums
+        [s1 , s2] = deal(toRow);
+        % set the first n+1-m rows block of rows of colum i
+        P(1:toRow , i) = i;
+        for j = i+1:i+n-m                 % internal loop
+            s1      = s1*(np1+i-j-m)/(np1-j);
+            fromRow = toRow + 1;
+            toRow   = fromRow + s1 - 1;
+            P(fromRow:toRow , i+1:m) = P(s2-s1+1:s2 , i+1:m);
+            P(fromRow:toRow , i)     = j;
+        end
+    end
+    % find the true P if the vector of elements in v is not the default 1:n
+    if ~isequal(v,1:n) , P = v(P); end
 end
 
 end
