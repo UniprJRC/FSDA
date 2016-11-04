@@ -13,7 +13,9 @@ function y = randsampleFS(n,k,method)
 %
 %  Optional input arguments:
 %
-%   method : The method used to extract the numbers (default is method = 1).
+%   method : Sampling methods. Scalar or vector.
+%            Methods used to extract the subsets. See more about for
+%            further details. Default is method = 1.
 %            - Scalar, from 1 to 3 determining the (random sample without
 %            replacement) method to be used.
 %            - Vector of weights: in such a case, Weighted Sampling Without
@@ -99,8 +101,8 @@ function y = randsampleFS(n,k,method)
 %}
 
 %{
-    % randsampleFS Weighted Sampling Without Replacement
-    % extract 10 number from [-1000 -900] with normal distributed weights.
+    % randsampleFS Weighted Sampling Without Replacement.
+    % Extract 10 number from [-1000 -900] with normal distributed weights.
      population = -1000:1:-900; 
      k=10; 
      wgts=sort(random('gamma',0.3,2,101,1),'descend'); 

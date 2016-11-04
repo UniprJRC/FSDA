@@ -1,4 +1,4 @@
-function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
+function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %subsets creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements
 %
 %<a href="matlab: docsearchFS('subsets')">Link to the help function</a>
@@ -30,6 +30,18 @@ function [C,nselected] = subsets(nsamp,n,p,ncomb,msg)
 %               on the screen about estimated time.
 %               Example - C=subsets(20,10,3,120,0)
 %               Data Types - boolean
+%
+%   method : Sampling methods. Scalar or vector.
+%            Methods used to extract the subsets. See section 'More About'
+%            of function randsampleFS.m for details about the sampling
+%            methods. Default is method = 1.
+%            - Scalar, from 1 to 3 determining the (random sample without
+%            replacement) method to be used.
+%            - Vector of weights: in such a case, Weighted Sampling Without
+%              Replacement is applied using that vector of weights.
+%            Example - randsampleFS(100,10,2)
+%            Data Types - single|double
+%
 %
 %  Output:
 %
@@ -113,6 +125,10 @@ if nargin<5
     msg=1;
 end
 
+if nargin<6
+    method=1;
+end
+
 %% Combinatorial part to extract the subsamples
 % Key combinatorial variables used:
 % C = matrix containing the indexes of the subsets (subsamples) of size p
@@ -121,7 +137,7 @@ end
 % rndsi = vector of nselected indexes randomly chosen between 1 e ncomb.
 Tcomb = 5e+7; T2comb = 1e+8;
 
-if nsamp==0 || ncomb <= Tcomb
+if nsamp==0 || ncomb <= Tcomb || ~isscalar(method)
     if nsamp==0
         if ncomb > 100000 && msg==1
             disp(['Warning: you have specified to extract all subsets (ncomb=' num2str(ncomb) ')']);
@@ -134,12 +150,19 @@ if nsamp==0 || ncomb <= Tcomb
     
     % If nsamp = 0 matrix C contains the indexes of all possible subsets
     C=combsFS(seq,p);
-    
-    
+        
     % If nsamp is > 0 just select randomly ncomb rows from matrix C
     if nsamp>0
-        % Extract without replacement nsamp elements from ncomb
-        rndsi=randsampleFS(ncomb,nsamp,2);
+        if ~isscalar(method)
+            % Weighted Sampling Without Replacement.
+            % The weight of a p-subset is the product of the weights of the units
+            % in the sample
+            Cw = prod(method(C),2);
+            rndsi=randsampleFS(ncomb,nsamp,Cw);            
+        else
+            % Extract without replacement nsamp elements from ncomb
+            rndsi=randsampleFS(ncomb,nsamp,2);
+        end
         C = C(rndsi,:);
     end
     
@@ -191,7 +214,11 @@ else
                 s=lexunrank(n,p,rndsi(i));
             end
         else
-            s=randsampleFS(n,p);
+            if isscalar(method)
+                s=randsampleFS(n,p);
+            else
+                 s=randsampleFS(n,p,method);
+            end
         end
         C(i,:)=s;
         
