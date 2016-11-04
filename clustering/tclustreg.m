@@ -150,7 +150,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            of Cerioli and Perrotta (2014).
 %            Example - 'wtrim',1
 %            Data Types - double
-%      we: Vector of observation weights. Vector. A vector of size nX1
+%      we: Vector of observation weights. Vector. A vector of size n-by-1
 %          containing the weights to apply to each observation. Default
 %          value: vector of ones.
 %            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
@@ -201,9 +201,9 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %                       of all n observations (trimmed observations
 %                       included).
 %   out.trim1levelopt       = $n$ vector containing the 1st level trimmed units (0) and
-%   1st level untrimmed (1) units.
+%                       1st level untrimmed (1) units.
 %   out.trim2levelopt       = $n$ vector containing the 2nd level trimmed units (0) and
-%   2nd level untrimmed (1) units.
+%                           2nd level untrimmed (1) units.
 %   out.postprob       = $n$ vector containing the final posterior probability
 %   out.count1_ng_lt_k = number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
 %   out.count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
@@ -237,14 +237,18 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 % Examples:
 %
 %{
-    %% tclustreg of 'X data' (Gordaliza, Garc?a-Escudero & Mayo-Iscar, 2013).
+    %% tclustreg of 'X data' (Gordaliza, Garcia-Escudero & Mayo-Iscar, 2013).
     % The dataset presents two parallel components without contamination.
     X   = load('X.txt');
     y1=X(:,end);
     X1=X(:,1:end-1);
 
     k = 2 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2);
+
+    k = 2 ; restrfact = 2; alpha1 = 0.05 ; alpha2 = 0.01;
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);
+
 
     % Comparison with robust linear grouping
     figure;
@@ -273,7 +277,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     y1 = X(:,end);
     X1 = X(:,1:end-1);
     k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2);
 %}
 
 %{
@@ -284,34 +288,34 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     we = XX/sum(XX);
     
     mixt = 0; wtrim = 0;
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 2; wtrim = 0;
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 0; wtrim = 1;
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
     mixt = 2; wtrim = 1;
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
     mixt = 0; wtrim = 2; we = [];
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 2; wtrim = 2; we = [];
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 0; wtrim = 3; we = [];
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 2; wtrim = 3; we = [];
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 0; wtrim = 4; we = [];
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 2; wtrim = 4; we = [];
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 %}
 
 %{
@@ -328,7 +332,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     yXplot(y,X);
 
     % run tclustreg
-    out=tclustreg(y,X,k,50,0.01,0.01,'intercept',1);
+    out=tclustregMR(y,X,k,50,0.01,0.01,'intercept',1);
 %}
 
 %{
@@ -411,6 +415,9 @@ end
 nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+
+
+seq=1:n;
 
 % THINNING: check if wtrim user option is equal to 4. In such a case,
 % thinning is applied just at the very beginning and on the full dataset.
@@ -563,6 +570,9 @@ mixtdef = 0;
 % control on the initial fits.
 eps_beta_def = 0;
 
+%seqk = sequence from 1 to number of groups
+seqk=1:k;
+
 %% User options
 
 options = struct('intercept',1,'mixt',mixtdef,...
@@ -637,19 +647,20 @@ equalweights = options.equalweights;
 eps_beta   = options.eps_beta;
 
 if NoPriorSubsets == 1
-    % in order to face the possibility that 
-    %(1) some subsets can contain collinear observations 
-    %or 
-    %(2) a set of nsamp subsets does not bring to the best subset or bring to a bust subset with less than k groups, 
-    %and therefore have to be excluded from  the analysis, a number of subsets
-    % equal to nsamp * oversamp is generated.
+    % in order to face the possibility that
+    %(1) some subsets can contain collinear observations
+    %or
+    %(2) a set of nsamp subsets does not lead to the best subset or leads
+    %to a best subset with less than k groups, and therefore have to be
+    %excluded from  the analysis, a number of subsets equal to nsamp *
+    % oversamp is generated.
     %oversamp is set equal to (10 * k). In the univariate case, therefore,
     %oversamp = 10, i.e. 10*nsamp subsets are generated. If eps_beta = 0, i.e.
     %there is no threshold controlling the distance between regression lines in
     %the generated subsets, no oversampling is necessary and therefore oversamp is
     % equal to 1.
     if eps_beta>0
-        oversamp = 10*k;
+        oversamp = 50*k;
     else
         oversamp = 1;
     end
@@ -756,13 +767,13 @@ else
     
 end
 
-% First level trimming
-if alpha1<1
-    notrim = floor(n*(1-alpha1));
-else
-    notrim = n-floor(alpha1);
-end
-trimm = n-notrim;
+% % First level trimming
+% if alpha1<1
+%     notrim = floor(n*(1-alpha1));
+% else
+%     notrim = n-floor(alpha1);
+% end
+% trimm = n-notrim;
 
 
 
@@ -786,7 +797,7 @@ if NoPriorSubsets
     end
     % the number of initial subsets to be generated is nsamp*oversamp.
     % The input parameter nsamp is multiplied by a factor (oversamp) in
-    % order to increase the number of generated subsets because in some subsets the regression lines 
+    % order to increase the number of generated subsets because in some subsets the regression lines
     % could be very closed one to the other and therefore have to be
     % substituted with other subsets.
     for ns =1:nsamp*oversamp
@@ -795,13 +806,15 @@ if NoPriorSubsets
     end
     %nselected is set equal to the number of subsets that will be finally
     %used in tclustreg, i.e. not considering the over sampling:
-    % - nselected = nsamp, if nsamp is a scalar; 
+    % - nselected = nsamp, if nsamp is a scalar;
     % - nselected = size(nsamp,1), if nsamp is a matrix (containing the initial subsets)
-    %nselected will be increased later in the code 
+    %nselected will be increased later in the code
     nselected  = length(C)/oversamp;
     
 end
-%initialization of ntclust_no_opt_subs: number of times a complete loop over the subsets concludes without identifying the best subset or with a subset with less tha k groups.
+%initialization of ntclust_no_opt_subs: number of times a complete loop
+%over the subsets concludes without identifying the best subset or with a
+%subset with less tha k groups.
 ntclust_no_opt_subs = 0;
 
 %check_obj_reached = 1, if the best subset has been identified (that is if
@@ -816,22 +829,22 @@ check_obj_reached = 0;
 %size(nsamp,1)*oversamp if nsamp is a matrix .
 iter                = 0;
 
-%the while cycle is necessary when at the end of an entire loop on the extracted subsets 
-%(while iter < nselected), the best subset has not been identified (i.e.
-%the best subset does not exist) or if it has less than k groups. If it
-%happens another loop on other extracted subsets (the following nselected rows in C matrix) is repeated.
+%this while cycle is necessary when at the end of an entire loop on the
+%extracted subsets (while iter < nselected), the best subset has not been
+%identified (i.e. the best subset does not exist) or if it has less than k
+%groups. If it happens another loop on other extracted subsets (the
+%following nselected rows in C matrix) is repeated.
 while check_obj_reached == 0
     
     %% Initialize structures
     
     ll                  = zeros(n,k);
-    ni                  = ones(1,k);
     count               = 0;
     count_elim          = 0;
     count_keep          = 0;
     sigmaini            = ones(1,k);
     comb_beta           = combnk(1:k,2);
-    diff                = NaN(intercept+1,size(comb_beta,1));
+    diff                = NaN(size(comb_beta,1),1);
     %good_subs_id: list of observations of subsets where the regression
     %lines are sufficiently distant and during the concentration steps it
     %does not happen that all the k regression lines are NaN (this happens
@@ -849,15 +862,14 @@ while check_obj_reached == 0
     %in the subsequent analysis. The first p columns contain observations
     %belonging to the fisrt group, ...., the last p columns contain
     %observations belonging to the last (k-th)  group.
-    elim_subs_id    = NaN(nselected,k*p);    
+    elim_subs_id    = NaN(nselected,k*p);
     %all_subs_id: list of  observations in all subsets, both acceptable and
     %unacceptable in terms of distance among regression lines and in terms
     %of existence of regression parameters. The first p columns contain
     %observations belonging to the fisrt group, ...., the last p columns
     %contain observations belonging to the last (k-th) group.
     all_subs_id    = NaN(nselected,k*p);
-    %initialize the output of tclustreg, i.e. the parameters obtained in the best (optimum) subset 
-    sigmaopt     = ni;
+    %initialize the output of tclustreg, i.e. the parameters obtained in the best (optimum) subset
     bopt             = zeros(p,k);
     %numopt = (kX1) vector containing the number of observations in each of
     %the k groups in the optimal subset.
@@ -866,29 +878,31 @@ while check_obj_reached == 0
     %trim1levelopt = (nx1) vector of 0 and 1 indicating respectively units
     %trimmed and not trimmed in the first trimming level in the optimal
     %subset
-    trim1levelopt       = ones(n,1);     
+    trim1levelopt       = ones(n,1);
     %trim2levelopt = (nx1) vector of 0 and 1 indicating respectively units
     %trimmed and not trimmed in the second trimming level in the optimal
     %subset
-    trim2levelopt       = ones(n,1); 
+    trim2levelopt       = ones(n,1);
     %indmaxopt = (nx1) vector of 1, ... , k, indicating the assignement of
     %all the n observations (trimmed observations included) to one of the k
     %groups  in the optimal subset
     indmaxopt           = zeros(n,1);
     %not_empty_gopt: 1xk vector of ones and zeros: 1 means that a groups is not empty, 0 means that a group is empty
     not_empty_gopt      = zeros(1,k);
-    %number of refining steps in the optimal subset where less than k groups have been identified 
+    %number of refining steps in the optimal subset where less than k groups have been identified
     n_refsteps_lt_k_gropt   = 0;
-    %number of refining steps in the optimal subset where k groups have been identified 
-    n_refsteps_eq_k_gropt   = 0; 
-    %extra_inisubsopt: in the optimal subset, number of extra subsets that were extracted to compensate eventual 
-    %subsets characterized by two regression lines too much closed
-    %one to the other
+    %number of refining steps in the optimal subset where k groups have been identified
+    n_refsteps_eq_k_gropt   = 0;
+    %extra_inisubsopt: in the optimal subset, number of extra subsets that
+    %were extracted to compensate eventual subsets characterized by two
+    %regression lines too close  one to the other
     extra_inisubsopt    = nselected - nsampdef;
-    %good_subs_idopt: observation ids only in initial subsets where the regression lines are well separated
+    %good_subs_idopt: observation ids only in initial subsets where the
+    %regression lines are well separated
     % (therefore analyzed subsets)
     good_subs_idopt        = zeros(nselected,k);
-    %elim_subs_idopt: observation ids only in initial subsets where the regression lines are NOT well separated
+    %elim_subs_idopt: observation ids only in initial subsets where the
+    %regression lines are NOT well separated
     % (therefore discarded subsets)
     elim_subs_idopt        = zeros(nselected,k);
     %all_subs_idopt: observation ids in all initial subsets (analyzed and discarded subsets)
@@ -900,31 +914,38 @@ while check_obj_reached == 0
     %%  Random starts
     while iter < nselected
         
+        % lessthankgroups will be equal 1 if for a particlar subset less
+        % than k groups are found
+        lessthankgroups=0;
+        
         %iter =  iteration number  of the loop on the subsets, including:
         % -subsets which are refused because the regression lines are too
-        % closed one to the other;
-        % -an entire loop of subsets which does not bring to any best substet or bring to a best subset with less than k groups.  
+        % closed one to the other; -an entire loop of subsets which does
+        % not lead to any best subset or leads to a best subset with less
+        % than k groups.
         iter  = iter+1;
         
         %count =  iteration number of the loop on the subsets, NOT including:
         % -subsets which are rejected because the regression lines are too
-        % closed one to the other;
-        % -an entire loop of subsets which does not bring to any best substet or bring to a best subset with less than k groups. 
+        % closed one to the other; -an entire loop of subsets which does
+        % not bring to any best substet or bring to a best subset with less
+        % than k groups.
         count = count+1;
         
-        %number of refining steps where less than k groups have been identified 
+        %number of refining steps where less than k groups have been identified
         n_refsteps_lt_k_gr = 0;
-       %number of refining steps where less than k groups have been identified 
+        %number of refining steps where less than k groups have been identified
         n_refsteps_eq_k_gr = 0;
-
-
+        
+        
         if msg == 1
             disp(['Iteration ' num2str(count)])
         end
         %if startv1 = 1, covariance matrices is estimated in each initial subset composed by  (v+1)*k units
         if startv1
-            
-            nameYY = zeros(p,k);
+            % Beta = matrix of beta coefficients (j-col is referred to j-th
+            % group)
+            Beta = zeros(p,k);
             % in order to fix the seed decomment the following command
             % rng(1234);
             randk=rand(k,1);
@@ -935,14 +956,14 @@ while check_obj_reached == 0
                 niini=floor(fix(n - floor(alpha1))*randk/nansum(randk));
             end
             %if one or more groups have been initialized with 0 observations, we repete
-            %the initialization until all the k groups are populated. 
+            %the initialization until all the k groups are populated.
             while sum(niini == 0) >0
                 randk=rand(k,1);
                 % Initialize niini with with random numbers from uniform
                 if alpha1<1
-                    niini=floor(fix(n*(1-alpha1))*randk/nansum(randk));
+                    niini=floor(fix(n*(1-alpha1))*randk/sum(randk));
                 else
-                    niini=floor(fix(n -floor(alpha1))*randk/nansum(randk));
+                    niini=floor(fix(n -floor(alpha1))*randk/sum(randk));
                 end
             end
             %given the current subsets extracted observations (C(iter,:)),
@@ -956,18 +977,22 @@ while check_obj_reached == 0
                 all_subs_id(count,ilow:iup) = selj;
                 Xb     = X(selj,:);
                 yb     = y(selj,:);
-                ni(j)  = length(yb);
-                nameYY(:,j) = Xb\yb;
+                niini(j)  = length(yb);
+                Beta(:,j) = Xb\yb;
                 %Update residuals
-                residuals = yb-Xb*nameYY(:,j);
+                residuals = yb-Xb*Beta(:,j);
                 % Update sigmas through the mean square residuals
                 if size(selj,2) > p
-                    sigmaini(j) = nansum(residuals.^2)/ni(j);
+                    sigmaini(j) = nansum(residuals.^2)/niini(j);
                 else
-                    sigmaini(j) =var(y);
+                    if length(yb)==1
+                        sigmaini(j)= var(y);
+                    else
+                        sigmaini(j) =var(yb);
+                    end
                 end
             end
-            sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
+            sigmaini= restreigen(sigmaini,niini,restrfact,tolrestreigen,userepmat);
         else
             %given the current subsets extracted observations (C(iter,:)),
             %identification of X and y for each group, computation of
@@ -982,24 +1007,22 @@ while check_obj_reached == 0
             for j=1:k
                 Xbj = Xb((1+(j-1)*p):(j*p),:);
                 ybj = yb((1+(j-1)*p):(j*p));
-                nameYY(:,j) = Xbj\ybj;
+                Beta(:,j) = Xbj\ybj;
             end
             sigmaini=ones(1,k);
         end
         
         %compute the differences between pairwise regression parameters in
-        %order to reject subsets where the differences are two small. 
-        for par = 1:intercept + 1
-            for gr = 1:size(comb_beta,1)
-                diff(par,gr) = nameYY(par,comb_beta(gr,1)) - nameYY(par,comb_beta(gr,2));
-            end
+        %order to reject subsets where the differences are two small.
+        for gr = 1:size(comb_beta,1)
+            diff(gr) = norm(Beta(:,comb_beta(gr,1)) - Beta(:,comb_beta(gr,2)))/norm(Beta(:,comb_beta(gr,2)));
         end
         
         %if the differences between regression parameters is lower than a
         %threshold eps_beta the subset will not be considered and substitute
         %with a new generated one
-        mindiff = min(abs(diff),[],2);
-        if sum(abs(mindiff) > eps_beta) >0
+        mindiff = min(diff);
+        if mindiff > eps_beta
             good_initial_subs = 1;
             count_keep = count_keep + 1;
             good_subs_id(count_keep,:) = all_subs_id(count,:);
@@ -1010,64 +1033,232 @@ while check_obj_reached == 0
             count = count-1;
             nselected = nselected+1;
         end
+        
+        
+        
         %if  the current initial subset is acceptable in terms of distance
         %among regression lines, the tclust procedure is applied; otherwise
         %a new subsets will be considered.
         if good_initial_subs == 1
             
-            % CONCENTRATION STEPS
+            
+            %% a) Log-likelihood based on all  n observations
+            % Given starting values of parameters (coming from a subset)
+            if equalweights == 1
+                for jj = 1:k
+                    ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj));
+                end
+            else
+                for jj = 1:k
+                    ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj));
+                end
+            end
+            
+            %to compute the normal probability density function with
+            %normpdf(y-X*nameYY(:,jk),0,sqrt(sigmaini(jk))) instead of logmvnpdfFS leads to
+            %imprecise results in the queue of the distribution. For example, if there are extreme
+            %outliers and the groups are almost collinear (small sigmaini), it can happen that the
+            %area computed by the normpdf is zero for all the k groups. In this case we would have
+            %to perturb the k values close to zero in such a way that these points are randomly
+            %assigned to one of the k groups. This can be done with the following code:
+            %                 for jk = 1:k
+            %                    fact2(:,jk) = logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));
+            %                 end
+            %                extreme_obs = find(sum(fact2,2)==0);
+            %                 for jk = 1:k
+            %                    if ~isempty(extreme_obs)
+            %                        fact2(extreme_obs,jk) = fact2(extreme_obs,jk)+10^(-8)*abs(rand(length(extreme_obs),1));
+            %                    end
+            %                    ll(:,jk) = log((niini(jk)/sum(niini))) + fact2(:,jk);
+            %                 end
+            
+            %In the case of crisp assignement we compute the maximum value of the log-likelihood
+            %(disc) among the k groups, as in point 2.1 of appendix of Garcia Escudero et al.
+            %(2010). In the case of mixture modelling we need an estep to compute the log of the sum
+            %of the log-likelihood (disc) and the normalized log-likelihood (postprob).
+            if mixt == 2
+                [~,postprob,disc] = estepFS(ll);
+                % indmax assigns each observation to the group with the largest posterior probability
+                [~,indmax]= max(postprob,[],2);
+                
+            elseif mixt == 0
+                postprob = ones(n,k);
+                [disc,indmax] = max(ll,[],2);
+            end
+            
+            
+            %% b) THINNING ONCE AND FOR ALL
+            % The following switch statement is to compute the vector of weights that enter in the
+            % update of the model parameters (remember that in computing the value of the target
+            % function, we use the standard (un-weighted) version of the likelihood functions --
+            % mixture or classification -- ).
+            
+            % pretain is the same for all units
+            w4trim=ones(n,1);
+            
+            switch wtrim
+                
+                case 0
+                    %no observation weighting,
+                    
+                    
+                case 1
+                    % user weights applied to each observation;   the weights are the posterior
+                    % probabilities multiplied by the user weights
+                    
+                    % pretain is the same for all units
+                    w4trim=we;
+                case 2
+                    % weights are the posterior probabilities multiplied by the density
+                    % the next lines are written to assigne a weight to the trimmed observations.
+                    check_we_groups = zeros(k,1);
+                    id_obs_in_groups_no_weight = zeros(n,k);
+                    for jj=1:k
+                        % Boolean index of units forming group j
+                        groupj=indmax==jj;
+                        % ijj: indices of units in group jj
+                        ijj = find(groupj);
+                        
+                        
+                        % weight vector is updated only if the group has
+                        % more than thinning_th observations and if the
+                        % beta of the group is not zero
+                        
+                        %computation of weights for trimmed and non-trimmed units
+                        %????????????????????? TO CHECL
+                        if  length(ijj)>thinning_th
+                            % retention probabilities based on density
+                            % estimated on the component predicted values
+                            % of the previous step. The bernoulli weights
+                            % (the first output argument of wthin, i.e. Wt)
+                            % are not used.
+                            
+                            Xj = X(ijj,:);
+                            yhat = Xj*Beta(:,jj);
+                            
+                            [~ , pretain] = wthin(yhat);
+                            w4trim(ijj) = pretain;
+                            
+                        else
+  %                          error('Qua Non ho capito')
+                            check_we_groups(jj) = 1;
+                            id_obs_in_groups_no_weight(:,jj) = groupj;
+                        end
+                        
+                    end
+                    %if in some group it was not possible to run wthin,
+                    %then we is fixed equal to the median of the weights
+                    %(we) of the other groups. In order to simplify the
+                    %code, the median is computed using the weights (we)
+                    %different from one, which is the default value. In
+                    %this way we underestimate the median weight (we), in
+                    %case wthin assigns to some observations we=1
+                    if sum(check_we_groups) > 0
+                        median_we = nanmedian(w4trim(w4trim~=1)) ;
+                        pos_check_we_groups = find(check_we_groups==1);
+                        for jj=1:length(pos_check_we_groups)
+                            %if the number of observations in the group not
+                            %analysed with wthin is 0 there is necessity to
+                            %assign the median
+                            n_obs_current_gr = sum(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)));
+                            if n_obs_current_gr > 0
+                                rep_median_we = repmat(median_we,n_obs_current_gr,1);
+                                w4trim(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)) == 1) = rep_median_we;
+                            end
+                        end
+                    end
+                    
+                    
+                case 3
+                    
+                    % weights are the posterior probabilities multiplied by
+                    % the bernoulli weights
+                    
+                    ii = 0;
+                    
+                    for jj=1:k
+                        % find indices of units in group jj
+                        ijj = find(indmax==jj);
+                        %ijj_ori = find(indall == jj);
+                        % weight vector is updated only if the group has
+                        % more than thinning_th observations abd if the
+                        % beta of the group is not zero
+                        if  numel(ijj)> thinning_th
+                            % Bernoulli weights based on density estimated
+                            % on the component predicted values of the
+                            % previous step. The retention probabilities
+                            % (the second output argument of wthin, i.e.
+                            % pretain) are not used.
+                            Xj = X(ijj,:);
+                            yhat = Xj*Beta(:,jj);
+                            
+                            [Wt , ~] = wthin(yhat);
+                            
+                            w4trim(ijj)=Wt;
+                            
+                            % count the thinned observations
+                            nthinned = sum(Wt == 0);
+                            ii = ii + nthinned;
+                            %eliminate thinned observations
+                            niini(jj) = niini(jj) - nthinned;
+                        end
+                        
+                    end
+                    
+            end
+            
+            % Mean of the weights must be 1
+            % These weights will be used in first and second level trimming
+            w4trim=w4trim/mean(w4trim);
+            
+            % Now multiply posterior probabilities (n-by-k matrix) by weights (n-by-1 vector)
+            w4beta=bsxfun(@times,postprob,w4trim);
+            
+            
+%             % Note that w4trim is a vector while w4beta is a matrix
+%             
+%             not_empty_g = ~( niini <= p + 1 );
+%             
+%             %count number of times the number of groups is lt k
+%             if sum(not_empty_g) == k
+%                 n_refsteps_eq_k_gr = n_refsteps_eq_k_gr + 1;
+%             else
+%                 n_refsteps_lt_k_gr = n_refsteps_lt_k_gr + 1;
+%             end
+            
+            
+            
+            %% CONCENTRATION STEPS
             
             indold = zeros(n,1)-1;
-            check_beta = 0;
-            %check_beta = 0 or 1. If check_beta=1, all beta coefficient are
-            %NAN; else at least one beta coefficient is not NAN. all beta
-            %coefficient are NAN when from a previous concentration step,
-            %almost all obs have been assigned to the same group and the
-            %thinning was very strong, leaving few obs. In this case we
-            %force to exit from the concentration step and we drop the
-            %current subset and substitute it with a new one
+            
             for cstep = 1:Ksteps
+                
                 not_empty_g = zeros(1,k);
-                if sum(isnan(nameYY)) == k
-                    if check_beta == 0
-                        count_elim = count_elim + 1;
-                        elim_subs_id(count_elim,:) = all_subs_id(count,:);
-                        count = count-1;
-                        nselected = nselected+1;
-                        check_beta = 1;
-                    end
-                    
+                if all(isnan(Beta(:)))
+                    %                     if check_beta == 0
+                    count_elim = count_elim + 1;
+                    elim_subs_id(count_elim,:) = all_subs_id(count,:);
+                    count = count-1;
+                    nselected = nselected+1;
+                    %                        check_beta = 1;
+                    %                     end
+                    break
                 else
                     
-                    %% Log-likelihood
+                    
+                    %% 1) Log-likelihood (inside concentration steps)
                     % Discriminant functions for the assignments
                     if equalweights == 1
-                        for jk = 1:k
-                            ll(:,jk) = log((1/k)) + logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));
+                        for jj = 1:k
+                            ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj));
                         end
                     else
-                        for jk = 1:k
-                            ll(:,jk) = log((niini(jk)/sum(niini))) + logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));
+                        for jj = 1:k
+                            ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj));
                         end
                     end
                     
-                    %to compute the normal probability density function with
-                    %normpdf(y-X*nameYY(:,jk),0,sqrt(sigmaini(jk))) instead of logmvnpdfFS leads to
-                    %imprecise results in the queue of the distribution. For example, if there are extreme
-                    %outliers and the groups are almost collinear (small sigmaini), it can happen that the
-                    %area computed by the normpdf is zero for all the k groups. In this case we would have
-                    %to perturb the k values close to zero in such a way that these points are randomly
-                    %assigned to one of the k groups. This can be done with the following code:
-                    %                 for jk = 1:k
-                    %                    fact2(:,jk) = logmvnpdfFS(y-X*nameYY(:,jk),0,(sigmaini(jk)));
-                    %                 end
-                    %                extreme_obs = find(sum(fact2,2)==0);
-                    %                 for jk = 1:k
-                    %                    if ~isempty(extreme_obs)
-                    %                        fact2(extreme_obs,jk) = fact2(extreme_obs,jk)+10^(-8)*abs(rand(length(extreme_obs),1));
-                    %                    end
-                    %                    ll(:,jk) = log((niini(jk)/sum(niini))) + fact2(:,jk);
-                    %                 end
                     
                     %In the case of crisp assignement we compute the maximum value of the log-likelihood
                     %(disc) among the k groups, as in point 2.1 of appendix of Garcia Escudero et al.
@@ -1075,6 +1266,9 @@ while check_obj_reached == 0
                     %of the log-likelihood (disc) and the normalized log-likelihood (postprob).
                     if mixt == 2
                         [~,postprob,disc] = estepFS(ll);
+                        % indmax assigns each observation to the group with the largest posterior probability
+                        [~,indmax]= max(postprob,[],2);
+                        
                     elseif mixt == 0
                         [disc,indmax] = max(ll,[],2);
                     end
@@ -1084,537 +1278,157 @@ while check_obj_reached == 0
                     [~,qq] = sort(disc,'ascend');
                     
                     
-                    %% first level trimming
-                    switch wtrim
-                        case {0,4}
-                            % standard case, without observation weighting
-                            
-                            %[~,qq] = sort(disc,'descend');
-                            %qqunassigned = qq((n-trimm+1):n);
-                            %qq           = qq(1:n-trimm);
-                            
-                            % qq = vector which contains the indexes associated with the largest n(1-alpha)
-                            % likelihood contributions
-                            % qqunassigned is vector which contains the indices of the remaining trimmed
-                            % observations
-                            qqunassigned = qq(1:trimm);
-                            qqassigned   = qq(trimm + 1:n);
-                            
-                        case {1,2,3}
-                            % trimming with observation weighting, set by the user or density estimation
-                            %if wtrim = 3 the weights should be re-initialized to one, to avoid the
-                            %continuous elimination of observations from the estimates.
-                            if wtrim == 3
-                                we = wedef;
-                            end
-                            cumsumyy = cumsum(we(qq));
-                            if alpha1<1
-                                qqunassigned_small = cumsumyy < alpha1*nansum(we(qq));
-                                qq_small = cumsumyy >= alpha1*nansum(we(qq));
-                            else
-                                qqunassigned_small = cumsumyy < alpha1/n*nansum(we(qq));
-                                qq_small = cumsumyy >= alpha1/n*nansum(we(qq));
-                            end
-                            qqunassigned = qq(qqunassigned_small);
-                            qqassigned = qq(qq_small);
-                            % qq_small introduced because setdiff below is inefficient
-                            %qq = setdiff((1:n)',qqunassigned);
-                    end
-                    qqunassigned = sort(qqunassigned);
-                    qqassigned = sort(qqassigned);
+                    %% 2) First level trimming (inside concentration steps)
+                    % Order the weights according to qq
+                    w4trimordered=w4trim(qq);
                     
-                    %index of units trimmed with the 1st level trimming in original scale
-                    trim1level = qqunassigned;
+                    % Find cumlative sum of weights
+                    cumsumww = cumsum(w4trimordered);
                     
-                    % In case of mixture modeling:
-                    if mixt == 2
-                        % update the posterior probabilities
-                        postprobuntri = postprob(qqassigned,:);
-                        postprob(qqunassigned,:) = 0;
-                        
-                        % M-step: update of niini, the numerator of component probabilities
-                        niini=(nansum(postprob))';
-                        
-                        % indmax assigns each observation to the group with the largest posterior probability
-                        [~,indmax]= max(postprob,[],2);
-                    end
+                    % qqunassigned_small is a n-by-1 Boolean vector which
+                    % contains true in the first k positions (units which
+                    % have to be trimmed)
+                    qqunassigned_small = cumsumww < n*alpha1;
                     
-                    % data and observation weights vectors associated with the units which have the
-                    % largest n(1-alpha) likelihood contributions
-                    Xuntri      = X(qqassigned,:);
-                    Xtri        = X(qqunassigned,:);
-                    yuntri      = y(qqassigned,:);
-                    weuntri     = we(qqassigned,:);
-                    induntri    = indmax(qqassigned);
-                    indtri      = indmax(qqunassigned);
-                    xmoduntri   = [Xuntri , yuntri , induntri];
+                    % qqunassigned = indexes of units subject to first
+                    % level trimming
+                    qqunassigned = qq(qqunassigned_small);
                     
-                    % size of the groups nj (could be named mixing proportions or group weights)
-                    %histcount is more efficient but cannot be used because when one group is missing it
-                    %rdoes not report "0" but missing. Therefore the result is a vector of length less than
-                    %k.
-                    %             if verLessThan('matlab','8.4')
-                    %                 for jj=1:k
-                    %                     ni(jj) = sum(indtri==jj);
-                    %                 end
-                    %             else
-                    %                 ni = histcounts(indtri,k);
-                    %             end
+                    %indmax_before_tr should be saved in order to be able
+                    %to understand which groups the two trimmings affect more
+                    indmax_before_tr = indmax;
+                    
+                    % indmax of the units subject to first level trimming
+                    % is set equal to 0
+                    indmax(qqunassigned)=0;
+                    
+                    %% 3) Second level of trimming (inside concentration steps)
+                    % FS or MCD are used to find units to trim
+                    % Using untrimmed units find beta coefficients and
+                    % sigma2 using weighted regression (the weights are
+                    % based on thinning fixed once and for all before the
+                    % concentraion steps)
+                    
                     for jj=1:k
-                        ni(jj) = sum(induntri==jj);
-                    end
-                    if mixt == 0
-                        niini = ni;
-                    end
-                    
-                    %% Weights for the update of the model parameters
-                    
-                    % The following switch statement is to compute the vector of weights that enter in the
-                    % update of the model parameters (remember that in computing the value of the target
-                    % function, we use the standard (un-weighted) version of the likelihood functions --
-                    % mixture or classification -- ).
-                    
-                    xmoduntri_unthinned = xmoduntri;
-                    induntri_unthinned = induntri;
-                    weuntri_unthinned = weuntri;
-                    if mixt == 2
-                        postprobuntri_unthinned = postprobuntri;
-                    end
-                    switch wtrim
-                        
-                        case {0,4}
-                            %no observation weighting, therefore:
-                            if mixt == 2
-                                % for mixture likelihood, the weights are the posterior probabilities
-                                weightsuntri = postprobuntri;
-                            elseif mixt == 0
-                                % for crisp clustering the weights are a vector of ones
-                                weightsuntri = repmat(weuntri,1,k);
-                            end
-                            
-                            weightsuntri_unthinned = weightsuntri;
-                            
-                        case 1
-                            % user weights applied to each observation;   the weights are the posterior
-                            % probabilities multiplied by the user weights
-                            
-                            if mixt == 2
-                                weightsuntri = postprobuntri .* repmat(weuntri,1,k);
-                            elseif mixt == 0
-                                weightsuntri =   repmat(weuntri,1,k);
-                            end
-                            
-                            weightsuntri_unthinned = weightsuntri;
-                            
-                        case 2
-                            % weights are the posterior probabilities multiplied by the density
-                            
-                            %initialize weight for trimming
-                            %we = wedef ;
-                            
-                            if mixt == 2
-                                % for mixture likelihood, the weights are the posterior probabilities
-                                weightsuntri = postprobuntri;
-                            elseif mixt == 0
-                                % for crisp clustering the weights are ...
-                                weightsuntri =  repmat(weuntri,1,k);
-                            end
-                            
-                            % the next lines are written to assigne a weight to the trimmed observations.
-                            
-                            %indall_good = vector of length n containing the id 1,...,k of the group the
-                            %observation belongs to or "-1" if the observations was trimmed
-                            indall = -ones(n,1);
-                            indall(qqassigned) = induntri;
-                            
-                            % indall_good_and_outl  = vector of length n containing the id 1,...,k of the group the
-                            %observation belongs to, for trimmed and untrimmed units.
-                            % indall_good  = vector of length n containing the id 1,...,k of the group the
-                            %observation belongs to, for untrimmed units.
-                            indall_good_and_outl = NaN(1,n);
-                            indall_good_and_outl(qqassigned)   = induntri;
-                            indall_good_and_outl(qqunassigned) = indtri;
-                            %Xsort_ll is X sorted in ascending order of loglikelihood, as Xuntri etc.
-                            Xsort_ll = ones(n,v+intercept);
-                            Xsort_ll(1:length(qqassigned),1:v+intercept) = Xuntri;
-                            Xsort_ll(length(qqassigned)+1:end,1:v+intercept) = Xtri;
-                            %if it is not possible to  compute wthin in a group
-                            %(because there are less than thinning_th obs or
-                            %because beta is zero), we are set to the median of the
-                            %other weights. To do this we create a k-vector
-                            %check_we_groups which contains k zeros, if all the k
-                            %groups can be computed by wthin; otherwise it contains
-                            %ones in correpondence of the groups which cannot be
-                            %computed by wthin.
-                            check_we_groups = zeros(k,1);
-                            id_obs_in_groups_no_weight = zeros(n,k);
-                            for jj=1:k
-                                % ijj: indices of untrimmed units in group jj
-                                ijj = find(induntri==jj);
-                                %ijj_ori = vector of length n containing indices of untrimmed units in group jj
-                                ijj_ori = indall == jj; % was find( indall == jj)
-                                
-                                %ijj_ori_good_and_outl = vector of length n containing indices of trimmed and untrimmed units in group jj
-                                ijj_ori_good_and_outl = indall_good_and_outl == jj; % was find( indall_good_and_outl == jj)
-                                %ijj_ori_good = vector of length n containing indices of untrimmed units in group jj
-                                %ijj_ori_good = indall_good == jj; % was find( indall_good_and_outl == jj)
-                                
-                                % find indices of trimmed and untrimmed units in group jj
-                                ijj_good_and_outl = find(ijj_ori_good_and_outl);
-                                
-                                
-                                % weight vector is updated only if the group has
-                                % more than thinning_th observations and if the
-                                % beta of the group is not zero
-                                
-                                %computation of weights for trimmed and non-trimmed units
-                                if  numel(ijj_good_and_outl)>thinning_th && nameYY(end,jj) ~= 0
-                                    % retention probabilities based on density
-                                    % estimated on the component predicted values
-                                    % of the previous step. The bernoulli weights
-                                    % (the first output argument of wthin, i.e. Wt)
-                                    % are not used.
-                                    
-                                    X_jj = Xsort_ll(ijj_good_and_outl,:);
-                                    yhat = X_jj*nameYY(:,jj);
-                                    
-                                    [~ , pretain1] = wthin(yhat);
-                                    
-                                    we(ijj_ori_good_and_outl) = pretain1;
-                                    
-                                else
-                                    check_we_groups(jj) = 1;
-                                    id_obs_in_groups_no_weight(:,jj) = ijj_ori_good_and_outl';
-                                end
-                                
-                                %computation of weights only for non-trimmed units.
-                                %It is necessary to compute weights only for
-                                %untrimmed units.
-                                if  numel(ijj)>thinning_th && nameYY(end,jj) ~= 0
-                                    Xuntri_jj = Xuntri(ijj,:);
-                                    yhatuntri = Xuntri_jj*nameYY(:,jj);
-                                    
-                                    [~ , pretain2] = wthin(yhatuntri);
-                                    
-                                    we(ijj_ori) = pretain2;
-                                    
-                                    %weights for the parameter estimation step. They
-                                    %are computed only for non-trimmed units.
-                                    weightsuntri(ijj,jj) = weightsuntri(ijj,jj) .* pretain2;
-                                end
-                                
-                                %                        %computation of weiights only for non-trimmed units
-                                %                         if  numel(ijj)>thinning_th && nameYY(end,jj) ~= 0
-                                %                             % retention probabilities based on density estimated on the component
-                                %                             % predicted values of the previous step. The bernoulli weights
-                                %                             % (the first output argument of wthin, i.e. Wt) are not used.
-                                %                             Xtri_jj = Xtri(ijj,:);
-                                %                             yhattri = Xtri_jj*nameYY(:,jj);
-                                %
-                                %                             [~ , pretain] = wthin(yhattri);
-                                %
-                                %                             we(ijj_ori) = pretain;
-                                %                             weights(ijj,jj) = weights(ijj,jj) .* pretain;
-                                %
-                                %                         end
-                                
-                                
-                            end
-                            %if in some group it was not possible to run wthin,
-                            %then we is fixed equal to the median of the weights
-                            %(we) of the other groups. In order to simplify the
-                            %code, the median is computed using the weights (we)
-                            %different from one, which is the default value. In
-                            %this way we underestimate the median weight (we), in
-                            %case wthin assigns to some observations we=1
-                            if sum(check_we_groups) > 0
-                                median_we = nanmedian(we(we~=1)) ;
-                                pos_check_we_groups = find(check_we_groups==1);
-                                for jj=1:length(pos_check_we_groups)
-                                    %if the number of observations in the group not
-                                    %analysed with wthin is 0 there is necessity to
-                                    %assign the median
-                                    n_obs_current_gr = sum(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)));
-                                    if n_obs_current_gr > 0
-                                        rep_median_we = repmat(median_we,n_obs_current_gr,1);
-                                        we(id_obs_in_groups_no_weight(:,pos_check_we_groups(jj)) == 1) = rep_median_we;
-                                    end
-                                end
-                            end
-                            
-                            weightsuntri_unthinned = weightsuntri;
-                        case 3
-                            
-                            % weights are the posterior probabilities multiplied by
-                            % the bernoulli weights
-                            
-                            %initialize weight for trimming
-                            we = wedef ;
-                            
-                            % initialize weight vector with posterior probabilities
-                            if mixt == 2
-                                weightsuntri = postprobuntri;
-                            elseif mixt == 0
-                                weightsuntri =  repmat(weuntri,1,k);
-                            end
-                            weightsuntri_unthinned = weightsuntri;
-                            %indall = vector of length n containing the id 1,...,k
-                            %of the group the observation belongs to or "-1" if the
-                            %observations was trimmed
-                            %indall = -ones(n,1);
-                            %indall(qqassigned) = induntri;
-                            ii = 0;
-                            
-                            
-                            for jj=1:k
-                                % find indices of units in group jj
-                                ijj = find(induntri==jj);
-                                %ijj_ori = find(indall == jj);
-                                % weight vector is updated only if the group has
-                                % more than thinning_th observations abd if the
-                                % beta of the group is not zero
-                                if  numel(ijj)> thinning_th && nameYY(end,jj) ~= 0
-                                    % Bernoulli weights based on density estimated
-                                    % on the component predicted values of the
-                                    % previous step. The retention probabilities
-                                    % (the second output argument of wthin, i.e.
-                                    % pretain) are not used.
-                                    Xuntri_jj = Xuntri(ijj,:);
-                                    yhatuntri = Xuntri_jj*nameYY(:,jj);
-                                    
-                                    [Wt , ~] = wthin(yhatuntri);
-                                    %    figure;gscatter(Xtri_jj,ytri_jj,Wt)
-                                    % the ids of the thinned observations. Values between [1 n_untrimmed]
-                                    idWt0 = ijj(Wt == 0);
-                                    %update of the we and wetri vector, necessary for doing
-                                    %the trimming on all the observations in the
-                                    %next step. wetri is n_untrimmed x 1 we is n x 1.
-                                    weuntri(idWt0) = 0;
-                                    weuntri_unthinned =  weuntri;
-                                    
-                                    %   figure;gscatter(X,y,we)
-                                    
-                                    %update of the weights vector, necessary for
-                                    %doing the regression parameter estimation on
-                                    %the observations not trimmed and not thinned.
-                                    %weight has size (n_not_trimmes x k)
-                                    weightsuntri(ijj,jj) = weightsuntri(ijj,jj) .* Wt;
-                                    
-                                    % count the thinned observations
-                                    nthinned = sum(Wt == 0);
-                                    ii = ii + nthinned;
-                                    %eliminate thinned observations
-                                    ni(jj) = ni(jj) - nthinned;
-                                    
-                                end
-                                
-                            end
-                            
-                            we(qqassigned)=weuntri;
-                            xmoduntri_unthinned(weuntri_unthinned == 0,:)=[];
-                            induntri_unthinned(weuntri_unthinned == 0,:)= [];
-                            weightsuntri_unthinned(weuntri_unthinned == 0,:)= [];
-                            if mixt == 0
-                                niini =ni;
-                            elseif mixt ==2
-                                postprob(we==0) = 0;
-                                postprobuntri_unthinned (weuntri==0) = 0;
-                            end
-                            
-                    end
-                    
-                    weightmoduntri_unthinned = [weightsuntri_unthinned, induntri_unthinned ];
-                    % initializations of xmodtemp which is a working matrix used
-                    % for creating xmod (which contains the results of the second
-                    % trimming for all the observations) from xmodjj (which
-                    % contains the results of the second trimming for the current
-                    % group).
-                    
-                    not_empty_g = ~( ni <= p + 1 );
-                    
-                    %count number of times the number of groups is lt k
-                    if sum(not_empty_g) == k
-                        n_refsteps_eq_k_gr = n_refsteps_eq_k_gr + 1;
-                    else
-                        n_refsteps_lt_k_gr = n_refsteps_lt_k_gr + 1;
-                    end
-                    
-                    %                     [xmoduntri_unthinned , trim2level ,  nameYY ,  sigmaini,  count1_ng_eq_k_xx] = ...
-                    %                         trimX(xmoduntri_unthinned, ...
-                    %                         intercept , ...
-                    %                         weightmoduntri_unthinned , ...
-                    %                         not_empty_g , ...
-                    %                         qqassigned , ...
-                    %                         ni ,...
-                    %                         alpha2 ) ;
-                    %
-                    %                     count1_ng_eq_k = count1_ng_eq_k + count1_ng_eq_k_xx;
-                    
-                    %% second level of trimming
-                    
-                    % initializations of indxmodtemp which is a working scalar used to identify the
-                    % rows of xmodtemp, where to append the following group results.
-                    xmodtemp    = zeros(n,p+2);
-                    indxmodtemp = 0;
-                    
-                    % trim2level = global list of second level trimming units. It is initialized to
-                    % a larger structure of n records to avoid reallocation after each iteration,
-                    % which is inefficient.
-                    trim2level = zeros(n,1); rowst2 = 0;
-                    jk = 0;
-                    for iii = not_empty_g
-                        jk = jk+1;
+                        % find indices of units belonging to groupj
+                        groupjind = find(indmax==jj);
                         
                         %check if a group is populated
-                        if iii == 1
-                            %extract x and y belonging to group iii
-                            xmoduntri_unthinned_jk = xmoduntri_unthinned(:,end)==jk;
-                            id_jk = qqassigned(xmoduntri_unthinned_jk==1);
-                            xmodjuntri_unthinned = xmoduntri_unthinned(xmoduntri_unthinned_jk,:);
-                            %extract the weights (for beta estimation) of
-                            %observations belonging to group iii
-                            weightmodjuntri_unthinned = weightmoduntri_unthinned(weightmoduntri_unthinned(:,end) == jk,:);
+                        if length(groupjind) >p+2
                             
-                            % qqs contains contains the indexes of untrimmed units
-                            % (after 2nd level trimming)  for group j
-                            if alpha2 == 0
-                                qqs = 1:ni(jk);
+                            Xjnointercept  = X(groupjind,intercept+1:end);
+                            Xj=X(groupjind,:);
+                            
+                            yj  = y(groupjind);
+                            w4betaj=w4beta(groupjind,jj);
+                            w4betaj=w4betaj/mean(w4betaj);
+                            
+                            njj=size(Xj,1);
+                            
+                            
+                            % hjj = number of units to retan for group j
+                            % This is simply h referred to group j
+                            hj = floor(njj*(1-alpha2));
+                            
+                            
+                            %The MCD is applied only when v=1, because in this case it is faster
+                            %than the FS.
+                            if v==1
+                                
+                                [~,REW]      = mcd(Xjnointercept,'bdp',alpha2,'msg',0);
+                                %R2016a has introduced robustcov, which could be used here as below.
+                                %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
+                                %[~,~,mah,~,~] = robustcov(inliers,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
+                                %plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b');
+                                %close;
+                                [~,indmdsor] = sort(REW.md);
+                                % Trimmed units (after second level
+                                % trimming)
+                                % indmax for second level trimmed units is
+                                % set to -1
+                                trimj=indmdsor(hj+1:end);
                                 
                             else
-                                % Find the units with the smallest h distances. This is done by
-                                % applying the mcd or the FS on the X space (without the intercept if
-                                % present). This is a computationally expensive step, because of the
-                                % expensive resampling and refining steps (IRWLSmcd function).
-                                % However, since here the mcd is applied after the first trimming,
-                                % the number of basic subsets (nsamp option) can be reasonably samll.
-                                if alpha2 < 1
-                                    alpha2b = alpha2;
-                                    trimpoint = floor(ni(jk)*(1-alpha2));
-                                else
-                                    % i.e. if alpha2 >= 1
-                                    alpha2b = alpha2/n;
-                                    trimpoint = floor(ni(jk) - alpha2);
-                                end
-                                inliers  = xmodjuntri_unthinned(:,intercept+1:p);
-                                
-                                %The MCD is applied only when v=1, because in this case it is faster
-                                %than the FS.
-                                if v==1
-                                    
-                                    nsampmcd = min(100,bc(ni(jk),p)); % p = v + intercept
-                                    RAW      = mcd(inliers,'bdp',alpha2b,...
-                                        'nsamp',nsampmcd,'refsteps',1,'refstepsbestr',5,'msg',0);
-                                    %R2016a has introduced robustcov, which could be used here as below.
-                                    %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
-                                    %[~,~,mah,~,~] = robustcov(inliers,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
-                                    %plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b');
-                                    %close;
-                                    [~,indmdsor] = sort(RAW.md);
-                                    qqs       = indmdsor(1:trimpoint);
-                                    qqs_trim  = indmdsor(trimpoint+1:end);
-                                    % line above is quivalent (but faster than) to the one below
-                                    % qqs_trim  = setdiff(indmdsor, qqs);
-                                    
-                                else
-                                    
-                                    % Lines below are to find the second trimming points id_trim with
-                                    % the Forward Search rather than the MCD, using function FSMmmd
-                                    % Function FSMmmd is consderably faster than mcd when v>1.
-                                    %%{
-                                    [~,Un] = FSMmmd(inliers,0,'bsbsteps',trimpoint,'init',trimpoint,'nocheck',1,'msg',0);
-                                    qqs_trim = Un(:,2:end);
-                                    qqs_trim = qqs_trim(~isnan(qqs_trim));
-                                    seq      = 1:ni(jk);
-                                    qqs      = setdiff(seq(:),qqs_trim);
-                                    
-                                    %lines below find id_trim using the bb matrix
-                                    %seq       =  1:ni(jk);
-                                    %qqs_trim2 = setdiff(seq,bb);
-                                    %id_trim2  =  id_jk(qqs_trim2);
-                                    %{
-                                     %this is just for debugging purposes
-                                         [~,bb]  =  FSMbsb(inliers,0,'bsbsteps',trimpoint,'init',trimpoint,'nocheck',1);
-                                         xxx = zeros(size(X,1),1);
-                                         xxx(id_trim)=1; xxx(setdiff(id_trim2,id_trim))=2;
-                                         spmplot(X(:,2:end),xxx);
-                                    %}
-                                    %%}
-                                end
-                                
-                                % Units trimmed with the 2nd level trimming in original scale
-                                id_trim = id_jk(qqs_trim);
-                                
-                                % Add id_trim to the global list of second level trimming units
-                                istart = rowst2+1;
-                                iend   = istart+length(id_trim)-1;
-                                trim2level(istart:iend) = id_trim;
-                                rowst2 = iend;
+                                % Lines below are to find the second trimming points id_trim with
+                                % the Forward Search rather than the MCD, using function FSMmmd
+                                % Function FSMbsb is consderably faster than mcd when v>1.
+                                % BBsel contains a NAN for the units
+                                % not belonging to subset in step hj
+                                [~,BBsel]=FSMbsb(Xjnointercept,0,'bsbsteps',hj,'init',hj,'nocheck',1,'msg',0);
+                                trimj=seq(isnan(BBsel));
                             end
                             
-                            %% new mixture parameters computed using OLS
-                            %x and y belonging to group iii, after second level trimming.
-                            xxx = xmodjuntri_unthinned(qqs,1:p);
-                            yyy = xmodjuntri_unthinned(qqs,p+1);
-                            %dimension of group iii, after second level trimming.
-                            ni(jk) = length(yyy);
+                            % indmax for second level trimmed units is
+                            % equal to -1
+                            indmax(groupjind(trimj))=-1;
+                            
+                            % Redefine Xj and yj ater removing 2nd level
+                            % trimmed units
+                            Xj(trimj,:)=[];
+                            yj(trimj)=[];
+                            w4betaj(trimj)=[];
+                            nj=length(yj);
+                            
+                            % Number of units belonging to group j after
+                            % second level trimming
+                            niini(jj)=nj;
+                            
+                            
+                            % Find beta coefficients and sigma2 using weighted
+                            % regression
+                            
                             %weights (for beta estimation) of observations
                             %belonging to group iii, after second level trimming.
-                            weightmodj_jk = sqrt(weightmodjuntri_unthinned(qqs,jk));
-                            %weighted regression for group iii, after second level trimming.
-                            breg =  (bsxfun(@times,xxx, weightmodj_jk)) \ (bsxfun(@times,yyy ,weightmodj_jk));
-                            %store beta of the current group.
-                            nameYY(:,jk) = breg;
-                            % Update residuals
-                            residuals = yyy-xxx*breg;
-                            % Update sigmas through the mean square residuals
-                            sigmaini(jk) = sum((residuals .* weightmodj_jk).^2)/(sum((weightmodj_jk).^2));
-                            %xmodtemp is a working matrix necessary to concatenate
-                            %the results of the second level trimming of the
-                            %current group, with all the other groups.
-                            xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodjuntri_unthinned(qqs,:);
-                            indxmodtemp = indxmodtemp+ni(jk);
+                            sqweights = sqrt(w4betaj);
+                            
+                            Xw = bsxfun(@times, Xj, sqweights);
+                            yw = yj .* sqweights;
+                            
+                            % Estimate of beta from (re)weighted regression (RWLS)
+                            breg = Xw\yw;
+                            Beta(:,jj)=breg;
+                            
+                            % Find estimate of sigma2 after weighted regression
+                            res2=(yw-Xw*breg).^2;
+                            sigma2=sum(res2)/(nj-size(Xw,2));
+                            
+                            sigmaini(jj) = sigma2;
                             
                         else
-                            
-                            xmodjuntri_unthinned = xmoduntri_unthinned(xmoduntri_unthinned(:,end)==jk,:);
-                            
-                            if alpha2 == 0
-                                qqs = [];
-                            else
-                                qqs = [];
-                            end
-                            
-                            ni(jk) = 0;
-                            breg = NaN;
-                            nameYY(:,jk) = breg;
-                            %xmodtemp is a working matrix necessary to concatenate the results of the second
-                            %level trimming of the current group, with all the other groups.
-                            xmodtemp((indxmodtemp+1):(indxmodtemp+ni(jk)),:) = xmodjuntri_unthinned(qqs,:);
-                            indxmodtemp = indxmodtemp+ni(jk);
-                            sigmaini(jk) = NaN;
+                            lessthankgroups=1;
+                            break
                         end
-                        
+                    end % loop on groups
+                    
+                    % get out of loop if you find less than k groups
+                    if lessthankgroups==1
+                        Beta=NaN;
+                        break
                     end
                     
-                    xmoduntri_unthinned = xmodtemp(1:indxmodtemp,:);
-                    
-                    % Remove the extra rows from the global list of second level trimming units
-                    trim2level(rowst2+1:end,:) = [];
-                    
-                    sigmaini= restreigen(sigmaini,ni',restrfact,tolrestreigen,userepmat);
-                    
+                    % ?????????????????????????
                     %for computing the objective function, if a group is empty, beta and sigma are
                     %computed as mean of the other groups. In order to be passed to the next
                     %refining step, after having computed the objective function, they will be set
                     %at NaN.
                     for j=1:k
                         if isnan(sigmaini(j))
+                            
                             sigmaini(j) = nanmean(sigmaini);
+                            disp('sigmaininan')
+                            error('nansigma')
                         end
-                        if isnan(nameYY(:,j))
-                            nameYY(:,j) = nanmean(nameYY,2);
+                        if isnan(Beta(:,j))
+                            
+                            Beta(:,j) = nanmean(Beta,2);
+                            disp('betanan')
+                            error('betanan')
                         end
                     end
+                    
+                    % Apply eigenvalue restrictions on sigmas from
+                    % regression
+                    sigmaini= restreigen(sigmaini,niini,restrfact,tolrestreigen,userepmat);
                     
                     % Stop if two consecutive concentration steps have the same result
                     if indmax == indold
@@ -1623,130 +1437,108 @@ while check_obj_reached == 0
                         indold = indmax;
                     end
                     
-                    %% Compute the value of the target function
+                    %% 4) Computation of the value of the target function
                     obj = 0;
-                    not_empty_g = ~( ni <= p + 1 );
+                    not_empty_g = seqk(~( niini <= p + 1 ));
                     if mixt == 0
                         
-                        jk = 0;
-                        for iii = not_empty_g
-                            jk = jk+1;
-                            % Update weights
-                            %niini(jk) = ni(jk);%bug
-                            if iii ==1
-                                yj = xmoduntri_unthinned(xmoduntri_unthinned(:,end) == jk,end-1);
-                                Xj = xmoduntri_unthinned(xmoduntri_unthinned(:,end) == jk,1:end-2);
-                                
-                                %The following line should be executed at the end
-                                %of the concentration steps loop. It is executed at
-                                %each step because of the break above, which is
-                                %executed if two consecutive concentration steps
-                                %have the same result
-                                if equalweights ==1
-                                    obj = obj + log(1/k) +...
-                                        sum(logmvnpdfFS(yj-Xj*nameYY(:,jk),0,(sigmaini(jk))));
-                                else
-                                    obj = obj + niini(jk)*log(niini(jk)/sum(niini)) +...
-                                        sum(logmvnpdfFS(yj-Xj*nameYY(:,jk),0,(sigmaini(jk))));
-                                end
+                        for jj = not_empty_g
+                            
+                            yj = y(indmax==jj);
+                            Xj = X(indmax==jj,:);
+                            
+                            %The following line should be executed at the end
+                            %of the concentration steps loop. It is executed at
+                            %each step because of the break above, which is
+                            %executed if two consecutive concentration steps
+                            %have the same result
+                            if equalweights ==1
+                                obj = obj + log(1/k) +...
+                                    sum(logmvnpdfFS(yj-Xj*Beta(:,jj),0,sigmaini(jj)));
                             else
-                                %if a group is missing, we do not compute its
-                                %objective function contribution.
+                                obj = obj + niini(jj)*log(niini(jj)/sum(niini)) +...
+                                    sum(logmvnpdfFS(yj-Xj*Beta(:,jj),0,sigmaini(jj)));
                             end
+                            
                         end
                         
-                        %                 nameYY(:,~not_empty_g) = NaN;
-                        %                 sigmaini(~not_empty_g) = NaN;
                         
                     elseif mixt == 2
-                        %the following command should be executed at the end of
-                        %the for loop of the concentration steps. However here
-                        %it is executed in all steps, because of the above break from the
-                        %loop, which is executed if two consecutive
-                        %concentration steps have the same result
                         
-                        log_lh=NaN(size(xmoduntri_unthinned,1),size(not_empty_g,2));
+                        log_lh=NaN(sum(niini),size(not_empty_g,2));
+                        % Select all units not trimmed and not thinned
+                        % Target function is based on these units (not
+                        % trimmed and not thinned)
+                        ytri=y(indmax>0);
+                        Xtri=X(indmax>0,:);
                         
-                        %log_lh = [];
-                        jk = 0;
-                        for iii = not_empty_g
-                            jk = jk+1;
-                            if iii ==1
-                                if equalweights ==1
-                                    log_lh(:,jk) = ...
-                                        log(1/k) + (logmvnpdfFS(...
-                                        xmoduntri_unthinned(:,end-1) - ...
-                                        xmoduntri_unthinned(:,1:(size(xmoduntri_unthinned,2)-2)) * ...
-                                        nameYY(:,jk),0,(sigmaini(jk)) ) );
-                                    
-                                else
-                                    log_lh(:,jk) = ...
-                                        log(niini(jk)/sum(niini)) + (logmvnpdfFS(...
-                                        xmoduntri_unthinned(:,end-1) - ...
-                                        xmoduntri_unthinned(:,1:(size(xmoduntri_unthinned,2)-2)) * ...
-                                        nameYY(:,jk),0,(sigmaini(jk)) ) );
-                                end
-                                
+                        for jj = 1:k
+                            if equalweights ==1
+                                log_lh(:,jj) = ...
+                                    log(1/k) + (logmvnpdfFS(ytri -Xtri * Beta(:,jj),0,sigmaini(jj) ) );
                             else
-                                %if a groupis missing, we do not compute the objective
-                                %function for it.
-                                log_lh(:,jk) = NaN(length(xmoduntri_unthinned),1);
+                                log_lh(:,jj) = ...
+                                    log(niini(jj)/sum(niini)) + (logmvnpdfFS(...
+                                    ytri - Xtri*Beta(:,jj),0,sigmaini(jj) ) );
                             end
                         end
                         
-                        group_missing = sum(isnan(log_lh),1)>0;
-                        log_lh(:,group_missing)=[];
                         obj = estepFS(log_lh);
                         %                 if ~isempty(group_missing)
                         %                     nameYY(:,group_missing) = NaN;
                         %                     sigmaini(group_missing) = NaN;
                         %                 end
                     end
+                    
+                    
                 end
             end % End of concentration steps
             
             %% Change the 'optimal' target value and 'optimal' parameters
-           
+            
             %the following two checks have to be commented if one can accept an optimal
             %subset with less than k groups.
-            if sum(not_empty_g ) == k && sum(sum(isnan(nameYY))) == 0
-                
-                     % The following if condition is done to check if an increase in the target value is achieved
-                    if (obj >= vopt)
-                        check_obj_reached       = 1;
-                        vopt                    = obj;
-                        bopt                    = nameYY;
-                        numopt                  = niini;
-                        sigmaopt                = sigmaini;
-                        weopt                   = we;
-                        trim1levelopt           = trim1level;
-                        trim2levelopt           = trim2level;
-                        indmaxopt               = indmax;
-                        not_empty_gopt          = not_empty_g;
-                        n_refsteps_lt_k_gropt       = n_refsteps_lt_k_gr;
-                        n_refsteps_eq_k_gropt       = n_refsteps_eq_k_gr;
-                        extra_inisubsopt        = nselected - nsampdef;
-                        good_subs_idopt            = good_subs_id;
-                        elim_subs_idopt            = elim_subs_id(1:count_elim,:);
-                        all_subs_idopt             = [elim_subs_id(1:count_elim,:); good_subs_id];
-                        
-                        if mixt ==2
-                            postprobopt = postprob;
-                        end
-                        
+            if  iter == nsamp*oversamp || (length(not_empty_g )== k && sum(sum(isnan(Beta))) == 0)
+                if  iter == nsamp*oversamp
+                    disp('all the nsamp*oversamp subsets have been used without obtaining k groups.')
+                end
+                % The following if condition is done to check if an increase in the target value is achieved
+                if obj >= vopt
+                    check_obj_reached       = 1;
+                    vopt                    = obj;
+                    bopt                    = Beta;
+                    numopt                  = niini;
+                    sigmaopt                = sigmaini;
+                    w4trimopt                   = w4trim;
+                    trim1levelopt           = indmax(indmax==0);
+                    trim2levelopt           = indmax(indmax==-1);
+                    indmax_before_tropt     = indmax_before_tr;
+                    indmaxopt               = indmax;
+                    %                     not_empty_gopt          = not_empty_g;
+                    %                     n_refsteps_lt_k_gropt       = n_refsteps_lt_k_gr;
+                    %                     n_refsteps_eq_k_gropt       = n_refsteps_eq_k_gr;
+                    %                     extra_inisubsopt        = nselected - nsampdef;
+                    %                     good_subs_idopt            = good_subs_id;
+                    %                     elim_subs_idopt            = elim_subs_id(1:count_elim,:);
+                    %                     all_subs_idopt             = [elim_subs_id(1:count_elim,:); good_subs_id];
+                    if mixt ==2
+                        postprobopt = postprob;
                     end
+                    
+                end
             else
-                    disp('--------- current sample has less than k groups');
+                disp(['In subset ' num2str(iter) ' found a solution with less than k groups']);
             end
         end
     end % end of loop over the nsamp subsets
+    
     if check_obj_reached == 0
         %number of times a complete loop over the subsets concludes without identifying the best subset or with a subset with less tha k groups.
-        ntclust_no_opt_subs = ntclust_no_opt_subs+1;     
+        ntclust_no_opt_subs = ntclust_no_opt_subs+1;
         %restrfact = restrfact*2;
         %disp(['--------- restrfact has been duplicated to ' num2str(restrfact)]);
     end
-
+    
 end
 
 if count < nsamp
@@ -1762,7 +1554,7 @@ else
     % optimization, using function quadi, i.e. by running
     % sigmaopt_0 = (quadi(sigmaopt.^(-1), restrfact)).^(-1);
     if sum(isnan(sigmaopt)) == 0
-        sigmaopt_0 = restreigen(sigmaopt,ni',restrfact,tolrestreigen,userepmat);
+        sigmaopt_0 = restreigen(sigmaopt,numopt,restrfact,tolrestreigen,userepmat);
     end
     
     % Apply consistency factor based on the variance of the truncated normal distribution.
@@ -1791,52 +1583,52 @@ else
         sigmaopt_pison=sigmaopt_cons;
     end
     
-    % units classification: 0 if trimmed at the 1st step, 1 otherwise
-    trim1level_01opt = ones(n,1);
-    trim1level_01opt(trim1levelopt) = 0;
-    
-    % units classification: 0 if trimmed at the 2st step, 1 otherwise
-    trim2level_01opt = ones(n,1);
-    trim2level_01opt(trim2levelopt) = 0;
-    
-    % final cluster assigments after first trimming ('0' means a trimmed observation)
-    asig1 = indmaxopt .* weopt .* trim1level_01opt ;
-    % final cluster assigments after first and second trimming ('0' means a trimmed observation)
-    asig2 = asig1 .* trim2level_01opt ;
+    %     % units classification: 0 if trimmed at the 1st step, 1 otherwise
+    %     trim1level_01opt = ones(n,1);
+    %     trim1level_01opt(trim1levelopt) = 0;
+    %
+    %     % units classification: 0 if trimmed at the 2st step, 1 otherwise
+    %     trim2level_01opt = ones(n,1);
+    %     trim2level_01opt(trim2levelopt) = 0;
+    %
+    %     % final cluster assigments after first trimming ('0' means a trimmed observation)
+    %     asig1 = indmaxopt .* weopt .* trim1level_01opt ;
+    %     % final cluster assigments after first and second trimming ('0' means a trimmed observation)
+    %     asig2 = asig1 .* trim2level_01opt ;
     
     %%  Set the output structure
     
     out                     = struct;
+    %   bopt           = regression parameters
     out.bopt                = bopt;
+    %   sigmaopt0      = estimated group variances
     out.sigmaopt_0          = sigmaopt_0;
+    %   sigmaopt_cons  = estimated group variances corrected with  asymptotic consistency factor
     out.sigmaopt_cons       = sigmaopt_cons;
+    %   sigmaopt_pison = estimated group variances corrected with  asymptotic consistency factor and small sample correction factor of Pison et al.
     out.sigmaopt_pison      = sigmaopt_pison;
+    %   numopt         = number of observations in each cluster after the second trimming
     out.numopt              = numopt;
+    %   vopt           = value of the target function
     out.vopt                = vopt;
-    out.weopt               = weopt;
-    out.asig1               = asig1;
-    out.asig2               = asig2;
+    %     out.asig1               = asig1;
+    %     out.asig2               = asig2;
     out.asig_obs_to_group   = indmaxopt;
-    out.trim1levelopt       = trim1level_01opt;
-    out.trim2levelopt       = trim2level_01opt;
-    out.count1_ng_lt_k      = n_refsteps_lt_k_gropt;
-    out.count1_ng_eq_k      = n_refsteps_eq_k_gropt;
-    out.numb_opt_sample_with_lt_k_gr = ntclust_no_opt_subs;
-    out.extra_inisubs       = extra_inisubsopt;
-    out.selj_good           = good_subs_idopt;
-    out.selj_elim           = elim_subs_idopt;
-    out.selj_all            = all_subs_idopt;
+    out.asig_obs_to_group_before_tr   = indmax_before_tropt;
+    out.trim1levelopt       = indmaxopt==0;
+    %     out.trim2levelopt       = trim2level_01opt;
+    %     out.count1_ng_lt_k      = n_refsteps_lt_k_gropt;
+    %     out.count1_ng_eq_k      = n_refsteps_eq_k_gropt;
+    %     out.numb_opt_sample_with_lt_k_gr = ntclust_no_opt_subs;
+    %     out.extra_inisubs       = extra_inisubsopt;
+    %     out.selj_good           = good_subs_idopt;
+    %     out.selj_elim           = elim_subs_idopt;
+    %     out.selj_all            = all_subs_idopt;
     if mixt == 2
         out.postprobopt     = postprobopt;
     end
     out.restrfact           = restrfact;
     
-    %   bopt           = regression parameters
-    %   sigmaopt0      = estimated group variances
-    %   sigmaopt_cons  = estimated group variances corrected with  asymptotic consistency factor
-    %   sigmaopt_pison = estimated group variances corrected with  asymptotic consistency factor and small sample correction factor of Pison et al.
-    %   numopt         = number of observations in each cluster after the second trimming
-    %   vopt           = value of the target function
     %   asig1          = cluster assigments after first trimming ('0' means a trimmed observation)
     %   asig2          = (-final-) cluster assigments after second trimming ('0' means a trimmed observation)
     %   postprob       = posterior probability
@@ -1864,66 +1656,52 @@ else
             ylabel('y');
             title({ ['TclustReg clustering: ' 'mixt=' num2str(mixt) ' - wtrim=' num2str(wtrim)] },'Fontsize',12);
             
-            jk = 0;
-            for iii = not_empty_gopt
-                jk = jk+1;
-                if iii>0
-                    group_label = ['Group ' num2str(jk)];
-                    
-                    % plot of the good units allocated to the current group.
-                    % Indices are taken after the second level trimming.
-                    % Trimmed points are not plotted by group.
-                    if wtrim ==3
-                        ucg = find(indmaxopt==jk & weopt == 1 & trim1level_01opt ==1 & trim2level_01opt == 1);
-                    else
-                        ucg = find(indmaxopt==jk &  trim1level_01opt ==1 & trim2level_01opt == 1);
-                    end
-                    
-                    % misteriously text does not show a legend. This is why
-                    % we add a (ficticious) plot instruction with white symbols
-                    plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
-                    text(X(ucg,end),y(ucg),num2str(jk*ones(length(ucg),1)),...
-                        'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
-                        'HorizontalAlignment','center',...
-                        'VerticalAlignment','middle',...
-                        'Color',clrdef(jk));
-                    
-                    % plot regression lines
-                    vv = [min(X(:,end)) max(X(:,end))];
-                    if intercept==1
-                        plot(vv,bopt(1,jk)+bopt(2,jk)*vv,...
-                            'DisplayName',[group_label ' fit' ],...
-                            'Color',clrdef(jk));
-                    elseif intercept==0
-                        plot(vv,bopt(:,jk)*vv,...
-                            'DisplayName',[group_label ' fit' ],...
-                            'Color',clrdef(jk));
-                    end
-                    
-                    %plot the thinned units
-                    if wtrim == 3
-                        %                text(X(ucg,end),y(ucg),num2str(0*ones(length(ucg),1)),...
-                        %                         'DisplayName','Thinned units' , ...
-                        %                         'HorizontalAlignment','center',...
-                        %                         'VerticalAlignment','middle',...
-                        %                         'Color',clrdef(k+1));
-                        ucg = find(indmaxopt==jk & weopt == 0);
-                        plot(X(ucg,end),y(ucg),symdef(jk),'color',clrdef(k+1),...
-                            'DisplayName',['Group ' num2str(jk) ': thinned units (' num2str(length(ucg)) ')' ]);
-                    end
-                    
+            
+            for jj = 1:k
+                group_label = ['Group ' num2str(jj)];
+                
+                % plot of the good units allocated to the current group.
+                % Indices are taken after the second level trimming.
+                % Trimmed points are not plotted by group.
+                ucg = find(indmaxopt==jj);
+                
+                
+                % misteriously text does not show a legend. This is why
+                % we add a (ficticious) plot instruction with white symbols
+                plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
+                text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
+                    'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
+                    'HorizontalAlignment','center','VerticalAlignment','middle',...
+                    'Color',clrdef(jj));
+                
+                % plot regression lines
+                vv = [min(X(:,end)) max(X(:,end))];
+                if intercept==1
+                    plot(vv,bopt(1,jj)+bopt(2,jj)*vv,'DisplayName',[group_label ' fit' ],...
+                        'Color',clrdef(jj));
+                elseif intercept==0
+                    plot(vv,bopt(:,jj)*vv,'DisplayName',[group_label ' fit' ],...
+                        'Color',clrdef(jj));
                 end
+                
+                %plot the thinned units
+                if wtrim == 3
+                    ucg = find(w4trimopt == 0);
+                    plot(X(ucg,end),y(ucg),symdef(jj),'color',clrdef(k+1),...
+                        'DisplayName',['Group ' num2str(jj) ': thinned units (' num2str(length(ucg)) ')' ]);
+                end
+                
             end
             
             % Plot the outliers (trimmed points)
-            plot(X(trim1levelopt,end),y(trim1levelopt),'o','color','r','MarkerSize',8,...
-                'DisplayName',['Trimmed units (' num2str(length(y(trim1levelopt))) ')']);
+            ucg = find(indmaxopt==0);
+            plot(X(ucg,end),y(ucg),'o','color','r','MarkerSize',8,...
+                'DisplayName',['Trimmed units (' num2str(length(ucg)) ')']);
             
             % Second level trimming points
-            xxx0_all = X(trim2levelopt,end);
-            yyy0_all = y(trim2levelopt);
-            plot(xxx0_all,yyy0_all,'*','color','c',...
-                'DisplayName',['L2 trimmed units (' num2str(length(yyy0_all)) ')']);
+            ucg = find(indmaxopt==-1);
+            plot(X(ucg,end),y(ucg),'*','color','c',...
+                'DisplayName',['L2 trimmed units (' num2str(length(ucg)) ')']);
             
             if wtrim == 4
                 % in case of tandem thinning, plot the thinned points
@@ -1959,18 +1737,18 @@ else
             end
             
             % axis labels
-            nameYY = cellstr([repmat('X',size(YY,2)-1,1) , num2str((1:size(YY,2)-1)')]);
-            nameYY = [nameYY ; 'y'];
-            nameYY = nameYY';
+            nameY = cellstr([repmat('X',size(YY,2)-1,1) , num2str((1:size(YY,2)-1)')]);
+            nameY = [nameY ; 'y'];
+            nameY = nameY';
             plo=struct;
-            plo.nameY=nameYY;
+            plo.nameY=nameY;
             
             % group names in the legend
-            group = cell(size(asig2,1),1);
-            group(asig2==0) = {'Trimmed units'};
-            group(xor(asig1,asig2)==0) = {'Trimmed units level 2'};
+            group = cell(n,1);
+            group(indmaxopt==0) = {'Trimmed units'};
+            group(indmaxopt==-1) = {'Trimmed units level 2'};
             for iii = 1:k
-                group(asig2==iii) = {['Group ' num2str(iii)]};
+                group(indmaxopt==iii) = {['Group ' num2str(iii)]};
             end
             
             % scatterplot
@@ -2054,7 +1832,7 @@ end
 %     if typemin ~=2
 %         error('FSDA:tclustreg:MissingOptToolbox','This function requires the optimization toolbox');
 %     end
-% 
+%
 %         if size(gg,1)>1
 %             gg=gg';
 %         end
