@@ -1,4 +1,4 @@
-function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
+function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %tclustreg performs robust linear grouping analysis
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help function</a>
@@ -244,10 +244,10 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     X1=X(:,1:end-1);
 
     k = 2 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2);
 
     k = 2 ; restrfact = 2; alpha1 = 0.05 ; alpha2 = 0.01;
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);
 
 
     % Comparison with robust linear grouping
@@ -277,7 +277,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     y1 = X(:,end);
     X1 = X(:,1:end-1);
     k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2);
 %}
 
 %{
@@ -288,34 +288,34 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     we = XX/sum(XX);
     
     mixt = 0; wtrim = 0;
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 2; wtrim = 0;
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 0; wtrim = 1;
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
     mixt = 2; wtrim = 1;
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
     mixt = 0; wtrim = 2; we = [];
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 2; wtrim = 2; we = [];
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 0; wtrim = 3; we = [];
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 2; wtrim = 3; we = [];
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 0; wtrim = 4; we = [];
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     mixt = 2; wtrim = 4; we = [];
-    out = tclustregMR(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 %}
 
 %{
@@ -332,7 +332,7 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     yXplot(y,X);
 
     % run tclustreg
-    out=tclustregMR(y,X,k,50,0.01,0.01,'intercept',1);
+    out=tclustreg(y,X,k,50,0.01,0.01,'intercept',1);
 %}
 
 %{
@@ -347,6 +347,17 @@ function [out] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     we=X(:,2)/sum(X(:,2));
     out=tclustreg(y,X,2,50,0.01,0.01,'intercept',1,'we',we,'wtrim',1,'mixt',2);
 
+%}
+
+%{
+    % Generate subsets once and for all.
+    nsamp=200;
+    n=100;
+    p=4;
+    ncomb=bc(n,p);
+    msg=0;
+    method=[10*ones(n/2,1); ones(n/2,1)];
+    C=subsets(nsamp, n, p, ncomb, msg, method);
 %}
 
 %%  computational issues to be addressed in future releases
@@ -801,6 +812,10 @@ if NoPriorSubsets
     % could be very closed one to the other and therefore have to be
     % substituted with other subsets.
     for ns =1:nsamp*oversamp
+        % Matlab function datasample adopts an efficient method for
+        % weighted sampling based on binary trees. However, it consumes a
+        % lot of of time in parameter checking. This is way we use our
+        % function randsampleFS.
         %C(ns,:) = datasample(1:n,initial_subs_size,'weights',we,'Replace',false);
         C(ns,:) = randsampleFS(n,initial_subs_size,we);
     end
@@ -1629,7 +1644,15 @@ else
     end
     out.restrfact           = restrfact;
     
-    %   asig1          = cluster assigments after first trimming ('0' means a trimmed observation)
+    
+    
+    % Store the indices in varargout
+if nargout==2
+    varargout={C};
+end
+
+
+%   asig1          = cluster assigments after first trimming ('0' means a trimmed observation)
     %   asig2          = (-final-) cluster assigments after second trimming ('0' means a trimmed observation)
     %   postprob       = posterior probability
     %   count1_ng_lt_k = number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
