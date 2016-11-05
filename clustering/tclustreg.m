@@ -155,14 +155,6 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %          value: vector of ones.
 %            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
 %            Data Types - double
-%eps_beta: minimum accepted difference between regression coefficients in
-%           the initial subsets. Scalar. If the observation in the initial subsets are
-%           collinear, it can happen that the number of groups identified is less than
-%           p. To avoide this behavior, eps_beta>0 allows to start the refining steps
-%           of the tclust algorithm from subsets chosen in a better way.
-%           Default value: 0.
-%            Example - 'eps_beta',0.01
-%            Data Types - double
 %        msg  : Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen. If msg==1 (default) messages are displayed
@@ -192,12 +184,10 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %   out.weopt       = $n$ vector containing the weigths of each
 %                           observation, i.e. its contribution to the
 %                           estimates.
-%   out.asig1          = $n$ vector containing the cluster assigments after
-%                        first trimming ('0' means a trimmed observation).
-%   out.asig2          = $n$ vector containing the final cluster assigments
-%                        after second trimming ('0' means a trimmed
-%                        observation).
 %   out.asig_obs_to_group   = $n$ vector containing the  cluster assigments
+%                       of all n observations (trimmed observations
+%                       excluded).
+% out.asig_obs_to_group_before_tr = $n$ vector containing the  cluster assigments
 %                       of all n observations (trimmed observations
 %                       included).
 %   out.trim1levelopt       = $n$ vector containing the 1st level trimmed units (0) and
@@ -205,12 +195,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %   out.trim2levelopt       = $n$ vector containing the 2nd level trimmed units (0) and
 %                           2nd level untrimmed (1) units.
 %   out.postprob       = $n$ vector containing the final posterior probability
-%   out.count1_ng_lt_k = number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
-%   out.count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
-%   out.nselected      = number of initial subsets actually
-%                        extracted. If eps_beta is not specified or if it is set to
-%                        zero, out.nselected = nsamp; otherwise out.nselected > nsamp
-%  out.selj_all        = initial subsets extracted
+%    out.C       = initial subsets extracted
 %
 % See also: tclust, tkmeans, estepFS
 %
@@ -576,10 +561,6 @@ wedef = ones(n,1);
 %default model (mixture or classification likelihood)
 mixtdef = 0;
 
-% default for threshold controlling the distance between regression lines
-% in the initialization phase. Zero threshold means that there is no
-% control on the initial fits.
-eps_beta_def = 0;
 
 %seqk = sequence from 1 to number of groups
 seqk=1:k;
@@ -588,7 +569,7 @@ seqk=1:k;
 
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'Ksteps',Kstepsdef,...
-    'startv1',startv1def,'we',wedef,'wtrim',wtrimdef,'eps_beta',eps_beta_def,...
+    'startv1',startv1def,'we',wedef,'wtrim',wtrimdef,...
     'msg',0,'plots',1,'equalweights',1);
 
 if nargin > 6
@@ -653,29 +634,7 @@ Ksteps = options.Ksteps;
 % equalweights
 equalweights = options.equalweights;
 
-% Threshold controlling the distance between regression lines in the
-% initialization phase
-eps_beta   = options.eps_beta;
 
-if NoPriorSubsets == 1
-    % in order to face the possibility that
-    %(1) some subsets can contain collinear observations
-    %or
-    %(2) a set of nsamp subsets does not lead to the best subset or leads
-    %to a best subset with less than k groups, and therefore have to be
-    %excluded from  the analysis, a number of subsets equal to nsamp *
-    % oversamp is generated.
-    %oversamp is set equal to (10 * k). In the univariate case, therefore,
-    %oversamp = 10, i.e. 10*nsamp subsets are generated. If eps_beta = 0, i.e.
-    %there is no threshold controlling the distance between regression lines in
-    %the generated subsets, no oversampling is necessary and therefore oversamp is
-    % equal to 1.
-    if eps_beta>0
-        oversamp = 50*k;
-    else
-        oversamp = 1;
-    end
-end
 % the weights vector
 we         = options.we;
 
@@ -811,7 +770,7 @@ if NoPriorSubsets
     % order to increase the number of generated subsets because in some subsets the regression lines
     % could be very closed one to the other and therefore have to be
     % substituted with other subsets.
-    for ns =1:nsamp*oversamp
+    for ns =1:nsamp
         % Matlab function datasample adopts an efficient method for
         % weighted sampling based on binary trees. However, it consumes a
         % lot of of time in parameter checking. This is way we use our
@@ -819,29 +778,17 @@ if NoPriorSubsets
         %C(ns,:) = datasample(1:n,initial_subs_size,'weights',we,'Replace',false);
         C(ns,:) = randsampleFS(n,initial_subs_size,we);
     end
-    %nselected is set equal to the number of subsets that will be finally
-    %used in tclustreg, i.e. not considering the over sampling:
+    %nselected is set equal to the number of subsets:
     % - nselected = nsamp, if nsamp is a scalar;
     % - nselected = size(nsamp,1), if nsamp is a matrix (containing the initial subsets)
-    %nselected will be increased later in the code
-    nselected  = length(C)/oversamp;
+    nselected  = length(C);
     
 end
-%initialization of ntclust_no_opt_subs: number of times a complete loop
-%over the subsets concludes without identifying the best subset or with a
-%subset with less tha k groups.
-ntclust_no_opt_subs = 0;
-
-%check_obj_reached = 1, if the best subset has been identified (that is if
-%does exist the best subset) and if it has k groups.
-%check_obj_reached = 0, if the best subset has not been identified (i.e.
-%the best subset does not exist) or if it has less than k groups.
-check_obj_reached = 0;
 
 %initialization of iter: index which is used to extract the subset in the C
 %matrix. Iter takes value in the interval 1:nselected, where nselected is
-%the number of rows of C, i.e. nsamp*oversamp if nsamp is a scalar, or
-%size(nsamp,1)*oversamp if nsamp is a matrix .
+%the number of rows of C, i.e. nsamp if nsamp is a scalar, or
+%size(nsamp,1) if nsamp is a matrix .
 iter                = 0;
 
 %this while cycle is necessary when at the end of an entire loop on the
@@ -849,41 +796,12 @@ iter                = 0;
 %identified (i.e. the best subset does not exist) or if it has less than k
 %groups. If it happens another loop on other extracted subsets (the
 %following nselected rows in C matrix) is repeated.
-while check_obj_reached == 0
+
     
     %% Initialize structures
     
     ll                  = zeros(n,k);
-    count               = 0;
-    count_elim          = 0;
-    count_keep          = 0;
     sigmaini            = ones(1,k);
-    comb_beta           = combnk(1:k,2);
-    diff                = NaN(size(comb_beta,1),1);
-    %good_subs_id: list of observations of subsets where the regression
-    %lines are sufficiently distant and during the concentration steps it
-    %does not happen that all the k regression lines are NaN (this happens
-    %when from a previous concentration step, almost all obs have been
-    %assigned to the same group and the thinning was very strong). These
-    %subsets are  used in the subsequent analysis. The first p columns
-    %contain observations belonging to the fisrt group, ...., the last p
-    %columns contain observations belonging to the last (k-th)  group.
-    good_subs_id    = NaN(nselected,k*p);
-    %elim_subs_id: list of observations of subsets where the regression
-    %lines are NOT sufficiently distant or during some concentration step,
-    %all the k regression lines parameters have become NaN (this happens when from a
-    %previous concentration step, almost all obs have been assigned to the
-    %same group and the thinning was very strong). These subsets are  NOT used
-    %in the subsequent analysis. The first p columns contain observations
-    %belonging to the fisrt group, ...., the last p columns contain
-    %observations belonging to the last (k-th)  group.
-    elim_subs_id    = NaN(nselected,k*p);
-    %all_subs_id: list of  observations in all subsets, both acceptable and
-    %unacceptable in terms of distance among regression lines and in terms
-    %of existence of regression parameters. The first p columns contain
-    %observations belonging to the fisrt group, ...., the last p columns
-    %contain observations belonging to the last (k-th) group.
-    all_subs_id    = NaN(nselected,k*p);
     %initialize the output of tclustreg, i.e. the parameters obtained in the best (optimum) subset
     bopt             = zeros(p,k);
     %numopt = (kX1) vector containing the number of observations in each of
@@ -902,26 +820,6 @@ while check_obj_reached == 0
     %all the n observations (trimmed observations included) to one of the k
     %groups  in the optimal subset
     indmaxopt           = zeros(n,1);
-    %not_empty_gopt: 1xk vector of ones and zeros: 1 means that a groups is not empty, 0 means that a group is empty
-    not_empty_gopt      = zeros(1,k);
-    %number of refining steps in the optimal subset where less than k groups have been identified
-    n_refsteps_lt_k_gropt   = 0;
-    %number of refining steps in the optimal subset where k groups have been identified
-    n_refsteps_eq_k_gropt   = 0;
-    %extra_inisubsopt: in the optimal subset, number of extra subsets that
-    %were extracted to compensate eventual subsets characterized by two
-    %regression lines too close  one to the other
-    extra_inisubsopt    = nselected - nsampdef;
-    %good_subs_idopt: observation ids only in initial subsets where the
-    %regression lines are well separated
-    % (therefore analyzed subsets)
-    good_subs_idopt        = zeros(nselected,k);
-    %elim_subs_idopt: observation ids only in initial subsets where the
-    %regression lines are NOT well separated
-    % (therefore discarded subsets)
-    elim_subs_idopt        = zeros(nselected,k);
-    %all_subs_idopt: observation ids in all initial subsets (analyzed and discarded subsets)
-    all_subs_idopt         = zeros(nselected,k);
     if mixt ==2
         postprobopt     = zeros(n,k);
     end
@@ -940,21 +838,10 @@ while check_obj_reached == 0
         % than k groups.
         iter  = iter+1;
         
-        %count =  iteration number of the loop on the subsets, NOT including:
-        % -subsets which are rejected because the regression lines are too
-        % closed one to the other; -an entire loop of subsets which does
-        % not bring to any best substet or bring to a best subset with less
-        % than k groups.
-        count = count+1;
-        
-        %number of refining steps where less than k groups have been identified
-        n_refsteps_lt_k_gr = 0;
-        %number of refining steps where less than k groups have been identified
-        n_refsteps_eq_k_gr = 0;
         
         
         if msg == 1
-            disp(['Iteration ' num2str(count)])
+            disp(['Iteration ' num2str(iter)])
         end
         %if startv1 = 1, covariance matrices is estimated in each initial subset composed by  (v+1)*k units
         if startv1
@@ -989,7 +876,6 @@ while check_obj_reached == 0
                 iup    = j*(p);
                 index  = C(iter,:);
                 selj   = index(ilow:iup);
-                all_subs_id(count,ilow:iup) = selj;
                 Xb     = X(selj,:);
                 yb     = y(selj,:);
                 niini(j)  = length(yb);
@@ -1027,34 +913,7 @@ while check_obj_reached == 0
             sigmaini=ones(1,k);
         end
         
-        %compute the differences between pairwise regression parameters in
-        %order to reject subsets where the differences are two small.
-        for gr = 1:size(comb_beta,1)
-            diff(gr) = norm(Beta(:,comb_beta(gr,1)) - Beta(:,comb_beta(gr,2)))/norm(Beta(:,comb_beta(gr,2)));
-        end
         
-        %if the differences between regression parameters is lower than a
-        %threshold eps_beta the subset will not be considered and substitute
-        %with a new generated one
-        mindiff = min(diff);
-        if mindiff > eps_beta
-            good_initial_subs = 1;
-            count_keep = count_keep + 1;
-            good_subs_id(count_keep,:) = all_subs_id(count,:);
-        else
-            good_initial_subs = 0;
-            count_elim = count_elim + 1;
-            elim_subs_id(count_elim,:) = all_subs_id(count,:);
-            count = count-1;
-            nselected = nselected+1;
-        end
-        
-        
-        
-        %if  the current initial subset is acceptable in terms of distance
-        %among regression lines, the tclust procedure is applied; otherwise
-        %a new subsets will be considered.
-        if good_initial_subs == 1
             
             
             %% a) Log-likelihood based on all  n observations
@@ -1246,18 +1105,10 @@ while check_obj_reached == 0
             %% CONCENTRATION STEPS
             
             indold = zeros(n,1)-1;
-            
             for cstep = 1:Ksteps
                 
-                not_empty_g = zeros(1,k);
+                %not_empty_g = zeros(1,k);
                 if all(isnan(Beta(:)))
-                    %                     if check_beta == 0
-                    count_elim = count_elim + 1;
-                    elim_subs_id(count_elim,:) = all_subs_id(count,:);
-                    count = count-1;
-                    nselected = nselected+1;
-                    %                        check_beta = 1;
-                    %                     end
                     break
                 else
                     
@@ -1429,13 +1280,11 @@ while check_obj_reached == 0
                     for j=1:k
                         if isnan(sigmaini(j))
                             
-                            sigmaini(j) = nanmean(sigmaini);
                             disp('sigmaininan')
                             error('nansigma')
                         end
                         if isnan(Beta(:,j))
                             
-                            Beta(:,j) = nanmean(Beta,2);
                             disp('betanan')
                             error('betanan')
                         end
@@ -1513,18 +1362,16 @@ while check_obj_reached == 0
             
             %the following two checks have to be commented if one can accept an optimal
             %subset with less than k groups.
-            if  iter == nsamp*oversamp || (length(not_empty_g )== k && sum(sum(isnan(Beta))) == 0)
-                if  iter == nsamp*oversamp
-                    disp('all the nsamp*oversamp subsets have been used without obtaining k groups.')
-                end
+            %if  (length(not_empty_g )== k && sum(sum(isnan(Beta))) == 0)
+
                 % The following if condition is done to check if an increase in the target value is achieved
                 if obj >= vopt
-                    check_obj_reached       = 1;
-                    vopt                    = obj;
+                     vopt                    = obj;
                     bopt                    = Beta;
                     numopt                  = niini;
                     sigmaopt                = sigmaini;
                     w4trimopt                   = w4trim;
+                    weopt                   = we;
                     trim1levelopt           = indmax(indmax==0);
                     trim2levelopt           = indmax(indmax==-1);
                     indmax_before_tropt     = indmax_before_tr;
@@ -1541,26 +1388,10 @@ while check_obj_reached == 0
                     end
                     
                 end
-            else
-                disp(['In subset ' num2str(iter) ' found a solution with less than k groups']);
-            end
-        end
+        %end
     end % end of loop over the nsamp subsets
-    
-    if check_obj_reached == 0
-        %number of times a complete loop over the subsets concludes without identifying the best subset or with a subset with less tha k groups.
-        ntclust_no_opt_subs = ntclust_no_opt_subs+1;
-        %restrfact = restrfact*2;
-        %disp(['--------- restrfact has been duplicated to ' num2str(restrfact)]);
-    end
-    
-end
 
-if count < nsamp
-    
-    out = struct;
-    
-else
+
     
     %%  Compute quantities to be stored in the output structure or used in the plots
     
@@ -1626,11 +1457,14 @@ else
     out.numopt              = numopt;
     %   vopt           = value of the target function
     out.vopt                = vopt;
-    %     out.asig1               = asig1;
-    %     out.asig2               = asig2;
     out.asig_obs_to_group   = indmaxopt;
     out.asig_obs_to_group_before_tr   = indmax_before_tropt;
-    out.trim1levelopt       = indmaxopt==0;
+    out.trim1levelopt       = trim1levelopt;
+    out.trim2levelopt           = trim2levelopt;
+    out.weopt               =weopt;
+    out.C                   =C;
+    %     out.asig1               = asig1;
+    %     out.asig2               = asig2;
     %     out.trim2levelopt       = trim2level_01opt;
     %     out.count1_ng_lt_k      = n_refsteps_lt_k_gropt;
     %     out.count1_ng_eq_k      = n_refsteps_eq_k_gropt;
@@ -1780,8 +1614,7 @@ end
         end
         
     end
-    
-end
+   
 
 %% Subfunctions
 
