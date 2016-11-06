@@ -70,7 +70,7 @@ function y = randsampleFS(n,k,method)
 %
 %   For Weighted Sampling Without Replacement. Wong, C. K. and M. C.
 %   Easton. An Efficient Method for Weighted Sampling Without Replacement.
-%   SIAM Journal of Computing 9(1), pp. 111–113, 1980.
+%   SIAM Journal of Computing 9(1), pp. 111?113, 1980.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -133,6 +133,9 @@ switch method
     case 0
         
         % Weighted Sampling Without Replacement
+        
+        % The current implementation is intuitive but sub-optimal
+        % It will be improved in next releases
           
         if k>n, error('k must be smaller than n'), end
         if length(wgts)~=n,error('the length of the weight vector must be n'),end
@@ -144,7 +147,7 @@ switch method
             %the following three lines are equivalent (but faster than) 
             %v(i)=randsample(x,1,true,wgts)
             % i.e. return in yi a weighted sample, of 1 element only,
-            % taken with replacement from the set 1:n, using a vector of
+            % taken *with replacement* from the set 1:n, using a vector of
             % positive weights (probabilities) p whose length is n.
             % The 'min' function is to avoid probabilities begger than 1 
             % due to accumulation of roundoff errors (this was actually
@@ -153,9 +156,10 @@ switch method
             [~ , yi] = histc(rand(1,1),edges);
             y(i) = yi;
 
-            % now there is one element less in the sample, so the
-            % probabilities must be re-normalised.
+            % Now there is one element less in the sample
+            % (weighted sampling must be *without* replacement)
             p(x==yi)=0;
+            % and the new probabilities must be re-normalised
             p = p / sum(p);
         end
         
