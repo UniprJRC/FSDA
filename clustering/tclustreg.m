@@ -224,9 +224,9 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %{
     %% tclustreg of 'X data' (Gordaliza, Garcia-Escudero & Mayo-Iscar, 2013).
     % The dataset presents two parallel components without contamination.
-    X   = load('X.txt');
-    y1=X(:,end);
-    X1=X(:,1:end-1);
+    X  = load('X.txt');
+    y1 = X(:,end);
+    X1 = X(:,1:end-1);
 
     k = 2 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2);
@@ -234,12 +234,37 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     k = 2 ; restrfact = 2; alpha1 = 0.05 ; alpha2 = 0.01;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);
 
-
     % Comparison with robust linear grouping
     figure;
     out = rlga(X,k,alpha2);
     title('robust linear grouping on ''X data'' ');
+%}
 
+%{
+    clear all; close all;
+    load fishery;
+    X = fishery.data;
+    % some jittering is necessary because duplicated units are not treated:
+    % this needs to be addressed
+    X = X + 10^(-8) * abs(randn(677,2));
+
+    %tclustreg on fishery data
+    y1 = X(:,end);
+    X1 = X(:,1:end-1);
+    k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',0);
+
+    %lga and rlga on fishery data
+    figure('name','RLGA');
+    out=lga(X,3);
+    clickableMultiLegend('1','2','3','data1','data2','data3');
+    axis manual;
+
+    alpha = 0.95;
+    figure('name','LGA');
+    out=rlga(X,3,1-alpha);
+    clickableMultiLegend('0','1','2','3','data1','data2','data3');
+    axis manual;
 %}
 
 %{
@@ -249,56 +274,64 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     % some jittering is necessary because duplicated units are not treated
     % in tclustreg: this needs to be addressed
     X = X + 10^(-8) * abs(randn(677,2));
-
-    out=lga(X,3);
-    clickableMultiLegend('1','2','3','data1','data2','data3');
-    axis manual;
-
-    alpha = 0.95;
-    out=rlga(X,3,1-alpha);
-    clickableMultiLegend('0','1','2','3','data1','data2','data3');
-    axis manual;
-
     y1 = X(:,end);
     X1 = X(:,1:end-1);
-    k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',2);
-%}
-
-%{
-    close all;
-    XX = X1;
-    XX = sqrt(X1);
-    XX = X1.^(1/3);
-    we = XX/sum(XX);
     
+    % some arbitrary weights for the units
+    we = sqrt(X1)/sum(sqrt(X1));
+    
+    % tclustreg required parameters 
+    k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
+
+    % now tclust is run on each combination of mixt and wtrim options
+
+    disp('mixt = 0; wtrim = 0;');
+    disp('standard tclustreg, with classification likelihood and without thinning' );
     mixt = 0; wtrim = 0;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    disp('mixt = 2; wtrim = 0;');
+    disp('mixture likelihood, no thinning' );
     mixt = 2; wtrim = 0;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    disp('mixt = 0; wtrim = 1;');
+    disp('classification likelihood, thinning based on user meights' );
     mixt = 0; wtrim = 1;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
+    disp('mixt = 2; wtrim = 1;');
+    disp('mixture likelihood, thinning based on user meights' );
     mixt = 2; wtrim = 1;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
+    disp('mixt = 0; wtrim = 2;');
+    disp('classification likelihood, thinning based on retention probabilities' );
     mixt = 0; wtrim = 2; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    disp('mixt = 2; wtrim = 2;');
+    disp('mixture likelihood, thinning based on retention probabilities' );
     mixt = 2; wtrim = 2; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    disp('mixt = 0; wtrim = 3;');
+    disp('classification likelihood, thinning based on bernoulli weights' );
     mixt = 0; wtrim = 3; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    disp('mixt = 2; wtrim = 3;');
+    disp('mixture likelihood, thinning based on bernoulli weights' );
     mixt = 2; wtrim = 3; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    disp('mixt = 0; wtrim = 4;');
+    disp('classification likelihood, tandem thinning based on bernoulli weights' );
     mixt = 0; wtrim = 4; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    disp('mixt = 2; wtrim = 4;');
+    disp('mixture likelihood, tandem thinning based on bernoulli weights' );
     mixt = 2; wtrim = 4; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 %}
@@ -322,27 +355,21 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 
 %{
     % Generate mixture of regression using MixSimReg, with an average
-    % overlapping at centroids =0.01. Use all default options.
+    % overlapping at centroids =0.01. 
     p=3;
     k=2;
     Q=MixSimreg(k,p,'BarOmega',0.001);
-    n=400;
+    n=200;
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
 
-    we=X(:,2)/sum(X(:,2));
-    out=tclustreg(y,X,2,50,0.01,0.01,'intercept',1,'we',we,'wtrim',1,'mixt',2);
+    % Generate the elemental subsets used in tclustreg once and for all.
+    nsamp  = 100;
+    ncomb  = bc(n,p);
+    method = [10*ones(n/2,1); ones(n/2,1)]; % weighted sampling using weights in "method"
+    C      = subsets(nsamp, n, p, ncomb, msg, method);
 
-%}
-
-%{
-    % Generate subsets once and for all.
-    nsamp=200;
-    n=100;
-    p=4;
-    ncomb=bc(n,p);
-    msg=0;
-    method=[10*ones(n/2,1); ones(n/2,1)];
-    C=subsets(nsamp, n, p, ncomb, msg, method);
+    % tclustreg using samples in C
+    out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',C);
 %}
 
 %%  computational issues to be addressed in future releases
@@ -899,9 +926,9 @@ iter                = 0;
             %identification of X and y for each group, computation of
             %residuals and sigma
             % initialization of niini with equal proportions
-            niini=niinistart;
+  
             % extract a subset of size v
-            index = C(count,:);
+            index  = C(iter,:);
             Xb = X(index,:);
             yb = y(index);
             
@@ -909,7 +936,9 @@ iter                = 0;
                 Xbj = Xb((1+(j-1)*p):(j*p),:);
                 ybj = yb((1+(j-1)*p):(j*p));
                 Beta(:,j) = Xbj\ybj;
+                niinistart(j) =  length(ybj);
             end
+            niini=niinistart;
             sigmaini=ones(1,k);
         end
         
