@@ -366,6 +366,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
     nsamp  = 100;
     ncomb  = bc(n,p);
     method = [10*ones(n/2,1); ones(n/2,1)]; % weighted sampling using weights in "method"
+    msg    = 0;
     C      = subsets(nsamp, n, p, ncomb, msg, method);
 
     % tclustreg using samples in C
