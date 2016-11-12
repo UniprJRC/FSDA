@@ -127,21 +127,24 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %
 %   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure.
-%                   If datatooltip is not empty the user can use the mouse
-%                   in order to have information about the unit selected,
-%                   the step in which the unit enters the search and the
-%                   associated label.
-%                   If datatooltip is a structure, it is possible to
-%                   control the aspect of the data cursor (see function
-%                   datacursormode for more details or the examples below).
-%                   The default options of the structure are
+%                   structure. If datatooltip is not empty the user can use
+%                   the mouse in order to have information about the unit
+%                   selected, the step in which the unit enters the search
+%                   and the associated label. If datatooltip is a
+%                   structure, it is possible to control the aspect of the
+%                   data cursor (see function datacursormode for more
+%                   details or the examples below).
+%                   datatooltip.DisplayStyle = Determines how the data
+%                   cursor displays. 
+%                   datatooltip.SnapToDataVertex = Specifies whether the
+%                   data cursor snaps to the nearest data value or is
+%                   located at the actual pointer position. The default
+%                   options of the structure are
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
-%                   Example - 'datatooltip',''
-%                   Data Types - char
+%                   Example - 'datatooltip','' Data Types - char
 %    databrush :    interactive mouse brushing. Empty value (default),
-%                   scalar or structure.
-%                   DATABRUSH IS AN EMPTY VALUE
+%                   scalar or cell.
+%                   DATABRUSH IS AN EMPTY VALUE.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
 %                   The activation of this option (databrush is a scalar or
@@ -157,16 +160,17 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Remark. the window style of the other figures is set
 %                   equal to that which contains the spmplot. In other
 %                   words, if the scatterplot matrix plot is docked all the
-%                   other figures will be docked too
-%                   DATABRUSH IS A SCALAR
+%                   other figures will be docked too.
+%                   DATABRUSH IS A SCALAR.
 %                   If databrush is a scalar the default selection tool is
 %                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='')
-%                   DATABRUSH IS A CELL
-%                   If databrush is a cell, it is possible to use all
+%                   once (that is persist='').
+%                   DATABRUSH IS A CELL.
+%                   If databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
 %                   following optional argument:
-%                   - persist. Persist is an empty value or a scalar
+%                   - persist = Persistent brushing. 
+%                     Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
 %                     is allowed only once.
@@ -178,18 +182,19 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                     different color for the brushed units.
 %                     If persist='off' every time a new brush is performed
 %                     units previously brushed are removed.
-%                   - labeladd. If this option is '1', we label the units
+%                   - labeladd= point labelling. If this option is '1', we label the units
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
-%       The options which follow work in connection with previous option
+%       Remark: The options which follow work in connection with previous option
 %       databrush and produce their effect on the monitoring MD plot
 %       (malfwdplot)
 %
-%       subsize :   x axis control in malfwdplot. Vector. numeric vector containing the subset size with length
+%       subsize :   x axis control in malfwdplot. Vector. numeric vector
+%                   containing the subset size with length
 %                   equal to the number of columns of matrix Y.MAL.
 %                   If it is not specified it will be set equal to
 %                   size(Y.MAL,1)-size(Y.MAL,2)+1:size(Y.MAL,1)

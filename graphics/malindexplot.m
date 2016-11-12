@@ -113,7 +113,7 @@ function malindexplot(md,v,varargin)
 %                   If databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
 %                   following optional argument:
-%                   - persist. Persist is an empty value or a scalar
+%                   databrush.persist = persisente brushing. Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
 %                     is allowed only once.
@@ -125,7 +125,7 @@ function malindexplot(md,v,varargin)
 %                     different color for the brushed units.
 %                     If persist='off' every time a new brush is performed
 %                     units previously brushed are removed.
-%                   - labeladd. If this option is '1', we label in the
+%                   databrush.labeladd = add labels. If this option is '1', we label in the
 %                     scatter plot matrix the units of the last selected
 %                     group with the unit row index in matrix Y. The
 %                     default value is labeladd='', i.e. no label is added.

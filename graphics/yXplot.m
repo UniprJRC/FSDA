@@ -8,30 +8,31 @@ function [plot1]=yXplot(y,X,varargin)
 %    y: Response variable. Vector. A vector with n elements that contains
 %       the response variable. y can be either a row or a column vector.
 %    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension. Rows of X represent observations, and columns
+%       dimension nxp. Rows of X represent observations, and columns
 %       represent variables.
 %
-%      or a structure out containing the following fields
+%      or a structure out containing the following fields:
 %
-%               yXplot(out,varargin)
+%               yXplot(out,varargin);
 %
-%       y   =   a vector containing the response
-%       X   =   a matrix containing the explanatory variables
+%       y   =   a vector containing the response.
+%       X   =   a matrix containing the explanatory variables.
 %
 %               If out contains just the two above fields the yXplot will
 %               be immediately created. On the other hand, if out also
 %               contains information about the search, it is possible to
 %               exploit the brushing (i.e. the automatic
 %               interaction with the other plots) and datatooltip
-%               possibilities
+%               possibilities.
 %
 %       RES =   matrix containing the residuals monitored in each
 %               step of the forward search. Every row is associated with a
 %               residual (unit).
 %               This matrix can be created using function FSReda
-%               (compulsory argument)
+%               (compulsory argument).
 %       Un  =   matrix containing the order of entry of each unit
-%               (necessary if datatooltip is true or databrush is not empty)
+%               (necessary if datatooltip is true or databrush is not
+%               empty).
 %
 %
 %  Optional input arguments:
@@ -303,32 +304,34 @@ function [plot1]=yXplot(y,X,varargin)
     % Interactive_example  
     %   Example of the use of options selstep, selunit, selunitbold and
     %   selunitcolor.
+    %   It produces a yXplot plot in which labels are put for units
+    %   which have a residual greater and 1.5. When a set of units is brushed in the yXplot
+    %   in the monitoring residuals plot the labels are added in steps
+    %   selsteps.
    yXplot(out,'selstep',[40 21 80],'selunit','1.5',...
            'databrush',{'persist','off','selectionmode' 'Rect'})
 
-    %   produces a yXplot plot in which labels are put for units
-    %   which have a residual greater and 1.5. When a set of units is brushed in the yXplot
-    %   in the monitoring residuals plot the labels are added in steps selsteps
 %}
 %
 %{
     % Interactive_example
     %   Example of the use of option selunit (notice that in this
     %   case selunit is a cell array of strings.
-    yXplot(out,'selunit',{'-3';'2'},...
-            'databrush',{'selectionmode' 'Rect'});
-    %   highlight only the trajectories which in at least one step of the
+    %   Highlight only the trajectories which in at least one step of the
     %   search had a value smaller than -3 or greater than 2 and label
     %   them at the beginning and at the end of the search.
+    yXplot(out,'selunit',{'-3';'2'},...
+            'databrush',{'selectionmode' 'Rect'});
 %}
 %
 %{
     %   Example of the use of option datatooltip.
-   yXplot(out,'datatooltip',1);
-    %   gives the possibility of clicking on the different points and have
+    %   It gives the possibility of clicking on the different points and have
     %   information about the unit selected, the step of entry into the
     %   subset and the associated label
+        yXplot(out,'datatooltip',1);
 %}
+
 %{
     % Interactive_example
     %   Example of the use of option databrush
@@ -364,16 +367,17 @@ function [plot1]=yXplot(y,X,varargin)
     %   brushed
     yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})
 %}
-%
-%   All previuos examples used a non persistent brushing (that is brushing
-%   could be done only once). The examples below use persistent brushing
-%   (that is brushing can be done multiple times)
-%
-%   Example of the use of persistent non cumulative brush. Every time a
-%   brushing action is performed previous highlightments are removed
+
+
 %{
     % Interactive_example
     % Example of persistent cumulative brushing (with persist off).
+    %   All previous examples used a non persistent brushing (that is brushing
+    %   could be done only once). The examples below use persistent brushing
+    %   (that is brushing can be done multiple times)
+    %
+    %   Example of the use of persistent non cumulative brush. Every time a
+    %   brushing action is performed previous highlightments are removed
     %   Every time a brushing action is performed
     %   current highlightments replace previous highlightments
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...
