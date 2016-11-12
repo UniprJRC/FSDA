@@ -1293,13 +1293,15 @@ loc=mean(Y(goodobs,:));
 cova=cov(Y(goodobs,:));
 md=mahalFS(Y,loc,cova);
 %% Scatter plot matrix with the outliers shown with a different symbol
-
+if v<=20
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
     figure('Tag','pl_spm_outliers');
     spmplot(Y,group,plo);
     set(gcf,'Name','FSM: scatter plot matrix with outliers highlighted');
 end
-
+else
+    disp('There are more than 20 variables, spmplot is not shown')
+end
 %% Structure returned by function FSM
 % If you wish that the output also contains the list of units not declared
 % as outliers, please uncomment the two following lines.
