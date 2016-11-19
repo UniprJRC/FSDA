@@ -416,6 +416,14 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 % be identified with a "TRIMMING" or "THINNING" tag.
 
 
+
+% for benchmark purposes, set bench=1: four new output will be produced
+% containing, for each sample and for each refining step the value of the
+% (1) objective function (obj_all), (2) sigma2 in each group
+% (sigmaini_all), (3) beta in each group (Beta_all), (4) weights of each
+% observation (w4trim_all).
+bench = 0;
+
 %% initializations
 
 warning('off');
@@ -446,6 +454,13 @@ nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
+
+if bench == 1
+    obj_all = NaN(300,10);
+    sigmaini_all = NaN(300,10,k);
+    Beta_all = NaN(300,10,p,k);
+    w4trim_all = NaN(300,10,n);
+end
 
 seq=1:n;
 
@@ -1336,7 +1351,7 @@ iter                = 0;
                     else
                         indold = indmax;
                     end
-                    
+
                     %% 4) Computation of the value of the target function
                     obj = 0;
                     not_empty_g = seqk(~( niini <= p + 1 ));
@@ -1392,6 +1407,26 @@ iter                = 0;
                     
                     
                 end
+                
+                %monitoring of obj, sigma and w4trim
+                if bench == 1
+                    obj_all(iter,cstep) = obj;
+                    sigmaini_all(iter,cstep,:) = sigmaini;
+                    w4trim_all(iter,cstep,:) = w4trim;
+                    Beta_all(iter,cstep,:,:)=Beta;
+
+%                     if p==1+intercept
+%                         figure;
+%                         gscatter(X(:,intercept+1),y,indmax);
+%                         hold on;
+%                         for ss =1:k
+%                             line([0 max(X(:,intercept+1))],[Beta(1,ss) Beta(:,ss)*max(X)])
+%                         end
+%                         title(['nsamp=' num2str(iter) ', obj = ' num2str(obj) ', s1=' num2str(sigmaini(1)), ', s2=' num2str(sigmaini(2))])
+%                     end
+
+                end
+
             end % End of concentration steps
             
             %% Change the 'optimal' target value and 'optimal' parameters
@@ -1408,8 +1443,8 @@ iter                = 0;
                     sigmaopt                = sigmaini;
                     w4trimopt                   = w4trim;
                     weopt                   = we;
-                    trim1levelopt           = indmax(indmax==0);
-                    trim2levelopt           = indmax(indmax==-1);
+                    trim1levelopt           = find(indmax==0);
+                    trim2levelopt           = find(indmax==-1);
                     indmax_before_tropt     = indmax_before_tr;
                     indmaxopt               = indmax;
                     %                     not_empty_gopt          = not_empty_g;
@@ -1513,13 +1548,16 @@ iter                = 0;
         out.postprobopt     = postprobopt;
     end
     out.restrfact           = restrfact;
-    
-    
-    
+    if bench ==1
+        out.obj_all = obj_all;
+        out.sigmaini_all = sigmaini_all;
+        out.w4trim_all = w4trim_all;
+        out.Beta_all = Beta_all;
+    end
     % Store the indices in varargout
-if nargout==2
-    varargout={C};
-end
+    if nargout==2
+        varargout={C};
+    end
 
 
 %   asig1          = cluster assigments after first trimming ('0' means a trimmed observation)
@@ -1577,9 +1615,11 @@ end
                         'Color',clrdef(jj));
                 end
                 
-                %plot the thinned units
+                %plot the thinned (not trimmed) units
                 if wtrim == 3
-                    ucg = find(w4trimopt == 0);
+                    thinned_nt_trimmed = w4trimopt;
+                    thinned_nt_trimmed([trim1levelopt ;trim2levelopt]) = -12;
+                    ucg = find(thinned_nt_trimmed == 0);
                     plot(X(ucg,end),y(ucg),symdef(jj),'color',clrdef(k+1),...
                         'DisplayName',['Group ' num2str(jj) ': thinned units (' num2str(length(ucg)) ')' ]);
                 end
