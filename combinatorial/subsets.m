@@ -57,7 +57,9 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 % See also randsampleFS.m, lexunrank.m, bc.m
 %
 % References: 
-%       see references in randsampleFS.m, lexunrank.m and bc.m
+%       See references in randsampleFS.m, lexunrank.m and bc.m. See also, for weighted sampling,
+%       Pavlos S. Efraimidis, Paul G. Spirakis, Weighted random sampling with a reservoir,
+%       Information Processing Letters, Volume 97, Issue 5, 16 March 2006, Pages 181-185.
 %
 %
 % Copyright 2008-2016.
@@ -71,14 +73,14 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 % Examples: 
 %
 %{
-       %% Create a matrix wuth the indexes of 5 subsets when n=100, p=3.
+       %% Create a matrix with the indexes of 5 subsets when n=100, p=3.
        % Only default arguments used.
        C = subsets(5,100,3)
 %}
 
 %{
        %% Create a matrix with the indexes of 5 subsets when n=100, p=3. 
-       % Use information on the number of combinations.
+       % Use information on the number of combinations to speed up generation.
         ncomb = bc(100,3);
         C = subsets(5,100,3,ncomb)
 %}
@@ -102,6 +104,138 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
         % Extract 80000 subsets and check they are unique.
         C=subsets(80000,100,5);
         size(unique(C,'rows'))
+%}
+
+%{
+    %% Sampling without replacement and the hypergeometric distribution.
+
+    % parameters
+    n      = 100;
+    p      = 3;
+    nsamp  = 1000000;
+    ncomb  = bc(n,p);
+    msg    = 0;
+    
+    % Sampling without repetition nsamp p-subsets from a dataset of n units.
+	C = subsets(nsamp, n, p, ncomb, msg);
+    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers'); xlim([1 n]);
+    
+    % this superimposes a line with the unit counts
+    frC = tabulateFS(double(C(:))); 
+    hold on; plot(1:n,frC(:,3)/100,'r-','LineWidth',3);
+
+    % The hypergeometric distribution hygepdf(X,M,K,N) describes the probability of X successes 
+    % in N draws, without replacement, from a finite population of size M that contains exactly K 
+    % successes, wherein each draw is either a success or a failure. Note that if the sampling is
+    % with replacement, the distribution is binomial.
+    hpdf = hygepdf(0:p,n,n/2,p);
+
+    % Say that a success is a draw in the subset formed by units 1,2,...n/2. 
+    % Let's then count how many times we get units from this group.
+    c   = C<=n/2;
+    sc  = sum(c,2);
+    tab = tabulateFS(sc);
+    tab = (tab(:,2)/sum(tab(:,2)))';
+
+    disp('Probability of getting 0 to p successes in p drawns (hypergeometric pdf):');
+    disp(hpdf);
+    disp('Frequencies of the 0 to p successes in the p drawns (subsets output):');
+    disp(tab);
+
+%}
+
+%{
+ 
+    %% Weighted sampling without replacement and the non-central hypergeometric distribution.
+    
+    clear all; close all;
+
+    % parameters
+    n      = 100;
+    p      = 3;
+    nsamp  = 20000;
+    ncomb  = bc(n,p);
+    msg    = 0;
+
+    % Sampling probability of the first n/2 units is 10 times larger than the others n/2.
+    method = [10*ones(n/2,1); ones(n/2,1)]; 
+
+	C = subsets(nsamp, n, p, ncomb, msg, method);
+
+    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
+
+    % As the sampling, without replacement, is biased by the weight vector given in option 'method', 
+    % Wallenius' noncentral hypergeometric distribution has to be used. Again, the distribution  
+    % describes the probability of X successes in N draws, without replacement, from a finite  
+    % population of size M that contains exactly K successes. In addition, the two groups have 
+    % weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The function is called as: 
+    % wpdf = WNChygepdf(x,N,K,M,W)
+
+    for i = 0:p
+        wpdf(i+1) = WNChygepdf(i,p,n/2,n,10);
+    end
+
+    % counts of the actual samples
+    c   = C<=n/2;
+    sc  = sum(c,2);
+    tab = tabulateFS(sc);
+    tab = (tab(:,2)/sum(tab(:,2)))';
+
+    disp('Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):');
+    disp(wpdf);
+    disp('Frequencies of the 0 to p successes in the p weighted drawns (subsets output):');
+    disp(tab);
+    
+    % The non-central hypergeometric is also available in the R package BiasedUrn.
+    % In the example above, where there are just two groups and one weight defining the ratio
+    % between the units in the two groups, the function to use is dWNCHypergeo (for Wallenius' 
+    % distribution):
+    %
+    % dWNCHypergeo(c(0,1,2,3), 50, 50, 3, 10)
+    % [1] 0.0007107089 0.0225823308 0.2296133830 0.7470935773
+    %
+    % The general syntax of the function is:
+    % dWNCHypergeo(x, m1, m2, n, odds)
+    % x  = Number of red balls sampled.
+    % m1 = Initial number of red balls in the urn.
+    % m2 = Initial number of white balls in the urn.
+    % n  = Total number of balls sampled.
+    % N  = Total number of balls in urn before sampling.
+    % odds = Probability ratio of red over white balls.
+    % p = Cumulative probability.
+    % nran = Number of random variates to generate.
+    % mu = Mean x.
+    % precision = Desired precision of calculation.
+
+%}
+
+%{
+    % subset use in clustering or mixture modeling simulations.
+
+    % parameters
+    n      = 100;       %number of units
+    p      = 2;         %number of variables
+    k      = 3;         %number of groups
+    nsamp  = 500;       %number of samples
+    ncomb  = bc(n,p);
+    msg    = 0;
+
+    % A dataset simulated using MixSim
+    rng(372,'twister');
+    Q=MixSimreg(k,p,'BarOmega',0.001);
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+
+    % Some user-defined weights for weighted sampling, provided as a vector of "method" option.
+    method = [1*ones(n/2,1); ones(n/2,1)]; 
+
+    % C must be a nsamp x k*p matrix, to contain the estraction of nsamp p-combinations k times. 
+    % This can be easily done as follows:
+    for i=1:k
+        Ck(:,(i-1)*p+1:i*p) = subsets(nsamp, n, p, ncomb, msg, method);
+    end
+
+    % Ck is then provided, e.g., to tclustreg as follows:
+    out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',Ck);
 %}
 
 

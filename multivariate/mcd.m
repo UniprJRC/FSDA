@@ -576,7 +576,9 @@ end
 %% h==n is the case in which there is no trimming (classical case)
 
 if h==n
-    disp(['The MCD estimates are equal to the classical estimates h=n=',num2str(h)]);
+    if msg
+        disp(['The MCD estimates are equal to the classical estimates h=n=',num2str(h)]);
+    end
     %  REW.method=char(REW.method,msgn);
     
     RAW.loc=clmean;
