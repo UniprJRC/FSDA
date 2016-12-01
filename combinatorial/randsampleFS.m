@@ -134,12 +134,26 @@ switch method
         
         % Weighted Sampling Without Replacement
         
-        % The current implementation is intuitive but sub-optimal
-        % It will be improved in next releases
-          
         if k>n, error('k must be smaller than n'), end
         if length(wgts)~=n,error('the length of the weight vector must be n'),end
-        
+
+        % To achieve the best trade-off between simplicity and efficiency, we follow:
+        % Efraimidis, P.S. and Spirakis, P.G. Information Processing Letters, 97, 181?185 (2006), 
+        % i.e. we generate a weighted random sample without replacement of size $k<n$ by:
+        % 1. Drawing uniformly in [0,1] $n$ independent values $u_i$;
+        % 2. Computing the keys $U_i = u_i^{1/p_i}$;
+        % 3. Keeping the $k$ elements with largest $U_i$. 
+        % REMARK: this approach does not require the normalization of the weights $p_i$.
+        % TO DO:  To be checked the computational accuracy for weights in [0,1].
+        %p = wgts(:)' / sum(wgts);
+        p = wgts(:)';
+        u = rand(1,n);
+        U = u.^(1./p);
+        [~,y] = sort(U,'descend');
+        y     = y(1:k); 
+
+        % The next implementation is much more intuitive, but also very inefficient
+        %{
         x = 1:n;
         y = zeros(1,k);
         p = wgts(:)' / sum(wgts);
@@ -162,6 +176,25 @@ switch method
             % and the new probabilities must be re-normalised
             p = p / sum(p);
         end
+        %}
+
+        % A more efficient implementation equivalent to the previous one
+        %{
+            x = 1:n;
+            p = wgts(:)' / sum(wgts);
+            y2 = zeros(1,k);
+            for i=1:k
+                yi = 1 + sum( rand() > cumsum(p) );
+                y2(i) = yi;
+                p(x==yi)=0;
+            end
+        %}        
+        
+        % This would be the corresponding Weighted Sampling *With* Replacement:
+        %{
+            [~, y] = histc(rand(k,1),cumsum([0;p(:)./sum(p)]));
+        %}
+
         
     case 1
         

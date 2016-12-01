@@ -124,14 +124,13 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     frC = tabulateFS(double(C(:))); 
     hold on; plot(1:n,frC(:,3)/100,'r-','LineWidth',3);
 
-    % The hypergeometric distribution hygepdf(X,M,K,N) describes the probability of X successes 
-    % in N draws, without replacement, from a finite population of size M that contains exactly K 
-    % successes, wherein each draw is either a success or a failure. Note that if the sampling is
-    % with replacement, the distribution is binomial.
+    % The hypergeometric distribution hygepdf(X,M,K,N) computes the probability of drawing exactly 
+    % X of a possible K items in N drawings without replacement from a group of M objects. 
+    % Note that if the drawings are with replacement, the distribution would be binomial.
     hpdf = hygepdf(0:p,n,n/2,p);
 
-    % Say that a success is a draw in the subset formed by units 1,2,...n/2. 
-    % Let's then count how many times we get units from this group.
+    % Say that the n/2 target items (which determine the success of a draw) are in the subset formed 
+    % by units 1,2,...n/2. Let's then count how many times we get units from this group.
     c   = C<=n/2;
     sc  = sum(c,2);
     tab = tabulateFS(sc);
@@ -145,9 +144,8 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %}
 
 %{
- 
-    %% Weighted sampling without replacement and the non-central hypergeometric distribution.
-    
+    %% Weighted sampling without replacement and the non-central Wallenius hypergeometric distribution.   
+
     clear all; close all;
 
     % parameters
@@ -164,12 +162,16 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 
     histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
 
-    % As the sampling, without replacement, is biased by the weight vector given in option 'method', 
-    % Wallenius' noncentral hypergeometric distribution has to be used. Again, the distribution  
-    % describes the probability of X successes in N draws, without replacement, from a finite  
-    % population of size M that contains exactly K successes. In addition, the two groups have 
-    % weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The function is called as: 
-    % wpdf = WNChygepdf(x,N,K,M,W)
+    % The hypergeometric distribution hygepdf(X,M,K,N) computes the probability of drawing exactly 
+    % X of a possible K items in N drawings without replacement from a group of M objects. 
+
+    % In this case the sampling (without replacement) is biased, in the sense that the probability 
+    % to select the units in the sample are proportional to weights provided using option 'method'. 
+    % In this case, Wallenius' noncentral hypergeometric distribution has to be used. The distribution
+    % describes the probability of X successes in N draws, without replacement, from a finite
+    % population of size M that contains exactly K successes. In addition, the two groups have
+    % weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The function is called
+    % as: wpdf = WNChygepdf(x,N,K,M,W)
 
     for i = 0:p
         wpdf(i+1) = WNChygepdf(i,p,n/2,n,10);
