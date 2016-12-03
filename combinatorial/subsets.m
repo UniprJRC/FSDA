@@ -57,9 +57,10 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 % See also randsampleFS.m, lexunrank.m, bc.m
 %
 % References: 
-%       See references in randsampleFS.m, lexunrank.m and bc.m. See also, for weighted sampling,
-%       Pavlos S. Efraimidis, Paul G. Spirakis, Weighted random sampling with a reservoir,
-%       Information Processing Letters, Volume 97, Issue 5, 16 March 2006, Pages 181-185.
+%       See references in randsampleFS.m, lexunrank.m and bc.m. See also, for
+%       weighted sampling, Pavlos S. Efraimidis, Paul G. Spirakis, Weighted
+%       random sampling with a reservoir, Information Processing Letters, Volume
+%       97, Issue 5, 16 March 2006, Pages 181-185.
 %
 %
 % Copyright 2008-2016.
@@ -124,13 +125,15 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     frC = tabulateFS(double(C(:))); 
     hold on; plot(1:n,frC(:,3)/100,'r-','LineWidth',3);
 
-    % The hypergeometric distribution hygepdf(X,M,K,N) computes the probability of drawing exactly 
-    % X of a possible K items in N drawings without replacement from a group of M objects. 
-    % Note that if the drawings are with replacement, the distribution would be binomial.
+    % The hypergeometric distribution hygepdf(X,M,K,N) computes the probability
+    % of drawing exactly X of a possible K items in N drawings without
+    % replacement from a group of M objects. For drawings with replacement,
+    % the distribution would be binomial.
     hpdf = hygepdf(0:p,n,n/2,p);
 
-    % Say that the n/2 target items (which determine the success of a draw) are in the subset formed 
-    % by units 1,2,...n/2. Let's then count how many times we get units from this group.
+    % Say that the n/2 target items (which determine the success of a draw) are 
+    % in the subset formed by units 1,2,...n/2. Let's then count how many times 
+    % we get units from this group.
     c   = C<=n/2;
     sc  = sum(c,2);
     tab = tabulateFS(sc);
@@ -149,29 +152,28 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     clear all; close all;
 
     % parameters
-    n      = 100;
+    n      = 500;
     p      = 3;
-    nsamp  = 20000;
+    nsamp  = 50000;
     ncomb  = bc(n,p);
     msg    = 0;
 
     % Sampling probability of the first n/2 units is 10 times larger than the others n/2.
     method = [10*ones(n/2,1); ones(n/2,1)]; 
+    % no need to normalize weights: method = method(:)' / sum(method);
 
 	C = subsets(nsamp, n, p, ncomb, msg, method);
 
     histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
 
-    % The hypergeometric distribution hygepdf(X,M,K,N) computes the probability of drawing exactly 
-    % X of a possible K items in N drawings without replacement from a group of M objects. 
-
-    % In this case the sampling (without replacement) is biased, in the sense that the probability 
-    % to select the units in the sample are proportional to weights provided using option 'method'. 
-    % In this case, Wallenius' noncentral hypergeometric distribution has to be used. The distribution
-    % describes the probability of X successes in N draws, without replacement, from a finite
-    % population of size M that contains exactly K successes. In addition, the two groups have
-    % weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The function is called
-    % as: wpdf = WNChygepdf(x,N,K,M,W)
+    % Here we address the case when the sampling (without replacement) is biased,
+    % in the sense that the probabilities to select the units in the sample are
+    % proportional to weights provided using option 'method'. In this case, the
+    % extraction probabilities follow Wallenius' noncentral hypergeometric
+    % distribution. The sampling scheme is the same of that of the hypergeometric
+    % distribution but, in addition, the success and failure are associated with
+    % weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The
+    % function is then called as: wpdf = WNChygepdf(x,N,K,M,W). 
 
     for i = 0:p
         wpdf(i+1) = WNChygepdf(i,p,n/2,n,10);
@@ -188,10 +190,10 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     disp('Frequencies of the 0 to p successes in the p weighted drawns (subsets output):');
     disp(tab);
     
-    % The non-central hypergeometric is also available in the R package BiasedUrn.
-    % In the example above, where there are just two groups and one weight defining the ratio
-    % between the units in the two groups, the function to use is dWNCHypergeo (for Wallenius' 
-    % distribution):
+    % The non-central hypergeometric is also available in the R package
+    % BiasedUrn. In the example above, where there are just two groups and one
+    % weight defining the ratio between the units in the two groups, the function
+    % to use is dWNCHypergeo (for Wallenius' distribution):
     %
     % dWNCHypergeo(c(0,1,2,3), 50, 50, 3, 10)
     % [1] 0.0007107089 0.0225823308 0.2296133830 0.7470935773
@@ -212,7 +214,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %}
 
 %{
-    % subset use in clustering or mixture modeling simulations.
+    %% subset use in clustering or mixture modeling simulations.
 
     % parameters
     n      = 100;       %number of units
@@ -251,7 +253,7 @@ if nargin<4
 end
 
 if ncomb<nsamp
-    disp(['Warning: number of subsets which have been chosen (' num2str(ncomb) ') are greater than possibile number (' num2str(nsamp) ')']);
+    disp(['Warning: number of subsets which have been chosen (' num2str(nsamp) ') are greater than possibile number (' num2str(ncomb) ')']);
     disp('All subsets are extracted')
     nsamp=0;
 end

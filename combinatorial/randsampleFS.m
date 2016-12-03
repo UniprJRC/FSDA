@@ -33,26 +33,24 @@ function y = randsampleFS(n,k,method)
 %
 % More About:
 %
-%   if method=1 (default option) the program proceeds as follows:
+%   If method=1 (default option) the program proceeds as follows:
 %   if  $4*k >n$ the programs does a random permutation of the population
 %   and returns the first nsel elements else if $4*k<=n$ (that is if the
 %   desired sample is small compared to all combinations, the program
 %   repeatedly samples with replacement until there are nsel unique values.
 %
-%   if method=2 Systematic sampling is used where the starting point is
+%   If method=2 Systematic sampling is used where the starting point is
 %   random and the step is also random.
 %
-%   if method=3 random sampling based on the old but well known Linear
+%   If method=3 random sampling based on the old but well known Linear
 %   Congruential Generator (LCG) method is used. In this case there is no
 %   guarantee to get unique numbers.
 %
-%   if method is a vector of n weights, then Weighted Sampling Without
-%   Replacement is applied. Our implementation could be improved. 
-%   The best algorithm for Weighted Sampling Without Replacement, mentioned
-%   in the references, is applied by MATLAB function datasample, which is
-%   unfortunately very slow for the large amount of time spent on options
-%   checking.
-%
+%   If method is a vector of n weights, then Weighted Sampling Without
+%   Replacement is applied. Our implementation follows Efraimidis and Spirakis
+%   (2006). MATLAB function datasample follows Wong and  Easton (1980), which is
+%   also quite fast; note however that function datasample may be very slow if
+%   applied repetedly, for the large amount of time spent on options checking.
 %
 % See also: randsample, datasample, shuffling
 %
@@ -68,9 +66,11 @@ function y = randsampleFS(n,k,method)
 %   Algorithms, Third Edition. Addison-Wesley, 1997. Section 3.2.1: The
 %   Linear Congruential Method, pp. 10-26.
 %
-%   For Weighted Sampling Without Replacement. Wong, C. K. and M. C.
-%   Easton. An Efficient Method for Weighted Sampling Without Replacement.
-%   SIAM Journal of Computing 9(1), pp. 111?113, 1980.
+%   For Weighted Sampling Without Replacement: 
+%   Efraimidis, P.S. and Spirakis, P.G. (2006). Weighted random sampling with a reservoir. 
+%   Information Processing Letters, 97, 181-185, 2006;
+%   Wong, C. K. and M. C. Easton. An Efficient Method for Weighted Sampling Without Replacement.
+%   SIAM Journal of Computing 9(1), pp. 111-113, 1980.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -102,11 +102,12 @@ function y = randsampleFS(n,k,method)
 
 %{
     % randsampleFS Weighted Sampling Without Replacement.
-    % Extract 10 number from [-1000 -900] with normal distributed weights.
+    % Extract k=10 number in [-1000 -900] with gamma distributed weights.
      population = -1000:1:-900; 
-     k=10; 
-     wgts=sort(random('gamma',0.3,2,101,1),'descend'); 
      n = numel(population);
+     wgts = sort(random('gamma',0.3,2,n,1),'descend'); 
+
+     k=10; 
      y = randsampleFS(n,k,wgts);
      sample  = population(y);
      
@@ -124,7 +125,7 @@ end
 % Weighted Sampling Without Replacement
 % This is done if the third argument is provided as a vector of weights.
 if nargin == 3 && ~isscalar(method)
-    wgts = method;
+    wgts = method(:)';
     method = 0;
 end
 
@@ -137,22 +138,19 @@ switch method
         if k>n, error('k must be smaller than n'), end
         if length(wgts)~=n,error('the length of the weight vector must be n'),end
 
-        % To achieve the best trade-off between simplicity and efficiency, we follow:
-        % Efraimidis, P.S. and Spirakis, P.G. Information Processing Letters, 97, 181?185 (2006), 
-        % i.e. we generate a weighted random sample without replacement of size $k<n$ by:
+        % To achieve the best trade-off between simplicity and efficiency, following Efraimidis and
+        % Spirakis (2006) we generate a weighted random sample without replacement of size $k<n$ by:
         % 1. Drawing uniformly in [0,1] $n$ independent values $u_i$;
-        % 2. Computing the keys $U_i = u_i^{1/p_i}$;
+        % 2. Computing the keys $U_i = u_i^{1/wgts_i}$;
         % 3. Keeping the $k$ elements with largest $U_i$. 
-        % REMARK: this approach does not require the normalization of the weights $p_i$.
-        % TO DO:  To be checked the computational accuracy for weights in [0,1].
-        %p = wgts(:)' / sum(wgts);
-        p = wgts(:)';
+        % REMARK 1: This approach does not require the weights normalization wgts = wgts / sum(wgts)
+        % REMARK 2: We take the log to avoid numerical issues when (positive) weights are << 1
         u = rand(1,n);
-        U = u.^(1./p);
+        U = (1./wgts) .* log(u); % U = u.^(1./wgts) may give rise to numerical issues 
         [~,y] = sort(U,'descend');
         y     = y(1:k); 
 
-        % The next implementation is much more intuitive, but also very inefficient
+        % The next implementation is very intuitive, but also very inefficient
         %{
         x = 1:n;
         y = zeros(1,k);
@@ -178,7 +176,7 @@ switch method
         end
         %}
 
-        % A more efficient implementation equivalent to the previous one
+        % This implementation is equivalent to the previous one, but a bit more efficient  
         %{
             x = 1:n;
             p = wgts(:)' / sum(wgts);
@@ -190,7 +188,7 @@ switch method
             end
         %}        
         
-        % This would be the corresponding Weighted Sampling *With* Replacement:
+        % This is a similar implementation for Weighted Sampling *With* Replacement:
         %{
             [~, y] = histc(rand(k,1),cumsum([0;p(:)./sum(p)]));
         %}
@@ -218,8 +216,8 @@ switch method
         end
         
     case 2
-        % Systematic sampling method, Cochran (1977), third edition, Sampling
-        % Techniques, Wiley.
+        
+        % Systematic sampling method, Cochran (1977), third edition, Sampling Techniques, Wiley.
         stepk=floor(n/k);
         startk=randi(n);
         y=startk:stepk:startk+stepk*k-1;

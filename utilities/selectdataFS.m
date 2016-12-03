@@ -4,8 +4,8 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %<a href="matlab: docsearchFS('selectdatafs')">Link to the help function</a>
 %
 % This function is an extension of the selectdata function by John
-% D'Errico that can be found in the Mathworks page <a
-% http://www.mathworks.com/matlabcentral/fileexchange/13857.
+% D'Errico that can be found in the Mathworks page 
+% <a http://www.mathworks.com/matlabcentral/fileexchange/13857</a>.
 % Our extension is used in the FS toolbox to provide the forward plots and
 % other specific graphical functions with brushing and linking
 % functionalities. Using this toolbox generally the user does not call
