@@ -5,24 +5,24 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
 %
 % This function is taken from the toolbox "Generation of Random Variates"
 % (function wallen_pdf.m) created by Jim Huntley, that can be found at the
-% Mathworks page
-% <a https://it.mathworks.com/matlabcentral/fileexchange/35008-generation-of-random-variates)</a>.
-% In FSDA, the function is only used for showing the coherence of the
-% non-central hypergeometric distribution probability density values with
-% samples extracted with FSDA function randsampleFS using option for weighted
-% sampling without replacement.
+% Mathworks page:
+% https://it.mathworks.com/matlabcentral/fileexchange/35008-generation-of-random-variates).
+% FSDA uses the function only to demonstrate the coherence of the non-central
+% hypergeometric distribution probability density values with samples extracted
+% with FSDA function randsampleFS using option for weighted sampling without
+% replacement.
 %
-% To simplify the illustration of Wallenius' distribution parameters, let's use
+% To illustrate the meaning of Wallenius' function parameters, let's use
 % the classical urn example, with $m_{1}$ red balls and  $m_{2}$ white balls,
-% totalling $N = m_{1}+m_{2} balls. $n$ balls are drawn at random from the urn
+% totalling $M = m_{1}+m_{2}$ balls. $N$ balls are drawn at random from the urn
 % one by one without replacement. Each red ball has the weight $\omega_{1}$, and
-% each white ball has the weight $omega_{2}$; the probability ratio of red over
+% each white ball has the weight $\omega_{2}$; the probability ratio of red over
 % white balls is then given by $W = \omega_{1} / \omega_{2}$.
 %
 %  Required input arguments:
-%           X    : Total number of balls sampled. Scalar.
+%           X    : Number of red balls sampled. Scalar.
 %                  Data Types - single|double
-%           N    : Number of red balls sampled. Scalar.
+%           N    : Total number of balls sampled. Scalar.
 %                  Data Types - single|double
 %           K    : Initial number of red balls in the urn. Scalar.
 %                  Data Types - single|double
@@ -62,7 +62,7 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
 %{
     %% Probability of getting 0 to p successes in p weighted drawns without replacement.
     M  = 500;   %we have 500 balls in the urn
-    N  = 3;     %total number of red balls sampled
+    N  = 3;     %we extract 3 balls, one at a time, without replacement
     K  = M/2;   %initially, in the urn we have 250 red and 250 white balls
     W  = 10;    %red balls are ten times the white balls
     % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
