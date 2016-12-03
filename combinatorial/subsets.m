@@ -214,6 +214,23 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %}
 
 %{
+    % Weighted sampling without replacement, with negative weights.
+
+    clear all; close all;
+
+    n = 200;
+    p = 3;
+    nsamp = 10000;
+    ncomb = bc(n,p);
+    msg = 0;
+    method = [-4*ones(n/4,1); -2*ones(n/4,1) ; -1*ones(n/4,1); -4*ones(n/4,1)]; 
+    C = subsets(nsamp, n, p, ncomb, msg, method);
+    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
+
+%}
+
+
+%{
     %% subset use in clustering or mixture modeling simulations.
 
     % parameters
