@@ -70,9 +70,13 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
     for x = 0:N
         wpdf(i+1) = WNChygepdf(x,N,K,M,W);
     end
-    disp('Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):');
+    disp('We have an urn with 2 groups of balls;');
+    disp('There are 250 balls in each group;');
+    disp('But the probability of getting a ball of one type is 10 times that of the other type;');
+    disp('Then:');
+    disp('    the probability of getting 0, or 1, or 2, or 3 balls');
+    disp('    of the first type in 3 (weighted) drawns is respectively:');
     disp(wpdf);
-
 %}
 
 n2  = N-X;
