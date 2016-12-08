@@ -68,7 +68,7 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
     % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
     % 3 balls without replacement.
     for x = 0:N
-        wpdf(i+1) = WNChygepdf(x,N,K,M,W);
+        wpdf(x+1) = WNChygepdf(x,N,K,M,W);
     end
     disp('We have an urn with 2 groups of balls;');
     disp('There are 250 balls in each group;');
