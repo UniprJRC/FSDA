@@ -119,11 +119,15 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     
     % Sampling without repetition nsamp p-subsets from a dataset of n units.
 	C = subsets(nsamp, n, p, ncomb, msg);
-    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers'); xlim([1 n]);
-    
-    % this superimposes a line with the unit counts
-    frC = tabulateFS(double(C(:))); 
-    hold on; plot(1:n,frC(:,3)/100,'r-','LineWidth',3);
+    if verLessThan('matlab','8.4')
+        hist(double(C(:))); xlim([1 n]);
+    else
+        histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers'); xlim([1 n]);
+        % this superimposes a line with the unit counts
+        frC = tabulateFS(double(C(:))); 
+        hold on; plot(1:n,frC(:,3)/100,'r-','LineWidth',3);
+    end
+
 
     % The hypergeometric distribution hygepdf(X,M,K,N) computes the probability
     % of drawing exactly X of a possible K items in N drawings without
@@ -164,7 +168,11 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 
 	C = subsets(nsamp, n, p, ncomb, msg, method);
 
-    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
+    if verLessThan('matlab','8.4')
+        hist(double(C(:))); xlim([1 n]);
+    else
+        histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
+    end
 
     % Here we address the case when the sampling (without replacement) is biased,
     % in the sense that the probabilities to select the units in the sample are
@@ -225,8 +233,11 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     msg = 0;
     method = [-4*ones(n/4,1); -2*ones(n/4,1) ; -1*ones(n/4,1); -4*ones(n/4,1)]; 
     C = subsets(nsamp, n, p, ncomb, msg, method);
-    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
-
+    if verLessThan('matlab','8.4')
+        hist(double(C(:))); xlim([1 n]);
+    else
+        histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
+    end
 %}
 
 
