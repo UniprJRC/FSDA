@@ -4,11 +4,11 @@ ans =
 
   Columns 1 through 13
 
-    19     3    18    20    10    11    14    13     9    17    15    12     8
+     8    12     9     4    19     7    15    11    14    16     6     3    18
 
   Columns 14 through 20
 
-     4     5     7    16     6     2     1
+    13     5    17    10    20     2     1
 
 </pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>shuffling applied with parsimonious data type.</li></span></a></span></h3><div class="collapse"><p>
      shuffling applied to a set of 20 elements, but using a parsimonious
@@ -19,15 +19,20 @@ ans =
     for i=1:5000
         x = randi(100000,10000,1);
         nn=numel(x);
-        shuffling(x);
-        x(randperm(nn));
-    end</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; A set of elements </span>  </a><span class="example_desc">Vector of length t</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_x" class="clearfix"></div><h3 id="output_argument_x" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>x</code> &#8212;A permutation of the set of elements in x.</span></a><span class="example_desc"><code> </code>Vector of length t</span></span></h3><div class="collapse"><p> 
+        xperm1 = shuffling(x);
+        ix = randperm(nn);
+        xperm2 = x(ix);
+    end</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; A set of elements. </span>  </a><span class="example_desc">Vector of length t.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_x" class="clearfix"></div><h3 id="output_argument_x" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>x</code> &#8212;A permutation of the set of elements in x.</span></a><span class="example_desc"><code> </code>Vector of length t</span></span></h3><div class="collapse"><p> 
        Data Types - single|double</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details </span></a></span></h3><div class="collapse"><p><p>
  If set $x$ has $t$ elements, the objective is to obtain each of the $t!$
  pemutations with equal probability, especially when $t$ is large. To
  achieve this goal, we use backward Knuth's shuffling, which is actually
- based on the Fisher-Yates shuffle. Once compiled, Knuth solution is more
- efficient than the natural MATLAB solution x(randperm(numel(x)).</p> <p>
+ based on the Fisher-Yates shuffle.</p> <p> 
+
+ shuffling is equivalent to MATLAB function randperm. However, in old MATLAB
+ releases randperm was slower than shuffling (for example, in R2009a - MATLAB
+ 7.8 - randperm was at least 50 slower). If compiled as mex file, shuffling
+ becomes more efficient than the MATLAB solution x(randperm(numel(x))).</p><p>
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Knuth, Donald E. (1969). The Art of Computer Programming volume 2,
  Seminumerical algorithms, Reading, MA: Addison-Wesley, pp. 124-125.</p></div><div><p>Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables for biological,

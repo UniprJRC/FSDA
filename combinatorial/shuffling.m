@@ -20,8 +20,12 @@ function x = shuffling(x)
 % If set $x$ has $t$ elements, the objective is to obtain each of the $t!$
 % pemutations with equal probability, especially when $t$ is large. To
 % achieve this goal, we use backward Knuth's shuffling, which is actually
-% based on the Fisher-Yates shuffle. Once compiled, Knuth solution is more
-% efficient than the natural MATLAB solution x(randperm(numel(x)).
+% based on the Fisher-Yates shuffle. 
+%
+% shuffling is equivalent to MATLAB function randperm. However, in old MATLAB
+% releases randperm was slower than shuffling (for example, in R2009a - MATLAB
+% 7.8 - randperm was at least 50% slower). If compiled as mex file, shuffling
+% becomes more efficient than the MATLAB solution x(randperm(numel(x))).
 %
 % See also: randperm
 %
@@ -66,8 +70,9 @@ function x = shuffling(x)
     for i=1:5000
         x = randi(100000,10000,1);
         nn=numel(x);
-        shuffling(x);
-        x(randperm(nn));
+        xperm1 = shuffling(x);
+        ix = randperm(nn);
+        xperm2 = x(ix);
     end
 %}
 

@@ -89,6 +89,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %{
        %% Create a matrix with the indexes of 5 subsets when n=100, p=3.
        % Also inform about the time taken for the operation.
+       
        ncomb = bc(1000,5);
        C = subsets(500000,1000,5,ncomb,1);
 %}
@@ -97,18 +98,22 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
        % Create a matrix with the indexes of 5 subsets when n=100, p=3.
        % As the previous example, but in addition returns in nselected the
        % number of combinations.
+       
        ncomb = bc(1000,5);
        [C , nselected] = subsets(500000,1000,5,ncomb,1);
 %}
 
 %{
         % Extract 80000 subsets and check they are unique.
+        
         C=subsets(80000,100,5);
         size(unique(C,'rows'))
 %}
 
 %{
     %% Sampling without replacement and the hypergeometric distribution.
+
+    clear all; close all;
 
     % parameters
     n      = 100;
@@ -243,6 +248,8 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 
 %{
     %% subset use in clustering or mixture modeling simulations.
+
+    clear all; close all;
 
     % parameters
     n      = 100;       %number of units
@@ -383,7 +390,7 @@ else
             if isscalar(method)
                 s=randsampleFS(n,p);
             else
-                 s=randsampleFS(n,p,method);
+                s=randsampleFS(n,p,method);
             end
         end
         C(i,:)=s;
