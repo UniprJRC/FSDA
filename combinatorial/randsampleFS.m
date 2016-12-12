@@ -33,10 +33,10 @@ function y = randsampleFS(n,k,method)
 %
 % More About:
 %
-%   The method=0 (default option) just uses MATLAB function randperm. In older
-%   MATLAB releases randperm was slower than FSDA function shuffling, which is
-%   used in method 1 (for example, in R2009a - MATLAB 7.8 - randperm was at
-%   least 50% slower).
+%   The method=0 (default option) uses MATLAB function randperm. In older
+%   MATLAB releases randperm was slower than FSDA function shuffling, which
+%   is used in method 1 (for example, in R2009a - MATLAB 7.8 - randperm was
+%   at least 50% slower).
 %
 %   If method=1 the approach depends on the population and sample sizes:
 %   - if $n < 1000$ and $k < n/(10 + 0.007n)$, that is if the population is
