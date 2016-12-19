@@ -372,9 +372,9 @@ quant=[0.99;0.999;0.9999;0.99999;0.01;0.5];
 
 % Compute Minimum Mahalanobis Distance for each step of the search
 if n<5000
-    [mmd,Un,bb] = FSMmmd(Y,bs,'init',init,'nocheck',1);
+    [mmd,Un,bb] = FSMmmd(Y,bs,'init',init,'nocheck',1,'msg',msg);
 else
-    [mmd,Un] = FSMmmd(Y,bs,'init',init,'nocheck',1);
+    [mmd,Un] = FSMmmd(Y,bs,'init',init,'nocheck',1,'msg',msg);
 end
 
 if isnan(mmd)
@@ -976,14 +976,14 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             strmin='Exceedance based on Bonferroni threshold';
             annotation(figure1,'textbox',[0.5 0.90 kx ky],'String',strmin,...
                 PrVaCell{:});
-            msg=['$d_{min}(' num2str(mmd(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
-            annotation(figure1,'textbox',[0.5 0.80 kx ky],'String',msg,PrVaCell{:},'FontSize',fsizeannot);
+            msgtxt=['$d_{min}(' num2str(mmd(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
+            annotation(figure1,'textbox',[0.5 0.80 kx ky],'String',msgtxt,PrVaCell{:},'FontSize',fsizeannot);
         else
             strmin='Exceedance based on user supplied threshold';
             annotation(figure1,'textbox',[0.5 0.90 kx ky],'String',strmin,...
                 PrVaCell{:},'FontSize',fsizeannot);
-            msg=['$d_{min}(' num2str(mmd(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
-            annotation(figure1,'textbox',[0.5 0.80 kx ky],'String',msg,PrVaCell{:},'FontSize',fsizeannot);
+            msgtxt=['$d_{min}(' num2str(mmd(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
+            annotation(figure1,'textbox',[0.5 0.80 kx ky],'String',msgtxt,PrVaCell{:},'FontSize',fsizeannot);
         end
         if signal==1
             stem(mmd(i,1),mmd(i,2),'LineWidth',1,...
@@ -1293,14 +1293,16 @@ loc=mean(Y(goodobs,:));
 cova=cov(Y(goodobs,:));
 md=mahalFS(Y,loc,cova);
 %% Scatter plot matrix with the outliers shown with a different symbol
-if v<=20
+if v<=15
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
     figure('Tag','pl_spm_outliers');
     spmplot(Y,group,plo);
     set(gcf,'Name','FSM: scatter plot matrix with outliers highlighted');
 end
 else
-    disp('There are more than 20 variables, spmplot is not shown')
+    if msg
+        disp('There are more than 15 variables, spmplot is not shown')
+    end
 end
 %% Structure returned by function FSM
 % If you wish that the output also contains the list of units not declared
