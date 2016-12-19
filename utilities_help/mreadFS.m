@@ -1,5 +1,5 @@
 function out=mreadFS(file,varargin)
-%Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files 
+%Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files
 %
 %<a href="matlab: docsearchFS('mreadFS')">Link to the help function</a>
 %
@@ -62,7 +62,7 @@ function out=mreadFS(file,varargin)
 %                 1st column = name.
 %                 2nd column = short description.
 %                 3rd column = type indication (Scalar, matrix, strucutre, ...).
-%                 4th column = string containing long description. 
+%                 4th column = string containing long description.
 %                 5th column = example (if present).
 %                 6th column = Data type (ex. Single |Double).
 %                 7th column = this column is empty unless 3rd column
@@ -85,7 +85,7 @@ function out=mreadFS(file,varargin)
 %                 file will appear under the section "More About".
 %out.Acknowledgements = Acknowledgements. String. String containing what in the HTML
 %                 file will appear under the section "Acknowledgements".
-%out.References = References. cell. Cell of length r containing the 
+%out.References = References. cell. Cell of length r containing the
 %                 references.
 %   out.SeeAlso = References. cell. Cell of length s containing the
 %                 references to linked files.
@@ -689,7 +689,7 @@ else
 end
 
 
-% listOptArgs = list which contains all optional arguments (8 columns)
+% listOptArgs = list which contains all optional arguments (7 columns)
 % The first column will contain the names (just one word)
 % The second column will contain the title of the option (the first
 % sentence which finishes with a full stop sign)
@@ -704,7 +704,7 @@ end
 % If the third column contains the string struct then the content of
 % value/description of the struct input argument will appear in the seventh
 % column else the seventh column will be empty
-listOptArgs=cell(length(ini),8);
+listOptArgs=cell(length(ini),7);
 
 ij=1;
 for i=1:length(ini)
@@ -794,21 +794,23 @@ for i=1:length(ini)
             % Just in case take only the very last example
             CheckExample=CheckExample(end);
             Datatypes=regexp(descrlong,'Data Types -','once');
-            listOptArgs{ij,4}=descrlong(1:CheckExample-1);
+            
             
             % The first word of example code must be embedded around tags <code> </code>
             examplecode=descrlong(CheckExample+9:Datatypes-1);
-            % Store string containing the examples before adding
-            % HTML strings '<code>'  '</code>
-            listOptArgs{ij,7}=examplecode;
-            
-            posspace=regexp(examplecode,'      ');
-            examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
-            listOptArgs{ij,5}=strtrim(examplecode);
+            % Store string containing the examples
+            listOptArgs{ij,5}=examplecode;
             listOptArgs{ij,6}=descrlong(Datatypes+13:end);
+            descrlong=descrlong(1:CheckExample-1);
+        end
+        
+        if ~isempty(strfind(listOptArgs{ij,3},'tructure'))
+            [listStructureArgs]=formatHTMLstructure(descrlong,listOptArgs{ij,1});
+            listOptArgs{ij,7}=listStructureArgs;
         else
             listOptArgs{ij,4}=descrlong;
         end
+        
         
         ij=ij+1;
     end
@@ -1174,16 +1176,16 @@ for j=1:length(sintax)
     
 end
 
-    % Now check whether the first column of cell listEx contains the string interactive_example
-    NumOfInterEx=1;
-    for i=1:size(listEx,1)
-        [StartInteractive,EndInteractive]=regexp(listEx{i,1},'[Ii]nteractive_example.');
-        if ~isempty(StartInteractive)
-            StringToReplace=listEx{i,1};
-                listEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
-            NumOfInterEx=NumOfInterEx+1;
-        end
+% Now check whether the first column of cell listEx contains the string interactive_example
+NumOfInterEx=1;
+for i=1:size(listEx,1)
+    [StartInteractive,EndInteractive]=regexp(listEx{i,1},'[Ii]nteractive_example.');
+    if ~isempty(StartInteractive)
+        StringToReplace=listEx{i,1};
+        listEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
+        NumOfInterEx=NumOfInterEx+1;
     end
+end
 
 if strcmp(Display,'iter-detailed')
     disp('Detailed information about all the examples')
@@ -1274,7 +1276,7 @@ if length(startIndexEx)>length(sintax)
         [StartInteractive,EndInteractive]=regexp(listExtraEx{i,1},'[Ii]nteractive_example.');
         if ~isempty(StartInteractive)
             StringToReplace=listExtraEx{i,1};
-                listExtraEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
+            listExtraEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
             NumOfInterEx=NumOfInterEx+1;
         end
     end
@@ -1302,6 +1304,8 @@ end
 % string  Data Types -
 % The seventh col will contain '1' or '0' according to the fact that the
 % associated argument is required or optional
+% The eigth col will contain a cell with the value/desctiption
+% arguments of the structure
 
 listInpArgs=cell(nTOTargin,8);
 for i=1:nTOTargin
@@ -1435,13 +1439,19 @@ for i=1:nTOTargin
             listInpArgs{i,5}='';
             %TODO5
         end
+        % Extract what comes before the description of the fields of the
+        % structure
+        [iniA]=regexp(descrlong,[ inpi '\.\w*\s*=']);
+        if ~isempty(iniA)
+            
+            descrlongini=descrlong(1:iniA(1)-1);
+            listInpArgs{i,4}=descrlongini;
+            descrlong=descrlong(iniA(1):end);
+        end
+        % Include the fields of the structure in the 8th column
+        [listStructureArgs]=formatHTMLstructure(descrlong,inpi);
+        listInpArgs{i,8}=listStructureArgs;
         
-        [descrlongHTML,listStructureArgs]=formatHTMLstructure(descrlong,inpi);
-        listInpArgs{i,4}=descrlongHTML;
-        listInpArgs{i,7}=descrlong;
-        
-            listInpArgs{i,8}=listStructureArgs;
-
     else
         
         
@@ -1454,10 +1464,10 @@ for i=1:nTOTargin
                 descrlong=descrlong(1:Datatypes-1);
                 
                 
-                listInpArgs{i,7}=descrlong;
+                listInpArgs{i,4}=descrlong;
             else
                 
-                listInpArgs{i,7}=descrlong;
+                listInpArgs{i,4}=descrlong;
                 if strcmp(Display,'iter-detailed')
                     warning('FSDA:publishFS:MissingDataType',['Input argument ''' inpi ''' does not contain DataType line, by default string  ''single| double'' has been added'])
                 end
@@ -1473,7 +1483,7 @@ for i=1:nTOTargin
             if ~isempty(CheckExample)
                 Datatypes=regexp(descrlong,'Data Types -','once');
                 descrlonginp=descrlong(1:CheckExample-1);
-                listInpArgs{i,7}=descrlonginp;
+                listInpArgs{i,4}=descrlonginp;
                 
                 % The first word of example code must be embedded around tags <code> </code>
                 examplecode=descrlong(CheckExample+10:Datatypes-1);
@@ -1484,7 +1494,6 @@ for i=1:nTOTargin
                 
             else
                 listInpArgs{i,4}=descrlong;
-                listInpArgs{i,7}=descrlong;
                 warning('FSDA:publishFS:MissingExample',['Optional input argument ''' inpi ''' does not contain an Example'])
                 
             end
@@ -1493,7 +1502,7 @@ for i=1:nTOTargin
     end
     
     
-
+    
 end
 
 
@@ -1600,7 +1609,7 @@ if nargout>0
                 MoreAbout(posPercentageSigns)=[];
                 MoreAboutHTML=MoreAbout;
             else
-                                MoreAboutHTML='';
+                MoreAboutHTML='';
                 inipointMoreAbout=Inf;
             end
             
@@ -1648,7 +1657,7 @@ if nargout>0
             [listStructureArgs]=formatHTMLstructure(descrioutput,outi);
             listOutArgs{i,5}=listStructureArgs;
             
-
+            
             
         else
             % Check if string descrioutput contains the words 'which contains' or
@@ -1732,7 +1741,7 @@ else
         MoreAboutHTML=MoreAbout;
     else
         MoreAbout='';
-         MoreAboutHTML='';
+        MoreAboutHTML='';
     end
     % Remove from string descri leading and trailing white spaces
     
@@ -1929,16 +1938,11 @@ out.purpose=purpose;
 % Save description
 out.description=gendesc;
 % Save input arguments (required +optional)
-listInpArgs(:,4)=listInpArgs(:,7);
 listInpArgs(:,7)={'0'};
 listInpArgs(1:nREQargin,7)={'1'};
 out.InpArgs=listInpArgs;
 
-% Save optional input arguments of the kind name/pairs
-if size(listOptArgs,2)==8
-    listOptArgs(:,5)=listOptArgs(:,7);
-    listOptArgs=listOptArgs(:,[1:6 8]);
-end
+
 out.OptArgs=listOptArgs;
 % Save output arguments
 out.OutArgs=listOutArgs;

@@ -825,6 +825,14 @@ for i=1:nTOTargin
         example='';
     end
     
+    if ~isempty(strfind(listInpArgs{i,3},'tructure'))
+        FormattedInpArg=formatHTMLtable(listInpArgs{i,8});
+            if ~isempty(listInpArgs{i,4})
+                FormattedInpArg=[listInpArgs{i,4} '<p>'  FormattedInpArg '</p>'];
+            end
+    else
+         FormattedInpArg=listInpArgs{i,4};
+    end
     reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
         ' <div id="inputarg_' listInpArgs{i,1} '" class="clearfix">\r'...
         ' </div>\r'...
@@ -834,7 +842,7 @@ for i=1:nTOTargin
         ' <span class="argument_name"><code>' listInpArgs{i,1} '</code> &#8212; ']) listInpArgs{i,2} sprintf([' </span> \r'...  % &#8212; = long dash
         ' </a><span class="example_desc">']) listInpArgs{i,3} sprintf(['</span></span></h3>\r'...
         ' <div class="collapse">\r'...
-        ' <p>']) listInpArgs{i,4} sprintf('</p>\r') ...
+        ' <p>']) FormattedInpArg sprintf('</p>\r') ...
         example ...
         sprintf([' <p class="datatypelist"><strong>\r'...
         ' Data Types: </strong><code>' listInpArgs{i,6}  '</code></p>\r'...
@@ -918,12 +926,12 @@ else
             longdesc=listOptArgs{i,7};
             
             %    [inistructfield,finstructfield]=regexp(longdesc,'\s{8,18}\w*\s{0,8}=');
-            [longdescription]=formatHTMLtable(longdesc,nameoptarg);
-            
+            [longdescription]=formatHTMLtable(longdesc);
+            if ~isempty(listOptArgs{i,4})
+                longdescription=[longdescription '<p>' listOptArgs{i,4} '</p>'];
+            end
         else
-            longdescriptionHTML=formatHTMLwithMATHJAX(listOptArgs{i,4});
-            
-            longdescription=longdescriptionHTML;
+            longdescription=formatHTMLwithMATHJAX(listOptArgs{i,4});
         end
         % datatype = type of data for that particular option
         %     examplecode=['''Display'',''final'''];

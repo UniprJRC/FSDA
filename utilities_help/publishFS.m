@@ -85,9 +85,9 @@ function out=publishFS(file,varargin)
 %                 2nd column = short description
 %                 3rd column = type indication (Scalar, matrix, ...)
 %                 4th column = string containing long description. If the
-%                 input argument is a struct, columns 2 and 3 will be empty and all
+%                 input argument is a struct, all
 %                 information about the fields of the structure will be
-%                 included in the 4th column.
+%                 included in the 8th column.
 %                 5th column = example (if present)
 %                 6th column = Data type
 %                 7th column = string contaning '1' if the argument is
