@@ -79,6 +79,8 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
     disp(wpdf);
 %}
 
+%% Beginning of code
+
 n2  = N-X;
 m2  = M-K;
 d   = W*(K-X) + m2 - n2;
@@ -91,3 +93,5 @@ end
 Wpdf = bc1 * bc2 * d * sum1;
 
 end
+
+%FScategory:UTISTAT
