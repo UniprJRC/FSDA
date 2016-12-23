@@ -198,6 +198,7 @@ Y = chkinputM(Y,nnargin,vvarargin);
 % rows(Y)
 [n,v]=size(Y);
 
+verLessThan2016b=verLessThan('matlab','9.1');
 
 % Input parameters checking
 
@@ -385,7 +386,8 @@ else
         % If required, store units forming subset at each step
         if (mm>=init1) && nargout==3
             
-            if intersect(mm,bsbsteps)==mm
+            if min(abs(mm-bsbsteps))==0
+                % intersect(mm,bsbsteps)==mm
                 if mm<=percn
                     BB(bsb,ij)=bsb;
                 else
@@ -404,7 +406,11 @@ else
         % Ym = n-by-v matrix containing deviations from the means computed
         % using units forming subset
         % Ym=Y-one*ym;
-        Ym = bsxfun(@minus,Y, ym);
+        if verLessThan2016b
+         Ym = bsxfun(@minus,Y, ym);
+        else
+         Ym = Y - ym;
+        end
         
         if mm-lunit>v+1
             
