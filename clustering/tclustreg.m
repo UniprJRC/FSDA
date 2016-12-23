@@ -37,8 +37,14 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            Data Types - single|double
 %
 %   alpha2 : Second-level trimming. Scalar.
-%            alpha2 is a value between 0 and 0.5, usually smaller than
-%            alpha1. If alpha2=0 there is no second-level trimming.
+%            alpha2 is a value between [0 and 1).
+%            - If alpha2 is in the interval [0 0.5] it indicates the
+%               proportion of units subject to second level trimming. In
+%               particular, if alpha2=0 there is no second-level trimming.
+%               Note that alpha2 is usually smaller than alpha1.
+%            -  If alpha2 is in the interval (0.5 1) it indicates a
+%               Bonferronized confidence level to be used to identify the
+%               units subject to second level trimming.
 %            Data Types - single|double
 %
 %
@@ -50,17 +56,45 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            Example - 'intercept',1
 %            Data Types - double
 %
-%   mixt   : mixture modelling or crisp assignmen. Scalar.
-%            Option mixt specifies whether mixture modelling or crisp
-%            assignment has to be used:
-%            mixt = 2 is for mixture modelling;
-%            mixt = 0 is for crisp assignment.
-%            In mixture modelling, the likelihood is given by
-%           \prod_{i=1}^n \left[ \sum_{j=1}^k \pi_j \phi (x_i;\theta_j)  \right].
-%            In crisp assignment, the  likelihood is given by
-%           \prod_{j=1}^k  \prod_{i\in R_j} \phi (x_i;\theta_j)
-%            Example - 'mixt',0
-%            Data Types - single | double
+%       mixt  : mixture modelling or crisp assignment. Scalar.
+%               Option mixt specifies whether mixture modelling or crisp
+%               assignment approach to model based clustering must be used.
+%               In the case of mixture modelling parameter mixt also
+%               controls which is the criterior to find the untrimmed units
+%               in each step of the maximization
+%               If mixt >=1 mixture modelling is assumed else crisp
+%               assignment.
+%                In mixture modelling the likelihood is given by
+%                \[
+%                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j),
+%                \]
+%               while in crisp assignment the likelihood is given by
+%               \[
+%               \prod_{j=1}^k   \prod _{i\in R_j} \pi_j  \phi (y_i \; x_i' , \beta_j , \sigma_j),
+%               \]
+%               where $R_j$ contains the indexes of the observations which
+%               are assigned to group $j$,
+%               Remark - if mixt>=1 previous parameter equalweights is
+%               automatically set to 1.
+%               Parameter mixt also controls the criterion to select the units to trim
+%               if mixt == 2 the h units are those which give the largest
+%               contribution to the likelihood that is the h largest
+%               values of
+%               \[
+%                   \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j)   \qquad
+%                    i=1, 2, ..., n
+%               \]
+%               elseif mixt==1 the criterion to select the h units is
+%               exactly the same as the one which is used in crisp
+%               assignment. That is: the n units are allocated to a
+%               cluster according to criterion
+%               \[
+%                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i \; x_i' , \beta_j , \sigma_j)
+%               \]
+%               and then these n numbers are ordered and the units
+%               associated with the largest h numbers are untrimmed.
+%               Example - 'mixt',1
+%               Data Types - single | double
 %equalweights : cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
@@ -128,17 +162,20 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %            Data Types - double
 %      we: Vector of observation weights. Vector. A vector of size n-by-1
 %          containing the weights to apply to each observation. Default
-%          value: vector of ones.
+%          value is  a vector of ones.
 %            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
 %            Data Types - double
-%        msg  : Level of output to display. Scalar.
-%               Scalar which controls whether to display or not messages
-%               on the screen. If msg==1 (default) messages are displayed
-%               on the screen about estimated time to compute the estimator
-%               or the number of subsets in which there was no convergence
-%               else no message is displayed on the screen
-%                 Example - 'msg',1
-%                 Data Types - single | double
+%    msg  : Level of output to display. Scalar.
+%           Scalar which controls whether to display or not messages
+%           on the screen.
+%           If msg==0 nothing is displayed on the screen.
+%           If msg==1 (default) messages are displayed
+%           on the screen about estimated time to compute the estimator
+%           or the number of subsets in which there was no convergence.
+%           If msg==2 detailed messages are displayed. For example the
+%           information at iteration level.
+%             Example - 'msg',1
+%             Data Types - single | double
 %
 %  Output:
 %
@@ -171,7 +208,13 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alpha1,alpha2,varargin)
 %   out.trim2levelopt       = $n$ vector containing the 2nd level trimmed units (0) and
 %                           2nd level untrimmed (1) units.
 %   out.postprob       = $n$ vector containing the final posterior probability
-%    out.C       = initial subsets extracted
+%
+%  Optional Output:
+%
+%            C     : Indexes of extracted subsamples. Matrix.
+%                    Matrix of size nsamp-by-k*p containing (in the
+%                    rows) the indices of the subsamples extracted for
+%                    computing the estimate.
 %
 % See also: tclust, tkmeans, estepFS
 %
@@ -441,7 +484,6 @@ if bench == 1
     w4trim_all = NaN(300,10,n);
 end
 
-seq=1:n;
 
 % THINNING: check if wtrim user option is equal to 4. In such a case,
 % thinning is applied just at the very beginning and on the full dataset.
@@ -475,12 +517,12 @@ if nargin < 4 || isempty(restrfact) || ~isnumeric(restrfact)
 end
 
 % checks on alpha1 and alpha2
-if alpha1<0
-    error('FSDA:tclust:WrongAlpha','alpha1 must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
+if alpha1 < 0
+    error('FSDA:tclustreg:WrongAlpha1','alpha1 must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
 end
 
-if alpha2<0
-    error('FSDA:tclust:WrongAlpha','alpha2 must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
+if alpha2 < 0 || alpha2 >=1
+    error('FSDA:tclustreg:WrongAlpha2','alpha2 must a scalar in the interval [0 1)')
 end
 
 % nsamp option: if it is not set by the user, it has to be properly initialized
@@ -554,7 +596,7 @@ seqk=1:k;
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'Ksteps',Kstepsdef,...
     'we',wedef,'wtrim',wtrimdef,...
-    'msg',0,'plots',1,'equalweights',1);
+    'msg',1,'plots',1,'equalweights',1);
 
 if nargin > 6
     
@@ -588,7 +630,7 @@ if nargin > 6
         disp('Number of subsets to extract greater than (n k). It is set to (n k)');
         options.nsamp=0;
     elseif  options.nsamp<0
-        error('FSDA:tclust:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
+        error('FSDA:tclustreg:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
     
     % Check restriction factor
@@ -695,18 +737,20 @@ mixt = options.mixt;
 if msg == 1
     switch mixt
         case 0
-            %ClaLik + Crisp
-            disp('ClaLik + Crisp');
+            % Classification likelihood.
+            % To select the h untrimmed units, each unit is assigned to a
+            % group and then we take the h best maxima
+            disp('ClaLik with untrimmed units selected using crisp criterion');
         case 1
-            % each unit is assigned to a group and then we take the h
-            % best maxima
-            %ClaLik + PostProb
-            disp('ClaLik + PostProb');
+            % Mixture likelihood.
+            % To select the h untrimmed units, each unit is assigned to a
+            % group and then we take the h best maxima
+            disp('MixLik with untrimmed units selected using crisp criterion');
         case 2
-            % we take the units with the h largest contributions to the
-            % likelihood
-            %MixLik + PostProb
-            disp('MixLik + PostProb');
+            % Mixture likelihood.
+            % To select the h untrimmed units we take those with h largest
+            % contributions to the likelihood
+            disp('MixLik with untrimmed units selected using h largest lik contributions');
     end
 end
 
@@ -742,6 +786,15 @@ end
 
 %% Initialize structures
 
+% Initialise and start timer.
+tsampling = ceil(min(nselected/5 , 10));
+time=zeros(tsampling,1);
+
+% Store the indices in varargout
+if nargout==2
+    varargout={C};
+end
+
 ll                  = zeros(n,k);
 sigmaini            = ones(1,k);
 %initialize the output of tclustreg, i.e. the parameters obtained in the best (optimum) subset
@@ -771,21 +824,26 @@ trim2levelopt       = ones(n,1);
 %all the n observations (trimmed observations included) to one of the k
 %groups  in the optimal subset
 indmaxopt           = zeros(n,1);
-if mixt ==2
-    postprobopt     = zeros(n,k);
-end
+
+postprobopt     = zeros(n,k);
 
 
 
 %%  Random starts
-for iter =1:nselected
+for i =1:nselected
+    
+    if msg==1
+        if i <= tsampling
+            tstart = tic;
+        end
+    end
     
     % lessthankgroups will be equal 1 if for a particlar subset less
     % than k groups are found
     lessthankgroups=0;
     
-    if msg == 1
-        disp(['Iteration ' num2str(iter)])
+    if msg == 2
+        disp(['Iteration ' num2str(i)])
     end
     
     % Beta = matrix of beta coefficients (j-col is referred to j-th
@@ -821,7 +879,7 @@ for iter =1:nselected
     for j = 1:k
         ilow   = (j-1)*p+1;
         iup    = j*p;
-        index  = C(iter,:);
+        index  = C(i,:);
         selj   = index(ilow:iup);
         Xb     = X(selj,:);
         yb     = y(selj,:);
@@ -870,14 +928,14 @@ for iter =1:nselected
     %(disc) among the k groups, as in point 2.1 of appendix of Garcia Escudero et al.
     %(2010). In the case of mixture modelling we need an estep to compute the log of the sum
     %of the log-likelihood (disc) and the normalized log-likelihood (postprob).
-    if mixt == 2
-        [~,postprob,disc] = estepFS(ll);
+    if mixt > 0
+        [~,postprob,~] = estepFS(ll);
         % indmax assigns each observation to the group with the largest posterior probability
         [~,indmax]= max(postprob,[],2);
         
-    elseif mixt == 0
+    else %  mixt == 0
         postprob = ones(n,k);
-        [disc,indmax] = max(ll,[],2);
+        [~,indmax] = max(ll,[],2);
     end
     
     
@@ -919,7 +977,6 @@ for iter =1:nselected
                 % beta of the group is not zero
                 
                 %computation of weights for trimmed and non-trimmed units
-                %????????????????????? TO CHECL
                 if  length(ijj)>thinning_th
                     % retention probabilities based on density
                     % estimated on the component predicted values
@@ -934,7 +991,7 @@ for iter =1:nselected
                     w4trim(ijj) = pretain;
                     
                 else
-                    %                          error('Qua Non ho capito')
+                    %  Do not do thinning if the group size is small
                     check_we_groups(jj) = 1;
                     id_obs_in_groups_no_weight(:,jj) = groupj;
                 end
@@ -1028,7 +1085,7 @@ for iter =1:nselected
     for cstep = 1:Ksteps
         
         %not_empty_g = zeros(1,k);
-        if all(isnan(Beta(:)))
+        if sum(isnan(Beta(:)))>0
             break
         else
             
@@ -1046,16 +1103,20 @@ for iter =1:nselected
             end
             
             
-            %In the case of crisp assignement we compute the maximum value of the log-likelihood
-            %(disc) among the k groups, as in point 2.1 of appendix of Garcia Escudero et al.
-            %(2010). In the case of mixture modelling we need an estep to compute the log of the sum
-            %of the log-likelihood (disc) and the normalized log-likelihood (postprob).
             if mixt == 2
+                %In the case of mixture modelling we need an estep to compute the log of the sum
+                %of the log-likelihood (disc) and the normalized log-likelihood (postprob).
                 [~,postprob,disc] = estepFS(ll);
                 % indmax assigns each observation to the group with the largest posterior probability
                 [~,indmax]= max(postprob,[],2);
                 
-            elseif mixt == 0
+            else
+                % we are in the case mixt=0 or mixt=1
+                %We compute the maximum value of the log-likelihood
+                %(disc) among the k groups, as in point 2.1 of appendix of Garcia Escudero et al.
+                %(2010)
+                
+                
                 [disc,indmax] = max(ll,[],2);
             end
             
@@ -1099,49 +1160,73 @@ for iter =1:nselected
                 % find indices of units belonging to groupj
                 groupjind = find(indmax==jj);
                 
-                %check if a group is populated
-                if length(groupjind) >p+2
-                    
-                    Xjnointercept  = X(groupjind,intercept+1:end);
-                    Xj=X(groupjind,:);
+                Xjnointercept  = X(groupjind,intercept+1:end);
+                Xj=X(groupjind,:);
+                njj=size(Xj,1);
+                
+                if alpha2>0.5
+                    hj=njj;
+                else
+                    % hjj = number of units to retan for group j
+                    % This is simply h referred to group j
+                    hj = floor(njj*(1-alpha2));
+                end
+                %check if a group is populated, that is check if size
+                %of group after second level trimming is not smaller
+                %than p and that number of units belonging to group
+                %before second level trimming has a size at least
+                %greater than p+2 (to run the FS)
+                if hj >=p && njj>p+2
                     
                     yj  = y(groupjind);
                     w4betaj=w4beta(groupjind,jj);
                     w4betaj=w4betaj/mean(w4betaj);
                     
-                    njj=size(Xj,1);
-                    
-                    
-                    % hjj = number of units to retan for group j
-                    % This is simply h referred to group j
-                    hj = floor(njj*(1-alpha2));
-                    
-                    
-                    %The MCD is applied only when v=1, because in this case it is faster
-                    %than the FS.
-                    if p-intercept==1
+                    if njj/(p-intercept)>10 && alpha2>0
                         
-                        [~,REW]      = mcd(Xjnointercept,'bdp',alpha2,'msg',0);
-                        %R2016a has introduced robustcov, which could be used here as below.
-                        %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
-                        %[~,~,mah,~,~] = robustcov(inliers,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
-                        %plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b');
-                        %close;
-                        [~,indmdsor] = sort(REW.md);
-                        % Trimmed units (after second level
-                        % trimming)
-                        % indmax for second level trimmed units is
-                        % set to -1
-                        trimj=indmdsor(hj+1:end);
-                        
+                        %The MCD is applied only when p=1, because in this case it is faster
+                        %than the FS.
+                        if p-intercept==11
+                            [~,REW]      = mcd(Xjnointercept,'msg',0,'conflev',1-(1-alpha2)/njj);
+                            %R2016a has introduced robustcov, which could be used here as below.
+                            %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
+                            %[~,~,mah,~,~] = robustcov(inliers,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
+                            %plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b');
+                            %close;
+                            if alpha2>0.5
+                                trimj=REW.outliers;
+                            else
+                                [~,indmdsor] = sort(REW.md);
+                                % Trimmed units (after second level
+                                % trimming)
+                                % indmax for second level trimmed units is
+                                % set to -1
+                                trimj=indmdsor(hj+1:end);
+                            end
+                        else
+                            % Lines below are to find the second trimming points id_trim with
+                            % the Forward Search rather than the MCD, using function FSMmmd
+                            % Function FSMbsb is consderably faster than mcd when v>1.
+                            % BBsel contains a NAN for the units
+                            % not belonging to subset in step hj
+                            if alpha2>0.5
+                                % 'init',round(njj*0.9)
+                                outj=FSM(Xjnointercept,'nocheck',1,'init',round(njj*0.9),'msg',0,'bonflev',alpha2,'plots',0);
+                                
+                                trimj=outj.outliers;
+                                % disp(trimj)
+                                if isnan(trimj)
+                                    trimj=[];
+                                end
+                            else
+                                [~,BBsel]=FSMbsb(Xjnointercept,0,'bsbsteps',hj,'init',hj,'nocheck',1,'msg',0);
+                                seqj=1:njj;
+                                trimj=seqj(isnan(BBsel));
+                            end
+                            
+                        end
                     else
-                        % Lines below are to find the second trimming points id_trim with
-                        % the Forward Search rather than the MCD, using function FSMmmd
-                        % Function FSMbsb is consderably faster than mcd when v>1.
-                        % BBsel contains a NAN for the units
-                        % not belonging to subset in step hj
-                        [~,BBsel]=FSMbsb(Xjnointercept,0,'bsbsteps',hj,'init',hj,'nocheck',1,'msg',0);
-                        trimj=seq(isnan(BBsel));
+                        trimj=[];
                     end
                     
                     % indmax for second level trimmed units is
@@ -1192,23 +1277,6 @@ for iter =1:nselected
                 break
             end
             
-            % ?????????????????????????
-            %for computing the objective function, if a group is empty, beta and sigma are
-            %computed as mean of the other groups. In order to be passed to the next
-            %refining step, after having computed the objective function, they will be set
-            %at NaN.
-            for j=1:k
-                if isnan(sigmaini(j))
-                    
-                    disp('sigmaininan')
-                    error('nansigma')
-                end
-                if isnan(Beta(:,j))
-                    
-                    disp('betanan')
-                    error('betanan')
-                end
-            end
             
             % Apply eigenvalue restrictions on sigmas from
             % regression
@@ -1247,7 +1315,8 @@ for iter =1:nselected
                 end
                 
                 
-            elseif mixt == 2
+            else
+                % compute mixture likelihood
                 
                 log_lh=NaN(sum(niini),size(not_empty_g,2));
                 % Select all units not trimmed and not thinned
@@ -1279,10 +1348,10 @@ for iter =1:nselected
         
         %monitoring of obj, sigma and w4trim
         if bench == 1
-            obj_all(iter,cstep) = obj;
-            sigmaini_all(iter,cstep,:) = sigmaini;
-            w4trim_all(iter,cstep,:) = w4trim;
-            Beta_all(iter,cstep,:,:)=Beta;
+            obj_all(i,cstep) = obj;
+            sigmaini_all(i,cstep,:) = sigmaini;
+            w4trim_all(i,cstep,:) = w4trim;
+            Beta_all(i,cstep,:,:)=Beta;
             
             %                     if p==1+intercept
             %                         figure;
@@ -1328,7 +1397,16 @@ for iter =1:nselected
         end
         
     end
-    %end
+    
+    if msg==1
+        if i <= tsampling
+            % sampling time until step tsampling
+            time(i)=toc(tstart);
+        elseif i==tsampling+1
+            % stop sampling and print the estimated time
+            fprintf('Total estimated time to complete tclustreg: %5.2f seconds \n', nselected*median(time));
+        end
+    end
 end % end of loop over the nsamp subsets
 
 
@@ -1402,7 +1480,7 @@ out.asig_obs_to_group_before_tr   = indmax_before_tropt;
 out.trim1levelopt       = trim1levelopt;
 out.trim2levelopt           = trim2levelopt;
 out.weopt               =weopt;
-out.C                   =C;
+
 %     out.asig1               = asig1;
 %     out.asig2               = asig2;
 %     out.trim2levelopt       = trim2level_01opt;
@@ -1452,9 +1530,11 @@ if plots
         fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
         gca(fh);
         hold on;
-        xlabel('X');
-        ylabel('y');
-        title({ ['TclustReg clustering: ' 'mixt=' num2str(mixt) ' - wtrim=' num2str(wtrim)] },'Fontsize',12);
+        %         xlabel('X');
+        %         ylabel('y');
+        %    title({ ['TclustReg clustering: ' 'mixt=' num2str(mixt) ' - wtrim=' num2str(wtrim)] },'Fontsize',12);
+        title(['mixt=' num2str(mixt) ' b=(' num2str(out.bopt(end,:)) ') c=' num2str(restrfact)...
+            ' \alpha_1=' num2str(alpha1) ' \alpha_2=' num2str(alpha2) ' obj=' num2str(out.vopt) ' wtrim=' num2str(wtrim)])
         
         
         for jj = 1:k
