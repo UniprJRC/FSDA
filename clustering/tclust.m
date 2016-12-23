@@ -57,10 +57,10 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               If nsamp has k*(v+1) columns the initial centroids and covariance
 %               matrices in iteration i are computed as follows:
 %               X1=X(nsamp(i,:),:);
-%               mean(X1(1:v+1,:)) contains the initial centroid for group  1;  
-%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1;                
-%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2; 
-%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2;                
+%               mean(X1(1:v+1,:)) contains the initial centroid for group  1;
+%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1;
+%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2;
+%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2;
 %               ...;
 %               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k;
 %               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k.
@@ -172,10 +172,13 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               Data Types - single | double | matrix | string
 %        msg  : Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
-%               on the screen. If msg==1 (default) messages are displayed
+%               on the screen.
+%               If msg==0 nothing is displayed on the screen.
+%               If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
-%               or the number of subsets in which there was no convergence
-%               else no message is displayed on the screen
+%               or the number of subsets in which there was no convergence.
+%               If msg==2 detailed messages are displayed. For example the
+%               information at iteration level.
 %                 Example - 'msg',1
 %                 Data Types - single | double
 %      nocheck: Check input arguments. Scalar.
@@ -888,13 +891,37 @@ else
     userepmat=1;
 end
 
+if msg == 1
+    switch mixt
+        case 0
+            % Classification likelihood.
+            % To select the h untrimmed units, each unit is assigned to a
+            % group and then we take the h best maxima
+            disp('ClaLik with untrimmed units selected using crisp criterion');
+        case 1
+            % Mixture likelihood.
+            % To select the h untrimmed units, each unit is assigned to a
+            % group and then we take the h best maxima
+            disp('MixLik with untrimmed units selected using crisp criterion');
+        case 2
+            % Mixture likelihood.
+            % To select the h untrimmed units we take those with h largest
+            % contributions to the likelihood
+            disp('MixLik with untrimmed units selected using h largest lik contributions');
+    end
+end
 
-%% Core of tclust function
+%%  Random starts
 for i=1:nselected
+    
     if msg==1
         if i <= tsampling
             tstart = tic;
         end
+    end
+    
+    if msg == 2
+        disp(['Iteration ' num2str(i)])
     end
     
     if startv1
