@@ -5,7 +5,7 @@ function [out]=FSM(Y,varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -17,7 +17,7 @@ function [out]=FSM(Y,varargin)
 % Optional input arguments:
 %
 %          m0   : Initial subset size or vector which contains the list of the units forming
-%                 initial subset. Scalar or vector. 
+%                 initial subset. Scalar or vector.
 %                 The default is to start the search with v+1 units which
 %                 consisting of those observations which are not outlying
 %                 on any scatterplot, found as the intersection of all
@@ -25,7 +25,7 @@ function [out]=FSM(Y,varargin)
 %                 specified portion of the data (Riani and Zani 1997) and
 %                 inside the univariate boxplot. Remark: if m0 is a vector
 %                 option below crit is ignored.
-%                 Example - 'm0',5 
+%                 Example - 'm0',5
 %                 Data Types - double
 %       crit    : It specified the criterion to be used to
 %                 initialize the search. Character.
@@ -47,7 +47,7 @@ function [out]=FSM(Y,varargin)
 %                  the set of those which never fell outside
 %                  univariate boxplots then among those which fell only once
 %                  outside univariate boxplots... up to reach m0.
-%               Example - 'crit','md' 
+%               Example - 'crit','md'
 %               Data Types - char
 %                 Remark: as the user can see the starting point of the
 %                 search is not going to affect at all the results of the
@@ -55,15 +55,15 @@ function [out]=FSM(Y,varargin)
 %                 datasets.
 %                 Remark: if crit='biv' the user can also supply in scalar rf
 %                 (see below) the confidence level of the bivariate
-%                 ellipses. 
+%                 ellipses.
 %        rf     : confidence level for bivariate ellipses. Scalar. The default is
 %                 0.95. This option is useful only if crit='biv'.
-%                 Example - 'rf',0.9 
+%                 Example - 'rf',0.9
 %                 Data Types - double
-%       init    : Point where to start monitoring required diagnostics. Scalar. 
+%       init    : Point where to start monitoring required diagnostics. Scalar.
 %                 Note that if bsb is suppliedinit>=length(bsb). If init is not
 %                 specified it will be set equal to floor(n*0.6).
-%                 Example - 'init',50 
+%                 Example - 'init',50
 %                 Data Types - double
 %       plots   : plot of minimum Mahalanobis distance.
 %                  Scalar or structure. If plots is a missing value or is a scalar equal to 0 no
@@ -75,34 +75,34 @@ function [out]=FSM(Y,varargin)
 %                 If plots is a scalar equal to 2 the additional plots of
 %                 envelope resuperimposition are
 %                 produced.
-%                 If plots is a structure it may contain the following fields: 
+%                 If plots is a structure it may contain the following fields:
 %                   plots.ylim = vector with two elements controlling minimum and maximum
 %                       on the y axis. Default value is '' (automatic
-%                       scale); 
+%                       scale);
 %                   plots.xlim = vector with two elements controlling minimum and maximum
 %                       on the x axis. Default value is '' (automatic
-%                       scale); 
+%                       scale);
 %                   plots.resuper = vector which specifies for which steps it is
 %                       necessary to show the plots of resuperimposed envelopes
 %                       if resuper is not supplied a plot of each step in which the
 %                       envelope is resuperimposed is shown. Example if resuper =[85 87]
 %                       plots of resuperimposedenvelopes are shown at steps
-%                       m=85 and m=87; 
+%                       m=85 and m=87;
 %                   plots.ncoord = scalar. If ncoord=1 plots are shown in normal
 %                       coordinates else (default) plots are shown in
-%                       traditional mmd coordinates; 
+%                       traditional mmd coordinates;
 %                   plots.labeladd = If this option is '1', the outliers in the
 %                       spm are labelled with the unit row index. The
 %                       default value is labeladd='', i.e. no label is
-%                       added; 
+%                       added;
 %                   plots.nameY = cell array of strings containing the labels of
 %                       the variables. As default value, the labels which are
-%                       added are Y1, ...Yv; 
+%                       added are Y1, ...Yv;
 %                   plots.lwd =  Scalar which controls line width of the curve which
 %                       contains the monitoring of minimum Mahalanobis
 %                       distance. Default line of lwd=2.
 %                   plots.lwdenv = Scalar which controls linewidth of the
-%                       envelopes. Default value of lwdenv=2. 
+%                       envelopes. Default value of lwdenv=2.
 %               Example - 'plots',2
 %               Data Types - double
 %      bonflev  : option that might be used to identify extreme outliers
@@ -129,7 +129,7 @@ function [out]=FSM(Y,varargin)
 %                 If msg==1 (default) messages about the progression of the
 %                 search are displayed on the screen otherwise only error
 %                 messages will be displayed.
-%                 Example - 'msg',0 
+%                 Example - 'msg',0
 %                 Data Types - double
 %   nocheck     : It controls whether to perform checks on matrix Y.Scalar.
 %                 If nocheck is equal to 1 no check is performed.
@@ -144,8 +144,8 @@ function [out]=FSM(Y,varargin)
 %
 %out.outliers=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
-% out.mmd    =  (n-init) x 2 matrix. 
-%               1st col = fwd search index; 
+% out.mmd    =  (n-init) x 2 matrix.
+%               1st col = fwd search index;
 %               2nd col = value of minimum Mahalanobis Distance in each step
 %               of the fwd search.
 % out.Un     =  (n-init) x 11 Matrix which contains the unit(s) included
@@ -157,8 +157,9 @@ function [out]=FSM(Y,varargin)
 %               contains the units included in the final step of the search.
 % out.nout    = 2 x 5 matrix containing the number of times mmd went out
 %               of particular quantiles.
-%               First row contains quantiles 1 99 99.9 99.99 99.999 per cent; 
-%               Second row contains the frequency distribution.
+%               First row contains quantiles 1 99 99.9 99.99 99.999 per cent;
+%               Second row contains the frequency distribution. It is NaN
+%               if bonflev threshold is used.
 % out.loc     = 1 x v  vector containing location of the data.
 % out.cov     = v x v robust estimate of covariance matrix.
 % out.md      = n x 1 vector containing the estimates of the robust
@@ -175,9 +176,9 @@ function [out]=FSM(Y,varargin)
 %       Society Series B, Vol. 71, pp. 201-221.
 %       Cerioli A., Farcomeni A. Riani M., (2014). Strong consistency and
 %       robustness of the Forward Search estimator of multivariate location
-%       and scatter, Journal of Multivariate Analysis, Vol. 126, 
+%       and scatter, Journal of Multivariate Analysis, Vol. 126,
 %       pp. 167-183, http://dx.doi.org/10.1016/j.jmva.2013.12.010.
-% 
+%
 % Copyright 2008-2016.
 % Written by FSDA team
 %
@@ -238,7 +239,7 @@ function [out]=FSM(Y,varargin)
 %}
 
 %{
-    % Choosing an initial subset formed by the three observations with 
+    % Choosing an initial subset formed by the three observations with
     % the smallest Mahalanobis Distance.
     n=100;
     v=3;
@@ -254,7 +255,7 @@ function [out]=FSM(Y,varargin)
 
     load('swiss_banknotes');
 
-    % Monitor the exceedances of Minimum Mahalanobis Distance 
+    % Monitor the exceedances of Minimum Mahalanobis Distance
     [out]=FSM(swiss_banknotes.data(101:200,:),'plots',1);
 
     % Control minimum and maximum on the x axis
@@ -344,31 +345,16 @@ else
     
     % the subset need to be incremented if it is not full rank. We also
     % treat the unfortunate case when the rank of the matrix is v but a
-    % column is constant. 
+    % column is constant.
     incre = 1;
     %the second condition is added to treat subset with a constant
-    %variable. This situation does not decrease the rank of Y, but it 
+    %variable. This situation does not decrease the rank of Y, but it
     %decreases the rank of ym (i.e. Y-mean(Y)) inside FSMmmd.
     while (rank(Y(bs,:))<v) || min(max(Y(bs,:)) - min(Y(bs,:))) == 0
         bs=fre(1:m0+incre,1);
         incre = incre+1;
     end
 end
-
-quant=[0.99;0.999;0.9999;0.99999;0.01;0.5];
-% Compute theoretical envelops for minimum Mahalanobis Distance based on all
-% the observations for the above quantiles.
-[gmin] = FSMenvmmd(n,v,'prob',quant,'init',init);
-% gmin = the matrix which contains envelopes based on all observations.
-% 1st col of gmin = fwd search index
-% 2nd col of gmin = 99% envelope
-% 3rd col of gmin = 99.9% envelope
-% 4th col of gmin = 99.99% envelope
-% 5th col of gmin = 99.999% envelope
-% 6th col of gmin = 1% envelope
-% 7th col of gmin = 50% envelope
-% Thus, set the columns of gmin where the theoretical quantiles are located.
-[c99 , c999 , c9999 , c99999 , c001 , c50] = deal(2,3,4,5,6,7);
 
 % Compute Minimum Mahalanobis Distance for each step of the search
 if n<5000
@@ -382,39 +368,12 @@ if isnan(mmd)
     return
 end
 
-% Store in nout the number of times the observed mmd (d_min) lies above:
-[out99 , out999 , out9999 , out99999 , out001] = deal( ...
-    mmd(mmd(:,2)>gmin(:,c99),:) , ...       % the 99% envelope
-    mmd(mmd(:,2)>gmin(:,c999),:) , ...      % the 99.9% envelope
-    mmd(mmd(:,2)>gmin(:,c9999),:) , ...     % the 99.99% envelope
-    mmd(mmd(:,2)>gmin(:,c99999),:) , ...    % the 99.999% envelope
-    mmd(mmd(:,2)<gmin(:,c001),:) );         % the 1% envelope
 
-nout = [[1 99 999 9999 99999]; ...
-    [size(out001,1) size(out99,1) size(out999,1) size(out9999,1) size(out99999,1)]];
+bonflev=options.bonflev;
 
-% NoFalseSig = boolean linked to the fact that the signal is good or not
-NoFalseSig=0;
 
-% NoFalseSig is set to 1 if the condition for an INCONTROVERTIBLE SIGNAL is
-% fulfilled.
-n9999 = nout(2,nout(1,:)==9999);
-if (n9999>=10)
-    NoFalseSig=1;
-    if msg
-        disp('Observed curve of d_min is at least 10 times greater than 99.99% envelope'); % exact number is int2str(n9999)
-        disp('--------------------------------------------------');
-    end
-end
-
-% Divide central part from final part of the search
-istep = n-floor(13*sqrt(n/200));
 
 %% Part 1. Signal detection and validation
-nmmd=size(mmd,1);
-if nmmd<4
-    error('FSDA:FSM:WrongRationv','ratio n/v too small; modify init (i.e. decrease initial subset size)')
-end
 signal=0;
 sto=0;
 extram3='';
@@ -426,7 +385,9 @@ if msg
     disp('Signal detection loop');
 end
 
-bonflev=options.bonflev;
+nmmd=size(mmd,1);
+
+
 if ~isempty(bonflev)
     if bonflev<1
         [gbonf] = FSMbonfbound(n,v,'prob',bonflev,'init',init);
@@ -434,7 +395,57 @@ if ~isempty(bonflev)
     else
         bonfthresh=bonflev*ones(n-init,1);
     end
+else
+    if nmmd<4
+        error('FSDA:FSM:WrongRationv','ratio n/v too small; modify init (i.e. decrease initial subset size)')
+    end
+    
+    
+    quant=[0.99;0.999;0.9999;0.99999;0.01;0.5];
+    % Compute theoretical envelops for minimum Mahalanobis Distance based on all
+    % the observations for the above quantiles.
+    [gmin] = FSMenvmmd(n,v,'prob',quant,'init',init);
+    % gmin = the matrix which contains envelopes based on all observations.
+    % 1st col of gmin = fwd search index
+    % 2nd col of gmin = 99% envelope
+    % 3rd col of gmin = 99.9% envelope
+    % 4th col of gmin = 99.99% envelope
+    % 5th col of gmin = 99.999% envelope
+    % 6th col of gmin = 1% envelope
+    % 7th col of gmin = 50% envelope
+    % Thus, set the columns of gmin where the theoretical quantiles are located.
+    [c99 , c999 , c9999 , c99999 , c001 , c50] = deal(2,3,4,5,6,7);
+    
+    % Store in nout the number of times the observed mmd (d_min) lies above:
+    [out99 , out999 , out9999 , out99999 , out001] = deal( ...
+        mmd(mmd(:,2)>gmin(:,c99),:) , ...       % the 99% envelope
+        mmd(mmd(:,2)>gmin(:,c999),:) , ...      % the 99.9% envelope
+        mmd(mmd(:,2)>gmin(:,c9999),:) , ...     % the 99.99% envelope
+        mmd(mmd(:,2)>gmin(:,c99999),:) , ...    % the 99.999% envelope
+        mmd(mmd(:,2)<gmin(:,c001),:) );         % the 1% envelope
+    
+    nout = [[1 99 999 9999 99999]; ...
+        [size(out001,1) size(out99,1) size(out999,1) size(out9999,1) size(out99999,1)]];
+    
+    % NoFalseSig = boolean linked to the fact that the signal is good or not
+    NoFalseSig=0;
+    
+    % NoFalseSig is set to 1 if the condition for an INCONTROVERTIBLE SIGNAL is
+    % fulfilled.
+    n9999 = nout(2,nout(1,:)==9999);
+    if (n9999>=10)
+        NoFalseSig=1;
+        if msg
+            disp('Observed curve of d_min is at least 10 times greater than 99.99% envelope'); % exact number is int2str(n9999)
+            disp('--------------------------------------------------');
+        end
+    end
+    
+    % Divide central part from final part of the search
+    istep = n-floor(13*sqrt(n/200));
 end
+
+
 %% Stage 1a: signal detection
 % Signal detection is based on monitoring consecutive triplets or single
 % extreme values
@@ -465,7 +476,7 @@ for i=3:nmmd
                     end
                     strplot=['$d_{min}(' int2str(mmd(i,1)) ',' int2str(n) ')>99.999\%$'];
                     mmdsel=mmd(i-1:i+1,1:2);
-                end;
+                end
                 
                 if (mmd(i,2)>gmin(end,c99))
                     if msg
@@ -474,7 +485,7 @@ for i=3:nmmd
                     strplot=['$d_{min}(' int2str(mmd(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
                     mmdsel=mmd(i:i,1:2);
                     NoFalseSig=1; % i.e., no need of further validation
-                end;
+                end
                 '------------------------------------------------';
                 
                 signal=1;
@@ -576,7 +587,7 @@ for i=3:nmmd
                 end
             else
                 NoFalseSig=1;
-            end;
+            end
             
             % if the following statement is true, observed curve of d_min is
             % above 99.99% and later is below 1%: peak followed by dip
@@ -584,13 +595,13 @@ for i=3:nmmd
                 if sum(mmd(i+1:i+31,2)<gmin(i+1:i+31,c001))>=2
                     NoFalseSig=1;  % Peak followed by dip
                     extram2='Peak followed by dip (d_min is above 99.99% threshold and in the sucessive 30 steps goes below 1% envelope';
-                end;
+                end
             else
                 if sum(mmd(i+1:end,2) < gmin(i+1:end,c001))>=2
                     NoFalseSig=1;  %Peak followed by dip in the final part of the search';
                     extram2='Peak followed by dip (d_min is above 99.99% threshold and in the sucessive 30 steps goes below 1% envelope)';
-                end;
-            end;
+                end
+            end
             
             % if at this point NoFalseSig==0 it means that:
             % 1) n9999<10
@@ -610,7 +621,7 @@ for i=3:nmmd
                     mdag=0;
                 else
                     NoFalseSig=1;
-                end;
+                end
             end
             
             % If the signal has been validated get out of the signal detection
@@ -680,21 +691,21 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             ncoord=0;
         end
         
-                d=find(strcmp('lwd',fplo));
+        d=find(strcmp('lwd',fplo));
         if d>0
             lwd=plo.lwd;
         else
             lwd=2;
         end
-
-                  d=find(strcmp('lwdenv',fplo));
+        
+        d=find(strcmp('lwdenv',fplo));
         if d>0
             lwdenv=plo.lwdenv;
         else
             lwdenv=2;
         end
-
-      
+        
+        
     else
         xlimx='';
         ylimy='';
@@ -915,10 +926,10 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
             
             % latex annotations informing that the envelopes are based on
             % all the observations
-                        % ycoordinates of the messages displayed on the screen 
+            % ycoordinates of the messages displayed on the screen
             ycoordannott=0.90;
             ycoordannotb=0.85;
-
+            
             strmin=['$d_{min}(m,' int2str(n) ')$. '];
             annotation(figure1,'textbox',[0.5 ycoordannott kx ky],'String',{[strmin strsig]},...
                 PrVaCell{:},'FontSize',fsizeannot);
@@ -946,8 +957,8 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
     else
         % Set the ylimits in mdr coordinates
         if isempty(ylimy)
-            yl1=min([gmin(:,c001);mmd(:,2)]);
-            yl2=max([gmin(:,c999);mmd(:,2)]);
+            yl1=min(mmd(:,2));
+            yl2=max([bonfthresh(:,2);mmd(:,2)]);
             
         else
             yl1=ylimy(1);
@@ -960,7 +971,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
         plot(mmd(:,1),mmd(:,2),'LineWidth',lwd);
         
         % Superimpose Bonferroni line to the plot
-        line(gmin(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',lwdenv,'LineStyle','--','Color',[0 0 1]);
+        line(bonfthresh(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',lwdenv,'LineStyle','--','Color',[0 0 1]);
         % Property-value pairs which are common to the next latex annotations
         
         PrVaCell{1,1} = 'Interpreter'; PrVaCell{2,1} = 'latex';
@@ -1179,7 +1190,7 @@ if (signal==1)
                 end
                 
                 break;
-            end;
+            end
             if ~isempty(resuper) && ~isempty(intersect(resuper,tr))
                 if jwind==nr*nc+1
                     jwind=1;
@@ -1294,11 +1305,11 @@ cova=cov(Y(goodobs,:));
 md=mahalFS(Y,loc,cova);
 %% Scatter plot matrix with the outliers shown with a different symbol
 if v<=15
-if isstruct(plo) || (~isstruct(plo) && plo~=0)
-    figure('Tag','pl_spm_outliers');
-    spmplot(Y,group,plo);
-    set(gcf,'Name','FSM: scatter plot matrix with outliers highlighted');
-end
+    if isstruct(plo) || (~isstruct(plo) && plo~=0)
+        figure('Tag','pl_spm_outliers');
+        spmplot(Y,group,plo);
+        set(gcf,'Name','FSM: scatter plot matrix with outliers highlighted');
+    end
 else
     if msg
         disp('There are more than 15 variables, spmplot is not shown')
@@ -1317,8 +1328,11 @@ out.cov=cova;
 out.md=md;
 out.mmd=mmd;
 out.Un=Un;
-out.nout=nout;
-
+if isempty(bonflev)
+    out.nout=nout;
+else
+    out.nout =NaN;
+end
 
 %% Callback functions used to "pin" quantile labels and vertical line to axes.
 
@@ -1339,7 +1353,7 @@ out.nout=nout;
         %labels and of the vertical line are set.
         
         % axis limits
-        xxlim = get(evd.Axes,'XLim'); 
+        xxlim = get(evd.Axes,'XLim');
         xmin = xxlim(1); xmax=xxlim(2);
         
         % QUANTILES ANNOTATION: the handles
