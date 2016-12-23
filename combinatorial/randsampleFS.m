@@ -241,8 +241,8 @@ switch method
         
         % Weighted Sampling Without Replacement
         
-        if k>n, error('k must be smaller than n'), end
-        if length(wgts)~=n,error('the length of the weight vector must be n'),end
+        if k>n,  error('FSDA:randsampleFS:WrongInpArgs','k must be smaller than n'), end
+        if length(wgts)~=n,error('FSDA:randsampleFS:WrongInpArgs','The length of the weight vector must be n'),end
         
         % To achieve the best trade-off between simplicity and efficiency, following Efraimidis and
         % Spirakis (2006) we generate a weighted random sample without replacement of size $k<n$ by:

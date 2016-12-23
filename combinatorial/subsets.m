@@ -46,7 +46,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %  Output:
 %
 %
-%           C : The indeces of the subsets which need to be extracted.
+%           C : The indices of the subsets which need to be extracted.
 %               Matrix with nselected rows and p columns (stored in int16 format). 
 %               Data Types - single|double
 %
@@ -247,7 +247,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 
 
 %{
-    %% subset use in clustering or mixture modeling simulations.
+    %% Function subset used in clustering or mixture modeling simulations.
 
     clear all; close all;
 
@@ -267,7 +267,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     % Some user-defined weights for weighted sampling, provided as a vector of "method" option.
     method = [1*ones(n/2,1); ones(n/2,1)]; 
 
-    % C must be a nsamp x k*p matrix, to contain the estraction of nsamp p-combinations k times. 
+    % C must be a nsamp-by-k*p matrix, to contain the extraction of nsamp p-combinations k times. 
     % This can be easily done as follows:
     for i=1:k
         Ck(:,(i-1)*p+1:i*p) = subsets(nsamp, n, p, ncomb, msg, method);
@@ -310,7 +310,7 @@ end
 % rndsi = vector of nselected indexes randomly chosen between 1 e ncomb.
 Tcomb = 5e+7; T2comb = 1e+8;
 
-if nsamp==0 || ncomb <= Tcomb || ~isscalar(method)
+if nsamp==0 || ncomb <= Tcomb 
     if nsamp==0
         if ncomb > 100000 && msg==1
             disp(['Warning: you have specified to extract all subsets (ncomb=' num2str(ncomb) ')']);
