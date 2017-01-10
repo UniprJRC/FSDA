@@ -1186,8 +1186,8 @@ for i =1:nselected
                         
                         %The MCD is applied only when p=1, because in this case it is faster
                         %than the FS.
-                        if p-intercept==11
-                            [~,REW]      = mcd(Xjnointercept,'msg',0,'conflev',1-(1-alpha2)/njj);
+                        if p-intercept==1
+                            [~,REW]      = mcd(Xjnointercept,'msg',0,'conflev',1-(1-alpha2)/njj,'betathresh',1);
                             %R2016a has introduced robustcov, which could be used here as below.
                             %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
                             %[~,~,mah,~,~] = robustcov(inliers,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
