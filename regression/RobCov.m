@@ -119,8 +119,8 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \[
 %                 \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
 %                \]
-%                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n
-%                 \psi'(r_i/\hat \sigma))^2}$ ;
+%                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ \left[ (\sum_{i=1}^n
+%                 \psi'(r_i/\hat \sigma)) \right]^2}$ ;
 %  out.covrob2 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob1 implements
@@ -521,7 +521,15 @@ covrob=vhat*invXX; %#ok<MINV>
 % (and sigma is estimated)
 
 % Ksquare =see equation 7.84 of Huber and Ronchetti (2009) P. 171
-Ksquare=(1+p*n*var(psider,1)/sumpsider^2)^2;
+Ksquare=(1+(p/n)*var(psider,1)/((sumpsider/n)^2))^2;
+disp('varpsider')
+disp(var(psider))
+disp('M^2 varpsider')
+disp(((sumpsider/n)^2))
+disp('psider')
+disp(psider)
+disp('---------')
+
 K=sqrt(Ksquare);
 
 
