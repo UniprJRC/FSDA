@@ -50,7 +50,8 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Optional input arguments:
 %
-%   noiseunits : number of type of outlying observations. Scalar or structure. Missing value, scalar or structure. 
+%   noiseunits : number of type of outlying observations. Scalar or
+%                structure. Missing value, scalar or structure.
 %                This input parameter specifies the number
 %                and type of outlying observations. The default value of
 %                noiseunits is 0.
@@ -102,8 +103,8 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         particular point;
 %                       * componentwise, if the outliers must have the same
 %                         coordinates of the existing rows of matrix X apart
-%                         from a single coordinate (which will be to the
-%                         min or max in that particular dimension or to the
+%                         from a single coordinate (which will be the
+%                         min or max in that particular dimension or the
 %                         min or max specified in interval).
 %                For example, the code:
 %                   noiseunits=struct;
@@ -261,7 +262,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
     rng('default')
     rng(100)
     out = MixSim(4,2,'BarOmega',0.01);
-    n=300;n=300;
+    n=300;
     noisevars=0;
     noiseunits=3000;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
