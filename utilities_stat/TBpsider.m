@@ -32,8 +32,8 @@ function psider=TBpsider(u,c)
 % TBpsider(x)=
 % \left\{
 %    \begin{array}{cc}
-%  1- (x/c)^2 * [6- 5 (x/c)^2]                          &  \mbox{if  }  |x/c|<=1 
-%    0            &                      |x/c|>1 \\       
+%  1- (x/c)^2  [6- 5 (x/c)^2]  &  \mbox{if}  |x/c|<=1  \\
+%    0                          &  \mbox{if}  |x/c|>1 \\       
 % \end{array}
 %    \right.
 %  \] 
