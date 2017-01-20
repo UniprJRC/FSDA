@@ -703,14 +703,6 @@ end
 
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
-% Not necessary anymore: lines will be removed after additional testing.
-% if strcmp(dispopt,'box')==1
-%     % ahist=findobj(AX,'type','patch') ;
-%     %set(ahist,'MarkerEdgeColor','none','EdgeColor','none','FaceColor','none')
-% ahist=findobj(AX,'type','histogram');
-% set(ahist,'Visible','off')
-% end
-
 % The third dimension of H distinguishes the groups. If there are no groups
 % then ndims(H) = 2.
 
