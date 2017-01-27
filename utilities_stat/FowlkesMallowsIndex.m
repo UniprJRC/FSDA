@@ -231,3 +231,4 @@ VarBk = 2/(n * (n - 1)) + 4 * Pk2 * Qk2/((n * (n - 1) * (n -2)) * Pk * Qk)...
 
 end
 
+%FScategory:UTISTAT
