@@ -110,7 +110,7 @@ function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %}
 
 %{
-        % Compare ARI for iris data (exclude unassigned units from tclust).
+        % Compare FM index for iris data (exclude unassigned units from tclust).
         load fisheriris
         % first partition c1 is the true partition
         c1=species;
