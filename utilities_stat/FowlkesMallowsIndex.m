@@ -1,6 +1,8 @@
 function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %FowlkesMallowsIndex computes the Fowlkes and Mallows index.
 %
+%<a href="matlab: docsearchFS('FowlkesMallowsIndex')">Link to the help function</a>
+%
 % Fowlkes-Mallows index (see references) is an external evaluation method
 % that is used to determine the similarity between two clusterings
 % (clusters obtained after a clustering algorithm). This measure of
@@ -42,12 +44,11 @@ function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 % Output:
 %
 %  Bk:          Fowlkes and Mallows index. Scalar. A number between 0 and 1.
-%               The adjusted Rand index is the corrected-for-chance version
-%               of the Rand index.
+%               Value of the Fowlkes and Mallows index.
 %  EBk:         Expectation of the Fowlkes and Mallows index. Scalar.
 %               Expected value of the index computed under the null
 %               hypothesis of no-relation.
-%  VARBk:        Variance of the Fowlkes and Mallows index. Scalar.
+%  VarBk:        Variance of the Fowlkes and Mallows index. Scalar.
 %               Variance of the index computed under the null
 %               hypothesis of no-relation.
 %
