@@ -887,7 +887,7 @@ nameX={'Number of visits', 'Age', 'Number of persons in the family'};
 fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
     'multivarfit' '2' 'FlagSize' '5'})
 % If you wish to do persistent brushing from the fan plot
-% uncomment the following line. Notice taht multiple trajectories can be selected
+% uncomment the following line. Notice that multiple trajectories can be selected
 % fanplot(out,'databrush',{'selectionmode' 'Rect' 'persist' 'on' 'selectionmode','Brush'})
 
 
