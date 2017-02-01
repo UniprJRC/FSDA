@@ -100,14 +100,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
     eigenvalues(:,3)=1;
     restreigen(eigenvalues,niini,1.1)
 %}
-%
-%
-%{
-    % Trimmed k-means using geyser data.
-    % 3 groups and trimming level of 3%
-    Y=load('geyser2.txt');
-    out=tkmeans(Y,3,0.03,'plots',1)
-%}
+
 
 
 %% Beginning of code
@@ -184,7 +177,8 @@ if maxdnis <= tol
 else
     % we check if the  eigenvalues verify the restrictions
     
-    if maxdnis/min(dnis)<=c
+    % abs here is just for computational purposes
+    if abs(maxdnis/min(dnis))<=c
         % If all eigenvalues satisy the constraint
         % no further changes on the eigenvalues required, so return them immediately!
         % Simply replace the 0 eigenvalues with the mean of the eigenvalues
@@ -357,7 +351,9 @@ else
         end
         
         % obj is a vector of size dimsor
-        obj=sum(sum(oo,1));
+       %  obj=sum(sum(oo,1));
+        obj=sum(sum(oo,1),2);
+        
         [~,indmax]=min(obj);
         
         % m is the optimum value for the eigenvalues procedure
