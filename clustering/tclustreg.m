@@ -329,12 +329,12 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
     disp('mixt = 0; wtrim = 1;');
-    disp('classification likelihood, thinning based on user meights' );
+    disp('classification likelihood, thinning based on user weights' );
     mixt = 0; wtrim = 1;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
     disp('mixt = 2; wtrim = 1;');
-    disp('mixture likelihood, thinning based on user meights' );
+    disp('mixture likelihood, thinning based on user weights' );
     mixt = 2; wtrim = 1;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);
 
@@ -858,21 +858,21 @@ end
 w4trimopt=ones(n,1);
 % indmax_before_tropt = indexes of beloging of each obsevation to groups
 % (before trimming)
-indmax_before_tropt = ones(n,1);
+indmax_before_tropt = w4trimopt;
 
 
 %numopt = (kX1) vector containing the number of observations in each of
 %the k groups in the optimal subset.
 numopt              = zeros(1,k);
-weopt               = ones(n,1);
+weopt               = w4trimopt;
 %trim1levelopt = (nx1) vector of 0 and 1 indicating respectively units
 %trimmed and not trimmed in the first trimming level in the optimal
 %subset
-trim1levelopt       = ones(n,1);
+trim1levelopt       = w4trimopt;
 %trim2levelopt = (nx1) vector of 0 and 1 indicating respectively units
 %trimmed and not trimmed in the second trimming level in the optimal
 %subset
-trim2levelopt       = ones(n,1);
+trim2levelopt       = w4trimopt;
 %indmaxopt = (nx1) vector of 1, ... , k, indicating the assignement of
 %all the n observations (trimmed observations included) to one of the k
 %groups  in the optimal subset
@@ -1220,6 +1220,12 @@ for i =1:nselected
                 end
             end
             
+            % Assign infinite weights to trimmed units so that they can never be
+            % trimmed
+            disc(w4trim==0)=1e+20;
+            % Assign 0 to thinned units
+            indmax(w4trim==0)=0;
+
             % Sort the n likelihood contributions and save in qq the largest n*(1-alpha) likelihood
             % contributions
             [~,qq] = sort(disc,'ascend');
@@ -1247,23 +1253,23 @@ for i =1:nselected
             indmax_before_tr = indmax;
             
             % indmax of the units subject to first level trimming
-            % is set equal to 0
-            indmax(qqunassigned)=0;
+            % is set equal to -1
+            indmax(qqunassigned)=-1;
+          
+              % Put equal to zero the posterior probability of unassigned
+            % units
+            postprob(qqunassigned,:)=0;
             
+            % Now multiply posterior probabilities (n-by-k matrix) by
+            % weights (n-by-1 vector) obtained using thinning
+            Z=bsxfun(@times,postprob,w4trim);
+
             %% 3) Second level of trimming (inside concentration steps) or cwm model
             % FS or MCD are used to find units to trim
             % Using untrimmed units find beta coefficients and
             % sigma2 using weighted regression (the weights are
             % based on thinning fixed once and for all before the
             % concentration steps)
-            
-            % Put equal to zero the posterior probability of unassigned
-            % units
-            postprob(qqunassigned,:)=0;
-            
-            % Now multiply posterior probabilities (n-by-k matrix) by
-            % weights (n-by-1 vector) obtained using using thinning
-            Z=bsxfun(@times,postprob,w4trim);
             
             if alphaX<1
                 for jj=1:k
@@ -1338,7 +1344,7 @@ for i =1:nselected
                         
                         % indmax for second level trimmed units is
                         % equal to -1
-                        indmax(groupjind(trimj))=-1;
+                        indmax(groupjind(trimj))=-2;
                     else
                         lessthankgroups = 1;
                         break
@@ -1348,7 +1354,7 @@ for i =1:nselected
                 
                 % Set to zeros the rows of matrix Z which were trimmed based on
                 % second level
-                Z(indmax==-1,:)=0;
+                Z(indmax==-2,:)=0;
             end
             
             if lessthankgroups==1
@@ -1538,10 +1544,10 @@ for i =1:nselected
         bopt                    = Beta;
         numopt                  = niini;
         sigmaopt                = sigmaini;
-        w4trimopt                   = w4trim;
+        w4trimopt               = w4trim;
         weopt                   = we;
-        trim1levelopt           = find(indmax==0);
-        trim2levelopt           = find(indmax==-1);
+        trim1levelopt           = find(indmax==-1);
+        trim2levelopt           = find(indmax==-2);
         indmax_before_tropt     = indmax_before_tr;
         indmaxopt               = indmax;
         %                     not_empty_gopt          = not_empty_g;
@@ -1727,14 +1733,14 @@ if plots
         end
         
         % Plot the outliers (trimmed points)
-        ucg = find(indmaxopt==0);
+        ucg = find(indmaxopt==-1);
         plot(X(ucg,end),y(ucg),'o','color','r','MarkerSize',8,...
-            'DisplayName',['Trimmed units (' num2str(length(ucg)) ')']);
+            'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
         
         % Second level trimming points
-        ucg = find(indmaxopt==-1);
+        ucg = find(indmaxopt==-2);
         plot(X(ucg,end),y(ucg),'*','color','c',...
-            'DisplayName',['L2 trimmed units (' num2str(length(ucg)) ')']);
+            'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
         
         if wtrim == 4
             % in case of tandem thinning, plot the thinned points
