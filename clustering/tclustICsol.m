@@ -102,6 +102,12 @@ function out  = tclustICsol(IC,varargin)
 %                 Example - 'msg',1
 %                 Data Types - single | double
 %
+%     Rand   :  Index to use to compare partitions. Scalar. If Rand =1
+%               (default) the adjusted Rand index is used, else the
+%               adjusted Fowlkes and Mallows index is used
+%                 Example - 'Rand',1
+%                 Data Types - single | double
+%
 %  Output:
 %
 %         out:   structure which contains the following fields:
@@ -117,6 +123,7 @@ function out  = tclustICsol(IC,varargin)
 %                4th col = row vector of length d+r which contains the
 %                   values of c for which the solution is considered stable
 %                   (i.e. for which the value of the adjusted Rand index
+%                   (or the adjusted Fowlkes and Mallows index)
 %                   does not go below the threshold defined in input option
 %                   ThreshRandIndex).
 %                5th col = string which contains 'true' or 'spurious'. The
@@ -126,7 +133,8 @@ function out  = tclustICsol(IC,varargin)
 %               Remark: field out.MIXMIXbs is present only if input option
 %               'whichIC' is 'ALL' or 'whichIC' is 'MIXMIX'.
 %
-%  out.MIXMIXbsari =  matrix of adjusted Rand indexes associated with the best
+%  out.MIXMIXbsari =  matrix of adjusted Rand indexes (or Fowlkes and Mallows
+%               indexes) associated with the best
 %                solutions for MIXMIX. Matrix of size
 %                NumberOfBestSolutions-times-NumberOfBestSolutions whose
 %                i,j-th entry contains the adjusted Rand index between
@@ -216,6 +224,8 @@ function out  = tclustICsol(IC,varargin)
     disp(outCLACLCA.CLACLAbs)
 %}
 
+
+
 %{
     % An example with input option kk.
     Y=load('geyser2.txt');
@@ -223,6 +233,21 @@ function out  = tclustICsol(IC,varargin)
     [outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
 
 %}
+
+%{
+    % Comparison between the use of Rand index and FM index.
+    Y=load('geyser2.txt');
+    out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1,'whichIC','CLACLA')
+    [outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'Rand',1);
+    disp('Matrix of adjusted Rand indexes among the first 5 best solutions')
+    disp(outCLACLCA.CLACLAbsari)
+    [outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'Rand',0);
+    disp('Matrix of adjusted Fowlkes and Mallows indexes among the first 5 best solutions')
+    disp(outCLACLCA.CLACLAbsari)
+
+%}
+
+
 
 %% Beginning of code
 
@@ -240,7 +265,7 @@ msg=0;
 
 if nargin>1
     options=struct('whichIC',whichIC,'plots',plots,...
-        'NumberOfBestSolutions',NumberOfBestSolutions, 'ThreshRandIndex', ThreshRandIndex,'msg',msg);
+        'NumberOfBestSolutions',NumberOfBestSolutions, 'ThreshRandIndex', ThreshRandIndex,'msg',msg,'Rand',1);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -275,6 +300,7 @@ if nargin>1
     whichIC=options.whichIC;
     plots=options.plots;
     msg=options.msg;
+    Rand=options.Rand;
 end
 
 
@@ -312,10 +338,20 @@ end
 for k=1:length(kk) % loop for different values of k (number of groups)
     for j=2:length(cc) % loop through the different values of c
         if typeIC>0
+            if Rand==1
             ARIMIX(k,j)=RandIndexFS(IDXMIX{k,j-1},IDXMIX{k,j});
+            else
+            ARIMIX(k,j)=FowlkesMallowsIndex(IDXMIX{k,j-1},IDXMIX{k,j});
+            end
+            
         end
         if typeIC==0 || typeIC==3
+             if Rand==1
             ARICLA(k,j)=RandIndexFS(IDXCLA{k,j-1},IDXCLA{k,j});
+             else
+                  ARICLA(k,j)=FowlkesMallowsIndex(IDXCLA{k,j-1},IDXCLA{k,j});
+             end
+             
         end
     end
 end
