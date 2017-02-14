@@ -5,7 +5,6 @@ function psiHYPder = HYPpsider(u, cktuning)
 %
 %  Required input arguments:
 %
-%  Required input arguments:
 %
 %    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
 %               vector containing residuals or Mahalanobis distances
