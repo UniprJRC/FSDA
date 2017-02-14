@@ -1,4 +1,4 @@
-function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
+function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %FowlkesMallowsIndex computes the Fowlkes and Mallows index.
 %
 %<a href="matlab: docsearchFS('FowlkesMallowsIndex')">Link to the help function</a>
@@ -11,7 +11,11 @@ function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 % Fowlkes-Mallows index indicates a greater similarity between the clusters
 % and the benchmark classifications.
 % This index can be used to compare either two cluster label sets or a
-% cluster label set with a true label set.
+% cluster label set with a true label set. The formula of the
+% adjusted Fowlkes-Mallows index (ABk) is given below
+% \[
+%  ABk= \frac{\mbox{Bk- Expected value of Bk}}{\mbox{Max Index  - Expected value of Bk}}
+% \]
 %
 %
 % Required input arguments:
@@ -43,6 +47,10 @@ function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %
 % Output:
 %
+%  ABk:         Adjusted Fowlkes and Mallows index. A number between -1 and 1.
+%               The adjusted Fowlkes and Mallows index is the
+%               corrected-for-chance version of the Fowlkes and Mallows
+%               index.
 %  Bk:          Fowlkes and Mallows index. Scalar. A number between 0 and 1.
 %               Value of the Fowlkes and Mallows index.
 %  EBk:         Expectation of the Fowlkes and Mallows index. Scalar.
@@ -72,7 +80,7 @@ function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 % Examples:
 
 %{
-    % FM index with the contingency table as input.
+    % FM index (adjusted) with the contingency table as input.
     T=[1 1 0;
     1 2 1;
     0 0 4];
@@ -81,7 +89,7 @@ function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 
 %{
 
-    % FowlkesMallowsIndex with the two vectors as input.
+    % FowlkesMallowsIndex (adjusted) with the two vectors as input.
      c=[1 1;
         1 2
         2 1;
@@ -100,18 +108,18 @@ function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %}
 
 %{
-        % Compare ARI for iris data (true classification against tclust classification).
+        % Compare FM (unadjusted) for iris data (true classification against tclust classification).
         load fisheriris
         % first partition c1 is the true partition
         c1=species;
         % second partition c2 is the output of tclust clustering procedure
         out=tclust(meas,3,0,100,'msg',0);
         c2=out.idx;
-        [FM,EFM,VARFM]=FowlkesMallowsIndex(c1,c2);
+        [~.FM,EFM,VARFM]=FowlkesMallowsIndex(c1,c2);
 %}
 
 %{
-        % Compare FM index for iris data (exclude unassigned units from tclust).
+        % Compare FM index (unadjusted) for iris data (exclude unassigned units from tclust).
         load fisheriris
         % first partition c1 is the true partition
         c1=species;
@@ -120,27 +128,29 @@ function [Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
         c2=out.idx;
         % Units inside c2 which contain number 0 are referred to trimmed observations
         noisecluster=0;
-        [FM,EFM,VARFM]=RandIndexFS(c1,c2,noisecluster);
+        [~,FM,EFM,VARFM]=RandIndexFS(c1,c2,noisecluster);
 %}
 
 %{
-    % FM index for iris data with 3 groups coming from single linkage.
+    % FM index (unadjusted) for iris data with 3 groups coming from single linkage.
     % FM index between true and empirical classification
     load fisheriris
     d = pdist(meas);
     Z = linkage(d);
     C = cluster(Z,'maxclust',3);
-    [FM,FMexp,FMvar]=FowlkesMallowsIndex(C,species);
+    [AFM,FM,FMexp,FMvar]=FowlkesMallowsIndex(C,species);
     disp('FM index is equal to')
     disp(FM)
     disp('Expectation of FM index is')
     disp(FMexp)
     disp('Variance of FM index is')
     disp(FMvar)
+    disp('Adjsuted FM index is equal to')
+    disp(AFM)
 %}
 
 %{
-    % Monitoring of FM index for iris data using true classification as benchmark.
+    % Monitoring of (adjusted) FM index for iris data using true classification as benchmark.
     load fisheriris
     d = pdist(meas);
     Z = linkage(d);
@@ -230,6 +240,8 @@ VarBk = 2/(n * (n - 1)) + 4 * Pk2 * Qk2/((n * (n - 1) * (n -2)) * Pk * Qk)...
     + (Pk - 2 - 4 * Pk2/Pk) * (Qk - 2 - 4 *Qk2/Qk)/((n * (n - 1) * (n - 2) * (n - 3)))...
     - Pk * Qk/(n^2 * (n-1)^2);
 
+% Compute adjusted version of the index
+ABk = (Bk - EBk)/(1- EBk);
 end
 
 %FScategory:UTISTAT
