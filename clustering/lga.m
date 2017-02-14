@@ -57,9 +57,9 @@ function out = lga(X,k,varargin)
 %
 % References:
 %
-% Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) ?Linear
-% Grouping Using Orthogonal Regression?, Computational Statistics and Data
-% Analysis 50, 1287?1312.
+% Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) Linear
+% Grouping Using Orthogonal Regression, Computational Statistics and Data
+% Analysis 50, 1287-1312.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
