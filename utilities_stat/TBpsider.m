@@ -63,8 +63,9 @@ function psider=TBpsider(u,c)
 %{
     % Plot the derivative of Tukey's biweght psi function.
     x=-6:0.01:6;
-    psiHUder=HUpsider(x,2);
-    plot(x,psiHUder)
+    c=1.5476;
+    psiTBder=TBpsider(x,c);
+    plot(x,psiTBder)
     xlabel('x','Interpreter','Latex')
     ylabel('$\psi''(x)$','Interpreter','Latex')
 
