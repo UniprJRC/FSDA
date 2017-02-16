@@ -719,8 +719,8 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                                 pos1(1,3) = (1-space)*pos(1,3)/sizeAX;
                                 pos1(1,4) = pos(1,4);
                                 set(hax2(i), 'Position', pos1);
-                            end;
-                        end;
+                            end
+                        end
                     end
                     
                     
@@ -847,7 +847,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 [oute] = FSReda(y1,X,out.bs(:,lasel),'nocheck',1);
                 
                 %% Display the yXplot with the corresponding groups of units highlighted
-                [H,AX,~] = gplotmatrix(Xsel,y1,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
+                [H,AX,BigAx] = gplotmatrix(Xsel,y1,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
                 set(gcf,'Name',['Scatter plot matrix y^' num2str(la(lasel))  '|X with different symbols for brushed units']);
                 set(gcf,'tag','pl_yX');
                 %set(gcf,'Name',['yXplot: results for lambda=' num2str(la(lasel)) ]); %DDD
@@ -887,7 +887,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 
                 % The following line adds objects to the panels of the yX
                 % add2yX(H,AX,BigAx,oute,group,nbrush,bivarfit,multivarfit,labeladd)
-                add2yX('intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
+                add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
                 
                 
                 for mfc=1:length(unigroup)

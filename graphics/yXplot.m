@@ -5,103 +5,143 @@ function [plot1]=yXplot(y,X,varargin)
 %
 %  Required input arguments:
 %
-%    y: Response variable. Vector. A vector with n elements that contains
-%       the response variable. y can be either a row or a column vector.
-%    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension nxp. Rows of X represent observations, and columns
-%       represent variables.
+%    y: Response variable. Vector or structure. A vector with n elements that contains
+%       the response variable or a structure 'out' coming from function FSReda.
+%       If y is a vector it can be either a row or a column vector.
 %
-%      or a structure out containing the following fields:
+%  Optional input arguments if y is a vector:
 %
-%               yXplot(out,varargin);
+%     If y is a vector, varargin can be either a sequence of name/value
+%     pairs, detailed below, or one of the following explicit assignments:
 %
-%       y   =   a vector containing the response.
-%       X   =   a matrix containing the explanatory variables.
+%       yXplot(y,X,group);
 %
-%               If out contains just the two above fields the yXplot will
-%               be immediately created. On the other hand, if out also
-%               contains information about the search, it is possible to
-%               exploit the brushing (i.e. the automatic
-%               interaction with the other plots) and datatooltip
-%               possibilities.
+%       yXplot(y,X,group, plo);
 %
-%       RES =   matrix containing the residuals monitored in each
+%       yXplot(y,X, 'name1',value1, 'name2', value2, ...); % y vector call  through name value pairs
+%
+%     If varargin{1} is a n-elements vector, then it is interpreted
+%     as a grouping variable vector 'group'. In this case, it can only be
+%     followed by 'plo'. Otherwise, the program expects a
+%     sequence of name/value pairs.
+%
+%  List of optional input arguments if first argument y is a vector:
+%
+%  group: vector with n elements. It is a grouping variable that determines
+%         the marker and color assigned to each point. It can be a categorical
+%         variable, vector, string matrix, or cell array of strings.
+%         Remark: if 'group' is used to distinguish a set of outliers from
+%         a set of good units, the id number for the outliers should be the
+%         larger (see optional field 'labeladd' of option 'plo' for details).
+%
+%
+%    plo: empty value, scalar of structure which controls the names which
+%         are displayed in the margins of the yX matrix and the
+%         labels of the legend.
+%
+%         If plo is the empty vector [], then namey, nameX and labeladd are
+%           both set to the empty string '' (default), and no label and
+%           no name is added to the plot.
+%
+%         If plo = 1 the names y, and X1,..., Xp are added to the margins of the
+%           the scatter plot matrix else nothing is added.
+%
+%         If plo is a structure it may contain the following fields:
+%         - labeladd: if it is '1', the elements belonging to the max(group)
+%                in the spm are labelled with their unit row index.
+%                The default value is labeladd = '', i.e. no label is added.
+%         - clr: a string of color specifications. By default, the colors
+%                are 'brkmgcy'.
+%         - sym: a string or a cell of marker specifications. For example,
+%                if sym = 'o+x', the first group will be plotted with a
+%                circle, the second with a plus, and the third with a 'x'.
+%                This is obtained with the assignment plo.sym = 'o+x'
+%                or equivalently with plo.sym = {'o' '+' 'x'}.
+%                By default the sequence of marker types is:
+%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'
+%         - siz: scalar, a marker size to use for all plots. By default the
+%                marker size depends on the number of plots and the size of
+%                the figure window. Default is siz = '' (empty value).
+%       - doleg: a string to control whether legends are created or not.
+%                Set doleg to 'on' (default) or 'off'.
+%       - nameX:   explanatory variables names. Cell. Cell array of strings of length p containing the labels
+%                   of the varibles of the regression dataset. If it is empty
+%                 	(default) the sequence X1, ..., Xp will be created
+%                   automatically
+%       - namey   :   response variable name. Character. Character containing the label of the response
+%                   Example - 'namey','response'
+%                   Data Types - character
+%       - ylimy    :   y limits. Vector. vector with two elements controlling
+%                   minimum and maximum on the y axis. Default value is ''
+%                   (automatic scale)
+%                   Example - 'ylimy',[0 4]
+%                   Data Types - single or double
+%       - xlimx    :   x limits. Vector. vector with two elements controlling minimum and maximum
+%                   on the x axis. Default value is '' (automatic scale)
+%                   Example - 'xlimx',[0 4]
+%                   Data Types - single or double
+%   tag  :   plot tag. String. string which identifies the handle of the plot which
+%           is about to be created. The default is to use tag
+%           'pl_yX'. Notice that if the program finds a plot which
+%           has a tag equal to the one specified by the user, then
+%           the output of the new plot overwrites the existing one
+%           in the same window else a new window is created
+%           Example - 'tag','myplot'
+%           Data Types - character
+%
+%  y is a structure.
+%
+%  If first input argument y is a structure (generally created by function FSReda),
+%  then this structure must have the following fields:
+%
+%       REQUIRED FIELDS IN INPUT STRUCTURE y.
+%
+%       y.y   =   a vector containing the response of length n.
+%       y.X   =   a matrix containing the explanatory variables of size nxp.
+%
+%               If the input structure y contains just the data matrix, a
+%               standard static yXplot matrix  will be created.
+%
+%               On the other hand, if Y also contains information on
+%               statistics monitored along a search, then the scatter plots
+%               will be linked with other (forward) plots with interaction
+%               possibilities, enabled via brushing and datatooltip. More
+%               precisely, with option databrush it is possible to create
+%               an automatic interaction with the other plots, while with
+%               option datatooltip it is possible to retrieve information
+%               about a particular unit once selected with the mouse).
+%
+%       OPTIONAL FIELDS IN INPUT STRUCTURE y.
+%
+%       y.RES =   matrix containing the residuals monitored in each
 %               step of the forward search. Every row is associated with a
 %               residual (unit).
 %               This matrix can be created using function FSReda
 %               (compulsory argument).
-%       Un  =   matrix containing the order of entry of each unit
+%       y.Un  =   matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not
 %               empty).
+%       y.label = cell of length n containing the labels of the units
+%               (optional argument used when datatooltip=1. If this
+%               field is not present labels row1, ..., rown will be
+%               automatically created and included in the pop up
+%               datatooltip window)
 %
 %
-%  Optional input arguments:
+%    X: Data matrix of explanatory variables (also called 'regressors') of
+%       dimension nxp if the first argument is a vector. Matrix. Rows of X
+%       represent observations, and columns represent variables.
+%       Data Types - single|double
 %
-%          group:   identifier vector. Vector. 
-%                   Vector with n elements, grouping variable that
-%                   determines the marker and color assigned to each point.
-%                   It can be a categorical variable, vector, string
-%                   matrix, or cell array of strings.
-%               Example - group, 
-%               Data Types - single or double
-%       nameX   :   explanatory variables names. Cell. Cell array of strings of length p containing the labels
-%                   of the varibles of the regression dataset. If it is empty
-%                 	(default) the sequence X1, ..., Xp will be created
-%                   automatically
-%               Example - group, 
-%               Data Types - single or double
-%       namey   :   response variable name. Character. Character containing the label of the response
-%                   Example - 'namey','response'
-%                   Data Types - character
-%       ylim    :   y limits. Vector. vector with two elements controlling
-%                   minimum and maximum on the y axis. Default value is ''
-%                   (automatic scale)
-%                   Example - 'ylim',[0 4]
-%                   Data Types - single or double
-%       xlim    :   x limits. Vector. vector with two elements controlling minimum and maximum
-%                   on the x axis. Default value is '' (automatic scale)
-%                   Example - 'xlim',[0 4]
-%                   Data Types - single or double
-%       tag     :   plot tag. String. string which identifies the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   'pl_yX'. Notice that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
-%                   Example - 'tag','myplot'
-%                   Data Types - character
-%       selunit :   unit labelling. Cell array of strings, string, or numeric vector for
-%                   labelling units. If out is a structure the threshold is
-%                   associated with the trajectories of the residuals
-%                   monitored along the search else it refers to the values
-%                   of the response variable.
-%                   If it is a cell array of strings, only
-%                   the lines associated with the units that in at least
-%                   one step of the search had a residual smaller than
-%                   selunit{1} or greater than selline{2} will have a
-%                   textbox.
-%                   If it is a string it specifies the threshold
-%                   above which labels have to be put. For example
-%                   selunit='2.6' means that the text labels are written
-%                   only for the units which have in at least one step of
-%                   the search a value of the scaled residual greater than
-%                   2.6 in absolute value.
-%                   If it is a numeric vector it
-%                   contains the list of the units for which it is
-%                   necessary to put the text labels.
-%                   The default value of
-%                   selunit is string '2.5' if the input is a structure
-%                   else it is an empty value if if the input is matrices y
-%                   and X.
-%                   Example - 'selunit','3'
-%                   Data Types - numeric or character
 %
+%   Optional input arguments: (if the first argument of yXplot is a
+%                               structure)
 %
 %       The options which follow can only be used if the input is a
 %       structure which contains information about the fwd search (i.e. the
-%       two fields RES and Un)
+%       two fields RES and Un and eventually label)
 %
-%   datatooltip :   personalized tooltip. Empty value or structure. 
+%   datatooltip :   personalized tooltip. Empty value or structure.
 %                    The default is datatooltip=''
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
@@ -216,11 +256,52 @@ function [plot1]=yXplot(y,X,varargin)
 %                   search.
 %                   Example - 'selstep',100
 %                   Data Types - single | double
+%       selunit :   unit labelling. Cell array of strings, string, or numeric vector for
+%                   labelling units. If out is a structure the threshold is
+%                   associated with the trajectories of the residuals
+%                   monitored along the search else it refers to the values
+%                   of the response variable.
+%                   If it is a cell array of strings, only
+%                   the lines associated with the units that in at least
+%                   one step of the search had a residual smaller than
+%                   selunit{1} or greater than selline{2} will have a
+%                   textbox.
+%                   If it is a string it specifies the threshold
+%                   above which labels have to be put. For example
+%                   selunit='2.6' means that the text labels are written
+%                   only for the units which have in at least one step of
+%                   the search a value of the scaled residual greater than
+%                   2.6 in absolute value.
+%                   If it is a numeric vector it
+%                   contains the list of the units for which it is
+%                   necessary to put the text labels.
+%                   The default value of
+%                   selunit is string '2.5' if y is a structure
+%                   else it is an empty value if y is a vector
+%                   Example - 'selunit','3'
+%                   Data Types - numeric or character
+%
 %
 %  Output:
 %
-%        plot1  :   handle to the figure. Graphic handle. Handle to the
-%        yXplot.
+%        H      :   array of handles H to the plotted points. 3D array. See
+%                   gplotmatrix for further details
+%        AX     :   handles to the individual subaxes. Matrix. See
+%                   gplotmatrix for further details
+%      BigAx    :   handle to big (invisible) axes framing the subaxes.
+%                   Scalar. See gplotmatrix for further details
+%
+% More About:
+%
+%   yXplot has the same output of gplotmatrix in the statistics toolbox:
+%   [H,AX,BigAx] = yXplot(...) returns an array of handles H to the
+%   plotted points; a matrix AX of handles to the individual subaxes; and a
+%   handle BIGAX to big (invisible) axes framing the subaxes.  The third
+%   dimension of H corresponds to groups in G. AX contains one extra row of
+%   handles to invisible axes in which the histograms are plotted. BigAx is
+%   left as the CurrentAxes so that a subsequent TITLE, XLABEL, or YLABEL
+%   will be centered with respect to the matrix of axes.
+%
 %
 % See also: spmplot, mdrplot, fanplot, resfwdplot
 %
@@ -234,7 +315,7 @@ function [plot1]=yXplot(y,X,varargin)
 % Examples:
 
 %{
-    %First example of yXplot.
+    % yXplot with first argument vector y and no option.
     % In the first example as input there are two matrices
     % y and X respectively
     % A simple yX plot is created
@@ -249,7 +330,8 @@ function [plot1]=yXplot(y,X,varargin)
 %
 %
 %{
-    % Example of the use of function yXplot with option group.
+    % yXplot with first argument vector y and third argumeng group.
+    % Different groups are shown in the yXplot
     n=100;
     p=3;
     X=randn(n,p);
@@ -258,17 +340,58 @@ function [plot1]=yXplot(y,X,varargin)
     y(sel)=y(sel)+2;
     group=ones(n,1);
     group(sel)=2;
-    yXplot(y,X,'group',group);
+    yXplot(y,X,group);
 %}
-%
+
 %{
-    % Example of option selunit.
+    % yXplot with first argument vector y, third argument group and fourth argument plo (Ex1).
+    % In this case plo is a scalar
+    n=100;
+    p=3;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    group=ones(n,1);
+    group(sel)=2;
+    % plo is a scalar
+    plo=1;
+    yXplot(y,X,group,plo);
+%}
+
+%{
+    % yXplot with first argument vector y, third argument group and fourth argument plo (Ex1).
+    % In this case plo is a structure
+    n=100;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    group=ones(n,1);
+    group(sel)=2;
+    % plo is a struct
+    plo=struct;
+    % Set the scale for the x axes
+    plo.xlimx=[-1 2];
+    % Set the scale for the y axis
+    plo.ylimy=[0 2];
+    % Control symbol type
+    plo.sym={'^';'v'};
+    yXplot(y,X,group,plo);
+
+%}
+
+%{
+    % yXplot with first input argument a vector, varargin is name/value pairs Ex1.
+    % Example of use of option selunit.
     % Example of the use of function yXplot putting the text for the units
     % which have a value of y smaller than 98 and greater than 102.
     yXplot(y,X,'selunit',{'98' '102'});
 %}
-%
+
 %{
+    % yXplot with first input argument a vector, varargin is name/value pairs Ex2.
     % yXplot with personalized labelling.
     % Example of the use of function yXplot putting the text for the units
     % which have a value of y smaller than 1% percentile and greater than
@@ -278,7 +401,23 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 
 %{
-    % Example of use of yXplot when input is a structure.
+    % yXplot with first input argument a vector, varargin is name/value pairs Ex3.
+    % In this case group is passed as a name value pairs.
+    n=100;
+    p=3;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    group=ones(n,1);
+    group(sel)=2;
+    % add a personalized tag to the figure
+    yXplot(y,X,'group',group,'tag','myfig');
+%}
+
+
+%{
+    % yXplot when first input argument y is a structure. Ex1.
     % In the following example the input is a strucure which also contains
     % information about the forward search.
     [out]=LXS(y,X,'nsamp',1000);
@@ -301,7 +440,7 @@ function [plot1]=yXplot(y,X,varargin)
 %}
 %
 %{
-    % Interactive_example  
+    % Interactive_example
     %   Example of the use of options selstep, selunit, selunitbold and
     %   selunitcolor.
     %   It produces a yXplot plot in which labels are put for units
@@ -419,7 +558,8 @@ end
 % Check if the first argument is a structure or not
 if ~isstruct(y)
     [n,p]=size(X);
-    onlyyX=1;
+    out='';
+    isnotstructy=1;
 else
     % If the first argument is a structure and the number of supplied
     % arguments is greater than 1 it is necessary to add to varargin the
@@ -439,9 +579,9 @@ else
         % the fwd search.
         residuals=out.RES;
         [n,nsteps]=size(residuals);
-        onlyyX=0;
+        isnotstructy=0;
     else
-        onlyyX=1;
+        isnotstructy=1;
     end
 end
 % seq= column vector containing the sequence 1 to n
@@ -454,217 +594,369 @@ numtext=cellstr(num2str(seq,'%d'));
 % Initialize line width
 linewidthStd = 0.5;
 
-if onlyyX==0
-    % x= vector which contains the subset size (numbers on the x axis)
-    x=(n-nsteps+1):n;
-    
-    % selthdef= threshold used to decide which residuals are labelled in the resfwdplot.
-    % laby= label used for the y-axis of the resfwdplot.
-    labx='Subset size m';
-    if min(min(residuals))<0
-        laby='Scaled residuals';
-        selthdef=num2str(2.5);
-    else
-        laby='Squared scaled residuals';
-        selthdef=num2str(2.5^2);
-    end
-    
-    % maximum and minimum residual along the search for each unit
-    selmax=max(residuals,[],2);
-    selmin=min(residuals,[],2);
-else
-    x=1;
-    % The default is not to add textlabels to any unit
-    selthdef='';
-end
+      % Check if X includes the constant term for the intercept.
+        
+        intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
+        
+        if intcolumn==1
+            p1=p-numel(intcolumn);
+            Xsel=X;
+            Xsel(:,intcolumn)=[];
+        else
+            p1=p;
+            Xsel=X;
+        end
 
 %% User options
 one=ones(n,1);
-options= struct('subsize',x,'selstep',x([1 end]),'selunit',selthdef,...
-    'xlim','','ylim','','tag','pl_yX',...
-    'datatooltip',0,'label','','databrush','','nameX','','namey','','group',one);
+% Specify default values for colors, symbols, size of symbols and presence
+% of legend
+clr='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
+sym={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
+siz='';
+doleg='on';
+plo='';
+tag='pl_yX';
 
-if nargin>2 || (nargin>1 && onlyyX==0)
-    
-    UserOptions=varargin(1:2:length(varargin));
-    if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
-        if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:yXplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+if nargin>2
+    if length(varargin{1})==n
+        % In this case the user has called function yXplot with the
+        % old format, that is
+        % yXplot(y,X,group,plo), without name/value pairs
+        
+        group=varargin{1};
+        ngroups=length(unique(group));
+        
+        if length(varargin)<2
+            plo=1;
+        else
+            plo=varargin{2};
         end
-        % Check if user options are valid options
-        chkoptions(options,UserOptions)
+        
+        databrush='';
+        datatooltip=0;
+        tag='pl_yX';
+        units='';
+    else
+        
+        %         % In the case the user has called function yXplot with the new
+        %         % format name/value pairs
+        %         namevaluepairs=1;
+        
+        % || (nargin>1 && onlyyX==0)
+        if isnotstructy==0
+            % x= vector which contains the subset size (numbers on the x axis)
+            x=(n-nsteps+1):n;
+            
+            % selthdef= threshold used to decide which residuals are labelled in the resfwdplot.
+            % laby= label used for the y-axis of the resfwdplot.
+            labx='Subset size m';
+            if min(min(residuals))<0
+                laby='Scaled residuals';
+                selthdef=num2str(2.5);
+            else
+                laby='Squared scaled residuals';
+                selthdef=num2str(2.5^2);
+            end
+            
+            % maximum and minimum residual along the search for each unit
+            selmax=max(residuals,[],2);
+            selmin=min(residuals,[],2);
+        else
+            x=1;
+            % The default is not to add textlabels to any unit
+            selthdef='';
+        end
+        
+        
+        options= struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),'selunit',selthdef,...
+            'tag','pl_yX','namey','','nameX','','xlim','','ylim','',...
+            'datatooltip',0,'label','','databrush','');
+        
+        UserOptions=varargin(1:2:length(varargin));
+        if ~isempty(UserOptions)
+            % Check if number of supplied options is valid
+            if length(varargin) ~= 2*length(UserOptions)
+                error('FSDA:yXplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+            end
+            % Check if user options are valid options
+            chkoptions(options,UserOptions)
+        end
+        
+        for i=1:2:length(varargin)
+            options.(varargin{i})=varargin{i+1};
+        end
+        
+        
+        group=options.group;
+        ngroups=length(unique(group));
+        databrush=options.databrush;
+        datatooltip=options.datatooltip;
+        units=options.selunit;
+        tag=options.tag;
+        plo=options.plo;
+        
+        % extract the vector associated with the subset size (x)
+        x=options.subsize;
+        % and check if the choice of selsteps is valid
+        steps=options.selstep;
+        if max(steps)>n
+            mess=sprintf(['One of the steps which has beeen chosen is greater than n. \n',...
+                'It is deleted.']);
+            fprintf('%s\n',mess);
+            steps=steps(steps<=n);
+        end
+        if min(steps)<x(1)
+            mess=sprintf(['One of the steps which has beeen chosen is smaller than m0. \n',...
+                'It is deleted.']);
+            fprintf('%s\n',mess);
+            steps=steps(steps>=x(1));
+        end
     end
     
-    for i=1:2:length(varargin)
-        options.(varargin{i})=varargin{i+1};
+    
+    
+    
+    
+    if isnotstructy ==1
+  
+        nameX = cellstr(num2str((1:p1)','X%d'));
+        namey='y';
+        
+        
+        if ~isempty(databrush)
+            disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
+            return
+        end
+        
+        if iscellstr(units)
+            selunit=str2double(units);
+            units=seq(y>selunit(2) | y<selunit(1));
+        elseif ischar(units)==1
+            % if units is a character than the user has specified a threshold
+            % convert character to numeric
+            thresh=str2double(units);
+            % Label the units whose maximum residual along the search is greater
+            % than the required threshold or smalleR than -threshold
+            units=seq(y>thresh | y<-thresh);
+        else
+            % Some checks on minimum and maximum of vector units
+            if max(units)>n
+                mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
+                    'It is deleted.']);
+                fprintf('%s\n',mess);
+                units=units(units<=n);
+            end
+            if min(units)<1
+                mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
+                    'It is deleted.']);
+                fprintf('%s\n',mess);
+                units=units(units>0);
+            end
+        end
+        
+    else
+        if iscellstr(units)
+            selunit=str2double(units);
+            selmax=max(residuals,[],2);
+            selmin=min(residuals,[],2);
+            units=seq(selmax>selunit(2) | selmin<selunit(1));
+        elseif ischar(units)==1
+            % if units is a character than the user has specified a threshold
+            % convert character to numeric
+            thresh=str2double(units);
+            % Label the units whose maximum residual along the search is greater
+            % than the required threshold or smalleR than -threshold
+            units=seq(selmax>thresh | selmin<-thresh);
+        else
+            % Some checks on minimum and maximum of vector units
+            if max(units)>n
+                mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
+                    'It is deleted.']);
+                fprintf('%s\n',mess);
+                units=units(units<=n);
+            end
+            if min(units)<1
+                mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
+                    'It is deleted.']);
+                fprintf('%s\n',mess);
+                units=units(units>0);
+            end
+        end
     end
+    
+    
+    
+    % units= the list of the units which must be labelled.
+    % It can be a cell array of strings (defining lower and upper threhold),
+    % a string (defining just one threshold) or a numeric vector.
+    
+else
+    
+    group=ones(n,1);
+    datatooltip=0;
+    databrush='';
+    xlimx='';
+    ylimy='';
+    units='';
+    
 end
 
-group=options.group;
 
-% labeladd option
-d=find(strcmp('labeladd',options.databrush));
-if d>0
-    labeladd=options.databrush(d+1);
-    labeladd=labeladd{1};
-    % This option must be removed from cell options.databrush because it is
-    % not a valid option for the function selectdataFS.
-    options.databrush(d:d+1)=[];
+
+
+
+% seq= column vector containing the sequence 1 to n
+seq= (1:n)';
+
+
+if iscell(group)
+    groupv = zeros(numel(group),1);
+    guni = unique(group,'stable');
+    for ii=1:numel(guni)
+        groupv(strcmp(group,guni(ii))) = ii;
+    end
+    %guniv = cellstr(num2str(unique(groupv,'stable')));
 else
+    groupv = group;
+end
+
+% unigroup = 1:ngroups;
+% plo can be the fourth argument if the third argument is grouping vetor or could be called through name/value pairs
+if isstruct(plo)
+    fplo=fieldnames(plo);
+    
+    d=find(strcmp('namey',fplo));
+    if d>0
+        namey=plo.namey;
+    end
+    d=find(strcmp('nameX',fplo));
+    if d>0
+        nameX=plo.nameX;
+    end
+    d=find(strcmp('ylimy',fplo));
+    if d>0
+        ylimy=plo.ylimy;
+    end
+    
+    d=find(strcmp('xlimx',fplo));
+    if d>0
+        xlimx=plo.xlimx;
+    end
+
+    
+    d=find(strcmp('labeladd',fplo));
+    if d>0
+        labeladd=plo.labeladd;
+    else
+        labeladd='';
+    end
+    d=find(strcmp('clr',fplo));
+    if d>0
+        clr=plo.clr;
+        
+        if length(clr) ~= ngroups
+            warning('FSDA:spmplot:WrongNumColors','Number of colors which have been supplied is not equal to the number of groups')
+            disp(['Number of groups =' num2str(ngroups)])
+            disp(['Number of colors =' num2str(length(clr))])
+            if length(clr)< ngroups
+                disp('Supplied colors will be duplicated')
+                if isrow(clr)
+                    clr=repmat(clr,1,ngroups);
+                else
+                    clr=repmat(clr,ngroups,1);
+                end
+            else
+                disp(['Just the first ' num2str(ngroups) ' colors will be used'])
+            end
+        end
+        
+    end
+    d=find(strcmp('sym',fplo));
+    if isempty(d)
+        d=0;
+    end
+    if d>0 % && (ngroups == numel(plo.sym))
+        sym=plo.sym;
+        if length(sym) ~= ngroups
+            warning('FSDA:spmplot:WrongNumSymb','Number of symbols which have been supplied is not equal to the number of groups')
+            disp(['Number of groups =' num2str(ngroups)])
+            disp(['Number of symbols =' num2str(length(sym))])
+            if length(sym)< ngroups
+                disp('Supplied symbols will be duplicated')
+                if isrow(sym)
+                    sym=repmat(sym,1,ngroups);
+                else
+                    sym=repmat(sym,ngroups,1);
+                end
+            else
+                disp(['Just the first ' num2str(ngroups) ' symbols will be used'])
+            end
+        end
+    end
+    d=find(strcmp('siz',fplo));
+    if d>0
+        siz=plo.siz;
+    end
+    d=find(strcmp('doleg',fplo));
+    if d>0
+        doleg=plo.doleg;
+    else
+        doleg='on';
+    end
+else % in this case plo is not a structure
+    
+    %     if ischar(plo) && namevaluepairs==0
+    %         error('FSDA:spmplot:InvalidArg3',' Third argument must be a structure, or a scalar or an empty value []')
+    %     end
+    
+    if plo==1
+        nameX = cellstr(num2str((1:p)','X%d'));
+        namey=char('y');
+    else
+        nameX = '';
+        namey='';
+    end
     labeladd='';
+    ylimy='';
+    xlimx='';
 end
 
-% bivarfit option
-d=find(strcmp('bivarfit',options.databrush));
-if d>0
-    bivarfit=options.databrush(d+1);
-    bivarfit=bivarfit{1};
-    % This option must be removed from cell options.databrush because it is
-    % not a valid option for the function selectdataFS.
-    options.databrush(d:d+1)=[];
-else
-    bivarfit='';
-end
+%% The yX matrix  generalised to groups
 
-% multivarfit option
-d=find(strcmp('multivarfit',options.databrush));
-if d>0
-    multivarfit=options.databrush(d+1);
-    multivarfit=multivarfit{1};
-    % This option must be removed from cell options.databrush because it is
-    % not a valid option for the function selectdataFS.
-    options.databrush(d:d+1)=[];
-else
-    multivarfit='';
-end
 
-% persist option
-d=find(strcmp('persist',options.databrush));
-if d>0
-    persist=options.databrush(d+1);
-    % This option must be removed from cell options.databrush because it is
-    % not a valid option for the function selectdataFS.
-    options.databrush(d:d+1)=[];
-    
-    ColorOrd=[1 0 0;0 1 1; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
-    ColorOrd=repmat(ColorOrd,4,1);
-else
-    persist='';
-    ColorOrd=[1 0 0];
-end
+
+% % labeladd option
+% d=find(strcmp('labeladd',options.databrush));
+% if d>0
+%     labeladd=options.databrush(d+1);
+%     labeladd=labeladd{1};
+%     % This option must be removed from cell options.databrush because it is
+%     % not a valid option for the function selectdataFS.
+%     options.databrush(d:d+1)=[];
+% else
+%     labeladd='';
+% end
 
 % FlagColor option
 % Initialize colors: default colors are blue (unbrushed unit)
 % and red (brushed units)
-d=find(strcmp('FlagColor',options.databrush));
-if d>0
-    flagcol=options.databrush{d+1};
-    clr=['b' flagcol 'cmykgbrcmykg'];
-else
-    clr='brcmykgbrcmykgbrcmykg';
-    
-end
+% d=find(strcmp('FlagColor',options.databrush));
+% if d>0
+%     flagcol=options.databrush{d+1};
+%     clr=['b' flagcol 'cmykgbrcmykg'];
+% else
+%     clr='brcmykgbrcmykgbrcmykg';
+%
+% end
 
-% selstep option
 
-% extract the vector associated with the subset size (x)
-x=options.subsize;
-% and check if the choice of selsteps is valid
-steps=options.selstep;
-if max(steps)>n
-    mess=sprintf(['One of the steps which has beeen chosen is greater than n. \n',...
-        'It is deleted.']);
-    fprintf('%s\n',mess);
-    steps=steps(steps<=n);
-end
-if min(steps)<x(1)
-    mess=sprintf(['One of the steps which has beeen chosen is smaller than m0. \n',...
-        'It is deleted.']);
-    fprintf('%s\n',mess);
-    steps=steps(steps>=x(1));
-end
 
-% selunit option
-
-% units= the list of the units which must be labelled.
-% It can be a cell array of strings (defining lower and upper threhold),
-% a string (defining just one threshold) or a numeric vector.
-
-units=options.selunit;
-
-if onlyyX
-    
-    if ~isempty(options.databrush)
-        disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
-        return
-    end
-    if iscellstr(units)
-        selunit=str2double(units);
-        units=seq(y>selunit(2) | y<selunit(1));
-    elseif ischar(units)==1
-        % if units is a character than the user has specified a threshold
-        % convert character to numeric
-        thresh=str2double(units);
-        % Label the units whose maximum residual along the search is greater
-        % than the required threshold or smalleR than -threshold
-        units=seq(y>thresh | y<-thresh);
-    else
-        % Some checks on minimum and maximum of vector units
-        if max(units)>n
-            mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
-                'It is deleted.']);
-            fprintf('%s\n',mess);
-            units=units(units<=n);
-        end
-        if min(units)<1
-            mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
-                'It is deleted.']);
-            fprintf('%s\n',mess);
-            units=units(units>0);
-        end
-    end
-    
-else
-    if iscellstr(units)
-        selunit=str2double(units);
-        selmax=max(residuals,[],2);
-        selmin=min(residuals,[],2);
-        units=seq(selmax>selunit(2) | selmin<selunit(1));
-    elseif ischar(units)==1
-        % if units is a character than the user has specified a threshold
-        % convert character to numeric
-        thresh=str2double(units);
-        % Label the units whose maximum residual along the search is greater
-        % than the required threshold or smalleR than -threshold
-        units=seq(selmax>thresh | selmin<-thresh);
-    else
-        % Some checks on minimum and maximum of vector units
-        if max(units)>n
-            mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
-                'It is deleted.']);
-            fprintf('%s\n',mess);
-            units=units(units<=n);
-        end
-        if min(units)<1
-            mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
-                'It is deleted.']);
-            fprintf('%s\n',mess);
-            units=units(units>0);
-        end
-    end
-end
-
-% lunits = number of units which must be labelled
-lunits=length(units);
-% lsteps = number of steps for which it is necessary to add the labels
-lsteps=length(steps);
-lall=lunits*lsteps;
 
 %% Display the yXplot
 
 % Create a figure to host the gplotmatrix or clear the existing one
-h=findobj('-depth',1,'tag',options.tag);
+h=findobj('-depth',1,'tag',tag);
 if (~isempty(h))
     clf(h);
     figure(h);
@@ -676,44 +968,50 @@ set(h,'Name', 'yXplot: plot of y against each column of matrix X', 'NumberTitle'
 hold('all');
 
 % Set default value for potential groups of selected units
-unigroup=unique(group);
+% unigroup=unique(group);
+ngroups=length(unique(group));
+unigrouplist = 1:ngroups;
+
+
+% % sym can be either a cell array or a character
+% if iscell(sym)
+%     charsym=char(sym{unigroup});
+% else
+%     charsym=sym(unigroup);
+% end
+%
+% sym can be either a cell array or a character
+if iscell(sym)
+    charsym=char(sym{unigrouplist});
+else
+    charsym=sym(unigrouplist);
+end
+
 styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
-% Check if X includes the constant term for the intercept.
 
-intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
-
-if intcolumn==1
-    intercept = 1;
-    p1=1:(p-numel(intcolumn));
-    Xsel=X;
-    Xsel(:,intcolumn)=[];
-else
-    intercept = 0;
-    p1=1:p;
-    Xsel=X;
-end
-
-if isempty(options.nameX)
-    nameX=cellstr(num2str(p1','X%d'));
-else
-    nameX=options.nameX;
-end
-
-if isempty(options.namey)
-    namey=char('y');
-else
-    namey=options.namey;
-end
+%
+% if isempty(options.nameX)
+%     nameX=cellstr(num2str(p1','X%d'));
+% else
+%     nameX=options.nameX;
+% end
+%
+% if isempty(options.namey)
+%     namey=char('y');
+% else
+%     namey=options.namey;
+% end
 
 % Display the initial gplotmatrix
-[H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
+% [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigrouplist),char(styp{unigrouplist}),siz,doleg,[],nameX,namey);
 
-%[H,AX,BigAx] = gplotmatrix(Xsel,Y,group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
-
+[H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigrouplist),charsym,siz,doleg,[],nameX,namey);
 
 % default legenda
-set(H,'DisplayName','Units');
+if isnotstructy ~=1
+    set(H,'DisplayName','Units');
+end
 
 % if ~isempty(units)
 %     for i = 1:length(AX)
@@ -729,19 +1027,48 @@ for i = 1:length(AX)
     set(gcf,'CurrentAxes',AX(i));
     % If the user has specified the min and max for y limit
     
-    if ~isempty(options.ylim)
-        ylim(AX(i),options.ylim);
+    if ~isempty(ylimy)
+        ylim(AX(i),ylimy);
     end
-    % if selunit option has been defined label the units.
+    if ~isempty(xlimx)
+        xlim(AX(i),xlimx);
+    end
     
+    
+    % if selunit option has been defined label the units.
     if ~isempty(units)
         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
         text(Xsel(units,i)+dx,y(units)+dy,numtext(units),'HorizontalAlignment', 'Left');
     end
+    
 end
 
 
+if ndims(H) == 3
+    H=double(H);
+    H(:,:,end) = ~eye(size(H,1)).*H(:,:,end);
+    
+    % Put in the figure UserData field the list of units in the last group,
+    % i.e. (depending on context) the outliers or the units last brushed.
+    if isnumeric(group)
+        set(H(:,:,end), 'UserData' , seq(group==max(group)));
+    else
+        set(H(:,:,end), 'UserData' , seq(groupv==max(groupv)));
+    end
+    
+    if strcmp(doleg,'on')
+        % Add to the spm the clickable multilegend and eventually the text labels
+        % of the selections
+        if isnumeric(group)
+            % use context sensitive legends
+            add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
+        else
+            % use legends in guni
+            add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg',guni);
+        end
+    end
+end
 
 %%  Prepare the yXplot for brushing
 
@@ -764,10 +1091,22 @@ styp=repmat(styp,ceil(n/13),1);
 box on
 
 % set the specified tag in the current plot
-set(gcf,'tag',options.tag)
+set(gcf,'tag',tag)
+
+% labeladd option
+d=find(strcmp('labeladd',databrush));
+if d>0
+    labeladdDB=databrush(d+1);
+    labeladdDB=labeladdDB{1};
+    % This option must be removed from cell options.databrush because it is
+    % not a valid option for the function selectdataFS.
+    databrush(d:d+1)=[];
+else
+    labeladdDB='';
+end
 
 % set the options.datatooltip (enable/disable interactive data cursor mode)
-if options.datatooltip
+if datatooltip
     hdt = datacursormode;
     set(hdt,'Enable','on');
     
@@ -784,12 +1123,62 @@ if options.datatooltip
     set(hdt,'UpdateFcn',{@yXplotLbl,out})
 end
 
+
 %% Brush mode (call to function selectdataFS)
-if ~isempty(options.databrush) || iscell(options.databrush)
-    if isscalar(options.databrush)
+
+if ~isempty(databrush) || iscell(databrush)
+    
+    
+    % lunits = number of units which must be labelled
+    lunits=length(units);
+    % lsteps = number of steps for which it is necessary to add the labels
+    lsteps=length(steps);
+    lall=lunits*lsteps;
+    
+    % bivarfit option
+    d=find(strcmp('bivarfit',databrush));
+    if d>0
+        bivarfit=databrush(d+1);
+        bivarfit=bivarfit{1};
+        % This option must be removed from cell options.databrush because it is
+        % not a valid option for the function selectdataFS.
+        databrush(d:d+1)=[];
+    else
+        bivarfit='';
+    end
+    
+    % multivarfit option
+    d=find(strcmp('multivarfit',databrush));
+    if d>0
+        multivarfit=databrush(d+1);
+        multivarfit=multivarfit{1};
+        % This option must be removed from cell options.databrush because it is
+        % not a valid option for the function selectdataFS.
+        databrush(d:d+1)=[];
+    else
+        multivarfit='';
+    end
+    
+    % persist option
+    d=find(strcmp('persist',databrush));
+    if d>0
+        persist=databrush(d+1);
+        % This option must be removed from cell options.databrush because it is
+        % not a valid option for the function selectdataFS.
+        databrush(d:d+1)=[];
+        
+        ColorOrd=[1 0 0;0 1 1; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
+        ColorOrd=repmat(ColorOrd,4,1);
+    else
+        persist='';
+        ColorOrd=[1 0 0];
+    end
+    
+    
+    if isscalar(databrush)
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     else
-        sele={options.databrush{:} 'Ignore' findobj(gcf,'tag','env')}; %#ok<*CCAT>
+        sele={databrush{:} 'Ignore' findobj(gcf,'tag','env')}; %#ok<*CCAT>
     end
     
     sele={sele{:} 'Tag' options.tag};
@@ -847,13 +1236,6 @@ if ~isempty(options.databrush) || iscell(options.databrush)
             but=1;
         end
         
-        %         button = get(fig, 'SelectionType');
-        %         if strcmp(button,'open'), but = 1;
-        %         elseif strcmp(button,'normal'), but = 1;
-        %         elseif strcmp(button,'extend'), but = 2;
-        %         % elseif strcmp(button,'alt'), % but = 3;
-        %         else error('MATLAB:ginput:InvalidSelection', 'Invalid mouse selection.')
-        %         end
         
         if but==1 && find(AX==gca) > 0 %if the User has made a selection in one of the scatterplots
             
@@ -877,9 +1259,11 @@ if ~isempty(options.databrush) || iscell(options.databrush)
             %% - call selectdataFS
             
             if ij>1
-                legend(hLegend(length(AX)),'hide');
+                % legend(hLegend(length(AX)),'hide');
+                set( hLegend(1,end),'Visible','off')
+                
                 %               set(hLegend(length(AX)),'Location', 'EastOutside');
-            end;
+            end
             set(fig,'UserData',num2cell(seq));
             [pl,xselect,yselect] = selectdataFS(sele{:}, 'Label', 'off');
             
@@ -888,7 +1272,9 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                 return
             end
             
-            if ij>1; set(hLegend(length(AX)),'Location', 'Best'); end;
+            if ij>1
+                set(hLegend(length(AX)),'Location', 'Best')
+            end
             
             %When the selection has been completed, axes properties
             %'HandleVisibility' and 'HitTest' must be set to on for an eventual
@@ -947,7 +1333,7 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                 coi(jk:jk+length(listbra)-1)=listbra;
                 jk=jk+length(listbra);
             end
-            % Resize coi with the number of selected units. 
+            % Resize coi with the number of selected units.
             % jk-1 = number of selected units
             coi=coi(1:jk-1);
             
@@ -1015,7 +1401,10 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                 %(the selection was done ONLY on one scatterplot) with a
                 %new gplotmatrix which takes into consideration the
                 %selection coming out from selectdataFS, in all scatterplots
-                [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
+                
+                % OLDOLD
+                % [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
+                [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),siz,doleg,[],nameX,namey);
                 
                 % Set the legenda properties of the gplotmatrix
                 if nbrush>0
@@ -1027,149 +1416,163 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                     set(H,'DisplayName','Units');
                 end
                 
-                %fig is the handle of the closest ancestor figure of BigAx.
-                fig = ancestor(BigAx,'figure');
-                
-                %In order to add new graphics objects without clearing or
-                %resetting the current figure we set the figure and axes
-                %NextPlot properties to 'add'.
-                set(fig,'NextPlot','add');
-                set(AX,'NextPlot','add');
-                
-                % Now, for each plot of y|X do:
-                for i = 1:length(AX)
-                    % Make the axes of the scatterplot identified by the handle
-                    % AX(i) the current axes.
-                    set(fig,'CurrentAxes',AX(i));
-                    % Remark: axes(AX(i)) would also do the job, but would restack
-                    % the axes above all other axes in the figure.
-                    
-                    % Fit least square line(s) to the scatterplot AX(i).
-                    switch bivarfit
-                        case ''
-                            %do nothing: no line is fit.
-                        case '0'
-                            h=olsline(0); % fit a line to each group
-                            if length(h)==1
-                                set(h,'DisplayName','fit on unbrushed units of y|Xi');
-                            else
-                                for brugrp = 1:size(h,1)-1
-                                    set(h(brugrp),'DisplayName',['fit on brushed units ' num2str(size(h,1)-brugrp)]);
-                                end
-                                %set(h(2),'DisplayName','fit on unbrushed units of y|Xi');
-                                set(h(size(h,1)),'DisplayName','fit on unbrushed units of y|Xi');
-                            end
-                        case '1'
-                            h=olsline;    % fit 1 line to all data, regardless the groups
-                            set(h,'DisplayName','fit on all units of y|Xi');
-                        case '2'
-                            h=olsline;    % fit a line to all data
-                            set(h,'DisplayName','fit on all units of y|Xi');
-                            h=olsline(size(H,3)); % fit a line to the unselected data, i.e. the last group among the handles H
-                            set(h,'DisplayName','fit on unbrushed units of y|Xi');
-                        otherwise
-                            if strncmp('i',bivarfit,1)
-                                token = strtok(bivarfit, 'i');
-                                selgroup=str2double(token);
-                                if ~isnan(selgroup) && selgroup > 0.5 && selgroup <= size(H,3)
-                                    h=olsline(size(H,3)-round(selgroup)+1); % fit one group only: the one with index round(bivarfit)
-                                    set(h,'DisplayName','fit on a group of y|Xi');
-                                else
-                                    %do nothing: no line is fit.
-                                end
-                            else
-                                error('FSDA:yXplot:WrongBivarfit','''Valid values for option ''bivarfit'' are: '''', ''0'', ''1'', ''2'', ''i1'', ''i2'', ... , ''ig'', ... being ''g'' the index of a selected group.')
-                                %do nothing: no line is fit
-                            end
-                    end
-                    
-                    % Add the labels of the last selected group.
-                    if strcmp('1',labeladd)
-                        xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
-                        dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
-                        text(Xsel(brushcum,i)+dx,y(brushcum)+dy,numtext(brushcum),'HorizontalAlignment', 'Left');
-                    end
-                    % Add the (fix) labels eventually set in selunit.
-                    if ~isempty(units)
-                        xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
-                        dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
-                        text(Xsel(units,i)+dx,y(units)+dy,numtext(units),'HorizontalAlignment', 'Left');
-                    end
-                    
-                    % Add to each scatterplot AX(i) the line(s) based on the hyperplane
-                    % fit to y|X.
-                    switch multivarfit
-                        case {'1' , '2'}
-                            %int = out.beta(intcolumn,1); % the intercept value
-                            coef =regress(y,X);
-                            
-                            % indcoef = vector which contains the indexes of columns of X
-                            % except that which is about to be plotted
-                            if intercept==1
-                                indcoef=setdiff(1:p,i+1);
-                            else
-                                indcoef=setdiff(1:p,i);
-                            end
-                            % Find the mean value of the columns of matrix X using all
-                            % the units
-                            meaot=mean(X(:,indcoef))*coef(indcoef);
-                            
-                            coef(intcolumn)=[]; % the other coefficients
-                            xlimits = get(AX(i),'Xlim');
-                            hline1 = line(xlimits , meaot + coef(i).*xlimits);
-                            datacolor = [.3 .3 .3]; %Dark grey;  [1 .62 .40] == %Copper
-                            set(hline1,'Color',datacolor,'LineWidth',2,...
-                                'DisplayName','fit on all units of y|X');
-                            if strcmp(multivarfit, '2')
-                                % Notice that group==1 is the group of the
-                                % unselected units
-                                Xgood = X(logical(group==1),:);
-                                ygood = y(logical(group==1));
-                                
-                                coef = regress(ygood,Xgood);
-                                
-                                % Find the mean of all the other variables
-                                % considering just good units
-                                meaot=mean(Xgood(:,indcoef))*coef(indcoef);
-                                
-                                coef(intcolumn)=[];
-                                hline2 = line(xlimits , meaot  + coef(i).*xlimits);
-                                datacolor = get(H(1,i,1),'Color');
-                                %datacolor = [1 .40 .80]; %Copper verso rosso
-                                set(hline2,'Color',datacolor,'LineWidth',2,...
-                                    'DisplayName','fit on unbrushed units of y|X');
-                            end
-                        otherwise
-                            %do nothing
-                    end
-                    
-                end
-                
-                % Now update the legends and make them clickable.
-                
-                hLines = findobj(AX(1), 'type', 'line');
-                hLegend = zeros(size(AX));
-                for iAxes = 1:length(AX)
-                    % Find all lines in current axes and get their DisplayName
-                    hLines = findobj(AX(iAxes), 'type', 'line');
-                    eLegend = cell(length(hLines), 1);
-                    for iLines = 1:length(hLines)
-                        eLegend{iLines} = get(hLines(iLines), 'DisplayName');
-                    end
-                    %%hLegend(iAxes) = clickableLegend(hLines, eLegend{:});
-                    legend_h = legend(hLines);
-                    if iAxes < length(AX)
-                        %                         if verMatlab
-                        %                             legend(legend_h,'hide');
-                        %                         else
-                        %                             legend_h.Visible='off';
-                        %                         end
-                        set(legend_h,'Visible','off')
-                        
+                if strcmp(doleg,'on')
+                    % Add to the spm the clickable multilegend and eventually the text labels
+                    % of the selections
+                    if isnumeric(group)
+                        % use context sensitive legends
+                        add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg','1','bivarfit',bivarfit,'multivarfit',multivarfit);
+                    else
+                        % use legends in guni
+                        add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg',guni,'bivarfit',bivarfit,'multivarfit',multivarfit)
                     end
                 end
-                hLegend(iAxes) = clickableMultiLegend(hLines, eLegend{:});
+                hLegend=zeros(size(AX));
+                hLegend(1,end)=legend;
                 
+                % % %                 %fig is the handle of the closest ancestor figure of BigAx.
+                % % %                 fig = ancestor(BigAx,'figure');
+                % % %
+                % % %                 %In order to add new graphics objects without clearing or
+                % % %                 %resetting the current figure we set the figure and axes
+                % % %                 %NextPlot properties to 'add'.
+                % % %                 set(fig,'NextPlot','add');
+                % % %                 set(AX,'NextPlot','add');
+                % % %
+                % % %                 % Now, for each plot of y|X do:
+                % % %                 for i = 1:length(AX)
+                % % %                     % Make the axes of the scatterplot identified by the handle
+                % % %                     % AX(i) the current axes.
+                % % %                     set(fig,'CurrentAxes',AX(i));
+                % % %                     % Remark: axes(AX(i)) would also do the job, but would restack
+                % % %                     % the axes above all other axes in the figure.
+                % % %
+                % % %                     % Fit least square line(s) to the scatterplot AX(i).
+                % % %                     switch bivarfit
+                % % %                         case ''
+                % % %                             %do nothing: no line is fit.
+                % % %                         case '0'
+                % % %                             h=olsline(0); % fit a line to each group
+                % % %                             if length(h)==1
+                % % %                                 set(h,'DisplayName','fit on unbrushed units of y|Xi');
+                % % %                             else
+                % % %                                 for brugrp = 1:size(h,1)-1
+                % % %                                     set(h(brugrp),'DisplayName',['fit on brushed units ' num2str(size(h,1)-brugrp)]);
+                % % %                                 end
+                % % %                                 %set(h(2),'DisplayName','fit on unbrushed units of y|Xi');
+                % % %                                 set(h(size(h,1)),'DisplayName','fit on unbrushed units of y|Xi');
+                % % %                             end
+                % % %                         case '1'
+                % % %                             h=olsline;    % fit 1 line to all data, regardless the groups
+                % % %                             set(h,'DisplayName','fit on all units of y|Xi');
+                % % %                         case '2'
+                % % %                             h=olsline;    % fit a line to all data
+                % % %                             set(h,'DisplayName','fit on all units of y|Xi');
+                % % %                             h=olsline(size(H,3)); % fit a line to the unselected data, i.e. the last group among the handles H
+                % % %                             set(h,'DisplayName','fit on unbrushed units of y|Xi');
+                % % %                         otherwise
+                % % %                             if strncmp('i',bivarfit,1)
+                % % %                                 token = strtok(bivarfit, 'i');
+                % % %                                 selgroup=str2double(token);
+                % % %                                 if ~isnan(selgroup) && selgroup > 0.5 && selgroup <= size(H,3)
+                % % %                                     h=olsline(size(H,3)-round(selgroup)+1); % fit one group only: the one with index round(bivarfit)
+                % % %                                     set(h,'DisplayName','fit on a group of y|Xi');
+                % % %                                 else
+                % % %                                     %do nothing: no line is fit.
+                % % %                                 end
+                % % %                             else
+                % % %                                 error('FSDA:yXplot:WrongBivarfit','''Valid values for option ''bivarfit'' are: '''', ''0'', ''1'', ''2'', ''i1'', ''i2'', ... , ''ig'', ... being ''g'' the index of a selected group.')
+                % % %                                 %do nothing: no line is fit
+                % % %                             end
+                % % %                     end
+                % % %
+                % % %                     % Add the labels of the last selected group.
+                % % %                     if strcmp('1',labeladd)
+                % % %                         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
+                % % %                         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
+                % % %                         text(Xsel(brushcum,i)+dx,y(brushcum)+dy,numtext(brushcum),'HorizontalAlignment', 'Left');
+                % % %                     end
+                % % %                     % Add the (fix) labels eventually set in selunit.
+                % % %                     if ~isempty(units)
+                % % %                         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
+                % % %                         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
+                % % %                         text(Xsel(units,i)+dx,y(units)+dy,numtext(units),'HorizontalAlignment', 'Left');
+                % % %                     end
+                % % %
+                % % %                     % Add to each scatterplot AX(i) the line(s) based on the hyperplane
+                % % %                     % fit to y|X.
+                % % %                     switch multivarfit
+                % % %                         case {'1' , '2'}
+                % % %                             %int = out.beta(intcolumn,1); % the intercept value
+                % % %                             coef =regress(y,X);
+                % % %
+                % % %                             % indcoef = vector which contains the indexes of columns of X
+                % % %                             % except that which is about to be plotted
+                % % %                             if intercept==1
+                % % %                                 indcoef=setdiff(1:p,i+1);
+                % % %                             else
+                % % %                                 indcoef=setdiff(1:p,i);
+                % % %                             end
+                % % %                             % Find the mean value of the columns of matrix X using all
+                % % %                             % the units
+                % % %                             meaot=mean(X(:,indcoef))*coef(indcoef);
+                % % %
+                % % %                             coef(intcolumn)=[]; % the other coefficients
+                % % %                             xlimits = get(AX(i),'Xlim');
+                % % %                             hline1 = line(xlimits , meaot + coef(i).*xlimits);
+                % % %                             datacolor = [.3 .3 .3]; %Dark grey;  [1 .62 .40] == %Copper
+                % % %                             set(hline1,'Color',datacolor,'LineWidth',2,...
+                % % %                                 'DisplayName','fit on all units of y|X');
+                % % %                             if strcmp(multivarfit, '2')
+                % % %                                 % Notice that group==1 is the group of the
+                % % %                                 % unselected units
+                % % %                                 Xgood = X(logical(group==1),:);
+                % % %                                 ygood = y(logical(group==1));
+                % % %
+                % % %                                 coef = regress(ygood,Xgood);
+                % % %
+                % % %                                 % Find the mean of all the other variables
+                % % %                                 % considering just good units
+                % % %                                 meaot=mean(Xgood(:,indcoef))*coef(indcoef);
+                % % %
+                % % %                                 coef(intcolumn)=[];
+                % % %                                 hline2 = line(xlimits , meaot  + coef(i).*xlimits);
+                % % %                                 datacolor = get(H(1,i,1),'Color');
+                % % %                                 %datacolor = [1 .40 .80]; %Copper verso rosso
+                % % %                                 set(hline2,'Color',datacolor,'LineWidth',2,...
+                % % %                                     'DisplayName','fit on unbrushed units of y|X');
+                % % %                             end
+                % % %                         otherwise
+                % % %                             %do nothing
+                % % %                     end
+                % % %
+                % % %                 end
+                % % %
+                % % %                 % Now update the legends and make them clickable.
+                % % %
+                % % %                 hLines = findobj(AX(1), 'type', 'line');
+                % % %                 hLegend = zeros(size(AX));
+                % % %                 for iAxes = 1:length(AX)
+                % % %                     % Find all lines in current axes and get their DisplayName
+                % % %                     hLines = findobj(AX(iAxes), 'type', 'line');
+                % % %                     eLegend = cell(length(hLines), 1);
+                % % %                     for iLines = 1:length(hLines)
+                % % %                         eLegend{iLines} = get(hLines(iLines), 'DisplayName');
+                % % %                     end
+                % % %                     %%hLegend(iAxes) = clickableLegend(hLines, eLegend{:});
+                % % %                     legend_h = legend(hLines);
+                % % %                     if iAxes < length(AX)
+                % % %                         %                         if verMatlab
+                % % %                         %                             legend(legend_h,'hide');
+                % % %                         %                         else
+                % % %                         %                             legend_h.Visible='off';
+                % % %                         %                         end
+                % % %                         set(legend_h,'Visible','off')
+                % % %
+                % % %                     end
+                % % %                 end
+                % % %                 hLegend(iAxes) = clickableMultiLegend(hLines, eLegend{:});
+                % % %
                 %% - display the resfwdplot with the corresponding groups of trajectories highlighted.
                 
                 % creates the resfwdplot
@@ -1186,15 +1589,25 @@ if ~isempty(options.databrush) || iscell(options.databrush)
                     
                     plot(x,residuals,'Tag','data_res','Color','b','LineWidth',0.5);
                     
+                    %add labels, if necessary.
+                    if strcmp('1',labeladdDB)
+                        if strcmp('off',persist)
+                            text(reshape(repmat(steps,length(nbrush),1),length(nbrush)*length(steps),1),reshape(residuals(nbrush,steps-x(1)+1),length(nbrush)*length(steps),1),reshape(repmat(numtext(nbrush),1,length(steps)),length(nbrush)*length(steps),1));
+                        end
+                        if strcmp('on',persist)
+                            text(reshape(repmat(steps,length(brushcum),1),length(brushcum)*length(steps),1),reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
+                        end
+                    end
+                    
                     set(gcf,'tag','data_res');
                     hold('off')
                     % control minimum and maximum for x and y axis
-                    if ~isempty(options.xlim)
-                        xlim(options.xlim);
+                    if ~isempty(xlimx)
+                        xlim(xlimx);
                     end
                     
-                    if ~isempty(options.ylim)
-                        ylim(options.ylim);
+                    if ~isempty(ylimy)
+                        ylim(ylimy);
                     end
                     
                     % displays the boundary of the current axes.

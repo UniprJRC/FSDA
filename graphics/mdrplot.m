@@ -847,7 +847,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 set(gcf,'WindowStyle',get(hmin,'WindowStyle'));
             end
             
-            [H,~,~] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
+            [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
             
             % Assign to this figure a name and a tag=pl_yX
             set(gcf,'Name','Scatter plot matrix y|X with selected groups highlighted');
@@ -870,7 +870,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             
             % The following line adds objects to the panels of the yX
             % add2yX(H,AX,BigAx,out,group,nbrush,bivarfit,multivarfit,labeladd)
-            add2yX('intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
+            add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
             
             
             %% - highlight brushed trajectories also in the resplot, if it is open

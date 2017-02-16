@@ -677,7 +677,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 figure;
                 set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
             end
-            [H,~,~] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
+            [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
             
             % Assign to this figure a name and a tag=pl_yX
             set(gcf,'Name','Scatter plot matrix y|X with selected groups highlighted');
@@ -700,7 +700,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             
             % add objects to the panels of the yX
             % add2yX(H,AX,BigAx,out,group,nbrush,bivarfit,multivarfit,labeladd);
-            add2yX('intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
+            add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
             
             %% - check condition to exit from the brush mode
             % If the option persistent is not equal off or on than get out

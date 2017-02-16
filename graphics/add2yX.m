@@ -1,4 +1,4 @@
-function add2yX(varargin)
+function add2yX(H,AX,BigAx,varargin)
 %add2yX adds objects to the yXplot.
 %
 %
@@ -9,10 +9,10 @@ function add2yX(varargin)
 % Optional input arguments:
 %
 %           bivarfit:   Add a line fit. Char.
-%                       '0' fit a line to each group; 
-%                       '1' fit 1 line to all data, regardless the groups; 
+%                       '0' fit a line to each group;
+%                       '1' fit 1 line to all data, regardless the groups;
 %                       '2' fit a line on all data and a line to relevant
-%                       data; 
+%                       data;
 %                       ''  the default, nothing is added.
 %                       Example - 'bivarfit','1'
 %                       Data Types - char
@@ -30,11 +30,11 @@ function add2yX(varargin)
 %                       Example - 'labeladd','1'
 %                       Data Types - char
 %
-%           intercept:  Indicator for constant term. Scalar. 
+%           intercept:  Indicator for constant term. Scalar.
 %                       intercept = 1 (default) assumes the intercept for the
-%                       bivarfit and multivarfit. When intercept = 0, 
+%                       bivarfit and multivarfit. When intercept = 0,
 %                       the intercept is not used for the fits.
-%                       Example - 'intercept',1 
+%                       Example - 'intercept',1
 %                       Data Types - double
 %
 % Output:
@@ -43,10 +43,10 @@ function add2yX(varargin)
 % More About:
 %
 % Note that the function extracts the data from the graphical
-% objects in the plot. At the current stage the objects that can be 
+% objects in the plot. At the current stage the objects that can be
 % added to yXplot using add2yX are:
-% - a bivariate fit on each panel of yXplot (see olsline.m); 
-% - a multivariate fit that is shown on each panel of yXplt; 
+% - a bivariate fit on each panel of yXplot (see olsline.m);
+% - a multivariate fit that is shown on each panel of yXplt;
 % - the labels of relevant observations, e.g. outliers or brushed groups.
 %
 %
@@ -63,7 +63,7 @@ function add2yX(varargin)
 %% Beginning of code
 
 % user options
-options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','');
+options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','','userleg','');
 
 % FontSizelabeladd= height of text labels
 FontSizelabeladd=12;
@@ -88,6 +88,16 @@ intercept   = options.intercept;
 bivarfit    = options.bivarfit;
 multivarfit = options.multivarfit;
 labeladd    = options.labeladd;
+userleg  = options.userleg;
+
+% To take account a change in property names of the legend object in 2016b
+if verLessThan('matlab','9.1')
+    legstring='LegendPeerHandle';
+else
+    legstring='LayoutPeers';
+end
+
+
 
 %% get the values of the observations from the yXplot
 
@@ -113,7 +123,26 @@ hChildren  = get(fig,'Children');
 % nhChildren = numel(hChildren);
 % AX([1 nhChildren])=[];
 
-AX= findobj(hChildren,'Type','axes','-and','Tag','');
+% AX= findobj(hChildren,'Type','axes','-and','Tag','');
+
+% force to build default legends if there are no legends in the scatterplot
+if ~isappdata(AX(1,end),legstring)
+    userleg = '1';
+end
+
+% These are the legends already in the plot
+legplot = get(getappdata(AX(1,end),legstring),'String');
+
+% if 'userleg' is empty, use the legend already in the plot.
+if isempty(userleg)
+    legnew = legplot;
+end
+
+% if 'userleg' is a cell of string, use such strings as user-defined legends
+if ~isempty(userleg) && iscell(userleg)
+    legnew = userleg;
+end
+
 
 nAX = numel(AX);
 
@@ -151,12 +180,12 @@ end
 % the same of the Xi extracted here. As a consequence, the observations
 % identified by "group=1" may not be equivalent to (Xigood ygood).
 
-verMatlab=verLessThan('matlab','8.4.0');
-if verMatlab
-    H = NaN(1,nAX,ngroups);
-else
-    H=gobjects(1,nAX,ngroups);
-end
+% verMatlab=verLessThan('matlab','8.4.0');
+% if verMatlab
+%     H = NaN(1,nAX,ngroups);
+% else
+%     H=gobjects(1,nAX,ngroups);
+% end
 
 if nAX > 1
     for i=1:nAX
@@ -322,13 +351,106 @@ for i = 1:length(AX)
     end
 end
 
-%% Update the legends with the new objects and make them clickable
-hLines = findobj(AX(end), 'type', 'line');
-eLegend=get(hLines, 'DisplayName');
-% Create clickable multilegend if there is more than one group in the spm
-if iscell(eLegend)
-    hleg = findobj(fig,'Tag','legend');
-    set(hleg,'Visible','off');
-    clickableMultiLegend(hLines, eLegend{:},'Location','northwest');
+
+% if 'userleg' is '1', set context sensitive group-specific legends.
+% The context is determined by the occcurence of specific words in the Tag
+% of the current figure. The currently addressed strings/contexts are
+% 'outlier' (for outliers/normal units), 'brush' (for Brushed units 1,
+% Brushed units 2, etc.) and 'group' (for 'Group 1, Group 2, etc.).
+if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
+    
+    % add multilegend
+    v = size(AX,2);
+    leg = get(getappdata(AX(1,end),legstring),'String');
+    nleg = numel(leg);
+    
+    if ndims(H) == 3
+        % The third dimension of H is to distinguish the groups. In the next
+        % 'if' statement we use two equivalent ways to deal with H, considering
+        % that the diagonal of the scatter matrix is dedicated to the
+        % histograms.
+        if nleg == 2 && ~isempty(strfind(lower(get(gcf, 'Tag')),'outlier'))
+            set(H(H(:,:,2)~=0),'DisplayName','Normal units');
+            linind      = sub2ind([v v],1:v,1:v);
+            outofdiag   = setdiff(1:v^2,linind);
+            lin2ind     = outofdiag+v^2;
+            set(H(lin2ind),'DisplayName','Outliers');
+        else
+            % Assign to this figure a name
+            set(gcf,'Name','yXplot with groups highlighted');
+            % Reset the handles of the main diagonal (histograms) to zero.
+            
+            % DA DISCUTERE ??????????????????? TOO
+            %   H(:,:,1) = ~eye(size(H,1)).*H(:,:,1);
+            
+            
+            % Now reshape the handles array to make it more manageable: while H
+            % is a 3-dimensional array with the third dimension associated to
+            % the groups, newH is 2-dimensional with columns associated to the
+            % lines of the scatterplot and lines associated to the groups.
+            newH = reshape(H,numel(H)/nleg,nleg);
+            if strcmp(get(gcf, 'Tag'),'pl_yX') || ~isempty(strfind(lower(get(gcf, 'Tag')),'brush')) %#ok<*STREMP>
+                % set the legend of the unbrushed units
+                set(newH(newH(:,1)~=0),'DisplayName','Unbrushed units');
+                % set the legend of the brushed units
+                for i = 2 : nleg
+                    set(newH(newH(:,1)~=0,i),'DisplayName',['Brushed units ' num2str(i-1)]);
+                end
+            elseif ~isempty(strfind(lower(get(gcf, 'Tag')),'group'))
+                for i = 1 : nleg
+                    set(newH(newH(:,1)~=0,i),'DisplayName',['Group ' num2str(i)]);
+                end
+            else
+                % here the tag is empty: in this case take the legends
+                % provided by the user
+                for i = 1 : nleg
+                    %leguser = get(getappdata(AX(1,end),'LegendPeerHandle'),'String');
+                    set(newH(newH(:,1)~=0,i),'DisplayName',legplot{i});
+                end
+            end
+        end
+    else
+        % In this case there are no groups in the data
+        set(setdiff(H(:),diag(H)),'DisplayName','Units')
+    end
+    
+    % Get the final legends
+    legnew = get(getappdata(AX(1,end),legstring),'String');
 end
+
+% Now update the legends in the plot and make them clickable.
+hLines  = findobj(AX(1,end), 'type', 'line');
+if ~isempty(legnew)
+    if strcmp(legnew{1},'Unbrushed units')
+        clickableMultiLegend(sort(double(hLines),'descend'), legnew{:});
+    else
+        clickableMultiLegend(sort(double(hLines),'ascend'), legnew{:});
+    end
+end
+
+%
+% legnew = get(getappdata(AX(1),legstring),'String');
+% % Now update the legends in the plot and make them clickable.
+% hLines  = findobj(AX(1), 'type', 'line');
+% if ~isempty(legnew)
+%     clickableMultiLegend(sort(double(hLines)), legnew{:});
+% end
+
+%% Update the legends with the new objects and make them clickable
+% hLines = findobj(AX(end), 'type', 'line');
+% hLines = findobj(AX(1), 'type', 'line');
+%
+% eLegend=get(hLines, 'DisplayName');
+% % Create clickable multilegend if there is more than one group in the spm
+% if iscell(eLegend)
+%     hleg = findobj(fig,'Tag','legend');
+%     set(hleg,'Visible','off');
+%     clickableMultiLegend(hLines, eLegend{:},'Location','northwest');
+% elseif ischar(eLegend)
+%     hleg = findobj(fig,'Tag','legend');
+%      set(hleg,'Visible','off');
+%     clickableMultiLegend(hLines, eLegend,'Location','northwest');
+% else
+%
+% end
 end

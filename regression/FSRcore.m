@@ -1237,14 +1237,14 @@ if plo==1 || plo==2
         else
             nameX=options.nameX;
         end
-        [H,~,~]=gplotmatrix(X(:,2:end),y,group,'br','+o',[],[],[],nameX,namey);
+        [H,AX,BigAx]=gplotmatrix(X(:,2:end),y,group,'br','+o',[],[],[],nameX,namey);
     else
         if isempty(options.nameX)
             nameX=cellstr(num2str((1:p)','X%d'));
         else
             nameX=options.nameX;
         end
-        [H,~,~]=gplotmatrix(X,y,group,'br','+o',[],[],[],nameX,namey);
+        [H,AX,BigAx]=gplotmatrix(X,y,group,'br','+o',[],[],[],nameX,namey);
     end
     set(gcf,'Name','Scatter plot matrix y|X with outliers highlighted');
     
@@ -1270,7 +1270,7 @@ if plo==1 || plo==2
     
     % The following line adds objects to the panels of the yX
     % add2yX(H,AX,BigAx,outadd,group,ListOut,bivarfit,multivarfit,labeladd)
-    add2yX('intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
+    add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
 end
 
 %% Structure returned by function FSR
