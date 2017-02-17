@@ -66,9 +66,9 @@ function add2spm(H,AX,BigAx,varargin)
 %   logic can be also demonstrated with MATLAB function gplotmatrix.m, as in
 %   the examples below.
 %
-% As default add2spm makes legends in the existing scatter plot matrix
-% clickable or creates a clickable multilegend if the legend does not
-% exist.
+%   As default add2spm makes legends in the existing scatter plot matrix
+%   clickable or creates a clickable multilegend if the legend does not
+%   exist.
 %
 % Using varargin it is possible to:
 % 1. Personalize the legend of groups in the scatterplot matrix. See option
@@ -99,8 +99,10 @@ function add2spm(H,AX,BigAx,varargin)
     load fisheriris;
     % Create scatter plot matrix with specific legends
     [H,AX,BigAx]=gplotmatrix(meas,[],species);
+    % The legens are not clickable
     % [H,AX,BigAx]=gplotmatrix(meas,[],species,[],[],[],[],'grpbars')
     add2spm(H,AX,BigAx)
+    % Now the legends become clickable
 %}
 
 %{
@@ -256,7 +258,7 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
         % 'if' statement we use two equivalent ways to deal with H, considering
         % that the diagonal of the scatter matrix is dedicated to the
         % histograms.
-        if nleg == 2 && ~isempty(strfind(lower(get(gcf, 'Tag')),'outlier'))
+        if nleg == 2 && ~isempty(strfind(lower(get(gcf, 'Tag')),'outlier')) %#ok<*STREMP>
             set(H(H(:,:,2)~=0),'DisplayName','Normal units');
             linind      = sub2ind([v v],1:v,1:v);
             outofdiag   = setdiff(1:v^2,linind);

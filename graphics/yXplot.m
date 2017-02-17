@@ -154,12 +154,6 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',''
 %                   Data Types - char
-%       label   :   uni labels. Cell. Cell containing the labels of the units (optional
-%                   argument used when datatooltip=1. If this field is not
-%                   present labels row1, ..., rown will be automatically
-%                   created and included in the pop up datatooltip window)
-%                   Example - 'label',{'Row 1' 'Row 2' 'Row 3'}
-%                   Data Types - cell
 %     databrush :   empty value, scalar or cell.
 %                   DATABRUSH IS AN EMPTY VALUE
 %                   If databrush is an empty value (default), no brushing
@@ -462,14 +456,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     yXplot(out,'selunit',{'-3';'2'},...
             'databrush',{'selectionmode' 'Rect'});
 %}
-%
-%{
-    %   Example of the use of option datatooltip.
-    %   It gives the possibility of clicking on the different points and have
-    %   information about the unit selected, the step of entry into the
-    %   subset and the associated label
-        yXplot(out,'datatooltip',1);
-%}
+
 
 %{
     % Interactive_example
@@ -540,6 +527,36 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %   selected units is displayed in the monitoring residuals plot
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'labeladd' '1'})
+%}
+
+%{
+    %   Example of the use of option datatooltip.
+    %   It gives the possibility of clicking on the different points and have
+    %   information about the unit selected, the step of entry into the
+    %   subset and the associated label
+        yXplot(out,'datatooltip',1);
+%}
+
+%{
+    % Option datatooltip combined with rownames
+    % Example of use of option datatooltip.
+    % First input argument of yXplot is a structure.
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    X=[x1 x2];
+    y = MPG;    % Contaminated data
+    boo=~isnan(y);
+    y=y(boo,:);
+    X=X(boo,:);
+    Model=Model(boo,:);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
+    % field label (rownames) is added to structure out
+    % In this case datatooltip will display the rowname and not the default
+    % string row...
+    out.label=cellstr(Model);
+    yXplot(out,'datatooltip',1)
 %}
 
 %% Beginning of code
@@ -643,7 +660,6 @@ if nargin>2
         %         % format name/value pairs
         %         namevaluepairs=1;
         
-        % || (nargin>1 && onlyyX==0)
         if isnotstructy==0
             % x= vector which contains the subset size (numbers on the x axis)
             x=(n-nsteps+1):n;
@@ -671,7 +687,7 @@ if nargin>2
         
         options= struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),'selunit',selthdef,...
             'tag','pl_yX','namey','','nameX','','xlim','','ylim','',...
-            'datatooltip',0,'label','','databrush','');
+            'datatooltip',0,'databrush','');
         
         UserOptions=varargin(1:2:length(varargin));
         if ~isempty(UserOptions)

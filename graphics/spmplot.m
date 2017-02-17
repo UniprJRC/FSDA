@@ -80,6 +80,15 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       REMARK 2: to set dispopt without changing the defaults for plo use,
 %       e.g., spmplot(Y,group,[],'box');
 %
+%   tag     :   plot tag. String. string which identifies the handle of the plot which
+%               is about to be created. The default is to use tag
+%               'pl_spm'. Notice that if the program finds a plot which
+%               has a tag equal to the one specified by the user, then
+%               the output of the new plot overwrites the existing one
+%               in the same window else a new window is created
+%               Example - 'tag','myplot'
+%               Data Types - character
+%
 %
 %  Y is a structure.
 %
@@ -135,7 +144,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   data cursor (see function datacursormode for more
 %                   details or the examples below).
 %                   datatooltip.DisplayStyle = Determines how the data
-%                   cursor displays. 
+%                   cursor displays.
 %                   datatooltip.SnapToDataVertex = Specifies whether the
 %                   data cursor snaps to the nearest data value or is
 %                   located at the actual pointer position. The default
@@ -169,7 +178,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   If databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
 %                   following optional argument:
-%                   - persist = Persistent brushing. 
+%                   - persist = Persistent brushing.
 %                     Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
@@ -210,6 +219,32 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   search.
 %                   Example - 'selstep',100
 %                   Data Types - single | double
+%       selunit :   unit labelling. Cell array of strings, string, or numeric vector for
+%                   labelling units. If out is a structure the threshold is
+%                   associated with the trajectories of the residuals
+%                   monitored along the search else it refers to the values
+%                   of the response variable.
+%                   If it is a cell array of strings, only
+%                   the lines associated with the units that in at least
+%                   one step of the search had a residual smaller than
+%                   selunit{1} or greater than selline{2} will have a
+%                   textbox.
+%                   If it is a string it specifies the threshold
+%                   above which labels have to be put. For example
+%                   selunit='2.6' means that the text labels are written
+%                   only for the units which have in at least one step of
+%                   the search a value of the scaled residual greater than
+%                   2.6 in absolute value.
+%                   If it is a numeric vector it
+%                   contains the list of the units for which it is
+%                   necessary to put the text labels.
+%                   The default value of
+%                   selunit is string '2.5' if the input is a structure
+%                   else it is an empty value if if the input is matrices y
+%                   and X.
+%                   Example - 'selunit','3'
+%                   Data Types - numeric or character
+%
 %
 %  Output:
 %
@@ -251,6 +286,15 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo.nameY={'SL','SW','PL','PW'};
     spmplot(meas,species,plo,'hist');
 %}
+
+%{
+    % Call of spmplot without name/value pairs (2nd example).
+    % With this way of calling spmplot just the first 4 arguments are
+    % considered. All the rest is discarded. A message appears to alert the
+    % user that this is the case.
+    spmplot(meas,species,plo,'hist','selunit',10.1);
+%}
+
 
 %{
     %% Call of spmplot with name/value pairs.
@@ -379,35 +423,13 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % Symbols can also be specified as characters
     % plo.sym='++v'; % Symbols of the groups
     plo.siz=3.4; % Symbol size
-    spmplot(meas,'group',species,'plo',plo,'dispopt','box');
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box','tag','myspm');
 %}
 
 % In the previous examples the first argument of spmplot was a matrix. In
 % the two examples below the first argument is a structure which contains
 % the fields Y and Un
 
-%{
-    % Example of use of option datatooltip.
-    % First input argument is a structure.
-    n=100;
-    v=3;
-    m0=3;
-    Y=randn(n,v);
-    % Contaminated data
-    Ycont=Y;
-    Ycont(1:10,:)=5;
-    [fre]=unibiv(Ycont);
-    %create an initial subset with the 3 observations with the lowest
-    %Mahalanobis Distance
-    fre=sortrows(fre,4);
-    bs=fre(1:m0,1);
-    [out]=FSMeda(Ycont,bs,'plots',1);
-    % mmdplot(out);
-    figure
-    plo=struct;
-    plo.labeladd='1';
-    spmplot(out,'datatooltip',1)
-%}
 
 %{
     % Interactive_example.
@@ -438,6 +460,59 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % matrix once selected. Option labeladd '1' inside databrush enables to add
     % the labels of the selected units in the linked plots
     spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect','labeladd','1'},'plo',plo,'dispopt','hist')
+%}
+
+%{
+    % Example of use of option datatooltip.
+    % First input argument is a structure.
+    n=100;
+    v=3;
+    m0=3;
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:10,:)=5;
+    [fre]=unibiv(Ycont);
+    %create an initial subset with the 3 observations with the lowest
+    %Mahalanobis Distance
+    fre=sortrows(fre,4);
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Ycont,bs,'plots',1);
+    % mmdplot(out);
+    figure
+    plo=struct;
+    plo.labeladd='1';
+    spmplot(out,'datatooltip',1)
+%}
+
+%{
+    %% Option datatooltip combined with rownames
+    % Example of use of option datatooltip.
+    % First input argument is a structure.
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % Contaminated data
+    Ycont=[x1 x2 y];
+    boo=~isnan(y);
+    Ycont=Ycont(boo,:);
+    Model=Model(boo,:);
+
+    m0=5;
+    [fre]=unibiv(Ycont);
+    %create an initial subset with the 3 observations with the lowest
+    %Mahalanobis Distance
+    fre=sortrows(fre,4);
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Ycont,bs,'plots',0);
+    % field label (rownames) is added to structure out
+    % In this case datatooltip will display the rowname and not the default
+    % string row...
+    out.label=cellstr(Model);
+    figure
+    plo=struct;
+    plo.labeladd='1';
+    spmplot(out,'datatooltip',1)
 %}
 
 %% Beginning of code
@@ -501,6 +576,13 @@ if nargin>1
         databrush='';
         datatooltip=0;
         tag='pl_spm';
+        
+        if length(varargin)>3
+            disp('spmplot has been called in the old format without name pairs')
+            disp('In this case only the first four arguments "Y,group,plo,dispopt" are considered')
+            disp('All the other arguments are ignored')
+        end
+        
     else
         % In the case the user has called function spmplot with the new
         % format name/value pairs
@@ -526,7 +608,7 @@ if nargin>1
         end
         one=ones(n,1);
         options=struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),...
-            'selunit',selthdef,'datatooltip',0,'label','',...
+            'selunit',selthdef,'datatooltip',0,...
             'dispopt','hist','databrush','','tag','pl_spm');
         
         UserOptions=varargin(1:2:length(varargin));
@@ -703,8 +785,6 @@ end
 
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
-% The third dimension of H distinguishes the groups. If there are no groups
-% then ndims(H) = 2.
 
 for i=1:size(AX,2)
     hold('on');
@@ -789,6 +869,9 @@ for i=1:size(AX,2)
     end
 end
 
+% The third dimension of H distinguishes the groups. If there are no groups
+% then ndims(H) = 2.
+
 if ndims(H) == 3
     H=double(H);
     H(:,:,end) = ~eye(size(H,1)).*H(:,:,end);
@@ -827,6 +910,9 @@ set(gcf,'CurrentAx',BigAx)
 set([get(BigAx,'Title'); get(BigAx,'XLabel'); get(BigAx,'YLabel')], ...
     'String','','Visible','on')
 
+% set the specified tag in the current plot
+set(gcf,'tag',tag)
+
 
 % set the options.datatooltip (enable/disable interactive data cursor mode)
 if datatooltip
@@ -844,6 +930,9 @@ if datatooltip
     end
     % Declare a custom datatooltip update function to display additional
     % information about the selected unit
+    
+    
+    
     set(hdt,'UpdateFcn',{@spmplotLbl,out})
 end
 
@@ -964,8 +1053,6 @@ if ~isempty(databrush) || iscell(databrush)
     % displays the boundary of the current axes.
     box on
     
-    % set the specified tag in the current plot
-    set(gcf,'tag',tag)
     
     % labeladd option
     d=find(strcmp('labeladd',databrush));
@@ -1593,6 +1680,7 @@ if ~isempty(databrush) || iscell(databrush)
                 else
                     but=2;
                 end
+ 
             end
         end
     end
@@ -1613,7 +1701,7 @@ end
         %               in each step of the search
         %      label=  (optional argument) if it is present it must be
         %               a cell array of strings containing the labels of
-        %               the rows of the regression dataset
+        %               the rows of the dataset
         %
         % Output:
         %

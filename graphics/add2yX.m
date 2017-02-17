@@ -5,6 +5,16 @@ function add2yX(H,AX,BigAx,varargin)
 %
 % Required input arguments:
 %
+%            H   : handles to the lines on the graphs. 2D or 3D array. H is an array of handles to the
+%                   lines on the graphs. The array's third dimension
+%                   corresponds to groups in the grouping variable.
+%                   For more details see the output arguments of gplotmatrix.
+%           AX   : handles to the axes of the individual plots. Matrix.  AX is a
+%                   matrix of handles to the axes of the individual plots.
+%                   For more details see the output arguments of gplotmatrix.
+%          BigAx :  handle to big (invisible) axes framing the
+%                   entire plot matrix. Scalar.
+%                   For more details see the output arguments of gplotmatrix.
 %
 % Optional input arguments:
 %
@@ -168,8 +178,8 @@ end
 
 %% get the values of the observations from the yXplot
 
-% assume the current figure is yXplot and get its handle
-fig = gcf;
+% get its handle
+fig = ancestor(BigAx,'figure');
 
 % BigAx: the handle to big (invisible) axes framing the entire plot matrix.
 % remark: fig = ancestor(BigAx,'figure');
@@ -243,13 +253,6 @@ end
 % Remark 5: The order of the observations as passed to gplotmatrix is not
 % the same of the Xi extracted here. As a consequence, the observations
 % identified by "group=1" may not be equivalent to (Xigood ygood).
-
-% verMatlab=verLessThan('matlab','8.4.0');
-% if verMatlab
-%     H = NaN(1,nAX,ngroups);
-% else
-%     H=gobjects(1,nAX,ngroups);
-% end
 
 if nAX > 1
     for i=1:nAX
@@ -414,13 +417,7 @@ if ~isempty(legnew)
     for j=1:nleg
         sorindlegnew(j)=seqnames(strcmp(hNames(j),legnew));
     end
-    
-    %     if strcmp(legnew{1},'Unbrushed units')
-    %         clickableMultiLegend(sort(double(hLines),'descend'), legnew{:});
-    %     else
-    %         clickableMultiLegend(sort(double(hLines),'ascend'), legnew{:});
-    %     end
-    
+    % make the legend entries clickable
     clickableMultiLegend(hLines(sorindlegnew), legnew{:});
     
 end
