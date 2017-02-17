@@ -160,7 +160,7 @@ robscale=options.robscale;
 
 if rf<=0 || rf>=1
     error('FSDA:unibiv:Wrongrf','The confidence threshold must be greater than 0 and smaller than 1')
-end;
+end
 
 if plo==1
     % Create a figure to host the plot or clear the existing one
@@ -438,7 +438,7 @@ for il=1:v      % il is linked to the rows
             end
             
             
-        end; % endif of il=jl
+        end % endif of il=jl
         
     end % endif of jl=1:v
     

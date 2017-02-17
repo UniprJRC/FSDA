@@ -141,36 +141,36 @@ end
 % REGRESSION PLOTS
 % yXplot
 plyX=((findobj(openfigs,'flat','Tag','pl_yX')));
-if isempty(plyX), plyX=[]; end;
+if isempty(plyX), plyX=[]; end
 % resfwdplot
 plres=((findobj(openfigs,'flat','Tag','pl_resfwd')));
-if isempty(plres), plres=[]; end;
+if isempty(plres), plres=[]; end
 % resfwdplot
 plresindex=((findobj(openfigs,'flat','Tag','pl_resindex')));
-if isempty(plresindex), plresindex=[]; end;
+if isempty(plresindex), plresindex=[]; end
 % levfwdplot
 pllev=((findobj(openfigs,'flat','Tag','pl_levfwd')));
-if isempty(pllev), pllev=[]; end;
+if isempty(pllev), pllev=[]; end
 % mdrplot
 plmdr=((findobj(openfigs,'flat','Tag','pl_mdr')));
-if isempty(plmdr), plmdr=[]; end;
+if isempty(plmdr), plmdr=[]; end
 % fanplot
 plfan=((findobj(openfigs,'flat','Tag','pl_fan')));
-if isempty(plfan), plfan=[]; end;
+if isempty(plfan), plfan=[]; end
 
 % MULTIVARIATE PLOTS
 % malfwdplot
 plmalfwd=((findobj(openfigs,'flat','Tag','pl_malfwd')));
-if isempty(plmalfwd), plmalfwd=[]; end;
+if isempty(plmalfwd), plmalfwd=[]; end
 % malindexplot
 plmalindex=((findobj(openfigs,'flat','Tag','pl_malindex')));
-if isempty(plmalindex), plmalindex=[]; end;
+if isempty(plmalindex), plmalindex=[]; end
 % mmdplot
 plmmd=((findobj(openfigs,'flat','Tag','pl_mmd')));
-if isempty(plmmd), plmmd=[]; end;
+if isempty(plmmd), plmmd=[]; end
 % spmplot
 plspm=((findobj(openfigs,'flat','Tag','pl_spm')));
-if isempty(plspm), plspm=[]; end;
+if isempty(plspm), plspm=[]; end
 
 %Set the new position of the FS plots linked to that under brushing
 lkplots = horzcat(plmdr,plres,plresindex,plyX,pllev,plfan,...

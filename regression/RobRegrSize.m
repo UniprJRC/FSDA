@@ -548,14 +548,14 @@ else
     THsel=mean(MAT.ThreshAllSmind(:,:,posint),3);
 end
 
-if Tallis==1;
+if Tallis==1
     THsel=THsel*corr;
 end
 
 THsel=[nn' THsel];
 % Check is the supplied value of n is in our grid
 seln=find(nn>n);
-if isempty(seln); % in this case n is equal to 500
+if isempty(seln) % in this case n is equal to 500
     THseln=THsel([size(THsel,1) size(THsel,1)],:);
 else
     % Find the two values of n among those of the simulations which enclose

@@ -457,7 +457,7 @@ for i=1:lla
                         % ALSO INCLUDE VALUE OF LAMBDA
                         disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                         Unlai(mm-init+1,2:end)=unit(1:10);
-                    end;
+                    end
                 end
             end
             

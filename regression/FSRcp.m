@@ -643,7 +643,7 @@ if ~isempty(Aj)
                         disp(['Number of units which entered=' int2str(length(unit))]);
                         
                         Un(mm-init+1,2:end)=unit(1:10);
-                    end;
+                    end
                 end
                 
                 

@@ -527,7 +527,8 @@ disp(var(psider))
 disp('M^2 varpsider')
 disp(((sumpsider/n)^2))
 disp('psider')
-disp(psider)
+% disp(psider)
+plot(abs(sort(psider)))
 disp('---------')
 
 K=sqrt(Ksquare);

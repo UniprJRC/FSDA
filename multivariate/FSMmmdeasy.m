@@ -329,10 +329,10 @@ else
                         disp(['Number of units which entered=' int2str(length(unit))]);
                     end
                     Un(mm-init1+1,2:end)=unit(1:10);
-                end;
+                end
             end
         else
-        end;
+        end
         
         if nargout==3
             varargout={BB};

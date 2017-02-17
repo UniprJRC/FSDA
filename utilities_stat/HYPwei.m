@@ -114,7 +114,7 @@ if length(cktuning)>2
     B=cktuning(4);
     d=cktuning(5);
     
-    if ((A < 0) || (B < A) || (B>1)),
+    if ((A < 0) || (B < A) || (B>1))
         error('FSDA:HYPwei:WrongAorB',[' Illegal choice of parameters in hyperbolic tangent estimator: ' ...
             num2str(param) ]')
     else

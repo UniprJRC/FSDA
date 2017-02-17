@@ -279,10 +279,10 @@ while (converge==0 && k<=500)
     converge = max(max(abs(x0 - x1))) < tol ;
     x0 = x1;
     k = k + 1;
-end;
+end
 if not(converge)
     disp('Warning: tinvFS has not converged');
-end;
+end
 
 end
 
@@ -335,15 +335,15 @@ while (converge==0 && k<=50)
     negative = sum(sum(not((x1 > tol2)))) ;
     if negative>0
         x1 = x1 + (x1<=tol2).*(x0.*(0.5 + 1.5.*(p< f0)) - x1) ;
-    end;
+    end
     converge = max(max(abs(x0 - x1))) < tol & not(negative);
     x0 = x1;
     k = k + 1;
-end;
+end
 if not(converge)
     disp('Warning: finvFS has not converged, exaxt routine finv is used');
     x0=finv(1-p,v1,v2);
-end;
+end
 
 end
 %% Subfunction: tcdfFS

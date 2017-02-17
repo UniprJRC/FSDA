@@ -410,7 +410,7 @@ for i=vars
                     disp(['Number of units which entered=' int2str(length(unit))]);
 
                     Un(mm-init+1,2:end)=unit(1:10);
-                end;
+                end
             end
 
         end
@@ -418,7 +418,7 @@ for i=vars
 
     % Store in cell Una matrix Un
     Una{j}=Un;
-end;
+end
 
 out.Tdel=Tdel;
 out.S2del=S2del;
