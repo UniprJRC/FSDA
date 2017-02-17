@@ -66,7 +66,7 @@ classdef ProgressBar < handle
             fprintf(f, '%d\n', N); % Save N at the top of progress.txt
             fclose(f);
 
-            if obj.verbose; disp(['  0%[>', repmat(' ', 1, obj.width), ']']); end;
+            if obj.verbose; disp(['  0%[>', repmat(' ', 1, obj.width), ']']); end
         end
         
         function percent = progress(obj)
@@ -85,7 +85,7 @@ classdef ProgressBar < handle
 
             if obj.verbose
                 perc = sprintf('%3.0f%%', percent); % 4 characters wide, percentage
-                disp([repmat(char(8), 1, (obj.width+9)), char(10), perc, '[', repmat('=', 1, round(percent*obj.width/100)), '>', repmat(' ', 1, obj.width - round(percent*obj.width/100)), ']']);
+                disp([repmat(char(8), 1, (obj.width+9)), newline, perc, '[', repmat('=', 1, round(percent*obj.width/100)), '>', repmat(' ', 1, obj.width - round(percent*obj.width/100)), ']']);
             end           
         end
         
@@ -95,7 +95,7 @@ classdef ProgressBar < handle
             percent = 100;
 
             if obj.verbose
-                disp([repmat(char(8), 1, (obj.width+9)), char(10), '100%[', repmat('=', 1, obj.width+1), ']']);
+                disp([repmat(char(8), 1, (obj.width+9)), newline, '100%[', repmat('=', 1, obj.width+1), ']']);
             end
         end
     end
