@@ -294,7 +294,6 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     % spmplot([y X(:,2:end)],id)
     yXplot(y,X,'group',id);
-
 %}
 
 %{
@@ -306,10 +305,10 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     out=MixSimreg(k,p,'BarOmega',0.01);
     n=300;
     noisevars=0;
-    noiseunits=30000;
+    noiseunits=300;
     [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
     yXplot(y,X,'group',id);
-    title('2 regression lines with outliers from uniform')
+    suplabel('2 regression lines with outliers from uniform','t')
 %}
 
 %{
@@ -324,7 +323,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     noiseunits=3000;
     [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
     yXplot(y,X,'group',id);
-    title('2 regression lines with outliers from uniform')
+     suplabel('2 regression lines with outliers from uniform','t')
 %}
 
 %{
@@ -376,7 +375,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     noiseunits.typeout={'T5'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
      yXplot(y,X,'group',id);
-    title('4 groups with outliers from Student T with 5 degrees if freedom','Interpreter','Latex')
+    suplabel('4 groups with outliers from Student T with 5 degrees if freedom','t')
 %}
 
 %{
@@ -389,7 +388,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     noiseunits.typeout={'componentwise'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
      yXplot(y,X,'group',id);
-    title('4 groups with component wise outliers','Interpreter','Latex')
+    suplabel('4 groups with component wise outliers','t')
 %}
 
 %{
@@ -457,7 +456,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 
      [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
      yXplot(y,X,'group',id);
-    title('4 groups with outliers componentwise and from uniform in interval [-2 3]','Interpreter','Latex')
+     suplabel('4 groups with outliers componentwise and from uniform in the interval [-2 3]','t')
 %}
 
 
