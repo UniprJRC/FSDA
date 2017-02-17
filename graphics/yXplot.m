@@ -1,4 +1,4 @@
-function [plot1]=yXplot(y,X,varargin)
+function [H,AX,BigAx]=yXplot(y,X,varargin)
 %yXplot produces an interactive scatterplot of y against each variable of X in the input dataset.
 %
 %<a href="matlab: docsearchFS('yXplot')">Link to the help function</a>
@@ -594,18 +594,18 @@ numtext=cellstr(num2str(seq,'%d'));
 % Initialize line width
 linewidthStd = 0.5;
 
-      % Check if X includes the constant term for the intercept.
-        
-        intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
-        
-        if intcolumn==1
-            p1=p-numel(intcolumn);
-            Xsel=X;
-            Xsel(:,intcolumn)=[];
-        else
-            p1=p;
-            Xsel=X;
-        end
+% Check if X includes the constant term for the intercept.
+
+intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
+
+if intcolumn==1
+    p1=p-numel(intcolumn);
+    Xsel=X;
+    Xsel(:,intcolumn)=[];
+else
+    p1=p;
+    Xsel=X;
+end
 
 %% User options
 one=ones(n,1);
@@ -719,7 +719,7 @@ if nargin>2
     
     
     if isnotstructy ==1
-  
+        
         nameX = cellstr(num2str((1:p1)','X%d'));
         namey='y';
         
@@ -843,7 +843,7 @@ if isstruct(plo)
     if d>0
         xlimx=plo.xlimx;
     end
-
+    
     
     d=find(strcmp('labeladd',fplo));
     if d>0
@@ -1796,6 +1796,19 @@ if ~isempty(databrush) || iscell(databrush)
                     ss=waitforbuttonpressFS;
                     set(get(0,'CurrentFigure'),'CloseRequestFcn','closereq');
                     disp('------------------------')
+                    
+                    % After waitforbuttonpress:
+                    % - the standard MATLAB function to be executed on figure
+                    %   close is recovered
+                    set(gcf,'CloseRequestFcn','closereq');
+                    Open_res = findobj(0, 'type', 'figure','tag','pl_resfwd');
+                    Open_mdr = findobj(0, 'type', 'figure','tag','pl_mdr');
+                    if isempty(Open_res)  % User closed the main brushing window
+                        if ~isempty(Open_res); delete(Open_res); end    % resfwdplot is deleted
+                        if ~isempty(Open_mdr); delete(Open_mdr); end  % mdr plot is deleted
+                        delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
+                    end
+                    
                     if ss==1
                         but=2;
                     end
