@@ -853,11 +853,15 @@ if isstruct(plo)
     d=find(strcmp('ylimy',fplo));
     if d>0
         ylimy=plo.ylimy;
+    else
+        ylimy='';
     end
     
     d=find(strcmp('xlimx',fplo));
     if d>0
         xlimx=plo.xlimx;
+    else
+        xlimx='';
     end
     
     
