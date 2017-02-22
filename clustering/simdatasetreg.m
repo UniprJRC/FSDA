@@ -335,8 +335,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % Add asymmetric very concentrated noise
     noiseunits.typeout={'Chisquare5'};
     [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
-    title('2 groups with outliers from $\chi^2_5$','Interpreter','Latex')
+    [H,AX,BigAx]=yXplot(y,X,'group',id);
+    title(BigAx,'2 groups with outliers from $\chi^2_5$','Interpreter','Latex')
 %}
 
 %{
@@ -348,8 +348,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % Add asymmetric concentrated noise
     noiseunits.typeout={'Chisquare40'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
-    title('4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')
+    [H,AX,BigAx]=yXplot(y,X,'group',id);
+    title(BigAx,'4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')
 %}
 
 %{
@@ -361,8 +361,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % Add normal noise
     noiseunits.typeout={'normal'};
     [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
-    title('4 groups with outliers from normal distribution','Interpreter','Latex')
+    [H,AX,BigAx]=yXplot(y,X,'group',id);
+    title(BigAx,'4 groups with outliers from normal distribution','Interpreter','Latex')
 %}
 
 %{
@@ -374,7 +374,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % Add outliers from T5
     noiseunits.typeout={'T5'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
+    [H,AX,BigAx]=yXplot(y,X,'group',id);
     suplabel('4 groups with outliers from Student T with 5 degrees if freedom','t')
 %}
 
@@ -387,7 +387,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % Add asymmetric concentrated noise
     noiseunits.typeout={'componentwise'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
+    yXplot(y,X,'group',id);
     suplabel('4 groups with component wise outliers','t')
 %}
 
@@ -399,8 +399,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     noiseunits.number=5000*ones(2,1);
     noiseunits.typeout={'Chisquare3','T20'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
-    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')
+    [H,AX,BigAx]=yXplot(y,X,'group',id);
+    title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')
 %}
 
 %{
@@ -412,8 +412,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     noiseunits.typeout={'Chisquare3','T20'};
     noiseunits.alpha=0.002;
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
-    title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')
+    [H,AX,BigAx]=yXplot(y,X,'group',id);
+    title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')
 %}
 
 %{
@@ -424,8 +424,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     noiseunits.number=[100 100];
     noiseunits.typeout={'pointmass' 'Chisquare5'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
-    title('4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')
+    [H,AX,BigAx]=yXplot(y,X,'group',id);
+    title(BigAx,'4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')
 %}
 
 %{
@@ -440,9 +440,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % Finally add a noise variable
     noisevars=struct;
     noisevars.number=1;
-     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
-    title('4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')
+    [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
+    [H,AX,BigAx]=yXplot(y,X,'group',id);
+    title(BigAx,'4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')
 %}
 
 %{
