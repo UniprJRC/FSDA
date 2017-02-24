@@ -115,7 +115,7 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
         % second partition c2 is the output of tclust clustering procedure
         out=tclust(meas,3,0,100,'msg',0);
         c2=out.idx;
-        [~.FM,EFM,VARFM]=FowlkesMallowsIndex(c1,c2);
+        [~,FM,EFM,VARFM]=FowlkesMallowsIndex(c1,c2);
 %}
 
 %{
