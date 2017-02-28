@@ -133,10 +133,10 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            group k
 %             Example - 'nsamp',1000
 %             Data Types - double
-% Ksteps:  Number of refining iterations. Scalar. Number of refining
+% refsteps:  Number of refining iterations. Scalar. Number of refining
 %               iterations in each subsample.  Default is 10.
-%               Ksteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'Ksteps',15
+%               refsteps = 0 means "raw-subsampling" without iterations.
+%                 Example - 'refsteps',15
 %                 Data Types - single | double
 %    plots : Plot on the screen. Scalar. A flag to control the
 %            generation of the plots.
@@ -615,7 +615,7 @@ end
 %% Defaults for optional arguments
 
 % default number of concentration starts
-Kstepsdef  = 10;
+refstepsdef  = 10;
 
 %default value for wtrim
 wtrimdef = 0;
@@ -635,7 +635,7 @@ seqk=1:k;
 %% User options
 
 options = struct('intercept',1,'mixt',mixtdef,...
-    'nsamp',nsampdef,'Ksteps',Kstepsdef,...
+    'nsamp',nsampdef,'refsteps',refstepsdef,...
     'we',wedef,'wtrim',wtrimdef,...
     'msg',1,'plots',1,'equalweights',0);
 
@@ -691,7 +691,7 @@ intercept = options.intercept;
 nsamp = options.nsamp;
 
 % Concentration steps
-Ksteps = options.Ksteps;
+refsteps = options.refsteps;
 
 % equalweights
 equalweights = options.equalweights;
@@ -1046,7 +1046,7 @@ for i =1:nselected
     %% CONCENTRATION STEPS
     
     indold = zeros(n,1)-1;
-    for cstep = 1:Ksteps
+    for cstep = 1:refsteps
         
         
         %% b) THINNING INSIDE THE CONCENTRATION STEPS

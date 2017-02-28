@@ -4,7 +4,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %<a href="matlab: docsearchFS('mcd')">Link to the help function</a>
 %
 %  Required input arguments:
-%
+%kste
 %    Y: Data matrix containing n observations on v variables.
 %       Rows of Y represent observations, and columns represent variables.
 %       Missing values (NaN's) and infinite values (Inf's) are allowed,
