@@ -3,14 +3,14 @@
     randsampleFS(1000,10)</pre></div></div><pre class="codeoutput">
 ans =
 
-   900   164   854   502   505   224    59   322   302   634
+   426   526   626   726   826   926    26   126   226   326
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> randsampleFS with optional argument set to method (2).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     method = 2;
     randsampleFS(100,10,method)</pre></div></div><pre class="codeoutput">
 ans =
 
-    95     5    15    25    35    45    55    65    75    85
+    54    64    74    84    94     4    14    24    34    44
 
 </pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>randsampleFS with optional arguments set to method (3).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     method = 3;
@@ -39,10 +39,11 @@ ans =
            are unique; For method 3 (included for historical reasons) there is
            no guarantee that the elements extracted are unique</span></span></h3><div class="collapse"><p>
            Data Types - single|double.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details </span></a></span></h3><div class="collapse"><p><p>
-   The method=0 (default option) uses MATLAB function randperm. In older
-   MATLAB releases randperm was slower than FSDA function shuffling, which
-   is used in method 1 (for example, in R2009a - MATLAB 7.8 - randperm was
-   at least 50 slower).</p> <p>
+   The method=0 uses MATLAB function randperm. In older MATLAB releases
+   randperm was slower than FSDA function shuffling, which is used in
+   method 1 (for example, in R2009a - MATLAB 7.8 - randperm was at least
+   50 slower). REMARK: in release 2012a and earlier, randperm is
+   very slow.</p> <p> 
 
    If method=1 the approach depends on the population and sample sizes:</p> <p>
    - if $n &lt; 1000$ and $k &lt; n/(10 + 0.007n)$, that is if the population is
@@ -53,8 +54,9 @@ ans =
      first k elements. The threshold $k &lt; n/(10 + 0.007n)$ has been determined
      by simulation under MATLAB R2016b. Before, the threshold was $n &lt; 4*k$.</p> <p>
 
-   If method=2 Systematic sampling is used where the starting point is
-   random and the step is also random.</p> <p>
+   If method=2 (default option). Systematic sampling is used where the
+   starting point is random and the step is also random. This is typically
+   the fastest option: for this reason it is select as default option.</p> <p>
 
    If method=3 random sampling is based on the old but well known Linear
    Congruential Generator (LCG) method. In this case there is no guarantee to

@@ -33,10 +33,11 @@ function y = randsampleFS(n,k,method)
 %
 % More About:
 %
-%   The method=0 (default option) uses MATLAB function randperm. In older
-%   MATLAB releases randperm was slower than FSDA function shuffling, which
-%   is used in method 1 (for example, in R2009a - MATLAB 7.8 - randperm was
-%   at least 50% slower).
+%   The method=0 uses MATLAB function randperm. In older MATLAB releases
+%   randperm was slower than FSDA function shuffling, which is used in
+%   method 1 (for example, in R2009a - MATLAB 7.8 - randperm was at least
+%   50% slower). REMARK: in release 2012a and earlier, randperm is
+%   very slow. 
 %
 %   If method=1 the approach depends on the population and sample sizes:
 %   - if $n < 1000$ and $k < n/(10 + 0.007n)$, that is if the population is
@@ -47,8 +48,9 @@ function y = randsampleFS(n,k,method)
 %     first k elements. The threshold $k < n/(10 + 0.007n)$ has been determined
 %     by simulation under MATLAB R2016b. Before, the threshold was $n < 4*k$.
 %
-%   If method=2 Systematic sampling is used where the starting point is
-%   random and the step is also random.
+%   If method=2 (default option). Systematic sampling is used where the
+%   starting point is random and the step is also random. This is typically
+%   the fastest option: for this reason it is select as default option.
 %
 %   If method=3 random sampling is based on the old but well known Linear
 %   Congruential Generator (LCG) method. In this case there is no guarantee to
@@ -134,7 +136,7 @@ function y = randsampleFS(n,k,method)
 
 %% Beginning of code
 if nargin<3
-    method=0;
+        method=2;
 end
 
 % Weighted Sampling Without Replacement
