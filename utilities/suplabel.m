@@ -1,66 +1,96 @@
-function [ax,h]=suplabel(text,whichaxis,possuperaxes)
+function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %suplabel places text as a title, xlabel, or ylabel on a group of subplots.
 %
 %
 % Required input arguments:
 %
-% haxis=suplabel('any string') insert text 'any string' as x label and returns
-% the handle to the axis.
+%   text       : any string. Character.
+%               Character containg the string which has to put as title,
+%               xlabel or ylabel on a group of subplots
 %
-% [haxis,hlabel]=suplabel('any string') insert text 'any string' as x label and returns
-% both the handle to the axis (inside haxis) and the handle to the label (inside hlabel).
 %
-% [haxis,hlabel]=suplabel('any string','whichaxis')
-% whichaxis is a string equal to any of 'x', 'y', 'yy', or
-% 't', specifying whether the text is to be the xlable, ylabel, right
-% side y-label, or title respectively.
+% Optional input arguments:
 %
-% [haxis,hlabel]=suplabel('any string','whichaxis',possuperaxes)
-% possuperaxes is a vector of length 4 which specifies the
-% position of the "super" axes surrounding the subplots.
-% The default values of possuperaxes is [.08 .08 .84 .84]
+%   whichaxis   : where to put the string. Character.
+%                 String equal to any of 'x', 'y', 'yy', or 't', specifying
+%                 whether the text is to be the xlabel, ylabel, right
+%                 side y-label, or title respectively. If whichaxis is not
+%                 specified it is set to 'x'
 %
-% The meaning of the four elements of possuperaxes are
-% [left bottom width height]
-% where left and bottom define the distance from the lower-left corner of
-% the container to the lower-left corner of the rectangle. width and height
-% are the dimensions of the rectangle. The Units property specifies the
-% units for all measurements.
+% possuperaxes  : super axes position. double. 
+%                 vector of length 4 which specifies the
+%                 position of the "super" axes surrounding the subplots.
+%                 The default values of possuperaxes is [.08 .08 .84 .84];
+%                 The meaning of the four elements of possuperaxes are
+%                 [left bottom width height] where left and bottom define
+%                 the distance from the lower-left corner of the container
+%                 to the lower-left corner of the rectangle. width and
+%                 height are the dimensions of the rectangle. The Units
+%                 property specifies the units for all measurements.
 %
-% REMARK: this code has been inspired by suplabel by Ben Barrowes
+%
+% Output:
+%
+%      haxis: handle to the axis. Graphics handle.
+%             Graphics handle to the axis.
+%      hlabel: handle to the label. Graphics handle.
+%             Graphics handle to the label.
+%
+%
+%
+%
+% Acknowledgements: 
+%  this code tranlated in FSDA help format follows the code suplabel by Ben Barrowes
 % <barrowes@alum.mit.edu>
+% https://www.mathworks.com/matlabcentral/fileexchange/7772-suplabel?s_tid=srchtitle
 %
-% SEE ALSO: text, title, xlabel, ylabel, zlabel, subplot,
-%           suptitle (Matlab Central)
+% See also: text, title, xlabel, ylabel, zlabel, subplot,
+% 
+% Copyright 2008-2016.
+% Written by FSDA team
 %
-% Example:
+%
+%<a href="matlab: docsearchFS('Score')">Link to the help function</a>
+% Last modified 31-05-2016
+
+% Examples
+
+  
 %{
+  % Add a top, let, right and bottom titles to a gplotmatrix.  
   % Creare a scatter plot matrix with three variables and add gloabal X
   % label on the X axis, global Y label on the left and right, and global
-  % title
+  % title.
   n=200;
   p=3;
   state1=123498;
   randn('state', state1);
   X=randn(n,p);
   gplotmatrix(X);
+  % Add a common label on the x axis
   [ax1,h1]=suplabel('super X label');
+  % Add a common label on the y axis
   [ax2,h2]=suplabel('super Y label','y');
+  % Add a common label on the y axis
   [ax3,h2]=suplabel('super Y label (right)','yy');
+  % Add a common label on top of the plot
   [ax4,h3]=suplabel('super Title'  ,'t');
+  % set the fontsize of the string on top of the plot
   set(h3,'FontSize',30);
 %}
 
 %{
-    % Two panel with a common y label
+    % Two panels with a common y label.
     figure
-    subplot(2,1,1);
-    plot((1:10).^2)= subplot(2,1,2);
-    plot((1:10).^3)= suplabel('Population growth','y')
+    subplot(2,1,1)
+    plot((1:10).^2)
+    subplot(2,1,2);
+    plot((1:10).^3)
+    suplabel('Population growth','y')
 %}
 
 %{
-    % Example with 6 panels
+    % Example with 6 panels.
     % The three panels of the left have a common xlabel, ylabel and
     % right ylabel
     figure
@@ -89,12 +119,24 @@ function [ax,h]=suplabel(text,whichaxis,possuperaxes)
     suplabel('Months','x',possuperaxes)
 %}
 
+
+%{
+    % Example of suplabel with output arguments
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'};
+    spmplot(meas,species,plo,'hist');
+    % insert text 'any string' as x label
+    % and return both the handle to the axis (inside haxis) and the handle to the label (inside hlabel).
+    [haxis,hlabel]=suplabel('Title added to the x axis')  
+%}
+
 %% Beginning of code
-if nargin < 1
-    help(mfilename); 
-    return 
+if nargin<1
+    error('FSDA:suplabel:Missingtext','text to add is missing');
 end
 
+% Set default position where to put the text
 if nargin < 2 
     whichaxis = 'x';  
 end
@@ -129,39 +171,43 @@ if nargin < 3
     end
 end
 
-ax=axes('Units','Normal','Position',possuperaxes,'Visible','off','tag','suplabel');
+% creates Cartesian axes in the current figure in position specified by
+% possuperaxes and make them invisible. This is the trick to add xlabel,
+% ylabels, title... to a series of multiple plots
+haxis=axes('Units','Normal','Position',possuperaxes,'Visible','off','tag','suplabel');
 
 if strcmp('t',whichaxis)   % Global title
-    set(get(ax,'Title'),'Visible','on')
+    set(get(haxis,'Title'),'Visible','on')
     title(text);
 elseif strcmp('x',whichaxis) % Global x label
-    set(get(ax,'XLabel'),'Visible','on')
+    set(get(haxis,'XLabel'),'Visible','on')
     xlabel(text);
 elseif strcmp('y',whichaxis) % Global y label
-    set(get(ax,'YLabel'),'Visible','on')
+    set(get(haxis,'YLabel'),'Visible','on')
     ylabel(text);
 elseif strcmp('yy',whichaxis) % Global y label (on the right(
-    set(get(ax,'YLabel'),'Visible','on')
+    set(get(haxis,'YLabel'),'Visible','on')
     ylabel(text);
-    set(ax,'YAxisLocation','right')
+    set(haxis,'YAxisLocation','right')
 else
     error('FSDA:suplabel:WrongInput','String label must be any of ''x'', ''y'', ''yy'', or ''t''')
 end
 
 for k=1:length(currax)
-    axes(currax(k))
+    axes(currax(k)) %#ok<LAXES>
 end % restore all other axes
 
 if (nargout < 2)
     return
 end
+
 if strcmp('t',whichaxis)
-    h=get(ax,'Title');
-    set(h,'VerticalAlignment','middle')
+    hlabel=get(haxis,'Title');
+    set(hlabel,'VerticalAlignment','middle')
 elseif strcmp('x',whichaxis)
-    h=get(ax,'XLabel');
+    hlabel=get(haxis,'XLabel');
 elseif strcmp('y',whichaxis) || strcmp('yy',whichaxis)
-    h=get(ax,'YLabel');
+    hlabel=get(haxis,'YLabel');
 end
 
 end
