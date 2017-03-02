@@ -1,11 +1,11 @@
-function Ytra=basicPower(Y,ColtoTra,la)
+function Ytra=basicPower(Y,ColtoTra,la, varargin)
 %basicPower computes the basic power transformation
 %
 %<a href="matlab: docsearchFS('basicPower')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -25,6 +25,11 @@ function Ytra=basicPower(Y,ColtoTra,la)
 %
 % Optional input arguments:
 %
+%  inverse :    Inverse transformation. Logical. If inverse is true, the
+%               inverse transformation is returned. The default value of
+%               inverse is false.
+%                 Example - 'inverse',true
+%                 Data Types - Logical
 % Output:
 %
 %   Ytra    : transformed data matrix. Matrix. n x v data matrix containing
@@ -35,13 +40,13 @@ function Ytra=basicPower(Y,ColtoTra,la)
 %               ytra = y^\lambda
 %             \]
 %             else
-%             \[ 
-%               ytra = log(y) 
+%             \[
+%               ytra = log(y)
 %             \]
 %
 %
 % See also: normBoxCox, normYJ
-% 
+%
 % References:
 %
 %Box, G. E. P. & Cox, D. R. (1964). An analysis of transformations (with
@@ -68,7 +73,16 @@ function Ytra=basicPower(Y,ColtoTra,la)
     Y1=basicPower(Y,[],la);
 %}
 
-
+%{
+    % Simulated data check inverse transformation.
+    n=100;p=5;
+    Y=abs(randn(n,p));
+    la=[0.5 0 -0.5 2 0];
+    % Transform all columns of matrix Y according to the values of la
+    Ytra=basicPower(Y,[],la);
+    Ychk=basicPower(Ytra,[],la,'inverse',true);
+    disp(max(max(abs(Y-Ychk))))
+%}
 
 %% Input parameters checking
 % Extract size of the data
@@ -90,26 +104,64 @@ if isempty(ColtoTra) && length(la)==v
     ColtoTra=1:v;
 end
 
+inverse=false;
+
+if nargin>3
+    options=struct('inverse',inverse);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:normBoxCox:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+    end
+    
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
+    end
+    inverse=options.inverse;
+end
+
+
 
 %% basic power transformation of columns ColtoTra using la
 Ytra=Y;
-for j=1:length(ColtoTra)
-    cj=ColtoTra(j);
-    laj=la(j);
-    Ycj=Y(:,cj);
+
+if inverse== false
     
-    if min(Ycj)<=0 && laj==1
-        % if min(Ycj)<=0 and la(cj)=1 then variable is not transformed
-    elseif min(Ycj)<=0 && cj ~=1
-        error('FSDA:normBoxCox:Wronglaj',['lambda=' num2str(laj) ' for column ' num2str(cj) ' but min(Ycj)=' num2str(min(Ycj))])
-    else
-        if laj~=0
-            Ytra(:,cj)=Y(:,cj).^laj;
+    for j=1:length(ColtoTra)
+        cj=ColtoTra(j);
+        laj=la(j);
+        Ycj=Y(:,cj);
+        
+        if min(Ycj)<=0 && laj==1
+            % if min(Ycj)<=0 and la(cj)=1 then variable is not transformed
+        elseif min(Ycj)<=0 && cj ~=1
+            error('FSDA:normBoxCox:Wronglaj',['lambda=' num2str(laj) ' for column ' num2str(cj) ' but min(Ycj)=' num2str(min(Ycj))])
         else
-            Ytra(:,cj)=log(Y(:,cj));
+            if laj~=0
+                Ytra(:,cj)=Y(:,cj).^laj;
+            else
+                Ytra(:,cj)=log(Y(:,cj));
+            end
+        end
+    end
+else
+    
+    for j=1:length(ColtoTra)
+        cj=ColtoTra(j);
+        laj=la(j);
+        if  laj~=0
+            Ytra(:,cj)=Y(:,cj).^(1/laj);
+        else
+            Ytra(:,cj)=exp(Y(:,cj));
         end
     end
 end
-
 end
+
 %FScategory:UTISTAT

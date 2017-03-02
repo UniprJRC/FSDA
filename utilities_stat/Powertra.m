@@ -41,7 +41,8 @@ function Ytra=Powertra(Y,la,varargin)
 %               transformations does not have this limitation.
 %  Jacobian :   Requested Jacobian of transformed values. true (default) or
 %               false. If true (default) the transformation is normalized
-%               to have Jacobian equal to 1
+%               to have Jacobian equal to 1. This option does not apply if
+%               inverse =1.
 %                   Example - 'Jacobian',true
 %                   Data Types - string
 %   ColtoTra:   Variable to transform. Vector.  k x 1 integer vector
@@ -50,14 +51,16 @@ function Ytra=Powertra(Y,la,varargin)
 %               variables are transformed
 %                   Example - 'ColtoTra',[1 2 4]
 %                Data Types - single|double
+%  inverse :    Inverse transformation. Logical. If inverse is true, the
+%               inverse transformation is returned. The default value of
+%               inverse is false.
+%                 Example - 'inverse',true
+%                 Data Types - Logical
 %
 % Output:
 %
 %   Ytra    : n x v data matrix containing transformed observations
-%             acoording to the family specified in
-%             The Yeo-Johnson transformation is the Box-Cox transformation
-%             of y+1 for nonnegative values, and of |y|+1 with parameter
-%             2-lambda for y negative.
+%             accoording to the family specified in family.
 %
 %
 % See also normBoxCox, normYJ
@@ -79,23 +82,18 @@ function Ytra=Powertra(Y,la,varargin)
 % Examples:
 
 %{
-    % Transform value -3, -2, ..., 3
+    % Transform value 1, 2, 3, 4 and 5
     y=(1:5)';
-    lambda=0
     y1=Powertra(y,0.2);
-
     plot(y,y1)
     xlabel('Original values')
-    ylabel('Transformed values')
+    ylabel('Transformed values using BoxCox')
 
 %}
 
-%{
-
-%}
 
 %{
-    % Comparison between Box-Cox and Yeo-Johnson transformation
+    % Comparison between Box-Cox and Yeo-Johnson transformation.
     close all
     y=(-2:0.1:2)';
     n=length(y);
@@ -140,6 +138,18 @@ function Ytra=Powertra(Y,la,varargin)
 %}
 
 
+%{
+    % Simulated data to check option inverse.
+    n=100;p=5;
+    Y=randn(n,p);
+    Y(3,1:3)=0;
+    la=[0.5 0 -0.5 2 0];
+    family='YeoJohnson';
+    % Transform all columns of matrix Y according to the values of la
+    Ytra=Powertra(Y,la,'Jacobian',false,'family',family);
+    Ychk=Powertra(Ytra,la,'Jacobian',false,'inverse',true,'family',family);
+    disp(max(max(abs(Y-Ychk))))
+%}
 
 %% Input parameters checking
 % Extract size of the data
@@ -156,13 +166,17 @@ end
 % The default value is to use the normalized transformation
 Jacobian=true;
 
+% The default value is to use the normalized transformation
+inverse=false;
+
 % The default it to transform all columns of input matrix
 ColtoTra=1:v;
 
 % The default is to use the BoxCox family of transformations
 family='BoxCox';
 
-options=struct('ColtoTra',ColtoTra,'Jacobian',Jacobian,'family',family);
+if nargin>2
+options=struct('ColtoTra',ColtoTra,'Jacobian',Jacobian,'family',family,'inverse',inverse);
 
 
 UserOptions=varargin(1:2:length(varargin));
@@ -175,8 +189,7 @@ if ~isempty(UserOptions)
     chkoptions(options,UserOptions)
 end
 
-%init1=options.init;
-if nargin > 2
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -184,17 +197,18 @@ if nargin > 2
     ColtoTra=options.ColtoTra;
     Jacobian=options.Jacobian;
     family=options.family;
+    inverse=options.inverse;
 end
 
 
 
 %% Normalized Yeo-Johnson transformation of columns ColtoTra using la
 if strcmp(family,'BoxCox')
-    Ytra=normBoxCox(Y,ColtoTra,la,Jacobian);
-elseif strcmp(family,'YaoJohnson') || strcmp(family,'YJ')
-    Ytra=normYJ(Y,ColtoTra,la,Jacobian);
+    Ytra=normBoxCox(Y,ColtoTra,la,'Jacobian',Jacobian,'inverse',inverse);
+elseif strcmp(family,'YeoJohnson') || strcmp(family,'YJ')
+    Ytra=normYJ(Y,ColtoTra,la,'Jacobian',Jacobian,'inverse',inverse);
 elseif strcmp(family,'basicpower')
-    Ytra=basicPower(Y,ColtoTra,la);
+    Ytra=basicPower(Y,ColtoTra,la,'inverse',inverse);
 else
     warning('FSDA:Powertra:WrongFamily','Transformation family which has been chosen is not supported')
     error('FSDA:Powertra:WrongFamily','Supported values are BoxCox or YaoJohnson or basicpower')

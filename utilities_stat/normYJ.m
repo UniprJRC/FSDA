@@ -1,11 +1,11 @@
-function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
+function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %normYJ computes (normalized) Yeo-Johnson transformation
 %
 %<a href="matlab: docsearchFS('normYJ')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -30,6 +30,12 @@ function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
 %               false. If true (default) the transformation is normalized
 %               to have Jacobian equal to 1
 %                 Example - 'Jacobian',true
+%                 Data Types - Logical
+%
+%  inverse :    Inverse transformation. Logical. If inverse is true, the
+%               inverse transformation is returned. The default value of
+%               inverse is false.
+%                 Example - 'inverse',true
 %                 Data Types - Logical
 %
 % Output:
@@ -82,9 +88,9 @@ function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
     YtraBC=nan(n,nla);
     posy=y>0;
     for j=1:nla
-      YtraYJ(:,j)=normYJ(y,1,la(j),false);
+      YtraYJ(:,j)=normYJ(y,1,la(j),'Jacobian',false);
 
-      YtraBC(posy,j)=normBoxCox(y(posy),1,la(j),false);
+      YtraBC(posy,j)=normBoxCox(y(posy),1,la(j),'Jacobian',false);
     end
     subplot(1,2,1)
     plot(y,YtraYJ)
@@ -108,14 +114,16 @@ function Ytra=normYJ(Y,ColtoTra,la,Jacobian)
 %}
 
 %{
-    % Mussels data.
-    load('mussels.mat');
-    Y=mussels.data;
-    la=[0.5 0 0.5 0 0];
+    % Simulated data check inverse transformation.
+    n=100;p=5;
+    Y=randn(n,p);
+    Y(3,1:3)=0;
+    la=[0.5 0 -0.5 2 0];
     % Transform all columns of matrix Y according to the values of la
-    Y=normYJ(Y,[],la);
+    Ytra=normYJ(Y,[],la,'Jacobian',false);
+    Ychk=normYJ(Ytra,[],la,'Jacobian',false,'inverse',true);
+    disp(max(max(abs(Y-Ychk))))
 %}
-
 
 
 %% Input parameters checking
@@ -138,42 +146,104 @@ if isempty(ColtoTra) && length(la)==v
     ColtoTra=1:v;
 end
 
+Jacobian=true;
+inverse=false;
 
-if nargin<4
-    Jacobian=true;
+if nargin>2
+    options=struct('Jacobian',Jacobian,'inverse',inverse);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:normBoxCox:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+    end
+    
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
+    end
+    Jacobian=options.Jacobian;
+    inverse=options.inverse;
 end
 
 %% Normalized Yeo-Johnson transformation of columns ColtoTra using la
 Ytra=Y;
-for j=1:length(ColtoTra)
-    cj=ColtoTra(j);
-    laj=la(j);
-    Ycj=Y(:,cj);
+
+if inverse== false
     
-    nonnegs = Ycj >= 0;
-    negs = ~nonnegs;
-    % YJ transformation is the Box-Cox transformation of
-    % y+1 for nonnegative values of y
-    if laj ~=0
-        Ytra(nonnegs,cj)= ((Y(nonnegs,cj)+1).^laj-1)/laj;
-    else
-        Ytra(nonnegs,cj)= log(Y(nonnegs,cj)+1);
+    for j=1:length(ColtoTra)
+        cj=ColtoTra(j);
+        laj=la(j);
+        Ycj=Y(:,cj);
+        
+        nonnegs = Ycj >= 0;
+        negs = ~nonnegs;
+        
+        
+        % YJ transformation is the Box-Cox transformation of
+        % y+1 for nonnegative values of y
+        if laj ~=0
+            Ytra(nonnegs,cj)= ((Y(nonnegs,cj)+1).^laj-1)/laj;
+        else
+            Ytra(nonnegs,cj)= log(Y(nonnegs,cj)+1);
+        end
+        
+        % YJ transformation is the Box-Cox transformation of
+        %  |y|+1 with parameter 2-lambda for y negative.
+        if 2-laj~=0
+            Ytra(negs,cj) = - ((-Y(negs,cj)+1).^(2-laj)-1)/(2-laj);
+        else
+            Ytra(negs,cj) = -log(-Y(negs,cj)+1);
+        end
+        
+        % If Jacobian ==true the transformation is normalized so that its
+        % Jacobian will be 1
+        
+        if Jacobian ==true
+            Ytra(:,cj)=Ytra(:,cj) * (exp(mean(log(   (1 + abs(Y(:,cj))).^(2 * nonnegs - 1)) )))^(1 - laj);
+        end
     end
     
-    % YJ transformation is the Box-Cox transformation of
-    %  |y|+1 with parameter 2-lambda for y negative.
-    if 2-laj~=0
-        Ytra(negs,cj) = - ((-Y(negs,cj)+1).^(2-laj)-1)/(2-laj);
-    else
-        Ytra(negs,cj) = -log(-Y(negs,cj)+1);
+else % inverse transformation
+     for j=1:length(ColtoTra)
+        cj=ColtoTra(j);
+        laj=la(j);
+        Ycj=Y(:,cj);
+        
+        nonnegs = Ycj >= 0;
+        negs = ~nonnegs;
+        
+        
+        % YJ transformation is the Box-Cox transformation of
+        % y+1 for nonnegative values of y
+        if laj ~=0
+            Ytra(nonnegs,cj)=  (laj*Y(nonnegs,cj)+1).^(1/laj)   -1 ;
+        else
+            Ytra(nonnegs,cj)= expm1(Y(nonnegs,cj));
+        end
+        
+        if 2-laj~=0
+            Ytra(negs,cj) = 1 - (    ((laj-2)*Y(negs,cj)+1).^(1/(2-laj))  ) ;
+        else
+            Ytra(negs,cj) = -expm1(-Y(negs,cj));
+        end
+        
     end
     
-    % If Jacobian ==true the transformation is normalized so that its
-    % Jacobian will be 1
     
-    if Jacobian ==true
-        Ytra(:,cj)=Ytra(:,cj) * (exp(mean(log(   (1 + abs(Y(:,cj))).^(2 * nonnegs - 1)) )))^(1 - laj);
-    end
+%             ans[index] <- (y[index] * lambda[index] + 1)^(1/lambda[index]) - 
+%                 1
+%         if (any(index <- y >= 0 & abs(lambda) <= epsilon)) 
+%             ans[index] <- expm1(y[index])
+%         if (any(index <- y < 0 & abs(lambda - 2) > epsilon)) 
+%             ans[index] <- 1 - (-(2 - lambda[index]) * y[index] + 
+%                 1)^(1/(2 - lambda[index]))
+%         if (any(index <- y < 0 & abs(lambda - 2) <= epsilon)) 
+%             ans[index] <- -expm1(-y[index])  
 end
 
 end

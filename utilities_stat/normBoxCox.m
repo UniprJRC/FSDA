@@ -1,11 +1,11 @@
-function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
+function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %normBoxCox computes (normalized) Box-Cox transformation
 %
 %<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -30,6 +30,12 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
 %               false. If true (default) the transformation is normalized
 %               to have Jacobian equal to 1
 %                 Example - 'Jacobian',true
+%                 Data Types - Logical
+%
+%  inverse :    Inverse transformation. Logical. If inverse is true, the
+%               inverse transformation is returned. The default value of
+%               inverse is false.
+%                 Example - 'inverse',true
 %                 Data Types - Logical
 %
 % Output:
@@ -60,7 +66,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
 % Copyright 2008-2016.
 % Written by FSDA team
 %
-% 
+%
 %
 %<a href="matlab: docsearchFS('normBoxCox')">Link to the help function</a>
 % Last modified 31-05-2016
@@ -79,9 +85,9 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
     YtraBC=nan(n,nla);
     posy=y>0;
     for j=1:nla
-      YtraYJ(:,j)=normYJ(y,1,la(j),false);
+      YtraYJ(:,j)=normYJ(y,1,la(j),'Jacobian',false);
 
-      YtraBC(posy,j)=normBoxCox(y(posy),1,la(j),false);
+      YtraBC(posy,j)=normBoxCox(y(posy),1,la(j),'Jacobian',false);
     end
     subplot(1,2,1)
     plot(y,YtraYJ)
@@ -113,6 +119,16 @@ function Ytra=normBoxCox(Y,ColtoTra,la,Jacobian)
     Y=normBoxCox(Y,[],la);
 %}
 
+%{
+    % Check the inverse tranformation
+    load('mussels.mat');
+    Y=mussels.data;
+    la=[0.5 0 0.5 0 0];
+    % Transform all columns of matrix Y according to the values of la
+    Ytra=normBoxCox(Y,[],la,'Jacobian',false);
+    Ychk=normBoxCox(Ytra,[],la,'inverse',true);
+    disp(max(max(abs(Y-Ychk))))
+%}
 
 
 %% Input parameters checking
@@ -135,37 +151,73 @@ if isempty(ColtoTra) && length(la)==v
     ColtoTra=1:v;
 end
 
-if nargin<4
-    Jacobian=true;
+Jacobian=true;
+inverse=false;
+
+if nargin>2
+    options=struct('Jacobian',Jacobian,'inverse',inverse);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:normBoxCox:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+    end
+    
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
+    end
+    Jacobian=options.Jacobian;
+    inverse=options.inverse;
 end
+
 
 %% Normalized Box Cox transformation of columns ColtoTra using la
 Ytra=Y;
-for j=1:length(ColtoTra)
-    cj=ColtoTra(j);
-    laj=la(j);
-    Ycj=Y(:,cj);
-    
-    if min(Ycj)<=0 && laj==1
-        % if min(Ycj)<=0 and la(cj)=1 then variable is not transformed
-    elseif min(Ycj)<=0 && cj ~=1
-        error('FSDA:normBoxCox:Wronglaj',['lambda=' num2str(laj) ' for column ' num2str(cj) ' but min(Ycj)=' num2str(min(Ycj))])
-    else
-        % If Jacobian ==true the transformation is normalized so that its
-        % Jacobian will be 1
-        if Jacobian ==true
-            Gj=exp(mean(log(Ycj)));
+
+if inverse== false
+    for j=1:length(ColtoTra)
+        cj=ColtoTra(j);
+        laj=la(j);
+        Ycj=Y(:,cj);
+        
+        if min(Ycj)<=0 && laj==1
+            % if min(Ycj)<=0 and la(cj)=1 then variable is not transformed
+        elseif min(Ycj)<=0 && cj ~=1
+            error('FSDA:normBoxCox:Wronglaj',['lambda=' num2str(laj) ' for column ' num2str(cj) ' but min(Ycj)=' num2str(min(Ycj))])
         else
-            Gj=1;
+            % If Jacobian ==true the transformation is normalized so that its
+            % Jacobian will be 1
+            if Jacobian ==true
+                Gj=exp(mean(log(Ycj)));
+            else
+                Gj=1;
+            end
+            
+            if laj~=0
+                Ytra(:,cj)=(Y(:,cj).^laj-1)/(laj*(Gj^(laj-1)));
+            else
+                Ytra(:,cj)=Gj*log(Y(:,cj));
+            end
         end
+    end
+else
+    
+    for j=1:length(ColtoTra)
+        cj=ColtoTra(j);
+        laj=la(j);
         
         if laj~=0
-            Ytra(:,cj)=(Y(:,cj).^laj-1)/(laj*(Gj^(laj-1)));
+            Ytra(:,cj)=(Y(:,cj)*laj+1).^(1/laj);
         else
-            Ytra(:,cj)=Gj*log(Y(:,cj));
+            Ytra(:,cj)=exp(Y(:,cj));
         end
     end
 end
-
 end
+
 %FScategory:UTISTAT
