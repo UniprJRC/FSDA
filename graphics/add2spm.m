@@ -353,7 +353,10 @@ if strcmp('1',labeladd)
     % We need to add objects (the labels) to the scatterplots
     fig = ancestor(BigAx,'figure');
     set(fig,'NextPlot','add');
-    set(AX,'NextPlot','add');
+    
+    % We must check if this instruction is necessary
+    % set(AX,'NextPlot','add');
+    
     % The UserData field of the last selected group of H(:,:,end) contains
     % the indices of the last selected units.
     nbrush = get(H(end,1,end), 'UserData');

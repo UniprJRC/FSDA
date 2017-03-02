@@ -789,17 +789,17 @@ end
 for i=1:size(AX,2)
     hold('on');
     
+    % Add the boxplots generalised to groups. Note that we use AX(i,i)
+    % just to find the position of the required panel on the main
+    % diagonal to superimpose boxplots
+    ax=AX(i,i);
+    
     if strcmp(dispopt,'hist')==1
         % Add the histograms generalised to groups
         
-        ax = AX(i,i);
         Xlim=get(ax,'Xlim');
         
         ax = AX(end,i);
-        
-        % Not necessary anymore: lines will be removed after additional testing.
-        % Ylim=get(ax,'Ylim');
-        % set(gcf,'CurrentAxes',ax);
         
         % the strings used to label the tick marks
         XTickLabel = get(ax,'XTickLabel');
@@ -822,13 +822,22 @@ for i=1:size(AX,2)
         set(get(ax,'XLabel'),'String',XLabel);
         set(get(ax,'YLabel'),'String',YLabel);
         
+        
     else % if strcmp(dispopt,'box')==1
-        % Add the boxplots generalised to groups. Note that we use AX(i,i)
-        % just to find the position of the required panel on the main
-        % diagonal to superimpose boxplots
-        ax=AX(i,i);
+        
+        if i==1
+            hylabel=get(ax,'ylabel');
+            labForAxis=get(hylabel,'String');
+        elseif i==size(AX,2)
+            hylabel=get(ax,'xlabel');
+            labForAxis=get(hylabel,'String');
+        else
+            
+        end
+        
         
         axPosition = get(ax,'position');
+        
         % Now we create an axes object using axPosition.
         ax = axes('Position',axPosition);
         
@@ -850,23 +859,30 @@ for i=1:size(AX,2)
         % Put the graph containing boxplots in the correct position
         set(ax,'position',axPosition);
         
-        % Not necessary anymore: lines will be removed after additional testing.
-        % Adjust the vertical scale (using the y scale of a scatter in
-        % the same row of the scatter plot matrix)
-        %         if i < size(Y,2);
-        %             ax1 = AX(i,end);
-        %             Ylim=get(ax1,'Ylim');
-        %         else
-        %             ax1 = AX(i,1);
-        %             Ylim=get(ax1,'Ylim');
-        %         end
-        %         set(ax,'Ylim',Ylim)
+        % The label is reput on the x or y axis
+        if i==1
+            ylabel(labForAxis)
+        elseif i== size(AX,2)
+            xlabel(labForAxis)
+        else
+        end
+        
+        delete(AX(end,i))
         
         % The tag is set for later use in add2spm by clickableMultiLegend
         for gg=1:numel(unigroup)
             set(hbp(:,gg),'Tag',['boxplot' num2str(gg)]);
         end
     end
+    
+    % The empty panel created by gplotmatrix in position (i,i) is
+    % deleted
+    delete(AX(i,i));
+    
+    % The final row of AX contains the handle to the panel which
+    % contains the histograms
+    AX(end,i)=ax;
+    
 end
 
 % The third dimension of H distinguishes the groups. If there are no groups
@@ -1680,7 +1696,7 @@ if ~isempty(databrush) || iscell(databrush)
                 else
                     but=2;
                 end
- 
+                
             end
         end
     end
@@ -1800,11 +1816,6 @@ end
                 ij=ij+2;
             end
             
-            %         %When the selection has been completed, axes properties
-            %         %'HandleVisibility' and 'HitTest' must be set to on for an eventual
-            %         %possible future selection.
-            %         set(otherAxes,'HandleVisibility','on');
-            %         set(otherAxes,'HitTest','on');
             
         end
     end

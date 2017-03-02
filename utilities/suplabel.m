@@ -2,6 +2,8 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %suplabel places text as a title, xlabel, or ylabel on a group of subplots.
 %
 %
+%<a href="matlab: docsearchFS('suplabel')">Link to the help function</a>
+%
 % Required input arguments:
 %
 %   text       : any string. Character.
@@ -16,6 +18,8 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %                 whether the text is to be the xlabel, ylabel, right
 %                 side y-label, or title respectively. If whichaxis is not
 %                 specified it is set to 'x'
+%                 Example - 'y'
+%                 Data Types - character
 %
 % possuperaxes  : super axes position. double. 
 %                 vector of length 4 which specifies the
@@ -27,6 +31,8 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %                 to the lower-left corner of the rectangle. width and
 %                 height are the dimensions of the rectangle. The Units
 %                 property specifies the units for all measurements.
+%                 Example - [.08 .10 .84 .84]
+%                 Data Types - character
 %
 %
 % Output:
@@ -40,7 +46,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %
 %
 % Acknowledgements: 
-%  this code tranlated in FSDA help format follows the code suplabel by Ben Barrowes
+%  this code is based on the code suplabel by Ben Barrowes
 % <barrowes@alum.mit.edu>
 % https://www.mathworks.com/matlabcentral/fileexchange/7772-suplabel?s_tid=srchtitle
 %
@@ -50,7 +56,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('Score')">Link to the help function</a>
+%<a href="matlab: docsearchFS('suplabel')">Link to the help function</a>
 % Last modified 31-05-2016
 
 % Examples
@@ -82,7 +88,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %{
     % Two panels with a common y label.
     figure
-    subplot(2,1,1)
+    subplot(2,1,1);
     plot((1:10).^2)
     subplot(2,1,2);
     plot((1:10).^3)
@@ -113,7 +119,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
     plot((1:10).^2)
     subplot(3,2,6);
     plot((1:10).^2)
-    possuperaxes=[0.6 0.1 0.3 0.8];
+    possuperaxes=[0.55 0.1 0.3 0.8];
     suplabel('Population growth 2','y',possuperaxes)
     suplabel('Right label','yy',possuperaxes)
     suplabel('Months','x',possuperaxes)
@@ -121,7 +127,8 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 
 
 %{
-    % Example of suplabel with output arguments
+    % Example of suplabel with output arguments.
+    % A label is added to the spmplot on the x axis
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'};
@@ -193,9 +200,12 @@ else
     error('FSDA:suplabel:WrongInput','String label must be any of ''x'', ''y'', ''yy'', or ''t''')
 end
 
-for k=1:length(currax)
-    axes(currax(k)) %#ok<LAXES>
-end % restore all other axes
+% The loop seems to be unnecessary
+axes(currax);
+
+% for k=1:length(currax)
+%     axes(currax(k)) %#ok<LAXES>
+% end % restore all other axes
 
 if (nargout < 2)
     return
