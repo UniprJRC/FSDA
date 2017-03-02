@@ -1,7 +1,7 @@
-function [outSC]=Score(y,X,varargin)
-%Score computes the score test for transformation
+function [outSC]=ScoreYJ(y,X,varargin)
+%Score computes the score test for Yeo and Johnson transformation
 %
-%<a href="matlab: docsearchFS('Score')">Link to the help function</a>
+%<a href="matlab: docsearchFS('ScoreYJ')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -19,7 +19,7 @@ function [outSC]=Score(y,X,varargin)
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), if 0, no constant
 %               term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 %           la  :It specifies for which values of the
 %                 transformation parameter it is necessary to compute the
@@ -38,7 +38,7 @@ function [outSC]=Score(y,X,varargin)
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
 %                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %
 %  Output:
@@ -51,13 +51,14 @@ function [outSC]=Score(y,X,varargin)
 %                           is produced just if input value Lik =1
 %
 % See also
-% 
-% FSRfan
+%
+% FSRfan, Score
 %
 % References:
 %
-% Atkinson Riani (2000), equation (2.30) for the expression
-% for score test statistic.
+% Yeo, In-Kwon and Johnson, Richard (2000). A new family of power
+% transformations to improve normality or symmetry. Biometrika, 87,
+% 954-959.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -68,14 +69,15 @@ function [outSC]=Score(y,X,varargin)
 
 % Examples
 
+
 %{
-    % Score with all default options.
-    % Wool data.
+    % Score with all default options for the wool data.
+    % Load the wool data.
     XX=load('wool.txt');
     y=XX(:,end);
     X=XX(:,1:end-1);
     % Score test using the five most common values of lambda
-    [outSc]=Score(y,X);
+    [outSc]=ScoreYJ(y,X);
 %}
 
 %{
@@ -87,43 +89,76 @@ function [outSC]=Score(y,X,varargin)
     % la = vector containing the values of the transformation
     % parameters which have to be tested
     la=[0.25 1/3 0.4 0.5];
-    [outSc]=Score(y,X,'la',la,'intercept',0);
+    [outSc]=ScoreYJ(y,X,'la',la,'intercept',1);
 %}
 
 %{
-
+    % Compare Score test using BoxCox and YeoJohnson for the wool data.
+    % Wool data.
+    XX=load('wool.txt');
+    y=XX(:,end);
+    X=XX(:,1:end-1);
+    % Define vector of transformation parameters
+    la=[-1:0.01:1];
+    % Score test using YeoJohnson transformation
+    [outYJ]=ScoreYJ(y,X,'la',la);
+    % Score test using YeoJohnson transformation
+    [outBC]=Score(y,X,'la',la);
+    plot(la',[outBC.Score outYJ.Score])
+    xlabel('\lambda')
+    ylabel('Value of the score test')
+    legend({'BoxCox' 'YeoJohnson'})
 %}
 
+%{
+    % Score test using Darwin data given by Yeo and Yohnson.
+     y=[6.1, -8.4, 1.0, 2.0, 0.7, 2.9, 3.5, 5.1, 1.8, 3.6, 7.0, 3.0, 9.3, 7.5 -6.0]';
+     n=length(y);
+     X=ones(n,1);
+     la=-1:0.01:2.5;
+     % Given that there are no explanatory variables the test must be
+     % called with intercept 0
+     out=ScoreYJ(y,X,'intercept',0,'la',la,'Lik',1);
+     plot(la',out.Score)
+     xax=axis;
+     line(xax(1:2),zeros(1,2))
+     xlabel('lambda')
+     ylabel('Value of the score test')
+     title('Value of the score test is 0 in correspondence of $\hat \lambda =1.305$','Interpreter','Latex')
+%}
 
+%% Beginning of code
 nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
-% Add the extra check on vector y
-if min(y)<0
-    error('FSDA:Score:ynegative','Score test using BoxCox cannot be computed because min(y) is smaller than 0. Please use Yeo-Johnson family')
-end
+la=[-1 -0.5 0 0.5 1];
+Likopt=0;
 
-options=struct('Lik',0,'la',[-1 -0.5 0 0.5 1],'nocheck',0,'intercept',0);
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
+if nargin>2
+    
+    options=struct('Lik',0,'la',la,'nocheck',0,'intercept',0); % ,'mingreater0',mingreater0);
+    
+    UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:Score:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-end
-
-% Write in structure 'options' the options chosen by the user
-if nargin > 2
-    for i=1:2:length(varargin)
-        options.(varargin{i})=varargin{i+1};
+    
+    
+    % Write in structure 'options' the options chosen by the user
+    if nargin > 2
+        for i=1:2:length(varargin)
+            options.(varargin{i})=varargin{i+1};
+        end
     end
+    
+    la=options.la;
+    % mingreater0=options.mingreater0;
+    Likopt=options.Lik;
 end
-
-la=options.la;
 
 
 %  Sc= vector which contains the t test for constructed variables for the
@@ -132,21 +167,46 @@ lla=length(la);
 Sc=zeros(lla,1);
 
 % Lik is a vector which contains the likelihoods for diff. values of la
-Lik=Sc;
+if Likopt==1
+    Lik=Sc;
+end
 
-% Geometric mean of the observations
-G=exp(mean(log(y)));
+% value related to the Jacobian
+G=exp(sum(  sign(y) .* log(abs(y)+1)   )/n   );
+logG=log(G);
+
+nonnegs = y >= 0;
+negs = ~nonnegs;
 
 % loop over the values of \lambda
 for i=1:lla
-  
+    z=y; % Initialized z and w
+    w=y;
+    
     % Define transformed and constructed variable
-    if abs(la(i))<1e-8
-        z=G*log(y);
-        w=G*log(y).*(log(y)/2-log(G));
+    % transformation for non negative values
+    if abs(la(i))>1e-8  % if la is different from 0
+        k= (1/la(i)+logG);
+        q=la(i)*G^(la(i)-1);
+        z(nonnegs)=((y(nonnegs)+1).^la(i)-1)/(la(i)*G^(la(i)-1));
+        w(nonnegs)=(  ((y(nonnegs)+1).^la(i))  .*(log(y(nonnegs)+1)-k)    +k) /q;
+    else % if la is equal to 0
+        z(nonnegs)=G*log(y(nonnegs)+1);
+        w(nonnegs)=G*log(y(nonnegs)+1).*(log(y(nonnegs)+1)/2-logG);
+    end
+    
+    % Transformation for negative values
+    if   abs(la(i)-2)>1e-8 % la not equal 2
+        v=-y(negs)+1;
+        k=logG-1/(2-la(i));
+        q=(2-la(i))* (G^(la(i)-1));
+        z(negs)=-(v.^(2-la(i))  -1)  /(  (2-la(i))*G^(la(i)-1) );
+        w(negs)=(   v.^(2-la(i)) .*  (log(v)+k)   -k  )/q;
     else
-        z=(y.^la(i)-1)/(la(i)*G^(la(i)-1));
-        w=(y.^la(i).*log(y)-(y.^la(i)-1)*(1/la(i)+log(G)))/(la(i)*G^(la(i)-1));
+        v=-y(negs)+1;
+        logv=log(v);
+        z(negs)=-log(-y(negs)+1)/G;
+        w(negs)=logv.*(logG+logv/2)/G;
     end
     
     % Define augmented X matrix
@@ -164,7 +224,7 @@ for i=1:lla
     
     % Store the value of the likelihood for the model which also contains
     % the constructed variable
-    if options.Lik==1
+    if Likopt==1
         Lik(i)=-n*log(sse/n);
     end
 end
@@ -173,7 +233,7 @@ end
 outSC.Score=Sc;
 
 % Store values of the likelihood inside structure outSC
-if options.Lik==1
+if Likopt==1
     outSC.Lik=Lik;
 end
 
