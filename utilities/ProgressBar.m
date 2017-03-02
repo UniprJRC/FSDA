@@ -95,7 +95,9 @@ classdef ProgressBar < handle
             percent = 100;
 
             if obj.verbose
-                disp([repmat(char(8), 1, (obj.width+9)), newline, '100%[', repmat('=', 1, obj.width+1), ']']);
+                    % Remark: char(10) instead of newline is used  for
+                    % retrocompatibility with older version of MATLAB
+                disp([repmat(char(8), 1, (obj.width+9)), char(10), '100%[', repmat('=', 1, obj.width+1), ']']);
             end
         end
     end
