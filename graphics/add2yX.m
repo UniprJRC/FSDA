@@ -411,7 +411,10 @@ if ~isempty(legnew)
     % For example it may happen that
     % legnew = {'Unbrushed units'    'Brushed units 1'} and
     % {hLines.DisplayName} is  {'Brushed units 1'    'Unbrushed units'}
-    hNames={hLines.DisplayName};
+    
+    % For retrocompatibility with older version of MATLAB instead of using 
+    % hNames={hLines.DisplayName}; we use
+    hNames=get(hLines,'DisplayName');
     sorindlegnew=zeros(nleg,1);
     seqnames=1:nleg;
     for j=1:nleg
