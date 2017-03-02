@@ -54,6 +54,20 @@ function [out]=FSRfan(y,X,varargin)
 %                   computed, else Least trimmed of Squares is computed.
 %                 Example - 'lms',1
 %                 Data Types - double
+%        family :   string which identifies the family of transformations which
+%                   must be used. Character. Possible values are 'BoxCox'
+%                   (default) or 'YJ'.
+%                   The Box-Cox family of power transformations equals
+%                   $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero,
+%                   and $\log(y)$ if $\lambda = 0$.
+%                   The Yeo-Johnson (YJ) transformation is the Box-Cox
+%                   transformation of $y+1$ for nonnegative values, and of
+%                   $|y|+1$ with parameter 2-lambda for y negative.
+%                   Remark. BoxCox can be used just
+%                   if input y is positive. Yeo-Johnson family of
+%                   transformations does not have this limitation.
+%                   Example - 'family','YJ'
+%                   Data Types - char
 %       init    :   Search initialization. Scalar.
 %                   It specifies the initial subset size to start
 %                   monitoring the value of the score test, if init is not
@@ -260,6 +274,25 @@ function [out]=FSRfan(y,X,varargin)
   %the presence of particular observations it goes below the lower rejection line.
 %}
 
+%{
+    %% Compare BoxCox with Yeo and Johnson transformation.
+    % Store values of the score test statistic
+    % for the five most common values of $\lambda$.
+    % Produce also a fan plot and display it on the screen.
+    % Common part to all examples: load wool dataset.
+    XX=load('wool.txt');
+    y=XX(:,end);
+    X=XX(:,1:end-1);
+    % Store the score test statistic using Box Cox transformation.
+    [outBC]=FSRfan(y,X,'nsamp',0);
+    % Store the score test statistic using Yeo and Johnson transformation.
+    [outYJ]=FSRfan(y,X,'family','YJ','nsamp',0);
+    fanplot(outBC,'titl','Box Cox');
+    fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
+    disp('Maximum difference in absolute value')
+    disp(max(max(abs(outYJ.Score-outBC.Score))))
+
+%}
 
 %% Input parameters checking
 
@@ -283,11 +316,12 @@ if n<40
 else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
+family='BoxCox';
 
 options=struct('la',[-1 -0.5 0 0.5 1],'h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',0,'init',init,'conflev',0.99,'titl','Fan plot','labx','Subset size m',...
     'laby','Score test statistic','xlimx','','ylimy','','lwd',2,'lwdenv',1,'FontSize',12,'SizeAxesNum',10,...
-    'tag','pl_fan','intercept',1,'msg',1,'nocheck',0);
+    'tag','pl_fan','intercept',1,'msg',1,'nocheck',0,'family',family);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -312,6 +346,17 @@ lms=options.lms;
 plo=options.plots;
 nsamp=options.nsamp;
 msg=options.msg;
+family=options.family;
+
+if strcmp(family,'BoxCox')
+    BoxCox=1;
+elseif strcmp(family,'YJ')
+    BoxCox=0;
+    
+else
+    warning('FSDA:FSRfan:WrongFamily','Transformation family which has been chosen is not supported')
+    error('FSDA:FSRfan:WrongFamily','Supported values are BoxCox or YeoJohnson')
+end
 
 % Specify where to send the output of the current procedure if options plot
 % =1
@@ -365,11 +410,15 @@ binit=zeros(p,lla);
 % loop over the values of \lambda
 for i=1:lla
     
-    % Construct transformed z according to power tansformation
-    if abs(la(i))<1e-8
-        z=log(y);
+    if BoxCox==1
+        % Construct transformed z according to power tansformation
+        if abs(la(i))<1e-8
+            z=log(y);
+        else
+            z=y.^la(i);
+        end
     else
-        z=y.^la(i);
+        z=normYJ(y,1,la(i),'Jacobian',false);
     end
     
     % Find initial subset to initialize the search using as y transformed
@@ -387,7 +436,7 @@ for i=1:lla
     
     % FS loop for a particular value of vector la
     zb=z(bsb);
-    yb=z(bsb);
+    yb=y(bsb);
     Xb=X(bsb,:);
     
     % last correctly computed beta oefficients
@@ -407,8 +456,14 @@ for i=1:lla
             
             
             if (mm>=init)
-                % Compute and store the value of the score test
-                [outSC]=Score(yb,Xb,'la',la(i),'nocheck',1);
+                if BoxCox==1
+                    % Compute and store the value of the score test
+                    [outSC]=Score(yb,Xb,'la',la(i),'nocheck',1);
+                else
+                    % Compute and store the value of the score test using Yeo
+                    % and Johnson transformation
+                    [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',1);
+                end
                 
                 % Store S2 for the units belonging to subset
                 Sco(mm-init+1,i+1)=outSC.Score;
@@ -425,8 +480,8 @@ for i=1:lla
             end
             
             
-            % e= (n x 1) vector of residual for all units using b estimated
-            % using subset
+            % e= (n x 1) vector of residuals for all units using b estimated
+            % using subset and transformed response
             e=z-X*b;
             
             % r_i =e_i^2
