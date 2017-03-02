@@ -369,7 +369,7 @@ for i=vars
 
         if (mm>=init)
             % compute added t test
-            [outADDT]=addt(yb,Xb,wb,'intercept',0);
+            [outADDT]=addt(yb,Xb,wb,'intercept',0,'nocheck',1);
             % Store added tstat
             Tdel(mm-init+1,i)=outADDT.Tadd;
             % store added estimate of S2
