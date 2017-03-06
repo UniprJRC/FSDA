@@ -6,9 +6,12 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %
 % Required input arguments:
 %
-%   text       : any string. Character.
-%               Character containg the string which has to put as title,
-%               xlabel or ylabel on a group of subplots
+%   text       : any string. Character or cell array of string.
+%               If text is a Character it containg the string which has to put as title,
+%               xlabel or ylabel on a group of subplots. If text is a cell
+%               array of strings each element of the cell is put on a
+%               different line. In other words, in this case suplabel will
+%               display multiline titles contained in a cell array
 %
 %
 % Optional input arguments:
@@ -32,7 +35,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %                 height are the dimensions of the rectangle. The Units
 %                 property specifies the units for all measurements.
 %                 Example - [.08 .10 .84 .84]
-%                 Data Types - character
+%                 Data Types - numeric vector of length 4
 %
 %
 % Output:
@@ -138,6 +141,20 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
     [haxis,hlabel]=suplabel('Title added to the x axis')  
 %}
 
+%{
+    % Call to subplot using as text a cell array of strings.
+    figure
+    subplot(3,2,1);
+    plot((1:10).^2)
+    subplot(3,2,3);
+    plot((1:10).^2)
+    subplot(3,2,5);
+    plot((1:10).^2)
+    possuperaxes=[0.1 0.1 0.35 0.8];
+    text={'Population growth','3 countries'} ;
+    suplabel(text,'y',possuperaxes)
+%}
+
 %% Beginning of code
 if nargin<1
     error('FSDA:suplabel:Missingtext','text to add is missing');
@@ -148,9 +165,12 @@ if nargin < 2
     whichaxis = 'x';  
 end
 
-if ~ischar(text) || ~ischar(whichaxis)
-    error('FSDA:suplabel:WrongInput','text and whichLabel must be strings')
+% Check that text is a character or a cell array of strings and text is a
+% character
+if ((iscell(text) && ~ischar([text{:}])) || (~iscell(text) &&~ischar(text) )) || ~ischar(whichaxis)
+    error('FSDA:suplabel:WrongInput','text must be a string and whichLabel must be either a text or a cell array of strings')
 end
+
 whichaxis=lower(whichaxis);
 
 % Find all graphics objects of type axes exclusing those which have tag
