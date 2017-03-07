@@ -1784,8 +1784,8 @@ if plots
         
         % group names in the legend
         group = cell(n,1);
-        group(indmaxopt==0) = {'Trimmed units'};
-        group(indmaxopt==-1) = {'Trimmed units level 2'};
+        group(indmaxopt==-1) = {'Trimmed units'};
+        group(indmaxopt==-2) = {'Trimmed units level 2'};
         for iii = 1:k
             group(indmaxopt==iii) = {['Group ' num2str(iii)]};
         end
