@@ -10,7 +10,9 @@ function strFormatted = wraptextFS(str, varargin)
 % 2) to control the maximum width of the text or the right margin;
 % 3) to add a (comment) sign at the beginning of each row of the wrapped text;
 % 4) to indent the first line of the text.
-% 5) to personalize comments, and left margin for comments
+% 5) to personalize comments, and left margin for comments. 
+% This function uses routine strjoin and therefore can be used just by
+% those who have a version of MATLAB>=2013a
 %
 %  Required input arguments:
 %
