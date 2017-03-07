@@ -85,7 +85,7 @@ classdef ProgressBar < handle
 
             if obj.verbose
                 perc = sprintf('%3.0f%%', percent); % 4 characters wide, percentage
-                disp([repmat(char(8), 1, (obj.width+9)), newline, perc, '[', repmat('=', 1, round(percent*obj.width/100)), '>', repmat(' ', 1, obj.width - round(percent*obj.width/100)), ']']);
+                disp([repmat(char(8), 1, (obj.width+9)), char(10), perc, '[', repmat('=', 1, round(percent*obj.width/100)), '>', repmat(' ', 1, obj.width - round(percent*obj.width/100)), ']']);
             end           
         end
         
