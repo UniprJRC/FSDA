@@ -128,7 +128,7 @@ function add2yX(H,AX,BigAx,varargin)
     % add a regression line to each group
     add2yX(H,AX,BigAx,'bivarfit','0')
 %}
-    
+
 %% Beginning of code
 
 % FontSizelabeladd= height of text labels
@@ -144,7 +144,7 @@ userleg='';
 if nargin>3
     % user options
     options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','','userleg','');
-
+    
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -159,11 +159,11 @@ if nargin>3
     end
     
     intercept   = options.intercept;
-bivarfit    = options.bivarfit;
-multivarfit = options.multivarfit;
-labeladd    = options.labeladd;
-userleg  = options.userleg;
-
+    bivarfit    = options.bivarfit;
+    multivarfit = options.multivarfit;
+    labeladd    = options.labeladd;
+    userleg  = options.userleg;
+    
 end
 
 
@@ -412,16 +412,20 @@ if ~isempty(legnew)
     % legnew = {'Unbrushed units'    'Brushed units 1'} and
     % {hLines.DisplayName} is  {'Brushed units 1'    'Unbrushed units'}
     
-    % For retrocompatibility with older version of MATLAB instead of using 
+    % For retrocompatibility with older version of MATLAB instead of using
     % hNames={hLines.DisplayName}; we use
     hNames=get(hLines,'DisplayName');
-    sorindlegnew=zeros(nleg,1);
-    seqnames=1:nleg;
-    for j=1:nleg
-        sorindlegnew(j)=seqnames(strcmp(hNames(j),legnew));
+    if nleg>1
+        sorindlegnew=zeros(nleg,1);
+        seqnames=1:nleg;
+        for j=1:nleg
+            sorindlegnew(j)=seqnames(strcmp(hNames(j),legnew));
+        end
+        % make the legend entries clickable
+        clickableMultiLegend(hLines(sorindlegnew), legnew{:});
+    else
+        clickableMultiLegend(hLines, legnew{:})
     end
-    % make the legend entries clickable
-    clickableMultiLegend(hLines(sorindlegnew), legnew{:});
     
 end
 
