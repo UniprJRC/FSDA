@@ -317,7 +317,7 @@ end
 % tag the histogram group patches with the group labels. The tag is used in
 % clickablemultilegend to show/hide the legends.
 if verLessThan('matlab','8.4.0')
-    h = findobj(AX, 'Type','patch');
+    h = findobj(AX(end,:), 'Type','patch');
 else
     h = findobj(AX, 'Type','Bar');
     %h2 = findobj(AX, 'DisplayStyle','stairs');
