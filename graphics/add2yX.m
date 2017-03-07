@@ -414,8 +414,9 @@ if ~isempty(legnew)
     
     % For retrocompatibility with older version of MATLAB instead of using
     % hNames={hLines.DisplayName}; we use
-    hNames=get(hLines,'DisplayName');
+
     if nleg>1
+        hNames=get(hLines,'DisplayName');
         sorindlegnew=zeros(nleg,1);
         seqnames=1:nleg;
         for j=1:nleg
