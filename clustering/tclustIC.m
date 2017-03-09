@@ -268,7 +268,7 @@ function out  = tclustIC(Y,varargin)
 %                   been used.
 %
 %
-% See also tclust
+% See also tclust, tclustICplot
 %
 % References:
 %
