@@ -169,7 +169,7 @@ function tclustICplot(IC,varargin)
 %
 %
 %
-% See also: tclustIC, tclust
+% See also: tclustIC, tclust, tclustICsol
 %
 % References:
 %
