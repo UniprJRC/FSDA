@@ -245,7 +245,7 @@ function outms = FSRms(y,X,varargin)
 %
 %
 %
-% See also FSRcp.m
+% See also FSRcp.m, cdsplot.m
 %
 % References:
 %
