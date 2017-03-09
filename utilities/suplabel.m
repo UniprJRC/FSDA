@@ -220,12 +220,13 @@ else
     error('FSDA:suplabel:WrongInput','String label must be any of ''x'', ''y'', ''yy'', or ''t''')
 end
 
-% The loop seems to be unnecessary
-axes(currax);
-
-% for k=1:length(currax)
-%     axes(currax(k)) %#ok<LAXES>
-% end % restore all other axes
+% The loop seems to be unnecessary and in recent MATLAB (version greater
+% than 2014a) can simply be replaced by. 
+% axes(currax);
+% However, for compatibility with older version we leave it
+for k=1:length(currax)
+    axes(currax(k)) %#ok<LAXES>
+end % restore all other axes
 
 if (nargout < 2)
     return
