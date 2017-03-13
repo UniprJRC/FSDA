@@ -102,7 +102,7 @@ function out=publishFS(file,varargin)
 %                 1st column = name.
 %                 2nd column = short description.
 %                 3rd column = type indication (Scalar, matrix, strucutre, ...).
-%                 4th column = string containing long description. 
+%                 4th column = string containing long description.
 %                 5th column = example (if present).
 %                 6th column = Data type (ex. Single |Double).
 %                 7th column = this column is empty unless 3rd column
@@ -125,11 +125,11 @@ function out=publishFS(file,varargin)
 %                 file will appear under the section "More About".
 %out.Acknowledgements = Acknowledgements. String. String containing what in the HTML
 %                 file will appear under the section "Acknowledgements".
-%out.References = References. cell. Cell of length r containing the 
+%out.References = References. cell. Cell of length r containing the
 %                 references.
-%   out.SeeAlso = References. cell. Cell of length s containing the 
+%   out.SeeAlso = References. cell. Cell of length s containing the
 %                 references to linked files.
-%        out.Ex = Examples. cell. Cell of length t containing the 
+%        out.Ex = Examples. cell. Cell of length t containing the
 %                 examples.
 %                 First column= title of the example;
 %                 Second column = detailed description;
@@ -705,7 +705,7 @@ if nargin>1
         
     end
     
-    evalCode=options.evalCode;    
+    evalCode=options.evalCode;
     write2file=options.write2file;
     outputDir=options.outputDir;
     Display=options.Display;
@@ -1560,16 +1560,16 @@ for j=1:length(sintax)
     descriptionhtml= [descriptionhtml description];
 end
 
-    % Now check whether the first column of cell listEx contains the string interactive_example
-    NumOfInterEx=1;
-    for i=1:size(listEx,1)
-        [StartInteractive,EndInteractive]=regexp(listEx{i,1},'[Ii]nteractive_example.');
-        if ~isempty(StartInteractive)
-            StringToReplace=listEx{i,1};
-                listEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
-            NumOfInterEx=NumOfInterEx+1;
-        end
+% Now check whether the first column of cell listEx contains the string interactive_example
+NumOfInterEx=1;
+for i=1:size(listEx,1)
+    [StartInteractive,EndInteractive]=regexp(listEx{i,1},'[Ii]nteractive_example.');
+    if ~isempty(StartInteractive)
+        StringToReplace=listEx{i,1};
+        listEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
+        NumOfInterEx=NumOfInterEx+1;
     end
+end
 
 closedescription=sprintf(['								</div>\r'...
     '							</div>\r'...
@@ -1704,7 +1704,7 @@ if length(startIndexEx)>length(sintax)
         [StartInteractive,EndInteractive]=regexp(listExtraEx{i,1},'[Ii]nteractive_example.');
         if ~isempty(StartInteractive)
             StringToReplace=listExtraEx{i,1};
-                listExtraEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
+            listExtraEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
             NumOfInterEx=NumOfInterEx+1;
         end
     end
@@ -1919,8 +1919,8 @@ for i=1:nTOTargin
         listInpArgs{i,4}=descrlongHTML;
         listInpArgs{i,7}=descrlong;
         
-            listInpArgs{i,8}=listStructureArgs;
-
+        listInpArgs{i,8}=listStructureArgs;
+        
         jins=6;
     else
         
@@ -2090,7 +2090,7 @@ else
             %    [inistructfield,finstructfield]=regexp(longdesc,'\s{8,18}\w*\s{0,8}=');
             [longdescription,listStructureArgs]=formatHTMLstructure(longdesc,nameoptarg);
             listOptArgs{i,8}=listStructureArgs;
-          
+            
         else
             longdescriptionHTML=formatHTMLwithMATHJAX(listOptArgs{i,4});
             
@@ -2188,11 +2188,18 @@ if nargout>0
         
         % The endpoint of the substring is 'more About'. or See also or the next output argument
         if i <nargout-1
-            endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
+            % Note that the endpoint must be searched from position
+            % inipoint+length(listargouts{i}) of fstringsel because in
+            % order to avaoid cases in which the first output argument is
+            % for example ABk and the second output argument is Bk
+            endpoint=inipoint+length(listargouts{i})-1+regexp(fstringsel(inipoint+length(listargouts{i}):end),[listargouts{i+1} '\s{0,7}:']);
         elseif i==nargout-1
             
             if strcmp(listargouts{end},'varargout') ==0
-                endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
+                % Note that also in this case the endpoint must be searched from position
+                % inipoint+length(listargouts{i}) of fstringsel
+                endpoint=inipoint+length(listargouts{i})-1+regexp(fstringsel(inipoint+length(listargouts{i}):end),[listargouts{i+1} '\s{0,7}:']);
+                % endpoint=regexp(fstringsel,[listargouts{i+1} '\s{0,7}:']);
                 if isempty(endpoint)
                     % warning('FSDA:wrongOutDescription',)
                     errmsg=['Error in processing output argument  ''' listargouts{i} '''\n' ...
@@ -2925,22 +2932,22 @@ outstring=([titl metacontent2015b sitecont sintaxhtml sintaxclose description  .
 
 
 if write2file
-file1ID=fopen([outputDir fsep name '.html'],'w');
-
-if file1ID==-1
+    file1ID=fopen([outputDir fsep name '.html'],'w');
     
-    if ismac || isunix
-        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
-    elseif ispc
-        outputDir=strrep(outputDir,'\','\\');
-        errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
-    else
-        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+    if file1ID==-1
+        
+        if ismac || isunix
+            errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+        elseif ispc
+            outputDir=strrep(outputDir,'\','\\');
+            errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
+        else
+            errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+        end
+        
+        error('FSDA:publishFS:WrngOutFolder',errmsg);
+        
     end
-    
-    error('FSDA:publishFS:WrngOutFolder',errmsg);
-    
-end
 end
 
 %% EXECUTE THE EXAMPLES WHICH START WITH SYMBOLS %%
@@ -3183,8 +3190,8 @@ out.laste=laste;
 
 %% WRITE string outstring into final HTML file
 if write2file
-fprintf(file1ID,'%s',outstring);
-fclose('all');
+    fprintf(file1ID,'%s',outstring);
+    fclose('all');
 end
 
 %% Check if all name pairs arguments are commented inside the HTML

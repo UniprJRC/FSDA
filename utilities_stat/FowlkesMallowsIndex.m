@@ -47,7 +47,7 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %
 % Output:
 %
-%  ABk:         Adjusted Fowlkes and Mallows index. A number between -1 and 1.
+%  ABk  :       Adjusted Fowlkes and Mallows index. A number between -1 and 1.
 %               The adjusted Fowlkes and Mallows index is the
 %               corrected-for-chance version of the Fowlkes and Mallows
 %               index.
