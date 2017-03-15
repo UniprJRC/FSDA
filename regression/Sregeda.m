@@ -125,11 +125,6 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               confidence interval will be used.
 %                 Example - 'plots',0 
 %                 Data Types - single | double
-%       yxsave : save option. Scalar. if yxsave is equal to 1, the response
-%               vector y and data matrix X are saved into the output
-%               structure out. Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1 
-%               Data Types - double
 %
 %  Output:
 %
@@ -209,9 +204,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
     [out]=Sregeda(ycont,X);
-    laby='Scaled S residuals'; 
-    titl='';
-   resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')
+    resfwdplot(out)
+    ylabel('Scaled S residuals'); 
 %}
 
 %{
@@ -226,7 +220,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out]=Sreg(ycont,X,'rhofunc','optimal');
+    [out]=Sregeda(ycont,X,'rhofunc','optimal');
 %}
 
 
@@ -282,7 +276,7 @@ rhofuncdef='bisquare';
 options=struct('intercept',1,'nsamp',nsampdef,'refsteps',refstepsdef,...
     'reftol',reftoldef,'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
     'minsctol',minsctoldef,'bestr',bestrdef,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,...
-    'plots',0,'conflev',0.975,'nocheck',0,'msg',1,'yxsave',0);
+    'plots',0,'conflev',0.975,'nocheck',0,'msg',1);
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -650,6 +644,8 @@ out.Outliers = Outliers;
 % Store values of bdp which have been used
 out.bdp=bdp;
 
+out.class='Seda';
+
 out.rhofunc=rhofunc;
 % In case of Hampel or hyperbolic tangent estimator store the additional
 % parameters which have been used
@@ -659,7 +655,6 @@ if exist('rhofuncparam','var')
     out.rhofuncparam=rhofuncparam;
 end
 
-if options.yxsave
     if options.intercept==1
         % Store X (without the column of ones if there is an intercept)
         out.X=X(:,2:end);
@@ -668,12 +663,12 @@ if options.yxsave
     end
     % Store response
     out.y=y;
-end
 
 % Plot residuals as function of the break down point
 if options.plots==1
     laby='Scaled S residuals';
-    resfwdplot(out.residuals,'laby',laby,'numlab');
+    resfwdplot(out);
+    ylabel(laby)
 end
 
 end

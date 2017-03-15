@@ -88,11 +88,6 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               confidence interval will be used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
-%       yxsave : the response vector y and data matrix X are saved into the output
-%                structure out. Scalar.
-%               Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1
-%               Data Types - double
 %
 %  Output:
 %
@@ -131,10 +126,9 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                           a, b and c
 %            out.eff    =   vector containing the value of eff which have
 %                           been used.
-%            out.y      =   response vector Y. The field is present if option
-%                           yxsave is set to 1.
-%            out.X      =   data matrix X. The field is present if option
-%                           yxsave is set to 1.
+%            out.y      =   response vector y.
+%            out.X      =   data matrix X.
+%
 %  Optional Output:
 %
 %            C        : matrix containing the indices of the subsamples
@@ -165,13 +159,13 @@ function [out , varargout] = MMregeda(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('MMreg')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('MMregeda')">Link to the help page for this function</a>
 % Last modified 31-05-2016
 
 % Examples:
 
 %{
-    % MMreg with all default options.
+    % MMregeda with all default options.
     % Run this code to see the output shown in the help file
     n=200;
     p=3;
@@ -186,8 +180,8 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %}
 
 %{
-    % MMreg with optional input arguments.
-    % MMreg using the hyperbolic rho function
+    % MMregeda with optional input arguments.
+    % MMregeda using the hyperbolic rho function
     % Run this code to see the output shown in the help file
     n=200;
     p=3;
@@ -218,17 +212,11 @@ function [out , varargout] = MMregeda(y,X,varargin)
     conflev=[0.99,1-0.01/length(y)];
     % Define number of subsets
     nsamp=3000;
-    % Define the main title of the plots
-    titl='';
 
     % MM  estimators
     [outMM]=MMregeda(y,X,'conflev',conflev(1));
     laby='Scaled MM residuals';
-    resindexplot(outMM.residuals,'title',titl,'laby',laby,'numlab','','conflev',conflev)
-    % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level.
-    % By simply changing the seed to 543 (state=543), using a Bonferroni size
-    %of 1%, no unit is declared as outlier and just half of them using the 99%
-    %band.
+    resfwdplot(outMM)
 %}
 
 
@@ -267,7 +255,7 @@ options=struct('intercept',1,'InitialEst','','Snsamp',Snsampdef,'Srefsteps',Sref
     'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
     'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam','','nocheck',0,'eff',eff,'effshape',0,...
-    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'yxsave',0);
+    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -404,18 +392,17 @@ end
 % Store values of efficiency
 out.eff=eff;
 
-if options.yxsave
-    if options.intercept==1
-        % Store X (without the column of ones if there is an intercept)
-        out.X=X(:,2:end);
-    else
-        out.X=X;
-    end
-    % Store response
-    out.y=y;
+if options.intercept==1
+    % Store X (without the column of ones if there is an intercept)
+    out.X=X(:,2:end);
+else
+    out.X=X;
 end
+% Store response
+out.y=y;
 
-% Plot monitoring of scaled MM residuals for each value of eff 
+
+% Plot monitoring of scaled MM residuals for each value of eff
 if plots==1
     resfwdplot(out)
 end

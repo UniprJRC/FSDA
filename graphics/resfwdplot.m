@@ -6,7 +6,7 @@ function plotopt=resfwdplot(out,varargin)
 %
 %  Required input arguments:
 %
-%  out :  Structure containing monitoring of scaled residuals. Structure. 
+%  out :  Structure containing monitoring of scaled residuals. Structure.
 %               Structure containing the following fields.
 %   out.RES =   matrix containing the residuals monitored in each step of
 %               the forward search. Every row is associated with a residual
@@ -29,7 +29,7 @@ function plotopt=resfwdplot(out,varargin)
 %
 %           standard : appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. Structure. 
+%                   style, color of the lines, etc. Structure.
 %                   Structure standard contains the following fields
 %                   standard.SizeAxesNum  = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
@@ -43,7 +43,7 @@ function plotopt=resfwdplot(out,varargin)
 %                       or 'Scaled squared residuals').
 %                  standard. SizeAxesLab = Scalar specifying the fontsize of the
 %                       labels of the axes. Default value is 12.
-%                   standard.xvalues = vector. x axis values.  
+%                   standard.xvalues = vector. x axis values.
 %                       Numeric vector of length(size(out.RES,2)) controlling the x
 %                       axis coordinates. The default value of xvalues is
 %                       size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
@@ -71,7 +71,7 @@ function plotopt=resfwdplot(out,varargin)
 %                   standard.LineStyle={'-'}
 %                   standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
 %                   Example - 'standard.LineWidth','1'
-%                   Data Types - struct 
+%                   Data Types - struct
 %
 %         fground : trajectories in foregroud.
 %                   Structure. Structure which controls which trajectories
@@ -127,12 +127,12 @@ function plotopt=resfwdplot(out,varargin)
 %                    fground.FontSize=12
 %
 %                   Example - 'fground.LineWidth','1'
-%                   Data Types - struct 
+%                   Data Types - struct
 %                   Remark: if fground='' no unit is highlighted and no
 %                   label is inserted into the plot.
 %
 %         bground : characterictics of the trajectories in background.
-%                   Structure. 
+%                   Structure.
 %                    Structure which specifies the trajectories in background,
 %                   i.e. the trajectories corresponding to "unimmportant"
 %                   units in the central part of the data. The structure
@@ -167,7 +167,7 @@ function plotopt=resfwdplot(out,varargin)
 %                       When n<=100 and bthresh = -Inf option bstyle is
 %                       ignored.
 %                   Example - 'bground.bstyle','faint'
-%                   Data Types - struct 
+%                   Data Types - struct
 %                   Remark: bground='' is equivalent to bground.thresh=-Inf
 %                   that is all trajectories are considered relevant.
 %
@@ -179,7 +179,7 @@ function plotopt=resfwdplot(out,varargin)
 %                   the output of the new plot overwrites the existing one
 %                   in the same window else a new window is created.
 %                   Example - 'tag','myplot'
-%                   Data Types - char 
+%                   Data Types - char
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. The default is datatooltip=''.
 %                   It is inactive if it is an empty value. The default is
@@ -216,14 +216,14 @@ function plotopt=resfwdplot(out,varargin)
 %                   interpreted as RGB vector will be converted to blue,
 %                   i.e. SubsetLinesColor will be forced to be [0 0 1].
 %                   Example - 'datatooltip',''
-%                   Data Types - empty value, scalar or struct 
-%       label   :   row labels. Cell of strings. 
+%                   Data Types - empty value, scalar or struct
+%       label   :   row labels. Cell of strings.
 %                   Cell containing the labels of the units (optional
 %                   argument used when datatooltip=1. If this field is not
 %                   present labels row1, ..., rown will be automatically
 %                   created and included in the pop up datatooltip window)
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell 
+%                   Data Types - cell
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
@@ -310,17 +310,17 @@ function plotopt=resfwdplot(out,varargin)
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
-%                   Data Types - single | double | struct 
+%                   Data Types - single | double | struct
 %       nameX   :  labels of the explanatory variables. Cell. Cell array of
 %                   strings of length p containing the labels
 %                   of the variables of the regression dataset. If it is
 %                   empty the sequence X1, ..., Xp will be created
 %                   automatically
 %                   Example - 'nameX',{'var1', var2, 'var3'}
-%                   Data Types - cell of strings 
+%                   Data Types - cell of strings
 %       namey   :   response label. Character. Character containing the label of the response
 %                   Example - 'namey','response'
-%                   Data Types - character 
+%                   Data Types - character
 %       msg     :   display or save used options. Scalar.
 %                   Scalar which controls whether to display or to save
 %                   as output the options inside structures standard,
@@ -334,7 +334,7 @@ function plotopt=resfwdplot(out,varargin)
 %                   the options which have been used and prints them on the
 %                   screen.
 %                   Example - 'msg',1
-%                   Data Types - single or double 
+%                   Data Types - single or double
 %
 % Output:
 %
@@ -473,7 +473,7 @@ function plotopt=resfwdplot(out,varargin)
 %
 %{
     % Interactive_example
-    %   Example of the use of brush using a rectangular selection tool. 
+    %   Example of the use of brush using a rectangular selection tool.
     % Use a cyan colour.
     resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
 %}
@@ -927,7 +927,24 @@ standard=standarddef;
 % extract the vector associated with the subset size (x)
 x=standard.xvalues;
 
+% If structure out contains fielname class we check whether input structure
+% out comes from MMeda or Seda
+if any(strcmp(fieldnames(out),'class'))
+    if strcmp(out.class,'MMeda')
+        x=out.eff;
+        out.Un='';
+    elseif strcmp(out.class,'Seda')
+        x=out.bdp;
+        out.Un='';
+    end
+    
+end
+
 plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
+
+if strcmp(out.class,'Seda')
+    set(gca,'XDir','reverse')
+end
 
 % Apply color
 scol=standard.Color;
@@ -1062,6 +1079,15 @@ if ~isempty(options.fground)
         % lsteps = number of steps for which we add the labels
         lsteps=length(steps);
         lall=lunits*lsteps;
+        % indsteps = indexes of the columns of the matrix named residuals
+        % which have to be taken
+        % For FS indsteps is simply
+        % indsteps=steps-steps(1)+1; however we want to write it in very
+        % general terms
+        indsteps=zeros(lsteps,1);
+        for i=1:lsteps
+            indsteps(i)=find(x==steps(i));
+        end
         
         % HA = the HorizontalAlignment of the labels
         nflabstep = lunits*numel(steps);
@@ -1083,7 +1109,7 @@ if ~isempty(options.fground)
         
         % Label the units
         h=text(reshape(repmat(steps,lunits,1),lall,1),...
-            reshape(residuals(funit,steps-steps(1)+1),lall,1),...
+            reshape(residuals(funit,indsteps),lall,1),...
             reshape(repmat(strings,1,lsteps),lall,1),...
             'FontSize',fground.FontSize);
         set(h,{'HorizontalAlignment'},HA)
@@ -1133,7 +1159,7 @@ if ~isempty(options.bground)
     bthresh=bground.bthresh;
     
     if ~isempty(bthresh) && ischar(bthresh)
-            error('FSDA:resfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
+        error('FSDA:resfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
     else
         if length(bthresh)>1
             units=seq(selmax>bthresh(2) | selmin<bthresh(1));
