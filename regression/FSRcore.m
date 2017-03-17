@@ -917,14 +917,14 @@ if signal==1 || signal==2
                 end
                 % Find m^{1%} that is the step where mdr goes below the 1%
                 % threshold for the first time
-                % ginfd = concatenate all the steps from m^*+1 to m^\dagger+k-1
-                gfind=[gmin1(i+1:end,1) gmin1(i+1:end,4)>mdr(i+1:size(gmin1,1),2)];
+                % gfind = concatenate all the steps from m^*+1 to m^\dagger+k-1
+                gfind=[gmin1(ii+1:end,1) gmin1(ii+1:end,4)>mdr(ii+1:size(gmin1,1),2)];
                 % select from gfind the steps where mdr was below 1% threshold
                 % gfind(1,1) contains the first step where mdr was below 1%
                 gfind=gfind(gfind(:,2)>0,1);
                 % find maximum in the interval m^\dagger=mdr(i,1) to the step
                 % prior to the one where mdr goes below 1% envelope
-                if length(gfind)==1
+                if length(gfind)==1 
                     tr=gfind;
                 else
                     tr=sortrows(mdr(i:gfind(1,1)-mdr(1,1),1:2),2);
