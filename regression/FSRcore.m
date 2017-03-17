@@ -924,7 +924,7 @@ if signal==1 || signal==2
                 gfind=gfind(gfind(:,2)>0,1);
                 % find maximum in the interval m^\dagger=mdr(i,1) to the step
                 % prior to the one where mdr goes below 1% envelope
-                if length(gfind)==1 
+                if length(gfind)==1
                     tr=gfind;
                 else
                     tr=sortrows(mdr(i:gfind(1,1)-mdr(1,1),1:2),2);
@@ -1200,13 +1200,29 @@ if ndecl>0
     end
     % Store the values of beta coefficients in step n-ndecl
     ndecl=length(ListOut);
-    beta = Bcoeff(end-ndecl,2:end);
     if strcmp(model,'H')
         Hetero=INP.Hetero;
         hetero=Hetero(end-ndecl,2:end);
     end
-    
-    scale= sqrt(S2(end-ndecl,2));
+    % Note that the S2 which comes out from procedure FSRBmdr (differently
+    % from FSRmdr and FSRHmdr is rescaled, that is it has been inflated by
+    % the consistency term, therefore in order to find the unrescaled one
+    % we have to recal procedure regressB). Given that the estimate of beta
+    % is also affected we also need to recompute it
+    if strcmp(model,'B')
+        goodobs=setdiff(seq,ListOut);
+        beta0=INP.beta0;
+        R=INP.R;
+        tau0=INP.tau0;
+        n0=INP.n0;
+        outregrB = regressB(y(goodobs), X(goodobs,:), beta0, R, tau0, n0,'intercept',intercept,...
+            'nocheck',1);
+        scale=sqrt(1/outregrB.tau1);
+        beta = outregrB.beta1';
+    else
+        beta = Bcoeff(end-ndecl,2:end);
+        scale= sqrt(S2(end-ndecl,2));
+    end
     group(ListOut)=2;
 else
     % No outlier is found.

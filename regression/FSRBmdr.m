@@ -148,9 +148,11 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               in each step of the forward search.
 %               1st col = fwd search index (from init to n).
 %               2nd col = monitoring of $\sigma^2_1$ (posterior estimate of
-%               $\sigma^2$).
+%               $\sigma^2$). 
 %               3rd col = monitoring $\tau_1$ (posterior estimate of
-%               $\tau$).
+%               $\tau$). Note that these posterior estimates during the fwd
+%               search are corrected using the usual truncated variance
+%               consistency factor.
 %
 % See also
 %
