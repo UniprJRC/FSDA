@@ -559,6 +559,12 @@ if nargin>6
                 y    = y(Wt4);
                 %recompute n
                 n = size(y,1);
+                if bench == 1
+                    obj_all = NaN(300,10);
+                    sigmaini_all = NaN(300,10,k);
+                    Beta_all = NaN(300,10,p,k);
+                    w4trim_all = NaN(300,10,n);
+                end
             end
         end
     end
