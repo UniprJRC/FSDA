@@ -318,13 +318,13 @@ function [out , varargout] = LXS(y,X,varargin)
     % Define the main title of the plots
     titl='';
 
-    % LMS with no rewighting
+    % LMS with no reweighting
     [outLMS]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1));
     h=subplot(2,2,1)
     laby='Scaled LMS residuals'; 
     resindexplot(outLMS.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev)
 
-    % LTS with no rewighting
+    % LTS with no reweighting
     h=subplot(2,2,2);
     [outLTS]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1),'lms',0);
     laby='Scaled LTS residuals'; 
