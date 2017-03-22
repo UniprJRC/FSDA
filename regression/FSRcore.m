@@ -1200,6 +1200,10 @@ if ndecl>0
     end
     % Store the values of beta coefficients in step n-ndecl
     ndecl=length(ListOut);
+    
+    % Remark: if n-ndecl<n-init then the number of outliers is set to n-init
+    ndecl=max(n-init,n-ndecl);
+    
     if strcmp(model,'H')
         Hetero=INP.Hetero;
         hetero=Hetero(end-ndecl,2:end);
