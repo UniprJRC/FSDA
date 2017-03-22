@@ -1202,7 +1202,7 @@ if ndecl>0
     ndecl=length(ListOut);
     
     % Remark: if n-ndecl<n-init then the number of outliers is set to n-init
-    ndecl=max(n-init,n-ndecl);
+    ndecl=min(n-init,ndecl);
     
     if strcmp(model,'H')
         Hetero=INP.Hetero;
