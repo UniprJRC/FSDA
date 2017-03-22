@@ -1201,7 +1201,7 @@ if ndecl>0
     % Store the values of beta coefficients in step n-ndecl
     ndecl=length(ListOut);
     
-    % Remark: if n-ndecl<n-init then the number of outliers is set to n-init
+    % Remark: if ndecl>n-init then the number of outliers is set to n-init
     ndecl=min(n-init,ndecl);
     
     if strcmp(model,'H')
