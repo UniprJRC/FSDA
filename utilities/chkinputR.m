@@ -121,6 +121,10 @@ else
         error('FSDA:chkinputR:WrongX','Invalid data set X.');
     end
     
+    if isequal(y,X)
+        error('FSDA:chkinputR:yXequal','Invalid input: y and X are equal.');
+    end
+    
     % Check dimension consistency of X and y
     na.X=~isfinite(X*ones(size(X,2),1));
     na.y=~isfinite(y);
