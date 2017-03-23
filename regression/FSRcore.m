@@ -1219,8 +1219,16 @@ if ndecl>0
         R=INP.R;
         tau0=INP.tau0;
         n0=INP.n0;
-        outregrB = regressB(y(goodobs), X(goodobs,:), beta0, R, tau0, n0,'intercept',intercept,...
-            'nocheck',1);
+        if ~isempty(goodobs)
+            outregrB = regressB(y(goodobs), X(goodobs,:), beta0, R, tau0, n0,'intercept',intercept,...
+                'nocheck',1);
+        else
+            % posterior values are equal to prior values, if goodobs is
+            % empty
+            outregrB=struct;
+            outregrB.beta1=beta0;
+            outregrB.tau1=tau0;
+        end
         scale=sqrt(1/outregrB.tau1);
         beta = outregrB.beta1';
     else
