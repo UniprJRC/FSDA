@@ -731,7 +731,7 @@ residuals=y-X*brob;
 
 
 % Consistency factor
-if lmsopt
+if lmsopt==1
     % Consistency factor based on the fact that med |z_i|/ \Phi^-1(0.75) is a
     % consistent estimator of \sigma when z_i ~ N(0, \sigma^2)
     % The additional factor 1+5/(n-p) was found by simulation by Rousseeuw and
