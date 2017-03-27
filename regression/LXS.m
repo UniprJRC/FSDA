@@ -442,7 +442,8 @@ if nargin > 2
             error('FSDA:LXS:WrongBdp','Attention: bdp should be larger than 0');
         end
         
-        nalpha=floor(n*(1-options.bdp));
+        % nalpha must be greater or equal than 50% of the observations
+        nalpha=ceil(n*(1-options.bdp));
         
         if nalpha <p+1
             error('FSDA:LXS:WrongAlpha',['Attention: the specified trimming proportion is too high.\n',...
@@ -1115,10 +1116,12 @@ else
 end
 if 0.5 <= alpha && alpha <= 0.875
     fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
-end
-if 0.875 < alpha && alpha < 1
+elseif 0.875 < alpha && alpha < 1
     fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
+else
+   error('FSDA:LXS:WrongBdp','Condition 1-alpha>=0.5 not respected')
 end
+
 rawcorfac=1/fp_alpha_n;
 if rawcorfac <=0 || rawcorfac>50
     rawcorfac=1;
