@@ -102,33 +102,53 @@ function strFormatted = wraptextFS(str, varargin)
 %{
     %% wraptextFS with all default options.
     str='Paene insularum, Sirmio, insularumque ocelle, quascumque in liquentibus stagnis marique vasto fert uterque Neptunus, quam te libenter quamque laetus inviso, vix mi ipse credens Thuniam atque Bithunos liquisse campos et videre te in tuto. o quid solutis est beatius curis, cum mens onus reponit, ac peregrino labore fessi venimus larem ad nostrum, desideratoque acquiescimus lecto? hoc est quod unum est pro laboribus tantis. salve, o venusta Sirmio, atque ero gaude gaudente, vosque, o Lydiae lacus undae, ridete quidquid est domi cachinnorum.';
-    Newstr=wraptextFS(str)
+    if verLessThan('matlab','8.1') ==1
+        warning('This function uses routine strjoin and works just with Matlab >=2013a')
+    else
+        Newstr=wraptextFS(str)
+    end
 %}
 
 %{
     % start text in column 3 and put percentage sign at the beginning of
     % each line.
-    Newstr=wraptextFS(str,'comment',true,'startcolumn',3)
+    if verLessThan('matlab','8.1') ==1
+        warning('This function uses routine strjoin and works just with Matlab >=2013a')
+    else
+        Newstr=wraptextFS(str,'comment',true,'startcolumn',3)
+    end
 %}
 
 %{
     % Example of specification of startcolumn and text width.
     % Start text in column 5, the maximum text width is 40.
-    Newstr=wraptextFS(str,'comment',true,'startcolumn',10,'width',40)
+    if verLessThan('matlab','8.1') ==1
+        warning('This function uses routine strjoin and works just with Matlab >=2013a')
+    else
+        Newstr=wraptextFS(str,'comment',true,'startcolumn',10,'width',40)
+    end
 %}
 
 %{
     % Add an indentation for first line.
-    Newstr=wraptextFS(str,'comment',true,'startcolumn',10,'width',40,'firstline',true)
+    if verLessThan('matlab','8.1') ==1
+        warning('This function uses routine strjoin and works just with Matlab >=2013a')
+    else
+        Newstr=wraptextFS(str,'comment',true,'startcolumn',10,'width',40,'firstline',true)
+    end
 %}
 
 
 %{
    % Use the width of command window.
-    startcolumn=10;
-    cms = get(0,'CommandWindowSize');
-    width = cms(1)-10;
-    Newstr=wraptextFS(str,'comment',false,'startcolumn',startcolumn,'width',width)
+    if verLessThan('matlab','8.1') ==1
+        warning('This function uses routine strjoin and works just with Matlab >=2013a')
+    else
+        startcolumn=10;
+        cms = get(0,'CommandWindowSize');
+        width = cms(1)-10;
+        Newstr=wraptextFS(str,'comment',false,'startcolumn',startcolumn,'width',width)
+    end
 %}
 
 %{
@@ -140,7 +160,7 @@ function strFormatted = wraptextFS(str, varargin)
     comment.startcolumn=5;
     startcolumn=12;
     width=60;
-     if verLessThan('matlab','8.1') ==1
+    if verLessThan('matlab','8.1') ==1
         warning('This function uses routine strjoin and works just with Matlab >=2013a')
     else
        Newstr=wraptextFS(str,'comment',comment,'startcolumn',startcolumn,'width',width);
