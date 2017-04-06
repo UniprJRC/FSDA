@@ -799,13 +799,12 @@ for i=1:size(AX,2)
         
         Xlim=get(ax,'Xlim');
         
-        ax = AX(end,i);
-        
-        % the strings used to label the tick marks
+        % the strings used to label the tick marks and the axes labels
         XTickLabel = get(ax,'XTickLabel');
         YTickLabel = get(ax,'YTickLabel');
         XLabel = get(get(ax,'XLabel'),'String');
         YLabel = get(get(ax,'YLabel'),'String');
+        ax = AX(end,i);
         
         [countfreq, ~] = histFS(Y(:,i),10,groupv,'',ax,clr(unigroup)); %'br'
         
