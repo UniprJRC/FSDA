@@ -4,7 +4,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %<a href="matlab: docsearchFS('mcd')">Link to the help function</a>
 %
 %  Required input arguments:
-%kste
+%
 %    Y: Data matrix containing n observations on v variables.
 %       Rows of Y represent observations, and columns represent variables.
 %       Missing values (NaN's) and infinite values (Inf's) are allowed,
@@ -990,7 +990,7 @@ plo=options.plots;
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
     
     laby='Raw MCD Mahalanobis distances';
-    malindexplot(RAW.md,v,'conflev',conflev,'laby',laby,'numlab',RAW.outliers);
+    malindexplot(RAW.md,v,'conflev',conflev,'laby',laby,'numlab',RAW.outliers,'tag','rawmcd');
     
     figure('Tag','pl_spm_outliers');
     group=ones(n,1);
@@ -1001,7 +1001,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
     set(gcf,'Name',' Raw MCD: scatter plot matrix with outliers highlighted');
     
     laby='Reweighted MCD Mahalanobis distances';
-    malindexplot(REW.md,v,'conflev',conflev,'laby',laby,'numlab',REW.outliers);
+    malindexplot(REW.md,v,'conflev',conflev,'laby',laby,'numlab',REW.outliers,'tag','rewmcd');
     
     figure('Tag','pl_spm_outliers');
     group=ones(n,1);
