@@ -237,7 +237,7 @@ function malindexplot(md,v,varargin)
 
 
 
-%% Initialization
+%% Beginning of code
 
 if nargin<1
         error('FSDA:malindexplot:missingInputs','To run this function a vector of Mahalanobis distances has to be supplied')
@@ -313,9 +313,12 @@ else
     end
 end
 
+Tag=options.tag;
+
 % Create the figure that will host the malindexplot
 hfig = figure('Name', 'Residual plot', 'NumberTitle', 'off',...
-    'Tag','pl_malindex');
+    'Tag',Tag);
+
 
 % Get figure's axis
 afig = axes('Parent',hfig);
@@ -494,8 +497,10 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     else
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     end
-    
-    sele=[sele 'Tag' {options.tag}];
+ 
+    % Adding the instruction is necessary to make sure that the selection
+    % is done in the  current plot
+     sele=[sele 'Tag' {Tag}];
     
     
     % Create the labels
@@ -546,10 +551,10 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         end
         
         % call to selectdataFS
-        disp('Select a region to brush in the index plot of residuals');
+        disp('Select a region to brush in the index plot of Mahalanobis distances');
         pl = selectdataFS(sele{:});
         
-        % exit if the resfwdplot figure was closed before selection
+        % exit if the malfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)
             return
         end
