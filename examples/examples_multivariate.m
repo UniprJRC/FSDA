@@ -594,7 +594,7 @@ h2=subplot(2,1,2);
 malindexplot(outMM,v,'h',h2,'conflev',conflev);
 ylabel('MM estimator')
 
-%% SB: (Swiss banknotes) Forward EDA minMD
+%% SB: (Swiss banknotes) spmplot of the two groups
 clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
