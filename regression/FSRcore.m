@@ -124,9 +124,11 @@ function [out]=FSRcore(INP,model,options)
 %
 % Output:
 %
-%  out :     A structure containing the following fields
-% out.ListOut=  k x 1 vector containing the list of the units declared as
-%               outliers or NaN if the sample is homogeneous
+%     out :     A structure containing the following fields
+% out.ListOut  =  k x 1 vector containing the list of the units declared as
+%                 outliers or NaN if the sample is homogeneous.
+% out.outliers =  out.ListOut. This field is added for homogeneity with the
+%                 other robust estimators.  
 % out.beta   =  p-by-1 vector containing the estimated regression
 %               parameter in step n-k. Depending on the string 'model',
 %               beta refers to OLS coefficents, GLS coefficients or Bayes
@@ -1303,7 +1305,9 @@ end
 
 %% Structure returned by function FSR
 out=struct;
-out.ListOut=ListOut;
+out.ListOut  = ListOut;
+out.outliers = ListOut;
+
 
 % If you wish that the output also contains the list of units not declared
 % as outliers, please uncomment the two following lines.

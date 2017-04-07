@@ -93,6 +93,13 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               Default is 0, i.e. no saving is done.
 %               Example - 'yxsave',1 
 %               Data Types - double
+%       msg    :  Level of output to display. Scalar. It controls whether
+%                 to display or not messages on the screen
+%                 If msg==1 (default) messages are displayed on the screen about
+%                   step in which signal took place
+%                 else no message is displayed on the screen.
+%               Example - 'msg',1 
+%               Data Types - double
 %
 %  Output:
 %
@@ -258,7 +265,7 @@ options=struct('intercept',1,'InitialEst','','Snsamp',Snsampdef,'Srefsteps',Sref
     'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
     'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam','','nocheck',0,'eff',0.95,'effshape',0,...
-    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'yxsave',0);
+    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'yxsave',0,'msg',1);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -307,6 +314,7 @@ if isempty(InitialEst)
     rhofunc=options.Srhofunc;           % rho function which must be used
     rhofuncparam=options.Srhofuncparam;    % eventual additional parameters associated to the rho function
     
+    msg=options.msg;
     
     % first compute S-estimator with a fixed breakdown point
     
@@ -316,14 +324,14 @@ if isempty(InitialEst)
         [Sresult , C] = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
-            'nocheck',1);
+            'nocheck',1,'msg',msg);
 
         varargout = {C};
     else
         Sresult = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
-            'nocheck',1);
+            'nocheck',1,'msg',msg);
     end
     
     bs = Sresult.beta;
@@ -353,7 +361,7 @@ plots=options.plots;
 conflev=options.conflev;
 
 outIRW = MMregcore(y,X,bs,ss,'eff',eff,'effshape',effshape,...
-    'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',plots,'nocheck',1);
+    'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',plots,'nocheck',1,'msg',msg);
 
 
 out = struct;

@@ -214,12 +214,13 @@ function [out]=FSR(y,X,varargin)
 %
 %         out:   structure which contains the following fields
 %
-% out.ListOut=  k x 1 vector containing the list of the units declared as
-%               outliers or NaN if the sample is homogeneous
+% out.ListOut  = k x 1 vector containing the list of the units declared as
+%                outliers or NaN if the sample is homogeneous
+% out.outliers = out.ListOut. This field is added for homogeneity with the
+%                other robust estimators.  
 % out.beta   =  p-by-1 vector containing the estimated regression
 %               parameters (in step n-k).
-% out.scale  = scalar containing the estimate of the scale
-%                       (sigma). 
+% out.scale  =  scalar containing the estimate of the scale (sigma). 
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
@@ -463,8 +464,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
             disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
-            out.ListOut=setdiff(seq,mdr);
-            
+            out.ListOut  = setdiff(seq,mdr);
         else
             disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point or use option bsbmfullrank=0 ')
             
@@ -513,7 +513,7 @@ else % initial subset is not supplied by the user
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
                 
-                out.ListOut=setdiff(seq,mdr);
+                out.ListOut = setdiff(seq,mdr);
                 
                 return
             elseif isnan(mdr(1,1))

@@ -24,7 +24,7 @@
     [outFS]=FSR(y,X,'plots',2);
     %The envelopes based on all the observations show that in the central part of the search the observed curve is well beyond the extreme thresholds. More precisely, the message inside the graph informs that the signal took place in step 81 because the value of minimum deletion residual in this step was greater than 99.999% threshold.
     %Once a signal takes place the envelopes are resuperimposed until a stopping rule is fulfilled
-    %The procedure of resuperimposing envelopes in this case stops when n = 85, the first time in which we have a value of rmin(m) for n&gt;=m†-1 greater than the 99% threshold. The group can therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+    %The procedure of resuperimposing envelopes in this case stops when n = 85, the first time in which we have a value of rmin(m) for n&gt;=m†-1 greater than the 99% threshold. The group can therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.10 seconds 
 -------------------------
 Signal detection loop
 Tentative signal in central part of the search: step m=81 because
@@ -42,7 +42,7 @@ Final output
 Number of units declared as outliers=16
 Summary of the exceedances
            1          99         999        9999       99999
-           1          17          10           9           6
+           0          17          10           9           6
 
 </pre><img vspace="5" hspace="5" src="images\FSR_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_04.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSR with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Monitor the exceedances from m=60 without showing plots.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -68,13 +68,13 @@ Summary of the exceedances
     p=3;
     X=randn(n,p);
     y=randn(n,1);
-    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.13 seconds 
 -------------------------
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
            1          99         999        9999       99999
-           0           1           0           0           0
+           0           0           0           0           0
 
 </pre><img vspace="5" hspace="5" src="images\FSR_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_06.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of options xlim and ylim (Hawkins data).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('hawkins.txt','hawkins');
@@ -108,14 +108,14 @@ Summary of the exceedances
     % point mass contamination of the first kk units
     X(1:kk,:)=1;
     y(1:kk)=3;
-    [out]=FSR(y,X);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable </span>  </a><span class="example_desc">Vector</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+    [out]=FSR(y,X);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
                values will automatically be excluded from the
-               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>Matrix of explanatory
+               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix of explanatory
                variables (also called 'regressors') of dimension n x (p-1)
                where p denotes the number of explanatory variables
                including the intercept.</p> <p>
@@ -140,12 +140,12 @@ Summary of the exceedances
 </code>,<code> 'bonflev',0.99
 </code>,<code> 'msg',1 
 </code>,<code> 'bsbmfullrank',1 
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If 1, a model with
+</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
                constant term will be fitted (default), if 0, no constant
                term will be included.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that have determined the least
-                 trimmed squares estimator</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>h is an integer
+                 trimmed squares estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>h is an integer
                  greater or equal than p but smaller then n. Generally if
                  the purpose is outlier detection h=[0.5*(n+p+1)] (default
                  value). h can be smaller than this threshold if the
@@ -154,13 +154,13 @@ Summary of the exceedances
                  initialize the search.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0,75) 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find the
-                 robust estimator</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be extracted.</p> <p>
+                 robust estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be extracted.</p> <p>
                  They will be (n choose p).</p> <p>
                  If the number of all possible subset is &lt;1000 the
                  default is to extract all subsets otherwise just 1000.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initlal
-                 subset to initialize the search</span></a><span class="example_desc">scalar,  vector | structure</span></span></h3><div class="collapse">	<p><p>lms specifies the criterion to use to find the initlal
+                 subset to initialize the search.</span></a><span class="example_desc">scalar,  vector | structure.</span></span></h3><div class="collapse">	<p><p>lms specifies the criterion to use to find the initlal
                  subset to initialize the search (LMS, LTS with
                  concentration steps, LTS without concentration steps
                  or subset supplied directly by the user).</p> <p>
@@ -187,7 +187,7 @@ Summary of the exceedances
                  origin with just one explanatory variable, if the user
                  wants to initialize the search with unit 3 then
                  lms=struct;</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bsb</code></td><td><p>3;</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If plots=1 (default) the plot of minimum deletion
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1 (default) the plot of minimum deletion
                  residual with envelopes based on n observations and the
                  scatterplot matrix with the outliers highlighted is
                  produced.</p> <p>
@@ -195,18 +195,18 @@ Summary of the exceedances
                  plots based on envelope superimposition.</p> <p>
                  Else no plot is produced.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>It specifies the initial subset size to start
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the initial subset size to start
                  monitoring exceedances of minimum deletion residual, if
                  init is not specified it set equal to:</p> <p>
                    p+1, if the sample size is smaller than 40;</p> <p>
                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
                  matrix y and matrix X. Notice that y and X are left
                  unchanged. In other words the additional column of ones
                  for the intercept is not added. As default nocheck=0.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>This option adds
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds
                  one or more least squares lines, based on
                  SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.</p> <p>
                  bivarfit = ''
@@ -226,7 +226,7 @@ Summary of the exceedances
                    index 'i' equal to 1, 2, 3 etc. Again, useful in case
                    of mixtures.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bivarfit',2 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_multivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_multivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>multivarfit</code> &#8212;Superimpose multivariate least square lines</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_multivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_multivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>multivarfit</code> &#8212;Superimpose multivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on
                  MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.</p> <p>
                  multivarfit = ''
                    is the default: no line is fitted.</p> <p>
@@ -243,28 +243,28 @@ Summary of the exceedances
                    line based on the group of unselected observations
                    (i.e. the normal units).</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'multivarfit','1' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labeladd" class="clearfix"></div><h3 id="input_argument_namevalue_labeladd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labeladd</code> &#8212;Add outlier labels in plot</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>If this option is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labeladd" class="clearfix"></div><h3 id="input_argument_namevalue_labeladd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labeladd</code> &#8212;Add outlier labels in plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>If this option is
                  '1',  we label the outliers with the
                  unit row index in matrices X and y. The default value is
                  labeladd='', i.e. no label is added.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labeladd','1' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Add variable labels in plot</span></a><span class="example_desc">cell array of strings</span></span></h3><div class="collapse">	<p>Cell
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Add variable labels in plot.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>Cell
                  array of strings of length p containing the labels of
                  the variables of the regression dataset. If it is empty
                  (default) the sequence X1, ..., Xp will be created
                  automatically
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'NameVar1','NameVar2'} 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;Add response label</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p>String containing the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;Add response label.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>String containing the
                  label of the response
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','NameOfResponse' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p>Vector with two elements controlling minimum and maximum
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Vector with two elements controlling minimum and maximum
                  on the y axis. Default value is '' (automatic scale)
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim','[0,10]' sets the minim value to 0 and the
-</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlim" class="clearfix"></div><h3 id="input_argument_namevalue_xlim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p>Vector with two elements
+</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlim" class="clearfix"></div><h3 id="input_argument_namevalue_xlim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Vector with two elements
                minimum and maximum on the x axis. Default value is ''
                (automatic scale)
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlim','[0,10]' sets the minim value to 0 and the
-</code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Option to be
+</code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option to be
                 used if the distribution of the data is
                  strongly non normal and, thus, the general signal
                  detection rule based on consecutive exceedances cannot be
@@ -281,13 +281,13 @@ Summary of the exceedances
                  Default value is '', which means to rely on general rules
                  based on consecutive exceedances.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bonflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>It controls whether
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It controls whether
                  to display or not messages on the screen
                  If msg==1 (default) messages are displayed on the screen about
                    step in which signal took place
                  else no message is displayed on the screen.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;Dealing with singluar X matrix</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>This option tells
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;Dealing with singluar X matrix.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This option tells
                  how to behave in case subset at step m
                  (say bsbm) produces a non singular X. In other words,
                  this options controls what to do when rank(X(bsbm,:)) is
@@ -299,9 +299,9 @@ Summary of the exceedances
                  found in the previous step.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbmfullrank',1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ListOut</code></td><td><p>k x 1 vector containing the list of the units declared as
-               outliers or NaN if the sample is homogeneous</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the estimated regression
-               parameters (in step n-k).</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar containing the estimate of the scale
-                       (sigma).</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p>(n-init) x 2 matrix
+                outliers or NaN if the sample is homogeneous</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>out.ListOut. This field is added for homogeneity with the
+                other robust estimators.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the estimated regression
+               parameters (in step n-k).</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar containing the estimate of the scale (sigma).</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p>(n-init) x 2 matrix
                1st col = fwd search index
                2nd col = value of minimum deletion residual in each step
                of the fwd search</p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 matrix which contains the unit(s) included

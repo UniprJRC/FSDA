@@ -223,7 +223,7 @@ rhofuncdef='bisquare';
 options=struct('refsteps',refstepsdef,'reftol',reftoldef,...
     'eff',effdef,'effshape',effshapedef,'conflev',0.975,...
     'rhofunc',rhofuncdef,'rhofuncparam','',...
-    'plots',0,'nocheck',0,'yxsave',0,'intercept',1);
+    'plots',0,'nocheck',0,'yxsave',0,'intercept',1,'msg',1);
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -247,8 +247,9 @@ eff     = options.eff;      % nominal efficiency
 effshape= options.effshape; % nominal efficiency refers to shape or location
 refsteps= options.refsteps; % maximum refining iterations
 reftol  = options.reftol;   % tolerance for refining iterations covergence
-rhofunc = options.rhofunc;    % String which specifies the function to use to weight the residuals
-
+rhofunc = options.rhofunc;  % String which specifies the function to use to weight the residuals
+msg     = options.msg;      %#ok<NASGU>  msg option may be used in the future
+  
 psifunc=struct;
 
 if strcmp(rhofunc,'bisquare')
