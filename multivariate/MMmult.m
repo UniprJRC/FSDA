@@ -233,14 +233,15 @@ function [out , varargout] = MMmult(Y,varargin)
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
-Y = chkinputM(Y,nnargin,vvarargin);
+[Y,n,v] = chkinputM(Y,nnargin,vvarargin);
 
 % default values for the initial S estimate:
 
 % default value of break down point
 Sbdpdef=0.5;
 % default values of subsamples to extract
-Snsampdef=20;
+ncomb=bc(n,v+1);
+Snsampdef=min(1000,ncomb);
 % default value of number of refining iterations (C steps) for each extracted subset
 Srefstepsdef=3;
 % default value of tolerance for the refining steps convergence for  each extracted subset
