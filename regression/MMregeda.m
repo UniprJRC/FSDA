@@ -1,5 +1,6 @@
 function [out , varargout] = MMregeda(y,X,varargin)
-%MMreg computes MM estimator of regression coefficients
+%MMregeda computes MM estimator in linear regression for a series of values of efficiency
+%
 %
 %<a href="matlab: docsearchFS('MMregeda')">Link to the help function</a>
 %

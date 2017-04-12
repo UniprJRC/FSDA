@@ -119,7 +119,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               Data Types - double
 %       plots : Plot on the screen. Scalar.
 %               If plots = 1, generates a plot with the robust residuals
-%               against index number. The confidence level used to draw the
+%               for each value of bdp. The confidence level used to draw the
 %               confidence bands for the residuals is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
@@ -136,10 +136,11 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                       (sigma) for each value of bdp. This is the value of the objective function
 %              out.BS = p x 1 vector containing the units forming best subset
 %                       associated with S estimate of regression coefficient.
-%              out.RES= n x length(bdp) vector containing the estimates of the robust
+%              out.RES= n x length(bdp) matrix containing the robust
 %                       scaled residuals for each value of bdp
-%        out.Outliers = this output is present only if conflev has been
-%                       specified. It is a Booelan matrix containing the list of
+%         out.Weights = n x length(bdp) vector containing the estimates of
+%                       the weights for each value of bdp
+%        out.Outliers = Boolean matrix containing the list of
 %                       the units declared as outliers for each value of bdp using confidence
 %                       level specified in input scalar conflev
 %         out.conflev = confidence level which is used to declare outliers.
@@ -148,8 +149,6 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %         out.Singsub = Number of subsets wihtout full rank. Notice that
 %                       out.singsub(bdp(jj)) > 0.1*(number of subsamples) produces a
 %                       warning
-%         out.Weights = n x length(bdp) vector containing the estimates of
-%                       the weights for each value of bdp
 %           out.class = 'Seda'
 %         out.rhofunc = string identifying the rho function which has been
 %                       used
