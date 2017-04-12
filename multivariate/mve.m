@@ -172,7 +172,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %
 %
 % The mve method is intended for continuous variables, and assumes that
-% the number of observations n is at least 5 times the number of variables v.%
+% the number of observations n is at least 5 times the number of variables v.
 %
 % See also: mcd.m
 %
