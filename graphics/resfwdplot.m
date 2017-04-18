@@ -718,7 +718,15 @@ selmax=max(residuals,[],2);
 selmin=min(residuals,[],2);
 
 % default values for fthresh, bthresh, bstyle, labx and laby.
-labx= 'Subset size m';
+if strcmp(out.class,'Seda')
+    labx= 'Break down point';
+elseif strcmp(out.class,'MMeda')
+    labx= 'Efficiency';
+else
+    labx= 'Subset size m';
+end
+
+
 if min(min(residuals))<0
     fthresh=2.5;
     laby='Scaled residuals';
@@ -1083,7 +1091,7 @@ if ~isempty(options.fground)
         % which have to be taken
         % For FS indsteps is simply
         % indsteps=steps-steps(1)+1; however we want to write it in very
-        % general terms
+        % general terms to cope with S and MM
         indsteps=zeros(lsteps,1);
         for i=1:lsteps
             indsteps(i)=find(x==steps(i));

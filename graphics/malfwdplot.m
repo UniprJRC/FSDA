@@ -5,9 +5,9 @@ function plotopt=malfwdplot(out,varargin)
 %
 %  Required input arguments:
 %
-%  out :  Structure containing monitoring of Mahalanobis distance. Structure. 
+%  out :  Structure containing monitoring of Mahalanobis distance. Structure.
 %               Structure containing the following fields.
-%       out.MAL =   matrix containing the Mahalanobis distances monitored in each
+%       out.MAL =   matrix containing the squared Mahalanobis distances monitored in each
 %               step of the forward search. Every row is associated with a
 %               unit (row of data matrix Y).
 %               This matrix can be created using function FSMeda
@@ -22,7 +22,7 @@ function plotopt=malfwdplot(out,varargin)
 %  Optional input arguments:
 %           standard : appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. Structure. 
+%                   style, color of the lines, etc. Structure.
 %                   Structure standard contains the following fields:
 %                   standard.SizeAxesNum = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
@@ -64,14 +64,14 @@ function plotopt=malfwdplot(out,varargin)
 %                   standard.LineStyle={'-'}
 %
 %                   Example - 'standard.LineWidth','1'
-%                   Data Types - struct 
+%                   Data Types - struct
 %         fground : trajectories in foregroud.
 %                   Structure. Structure which controls which trajectories
 %                   are highlighted and how they are plotted to be
 %                   distinguishable from the others.
 %                   It is possible to control the label, the width, the
 %                   color, the line type and the marker of the highlighted
-%                   units. 
+%                   units.
 %                   Structure fground contains the following fields:
 %                   fground.fthresh = (alternative to funit) numeric vector
 %                       of length 1 or 2 which specifies the criterion to
@@ -121,9 +121,9 @@ function plotopt=malfwdplot(out,varargin)
 %                   label is inserted into the plot.
 %
 %                   Example - 'fground.LineWidth','1'
-%                   Data Types - struct 
+%                   Data Types - struct
 %         bground : characterictics of the trajectories in background.
-%                   Structure. 
+%                   Structure.
 %                    Structure which specifies the trajectories in background,
 %                   i.e. the trajectories corresponding to "unimmportant"
 %                   units in the central part of the data. The structure
@@ -158,19 +158,19 @@ function plotopt=malfwdplot(out,varargin)
 %                       When n<=100 and bthresh = -Inf option bstyle is
 %                       ignored.
 %                   Example - 'bground.bstyle','faint'
-%                   Data Types - struct 
+%                   Data Types - struct
 %                   Remark: bground='' is equivalent to bground.bthresh=-Inf
 %                   that is all trajectories are considered relevant.
 %
 %       tag     :   Personalized plot tag. String. String which identifies the
 %                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_mal'. 
+%                   default is to use tag 'pl_mal'.
 %                   Note that if the program finds a plot which has a tag
 %                   equal to the one specified by the user, then the output
 %                   of the new plot overwrites the existing one in the same
 %                   window else a new window is created.
 %                   Example - 'tag','myplot'
-%                   Data Types - char 
+%                   Data Types - char
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. The default is datatooltip=''.
 %                   If datatooltip = 1, the user can select with the
@@ -179,20 +179,20 @@ function plotopt=malfwdplot(out,varargin)
 %                   associated label and the step of the search in which
 %                   the unit enters the subset.
 %                   If datatooltip is a structure it may contain the
-%                   following the fields 
+%                   following the fields
 %                   datatooltip.DisplayStyle = Determines how the data
 %                       cursor displays. datatip | window.
 %                       - datatip displays data cursor
 %                       information in a small yellow text box attached to a
 %                       black square marker at a data point you interactively
-%                       select. 
+%                       select.
 %                       - window displays data cursor information for the
 %                       data point you interactively select in a floating
 %                       window within the figure.
 %                   datatooltip.SnapToDataVertex=  Specifies whether the
 %                       data cursor snaps to the nearest data value or is
 %                       located at the actual pointer position.  on | off.
-%                       - on data cursor snaps to the nearest data value  
+%                       - on data cursor snaps to the nearest data value
 %                       - off data cursor is located at the actual pointer
 %                       position.
 %                   (see the MATLAB function datacursormode or the examples
@@ -206,7 +206,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       conveniently chosen with our MATLAB class FSColor,
 %                       see documentation).
 %                       Example -
-%                       datatooltip.LineColor=[155/255,190/255,61/255]; 
+%                       datatooltip.LineColor=[155/255,190/255,61/255];
 %                       or using class FScolors:
 %                       datatooltip.LineColor='greenish'
 %                   datatooltip.SubsetLinesColor = highlights the
@@ -214,7 +214,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       that are in the subset at a given step of the
 %                       search. Vector with three elements
 %                       specifying RGB color.
-%                       Example - datatooltip.SubsetLinesColor=[0 0 0]; 
+%                       Example - datatooltip.SubsetLinesColor=[0 0 0];
 %                       or using class FScolors:
 %                       datatooltip.SubsetLinesColor='black'; highlights in
 %                       black the trajectories of the units which are
@@ -234,14 +234,14 @@ function plotopt=malfwdplot(out,varargin)
 %                       converted to blue, i.e. SubsetLinesColor will be
 %                       forced to be [0 0 1].
 %                   Example - 'datatooltip',''
-%                   Data Types - empty value, scalar or struct 
+%                   Data Types - empty value, scalar or struct
 %       label   :   row labels. Cell of strings. Cell containing the labels
 %                   of the units (optional argument used when
 %                   datatooltip=1. If this field is not present labels
 %                   row1, ..., rown will be automatically created and
 %                   included in the pop up datatooltip window).
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell 
+%                   Data Types - cell
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
@@ -279,19 +279,19 @@ function plotopt=malfwdplot(out,varargin)
 %                   - databrush.Label = add labels of brushed units in the
 %                     malfwdplot.
 %                   - databrush.labeladd = add labels of brushed units in spm.
-%                     Character. [] (default) | '1'. 
+%                     Character. [] (default) | '1'.
 %                     If databrush.labeladd='1', we label in the scatter
 %                     plot matrix the units of the last selected group with
 %                     the unit row index in matrices X and y. The default
 %                     value is labeladd='', i.e. no label is added.
 %                   Example - 'databrush',1
-%                   Data Types - single | double | struct 
+%                   Data Types - single | double | struct
 %       nameY   :   cell array of strings of length v containing the labels
 %                   of the variables of the dataset. Cell of strings. If it
 %                   is empty (default) the sequence Y1, ..., Yv will be used
 %                   automatically
 %                   Example - 'nameY',{'var1', var2, 'var3'}
-%                   Data Types - cell of strings 
+%                   Data Types - cell of strings
 %       msg     :   display or save used options. Scalar. Scalar which
 %                   controls whether to display or to save
 %                   as output the options inside structures standard,
@@ -305,8 +305,13 @@ function plotopt=malfwdplot(out,varargin)
 %                   the options which have been used and prints them on the
 %                   screen
 %                   Example - 'msg',1
-%                   Data Types - single or double 
-%
+%                   Data Types - single or double
+%        conflev :  confidence interval for the horizontal bands. Vector.
+%                   It can be a vector of different confidence level values,
+%                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
+%                   the chi^2 distribution.
+%                   Example - 'conflev',0.99
+%                   Data Types - numeric%
 %
 % Output:
 %
@@ -617,7 +622,17 @@ x=(n-nsteps+1):n;
 % selline=  threshold to select the MDs highlighted in the malfwdplot.
 % unselline= to select how to represent the unselected units ('faint' 'hide' 'greish');
 % laby=     label used for the y-axis of the malfwdplot.
-labx='Subset size m';
+if isfield(out,'class')
+    if strcmp(out.class,'Seda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
+        labx= 'Break down point';
+    elseif strcmp(out.class,'MMeda')
+        labx= 'Efficiency';
+    else
+        labx= 'Subset size m';
+    end
+else
+    labx= 'Subset size m';
+end
 
 laby='Mahalanobis distances';
 fthresh=2.5^2;
@@ -627,7 +642,7 @@ if n>100
 else
     bthresh=-inf;
     bstyle='';
-end;
+end
 
 % maximum and minimum MD along the search for each unit
 selmax=max(MDvalues,[],2);
@@ -644,16 +659,17 @@ standarddef = struct(...
 
 % Default options for the trajectories in foreground
 fgrounddef = struct(...
-    'fthresh',fthresh,'funit','','flabstep',x([1 end]),...
+    'fthresh',fthresh,'funit','','flabstep','',...
     'fmark',0,'LineWidth','','Color','','LineStyle','','FontSize',12);
 
 % Default options for the trajectories in background
 bgrounddef=struct('bthresh',bthresh, 'bstyle',bstyle);
 
+conflev='';
 options=struct(...
     'standard',standarddef,'fground',fgrounddef,'bground',bgrounddef,...
     'tag','pl_malfwd','datatooltip',1,'label','','databrush','',...
-    'nameY','','msg','');
+    'nameY','','msg','','conflev',conflev);
 
 
 %% Preliminary checks
@@ -804,7 +820,39 @@ standard=standarddef;
 % extract the vector associated with the subset size (x)
 x=standard.subsize;
 
+
+
+
+% If structure out contains fielname class we check whether input structure
+% out comes from MMeda or Seda
+if any(strcmp(fieldnames(out),'class'))
+    if strcmp(out.class,'MMeda')
+        x=out.eff;
+        out.Un='';
+    elseif strcmp(out.class,'Seda') || strcmp(out.class,'mveeda')
+        x=out.bdp;
+        out.Un='';
+    end
+    
+end
+
 plot1=plot(x,MDvalues,'tag','data_res','LineWidth',standard.LineWidth);
+
+% Make sure that in the case the length of x is not large the labels on the
+% x axis correspond to the values of bdp or of eff
+if length(x)<10
+    if x(end)<x(1)
+        set(gca,'XTick',fliplr(x))
+    else
+        set(gca,'XTick',x)
+    end
+end
+
+if any(strcmp(fieldnames(out),'class'))
+    if strcmp(out.class,'Seda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
+        set(gca,'XDir','reverse')
+    end
+end
 
 % Apply color
 scol=standard.Color;
@@ -887,6 +935,9 @@ if ~isempty(options.fground)
             % before, the steps outside range were not considered
             %steps=steps(steps>=x(1) & steps<=n);
         end
+    else
+        steps=[x(1) x(end)];
+        fground.flabstep=steps;
     end
     
     % fthresh= threshold to define units which have to be displayed in foreground
@@ -933,6 +984,17 @@ if ~isempty(options.fground)
         lsteps=length(steps);
         lall=lunits*lsteps;
         
+        % indsteps = indexes of the columns of the matrix of the
+        % Mahalanobis distances
+        % which have to be taken
+        % For FS indsteps is simply
+        % indsteps=steps-steps(1)+1; however we want to write it in very
+        % general terms to cope with S and MM
+        indsteps=zeros(lsteps,1);
+        for i=1:lsteps
+            indsteps(i)=find(x==steps(i));
+        end
+        
         % HA = the HorizontalAlignment of the labels
         nflabstep = lunits*numel(steps);
         HA = repmat({'center'},nflabstep,1);
@@ -952,10 +1014,19 @@ if ~isempty(options.fground)
         end
         
         % Label the units
+        %         h=text(reshape(repmat(steps,lunits,1),lall,1),...
+        %             reshape(MDvalues(funit,steps-x(1)+1),lall,1),...
+        %             reshape(repmat(strings,1,lsteps),lall,1),...
+        %             'FontSize',fground.FontSize);
+        
+        % Label the units
         h=text(reshape(repmat(steps,lunits,1),lall,1),...
-            reshape(MDvalues(funit,steps-x(1)+1),lall,1),...
+            reshape(MDvalues(funit,indsteps),lall,1),...
             reshape(repmat(strings,1,lsteps),lall,1),...
             'FontSize',fground.FontSize);
+        
+        
+        
         set(h,{'HorizontalAlignment'},HA)
     end
     
@@ -1005,7 +1076,7 @@ if ~isempty(options.bground)
     bthresh=bground.bthresh;
     
     if ~isempty(bthresh) && ischar(bthresh)
-            error('FSDA:malfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
+        error('FSDA:malfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
     else
         if length(bthresh)>1
             units=seq(selmax>bthresh(2) | selmin<bthresh(1));
@@ -1051,6 +1122,31 @@ set(gca,'Position',[0.1 0.1 0.85 0.85])
 plot1=gcf;
 
 Un=out.Un;
+
+if ~isempty(options.conflev)
+    conflev=options.conflev;
+    v=size(out.Loc,2)-1;
+    quant = chi2inv(conflev,v);
+    rangeaxis=axis;
+    V=[rangeaxis(1);rangeaxis(2)];
+    QUANT=[quant;quant];
+    lwdenv=2;
+    numconflev = length(conflev);
+    
+    % set the string legend for the confidence bands
+    legendstring = cell(numconflev,1);
+    legendstring(:) = cellstr('% band');
+    legendstring2 = strcat(num2str(((conflev)*100)'),legendstring);
+    % plot the confidence bands
+    hline = line(V, QUANT,'LineWidth',lwdenv,'Tag','conflevline','color','r');
+    
+    % make the legend for the confidence bands clickable
+    clickableMultiLegend(hline(1:numconflev),legendstring2);
+    
+    % fix the y-axis, otherwise the figure may change if one hides the bands
+    % by clicking on the legend
+    axis(axis);
+end
 
 %% Datatooltip mode (call to function ginputFS)
 % This is to highlight trajectories of unit in the subset at given step
