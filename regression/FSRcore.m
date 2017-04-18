@@ -875,7 +875,9 @@ if signal==1 || signal==2
                     end
                     
                     % add X label again to the last plot
-                    set(gca,'XTickLabel',get(get(figure1,'Children'),'XTick'))
+                    getaxes=get(figure1,'Children');
+                    getaxes=getaxes(end);
+                    set(gca,'XTickLabel',get(getaxes,'XTick'))
                     xlabel('Subset size m');
                     
                     % if jwind=2 than the width of the last plot is enlarged to
