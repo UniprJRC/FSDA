@@ -202,6 +202,31 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
     outMM1=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofunc,'plots',1)
 %}
 
+%{
+    % Comparison between direct call to MMreg and call to Sreg and MMregcore.
+    % In this example two different rho functions are used for S and MM
+    n=30;
+    p=3;
+    randn('state', 16);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    % Two different rho functions are used for S and MM
+    rhofuncS='hyperbolic';
+    rhofuncMM='hampel';
+    % Direct call to MMreg
+    [out]=MMreg(ycont,X,'Srhofunc',rhofuncS,'rhofunc',rhofuncMM,'Snsamp',0);
+
+    % Call to Sreg and then to MMregcore
+    [outS]=Sreg(ycont,X,'rhofunc',rhofuncS,'nsamp',0);
+    outMM=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofuncMM);
+    disp('Difference between direct call to S and the calls to Sreg and MMregcore')
+    max(abs([out.beta-outMM.beta]))
+%}
+
 %% Beginning of code
 
 nnargin = nargin;
@@ -213,9 +238,9 @@ effdef = 0.95;
 % by default the nominal efficiency refers to location efficiency
 effshapedef = 0;
 % default value of number of maximum refining iterations
-refstepsdef = 50;
+refstepsdef = 100;
 % default value of tolerance for the refining steps convergence
-reftoldef = 1e-6;
+reftoldef = 1e-7;
 % rho (psi) function which has to be used to weight the residuals
 rhofuncdef='bisquare';
 

@@ -19,7 +19,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), if 0, no constant
 %               term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 %  InitialEst : starting values of the MM-estimator. [] (default) or structure.
 %               InitialEst must contain the following fields
@@ -28,20 +28,20 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               If InitialEst is empty (default)
 %               program uses S estimators. In this last case it is
 %               possible to specify the options given in function Sreg.
-%               Example - 'InitialEst',[] 
+%               Example - 'InitialEst',[]
 %               Data Types - struct
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
 %               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
 %               Sreftolbestr, Sminsctol, Sbestr.
-%               See function Sreg.m for more details on these options.     
+%               See function Sreg.m for more details on these options.
 %               It is necessary to add to the S options the letter
 %               S at the beginning. For example, if you want to use the
 %               optimal rho function the supplied option is
 %               'Srhofunc','optimal'. For example, if you want to use 3000
 %               subsets, the supplied option is 'Snsamp',3000
-%               Example - 'Snsamp',1000 
+%               Example - 'Snsamp',1000
 %               Data Types - single | double
-%                   
+%
 %
 %               MM options
 %
@@ -52,11 +52,36 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',0.99
 %                 Data Types - double
-%     effshape : location or scale effiicency. dummy scalar. 
-%                If effshape=1 efficiency refers to shape 
+%     effshape : location or scale effiicency. dummy scalar.
+%                If effshape=1 efficiency refers to shape
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
 %                 Data Types - double
+%     rhofunc : rho function. String. String which specifies the rho function which must be used to
+%               weight the residuals. Possible values are
+%               'bisquare'
+%               'optimal'
+%               'hyperbolic'
+%               'hampel'
+%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
+%               See TBrho and TBpsi
+%               'optimal' uses optimal $\rho$ and $\psi$ functions.
+%               See OPTrho and OPTpsi
+%               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
+%               See HYPrho and HYPpsi
+%               'hampel' uses Hampel $\rho$ and $\psi$ functions.
+%               See HArho and HApsi
+%               The default is bisquare
+%                 Example - 'rhofunc','optimal'
+%                 Data Types - char
+% rhofuncparam: Additional parameters for the specified rho function.
+%               Scalar or vector.
+%               For hyperbolic rho function it is possible to set up the
+%               value of k = sup CVC (the default value of k is 4.5).
+%               For Hampel rho function it is possible to define parameters
+%               a, b and c (the default values are a=2, b=4, c=8)
+%                 Example - 'rhofuncparam',5
+%                 Data Types - single | double
 %     refsteps  : Maximum iterations. Scalar.
 %                 Scalar defining maximum number of iterations in the MM
 %                 loop. Default value is 100.
@@ -78,7 +103,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
 %                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot with the robust residuals
@@ -86,29 +111,29 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               confidence bands for the residuals is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
-%                 Example - 'plots',0 
+%                 Example - 'plots',0
 %                 Data Types - single | double
 %       yxsave : the response vector y and data matrix X are saved into the output
 %                structure out. Scalar.
 %               Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1 
+%               Example - 'yxsave',1
 %               Data Types - double
 %       msg    :  Level of output to display. Scalar. It controls whether
 %                 to display or not messages on the screen
 %                 If msg==1 (default) messages are displayed on the screen about
 %                   step in which signal took place
 %                 else no message is displayed on the screen.
-%               Example - 'msg',1 
+%               Example - 'msg',1
 %               Data Types - double
 %
 %  Output:
 %
 %
 %  out :     A structure containing the following fields
-%       out.beta        =   p x 1 vector containing MM estimate of 
+%       out.beta        =   p x 1 vector containing MM estimate of
 %                           regression coefficients
 %       out.auxscale    =   scalar, S estimate of the scale (or supplied
-%                           external estimate of scale, if option InitialEst  
+%                           external estimate of scale, if option InitialEst
 %                           is not empty)
 %       out.residuals	=   n x 1 vector containing standardized MM
 %                           residuals
@@ -118,9 +143,9 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                           coefficients (or supplied initial external
 %                           estimate of regression coefficients, if option
 %                           InitialEst is not empty)
-%       out.Ssingsub    =   Number of subsets without full rank in the S 
-%                           preliminary part. Notice that 
-%                           out.singsub > 0.1*(number of subsamples) 
+%       out.Ssingsub    =   Number of subsets without full rank in the S
+%                           preliminary part. Notice that
+%                           out.singsub > 0.1*(number of subsamples)
 %                           produces a warning
 %       out.outliers    :   1 x k vectors containing the outliers which
 %                           have been found
@@ -133,13 +158,13 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                           used. For hyperbolic rho function the value of
 %                           k =sup CVC. For Hampel rho function the parameters
 %                           a, b and c
-%            out.y      =   response vector Y. The field is present if option 
+%            out.y      =   response vector Y. The field is present if option
 %                           yxsave is set to 1.
-%            out.X      =   data matrix X. The field is present if option 
+%            out.X      =   data matrix X. The field is present if option
 %                           yxsave is set to 1.
 %  Optional Output:
 %
-%            C        : matrix containing the indices of the subsamples 
+%            C        : matrix containing the indices of the subsamples
 %                       extracted for computing the estimate (the so called
 %                       elemental sets).
 %
@@ -187,7 +212,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 
 %{
     % MMreg with optional input arguments.
-    % MMreg using the hyperbolic rho function 
+    % MMreg using the hyperbolic rho function
     % Run this code to see the output shown in the help file
     n=200;
     p=3;
@@ -216,21 +241,44 @@ function [out , varargout] = MMreg(y,X,varargin)
 
     % Define nominal confidence level
     conflev=[0.99,1-0.01/length(y)];
-    % Define number of subsets 
+    % Define number of subsets
     nsamp=3000;
     % Define the main title of the plots
     titl='';
 
-    % MM  estimators 
+    % MM  estimators
     [outMM]=MMreg(y,X,'conflev',conflev(1));
-    laby='Scaled MM residuals'; 
+    laby='Scaled MM residuals';
     resindexplot(outMM.residuals,'title',titl,'laby',laby,'numlab','','conflev',conflev)
-    % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level. 
+    % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level.
     % By simply changing the seed to 543 (state=543), using a Bonferroni size
     %of 1%, no unit is declared as outlier and just half of them using the 99%
     %band.
 %}
 
+%{
+    % Comparison between direct call to MMreg and call to Sreg and MMregcore.
+    n=30;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    % Two different rho functions are used for S and MM
+    rhofuncS='hyperbolic';
+    rhofuncMM='hampel';
+    % Direct call to MMreg
+    [out]=MMreg(ycont,X,'Srhofunc',rhofuncS,'rhofunc',rhofuncMM,'Snsamp',0);
+
+    % Call to Sreg and then to MMregcore
+    [outS]=Sreg(ycont,X,'rhofunc',rhofuncS,'nsamp',0);
+    outMM=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofuncMM);
+    disp('Difference between direct call to S and the calls to Sreg and MMregcore')
+    max(abs([out.beta-outMM.beta]))
+%}
 
 %% Input parameters checking
 nnargin=nargin;
@@ -256,18 +304,19 @@ Sbestrdef=5;
 Srefstepsbestrdef=50;
 % default value of tolerance for the refining steps convergence for best subsets
 Sreftolbestrdef=1e-8;
-% default value of tolerance for finding the minimum value of the scale 
+% default value of tolerance for finding the minimum value of the scale
 % both for each extracted subset and each of the best subsets
 Sminsctoldef=1e-7;
 
 % rho (psi) function which has to be used to weight the residuals
 Srhofuncdef='bisquare';
-
+rhofuncdef=Srhofuncdef;
 
 options=struct('intercept',1,'InitialEst','','Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
     'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
     'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam','','nocheck',0,'eff',0.95,'effshape',0,...
+    'rhofunc',rhofuncdef,'rhofuncparam','',...
     'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'yxsave',0,'msg',1);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -304,18 +353,22 @@ end
 InitialEst=options.InitialEst;
 
 if isempty(InitialEst)
-
+    
     bdp = options.Sbdp;              % break down point
     refsteps = options.Srefsteps;    % refining steps
     bestr = options.Sbestr;          % best locs for refining steps till convergence
     nsamp = options.Snsamp;          % subsamples to extract
     reftol = options.Sreftol;        % tolerance for refining steps
     minsctol = options.Sminsctol;    % tolerance for finding minimum value of the scale for each subset
-    refstepsbestr=options.Srefstepsbestr;  % refining steps for the best subsets 
+    refstepsbestr=options.Srefstepsbestr;  % refining steps for the best subsets
     reftolbestr=options.Sreftolbestr;      % tolerance for refining steps for the best subsets
     
-    rhofunc=options.Srhofunc;           % rho function which must be used
-    rhofuncparam=options.Srhofuncparam;    % eventual additional parameters associated to the rho function
+    rhofuncS=options.Srhofunc;              % rho function which must be used for S estimator
+    rhofuncparamS=options.Srhofuncparam;    % eventual additional parameters associated to the rho function for S estimator
+    
+    rhofuncMM=options.rhofunc;              % rho function which must be used for MM loop
+    rhofuncparamMM=options.rhofuncparam;    % eventual additional parameters associated to the rho function for MM loop
+    
     
     msg=options.msg;
     
@@ -326,14 +379,14 @@ if isempty(InitialEst)
     if nargout==2
         [Sresult , C] = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
-            'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
+            'reftolbestr',reftolbestr,'rhofunc',rhofuncS,'rhofuncparam',rhofuncparamS,...
             'nocheck',1,'msg',msg);
-
+        
         varargout = {C};
     else
         Sresult = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
-            'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
+            'reftolbestr',reftolbestr,'rhofunc',rhofuncS,'rhofuncparam',rhofuncparamS,...
             'nocheck',1,'msg',msg);
     end
     
@@ -364,6 +417,7 @@ plots=options.plots;
 conflev=options.conflev;
 
 outIRW = MMregcore(y,X,bs,ss,'eff',eff,'effshape',effshape,...
+    'rhofunc',rhofuncMM,'rhofuncparam',rhofuncparamMM,...
     'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',plots,'nocheck',1,'msg',msg);
 
 
@@ -377,14 +431,33 @@ out.weights=outIRW.weights;
 out.outliers=outIRW.outliers;
 out.conflev=conflev;
 out.class='MM';
-out.rhofunc=rhofunc;
-% In case of Hampel or hyperbolic tangent estimator store the additional
-% parameters which have been used
-% For Hampel store a vector of length 3 containing parameters a, b and c
-% For hyperbolic store the value of k= sup CVC
-if exist('rhofuncparam','var')
-    out.rhofuncparam=rhofuncparam;
+if isequal(rhofuncS,rhofuncMM)
+    out.rhofunc=rhofuncS;
+    % In case of Hampel or hyperbolic tangent estimator store the additional
+    % parameters which have been used
+    % For Hampel store a vector of length 3 containing parameters a, b and c
+    % For hyperbolic store the value of k= sup CVC
+    if isfield(Sresult, 'rhofuncparam')
+        out.rhofuncparam=Sresult.rhofuncparam;
+    end
+else
+    out.rhofuncS=rhofuncS;
+    out.rhofuncMM=rhofuncMM;
+    % In case of Hampel or hyperbolic tangent estimator store the additional
+    % parameters which have been used
+    % For Hampel store a vector of length 3 containing parameters a, b and c
+    % For hyperbolic store the value of k= sup CVC
+    if isfield(Sresult, 'rhofuncparam')
+        out.rhofuncparamMM=rhofuncparamS;
+    end
+    
+    if isfield(outIRW,'rhofuncparam')
+        out.rhofuncparamMM=outIRW.rhofuncparam;
+    end
+    
 end
+
+
 
 if options.yxsave
     if options.intercept==1
