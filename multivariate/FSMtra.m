@@ -197,6 +197,7 @@ function out = FSMtra(Y,varargin)
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
+% out.class  =  'FSMtra';
 %
 % See also FSMmmd.m, FSM.m
 %
@@ -1295,7 +1296,8 @@ else
     out.LIKrat=LIKrat;
     % Un = Units entering the subset
     out.Un=Un;
-    
+
+    out.class  =  'FSMtra';
 end
 
 

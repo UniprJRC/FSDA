@@ -33,18 +33,13 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %                 Example - 'exact',0 
 %                 Data Types - double
 %   scaled:  It indicates how to compute the envelopes. Scalar. 
-%               If scaled=1 the envelopes are produced for
+%               If scaled>0 the envelopes are produced for
 %               scaled Mahalanobis distances (no consistency factor is
 %               applied) else the traditional consistency factor is applied
 %               (this is the default)
 %                 Example - 'scaled',0 
 %                 Data Types - double
 %
-% Subfunctions.
-%   invcdff.
-%
-% Other function dependencies:
-%   none.
 %
 % Output:
 %
@@ -231,7 +226,7 @@ end
 
 % Compute Tallis correction factor based on the chi^2 distribution
 % mm/n is the percentage of observations inside subset if scaled is not equal to 1.
-if scaled==1
+if scaled > 0
     corr=1;
 else
     a=chi2inv(mm/n,v);

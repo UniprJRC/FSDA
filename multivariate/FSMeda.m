@@ -13,7 +13,7 @@ function out = FSMeda(Y,bsb,varargin)
 %               or infinite values will automatically be excluded from the
 %               computations.
 %               Data Types - single | double
-% bsb :         Units forming subset. Vector. List of units forming the initial subset. 
+% bsb :         Units forming subset. Vector. List of units forming the initial subset.
 %               If bsb=0 (default) then the procedure starts with v units randomly
 %               chosen else if bsb is not 0 the search will start with
 %               m0=length(bsb).
@@ -21,10 +21,10 @@ function out = FSMeda(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
-% init :       Point where to start monitoring required diagnostics. Scalar. 
+% init :       Point where to start monitoring required diagnostics. Scalar.
 %              Note that if bsb is supplied, init>=length(bsb). If init is not
 %              specified it will be set equal to floor(n*0.6).
-%                 Example - 'init',50 
+%                 Example - 'init',50
 %                 Data Types - double
 % plots :    It specify whether it is necessary to produce the plots of the
 %               monitoring of minMD.
@@ -38,12 +38,17 @@ function out = FSMeda(Y,bsb,varargin)
 %               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen.
-%                 Example - 'msg',0 
+%                 Example - 'msg',0
 %                 Data Types - double
 % scaled:     It controls whether to monitor scaled Mahalanobis distances.
-%               Scalar. If scaled=1 scaled Mahalanobis distances are
-%               monitored during the search.
-%                 Example - 'scaled',0 
+%               Scalar. 
+%               If scaled=1  Mahalanobis distances 
+%               monitored during the search are scaled using ratio of determinant.
+%               If scaled=2  Mahalanobis distances 
+%               monitored during the search are scaled using asymptotic consistency factor.
+%               The default value is 0 that is Mahalanobis distances are
+%               not scaled.
+%                 Example - 'scaled',0
 %                 Data Types - double
 % nocheck     : It controls whether to perform checks on matrix Y.Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
@@ -65,56 +70,57 @@ function out = FSMeda(Y,bsb,varargin)
 %         out:   structure which contains the following fields
 %
 %   out.MAL=        n x (n-init+1) = matrix containing the monitoring of
-%               Mahalanobis distances. 
-%               1st row = distance for first unit; 
-%               ...; 
+%               Mahalanobis distances.
+%               1st row = distance for first unit;
+%               ...;
 %               nth row = distance for nth unit.
 %    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
 %               to the subset at each step of the forward search.
 %               1st col = indexes of the units forming subset in the
-%               initial step; 
-%               ...; 
+%               initial step;
+%               ...;
 %               last column = units forming subset in the final step (all
 %               units).
 %   out.mmd=        n-init x 3 matrix which contains the monitoring of minimum
 %               MD or (m+1)th ordered MD  at each step of
 %               the forward search.
-%               1st col = fwd search index (from init to n-1); 
-%               2nd col = minimum MD; 
+%               1st col = fwd search index (from init to n-1);
+%               2nd col = minimum MD;
 %               3rd col = (m+1)th-ordered MD.
 %   out.msr=        n-init+1 x 3 = matrix which contains the monitoring of
-%               maximum MD or mth ordered MD. 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = maximum MD; 
+%               maximum MD or mth ordered MD.
+%               1st col = fwd search index (from init to n);
+%               2nd col = maximum MD;
 %               3rd col = mth-ordered MD.
 %    out.gap=       n-init+1 x 3 = matrix which contains the monitoring of
 %               the gap (difference between minMD outside subset and max.
-%               inside). 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = min MD - max MD; 
+%               inside).
+%               1st col = fwd search index (from init to n);
+%               2nd col = min MD - max MD;
 %               3rd col = (m+1)th ordered MD - mth ordered distance.
-%   out.loc=        (n-init+1) x (v+1) matrix containing the monitoring of
+%   out.Loc=        (n-init+1) x (v+1) matrix containing the monitoring of
 %               estimated of the means for each variable in each step of
 %               the forward search.
 %  out.S2cov=       (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
 %               of the elements of the covariance matrix in each step
-%               of the forward search. 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = monitoring of S(1,1); 
-%               3rd col = monitoring of S(1,2); 
-%               ...; 
+%               of the forward search.
+%               1st col = fwd search index (from init to n);
+%               2nd col = monitoring of S(1,1);
+%               3rd col = monitoring of S(1,2);
+%               ...;
 %               end col = monitoring of S(v,v).
 %  out.detS=        (n-init+1) x (2) matrix containing the monitoring of
 %               the determinant of the covariance matrix
 %               in each step of the forward search.
 %    out.Un=        (n-init) x 11 Matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search. 
+%               included in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
 %     out.Y=        Original data input matrix
+% out.class=    'FSMeda'
 %
 % See also FSMmmd.m, FSM.m
 %
@@ -468,6 +474,7 @@ else
     
     
     if scaled==1
+        % Scale distances with ratio of determinants
         detcovY=(detcovYb^(1/(2*v)));
         % Rescale MD
         MAL=MAL/detcovY;
@@ -475,6 +482,15 @@ else
         mmd(:,2:3)=mmd(:,2:3)/detcovY;
         % Rescale max MD
         msr(:,2:3)=msr(:,2:3)/detcovY;
+    elseif scaled==2
+        % Scale distances with asymptotic consistency factor
+        mm=init1:n;
+        a=chi2inv(mm/n,v);
+        corr=sqrt((n./mm).*(chi2cdf(a,v+2)));
+        MAL=bsxfun(@times,MAL,corr);
+        mmd(:,2:3)=bsxfun(@times,mmd(:,2:3),corr(2:end)');
+        % Rescale max MD
+        msr(:,2:3)=bsxfun(@times,msr(:,2:3),corr');
         
     end
     
@@ -524,7 +540,7 @@ else
     out.detS=detS;
     out.Un=Un;
     out.Y=Y;
-    out.loc=loc;
+    out.Loc=loc;
 end
 
 end

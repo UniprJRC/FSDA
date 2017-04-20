@@ -167,6 +167,8 @@ function [out]=FSM(Y,varargin)
 %               contains the distances of each observation from the
 %               location of the data, relative to the scatter matrix cov.
 %
+% out.class   = FSM
+%
 % See also: FSMeda, unibiv.m, FSMmmd.m
 %
 % References:

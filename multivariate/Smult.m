@@ -135,7 +135,7 @@ function [out , varargout] = Smult(Y,varargin)
 %      out.weights = n x 1 vector containing the estimates of the weights
 %            out.Y = Data matrix Y. The field is present if option ysave
 %                    is set to 1.
-%        out.class = 'S'
+%        out.class = 'Smult'
 %
 %  Optional Output:
 %

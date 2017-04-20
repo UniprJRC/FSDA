@@ -166,6 +166,7 @@ function out = FSMfan(Y,la0,varargin)
 %               subset but not in the old one Unj(1,2) for example contains
 %               the unit included in step init+1 Unj(end,2) contains the
 %               units included in the final step of the search
+% out.class  =  'FSMfan'.
 %
 % See also FSMtra.m, FSM.m
 %
@@ -979,5 +980,6 @@ out.LRT=LRT;
 out.Exflag=Exflag;
 % Un = Units entering the subset
 out.Un=Un;
+out.class  =  'FSMfan';
 end
 %FScategory:MULT-Transformations

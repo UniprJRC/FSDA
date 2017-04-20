@@ -189,7 +189,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %                    containing at least h observations, where (m_1,...,m_p)
 %            REW.Y = Data matrix Y. The field is present if option
 %                    ysaveREW was set to 1.
-%        REW.class = 'mcdr'
+%        REW.class = 'mcdr'.
 %
 %  Optional Output:
 %

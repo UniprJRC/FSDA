@@ -111,7 +111,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %            RAW.h = number of observations which have determined MVE.
 %            RAW.Y = Data matrix Y. The field is present if option
 %                    ysaveRAW is set to 1.
-%        RAW.class = 'mve'
+%        RAW.class = 'mve'.
 %
 %
 %         REW : structure which contains the following fields:
@@ -132,7 +132,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %                    outliers after reweighting.
 %            REW.Y = Data matrix Y. The field is present if option
 %                    ysaveRAW is set to 1.
-%       REW.class = 'mve'
+%       REW.class = 'mver';
 %            
 %  Optional Output:
 %

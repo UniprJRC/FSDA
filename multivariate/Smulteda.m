@@ -141,7 +141,7 @@ function [out , varargout] = Smulteda(Y,varargin)
 %                       been used
 %            out.Y = Data matrix Y. The field is present if option ysave
 %                    is set to 1.
-%        out.class = 'Seda'
+%        out.class = 'Smulteda'
 %
 %  Optional Output:
 %
@@ -168,7 +168,7 @@ function [out , varargout] = Smulteda(Y,varargin)
 % Examples:
 
 %{
-    % Smult with all default options.
+    % Smulteda with all default options.
     n=200;
     v=3;
     randn('state', 123456);
@@ -176,11 +176,11 @@ function [out , varargout] = Smulteda(Y,varargin)
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [out]=Smult(Ycont);
+    [out]=Smulteda(Ycont);
 %}
 
 %{
-    %% Smult with optional arguments.
+    %% Smulteda with optional arguments.
     n=200;
     v=3;
     randn('state', 123456);
@@ -188,11 +188,11 @@ function [out , varargout] = Smulteda(Y,varargin)
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [out]=Smult(Ycont,'plots',1);
+    [out]=Smulteda(Ycont,'bdp',[0.5 0.3 0.1],'plots',1);
 %}
 
 %{
-    % Smulteda with exctracted subsamples.
+    % Smulteda with extracted subsamples.
     n=200;
     v=3;
     randn('state', 123456);
@@ -204,7 +204,7 @@ function [out , varargout] = Smulteda(Y,varargin)
 %}
 
 %% Beginning of code
-%% Input parameters checking
+% Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;

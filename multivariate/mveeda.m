@@ -131,7 +131,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %     REW.outliers = A vector containing the list of the units declared as
 %                    outliers after reweighting.
 %            REW.Y = Data matrix Y.
-%       REW.class = 'mveeda'
+%       REW.class = 'mvereda'
 %
 %  Optional Output:
 %
@@ -612,7 +612,7 @@ REW.Outliers=Outliersrew;
 % Store class
 RAW.class='mveeda';
 
-REW.class='mveeda';
+REW.class='mvereda';
 
 plo=options.plots;
 

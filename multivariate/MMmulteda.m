@@ -169,7 +169,7 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %           out.eff= vector which contains the values of efficiency which have
 %                       been used
 %            out.Y = Data matrix Y.
-%        out.class = 'MMeda'
+%        out.class = 'MMmulteda'
 %
 %  Optional Output:
 %
@@ -177,7 +177,7 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %                       extracted for computing the estimate (the so called
 %                       elemental sets).
 %
-% See also: Smult
+% See also: Smulteda, MMmult
 %
 % References:
 %
@@ -220,7 +220,6 @@ function [out , varargout] = MMmulteda(Y,varargin)
 
 %% Beginning of code
 
-%% Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
@@ -262,7 +261,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:MMmult:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:MMmulteda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
