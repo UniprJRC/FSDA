@@ -358,9 +358,11 @@ function plotopt=resfwdplot(out,varargin)
 
 % Examples:
 
+
 %{
     % Monitoring residuals plot with all the default options.
     % generate input structure for the resfwdplot
+    % In this example FS estimator is used
     n=100;
     y=randn(n,1);
     X=randn(n,4);
@@ -683,6 +685,15 @@ function plotopt=resfwdplot(out,varargin)
     resfwdplot(out,'standard',standard)
 %}
 
+%{
+    % Monitoring residuals plot using S estimator.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=Sregeda(y,X);
+    % Produce  resfwdplot
+    resfwdplot(out);
+%}
 
 %
 %   REMARK: note that at present options.databrush and options.datatooltip
@@ -718,9 +729,9 @@ selmax=max(residuals,[],2);
 selmin=min(residuals,[],2);
 
 % default values for fthresh, bthresh, bstyle, labx and laby.
-if strcmp(out.class,'Seda')
+if strcmp(out.class,'Sregeda')
     labx= 'Break down point';
-elseif strcmp(out.class,'MMeda')
+elseif strcmp(out.class,'MMregeda')
     labx= 'Efficiency';
 else
     labx= 'Subset size m';
@@ -938,10 +949,10 @@ x=standard.xvalues;
 % If structure out contains fielname class we check whether input structure
 % out comes from MMeda or Seda
 if any(strcmp(fieldnames(out),'class'))
-    if strcmp(out.class,'MMeda')
+    if strcmp(out.class,'MMregeda')
         x=out.eff;
         out.Un='';
-    elseif strcmp(out.class,'Seda')
+    elseif strcmp(out.class,'Sregeda')
         x=out.bdp;
         out.Un='';
     end
@@ -950,7 +961,7 @@ end
 
 plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
 
-if strcmp(out.class,'Seda')
+if strcmp(out.class,'Sregeda')
     set(gca,'XDir','reverse')
 end
 
@@ -1736,7 +1747,7 @@ end % close options.databrush
         % Linear indexing is transformed into normal indexing using
         % function ind2sub row and column contain the column and row
         % indexed of the observation which has been selected with the mouse
-        [row,~] = ind2sub(size(residuals),idx);
+        [row,col] = ind2sub(size(residuals),idx);
         
         if isempty(row)
             output_txt{1}=['no residual has coordinates x,y' num2str(x1) '' num2str(y1)] ;
@@ -1750,31 +1761,42 @@ end % close options.databrush
             
             output_txt=cell(5,1);
             
-            % output_txt is what it is shown on the screen
+            % output_txt is what is shown on the screen
             output_txt(1,1) = {['Residual equal to: ',num2str(y1,4)]};
-            
-            % Add information about the step of the search which is under
-            % investigation
-            output_txt{2,1} = ['Step m=' num2str(x1)];
             
             % Add information about the corresponding row label of what has
             % been selected
             output_txt{3,1} = ['Unit name: ' num2str(cell2mat(out.label(row)))];
             
-            % Add information about the step (to be precise the last three
-            % steps) in which the selected unit entered the search
-            idx = find(Un(:,2:end) == row,3,'last');
-            [row,~] = ind2sub(size(Un(:,2:end)),idx);
-            if isempty(row)
-                output_txt{4,1} = ['Unit entered before step m=' num2str(Un(1,1))];
-            elseif length(row)<2
-                output_txt{4,1} = ['Unit entered in step m=' num2str(Un(row,1))];
-            elseif length(row)==2
-                output_txt{4,1} = ['Unit entered in step m=' num2str(Un(row(1),1)) ' and then in step m=' num2str(Un(row(2),1))];
-            else
-                output_txt{4,1} = ['Unit entered in steps m=' num2str(Un(row(1),1)) ', m=' num2str(Un(row(2),1)) ' and m=' num2str(Un(row(3),1))];
+            if any(strcmp(fieldnames(out),'class'))
+                if strcmp(out.class,'MMregeda')
+                    output_txt{2,1} = ['eff=' num2str(x1)];
+                    output_txt{4,1} = ['weight=' num2str(out.Weights(row,col))];
+                    
+                elseif strcmp(out.class,'Sregeda') 
+                    output_txt{2,1} = ['bdp=' num2str(x1)];
+                    output_txt{4,1} = ['weight=' num2str(out.Weights(row,col))];
+                else
+                    % Add information about the step of the search which is under
+                    % investigation or the value of bdp or the value of eff
+                    output_txt{2,1} = ['Step m=' num2str(x1)];
+                    
+                    
+                    % Add information about the step (to be precise the last three
+                    % steps) in which the selected unit entered the search
+                    idx = find(Un(:,2:end) == row,3,'last');
+                    [row,~] = ind2sub(size(Un(:,2:end)),idx);
+                    if isempty(row)
+                        output_txt{4,1} = ['Unit entered before step m=' num2str(Un(1,1))];
+                    elseif length(row)<2
+                        output_txt{4,1} = ['Unit entered in step m=' num2str(Un(row,1))];
+                    elseif length(row)==2
+                        output_txt{4,1} = ['Unit entered in step m=' num2str(Un(row(1),1)) ' and then in step m=' num2str(Un(row(2),1))];
+                    else
+                        output_txt{4,1} = ['Unit entered in steps m=' num2str(Un(row(1),1)) ', m=' num2str(Un(row(2),1)) ' and m=' num2str(Un(row(3),1))];
+                    end
+                end
             end
-            
         end
     end
 

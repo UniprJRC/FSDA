@@ -360,7 +360,6 @@ for jj=1:leff
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-out.class   = 'MMeda';
 out.Loc     = Loc;         % robust estimate of location
 out.Shape   = Shape;       % robust estimate of shape matrix
 out.cov     = Covar;       % robust estimate of covariance matrix
@@ -369,6 +368,7 @@ out.MAL=MAL;
 out.Y = Y;
 out.eff=eff;
 out.scale=auxscale;
+out.class   = 'MMmulteda';
 
 % Store in output structure the outliers found with confidence level conflev
 out.conflev = conflev;

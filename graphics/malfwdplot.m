@@ -589,6 +589,18 @@ function plotopt=malfwdplot(out,varargin)
     % malfwdplot(out,plotopt{:})
 %}
 
+%{
+    % malfwdplot starting from MM estimators.
+    n=100;
+    v=3;
+    Y=randn(n,v);
+    % Contaminated data
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [out]=MMmulteda(Ycont);
+    malfwdplot(out,'conflev',0.99)
+%}
+
 
 %
 %   REMARK: note that at present options.databrush and options.datatooltip
@@ -623,9 +635,9 @@ x=(n-nsteps+1):n;
 % unselline= to select how to represent the unselected units ('faint' 'hide' 'greish');
 % laby=     label used for the y-axis of the malfwdplot.
 if isfield(out,'class')
-    if strcmp(out.class,'Seda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
+    if strcmp(out.class,'Smulteda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
         labx= 'Break down point';
-    elseif strcmp(out.class,'MMeda')
+    elseif strcmp(out.class,'MMmulteda')
         labx= 'Efficiency';
     else
         labx= 'Subset size m';
@@ -826,10 +838,10 @@ x=standard.subsize;
 % If structure out contains fielname class we check whether input structure
 % out comes from MMeda or Seda
 if any(strcmp(fieldnames(out),'class'))
-    if strcmp(out.class,'MMeda')
+    if strcmp(out.class,'MMmulteda')
         x=out.eff;
         out.Un='';
-    elseif strcmp(out.class,'Seda') || strcmp(out.class,'mveeda')
+    elseif strcmp(out.class,'Smulteda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
         x=out.bdp;
         out.Un='';
     end
@@ -849,7 +861,7 @@ if length(x)<10
 end
 
 if any(strcmp(fieldnames(out),'class'))
-    if strcmp(out.class,'Seda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
+    if strcmp(out.class,'Smulteda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
         set(gca,'XDir','reverse')
     end
 end
@@ -1671,7 +1683,7 @@ end % close options.databrush
         % Linear indexing is transformed into normal indexing using
         % function ind2sub row and column contain the column and row
         % indexed of the observation which has been selected with the mouse
-        [row,~] = ind2sub(size(MDvalues),idx);
+        [row,col] = ind2sub(size(MDvalues),idx);
         
         if isempty(row)
             output_txt{1}=['no MD has coordinates x,y' num2str(x1) '' num2str(y1)] ;
@@ -1690,35 +1702,47 @@ end % close options.databrush
             % output_txt is what it is shown on the screen
             output_txt(1,1) = {['MD equal to: ',num2str(y1,4)]};
             
-            % Add information about the step of the search which is under
-            % investigation
-            output_txt{2,1} = ['Step $m$=' num2str(x1)];
             
             % Add information about the corresponding row label of what has
             % been selected
             output_txt{3,1} = ['Unit: ' num2str(cell2mat(label(row)))];
             
-            % Add information about the step (to be precise the last three
-            % steps) in which the selected unit entered the search
-            idx = find(Un(:,2:end) == row,3,'last');
-            [row,~] = ind2sub(size(Un(:,2:end)),idx);
-            
-            if isempty(row)
-                output_txt{4,1} = ['Unit entered before step $m$=' num2str(Un(1,1))];
-            elseif length(row)<2
-                output_txt{4,1} = ['Unit entered in step $m$=' num2str(Un(row,1))];
-            elseif length(row)==2
-                output_txt{4,1} = ['Unit entered in step $m$=' num2str(Un(row(1),1)) ' and then in step $m$=' num2str(Un(row(2),1))];
-            else
-                output_txt{4,1} = ['Unit entered in steps $m$=' num2str(Un(row(1),1)) ', $m$=' num2str(Un(row(2),1)) ' and $m$=' num2str(Un(row(3),1))];
+            if any(strcmp(fieldnames(out),'class'))
+                if strcmp(out.class,'MMmulteda')
+                    output_txt{2,1} = ['eff=' num2str(x1)];
+                    output_txt{4,1} = ['weight=' num2str(out.Weights(row,col))];
+                    
+                elseif strcmp(out.class,'Smulteda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
+                    output_txt{2,1} = ['bdp=' num2str(x1)];
+                    output_txt{4,1} = ['weight=' num2str(out.Weights(row,col))];
+                else
+                    % Add information about the step of the search which is under
+                    % investigation
+                    output_txt{2,1} = ['Step $m$=' num2str(x1)];
+                    
+                    % Add information about the step (to be precise the last three
+                    % steps) in which the selected unit entered the search
+                    idx = find(Un(:,2:end) == row,3,'last');
+                    [row,~] = ind2sub(size(Un(:,2:end)),idx);
+                    
+                    if isempty(row)
+                        
+                        output_txt{4,1} = ['Unit entered before step $m$=' num2str(Un(1,1))];
+                    elseif length(row)<2
+                        output_txt{4,1} = ['Unit entered in step $m$=' num2str(Un(row,1))];
+                    elseif length(row)==2
+                        output_txt{4,1} = ['Unit entered in step $m$=' num2str(Un(row(1),1)) ' and then in step $m$=' num2str(Un(row(2),1))];
+                    else
+                        output_txt{4,1} = ['Unit entered in steps $m$=' num2str(Un(row(1),1)) ', $m$=' num2str(Un(row(2),1)) ' and $m$=' num2str(Un(row(3),1))];
+                    end
+                end
             end
-            
             set(0,'ShowHiddenHandles','on');    % Show hidden handles
             hText = findobj('Type','text','Tag','DataTipMarker');
             set(hText,'Interpreter','latex');
             
-            
         end
+        
     end
 
 if ~isempty(options.msg)

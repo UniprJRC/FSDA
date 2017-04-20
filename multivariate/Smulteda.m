@@ -451,7 +451,6 @@ for jj=1:length(bdp)
 end
 
 
-out.class   = 'Seda';
 out.Loc     = Loc;         % robust estimate of location
 out.Shape   = Shape;       % robust estimate of shape matrix
 out.Scale   = Scale;       % robust estimate of the scale
@@ -464,6 +463,7 @@ out.bdp=bdp;
 
 % Store in output structure the outliers found with confidence level conflev
 out.conflev = conflev;
+out.class   = 'Smulteda';
 
 plo=options.plots;
 

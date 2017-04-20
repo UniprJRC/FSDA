@@ -246,6 +246,7 @@ function out = FSMeda(Y,bsb,varargin)
     malfwdplot(out,'standard',standard);
 %}
 
+ 
 %% Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
@@ -541,6 +542,7 @@ else
     out.Un=Un;
     out.Y=Y;
     out.Loc=loc;
+    out.class='FSMeda';
 end
 
 end
