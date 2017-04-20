@@ -152,12 +152,17 @@ function [out , varargout] = MMreg(y,X,varargin)
 %       out.conflev     =   Confidence level that was used to declare outliers
 %       out.class       =   'MM'
 %           out.rhofunc =   string identifying the rho function which has been
-%                           used
+%                           used. If a different rho function is specified
+%                           for S and MM loop then insted of out.rhofunc we
+%                           will have out.rhofuncS and out.rhofuncMM.
 %      out.rhofuncparam =   vector which contains the additional parameters
 %                           for the specified rho function which have been
 %                           used. For hyperbolic rho function the value of
 %                           k =sup CVC. For Hampel rho function the parameters
-%                           a, b and c
+%                           a, b and c. If a different rho function is
+%                           specified for S and MM loop then insted of
+%                           out.rhofuncparam we will have out.rhofuncparamS
+%                           and out.rhofuncparamMM.
 %            out.y      =   response vector Y. The field is present if option
 %                           yxsave is set to 1.
 %            out.X      =   data matrix X. The field is present if option
@@ -448,7 +453,7 @@ else
     % For Hampel store a vector of length 3 containing parameters a, b and c
     % For hyperbolic store the value of k= sup CVC
     if isfield(Sresult, 'rhofuncparam')
-        out.rhofuncparamMM=rhofuncparamS;
+        out.rhofuncparamS=Sresult.rhofuncparam;
     end
     
     if isfield(outIRW,'rhofuncparam')

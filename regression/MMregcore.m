@@ -103,22 +103,29 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %
 %  Output:
 %
-%  %  out :     A structure containing the following fields
+%      out :     A structure containing the following fields
 %
-%     out.beta  = p x 1 vector. Estimate of beta coefficients after 
-%                 refsteps refining steps
-%  out.residuals= n x 1 vector containing the estimates of the robust
-%                 scaled residuals
-%   out.outliers= A vector containing the list of the units declared as
-%                 outliers using confidence level specified in input
-%                 scalar conflev
-%   out.conflev=  Confidence level that was used to declare outliers
-%   out.weights=  n x 1 vector. Weights assigned to each observation
-%     out.class=  'MM'
-%     out.y    = response vector y. The field is present if option 
-%                yxsave is set to 1.
-%     out.X    = data matrix X. The field is present if option 
-%                yxsave is set to 1.
+%       out.beta  = p x 1 vector. Estimate of beta coefficients after 
+%                   refsteps refining steps
+%   out.residuals = n x 1 vector containing the estimates of the robust
+%                   scaled residuals
+%   out.outliers  = A vector containing the list of the units declared as
+%                   outliers using confidence level specified in input
+%                   scalar conflev
+%   out.conflev   = Confidence level that was used to declare outliers
+%   out.weights   = n x 1 vector. Weights assigned to each observation
+%     out.class   = 'MM'
+%     out.rhofunc = string identifying the rho function which has been
+%                   used. 
+% out.rhofuncparam= vector which contains the additional parameters
+%                   for the specified rho function which have been
+%                   used. For hyperbolic rho function the value of
+%                   k =sup CVC. For Hampel rho function the parameters
+%                   a, b and c. 
+%     out.y       = response vector y. The field is present if option 
+%                   yxsave is set to 1.
+%     out.X       = data matrix X. The field is present if option 
+%                   yxsave is set to 1.
 %
 %
 % More About:
