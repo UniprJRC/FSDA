@@ -137,6 +137,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                         freedom;
 %                       * pointmass, if the outliers are concentrated on a
 %                         particular point;
+%                       * by_comp, if the outliers are distributed along a 
+%                         linear component. The option was introduced to add
+%                         dense area in one linear component.
 %                       * componentwise, if the outliers must have the same
 %                         coordinates of the existing rows of matrix X apart
 %                         from the single coordinate of y (which will be the
@@ -705,7 +708,7 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
     for ii=1:length(number)
         typeouti=typeout{ii};
         
-        [Xouti, youti,  ~] = getOutliersreg(number(ii), Beta, S, alpha(ii), maxiter, typeouti, intervalout);
+        [Xouti, youti,  ~] = getOutliersreg(number(ii), Beta, S, alpha(ii), maxiter, typeouti, intervalout,ii);
         Xout(ni+1:ni+size(Xouti,1),:)=Xouti;
         yout(ni+1:ni+size(Xouti,1),:)=youti;
         
@@ -840,7 +843,7 @@ end
 % fail = scalar. If fail =1 than it was not possible to generate the
 % outliers in the interval specified by input option int in maxiter trials
 % else fail = 0
-    function [Xout,yout, fail] = getOutliersreg(nout, Beta, S, alpha, maxiter, typeout, intervalout)
+    function [Xout,yout, fail] = getOutliersreg(nout, Beta, S, alpha, maxiter, typeout, intervalout,current_group)
         fail = 0;
         % maxiter = maximum number of iterations to generate outliers
         critval =chi2inv(1-alpha,1);
@@ -895,6 +898,8 @@ end
             rrally = rescale(randn(maxiter1,1));
         elseif strcmp(typeout(1:4),'unif')
             rrally = rand(maxiter1,1);
+        elseif   strcmp(typeout,'by_comp')
+            %rrally = rand(maxiter1,1);
         elseif strcmp(typeout(1:9),'Chisquare')
             nuC=str2double(typeout(10:end));
             rrally = rescale(chi2rnd(nuC,maxiter1,1));
@@ -930,13 +935,17 @@ end
                 % extract one unit from rrallX and rrally
                 rindex=randsample(maxiter1,1);
                 rrX=rrallX(rindex,:);
-                rry=rrally(rindex);
-                
-                
-                % Rescale the unit in the interval Lout and Uout for X and
-                % Louty and Uouty for y
+                % Rescale the unit in the interval Lout and Uout for X
                 Xout(i,:) = (Uout-Lout).*rrX+Lout;
-                yout(i) = (Uouty-Louty).*rry+Louty;
+                if strcmp(typeout,'by_comp')
+                    yout(i) = Xout(i,:) * Beta(:,current_group) + sqrt(S(:,:,current_group))* rand/max(Xout(i,:),0.5);
+                else
+                    rry=rrally(rindex);
+                    % Rescale the unit in the interval Louty and Uouty for y
+                    yout(i) = (Uouty-Louty).*rry+Louty;
+                end
+                
+                
                 
             end
             
@@ -951,16 +960,16 @@ end
             % than critval
             ij=0;
             
-            
-            for jj=1:k
-                yhatij=Xout(i,:)*Beta(:,jj);
-                if ((yout(i)-yhatij)^2)/(S(:,:,jj)) <critval
-                    
-                    ij=1;
-                    break
+            if ~strcmp(typeout,'by_comp')
+                for jj=1:k
+                    yhatij=Xout(i,:)*Beta(:,jj);
+                    if ((yout(i)-yhatij)^2)/(S(:,:,jj)) <critval
+
+                        ij=1;
+                        break
+                    end
                 end
             end
-            
             % disp(jj)
             
             if ij==0
