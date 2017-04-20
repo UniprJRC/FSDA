@@ -128,7 +128,7 @@ function [out]=FSRcore(INP,model,options)
 % out.ListOut  =  k x 1 vector containing the list of the units declared as
 %                 outliers or NaN if the sample is homogeneous.
 % out.outliers =  out.ListOut. This field is added for homogeneity with the
-%                 other robust estimators.  
+%                 other robust estimators.
 % out.beta   =  p-by-1 vector containing the estimated regression
 %               parameter in step n-k. Depending on the string 'model',
 %               beta refers to OLS coefficents, GLS coefficients or Bayes
@@ -359,11 +359,22 @@ if isempty(bonflev)
         elseif i<size(mdr,1)-1 % FINAL PART OF THE SEARCH
             % Extreme couple adjacent to an exceedance
             % Two consecutive values of mdr above the 99.99% envelope and 1 above 99%
-            if ((mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99)) || (mdr(i-1,2)>gmin(i-1,c999) && mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c99)) || mdr(i,2)>gmin(end,c99) || mdr(i,2)>gmin(i,c99999))
+            %             if ( (mdr(i,2)   > gmin(i,c999)   && mdr(i+1,2) > gmin(i+1,c999) && mdr(i-1,2) > gmin(i-1,c99)) || ...
+            %                  (mdr(i-1,2) > gmin(i-1,c999) && mdr(i,2)   > gmin(i,c999)   && mdr(i+1,2) > gmin(i+1,c99)) || ...
+            %                   mdr(i,2)   > gmin(end,c99)  || ...
+            %                   mdr(i,2)   > gmin(i,c99999) )
+            
+            condition1 = (mdr(i,2)   > gmin(i,c999)   && mdr(i+1,2) > gmin(i+1,c999) && mdr(i-1,2) > gmin(i-1,c99)) ;
+            condition2 = (mdr(i-1,2) > gmin(i-1,c999) && mdr(i,2)   > gmin(i,c999)   && mdr(i+1,2) > gmin(i+1,c99)) ;
+            condition3 = mdr(i,2)   > gmin(end,c99)  ;
+            condition4 = mdr(i,2)   > gmin(i,c99999) ;
+            if ( condition1 || condition2 || condition3  || condition4 )
+              
                 if msg
                     disp(['Signal in final part of the search: step ' num2str(mdr(i,1)) ' because']);
                 end
-                if (mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c999) && mdr(i-1,2)>gmin(i-1,c99))
+                
+                if condition1
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99%']);
                     end
@@ -371,7 +382,7 @@ if isempty(bonflev)
                     mdrsel=mdr(i-1:i+1,1:2);
                 end
                 
-                if (mdr(i-1,2)>gmin(i-1,c999) && mdr(i,2)>gmin(i,c999) && mdr(i+1,2)>gmin(i+1,c99))
+                if condition2
                     if msg
                         disp(['rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99%']);
                     end
@@ -379,7 +390,7 @@ if isempty(bonflev)
                     mdrsel=mdr(i-1:i+1,1:2);
                 end
                 
-                if (mdr(i,2)>gmin(end,c99))
+                if condition3
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
                     end
@@ -388,7 +399,7 @@ if isempty(bonflev)
                 end
                 
                 % Extreme single value above the upper threshold
-                if mdr(i,2)>gmin(i,c99999)
+                if condition4
                     if msg
                         disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.999%']);
                     end
@@ -1135,9 +1146,9 @@ if ndecl>0
     % Now find the list of the units declared as outliers
     % bsel=~isnan(bb(:,tr-init+1));
     % ListOut=setdiff(1:n,bsel,1);
-    % If the units forming subset have not been stored for all steps of the
-    % fwd search then it is necessary to call procedure FSRbsb to find unit
-    % forming subset in step n-decl
+    % REMARK: If the units forming subset have not been stored for all
+    % steps of the fwd search then it is necessary to call procedure FSRbsb
+    % to find unit forming subset in step n-decl
     if size(bb,2)<n-init+1
         % then it is necessary to understand what are the units belonging to
         % subset in step n-ndecl.
