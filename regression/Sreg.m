@@ -155,7 +155,6 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                       out.singsub > 0.1*(number of subsamples) produces a
 %                       warning
 %         out.weights = n x 1 vector containing the estimates of the weights
-%           out.class = 'S'
 %         out.rhofunc = string identifying the rho function which has been
 %                       used
 %    out.rhofuncparam = vector which contains the additional parameters
@@ -167,6 +166,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                       yxsave is set to 1.
 %            out.X    = data matrix X. The field is present if option
 %                       yxsave is set to 1.
+%           out.class = 'Sreg'
 %
 %  Optional Output:
 %

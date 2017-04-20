@@ -244,6 +244,7 @@ function [out]=FSR(y,X,varargin)
 %               units which produced a singular matrix in the last n-constr
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
+% out.class  =  'FSR'.
 %
 % See also: FSReda, LXS.m
 %
@@ -562,7 +563,7 @@ INP.Bcoeff=Bols;
 INP.S2=S2(:,1:2);
 %% Call core function which computes exceedances to thresholds of mdr
 [out]=FSRcore(INP,'',options);
-
+out.class  =  'FSR';
 end
 
 %FScategory:REG-Regression

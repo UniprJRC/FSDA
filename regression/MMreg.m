@@ -150,7 +150,6 @@ function [out , varargout] = MMreg(y,X,varargin)
 %       out.outliers    :   1 x k vectors containing the outliers which
 %                           have been found
 %       out.conflev     =   Confidence level that was used to declare outliers
-%       out.class       =   'MM'
 %           out.rhofunc =   string identifying the rho function which has been
 %                           used. If a different rho function is specified
 %                           for S and MM loop then insted of out.rhofunc we
@@ -167,6 +166,9 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                           yxsave is set to 1.
 %            out.X      =   data matrix X. The field is present if option
 %                           yxsave is set to 1.
+%       out.class       =   'MMreg'
+%
+%
 %  Optional Output:
 %
 %            C        : matrix containing the indices of the subsamples
@@ -435,7 +437,7 @@ out.Ssingsub=singsub;
 out.weights=outIRW.weights;
 out.outliers=outIRW.outliers;
 out.conflev=conflev;
-out.class='MM';
+out.class='MMreg';
 if isequal(rhofuncS,rhofuncMM)
     out.rhofunc=rhofuncS;
     % In case of Hampel or hyperbolic tangent estimator store the additional

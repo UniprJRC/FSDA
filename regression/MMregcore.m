@@ -114,7 +114,6 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %                   scalar conflev
 %   out.conflev   = Confidence level that was used to declare outliers
 %   out.weights   = n x 1 vector. Weights assigned to each observation
-%     out.class   = 'MM'
 %     out.rhofunc = string identifying the rho function which has been
 %                   used. 
 % out.rhofuncparam= vector which contains the additional parameters
@@ -126,6 +125,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %                   yxsave is set to 1.
 %     out.X       = data matrix X. The field is present if option 
 %                   yxsave is set to 1.
+%     out.class   = 'MMreg'
 %
 %
 % More About:
@@ -444,7 +444,7 @@ while (iter <= refsteps) && (crit > reftol)
     b1=b2;
 end
 
-out.class = 'MM';
+out.class = 'MMreg';
 out.beta = b2;
 out.weights = w;
 out.residuals = (y-X*out.beta)/auxscale;

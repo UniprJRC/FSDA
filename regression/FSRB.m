@@ -205,10 +205,10 @@ function [out]=FSRB(y,X,varargin)
 %               $n-k$
 % out.scale  =   scalar. This is the reciprocal of the square root of the
 %               posterior estimate of $\tau$ in step $n-k$
-% out.mdr    =  (n-init) x 2 matrix: 
-%               1st col = fwd search index; 
+% out.mdr    =  (n-init) x 2 matrix:
+%               1st col = fwd search index;
 %               2nd col = value of Bayesian minimum deletion residual in
-%               each step of the fwd search. 
+%               each step of the fwd search.
 % out.Un     =  (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
@@ -228,6 +228,7 @@ function [out]=FSRB(y,X,varargin)
 %               units which produced a singular matrix in the last n-constr
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
+%  out.class  =  'FSRB'.
 %
 % See also: FSRBmdr, FSR.m
 %
@@ -758,7 +759,7 @@ INP.tau0=tau0;
 INP.n0=n0;
 
 [out]=FSRcore(INP,'B',options);
-
+out.class  =  'FSRB';
 
 end
 %FScategory:REG-Bayes

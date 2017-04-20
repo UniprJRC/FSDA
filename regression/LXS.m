@@ -171,7 +171,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %         out.singsub = Number of subsets wihtout full rank. Notice that if
 %                       this number is greater than 0.1*(number of
 %                       subsamples) a warning is produced on the screen
-%           out.class = 'LTS', LTSfast (or LMS).
+%           out.class = 'LTS' or 'LMS'.
 %            out.y    = response vector Y. The field is present if option
 %                       yxsave is set to 1.
 %            out.X    = data matrix X. The field is present if option

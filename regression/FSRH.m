@@ -291,6 +291,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               units which produced a singular matrix in the last n-constr
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
+%  out.class  =  'FSRH'.
 %
 % See also: FSRHeda.m, LXS.m
 %
@@ -547,6 +548,8 @@ INP.S2=S2(:,1:2);
 
 out.mdr=mdr;
 out.Un=Un;
+  out.class  =  'FSRH';
+  
 % out.Hetero=Hetero;
 % out.S2=S2;
 % out.WEI=WEI;

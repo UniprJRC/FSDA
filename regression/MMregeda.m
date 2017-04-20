@@ -117,7 +117,6 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                           produces a warning
 
 %       out.conflev     =   Confidence level that was used to declare outliers
-%       out.class       =   'MM'
 %           out.rhofunc =   string identifying the rho function which has been
 %                           used
 %      out.rhofuncparam =   vector which contains the additional parameters
@@ -129,6 +128,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                           been used.
 %            out.y      =   response vector y.
 %            out.X      =   data matrix X.
+%       out.class       =   'MMregeda'.
 %
 %  Optional Output:
 %
@@ -380,7 +380,7 @@ out.Sbeta = bs;
 out.auxscale = ss;
 out.Ssingsub=singsub;
 out.conflev=conflev;
-out.class='MMeda';
+out.class='MMregeda';
 out.rhofunc=rhofunc;
 % In case of Hampel or hyperbolic tangent estimator store the additional
 % parameters which have been used

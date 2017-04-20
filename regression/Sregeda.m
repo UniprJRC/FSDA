@@ -149,7 +149,6 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %         out.Singsub = Number of subsets wihtout full rank. Notice that
 %                       out.singsub(bdp(jj)) > 0.1*(number of subsamples) produces a
 %                       warning
-%           out.class = 'Seda'
 %         out.rhofunc = string identifying the rho function which has been
 %                       used
 %    out.rhofuncparam = vector which contains the additional parameters
@@ -163,6 +162,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                       yxsave is set to 1.
 %            out.X    = data matrix X. The field is present if option
 %                       yxsave is set to 1.
+%           out.class = 'Sregeda'
 %
 %  Optional Output:
 %
@@ -282,7 +282,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:Sreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:Sregeda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -643,7 +643,7 @@ out.Outliers = Outliers;
 % Store values of bdp which have been used
 out.bdp=bdp;
 
-out.class='Seda';
+out.class='Sregeda';
 
 out.rhofunc=rhofunc;
 % In case of Hampel or hyperbolic tangent estimator store the additional

@@ -174,7 +174,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %     out.X=    Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1)
-%  out.class =  string FSReda.
+%  out.class =  'FSReda'.
 %
 %
 % See also LXS.m, FSRbsb.m

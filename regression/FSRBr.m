@@ -249,6 +249,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %              First column = studentized residuals
 %              Second column = p-values (computed using as reference
 %              distribution the Student t)
+% out.class  =  'FSRBr'.
 %
 %Optional Output:
 %
@@ -607,6 +608,8 @@ if nargout > 0 || plotsPI==1
     end
     
 end
+
+out.class  =  'FSRBr';
 
 end
 

@@ -92,6 +92,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %                   First column = studentized residuals
 %                   Second column = p-values (computed using as reference
 %                   distribution the Student t)
+%  out.class  =  'FSRr'.
 %
 %Optional Output:
 %
@@ -100,7 +101,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %          ypred = values predicted by the fitted model on xnew. Vector of
 %                  length(xnew)
 %           yci  = Confidence intervals. A two-column matrix with each row providing
-%                  one interval. 
+%                  one interval.
 %
 % See also: FSR
 %
@@ -173,7 +174,7 @@ UserOptions = varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-      error('FSDA:FSRmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSRmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if all the specified optional arguments were present
     % in structure options
@@ -331,7 +332,7 @@ end
 % Store studentized residuals
 % and the associated p-values
 if verLessThan('matlab','8.3.0')
-    rstud=[sign(res).*sqrt(studres2) 1 - fcdf(studres2,1,dfe)];  
+    rstud=[sign(res).*sqrt(studres2) 1 - fcdf(studres2,1,dfe)];
 else
     rstud=[sign(res).*sqrt(studres2) fcdf(studres2,1,dfe,'upper')];
 end
@@ -382,6 +383,8 @@ if nargout > 0 || plotsPI==1
         title({[num2str((1-alpha)*100,4) '% Prediction Interval '] , tit2});
     end
 end
+
+out.class  =  'FSRr';
 
 end
 %FScategory:REG-Regression

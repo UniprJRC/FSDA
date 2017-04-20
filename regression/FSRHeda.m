@@ -242,7 +242,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1).
 %     out.Z=   Predictor variables in the scedastic equation. 
-%   out.class =  string FSRHeda.
+%   out.class =  'FSRHeda'.
 %
 %
 % See also FSRH.m, FSRHmdr.m, FSReda.m
