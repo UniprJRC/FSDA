@@ -1,4 +1,4 @@
-function y = randsampleFS(n,k,method)
+function y = randsampleFS(n,k,method,after2011b)
 %randsampleFS generates a random sample of k elements from the integers 1 to n (k<=n)
 %
 %<a href="matlab: docsearchFS('randsampleFS')">Link to the help function</a>
@@ -23,6 +23,14 @@ function y = randsampleFS(n,k,method)
 %            Example - randsampleFS(100,10,2)
 %            Data Types - single|double
 %
+%after2011b: MATLAB version flag. Logical. Indicates if the MATLAB version 
+%            in use is later than R2012a (7.14). Used to speed up
+%            computations in function subsets and, more in general, in
+%            simulation experiments which use randsampleFS intensively.
+%            Example - randsampleFS(100,10,2,true) or
+%            randsampleFS(100,10,2,~verLessThan('MATLAB','7.14'))
+%            Data Types - logical
+%
 %   Output:
 %
 %   y :     A column vector of k values sampled at random from the integers 1:n.
@@ -33,41 +41,42 @@ function y = randsampleFS(n,k,method)
 %
 % More About:
 %
-%   The method=0 uses MATLAB function randperm. In older MATLAB releases
+%   The method=0 uses MATLAB function randperm. In old MATLAB releases
 %   randperm was slower than FSDA function shuffling, which is used in
 %   method 1 (for example, in R2009a - MATLAB 7.8 - randperm was at least
-%   50% slower). REMARK: in release 2012a and earlier, randperm is
-%   very slow. 
+%   50% slower).  
 %
 %   If method=1 the approach depends on the population and sample sizes:
 %   - if $n < 1000$ and $k < n/(10 + 0.007n)$, that is if the population is
 %     relatively small and the desired sample is small compared to the
 %     population, we repeatedly sample with replacement until there are k
 %     unique values;
-%   - otherwise, we do a random permutation of the population and return the 
-%     first k elements. The threshold $k < n/(10 + 0.007n)$ has been determined
-%     by simulation under MATLAB R2016b. Before, the threshold was $n < 4*k$.
+%   - otherwise, we do a random permutation of the population and return  
+%     the first k elements. 
+%   The threshold $k < n/(10 + 0.007n)$ has been determined by simulation
+%   under MATLAB R2016b. Before, the threshold was $n < 4*k$.
 %
-%   If method=2 (default option). Systematic sampling is used where the
-%   starting point is random and the step is also random. This is typically
-%   the fastest option: for this reason it is select as default option.
+%   If method=2 systematic sampling is used, where the starting point is
+%   random and the step is also random. 
 %
 %   If method=3 random sampling is based on the old but well known Linear
-%   Congruential Generator (LCG) method. In this case there is no guarantee to
-%   get unique numbers. The method is included for historical reasons.
+%   Congruential Generator (LCG) method. In this case there is no guarantee
+%   to get unique numbers. The method is included for historical reasons.
 %
 %   If method is a vector of n weights, then Weighted Sampling Without
-%   Replacement is applied. Our implementation follows Efraimidis and Spirakis
-%   (2006). MATLAB function datasample follows Wong and  Easton (1980), which is
-%   also quite fast; note however that function datasample may be very slow if
-%   applied repetedly, for the large amount of time spent on options checking.
+%   Replacement is applied. Our implementation follows Efraimidis and
+%   Spirakis (2006). MATLAB function datasample follows Wong and  Easton
+%   (1980), which is also quite fast; note however that function datasample
+%   may be very slow if applied repetedly, for the large amount of time
+%   spent on options checking.
 %
-%   Remark on computation performances. Method=2 (systematic sampling) is by far
-%   the fastest for any practical population size $n$. For example, for $n
-%   \approx 10^6$ method=2 is two orders of magniture faster than method=1.
-%   With recent MATLAB releases (after R2011b) method = 0 (which uses compiled
-%   MATLAB function randperm) has comparable performances, at least for
-%   reasonably small $k$. 
+%   Remark on computation performances. Method=2 (systematic sampling) is
+%   by far the fastest for any practical population size $n$. For example,
+%   for $n \approx 10^6$ method=2 is two orders of magniture faster than
+%   method=1. With recent MATLAB releases (after R2011b) method = 0 (which
+%   uses compiled MATLAB function randperm) has comparable performances, at
+%   least for reasonably small $k$. In releases before 2012a, randperm was
+%   considerably slow.
 %
 % See also: randsample, datasample, shuffling
 %
@@ -135,13 +144,33 @@ function y = randsampleFS(n,k,method)
 %}
 
 %% Beginning of code
-if nargin<3
+
+% randsampleFS needs to check the MATLAB version in use in order to:
+% - decide the sempling method to use, and
+% - use properly the optional parameter of randperm.
+% In the first case  the release to check is R2012a, i.e. 7.14
+% In the second case the release to check is R2011b, i.e. 7.13
+% For the sake of computational efficiency, we just check the latest
+% To pass the argument, use:
+% after2012a = ~verLessThan('MATLAB','7.14');
+if nargin < 4 
+    after2011b = ~verLessThan('MATLAB','7.14');
+end
+
+% choose the default sampling method
+if nargin < 3 || isempty(method)
+    if after2011b
+        method=0;
+    else 
+        % in older releases we use systematic sampling because randperm
+        % function (used for merhod = 0) was extremely inefficient
         method=2;
+    end
 end
 
 % Weighted Sampling Without Replacement
 % This is done if the third argument is provided as a vector of weights.
-if nargin == 3 && ~isscalar(method)
+if nargin >= 3 && ~isscalar(method)
     wgts = method(:)';
     method = 999;
 end
@@ -150,15 +179,14 @@ switch method
     
     case 0
         
-        % MATLAB solution for generating a random sample of k elements from the
-        % sequence of integers 1 to n.
-        if verLessThan('MATLAB','7.13')
+        % Extract a random sample of k integers between 1 and n.
+        if after2011b % it is a logical: no need to specify before714 == true
+            y = randperm(n,k);
+        else
             % In Matlab 2011b and older, input parameter k was not supported.
             % This solution is clearly less efficient for k much smaller than n.
             rp = randperm(n);
             y = rp(1:k);
-        else
-            y = randperm(n,k);
         end
         
     case 1

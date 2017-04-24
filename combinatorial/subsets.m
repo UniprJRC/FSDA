@@ -11,9 +11,9 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %               Data Types - single|double
 %         n   : Number of observations of the dataset. Scalar.
 %               Data Types - single|double
-%         p   : Size of the subsets. Scalar. In regression with p 
-%               explanatory variable the size of the elmental subsets is p; 
-%               in multivariate analysis, in presence of v variables, 
+%         p   : Size of the subsets. Scalar. In regression with p
+%               explanatory variable the size of the elmental subsets is p;
+%               in multivariate analysis, in presence of v variables,
 %               the size of the elemental subsets is v+1.
 %               Data Types - single|double
 %
@@ -35,7 +35,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %            Methods used to extract the subsets. See section 'More About'
 %            of function randsampleFS.m for details about the sampling
 %            methods. Default is method = 1.
-%            - Scalar, from 1 to 3 determining the (random sample without
+%            - Scalar, from 0 to 3 determining the (random sample without
 %            replacement) method to be used.
 %            - Vector of weights: in such a case, Weighted Sampling Without
 %              Replacement is applied using that vector of weights.
@@ -47,7 +47,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %
 %
 %           C : The indices of the subsets which need to be extracted.
-%               Matrix with nselected rows and p columns (stored in int16 format). 
+%               Matrix with nselected rows and p columns (stored in int16 format).
 %               Data Types - single|double
 %
 %   nselected : Number of rows of matrix C. Scalar.
@@ -56,7 +56,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %
 % See also randsampleFS.m, lexunrank.m, bc.m
 %
-% References: 
+% References:
 %       See references in randsampleFS.m, lexunrank.m and bc.m. See also, for
 %       weighted sampling, Pavlos S. Efraimidis, Paul G. Spirakis, Weighted
 %       random sampling with a reservoir, Information Processing Letters, Volume
@@ -71,7 +71,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %
 % Last modified 31-05-2016
 %
-% Examples: 
+% Examples:
 %
 %{
        %% Create a matrix with the indexes of 5 subsets when n=100, p=3.
@@ -80,7 +80,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %}
 
 %{
-       %% Create a matrix with the indexes of 5 subsets when n=100, p=3. 
+       %% Create a matrix with the indexes of 5 subsets when n=100, p=3.
        % Use information on the number of combinations to speed up generation.
         ncomb = bc(100,3);
         C = subsets(5,100,3,ncomb)
@@ -129,7 +129,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     else
         histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers'); xlim([1 n]);
         % this superimposes a line with the unit counts
-        frC = tabulateFS(double(C(:))); 
+        frC = tabulateFS(double(C(:)));
         hold on; plot(1:n,frC(:,3)/100,'r-','LineWidth',3);
     end
 
@@ -140,8 +140,8 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     % the distribution would be binomial.
     hpdf = hygepdf(0:p,n,n/2,p);
 
-    % Say that the n/2 target items (which determine the success of a draw) are 
-    % in the subset formed by units 1,2,...n/2. Let's then count how many times 
+    % Say that the n/2 target items (which determine the success of a draw) are
+    % in the subset formed by units 1,2,...n/2. Let's then count how many times
     % we get units from this group.
     c   = C<=n/2;
     sc  = sum(c,2);
@@ -156,7 +156,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %}
 
 %{
-    %% Weighted sampling without replacement and the non-central Wallenius hypergeometric distribution.   
+    %% Weighted sampling without replacement and the non-central Wallenius hypergeometric distribution.
 
     clear all; close all;
 
@@ -168,7 +168,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     msg    = 0;
 
     % Sampling probability of the first n/2 units is 10 times larger than the others n/2.
-    method = [10*ones(n/2,1); ones(n/2,1)]; 
+    method = [10*ones(n/2,1); ones(n/2,1)];
     % no need to normalize weights: method = method(:)' / sum(method);
 
 	C = subsets(nsamp, n, p, ncomb, msg, method);
@@ -186,7 +186,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     % distribution. The sampling scheme is the same of that of the hypergeometric
     % distribution but, in addition, the success and failure are associated with
     % weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The
-    % function is then called as: wpdf = WNChygepdf(x,N,K,M,W). 
+    % function is then called as: wpdf = WNChygepdf(x,N,K,M,W).
 
     for i = 0:p
         wpdf(i+1) = WNChygepdf(i,p,n/2,n,10);
@@ -236,7 +236,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     nsamp = 10000;
     ncomb = bc(n,p);
     msg = 0;
-    method = [-4*ones(n/4,1); -2*ones(n/4,1) ; -1*ones(n/4,1); -4*ones(n/4,1)]; 
+    method = [-4*ones(n/4,1); -2*ones(n/4,1) ; -1*ones(n/4,1); -4*ones(n/4,1)];
     C = subsets(nsamp, n, p, ncomb, msg, method);
     if verLessThan('matlab','8.4')
         hist(double(C(:))); xlim([1 n]);
@@ -265,9 +265,9 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
 
     % Some user-defined weights for weighted sampling, provided as a vector of "method" option.
-    method = [1*ones(n/2,1); ones(n/2,1)]; 
+    method = [1*ones(n/2,1); ones(n/2,1)];
 
-    % C must be a nsamp-by-k*p matrix, to contain the extraction of nsamp p-combinations k times. 
+    % C must be a nsamp-by-k*p matrix, to contain the extraction of nsamp p-combinations k times.
     % This can be easily done as follows:
     for i=1:k
         Ck(:,(i-1)*p+1:i*p) = subsets(nsamp, n, p, ncomb, msg, method);
@@ -282,10 +282,10 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 
 seq=1:n;
 
-if nargin<4
+if nargin<4 || isempty(ncomb)
     ncomb=bc(n,p);
-    
 end
+
 
 if ncomb<nsamp
     disp(['Warning: number of subsets which have been chosen (' num2str(nsamp) ') are greater than possibile number (' num2str(ncomb) ')']);
@@ -299,18 +299,24 @@ if nargin<5
 end
 
 if nargin<6
-    method=1;
+    method=0;
 end
+
+% this check is used in combination of randsampleFS, for computational
+% efficiency
+after2011b = ~verLessThan('MATLAB','7.14');
 
 %% Combinatorial part to extract the subsamples
 % Key combinatorial variables used:
-% C = matrix containing the indexes of the subsets (subsamples) of size p
-% nselected = size(C,1), the number of all selected subsamples.
-% nselected = number of combinations on which the procedure is run.
-% rndsi = vector of nselected indexes randomly chosen between 1 e ncomb.
+% C = matrix containing the indexes of the p-subsets.
+% nselected = size(C,1), number of p-subsets to be selected.
+% rndsi = vector of nselected indexes, randomly chosen between 1 e ncomb.
+
+% Constants that determine the method used to extract the p-subsets
 Tcomb = 5e+7; T2comb = 1e+8;
 
-if nsamp==0 || ncomb <= Tcomb 
+if nsamp==0 || ncomb <= Tcomb
+    
     if nsamp==0
         if ncomb > 100000 && msg==1
             disp(['Warning: you have specified to extract all subsets (ncomb=' num2str(ncomb) ')']);
@@ -323,7 +329,7 @@ if nsamp==0 || ncomb <= Tcomb
     
     % If nsamp = 0 matrix C contains the indexes of all possible subsets
     C=combsFS(seq,p);
-        
+    
     % If nsamp is > 0 just select randomly ncomb rows from matrix C
     if nsamp>0
         if ~isscalar(method)
@@ -331,39 +337,39 @@ if nsamp==0 || ncomb <= Tcomb
             % The weight of a p-subset is the product of the weights of the units
             % in the sample
             Cw = prod(method(C),2);
-            rndsi=randsampleFS(ncomb,nsamp,Cw);            
+            rndsi=randsampleFS(ncomb,nsamp,Cw,after2011b);
         else
             % Extract without replacement nsamp elements from ncomb
-            rndsi=randsampleFS(ncomb,nsamp,2);
+            rndsi=randsampleFS(ncomb,nsamp,method,after2011b); % METHOD: it was set to 2
         end
         C = C(rndsi,:);
     end
     
 else
+    
     if nsamp > 100000 && msg==1
         disp('Warning: you have specified to extract more than 100000 subsets');
         disp('To iterate so many times may be lengthy');
     end
     nselected = nsamp;
     
+    % usepascal: flag used to decide whether to use the Pascal triangle
+    % tric, which allows to reduce considerably the computation time
     usepascal=0;
     
     if ncomb>Tcomb && ncomb<T2comb
         
         % Extract without replacement nsamp elements from ncomb
-        rndsi=randsampleFS(ncomb,nsamp,2);
+        rndsi=randsampleFS(ncomb,nsamp,method,after2011b); % METHOD: it was set to 2
         
-        if ispc
-            
+        % The Pascal triangle can be used only if there is enough memory.
+        % Unfortunately, the memory check works only in PC platforms.
+        if ispc % ispc returns a logical: no need to specify ispc == true
             [~,sys]=memory;
-            bytesavailable=sys.PhysicalMemory.Available;
-            if bytesavailable > 2*8*n^2
+            if sys.PhysicalMemory.Available > 2*8*n^2
                 pascalM=pascal(n);
-            else
-                pascalM=pascal(n);
+                usepascal=1;
             end
-            usepascal=1;
-            
         end
         
     end
@@ -380,18 +386,13 @@ else
     for i=1:nselected
         
         if ncomb>Tcomb && ncomb<T2comb
-            
             if usepascal
                 s=lexunrank(n,p,rndsi(i),pascalM);
             else
                 s=lexunrank(n,p,rndsi(i));
             end
         else
-            if isscalar(method)
-                s=randsampleFS(n,p);
-            else
-                s=randsampleFS(n,p,method);
-            end
+            s=randsampleFS(n,p,method,after2011b);
         end
         C(i,:)=s;
         
