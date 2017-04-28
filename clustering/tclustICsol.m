@@ -7,10 +7,10 @@ function out  = tclustICsol(IC,varargin)
 %   series of matrices which contain the values of the information criteria
 %   BIC/ICL/CLA for different values of k and c) and extracts the first
 %   best solutions. Two solutions are considered equivalent if the value of
-%   the adjusted Rand index is above a certain threshold. For each
-%   tentative solution the program checks the adjacent values of c for
-%   which the solution is stable. A matrix with adjusted Rand indexes is
-%   given for the extracted solutions.
+%   the adjusted Rand index (or the adjusted Fowlkes and Mallows index) is
+%   above a certain threshold. For each tentative solution the program
+%   checks the adjacent values of c for which the solution is stable. A
+%   matrix with adjusted Rand indexes is given for the extracted solutions.
 %
 %  Required input arguments:
 %
@@ -27,7 +27,7 @@ function out  = tclustICsol(IC,varargin)
 %                Remark: fields CLACLA and IDXCLA are linked together.
 %                   CLACLA and IDXCLA are compulsory just if optional input
 %                   argument 'whichIC' is 'CLACLA' or 'ALL'.
-%                IC.MIXMIX = matrix of size length(kk)-by-length(cc) 
+%                IC.MIXMIX = matrix of size length(kk)-by-length(cc)
 %                   containinig the value of the penalized
 %                   mixture likelihood (BIC). This field is linked with
 %                   out.IDXMIX.
@@ -143,6 +143,26 @@ function out  = tclustICsol(IC,varargin)
 %               Remark: field out.MIXMIXbsari is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'MIXMIX'.
 %
+% out.ARIMIX = Matrix of adjusted Rand indexes between two consecutive value of c.
+%                 Matrix of size k-by-length(cc)-1. The first column
+%                 contains the ARI indexes between 
+%                 with cc(2) and cc(1) given k. The second column contains
+%                 the the ARI indexes  between cc(3) and cc(2) given k.
+%                 This output is also present in table format (see below)
+%               Remark: field ARIMIX is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
+% out.ARIMIXtable = Table with the same meaning of matrixo ARIMIX above.
+%                 A Matlab table has also been been given to faciliate the
+%                 interpretation of the rows and columns. The Rownames of
+%                 this table correspond to the values of k which are used
+%                 and the colNames of this table contain in a dynamic way
+%                 the two values of c which are considered. For example if
+%                 the first two values of c are c=3 and c=7, the first
+%                 column name of this table is c3_v_c7 to denote that the
+%                 entry of this column are the ARI indexes between c=3 and
+%                 c=7
+%               Remark: field ARIMIXtable is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
 %  out.MIXCLAbs = this output has the same structure as out.MIXMIXbs but
 %               it is referred to MIXCLA.
 %               Remark: field out.MIXCLAbs is present only if 'whichIC' is
@@ -163,8 +183,38 @@ function out  = tclustICsol(IC,varargin)
 %               Remark: field out.MIXCLAbsari is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'CLACLA'
 %
+% out.ARICLA = Matrix of adjusted Rand indexes between two consecutive value of c.
+%                 Matrix of size k-by-length(cc)-1. The first column
+%                 contains the ARI indexes between 
+%                 with cc(2) and cc(1) given k. The second column contains
+%                 the the ARI indexes  between cc(3) and cc(2) given k.
+%                 This output is also present in table format (see below)
+%               Remark: field ARICLA is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'CLACLA'
+% out.ARICLAtable = Table with the same meaning of matrixo CLACLAari above.
+%                 A Matlab table has also been been given to faciliate the
+%                 interpretation of the rows and columns. The Rownames of
+%                 this table correspond to the values of k which are used
+%                 and the colNames of this table contain in a dynamic way
+%                 the two values of c which are considered. For example if
+%                 the first two values of c are c=3 and c=7, the first
+%                 column name of this table is c3_v_c7 to denote that the
+%                 entry of this column are the ARI indexes between c=3 and
+%                 c=7
+%               Remark: field ARICLAtable is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'CLACLA'
+%           out.kk = vector containing the values of k (number of
+%                   components) which have been considered. This  vector
+%                   is equal to input optional argument kk if kk had been
+%                   specified else it is equal to 1:5.
 %
-% See also: tclustIC, tclust
+%          out.cc = vector containing the values of c (values of the
+%                   restriction factor) which have been considered. This
+%                   vector is equal to input optional argument cc if cc had
+%                   been specified else it is equal to [1, 2, 4, 8, 16, 32,
+%                   64, 128].
+%
+% See also: tclustIC, tclust, carbikeplot
 %
 % References:
 %
@@ -220,8 +270,8 @@ function out  = tclustICsol(IC,varargin)
     [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',3);
     disp(outMIXMIX.MIXMIXbs)
     disp('Best 3 solutions using CLACLA')
-    [outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
-    disp(outCLACLCA.CLACLAbs)
+    [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
+    disp(outCLACLA.CLACLAbs)
 %}
 
 
@@ -320,41 +370,56 @@ elseif strcmp(whichIC,'MIXCLA')
 elseif strcmp(whichIC,'CLACLA')
     typeIC=0;
 else
-    warning('Supplied string for whichIC is not supported.')
+    warning('FSDA:tclustICsol:WrongIC','Supplied string for whichIC is not supported.')
     error('FSDA:tclustICsol:WrongIC','Specified information criterion is not supported: possible values are ''MIXMIX'' , ''MIXCLA'',  ''CLACLA'', ''ALL''')
 end
 
 
 if typeIC>0
-    ARIMIX=zeros(lkk,lcc);
+    ARIMIX=ones(lkk,lcc);
     IDXMIX=IC.IDXMIX;
 end
 
 if typeIC==0 || typeIC==3
-    ARICLA=zeros(lkk,lcc);
+    ARICLA=ones(lkk,lcc);
+    
     IDXCLA=IC.IDXCLA;
 end
 
 for k=1:length(kk) % loop for different values of k (number of groups)
-    for j=2:length(cc) % loop through the different values of c
-        if typeIC>0
-            if Rand==1
-            ARIMIX(k,j)=RandIndexFS(IDXMIX{k,j-1},IDXMIX{k,j});
-            else
-            ARIMIX(k,j)=FowlkesMallowsIndex(IDXMIX{k,j-1},IDXMIX{k,j});
+    if kk(k) ~= 1 % just do the computations or ARI or FM indexes when k is different from 1
+        for j=2:length(cc) % loop through the different values of c
+            if typeIC>0
+                if Rand==1
+                    ARIMIX(k,j)=RandIndexFS(IDXMIX{k,j-1},IDXMIX{k,j});
+                else
+                    ARIMIX(k,j)=FowlkesMallowsIndex(IDXMIX{k,j-1},IDXMIX{k,j});
+                end
+                
             end
-            
-        end
-        if typeIC==0 || typeIC==3
-             if Rand==1
-            ARICLA(k,j)=RandIndexFS(IDXCLA{k,j-1},IDXCLA{k,j});
-             else
-                  ARICLA(k,j)=FowlkesMallowsIndex(IDXCLA{k,j-1},IDXCLA{k,j});
-             end
-             
+            if typeIC==0 || typeIC==3
+                if Rand==1
+                    ARICLA(k,j)=RandIndexFS(IDXCLA{k,j-1},IDXCLA{k,j});
+                else
+                    ARICLA(k,j)=FowlkesMallowsIndex(IDXCLA{k,j-1},IDXCLA{k,j});
+                end
+                
+            end
         end
     end
 end
+
+% Prepare rownames and colsnames for table which will contain
+% in the rows the number of groups from
+rownamesARI=strcat(cellstr(repmat('k=',length(kk),1)), cellstr(num2str(kk')));
+
+lc1=length(cc)-1;
+cup=strcat(cellstr(repmat('c',lc1,1)), cellstr(num2str(cc(2:end)')));
+clow=strcat(cellstr(repmat('c',lc1,1)), cellstr(num2str(cc(1:end-1)')));
+cuplow=strcat(cup,repmat('_vs_',lc1,1),clow);
+colnamesARI=regexprep(cuplow,' ','');
+
+
 
 out=struct;
 
@@ -367,6 +432,10 @@ if typeIC==2 || typeIC==3
     % classification
     MIXMIXbsIDX=plotBestSolutions(IC.Y,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX',plots);
     out.MIXMIXbsIDX=MIXMIXbsIDX;
+    out.ARIMIX=ARIMIX(:,2:end);
+    ARIMIXtable=array2table(ARIMIX(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
+    out.ARIMIXtable=ARIMIXtable;
+    
 end
 
 if typeIC==1 || typeIC==3
@@ -377,7 +446,9 @@ if typeIC==1 || typeIC==3
     % classification
     MIXCLAbsIDX=plotBestSolutions(IC.Y,IC.IDXMIX,MIXCLAbs,kk,cc,'MIXCLA',plots);
     out.MIXCLAbsIDX=MIXCLAbsIDX;
-    
+    out.ARIMIX=ARIMIX(:,2:end);
+    ARIMIXtable=array2table(ARIMIX(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
+    out.ARIMIXtable=ARIMIXtable;
 end
 
 if typeIC==0 || typeIC==3
@@ -388,7 +459,15 @@ if typeIC==0 || typeIC==3
     % classification
     CLACLAbsIDX=plotBestSolutions(IC.Y,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots);
     out.CLACLAbsIDX=CLACLAbsIDX;
+    out.ARICLA=ARICLA(:,2:end);
+    ARICLAtable=array2table(ARICLA(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
+    out.ARICLAtable=ARICLAtable;
+    
 end
+
+% Store values of c and k which have been used
+out.cc=cc;
+out.kk=kk;
 
 end
 
@@ -402,7 +481,12 @@ function [Bestsols,ARIbest]  = findBestSolutions(PENloglik,ARI,IDX,kk,cc,NumberO
 % kk  = vector containing values of k which have to be considered
 % cc  = vector containing values of c which have to be considered
 ARI=ARI';
-ARI(2:end,1)=1;
+
+% The rows of ARI refer to the values of c. The columns of ARI refer to k
+
+% this instruction should not be necessary anymore
+% ARI(2:end,1)=1;
+
 Xcmod=PENloglik';
 lcc=length(cc);
 seqcc=1:lcc;
@@ -410,161 +494,173 @@ seqkk=1:length(kk);
 Bestsols=cell(NumberOfBestSolutions,5);
 Bestsols{1,5}='true';
 endofloop=0;
+NumberOfExistingSolutions=NumberOfBestSolutions;
 for z=1:NumberOfBestSolutions
     
+    % valmin= mimimum for IC each value of k
     [valmin,indmin]=min(Xcmod,[],1);
-   
-    % indminall identifies for which k there is the optimal solution
+    
+    % minBICk identifies position of k where there is the optimal solution
     [~,minBICk]=min(valmin);
+    % minBICc position of the best value of c where there is the optimal
+    % solution
     minBICc=indmin(minBICk);
     
-    if msg==1
-        disp(['Best solution number: ' num2str(z)])
-        disp(['k=' num2str(kk(minBICk))])
-        disp(['c=' num2str(cc(minBICc))])
-    end
-    % overall minimum is in col minBICk
-    % overall minimum is in row minBICc
-    Xcmod(indmin(minBICk),minBICk)=Inf;
-    cwithbestsol=nan(length(cc),1);
-    cwithbestsol(minBICc)=1;
-    % Store value of k
-    Bestsols{z,1}=kk(minBICk);
-    % Store value of c
-    Bestsols{z,2}=cc(minBICc);
-    if msg==1
-        disp('Find for which values of c best solution extends to')
-    end
-    for m=1:1000
-        [valmin,indmin]=min(Xcmod,[],1);
-        if min(valmin)<Inf
-            % indminall identifies for which k there is the optimal solution
-            [~,minBICknew]=min(valmin);
-            % disp(['k=' num2str(kk(minBICknew))])
-            minBICcnew=indmin(minBICknew);
-            twoc=[minBICcnew minBICc];
-            
-            if minBICknew==minBICk && min(ARI(min(twoc)+1:max(twoc),minBICk))>ThreshRandIndex
-                if msg ==1
-                    disp(['c=' num2str(cc(minBICcnew))])
-                end
-                Xcmod(minBICcnew,minBICk)=Inf;
-                % replace old minBICc with minBICcnew
-                cwithbestsol(minBICcnew)=1;
-                minBICc=minBICcnew;
-                % as concerns k, it is the same therefore there is nothing to do
-            else
-                % Store the values of c associated to the best solution
-                Bestsols{z,3}=cc(cwithbestsol==1);
-                
-                % The interval of values of c for which the solution is uniformly
-                % better has been found, however, now we have to make sure that we
-                % do not consider anymore the solutions for the same k which have a
-                % value of R index adjacent to those which have already been found
-                % greater than a certain threshold
-                % Remark. If minBICk =1
-                
-                if minBICk ==1
-                    Bestsols{z,4}=cc;
-                    Xcmod(:,minBICk)=Inf;
-                else
-                    intc=seqcc(cwithbestsol==1);
-                    outc=cc(cwithbestsol~=1);
-                    cctoadd=zeros(length(cc),1);
-                    
-                    if ~isempty(outc)
-                        % candcbelow = indexes of the set of candidate values for c which are smaller than
-                        % those assocaited with best solutions found so far. For
-                        % example, if candc =(1 2) it means that we check whether for the same value of k
-                        % solution with cc(2) and cc(1) have a R index greater than a certain threshold.
-                        % If it is the case this means that these solutions do not have to be considered anymore
-                        candcbelow=seqcc(seqcc<min(intc));
-                        if ~isempty(candcbelow)
-                            posctoadd=min(intc);
-                            for r=1:length(candcbelow)
-                                if ARI(posctoadd,minBICk)>ThreshRandIndex
-                                    Xcmod(posctoadd-1,minBICk)=Inf;
-                                    cctoadd(posctoadd-1)=1;
-                                    posctoadd=posctoadd-1;
-                                else
-                                    break
-                                end
-                            end
-                        end
-                        
-                        candcabove=seqcc(seqcc>max(intc));
-                        if ~isempty(candcabove)
-                            posctoadd=max(intc)+1;
-                            for r=1:length(candcabove)
-                                if ARI(posctoadd,minBICk)>ThreshRandIndex
-                                    Xcmod(posctoadd,minBICk)=Inf;
-                                    cctoadd(posctoadd)=1;
-                                    posctoadd=posctoadd+1;
-                                else
-                                    break
-                                end
-                            end
-                        end
-                        Bestsols{z,4}=cc(cctoadd==1);
-                    end
-                end
-                % get out of the loop because in this case there is a new candidate
-                % solution (with the same k because the R index was smaller than a
-                % certain threshold, or with a different k)
-                
-                % Before getting out of the loop, check if the solution
-                % which has just been found, has a Rand index greater than a
-                % certain threshold with those which have already been
-                % found
-                if z>1
-                    for  j=1:z-1
-                        idxpreviousz=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cc==Bestsols{j,2})};
-                        idxcurrentz=IDX{seqkk(kk==Bestsols{z,1}),seqcc(cc==Bestsols{z,2})};
-                        if RandIndexFS(idxpreviousz,idxcurrentz)>ThreshRandIndex
-                            Bestsols{z,5}='spurious';
-                            break
-                        else
-                            Bestsols{z,5}='true';
-                        end
-                    end
-                end
-                
-                break
-            end
-            
-            % Check if the solution which has just been found has a
-            % Rand index greater than a certain threshold with those which have
-            % already been found
-            if z>1
-                for  j=1:z-1
-                    idxpreviousz=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cc==Bestsols{j,2})};
-                    idxcurrentz=IDX{seqkk(kk==Bestsols{z,1}),seqcc(cc==Bestsols{z,2})};
-                    if RandIndexFS(idxpreviousz,idxcurrentz)>ThreshRandIndex
-                        Bestsols{z,5}='spurious';
-                        break
-                    else
-                        Bestsols{z,5}='true';
-                    end
-                end
-            end
-        else % if Xcmod is full of inf than get out of the loop
-            Bestsols=Bestsols(1:z,:);
-            endofloop=1;
-            break
-        end
-    end
-    if endofloop==1
+    if min(valmin)<Inf
+        
         if msg==1
-            disp(['There are at most ' num2str(z) ' different solutions'])
+            disp(['Best solution number: ' num2str(z)])
+            disp(['k=' num2str(kk(minBICk))])
+            disp(['c=' num2str(cc(minBICc))])
         end
+        % overall minimum is in col minBICk
+        % overall minimum is in row minBICc
+        Xcmod(indmin(minBICk),minBICk)=Inf;
+        cwithbestsol=nan(length(cc),1);
+        cwithbestsol(minBICc)=1;
+        % Store value of k in column 1 of Bestsols
+        Bestsols{z,1}=kk(minBICk);
+        % Store value of c in column 2 of Bestsols
+        Bestsols{z,2}=cc(minBICc);
+        if msg==1
+            disp('Find for which adjacent value of c (and fixed k) best solution extends to')
+        end
+        
+        % Find overall minimum of matrix Xcmod after excluding the column
+        % associated with the value of k where minBICk lies
+        XcmodWithoutBestk=Xcmod;
+        XcmodWithoutBestk(:,kk(minBICk))=[];
+        % minICconstr= min value of IC excluding the values involving column
+        % minBICk
+        minICconstr=min(min(XcmodWithoutBestk));
+        cctoadd=zeros(length(cc),1);
+        
+        candcabove=seqcc(seqcc>minBICc);
+        if ~isempty(candcabove)
+            for r=1:length(candcabove)
+                posctoadd=candcabove(r);
+                if ARI(posctoadd,minBICk)>ThreshRandIndex && Xcmod(posctoadd,minBICk)<minICconstr
+                    Xcmod(posctoadd,minBICk)=Inf;
+                    cctoadd(posctoadd)=1;
+                else
+                    break
+                end
+            end
+        end
+        
+        candcbelow=seqcc(seqcc<minBICc);
+        if ~isempty(candcbelow)
+            for r=length(candcbelow):-1:1
+                posctoadd=candcbelow(r);
+                if ARI(posctoadd+1,minBICk)>ThreshRandIndex && Xcmod(posctoadd,minBICk)<minICconstr
+                    Xcmod(posctoadd,minBICk)=Inf;
+                    cctoadd(posctoadd)=1;
+                else
+                    break
+                end
+            end
+        end
+        
+        
+        cwithbestsol(cctoadd==1)=1;
+        % Store the values of c associated to the best solution
+        Bestsols{z,3}=cc(cwithbestsol==1);
+        
+        % The interval of values of c for which the solution is uniformly
+        % better has been found, however, now we have to make sure that we
+        % do not consider anymore the solutions for the same k which have a
+        % value of R index adjacent to those which have already been found
+        % greater than a certain threshold
+        % Remark. If minBICk =1
+        
+        
+        if minBICk ==1
+            Bestsols{z,4}=cc;
+            Xcmod(:,minBICk)=Inf;
+        else
+            intc=seqcc(cwithbestsol==1);
+            outc=cc(cwithbestsol~=1);
+            cctoadd=zeros(length(cc),1);
+            
+            if ~isempty(outc)
+                % candcbelow = indexes of the set of candidate values for c which are smaller than
+                % those associated with best solutions found so far. For
+                % example, if candc =(1 2) it means that we check whether for the same value of k
+                % solution with cc(2) and cc(1) have a R index greater than a certain threshold.
+                % If it is the case this means that these solutions do not have to be considered anymore
+                candcbelow=seqcc(seqcc<min(intc));
+                
+                if ~isempty(candcbelow)
+                    for r=length(candcbelow):-1:1
+                        posctoadd=candcbelow(r);
+                        if ARI(posctoadd+1,minBICk)>ThreshRandIndex
+                            Xcmod(posctoadd,minBICk)=Inf;
+                            cctoadd(posctoadd)=1;
+                        else
+                            break
+                        end
+                    end
+                end
+                
+                candcabove=seqcc(seqcc>max(intc));
+                if ~isempty(candcabove)
+                    for r=1:length(candcabove)
+                        posctoadd=candcabove(r);
+                        if ARI(posctoadd,minBICk)>ThreshRandIndex
+                            Xcmod(posctoadd,minBICk)=Inf;
+                            cctoadd(posctoadd)=1;
+                        else
+                            break
+                        end
+                    end
+                end
+                
+                Bestsols{z,4}=cc(cctoadd==1);
+            end
+        end
+        % get out of the loop because in this case there is a new candidate
+        % solution (with the same k because the R index was smaller than a
+        % certain threshold, or with a different k)
+        
+        % Before getting out of the loop, check if the solution
+        % which has just been found, has a Rand index greater than a
+        % certain threshold with those which have already been
+        % found
+        if z>1
+            idxcurrentz=IDX{seqkk(kk==Bestsols{z,1}),seqcc(cc==Bestsols{z,2})};
+            
+            for  j=1:z-1
+                idxpreviousz=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cc==Bestsols{j,2})};
+                if RandIndexFS(idxpreviousz,idxcurrentz)>ThreshRandIndex  && strcmp(Bestsols{j,5},'true')==1
+                    Bestsols{z,5}='spurious';
+                    break
+                else
+                    Bestsols{z,5}='true';
+                end
+            end
+        end
+        
+        
+    else % if Xcmod is full of inf than get out of the loop
+        NumberOfExistingSolutions=z-1;
+        Bestsols=Bestsols(1:NumberOfExistingSolutions,:);
+        endofloop=1;
         break
     end
 end
 
+if endofloop==1
+    if msg==1
+        disp(['There are at most ' num2str(z) ' different solutions'])
+    end
+    %  break
+end
+
+
 %% Find matrix of ARI for the z solutions which have been found
-ARIbest=zeros(z,z);
-for i=1:z
-    for  j=1:z
+ARIbest=zeros(NumberOfExistingSolutions,NumberOfExistingSolutions);
+for i=1:NumberOfExistingSolutions
+    for  j=1:NumberOfExistingSolutions
         idxi=IDX{seqkk(kk==Bestsols{i,1}),seqcc(cc==Bestsols{i,2})};
         idxj=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cc==Bestsols{j,2})};
         ARIbest(i,j)=RandIndexFS(idxi,idxj);
@@ -591,7 +687,10 @@ for i=1:nbestsol
         title([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
     end
 end
-cascade
+
+if plots==1
+    cascade
+end
 
 end
 %FScategory:CLUS-RobClaMULT
