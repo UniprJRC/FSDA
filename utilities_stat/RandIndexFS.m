@@ -167,14 +167,14 @@ function [AR,RI,MI,HI]=RandIndexFS(c1,c2, noisecluster)
 
 if nargin < 2 || isempty(c2)
     if size(c1,2)<2
-        error('RandIndex: Requires a contingency table with at least two columns')
+        error('FSDA:RandIndexFS:WrongInput','RandIndex requires a contingency table with at least two columns')
     end
     % Supplied input is the contingency table
     C=c1;
 else
     
     if min(size(c1)) > 1 || min(size(c2)) > 1
-        error('RandIndex: Requires two vector arguments')
+        error('FSDA:RandIndexFS:WrongInput','RandIndex: Requires two vector arguments')
     end
     
     if nargin>2
