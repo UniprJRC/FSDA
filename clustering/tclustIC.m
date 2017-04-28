@@ -22,7 +22,7 @@ function out  = tclustIC(Y,varargin)
 %
 %  Optional input arguments:
 %
-%           kk: Integer vector specifying the number of mixture components 
+%           kk: Integer vector specifying the number of mixture components
 %               (clusters) for which the BIC is to be calculated.
 %               Vector. The default value of kk is 1:5.
 %                 Example - 'kk',1:4
@@ -43,16 +43,16 @@ function out  = tclustIC(Y,varargin)
 %                   likelihood is used. This option corresponds to the use of
 %                   the Bayesian Information criterion (BIC). In output
 %                   structure out just the matrix out.MIXMIX is given.
-%               'MIXCLA'  = a mixture model is fitted but to compute the 
+%               'MIXCLA'  = a mixture model is fitted but to compute the
 %                   information criterion the classification likelihood is
 %                   used. This option corresponds to the use of the
 %                   Integrated Complete Likelihood (ICL). In output
 %                   structure out just the matrix out.MIXCLA is given.
-%               'CLACLA' =  everything is based on the classification 
+%               'CLACLA' =  everything is based on the classification
 %                   likelihood. This information criterion will be called
 %                   CLA. In output structure out just the matrix out.CLACLA
 %                   is given.
-%               'ALL' = both classification and mixture likelihood are used. 
+%               'ALL' = both classification and mixture likelihood are used.
 %                   In this case all the three information criteria CLA,
 %                   ICL and BIC are computed. In output structure out all
 %                   the three matrices out.MIXMIX and out.MIXCLA and
@@ -64,9 +64,9 @@ function out  = tclustIC(Y,varargin)
 %               which have to be trimmed. alpha is a scalar between 0 and
 %               0.5 or an integer specifying the number of observations to
 %               be trimmed. If alpha = 0 all observations are considered.
-%               More in detail, if 0 < alpha < 1 clustering is based on 
-%               h = fix(n*(1-alpha)) observations. Else if alpha is an 
-%               integer greater than 1 clustering is based on h=n-floor(alpha). 
+%               More in detail, if 0 < alpha < 1 clustering is based on
+%               h = fix(n*(1-alpha)) observations. Else if alpha is an
+%               integer greater than 1 clustering is based on h=n-floor(alpha).
 %               The default value of alpha which is used is 0.
 %                 Example - 'alpha',0
 %                 Data Types - single | double
@@ -77,14 +77,14 @@ function out  = tclustIC(Y,varargin)
 %               extracted.
 %               Remark - if the number of all possible subset is <300 the
 %               default is to extract all subsets, otherwise just 300.
-%               - If nsamp is a matrix it contains in the rows the indexes 
+%               - If nsamp is a matrix it contains in the rows the indexes
 %                 of the subsets which have to be extracted. nsamp in this
 %                 case can be conveniently generated  by function subsets.
 %                 nsamp can have k columns or k*(v+1) columns. If nsamp has
 %                 k columns the k initial centroids each iteration i are
 %                 given by X(nsamp(i,:),:) and the covariance matrices are
 %                 equal to the identity.
-%               - If nsamp has k*(v+1) columns the initial centroids and 
+%               - If nsamp has k*(v+1) columns the initial centroids and
 %                 covariance matrices in iteration i are computed as follows
 %                 X1=X(nsamp(i,:),:)
 %                 mean(X1(1:v+1,:)) contains the initial centroid for group 1
@@ -100,7 +100,7 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %
-%    refsteps : Number of refining iterations. Scalar. Number of refining  
+%    refsteps : Number of refining iterations. Scalar. Number of refining
 %               iterations in subsample.  Default is 15. refsteps = 0 means
 %               "raw-subsampling" without iterations.
 %                 Example - 'refsteps',10
@@ -132,7 +132,7 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'startv1',1
 %                 Data Types - single | double
 %
-%       restr : The type of restriction to be applied on the cluster scatter 
+%       restr : The type of restriction to be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
 %               eigen implies restriction on the eigenvalues while deter
 %               implies restrictions on the determinant.
@@ -146,7 +146,7 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'plots',1
 %                 Data Types - single | double
 %
-%     numpool : scalar. If numpool > 1, the routine automatically checks if 
+%     numpool : scalar. If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
 %               numpool <= 1, the random starts are run sequentially. By
@@ -195,12 +195,12 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'cleanpool',1
 %                 Data Types - single | double
 %
-%       msg  :  Message on the screen. Scalar. Scalar which controls whether 
+%       msg  :  Message on the screen. Scalar. Scalar which controls whether
 %               to display or not messages about code execution.
 %                 Example - 'msg',1
 %                 Data Types - single | double
 %
-%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 
+%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1
 %               no check is performed on matrix Y. As default nocheck=0.
 %                 Example - 'nocheck',10
 %                 Data Types - single | double
@@ -232,14 +232,14 @@ function out  = tclustIC(Y,varargin)
 %                   length(cc). Each element of the cell is a vector of
 %                   length n containinig the assignment of each unit using
 %                   the classification model. This output is present only
-%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.    
+%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
 %
 %                out.MIXMIX = matrix of size 5-times-8 if kk and cc are not
 %                   specififed else it is a matrix of size length(kk)-times
 %                   length(cc) containinig the value of the penalized
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
-%                   
+%
 %                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
 %                   specififed else it is a matrix of size length(kk)-times
 %                   length(cc) containinig the value of the ICL. This
@@ -297,7 +297,7 @@ function out  = tclustIC(Y,varargin)
         VariableNames={'c_1'; 'c_2'; 'c_4'; 'c_8'; 'c_16'; 'c_32'; 'c_64'; 'c_128'};
         disp(VariableNames')
         disp(out.MIXMIX)
-        disp('Rows refers to k (number of groups') 
+        disp('Rows refers to k (number of groups')
     else
         RowNames=cellstr([repmat('k=',length(out.kk),1) num2str(out.kk')]);
         VariableNames=matlab.lang.makeValidName(cellstr([repmat('c=',length(out.cc),1) num2str(out.cc')]));
@@ -307,7 +307,7 @@ function out  = tclustIC(Y,varargin)
     % values of k (number of groups) and c (restriction factor)
     [valmin,indk]=min(out.MIXMIX);
     [minIC,indc]=min(valmin);
-    disp(['Smallest value of IC is ' num2str(minIC) ' and takes place for'])    
+    disp(['Smallest value of IC is ' num2str(minIC) ' and takes place for'])
     disp(['k=' num2str(out.kk(indk(indc))) ' and  c=' num2str(out.cc(indc))]);
 
 %}
@@ -486,9 +486,15 @@ pariter=0;
 for k=1:length(kk)  % loop for different values of k (number of groups)
     
     seqk=kk(k);
-
-    Cnsamp=subsets(nsamp,n,(v+1)*seqk);
+    
+    % Cnsamp=subsets(nsamp,n,(v+1)*seqk);
     %seqk = number of groups to consider
+    % For each value of seqk extract subsamples once and for all
+    Cnsamp=subsets(nsamp,n,(v+1)*seqk);
+    % For each value of k extract random numbers to initialize proportions
+    % once and for all
+    RandNumbForNini=rand(k,nsamp);
+    
     
     parfor (c=1:length(cc) , numpool)
         % columns = restr
@@ -497,7 +503,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
         if typeIC>0
             outMixt=tclust(Y,seqk,alpha,cc(c),'nsamp',Cnsamp,'plots',0,'msg',0,'mixt',2, ...
                 'restr',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-                'reftol',reftol);
+                'reftol',reftol,'RandNumbForNini',RandNumbForNini);
             IDXMIX{k,c}=outMixt.idx;
             if typeIC==2 || typeIC==3
                 MIXMIX(k,c)=outMixt.MIXMIX;
@@ -511,7 +517,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
             % tclust using classification likelihood
             outCla=tclust(Y,seqk,alpha,cc(c),'nsamp',Cnsamp,'plots',0,'msg',0, ...
                 'restr',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-                'reftol',reftol);
+                'reftol',reftol,'RandNumbForNini',RandNumbForNini);
             CLACLA(k,c)=outCla.CLACLA;
             IDXCLA{k,c}=outCla.idx;
         end

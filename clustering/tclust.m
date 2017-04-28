@@ -200,6 +200,20 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               (see for more details the help associated with nsamp)
 %                 Example - 'startv1',1
 %                 Data Types - single | double
+% RandNumbForNini: preextracted random numbers to initialize proportions.
+%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                random numbers which are used to initialize the
+%                proportions of the groups. This option is effective just
+%                if nsamp is a matrix which contains preextracted
+%                subsamples. The purpose of this option is to enable to
+%                user to replicate the results in case routine tclust is
+%                called using a parfor instruction (as it happens for
+%                example in routine IC, where tclust is called through a
+%                parfor for different values of the restriction factor).
+%                The default value of RandNumbForNini is empty that is
+%                random numbers from uniform are used.
+%                 Example - 'RandNumbForNini',''
+%                 Data Types - single | double
 %    restr    : The type of restriction to be applied on the cluster
 %               scatter matrices. Valid values are 'eigen' (default), or
 %               'deter'. eigen implies restriction on the eigenvalues while
@@ -662,7 +676,7 @@ if NoPriorSubsets ==1
     % Remark: startv1 must be immediately checked because the calculation of
     % ncomb is immediately affected.
     
-    if startv1
+    if startv1 ==1
         ncomb=bc(n,k*(v+1));
     else
         % If the number of all possible subsets is <300 the default is to extract
@@ -710,7 +724,7 @@ end
 % restrnum=1 implies eigenvalue restriction
 restrnum=1;
 
-options=struct('nsamp',nsampdef,'plots',0,'nocheck',0,...
+options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
     'msg',1,'Ysave',0,'refsteps',refstepsdef,'equalweights',false,...
     'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restr','eigen');
 
@@ -786,6 +800,13 @@ equalweights=options.equalweights;    % Specify if assignment must take into acc
 refsteps=options.refsteps;
 reftol=options.reftol;
 
+RandNumbForNini=options.RandNumbForNini;
+if isempty(RandNumbForNini)
+    NoPriorNini=1;
+else
+    NoPriorNini=0;
+end
+
 %Initialize the objective function (trimmed variance) by a
 %large  value
 vopt=-1e+30;
@@ -802,8 +823,8 @@ if mixt>=1 && equalweights == true
 end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
-if NoPriorSubsets
-    if startv1 && k*(v+1) < n
+if NoPriorSubsets ==1
+    if startv1 ==1 && k*(v+1) < n
         [C,nselected] = subsets(nsamp,n,k*(v+1),ncomb,msg);
     else
         [C,nselected] = subsets(nsamp,n,k,ncomb,msg);
@@ -911,6 +932,8 @@ if msg == 1
     end
 end
 
+
+
 %%  Random starts
 for i=1:nselected
     
@@ -924,10 +947,13 @@ for i=1:nselected
         disp(['Iteration ' num2str(i)])
     end
     
-    if startv1
+    if startv1 ==1
+        if NoPriorNini==1
+            randk=rand(k,1);
+        else
+            randk=RandNumbForNini(:,i);
+        end
         
-        % Initialize niini with with random numbers from uniform
-        randk=rand(k,1);
         niini=floor(h*randk/sum(randk));
         if restrnum==1
             cini=zeros(k,v);
