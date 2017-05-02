@@ -89,13 +89,6 @@ function h  = carbikeplot(RelSol,varargin)
 %                 Example - 'SpuriousSolutions',false
 %                 Data Types - single | double
 %
-%       msg  :  Message on the screen. Scalar. Scalar which controls
-%               whether to display or not messages about code execution.
-%               The default value of msg is 0, that is no message is
-%               displayed on the screen.
-%                 Example - 'msg',1
-%                 Data Types - single | double
-%
 %
 %  Output:
 %
@@ -157,7 +150,7 @@ function h  = carbikeplot(RelSol,varargin)
 %}
 
 %{
-    %% Plot of first two best solutions for Geyser data.
+    %% car-bike plot fot the gyeser data
     Y=load('geyser2.txt');
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
 
@@ -175,12 +168,10 @@ if ~isstruct(RelSol)
                 error('FSDA:carbikeplot:WrongInput','irst input argument must be a structure.');
 end
 
-% Message about code execution
-msg=0;
 SpuriousSolutions=false;
 
 if nargin>1
-    options=struct('msg',msg,'SpuriousSolutions',SpuriousSolutions);
+    options=struct('SpuriousSolutions',SpuriousSolutions);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -209,7 +200,6 @@ if nargin>1
         options.(varargin{i})=varargin{i+1};
     end
     
-    msg=options.msg;
     SpuriousSolutions=options.SpuriousSolutions;
     
 end
