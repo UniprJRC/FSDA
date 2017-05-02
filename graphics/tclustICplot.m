@@ -191,7 +191,10 @@ function tclustICplot(IC,varargin)
 %{
     %% Plot BIC, ICL and CLA for for Geyser data with all default options.
     Y=load('geyser2.txt');
-    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
+    % Make sure (whenever possible) that units 15, 30 and 69 are inside
+    % groups which have labels respectively equal to 1, 2 and 3.
+    UnitsSameGroup=[15 30 69];
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
     tclustICplot(out)
 
 %}

@@ -151,7 +151,7 @@ function out  = tclustICsol(IC,varargin)
 %                 This output is also present in table format (see below)
 %               Remark: field ARIMIX is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
-% out.ARIMIXtable = Table with the same meaning of matrixo ARIMIX above.
+% out.ARIMIXtable = Table with the same meaning of matrix ARIMIX above.
 %                 A Matlab table has also been been given to faciliate the
 %                 interpretation of the rows and columns. The Rownames of
 %                 this table correspond to the values of k which are used
@@ -323,7 +323,7 @@ if nargin>1
         
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:tclustBICsol:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:tclustICsol:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         
         % Check if all the specified optional arguments were present

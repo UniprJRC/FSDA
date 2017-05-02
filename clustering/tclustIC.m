@@ -211,6 +211,22 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
+%   UnitsSameGroup :  list of the units which must (whenever possible)
+%                   have the same label. Numeric vector.  For example if
+%                   UnitsSameGroup=[20 26], it means that group which contains
+%                   unit 20 is always labelled with number 1. Similarly,
+%                   the group which contains unit 26 is always labelled
+%                   with number 2, (unless it is found that unit 26 already
+%                   belongs to group 1). In general, group which contains
+%                   unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
+%                   labelled with number r (unless it is found that unit
+%                   UnitsSameGroup(r) has already been assigned to groups
+%                   1, 2, ..., r-1). The default value of UnitsSameGroup is
+%                   '' that is consistent labels are not imposed.
+%                 Example - 'UnitsSameGroup',[12 20]
+%                 Data Types - single | double
+%
+%
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
@@ -226,6 +242,8 @@ function out  = tclustIC(Y,varargin)
 %                   length(cc) containinig the value of the penalized
 %                   classification likelihood. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
+%                   The same output in MATLAB table format is present in
+%                   out.CLACLAtable.
 %
 %                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
 %                   specififed else it is a cell of size length(kk)-times
@@ -239,12 +257,16 @@ function out  = tclustIC(Y,varargin)
 %                   length(cc) containinig the value of the penalized
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
+%                   The same output in MATLAB table format is present in
+%                   out.MIXMIXtable.
 %
 %                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
 %                   specififed else it is a matrix of size length(kk)-times
 %                   length(cc) containinig the value of the ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA' or
 %                   'whichIC' is 'ALL'.
+%                   The same output in MATLAB table format is present in
+%                   out.MIXCLAtable.
 %
 %                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
 %                   specififed else it is a cell of size length(kk)-times
@@ -268,7 +290,7 @@ function out  = tclustIC(Y,varargin)
 %                   been used.
 %
 %
-% See also tclust, tclustICplot, carbikeplot
+% See also tclust, tclustICsol, tclustICplot, carbikeplot
 %
 % References:
 %
@@ -395,9 +417,13 @@ whichIC='ALL';
 msg=1;
 cc=[1 2 4 8 16 32 64 128];
 cleanpool=true;
+UnitsSameGroup='';
+
 options=struct('kk',kk,'cc',cc,'whichIC',whichIC,'alpha',alpha,'nsamp',nsamp,'plots',plots,'nocheck',0,...
     'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
-    'reftol',reftol,'startv1',startv1,'restr',restr,'numpool',numpool, 'cleanpool', cleanpool);
+    'reftol',reftol,'startv1',startv1,'restr',restr,...
+    'UnitsSameGroup',UnitsSameGroup,...
+    'numpool',numpool, 'cleanpool', cleanpool);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -405,7 +431,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:tclustBIC:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:tclustIC:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -416,7 +442,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:tclustBIC:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:tclustIC:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
@@ -444,6 +470,7 @@ if nargin > 1
     whichIC=options.whichIC;
     cleanpool=options.cleanpool;
     numpool=options.numpool;
+    UnitsSameGroup=options.UnitsSameGroup;
 end
 
 if strcmp(whichIC,'ALL')
@@ -478,6 +505,14 @@ if typeIC==0 || typeIC==3
     CLACLA=zeros(length(kk),length(cc));
     IDXCLA=cell(length(kk),length(cc));
 end
+
+
+% Prepare rownames and colsnames for table which will contain
+% in the rows the number of groups and in the columsn the values of c
+rownamesIC=strcat(cellstr(repmat('k=',length(kk),1)), cellstr(num2str(kk')));
+rownamesIC=regexprep(rownamesIC,' ','');
+colnamesIC=strcat(cellstr(repmat('c_',length(cc),1)), cellstr(num2str(cc')));
+colnamesIC=regexprep(colnamesIC,' ','');
 
 %% Preapare the pool (if required)
 pariter=0;
@@ -556,8 +591,15 @@ end
 % CLACLA
 if typeIC==0 || typeIC==3
     out.CLACLA=CLACLA;
-    out.IDXCLA=IDXCLA;
+    % out.(IC) is also given in table format
+    out.CLACLAtable=array2table(CLACLA,'RowNames',rownamesIC,'VariableNames',colnamesIC);
     
+    % Store whenever possible consistent labels
+    if ~isempty(UnitsSameGroup)
+        IDXCLA=UnitsSameCluster(IDXCLA,UnitsSameGroup);
+    end
+    
+    out.IDXCLA=IDXCLA;
     
     if plots==1
         figure
@@ -583,12 +625,19 @@ end
 
 % MIXMIX or MIXCLA
 if typeIC>0
+    if ~isempty(UnitsSameGroup)
+        IDXMIX=UnitsSameCluster(IDXMIX,UnitsSameGroup);
+    end
+    
     out.IDXMIX=IDXMIX;
 end
 
 % MIXMIX
 if typeIC==2 || typeIC==3
     out.MIXMIX=MIXMIX;
+    % out.(IC) is also given in table format
+    out.MIXMIXtable=array2table(MIXMIX,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+    
     if plots==1
         figure
         plot1=plot(kk',out.MIXMIX,'LineWidth',LineWidth);
@@ -613,6 +662,9 @@ end
 %MIXCLA
 if typeIC==1 || typeIC==3
     out.MIXCLA=MIXCLA;
+    % out.(IC) is also given in table format
+    out.MIXCLAtable=array2table(MIXCLA,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+    
     if plots==1
         figure
         plot1=plot(kk',out.MIXCLA,'LineWidth',LineWidth);
@@ -635,7 +687,7 @@ if typeIC==1 || typeIC==3
 end
 
 if plots==1
-    disp('The labels of c in high part of the plot denote the values of c for which IC is minimum')
+    disp('The labels of c in the top part of the plot denote the values of c for which IC is minimum')
 end
 
 % Store vectors kk and cc inside output structure out

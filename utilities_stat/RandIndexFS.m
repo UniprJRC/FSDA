@@ -211,7 +211,7 @@ totcomp=nchoosek(n,2);
 t2=sum(sum(C.^2));	%sum over rows & columnns of nij^2
 t3=.5*(nis+njs);
 
-%Expected avlue of the index (for adjustment)
+% Expected value of the index (for adjustment)
 % Hubert and Arabie proposed an adjustment which assumes a generalized
 % hypergeometric distribution as null hypothesis: the two clusterings are
 % drawn randomly with a fixed number of clusters and a fixed number of
