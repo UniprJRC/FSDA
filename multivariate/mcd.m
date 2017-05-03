@@ -13,56 +13,57 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %
 %  Optional input arguments:
 %
-%      bdp    : scalar. Breakdown point. (Number between 0
+%      bdp    : Breakdown point. Scalar. (Number between 0
 %               and 0.5). The default value is 0.5.
 %               Example - 'bdp',1/4 
 %               Data Types - double
-%      nsamp  : scalar. Number of subsamples of size v which have
+%      nsamp  : Number of subsamples. Scalar. Number of subsamples of size v which have
 %               to be extracted (if not given, default = 1000).
 %               Example - 'nsamp',10000 
 %               Data Types - double
-%    refsteps : scalar. Number of refining iterations in each
+%    refsteps : Number of refining iterations. Scalar. Number of refining iterations in each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %               Example - 'refsteps',10 
 %               Data Types - double
-%     reftol  : scalar. Tolerance for the refining steps.
+%     reftol  : Refining steps tolerance. Scalar. Tolerance for the refining steps.
 %               The default value is 1e-6;
 %               Example - 'reftol',1e-8 
 %               Data Types - double
-%refstepsbestr: scalar. Number of refining iterations for each
+%refstepsbestr: Number of refining iterations. Scalar. Number of refining iterations for each
 %               best subset (default = 50).
 %               Example - 'refstepsbestr',10 
 %               Data Types - double
-% reftolbestr : scalar. Value of tolerance for the refining steps
+% reftolbestr : Tolerance for refining steps. Scalar. Value of tolerance
+%               for the refining steps
 %               for each of the best subsets.
 %               The default value is 1e-8;
 %               Example - 'reftolbestr',1e-8
 %               Data Types - double
-%      bestr  : scalar. Number of "best locations" to remember from
+%      bestr  : Number of best solutions to store. Scalar. Number of "best locations" to remember from
 %               the subsamples. These will be later iterated until
 %               convergence (default=5)
 %               Example - 'bestr',10
 %               Data Types - double
-%     conflev : Scalar. Number between 0 and 1 containing confidence level which is
+%     conflev : Confidence level. Scalar. Number between 0 and 1 containing confidence level which is
 %               used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
 %               Example - 'conflev',0.99
 %               Data Types - double
-%  conflevrew : Scalar. Number between 0 and 1 containing confidence level which is
+%  conflevrew : Confidence level for to use for reweighting. Scalar. Number between 0 and 1 containing confidence level which is
 %               used to do the reweighting step.
 %               Default value is the one specified in previous option conflev
 %               Example - 'conflevrew',0.99
 %               Data Types - double
-%  betathresh : Scalar. Distribution to use. If betathresh = 1 the distribution which is used to
+%  betathresh : Distribution to use. Scalar. If betathresh = 1 the distribution which is used to
 %               declare units as outliers is a mixture of Rocke scaled F
 %               distribution and beta else (default) traditional chi^2
 %               distribution is used.
 %               Example - 'betathresh',1
 %               Data Types - double
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
+%      nocheck: No check on input data. Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
@@ -84,27 +85,36 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %                       are added are Y1, ...Yv.
 %               Example - 'plots',1
 %               Data Types - double or structure
-%        msg  : scalar. Display or not messages
-%               on the screen. If msg==1 (default) messages are displayed
+%        msg  : Display or not messages on the screen. 
+%               Scalar. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final
 %               estimator else no message is displayed on the screen.
 %               Example - 'msg',1
 %               Data Types - double
-%     tolMCD  : scalar. Tolerance to declare a subset as singular. The
+%     tolMCD  : Tolerance to declare a subset as singular. Scalar. The
 %               default value of tolMCD is exp(-50*v).
 %               Example - 'tolMCD',1e-20
 %               Data Types - double
-%    ysaveRAW : scalar that is set to 1 to request that the data matrix Y
+%    ysaveRAW : save Y. Scalar. Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure RAW. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'ysaveRAW',1
 %               Data Types - double
-%    ysaveREW : scalar that is set to 1 to request that the data matrix Y
+%    ysaveREW : save Y. Scalar. Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure REW. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'ysaveREW',1
+%               Data Types - double
+%smallsamplecor: small sample correction factor. Scalar. Scalar which
+%               defines whether to use or not small sample correction
+%               factor to inflate the scale estimate if it is equal to 1. The default value of 
+%               smallsamplecor is 1, that is the correction is used. 
+%               See
+%               http://users.ugent.be/~svaelst/publications/corrections.pdf
+%               for further details about the correction factor.
+%               Example - 'smallsamplecor',1
 %               Data Types - double
 %
 %  Output:
@@ -381,13 +391,17 @@ generictol = 1e-8;
 % but this is useless, as the roundoff level is eps = 2^(-52)
 tolMCDdef=eps('double');
 
+% if smallsamplecor ==1 (then small sample correction factor is
+% applied to the estimate of the scale)
+smallsamplecor=1;
+
 % store default values in the structure options
 options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'reftol',reftoldef,...
     'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',0.975,'conflevrew','',...
     'betathresh',0,'nocheck',0,'msg',1,'tolMCD',tolMCDdef,...
-    'ysaveRAW',0,'ysaveREW',0);
+    'ysaveRAW',0,'ysaveREW',0,'smallsamplecor',smallsamplecor);
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -510,7 +524,7 @@ if v==1 && h~=n
     
     REW.method=sprintf('\nUnivariate location and scale estimation.');
     
-    [RAW.loc,RAW.cov]=mcduni(Y,h,1-bdp);
+    [RAW.loc,RAW.cov]=mcduni(Y,h,1-bdp,smallsamplecor);
     
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
@@ -534,7 +548,10 @@ if v==1 && h~=n
     REW.cov=cov(Y(weights==1,:));
     
     factor=consistencyfactor(sum(weights),n,v);
+    if smallsamplecor ==1
     factor=factor*corfactorREW(v,n,1-bdp);
+    end
+    
     REW.cov=factor*REW.cov;
     
     md=(Y-REW.loc).^2/REW.cov;
@@ -851,7 +868,12 @@ RAW.bs=superbestsubset;
 % factor : if we multiply the raw MCD covariance matrix with factor, we obtain consistency
 %          when the data come from a multivariate normal distribution.
 factor=consistencyfactor(h,n,v);
+
+% Apply small sample correction factor 
+if smallsamplecor==1
 factor=factor*corfactorRAW(v,n,1-bdp);
+end
+
 RAW.cov=factor*superbestcov;
 RAW.obj=superbestobj*prod(madY)^2;
 
@@ -924,8 +946,11 @@ else
         factor=1;
     end
     
+    % Apply small sample correction factor 
+if smallsamplecor==1
     factor=factor*corfactorREW(v,n,1-bdp);
-    
+end
+
 end
 
 REW.cov=factor*REW.cov;
@@ -1186,7 +1211,7 @@ end
     end
 
 %% mcduni function
-    function [initmean,initcov]=mcduni(y,h,alpha)
+    function [initmean,initcov]=mcduni(y,h,alpha,smallsamplecorfactor)
         
         ncas=length(y);
         len=ncas-h+1;
@@ -1218,8 +1243,10 @@ end
         slutn(1:ndup)=ay(ijk);
         initmean=slutn(floor((ndup+1)/2))/h;
         
-        
+        if smallsamplecorfactor==1
         factor=corfactorRAW(1,ncas,alpha);
+        end
+        
         factor=factor*consistencyfactor(h,ncas,1);
         initcov=factor*sqmin/(h-1);
     end
