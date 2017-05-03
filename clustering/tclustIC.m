@@ -243,7 +243,7 @@ function out  = tclustIC(Y,varargin)
 %                   classification likelihood. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
 %                   The same output in MATLAB table format is present in
-%                   out.CLACLAtable.
+%                   out.CLACLAtable (if your MATLAB version is not<2013b).
 %
 %                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
 %                   specififed else it is a cell of size length(kk)-times
@@ -258,7 +258,7 @@ function out  = tclustIC(Y,varargin)
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
 %                   The same output in MATLAB table format is present in
-%                   out.MIXMIXtable.
+%                   out.MIXMIXtable (if your MATLAB version is not<2013b).
 %
 %                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
 %                   specififed else it is a matrix of size length(kk)-times
@@ -266,7 +266,7 @@ function out  = tclustIC(Y,varargin)
 %                   output is present only if 'whichIC' is 'MIXCLA' or
 %                   'whichIC' is 'ALL'.
 %                   The same output in MATLAB table format is present in
-%                   out.MIXCLAtable.
+%                   out.MIXCLAtable (if your MATLAB version is not<2013b).
 %
 %                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
 %                   specififed else it is a cell of size length(kk)-times
@@ -397,6 +397,9 @@ Y = chkinputM(Y,nnargin,vvarargin);
 % release).
 numpool = feature('numCores');
 
+% Check MATLAB version. If it is not smaller than 2013b than output is
+% shown in table format
+verMatlab=verLessThan('matlab','8.2.0');
 
 % User options
 % startv1def = default value of startv1 =1, initialization using covariance
@@ -591,8 +594,10 @@ end
 % CLACLA
 if typeIC==0 || typeIC==3
     out.CLACLA=CLACLA;
-    % out.(IC) is also given in table format
-    out.CLACLAtable=array2table(CLACLA,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+    if verMatlab == false
+        % out.(IC) is also given in table format
+        out.CLACLAtable=array2table(CLACLA,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+    end
     
     % Store whenever possible consistent labels
     if ~isempty(UnitsSameGroup)
@@ -635,8 +640,10 @@ end
 % MIXMIX
 if typeIC==2 || typeIC==3
     out.MIXMIX=MIXMIX;
-    % out.(IC) is also given in table format
-    out.MIXMIXtable=array2table(MIXMIX,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+    if verMatlab == false
+        % out.(IC) is also given in table format
+        out.MIXMIXtable=array2table(MIXMIX,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+    end
     
     if plots==1
         figure
@@ -662,8 +669,10 @@ end
 %MIXCLA
 if typeIC==1 || typeIC==3
     out.MIXCLA=MIXCLA;
-    % out.(IC) is also given in table format
-    out.MIXCLAtable=array2table(MIXCLA,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+    if verMatlab == false
+        % out.(IC) is also given in table format
+        out.MIXCLAtable=array2table(MIXCLA,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+    end
     
     if plots==1
         figure
