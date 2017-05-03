@@ -529,7 +529,9 @@ for z=1:NumberOfBestSolutions
         % Find overall minimum of matrix Xcmod after excluding the column
         % associated with the value of k where minBICk lies
         XcmodWithoutBestk=Xcmod;
-        XcmodWithoutBestk(:,kk(minBICk))=[];
+        XcmodWithoutBestk(:,minBICk)=[];
+       
+        
         % minICconstr= min value of IC excluding the values involving column
         % minBICk
         minICconstr=min(min(XcmodWithoutBestk));
