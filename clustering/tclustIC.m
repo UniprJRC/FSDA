@@ -528,7 +528,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
     Cnsamp=subsets(nsamp,n,(v+1)*seqk);
     % For each value of k extract random numbers to initialize proportions
     % once and for all
-    RandNumbForNini=rand(k,nsamp);
+    RandNumbForNini=rand(seqk,nsamp);
     
     
     parfor (c=1:length(cc) , numpool)
