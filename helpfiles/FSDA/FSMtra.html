@@ -137,10 +137,11 @@
         ii=ii+1;
     end
     disp(out)
-% Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</pre></div></div><pre class="codeoutput">    MLEtra: [23x2 double]
-    Exflag: [23x2 double]
-    LIKrat: [23x2 double]
-        Un: [22x11 double]
+% Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</pre></div></div><pre class="codeoutput">    MLEtra: [23&times;2 double]
+    Exflag: [23&times;2 double]
+    LIKrat: [23&times;2 double]
+        Un: [22&times;11 double]
+     class: 'FSMtra'
 
 </pre><img vspace="5" hspace="5" src="images\FSMtra_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSMtra_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSMtra_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSMtra_07.png" alt=""> </p></div></div><div id="ExtraExample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Emilia Romagna data, Example 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('emilia2001')
@@ -257,7 +258,7 @@
     Y1=Y(:,[6:9 24:28]);
     colnames={'6' '7' '8' '9' '24' '25' '26' '27' '28'};
     la0=[0.25,0,2,-1,0,0,1.5,1,1];
-    [out]=FSMtra(Y1,'plotsmle',1,'plotslrt',1,'la0',la0,'colnames',colnames);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
+    [out]=FSMtra(Y1,'plotsmle',1,'plotslrt',1,'la0',la0,'colnames',colnames);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
@@ -277,7 +278,7 @@
 </code>,<code>'plotslrt',1
 </code>,<code>'msg',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_family" class="clearfix"></div><h3 id="input_argument_namevalue_family" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>family</code> &#8212;string which identifies the family of transformations which
-               must be used</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>Possible values are 'BoxCox'
+               must be used.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Possible values are 'BoxCox'
                (default) or 'YJ'.</p> <p>
                The Box-Cox family of power transformations equals
                $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero,
@@ -291,48 +292,48 @@
                if input y is positive. Yeo-Johnson family of
                transformations does not have this limitation.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'family','YJ'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Point where to start monitoring required diagnostics</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Note that if bsb is suppliedinit&gt;=length(bsb). If init is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Point where to start monitoring required diagnostics.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Note that if bsb is suppliedinit&gt;=length(bsb). If init is
                not specified it will be set equal to floor(n*0.6).</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',50
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;It contains the units forming initial subset</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>The
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;It contains the units forming initial subset.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>The
                default value of bsb is '' that is the initial subset is
                found through the intersection of robust bivariate ellipses
                This option is useful if a forced start is required.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsb',[4 6 9]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rf" class="clearfix"></div><h3 id="input_argument_namevalue_rf" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rf</code> &#8212;confidence level for bivariate ellipses</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Default is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rf" class="clearfix"></div><h3 id="input_argument_namevalue_rf" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rf</code> &#8212;confidence level for bivariate ellipses.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default is
                0.9. If bsb is not empty this argument is ignored.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rf',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ColToTra" class="clearfix"></div><h3 id="input_argument_namevalue_ColToTra" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ColToTra</code> &#8212;It specifies the variables which must be
-               transformed</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>It is a k x 1 integer vector.</p> <p>
+               transformed.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It is a k x 1 integer vector.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ColToTra',[1 3]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_la0" class="clearfix"></div><h3 id="input_argument_namevalue_la0" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>la0</code> &#8212;It contains set of transformation
-               parameters for the k ColtoTra</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>It is a k x 1
+               parameters for the k ColtoTra.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It is a k x 1
                vector.  The ordering of Mahalanobis distances at each step
                of the forward search uses variables transformed with la0.</p> <p>
                la0 empty is equivalent to its default value
                la0=ones(length(ColToTra),1).</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'la0',[-1 0]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_onelambda" class="clearfix"></div><h3 id="input_argument_namevalue_onelambda" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>onelambda</code> &#8212;If onelambda=1, a common value lambda is estimated
-               for all variables specified in ColToTra</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'onelambda',0
+               for all variables specified in ColToTra.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'onelambda',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_optmin" class="clearfix"></div><h3 id="input_argument_namevalue_optmin" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>optmin</code> &#8212;It contains the options dealing with the
-               maximization algorithm</span></a><span class="example_desc">structure</span></span></h3><div class="collapse">	<p><p>Use optimset to set
+               maximization algorithm.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Use optimset to set
                these options. Notice that the maximization algorithm which
                is used is fminunc is the optimization toolbox is present
                else is fminsearch.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'optmin.Display','off'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_speed" class="clearfix"></div><h3 id="input_argument_namevalue_speed" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>speed</code> &#8212;If speed=1 the initial value at step m of
                the maximization procedure is the
-               final value at step m-1 else it is la0</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Default
+               final value at step m-1 else it is la0.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default
                value 1. The maximization procedure is fminunc or fminsearch.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'speed',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_colnames" class="clearfix"></div><h3 id="input_argument_namevalue_colnames" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>colnames</code> &#8212;It contains the names of
-               the variables of the dataset</span></a><span class="example_desc">cell array of strings</span></span></h3><div class="collapse">	<p><p>Cell
+               the variables of the dataset.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p><p>Cell
                array of strings of length v. If colnames is empty then the
                sequence 1:v is created to label the variables.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'colnames', {'1' '2' '3' '4' '5' '10' '11' '12' '13'};
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_prolik" class="clearfix"></div><h3 id="input_argument_namevalue_prolik" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>prolik</code> &#8212;It specifies whether it is necessary to
                monitor the profile log likelihood of the transformation
-               parameters at selected steps of the search</span></a><span class="example_desc">scalar |               structure</span></span></h3><div class="collapse">	<p><p>If prolik is a scalar, the plot of the profile loglikelihoods
+               parameters at selected steps of the search.</span></a><span class="example_desc">scalar |               structure.</span></span></h3><div class="collapse">	<p><p>If prolik is a scalar, the plot of the profile loglikelihoods
                is produced at step m=n with all default parameters.</p> <p>
                If prolik is a structure it may contain the following fields:</p><p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>steps</code></td><td><p>vector containing the steps of the fwd
@@ -350,7 +351,7 @@
                                  transformation parameters.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'prolik',7
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plotsmle" class="clearfix"></div><h3 id="input_argument_namevalue_plotsmle" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plotsmle</code> &#8212;It specifies whether it is necessary to
                plot the maximum likelihood estimates of the transformation
-               parameters</span></a><span class="example_desc">scalar | structure</span></span></h3><div class="collapse">	<p><p>Three horizontal lines
+               parameters.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>Three horizontal lines
                associated respectively with values -1, 0 and 1 are added
                to the plot.</p> <p>
                If prolik is a scalar, the plot of the monitoring of
@@ -364,7 +365,7 @@
                                       lines;</p></td></tr><tr valign="top"><td><code>Tag</code></td><td><p>tag of the plot (default is pl_mle);</p></td></tr><tr valign="top"><td><code>FontSize</code></td><td><p>font size of the text labels which
                                       identify the trajectories.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'plotsmle',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plotslrt" class="clearfix"></div><h3 id="input_argument_namevalue_plotslrt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plotslrt</code> &#8212;It specifies whether it is necessary to
-               plot the likelihood ratio test</span></a><span class="example_desc">scalar | structure</span></span></h3><div class="collapse">	<p><p>If plotslrt is a scalar, the plot of the monitoring of
+               plot the likelihood ratio test.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plotslrt is a scalar, the plot of the monitoring of
                likelihood ratio test is produced on the screen with all
                default options.</p> <p>
                If plotslrt is a strucure, it may contain the following fields:</p><p>
@@ -374,7 +375,7 @@
                                        the likelihood ratio test (default
                                        is conflev=[0.95 0.99]);</p></td></tr><tr valign="top"><td><code>LineWidthEnv</code></td><td><p>Line width of the horizontal lines;</p></td></tr><tr valign="top"><td><code>Tag</code></td><td><p>tag of the plot (default is pl_lrt).</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'plotslrt',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;It controls whether to display or not messages
-               about great interchange on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displayed on the screen
+               about great interchange on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displayed on the screen
                else no message is displayed on the screen.</p> <p>
                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'msg',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MLEtra</code></td><td><p><p>n-init+1 x v matrix which contains the monitoring of
@@ -398,5 +399,5 @@
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one Un(1,2) for example contains
                the unit included in step init+1 Un(end,2) contains the
-               units included in the final step of the search</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
+               units included in the final step of the search</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSMtra';</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
    forward search Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSMmmd.html" itemprop="url"><span itemprop="name"><code>FSMmmd</code></span></a></span> | <span itemprop="seealso"><a href="FSM.html" itemprop="url"><span itemprop="name"><code>FSM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

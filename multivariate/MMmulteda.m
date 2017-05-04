@@ -1,5 +1,6 @@
 function [out , varargout] = MMmulteda(Y,varargin)
-%MMmult computes MM estimators in multivariate analysis with auxiliary S-scale
+%MMmulteda computes MM estimators in multivariate analysis for a series of values of bdp
+%
 %
 %<a href="matlab: docsearchFS('MMmulteda')">Link to the help function</a>
 %
@@ -96,6 +97,11 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %                 Asymptotic nominal efficiency is:
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',[0.85 0.90 0.95 0.99]
+%                 Data Types - double
+%     effshape : location or scale effiicency. dummy scalar. 
+%                If effshape=1 efficiency refers to shape 
+%                efficiency else (default) efficiency refers to location
+%                 Example - 'effshape',1
 %                 Data Types - double
 %     refsteps  : Maximum iterations. Scalar.
 %                 Scalar defining maximum number of iterations in the MM
@@ -255,7 +261,7 @@ options=struct('InitialEst','','Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
     'Sbdp',Sbdpdef,...
     'nocheck',0,'eff',eff,'effshape',0,'refsteps',100,'tol',1e-7,...
-    'conflev',0.975,'plots',0,'ysave',0);
+    'conflev',0.975,'plots',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

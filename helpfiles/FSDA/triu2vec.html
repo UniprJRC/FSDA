@@ -27,8 +27,8 @@
     A=invhilb(r)
     disp('The elements on and above diagonal of A are');
     A1=A(:);
-    disp(A1(y))</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_A" class="clearfix"> </div> <h3 id="input_argument_A" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>A</code> &#8212; scalar, or square matrix  of order r (r&gt;1) </span>  </a><span class="example_desc">Scalar or
-               square matrix</span></span></h3> <div class="collapse"> <p><p>If A is a non negative integer, it indicates the number of
+    disp(A1(y))</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_A" class="clearfix"> </div> <h3 id="input_argument_A" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>A</code> &#8212; scalar, or square matrix  of order r (r&gt;1). </span>  </a><span class="example_desc">Scalar or
+               square matrix.</span></span></h3> <div class="collapse"> <p><p>If A is a non negative integer, it indicates the number of
                rows (columns) of a matrix whose linear indexes of the
                elements on and above diagonal have to be found. Then,
                triu2vec(A) returns the (A*(A-1)/2)+A linear indexes of the
@@ -36,7 +36,7 @@
 
                If A is a square matrix of order r (r&gt;1), then triu2vec(A)
                returns the elements on and above diagonal of matrix A in a
-               vector of length (r*(r-1)/2)+r;</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; which diagonal </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p><p>Non negative integer given to return the elements on and
+               vector of length (r*(r-1)/2)+r;</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; which diagonal. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Non negative integer given to return the elements on and
                above the k-th diagonal of A, being k=0 the main diagonal.</p> <p>
                Default is k = 0, i.e., the main diagonal is also returned.</p> <p>
                Negative integers are treated as 0, i.e. elements on and

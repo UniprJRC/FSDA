@@ -2,7 +2,9 @@
     FullPath=which('findDir');
     root=FullPath(1:end-length('findDir.m')-1);
     list = findDir(root)</pre></div></div><pre class="codeoutput">
-list = 
+list =
+
+  2&times;1 cell array
 
     'D:\MATLAB\FSDA\utilities'
     'D:\MATLAB\FSDA\utilities\privateFS'
@@ -20,18 +22,18 @@ list =
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
-    list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_root" class="clearfix"> </div> <h3 id="input_argument_root" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>root</code> &#8212; Root directory </span>  </a><span class="example_desc">String</span></span></h3> <div class="collapse"> <p><p>Case sensitive string that can indicate
+    list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_root" class="clearfix"> </div> <h3 id="input_argument_root" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>root</code> &#8212; Root directory. </span>  </a><span class="example_desc">String.</span></span></h3> <div class="collapse"> <p><p>Case sensitive string that can indicate
                relative or absolute path. Use '.' for current directory.</p> <p>
                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>string</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'InclDir','dirname'
 </code>,<code> 'ExclDir','dirname'
-</code></code></span></div><div class="expandableContent"><div id="inputarg_InclDir" class="clearfix"></div><h3 id="input_argument_namevalue_InclDir" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>InclDir</code> &#8212;Include directory pattern(s)</span></a><span class="example_desc">string | cell arrays of               strings</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not use regular expression,
+</code></code></span></div><div class="expandableContent"><div id="inputarg_InclDir" class="clearfix"></div><h3 id="input_argument_namevalue_InclDir" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>InclDir</code> &#8212;Include directory pattern(s).</span></a><span class="example_desc">string | cell arrays of               strings.</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not use regular expression,
                for examples 'abc' and 'ab*de*'. File separator (i.e. '\' in
                Windows or '/' in Unix) is not allowed. Case-sensitive.</p> <p>
                This filter is skipped if InclDir='', InclDir={},
                InclDir='*' or if one of the element of the cell array
                InclDir is '*'. Default: InclDir={''}.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'InclDir','dirname'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>(cell array of) string</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclDir" class="clearfix"></div><h3 id="input_argument_namevalue_ExclDir" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclDir</code> &#8212;Exclude directory pattern(s)</span></a><span class="example_desc">string | cell arrays of               strings</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>(cell array of) string</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclDir" class="clearfix"></div><h3 id="input_argument_namevalue_ExclDir" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclDir</code> &#8212;Exclude directory pattern(s).</span></a><span class="example_desc">string | cell arrays of               strings.</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not
                use regular expression. Examples: 'abc' and 'ab*de*'. Use ''
                or {} to skip this stage. File separator (i.e. '\' in
                Windows or '/' in Unix) is not allowed. Case-sensitive. Default: ExclDir={''}.</p> <p>

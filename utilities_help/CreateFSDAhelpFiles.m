@@ -53,8 +53,8 @@ FSDAroot=fileparts(FullPath);
 cd(FSDAroot)
 % Specify subfolders of main folders for which contents file has to be
 % created
-InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
-    'examples' 'utilities' 'utilities_stat'};
+    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
+    'examples' 'utilities' 'utilities_stat' 'utilities_help'};
 ExclDir={'privateFS'  'datasets'};
 % Create list of folders which must have the personlized contents file
 list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);

@@ -28,9 +28,7 @@
     %Mahalanobis Distance
     fre=sortrows(fre,4);
     bs=fre(1:m0,1);
-    [out]=FSMeda(Ycont,bs,'plots',1);</pre></div></div><pre class="codeoutput">Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  4.471732e-19. 
-</pre><img vspace="5" hspace="5" src="images\FSMeda_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with the Swiss bank notes data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [out]=FSMeda(Ycont,bs,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\FSMeda_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with the Swiss bank notes data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     [fre]=unibiv(Y);
@@ -86,80 +84,84 @@ RCOND =  4.471732e-19.
     
     standard=struct;
     standard.ylim=[4 17];
-    malfwdplot(out,'standard',standard);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Variables </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v
+    malfwdplot(out,'standard',standard);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v
                variables. Rows of Y represent observations, and columns represent
                variables. Missing values (NaN's) and infinite values
                (Inf's) are allowed, since observations (rows) with missing
                or infinite values will automatically be excluded from the
                computations.</p> <p>
-               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; Units forming subset </span>  </a><span class="example_desc">Vector</span></span></h3> <div class="collapse"> <p><p>List of units forming the initial subset.</p> <p> 
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; Units forming subset. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>List of units forming the initial subset.</p> <p>
                If bsb=0 (default) then the procedure starts with v units randomly
                chosen else if bsb is not 0 the search will start with
                m0=length(bsb).</p><p>
-               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',50 
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',50
 </code>,<code> 'plots',0
-</code>,<code> 'msg',0 
-</code>,<code> 'scaled',0 
+</code>,<code> 'msg',0
+</code>,<code> 'scaled',0
 </code>,<code> 'nocheck',1
-</code></code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Point where to start monitoring required diagnostics</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Note that if bsb is supplied, init&gt;=length(bsb). If init is not
+</code></code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Point where to start monitoring required diagnostics.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Note that if bsb is supplied, init&gt;=length(bsb). If init is not
               specified it will be set equal to floor(n*0.6).</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',50 
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',50
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;It specify whether it is necessary to produce the plots of the
-               monitoring of minMD</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If plots=1, a plot of the monitoring of minMD among
+               monitoring of minMD.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1, a plot of the monitoring of minMD among
                the units not belonging to the subset is produced on the
                screen with 1 per cent, 50 per cent and 99 per cent confidence bands
                else (default), all plots are suppressed.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;It controls whether to display or not messages
-               about great interchange on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displyed on the screen
+               about great interchange on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displyed on the screen
                else no message is displayed on the screen.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',0 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_scaled" class="clearfix"></div><h3 id="input_argument_namevalue_scaled" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scaled</code> &#8212;It controls whether to monitor scaled Mahalanobis distances</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If scaled=1 scaled Mahalanobis distances are
-               monitored during the search.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'scaled',0 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;It controls whether to perform checks on matrix Y</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',0
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_scaled" class="clearfix"></div><h3 id="input_argument_namevalue_scaled" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scaled</code> &#8212;It controls whether to monitor scaled Mahalanobis distances.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If scaled=1  Mahalanobis distances 
+               monitored during the search are scaled using ratio of determinant.</p> <p>
+               If scaled=2  Mahalanobis distances 
+               monitored during the search are scaled using asymptotic consistency factor.</p> <p>
+               The default value is 0 that is Mahalanobis distances are
+               not scaled.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'scaled',0
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;It controls whether to perform checks on matrix Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
                matrix Y. As default nocheck=0.</p> <p>
                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MAL</code></td><td><p><p>n x (n-init+1) = matrix containing the monitoring of
-               Mahalanobis distances.</p> <p> 
-               1st row = distance for first unit;</p> <p> 
-               ...;</p><p> 
+               Mahalanobis distances.</p> <p>
+               1st row = distance for first unit;</p> <p>
+               ...;</p><p>
                nth row = distance for nth unit.</p></p></td></tr><tr valign="top"><td><code>BB</code></td><td><p><p>n x (n-init+1) matrix containing the information about the units belonging
                to the subset at each step of the forward search.</p> <p>
                1st col = indexes of the units forming subset in the
-               initial step;</p> <p> 
-               ...;</p><p> 
+               initial step;</p> <p>
+               ...;</p><p>
                last column = units forming subset in the final step (all
                units).</p></p></td></tr><tr valign="top"><td><code>mmd</code></td><td><p><p>n-init x 3 matrix which contains the monitoring of minimum
                MD or (m+1)th ordered MD  at each step of
                the forward search.</p> <p>
-               1st col = fwd search index (from init to n-1);</p> <p> 
-               2nd col = minimum MD;</p><p> 
+               1st col = fwd search index (from init to n-1);</p> <p>
+               2nd col = minimum MD;</p><p>
                3rd col = (m+1)th-ordered MD.</p></p></td></tr><tr valign="top"><td><code>msr</code></td><td><p><p>n-init+1 x 3 = matrix which contains the monitoring of
-               maximum MD or mth ordered MD.</p> <p> 
-               1st col = fwd search index (from init to n);</p> <p> 
-               2nd col = maximum MD;</p><p> 
+               maximum MD or mth ordered MD.</p> <p>
+               1st col = fwd search index (from init to n);</p> <p>
+               2nd col = maximum MD;</p><p>
                3rd col = mth-ordered MD.</p></p></td></tr><tr valign="top"><td><code>gap</code></td><td><p><p>n-init+1 x 3 = matrix which contains the monitoring of
                the gap (difference between minMD outside subset and max.</p> <p>
-               inside).</p> <p> 
-               1st col = fwd search index (from init to n);</p> <p> 
-               2nd col = min MD - max MD;</p><p> 
-               3rd col = (m+1)th ordered MD - mth ordered distance.</p></p></td></tr><tr valign="top"><td><code>loc</code></td><td><p>(n-init+1) x (v+1) matrix containing the monitoring of
+               inside).</p> <p>
+               1st col = fwd search index (from init to n);</p> <p>
+               2nd col = min MD - max MD;</p><p>
+               3rd col = (m+1)th ordered MD - mth ordered distance.</p></p></td></tr><tr valign="top"><td><code>Loc</code></td><td><p>(n-init+1) x (v+1) matrix containing the monitoring of
                estimated of the means for each variable in each step of
                the forward search.</p></td></tr><tr valign="top"><td><code>S2cov</code></td><td><p><p>(n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
                of the elements of the covariance matrix in each step
-               of the forward search.</p> <p> 
-               1st col = fwd search index (from init to n);</p> <p> 
-               2nd col = monitoring of S(1,1);</p> <p> 
-               3rd col = monitoring of S(1,2);</p> <p> 
-               ...;</p><p> 
+               of the forward search.</p> <p>
+               1st col = fwd search index (from init to n);</p> <p>
+               2nd col = monitoring of S(1,1);</p> <p>
+               3rd col = monitoring of S(1,2);</p> <p>
+               ...;</p><p>
                end col = monitoring of S(v,v).</p></p></td></tr><tr valign="top"><td><code>detS</code></td><td><p>(n-init+1) x (2) matrix containing the monitoring of
                the determinant of the covariance matrix
                in each step of the forward search.</p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s)
-               included in the subset at each step of the fwd search.</p> <p> 
+               included in the subset at each step of the fwd search.</p> <p>
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one Un(1,2) for example contains
                the unit included in step init+1 Un(end,2) contains the
-               units included in the final step of the search</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data input matrix</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
+               units included in the final step of the search</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data input matrix</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSMeda'</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
    forward search Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSMmmd.html" itemprop="url"><span itemprop="name"><code>FSMmmd</code></span></a></span> | <span itemprop="seealso"><a href="FSM.html" itemprop="url"><span itemprop="name"><code>FSM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

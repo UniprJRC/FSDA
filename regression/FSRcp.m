@@ -279,7 +279,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 
 %{
     % FSRcp with all default options.
-    % Extract the best models of size 4, also store AIC.
+    % Extract the best models of size 4.
     % Common part to all examples: load Ozone dataset.
     X=load('ozone.txt');
     % Transform the response using logs
@@ -296,8 +296,8 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 
 %{
     %% FSRcp with optional arguments.
-    % Extract the best models of size 4, store AIC and show the plots
-    % of Cp and AIC.
+    % Extract the best models of size 4, and show the plot
+    % of forward Cp.
     X=load('ozone.txt');
     % Transform the response using logs
     X(:,end)=log(X(:,end));
@@ -743,8 +743,6 @@ if ~isempty(Aj)
         FontSize =options.FontSize;
         
         
-        % Title
-        title(['Forward Cp, p='  num2str(smallp)]);
         
         % Labels of the models in particular steps of the search specified
         % in vector steps
@@ -765,7 +763,13 @@ if ~isempty(Aj)
         laby=options.laby;
         titl=options.titl;
         
-        title(titl);
+        if ~isempty(titl)
+            title(titl);
+        else
+            % Title
+            title(['Forward Cp, p='  num2str(smallp)]);
+        end
+        
         
         % Add to the plot the labels for values of la
         % Add the horizontal lines representing asymptotic confidence bands

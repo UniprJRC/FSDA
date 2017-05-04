@@ -8,7 +8,10 @@
    plot and to see the associated classification in the scatter plot
    matrix.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustICplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code>tclustICplot(<a class="intrnllnk" href="#inputarg_IC"><code>IC</code></a>)</code></span>Plot BIC, ICL and CLA for for Geyser data with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustICplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code>tclustICplot(<a class="intrnllnk" href="#inputarg_IC"><code>IC</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of the use of option datatooltip (all default options).</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot BIC, ICL and CLA for for Geyser data with all default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
-    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
+    % Make sure (whenever possible) that units 15, 30 and 69 are inside
+    % groups which have labels respectively equal to 1, 2 and 3.
+    UnitsSameGroup=[15 30 69];
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
     tclustICplot(out)
 </pre></div></div><pre class="codeoutput">k=1
 k=2
@@ -50,7 +53,7 @@ k=5
     % show boxplots of the groups instead of histograms on the main
     % diagonal of the spm
     databrush.dispopt='box';
-    tclustICplot(out,'databrush',databrush)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use </span>  </a><span class="example_desc">Structure</span></span></h3> <div class="collapse"> <p><p>It contains the following fields.</p> <p>
+    tclustICplot(out,'databrush',databrush)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains the following fields.</p> <p>
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p><p>matrix of size length(kk)-times
                    length(cc) containinig the values of the penalized
                    classification likelihood (CLA).</p> <p>
@@ -86,7 +89,7 @@ k=5
 </code>,<code> 'databrush',1
 </code>,<code> 'nameY',{'myY1', 'myY2'}
 </code></code></span></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;character which specifies the information criterion to use
-               in the plot</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>Possible values for whichIC are:</p> <p>
+               in the plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Possible values for whichIC are:</p> <p>
                'CLACLA' = in this case best solutions are referred to
                    the classification likelihood.</p> <p>
                'MIXMIX'  = in this case in this case best solutions are
@@ -99,7 +102,7 @@ k=5
                    out.MIXMIXbs, out.CLACLAbs and out.MIXCLAbs are given.</p><p>
                The default value of 'whichIC' is 'ALL'
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'whichIC','ALL'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;Personalized tag</span></a><span class="example_desc">string</span></span></h3><div class="collapse">	<p><p>String which identifies the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;Personalized tag.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which identifies the
                    handle of the plot which is about to be created. The
                    default is to use tag 'pl_IC'.</p> <p>
                    Note that if the program finds a plot which has a tag
@@ -107,7 +110,7 @@ k=5
                    of the new plot overwrites the existing one in the same
                    window else a new window is created.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','myplot'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking</span></a><span class="example_desc">empty value (default) |                   structure</span></span></h3><div class="collapse">	<p><p>The default is datatooltip=''.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value (default) |                   structure.</span></span></h3><div class="collapse">	<p><p>The default is datatooltip=''.</p> <p>
                    If datatooltip = 1, the user can select with the
                    mouse a solution in order to
                    have the following information:</p><p>
@@ -135,7 +138,7 @@ k=5
                    (see the MATLAB function datacursormode or the examples
                    below). Default values are datatooltip.DisplayStyle =
                    'Window' and datatooltip.SnapToDataVertex = 'on'.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar double or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing</span></a><span class="example_desc">empty value, scalar | structure</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar double or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
                    is done.</p> <p>
                    The activation of this option (databrush is a scalar or
                    a structure) enables the user  to select a set of
@@ -174,7 +177,7 @@ k=5
                       diagonals in the scatterplot matrix of the brushed
                       solutions. Set dispopt to 'hist' (default) to plot
                       histograms, or 'box' to plot boxplots.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;variable labels</span></a><span class="example_desc">cell array</span></span></h3><div class="collapse">	<p><p>Cell array of strings
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;variable labels.</span></a><span class="example_desc">cell array.</span></span></h3><div class="collapse">	<p><p>Cell array of strings
                    containing the labels of the
                    variables. As default value, the labels which are added
                    are Y1, ..., Yv.</p> <p>
@@ -182,4 +185,4 @@ k=5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016). Finding
  the Number of Groups in Model-Based Clustering via Constrained
  Likelihoods, submitted.</p></div><div><p>L. Hubert and P. Arabie (1985). Comparing Partitions, Journal of
- Classification 2:193-218</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+ Classification 2:193-218</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

@@ -16,7 +16,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+4;
-    [out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.59 seconds 
+    [out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.97 seconds 
 </pre><img vspace="5" hspace="5" src="images\SDest_01.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_02.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_03.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>SDest with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
@@ -34,25 +34,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(2:20,3)=100;
-    [out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.59 seconds 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
+    [out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.89 seconds 
 </pre><img vspace="5" hspace="5" src="images\SDest_04.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_05.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_06.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>SDest with with Juan and Prieto adjustment.</li></span></a></span></h3><div class="collapse"><p>
      jpcorr&gt;1. Subsamples of size equal to v+5 are initially drawn (jpcorr=5).
      In each of them, the 4 units (=jpcorr-1) having the four
@@ -96,7 +78,7 @@ Warning: Matrix is singular to working precision.
     Y=randn(n,v);
     [outMAD]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000);
     [outSN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'sn');
-    [outQN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'qn');</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations on v variables
+    [outQN]=SDest(Y,'jpcorr',5,'plots',1,'nsamp',10000, 'projscale', 'qn');</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations on v variables
        $Y=(y_1^T, ..., y_i^T, ..., y_n^T)^T$.</p> <p> 
        $y_i^T$ of size 1-by-v is the ith row of matrix Y.</p> <p>
        Rows of Y represent observations, and columns
@@ -120,10 +102,10 @@ Warning: Matrix is singular to working precision.
 </code>,<code> 'rstprojsave',1
 </code>,<code> 'projloc',1
 </code>,<code> 'projscale',1
-</code></code></span></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of random directions</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Scalar defining number of random directions which have
+</code></code></span></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of random directions.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar defining number of random directions which have
                 to be extracted (if not given, default = 1000)
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_jpcorr" class="clearfix"></div><h3 id="input_argument_namevalue_jpcorr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>jpcorr</code> &#8212;Subsamples additional size</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Integer value greater or equal 0.</p> <p> 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_jpcorr" class="clearfix"></div><h3 id="input_argument_namevalue_jpcorr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>jpcorr</code> &#8212;Subsamples additional size.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Integer value greater or equal 0.</p> <p> 
                 If jpcorr=0 subsamples of size v are extracted. Each
                 subsample gives rise to only 1 direction (called dir).</p> <p> 
                 If jpcorr=1 subsamples of size v+1 are extracted and
@@ -139,21 +121,21 @@ Warning: Matrix is singular to working precision.
                 subsample. The default value of jpcorr is 0.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'jpcorr',1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level which is
-               used to declare units as outliers</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar between 0 and 1.</p> <p> 
+               used to declare units as outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar between 0 and 1.</p> <p> 
                Usually conflev=0.95, 0.975 0.99 (individual alpha)
                or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).</p> <p>
                Default value is 0.975.</p><p> 
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.95 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_margin" class="clearfix"></div><h3 id="input_argument_namevalue_margin" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>margin</code> &#8212;Marginal projections</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar which specifies if it is necessary to consider
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_margin" class="clearfix"></div><h3 id="input_argument_namevalue_margin" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>margin</code> &#8212;Marginal projections.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which specifies if it is necessary to consider
                marginal projections. Scalar margin specifies up to which
                order marginal projections must be considered. For example
                margin = 2 implies that all possible univariate and
                bivariate marginal projections are considered. Default
                value is 0 (marginal projections are not considered).</p> <p>
-                 %               Remark: note that if margin&gt;0, data are
+                                Remark: note that if margin&gt;0, data are
                preliminary standardized using medians and MADs.</p><p>
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'margin',2 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_weight" class="clearfix"></div><h3 id="input_argument_namevalue_weight" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>weight</code> &#8212;Value to use in the weight function</span></a><span class="example_desc">string</span></span></h3><div class="collapse">	<p><p>Value to use in the weight function to transform
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_weight" class="clearfix"></div><h3 id="input_argument_namevalue_weight" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>weight</code> &#8212;Value to use in the weight function.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>Value to use in the weight function to transform
                the outlyingness measure of each observation into a weight.</p> <p>
                Possible values are 'huber', 'tukey', 'zch', and 'mcd'.</p> <p>
                Default is 'mcd'.</p> <p>
@@ -205,24 +187,24 @@ Warning: Matrix is singular to working precision.
                - $C=Median(PD)$;</p> <p>
                - $K$ is a positive tuning parameter.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'weight','zch' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_q" class="clearfix"></div><h3 id="input_argument_namevalue_q" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>q</code> &#8212;Constant to be used in the Huber weight function</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>The default value of q is 2 (see Maronna and Yohai, 1995).</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_q" class="clearfix"></div><h3 id="input_argument_namevalue_q" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>q</code> &#8212;Constant to be used in the Huber weight function.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value of q is 2 (see Maronna and Yohai, 1995).</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'q',2
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_c" class="clearfix"></div><h3 id="input_argument_namevalue_c" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>c</code> &#8212;Scale parameter</span></a><span class="example_desc">string</span></span></h3><div class="collapse">	<p><p>If c='hdim' (high dimensions) the scale parameter c in the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_c" class="clearfix"></div><h3 id="input_argument_namevalue_c" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>c</code> &#8212;Scale parameter.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>If c='hdim' (high dimensions) the scale parameter c in the
                Huber weight function is given by:</p> <p>
                $c= min(\sqrt{\chi^2_{v,0.5}},4)$. If c='sdim' (small
                dimensions), parameter c is given by:</p> <p>
                $c=\sqrt{\chi^2_{v,0.95}}$. The default is 'hdim'.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'c','hdim' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nbp" class="clearfix"></div><h3 id="input_argument_namevalue_nbp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nbp</code> &#8212;Nominal breakdown point</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Nominal breakdown point to be fixed in the Tukey
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nbp" class="clearfix"></div><h3 id="input_argument_namevalue_nbp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nbp</code> &#8212;Nominal breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Nominal breakdown point to be fixed in the Tukey
                biweight function to obtain the thresold value c (0&lt;nbp&lt;1). The default
                value of npb is 0.5.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nbp',0.6
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_K" class="clearfix"></div><h3 id="input_argument_namevalue_K" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>K</code> &#8212;Constant to be used in Zuo, Cui and He's family of weights</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>The default of K is 3.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_K" class="clearfix"></div><h3 id="input_argument_namevalue_K" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>K</code> &#8212;Constant to be used in Zuo, Cui and He's family of weights.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default of K is 3.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'K',3
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
                matrix Y. As default nocheck=0.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen</span></a><span class="example_desc">scalar | structure</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p> 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p> 
                (1) a plot of robust Mahalanobis distances against index number. The 
                confidence level used to draw the confidence bands for
                the MD is given by the input option conflev. If conflev is
@@ -240,33 +222,33 @@ Warning: Matrix is singular to working precision.
                        added.</p></td></tr><tr valign="top"><td><code>nameY</code></td><td><p>cell array of strings containing the labels of
                        the variables. As default value, the labels which are
                        added are Y1, ...Yv.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>scalar which controls whether to display or not messages
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>scalar which controls whether to display or not messages
                on the screen If msg==1 (default) messages are displayed
                on the screen about estimated time to compute the final estimator
                else no message is displayed on the screen
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_ysave" class="clearfix"></div><h3 id="input_argument_namevalue_ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysave</code> &#8212;save input matrix Y</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the data matrix Y
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_ysave" class="clearfix"></div><h3 id="input_argument_namevalue_ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysave</code> &#8212;save input matrix Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the data matrix Y
                is saved into the output structure out. This feature is
                meant at simplifying the use of function malindexplot.</p> <p>
                Default is 0, i.e. no saving is done.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ysave',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_dirsave" class="clearfix"></div><h3 id="input_argument_namevalue_dirsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dirsave</code> &#8212;save directions</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>scalar that is set to 1 to request that the all directions
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_dirsave" class="clearfix"></div><h3 id="input_argument_namevalue_dirsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dirsave</code> &#8212;save directions.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>scalar that is set to 1 to request that the all directions
                for all extracted subsets are saved. If dirsave=1 out
                structure will contain a field named Dir
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dirsave',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_rstprojsave" class="clearfix"></div><h3 id="input_argument_namevalue_rstprojsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rstprojsave</code> &#8212;save robust standardized projection scores</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Scalar that is set to 1 to request that the robust
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_rstprojsave" class="clearfix"></div><h3 id="input_argument_namevalue_rstprojsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rstprojsave</code> &#8212;save robust standardized projection scores.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar that is set to 1 to request that the robust
                standardized projection scores associated to each direction
                are saved for each subset. If projsave=1 out structure will
                contain a field named RstProj
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rstprojsave',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_projloc" class="clearfix"></div><h3 id="input_argument_namevalue_projloc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>projloc</code> &#8212;Type of location</span></a><span class="example_desc">string</span></span></h3><div class="collapse">	<p><p>String with possible values 'median' (default) and 'mean'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_projloc" class="clearfix"></div><h3 id="input_argument_namevalue_projloc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>projloc</code> &#8212;Type of location.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String with possible values 'median' (default) and 'mean'
                This option controls the type of location  (robust
                estimator of scale) to use for the projections for
                each subset. The projections are defined as $d^T \times y_i$
                where d is a v-by-1 vector containing a particular direction
               ($d^T$ is its transpose) (to make estimator location invariant).</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'projloc',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_projscale" class="clearfix"></div><h3 id="input_argument_namevalue_projscale" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>projscale</code> &#8212;Type of standardization</span></a><span class="example_desc">string</span></span></h3><div class="collapse">	<p><p>string with possible values
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_projscale" class="clearfix"></div><h3 id="input_argument_namevalue_projscale" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>projscale</code> &#8212;Type of standardization.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>string with possible values
                'mad' (default), 'sn', 'qn' and 'std'.</p> <p>
                This option controls the type of standardization  (robust
                estimator of scale) to use for the centered projections for

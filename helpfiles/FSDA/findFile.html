@@ -7,12 +7,11 @@
     root=FullPath(1:end-length('findFile.m')-1);
     %list the content of the directory containing findFile.m
     list = findFile(root)</pre></div></div><pre class="codeoutput">
-list = 
+list =
+
+  39&times;1 cell array
 
     'D:\MATLAB\FSDA\utilities\Contents.m'
-    'D:\MATLAB\FSDA\utilities\CreateFSDAhelpFiles.m'
-    'D:\MATLAB\FSDA\utilities\CreateFSDApointerFiles.asv'
-    'D:\MATLAB\FSDA\utilities\CreateFSDApointerFiles.m'
     'D:\MATLAB\FSDA\utilities\FSColors.m'
     'D:\MATLAB\FSDA\utilities\PoolClose.m'
     'D:\MATLAB\FSDA\utilities\PoolPrepare.m'
@@ -31,7 +30,6 @@ list =
     'D:\MATLAB\FSDA\utilities\findFile.m'
     'D:\MATLAB\FSDA\utilities\ginputFS.m'
     'D:\MATLAB\FSDA\utilities\isfunction.m'
-    'D:\MATLAB\FSDA\utilities\makecontentsfileFS.m'
     'D:\MATLAB\FSDA\utilities\openExampleFS.m'
     'D:\MATLAB\FSDA\utilities\position.m'
     'D:\MATLAB\FSDA\utilities\privateFS\Contents.m'
@@ -39,11 +37,9 @@ list =
     'D:\MATLAB\FSDA\utilities\privateFS\m2mxdom.m'
     'D:\MATLAB\FSDA\utilities\privateFS\mxdom2simplehtml.xsl'
     'D:\MATLAB\FSDA\utilities\privateFS\supplyDefaultOptions.m'
-    'D:\MATLAB\FSDA\utilities\publishFS.m'
-    'D:\MATLAB\FSDA\utilities\publishFSallFiles.m'
-    'D:\MATLAB\FSDA\utilities\publishFunctionAlpha.m'
-    'D:\MATLAB\FSDA\utilities\publishFunctionCate.m'
     'D:\MATLAB\FSDA\utilities\quickselectFS.m'
+    'D:\MATLAB\FSDA\utilities\removeExtraSpacesLF(OLD).m'
+    'D:\MATLAB\FSDA\utilities\removeExtraSpacesLF.m'
     'D:\MATLAB\FSDA\utilities\rescale.m'
     'D:\MATLAB\FSDA\utilities\selectdataFS.m'
     'D:\MATLAB\FSDA\utilities\setuphelp.m'
@@ -52,6 +48,7 @@ list =
     'D:\MATLAB\FSDA\utilities\triu2vec.m'
     'D:\MATLAB\FSDA\utilities\upperfracpos.m'
     'D:\MATLAB\FSDA\utilities\waitforbuttonpressFS.m'
+    'D:\MATLAB\FSDA\utilities\wraptextFS.m'
     'D:\MATLAB\FSDA\utilities\zscoreFS.m'
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>findFile with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
@@ -68,31 +65,31 @@ list =
     root=FullPath(1:strfind(FullPath,'FSDA')+3);
     list = findFile(root,'InclDir','graphics','ExclFiles','res*')</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>find the location of help file gplotmatrix.</li></span></a></span></h3><div class="collapse"><p>html.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     pathdocroot=docroot;
-    pathExtHelpFile=findFile(pathdocroot,'InclFiles','gplotmatrixee.html');</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_root" class="clearfix"> </div> <h3 id="input_argument_root" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>root</code> &#8212; Root directory </span>  </a><span class="example_desc">String</span></span></h3> <div class="collapse"> <p><p>Case sensitive string that can indicate
+    pathExtHelpFile=findFile(pathdocroot,'InclFiles','gplotmatrixee.html');</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_root" class="clearfix"> </div> <h3 id="input_argument_root" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>root</code> &#8212; Root directory. </span>  </a><span class="example_desc">String.</span></span></h3> <div class="collapse"> <p><p>Case sensitive string that can indicate
                relative or absolute path. Use '.' for current directory.</p> <p>
                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>string</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'InclDir','dirname'
 </code>,<code> 'ExclDir','dirname'
 </code>,<code> 'InclFiles','filename'
 </code>,<code> 'ExclFiles','filename'
-</code></code></span></div><div class="expandableContent"><div id="inputarg_InclDir" class="clearfix"></div><h3 id="input_argument_namevalue_InclDir" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>InclDir</code> &#8212;Include directory pattern(s)</span></a><span class="example_desc">string | cell arrays of               strings</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not use regular expression,
+</code></code></span></div><div class="expandableContent"><div id="inputarg_InclDir" class="clearfix"></div><h3 id="input_argument_namevalue_InclDir" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>InclDir</code> &#8212;Include directory pattern(s).</span></a><span class="example_desc">string | cell arrays of               strings.</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not use regular expression,
                for examples 'abc' and 'ab*de*'. File separator (i.e. '\' in
                Windows or '/' in Unix) is not allowed. Case-sensitive.</p> <p>
                This filter is skipped if InclDir='', InclDir={},
                InclDir='*' or if one of the element of the cell array
                InclDir is '*'. Default: InclDir={''}.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'InclDir','dirname'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>(cell array of) string</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclDir" class="clearfix"></div><h3 id="input_argument_namevalue_ExclDir" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclDir</code> &#8212;Exclude directory pattern(s)</span></a><span class="example_desc">string | cell arrays of               strings</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>(cell array of) string</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclDir" class="clearfix"></div><h3 id="input_argument_namevalue_ExclDir" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclDir</code> &#8212;Exclude directory pattern(s).</span></a><span class="example_desc">string | cell arrays of               strings.</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not
                use regular expression. Examples: 'abc' and 'ab*de*'. Use ''
                or {} to skip this stage. File separator (i.e. '\' in
                Windows or '/' in Unix) is not allowed. Case-sensitive. Default: ExclDir={''}.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ExclDir','dirname'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>(cell array of) string</code></p></div></div><div class="expandableContent"><div id="inputarg_InclFiles" class="clearfix"></div><h3 id="input_argument_namevalue_InclFiles" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>InclFiles</code> &#8212;Include file pattern(s)</span></a><span class="example_desc">string | cell arrays of               strings</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not use regular expression.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>(cell array of) string</code></p></div></div><div class="expandableContent"><div id="inputarg_InclFiles" class="clearfix"></div><h3 id="input_argument_namevalue_InclFiles" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>InclFiles</code> &#8212;Include file pattern(s).</span></a><span class="example_desc">string | cell arrays of               strings.</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not use regular expression.</p> <p>
                Use '*' to include all files. Note that '*' and '*.*' give
                the same behaviour and return all files. File separator
                (i.e. '\' in Windows or '/' in Unix) is not allowed.</p> <p>
                Case-sensitive. Default: InclFile={'*'}.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'InclFiles','filename'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>(cell array of) string</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclFiles" class="clearfix"></div><h3 id="input_argument_namevalue_ExclFiles" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclFiles</code> &#8212;Exclude file pattern(s)</span></a><span class="example_desc">string | cell arrays of               strings</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not use regular expression.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>(cell array of) string</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclFiles" class="clearfix"></div><h3 id="input_argument_namevalue_ExclFiles" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclFiles</code> &#8212;Exclude file pattern(s).</span></a><span class="example_desc">string | cell arrays of               strings.</span></span></h3><div class="collapse">	<p><p>User can use wildcards. Do not use regular expression.</p> <p>
                Use '' or {} to skip this check. File separator (i.e. '\'
                in Windows or '/' in Unix) is not allowed.</p> <p>
                Case-sensitive. Default: ExclFiles={''}.</p><p>

@@ -64,7 +64,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('Score')">Link to the help function</a>
+%<a href="matlab: docsearchFS('ScoreYJ')">Link to the help function</a>
 % Last modified 31-05-2016
 
 % Examples

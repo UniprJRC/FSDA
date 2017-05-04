@@ -23,13 +23,9 @@ small p=7
 small p=6
 small p=5
 small p=4
-Warning: Rank deficient, rank = 2, tol =  7.981280e-12. 
 ------------------------------
-Warning: Number of subsets without full rank equal to 10.7%
+Warning: Number of subsets without full rank equal to 12.2%
 small p=3
-------------------------------
-Warning: Number of subsets without full rank equal to 16.7%
-small p=2
 </pre><img vspace="5" hspace="5" src="images\FSRms_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
@@ -137,14 +133,14 @@ small p=4
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
-    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5],'CandleWidth',0.01)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
+    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5],'CandleWidth',0.01)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
                values will automatically be excluded from the
-               computations</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called
-               'regressors') of dimension (n x (bigP-1)) </span>  </a><span class="example_desc">The intercept will be added in automatic way, so that the
+               computations.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called
+               'regressors') of dimension (n x (bigP-1)). </span>  </a><span class="example_desc">The intercept will be added in automatic way, so that the
                dimension of the full model is bigP
                Rows of X represent observations, and columns represent
-               variables</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values
+               variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values
                (Inf's) are allowed, since observations (rows) with missing
                or infinite values will automatically be excluded from the
                computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1 
@@ -167,37 +163,37 @@ small p=4
 </code>,<code> 'LineWidth',0.01
 </code>,<code> 'ylimy',[0 10]
 </code>,<code> 'xlimy',[0 10]
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
+</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
                else, no constant term will be included.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>It specifies the initial subset size to start
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the initial subset size to start
                monitoring the required quantities, if
                init is not specified it set equal to:</p> <p>
                    p+1, if the sample size is smaller than 40;</p> <p>
                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that have determined the least
-               trimmed squares estimator</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>h is an integer greater or
+               trimmed squares estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>h is an integer greater or
                equal than [(n+p+1)/2] but smaller then n
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0,75) 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find the
-                 robust estimator</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Number of subsamples which will be extracted to find the
+                 robust estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of subsamples which will be extracted to find the
                robust estimator. If nsamp=0 all subsets will be extracted.</p> <p>
                They will be (n choose smallp).</p> <p>
                Remark. if the number of all possible subset is &lt;1000 the
                default is to extract all subsets otherwise just 1000.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initlal
-                 subset to initialize the search</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If lms=1 (default) Least Median of Squares is
+                 subset to initialize the search.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If lms=1 (default) Least Median of Squares is
                computed, else Least Trimmed of Squares is computed.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
                matrix y and matrix X. Note that y and X are left
                unchanged. In other words the additional column of ones
                for the intercept is not added. As default nocheck=0.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_smallpint" class="clearfix"></div><h3 id="input_argument_namevalue_smallpint" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>smallpint</code> &#8212;It specifies which submodels (number of variables)
-               must be considered</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>The default is to consider all models
+               must be considered.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>The default is to consider all models
                from size 2 to size bigP-1. In other words, as default,
                smallpint=(bigP-1):-1:2.</p> <p>
                When smallpint=2 all submodels including one explanatory
@@ -205,7 +201,7 @@ small p=4
                When smallpint=3 all submodels including two explanatory
                variables and a constant will be considered. ....</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'smallpint',3 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_labels" class="clearfix"></div><h3 id="input_argument_namevalue_labels" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labels</code> &#8212;names of the explanatory variables</span></a><span class="example_desc">cell array of strings</span></span></h3><div class="collapse">	<p><p>Cell array of strings of length bigP-1 containing the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_labels" class="clearfix"></div><h3 id="input_argument_namevalue_labels" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labels</code> &#8212;names of the explanatory variables.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p><p>Cell array of strings of length bigP-1 containing the
                names of the explanatory variables.</p> <p>
                 If labels is a missing
                value the following sequence of strings will be
@@ -214,7 +210,7 @@ small p=4
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labels',{'1','2'} 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_fin_step" class="clearfix"></div><h3 id="input_argument_namevalue_fin_step" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fin_step</code> &#8212;initial and final step of the search
                which has to be monitored to choose the best models as
-               specified in scalar first_k</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>The first element of the vector specifies the initial step of the search
+               specified in scalar first_k.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>The first element of the vector specifies the initial step of the search
                which has to be monitored to choose the best models as
                specified in scalar first_k below. The second element
                specifies the ending point of the central part of the
@@ -235,12 +231,12 @@ small p=4
                observations
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fin_step',[1 50] 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_first_k" class="clearfix"></div><h3 id="input_argument_namevalue_first_k" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>first_k</code> &#8212;number of best models to
-               consider in each of the last fin_step</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>For example if
+               consider in each of the last fin_step.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>For example if
                first_k=5 in each of the fin_step the models which had
                the 5 smallest values of Cp are considered. As default
                first_k=3
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'first_k',5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ignore" class="clearfix"></div><h3 id="input_argument_namevalue_ignore" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ignore</code> &#8212;submodels to consider</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If ignore=1, when dealing with p explanatory
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ignore" class="clearfix"></div><h3 id="input_argument_namevalue_ignore" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ignore</code> &#8212;submodels to consider.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If ignore=1, when dealing with p explanatory
                variables, the submodels of the models with p+1
                explanatory variables which were considered irrelevant
                according to option ExclThresh, are not considered. As
@@ -248,7 +244,7 @@ small p=4
                If ignore is different from 1, for each p all submodels of
                size p which contain a constant are considered
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ignore',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclThresh" class="clearfix"></div><h3 id="input_argument_namevalue_ExclThresh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclThresh</code> &#8212;Exclusion threshold</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>It has effect only if ignore=1.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclThresh" class="clearfix"></div><h3 id="input_argument_namevalue_ExclThresh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclThresh</code> &#8212;Exclusion threshold.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It has effect only if ignore=1.</p> <p>
                Exclusion threshold associated to the uppper
                percentage point of the F distribution of Cp which defines
                the threshold for each p declaring models as irrelevant.</p><p>
@@ -259,35 +255,35 @@ small p=4
                p-1 explanatory variables which are contained inside the
                models considered irrelevant are not considered
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ExclThresh',0.9
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_meanmed" class="clearfix"></div><h3 id="input_argument_namevalue_meanmed" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>meanmed</code> &#8212;specfy how to construct the boxes of the candles</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If meanmed=1 boxes are constructed using mean and median
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_meanmed" class="clearfix"></div><h3 id="input_argument_namevalue_meanmed" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>meanmed</code> &#8212;specfy how to construct the boxes of the candles.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If meanmed=1 boxes are constructed using mean and median
                else using the first and third quartile.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'meanmed',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>If plot==1 a candlestick Cp plot is created on the screen
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If plot==1 a candlestick Cp plot is created on the screen
                else (default) no plot is shown on the screen
                The options below only work when plots=1
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rl" class="clearfix"></div><h3 id="input_argument_namevalue_rl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rl</code> &#8212;spread of the candles around
-               each integer value defining the size of the submodels</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>For example if rl=0.4 for each smallp candles are spread in the
+               each integer value defining the size of the submodels.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>For example if rl=0.4 for each smallp candles are spread in the
                interval [smallp-rl smallp+rl]. The default value of rl
                is 0.4. rl does not have to be greater than 0.45 otherwise
                the candles overlap
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rl',0.3
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_quant" class="clearfix"></div><h3 id="input_argument_namevalue_quant" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>quant</code> &#8212;quantiles for the horizontal lines
-               associated with the confidence bands of Cp</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>The default is to plot 2.5% and
+               associated with the confidence bands of Cp.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>The default is to plot 2.5% and
                97.5% envelopes. In other words the default is
                quant=[0.025;0.975];</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'quant',[0.01;0.99]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_CandleWidth" class="clearfix"></div><h3 id="input_argument_namevalue_CandleWidth" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>CandleWidth</code> &#8212;width of the boxes associated with
-               the central part of the search</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>The default width is 0.05;</p> <p>
+               the central part of the search.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default width is 0.05;</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'CandleWidth',0.01
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_LineWidth" class="clearfix"></div><h3 id="input_argument_namevalue_LineWidth" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>LineWidth</code> &#8212;Line Width (in points) for the vertical lines outside the 
-               boxes of the candles</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>The default LineWidth is 0.5 points.</p> <p>
+               boxes of the candles.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default LineWidth is 0.5 points.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'LineWidth',0.01
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ylimy" class="clearfix"></div><h3 id="input_argument_namevalue_ylimy" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylimy</code> &#8212;minimum and maximum
-               on the y axis</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p>Default value is [-2 50] (automatic scale)
+               on the y axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Default value is [-2 50] (automatic scale)
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylimy',[0 10]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlimx" class="clearfix"></div><h3 id="input_argument_namevalue_xlimx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlimx</code> &#8212;minimum and maximum
-               on the x axis</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p>Default value is '' (automatic scale)
+               on the x axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Default value is '' (automatic scale)
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlimy',[0 10]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outms" class="clearfix"></div><h3 id="output_argument_outms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outms</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
 
@@ -336,4 +332,4 @@ small p=4
        the sense that first all possible submodels of size bigP-1 are
        considered, then the models with size bigP-2 ...</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani and Atkinson (2010). Robust Model Selection with Flexible Trimming,
    Computational Statistics and Data Analysis, special issue on robust
-   model selection.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRcp.html" itemprop="url"><span itemprop="name"><code>FSRcp</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+   model selection.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRcp.html" itemprop="url"><span itemprop="name"><code>FSRcp</code></span></a></span> | <span itemprop="seealso"><a href="cdsplot.html" itemprop="url"><span itemprop="name"><code>cdsplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

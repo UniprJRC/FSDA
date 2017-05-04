@@ -587,7 +587,7 @@ if nargin>6
             C=nsamp;
             [nsampdef,ncolC]=size(C);
             if ncolC ~= k*(p+cwm)
-                error('Input matrix C must contain k*p columns')
+                error('FSDA:tclustreg:WrongInput','Input matrix C must contain k*p columns')
             end
             % The number of rows of nsamp (matrix C) is the number of
             % subsets which have to be extracted
@@ -927,7 +927,7 @@ for i =1:nselected
         itermax=itermax+1;
     end
     if itermax ==1000
-        error('Initialization of the group proportions failed')
+        error('FSDA:tclustreg:WrongInput','Initialization of the group proportions failed')
     end
     niini=niin;
     
@@ -1864,4 +1864,4 @@ end
     end
 
 end
-
+%FScategory:CLUS-RobClaREG

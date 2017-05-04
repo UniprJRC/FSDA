@@ -5,25 +5,25 @@
     X=XX(:,1);
     X=X./max(X);
     Z=log(X);
-    mdr=FSRHmdr(y,X,Z,0);</pre></div></div><pre class="codeoutput">Warning: interchange greater than 10 when m=117
-Number of units which entered=12
-Warning: interchange greater than 10 when m=301
-Number of units which entered=17
-Warning: interchange greater than 10 when m=302
-Number of units which entered=19
-Warning: interchange greater than 10 when m=303
-Number of units which entered=13
-Warning: interchange greater than 10 when m=304
-Number of units which entered=11
-Warning: interchange greater than 10 when m=482
+    mdr=FSRHmdr(y,X,Z,0);</pre></div></div><pre class="codeoutput">Warning: interchange greater than 10 when m=47
+Number of units which entered=42
+Warning: interchange greater than 10 when m=48
 Number of units which entered=26
-Warning: interchange greater than 10 when m=483
-Number of units which entered=11
-Warning: interchange greater than 10 when m=484
-Number of units which entered=12
-Warning: interchange greater than 10 when m=485
-Number of units which entered=12
-Warning: interchange greater than 10 when m=486
+Warning: interchange greater than 10 when m=315
+Number of units which entered=17
+Warning: interchange greater than 10 when m=322
+Number of units which entered=20
+Warning: interchange greater than 10 when m=330
+Number of units which entered=25
+Warning: interchange greater than 10 when m=354
+Number of units which entered=17
+Warning: interchange greater than 10 when m=499
+Number of units which entered=21
+Warning: interchange greater than 10 when m=502
+Number of units which entered=13
+Warning: interchange greater than 10 when m=507
+Number of units which entered=19
+Warning: interchange greater than 10 when m=509
 Number of units which entered=11
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRHmdr with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Specifying the search initialization.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -83,14 +83,14 @@ Number of units which entered=11
     Z=log(X);
     [mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
     plot(S2(:,1),WEI')
-    title('Monitoring of the weights')</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable </span>  </a><span class="example_desc">Vector</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+    title('Monitoring of the weights')</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
                values will automatically be excluded from the
-               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables in the regression equation </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>Matrix of explanatory variables (also called 'regressors')
+               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables in the regression equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix of explanatory variables (also called 'regressors')
                of dimension n x (p-1) where p denotes the number of
                explanatory variables including the intercept.</p> <p>
                Rows of X represent observations, and columns represent
@@ -99,7 +99,7 @@ Number of units which entered=11
                intercept, so do not include a column of 1s in X. Missing
                values (NaN's) and infinite values (Inf's) are allowed,
                since observations (rows) with missing or infinite values
-               will automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Z" class="clearfix"> </div> <h3 id="input_argument_Z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Z</code> &#8212; Predictor variables in the scedastic equation </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>n x r matrix or vector of length r.</p> <p>
+               will automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Z" class="clearfix"> </div> <h3 id="input_argument_Z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Z</code> &#8212; Predictor variables in the scedastic equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x r matrix or vector of length r.</p> <p>
                If Z is a n x r matrix it contains the r variables which
                form the scedastic function as follows (if input option art==1)
                </p>\[
@@ -118,7 +118,7 @@ Number of units which entered=11
                of matrix X, it is possible to use both the sintax
                     FSRHmdr(y,X,X(:,[3 5]),0)
                or the sintax
-                    FSRHmdr(y,X,[3 5],0)</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial subset </span>  </a><span class="example_desc">Vector | 0</span></span></h3> <div class="collapse"> <p>If
+                    FSRHmdr(y,X,[3 5],0)</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial subset. </span>  </a><span class="example_desc">Vector | 0.</span></span></h3> <div class="collapse"> <p>If
                bsb=0 then the procedure starts with p units randomly
                chosen else if bsb is not 0 the search will start with
                m0=length(bsb)</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',100 starts monitoring from step m=100
@@ -130,7 +130,7 @@ Number of units which entered=11
 </code>,<code> 'gridsearch',0
 </code>,<code> 'constr',[1 6 3]
 </code>,<code> 'bsbmfullrank',0
-</code>,</code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>It specifies the point where to start monitoring
+</code>,</code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to start monitoring
                required diagnostics. If it is not specified it is set
                equal to:</p> <p>
                    p+1, if the sample size is smaller than 40;</p> <p>
@@ -138,10 +138,10 @@ Number of units which entered=11
                The minimum value of init is 0. In this case in the first
                step we just use prior information
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
                if 0, no constant term will be included.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_modeltype" class="clearfix"></div><h3 id="input_argument_namevalue_modeltype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>modeltype</code> &#8212;Parametric function to be used in the skedastic equation</span></a><span class="example_desc">string</span></span></h3><div class="collapse">	<p>If modeltype is 'arc' (default) than the skedastic function is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_modeltype" class="clearfix"></div><h3 id="input_argument_namevalue_modeltype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>modeltype</code> &#8212;Parametric function to be used in the skedastic equation.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p>If modeltype is 'arc' (default) than the skedastic function is
                modelled as follows
                \[
                \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
@@ -155,7 +155,7 @@ Number of units which entered=11
                            Z(i,1) + \cdots + \gamma_{r} Z(i,r))
                \]
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'modeltype','har'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If equal to one a plot of Bayesian minimum deletion residual
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If equal to one a plot of Bayesian minimum deletion residual
                appears  on the screen with 1 per cent, 50 per cent and 99 per cent confidence
                bands else (default) no plot is shown.</p> <p>
                Remark. the plot which is produced is very simple. In order
@@ -163,26 +163,26 @@ Number of units which entered=11
                connect it dynamically to the other forward plots it is necessary to use
                function mdrplot
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
                matrix y and matrix X. Notice that y and X are left
                unchanged. In other words the additional column of ones for
                the intercept is not added. As default nocheck=0.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>It controls whether to display or not messages
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It controls whether to display or not messages
                about great interchange on the screen
                If msg==1 (default) messages are displyed on the screen
                else no message is displayed on the screen
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_gridsearch" class="clearfix"></div><h3 id="input_argument_namevalue_gridsearch" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>gridsearch</code> &#8212;Algorithm to be used</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If gridsearch ==1 grid search will be used else the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_gridsearch" class="clearfix"></div><h3 id="input_argument_namevalue_gridsearch" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>gridsearch</code> &#8212;Algorithm to be used.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If gridsearch ==1 grid search will be used else the
                scoring algorith will be used.</p> <p>
-               %               REMARK: the grid search has only been implemented when
+                              REMARK: the grid search has only been implemented when
                there is just one explantory variable which controls
                heteroskedasticity
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'gridsearch',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;units which are forced to join the search in the last r steps</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p>r x 1 vector. The default is constr=''.  No constraint is imposed
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;units which are forced to join the search in the last r steps.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>r x 1 vector. The default is constr=''.  No constraint is imposed
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1 6 3]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;It tells how to behave in case subset at step m
-               (say bsbm) produces a non singular X</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>In other words, this options controls what to do when rank(X(bsbm,:)) is
+               (say bsbm) produces a non singular X.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>In other words, this options controls what to do when rank(X(bsbm,:)) is
                smaller then number of explanatory variables. If
                bsbmfullrank = 1 (default is 1) these units (whose number is
                say mnofullrank) are constrained to enter the search in
@@ -191,7 +191,7 @@ Number of units which entered=11
                found in the previous step.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbmfullrank',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbsteps" class="clearfix"></div><h3 id="input_argument_namevalue_bsbsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbsteps</code> &#8212;Save the units forming subsets (and weights vector) in
-               selected steps</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>It specifies for which steps of the fwd search it is
+               selected steps.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It specifies for which steps of the fwd search it is
                necessary to save the units forming subset. If bsbsteps is
                0 we store the units forming subset in all steps. The
                default is store the units forming subset in all steps if

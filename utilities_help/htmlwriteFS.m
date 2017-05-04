@@ -8,7 +8,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 %
 % Required input arguments:
 %
-%   IPS:  Specific MATLAB strucure. Struct. A structure created with
+%   IPS:  Specific MATLAB strutcure. Structure. A structure created with
 %                   file mreadFS.m or modified with the GUI.
 %                   containing the following fields:
 % IPS.title     = title of HTML file. String.
@@ -82,7 +82,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 %                 Second column = detailed description;
 %                 Third column = MATLAB code;
 %                 Fourth column = dummy variable which indicates whether
-%                 the example must be executed or not) If 1 example is executed%                  Example-'mystrcut'
+%                 the example must be executed or not) If 1 example is executed
 %
 %
 % Optional input arguments:
@@ -132,7 +132,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 %             Example - 'evalCode','false'
 %             Data Types - Boolean
 % write2file: Option to write HTML file. Logical. Option which specifies
-%             whether HTML file must be created or if just structure out
+%             whether HTML file must be created or if just string outstring
 %             must be created. The default value of write2file is true,
 %             that is html file is created
 %             Example - 'write2file','false'
@@ -140,12 +140,17 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 %
 % Output:
 %
-
+% outstring : string wchich contains the processed HRML file. String.
+%             String containing parsed html file. 
+%  laste   : Information about errors. MException class. Object of class
+%            MException which provides information about last error in
+%            executing the examples. If the procedure runs without errors
+%            laste is an empty value;
 %
 %
 % More About:
 %
-% See also: publish
+% See also: publishFS
 %
 %
 % Copyright 2008-2016.
@@ -161,25 +166,26 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 
 %{
   % Create file FSRmdr.html starting from file FSRmdr.
-  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed')
+    NameFile='FSRmdr.m';
+    IPS=mreadFS(NameFile);
+    [htmlstring, laste]=htmlwriteFS(IPS);
 %}
 
 %{
   % Create file FSRmdr.html starting from file FSRmdr and
   % display detailed information about the Input, Output and Optional
   % arguments.
-  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed')
+    NameFile='FSRmdr.m';
+    IPS=mreadFS(NameFile);
+    [htmlstring, laste]=htmlwriteFS(IPS,'Display','iter-detailed');
 %}
 
-%{
-  % Create HTML file with embedded images in folder C:\tmp
-  out=publishFS('FSRmdr','evalCode',true,'outputDir','C:\tmp')
-%}
+
 
 %% Beginning of code
 
 if ~isstruct(IPS)
-    error('FSDA:publishFS:WrongInput','input must be a MATLAB strcut.');
+    error('FSDA:htmlwriteFS:WrongInput','input must be a MATLAB struct.');
 end
 
 evalCode=true;

@@ -1,6 +1,8 @@
 function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 %create an XML file passing through publishFS
 %
+%<a href="matlab: docsearchFS('xmlcreateFS')">Link to the help function</a>
+%
 % Required input arguments:
 %
 %    FileName:     MATLAB File. String. Full or partial
@@ -31,13 +33,22 @@ function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 %
 % Output:
 %
-%    docNode:    Document Object Model node, as defined by the World Wide Web
+%    docNode:     Document Object Model node. Character. String which contains
+%                the Document Object Model node, as defined by the World Wide Web
 %               consortium.
-% docNodechr:    Character vector that contains the serialized DOM node as
+% docNodechr:    Output string.  Character. Character vector that contains the serialized DOM node as
 %               it appears in an XML file.
 %
-
-%<a href="matlab: docsearchFS('zscoreFS')">Link to the help function</a>
+% See also: xmlwrite
+%
+% References:
+%
+% Copyright 2008-2016.
+% Written by FSDA team
+%
+%
+%
+%<a href="matlab: docsearchFS('xmlcreateFS')">Link to the help function</a>
 % Last modified 14-06-2016
 %
 

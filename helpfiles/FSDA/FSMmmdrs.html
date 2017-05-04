@@ -108,7 +108,7 @@
     %
     % ans =
     %
-    %    600</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
+    %    600</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
@@ -123,48 +123,48 @@
 </code>,<code> 'cleanpool',1
 </code>,<code> 'msg',0 
 </code></code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;scalar, specifies the point where to initialize the search
-               and start monitoring the required diagnostics</span></a><span class="example_desc">if not               specified, it is set equal to p+1</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',10
+               and start monitoring the required diagnostics.</span></a><span class="example_desc">if not               specified, it is set equal to p+1.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',10
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbsteps" class="clearfix"></div><h3 id="input_argument_namevalue_bsbsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbsteps</code> &#8212;vector which specifies for which steps of the fwd search it
                is necessary to save the units forming subset for each
-               random start</span></a><span class="example_desc">if bsbsteps is 0 for each random start we               store the units forming subset in all steps</span></span></h3><div class="collapse">	<p><p>The default is
+               random start.</span></a><span class="example_desc">if bsbsteps is 0 for each random start we               store the units forming subset in all steps.</span></span></h3><div class="collapse">	<p><p>The default is
                store the units forming subset in all steps if n&lt;=500 else
                to store the units forming subset at step init and steps
                which are multiple of 100. For example, if n=753 and
                init=6, units forming subset are stored for m=init, 100,
                200, 300, 400, 500 and 600.</p> <p>
-                 %               REMARK: vector bsbsteps must contain numbers from init to
+                                REMARK: vector bsbsteps must contain numbers from init to
                n. if min(bsbsteps)&lt;init a warning message will appear on
                the screen.</p><p>
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbsteps',[10 20 30]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsimul" class="clearfix"></div><h3 id="input_argument_namevalue_nsimul" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsimul</code> &#8212;scalar, number of random starts</span></a><span class="example_desc">default value=200</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsimul',1000
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;It controls whether to perform checks on matrix Y</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsimul" class="clearfix"></div><h3 id="input_argument_namevalue_nsimul" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsimul</code> &#8212;scalar, number of random starts.</span></a><span class="example_desc">default value=200.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsimul',1000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;It controls whether to perform checks on matrix Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed.</p> <p>
                  As default nocheck=0.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;scalar</span></a><span class="example_desc">if equal to one a plot of random starts minimum               Mahalanobis residual appears  on the screen with 1%, 50% and               99% confidence bands else (default) no plot is shown</span></span></h3><div class="collapse">	<p><p>%               Remark: the plot which is produced is very simple. In order
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;scalar.</span></a><span class="example_desc">if equal to one a plot of random starts minimum               Mahalanobis residual appears  on the screen with 1%, 50% and               99% confidence bands else (default) no plot is shown.</span></span></h3><div class="collapse">	<p><p>               Remark: the plot which is produced is very simple. In order
                to control a series of options in this plot and in order to
                connect it dynamically to the other forward plots it is
                necessary to use function mdrrsplot.</p> <p>
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;scalar</span></a><span class="example_desc">if numpool &gt; 1, the routine automatically checks               if the Parallel Computing Toolbox is installed and               distributes the random starts over numpool parallel               processes</span></span></h3><div class="collapse">	<p><p>If numpool &lt;= 1, the random starts are run
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;scalar.</span></a><span class="example_desc">if numpool &gt; 1, the routine automatically checks               if the Parallel Computing Toolbox is installed and               distributes the random starts over numpool parallel               processes.</span></span></h3><div class="collapse">	<p><p>If numpool &lt;= 1, the random starts are run
                sequentially. By default, numpool is set equal to the
                number of physical cores available in the CPU (this choice
                may be inconvenient if other applications are running
                concurrently). The same happens if the numpool value
                chosen by the user exceeds the available number of cores.</p> <p>
-               %               REMARK : up to R2013b, there was a limitation on the
+                              REMARK : up to R2013b, there was a limitation on the
                maximum number of cores that could be addressed by the
                parallel processing toolbox (8 and, more recently, 12).</p> <p>
                From R2014a, it is possible to run a local cluster of more
                than 12 workers.</p> <p>
-%               REMARK : Unless you adjust the cluster profile, the
+               REMARK : Unless you adjust the cluster profile, the
                default maximum number of workers is the same as the
                number of computational (physical) cores on the machine.</p> <p>
-%               REMARK : In modern computers the number of logical cores
+               REMARK : In modern computers the number of logical cores
                is larger than the number of physical cores. By default,
                MATLAB is not using all logical cores because, normally,
                hyper-threading is enabled and some cores are reserved to
                this feature.</p> <p>
-%               REMARK : It is because of Remarks 3 that we have chosen as
+               REMARK : It is because of Remarks 3 that we have chosen as
                default value for numpool the number of physical cores
                rather than the number of logical ones. The user can
                increase the number of parallel pool workers allocated to
@@ -182,12 +182,12 @@
                default value of 'numpool' obtained as feature('numCores')
                (i.e. the number of physical cores).</p><p>
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'numpool',8
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;Scalar</span></a><span class="example_desc">cleanpool is 1 if the parallel pool has to be cleaned after               the execution of the random starts</span></span></h3><div class="collapse">	<p><p>Otherwise it is 0.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;Scalar.</span></a><span class="example_desc">cleanpool is 1 if the parallel pool has to be cleaned after               the execution of the random starts.</span></span></h3><div class="collapse">	<p><p>Otherwise it is 0.</p> <p>
                The default value of cleanpool is 1.</p> <p>
                Clearly this option has an effect just if previous option
                numpool is &gt; 1.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cleanpool',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether to display or not messages
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether to display or not messages
                about random start progress. More precisely, if previous
                option numpool&gt;1, then a progress bar is displayed, on
                the other hand a message will be displayed on the screen

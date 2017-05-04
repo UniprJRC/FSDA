@@ -236,10 +236,10 @@ function [out]=FSRB(y,X,varargin)
 %
 % Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and
 % Residual Analysis, Biometrika, Vol 75 pp. 651-659.
-% Riani M., Corbellini A., Atkinson A.C. (2016), Very Robust Bayesian
+% Riani M., Corbellini A., Atkinson A.C. (2017), Very Robust Bayesian
 % Regression for Fraud Detection, submitted
-% Atkinson A.C., Corbellini A., Riani M., (2016) Robust Bayesian
-% Regression, submitted
+% Atkinson A.C., Corbellini A., Riani M., (2017) Robust Bayesian
+% Regression, Test, in press 
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -653,7 +653,7 @@ function [out]=FSRB(y,X,varargin)
     close all
     % just in case user has additional function subtightplot
     % http://www.mathworks.com/matlabcentral/fileexchange/39664-subtightplot
-    make_it_tight = true;
+    make_it_tight = false;
     if make_it_tight == true && exist('subtightplot','file') ==2
         subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);
     else

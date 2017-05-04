@@ -2185,7 +2185,7 @@ if nargout>0
         end
         
         if isempty(inipoint)
-            error('FSDA:missingOuts',['Output argument ' listargouts{i} ' has not been found'])
+            error('FSDA:publishFS:missingOuts',['Output argument ' listargouts{i} ' has not been found'])
         end
         
         % Just in case inipoint has more than one element take just the
@@ -3019,10 +3019,12 @@ if evalCode==true
         % file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
         [dom,laste] = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
         %
+        drawnow;
         
         ext='html';
         AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
         [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
+        drawnow;
         
         % Now remove the temporary .m file with the examples which had been created
         delete(fullPathToScript)

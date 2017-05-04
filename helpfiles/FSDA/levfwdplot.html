@@ -230,7 +230,7 @@
     plotopt=levfwdplot(out,'msg',2)
     % In order to reuse the options which have been stored inside plotopt
     % use the following sintax
-    % levfwdplot(out,plotopt{:})</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing monitoring of leverage </span>  </a><span class="example_desc">Structure</span></span></h3> <div class="collapse"> <p>Structure containing the following fields.<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>LEV</code></td><td><p><p>matrix containing the leverage monitored in each step of
+    % levfwdplot(out,plotopt{:})</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing monitoring of leverage. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields.<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>LEV</code></td><td><p><p>matrix containing the leverage monitored in each step of
                the forward search. Every row is associated with a unit.</p> <p>
                This matrix can be created using function FSReda
                (compulsory argument)</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p>matrix containing the order of entry of each unit
@@ -252,7 +252,7 @@
 </code>,<code> 'msg',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_standard" class="clearfix"></div><h3 id="input_argument_namevalue_standard" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>standard</code> &#8212;appearance of the plot
                    in terms of xlim, ylim, axes labels and their font size
-                   style, color of the lines, etc</span></a><span class="example_desc">structure</span></span></h3><div class="collapse">	<p><p>Structure standard contains the following fields:</p> <p>
+                   style, color of the lines, etc.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure standard contains the following fields:</p> <p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>SizeAxesNum</code></td><td><p>scalar specifying the fontsize of the
                        axes numbers. Default value is 10.</p></td></tr><tr valign="top"><td><code>xlim</code></td><td><p>two elements vector with minimum and maximum of
                        the x axis. Default value is '' (automatic scale).</p></td></tr><tr valign="top"><td><code>ylim</code></td><td><p>two elements vector with minimum and maximum of
@@ -282,7 +282,7 @@
                    standard.LineStyle={'-'}
 
                    </p></p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'standard.LineWidth','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_fground" class="clearfix"></div><h3 id="input_argument_namevalue_fground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fground</code> &#8212;trajectories in foregroud</span></a><span class="example_desc">structure</span></span></h3><div class="collapse">	<p><p>Structure which controls which trajectories
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_fground" class="clearfix"></div><h3 id="input_argument_namevalue_fground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fground</code> &#8212;trajectories in foregroud.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which controls which trajectories
                    are highlighted and how they are plotted to be
                    distinguishable from the others.</p> <p>
                    It is possible to control the label, the width, the
@@ -340,7 +340,7 @@
                    Remark. if fground='' no unit is highlighted and no
                    label is inserted into the plot.</p><p>
                    </p></p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fground.LineWidth','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_bground" class="clearfix"></div><h3 id="input_argument_namevalue_bground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bground</code> &#8212;trajectories in background</span></a><span class="example_desc">structure</span></span></h3><div class="collapse">	<p><p>Structure which specifies the trajectories in background,
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_bground" class="clearfix"></div><h3 id="input_argument_namevalue_bground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bground</code> &#8212;trajectories in background.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which specifies the trajectories in background,
                    i.e. the trajectories corresponding to "unimmportant"
                    units in the central part of the data. The structure
                    also specifies the style used in the plot to give them
@@ -373,10 +373,10 @@
                        When n&gt;100 the default option is 'faint'.</p> <p>
                        When n&lt;=100 and bthresh = -Inf option bstyle is
                        ignored.</p><p>
-                   %                   Remark: bground='' is equivalent to</p></p></td></tr><tr valign="top"><td><code>thresh</code></td><td><p>-Inf
+                                      Remark: bground='' is equivalent to</p></p></td></tr><tr valign="top"><td><code>thresh</code></td><td><p>-Inf
                    that is all trajectories are considered relevant.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bground.bstyle','faint'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_xground" class="clearfix"></div><h3 id="input_argument_namevalue_xground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xground</code> &#8212;trajectories to highlight in connection with
-                   resfwdplot</span></a><span class="example_desc">character 'lev' (default) | 'res'</span></span></h3><div class="collapse">	<p><p>xground = 'lev' (default).</p> <p>
+                   resfwdplot.</span></a><span class="example_desc">character 'lev' (default) | 'res'.</span></span></h3><div class="collapse">	<p><p>xground = 'lev' (default).</p> <p>
                        The levfwdplot trajectories are put in foreground
                        or in background depending on the leverage values.</p> <p>
                    xground = 'res'.</p> <p>
@@ -384,14 +384,14 @@
                        or in background depending on the residual values.</p> <p>
                    See options bground.bthresh and fground.fthresh.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xground','res'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;Personalized tag</span></a><span class="example_desc">string</span></span></h3><div class="collapse">	<p>String which identifies the handle of the plot which
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;Personalized tag.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p>String which identifies the handle of the plot which
                    is about to be created. The default is to use tag
                    'pl_resfwd'. Note that if the program finds a plot which
                    has a tag equal to the one specified by the user, then
                    the output of the new plot overwrites the existing one
                    in the same window else a new window is created
                    </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','myplot'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking</span></a><span class="example_desc">empty value | scalar (default)| structure</span></span></h3><div class="collapse">	<p><p>The default is datatooltip=1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value | scalar (default)| structure.</span></span></h3><div class="collapse">	<p><p>The default is datatooltip=1
                    If datatooltip is not empty the user can use the mouse
                    in order to have information about the unit selected,
                    the step in which the unit enters the search and the
@@ -401,13 +401,13 @@
                    examples below). The default options of the structure
                    are DisplayStyle='Window' and SnapToDataVertex='on'.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;row labels</span></a><span class="example_desc">cell of strings</span></span></h3><div class="collapse">	<p><p>Cell containing the labels
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;row labels.</span></a><span class="example_desc">cell of strings.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels
                    of the units (optional argument used when
                    datatooltip=1. If this field is not present labels
                    row1, ..., rown will be automatically created and
                    included in the pop up datatooltip window).</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'Smith','Johnson','Robert','Stallone'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing</span></a><span class="example_desc">empty value, scalar | structure</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
                    is done.</p> <p>
                    The activation of this option (databrush is a scalar or
                    a cell) enables the user  to select a set of
@@ -487,13 +487,13 @@
                      i.e. no label is added.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Labels
-                   of the variables of the regression dataset</span></a><span class="example_desc">cell array of                   strings</span></span></h3><div class="collapse">	<p>If it is empty (default) the sequence X1, ...,
+                   of the variables of the regression dataset.</span></a><span class="example_desc">cell array of                   strings.</span></span></h3><div class="collapse">	<p>If it is empty (default) the sequence X1, ...,
                    Xp will be created automatically
                    </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'var1', var2, 'var3'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;label of the response</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p>Character containing
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;label of the response.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>Character containing
                    the label of the response
                    </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','response'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;display or save used options</span></a><span class="example_desc">scalar which controls whether to display | to save                   as output the options inside structures standard,                   fground and bground which have been used to draw the                   plot</span></span></h3><div class="collapse">	<p>plotopt=levfwdplot(out,'msg',1) enables to save inside
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;display or save used options.</span></a><span class="example_desc">scalar which controls whether to display | to save                   as output the options inside structures standard,                   fground and bground which have been used to draw the                   plot.</span></span></h3><div class="collapse">	<p>plotopt=levfwdplot(out,'msg',1) enables to save inside
                    cell  plotopt the options which have been used to draw
                    the three types of trajectories (standard, foreground
                    and background)

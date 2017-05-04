@@ -221,8 +221,8 @@ function [out] = FSRBeda(y, X, varargin)
 %
 % References:
 %
-%   Atkinson A.C., Corbellini A. and Riani M. (2015), Robust Bayesian
-%   Regression, submitted
+%   Atkinson A.C., Corbellini A. and Riani M. (2017), Robust Bayesian
+%   Regression, Test, in press.
 %
 %
 % Copyright 2008-2016.
@@ -409,7 +409,7 @@ function [out] = FSRBeda(y, X, varargin)
     % Add multiple title
     suplabel(['Housing data; forward plots in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']  of HPD regions for \beta and \sigma^2'],'t')
+        ']  of HPD regions for \beta and \sigma^2'],'t');
 %}
 
 %{
@@ -538,7 +538,7 @@ function [out] = FSRBeda(y, X, varargin)
     % Add multiple title
     suplabel(['Housing data; forward plots in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']  of HPD regions for \beta and \sigma^2'],'t')
+        ']  of HPD regions for \beta and \sigma^2'],'t');
 %}
 
 %{

@@ -3,16 +3,16 @@
  confidence intervals. The covariance matrix of the estimated parameters
  \[
    cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
- \] 
- consists of four parts: 
+ \]
+ consists of four parts:
 1) $q$ a correction factor for the scale estimate;
- 2) $\sigma$ the scale parameter. 
+ 2) $\sigma$ the scale parameter.
  3) $v$ a correction factor depending on the $\psi$ function which is
- used; 
+ used;
  4) $V_X$= a matrix part. For OLS $V_X=X'X$. Given that in robust
  regression we give a weight to each observation, the matrix $X'X$ should
  be replaced by something like $X'WX$, where $W$ is a diagonal matrix
- containing the weights assigned to each observation. 
+ containing the weights assigned to each observation.
  The purpose of this function is to provide the user with different
  options for the estimate of $cov(\hat \beta)$ where $\hat \beta$ is  a
  vector of regression coefficients obtained using S or MM estimation and a

@@ -6,18 +6,18 @@
   Given two generic clusters $i$ and $j$ with $i \ne j=1,...,k$, indexed by
   $\phi(x,\mu_i,\sigma_i^2)$ and $\phi(x,\mu_j, \sigma_j^2)$ with probabilities of
   occurrence $\pi_i$ and $\pi_j$, the misclassification probability with
-  respect to cluster i (denoted with w_{j|i}) is defined as 
+  respect to cluster $i$ (denoted with $w_{j|i}$) is defined as 
   \[ Pr[\pi_i \phi(x,\mu_i,\sigma_i^2) &lt; \pi_j \phi(x,\mu_j,\sigma_j^2)] \]
   where, in the regression context, $\mu_i={\overline x}_i' \beta_i$ and
   $\mu_j= \overline x_j' \beta_j$. We assume that the length of vectors $x_i$,
   $x_j$, $\beta_i$, and $\beta_j$ is $p$ (number of explanatory variables
-  including or excluding intercept). In our implmentation, the
+  including or excluding intercept). In our implementation, the
   distribution of the elements of vectors $\beta_i$ ($\beta_j$) can be 'Normal'
   (with parameters $\mu$ and $\sigma$), 'HalfNormal' (with parameter $\sigma$) or
   uniform (with parameters $a$ and $b$). Same thing for the distribution of
   the elements of $x_i$ ($x_j$). However, while the parameters of the
   distributions are the same for all elements of $\beta$ in all groups, the
-  parameters of the diwtribution of the elements of vectors $x_i$ ($x_j$) can
+  parameters of the distribution of the elements of vectors $x_i$ ($x_j$) can
   vary for each group and each explanatory variable. In other words, it is
   possible to specify (say) that the distribution of the second
   explanatory variable in the first group is $U(2, 3)$ while the distribution
@@ -33,11 +33,12 @@
   probabilities) divided by $k*(k-1)/2$.
   The maximum overlap (MaxOmega, in the code) is defined as:
      \[       \max (w_{j|i} + w_{i|j})  \qquad i \ne j=1,2, ..., k   \]
+
   The probability of overlapping $w_{j|i}$ is nothing but the cdf of a linear
-  combination of non central  $\chi^2$ distributions with 1 degree of freedom
-  + a linear combination of $N(0,1)$ evaluated in a point $c$.
+  combination of non central $\chi^2$ distributions with 1 degree of freedom
+  plus a linear combination of $N(0,1)$ evaluated in a point $c$.
   The coefficients of the linear combinations of non central $\chi^2$ and
-  N(0,1) depend on the eigenvalues and eigenvectors of matrix
+  $N(0,1)$ depend on the eigenvalues and eigenvectors of matrix
   $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.
   Point c depends on the same eigenvalues and eigenvectors of matrix
   $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the determinants

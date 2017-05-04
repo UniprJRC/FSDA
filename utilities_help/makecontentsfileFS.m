@@ -70,7 +70,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 % Output:
 %
 %          out:   structured information of filtered files containing
-%                 selected Tags. cell.
+%                 selected Tags. Cell.
 %                 Cell of size r-times-9 containing detailed information about
 %                 the files present in required folder or folders if
 %                 dirpath is a cell array of strings.
@@ -91,9 +91,9 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %               FilterFileContentAnotherName in row 456;
 %               FilterFileContentObama, in row 1243;
 %               than category is associated to
-%               the last instance which is found (in this example 'Obama')
-%    Excluded:  structured information of .m files not included.
-%                 cell.
+%               the last instance which is found (in this example 'Obama').
+%    Excluded:  structured information of m files not included.
+%                 Cell.
 %                 Cell of size r-times-9 containing detailed information about
 %                 the files present in required folder or folders if
 %                 dirpath is a cell array of strings but which have been

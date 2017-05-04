@@ -115,7 +115,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %  sigma : scale estimate. Scalar, vector or matrix depending on the size of input matrix X.
 %           Estimates of scale specified in scale input string.
 %
-% See also zscore, MCD, Smult, MMmult, FSM
+% See also: zscore, MCD, Smult, MMmult, FSM
 %
 %
 % References:

@@ -415,4 +415,3 @@ fclose(fileID);
 end
 
 
-%FScategory:UTIHELP

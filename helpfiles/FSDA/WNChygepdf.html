@@ -13,14 +13,19 @@
  one by one without replacement. Each red ball has the weight $\omega_{1}$, and
  each white ball has the weight $\omega_{2}$; the probability ratio of red over
  white balls is then given by $W = \omega_{1} / \omega_{2}$.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="WNChygepdf.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Wpdf"><code>Wpdf</code></a>=WNChygepdf(<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>,<a class="intrnllnk" href="#inputarg_K"><code>K</code></a>,<a class="intrnllnk" href="#inputarg_M"><code>M</code></a>,<a class="intrnllnk" href="#inputarg_W"><code>W</code></a>)</code></span>Probability of getting 0 to p successes in p weighted drawns without replacement.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Probability of getting 0 to p successes in p weighted drawns without replacement.</li></span></a></span></h3><div class="collapse"><p>
-    M  = 500;   we have 500 balls in the urn
-    N  = 3;     we extract 3 balls, one at a time, without replacement
-    K  = M/2;   initially, in the urn we have 250 red and 250 white balls
-    W  = 10;    red balls are ten times the white balls
-     We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
-     3 balls without replacement.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Problem description.
+    we have 500 balls in the urn<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    M  = 500;   
+    %we extract 3 balls, one at a time, without replacement
+    N  = 3;     
+    %initially, in the urn we have 250 red and 250 white balls
+    K  = M/2;   
+    %red balls are ten times the white balls
+    W  = 10;    
+    % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
+    % 3 balls without replacement.
     for x = 0:N
-        wpdf(i+1) = WNChygepdf(x,N,K,M,W);
+        wpdf(x+1) = WNChygepdf(x,N,K,M,W);
     end
     disp('We have an urn with 2 groups of balls;');
     disp('There are 250 balls in each group;');

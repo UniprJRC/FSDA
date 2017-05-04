@@ -7,39 +7,41 @@
     spmplot(X,id)</pre></div></div><pre class="codeoutput">
 out = 
 
-    OmegaMap: [3x3 double]
+  struct with fields:
+
+    OmegaMap: [3&times;3 double]
     BarOmega: 0.0876
     MaxOmega: 0.1500
     StdOmega: 0.0542
         fail: 0
-          Pi: [3x1 double]
-          Mu: [3x4 double]
-           S: [4x4x3 double]
-       rcMax: [2x1 double]
+          Pi: [3&times;1 double]
+          Mu: [3&times;4 double]
+           S: [4&times;4&times;3 double]
+       rcMax: [2&times;1 double]
 
 
 ans(:,:,1) =
 
-   -1.0000    5.0354    8.0354   11.0354
-    2.0354   -1.0000    9.0354   12.0354
-    3.0354    6.0354   -1.0000   13.0354
-    4.0354    7.0354   10.0354   -1.0000
+   -1.0000    4.0625    7.0625   10.0625
+    1.0625   -1.0000    8.0625   11.0625
+    2.0625    5.0625   -1.0000   12.0625
+    3.0625    6.0625    9.0625   -1.0000
 
 
 ans(:,:,2) =
 
-   -1.0000   17.0354   20.0354   23.0354
-   14.0354   -1.0000   21.0354   24.0354
-   15.0354   18.0354   -1.0000   25.0354
-   16.0354   19.0354   22.0354   -1.0000
+   -1.0000   16.0625   19.0625   22.0625
+   13.0625   -1.0000   20.0625   23.0625
+   14.0625   17.0625   -1.0000   24.0625
+   15.0625   18.0625   21.0625   -1.0000
 
 
 ans(:,:,3) =
 
-         0   29.0354   32.0354   35.0354
-   26.0354         0   33.0354   36.0354
-   27.0354   30.0354         0   37.0354
-   28.0354   31.0354   34.0354         0
+         0   28.0625   31.0625   34.0625
+   25.0625         0   32.0625   35.0625
+   26.0625   29.0625         0   36.0625
+   27.0625   30.0625   33.0625         0
 
 </pre><img vspace="5" hspace="5" src="images\MixSim_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
      Use average overlap of 0.05 and
@@ -118,8 +120,8 @@ ans(:,:,3) =
     spmplot(X1,id1,[],'box');
     set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
     title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
-    cascade</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; number of groups (components) </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p><p>Desired number of groups.</p> <p>
-               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>int16|int32|int64|single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_v" class="clearfix"> </div> <h3 id="input_argument_v" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>v</code> &#8212; number of dimensions (variables) </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p><p>Desired number of variables.</p> <p>
+    cascade</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; number of groups (components). </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Desired number of groups.</p> <p>
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>int16|int32|int64|single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_v" class="clearfix"> </div> <h3 id="input_argument_v" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>v</code> &#8212; number of dimensions (variables). </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Desired number of variables.</p> <p>
                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>int16|int32|int64|single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'BarOmega',0.05 
 </code>,<code> 'MaxOmega',0.05 
 </code>,<code> 'StdOmega',0.05 
@@ -134,14 +136,14 @@ ans(:,:,3) =
 </code>,<code> 'lim',1e6 
 </code>,<code> 'Display','off' 
 </code>,<code> 'R_seed',0 
-</code></code></span></div><div class="expandableContent"><div id="inputarg_BarOmega" class="clearfix"></div><h3 id="input_argument_namevalue_BarOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BarOmega</code> &#8212;Requested average overlap</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Value of desired average
+</code></code></span></div><div class="expandableContent"><div id="inputarg_BarOmega" class="clearfix"></div><h3 id="input_argument_namevalue_BarOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BarOmega</code> &#8212;Requested average overlap.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Value of desired average
                overlap. The default value is ''
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'BarOmega',0.05 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_MaxOmega" class="clearfix"></div><h3 id="input_argument_namevalue_MaxOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>MaxOmega</code> &#8212;Requested maximum overlap</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Value of desired maximum
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_MaxOmega" class="clearfix"></div><h3 id="input_argument_namevalue_MaxOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>MaxOmega</code> &#8212;Requested maximum overlap.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of desired maximum
                overlap. If BarOmega is empty the default value of MaxOmega
                is 0.15.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'MaxOmega',0.05 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_StdOmega" class="clearfix"></div><h3 id="input_argument_namevalue_StdOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>StdOmega</code> &#8212;Requested std of overlap</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Value of desired standard
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_StdOmega" class="clearfix"></div><h3 id="input_argument_namevalue_StdOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>StdOmega</code> &#8212;Requested std of overlap.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of desired standard
                deviation of overlap.</p> <p>
                Remark1 - The probability of overlapping between two
                clusters $i$ and $j$, ($i \ne j =1, 2, ..., k$), called
@@ -151,23 +153,23 @@ ans(:,:,3) =
                Remark2- it is possible to specify up to two values among
                BarOmega MaxOmega and StdOmega.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'StdOmega',0.05 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_sph" class="clearfix"></div><h3 id="input_argument_namevalue_sph" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>sph</code> &#8212;Spherical covariances</span></a><span class="example_desc">scalar boolean</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies covariance matrix structure:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_sph" class="clearfix"></div><h3 id="input_argument_namevalue_sph" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>sph</code> &#8212;Spherical covariances.</span></a><span class="example_desc">scalar boolean.</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies covariance matrix structure:</p> <p>
                sph=false (default) ==&gt; non-spherical;</p> <p>
                sph=true            ==&gt; spherical = const*I.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'sph',false 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_hom" class="clearfix"></div><h3 id="input_argument_namevalue_hom" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hom</code> &#8212;Equal Sigmas</span></a><span class="example_desc">scalar boolean</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies heterogeneous or homogeneous
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_hom" class="clearfix"></div><h3 id="input_argument_namevalue_hom" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hom</code> &#8212;Equal Sigmas.</span></a><span class="example_desc">scalar boolean.</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies heterogeneous or homogeneous
                clusters.</p> <p>
                hom=false (default) ==&gt; heterogeneous;</p><p>
                hom=true            ==&gt; homogeneous $\Sigma_1 = ... =
                \Sigma_k$
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'hom',false 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_ecc" class="clearfix"></div><h3 id="input_argument_namevalue_ecc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ecc</code> &#8212;maximum eccentricity</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar in the interval (0, 1] which defines maximum eccentricity.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_ecc" class="clearfix"></div><h3 id="input_argument_namevalue_ecc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ecc</code> &#8212;maximum eccentricity.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar in the interval (0, 1] which defines maximum eccentricity.</p> <p>
                For example, if ecc=0.9 (default value), we require for
                each group that sqrt(1 - minL / maxL) &lt;= 0.9 where minL and
                maxL are respectively the min and max eigenvalue of the cov
                matrix of a particular group
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ecc',0.8 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_restrfactor" class="clearfix"></div><h3 id="input_argument_namevalue_restrfactor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrfactor</code> &#8212;eigenvalue restriction factor</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Scalar in the interval [1 \infty] which specifies the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_restrfactor" class="clearfix"></div><h3 id="input_argument_namevalue_restrfactor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrfactor</code> &#8212;eigenvalue restriction factor.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar in the interval [1 \infty] which specifies the
                maximum ratio to allow between the largest eigenvalue and
                the smallest eigenvalue of the k covariance matrices which
                are generated. The default value is ''. More in details if for example
@@ -181,21 +183,21 @@ ans(:,:,3) =
                larger than restrfactor. In order to apply this restriction
                (which is typical of tclust.m) we call routine <a href="restreigen.html">restreigen</a>
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrfactor',8 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_PiLow" class="clearfix"></div><h3 id="input_argument_namevalue_PiLow" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>PiLow</code> &#8212;Smallest miximg proportion</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Value of the smallest mixing proportion (if 'PiLow'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_PiLow" class="clearfix"></div><h3 id="input_argument_namevalue_PiLow" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>PiLow</code> &#8212;Smallest miximg proportion.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of the smallest mixing proportion (if 'PiLow'
                is not reachable with respect to k, equal proportions are
                taken; PiLow = 1.0 implies equal proportions by default).</p> <p>
                PiLow must be a number in the interval (0 1]. Default value
                0.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'PiLow',0.1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_int" class="clearfix"></div><h3 id="input_argument_namevalue_int" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>int</code> &#8212;Simulation interval of mean vectors</span></a><span class="example_desc">vector of length 2</span></span></h3><div class="collapse">	<p><p>Mean vectors are simulated uniformly on a hypercube with
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_int" class="clearfix"></div><h3 id="input_argument_namevalue_int" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>int</code> &#8212;Simulation interval of mean vectors.</span></a><span class="example_desc">vector of length 2.</span></span></h3><div class="collapse">	<p><p>Mean vectors are simulated uniformly on a hypercube with
                sides specified by int = [lower.bound, upper.bound].</p> <p>
                The default value of int is [0 1].</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'int',[0 2] 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resN" class="clearfix"></div><h3 id="input_argument_namevalue_resN" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resN</code> &#8212;number of simulations</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Maximum number of mixture resimulations to find a
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resN" class="clearfix"></div><h3 id="input_argument_namevalue_resN" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resN</code> &#8212;number of simulations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Maximum number of mixture resimulations to find a
                similation setting with prespecified level of overlapping.</p> <p>
                The default value of resN is 100
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'resN',20 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;Tolerances</span></a><span class="example_desc">vector of length 2</span></span></h3><div class="collapse">	<p><p>tol(1) (which will be called tolmap) specifies
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;Tolerances.</span></a><span class="example_desc">vector of length 2.</span></span></h3><div class="collapse">	<p><p>tol(1) (which will be called tolmap) specifies
                the tolerance between the requested and empirical
                misclassification probabilities (default is 1e-06)
                tol(2) (which will be called tolnxc2) specifies the
@@ -203,20 +205,20 @@ ans(:,:,3) =
                of linear combinations of non central chi2 distributions).</p> <p>
                The default value of tol(2) 1e-06.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tol',[1e-06 1e-08] 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lim" class="clearfix"></div><h3 id="input_argument_namevalue_lim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lim</code> &#8212;Precision in the calculation of probabilities of overlapping</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Maximum number of integration terms to use inside routine
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lim" class="clearfix"></div><h3 id="input_argument_namevalue_lim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lim</code> &#8212;Precision in the calculation of probabilities of overlapping.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Maximum number of integration terms to use inside routine
                <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>. Default is 1e06.</p> <p>
                REMARK - Optional parameters tolncx2=tol(2) and lim will be
                used by function <a href="ncx2mixtcdf.html">ncx2mixtcdf</a> which computes the cdf of a
                linear combination of non central chi2 r.v.. This is the
                probability of misclassification
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lim',1e6 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_Display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Display</code> &#8212;Level of display</span></a><span class="example_desc">character</span></span></h3><div class="collapse">	<p><p>'off' displays no output;</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_Display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Display</code> &#8212;Level of display.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>'off' displays no output;</p> <p>
                'notify' (default) displays output if requested
                overlap cannot be reached in a particular simulation
                'iter' displays output at each iteration of each
                simulation
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Display','off' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_R_seed" class="clearfix"></div><h3 id="input_argument_namevalue_R_seed" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>R_seed</code> &#8212;use random numbers from R</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If scalar &gt; 0 for the seed to be used to generate random numbers
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_R_seed" class="clearfix"></div><h3 id="input_argument_namevalue_R_seed" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>R_seed</code> &#8212;use random numbers from R.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If scalar &gt; 0 for the seed to be used to generate random numbers
                in a R instance. This is used to check consistency of the
                results obtained with the R package MixSim. See file
                <a href="Connect_Matlab_with_R_HELP.html">Connect_Matlab_with_R_HELP</a> to know how to connect MATLAB

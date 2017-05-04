@@ -6,18 +6,18 @@
   Given two generic clusters $i$ and $j$ with $i \ne j=1,...,k$, indexed by
   $\phi(x,\mu_i,\sigma_i^2)$ and $\phi(x,\mu_j, \sigma_j^2)$ with probabilities of
   occurrence $\pi_i$ and $\pi_j$, the misclassification probability with
-  respect to cluster i (denoted with w_{j|i}) is defined as 
+  respect to cluster $i$ (denoted with $w_{j|i}$) is defined as 
   </p>\[ Pr[\pi_i \phi(x,\mu_i,\sigma_i^2) &lt; \pi_j \phi(x,\mu_j,\sigma_j^2)] \]<p>
   where, in the regression context, $\mu_i={\overline x}_i' \beta_i$ and
   $\mu_j= \overline x_j' \beta_j$. We assume that the length of vectors $x_i$,
   $x_j$, $\beta_i$, and $\beta_j$ is $p$ (number of explanatory variables
-  including or excluding intercept). In our implmentation, the
+  including or excluding intercept). In our implementation, the
   distribution of the elements of vectors $\beta_i$ ($\beta_j$) can be 'Normal'
   (with parameters $\mu$ and $\sigma$), 'HalfNormal' (with parameter $\sigma$) or
   uniform (with parameters $a$ and $b$). Same thing for the distribution of
   the elements of $x_i$ ($x_j$). However, while the parameters of the
   distributions are the same for all elements of $\beta$ in all groups, the
-  parameters of the diwtribution of the elements of vectors $x_i$ ($x_j$) can
+  parameters of the distribution of the elements of vectors $x_i$ ($x_j$) can
   vary for each group and each explanatory variable. In other words, it is
   possible to specify (say) that the distribution of the second
   explanatory variable in the first group is $U(2, 3)$ while the distribution
@@ -33,11 +33,12 @@
   probabilities) divided by $k*(k-1)/2$.</p> <p>
   The maximum overlap (MaxOmega, in the code) is defined as:</p><p>
      </p>\[       \max (w_{j|i} + w_{i|j})  \qquad i \ne j=1,2, ..., k   \]<p>
+
   The probability of overlapping $w_{j|i}$ is nothing but the cdf of a linear
-  combination of non central  $\chi^2$ distributions with 1 degree of freedom
-  + a linear combination of $N(0,1)$ evaluated in a point $c$.</p> <p>
+  combination of non central $\chi^2$ distributions with 1 degree of freedom
+  plus a linear combination of $N(0,1)$ evaluated in a point $c$.</p> <p>
   The coefficients of the linear combinations of non central $\chi^2$ and
-  N(0,1) depend on the eigenvalues and eigenvectors of matrix
+  $N(0,1)$ depend on the eigenvalues and eigenvectors of matrix
   $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.</p><p>
   Point c depends on the same eigenvalues and eigenvectors of matrix
   $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the determinants
@@ -62,7 +63,7 @@
     % Probabilities of overlapping are evaluated at
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X(:,2:end)],id)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 2: Mixture of regression with prefixed average overlap.</li></span></a></span></h3><div class="collapse"><p>
+    yXplot(y,X(:,2:end),'group',id);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 2: Mixture of regression with prefixed average overlap.</li></span></a></span></h3><div class="collapse"><p>
      Generate mixture of regression hyperplanes using an average overlapping at
      centroids =0.01.
      1) we use all the default options for Beta (random normal for each group with
@@ -88,7 +89,7 @@
     % Probabilitties of overlapping are evaluated at
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X(:,2:end)],id)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 3: Mixture of regression with prefixed average overlap.</li></span></a></span></h3><div class="collapse"><p>
+    yXplot(y,X(:,2:end),'group',id);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 3: Mixture of regression with prefixed average overlap.</li></span></a></span></h3><div class="collapse"><p>
      Exactly as before but now the distribution of beta is N(0 6)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     rng(10,'twister')
     p=5;
@@ -113,7 +114,7 @@
     %     sigma: 6
     %        mu: 0.5000
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X(:,2:end)],id)</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 4: Internation trade data example.</li></span></a></span></h3><div class="collapse"><p>
+    yXplot(y,X(:,2:end),'group',id)</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 4: Internation trade data example.</li></span></a></span></h3><div class="collapse"><p>
      All slopes are positive (beta generated using half normal) p=1 and there
      is no intercept<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     rng(10,'twister')
@@ -132,7 +133,7 @@
     n=200;
 
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X],id)</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 5:  Another international trade data example.</li></span></a></span></h3><div class="collapse"><p>
+    yXplot(y,X,'group',id)</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 5:  Another international trade data example.</li></span></a></span></h3><div class="collapse"><p>
      Here the strips of certain groups are limited up to certain values
      There is no intercept.
      In this example we compare high and low overlap among regression hyperplanes<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -154,18 +155,17 @@
     rng(10,'twister')
     Q=MixSimreg(k,p,'BarOmega',0.2,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X],id)
+    yXplot(y,X,'group',id,'tag','Strong_Overlap')
     set(gcf,'Name','Strong overlap')
-    
+
     % Small overlap BarOmega=0.01
-    figure
     rng(10,'twister')
     Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-    spmplot([y X],id)
-    set(gcf,'Name','Small overlap')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups (components) </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p><p>Desired number of groups.</p> <p>
+    yXplot(y,X,'group',id,'tag','Small_Overlap')
+    set(gcf,'Name','Small overlap')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups (components). </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Desired number of groups.</p> <p>
                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>int16|int32|int64|single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_p" class="clearfix"> </div> <h3 id="input_argument_p" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>p</code> &#8212; Number of explanatory variables for each regression
-               hyperplane (including intercept) </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p><p>Desired number of variables.</p> <p>
+               hyperplane (including intercept). </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Desired number of variables.</p> <p>
                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>int16|int32|int64|single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'BarOmega',0.05 
 </code>,<code> 'MaxOmega',0.05 
 </code>,<code> 'StdOmega',0.05 
@@ -178,14 +178,14 @@
 </code>,<code> 'tol',[0.01 0.02] 
 </code>,<code> 'lim',0.001 
 </code>,<code> 'Display','off' 
-</code></code></span></div><div class="expandableContent"><div id="inputarg_BarOmega" class="clearfix"></div><h3 id="input_argument_namevalue_BarOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BarOmega</code> &#8212;Requested average overlap</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Value of desired average
+</code></code></span></div><div class="expandableContent"><div id="inputarg_BarOmega" class="clearfix"></div><h3 id="input_argument_namevalue_BarOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BarOmega</code> &#8212;Requested average overlap.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Value of desired average
                overlap. The default value is ''
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'BarOmega',0.05 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_MaxOmega" class="clearfix"></div><h3 id="input_argument_namevalue_MaxOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>MaxOmega</code> &#8212;Requested maximum overlap</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Value of desired maximum
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_MaxOmega" class="clearfix"></div><h3 id="input_argument_namevalue_MaxOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>MaxOmega</code> &#8212;Requested maximum overlap.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of desired maximum
                overlap. If BarOmega is empty the default value of MaxOmega
                is 0.15.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'MaxOmega',0.05 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_StdOmega" class="clearfix"></div><h3 id="input_argument_namevalue_StdOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>StdOmega</code> &#8212;Requested std of overlap</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Value of desired standard
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_StdOmega" class="clearfix"></div><h3 id="input_argument_namevalue_StdOmega" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>StdOmega</code> &#8212;Requested std of overlap.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of desired standard
                deviation of overlap.</p> <p>
                Remark 1: The probability of overlapping between two
                clusters i and j (i \ne j=1, 2, ..., k), called pij, is
@@ -195,12 +195,12 @@
                Remark 2: it is possible to specify up to two values among
                BarOmega MaxOmega and StdOmega.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'StdOmega',0.05 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_hom" class="clearfix"></div><h3 id="input_argument_namevalue_hom" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hom</code> &#8212;Equal Sigmas</span></a><span class="example_desc">scalar boolean</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies if the desired clusters have
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_hom" class="clearfix"></div><h3 id="input_argument_namevalue_hom" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hom</code> &#8212;Equal Sigmas.</span></a><span class="example_desc">scalar boolean.</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies if the desired clusters have
                to be heterogeneous or homogeneous:</p> <p>
                hom=false (default) ==&gt; heterogeneous,
                hom=true            ==&gt; homogeneous \Sigma_1 = ... = \Sigma_k
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'hom',false 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_restrfactor" class="clearfix"></div><h3 id="input_argument_namevalue_restrfactor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrfactor</code> &#8212;restriction factor</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p>Scalar in the interval [1 \infty] which specifies the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_restrfactor" class="clearfix"></div><h3 id="input_argument_namevalue_restrfactor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrfactor</code> &#8212;restriction factor.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar in the interval [1 \infty] which specifies the
                maximum ratio to allow between the largest \sigma^2 and
                the smallest \sigma^2 which are generated. If, for example,
                restrfactor=10, after generating the covariance matrices we
@@ -210,13 +210,13 @@
                restriction (which is typical of <a href="tclust.html">tclust</a>, we call routine
                restreigen.m)
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrfactor',8 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_PiLow" class="clearfix"></div><h3 id="input_argument_namevalue_PiLow" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>PiLow</code> &#8212;Smallest miximg proportion</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Value of the smallest mixing proportion (if 'PiLow'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_PiLow" class="clearfix"></div><h3 id="input_argument_namevalue_PiLow" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>PiLow</code> &#8212;Smallest miximg proportion.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of the smallest mixing proportion (if 'PiLow'
                is not reachable with respect to k, equal proportions are
                taken; PiLow = 1.0 implies equal proportions by default).</p> <p>
                PiLow must be a number in the interval (0 1]
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'PiLow',0.1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Xdistrib" class="clearfix"></div><h3 id="input_argument_namevalue_Xdistrib" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Xdistrib</code> &#8212;scalar or structure which specifies the distribution to use
-               for each explanatory variable and each group</span></a><span class="example_desc">scalar | structure</span></span></h3><div class="collapse">	<p><p>Once chosen,
+               for each explanatory variable and each group.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>Once chosen,
                the distribution is fixed for each explanatory variable and
                each group; however, the parameters of the chosen
                distribution may vary across variables and groups. For
@@ -278,7 +278,7 @@
                    or p-by-k (if intercept is not present) containing the
                    means of the p explanatory variables for each group.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Xdistrib',1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_betadistrib" class="clearfix"></div><h3 id="input_argument_namevalue_betadistrib" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>betadistrib</code> &#8212;scalar or structure which specifies the distribution to use
-               for each element of the vectors of regression coefficients</span></a><span class="example_desc">scalar | structure</span></span></h3><div class="collapse">	<p><p>Once chosen, the distribution together with its parameters
+               for each element of the vectors of regression coefficients.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>Once chosen, the distribution together with its parameters
                is fixed for each element of beta, across each group.</p> <p>
                - If betadistrib = 1 the default is to assume that the vector
                  of regression coefficients come from N(0, 1).</p> <p>
@@ -318,18 +318,18 @@
                      not present) containing the vectors of regression
                      coefficients for the k groups.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'betadistrib',1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resN" class="clearfix"></div><h3 id="input_argument_namevalue_resN" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resN</code> &#8212;maximum number of mixture re-simulations to find a
-               simulation setting with prespecified level of overlapping</span></a><span class="example_desc">integer</span></span></h3><div class="collapse">	<p><p>The default value of resN is 100.</p> <p>
+               simulation setting with prespecified level of overlapping.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p><p>The default value of resN is 100.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'resN',3 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;vector of length 2</span></a><span class="example_desc">vector               - tol(1) (which will be called tolmap) specifies                 the tolerance between the requested and empirical                 misclassification probabilities (default is 1e-06)               - tol(2) (which will be called tolnxc2) specifies the                 tolerance to use in routine ncx2mixtcdf (which computes                 the cdf of linear combinations of non central chi2                 distributions)</span></span></h3><div class="collapse">	<p><p>The default value of tol(2) 1e-06.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;vector of length 2.</span></a><span class="example_desc">vector               - tol(1) (which will be called tolmap) specifies                 the tolerance between the requested and empirical                 misclassification probabilities (default is 1e-06)               - tol(2) (which will be called tolnxc2) specifies the                 tolerance to use in routine ncx2mixtcdf (which computes                 the cdf of linear combinations of non central chi2                 distributions).</span></span></h3><div class="collapse">	<p><p>The default value of tol(2) 1e-06.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tol',[0.01 0.02] 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lim" class="clearfix"></div><h3 id="input_argument_namevalue_lim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lim</code> &#8212;maximum number of integration terms to use inside routine
-               ncx2mixtcdf</span></a><span class="example_desc">integer</span></span></h3><div class="collapse">	<p><p>Default is 1e06.</p> <p>
-                 %               REMARK: Parameters tolncx2=tol(2) and lim are used by
+               ncx2mixtcdf.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p><p>Default is 1e06.</p> <p>
+                                REMARK: Parameters tolncx2=tol(2) and lim are used by
                function <a href="ncx2mixtcdf.html">ncx2mixtcdf</a> which computes the cdf of a linear
                combination of non central chi2 r.v.. This is the
                probability of misclassification.</p><p>
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lim',0.001 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_Display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Display</code> &#8212;Level of display</span></a><span class="example_desc">logical</span></span></h3><div class="collapse">	<p><p>- 'off' displays no output.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_Display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Display</code> &#8212;Level of display.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>- 'off' displays no output.</p> <p>
                - 'notify' (default) displays output if requested
                   overlap cannot be reached in a particular simulation.</p> <p>
                - 'iter' displays output at each iteration of each

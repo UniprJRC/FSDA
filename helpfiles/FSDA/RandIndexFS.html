@@ -8,11 +8,11 @@
  points that are put into one cluster in one partition, but into different
  clusters by the other partition. The partitions disagree for all pairs D
  and agree for all pairs A. A+D=totcomp= total number of comparisons.</p> <p>
- We can measure the agreement by the Rand index
- A/(A+D)=A/(totcomp) which is invariant with respect to permutations of the columns or
- rows of T. The index has to be corrected for agreement by chance if the
- sizes of the clusters are not uniform (which is usually the case). Since
- the Rand index lies between 0 and 1, the expected value of the Rand index
+ We can measure the agreement by the Rand index A/(A+D)=A/(totcomp) which
+ is invariant with respect to permutations of the columns or rows of T.</p><p>
+ The index has to be corrected for agreement by chance if the sizes of the
+ clusters are not uniform (which is usually the case). Since the Rand
+ index lies between 0 and 1, the expected value of the Rand index
  (although not a constant value) must be greater than or equal to 0. On
  the other hand, the expected value of the adjusted Rand index has value
  zero and the maximum value of the adjusted Rand index is also 1. Hence,
@@ -67,15 +67,15 @@
         c2=out.idx;
         % Units inside c2 which contain number 0 are referred to trimmed observations
         noisecluster=0;
-        [ARI,RI,MI,HI]=RandIndexFS(c1,c2,noisecluster);</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_c1" class="clearfix"> </div> <h3 id="input_argument_c1" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>c1</code> &#8212; labels of first partition or contingency table </span>  </a><span class="example_desc">A numeric or
+        [ARI,RI,MI,HI]=RandIndexFS(c1,c2,noisecluster);</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_c1" class="clearfix"> </div> <h3 id="input_argument_c1" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>c1</code> &#8212; labels of first partition or contingency table. </span>  </a><span class="example_desc">A numeric or
           character vector containining the class labels of
           the first partition or a 2-dimensional numeric matrix which
-          contains the cross-tabulation of cluster assignments</span></span></h3> <div class="collapse"> <p>Data Types: single | double | char | logical</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_c2" class="clearfix"> </div> <h3 id="input_argument_c2" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>c2</code> &#8212; labels of second partition </span>  </a><span class="example_desc">A numeric or character vector
+          contains the cross-tabulation of cluster assignments.</span></span></h3> <div class="collapse"> <p>Data Types: single | double | char | logical</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_c2" class="clearfix"> </div> <h3 id="input_argument_c2" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>c2</code> &#8212; labels of second partition. </span>  </a><span class="example_desc">A numeric or character vector
           containining the class labels of
-          the second partition</span></span></h3> <div class="collapse"> <p><p>The length of vector c2 must be equal to
+          the second partition.</span></span></h3> <div class="collapse"> <p><p>The length of vector c2 must be equal to
           the length of vector c1. This second input is required just if
           c1 is not a 2-dimensional numeric matrix.</p> <p>
-          Data Types: single | double | char | logical</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_noisecluster" class="clearfix"> </div> <h3 id="input_argument_noisecluster" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>noisecluster</code> &#8212; label or number associated to the 'noise class' or 'noise level' </span>  </a><span class="example_desc">Scalar, numeric or character</span></span></h3> <div class="collapse"> <p><p>Number or character label which
+          Data Types: single | double | char | logical</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_noisecluster" class="clearfix"> </div> <h3 id="input_argument_noisecluster" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>noisecluster</code> &#8212; label or number associated to the 'noise class' or 'noise level'. </span>  </a><span class="example_desc">Scalar, numeric or character.</span></span></h3> <div class="collapse"> <p><p>Number or character label which
                  denotes the points which do not belong to any cluster.</p> <p>
                  These points are not takern into account for the
                  computation of the Rand type indexes

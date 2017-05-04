@@ -548,8 +548,10 @@ function out=mreadFS(file,varargin)
 %         still runs but a warning will be automatically produced.
 %         -----------------------------------------------------------------------:.
 %
-% See also: publish
+% See also: publishFS.m
 %
+%
+% References:
 %
 % Copyright 2008-2016.
 % Written by FSDA team

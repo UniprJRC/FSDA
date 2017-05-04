@@ -1,17 +1,40 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>randsampleFS</title> <meta content="refpage" name="chunktype"><meta content="function:randsampleFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="randsampleFS Generates a random sample of k elements from the integers 1 to n (k<=n)" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/randsampleFS.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: randsampleFS</em></p><h1 itemprop="title">randsampleFS</h1><h1 class="reftitle">randsampleFS Generates a random sample of k elements from the integers 1 to n (k<=n)</h1><h2>Description</h2><P></P><h2>More About</h2><P>
-   if method=1 (default option) the program proceeds as follows: 
-   if  $4*k &gt;n$ the programs does a random permutation of the population
-   and returns the first nsel elements else if $4*k&lt;=n$ (that is if the
-   desired sample is small compared to all combinations, the program
-   repeatedly samples with replacement until there are nsel unique values.
+   The method=0 uses MATLAB function randperm. In old MATLAB releases
+   randperm was slower than FSDA function shuffling, which is used in
+   method 1 (for example, in R2009a - MATLAB 7.8 - randperm was at least
+   50 slower).  
 
-   if method=2 Systematic sampling is used where the starting point is
-   random and the step is also random.
+   If method=1 the approach depends on the population and sample sizes:
+   - if $n &lt; 1000$ and $k &lt; n/(10 + 0.007n)$, that is if the population is
+     relatively small and the desired sample is small compared to the
+     population, we repeatedly sample with replacement until there are k
+     unique values;
+   - otherwise, we do a random permutation of the population and return  
+     the first k elements. 
+   The threshold $k &lt; n/(10 + 0.007n)$ has been determined by simulation
+   under MATLAB R2016b. Before, the threshold was $n &lt; 4*k$.
 
-   if method=3 random sampling based on the old but well known Linear
-   Congruential Generator (LCG) method is used. In this case there is no
-   guarantee to get unique numbers.
+   If method=2 systematic sampling is used, where the starting point is
+   random and the step is also random. 
 
+   If method=3 random sampling is based on the old but well known Linear
+   Congruential Generator (LCG) method. In this case there is no guarantee
+   to get unique numbers. The method is included for historical reasons.
+
+   If method is a vector of n weights, then Weighted Sampling Without
+   Replacement is applied. Our implementation follows Efraimidis and
+   Spirakis (2006). MATLAB function datasample follows Wong and  Easton
+   (1980), which is also quite fast; note however that function datasample
+   may be very slow if applied repetedly, for the large amount of time
+   spent on options checking.
+
+   Remark on computation performances. Method=2 (systematic sampling) is
+   by far the fastest for any practical population size $n$. For example,
+   for $n \approx 10^6$ method=2 is two orders of magniture faster than
+   method=1. With recent MATLAB releases (after R2011b) method = 0 (which
+   uses compiled MATLAB function randperm) has comparable performances, at
+   least for reasonably small $k$. In releases before 2012a, randperm was
+   considerably slow.
 
 </P><h2>References</h2><P>For Method 1. Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables
    for biological, agricultural and medical research (3rd ed.). London,

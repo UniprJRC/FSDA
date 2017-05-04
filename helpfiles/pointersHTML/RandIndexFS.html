@@ -8,11 +8,11 @@
  points that are put into one cluster in one partition, but into different
  clusters by the other partition. The partitions disagree for all pairs D
  and agree for all pairs A. A+D=totcomp= total number of comparisons.
- We can measure the agreement by the Rand index
- A/(A+D)=A/(totcomp) which is invariant with respect to permutations of the columns or
- rows of T. The index has to be corrected for agreement by chance if the
- sizes of the clusters are not uniform (which is usually the case). Since
- the Rand index lies between 0 and 1, the expected value of the Rand index
+ We can measure the agreement by the Rand index A/(A+D)=A/(totcomp) which
+ is invariant with respect to permutations of the columns or rows of T.
+ The index has to be corrected for agreement by chance if the sizes of the
+ clusters are not uniform (which is usually the case). Since the Rand
+ index lies between 0 and 1, the expected value of the Rand index
  (although not a constant value) must be greater than or equal to 0. On
  the other hand, the expected value of the adjusted Rand index has value
  zero and the maximum value of the adjusted Rand index is also 1. Hence,

@@ -164,7 +164,7 @@
     % Add multiple title
     suplabel(['Housing data; forward plots in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']  of HPD regions for \beta and \sigma^2'],'t')</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
+        ']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
 --------------------------------------------------
 -------------------------
 Signal detection loop
@@ -189,21 +189,6 @@ m=200
 m=300
 m=400
 m=500
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0600 0.0600 0.9700 0.9700]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
 </pre><img vspace="5" hspace="5" src="images\FSRBeda_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot posterior estimates of beta and sigma2 in the last steps.</li></span></a></span></h3><div class="collapse"><p>
      Plot posterior estimates of beta and sigma2 in the interval (subset size) [250 n+1].
      In this example for the house price data we monitor the forward plots
@@ -329,7 +314,7 @@ ans =
     % Add multiple title
     suplabel(['Housing data; forward plots in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']  of HPD regions for \beta and \sigma^2'],'t')</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
+        ']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
 --------------------------------------------------
 -------------------------
 Signal detection loop
@@ -354,21 +339,6 @@ m=200
 m=300
 m=400
 m=500
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0600 0.0600 0.9700 0.9700]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
 </pre><img vspace="5" hspace="5" src="images\FSRBeda_02.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Plot of HPDI for BankProfit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     XX=load('BankProfit.txt');
     R=load('BankProfitR.txt');
@@ -492,12 +462,12 @@ ans =
     % Add multiple title
     suplabel(['Bank profit data; forward plots in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']  of HPD regions for \beta and \sigma^2'],'t')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
+        ']  of HPD regions for \beta and \sigma^2'],'t')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
                values will automatically be excluded from the
-               computations</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
-               of dimension (n x p-1) </span>  </a><span class="example_desc">Rows of X represent observations, and
-               columns represent variables</span></span></h3> <div class="collapse"> <p><p>Missing values (NaN's) and
+               computations.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
+               of dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and
+               columns represent variables.</span></span></h3> <div class="collapse"> <p><p>Missing values (NaN's) and
                infinite values (Inf's) are allowed, since observations
                (rows) with missing or infinite values will automatically
                be excluded from the computations.</p> <p>
@@ -511,10 +481,10 @@ ans =
 </code>,<code> 'init',100 starts monitoring from step m=100 
 </code>,<code> 'nocheck',1 
 </code>,<code> 'conflev',[0.90 0.93] 
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
+</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
                      if 0, no constant term will be included.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bayes" class="clearfix"></div><h3 id="input_argument_namevalue_bayes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bayes</code> &#8212;It specifies prior information</span></a><span class="example_desc">structure</span></span></h3><div class="collapse">	<p><p>A structure which specifies prior information.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bayes" class="clearfix"></div><h3 id="input_argument_namevalue_bayes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bayes</code> &#8212;It specifies prior information.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies prior information.</p> <p>
                If structure bayes is not supplied the default values which
                are used are: beta0= zeros(p,1) (vector of zeros); R=eye(p) 
                (Identity matrix); tau0=1/1e+6 (very large value for the
@@ -533,24 +503,24 @@ ans =
                       information as coming from n0 previous experiments.</p> <p>
                       Therefore we assume that matrix $X_0$ (which defines
                       R), was made up of n0 observations.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;list of units forming the initial subset</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>if bsb=0 then the procedure starts with p
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;list of units forming the initial subset.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>if bsb=0 then the procedure starts with p
                units randomly chosen else if bsb is not 0 the search will
                start with m0=length(bsb). The default value of bsb is ''
                that is in the first step just prior information is used.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> bsb=[2 5 1];
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>scalar, specifies the point where to start monitoring
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>scalar, specifies the point where to start monitoring
                required diagnostics. if init is not specified it will be
                set equal to :</p> <p>
                  p+1, if the sample size is smaller than 40;</p> <p>
                  min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar. If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar. If nocheck is equal to 1 no check is performed on
                matrix y and matrix X. Notice that y and X are left
                unchanged. In other words the additional column of ones for
                the intercept is not added. As default nocheck=0. See
                routine <a href="chkinputRB.html">chkinputRB</a> for the details of the operations.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence levels to be used to compute HPDI</span></a><span class="example_desc">vector</span></span></h3><div class="collapse">	<p><p>This input option is used just if input
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence levels to be used to compute HPDI.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>This input option is used just if input
                stats=1. The default value of conflev is [0.95 0.99] that
                is 95% and 99% HPDI confidence intervals are computed.</p> <p>
                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.90 0.93] 
@@ -652,5 +622,5 @@ ans =
                units included in the final step of the search.</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>A vector with n elements that contains the response
                variable which has been used.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>Data matrix of explanatory variables
                which has been used (it also contains the column of ones if
-               input option intercept was missing or equal to 1).</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>string FSRBeda.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson A.C., Corbellini A. and Riani M. (2015), Robust Bayesian
-   Regression, submitted</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRB.html" itemprop="url"><span itemprop="name"><code>FSRB</code></span></a></span> | <span itemprop="seealso"><a href="regressB.html" itemprop="url"><span itemprop="name"><code>regressB</code></span></a></span> | <span itemprop="seealso"><a href="FSRBmdr.html" itemprop="url"><span itemprop="name"><code>FSRBmdr</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+               input option intercept was missing or equal to 1).</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSRBeda'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson A.C., Corbellini A. and Riani M. (2017), Robust Bayesian
+   Regression, Test, in press.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRB.html" itemprop="url"><span itemprop="name"><code>FSRB</code></span></a></span> | <span itemprop="seealso"><a href="regressB.html" itemprop="url"><span itemprop="name"><code>regressB</code></span></a></span> | <span itemprop="seealso"><a href="FSRBmdr.html" itemprop="url"><span itemprop="name"><code>FSRBmdr</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

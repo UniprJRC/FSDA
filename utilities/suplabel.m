@@ -45,15 +45,15 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %      hlabel: handle to the label. Graphics handle.
 %             Graphics handle to the label.
 %
+% See also: subplot, spmplot, yXplot
 %
-%
+% References:
 %
 % Acknowledgements: 
-%  this code is based on the code suplabel by Ben Barrowes
+%  This code is based on the code suplabel by Ben Barrowes
 % <barrowes@alum.mit.edu>
 % https://www.mathworks.com/matlabcentral/fileexchange/7772-suplabel?s_tid=srchtitle
 %
-% See also: text, title, xlabel, ylabel, zlabel, subplot,
 % 
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -242,3 +242,4 @@ elseif strcmp('y',whichaxis) || strcmp('yy',whichaxis)
 end
 
 end
+%FScategory:UTIGEN

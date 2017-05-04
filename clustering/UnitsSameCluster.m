@@ -6,7 +6,7 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 %
 %  Required input arguments:
 %
-%         IDX    = Assignment of units to groups for different values of c
+%         IDX   : Assignment of units to groups for different values of c
 %                   (restriction factor) and k (number of groups. Cell.
 %                   Cell of size length(kk)-times length(cc), where kk is
 %                   the vector which contains the number of groups which
@@ -28,6 +28,8 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 %                   labelled with number r (unless it is found that unit
 %                   UnitsSameGroup(r) has already been assigned to groups
 %                   1, 2, ..., r-1).
+%
+%  Optional input arguments:
 %
 %  Output:
 %

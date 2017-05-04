@@ -1,4 +1,4 @@
-function ceff = HUeff(eff,v,varargin)
+function ceff = HUeff(eff,v,shapeeff)
 %HUeff finds the constant c which is associated to the requested efficiency for Tukey biweight estimator
 %
 %
@@ -21,7 +21,7 @@ function ceff = HUeff(eff,v,varargin)
 %
 %   shapeeff : Location or shape efficiency. Scalar.
 %              If 1, the efficiency is referred to shape else (default)
-%              is referred to location
+%              is referred to location (not implemented yet)
 %               Example - 'shapeeff',1
 %               Data Types - double
 %

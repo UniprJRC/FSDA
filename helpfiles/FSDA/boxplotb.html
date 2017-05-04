@@ -51,13 +51,13 @@
     X=X(X(:,2)&lt;45,:);
     out=boxplotb(X,'strictlyinside',1);
     xlabel('y1=Percentage of infant population')
-    ylabel('y3 = Percentage of single member families')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Observations </span>  </a><span class="example_desc">Matrix</span></span></h3> <div class="collapse"> <p>n x 2 data matrix: n observations
+    ylabel('y3 = Percentage of single member families')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Observations. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p>n x 2 data matrix: n observations
                and 2 variables. Rows of Y represent observations, and columns represent
                variables.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'coeff',1.68
 </code>,<code> 'strictlyinside',1
 </code>,<code> 'plots',1
 </code>,<code> 'resolution',5000
-</code></code></span></div><div class="expandableContent"><div id="inputarg_coeff" class="clearfix"></div><h3 id="input_argument_namevalue_coeff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>coeff</code> &#8212;expansion factor</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Coefficient which enables us to pass from
+</code></code></span></div><div class="expandableContent"><div id="inputarg_coeff" class="clearfix"></div><h3 id="input_argument_namevalue_coeff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>coeff</code> &#8212;expansion factor.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Coefficient which enables us to pass from
                  a contour which contains 50% of the data (hinge) to a contour
                  which contains a prespecified portion of the data.</p> <p>
                  Table below (taken from Zani, Riani and Corbellini, 1998,
@@ -70,10 +70,10 @@
                    confidence level 0.95 -&gt; coefficient 1.13;</p> <p>
                    confidence level 0.99 -&gt; coefficient 1.68.</p> <p>
 
-                   %                 Remark: The default value of coeff is 1.68, that is 99%
+                                    Remark: The default value of coeff is 1.68, that is 99%
                  confidence level contours are produced.</p><p>
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'coeff',1.68
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_strictlyinside" class="clearfix"></div><h3 id="input_argument_namevalue_strictlyinside" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>strictlyinside</code> &#8212;additional peeling</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If strictlyinside=1 an additional convex hull is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_strictlyinside" class="clearfix"></div><h3 id="input_argument_namevalue_strictlyinside" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>strictlyinside</code> &#8212;additional peeling.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If strictlyinside=1 an additional convex hull is
                  done on the 50% hull in order to increase the robustness
                  properties of the method. In fact there may
                  in general be some loss of robustness in small samples
@@ -82,7 +82,7 @@
                  may be necessary to do an additional peeling. The default
                  value of strictlyinside is 0.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'strictlyinside',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;graphical output</span></a><span class="example_desc">missing value | scalar | structure</span></span></h3><div class="collapse">	<p><p>This options specifies whether it
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;graphical output.</span></a><span class="example_desc">missing value | scalar | structure.</span></span></h3><div class="collapse">	<p><p>This options specifies whether it
                  is necessary to produce the bivariate boxplot on the
                  screen.</p> <p> 
                  If plots is a missing value or is a scalar equal to 0 no
@@ -104,7 +104,7 @@
                        color in RGB format to fill the outer contour
                        (fence). The default value of OuterColor is
                        OuterColor=[210/255 203/255 255/255].</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resolution" class="clearfix"></div><h3 id="input_argument_namevalue_resolution" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resolution</code> &#8212;resolution to use</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Resolution which must be
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resolution" class="clearfix"></div><h3 id="input_argument_namevalue_resolution" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resolution</code> &#8212;resolution to use.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Resolution which must be
                      used to produce the inner and outer spline.</p> <p> 
                      The default value of resolution is 1000, that is the
                      splines are plotted on the screen using

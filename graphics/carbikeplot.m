@@ -80,6 +80,7 @@ function h  = carbikeplot(RelSol,varargin)
 %               it is referred to CLACLA.
 %               Remark: field out.MIXCLAbsari is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'CLACLA'
+%          Data Types - struct
 %
 %  Optional input arguments:
 %

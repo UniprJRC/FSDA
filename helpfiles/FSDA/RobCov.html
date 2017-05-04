@@ -3,16 +3,16 @@
  confidence intervals. The covariance matrix of the estimated parameters
  \[
    cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
- \]<p> 
- consists of four parts:</p> <p> 
+ \]<p>
+ consists of four parts:</p> <p>
 1) $q$ a correction factor for the scale estimate;</p> <p>
- 2) $\sigma$ the scale parameter.</p> <p> 
+ 2) $\sigma$ the scale parameter.</p> <p>
  3) $v$ a correction factor depending on the $\psi$ function which is
- used;</p> <p> 
+ used;</p> <p>
  4) $V_X$= a matrix part. For OLS $V_X=X'X$. Given that in robust
  regression we give a weight to each observation, the matrix $X'X$ should
  be replaced by something like $X'WX$, where $W$ is a diagonal matrix
- containing the weights assigned to each observation.</p><p> 
+ containing the weights assigned to each observation.</p><p>
  The purpose of this function is to provide the user with different
  options for the estimate of $cov(\hat \beta)$ where $\hat \beta$ is  a
  vector of regression coefficients obtained using S or MM estimation and a
@@ -49,7 +49,7 @@
     covrobS3=out.covrob3;
     covrobS4=out.covrob4;
 
-    % Compute robust S t-statistics 
+    % Compute robust S t-statistics
     tstatS=outS.beta./sqrt(diag(covrobS));
     tstatS1=outS.beta./sqrt(diag(covrobS1));
     tstatS2=outS.beta./sqrt(diag(covrobS2));
@@ -77,40 +77,40 @@
     qhat=out.q;
     disp('tstat from MM after correction for sigma')
     disp([tstatMM/qhat tstatMM1/qhat tstatMM2/qhat tstatMM3/qhat tstatMM4/qhat])</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
-            of dimension (n x p-1) </span>  </a><span class="example_desc">Rows of X represent observations, and
-            columns represent variables</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaledres" class="clearfix"> </div> <h3 id="input_argument_scaledres" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaledres</code> &#8212; Scaled residuals.Vector </span>  </a><span class="example_desc">n-times-1 vector containing scaled
-             residuals $r_i/\hat \sigma$</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaleest" class="clearfix"> </div> <h3 id="input_argument_scaleest" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaleest</code> &#8212; robust estimate of the scale </span>  </a><span class="example_desc">Scalar</span></span></h3> <div class="collapse"> <p><p>Robust estimate of
-             sigma ($\hat \sigma$).</p> <p> 
-               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1 
+            of dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and
+            columns represent variables.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaledres" class="clearfix"> </div> <h3 id="input_argument_scaledres" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaledres</code> &#8212; Scaled residuals.Vector. </span>  </a><span class="example_desc">n-times-1 vector containing scaled
+             residuals $r_i/\hat \sigma$.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaleest" class="clearfix"> </div> <h3 id="input_argument_scaleest" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaleest</code> &#8212; robust estimate of the scale. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Robust estimate of
+             sigma ($\hat \sigma$).</p> <p>
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
 </code>,<code> 'eff',0.99
-</code>,<code> 'intercept',1 
+</code>,<code> 'intercept',1
 </code>,<code> 'bdp',0.4
-</code>,<code> 'rhofunc','optimal' 
-</code>,<code> 'rhofuncparam',5 
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If 1, a model with
+</code>,<code> 'rhofunc','optimal'
+</code>,<code> 'rhofuncparam',5
+</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
                constant term will be fitted (default), if 0, no constant
                term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>Scalar defining nominal efficiency (i.e. a number between
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar defining nominal efficiency (i.e. a number between
                  0.5 and 0.99). The default value is 0.95
                  Asymptotic nominal efficiency is:</p> <p>
                  $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>If 1, a model with
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
                constant term will be fitted (default), if 0, no constant
                term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point</span></a><span class="example_desc">scalar</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
                the algorithm should resist. In this case any value greater
                than 0 but smaller or equal than 0.5 will do fine.</p> <p>
                Note that given bdp nominal
                efficiency is automatically determined.</p> <p>
-                 %               REMARK: just one between bdp and eff must be specified. If
+                                REMARK: just one between bdp and eff must be specified. If
                both of them are specified an error is produced. If both of
                them are not specified the defulat is tu use the tuning
                constant associated to a nominal efficiency of 0.95.</p><p>
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',0.4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofunc" class="clearfix"></div><h3 id="input_argument_namevalue_rhofunc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofunc</code> &#8212;rho function</span></a><span class="example_desc">string</span></span></h3><div class="collapse">	<p><p>String which specifies the rho function which must be used to
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofunc" class="clearfix"></div><h3 id="input_argument_namevalue_rhofunc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofunc</code> &#8212;rho function.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which specifies the rho function which must be used to
                weight the residuals. Possible values are
                'bisquare'
                'optimal'
@@ -125,34 +125,34 @@
                'hampel' uses Hampel $\rho$ and $\psi$ functions.</p> <p>
                See <a href="HArho.html">HArho</a> and <a href="HApsi.html">HApsi</a>.</p><p>
                The default is bisquare
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function</span></a><span class="example_desc">scalar | vector</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
                value of k = sup CVC (the default value of k is 4.5).</p> <p>
                For Hampel rho function it is possible to define parameters
                a, b and c (the default values are a=2, b=4, c=8)
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5 
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>covrob</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (4.49) of p. 101 of Maronna et al. (2006)
                namely:</p> <p>
-                </p>\[ 
+                </p>\[
                 \mbox{covrob} = cov( \hat \beta) = \hat \sigma^2 \hat v (X'X)^{-1}
                 \]
-                where 
+                where
                 \[
-                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{\sum_{i=1}^n \psi'(r_i/\hat \sigma)^2} 
+                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{\sum_{i=1}^n \psi'(r_i/\hat \sigma)^2}
                 \]</p></td></tr><tr valign="top"><td><code>covrob1</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
-               with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$ 
+               with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$
                namely:</p> <p>
                 </p>\[
                  \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
                 \]
-                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n
-                 \psi'(r_i/\hat \sigma))^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ \left[ (\sum_{i=1}^n
+                 \psi'(r_i/\hat \sigma)) \right]^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -194,7 +194,7 @@
                c = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma)) r_i/\hat \sigma)
                \]</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
  and Methods, Wiley, New York.</p></div><div><p>P.J. Huber and E.M. Ronchetti (2009), Robust Statistics, 2nd Edition,
- Wiley New York.</p></div><div><p>Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data 
+ Wiley New York.</p></div><div><p>Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data
  sets. Computational Statistics and Data Analysis, 54, pp. 3168-3173.</p></div><div><p>Koller, M. and W. A. Stahel (2011). Sharpening wald-type inference in
  robust regression for small samples. Computational Statistics & Data
  Analysis 55(8), pp. 2504-2515.</p></div><div><p><p>Croux, C., G. Dhaene, and D. Hoorelbeke (2003). Robust standard errors

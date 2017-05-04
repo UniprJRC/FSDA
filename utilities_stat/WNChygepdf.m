@@ -61,10 +61,15 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
 %
 %{
     %% Probability of getting 0 to p successes in p weighted drawns without replacement.
-    M  = 500;   %we have 500 balls in the urn
-    N  = 3;     %we extract 3 balls, one at a time, without replacement
-    K  = M/2;   %initially, in the urn we have 250 red and 250 white balls
-    W  = 10;    %red balls are ten times the white balls
+    % Problem description.
+    %we have 500 balls in the urn
+    M  = 500;   
+    %we extract 3 balls, one at a time, without replacement
+    N  = 3;     
+    %initially, in the urn we have 250 red and 250 white balls
+    K  = M/2;   
+    %red balls are ten times the white balls
+    W  = 10;    
     % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
     % 3 balls without replacement.
     for x = 0:N
