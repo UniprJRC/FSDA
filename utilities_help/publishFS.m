@@ -630,6 +630,8 @@ function out=publishFS(file,varargin)
 % See also: publish
 %
 %
+% References:
+%
 % Copyright 2008-2016.
 % Written by FSDA team
 %
@@ -2186,6 +2188,11 @@ if nargout>0
             error('FSDA:missingOuts',['Output argument ' listargouts{i} ' has not been found'])
         end
         
+        % Just in case inipoint has more than one element take just the
+        % first. This may happen, for example when, say output is out and
+        % then string out(:,1) ... is found 
+        inipoint=inipoint(1);
+        
         % The endpoint of the substring is 'more About'. or See also or the next output argument
         if i <nargout-1
             % Note that the endpoint must be searched from position
@@ -2207,6 +2214,8 @@ if nargout>0
                         'Endpoint for the description of output argument ''' listargouts{i} '''not found'];
                     error('FSDA:wrongOutDescription',errmsg)
                 end
+                % just in case endpoint has more than one element
+                endpoint=endpoint(1);
             else
                 % In this case there are also optional arguments
                 endpoint=regexp(fstringsel,'Optional [Oo]utput:');
@@ -3588,7 +3597,7 @@ fin=finA(seluni);
 
 if isempty(ini)
     disp('Probably ":" symbols  must be replaced with "=" symbols in out description')
-    error('FSDA:MissingArg',['Parser cannot find string \n''' StructureName '.xxxx'' = \n for output structure ' StructureName])
+    error('FSDA:MissingArg',['Parser cannot find string \n''' StructureName '.xxxx'' = \n for structure ' StructureName])
 else
 end
 
