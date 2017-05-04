@@ -24,6 +24,10 @@ function outHELP=CreateFSDAhelpFiles()
 % 
 % 5) Creare all pointer files using routine CreateFSDApointerFiles
 %
+% 6) Create searchable database with different versions of MATLAB using
+% function builddocsearchdb
+%
+%
 % Required input arguments:
 %
 %  Output:
@@ -122,7 +126,17 @@ web(outputOFHtmlHelpFile,'-browser');
 if h
     disp('Successful creation of pointer files')
 end
- 
+
+%% STEP 6: create searchable database with different versions of MATLAB
+FileName='addFSDA2path';
+FullPath=which(FileName);
+%Navigate to the main folder of FSDA
+FSDAroot=fileparts(FullPath);
+% Navigate to subfolder which contains pointerHTML
+pointersHTMLroot=[FSDAroot filesep 'helpfiles'  filesep 'pointersHTML'];
+% Create searchable database
+builddocsearchdb(pointersHTMLroot)
+
 %% Now if all was well let us do the setup.exe
 disp('Congratulations the FSDA package is ready to be deployed')
 

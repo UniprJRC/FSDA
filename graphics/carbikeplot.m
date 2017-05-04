@@ -27,7 +27,7 @@ function h  = carbikeplot(RelSol,varargin)
 %
 %  Required input arguments:
 %
-%           RelSol : Relevant solutions produced by function tclustICsol. Structure. 
+%           RelSol : Relevant solutions produced by function tclustICsol. Structure.
 %                It contains
 %                the following fields.
 %   RelSol.MIXMIXbs = cell of size NumberOfBestSolutions-times-5 which contains
@@ -85,7 +85,7 @@ function h  = carbikeplot(RelSol,varargin)
 %  Optional input arguments:
 %
 %
-% SpuriousSolutions  :  Include or nor spurious solutions. Boolean. As default spurios solutions 
+% SpuriousSolutions  :  Include or nor spurious solutions. Boolean. As default spurios solutions
 %               are not included into the plot
 %                 Example - 'SpuriousSolutions',false
 %                 Data Types - single | double
@@ -166,7 +166,7 @@ function h  = carbikeplot(RelSol,varargin)
 
 %% Beginning of code
 if ~isstruct(RelSol)
-                error('FSDA:carbikeplot:WrongInput','irst input argument must be a structure.');
+    error('FSDA:carbikeplot:WrongInput','First input argument must be a structure.');
 end
 
 SpuriousSolutions=false;
@@ -212,11 +212,11 @@ kk=RelSol.kk;
 cc=RelSol.cc;
 
 if isfield(RelSol,'CLACLAbs')
-   ICbs=RelSol.CLACLAbs; 
+    ICbs=RelSol.CLACLAbs;
 elseif isfield(RelSol,'MIXMIXbs')
-   ICbs=RelSol.MIXMIXbs; 
+    ICbs=RelSol.MIXMIXbs;
 elseif isfield(RelSol,'MIXCLAbs')
-     ICbs=RelSol.MIXCLAbs;
+    ICbs=RelSol.MIXCLAbs;
 else
     error('FSDA:carbikeplot:WrongInput','A field of input structure RelSol must be ''MIXMIXbs'' , ''MIXCLAbs'',  ''CLACLAbs''')
 end
@@ -277,9 +277,9 @@ for i=1:numsol
         rectangle('position',[cbest-0.25 kbest 0.5 0.5],'facecolor','w','Curvature',[1 1])
         minl=min([minindc minindstablec]);
         rectangle('position',[minl kbest max([maxindc maxindstablec])-minl 0],'facecolor','w');
-
+        
         soltruen=sum(strcmp(ICbs(1:i,end),'true'));
-
+        
         text(cbest,kbest+0.25,[num2str(soltruen) ',' num2str(i)],'HorizontalAlignment','center','FontSize',16,'VerticalAlignment','middle');
     end
 end
