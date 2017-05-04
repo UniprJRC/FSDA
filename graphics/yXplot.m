@@ -5,11 +5,11 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 %  Required input arguments:
 %
-%    y: Response variable. Vector or structure. A vector with n elements that contains
+%    y: Response variable. Vector or struct. A vector with n elements that contains
 %       the response variable or a structure 'out' coming from function FSReda.
 %       If y is a vector it can be either a row or a column vector.
 %
-%  Optional input arguments if y is a vector:
+%  OPTIONAL INPUT ARGUMENTS IF y IS A VECTOR:
 %
 %     If y is a vector, varargin can be either a sequence of name/value
 %     pairs, detailed below, or one of the following explicit assignments:
@@ -58,7 +58,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                This is obtained with the assignment plo.sym = 'o+x'
 %                or equivalently with plo.sym = {'o' '+' 'x'}.
 %                By default the sequence of marker types is:
-%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'
+%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'.
 %         - siz: scalar, a marker size to use for all plots. By default the
 %                marker size depends on the number of plots and the size of
 %                the figure window. Default is siz = '' (empty value).
@@ -67,34 +67,26 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %       - nameX:   explanatory variables names. Cell. Cell array of strings of length p containing the labels
 %                   of the varibles of the regression dataset. If it is empty
 %                 	(default) the sequence X1, ..., Xp will be created
-%                   automatically
+%                   automatically.
 %       - namey   :   response variable name. Character. Character containing the label of the response
-%                   Example - 'namey','response'
-%                   Data Types - character
 %       - ylimy    :   y limits. Vector. vector with two elements controlling
 %                   minimum and maximum on the y axis. Default value is ''
-%                   (automatic scale)
-%                   Example - 'ylimy',[0 4]
-%                   Data Types - single or double
+%                   (automatic scale).
 %       - xlimx    :   x limits. Vector. vector with two elements controlling minimum and maximum
-%                   on the x axis. Default value is '' (automatic scale)
-%                   Example - 'xlimx',[0 4]
-%                   Data Types - single or double
+%                   on the x axis. Default value is '' (automatic scale).
 %   tag  :   plot tag. String. string which identifies the handle of the plot which
 %           is about to be created. The default is to use tag
 %           'pl_yX'. Notice that if the program finds a plot which
 %           has a tag equal to the one specified by the user, then
 %           the output of the new plot overwrites the existing one
-%           in the same window else a new window is created
-%           Example - 'tag','myplot'
-%           Data Types - character
+%           in the same window else a new window is created.
 %
-%  y is a structure.
+%  OPTIONAL INPUT ARGUMENTS IF y IS A STRUCTURE:
 %
 %  If first input argument y is a structure (generally created by function FSReda),
 %  then this structure must have the following fields:
 %
-%       REQUIRED FIELDS IN INPUT STRUCTURE y.
+%       Required fields in input structure y.
 %
 %       y.y   =   a vector containing the response of length n.
 %       y.X   =   a matrix containing the explanatory variables of size nxp.
@@ -111,7 +103,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               option datatooltip it is possible to retrieve information
 %               about a particular unit once selected with the mouse).
 %
-%       OPTIONAL FIELDS IN INPUT STRUCTURE y.
+%       Optional fields in input structure y.
 %
 %       y.RES =   matrix containing the residuals monitored in each
 %               step of the forward search. Every row is associated with a
@@ -324,7 +316,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 %
 %{
-    % yXplot with first argument vector y and third argumeng group.
+    % yXplot with first argument vector y and third argument group.
     % Different groups are shown in the yXplot
     n=100;
     p=3;

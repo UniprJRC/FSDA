@@ -7,9 +7,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %     Y : data matrix (2D array) containing n observations on v variables
 %         or a structure 'out' coming from function FSMeda. Matrix or
-%         structure.
+%         struct.
 %
-%  Optional input arguments if Y is a 2D array:
+%  OPTIONAL INPUT ARGUMENTS IF Y IS A 2D ARRAY:
 %
 %     If Y is a 2D array, varargin can be either a sequence of name/value
 %     pairs, detailed below, or one of the following explicit assignments:
@@ -27,7 +27,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %     followed by 'plo' and 'dispopt'. Otherwise, the program expects a
 %     sequence of name/value pairs.
 %
-%  List of optional input arguments if input Y is a matrix:
+%  List of optional input arguments if input Y is a 2D array:
 %
 %  group: vector with n elements. It is a grouping variable that determines
 %         the marker and color assigned to each point. It can be a categorical
@@ -86,16 +86,14 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               has a tag equal to the one specified by the user, then
 %               the output of the new plot overwrites the existing one
 %               in the same window else a new window is created
-%               Example - 'tag','myplot'
-%               Data Types - character
 %
 %
-%  Y is a structure.
+%  OPTIONAL INPUT ARGUMENTS IF Y IS A STRUCTURE.
 %
 %  If first input Y is a structure (generally created by function FSMeda),
 %  then this structure must have the following fields:
 %
-%       REQUIRED FIELD IN INPUT STRUCTURE Y.
+%       Required fields in input structure Y.
 %
 %       Y.Y   = a data matrix of size n-by-v.
 %
@@ -111,7 +109,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               option datatooltip it is possible to retrieve information
 %               about a particular unit once selected with the mouse).
 %
-%       OPTIONAL FIELDS IN INPUT STRUCTURE Y.
+%       Optional fields in input structure Y.
 %
 %       Y.MAL = matrix containing the Mahalanobis distances monitored in each
 %               step of the forward search. Every row is associated with a
@@ -267,7 +265,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %   will be centered with respect to the matrix of axes.
 %
 %
-% See also: gplotmatrix
+% See also: gplotmatrix, yXplot
 %
 % Copyright 2008-2016.
 % Written by FSDA team
