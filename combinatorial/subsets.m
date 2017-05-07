@@ -360,7 +360,7 @@ else
     if ncomb>Tcomb && ncomb<T2comb
         
         % Extract without replacement nsamp elements from ncomb
-        rndsi=randsampleFS(ncomb,nsamp,method,after2011b); % METHOD: it was set to 2
+        rndsi=randsampleFS(ncomb,nsamp,0,after2011b); % METHOD: it was set to 2
         
         % The Pascal triangle can be used only if there is enough memory.
         % Unfortunately, the memory check works only in PC platforms.
