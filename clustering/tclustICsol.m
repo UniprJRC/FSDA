@@ -145,7 +145,7 @@ function out  = tclustICsol(IC,varargin)
 %
 % out.ARIMIX = Matrix of adjusted Rand indexes between two consecutive value of c.
 %                 Matrix of size k-by-length(cc)-1. The first column
-%                 contains the ARI indexes between 
+%                 contains the ARI indexes between
 %                 with cc(2) and cc(1) given k. The second column contains
 %                 the the ARI indexes  between cc(3) and cc(2) given k.
 %                 This output is also present in table format (see below)
@@ -185,7 +185,7 @@ function out  = tclustICsol(IC,varargin)
 %
 % out.ARICLA = Matrix of adjusted Rand indexes between two consecutive value of c.
 %                 Matrix of size k-by-length(cc)-1. The first column
-%                 contains the ARI indexes between 
+%                 contains the ARI indexes between
 %                 with cc(2) and cc(1) given k. The second column contains
 %                 the the ARI indexes  between cc(3) and cc(2) given k.
 %                 This output is also present in table format (see below)
@@ -353,6 +353,9 @@ if nargin>1
     Rand=options.Rand;
 end
 
+% Check MATLAB version. If it is not smaller than 2013b than output is
+% shown in table format
+verMatlab=verLessThan('matlab','8.2.0');
 
 % Extract the values of k (number of groups)
 kk=IC.kk;
@@ -433,9 +436,10 @@ if typeIC==2 || typeIC==3
     MIXMIXbsIDX=plotBestSolutions(IC.Y,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX',plots);
     out.MIXMIXbsIDX=MIXMIXbsIDX;
     out.ARIMIX=ARIMIX(:,2:end);
-    ARIMIXtable=array2table(ARIMIX(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
-    out.ARIMIXtable=ARIMIXtable;
-    
+    if verMatlab == false
+        ARIMIXtable=array2table(ARIMIX(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
+        out.ARIMIXtable=ARIMIXtable;
+    end
 end
 
 if typeIC==1 || typeIC==3
@@ -447,8 +451,10 @@ if typeIC==1 || typeIC==3
     MIXCLAbsIDX=plotBestSolutions(IC.Y,IC.IDXMIX,MIXCLAbs,kk,cc,'MIXCLA',plots);
     out.MIXCLAbsIDX=MIXCLAbsIDX;
     out.ARIMIX=ARIMIX(:,2:end);
-    ARIMIXtable=array2table(ARIMIX(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
-    out.ARIMIXtable=ARIMIXtable;
+    if verMatlab == false
+        ARIMIXtable=array2table(ARIMIX(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
+        out.ARIMIXtable=ARIMIXtable;
+    end
 end
 
 if typeIC==0 || typeIC==3
@@ -460,9 +466,10 @@ if typeIC==0 || typeIC==3
     CLACLAbsIDX=plotBestSolutions(IC.Y,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots);
     out.CLACLAbsIDX=CLACLAbsIDX;
     out.ARICLA=ARICLA(:,2:end);
-    ARICLAtable=array2table(ARICLA(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
-    out.ARICLAtable=ARICLAtable;
-    
+    if verMatlab == false
+        ARICLAtable=array2table(ARICLA(:,2:end),'RowNames',rownamesARI,'VariableNames',colnamesARI);
+        out.ARICLAtable=ARICLAtable;
+    end
 end
 
 % Store values of c and k which have been used
@@ -530,7 +537,7 @@ for z=1:NumberOfBestSolutions
         % associated with the value of k where minBICk lies
         XcmodWithoutBestk=Xcmod;
         XcmodWithoutBestk(:,minBICk)=[];
-       
+        
         
         % minICconstr= min value of IC excluding the values involving column
         % minBICk
