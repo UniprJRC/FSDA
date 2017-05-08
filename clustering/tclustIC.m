@@ -312,7 +312,7 @@ function out  = tclustIC(Y,varargin)
 %{
     %% Automatic choice of k for geyser data using alpha=0.1.
     Y=load('geyser2.txt');
-    out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1)
+    out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1);
     % Write out.MIXMIX as MATLAB table
     disp('MIXMIX (BIC)')
     if verLessThan ('matlab','8.2.0');
