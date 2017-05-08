@@ -149,6 +149,8 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 %
 %
 % More About:
+%  This function uses routine strjoin and can be used just by those which
+%  have at least MATLAB R2013a
 %
 % See also: publishFS
 %
