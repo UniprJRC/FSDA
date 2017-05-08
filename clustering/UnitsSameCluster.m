@@ -1,5 +1,5 @@
 function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
-%tclustIC computes tclust for different number of groups k and restriction factors c
+%UnitsSameCluster enables to control the labels of the clusters which contain predefined units
 %
 %<a href="matlab: docsearchFS('UnitsSameCluster')">Link to the help function</a>
 %

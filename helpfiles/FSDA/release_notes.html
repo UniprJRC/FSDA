@@ -33,6 +33,9 @@ document.write(divsbefore);
 <h1 class="r2016a" itemprop="title content">Release notes</h1>
 
 <p>This table provides quick access to what's new in each version.</p>
+	<p>FSDA follows typical MATLAB timetable in the sense that there are two 
+	releases per year. The first typically in June and the second around 
+	November. </p>
 
 <table style="width: 100%;" class="body" border="2" cellpadding="4" cellspacing="0">
   <colgroup><col>
@@ -54,17 +57,55 @@ document.write(divsbefore);
   </thead>
   <tbody>
      <tr>
+      <td style="vertical-align: top;"><strong>V2017a</strong></td>
+      <td style="vertical-align: top;">CLUSTERING <br>Function
+	  <a href="tclustreg.html">tclustreg</a> now includes trimmed Cluster 
+	  Weighted Restricted Models.<br><br>New function <a href="tclustIC.html">
+	  tclustIC</a> for the automatic selection of the best number of groups.<br>
+	  <br>New function <a href="tclustICsol.html">tlclustICsol</a> to extract a 
+	  set of relevant solutions (and associated <a href="tclustICplot.html">
+	  tclustICplot</a>).<br><br>New function <a href="UnitsSameCluster.html">
+	  UnitsSameCluster</a> to to control the labels of the clusters which 
+	  contain predefined units.<br><br>New function to compare two partitions (<a href="FowlkesMallowsIndex.html">Fowlkes 
+	  and Mallows index</a>)<br><br><br>Updated routine
+	  <a href="simdatasetreg.html">simdatasetreg</a> to generate new outlier 
+	  patterns <br><br>UTILITIES<br>New functions <a href="wraptextFS.html">
+	  wraptextFS</a> and <a href="removeExtraSpacesLF.html">removeextraspacesLF</a><br>
+	  <br>MONITORING ROBUST ESTIMATORS<br>New functions <a href="mveeda.html">
+	  mveeda</a>, <a href="MMmulteda.html">MMmulteda</a><br>
+	  <a href="Smulteda.html">Smulteda</a>, <a href="Sregeda.html">Sregeda</a><br>
+	  <br>TRANSFORMATIONS IN REGRESSION<br>&nbsp;New function
+	  <a href="ScoreYJ.html">ScoreYJ</a> which implements the score test for the 
+	  Yeo and Johnson transformation. This new transformation has also been 
+	  embedded inside function <a href="FSRfan.html">FSRfan</a>.<br><br>SAMPLING 
+	  AND COMBINATORIAL updated function <a href="randsampleFS.html">
+	  randsampleFS</a> and <a href="subsets.html">subsets</a>.<br>New routines 
+	  for thinning.<br><br>NEW mlx files<br>.mlx files introduced for
+	  <a href="examples.html">examples_MixSim</a><br><br>GRAPHICS<br>New 
+	  function to create the <a href="carbikeplot.html">car-bike plot</a> to 
+	  find the most relevant solutions.<br><br>Functions
+	  <a href="resfwdplot.html">resfwdplot</a>, <a href="malfwdplot.html">
+	  malfwdplot</a> generalized in order to take as input the output of 
+	  procedures which monitor robust estimators.<br><br>
+      </td>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">Control version added in many graphical 
+	  routines to take account the modifications in MATLAB 2017a</td>
+      <td style="vertical-align: top;">May 2017
+      </td>
+    </tr>
+     <tr>
       <td style="vertical-align: top;"><b>V3.3 (R2016b)</b></td>
       <td style="vertical-align: top;">New
 functions for&nbsp; bivariate density estimation and random thinning
-(kdebiv.m, rthin.m) used to extend tclustreg.m features.<br>
+(kdebiv.m, <a href="rthin.html">rthin.m</a>) used to extend tclustreg.m features.<br>
       <br>
 The FSDA help folder now contains XML files associated to the functions
 documentation. This is in view of generating/updating automatically or
 using a GUI the functions documentation, in html as well as in the
 function head. <br>
       <br>
-New html documentation generated with publishFS.<br>
+New html documentation generated with <a href="publishFS.html">publishFS</a>.<br>
       </td>
       <td style="vertical-align: top;">We are monitoring&nbsp; possible
 compatibility issues that may emerge from&nbsp; changes in the tagging
