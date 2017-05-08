@@ -24,8 +24,9 @@ function outHELP=CreateFSDAhelpFiles()
 % 
 % 5) Creare all pointer files using routine CreateFSDApointerFiles
 %
-% 6) Create searchable database with different versions of MATLAB using
-% function builddocsearchdb
+% Remark: remember that your setup program must execaute command
+% builddocsearchdb in folder [FSDAroot filesep 'helpfiles'  filesep 'pointersHTML'] 
+% to create a searchable help
 %
 %
 % Required input arguments:
