@@ -30,48 +30,6 @@ done
 echo -e "exit(0);\n" >>test_runner2016b.m
 # END MATLAB R2016b
 
-# MATLAB R2015a
-# rm -f test_runner2015a.m
-# rm -f execution_log2015a.txt
-# echo -e "\n" >>test_runner2015a.m
-
-# cat flist | while read func_file
-# do 
-
-#     x=`cygpath -w $func_file`
-
-#     #    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp('Execution of $x completed successfully'); diary('off'); exit(0); catch error; diary('execution_log.txt'); disp(['Execution of $x FAILED: ' error.message]); diary('off'); exit(0); end;" 
-#     # NO_EXITS    
-#     # clearvars 
-#     y="try; run('$x'); diary('execution_log2015a.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2015a.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
-	
-#     echo $y >>test_runner2015a.m
-# 	  echo -e "\n" >>test_runner2015a.m
-# done
-# echo -e "exit(0);\n" >>test_runner2015a.m
-# # END MATLAB R2015a
-
-# MATLAB R2015b
-# rm -f test_runner2015b.m
-# rm -f execution_log2015b.txt
-# echo -e "\n" >>test_runner2015b.m
-
-# cat flist | while read func_file
-# do 
-
-#     x=`cygpath -w $func_file`
-
-#     #    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp('Execution of $x completed successfully'); diary('off'); exit(0); catch error; diary('execution_log.txt'); disp(['Execution of $x FAILED: ' error.message]); diary('off'); exit(0); end;" 
-#     # NO_EXITS    
-#     # clearvars 
-#     y="try; run('$x'); diary('execution_log2015b.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2015b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
-	
-#     echo $y >>test_runner2015b.m
-	  echo -e "\n" >>test_runner2015b.m
-# done
-# echo -e "exit(0);\n" >>test_runner2015b.m
-# END MATLAB R2015b
-
 # MATLAB R2014b
 rm -f test_runner2014b.m
 rm -f execution_log2014b.txt
@@ -118,18 +76,29 @@ done
 echo -e "exit(0);\n" >>test_runner2012a.m
 # END MATLAB R2012a
 
+# MATLAB R2017a
+rm -f test_runner2017a.m
+rm -f execution_log2017a.txt
+
+echo -e "\n" >>test_runner2017a.m
+
+cat flist | while read func_file
+do 
+
+    x=`cygpath -w $func_file`
+    y="try; run('$x'); diary('execution_log2017a.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2017a.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+	
+    echo $y >>test_runner2017a.m
+	  echo -e "\n" >>test_runner2017a.m
+done
+echo -e "exit(0);\n" >>test_runner2017a.m
+# END MATLAB R2017a
+
+
+
 if [ $TEST_2016b == "YES" ]; then
 '/cygdrive/C/Program Files/MATLAB/R2016b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2016b"
 fi 
-
-# if [ $TEST_2015a == "YES" ]; then
-#'/cygdrive/C/Program Files/MATLAB/R2015a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2015a"
-#fi
-
-#if [ $TEST_2015b == "YES" ]; then
-#'/cygdrive/C/Program Files/MATLAB/R2015b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2015b"
-#fi 
-
 
 if [ $TEST_2014b == "YES" ]; then
 '/cygdrive/c/Program Files/MATLAB/R2014b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2014b"
@@ -137,4 +106,8 @@ fi
 
 if [ $TEST_2012a == "YES" ]; then
 '/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
+fi 
+
+if [ $TEST_2017a == "YES" ]; then
+'/cygdrive/c/Program Files/MATLAB/R2017a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2017a"
 fi 
