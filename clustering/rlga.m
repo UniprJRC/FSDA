@@ -1,65 +1,62 @@
 function out = rlga(X,k,alpha,varargin)
-
-% VERIFICARE LINEE 134 -- 136 ALPHA NON TORNA PER NIENTE !!!!!!!!   
-
 %rlga performs robust linear grouping analysis
-%
 %
 %<a href="matlab: docsearchFS('rlga')">Link to the help function</a>
 %
 %  Required input arguments:
 %
 %       X   : input data matrix. Matrix. Input data as matrix of size
-%            n-by-p
+%             n-by-p
 %       k   : number of clusters. Scalar. Scalar which specifies the number
 %             of clusters.
-%    alpha  : a numeric value between 0 and 0.5. Scalar. For the robust estimate of
-%             LGA, specifying the percentage of points to be trimmed.
-%             alpha must be a number in the interval [0 0.5]   
+%    alpha  : a numeric value between 0 and 0.5. Scalar. For the robust estimate
+%             of RLGA, specifying the percentage of points to be trimmed.
+%             alpha must be a number in the interval [0 0.5].
 %
 %  Optional input arguments:
 %
 %
 %     biter : an integer for the number of different starting hyperplanes
 %               to try. Integer.
-%               Example - 'biter',1 
+%               Example - 'biter',1
 %               Data Types - double
-%     niter : an integer for the number of iterations to attempt for convergence. Integer.
-%               Example - 'niter',1 
+%     niter : an integer for the number of iterations to attempt for convergence.
+%               Integer.
+%               Example - 'niter',1
 %               Data Types - double
-%   showall :  If true then display all the outcomes, not just the best
-%               one. Logical.
-%               Example - 'showall','true' 
-%               Data Types - char 
-%    stand  : If true standardize the X matrix with the standard
-%             deviation before fitting. Logical.
-%               Example - 'stand','true' 
-%               Data Types - char 
-%    silent : Text output. Logical. If true, produces no text output during processing. 
-%             The default value is false
-%               Example - 'silent','true' 
-%               Data Types - char                  
-%    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on the screen with the
-%             final allocation (and if size(X,2)==2 with the lines
-%             associated to the groups). 
-%               Example - 'plots',1 
+%   showall :  If true then display all the outcomes, not just the best one.
+%               Logical.
+%               Example - 'showall','true'
+%               Data Types - char
+%    stand  : If true standardize the X matrix with the standard deviation before
+%               fitting. Logical.
+%               Example - 'stand','true'
+%               Data Types - char
+%    silent : Text output. Logical. If true, produces no text output during
+%               processing. The default value is false.
+%               Example - 'silent','true'
+%               Data Types - char
+%    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on the
+%               screen with the final allocation (and if size(X,2)==2 with the
+%               lines associated to the groups).
+%               Example - 'plots',1
 %               Data Types - double
 %
 %  Output:
 %
 %         out:   structure which contains the following fields
 %
-%            out.cluster  = vector containing the cluster memberships.
-%              out.ROSS   = the Residual Orthogonal Sum of Squares for the solution.
-%           out.converged = logical. True if at least one solution has converged.
-%          out.nconverg   = the number of converged solutions (out of biter starts).
-%          out.hpcoeff     =  best hyerplane
-%           out.x	      = the (scaled if selected) dataset.
-%          out.scaled     = logical. Is the data set scaled?
-%          out.k          = the number of clusters to be found.
-%           out.biter     = the biter setting used.
-%           out.niter	  = the niter setting used.
-%             out.class = 'rlga'.
+%         out.cluster   = vector containing the cluster memberships.
+%         out.ROSS      = the Residual Orthogonal Sum of Squares for the solution.
+%         out.converged = logical. True if at least one solution has converged.
+%         out.nconverg  = the number of converged solutions (out of biter starts).
+%         out.hpcoeff   = best hyerplane
+%         out.x	        = the (scaled if selected) dataset.
+%         out.scaled    = logical. Is the data set scaled?
+%         out.k         = the number of clusters to be found.
+%         out.biter     = the biter setting used.
+%         out.niter	    = the niter setting used.
+%         out.class     = 'rlga'.
 %
 % See also: lga.m
 %
@@ -85,17 +82,29 @@ function out = rlga(X,k,alpha,varargin)
 %{
     % rlga with all default options.
     X=load('X.txt');
-    out=rlga(X,3,0.5);
+    out=rlga(X,3,0.05);
 %}
 %{
-    % rlga with all niter = 1000 and biter = 3000.
+    % rlga with niter = 500 and biter = 1000.
     X=load('X.txt');
-    out=rlga(X,4,0.5,'niter',1000,'biter',3000);
+    out=rlga(X,4,0.05,'niter',500,'biter',1000);
+%}
+%{
+    %% Generate mixture of regression using MixSimReg, with an average
+    % overlapping at centroids = 0.01. Use all default options.
+    rng(372,'twister');
+    p=3;
+    k=2;
+    Q=MixSimreg(k,p,'BarOmega',0.001);
+    n=500;
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+
+    % run rlga
+    out=rlga([y,X(:,2:end)],k,0.01);
 %}
 %
 
 %% Beginning of code
-
 
 [n,d]=size(X);
 
@@ -121,7 +130,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:rlga:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:rlga:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -135,7 +144,7 @@ if ~isempty(UserOptions)
 end
 
 if alpha>0.5
-     error('FSDA:rlga:WrongAlpha','Error:: alpha must be in [0, 0.5]');
+    error('FSDA:rlga:WrongAlpha','Error:: alpha must be in [0, 0.5]');
 end
 
 biter=options.biter;
@@ -162,15 +171,10 @@ hpcoef=zeros(k,d+1,biter);
 for j=1:biter
     % Choose starting clusters
     clindex=reshape(randsample(1:n,k*d),k,d);
-%      clindex(1,:)=[191 185];
-%      clindex(2,:)=[51, 27];
-%      clindex(3,:)=[8, 35];
-    
     for i=1:k
         hpcoef(i,:,j)=lgaorthreg(X(clindex(i,:),:));
     end
 end
-
 
 % nnode = an integer of many CPUS to use for parallel processing. Defaults
 % to NULL i.e. no parallel processing.
@@ -181,7 +185,7 @@ end
 % row n+2 contains information about ROSS
 outputs=zeros(n+2,biter);
 for j=1:biter
-    outputs(:,j)=rlgaiterate(hpcoef(:,:,j),X, k, d, n, niter,alpha);
+    outputs(:,j) = rlgaiterate(hpcoef(:,:,j),X, k, d, n, niter,alpha);
 end
 % else
 %     % parallel
@@ -208,20 +212,19 @@ if ~showall
     
     % using the instruction below we take the column of outputs which is
     % associated to the first minimum
-    [~,minoutindcol]=min(outputs(n+2,:));
-    outputs=outputs(:,minoutindcol);
-    
-    
-    % In the instruction below we check whether there is more than one
-    % minimum
-    %{
-    minout=min(outputs(n+2,:));
-    minoutindcol=outputs(n+2,:)==minout;
+    [~,minoutindcol] = min(outputs(n+2,:));
     outputs = outputs(:,minoutindcol);
     
-    if size(outputs,2) > 1
-        outputs = lgaCheckUnique(outputs);
-    end
+    % Instructions below are to check whether there is more than one minimum
+    %
+    %{
+        minout=min(outputs(n+2,:));
+        minoutindcol=outputs(n+2,:)==minout;
+        outputs = outputs(:,minoutindcol);
+
+        if size(outputs,2) > 1
+            outputs = lgaCheckUnique(outputs);
+        end
     %}
     
 end
@@ -236,14 +239,13 @@ if showall
     hp =nan;
 else
     
-    
     % Fit the best hyerplane(s) with ROSS
     hp =nan(k,d+1);
     for i=1:k
         hp(i,:)=lgaorthreg(X(outputs(1:n)== i,:));
     end
     
-    ROSS=rlgacalculateROSS(hp, X, n, d, outputs(1:n));
+    ROSS=rlgacalculateROSS(hp, X, d, outputs(1:n));
     
 end
 
@@ -253,52 +255,107 @@ out.converged=outputs(n+1,:);
 out.nconverg=nconverg;
 out.X=X;
 out.hpcoeff=hp;
-
-
 out.biter=biter;
 out.niter=niter;
 out.scaled=stand;
 out.k=k;
 out.class='rlga';
 
-
 plots=options.plots;
 
 if plots
+    
+    % this is just for rotating colors in the plots
+    clrdef = 'bkmgrcbkmgrcbkmgrcbkmgrcbkmgrcbkmgrcbkmgrc';
+    % symdef = '+*sd^v><pho*';
+    
     if d==2
+        % initialize figure
+        fh = figure('Name','RLGA plot','NumberTitle','off','Visible','on');
+        gca(fh);
+        hold on;
+        
+        % control of the axis limits
+        xmin = min(X(:,1)); xmax = max(X(:,1));
+        ymin = min(X(:,2)); ymax = max(X(:,2));
+        deltax = (xmax - xmin) / 10;
+        deltay = (ymax - ymin) / 10;
+        
+        xlim([xmin-deltax,xmax+deltax]);
+        ylim([ymin-deltay,ymax+deltay]);
         
         % spmplot(X,cluster)
-        gscatter(X(:,1),X(:,2),out.cluster)
+        % gscatter(X(:,1),X(:,2),out.cluster,'w',symdef(1:k),10,'off');
+        % v contains the axes limits
         v=axis';
+        
         hold('on')
         for i=1:k
-            a= hp(i, 3)/hp(i, 2);
+            group_label = ['Group ' num2str(i)];
+            ucg = find(out.cluster==i);
+            
+            plot(X(ucg,1),X(ucg,2),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
+            text(X(ucg,1),X(ucg,2),num2str(i*ones(length(ucg),1)),...
+                'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
+                'HorizontalAlignment','center','VerticalAlignment','middle',...
+                'Color',clrdef(i));
+            
+            a=  hp(i, 3)/hp(i, 2);
             b= -hp(i, 1)/hp(i, 2);
-            plot(v(1:2),a+b*v(1:2))
+            plot(v(1:2),a+b*v(1:2),'DisplayName',[group_label ' fit' ],'Color',clrdef(i));
         end
+        
+        % Plot the outliers (trimmed points)
+        ucg = find(out.cluster==0);
+        plot(X(ucg,1),X(ucg,2),'o','color','r','MarkerSize',8,...
+            'DisplayName',['Trimmed units (' num2str(length(ucg)) ')']);
+        
+        title(['$\alpha = ' num2str(alpha) ' \quad ROSS = ' num2str(out.ROSS) '$' ],...
+            'interpreter' , 'latex', 'fontsize' , 18);
+        
+        % Position the legends and make them clickable. For some reason
+        % clickableMultiLegend does not set properly the FontSize: to be fixed.
+        lh=legend('show');
+        legstr = get(lh,'String');
+        clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
+        
+        axis('manual');
+        
     else
-        spmplot(X,out.cluster)
+        
+        % axis labels
+        nameY = cellstr([repmat('X',size(X,2),1) , num2str((1:size(X,2))')]);
+        nameY = nameY';
+        plo=struct;
+        plo.nameY=nameY;
+        
+        % group names in the legend
+        group = cell(n,1);
+        group(out.cluster==0) = {'Trimmed units'};
+        for iii = 1:k
+            group(out.cluster==iii) = {['Group ' num2str(iii)]};
+        end
+        
+        spmplot(X,group,plo,'hist');
         
     end
     
 end
 
-
-    function yorthreg=lgaorthreg(X)
-        % Perform orthogonal regression.
+%% lgaorthreg performs orthogonal regression
+    function yorthreg = lgaorthreg(X)
+        
         mu = mean(X);
         y = bsxfun(@minus,X, mu);
         
-        %y <- scale(x, scale=FALSE)
         [~,~,V] = svd(y);
         emat=V(:,size(y,2))';
         
         yorthreg=[emat, sum(emat.*mu)];
-        % emat <- svd(y)$v[,dim(y)[2]]
-        % return(c(emat, emat %*% attr(y, 'scaled:center')))
+        
     end
 
-
+%% Do "concentration steps"
     function outputsj=rlgaiterate(hpcoef, xsc, k, d, n, niter,alpha)
         
         % give the function the inital set of hyperplanes (in hpcoef)
@@ -328,49 +385,49 @@ end
                 converged = true;
             end
         end
-        ROSS=rlgacalculateROSS(hpcoef, xsc, n, d, groups);
-        outputsj=[groups;converged;ROSS];
+        iROSS     = rlgacalculateROSS(hpcoef, xsc, d, groups);
+        outputsj = [groups;converged;iROSS];
         
     end
 
+%% rlgadodist calculates the (orthogonal) Residuals for different hyerplanes
     function indmin=rlgadodist(y, coeff, d, n,alpha)
-   % This function calculates the (orthogonal) Residuals for different hyerplanes,
-   % It calculates which hyperplane each observation is closest to, and then takes the
-   % smallest alpha of them (setting the rest to zero)
-
-        
+        % Find which hyperplane each observation is closest to. Then takes the
+        % smallest alpha of them (setting the rest to zero)
         dist = (y * (coeff(:,1:d)')-ones(n,1)*(coeff(:,d+1)') ).^2;
         [distmin,indmin]=min(dist,[],2);
-         indmin( distmin > quantile(distmin, 1 - alpha) ) = 0; 
+        indmin( distmin > quantile(distmin, 1 - alpha) ) = 0;
     end
 
-    function ROSS=rlgacalculateROSS(hpcoef, xsc, n, d, groups)
-        % This function calculates the total Residual Orthogonal Sum of
-        % Squares for a given grouping
-        z = bsxfun(@minus,xsc *(hpcoef(:,1:d)'), hpcoef(:,d+1)');
+%% rlgacalculateROSS calculates the total Residual Orthogonal Sum of Squares for a given grouping
+    function outROSS = rlgacalculateROSS(hpcoef, xsc, d, groups)
+        
+        z    = bsxfun(@minus,xsc *(hpcoef(:,1:d)'), hpcoef(:,d+1)');
         dist = z.^2;
         
-        seldis=groups>0;
-        dist=dist(seldis,:);
-        groups=groups(seldis);
+        seldis = groups>0;
+        dist   = dist(seldis,:);
+        groups = groups(seldis);
         
-        % modo alternativo per estrarre gli elementi di dist
-        seq1=(1:length(groups))';
+        % extract elements of dist
+        seq1 = (1:length(groups))';
         
-        ROSS=sum(dist((groups-1) * length(groups) + seq1));
+        outROSS=sum(dist((groups-1) * length(groups) + seq1));
     end
 
+%% lgaCheckUnique check if there is more than one minimum
+% used for debugging
 
-    function xbest=lgaCheckUnique(x)
+    function xbest = lgaCheckUnique(x) %#ok<DEFNU>
         function zfin=CheckUniqueRand (z)
             zfin=sum(sum(z.^2))-0.5*(sum((sum(z,2)').^2)+ sum((sum(z,1)').^2));
         end
         
-        d =size(x,2);
+        dd =size(x,2);
         
-        index = true(d,1);
-        for ii=1:(d-1)
-            for jj =(ii+1):d
+        index = true(dd,1);
+        for ii=1:(dd-1)
+            for jj =(ii+1):dd
                 y = crosstab(x(:,ii), x(:,jj));
                 z = CheckUniqueRand(y);
                 if (z==0)

@@ -261,16 +261,17 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     y1 = X(:,end);
     X1 = X(:,1:end-1);
 
-    k = 2 ; restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
+    k = 2 ;
+
+    restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2);
 
-    k = 2 ; restrfact = 2; alpha1 = 0.05 ; alpha2 = 0.01;
+    restrfact = 2; alpha1 = 0.05 ; alpha2 = 0.01;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);
 
     % Comparison with robust linear grouping
-    figure;
     out = rlga(X,k,alpha2);
-    title('robust linear grouping on ''X data'' ');
+
 %}
 
 %{
@@ -457,9 +458,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % (1) objective function (obj_all), (2) sigma2 in each group
 % (sigmaini_all), (3) beta in each group (Beta_all), (4) weights of each
 % observation (w4trim_all).
-bench = 1;
-
-
+bench = 0;
 
 %% initializations
 
@@ -1693,12 +1692,10 @@ if plots
         fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
         gca(fh);
         hold on;
-        %         xlabel('X');
-        %         ylabel('y');
-        %    title({ ['TclustReg clustering: ' 'mixt=' num2str(mixt) ' - wtrim=' num2str(wtrim)] },'Fontsize',12);
-        title(['mixt=' num2str(mixt) ' b=(' num2str(out.bopt(end,:)) ') c=' num2str(restrfact)...
-            ' \alpha_1=' num2str(alphaLik) ' \alpha_2=' num2str(alphaX) ' obj=' num2str(out.vopt) ' wtrim=' num2str(wtrim)])
-        
+
+        title({['$ wtrim=' num2str(wtrim) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_1=' num2str(alphaLik) '\quad \alpha_2=' num2str(alphaX) '$'] , ...
+               ['$ obj=' num2str(out.vopt) '\quad b=(' sprintf('%0.3f ;',out.bopt(end,:)) ') $']} , ...
+            'interpreter' , 'latex', 'fontsize' , 18);
         
         for jj = 1:k
             group_label = ['Group ' num2str(jj)];
