@@ -522,14 +522,14 @@ covrob=vhat*invXX; %#ok<MINV>
 
 % Ksquare =see equation 7.84 of Huber and Ronchetti (2009) P. 171
 Ksquare=(1+(p/n)*var(psider,1)/((sumpsider/n)^2))^2;
-disp('varpsider')
-disp(var(psider))
-disp('M^2 varpsider')
-disp(((sumpsider/n)^2))
-disp('psider')
-% disp(psider)
-plot(abs(sort(psider)))
-disp('---------')
+% disp('varpsider')
+% disp(var(psider))
+% disp('M^2 varpsider')
+% disp(((sumpsider/n)^2))
+% disp('psider')
+% % disp(psider)
+% plot(abs(sort(psider)))
+% disp('---------')
 
 K=sqrt(Ksquare);
 
