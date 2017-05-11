@@ -11,7 +11,7 @@ function bw = bwe(X, bwopt)
 %
 %  Optional input arguments:
 %
-%   bwopt :      Estimation method. String. Default is Scott's estimator.
+%   bwopt :      Estimation method. String. Default is Scott's rule.
 %                Other options are:
 %                - 'normal', the normal reference rule, applied only for
 %                  d=1. It is valid if the underlying density being
@@ -87,7 +87,7 @@ function bw = bwe(X, bwopt)
 
 %{
     % Bandwidth and kernel density estimates for a univariate mixture of two normals.
-    %The smoothing is shown for various bandwidth values.
+    % The smoothing is shown for various bandwidth values.
 
     % the normal probability density function
     npdf = @(x) (exp(-0.5*x.^2)/sqrt(2*pi));
@@ -121,25 +121,41 @@ function bw = bwe(X, bwopt)
 
 %}
 
+%{
+    % Bandwidth and kernel density estimates for a bivariate dataset.
+
+    load fishery;
+    X = fishery.data;
+    X = X+10^(-8)*abs(randn(677,2)); % some jittering to avoid dplicate points
+    h = bwe(X)
+    h = bwe(X,'scott')
+    h = bwe(X,'normal')
+    h = bwe(X,'robust')
+    %h = bwe(X,'sj')
+    %h = bwe(X,'botev')
+%}
+
 %% bandwidth selection
 %  Remark: ksdensity uses by default Scott's rule
 
 [n,d] = size(X);
-% units must be along the rows.  
+% units must be along the rows.
 if n<d
     X = X';
     [n,d] = size(X);
 end
 
+maxX = max(X);
+minX = min(X);
+
 % Scott's rule is called by default. The 'if' statement is introduced for
 % computational efficiency reasons in case bwe has to called many times.
 % This is to avoid the string comparison in the 'switch' statement.
-if nargin<2 || d > 1
+if nargin<2 %|| d > 1
     
-    % Scott's rule, optimal for normal distribution
-    % Uses a robust estimate of sigma
+    % Scott's rule (optimal for normal distribution, with robust sigma estimate)
     sig = mad(X,1) / 0.6745;
-    if sig <= 0, sig = max(X) - min(X); end
+    if sig <= 0, sig = maxX - minX; end
     if sig > 0
         bw  = sig * (4/((d+2)*n))^(1/(d+4));
     else
@@ -150,34 +166,54 @@ else
     
     switch bwopt
         case 'scott'
-            % Scott's rule, optimal for normal distribution
-            % Uses a robust estimate of sigma
-            sig = mad(X,1) / 0.6745;
-            if sig <= 0, sig = max(X) - min(X); end
-            if sig > 0
-                bw  = sig * (4/((d+2)*n))^(1/(d+4));
-            else
-                bw = 1;
-            end
+            %Scott's rule is the default: just call again the function with no
+            %bwopt option.
+            bw = bwe(X);
+            
         case 'normal'
-            % normal reference rule, applied only for d = 1. It is valid if the
-            % underlying density being estimated is Gaussian
+            % Silverman's (1986) rule of thumb, applied for d = 1. It is
+            % valid if the underlying density being estimated is Gaussian.
             bw = 1.06  * std(X) * n^(-1/5);
+            
         case 'robust'
-            % as for the normal reference rule, in presence of outliers
-            bw = 0.786 * iqr(X) * n^{-1/5};
-        otherwise
-            % if the user indicates a bandwidth option that does not exist,
-            % Scott is used by default
-            sig = mad(X,1) / 0.6745;
-            if sig <= 0, sig = max(X) - min(X); end
-            if sig > 0
-                bw  = sig * (4/((d+2)*n))^(1/(d+4));
-            else
-                bw = 1;
+            % As for Silverman's rule, but in presence of outliers.
+            bw = 0.786 * iqr(X) * n^(-1/5);
+            
+        case 'diggle'
+            
+        case 'sj'
+            % Bandwidth selection with Sheater and Jones(1991) and Wand and
+            % Jones (1995) pp.74-75
+            %{
+            number_of_draws = size(X,1);
+            bandwidth = -1;
+            kernel_function = 'gaussian';
+            bw = bSJ(X,number_of_draws,bandwidth,kernel_function);
+            %}
+            
+        case 'botev'
+            % Z. I. Botev, J. F. Grotowski, and D. P. Kroese (2010). Kernel
+            % density estimation via diffusion. Annals of Statistics, Volume 38,
+            % Number 5, pp. 2916-2957.
+            %{
+            if d==1
+                bw=kde(X,[],minX,maxX);
+            elseif d==2
+                bw=kde2d(X,[],minX,maxX);
+            elseif d>2
+                bw=akde(X);
             end
+            %}
+            
+        otherwise
+            % It the user's bandwidth option does not exist, bwe is called
+            % recursevely without options, so that the default is applied.
+            bw = bwe(X);
+            
     end
     
 end
 
 end
+
+%FScategory:UTISTAT

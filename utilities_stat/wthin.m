@@ -1,5 +1,5 @@
 function [Wt,pretain,varargout] = wthin(X,varargin)
-%WTHIN applies thinning to a uni/bi-dimensional dataset
+%WTHIN thin a uni/bi-dimensional dataset
 %
 %<a href="matlab: docsearchFS('wthin')">Link to the help page for this function</a>
 % Last modified 06-Feb-2016
@@ -266,14 +266,14 @@ if d > 1
             [pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
         end
     else
-            [pdfedef,xout1,u]  = kdebiv(X,'pdfmethod','fsda');
-            if verLessThan('matlab', '8.1')
-                Fpdfe = TriScatteredInterp(xout1(:,1),xout1(:,2),pdfedef); %#ok<DTRIINT>
-            else
-                Fpdfe = scatteredInterpolant(xout1(:,1),xout1(:,2),pdfedef);
-            end
-            pdfe  = Fpdfe(X(:,1),X(:,2));
-            xout = X;
+        [pdfedef,xout1,u]  = kdebiv(X,'pdfmethod','fsda');
+        if verLessThan('matlab', '8.1')
+            Fpdfe = TriScatteredInterp(xout1(:,1),xout1(:,2),pdfedef); %#ok<DTRIINT>
+        else
+            Fpdfe = scatteredInterpolant(xout1(:,1),xout1(:,2),pdfedef);
+        end
+        pdfe  = Fpdfe(X(:,1),X(:,2));
+        xout = X;
     end
 else
     % This is the univariate case. We address points 2 and 3.
@@ -326,3 +326,4 @@ varargout{1} = Xt;
 
 end
 
+%FScategory:UTISTAT

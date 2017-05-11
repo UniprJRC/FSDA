@@ -21,7 +21,7 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %
 % Optional input arguments:
 %
-%  XI:          Evaluation points of the estimated density. 
+%  XI:          Evaluation points of the estimated density.
 %               Matrix. In this case the density is estimated using X and evaluated on XI.
 %               Data Types - single | double.
 %               Example - 'XI',X
@@ -45,7 +45,7 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %               Example - 'cmap',[0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ]
 %
 %   pdfmethod:  Density estimation method. Supported options are 'matlab'
-%               and 'fsda'. 
+%               and 'fsda'.
 %               - 'matlab' (default) uses the default approach implemented
 %                  in the MATLAB ksdensity function, using a normal kernel.
 %               - 'fsda' computes a nonparametric estimate of the
@@ -64,7 +64,7 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %   F :         Density values. Vector. The estimate of F is based on the
 %               normal kernel function, using the window parameter
 %               (bandwidth) that is a function of the number of points and
-%               dimension in X. 
+%               dimension in X.
 %
 %   Xi :        Grid of evaluation points. Matrix. 2d matrix of equally-spaced
 %               points where the normal kernel function has been evaluated.
@@ -348,16 +348,16 @@ switch method
         xi1 = gx1(:);
         xi2 = gx2(:);
         F = F(:);
-
-        if ~isempty(XI) 
+        
+        if ~isempty(XI)
             if verLessThan('matlab', '8.1')
-                    Fpdfe = TriScatteredInterp(xi1,xi2,F); %#ok<DTRIINT>
+                Fpdfe = TriScatteredInterp(xi1,xi2,F); %#ok<DTRIINT>
             else
-                    Fpdfe = scatteredInterpolant(xi1,xi2,F);
+                Fpdfe = scatteredInterpolant(xi1,xi2,F);
             end
-            F  = Fpdfe(XI(:,1),XI(:,2)); %DOME DOME
+            F  = Fpdfe(XI(:,1),XI(:,2)); 
         end
-
+        
         
     case 'independence'
         % Calculate combined x-y pdf under assumption of independence
@@ -386,12 +386,12 @@ switch method
         
     case 'histsmooth'
         % A histogram smoothing method which does not make use of a model density estimate
-
+        
         % Estimate the number of bins (default is Freedman-Diaconis like rule):
         nbins = binsnum(X,'sqrt');
         nbins = min(nbins , nn/2);
         nbins = [nbins , nbins];
-
+        
         %Compute a two-dimensional histogram using hist3
         [H,C] = hist3(X,nbins) ;%./ nn
         
@@ -424,7 +424,7 @@ if plot_contour
     ymin = min(X(:,2)); ymax = max(X(:,2));
     deltax = 0;%(xmax - xmin) / 10;
     deltay = 0;%(ymax - ymin) / 10;
-        
+    
     % generate a vector of 100 evenly spaced points between the data limits
     xx = linspace(xmin-deltax,xmax+deltax);
     yy = linspace(ymin-deltay,ymax+deltay);
@@ -432,10 +432,10 @@ if plot_contour
     % define a data grid on the evenly spaced points
     [xq,yq] = meshgrid(xx,yy);
     % Interpolate the scattered data on the grid
-    if isempty(XI) 
-       FF = griddata(xi1,xi2,F,xq,yq);
+    if isempty(XI)
+        FF = griddata(xi1,xi2,F,xq,yq);
     else
-       FF = griddata(XI(:,1),XI(:,2),F,xq,yq);
+        FF = griddata(XI(:,1),XI(:,2),F,xq,yq);
     end
     
     % For plotting reasons, we do not want zero values
@@ -462,7 +462,7 @@ if plot_contour
     
 end
 
-%% Subfunctions 
+%% Subfunctions
 
     function [nbin] = binsnum(A,rule)
         % binsnum estimates the "optimal" number of bins for a two
@@ -553,45 +553,44 @@ end
         Z       = (E + P) \ GG;
     end
 
+    % case 'fsdaori'
+    %
+    %     % nonparametric estimate of the probability density function
+    %     % based on a normal kernel and using a bandwidth estimated as a
+    %     % function of the number of points in X.
+    %
+    %     % data points
+    %     X1 = X(:,1);
+    %     X2 = X(:,2);
+    %
+    %     % generate a vector of 100 evenly spaced points between x1 and x2
+    %     m   = 100;
+    %     x1 = linspace(min(X1),max(X1),m);
+    %     x2 = linspace(min(X2),max(X2),m);
+    %
+    %     m1 = length(x1);
+    %     m2 = length(x2);
+    %
+    %     % A bandwidth estimate over original data X(:,1) (x direction)
+    %     bw(1) = bwe(x1);
+    %     % A bandwidth estimate over original data X(:,2) (y direction)
+    %     bw(2) = bwe(x2);
+    %
+    %     % prepare a rectangular grid over xi1 and xi2
+    %     %[ggridx2,ggridx1] = meshgrid(xx2,xx1);
+    %     [gx1,gx2] = meshgrid(x1,x2);
+    %     gx1 = repmat(gx1, [1,1,nn]);
+    %     gx2 = repmat(gx2, [1,1,nn]);
+    %
+    %     % mean estimates over xi1 and xi2
+    %     mu1(1,1,:) = X1;
+    %     mu1 = repmat(mu1,[m1,m2,1]);
+    %     mu2(1,1,:) = X2;
+    %     mu2 = repmat(mu2,[m1,m2,1]);
+    %
+    %     % Normal density estimate over the grid
+    %     F = sum(normpdf(gx1,mu1,bw(1)) .* normpdf(gx2,mu2,bw(2)), 3) / nn;
+
 end
 
-
-
-% 
-% case 'fsdaori'
-%     
-%     % nonparametric estimate of the probability density function
-%     % based on a normal kernel and using a bandwidth estimated as a
-%     % function of the number of points in X.
-%     
-%     % data points
-%     X1 = X(:,1);
-%     X2 = X(:,2);
-%     
-%     % generate a vector of 100 evenly spaced points between x1 and x2
-%     m   = 100;
-%     x1 = linspace(min(X1),max(X1),m);
-%     x2 = linspace(min(X2),max(X2),m);
-%     
-%     m1 = length(x1);
-%     m2 = length(x2);
-%     
-%     % A bandwidth estimate over original data X(:,1) (x direction)
-%     bw(1) = bwe(x1);
-%     % A bandwidth estimate over original data X(:,2) (y direction)
-%     bw(2) = bwe(x2);
-%     
-%     % prepare a rectangular grid over xi1 and xi2
-%     %[ggridx2,ggridx1] = meshgrid(xx2,xx1);
-%     [gx1,gx2] = meshgrid(x1,x2);
-%     gx1 = repmat(gx1, [1,1,nn]);
-%     gx2 = repmat(gx2, [1,1,nn]);
-%     
-%     % mean estimates over xi1 and xi2
-%     mu1(1,1,:) = X1;
-%     mu1 = repmat(mu1,[m1,m2,1]);
-%     mu2(1,1,:) = X2;
-%     mu2 = repmat(mu2,[m1,m2,1]);
-%     
-%     % Normal density estimate over the grid
-%     F = sum(normpdf(gx1,mu1,bw(1)) .* normpdf(gx2,mu2,bw(2)), 3) / nn;
+%FScategory:UTISTAT
