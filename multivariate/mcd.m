@@ -998,6 +998,7 @@ else
         REW.outliers=seq(md > thresh);
     end
     
+    REW.weights = weights;
     % Store reweighted Mahalanobis distances (in square units)
     REW.md=md;
 end
