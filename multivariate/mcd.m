@@ -51,7 +51,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Default value is 0.975
 %               Example - 'conflev',0.99
 %               Data Types - double
-%  conflevrew : Confidence level for to use for reweighting. Scalar. Number
+%  conflevrew : Confidence level for use for reweighting. Scalar. Number
 %               between 0 and 1 containing confidence level which is used to do
 %               the reweighting step. Default value is the one specified in
 %               previous option conflev.
