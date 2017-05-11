@@ -267,8 +267,8 @@ plots=options.plots;
 if plots
     
     % this is just for rotating colors in the plots
-    clrdef = 'bkmgrcbkmgrcbkmgrcbkmgrcbkmgrcbkmgrcbkmgrc';
-    % symdef = '+*sd^v><pho*';
+    clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
+    symdef = '+*d^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
     
     if d==2
         % initialize figure
@@ -285,10 +285,9 @@ if plots
         xlim([xmin-deltax,xmax+deltax]);
         ylim([ymin-deltay,ymax+deltay]);
         
-        % spmplot(X,cluster)
         % gscatter(X(:,1),X(:,2),out.cluster,'w',symdef(1:k),10,'off');
-        % v contains the axes limits
-        v=axis';
+        % al contains the axes limits
+        al = axis';
         
         hold('on')
         for i=1:k
@@ -301,9 +300,9 @@ if plots
                 'HorizontalAlignment','center','VerticalAlignment','middle',...
                 'Color',clrdef(i));
             
-            a=  hp(i, 3)/hp(i, 2);
-            b= -hp(i, 1)/hp(i, 2);
-            plot(v(1:2),a+b*v(1:2),'DisplayName',[group_label ' fit' ],'Color',clrdef(i));
+            a =  hp(i, 3)/hp(i, 2);
+            b = -hp(i, 1)/hp(i, 2);
+            plot(al(1:2),a+b*al(1:2),'DisplayName',[group_label ' fit' ],'Color',clrdef(i));
         end
         
         % Plot the outliers (trimmed points)
@@ -325,10 +324,12 @@ if plots
     else
         
         % axis labels
-        nameY = cellstr([repmat('X',size(X,2),1) , num2str((1:size(X,2))')]);
+        nameY = cellstr([repmat('X',d,1) , num2str((1:d)')]);
         nameY = nameY';
         plo=struct;
         plo.nameY=nameY;
+        plo.sym = [symdef(1:k) , 'o' ];
+        plo.clr = [clrdef(1:k) , 'r' ]; 
         
         % group names in the legend
         group = cell(n,1);
