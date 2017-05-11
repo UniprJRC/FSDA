@@ -865,7 +865,7 @@ RAW.obj   = superbestobj;       % value of the objective function
 
 RAW.bs=superbestsubset;
 
-% factor: if we multiply the raw MCD covariance matrix by factor, we obtain
+% cfactor: if we multiply the raw MCD covariance matrix by factor, we obtain
 % consistency when the data come from a multivariate normal distribution.
 cfactor = consistencyfactor(h,n,v);
 
@@ -888,7 +888,7 @@ RAW.cor=superbestcov./(sqrt(diag(superbestcov))*sqrt(diag(superbestcov))');
 % Remember that MD are invariant under linear transformations of the data
 md=mahalFS(Y,superbestloc,cfactor*superbestcov);
 
-% Store vector of Mahalanobis distances (in square units)
+% Store vector of Mahalanobis distances (in squared units)
 RAW.md = md;
 
 % The first h smallest ordered Mahalanobis distances have weight equal to 1
