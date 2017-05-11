@@ -16,19 +16,20 @@ function out = rlga(X,k,alpha,varargin)
 %  Optional input arguments:
 %
 %
-%     biter : an integer for the number of different starting hyperplanes
-%               to try. Integer.
+%     biter : number of different starting hyperplanes. Scalar. An integer
+%             for the number of different starting hyperplanes to try.
 %               Example - 'biter',1
 %               Data Types - double
-%     niter : an integer for the number of iterations to attempt for convergence.
-%               Integer.
+%     niter : Number of iterations. Scalar. An integer for the number of
+%             iterations to attempt for convergence.
 %               Example - 'niter',1
 %               Data Types - double
-%   showall :  If true then display all the outcomes, not just the best one.
-%               Logical.
+%   showall :  Level of display. Logical. If true then display all the
+%               outcomes, not just the best one.
 %               Example - 'showall','true'
 %               Data Types - char
-%    stand  : If true standardize the X matrix with the standard deviation before
+%    stand  : Data standardization. Boolean. If true the X
+%               matrix is standardized using the standard deviation before
 %               fitting. Logical.
 %               Example - 'stand','true'
 %               Data Types - char
@@ -51,7 +52,7 @@ function out = rlga(X,k,alpha,varargin)
 %         out.converged = logical. True if at least one solution has converged.
 %         out.nconverg  = the number of converged solutions (out of biter starts).
 %         out.hpcoeff   = best hyerplane
-%         out.x	        = the (scaled if selected) dataset.
+%         out.X	        = the (scaled if selected) dataset.
 %         out.scaled    = logical. Is the data set scaled?
 %         out.k         = the number of clusters to be found.
 %         out.biter     = the biter setting used.
