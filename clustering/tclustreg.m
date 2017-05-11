@@ -474,10 +474,6 @@ tolrestreigen = 1e-08;
 vopt = -1e+20;
 obj = vopt;
 
-% this is just for rotating colors in the plots
-clrdef = 'bkmgrcbkmgrcbkmgrcbkmgrcbkmgrcbkmgrcbkmgrc';
-symdef = '+*sd^v><pho*';
-
 % repmat from Release 8.2 is faster than bsxfun
 if verLessThan('matlab','8.2.0') ==1
     userepmat=0;
@@ -1685,6 +1681,10 @@ end
 
 if plots
     
+    % this is just for rotating colors in the plots
+    clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
+    symdef = '+*d^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
+
     % The following plots are for the bi-variate case (i.e. v=1)
     if p-intercept < 2
         
@@ -1784,6 +1784,13 @@ if plots
         nameY = nameY';
         plo=struct;
         plo.nameY=nameY;
+        plo.sym = [symdef(1:k) , 'o' ];
+        plo.clr = [clrdef(1:k) , 'r' ]; 
+        if sum(indmaxopt==-2)>0
+            plo.sym = [plo.sym , 's'];
+            plo.clr = [plo.clr , 'r'];
+        end
+        
         
         % group names in the legend
         group = cell(n,1);
