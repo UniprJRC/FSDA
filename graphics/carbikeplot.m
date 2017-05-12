@@ -273,10 +273,10 @@ for i=1:numsol
             maxindstablec=find(cc==max(ICbs{i,4}));
         end
         
-        rectangle('position',[minindc kbest maxindc-minindc+eps 0.5*(1- i/numsol)],'facecolor','c');
+        rectangle('position',[minindc kbest maxindc-minindc+eps 0.5*(1- i/numsol)+eps],'facecolor','c');
         rectangle('position',[cbest-0.25 kbest 0.5 0.5],'facecolor','w','Curvature',[1 1])
         minl=min([minindc minindstablec]);
-        rectangle('position',[minl kbest max([maxindc maxindstablec])-minl+eps 0+eps],'facecolor','w');
+        rectangle('position',[minl kbest max([maxindc maxindstablec])-minl+eps eps],'facecolor','w');
         
         soltruen=sum(strcmp(ICbs(1:i,end),'true'));
         
