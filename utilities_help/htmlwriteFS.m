@@ -173,8 +173,8 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
     IPS=mreadFS(NameFile);
     % Note that this function uses routine strjoin and can be used just if
     % MATLAB >=2013a
-    if verLessThan('matlab','8.1.0');
-        error('version of MATLAB greater or equal than 2013a is needed')
+    if verLessThan('matlab','8.1.0')
+        warning('version of MATLAB greater or equal than 2013a is needed')
     else
         [htmlstring, laste]=htmlwriteFS(IPS);
     end
@@ -189,8 +189,8 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
     IPS=mreadFS(NameFile);
     % Note that this function uses routine strjoin and can be used just if
     % MATLAB >=2013a
-    if verLessThan('matlab','8.1.0');
-        error('version of MATLAB greater or equal than 2013a is needed')
+    if verLessThan('matlab','8.1.0')
+        warning('version of MATLAB greater or equal than 2013a is needed')
     else
         [htmlstring, laste]=htmlwriteFS(IPS,'Display','iter-detailed');
     end
