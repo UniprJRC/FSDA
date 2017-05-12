@@ -424,7 +424,7 @@ end
 %Create a figure to host the plot or clear the existing one
 h=findobj('-depth',1,'tag',options.tag);
 if (~isempty(h))
-    clf(h);
+    clf(h(end));
     figure(h(end))
     axes;
 else
