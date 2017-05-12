@@ -307,7 +307,7 @@ if retainby == 0
     % all defaults. For performance reasons, the 'switch' statement is
     % skipped and the default 'comp2one' function is applied.
     %pretain = 1 - pdfe/max(pdfe);
-    pretain = 1 - pdfe/max(pdfe);
+     pretain = (1 ./ pdfe) / max((1 ./ pdfe));
 else
     switch retainby
         case 'comp2one'

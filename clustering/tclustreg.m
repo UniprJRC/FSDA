@@ -315,7 +315,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     we = sqrt(X1)/sum(sqrt(X1));
     
     % tclustreg required parameters
-    k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
+    k = 2; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
 
     % now tclust is run on each combination of mixt and wtrim options
 
@@ -1161,8 +1161,10 @@ for i =1:nselected
                         % count the thinned observations
                         nthinned = sum(Wt == 0);
                         ii = ii + nthinned;
+                        %the next command should be descussed!!!!! FRT
+                        niini(jj) = sum(Wt > 0);
+                        %niini(jj) = niini(jj) - nthinned;
                         %eliminate thinned observations
-                        niini(jj) = niini(jj) - nthinned;
                     end
                     
                 end
