@@ -1,5 +1,5 @@
 function [out , varargout] = Smulteda(Y,varargin)
-%Smult computes S estimators in multivariate analysis for a series of values of bdp
+%Smulteda computes S estimators in multivariate analysis for a series of values of bdp
 %
 %
 %

@@ -36,10 +36,10 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %   alphaLik : Trimming level. Scalar.
 %            alpha1 is a value between 0 and 0.5 or an  integer specifying
 %            the number of observations which have to be trimmed. If
-%            alpha=0 there is no trimming. More in detail, if 0<alpha1<1
-%            clustering is based on h=fix(n*(1-alpha1)) observations.
-%            Else if alpha1 is an integer greater than 1 clustering is
-%            based on h=n-floor(alpha1). More in detail, likelihood
+%            alphaLik=0 there is no trimming. More in detail, if 0<alphaLik<1
+%            clustering is based on h=fix(n*(1-alphaLik)) observations.
+%            Else if alphaLik is an integer greater than 1 clustering is
+%            based on h=n-floor(alphaLik). More in detail, likelihood
 %            contributions are sorted and the units associated with the
 %            smallest n-h contributions are trimmed.
 %            Data Types - single|double
@@ -234,13 +234,13 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 % References:
 %
-% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
-% (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
+% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.,  (2008),
+% "A General Trimming Approach to Robust Cluster Analysis". Annals
 % of Statistics, Vol.36, 1324-1345. Technical Report available at
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 % Cerioli, A. and Perrotta, D. (2014). "Robust Clustering Around Regression
-% Lines with High Densoty Regions". Advances in Data Analysis and
+% Lines with High Density Regions". Advances in Data Analysis and
 % Classification, Volume 8, Issue 1, p. 5-26.
 %
 %
@@ -255,7 +255,8 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % Examples:
 %
 %{
-    %% tclustreg of 'X data' (Gordaliza, Garcia-Escudero & Mayo-Iscar, 2013).
+    %% tclustreg of 'X data'.
+    % The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
     % The dataset presents two parallel components without contamination.
     X  = load('X.txt');
     y1 = X(:,end);
@@ -275,6 +276,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %}
 
 %{
+    % tclustreg of fishery data 1.
     clear all; close all;
     load fishery;
     X = fishery.data;
@@ -302,6 +304,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %}
 
 %{
+    % tclustreg of fishery data 2.
     clear all; close all;
     load fishery;
     X=fishery.data;
@@ -371,7 +374,8 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %}
 
 %{
-    %% Generate mixture of regression using MixSimReg, with an average
+    % tclustreg of simulated data 1.
+    % Generate mixture of regression using MixSimReg, with an average
     % overlapping at centroids = 0.01. Use all default options.
     rng(372,'twister');
     p=3;
@@ -388,6 +392,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %}
 
 %{
+    % tclustreg of simulated data 2.
     % Generate mixture of regression using MixSimReg, with an average
     % overlapping at centroids =0.01.
     rng(372,'twister');

@@ -11,8 +11,10 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %  Required input arguments:
 %
-%eigenvalues: Eigenvalues. Matrix. v x k matrix containing the eigenvalues of the covariance matrices of the k groups
-%            v= number of variables of the dataset which has to be clustered
+%eigenvalues: Eigenvalues. Matrix. v x k matrix containing the eigenvalues
+%             of the covariance matrices of the k groups.
+%             v is the number of variables of the dataset which has to be
+%             clustered.
 %     niini: Cluster size. Vector. k x 1 vector containing the size of the k clusters
 %     restr: Restriction factor. Scalar. Scalar containing the restr parameter in tclust program.
 %            More in detail, parameter restr defines the cluster's shape
@@ -44,7 +46,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %                       The ratio between two possible elements in matrix
 %                       out is not greater than restr
 %
-% See also tclust
+% See also tclust, tclustreg
 %
 % References:
 %

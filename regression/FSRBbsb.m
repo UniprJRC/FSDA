@@ -6,12 +6,12 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %
 % Required input arguments:
 %
-%  y:            A vector with n elements that contains the response variable.
+%  y:           Response variable. Vector. A vector with n elements that contains the response variable.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%  X :           Data matrix of explanatory variables (also called
+%  X :           Predictor variables. Matrix.  Data matrix of explanatory variables (also called
 %               'regressors') of dimension (n x p-1).
 %               Rows of X represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
@@ -129,8 +129,8 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 % Residual Analysis, Biometrika, Vol 75 pp. 651-659.
 % Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian
 % Regression for Fraud Detection, submitted
-% Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian
-% Regression, submitted
+% Atkinson A.C., Corbellini A., Riani M., (2017) Robust Bayesian
+% Regression, Test, in press.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -173,7 +173,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %}
 
 %{
-    %%FSRaddt with optional arguments.
+    %%FSRBbsb with optional arguments.
     % Display the monitoring units plot. Suppress all messages about
     % interchange with option msg.
     load hprice.txt;
@@ -207,7 +207,9 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %}
 
 %{
-    % Monitoring the units belonging to subset in each step.
+    % Compare units belonging to subsets.
+    % Test procedures FSRBmdr and FSRBbsb to find out whether they produce
+    % the same results in terms of units belonging to subset
     load hprice.txt;
     
     % setup parameters

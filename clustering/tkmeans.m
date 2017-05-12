@@ -27,18 +27,18 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %
 %  Optional input arguments:
 %
-%       nsamp : Number of subsamples which will be extracted to find the
-%               partition. Integer. If nsamp=0 all subsets will be extracted.
+%       nsamp : Number of subsamples. Integer. Number of subsamples which will be extracted to find the
+%               partition.  If nsamp=0 all subsets will be extracted.
 %               They will be (n choose k).
 %                 Example - 'nsamp',0 
 %                 Data Types - double
 %               Remark: if the number of all possible subset is <300 the
 %               default is to extract all subsets, otherwise just 300
-%    refsteps : number of refining iterations in each
-%               subsample (default = 15). Scalar.
+%    refsteps : number of iterations. Scalar. Number of refining iterations in each
+%               subsample (default = 15).
 %                 Example - 'refsteps',20 
 %                 Data Types - double
-%     reftol  : Default value of tolerance for the refining steps. Scalar.
+%     reftol  : tolerance. Scalar. Default value of tolerance for the refining steps. 
 %               The default value is 1e-14.
 %                 Example - 'reftol',0.0001 
 %                 Data Types - double
@@ -54,18 +54,19 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %               shown on the screen.
 %                 Example - 'plots',1 
 %                 Data Types - double
-%        msg  : scalar which controls whether to display or not messages
-%               on the screen. Scalar. If msg==1 (default) messages are displayed
+%        msg  : Message on the screen. Scalar. Scalar which controls
+%               whether to display or not messages
+%               on the screen. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               else no message is displayed on the screen.
 %                 Example - 'msg',1 
 %                 Data Types - double
-%      nocheck:  If nocheck is equal to 1 no check is performed on
-%               matrix Y. Scalar. 
+%      nocheck:  check input. Scalar. If nocheck is equal to 1 no check is performed on
+%               matrix Y. 
 %               As default nocheck=0. 
 %                 Example - 'nocheck',1 
 %                 Data Types - double
-%        nomes: estimated time. Scalar. If nomes is equal to 1 no message about estimated
+%        nomes: estimated time message. Scalar. If nomes is equal to 1 no message about estimated
 %               time to compute tkemans is displayed, else if nomes is
 %               equal to 0 (default), a message about estimated time is
 %               displayed.

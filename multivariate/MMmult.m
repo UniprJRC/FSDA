@@ -138,14 +138,14 @@ function [out , varargout] = MMmult(Y,varargin)
 %                 matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1 
 %               Data Types - double
-%       ysave : input data matrix Y is saved into the output
-%                structure out. Scalar. 
+%       ysave : save input matrix Y. Scalar. 
 %               Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
 %               meant at simplifying the use of function malindexplot.
-%               Default is 0, i.e. no saving is done.
+%               Default is 0, i.e. no saving is done. 
 %               Example - 'ysave',1 
-%
+%               Data Types - double
+
 % Output:
 %
 %  out :     A structure containing the following fields
@@ -176,8 +176,8 @@ function [out , varargout] = MMmult(Y,varargin)
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory
-% and Methods, Wiley,New York.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
 %
 % Acknowledgements:
 %

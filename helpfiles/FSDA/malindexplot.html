@@ -55,8 +55,9 @@
     malindexplot(RAW,v,'databrush',databrush)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_md" class="clearfix"> </div> <h3 id="input_argument_md" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>md</code> &#8212; Mahalanobis distances. </span>  </a><span class="example_desc">Vector or structure.</span></span></h3> <div class="collapse"> <p><p>Vector of Mahalanobis distances (in squared units) or a structure
        containing fields md and Y. In this second case md is a structure with the following fields:</p> <p> 
 </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>md</code></td><td><p>contains the Mahalanobis distances;</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>contains the original data matrix whose Mahalanobis
-        distances have been computed.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_v" class="clearfix"> </div> <h3 id="input_argument_v" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>v</code> &#8212; Number of variables. </span>  </a><span class="example_desc">Scalar, the number of variables of the original
-       data matrix which have been used to compute md.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'h',gca
+        distances have been computed.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_v" class="clearfix"> </div> <h3 id="input_argument_v" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>v</code> &#8212; Number of variables. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>The number of variables of the original
+       data matrix which have been used to compute md.</p> <p>
+                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'h',gca
 </code>,<code> 'x','1:100'
 </code>,<code> 'labx','unit number'
 </code>,<code> 'laby','MD'
@@ -139,15 +140,15 @@
                    points in the current plot and to see them
                    highlighted in the scatter plot matrix (spm).</p> <p>
                    If spm does not exist it is automatically created.</p> <p>
-                   DATABRUSH IS A SCALAR
+                   DATABRUSH IS A SCALAR.</p> <p>
                    If databrush is a scalar the default selection tool is
                    a rectangular brush and it is possible to brush only
-                   once (that is persist='')
-                   DATABRUSH IS A STRUCTURE
+                   once (that is persist='').</p> <p>
+                   DATABRUSH IS A STRUCTURE.</p> <p>
                    If databrush is a structure, it is possible to use all
                    optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
-                   following optional argument:</p> <p>
-                   databrush.persist = persisente brushing. Persist is an empty value or a scalar
+                   following optional arguments:</p> <p>
+                   databrush.persist = persisent brushing. Persist is an empty value or a scalar
                      containing the strings 'on' or 'off'.</p> <p>
                      The default value of persist is '', that is brushing
                      is allowed only once.</p> <p>

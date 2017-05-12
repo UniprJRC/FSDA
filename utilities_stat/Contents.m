@@ -7,8 +7,8 @@
 %   basicPower          - Computes the basic power transformation                                                                                         - UTISTAT- 2017 Mar 02
 %   bwe                 - Estimates the bandwidth smoothing parameter for kernel density estimation                                                       - UTISTAT- 2017 May 12
 %   ellipse             - Generates an ellipse given mu (location vector) and Sigma (scatter matrix)                                                      - UTISTAT- 2016 Aug 01
-%   FowlkesMallowsIndex - Computes the Fowlkes and Mallows index                                                                                          - UTISTAT- 2017 Mar 13
-%   FSMbonfbound        - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                      - UTISTAT- 2016 Aug 01
+%   FowlkesMallowsIndex - Computes the Fowlkes and Mallows index                                                                                          - UTISTAT- 2017 May 12
+%   FSMbonfbound        - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                      - UTISTAT- 2017 May 12
 %   FSRbonfbound        - Computes Bonferroni bounds for each step of the search (in linear regression)                                                   - UTISTAT- 2016 Aug 01
 %   HAbdp               - Finds the constant c associated to the supplied breakdown point                                                                 - UTISTAT- 2016 Aug 01
 %   HAc                 - Computes breakdown point and efficiency associated with constant c                                                              - UTISTAT- 2016 Aug 01
@@ -67,5 +67,5 @@
 %   TBrho               - Computes rho function for Tukey's biweight                                                                                      - UTISTAT- 2016 Aug 01
 %   TBwei               - Computes weight function psi(u)/u for Tukey's biweight                                                                          - UTISTAT- 2016 Aug 01
 %   winsor              - Returns a winsorized copy of input                                                                                              - UTISTAT- 2016 Aug 01
-%   WNChygepdf          - Returns Wallenius' non-central hypergeometric probability density values                                                        - UTISTAT- 2017 May 04
+%   WNChygepdf          - Returns Wallenius' non-central hypergeometric probability density values                                                        - UTISTAT- 2017 May 12
 %   wthin               - Thin a uni/bi-dimensional dataset                                                                                               - UTISTAT- 2017 May 12

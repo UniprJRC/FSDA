@@ -5,14 +5,16 @@ function [out]=FSRaddt(y,X,varargin)
 %
 % Required input arguments:
 %
-%    y: A vector with n elements that contains the response variable. y can
-%       be both a row of column vector.
-%    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension (n x p-1). Rows of X represent observations, and columns
-%       represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       automatically be excluded from the computations.
+%    y:         Response variable. Vector. A vector with n elements that
+%               contains the response
+%               variable. It can be both a row of column vector. 
+%    X :        Predictor variables. Matrix. Data matrix of explanatory
+%               variables (also called 'regressors')
+%               of dimension (n x p-1). Rows of X represent observations, and
+%               columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are allowed,
+%               since observations (rows) with missing or infinite values will
+%               automatically be excluded from the computations.
 %
 % Optional input arguments:
 %

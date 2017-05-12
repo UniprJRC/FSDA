@@ -120,8 +120,9 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               datatooltip window)
 %
 %
-%    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension nxp if the first argument is a vector. Matrix. Rows of X
+%    X: Predictor variables. Matrix.  Matrix.  Data matrix of explanatory
+%       variables (also called 'regressors') of
+%       dimension nxp if the first argument is a vector. Rows of X
 %       represent observations, and columns represent variables.
 %       Data Types - single|double
 %
@@ -146,8 +147,8 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',''
 %                   Data Types - char
-%     databrush :   empty value, scalar or cell.
-%                   DATABRUSH IS AN EMPTY VALUE
+%     databrush :   interactive brushing. Empty value, scalar or cell.
+%                   DATABRUSH IS AN EMPTY VALUE.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
 %                   The activation of this option (databrush is a scalar or
@@ -168,12 +169,12 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                   Remark. The window style of the other figures is set
 %                   equal to that which contains the monitoring residual
 %                   plot. In other words, if the scatterplot matrix plot
-%                   is docked all the other figures will be docked too
-%                   DATABRUSH IS A SCALAR
+%                   is docked all the other figures will be docked too.
+%                   DATABRUSH IS A SCALAR.
 %                   If databrush is a scalar the default selection tool is
 %                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='')
-%                   DATABRUSH IS A CELL
+%                   once (that is persist='').
+%                   DATABRUSH IS A CELL.
 %                   If databrush is a cell, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
 %                   following optional argument:
@@ -192,17 +193,17 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                   - bivarfit. This option is to add one or more least
 %                     square lines to the plots of y|X, depending on the
 %                     selected groups.
-%                     bivarfit = ''
+%                     bivarfit = '';
 %                       is the default: no line is fitted.
-%                     bivarfit = '1'
+%                     bivarfit = '1';
 %                       fits a single ols line to all points of each
 %                       bivariate plot in the scatter matrix y|X.
-%                     bivarfit = '2'
+%                     bivarfit = '2';
 %                       fits two ols lines: one to all points and another
 %                       to the last selected group. This is useful when
 %                       there are only two groups, of which one refers to a
 %                       set of potential outliers.
-%                     bivarfit = '0'
+%                     bivarfit = '0';
 %                       fits one ols line for each selected group. This is
 %                       useful for the purpose of fitting mixtures of
 %                       regression lines.

@@ -14,15 +14,15 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %  Required input arguments:
 %
-%            Y: Data matrix containing n observations on v variables.
+%            Y: Input data. Matrix. Data matrix containing n observations on v variables.
 %               Rows of Y represent observations, and columns
 %               represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values will
 %               automatically be excluded from the computations.
-%            k: Number of groups.
+%            k: Number of groups. Scalar.
 %               Scalar which specifies the number of groups.
-%        alpha: global trimming level. alpha is a scalar between 0 and 0.5
+%        alpha: global trimming level. Scalar. alpha is a scalar between 0 and 0.5
 %               or an integer specifying the number of observations which have to
 %               be trimmed. If alpha=0 tclust reduces to traditional model
 %               based or mixture clustering (mclust): see Matlab function
@@ -31,7 +31,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                h=fix(n*(1-alpha)) observations
 %               Else if alpha is an integer greater than 1 clustering is
 %               based on h=n-floor(alpha);
-%  restrfactor: positive scalar which constrains the allowed differences
+%  restrfactor: restriction factor. Scalar. Positive scalar which constrains the allowed differences
 %               among group scatters. Larger values imply larger differences of
 %               group scatters. On the other hand a value of 1 specifies the
 %               strongest restriction forcing all eigenvalues/determinants

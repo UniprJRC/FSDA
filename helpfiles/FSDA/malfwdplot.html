@@ -213,9 +213,10 @@
 </code>,<code> 'nameY',{'var1', var2, 'var3'}
 </code>,<code> 'msg',1
 </code>,<code> 'conflev',0.99
-</code></code></span></div><div class="expandableContent"><div id="inputarg_standard" class="clearfix"></div><h3 id="input_argument_namevalue_standard" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>standard</code> &#8212;appearance of the plot
+</code></code></span></div><div class="expandableContent"><div id="inputarg_standard" class="clearfix"></div><h3 id="input_argument_namevalue_standard" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>standard</code> &#8212;plot layout.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Appearance of the plot
                    in terms of xlim, ylim, axes labels and their font size
-                   style, color of the lines, etc.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure standard contains the following fields:</p> <p>
+                   style, color of the lines, etc.</p> <p> 
+                   Structure standard contains the following fields:</p><p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>SizeAxesNum</code></td><td><p>scalar specifying the fontsize of the
                        axes numbers. Default value is 10.</p></td></tr><tr valign="top"><td><code>xlim</code></td><td><p>two elements vector with minimum and maximum of
                        the x axis. Default value is '' (automatic scale).</p></td></tr><tr valign="top"><td><code>ylim</code></td><td><p>two elements vector with minimum and maximum of
@@ -417,10 +418,10 @@
                    If databrush is a scalar the default selection tool is
                    a rectangular brush and it is possible to brush only
                    once (that is persist='').</p> <p>
-                   DATABRUSH IS A STRUCTURE.</p><p>
+                   DATABRUSH IS A STRUCTURE.</p> <p>
                    If databrush is a structure, it is possible to use all
                    optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
-                   following fields
+                   following fields:</p><p>
                    -</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>persist</code></td><td><p><p>repeated brushng enabled. Persist is an empty value or a scalar
                      containing the strings 'on' or 'off'.</p> <p>
                      The default value of persist is '', that is brushing
@@ -441,8 +442,8 @@
                      plot matrix the units of the last selected group with
                      the unit row index in matrices X and y. The default
                      value is labeladd='', i.e. no label is added.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;cell array of strings of length v containing the labels
-                   of the variables of the dataset.</span></a><span class="example_desc">cell of strings.</span></span></h3><div class="collapse">	<p>If it
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;variable labels.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>Cell array of strings of length v containing the labels
+                   of the variables of the dataset. Cell of strings. If it
                    is empty (default) the sequence Y1, ..., Yv will be used
                    automatically
                    </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameY',{'var1', var2, 'var3'}
@@ -463,8 +464,7 @@
                    e.g. [0.95,0.99,0.999]. Confidence interval is based on
                    the chi^2 distribution.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>numeric</div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_plotopt" class="clearfix"></div><h3 id="output_argument_plotopt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plotopt</code> &#8212;options which have been used to create the plot.</span></a><span class="example_desc">Cell array
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single or double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_plotopt" class="clearfix"></div><h3 id="output_argument_plotopt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plotopt</code> &#8212;options which have been used to create the plot.</span></a><span class="example_desc">Cell array
                of strings</span></span></h3><div class="collapse"><p> Store all options which have been used to
-               generate the plot inside cell plotopt.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, Riani and Cerioli (2004), Exploring Multivariate Data with
-   the Forward Search,
-   Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="resfwdplot.html" itemprop="url"><span itemprop="name"><code>resfwdplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+               generate the plot inside cell plotopt.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson A.C., Riani M. and Cerioli A. (2004), Exploring Multivariate Data with
+   the Forward Search,  Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="resfwdplot.html" itemprop="url"><span itemprop="name"><code>resfwdplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

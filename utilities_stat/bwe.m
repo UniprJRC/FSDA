@@ -1,8 +1,7 @@
 function bw = bwe(X, bwopt)
-%BWE estimates the bandwidth smoothing parameter for kernel density estimation.
+%bwe estimates the bandwidth smoothing parameter for kernel density estimation.
 %
 %<a href="matlab: docsearchFS('bwe')">Link to the help page for this function</a>
-% Last modified 06-Feb-2016
 %
 %  Required input arguments:
 %
@@ -29,15 +28,14 @@ function bw = bwe(X, bwopt)
 %               bandwidth value for each dimension.
 %
 %
-%  Optional Output:
 %
 %
-%  See also ksdensity
+%  See also: ksdensity
 %
 %
 % References:
 %
-%   A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
+%   Bowman A.W.  and Azzalini A. (1997), "Applied Smoothing
 %      Techniques for Data Analysis," Oxford University Press.
 %
 %   Silverman, B.W. (1998). Density Estimation for Statistics and Data

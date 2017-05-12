@@ -108,8 +108,9 @@ function [out] = MixSimreg(k,p,varargin)
 %               PiLow must be a number in the interval (0 1]
 %               Example - 'PiLow',0.1 
 %               Data Types - double
-%    Xdistrib : scalar or structure which specifies the distribution to use
-%               for each explanatory variable and each group. Scalar or structure. Once chosen,
+%    Xdistrib : distribution to use for each explanatory variable. Scalar
+%               or structure. It specifies the distribution to use
+%               for each explanatory variable and each group. Once chosen,
 %               the distribution is fixed for each explanatory variable and
 %               each group; however, the parameters of the chosen
 %               distribution may vary across variables and groups. For
@@ -124,55 +125,53 @@ function [out] = MixSimreg(k,p,varargin)
 %                 the distribution (in the fieldname 'type') and the
 %                 parameters of the distribution. The following options are
 %                 admitted for Xdistrib:
-%                 > Xdistrib.intercept = scalar equal to 1 if intercept is
+%                   Xdistrib.intercept = scalar equal to 1 if intercept is
 %                   present. The default value of Xdistrib.intercept is 1.
 %                   The other fields of Xdistrib depend on the distribution
 %                   which is chosen.
-%                 NORMAL DISTRIBUTION N(mu, sigma)
-%                 > Xdistrib.type = 'Normal';
-%                 > Xdistrib.mu   = matrix of size (p-1)-by-k if
-%                       (Xdistrib.intercept=1) or p-by-k if
-%                       (Xdistrib.intercept=0) containing the parameters mu
+%                   Xdistrib.type = string which identifies the kind of distribution. 
+%                   Possibile values are:
+%                   'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
+%                   case the use must supply mu and sigma.
+%                   'Uniform'; UNIFORM DISTRIBUTION U(a, b).
+%                   'HalfNormal'; HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|.
+%                   'User'.  OTHER DISTRIBUTION. In this case the user must directly provide
+%                   means of the p explanatory variables for each group.
+%                   Xdistrib.mu   = matrix of size (p-1)-by-k if
+%                        Xdistrib.intercept=1 or p-by-k if
+%                       Xdistrib.intercept=0 containing the parameters mu
 %                       for each explanatory variable and each group. The
 %                       default value of Xdistrib.mu is 0.5*ones(p-1, k).
-%                 > Xdistrib.sigma = matrix of size (p-1)-by-k if
+%                       Xdistrib.mu is used just if X.distrib.type is normal.
+%                   Xdistrib.sigma = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters
 %                       sigma for each explanatory variable and each group.
 %                       The default value of Xdistrib.sigma is ones(p-1,k).
-%                 UNIFORM DISTRIBUTION U(a, b)
-%                 > Xdistrib.type ='Uniform';
-%                 > Xdistrib.a    = matrix of size (p-1)-by-k if
-%                       (Xdistrib.intercept=1) or p-by-k if
-%                       (Xdistrib.intercept=0) containing the parameters
+%                       Xdistrib.sigma is used just if X.distrib.type is
+%                       'Normal' or if Xdistrib.type is 'HalfNormal'.
+%                   Xdistrib.a    = matrix of size (p-1)-by-k 
+%                       if Xdistrib.intercept=1 or p-by-k if
+%                       Xdistrib.intercept=0 containing the parameters
 %                       a (the lower limits) for each explanatory variable
 %                       and each group. The default value of Xdistrib.a is
-%                       zeros(p-1, k).
-%                 > Xdistrib.b = matrix of size (p-1)-by-k if
-%                       (Xdistrib.intercept=1) or p-by-k if
-%                       (Xdistrib.intercept=0) containing the parameters b
+%                       zeros(p-1, k).  
+%                       Xdistrib.a is used just if Xdistrib.type is 'Uniform'
+%                   Xdistrib.b = matrix of size (p-1)-by-k if
+%                       Xdistrib.intercept=1 or p-by-k if
+%                       Xdistrib.intercept=0 containing the parameters b
 %                       (the upper limits) for each explanatory variable
 %                       and each group. The default value of Xdistrib.b is
-%                       ones(p-1, k).
-%                 HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-%                 > Xdistrib.type='HalfNormal';
-%                 > Xdistrib.sigma = matrix of size (p-1)-by-k if
-%                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)
-%                   containing the parameters sigma for each explanatory variable
-%                   and each group. The default value of Xdistrib.sigma is
-%                   ones(p-1, k).
-%                 OTHER DISTRIBUTION
-%                 >  Xdistrib.type='User'.
-%                   If Xdistrib.type='User' the user must directly provide
+%                       ones(p-1, k). 
+%                       Xdistrib.b is used just if Xdistrib.type is 'Uniform'
+%                   Xdistrib.BarX= (p-1)-by k matrix if intercept is present
+%                   or p-by-k matrix if intercept is not present containing the
 %                   means of the p explanatory variables for each group.
-%                   So, if distrib.type is 'User', we expect there is a field
-%                   called Xbar.
-%                 > Xdistrib.BarX= (p-1)-by k (if intercept is present)
-%                   or p-by-k (if intercept is not present) containing the
-%                   means of the p explanatory variables for each group.
+%                       Xdistrib.BarX is used just if Xdistrib.type is 'User'
 %                 Example - 'Xdistrib',1 
 %                 Data Types - double
-% betadistrib : scalar or structure which specifies the distribution to use
+% betadistrib : distribution to use for regression coefficients. 
+%               Scalar or structure. It specifies the distribution to use
 %               for each element of the vectors of regression coefficients.
 %               Scalar or structure.
 %               Once chosen, the distribution together with its parameters
@@ -183,51 +182,51 @@ function [out] = MixSimreg(k,p,varargin)
 %                 about the distribution (in the fieldname type) and the
 %                 parameters of the distribution.
 %                 The following options are admitted for betadistrib:
-%               NORMAL DISTRIBUTION N(mu, sigma)
-%                   betadistrib.type='Normal';
+%                  betadistrib.type = string which identifies the kind of distribution. 
+%                   Possibile values are:
+%                   'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
+%                   case the use must supply mu and sigma.
+%                   'Uniform'; UNIFORM DISTRIBUTION U(a, b).
+%                   'HalfNormal'; HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|.
+%                   'User'.  OTHER DISTRIBUTION. 
 %                   betadistrib.mu = scalar, containing parameter mu for the
 %                       distribution of each element of beta across each
-%                       group. The default value of betadistrib.mu is 0
+%                       group. The default value of betadistrib.mu is 0.
+%                       betadistrib.mu is used just if betadistrib.type is normal.
 %                   betadistrib.sigma = scalar, containing parameter sigma for
 %                       the distribution of each element of beta across
 %                       each group. The default value of betadistrib.sigma
-%                       is 1
-%                   UNIFORM DISTRIBUTION U(a, b)
-%                   > betadistrib.type='Uniform';
-%                   > betadistrib.a = scalar, containing parameter a for the
+%                       is 1.
+%                       betadistrib.sigma is used just if betadistrib.type
+%                       is Normal or if betadistrib is HalfNormal.
+%                   betadistrib.a = scalar, containing parameter a for the
 %                     distribution of each element of beta across each
-%                     group. The default value of betadistrib.a is 0
-%                   > betadistrib.b = scalar, containing parameter b for
+%                     group. The default value of betadistrib.a is 0.
+%                       betadistrib.a is used just if betadistrib.type
+%                       is 'Uniform'.
+%                    betadistrib.b = scalar, containing parameter b for
 %                     the distribution of each element of beta across
 %                     each group. The default value of betadistrib.b is 1.
-%                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-%                   > betadistrib.type='HalfNormal';
-%                   > betadistrib.sigma = scalar containing parameter sigma
-%                       for the distribution of each element of beta across
-%                       each group. The default value of betadistrib.sigma
-%                       is 1
-%                   USER DISTRIBUTION
-%                   > betadistribtion.type='User';
-%                     If betadistribtion.type='User' the user must directly
-%                     provide the values of the beta coefficients.
-%                     So, if betadistribtion.type is 'User', we expect there
-%                     is a field called Beta.
-%                   > betadistribution.Beta = matrix of size (p-1)-by k
+%                       betadistrib.a is used just if betadistrib.type
+%                       is 'Uniform'.
+%                     betadistrib.Beta = matrix of size (p-1)-by k
 %                     (if intercept is present) or p-by-k (if intercept is
 %                     not present) containing the vectors of regression
 %                     coefficients for the k groups.
+%                       betadistrib.Beta is used just if betadistrib.type
+%                       is 'User'.
 %                 Example - 'betadistrib',1 
 %                 Data Types - double
-%        resN : maximum number of mixture re-simulations to find a
+%        resN : maximum number of attempts. Scalar integer.
+%               Maximum number of mixture re-simulations to find a
 %               simulation setting with prespecified level of overlapping.
-%               Integer.
 %               The default value of resN is 100.
 %                 Example - 'resN',3 
 %                 Data Types - double
-%         tol : vector of length 2. Vector
+%         tol : toleramce. Vector of length 2. 
 %               - tol(1) (which will be called tolmap) specifies
 %                 the tolerance between the requested and empirical
-%                 misclassification probabilities (default is 1e-06)
+%                 misclassification probabilities (default is 1e-06).
 %               - tol(2) (which will be called tolnxc2) specifies the
 %                 tolerance to use in routine ncx2mixtcdf (which computes
 %                 the cdf of linear combinations of non central chi2
@@ -320,6 +319,11 @@ function [out] = MixSimreg(k,p,varargin)
 %   (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
 %   of Statistics, Vol.36, 1324-1345. Technical Report available at
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+%
+%   Riani M., Cerioli A., Perrotta D. and Torti F. (2015). Simulating
+%   mixtures of multivariate data with fixed cluster overlap in FSDA,
+%   Advances in data analysis and classification. Volume 9, Issue 4, pp
+%   461-481, DOI 10.1007/s11634-015-0223-9.
 %
 %   Reference below documents the problem of the ill-conditioning of the
 %   eigenvalue-eigenvector computation.

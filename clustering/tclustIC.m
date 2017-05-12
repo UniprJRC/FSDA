@@ -13,7 +13,7 @@ function out  = tclustIC(Y,varargin)
 %
 %  Required input arguments:
 %
-%            Y: Data matrix containing n observations on v variables
+%            Y: Input data. Matrix. Data matrix containing n observations on v variables
 %               Rows of Y represent observations, and columns represent
 %               variables. Observations (rows) with missing (NaN) or or
 %               infinite (Inf) values will automatically be excluded from
@@ -22,19 +22,22 @@ function out  = tclustIC(Y,varargin)
 %
 %  Optional input arguments:
 %
-%           kk: Integer vector specifying the number of mixture components
+%           kk: number of mixture components. Integer vector. Integer
+%               vector specifying the number of mixture components
 %               (clusters) for which the BIC is to be calculated.
 %               Vector. The default value of kk is 1:5.
 %                 Example - 'kk',1:4
 %                 Data Types - int16 | int32 | single | double
 %
-%           cc: A vector specifying the values of the restriction factor
-%               which have to be considered. Vector.
+%           cc: values of restriction factor. Vector. A vector specifying
+%               the values of the restriction factor
+%               which have to be considered. 
 %               The default value of cc is [1 2 4 8 16 32 64 128]
 %                 Example - 'cc',[1 2 4 8 128]
 %                 Data Types - double
 %
-%      whichIC: Character which specifies which information criteria must
+%      whichIC: type of information criterion. Character. 
+%               Character which specifies which information criteria must
 %               be computed for each k (number of groups) and each value of
 %               the restriction factor (c).
 %               Possible values for whichIC are:
@@ -132,7 +135,8 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'startv1',1
 %                 Data Types - single | double
 %
-%       restr : The type of restriction to be applied on the cluster scatter
+%       restr : type of restriction. Character. The type of restriction to
+%               be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
 %               eigen implies restriction on the eigenvalues while deter
 %               implies restrictions on the determinant.
@@ -146,7 +150,8 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'plots',1
 %                 Data Types - single | double
 %
-%     numpool : scalar. If numpool > 1, the routine automatically checks if
+%     numpool : number of pools for parellel computing. Scalar. 
+%               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
 %               numpool <= 1, the random starts are run sequentially. By
@@ -188,10 +193,11 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'numpool',4
 %                 Data Types - double
 %
-%  cleanpool :  cleanpool is 1 if the parallel pool has to be cleaned after
-%               the execution of the routine. Otherwise it is 0. The
-%               default value of cleanpool is 1. Clearly this option has an
-%               effect just if previous option numpool is > 1.
+%  cleanpool :  clean pool. Scalar. cleanpool is 1 if the parallel pool has
+%               to be cleaned after the execution of the routine. Otherwise
+%               it is 0. The default value of cleanpool is 1. Clearly this
+%               option has an effect just if previous option numpool is >
+%               1.
 %                 Example - 'cleanpool',1
 %                 Data Types - single | double
 %
@@ -205,14 +211,14 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'nocheck',10
 %                 Data Types - single | double
 %
-%       Ysave : Scalar that is set to 1 to request that the input matrix Y
+%       Ysave : save input matrix. Scalar. Scalar that is set to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 1, that
 %               is  matrix Y is saved inside output structure out.
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
-%   UnitsSameGroup :  list of the units which must (whenever possible)
-%                   have the same label. Numeric vector.  For example if
+%   UnitsSameGroup : Units with same labels. Numeric vector.  List of the units which must (whenever possible)
+%                   have the same label.  For example if
 %                   UnitsSameGroup=[20 26], it means that group which contains
 %                   unit 20 is always labelled with number 1. Similarly,
 %                   the group which contains unit 26 is always labelled
@@ -294,9 +300,9 @@ function out  = tclustIC(Y,varargin)
 %
 % References:
 %
-% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016).
-% Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, submitted
+% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016),
+% "Finding the Number of Groups in Model-Based Clustering via Constrained
+% Likelihoods", submitted.
 %
 %
 % Copyright 2008-2016.

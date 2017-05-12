@@ -5,19 +5,23 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %
 %  Required input arguments:
 %
-%    Y: Data matrix containining n observations on v variables.
-%       Rows of Y represent observations, and columns represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       be excluded from the computations.
+% Y :           Input data. Matrix.
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
 %
 %  Optional input arguments:
 %
-%      bdp    : scalar. Breakdown point. (Number between 0
-%               and 0.5). The default value is 0.5.
+%      bdp    : Breakdown point. Scalar.  Number between 0
+%               and 0.5 which specifies the break down point. The default
+%               value is 0.5.
 %               Example - 'bdp',1/4 
 %               Data Types - double
-%      nsamp  : scalar. Number of subsamples of size v which have
+%      nsamp  : Number of subsamples. Scalar. Number of subsamples of size v+1 which have
 %               to be extracted (if not given, default = 500).
 %               Example - 'nsamp',10000 
 %               Data Types - double
@@ -26,19 +30,19 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',0 
 %                 Data Types - single | double
-%     reftol  : scalar. Default value of tolerance for the refining steps.
+%     reftol  : Tolerance for the refining steps. scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
 %                 Example - 'reftol',1e-8 
 %                 Data Types - single | double
-%     conflev : Scalar. Number between 0 and 1 containing confidence level which is
+%     conflev : Confidence level Scalar. Number between 0 and 1 containing confidence level which is
 %               used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
 %               Example - 'conflev',0.99
 %               Data Types - double
-%      nocheck: Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix Y. As default nocheck=0.
+%      nocheck: No check on input data. Scalar. If nocheck is equal to 1 no check
+%               is performed on matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
 %       plots : Plot on the screen. Scalar or structure.
@@ -59,20 +63,20 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %                       are added are Y1, ...Yv.
 %               Example - 'plots',1
 %               Data Types - double or structure
-%        msg  : scalar. Display or not messages
+%        msg  : Level of display. Scalar. Display or not messages
 %               on the screen. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final
 %               estimator else no message is displayed on the screen.
 %               Example - 'msg',1
 %               Data Types - double
 
-%    ysaveRAW : scalar that is set to 1 to request that the data matrix Y
+%    ysaveRAW : save input matrix. Scalar. Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure RAW. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'ysaveRAW',1
 %               Data Types - double
-%    ysaveREW : scalar that is set to 1 to request that the data matrix Y
+%    ysaveREW : save input matrix. Scalar. Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure REW. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.

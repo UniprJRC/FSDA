@@ -6,12 +6,13 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 % Required input arguments:
 %
-%  y:            A vector with n elements that contains the response variable.
+%  y:           Response variable. Vector.  A vector with n elements that contains the response variable.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%  X :           Data matrix of explanatory variables (also called
+%  X :          Predictor variables. Matrix.  Data matrix of explanatory
+%               variables (also called
 %               'regressors') of dimension (n x p-1).
 %               Rows of X represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
@@ -154,15 +155,15 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               search are corrected using the usual truncated variance
 %               consistency factor.
 %
-% See also
+% See also: FSRB, FSRmdr, regressB
 %
 % References:
 % Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and
 % Residual Analysis, Biometrika, Vol 75 pp. 651-659.
-% Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian
+% Riani M., Corbellini A., Atkinson A.C. (2017), Very Robust Bayesian
 % Regression for Fraud Detection, submitted
 % Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian
-% Regression, submitted
+% Regression, Test, in press.
 %
 % Copyright 2008-2016.
 % Written by FSDA team

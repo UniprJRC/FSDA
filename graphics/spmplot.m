@@ -85,7 +85,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               'pl_spm'. Notice that if the program finds a plot which
 %               has a tag equal to the one specified by the user, then
 %               the output of the new plot overwrites the existing one
-%               in the same window else a new window is created
+%               in the same window else a new window is created.
 %
 %
 %  OPTIONAL INPUT ARGUMENTS IF Y IS A STRUCTURE.

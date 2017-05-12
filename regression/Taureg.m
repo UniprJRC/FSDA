@@ -130,8 +130,9 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               confidence interval will be used.
 %                 Example - 'plots',0 
 %                 Data Types - single | double
-%       yxsave : the response vector y and data matrix X are saved into the output
-%                structure out. Scalar.
+%       yxsave : Save matrices X and y. Scalar. If yxsave is equal to 1 the
+%               response vector y and data matrix X are saved into the output
+%                structure out. 
 %               Default is 0, i.e. no saving is done.
 %               Example - 'yxsave',1 
 %               Data Types - double

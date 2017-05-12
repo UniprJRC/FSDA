@@ -1,5 +1,5 @@
 function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
-%FSMmmdeasy is exactly equal to minMD but much less efficient
+%FSMmmdeasy is exactly equal to FSMmmd but it is much less efficient
 %
 %<a href="matlab: docsearchFS('FSMmmdeasy')">Link to the help function</a>
 %

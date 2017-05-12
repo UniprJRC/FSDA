@@ -11,19 +11,19 @@
     % In this case we use the five most common values of lambda are considered
     [out]=FSRfan(y,X);
     fanplot(out);
-    %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+    %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.9%
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.2%
-Total estimated time to complete LMS:  0.07 seconds 
+Total estimated time to complete LMS:  0.11 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.03 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.9%
 </pre><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
@@ -112,7 +112,19 @@ m=500
     fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
     disp('Maximum difference in absolute value')
     disp(max(max(abs(outYJ.Score-outBC.Score))))
-</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.19 seconds 
+</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.15 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.14 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.14 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.15 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.13 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.14 seconds 
@@ -124,34 +136,25 @@ Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.14 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.14 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.13 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.14 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
+Total estimated time to complete LMS:  0.15 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Maximum difference in absolute value
     0.7564
 
-</pre><img vspace="5" hspace="5" src="images\FSRfan_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_04.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variable. </span>  </a><span class="example_desc">y can
-       be both a row of column vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors') of
-       dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and columns
-       represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values
-       (Inf's) are allowed, since observations (rows) with missing or
-       infinite values will automatically be excluded from the
-       computations. NOTICE THAT THE INTERCEPT MUST ALWAYS BE INCLUDED.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
+</pre><img vspace="5" hspace="5" src="images\FSRfan_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_04.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
+               contains the response
+               variable. It can be both a row of column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
+               variables (also called 'regressors')
+               of dimension (n x p-1). Rows of X represent observations, and
+               columns represent variables.</p> <p>
+               Missing values (NaN's) and infinite values
+               (Inf's) are allowed, since observations (rows) with missing or
+               infinite values will automatically be excluded from the
+               computations. NOTICE THAT THE INTERCEPT MUST ALWAYS BE INCLUDED.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
 </code>,<code> 'nocheck',1
 </code>,<code> 'la',[-1 -0.5]
 </code>,<code> 'h',5

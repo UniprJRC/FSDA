@@ -56,41 +56,45 @@ function Bbound = FSMbonfbound(n,p,varargin)
 
 % Examples:
 %{
-% Example using default options
-  n=1000;
-  p=5;
-  init=floor(0.5*(n+p+1))+1; 
-  MMDenv = FSMenvmmd(n,p,'exact',1,'init',init);
-  Bbound = FSMbonfbound(n,p,'init',init);
-  figure;
-  plot(MMDenv(:,1),MMDenv(:,2:end),'r',Bbound(:,1),Bbound(:,2:end),'b');
+    %% Example using default options.
+    n=1000;
+    p=5;
+    init=floor(0.5*(n+p+1))+1; 
+    MMDenv = FSMenvmmd(n,p,'exact',1,'init',init);
+    Bbound = FSMbonfbound(n,p,'init',init);
+    figure;
+    plot(MMDenv(:,1),MMDenv(:,2:end),'r',Bbound(:,1),Bbound(:,2:end),'b');
 %}
 %{
-% Example using default option, init=10 and prob=[0.01 0.05 0.99 0.999]
-  n=2000;
-  p=15;
-  init=100;
-  prob=[0.95 0.99 0.999];
-  MMDenv = FSMenvmmd(n,p,'exact',1,'init',init,'prob',prob);
-  Bbound = FSMbonfbound(n,p,'init',init,'prob',prob);
-  figure;
-  plot(MMDenv(:,1),MMDenv(:,2:end),'r',Bbound(:,1),Bbound(:,2:end),'b');
+    % Options init and prob.
+    % Example using option, init=10 and prob=[0.01 0.05 0.99 0.999]
+    n=2000;
+    p=15;
+    init=100;
+    prob=[0.95 0.99 0.999];
+    MMDenv = FSMenvmmd(n,p,'exact',1,'init',init,'prob',prob);
+    Bbound = FSMbonfbound(n,p,'init',init,'prob',prob);
+    figure;
+    plot(MMDenv(:,1),MMDenv(:,2:end),'r',Bbound(:,1),Bbound(:,2:end),'b');
 %}
+
 %{
-% Example plotting distrib=chi2 and F, init=100 and prob=[0.999]
-  n=2000;
-  p=10;
-  init=100;
-  prob=[0.99];
-  MMDenv = FSMenvmmd(n,p,'exact',1,'init',init,'prob',prob);
-  distrib='chi2';
-  BboundC = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);
-  distrib='F';
-  BboundF = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);
-  figure;
-  plot(MMDenv(:,1),MMDenv(:,2:end),BboundC(:,1),BboundC(:,2:end),BboundF(:,1),BboundF(:,2:end));
-  legend('Order statistic envelope','Bonferroni Chi2 bound','Bonferroni F bound','Location','best');
+      % Comparison between chi2 and F distributions.
+      % Example plotting distrib=chi2 and F, init=100 and prob=[0.999].
+      n=2000;
+      p=10;
+      init=100;
+      prob=[0.99];
+      MMDenv = FSMenvmmd(n,p,'exact',1,'init',init,'prob',prob);
+      distrib='chi2';
+      BboundC = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);
+      distrib='F';
+      BboundF = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);
+      figure;
+      plot(MMDenv(:,1),MMDenv(:,2:end),BboundC(:,1),BboundC(:,2:end),BboundF(:,1),BboundF(:,2:end));
+      legend('Order statistic envelope','Bonferroni Chi2 bound','Bonferroni F bound','Location','best');
 %}
+
 %% Input parameters checks
 
 if ~isscalar(n) || isempty(n) || isnan(n)

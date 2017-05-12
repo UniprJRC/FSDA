@@ -283,8 +283,9 @@
                (optional argument used when datatooltip=1. If this
                field is not present labels row1, ..., rown will be
                automatically created and included in the pop up
-               datatooltip window)</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors') of
-       dimension nxp if the first argument is a vector. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Rows of X
+               datatooltip window)</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix.  Data matrix of explanatory
+       variables (also called 'regressors') of
+       dimension nxp if the first argument is a vector. Rows of X
        represent observations, and columns represent variables.</p> <p>
        </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'datatooltip',''
 </code>,<code> 'databrush',1
@@ -302,7 +303,10 @@
                    The default options of the structure are
                    DisplayStyle='Window' and SnapToDataVertex='on'.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;empty value, scalar or cell.</span></a><span class="example_desc">dATABRUSH IS AN EMPTY VALUE                   If databrush is an empty value (default), no brushing                   is done.</span></span></h3><div class="collapse">	<p><p>The activation of this option (databrush is a scalar or
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive brushing.</span></a><span class="example_desc">empty value, scalar | cell.</span></span></h3><div class="collapse">	<p><p>DATABRUSH IS AN EMPTY VALUE.</p> <p>
+                   If databrush is an empty value (default), no brushing
+                   is done.</p> <p>
+                   The activation of this option (databrush is a scalar or
                    a cell) enables the user  to select a set of
                    observations in the current plot and to see them
                    highlighted in the resfwdplot, i.e. the plot of the
@@ -320,12 +324,12 @@
                    Remark. The window style of the other figures is set
                    equal to that which contains the monitoring residual
                    plot. In other words, if the scatterplot matrix plot
-                   is docked all the other figures will be docked too
-                   DATABRUSH IS A SCALAR
+                   is docked all the other figures will be docked too.</p> <p>
+                   DATABRUSH IS A SCALAR.</p> <p>
                    If databrush is a scalar the default selection tool is
                    a rectangular brush and it is possible to brush only
-                   once (that is persist='')
-                   DATABRUSH IS A CELL
+                   once (that is persist='').</p> <p>
+                   DATABRUSH IS A CELL.</p> <p>
                    If databrush is a cell, it is possible to use all
                    optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
                    following optional argument:</p> <p>
@@ -344,17 +348,17 @@
                    - bivarfit. This option is to add one or more least
                      square lines to the plots of y|X, depending on the
                      selected groups.</p> <p>
-                     bivarfit = ''
+                     bivarfit = '';</p> <p>
                        is the default: no line is fitted.</p> <p>
-                     bivarfit = '1'
+                     bivarfit = '1';</p> <p>
                        fits a single ols line to all points of each
                        bivariate plot in the scatter matrix y|X.</p> <p>
-                     bivarfit = '2'
+                     bivarfit = '2';</p> <p>
                        fits two ols lines: one to all points and another
                        to the last selected group. This is useful when
                        there are only two groups, of which one refers to a
                        set of potential outliers.</p> <p>
-                     bivarfit = '0'
+                     bivarfit = '0';</p> <p>
                        fits one ols line for each selected group. This is
                        useful for the purpose of fitting mixtures of
                        regression lines.</p> <p>

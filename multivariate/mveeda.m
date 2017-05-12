@@ -1,15 +1,18 @@
 function [RAW,REW,varargout] = mveeda(Y,varargin)
-%mve computes Minimum volume ellipsoid
+%mve monitors Minimum volume ellipsoid for a series of values of bdp
 %
 %<a href="matlab: docsearchFS('mveeda')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    Y: Data matrix containining n observations on v variables.
-%       Rows of Y represent observations, and columns represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       be excluded from the computations.
+% Y :           Input data. Matrix. 
+%               n x v data matrix; n observations and v variables. Rows of
+%               Y represent observations, and columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are
+%               allowed, since observations (rows) with missing or infinite
+%               values will automatically be excluded from the
+%               computations.
+%                Data Types - single|double
 %
 %  Optional input arguments:
 %
@@ -20,7 +23,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %               The default value of bdp is a sequence from 0.5 to 0.01 with step 0.01
 %                 Example - 'bdp',[0.5 0.4 0.3 0.2 0.1]
 %                 Data Types - double
-%      nsamp  : scalar. Number of subsamples of size v which have
+%      nsamp  : Number of subsamples. Scalar. Number of subsamples of size v which have
 %               to be extracted (if not given, default = 500).
 %               Example - 'nsamp',10000
 %               Data Types - double
@@ -33,7 +36,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %               The default value is 1e-6;
 %                 Example - 'reftol',1e-8
 %                 Data Types - single | double
-%     conflev : Scalar. Number between 0 and 1 containing confidence level which is
+%     conflev : Confidence level. Scalar. Number between 0 and 1 containing confidence level which is
 %               used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).

@@ -20,9 +20,9 @@ function plotopt=malfwdplot(out,varargin)
 %
 %
 %  Optional input arguments:
-%           standard : appearance of the plot
+%           standard : plot layout. Structure. Appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. Structure.
+%                   style, color of the lines, etc. 
 %                   Structure standard contains the following fields:
 %                   standard.SizeAxesNum = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
@@ -263,7 +263,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   DATABRUSH IS A STRUCTURE.
 %                   If databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
-%                   following fields
+%                   following fields:
 %                   - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
@@ -286,7 +286,8 @@ function plotopt=malfwdplot(out,varargin)
 %                     value is labeladd='', i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
-%       nameY   :   cell array of strings of length v containing the labels
+%       nameY   :   variable labels. Cell array of strings.
+%                   Cell array of strings of length v containing the labels
 %                   of the variables of the dataset. Cell of strings. If it
 %                   is empty (default) the sequence Y1, ..., Yv will be used
 %                   automatically
@@ -311,7 +312,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
 %                   the chi^2 distribution.
 %                   Example - 'conflev',0.99
-%                   Data Types - numeric%
+%                   Data Types - single or double
 %
 % Output:
 %
@@ -324,9 +325,8 @@ function plotopt=malfwdplot(out,varargin)
 %
 % References:
 %
-%   Atkinson, Riani and Cerioli (2004), Exploring Multivariate Data with
-%   the Forward Search,
-%   Springer Verlag, New York.
+%   Atkinson A.C., Riani M. and Cerioli A. (2004), Exploring Multivariate Data with
+%   the Forward Search,  Springer Verlag, New York.
 %
 % Copyright 2008-2016.
 % Written by FSDA team

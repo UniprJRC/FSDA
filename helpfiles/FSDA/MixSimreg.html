@@ -215,8 +215,8 @@
                taken; PiLow = 1.0 implies equal proportions by default).</p> <p>
                PiLow must be a number in the interval (0 1]
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'PiLow',0.1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Xdistrib" class="clearfix"></div><h3 id="input_argument_namevalue_Xdistrib" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Xdistrib</code> &#8212;scalar or structure which specifies the distribution to use
-               for each explanatory variable and each group.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>Once chosen,
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Xdistrib" class="clearfix"></div><h3 id="input_argument_namevalue_Xdistrib" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Xdistrib</code> &#8212;distribution to use for each explanatory variable.</span></a><span class="example_desc">scalar               | structure.</span></span></h3><div class="collapse">	<p><p>It specifies the distribution to use
+               for each explanatory variable and each group. Once chosen,
                the distribution is fixed for each explanatory variable and
                each group; however, the parameters of the chosen
                distribution may vary across variables and groups. For
@@ -231,54 +231,47 @@
                  the distribution (in the fieldname 'type') and the
                  parameters of the distribution. The following options are
                  admitted for Xdistrib:</p><p>
-                 &gt;</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p><p>scalar equal to 1 if intercept is
+           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p><p>scalar equal to 1 if intercept is
                    present. The default value of Xdistrib.intercept is 1.</p> <p>
                    The other fields of Xdistrib depend on the distribution
-                   which is chosen.</p><p>
-                 NORMAL DISTRIBUTION N(mu, sigma)
-                 &gt;</p></p></td></tr><tr valign="top"><td><code>type</code></td><td><p><p>'Normal';</p> <p>
-                 &gt;</p></p></td></tr><tr valign="top"><td><code>mu</code></td><td><p><p>matrix of size (p-1)-by-k if
-                       (Xdistrib.intercept=1) or p-by-k if
-                       (Xdistrib.intercept=0) containing the parameters mu
+                   which is chosen.</p></p></td></tr><tr valign="top"><td><code>type</code></td><td><p><p>string which identifies the kind of distribution.</p> <p> 
+                   Possibile values are:</p> <p>
+                   'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
+                   case the use must supply mu and sigma.</p> <p>
+                   'Uniform'; UNIFORM DISTRIBUTION U(a, b).</p> <p>
+                   'HalfNormal'; HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|.</p><p>
+                   'User'.  OTHER DISTRIBUTION. In this case the user must directly provide
+                   means of the p explanatory variables for each group.</p></p></td></tr><tr valign="top"><td><code>mu</code></td><td><p><p>matrix of size (p-1)-by-k if
+                        Xdistrib.intercept=1 or p-by-k if
+                       Xdistrib.intercept=0 containing the parameters mu
                        for each explanatory variable and each group. The
                        default value of Xdistrib.mu is 0.5*ones(p-1, k).</p> <p>
-                 &gt;</p></p></td></tr><tr valign="top"><td><code>sigma</code></td><td><p><p>matrix of size (p-1)-by-k if
+                       Xdistrib.mu is used just if X.distrib.type is normal.</p></p></td></tr><tr valign="top"><td><code>sigma</code></td><td><p><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
                        (Xdistrib.intercept=0) containing the parameters
                        sigma for each explanatory variable and each group.</p> <p>
-                       The default value of Xdistrib.sigma is ones(p-1,k).</p> <p>
-                 UNIFORM DISTRIBUTION U(a, b)
-                 &gt; Xdistrib.type ='Uniform';</p><p>
-                 &gt;</p></p></td></tr><tr valign="top"><td><code>a</code></td><td><p><p>matrix of size (p-1)-by-k if
-                       (Xdistrib.intercept=1) or p-by-k if
-                       (Xdistrib.intercept=0) containing the parameters
+                       The default value of Xdistrib.sigma is ones(p-1,k).</p><p>
+                       Xdistrib.sigma is used just if X.distrib.type is
+                       'Normal' or if Xdistrib.type is 'HalfNormal'.</p></p></td></tr><tr valign="top"><td><code>a</code></td><td><p><p>matrix of size (p-1)-by-k 
+                       if Xdistrib.intercept=1 or p-by-k if
+                       Xdistrib.intercept=0 containing the parameters
                        a (the lower limits) for each explanatory variable
                        and each group. The default value of Xdistrib.a is
-                       zeros(p-1, k).</p> <p>
-                 &gt;</p></p></td></tr><tr valign="top"><td><code>b</code></td><td><p><p>matrix of size (p-1)-by-k if
-                       (Xdistrib.intercept=1) or p-by-k if
-                       (Xdistrib.intercept=0) containing the parameters b
+                       zeros(p-1, k).</p> <p>  
+                       Xdistrib.a is used just if Xdistrib.type is 'Uniform'</p></p></td></tr><tr valign="top"><td><code>b</code></td><td><p><p>matrix of size (p-1)-by-k if
+                       Xdistrib.intercept=1 or p-by-k if
+                       Xdistrib.intercept=0 containing the parameters b
                        (the upper limits) for each explanatory variable
                        and each group. The default value of Xdistrib.b is
-                       ones(p-1, k).</p> <p>
-                 HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-                 &gt; Xdistrib.type='HalfNormal';</p> <p>
-                 &gt; Xdistrib.sigma = matrix of size (p-1)-by-k if
-                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)
-                   containing the parameters sigma for each explanatory variable
-                   and each group. The default value of Xdistrib.sigma is
-                   ones(p-1, k).</p> <p>
-                 OTHER DISTRIBUTION
-                 &gt;  Xdistrib.type='User'.</p> <p>
-                   If Xdistrib.type='User' the user must directly provide
+                       ones(p-1, k).</p> <p> 
+                       Xdistrib.b is used just if Xdistrib.type is 'Uniform'</p></p></td></tr><tr valign="top"><td><code>BarX</code></td><td><p><p>(p-1)-by k matrix if intercept is present
+                   or p-by-k matrix if intercept is not present containing the
                    means of the p explanatory variables for each group.</p> <p>
-                   So, if distrib.type is 'User', we expect there is a field
-                   called Xbar.</p><p>
-                 &gt;</p></p></td></tr><tr valign="top"><td><code>BarX</code></td><td><p>(p-1)-by k (if intercept is present)
-                   or p-by-k (if intercept is not present) containing the
-                   means of the p explanatory variables for each group.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Xdistrib',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_betadistrib" class="clearfix"></div><h3 id="input_argument_namevalue_betadistrib" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>betadistrib</code> &#8212;scalar or structure which specifies the distribution to use
-               for each element of the vectors of regression coefficients.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>Once chosen, the distribution together with its parameters
+                       Xdistrib.BarX is used just if Xdistrib.type is 'User'</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Xdistrib',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_betadistrib" class="clearfix"></div><h3 id="input_argument_namevalue_betadistrib" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>betadistrib</code> &#8212;distribution to use for regression coefficients.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>It specifies the distribution to use
+               for each element of the vectors of regression coefficients.</p> <p>
+               Scalar or structure.</p> <p>
+               Once chosen, the distribution together with its parameters
                is fixed for each element of beta, across each group.</p> <p>
                - If betadistrib = 1 the default is to assume that the vector
                  of regression coefficients come from N(0, 1).</p> <p>
@@ -286,41 +279,45 @@
                  about the distribution (in the fieldname type) and the
                  parameters of the distribution.</p> <p>
                  The following options are admitted for betadistrib:</p><p>
-               NORMAL DISTRIBUTION N(mu, sigma)
-           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p>'Normal';</p></td></tr><tr valign="top"><td><code>mu</code></td><td><p>scalar, containing parameter mu for the
+          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p><p>string which identifies the kind of distribution.</p> <p> 
+                   Possibile values are:</p> <p>
+                   'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
+                   case the use must supply mu and sigma.</p> <p>
+                   'Uniform'; UNIFORM DISTRIBUTION U(a, b).</p> <p>
+                   'HalfNormal'; HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|.</p><p>
+                   'User'.  OTHER DISTRIBUTION.</p></p></td></tr><tr valign="top"><td><code>mu</code></td><td><p><p>scalar, containing parameter mu for the
                        distribution of each element of beta across each
-                       group. The default value of betadistrib.mu is 0</p></td></tr><tr valign="top"><td><code>sigma</code></td><td><p><p>scalar, containing parameter sigma for
+                       group. The default value of betadistrib.mu is 0.</p> <p>
+                       betadistrib.mu is used just if betadistrib.type is normal.</p></p></td></tr><tr valign="top"><td><code>sigma</code></td><td><p><p>scalar, containing parameter sigma for
                        the distribution of each element of beta across
                        each group. The default value of betadistrib.sigma
-                       is 1
-                   UNIFORM DISTRIBUTION U(a, b)
-                   &gt; betadistrib.type='Uniform';</p> <p>
-                   &gt;</p></p></td></tr><tr valign="top"><td><code>a</code></td><td><p>scalar, containing parameter a for the
+                       is 1.</p> <p>
+                       betadistrib.sigma is used just if betadistrib.type
+                       is Normal or if betadistrib is HalfNormal.</p></p></td></tr><tr valign="top"><td><code>a</code></td><td><p><p>scalar, containing parameter a for the
                      distribution of each element of beta across each
-                     group. The default value of betadistrib.a is 0
-                   &gt;</p></td></tr><tr valign="top"><td><code>b</code></td><td><p><p>scalar, containing parameter b for
+                     group. The default value of betadistrib.a is 0.</p> <p>
+                       betadistrib.a is used just if betadistrib.type
+                       is 'Uniform'.</p></p></td></tr><tr valign="top"><td><code>b</code></td><td><p><p>scalar, containing parameter b for
                      the distribution of each element of beta across
                      each group. The default value of betadistrib.b is 1.</p> <p>
-                   HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-                   &gt; betadistrib.type='HalfNormal';</p> <p>
-                   &gt; betadistrib.sigma = scalar containing parameter sigma
-                       for the distribution of each element of beta across
-                       each group. The default value of betadistrib.sigma
-                       is 1
-                   USER DISTRIBUTION
-                   &gt; betadistribtion.type='User';</p> <p>
-                     If betadistribtion.type='User' the user must directly
-                     provide the values of the beta coefficients.</p> <p>
-                     So, if betadistribtion.type is 'User', we expect there
-                     is a field called Beta.</p><p>
-                   &gt; betadistribution.Beta = matrix of size (p-1)-by k
+                       betadistrib.a is used just if betadistrib.type
+                       is 'Uniform'.</p></p></td></tr><tr valign="top"><td><code>Beta</code></td><td><p><p>matrix of size (p-1)-by k
                      (if intercept is present) or p-by-k (if intercept is
                      not present) containing the vectors of regression
-                     coefficients for the k groups.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'betadistrib',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resN" class="clearfix"></div><h3 id="input_argument_namevalue_resN" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resN</code> &#8212;maximum number of mixture re-simulations to find a
-               simulation setting with prespecified level of overlapping.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p><p>The default value of resN is 100.</p> <p>
+                     coefficients for the k groups.</p> <p>
+                       betadistrib.Beta is used just if betadistrib.type
+                       is 'User'.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'betadistrib',1 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resN" class="clearfix"></div><h3 id="input_argument_namevalue_resN" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resN</code> &#8212;maximum number of attempts.</span></a><span class="example_desc">scalar integer.</span></span></h3><div class="collapse">	<p><p>Maximum number of mixture re-simulations to find a
+               simulation setting with prespecified level of overlapping.</p> <p>
+               The default value of resN is 100.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'resN',3 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;vector of length 2.</span></a><span class="example_desc">vector               - tol(1) (which will be called tolmap) specifies                 the tolerance between the requested and empirical                 misclassification probabilities (default is 1e-06)               - tol(2) (which will be called tolnxc2) specifies the                 tolerance to use in routine ncx2mixtcdf (which computes                 the cdf of linear combinations of non central chi2                 distributions).</span></span></h3><div class="collapse">	<p><p>The default value of tol(2) 1e-06.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;toleramce.</span></a><span class="example_desc">vector of length 2.</span></span></h3><div class="collapse">	<p><p>- tol(1) (which will be called tolmap) specifies
+                 the tolerance between the requested and empirical
+                 misclassification probabilities (default is 1e-06).</p> <p>
+               - tol(2) (which will be called tolnxc2) specifies the
+                 tolerance to use in routine ncx2mixtcdf (which computes
+                 the cdf of linear combinations of non central chi2
+                 distributions). The default value of tol(2) 1e-06.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tol',[0.01 0.02] 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lim" class="clearfix"></div><h3 id="input_argument_namevalue_lim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lim</code> &#8212;maximum number of integration terms to use inside routine
                ncx2mixtcdf.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p><p>Default is 1e06.</p> <p>
@@ -362,12 +359,15 @@
    Journal of Statistical Software, 51:12, 1-25.</p></div><div><p><p>Davies, R. (1980), The distribution of a linear combination of
    chi-square random variables, Applied Statistics, 29, 323-333.</p> <p>
 
-   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.</p></p></div><div><p><p>(2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
+   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.</p></p></div><div><p>(2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
    of Statistics, Vol.36, 1324-1345. Technical Report available at
-   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</p></div><div><p><p>Riani M., Cerioli A., Perrotta D. and Torti F. (2015). Simulating
+   mixtures of multivariate data with fixed cluster overlap in FSDA,
+   Advances in data analysis and classification. Volume 9, Issue 4, pp
+   461-481, DOI 10.1007/s11634-015-0223-9.</p> <p>
 
    Reference below documents the problem of the ill-conditioning of the
-   eigenvalue-eigenvector computation.</p> <p>
+   eigenvalue-eigenvector computation.</p><p>
 
    Numerische Mathematik, 19. August 1969, Volume 13, Issue 4, pp 293-304
    Balancing a matrix for calculation of eigenvalues and eigenvectors

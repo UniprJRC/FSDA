@@ -12,7 +12,7 @@ function malindexplot(md,v,varargin)
 %        md.Y = contains the original data matrix whose Mahalanobis
 %        distances have been computed.
 %                Data Types - single|double
-%  v : Number of variables. Scalar, the number of variables of the original
+%  v : Number of variables. Scalar. The number of variables of the original
 %       data matrix which have been used to compute md.
 %                Data Types - single|double
 %
@@ -105,15 +105,15 @@ function malindexplot(md,v,varargin)
 %                   points in the current plot and to see them
 %                   highlighted in the scatter plot matrix (spm).
 %                   If spm does not exist it is automatically created.
-%                   DATABRUSH IS A SCALAR
+%                   DATABRUSH IS A SCALAR.
 %                   If databrush is a scalar the default selection tool is
 %                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='')
-%                   DATABRUSH IS A STRUCTURE
+%                   once (that is persist='').
+%                   DATABRUSH IS A STRUCTURE.
 %                   If databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
-%                   following optional argument:
-%                   databrush.persist = persisente brushing. Persist is an empty value or a scalar
+%                   following optional arguments:
+%                   databrush.persist = persisent brushing. Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
 %                     is allowed only once.

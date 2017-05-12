@@ -47,7 +47,7 @@
     % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level.
     % By simply changing the seed to 543 (state=543), using a Bonferroni size
     %of 1%, no unit is declared as outlier and just half of them using the 99%
-    %band.</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.55 seconds 
+    %band.</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.45 seconds 
 </pre><img vspace="5" hspace="5" src="images\MMreg_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between direct call to MMreg and call to Sreg and MMregcore.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=30;
     p=3;
@@ -96,7 +96,10 @@
                If InitialEst is empty (default)
                program uses S estimators. In this last case it is
                possible to specify the options given in function Sreg.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'InitialEst',[]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_Soptions" class="clearfix"></div><h3 id="input_argument_namevalue_Soptions" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Soptions</code> &#8212;options if initial estimator is S and InitialEst is empty.</span></a><span class="example_desc">srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,               Sreftolbestr, Sminsctol, Sbestr.</span></span></h3><div class="collapse">	<p><p>See function <a href="Sreg.html">Sreg</a> for more details on these options.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_Soptions" class="clearfix"></div><h3 id="input_argument_namevalue_Soptions" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Soptions</code> &#8212;options to pass to Sreg.</span></a><span class="example_desc">name value pairs.</span></span></h3><div class="collapse">	<p><p>Options if initial estimator is S and InitialEst is empty.</p> <p>
+               The options are: Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
+               Sreftolbestr, Sminsctol, Sbestr.</p> <p>
+               See function <a href="Sreg.html">Sreg</a> for more details on these options.</p><p>
                It is necessary to add to the S options the letter
                S at the beginning. For example, if you want to use the
                optimal rho function the supplied option is

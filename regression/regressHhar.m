@@ -200,13 +200,12 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               (namely gamma(2)) is the estimate of $\alpha$
 %
 %
-% See also regressHart
+% See also regressHart, regressH
 %
 % References:
 %
-%   Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1
-%   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282).
-%   Prentice Hall.
+%   Greene W.H.(1987), Econometric Analysis (5th edition, section 11.7.1
+%   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282), Prentice Hall.
 %
 % Copyright 2008-2016.
 % Written by FSDA team

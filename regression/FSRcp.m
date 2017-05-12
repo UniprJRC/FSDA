@@ -5,12 +5,12 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %
 % Required input arguments:
 %
-% y:            A vector with n elements that contains the response variable.
+% y:            Response variable. Vector. A vector with n elements that contains the response variable.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-% X :           Data matrix of explanatory variables (also called
+% X :           Predictor variables. Matrix. Data matrix of explanatory variables (also called
 %               'regressors') of dimension (n x (bigP-1)).
 %               The intercept will be added in automatic way, so that the
 %               dimension of the full model is bigP
@@ -19,12 +19,13 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %               (Inf's) are allowed, since observations (rows) with missing
 %               or infinite values will automatically be excluded from the
 %               computations.
-% smallp:       scalar which specifies the number of variables in the
+% smallp:       number of variables in the reduced models. Scalar. Scalar
+%               which specifies the number of variables in the
 %               reduced models which will be considered. For example if
 %               smallp=3, all possible subsets containing 2 columns of
 %               matrix X will be considered. Notice that the dimension of
 %               each submodel is 3 because to each submodel the column of
-%               ones is added automatically
+%               ones is added automatically.
 %
 % Optional input arguments:
 %
@@ -155,9 +156,9 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 quant=[0.025 0.5 0.975];
 %                 Example - 'quant',0.1
 %                 Data Types - double
-%         steps : It specifies in which steps of the plot which
+%         steps : Steps to add labels. Vector. It specifies in which steps of the plot which
 %                 monitors Cp it is necessary to include the labels of the
-%                 models which have been previously chosen. Vector.
+%                 models which have been previously chosen. 
 %                 The default is to write the labels of the models in steps
 %                 round([n*0.6  n*0.8  n]);
 %                 Example - 'steps',[4 8]

@@ -30,8 +30,9 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               possible to specify the options given in function Sreg.
 %               Example - 'InitialEst',[]
 %               Data Types - struct
-%  Soptions  :  options if initial estimator is S and InitialEst is empty.
-%               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
+%  Soptions  :  options to pass to Sreg. Name value pairs. 
+%               Options if initial estimator is S and InitialEst is empty.
+%               The options are: Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
 %               Sreftolbestr, Sminsctol, Sbestr.
 %               See function Sreg.m for more details on these options.
 %               It is necessary to add to the S options the letter

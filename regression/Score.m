@@ -5,14 +5,16 @@ function [outSC]=Score(y,X,varargin)
 %
 %  Required input arguments:
 %
-%    y: A vector with n elements that contains the response variable. y can
-%       be both a row of column vector.
-%    X: Data matrix of explanatory variables (also called 'regressors') of
-%       dimension (n x p-1). Rows of X represent observations, and columns
-%       represent variables.
-%       Missing values (NaN's) and infinite values (Inf's) are allowed,
-%       since observations (rows) with missing or infinite values will
-%       automatically be excluded from the computations.
+%    y:         Response variable. Vector. A vector with n elements that
+%               contains the response
+%               variable. It can be both a row of column vector. 
+%    X :        Predictor variables. Matrix. Data matrix of explanatory
+%               variables (also called 'regressors')
+%               of dimension (n x p-1). Rows of X represent observations, and
+%               columns represent variables.
+%               Missing values (NaN's) and infinite values (Inf's) are allowed,
+%               since observations (rows) with missing or infinite values will
+%               automatically be excluded from the computations.
 %
 %  Optional input arguments:
 %
@@ -21,9 +23,9 @@ function [outSC]=Score(y,X,varargin)
 %               term will be included.
 %               Example - 'intercept',1 
 %               Data Types - double
-%           la  :It specifies for which values of the
+%           la  :transformation parameter. Vector. It specifies for which values of the
 %                 transformation parameter it is necessary to compute the
-%                 score test. Vector.
+%                 score test. 
 %                 Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
 %                 is the five most common values of lambda
 %               Example - 'la',[0 0.5]
@@ -56,7 +58,7 @@ function [outSC]=Score(y,X,varargin)
 %
 % References:
 %
-% Atkinson Riani (2000), equation (2.30) for the expression
+% Atkinson A.C. and Riani M. (2000), equation (2.30) for the expression
 % for score test statistic.
 %
 % Copyright 2008-2016.
@@ -90,10 +92,10 @@ function [outSC]=Score(y,X,varargin)
     [outSc]=Score(y,X,'la',la,'intercept',0);
 %}
 
-%{
 
-%}
 
+
+%% Beginning of code
 
 nnargin=nargin;
 vvarargin=varargin;

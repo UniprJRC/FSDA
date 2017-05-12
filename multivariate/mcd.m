@@ -17,8 +17,9 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               and 0.5). The default value is 0.5.
 %               Example - 'bdp',1/4
 %               Data Types - double
-%      nsamp  : Number of subsamples. Scalar. Number of subsamples of size v
-%               which have to be extracted (if not given, default = 1000).
+%      nsamp  : Number of subsamples. Scalar. Number of subsamples of size
+%               v+1 which have to be extracted (if not given, default =
+%               1000).
 %               Example - 'nsamp',10000
 %               Data Types - double
 %    refsteps : Number of refining iterations. Scalar. Number of refining
@@ -109,13 +110,13 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Data Types - double
 %smallsamplecor: small sample correction factor. Scalar. Scalar which
 %               defines whether to use or not small sample correction
-%               factor to inflate the scale estimate if it is equal to 1.
-%               The default value of smallsamplecor is 1, that is the
-%               correction is used. See
+%               factor to inflate the scale estimate.  If it is equal to 1
+%               the small sample correction factor is used. The default
+%               value of smallsamplecor is 1, that is the correction is
+%               used. See
 %               http://users.ugent.be/~svaelst/publications/corrections.pdf
-%               for further details about the correction factor.
-%               Example - 'smallsamplecor',1
-%               Data Types - double
+%               for further details about the correction factor. Example -
+%               'smallsamplecor',1 Data Types - double
 %
 %  Output:
 %
@@ -363,7 +364,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 bdpdef=0.5;
 
 % If the number of all possible subsets is <10000 the default is to extract
-% all subsets otherwise just 10000.
+% all subsets otherwise just 1000.
 % Notice that we use bc, a fast version of nchoosek. One may also use the
 % approximation floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5)
 ncomb=bc(n,v+1);

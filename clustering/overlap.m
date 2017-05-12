@@ -11,7 +11,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %  v  : dimensionality (number of variables). Integer. Scalar associated to the
 %       number of variables of the data matrix.
 %               Data Types - int16|int32|int64|single|double
-%  Pi : Mixin proportions. Vector. Vector of size k containing mixing
+%  Pi : Mixing proportions. Vector. Vector of size k containing mixing
 %       proportions. The sum of the elements of Pi is 1. 
 %  Mu : centroids. Matrix. Matrix of size k-by-v containing (in the rows) the centroids of the
 %       k groups. 
@@ -113,17 +113,51 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 
 %}
 
+%{
+    % Example of use of option tol.
+    [OmegaMap]=overlap(k,p,pigen,Mu,S,1e-05)
+%}
+
+%{
+    % Example of use of option lim.
+    [OmegaMap]=overlap(k,p,pigen,Mu,S,[],10000)
+%}
+
+%{
+    % Example of use of options lim and tol together.
+    [OmegaMap]=overlap(k,p,pigen,Mu,S,1e-08,100000)
+%}
+
+%{
+    % Display BarOmega and MaxOmega.
+    [OmegaMap, BarOmega, MaxOmega]=overlap(k,p,pigen,Mu,S)
+%}
+
+%{
+    % Display StdOmega.
+    [OmegaMap, BarOmega, MaxOmega, StdOmega]=overlap(k,p,pigen,Mu,S)
+%}
+
+%{
+    % Display rcMax.
+    [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax]=overlap(k,p,pigen,Mu,S)
+%}
+
 %% Beginning of code
 
 if nargin<5
-    error('FSDA:overlap:MissingInput','Not all input terms have been supplied (5 input terms are needed)')
+    error('FSDA:overlap:MissingInput','Not all input terms have been supplied (at least 5 input terms are needed)')
 end
-if nargin==6
+if nargin==6 
     lim=1e06;
 end
 if nargin ==5
     tol=1e-6;
     lim=100000;
+end
+
+if nargin==7 && isempty(tol)
+    tol=1e-6;
 end
 
 [li,di,const1]=ComputePars(v,k,Pi,Mu,S);

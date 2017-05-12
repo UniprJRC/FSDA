@@ -205,19 +205,19 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 % References:
 %
 %   Atkinson A.C., Riani M., and Cerioli A. (2006). Random Start Forward
-%   Searches with Envelopes for Detecting Clusters in Multivariate Data.
-%   In: ZANI S., CERIOLI A., RIANI M., VICHI M. EDS. Data Analysis,
-%   Classification and the Forward Search. (pp. 163-172). ISBN:
-%   3-540-35977-x. BERLIN: Springer Verlag (GERMANY).
+%   Searches with Envelopes for Detecting Clusters in Multivariate Data,
+%   in: ZANI S., CERIOLI A., RIANI M., VICHI M. EDS. Data Analysis,
+%   Classification and the Forward Search, (pp. 163-172), 
+%   ISBN:3-540-35977-x, BERLIN: Springer Verlag (GERMANY).
 %
-%   Atkinson A.C., Riani M., (2007),Exploratory Tools for Clustering
-%   Multivariate Data. COMPUTATIONAL STATISTICS & DATA ANALYSIS. vol. 52,
-%   pp. 272-285 ISSN: 0167-9473. doi:10.1016/j.csda.2006.12.034
+%   Atkinson A.C., Riani M., (2007), Exploratory Tools for Clustering
+%   Multivariate Data. COMPUTATIONAL STATISTICS & DATA ANALYSIS, vol. 52,
+%   pp. 272-285 ISSN: 0167-9473, doi:10.1016/j.csda.2006.12.034
 %
-%   Riani M., Cerioli A., Atkinson A.C., Perrotta D., Torti F. (2008).
-%   Fitting Mixtures of Regression Lines with the Forward Search. In:
-%   Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS.
-%   (pp. 271-286). IOS Press, Amsterdam (The Netherlands).
+%   Riani M., Cerioli A., Atkinson A.C., Perrotta D., Torti F. (2008),
+%   Fitting Mixtures of Regression Lines with the Forward Search, 
+%   in: Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS,
+%   (pp. 271-286), IOS Press, Amsterdam (The Netherlands).
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -230,8 +230,8 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %
 
 %{
-    % We start with an example with simulated data with regression lines
-    % with roughly the same number of observations
+    % An example with simulated data with regression lines
+    % with roughly the same number of observations.
     close all
     rng('default')
     rng(2);

@@ -43,17 +43,17 @@
     out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
     title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])
     cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  2.73 seconds 
+Total estimated time to complete tclust:  2.92 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 19.8%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.54 seconds 
+Total estimated time to complete tclust:  2.22 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 25%
+Warning: Number of subsets without convergence equal to 26.2%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.28 seconds 
+Total estimated time to complete tclust:  2.03 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 23.2%
+Warning: Number of subsets without convergence equal to 24.4%
 </pre><img vspace="5" hspace="5" src="images\tclust_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of
@@ -215,20 +215,22 @@ Warning: Number of subsets without convergence equal to 23.2%
     Y=swiss_banknotes.data;
     out=tclust(Y,3,0.1,10,'restr','deter','refsteps',20,'plots',1)</pre></div></div></p></div></div><div id="ExtraExample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the Geyser data imposing determinant restriciton.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
-    out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containing n observations on v variables. </span>  </a><span class="example_desc">Rows of Y represent observations, and columns
-               represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
+    out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations on v variables.</p> <p>
+               Rows of Y represent observations, and columns
+               represent variables.</p><p>
+               Missing values (NaN's) and infinite values (Inf's) are allowed,
                since observations (rows) with missing or infinite values will
-               automatically be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups. </span>  </a><span class="example_desc">Scalar which specifies the number of groups.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alpha" class="clearfix"> </div> <h3 id="input_argument_alpha" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alpha</code> &#8212; global trimming level. </span>  </a><span class="example_desc">alpha is a scalar between 0 and 0.5
+               automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Scalar which specifies the number of groups.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alpha" class="clearfix"> </div> <h3 id="input_argument_alpha" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alpha</code> &#8212; global trimming level. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>alpha is a scalar between 0 and 0.5
                or an integer specifying the number of observations which have to
-               be trimmed.</span></span></h3> <div class="collapse"> <p><p>If alpha=0 tclust reduces to traditional model
+               be trimmed. If alpha=0 tclust reduces to traditional model
                based or mixture clustering (mclust): see Matlab function
                gmdistribution.</p> <p>
                More in detail, if 0&lt; alpha &lt;1 clustering is based on
                 h=fix(n*(1-alpha)) observations
                Else if alpha is an integer greater than 1 clustering is
-               based on h=n-floor(alpha);</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; positive scalar which constrains the allowed differences
-               among group scatters. </span>  </a><span class="example_desc">Larger values imply larger differences of
-               group scatters.</span></span></h3> <div class="collapse"> <p>On the other hand a value of 1 specifies the
+               based on h=n-floor(alpha);</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; restriction factor. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Positive scalar which constrains the allowed differences
+               among group scatters. Larger values imply larger differences of
+               group scatters. On the other hand a value of 1 specifies the
                strongest restriction forcing all eigenvalues/determinants
                to be equal and so the method looks for similarly scattered
                (respectively spherical) clusters.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'nsamp',1000

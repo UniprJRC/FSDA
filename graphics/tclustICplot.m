@@ -116,7 +116,7 @@ function tclustICplot(IC,varargin)
 %                   'Window' and datatooltip.SnapToDataVertex = 'on'.
 %                   Example - 'datatooltip',''
 %                   Data Types - scalar double or struct
-%    databrush  :   interactive mouse brushing. empty value, scalar or structure.
+%    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
 %                   The activation of this option (databrush is a scalar or
@@ -136,8 +136,8 @@ function tclustICplot(IC,varargin)
 %                   DATABRUSH IS A STRUCTURE.
 %                   If databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
-%                   following fields
-%                   - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar
+%                   following optional arguments:
+%                   - databrush.persist = repeated brushing enabled. Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
 %                     is allowed only once.
@@ -337,7 +337,7 @@ elseif strcmp(whichIC,'MIXCLA')
 elseif strcmp(whichIC,'CLACLA')
     typeIC=0;
 else
-    warning('Supplied string for whichIC is not supported.')
+    warning('FSDA:tclustICplot:WrongIC','Supplied string for whichIC is not supported.')
     error('FSDA:tclustICplot:WrongIC','Specified information criterion is not supported: possible values are ''MIXMIX'' , ''MIXCLA'',  ''CLACLA'', ''ALL''')
 end
 

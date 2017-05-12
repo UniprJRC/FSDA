@@ -20,13 +20,15 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %
 % Required input arguments:
 %
-%    c1:   labels of first partition or contingency table. A numeric or
-%          character vector containining the class labels of
+%    c1:   labels of first partition or contingency table. 
+%          Numeric or character vector. 
+%          A numeric or character vector containining the class labels of
 %          the first partition or a 2-dimensional numeric matrix which
 %          contains the cross-tabulation of cluster assignments.
 %          Data Types: single | double | char | logical
-%    c2:   labels of second partition. A numeric or character vector
-%          containining the class labels of
+%    c2:   labels of second partition. 
+%          Numeric or character vector. 
+%          A numeric or character vector containining the class labels of
 %          the second partition. The length of vector c2 must be equal to
 %          the length of vector c1. This second input is required just if
 %          c1 is not a 2-dimensional numeric matrix.
@@ -47,7 +49,7 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %
 % Output:
 %
-%  ABk  :       Adjusted Fowlkes and Mallows index. A number between -1 and 1.
+%  ABk  :       Adjusted Fowlkes and Mallows index. Scalar. A number between -1 and 1.
 %               The adjusted Fowlkes and Mallows index is the
 %               corrected-for-chance version of the Fowlkes and Mallows
 %               index.

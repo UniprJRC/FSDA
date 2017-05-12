@@ -191,7 +191,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 % Examples:
 
 %{
-    %% Sregeda with all default options.
+    %% Sregeda with msg=0
     % Run this code to see the output shown in the help file
     n=200;
     p=3;
@@ -202,7 +202,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out]=Sregeda(ycont,X);
+    [out]=Sregeda(ycont,X,'msg',0);
     resfwdplot(out)
     ylabel('Scaled S residuals'); 
 %}

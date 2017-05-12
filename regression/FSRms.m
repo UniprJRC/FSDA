@@ -5,12 +5,12 @@ function outms = FSRms(y,X,varargin)
 %
 % Required input arguments:
 %
-%       y:      A vector with n elements that contains the response variables.
+%       y:      Response variable. Vector. A vector with n elements that contains the response variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%       X :     Data matrix of explanatory variables (also called
+%       X :     Predictor variables. Matrix. Data matrix of explanatory variables (also called
 %               'regressors') of dimension (n x (bigP-1)).
 %               The intercept will be added in automatic way, so that the
 %               dimension of the full model is bigP
@@ -63,8 +63,8 @@ function outms = FSRms(y,X,varargin)
 %               for the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1 
 %               Data Types - double
-%    smallpint: It specifies which submodels (number of variables)
-%               must be considered. Vector.
+%    smallpint: submodels to consider. Vector. It specifies which submodels (number of variables)
+%               must be considered. 
 %               The default is to consider all models
 %               from size 2 to size bigP-1. In other words, as default,
 %               smallpint=(bigP-1):-1:2.
@@ -83,9 +83,9 @@ function outms = FSRms(y,X,varargin)
 %               (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
 %               Example - 'labels',{'1','2'} 
 %               Data Types - cell
-%     fin_step: initial and final step of the search
+%     fin_step: Initial and final step. Vector with two elements. Initial and final step of the search
 %               which has to be monitored to choose the best models as
-%               specified in scalar first_k. Vector.
+%               specified in scalar first_k. 
 %               The first element of the vector specifies the initial step of the search
 %               which has to be monitored to choose the best models as
 %               specified in scalar first_k below. The second element
@@ -107,8 +107,8 @@ function outms = FSRms(y,X,varargin)
 %               observations
 %               Example - 'fin_step',[1 50] 
 %               Data Types - double
-%      first_k:  number of best models to
-%               consider in each of the last fin_step. Scalar.
+%      first_k: Number of models to consider. Scalar. Number of best models to
+%               consider in each of the last fin_step. 
 %               For example if
 %               first_k=5 in each of the fin_step the models which had
 %               the 5 smallest values of Cp are considered. As default
@@ -138,7 +138,7 @@ function outms = FSRms(y,X,varargin)
 %               models considered irrelevant are not considered
 %               Example - 'ExclThresh',0.9
 %               Data Types - double
-%     meanmed : specfy how to construct the boxes of the candles. Scalar.
+%     meanmed : Boxes of tha candles. Scalar. It specifies how to construct the boxes of the candles. 
 %               If meanmed=1 boxes are constructed using mean and median
 %               else using the first and third quartile.
 %               Example - 'meanmed',1

@@ -25,9 +25,10 @@
                   The default value is 0.95 that is the outer contour in presence of normality
                   for each ellipse should leave outside 5% of the values.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rf',0.99 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_robscale" class="clearfix"></div><h3 id="input_argument_namevalue_robscale" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>robscale</code> &#8212;It specifies the indexes to use
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_robscale" class="clearfix"></div><h3 id="input_argument_namevalue_robscale" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>robscale</code> &#8212;how to compute dispersion.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the statistical indexes to use
                    to compute the dispersion of each variable and the
-                   correlation among each pair of variables.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>robscale=1 (default): the program uses the median correlation
+                   correlation among each pair of variables.</p> <p> 
+                   robscale=1 (default): the program uses the median correlation
                    and the MAD as estimate of the dispersion of each variable;</p> <p> 
                    robscale=2: the correlation coefficient among ranks is used
                    (Spearman's rho) and the MAD as estimate of the dispersion
@@ -41,31 +42,33 @@
                    computed using the traditional (non robust) formulae
                    around the univariate medians.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'robscale',2 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;It specify whether it is necessary to produce a plot
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies whether it is
+                   necessary to produce a plot
                    with univariate standardized boxplots on the
                    main diagonal and bivariate confidence ellipses out of
-                   the main diagonal.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots is equal to 1 a plot
+                   the main diagonal. If plots is equal to 1 a plot
                    which contains univariate standardized boxplots on the
                    main diagonal and bivariate confidence ellipses out of
                    the main diagonal is produced on the screen. If plots is
                    &lt;&gt; 1 no plot is produced. As default no plot is
                    produced.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',2 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_textlab" class="clearfix"></div><h3 id="input_argument_namevalue_textlab" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>textlab</code> &#8212;It controls the labels in the plots.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If textlab=1 and
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_textlab" class="clearfix"></div><h3 id="input_argument_namevalue_textlab" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>textlab</code> &#8212;plot labels.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls the labels in
+                   the plots. If textlab=1 and
                    plots=1 the labels associated
                    to the units which are univariate outliers or which are
                    outside the confidence levels of the contours are
                    displayed on the screen.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'textlab',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;It identifies the handle of the plot which
-                   is about to be created.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>The default is to use tag
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;plot tag.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>It identifies the handle of the plot which
+                   is about to be created. The default is to use tag
                    'pl_unibiv'. Notice that if the program finds a plot which
                    has a tag equal to the one specified by the user, then
                    the output of the new plot overwrites the existing one
                    in the same window else a new window is created.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','new_tag'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_madcoef" class="clearfix"></div><h3 id="input_argument_namevalue_madcoef" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>madcoef</code> &#8212;Coefficient which is used to scale MAD
-                   coefficient to have a robust estimate of dispersion.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_madcoef" class="clearfix"></div><h3 id="input_argument_namevalue_madcoef" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>madcoef</code> &#8212;scaled MAD.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Coefficient which is used to scale MAD
+                   coefficient to have a robust estimate of dispersion.  The
                    default is 1.4815 so that 1.4815*MAD(N(0,1))=1.</p> <p> 
                                     Remark: if mad =median(y-median(y))=0 then the interquartile
                    range is used. If also the interquartile range is 0

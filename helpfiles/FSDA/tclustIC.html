@@ -38,8 +38,8 @@ MIXMIX (BIC)
     k=1    1475.7    1407.2      1356    1342.8      1343      1343    1343.1    1343.1
     k=2    1245.5    1133.2    1040.6    982.04    950.92     943.2    943.32    943.42
     k=3    810.31    790.66    785.85    788.47    789.93    790.65    791.01    791.18
-    k=4    812.15     802.2    805.85    804.07     800.5    799.25     799.8    800.63
-    k=5    815.53     821.1    827.75    823.36    818.92    819.37    817.46    820.12
+    k=4    812.15    802.22    805.96    803.86    800.55    799.41    800.17    799.02
+    k=5    815.39    820.26    822.47    823.18    816.71    813.25    814.57    814.98
 
 Smallest value of IC is 785.8544 and takes place for
 k=3 and  c=4
@@ -89,11 +89,12 @@ k=3 and  c=4
         xlabel('Restr. fact. $c$','Interpreter','Latex')
         title(['k=' num2str(j)])
     end
-    suplabel('BIC (MIXMIX)','t')</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containing n observations on v variables
+    suplabel('BIC (MIXMIX)','t')</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations on v variables
                Rows of Y represent observations, and columns represent
-               variables. </span>  </a><span class="example_desc">Observations (rows) with missing (NaN) or or
+               variables. Observations (rows) with missing (NaN) or or
                infinite (Inf) values will automatically be excluded from
-               the computations.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code> double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'kk',1:4
+               the computations.</p> <p>
+                 </p></p> <p class="datatypelist"><strong> Data Types: </strong><code> double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'kk',1:4
 </code>,<code> 'cc',[1 2 4 8 128]
 </code>,<code> 'whichIC','ALL'
 </code>,<code> 'alpha',0
@@ -110,15 +111,23 @@ k=3 and  c=4
 </code>,<code> 'nocheck',10
 </code>,<code> 'Ysave',1
 </code>,<code> 'UnitsSameGroup',[12 20]
-</code></code></span></div><div class="expandableContent"><div id="inputarg_kk" class="clearfix"></div><h3 id="input_argument_namevalue_kk" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>kk</code> &#8212;Integer vector specifying the number of mixture components
-               (clusters) for which the BIC is to be calculated.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>The default value of kk is 1:5.</p> <p>
+</code></code></span></div><div class="expandableContent"><div id="inputarg_kk" class="clearfix"></div><h3 id="input_argument_namevalue_kk" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>kk</code> &#8212;number of mixture components.</span></a><span class="example_desc">integer vector.</span></span></h3><div class="collapse">	<p><p>Integer
+               vector specifying the number of mixture components
+               (clusters) for which the BIC is to be calculated.</p> <p>
+               Vector. The default value of kk is 1:5.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'kk',1:4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>int16 | int32 | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cc" class="clearfix"></div><h3 id="input_argument_namevalue_cc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cc</code> &#8212;A vector specifying the values of the restriction factor
-               which have to be considered.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>The default value of cc is [1 2 4 8 16 32 64 128]
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cc',[1 2 4 8 128]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;Character which specifies which information criteria must
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>int16 | int32 | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cc" class="clearfix"></div><h3 id="input_argument_namevalue_cc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cc</code> &#8212;values of restriction factor.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>A vector specifying
+               the values of the restriction factor
+               which have to be considered.</p> <p> 
+               The default value of cc is [1 2 4 8 16 32 64 128]
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cc',[1 2 4 8 128]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;type of information criterion.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which specifies which information criteria must
                be computed for each k (number of groups) and each value of
-               the restriction factor (c).</span></a><span class="example_desc">possible values for whichIC are:               'MIXMIX'  = a mixture model is fitted and to                   compute the information criterion the mixture                   likelihood is used.</span></span></h3><div class="collapse">	<p><p>This option corresponds to the use of
+               the restriction factor (c).</p> <p>
+               Possible values for whichIC are:</p> <p>
+               'MIXMIX'  = a mixture model is fitted and to
+                   compute the information criterion the mixture
+                   likelihood is used. This option corresponds to the use of
                    the Bayesian Information criterion (BIC). In output
                    structure out just the matrix out.MIXMIX is given.</p> <p>
                'MIXCLA'  = a mixture model is fitted but to compute the
@@ -191,16 +200,20 @@ k=3 and  c=4
                Remark 2 - option startv1 is used just if nsamp is a scalar
                (see for more details the help associated with nsamp).</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'startv1',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_restr" class="clearfix"></div><h3 id="input_argument_namevalue_restr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restr</code> &#8212;The type of restriction to be applied on the cluster scatter
-               matrices.</span></a><span class="example_desc">valid values are 'eigen' (default), | 'deter'.</span></span></h3><div class="collapse">	<p><p>eigen implies restriction on the eigenvalues while deter
-               implies restrictions on the determinant.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_restr" class="clearfix"></div><h3 id="input_argument_namevalue_restr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restr</code> &#8212;type of restriction.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>The type of restriction to
+               be applied on the cluster scatter
+               matrices. Valid values are 'eigen' (default), or 'deter'.</p> <p>
+               eigen implies restriction on the eigenvalues while deter
+               implies restrictions on the determinant.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restr','deter'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot of the
                BIC (MIXMIX), ICL (MIXCLA)curve and CLACLA is shown on the
                screen. The plots which are shown depend on the input
                option 'whichIC'.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;scalar.</span></a><span class="example_desc">if numpool &gt; 1, the routine automatically checks if               the Parallel Computing Toolbox is installed and distributes               the random starts over numpool parallel processes.</span></span></h3><div class="collapse">	<p><p>If
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;number of pools for parellel computing.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks if
+               the Parallel Computing Toolbox is installed and distributes
+               the random starts over numpool parallel processes. If
                numpool &lt;= 1, the random starts are run sequentially. By
                default, numpool is set equal to the number of physical
                cores available in the CPU (this choice may be inconvenient
@@ -238,10 +251,11 @@ k=3 and  c=4
                (i.e. the number of physical cores).</p> <p>
               REMARK 5: the parallelization refers to the ...</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'numpool',4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;cleanpool is 1 if the parallel pool has to be cleaned after
-               the execution of the routine.</span></a><span class="example_desc">otherwise it is 0.</span></span></h3><div class="collapse">	<p><p>The
-               default value of cleanpool is 1. Clearly this option has an
-               effect just if previous option numpool is &gt; 1.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;clean pool.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>cleanpool is 1 if the parallel pool has
+               to be cleaned after the execution of the routine. Otherwise
+               it is 0. The default value of cleanpool is 1. Clearly this
+               option has an effect just if previous option numpool is &gt;</p> <p>
+               1.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cleanpool',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Message on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether
                to display or not messages about code execution.</p> <p>
@@ -249,10 +263,12 @@ k=3 and  c=4
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1
                no check is performed on matrix Y. As default nocheck=0.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',10
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;Scalar that is set to 1 to request that the input matrix Y
-               is saved into the output structure out.</span></a><span class="example_desc">default is 1, that               is  matrix Y is saved inside output structure out.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_UnitsSameGroup" class="clearfix"></div><h3 id="input_argument_namevalue_UnitsSameGroup" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>UnitsSameGroup</code> &#8212;list of the units which must (whenever possible)
-                   have the same label.</span></a><span class="example_desc">numeric vector.</span></span></h3><div class="collapse">	<p><p>For example if
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;save input matrix.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the input matrix Y
+               is saved into the output structure out. Default is 1, that
+               is  matrix Y is saved inside output structure out.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_UnitsSameGroup" class="clearfix"></div><h3 id="input_argument_namevalue_UnitsSameGroup" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>UnitsSameGroup</code> &#8212;Units with same labels.</span></a><span class="example_desc">numeric vector.</span></span></h3><div class="collapse">	<p><p>List of the units which must (whenever possible)
+                   have the same label.  For example if
                    UnitsSameGroup=[20 26], it means that group which contains
                    unit 20 is always labelled with number 1. Similarly,
                    the group which contains unit 26 is always labelled
@@ -302,6 +318,6 @@ k=3 and  c=4
                    vector is equal to input optional argument cc if cc had
                    been specified else it is equal to [1, 2, 4, 8, 16, 32,
                    64, 128].</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>scalar containing the trimming level which has
-                   been used.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016).</p> <p>
- Finding the Number of Groups in Model-Based Clustering via Constrained
- Likelihoods, submitted</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span> | <span itemprop="seealso"><a href="tclustICplot.html" itemprop="url"><span itemprop="name"><code>tclustICplot</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+                   been used.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016),
+ "Finding the Number of Groups in Model-Based Clustering via Constrained
+ Likelihoods", submitted.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span> | <span itemprop="seealso"><a href="tclustICplot.html" itemprop="url"><span itemprop="name"><code>tclustICplot</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

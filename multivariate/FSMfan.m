@@ -104,11 +104,9 @@ function out = FSMfan(Y,la0,varargin)
 %                   plotslrt.Tag      = tag of the plot (default is pl_lrt). 
 %                 Example -'plotslrt',1
 %                 Data Types - double
-%                 Example - 'plotslrt',struct
-%                 Data Types - double
-%  msg  :       It controls whether to display or not messages
-%               about great interchange on the screen. Scalar.
-%               If msg==1 (default) messages are displyed on the screen
+%  msg  :       Message on the screen. Scalar. It controls whether to
+%               display or not messages about great interchange on the
+%               screen. If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen.
 %                 Example - 'msg',0
 %                 Data Types - double
@@ -172,8 +170,8 @@ function out = FSMfan(Y,la0,varargin)
 %
 % References:
 %
-%   Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
-%   forward search Springer Verlag, New York.
+%   Atkinson A.C. Riani M. and Cerioli A. (2004), Exploring multivariate data with the
+%   forward search, Springer Verlag, New York.
 %
 % Copyright 2008-2016.
 % Written by FSDA team

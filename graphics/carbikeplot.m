@@ -102,9 +102,9 @@ function h  = carbikeplot(RelSol,varargin)
 %
 % References:
 %
-% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016).
-% Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, submitted.
+% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016),
+% "Finding the Number of Groups in Model-Based Clustering via Constrained
+% Likelihoods", submitted.
 %
 %
 %
@@ -151,7 +151,7 @@ function h  = carbikeplot(RelSol,varargin)
 %}
 
 %{
-    %% car-bike plot fot the gyeser data
+    %% car-bike plot fot the gyeser data.
     Y=load('geyser2.txt');
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
 
