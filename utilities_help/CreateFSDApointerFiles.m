@@ -40,10 +40,14 @@ function outHELP=CreateFSDApointerFiles(InputCell,OUT)
     % Create personalized contents file for main folder of FSDA
     % and required subfolders.
     [InputCell,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false)
-    % Publish all files  
-    [FilesWithProblems,OUT]=publishFSallFiles(InputCell,'write2file',false,'evalCode',false);
-    % Create HTML pointer files
-    CreateFSDApointerFiles(InputCell,OUT)
+    if verLessThan('matlab','8.1.0')==0
+        % Publish all files  
+        [FilesWithProblems,OUT]=publishFSallFiles(InputCell,'write2file',false,'evalCode',false);
+        % Create HTML pointer files
+        CreateFSDApointerFiles(InputCell,OUT)
+    else
+        warning('At least MATLAB version 2013a is needed')
+    end
 %}
 
 % Copyright 2008-2016.
