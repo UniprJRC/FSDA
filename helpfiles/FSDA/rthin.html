@@ -14,8 +14,8 @@
      Data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     clear all; close all;
     data=[randn(500,2);randn(500,1)+3.5, randn(500,1);];
-    x = data(:,1); 
-    y = data(:,2); 
+    x = data(:,1);
+    y = data(:,2);
 
     % Data density
     [density,xout,bandwidth]   = kdebiv(data,'pdfmethod','fsda');
@@ -37,7 +37,7 @@
     pretain = 1 - pdfe/max(pdfe);
     [Xt , Xti]= rthin([x y],pretain);
 
-    % rthin retention probabilities 
+    % rthin retention probabilities
     [psorted ii] = sort(pretain);
     figure;
     plot(x,y,'r.','MarkerSize',5);
@@ -60,13 +60,13 @@
     plot(x(Xti),y(Xti),'b.','MarkerSize',5);
     title(['Retained data (' num2str(numel(y(Xti))) ' units) with new density contour'],'FontSize',16);
 
-    cascade;</pre></div></div><img vspace="5" hspace="5" src="images/rthin_01.png" alt=""> <img vspace="5" hspace="5" src="images/rthin_02.png" alt=""> <img vspace="5" hspace="5" src="images/rthin_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Random thinning on the fishery dataset.</li></span></a></span></h3><div class="collapse"><p>
+    cascade;</pre></div></div><img vspace="5" hspace="5" src="images\rthin_01.png" alt=""> <img vspace="5" hspace="5" src="images\rthin_02.png" alt=""> <img vspace="5" hspace="5" src="images\rthin_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Random thinning on the fishery dataset.</li></span></a></span></h3><div class="collapse"><p>
      load data and add some jittering, because duplicated units are not treated<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     clear all; close all;
     load('fishery.txt');
     fishery = fishery + 10^(-8) * abs(randn(677,2));
-    x = fishery(:,1); 
-    y = fishery(:,2); 
+    x = fishery(:,1);
+    y = fishery(:,2);
 
     % Data density
     [density,xout,bandwidth]   = kdebiv(fishery,'pdfmethod','fsda');
@@ -108,9 +108,9 @@
     title({['Zoom on retained on the fishery data (' num2str(numel(y(Xti))) ' units) with density contour'] , 'Probabiity mass is smoother'},'FontSize',16);
 
     cascade;
- </pre></div></div><img vspace="5" hspace="5" src="images/rthin_04.png" alt=""> <img vspace="5" hspace="5" src="images/rthin_05.png" alt=""> </p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Vector with the data to be thinned </span>  </a><span class="example_desc">Data can represent a
-             point pattern</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_P" class="clearfix"> </div> <h3 id="input_argument_P" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>P</code> &#8212; Vector giving the retention probabilities, i.e </span>  </a><span class="example_desc">the probability
-             that each point in X will be retained</span></span></h3> <div class="collapse"> <p><p>It can be:</p> <p>
+ </pre></div></div><img vspace="5" hspace="5" src="images\rthin_04.png" alt=""> <img vspace="5" hspace="5" src="images\rthin_05.png" alt=""> </p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Vector with the data to be thinned. </span>  </a><span class="example_desc">Data can represent a
+             point pattern.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_P" class="clearfix"> </div> <h3 id="input_argument_P" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>P</code> &#8212; Vector giving the retention probabilities, i.e. </span>  </a><span class="example_desc">the probability
+             that each point in X will be retained.</span></span></h3> <div class="collapse"> <p><p>It can be:</p> <p>
              -  a single number, so that each point will be retained with
                 the same probability P;</p> <p>
              -  a vector of numbers, so that the ith point of X will be
@@ -120,7 +120,7 @@
              -  a pixel image, containing values of the retention
                 probability for all locations in a region encompassing the
                 point pattern.</p><p>
- 
+
              If P is a function, it should be vectorised, that is, it
              should accept vector arguments x,y and should yield a numeric
              vector of the same length. The function may have extra

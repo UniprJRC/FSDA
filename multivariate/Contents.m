@@ -13,7 +13,7 @@
 %   FSMmmd     - Monitors minMD                                                                           - MULT-Multivariate   - 2016 Dec 21
 %   FSMmmdeasy - Is exactly equal to minMD but much less efficient                                        - MULT-Multivariate   - 2017 Feb 17
 %   FSMtra     - Computes MLE of transformation parameters                                                - MULT-Transformations- 2017 Apr 20
-%   mcd        - Computes Minimum Covariance Determinant                                                  - MULT-Multivariate   - 2017 May 02
+%   mcd        - Computes Minimum Covariance Determinant                                                  - MULT-Multivariate   - 2017 May 12
 %   MMmult     - Computes MM estimators in multivariate analysis with auxiliary S-scale                   - MULT-Multivariate   - 2017 May 04
 %   MMmultcore - Computes multivariate MM estimators for a selected fixed scale                           - MULT-Multivariate   - 2016 Aug 01
 %   MMmulteda  - Computes MM estimators in multivariate analysis for a series of values of bdp            - MULT-Multivariate   - 2017 May 04

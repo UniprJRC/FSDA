@@ -9,7 +9,7 @@
     y=fishery.data(:,1);
     X=fishery.data(:,2);
     [out]=LXS(y,X,'nsamp',10000);
-    Un = FSRbsb(y,X,out.bs,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.26 seconds 
+    Un = FSRbsb(y,X,out.bs,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.27 seconds 
 m=100
 m=200
 m=300
@@ -55,7 +55,7 @@ m=600
     seqr=[Un(1,1)-1; Un(:,1)];
     plot(seqr,BB','bx');
     xlabel('Subset size m');
-    ylabel('Monitoring units plot');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+    ylabel('Monitoring units plot');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
 Total estimated time to complete LMS:  0.03 seconds 
 </pre><img vspace="5" hspace="5" src="images\FSRbsb_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRbsb_03.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with monitoring from step 60.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('fishery');

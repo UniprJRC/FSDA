@@ -6,7 +6,7 @@
    different values of c. In order to minimize randomness, given k, the
    same subsets are used for each value of c.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustIC.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustIC(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Automatic choice of k for geyser data using alpha=0.1.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustIC.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustIC(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Automatic choice of k in an example with 3 components and prefixed overlap.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic choice of k for geyser data using alpha=0.1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
-    out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1)
+    out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1);
     % Write out.MIXMIX as MATLAB table
     disp('MIXMIX (BIC)')
     if verLessThan ('matlab','8.2.0');
@@ -31,24 +31,6 @@ k=3
 k=4
 k=5
 The labels of c in the top part of the plot denote the values of c for which IC is minimum
-
-out = 
-
-  struct with fields:
-
-         CLACLA: [5&times;8 double]
-    CLACLAtable: [5&times;8 table]
-         IDXCLA: {5&times;8 cell}
-         IDXMIX: {5&times;8 cell}
-         MIXMIX: [5&times;8 double]
-    MIXMIXtable: [5&times;8 table]
-         MIXCLA: [5&times;8 double]
-    MIXCLAtable: [5&times;8 table]
-             kk: [1 2 3 4 5]
-             cc: [1 2 4 8 16 32 64 128]
-          alpha: 0.1000
-              Y: [271&times;2 double]
-
 MIXMIX (BIC)
             c_1       c_2       c_4       c_8       c_16      c_32      c_64     c_128 
            ______    ______    ______    ______    ______    ______    ______    ______
@@ -56,8 +38,8 @@ MIXMIX (BIC)
     k=1    1475.7    1407.2      1356    1342.8      1343      1343    1343.1    1343.1
     k=2    1245.5    1133.2    1040.6    982.04    950.92     943.2    943.32    943.42
     k=3    810.31    790.66    785.85    788.47    789.93    790.65    791.01    791.18
-    k=4    812.15    802.19     805.9    803.98    800.66    799.56    799.81     800.2
-    k=5    816.56    823.61    827.71    825.14    816.93    815.76    814.77    824.69
+    k=4    812.15     802.2    805.85    804.07     800.5    799.25     799.8    800.63
+    k=5    815.53     821.1    827.75    823.36    818.92    819.37    817.46    820.12
 
 Smallest value of IC is 785.8544 and takes place for
 k=3 and  c=4

@@ -12,8 +12,9 @@
 %   brushFAN                   - Displays a GUI which enables brushing in the fanplot                                                                            - GUI                 - 2016 Aug 01
 %   brushRES                   - Displays a GUI which enables brushing in resfwdplot                                                                             - GUI                 - 2016 Aug 01
 %   brushROB                   - Displays a GUI which enables brushing in resindexplot                                                                           - GUI                 - 2016 Aug 01
+%   bwe                        - Estimates the bandwidth smoothing parameter for kernel density estimation                                                       - UTISTAT             - 2017 May 12
 %   cabc                       - Closes all open figures except the one in foreground (the current)                                                              - UTIGEN              - 2016 Oct 01
-%   carbikeplot                - Produces the carbike plot to find best relevant clustering solutions                                                            - CLUS-RobClaMULT     - 2017 May 03
+%   carbikeplot                - Produces the carbike plot to find best relevant clustering solutions                                                            - CLUS-RobClaMULT     - 2017 May 12
 %   cascade                    - Is a third party function used in FSDA demos and examples                                                                       - UTIGEN              - 2016 Aug 01
 %   cdsplot                    - Produces the candlestick plot for robust model selection in linear regression                                                   - VIS-Reg             - 2016 Aug 01
 %   clickableMultiLegend       - Hides/shows symbols inside all gplotmatrix subplots (or similar multi-plots) clicking on the legend                             - UTIGEN              - 2016 Sep 26
@@ -66,7 +67,7 @@
 %   HArho                      - Computes rho function  using Hampel proposal                                                                                    - UTISTAT             - 2016 Aug 01
 %   HAwei                      - Computes weight function psi(u)/u using Hampel proposal                                                                         - UTISTAT             - 2016 Aug 01
 %   histFS                     - Plots a histogram with the elements in each bin grouped according to a vector of labels                                         - VIS-Reg             - 2016 Aug 01
-%   htmlwriteFS                - Enables to create automatic HELP FILES from a specific MATLAB structure created with function mreadFS.m                         - UTIHELP             - 2017 May 04
+%   htmlwriteFS                - Enables to create automatic HELP FILES from a specific MATLAB structure created with function mreadFS.m                         - UTIHELP             - 2017 May 12
 %   HUeff                      - Finds the constant c which is associated to the requested efficiency for Tukey biweight estimator                               - UTISTAT             - 2017 May 03
 %   HUpsi                      - Computes psi function (derivative of rho function) for Huber                                                                    - UTISTAT             - 2016 Aug 01
 %   HUpsider                   - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                    - UTISTAT             - 2016 Aug 01
@@ -87,6 +88,7 @@
 %   inversegaminv              - Inversegampdf Inverse-gamma cumulative distribution function                                                                    - UTISTAT             - 2016 Aug 01
 %   inversegampdf              - Computes inverse-gamma probability density function                                                                             - UTISTAT             - 2016 Aug 01
 %   isfunction                 - Checks if a function exists                                                                                                     - UTIGEN              - 2016 Aug 01
+%   kdebiv                     - Computes (and optionally plots) a kernel smoothing estimate for bivariate data                                                  - UTISTAT             - 2017 May 12
 %   levfwdplot                 - Plots the trajectories of leverage along the search                                                                             - VIS-Reg             - 2017 Feb 14
 %   lexunrank                  - Gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations                    - UTICOMB             - 2016 Aug 01
 %   lga                        - Performs linear grouping analysis                                                                                               - CLUS-RobClaREG      - 2017 Feb 12
@@ -96,11 +98,11 @@
 %   makecontentsfileFS         - Extends Matlab function makecontentsfile                                                                                        - UTIHELP             - 2017 May 04
 %   malfwdplot                 - Plots the trajectories of scaled Mahalanobis distances along the search                                                         - VIS-Mult            - 2017 Apr 20
 %   malindexplot               - Plots the Mahalanobis distances versus a selected variable                                                                      - VIS-Mult            - 2017 Apr 06
-%   mcd                        - Computes Minimum Covariance Determinant                                                                                         - MULT-Multivariate   - 2017 May 02
+%   mcd                        - Computes Minimum Covariance Determinant                                                                                         - MULT-Multivariate   - 2017 May 12
 %   mdrplot                    - Plots the trajectory of minimum deletion residual (mdr)                                                                         - VIS-Reg             - 2017 Feb 14
 %   MixSim                     - Generates k clusters in v dimensions with given overlap                                                                         - CLUS-MixSim         - 2016 Aug 01
 %   MixSimreg                  - Generates k regression hyperplanes in p dimensions with given overlap                                                           - CLUS-MixSim         - 2017 Mar 01
-%   mmdplot                    - Plots the trajectory of minimum Mahalanobis distance (mmd)                                                                      - VIS-Mult            - 2016 Oct 02
+%   mmdplot                    - Plots the trajectory of minimum Mahalanobis distance (mmd)                                                                      - VIS-Mult            - 2017 May 12
 %   MMmult                     - Computes MM estimators in multivariate analysis with auxiliary S-scale                                                          - MULT-Multivariate   - 2017 May 04
 %   MMmultcore                 - Computes multivariate MM estimators for a selected fixed scale                                                                  - MULT-Multivariate   - 2016 Aug 01
 %   MMmulteda                  - Computes MM estimators in multivariate analysis for a series of values of bdp                                                   - MULT-Multivariate   - 2017 May 04
@@ -128,7 +130,7 @@
 %   PoolPrepare                - Prepares a pool of MATLAB instances for executing code in parallel                                                              - UTIGEN              - 2016 Aug 01
 %   position                   - Controls the position of the open figures                                                                                       - UTIGEN              - 2017 Feb 17
 %   Powertra                   - Computes power transformation (Box-Cox or  Yeo-Johnson)                                                                         - UTISTAT             - 2017 Mar 02
-%   publishFS                  - Enables to create automatic HELP FILES from structured .m function files                                                        - UTIHELP             - 2017 May 04
+%   publishFS                  - Enables to create automatic HELP FILES from structured .m function files                                                        - UTIHELP             - 2017 May 12
 %   publishFunctionAlpha       - Enables to create web page which contains the alphabetical list of functions                                                    - UTIHELP             - 2016 Aug 01
 %   publishFunctionCate        - Enables to create web page which contains the alphabetical list of functions                                                    - UTIHELP             - 2016 Aug 01
 %   Qn                         - Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)                                                  - UTISTAT             - 2016 Aug 01
@@ -143,9 +145,10 @@
 %   resfwdplot                 - Plots the trajectories of the scaled (squared) residuals monitored                                                              - VIS-Reg             - 2017 Apr 20
 %   resindexplot               - Plots the residuals from a regression analysis versus index number or any other variable                                        - VIS-Reg             - 2017 Feb 14
 %   restreigen                 - Computes eigenvalues restriction (without Dykstra algorithm)                                                                    - CLUS-RobClaMULT     - 2017 Feb 01
-%   rlga                       - VERIFICARE LINEE 134 -- 136 ALPHA NON TORNA PER NIENTE !!!!!!!!                                                                 - CLUS-RobClaREG      - 2017 May 03
-%   RobCov                     - Computes covariance matrix of robust regression coefficients                                                                    - REG-Regression      - 2017 Feb 09
+%   rlga                       - Performs robust linear grouping analysis                                                                                        - CLUS-RobClaREG      - 2017 May 11
+%   RobCov                     - Computes covariance matrix of robust regression coefficients                                                                    - REG-Regression      - 2017 May 10
 %   RobRegrSize                - Provides proper threshold for robust estimators to obtain an empirical size close to 1 per cent nominal size                    - REG-Regression      - 2017 Feb 17
+%   rthin                      - Applies independent random thinning to a point pattern                                                                          - UTISTAT             - 2017 May 12
 %   Score                      - Computes the score test for transformation                                                                                      - REG-Transformations - 2017 Feb 22
 %   ScoreYJ                    - Score computes the score test for Yeo and Johnson transformation                                                                - REG-Transformations - 2017 May 04
 %   SDest                      - Computes Stahel-Donoho robust estimator of dispersion-location                                                                  - MULT-Multivariate   - 2016 Aug 01
@@ -158,7 +161,7 @@
 %   spmplot                    - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal                                     - VIS-Mult            - 2017 May 04
 %   Sreg                       - Computes S estimators in linear regression                                                                                      - REG-Regression      - 2017 Apr 20
 %   Sregeda                    - Computes S estimators in linear regression for a series of values of bdp                                                        - REG-Regression      - 2017 Apr 20
-%   subsets                    - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements                                - UTICOMB             - 2017 Apr 24
+%   subsets                    - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements                                - UTICOMB             - 2017 May 08
 %   suplabel                   - Places text as a title, xlabel, or ylabel on a group of subplots                                                                - UTIGEN              - 2017 May 04
 %   tabulateFS                 - Create frequency table of unique values of x, excluding possible 0 counts                                                       - UTISTAT             - 2016 Aug 01
 %   Taureg                     - Computes Tau estimators in linear regression                                                                                    - REG-Regression      - 2017 Apr 20
@@ -166,23 +169,24 @@
 %   TBc                        - Computes breakdown point and efficiency associated with constant c for Tukey's biweight                                         - UTISTAT             - 2016 Aug 01
 %   TBeff                      - Finds the constant c which is associated to the requested efficiency for Tukey's biweight                                       - UTISTAT             - 2016 Aug 01
 %   TBpsi                      - Computes psi function (derivative of rho function) for Tukey's biweight                                                         - UTISTAT             - 2016 Aug 01
-%   TBpsider                   - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                    - UTISTAT             - 2017 Feb 09
+%   TBpsider                   - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                    - UTISTAT             - 2017 May 10
 %   TBpsix                     - Computes psi function (derivative of rho function) times x for Tukey's biweight                                                 - UTISTAT             - 2016 Aug 01
 %   TBrho                      - Computes rho function for Tukey's biweight                                                                                      - UTISTAT             - 2016 Aug 01
 %   TBwei                      - Computes weight function psi(u)/u for Tukey's biweight                                                                          - UTISTAT             - 2016 Aug 01
 %   tclust                     - Computes trimmed clustering with restricitons on the eigenvalues                                                                - CLUS-RobClaMULT     - 2017 May 03
-%   tclustIC                   - Computes tclust for different number of groups k and restriction factors c                                                      - CLUS-RobClaMULT     - 2017 May 03
+%   tclustIC                   - Computes tclust for different number of groups k and restriction factors c                                                      - CLUS-RobClaMULT     - 2017 May 08
 %   tclustICplot               - Plots information criterion as a function of c and k                                                                            - VIS-Clu             - 2017 May 02
-%   tclustICsol                - Extracts a set of best relevant solutions                                                                                       - CLUS-RobClaMULT     - 2017 May 03
-%   tclustreg                  - Performs robust linear grouping analysis                                                                                        - CLUS-RobClaREG      - 2017 May 04
+%   tclustICsol                - Extracts a set of best relevant solutions                                                                                       - CLUS-RobClaMULT     - 2017 May 08
+%   tclustreg                  - Performs robust linear grouping analysis                                                                                        - CLUS-RobClaREG      - 2017 May 12
 %   tkmeans                    - Computes trimmed k-means                                                                                                        - CLUS-RobClaMULT     - 2016 Aug 01
 %   triu2vec                   - Extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix                       - UTIGEN              - 2016 Aug 01
 %   unibiv                     - Has the purpose of detecting univariate and bivariate outliers                                                                  - MULT-Multivariate   - 2017 Feb 17
-%   UnitsSameCluster           - TclustIC computes tclust for different number of groups k and restriction factors c                                             - UTISTAT             - 2017 May 04
+%   UnitsSameCluster           - Enables to control the labels of the clusters which contain predefined units                                                    - UTISTAT             - 2017 May 08
 %   upperfracpos               - Positions two figures on the upper part of the screen                                                                           - UTIGEN              - 2016 Aug 01
 %   winsor                     - Returns a winsorized copy of input                                                                                              - UTISTAT             - 2016 Aug 01
 %   WNChygepdf                 - Returns Wallenius' non-central hypergeometric probability density values                                                        - UTISTAT             - 2017 May 04
 %   wraptextFS                 - Formats long strings into wrapped text of specified width                                                                       - UTIGEN              - 2017 Mar 27
+%   wthin                      - Thin a uni/bi-dimensional dataset                                                                                               - UTISTAT             - 2017 May 12
 %   xmlcreateFS                - Create an XML file passing through publishFS                                                                                    - UTIHELP             - 2017 May 03
 %   yXplot                     - Produces an interactive scatterplot of y against each variable of X in the input dataset                                        - VIS-Reg             - 2017 May 04
 %   zscoreFS                   - Computes (robust) standardized z scores                                                                                         - UTIGEN              - 2017 May 04

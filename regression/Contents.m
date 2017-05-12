@@ -33,7 +33,7 @@
 %   regressH                - Fits a multiple linear regression model with heteroskedasticity                                                            - REG-Hetero         - 2016 Aug 01
 %   regressHart             - Fits a multiple linear regression model using ART heteroskedasticity                                                       - REG-Hetero         - 2016 Aug 01
 %   regressHhar             - RegressH fits a multiple linear regression model with Harvey heteroskedasticity                                            - REG-Hetero         - 2016 Aug 01
-%   RobCov                  - Computes covariance matrix of robust regression coefficients                                                               - REG-Regression     - 2017 Feb 09
+%   RobCov                  - Computes covariance matrix of robust regression coefficients                                                               - REG-Regression     - 2017 May 10
 %   RobRegrSize             - Provides proper threshold for robust estimators to obtain an empirical size close to 1 per cent nominal size               - REG-Regression     - 2017 Feb 17
 %   Score                   - Computes the score test for transformation                                                                                 - REG-Transformations- 2017 Feb 22
 %   ScoreYJ                 - Score computes the score test for Yeo and Johnson transformation                                                           - REG-Transformations- 2017 May 04

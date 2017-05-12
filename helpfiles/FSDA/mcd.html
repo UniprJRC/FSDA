@@ -14,7 +14,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    RAW=mcd(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  1.19 seconds 
+    RAW=mcd(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.97 seconds 
 </pre><img vspace="5" hspace="5" src="images\mcd_01.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_02.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_03.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_04.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mcd monitoring the reweighted estimates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
@@ -31,13 +31,13 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [RAW,REW,C]=mcd(Ycont);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (default plots).</li></span></a></span></h3><div class="collapse"><p> 
+    [RAW,REW,C]=mcd(Ycont);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (default plots).</li></span></a></span></h3><div class="collapse"><p>
      See Pison et al. 2002, Metrika.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     X = load('aircraft.txt');
     Y = X(:,1:end-1);
-    [RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.43 seconds 
+    [RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.46 seconds 
 </pre><img vspace="5" hspace="5" src="images\mcd_05.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_06.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_07.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_08.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (plots using the scale of Pison et al).</li></span></a></span></h3><div class="collapse"><p>
-     See Pison et al. 2002, Metrika. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     See Pison et al. 2002, Metrika.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     X = load('aircraft.txt');
     Y = X(:,1:end-1);
     [RAW,REW] = mcd(Y,'bdp',0.25,'ysaveRAW',1);
@@ -52,14 +52,14 @@
     ylimy=[0 36];
     malindexplot(REW.md,v,'conflev',0.975,'laby','robust distances','numlab',REW.outliers,'ylimy',ylimy);
     title('Corrected reweighted MCD')
-</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.43 seconds 
+</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.35 seconds 
 </pre><img vspace="5" hspace="5" src="images\mcd_09.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containing n observations on v variables. </span>  </a><span class="example_desc">Rows of Y represent observations, and columns represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
        since observations (rows) with missing or infinite values will
-       be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bdp',1/4 
-</code>,<code> 'nsamp',10000 
-</code>,<code> 'refsteps',10 
-</code>,<code> 'reftol',1e-8 
-</code>,<code> 'refstepsbestr',10 
+       be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bdp',1/4
+</code>,<code> 'nsamp',10000
+</code>,<code> 'refsteps',10
+</code>,<code> 'reftol',1e-8
+</code>,<code> 'refstepsbestr',10
 </code>,<code> 'reftolbestr',1e-8
 </code>,<code> 'bestr',10
 </code>,<code> 'conflev',0.99
@@ -74,54 +74,54 @@
 </code>,<code> 'smallsamplecor',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;Breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>(Number between 0
                and 0.5). The default value is 0.5.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',1/4 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of subsamples of size v which have
-               to be extracted (if not given, default = 1000).</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',10000 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining iterations in each
-               subsample (default = 3).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',1/4
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of subsamples of size v
+               which have to be extracted (if not given, default = 1000).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',10000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining
+               iterations in each subsample (default = 3).</p> <p>
                refsteps = 0 means "raw-subsampling" without iterations.</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10 
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;Refining steps tolerance.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Tolerance for the refining steps.</p> <p>
                The default value is 1e-6;</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-8 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refstepsbestr" class="clearfix"></div><h3 id="input_argument_namevalue_refstepsbestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refstepsbestr</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining iterations for each
-               best subset (default = 50).</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refstepsbestr',10 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftolbestr" class="clearfix"></div><h3 id="input_argument_namevalue_reftolbestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftolbestr</code> &#8212;Tolerance for refining steps.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of tolerance
-               for the refining steps
-               for each of the best subsets.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-8
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refstepsbestr" class="clearfix"></div><h3 id="input_argument_namevalue_refstepsbestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refstepsbestr</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining iterations
+               for each best subset (default = 50).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refstepsbestr',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftolbestr" class="clearfix"></div><h3 id="input_argument_namevalue_reftolbestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftolbestr</code> &#8212;Tolerance for refining steps.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of tolerance for the
+               refining steps for each of the best subsets.</p> <p>
                The default value is 1e-8;</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftolbestr',1e-8
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bestr" class="clearfix"></div><h3 id="input_argument_namevalue_bestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bestr</code> &#8212;Number of best solutions to store.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Number of "best locations" to remember from
-               the subsamples. These will be later iterated until
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bestr" class="clearfix"></div><h3 id="input_argument_namevalue_bestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bestr</code> &#8212;Number of best solutions to store.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Number of "best locations"
+               to remember from the subsamples. These will be later iterated until
                convergence (default=5)
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bestr',10
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number between 0 and 1 containing confidence level which is
-               used to declare units as outliers.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number between 0 and 1 containing
+               confidence level which is used to declare units as outliers.</p> <p>
                Usually conflev=0.95, 0.975 0.99 (individual alpha)
                or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).</p><p>
                Default value is 0.975
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflevrew" class="clearfix"></div><h3 id="input_argument_namevalue_conflevrew" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflevrew</code> &#8212;Confidence level for to use for reweighting.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number between 0 and 1 containing confidence level which is
-               used to do the reweighting step.</p> <p>
-               Default value is the one specified in previous option conflev
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflevrew" class="clearfix"></div><h3 id="input_argument_namevalue_conflevrew" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflevrew</code> &#8212;Confidence level for use for reweighting.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number
+               between 0 and 1 containing confidence level which is used to do
+               the reweighting step. Default value is the one specified in
+               previous option conflev.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflevrew',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_betathresh" class="clearfix"></div><h3 id="input_argument_namevalue_betathresh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>betathresh</code> &#8212;Distribution to use.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If betathresh = 1 the distribution which is used to
-               declare units as outliers is a mixture of Rocke scaled F
-               distribution and beta else (default) traditional chi^2
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_betathresh" class="clearfix"></div><h3 id="input_argument_namevalue_betathresh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>betathresh</code> &#8212;Distribution to use.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If betathresh = 1 the distribution
+               which is used to declare units as outliers is a mixture of Rocke
+               scaled F distribution and beta else (default) traditional chi^2
                distribution is used.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'betathresh',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;No check on input data.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
-               matrix Y. As default nocheck=0.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;No check on input data.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check
+               is performed on matrix Y. As default nocheck=0.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p> 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p>
                (1) a plot of Mahalanobis distances against index number. The
                confidence level used to draw the confidence bands for
                the MD is given by the input option conflev. If conflev is
                not specified a nominal 0.975 confidence interval will be
                used.</p> <p>
-               (2) a scatter plot matrix with the outliers highlighted.</p><p> 
+               (2) a scatter plot matrix with the outliers highlighted.</p><p>
                If plots is a structure it may contain the following fields
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>labeladd</code></td><td><p>if this option is '1', the outliers in the
                        spm are labelled with their unit row index. The
@@ -136,21 +136,21 @@
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tolMCD" class="clearfix"></div><h3 id="input_argument_namevalue_tolMCD" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tolMCD</code> &#8212;Tolerance to declare a subset as singular.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The
                default value of tolMCD is exp(-50*v).</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tolMCD',1e-20
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ysaveRAW" class="clearfix"></div><h3 id="input_argument_namevalue_ysaveRAW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysaveRAW</code> &#8212;save Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the data matrix Y
-               is saved into the output structure RAW. This feature is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ysaveRAW" class="clearfix"></div><h3 id="input_argument_namevalue_ysaveRAW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysaveRAW</code> &#8212;save Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the data
+               matrix Y is saved into the output structure RAW. This feature is
                meant at simplifying the use of function malindexplot.</p> <p>
                Default is 0, i.e. no saving is done.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ysaveRAW',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ysaveREW" class="clearfix"></div><h3 id="input_argument_namevalue_ysaveREW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysaveREW</code> &#8212;save Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the data matrix Y
-               is saved into the output structure REW. This feature is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ysaveREW" class="clearfix"></div><h3 id="input_argument_namevalue_ysaveREW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysaveREW</code> &#8212;save Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the data
+               matrix Y is saved into the output structure REW. This feature is
                meant at simplifying the use of function malindexplot.</p> <p>
                Default is 0, i.e. no saving is done.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ysaveREW',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_smallsamplecor" class="clearfix"></div><h3 id="input_argument_namevalue_smallsamplecor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>smallsamplecor</code> &#8212;small sample correction factor.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which
                defines whether to use or not small sample correction
-               factor to inflate the scale estimate if it is equal to 1. The default value of 
-               smallsamplecor is 1, that is the correction is used.</p> <p> 
-               See
+               factor to inflate the scale estimate if it is equal to 1.</p> <p>
+               The default value of smallsamplecor is 1, that is the
+               correction is used. See
               <a href="http://users.ugent.be/~svaelst/publications/corrections.pdf">http://users.ugent.be/~svaelst/publications/corrections.pdf</a>
                for further details about the correction factor.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'smallsamplecor',1

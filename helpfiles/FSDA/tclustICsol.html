@@ -19,7 +19,7 @@ k=4
 k=5
 Best solutions using MIXMIX
     [3]    [ 4]    [1&times;7 double]    [1]    'true'    
-    [4]    [32]    [1&times;7 double]    [1]    'spurious'
+    [4]    [32]    [1&times;8 double]     []    'spurious'
 
 </pre><img vspace="5" hspace="5" src="images\tclustICsol_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.</li></span></a></span></h3><div class="collapse"><p>
      Data generation<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -175,7 +175,7 @@ Best 3 solutions using CLACLA
                Remark: field out.MIXMIXbsari is present only if 'whichIC'
                is 'ALL' or 'whichIC' is 'MIXMIX'.</p></p></td></tr><tr valign="top"><td><code>ARIMIX</code></td><td><p><p>Matrix of adjusted Rand indexes between two consecutive value of c.</p> <p>
                  Matrix of size k-by-length(cc)-1. The first column
-                 contains the ARI indexes between 
+                 contains the ARI indexes between
                  with cc(2) and cc(1) given k. The second column contains
                  the the ARI indexes  between cc(3) and cc(2) given k.</p><p>
                  This output is also present in table format (see below)
@@ -205,7 +205,7 @@ Best 3 solutions using CLACLA
                Remark: field out.MIXCLAbsari is present only if 'whichIC'
                is 'ALL' or 'whichIC' is 'CLACLA'</p></p></td></tr><tr valign="top"><td><code>ARICLA</code></td><td><p><p>Matrix of adjusted Rand indexes between two consecutive value of c.</p> <p>
                  Matrix of size k-by-length(cc)-1. The first column
-                 contains the ARI indexes between 
+                 contains the ARI indexes between
                  with cc(2) and cc(1) given k. The second column contains
                  the the ARI indexes  between cc(3) and cc(2) given k.</p><p>
                  This output is also present in table format (see below)

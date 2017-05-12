@@ -5,6 +5,7 @@
 %   Name                - Description                                                                                                                     - Category- Date last modified
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %   basicPower          - Computes the basic power transformation                                                                                         - UTISTAT- 2017 Mar 02
+%   bwe                 - Estimates the bandwidth smoothing parameter for kernel density estimation                                                       - UTISTAT- 2017 May 12
 %   ellipse             - Generates an ellipse given mu (location vector) and Sigma (scatter matrix)                                                      - UTISTAT- 2016 Aug 01
 %   FowlkesMallowsIndex - Computes the Fowlkes and Mallows index                                                                                          - UTISTAT- 2017 Mar 13
 %   FSMbonfbound        - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                      - UTISTAT- 2016 Aug 01
@@ -36,6 +37,7 @@
 %   inversegamcdf       - Computes inverse-gamma cumulative distribution function                                                                         - UTISTAT- 2016 Aug 01
 %   inversegaminv       - Inversegampdf Inverse-gamma cumulative distribution function                                                                    - UTISTAT- 2016 Aug 01
 %   inversegampdf       - Computes inverse-gamma probability density function                                                                             - UTISTAT- 2016 Aug 01
+%   kdebiv              - Computes (and optionally plots) a kernel smoothing estimate for bivariate data                                                  - UTISTAT- 2017 May 12
 %   logmvnpdfFS         - Produces log of Multivariate normal probability density function (pdf)                                                          - UTISTAT- 2016 Aug 01
 %   mahalFS             - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                      - UTISTAT- 2017 May 02
 %   Mscale              - Finds the M estimator of the scale                                                                                              - UTISTAT- 2016 Aug 01
@@ -53,15 +55,17 @@
 %   Powertra            - Computes power transformation (Box-Cox or  Yeo-Johnson)                                                                         - UTISTAT- 2017 Mar 02
 %   Qn                  - Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)                                                  - UTISTAT- 2016 Aug 01
 %   RandIndexFS         - Calculates Rand type Indices to compare two partitions                                                                          - UTISTAT- 2017 May 02
+%   rthin               - Applies independent random thinning to a point pattern                                                                          - UTISTAT- 2017 May 12
 %   Sn                  - Robust estimator of scale (robust version of Gini's average difference)                                                         - UTISTAT- 2016 Aug 01
 %   tabulateFS          - Create frequency table of unique values of x, excluding possible 0 counts                                                       - UTISTAT- 2016 Aug 01
 %   TBbdp               - Finds the constant c associated to the supplied breakdown point for Tukey's biweight                                            - UTISTAT- 2016 Aug 01
 %   TBc                 - Computes breakdown point and efficiency associated with constant c for Tukey's biweight                                         - UTISTAT- 2016 Aug 01
 %   TBeff               - Finds the constant c which is associated to the requested efficiency for Tukey's biweight                                       - UTISTAT- 2016 Aug 01
 %   TBpsi               - Computes psi function (derivative of rho function) for Tukey's biweight                                                         - UTISTAT- 2016 Aug 01
-%   TBpsider            - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                    - UTISTAT- 2017 Feb 09
+%   TBpsider            - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                    - UTISTAT- 2017 May 10
 %   TBpsix              - Computes psi function (derivative of rho function) times x for Tukey's biweight                                                 - UTISTAT- 2016 Aug 01
 %   TBrho               - Computes rho function for Tukey's biweight                                                                                      - UTISTAT- 2016 Aug 01
 %   TBwei               - Computes weight function psi(u)/u for Tukey's biweight                                                                          - UTISTAT- 2016 Aug 01
 %   winsor              - Returns a winsorized copy of input                                                                                              - UTISTAT- 2016 Aug 01
 %   WNChygepdf          - Returns Wallenius' non-central hypergeometric probability density values                                                        - UTISTAT- 2017 May 04
+%   wthin               - Thin a uni/bi-dimensional dataset                                                                                               - UTISTAT- 2017 May 12

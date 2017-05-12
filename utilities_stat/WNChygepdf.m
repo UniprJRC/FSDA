@@ -42,7 +42,7 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
 %                  Data Types - single|double.
 %
 %
-% See also randsampleFS.m, subsets.m.
+% See also randsampleFS.m, subsets.m
 %
 % References:
 %   A. Fog (2008). Calculation Methods for Wallenius' Noncentral Hypergeometric

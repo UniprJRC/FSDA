@@ -10,4 +10,4 @@
 %   nchoosekFS     - Returns the Binomial coefficient or matrix containing all combinations                                       - UTICOMB- 2016 Aug 01
 %   randsampleFS   - Generates a random sample of k elements from the integers 1 to n (k<=n)                                      - UTICOMB- 2017 Apr 24
 %   shuffling      - Does a random permutation of the elements of input vector                                                    - UTICOMB- 2016 Dec 19
-%   subsets        - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements             - UTICOMB- 2017 Apr 24
+%   subsets        - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements             - UTICOMB- 2017 May 08
