@@ -686,7 +686,12 @@ imagesDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
 %  outputDir=[pathstr fsep 'FSDA'];
 %  imagesDir=[pathstr fsep 'FSDA' fsep 'images'];
 
-
+% Check matlab version. The help system has changed from 2012b and jar
+% files have been deleted therefore, given that in the see also part parser
+% checks whether a corresponding funciton xxx.html exists, we must take
+% into account that this function will not be found in releases older tha
+% 2012b
+matlabversion=verLessThan('matlab','8.1.0');
 
 if nargin>1
     options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir,'imagesDir',imagesDir,'write2file',true);
@@ -2158,7 +2163,9 @@ fstringsel=fstring(outsel(1):end);
 
 % cell which will contain the details of output arguments
 listOutArgs=cell(length(listargouts),5);
-listOutArgs(:,1)=listargouts;
+if ~isempty(listargouts)
+    listOutArgs(:,1)=listargouts;
+end
 
 if nargout>0
     for i=1:nargout
@@ -2190,7 +2197,7 @@ if nargout>0
         
         % Just in case inipoint has more than one element take just the
         % first. This may happen, for example when, say output is out and
-        % then string out(:,1) ... is found 
+        % then string out(:,1) ... is found
         inipoint=inipoint(1);
         
         % The endpoint of the substring is 'more About'. or See also or the next output argument
@@ -2660,16 +2667,21 @@ for i=1:nseealso
                 % Find path of .html documentation file
                 pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);
                 
-                if isempty(pathExtHelpFile)
-                    error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                if matlabversion==0
+                    if isempty(pathExtHelpFile)
+                        error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                    end
+                    pathExtHelpFile=char(pathExtHelpFile{1});
+                    addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
+                    
+                    % replace '\' with '/'
+                    addSubPath=strrep(addSubPath,'\','/') ;
+                    % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
+                    DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
+                else
+                    DestHyperLink='';
                 end
-                pathExtHelpFile=char(pathExtHelpFile{1});
-                addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
                 
-                % replace '\' with '/'
-                addSubPath=strrep(addSubPath,'\','/') ;
-                % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
-                DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
             end
         end
         
