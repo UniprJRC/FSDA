@@ -2166,7 +2166,7 @@ listOutArgs=cell(length(listargouts),5);
 if ~isempty(listargouts)
     listOutArgs(:,1)=listargouts;
 end
-
+endpoint=1;
 if nargout>0
     for i=1:nargout
         
@@ -2196,8 +2196,16 @@ if nargout>0
         end
         
         % Just in case inipoint has more than one element take just the
-        % first. This may happen, for example when, say output is out and
-        % then string out(:,1) ... is found
+        % first but before make sure that you take the first among those
+        % which have not been considered yet (that is among those which are
+        % greater than endpoint). Suppose for example that first output
+        % argument is called Abk and the second output argument is called
+        % bk, you want to avoid that string 'bk :' is found inside 'Abk   :'. 
+        % Please notice that endpoint has been initialized with number  at the beginning of this loop.
+        % Also, please notice that inipoint can have more than element
+        % when, for example, say output is out and then
+        % string out(:,1) ... is found. 
+        inipoint=inipoint(inipoint>=endpoint(1));
         inipoint=inipoint(1);
         
         % The endpoint of the substring is 'more About'. or See also or the next output argument
