@@ -53,8 +53,7 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %               The adjusted Fowlkes and Mallows index is the
 %               corrected-for-chance version of the Fowlkes and Mallows
 %               index.
-%  Bk:          Fowlkes and Mallows index. Scalar. A number between 0 and 1.
-%               Value of the Fowlkes and Mallows index.
+%  Bk:          Value of the Fowlkes and Mallows index. Scalar. A number between 0 and 1.            
 %  EBk:         Expectation of the Fowlkes and Mallows index. Scalar.
 %               Expected value of the index computed under the null
 %               hypothesis of no-relation.
@@ -81,13 +80,6 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 
 % Examples:
 
-%{
-    % FM index (adjusted) with the contingency table as input.
-    T=[1 1 0;
-    1 2 1;
-    0 0 4];
-    FM=FowlkesMallowsIndex(T);
-%}
 
 %{
 
@@ -107,6 +99,14 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
     % c1= numeric vector containing the labels of the second partition
     c2=c(:,2);
     FM=FowlkesMallowsIndex(c1,c2);
+%}
+
+%{
+    % FM index (adjusted) with the contingency table as input.
+    T=[1 1 0;
+    1 2 1;
+    0 0 4];
+    FM=FowlkesMallowsIndex(T);
 %}
 
 %{
