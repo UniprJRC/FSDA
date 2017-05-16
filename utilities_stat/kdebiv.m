@@ -12,10 +12,10 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %
 %  Required input arguments:
 %
-%   X: two-column matrix with the bi-variate data sample on which a
-%      probability density estimate is computed. Matrix. The density is
-%      estimated on a grid of points covering the range of the data,
-%      created using MATLAB function meshgrid.
+%   X: Input matrix. Matrix. Two-column matrix with the bi-variate data
+%      sample on which a probability density estimate is computed. The
+%      density is estimated on a grid of points covering the range of the
+%      data, created using MATLAB function meshgrid.
 %      Data Types - single | double.
 %
 %
@@ -23,8 +23,8 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %
 %  XI:          Evaluation points of the estimated density.
 %               Matrix. In this case the density is estimated using X and evaluated on XI.
-%               Data Types - single | double.
 %               Example - 'XI',X
+%               Data Types - single | double.
 %
 %   contourtype: Plot on the screen. String. Takes one of these strings:
 %               - contourtype = 'contour' generates a contour plot.
@@ -33,18 +33,18 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %               - contourtype = 'mesh' generates a mesh plot.
 %               Unless specified otherwise, the colormap of the plots is
 %               based on grey levels.
-%               Data Types - char
 %               Example - 'contourtype','contourf'
+%               Data Types - char
 %
 %   cmap:       Three-column matrix with colormap values in the range
-%               [0,1]. Matrix. A personalized colormap is used to plot
-%               the contour.  Each row of 'plots' is an RGB triplet that
-%               defines one color.
-%               Data Types - char | double
-%               Example - 'cmap','gray'
+%               [0,1]. Matrix or character. A personalized colormap is used
+%               to plot the contour.  Each row of 'plots' is an RGB triplet
+%               that defines one color or a string which identifies the
+%               color (i.e. 'gray').
 %               Example - 'cmap',[0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ]
+%               Data Types - single | double | char
 %
-%   pdfmethod:  Density estimation method. Supported options are 'matlab'
+%   pdfmethod:  Density estimation method. Character. Supported options are 'matlab'
 %               and 'fsda'.
 %               - 'matlab' (default) uses the default approach implemented
 %                  in the MATLAB ksdensity function, using a normal kernel.
@@ -56,8 +56,8 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %               switches automatically to 'fsda' in case the user is using
 %               releases older than R2016a, when function ksdensity was
 %               only addressing one-dimensional data.
-%               Data Types - char
 %               Example - 'pdfmethod','fsda'
+%               Data Types - char
 %
 %  Output:
 %
@@ -103,7 +103,9 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %}
 
 %{
-      % A standard (not filled) contour plot obtained using colormap 'cmap' = 'hot'.
+      % An example using colormap.
+      % A standard (not filled) contour plot obtained using colormap 
+      % 'cmap' = 'hot'.
       figure;
       F2 = kdebiv(X,'cmap','hot');
       title('A standard (not filled) contour plot obtained using colormap ''hot''');
@@ -127,9 +129,8 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %}
 
 %{
+      %  Surf and mesh plots.
       close all;
-
-      % Just to test surf and mesh plots.
       figure;
       F4 = kdebiv(X,'contourtype','surf');
       figure;
@@ -195,7 +196,7 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %}
 
 %{
-     % Just a speed test
+     % Speed test.
      if ~verLessThan('matlab','9.0')
         tt = 0; tt2=0;
         for i = 1 : 100

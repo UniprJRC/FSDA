@@ -191,7 +191,7 @@ function fanplot(out,varargin)
 %   Springer Verlag, New York.
 %   Atkinson, A.C. and Riani, M. (2002a). Tests in the fan plot for robust,
 %   diagnostic transformations in regression, Chemometrics and Intelligent
-%   Laboratory Systems, Vol. 60, pp. 87–100.
+%   Laboratory Systems, Vol. 60, pp. 87-100.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
