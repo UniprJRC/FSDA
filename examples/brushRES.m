@@ -14,19 +14,19 @@ function brushRES(eventdata)
 % eventdata  : scalar integer (from 1 to 6). Automatic code execution
 %              without user interaction. This option enables to perform in
 %              an automatic way the code associated with a particular
-%              radiobutton in the GUI 
+%              radiobutton in the GUI
 %              Example - 2 (the example associated
 %              with the second radiobutton will be automatically executed)
 %              Data Types - integer
 %
-%  Output: 
+%  Output:
 %
 %
 % See also: brushRES, brushROB
 %
 % References:
 %
-%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire 
+%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -137,7 +137,7 @@ if nargin < 1
     set(h,'SelectionChangeFcn',@brushRESex);
     set(h,'SelectedObject',[]);  % No selection
     
-        set(h,'Visible','on'); % Make the object visible
+    set(h,'Visible','on'); % Make the object visible
     
     % Add the logo to the GUI
     imdata = imread('logo.png','BackgroundColor',(240/255)*[1 1 1]);
@@ -157,11 +157,44 @@ end
     function brushRESex(~,eventdata)
         %% Examples inside GUI to show how interactive brushing works
         
+        % Before version 2014a eventdata is passed as a struct on the other
+        % hand with matlab>=2014a eventdata is passed as 'matlab.ui.eventdata.SelectionChangedData'
+        if verLessThan ('matlab','8.4.0')
+            
+            if isstruct(eventdata)
+                % In this case the user has called the function without
+                % number (there is interaction) and InputScalarInteger is 0
+                stringselected=get(eventdata.NewValue,'String');
+                InputScalarInteger=0;
+            else
+                % In this case the user has called the function with
+                % a scalar integer (no interaction) and InputScalarInteger
+                % is the number invoked by the user
+                stringselected='nostring';
+                InputScalarInteger=eventdata;
+            end
+        else
+            
+            InputScalarInteger=isa(eventdata,'matlab.ui.eventdata.SelectionChangedData');
+            if InputScalarInteger==1
+                % In this case the user has called the function without
+                % number (there is interaction) and InputScalarInteger is 0
+                stringselected=get(eventdata.NewValue,'String');
+                InputScalarInteger=0;
+            else
+                % In this case the user has called the function with
+                % a scalar integer (no interaction) and InputScalarInteger
+                % is the number invoked by the user
+                stringselected='nostring';
+                InputScalarInteger=eventdata;
+            end
+        end
+        
         % Set graphical options
         fsiztitl=12; % Font size of title and of the label of the axes
         SizeAxesNum=12; % Font size of the numbers on the axes
         
-        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Forbes dataset'))
+        if InputScalarInteger==1 || strcmp(stringselected,'Forbes dataset')
             forbes=load('forbes.txt');
             y=forbes(:,2);
             X=forbes(:,1);
@@ -174,7 +207,7 @@ end
             standard=struct;
             standard.SizeAxesNum=SizeAxesNum;
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger==0
                 % Plot monitoring of scaled residuals
                 databrush=struct;
                 databrush.bivarfit='i1';
@@ -188,7 +221,7 @@ end
             cascade;
             resfwdplot(out,'databrush',databrush,'standard',standard);
             
-        elseif eventdata==2 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Multiple regression'))
+        elseif InputScalarInteger==2 || strcmp(stringselected,'Multiple regression')
             multiple_regression=load('multiple_regression.txt');
             y=multiple_regression(:,4);
             X=multiple_regression(:,1:3);
@@ -204,7 +237,7 @@ end
             
             standard=struct;
             standard.SizeAxesNum=SizeAxesNum;
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger==0
                 % plot the scaled residuals using brushing
                 databrush=struct;
                 databrush.bivarfit='';
@@ -218,7 +251,7 @@ end
             cascade;
             resfwdplot(out,'databrush',databrush,'standard',standard);
             
-        elseif eventdata==3 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Multiple regression 2'))
+        elseif InputScalarInteger==3 || strcmp(stringselected,'Multiple regression 2')
             multiple_regression=load('multiple_regression.txt');
             y=multiple_regression(:,4);
             X=multiple_regression(:,1:3);
@@ -239,7 +272,7 @@ end
             standard.ylim=[0 30];
             standard.LineStyle=seltyp;
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger == 0
                 databrush=struct;
                 databrush.bivarfit='i1';
                 databrush.selectionmode='Rect';
@@ -256,7 +289,7 @@ end
             cascade;
             resfwdplot(out1,'databrush',databrush,'standard',standard,'fground',fground);
             
-        elseif eventdata==4 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Hawkins'))
+        elseif InputScalarInteger==4  || strcmp(stringselected,'Hawkins')
             %% Hawkins data
             hawkins=load('hawkins.txt');
             y=hawkins(:,9);
@@ -277,7 +310,7 @@ end
             standard.ylim=[-4.5 4.5];
             standard.LineStyle=seltyp;
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger == 0
                 databrush=struct;
                 databrush.bivarfit='';
                 databrush.selectionmode='Brush';
@@ -296,7 +329,7 @@ end
             cascade;
             resfwdplot(out1,'databrush',databrush,'standard',standard,'fground',fground);
             
-        elseif eventdata==5 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Stack loss (y)'))
+        elseif InputScalarInteger==5 || strcmp(stringselected,'Stack loss (y)')
             %% Stack loss data (original scale)
             stack_loss=load('stack_loss.txt');
             y=stack_loss(:,4);
@@ -305,7 +338,7 @@ end
             [out]=FSReda(y,X,out.bs,'init',5);
             mdrplot(out,'ylimy',[0.5 5],'xlimx',[5 21]);
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger == 0
                 databrush=struct;
                 databrush.bivarfit='2';
                 databrush.selectionmode='Rect';
@@ -318,7 +351,7 @@ end
             cascade;
             resfwdplot(out,'databrush',databrush);
             
-        elseif eventdata==6 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Stack loss (sqrt y)'))
+        elseif InputScalarInteger == 6  || strcmp(stringselected,'Stack loss (sqrt y)')
             %% Stack loss data (sqrt scale)
             stack_loss=load('stack_loss.txt');
             y=sqrt(stack_loss(:,4));
@@ -327,11 +360,11 @@ end
             [out]=FSReda(y,X,out.bs,'init',5);
             mdrplot(out,'ylimy',[0.5 5],'xlimx',[5 21]);
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger == 0
                 databrush=struct;
                 databrush.bivarfit='2';
                 databrush.selectionmode='Rect';
-                databrush.persist='on';
+                databrush.persist='';
                 databrush.Label='on';
                 databrush.RemoveLabels='off';
             else
@@ -376,7 +409,7 @@ end
 
 
 
-    stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
+stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
 disp(stri)
 
 end
