@@ -40,6 +40,7 @@ function c = TBbdp(bdp,v)
 % Examples:
 %
 %{
+    % Find c given bdp.
     % The constant c associated to a breakdown point of 50% in regression is 
     % c=1.547644980928226
     c=TBbdp(0.5,1)

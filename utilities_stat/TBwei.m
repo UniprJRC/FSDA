@@ -62,7 +62,7 @@ function w = TBwei(u,c)
 % Examples:
 
 %{
-    % Weight function for Tukey biweight
+    % Weight function for Tukey biweight.
     x=-6:0.01:6;
     weiTB=TBwei(x,2);
     plot(x,weiTB)

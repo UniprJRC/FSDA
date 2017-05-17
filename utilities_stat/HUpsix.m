@@ -1,5 +1,5 @@
 function psix=HUpsix(u,c)
-%HUpsix computes psi function (derivative of rho function) times x for Tukey's biweight  
+%HUpsix computes psi function (derivative of rho function) times x for Huber 
 %
 %<a href="matlab: docsearchFS('HUpsix')">Link to the help function</a>
 %
@@ -18,7 +18,7 @@ function psix=HUpsix(u,c)
 %  Output:
 %
 %
-%   psix :     n x 1 vector which contains the values of HU psi(u)*u
+%   psix :     psi(u) function multiplied by u. Vector. n-by-1 vector which contains the values of HU psi(u)*u
 %                function associated to the residuals or Mahalanobis
 %                distances for the n units of the sample.
 %
@@ -63,6 +63,7 @@ function psix=HUpsix(u,c)
 
 %{
 
+    % Plot of psi(x) function multiplied  by x.
     x=-6:0.01:6;
     psixHU=HUpsix(x,2);
     plot(x,psixHU)

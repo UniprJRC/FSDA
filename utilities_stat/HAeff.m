@@ -73,6 +73,7 @@ function ceff = HAeff(eff,v,abc)
 % Examples:
 %
 %{
+    % Find c for fixed efficiency.
     % The constant c associated to a nominal location efficiency of 95% in regression is
     % c = 0.690998716841394
     c=HAeff(0.95,1)

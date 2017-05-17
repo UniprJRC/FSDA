@@ -30,7 +30,8 @@ function psiHYP = HYPpsi(u, cktuning)
 %  Output:
 %
 %
-%   psiHYP :     n x 1 vector which contains the values of hyperbolic psi
+%   psiHYP :     hyperbolic psi function. Vector. n x 1 vector which
+%                contains the values of hyperbolic psi
 %                function associated to the residuals or Mahalanobis
 %                distances for the n units of the sample
 %
@@ -74,6 +75,7 @@ function psiHYP = HYPpsi(u, cktuning)
 
 %{
 
+    % Plot of hyperbolic psi function.
     % Obtain Figure 2 of  p. 645 of HRR.
     x=-9:0.1:9;
     ctuning=6;

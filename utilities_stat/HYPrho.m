@@ -1,5 +1,5 @@
 function rhoHYP = HYPrho(u, cktuning)
-%HYPrho computes rho function  using hyperboloc tangent estimator
+%HYPrho computes rho function  using hyperbolic tangent estimator
 %
 %<a href="matlab: docsearchFS('HYPrho')">Link to the help function</a>
 %
@@ -28,7 +28,8 @@ function rhoHYP = HYPrho(u, cktuning)
 %  Output:
 %
 %
-%   rhoHYP :     n x 1 vector which contains the hyperbolic rho
+%   rhoHYP :     rho function for hyperbolic tangent estimator. Vector. 
+%                n x 1 vector which contains the hyperbolic rho
 %                associated to the residuals or Mahalanobis distances for
 %                the n units of the sample.
 %

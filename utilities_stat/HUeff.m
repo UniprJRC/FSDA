@@ -58,7 +58,7 @@ function ceff = HUeff(eff,v,shapeeff)
 %
 %
 %{
-    % Analyze constant c as a function of eff
+    % Analyze constant c as a function of eff.
     % Initialize the matrix which stores the values of c for the two
     % methods
     eff=[0.70:0.0001:0.9999];

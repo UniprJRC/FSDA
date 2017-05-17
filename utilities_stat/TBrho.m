@@ -59,6 +59,7 @@ function rhoTB = TBrho(u,c)
 % Examples:
 
 %{
+    % Plot of rho function.
     close all
     x=-6:0.01:6;
     rhoTB=TBrho(x,2);

@@ -1,5 +1,5 @@
 function psider=HUpsider(u,c)
-%HUpsider computes derivative of psi function (second derivative of rho function) for Tukey's biweight  
+%HUpsider computes derivative of psi function (second derivative of rho function) for Huber 
 %
 %<a href="matlab: docsearchFS('HUpsider')">Link to the help function</a>
 %
@@ -56,7 +56,7 @@ function psider=HUpsider(u,c)
 % Examples:
 
 %{
-
+    % Plot of derivative of psi function.
     x=-6:0.01:6;
     psiHUder=HUpsider(x,2);
     plot(x,psiHUder)

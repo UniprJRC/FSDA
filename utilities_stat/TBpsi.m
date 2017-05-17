@@ -62,6 +62,7 @@ function psi=TBpsi(u,c)
 % Examples:
 
 %{
+    % Plot of psi function.
     close all
     x=-6:0.01:6;
     c=2;

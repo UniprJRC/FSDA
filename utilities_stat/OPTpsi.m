@@ -62,12 +62,13 @@ function psiOPT=OPTpsi(u,c)
 % Examples:
 
 %{
-
-x=-6:0.01:6;
-psiOPT=OPTpsi(x,1.2);
-plot(x,psiOPT)
-xlabel('x','Interpreter','Latex')
-ylabel('$\psi (x)$','Interpreter','Latex')
+    % Plot of psi function (derivative of rho function) for optimal weight
+    % function.
+    x=-6:0.01:6;
+    psiOPT=OPTpsi(x,1.2);
+    plot(x,psiOPT)
+    xlabel('x','Interpreter','Latex')
+    ylabel('$\psi (x)$','Interpreter','Latex')
 
 %}
 

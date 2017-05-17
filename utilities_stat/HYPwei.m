@@ -81,17 +81,10 @@ function w = HYPwei(u, cktuning)
 % Last modified 31-05-2016
 %
 %
-% Copyright 2008-2016.
-% Written by FSDA team
-%
-%
-%<a href="matlab: docsearchFS('tbwei')">Link to the help page for this function</a>
-% Last modified 31-05-2016
-%
 % Examples:
 
 %{
-
+    % Weight function for hyperbolic tangent estimator.
     x=-6:0.01:6;
     ctuning=4;
     ktuning=4.5;

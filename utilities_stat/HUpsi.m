@@ -62,6 +62,7 @@ function psi=HUpsi(u,c)
 % Examples:
 
 %{
+    % Plot of psi function.
     close all
     x=-6:0.01:6;
     c=1.345;

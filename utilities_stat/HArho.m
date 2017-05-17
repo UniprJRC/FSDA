@@ -79,7 +79,7 @@ function rhoHA = HArho(u, ctuning)
 % Examples:
 
 %{
-
+    % Plot of rho function.
     % Obtain Figure 11.10 p. 375 of
     % Hoaglin et al. (1987)
     x=-9:0.1:9;

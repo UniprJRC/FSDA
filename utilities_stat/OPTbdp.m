@@ -62,6 +62,7 @@ function c = OPTbdp(bdp,v)
 % Examples:
 %
 %{
+    % Find c given bdp.
     % The constant c associated to a breakdown point of 50% in regression is 
     % c= 1.213897063441983
     c=OPTbdp(0.5,1)

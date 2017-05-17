@@ -47,7 +47,7 @@ function rhoOPT=OPTrho(u, c)
 % efficiency of robust S-estimators TEST, Volume 23, Issue 2, pp. 356-387.
 % DOI: 10.1007/s11749-014-0357-7
 % YOHAI V.J., ZAMAR R.H. (1997) Optimal locally robust M-estimates of
-% regression. J Plan Stat Inference 64, pp. 309– 323
+% regression. J Plan Stat Inference 64, pp. 309-323
 
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -59,12 +59,12 @@ function rhoOPT=OPTrho(u, c)
 % Examples:
 
 %{
-
-x=-6:0.01:6;
-rhoOPT=OPTrho(x,2);
-plot(x,rhoOPT)
-xlabel('x','Interpreter','Latex')
-ylabel('$\rho (x)$','Interpreter','Latex')
+    % Plot of rho function. 
+    x=-6:0.01:6;
+    rhoOPT=OPTrho(x,2);
+    plot(x,rhoOPT)
+    xlabel('x','Interpreter','Latex')
+    ylabel('$\rho (x)$','Interpreter','Latex')
 
 %}
 

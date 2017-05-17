@@ -82,8 +82,8 @@ function w = HAwei(u, ctuning)
 % Examples:
 
 %{
-
-    %% Obtain Figure 11.15 (panel b) p. 382 of
+    %% Plot of weight function.
+    % Obtain Figure 11.15 (panel b) p. 382 of
     % Hoaglin et al. (1987)
     x=-8:0.01:8;
     weiHA=HAwei(x,[1 2 4 8]);

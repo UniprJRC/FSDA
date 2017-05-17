@@ -63,13 +63,14 @@ function ceff = OPTeff(eff,v)
 % Examples:
 %
 %{
+    % Find c given a value of efficiency.
     % The constant c associated to a nominal location efficiency of 95% in regression is
     % c = 3.180662196584308
     c=OPTeff(0.95,1)
 %}
 %
 %{
-    % Find the value of c for efficiency which goes from 0.75 to 0.99 with step 0.01
+    % Find the value of c for efficiency which goes to 1.
     ef=0.75:0.01:0.99;
     CC=[ef' zeros(length(ef),1)];
     jk=0;

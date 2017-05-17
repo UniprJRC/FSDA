@@ -75,7 +75,7 @@ function psiHAder = HApsider(u, ctuning)
 % Examples:
 
 %{
-
+    % Plot of derivative of psi function. 
     % Obtain bottom panel of Figure 11.10 p. 375 of
     % Hoaglin et al. (1987)
     x=-9:0.1:9;

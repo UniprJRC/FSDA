@@ -29,9 +29,10 @@ function psiHYPder = HYPpsider(u, cktuning)
 %  Output:
 %
 %
-%   psiHYPder :  n x 1 vector which contains the values of hyperbolic
-%                psi'(u) function associated to the residuals or Mahalanobis
-%                distances for the n units of the sample.
+%   psiHYPder :  Derivative of psi function. Vector. n x 1 vector which
+%               contains the values of hyperbolic
+%                psi'(u) function associated to the residuals or
+%                Mahalanobis distances for the n units of the sample.
 %
 %
 % More About:
@@ -74,7 +75,7 @@ function psiHYPder = HYPpsider(u, cktuning)
 
 %{
 
-    % Plot of derivative of hyperbolic psi function
+    % Plot of derivative of hyperbolic psi function.
     x=-9:0.1:9;
     ctuning=6;
     ktuning=4.5;
@@ -85,11 +86,12 @@ function psiHYPder = HYPpsider(u, cktuning)
 
 %}
 
-%% Comparison among four derivatives of psi function
-% TB, Optimal, Hampel, Hyperbolic
+%% 
+
 
 %{
-
+    % Comparison among four derivatives of psi function.
+    % TB, Optimal, Hampel, Hyperbolic
     bdp=0.5;
     c=TBbdp(bdp,1);
     subplot(2,2,1)

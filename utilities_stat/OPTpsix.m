@@ -62,6 +62,7 @@ function psix=OPTpsix(u,c)
 % Examples:
 
 %{
+    % Plot of psi(x) function (derivative of rho function) times x.
     x=-6:0.01:6;
     psixOPT=OPTpsix(x,1.2);
     plot(x,psixOPT)

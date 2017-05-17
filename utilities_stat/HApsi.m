@@ -77,6 +77,7 @@ function psiHA = HApsi(u, ctuning)
 
 %{
 
+    % Plot of psi function.
     % Obtain bottom panel of Figure 11.10 p. 375 of
     % Hoaglin et al. (1987).
     close all

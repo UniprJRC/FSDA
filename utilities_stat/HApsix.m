@@ -76,8 +76,8 @@ function psiHAx = HApsix(u, ctuning)
 % Examples:
 
 %{
-
-    %% Obtain bottom panel of Figure 11.10. 
+    %% Plot of psi(x) multiplied by x.
+    % Obtain bottom panel of Figure 11.10. 
     % p. 375 of Hoaglin et al. (1987)
     x=-9:0.1:9;
     psiHAx=HApsix(x,1);

@@ -62,7 +62,7 @@ function psix=TBpsix(u,c)
 % Examples:
 
 %{
-
+    % Plot of psi function (derivative of rho function) times x for Tukey's biweight. 
     x=-6:0.01:6;
     psixTB=TBpsix(x,2);
     plot(x,psixTB)

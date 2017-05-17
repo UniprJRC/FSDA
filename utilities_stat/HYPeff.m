@@ -84,7 +84,7 @@ function [c,A,B,d] = HYPeff(eff, v, k, traceiter)
 % Examples:
 
 %{
-
+    % Find parameters for fixed efficiency and k. 
     % Find value of c, A, B, for a nominal efficiency of 0.8427
     % when k=4.5
  
