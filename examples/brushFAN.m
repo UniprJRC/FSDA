@@ -13,12 +13,12 @@ function brushFAN(eventdata)
 % eventdata  : scalar integer (from 1 to 3). Automatic code execution
 %              without user interaction. This option enables to perform in
 %              an automatic way the code associated with a particular
-%              radiobutton in the GUI 
+%              radiobutton in the GUI
 %              Example - 2 (the example associated
 %              with the second radiobutton will be automatically executed)
 %              Data Types - integer
 %
-%  Output: 
+%  Output:
 %
 %
 % See also: brushRES, brushROB
@@ -26,7 +26,7 @@ function brushFAN(eventdata)
 %
 % References:
 %
-%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire 
+%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -147,21 +147,55 @@ end
 
     function brushFANex(~,eventdata)
         
-        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Wool dataset'))
+        % Before version 2014a eventdata is passed as a struct on the other
+        % hand with matlab>=2014a eventdata is passed as 'matlab.ui.eventdata.SelectionChangedData'
+        if verLessThan ('matlab','8.4.0')
+            
+            if isstruct(eventdata)
+                % In this case the user has called the function without
+                % number (there is interaction) and InputScalarInteger is 0
+                stringselected=get(eventdata.NewValue,'String');
+                InputScalarInteger=0;
+            else
+                % In this case the user has called the function with
+                % a scalar integer (no interaction) and InputScalarInteger
+                % is the number invoked by the user
+                stringselected='nostring';
+                InputScalarInteger=eventdata;
+            end
+        else
+            
+            InputScalarInteger=isa(eventdata,'matlab.ui.eventdata.SelectionChangedData');
+            if InputScalarInteger==1
+                % In this case the user has called the function without
+                % number (there is interaction) and InputScalarInteger is 0
+                stringselected=get(eventdata.NewValue,'String');
+                InputScalarInteger=0;
+            else
+                % In this case the user has called the function with
+                % a scalar integer (no interaction) and InputScalarInteger
+                % is the number invoked by the user
+                stringselected='nostring';
+                InputScalarInteger=eventdata;
+            end
+        end
+        
+        if InputScalarInteger==1 || strcmp(stringselected,'Wool dataset')
             wool=load('wool.txt');
             y=wool(:,4);
             X=wool(:,1:3);
             [out]=FSRfan(y,X);
             namey='Number of cycles to failure';
             nameX={'Length of test specimen', 'Amplitude of loading cycle', 'Load '};
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger==0
                 
                 fanplot(out,'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
                     'persist' '' 'multivarfit' '2' 'FlagSize' '5' 'Label' 'on' 'RemoveLabels' 'off'})
             else
                 fanplot(out,'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush','')
             end
-        elseif eventdata==2 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Stack loss dataset'))
+            
+        elseif InputScalarInteger==2 || strcmp(stringselected,'Stack loss dataset')
             
             
             stack_loss_data=load('stack_loss.txt');
@@ -170,7 +204,7 @@ end
             namey='Number of cycles to failure';
             nameX={'Length of test specimen', 'Amplitude of loading cycle', 'Load '};
             [out]=FSRfan(y,X,'init',8);
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger==0
                 
                 fanplot(out,'ylimy',[-5 7],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
                     'persist' '' 'multivarfit' '2' 'FlagSize' '5' 'Label' 'on' 'RemoveLabels' 'off'})
@@ -178,8 +212,7 @@ end
                 fanplot(out,'ylimy',[-5 7],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush','')
             end
             
-        elseif eventdata==3 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Loyalty cards'))
-            
+        elseif InputScalarInteger==3 || strcmp(stringselected,'Loyalty cards')
             
             loyalty=load('loyalty.txt');
             y=loyalty(:,4);
@@ -192,8 +225,7 @@ end
             nameX={'Number of visits', 'Age', 'Number of persons in the family'};
             %FlagSize controls how large must be the highlighted points. It is a
             %parameter of selectdataFS.
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
-                
+            if InputScalarInteger==0
                 fanplot(out,'ylimy',[-10 20],'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
                     'multivarfit' '2' 'FlagSize' '5'})
             else
@@ -226,9 +258,9 @@ end
         set(plresfwd,'Position',[(width+10) scrsz(4)/10  width scrsz(4)/3])
         set(plyX,'Position',[(2*width+10) scrsz(4)/10  width scrsz(4)/3])
         set(plmdr,'Position',[(3*width+10) scrsz(4)/10  width scrsz(4)/3])
-     end
+    end
 
-    stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
+stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
 disp(stri)
 
 end

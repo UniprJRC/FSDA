@@ -13,19 +13,19 @@ function brushROB(eventdata)
 % eventdata  : scalar integer (from 1 to 6). Automatic code execution
 %              without user interaction. This option enables to perform in
 %              an automatic way the code associated with a particular
-%              radiobutton in the GUI 
+%              radiobutton in the GUI
 %              Example - 2 (the example associated
 %              with the second radiobutton will be automatically executed)
 %              Data Types - integer
 %
-%  Output: 
+%  Output:
 %
 % See also: brushFAN, brushRES
 %
 %
 % References:
 %
-%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire 
+%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -165,13 +165,46 @@ end
     function brushROBex(~,eventdata)
         %% Examples inside GUI to show how interactive brushing works
         
-        if eventdata==1 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Forbes dataset'))
+        % Before version 2014a eventdata is passed as a struct on the other
+        % hand with matlab>=2014a eventdata is passed as 'matlab.ui.eventdata.SelectionChangedData'
+        if verLessThan ('matlab','8.4.0')
+            
+            if isstruct(eventdata)
+                % In this case the user has called the function without
+                % number (there is interaction) and InputScalarInteger is 0
+                stringselected=get(eventdata.NewValue,'String');
+                InputScalarInteger=0;
+            else
+                % In this case the user has called the function with
+                % a scalar integer (no interaction) and InputScalarInteger
+                % is the number invoked by the user
+                stringselected='nostring';
+                InputScalarInteger=eventdata;
+            end
+        else
+            
+            InputScalarInteger=isa(eventdata,'matlab.ui.eventdata.SelectionChangedData');
+            if InputScalarInteger==1
+                % In this case the user has called the function without
+                % number (there is interaction) and InputScalarInteger is 0
+                stringselected=get(eventdata.NewValue,'String');
+                InputScalarInteger=0;
+            else
+                % In this case the user has called the function with
+                % a scalar integer (no interaction) and InputScalarInteger
+                % is the number invoked by the user
+                stringselected='nostring';
+                InputScalarInteger=eventdata;
+            end
+        end
+        
+        if InputScalarInteger==1 || strcmp(stringselected,'Forbes dataset')
             forbes=load('forbes.txt');
             y=forbes(:,2);
             X=forbes(:,1);
             [out]=LXS(y,X,'nsamp',0,'yxsave',1);
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger==0
                 databrush=struct;
                 databrush.selectionmode='Rect';
                 databrush.persist='';
@@ -183,14 +216,15 @@ end
             resindexplot(out,'databrush',databrush);
             
             
-        elseif eventdata==2 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Multiple regression'))
+        elseif InputScalarInteger==2 || strcmp(stringselected,'Multiple regression')
+            %% Multiple regression data
             multiple_regression=load('multiple_regression.txt');
             y=multiple_regression(:,4);
             X=multiple_regression(:,1:3);
             % LMS using 1000 subsamples
             [out]=MMreg(y,X,'Snsamp',500,'eff',0.95,'yxsave',1);
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger==0
                 % plot residuals using brushing
                 databrush=struct;
                 databrush.bivarfit='';
@@ -204,14 +238,15 @@ end
             
             resindexplot(out,'databrush',databrush);
             
-        elseif eventdata==3 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Multiple regression (2)'))
+        elseif InputScalarInteger==3 || strcmp(stringselected,'Multiple regression (2)')
+            %% Multiple regression data (2)
             multiple_regression=load('multiple_regression.txt');
             y=multiple_regression(:,4);
             X=multiple_regression(:,1:3);
             % LMS using 1000 subsamples
             [out]=MMreg(y,X,'Snsamp',500,'eff',0.90,'yxsave',1);
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger == 0
                 % plot residuals using brushing
                 databrush=struct;
                 databrush.bivarfit='';
@@ -225,14 +260,14 @@ end
             
             resindexplot(out,'databrush',databrush,'numlab',{6});
             
-        elseif eventdata==4 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Hawkins'))
+        elseif InputScalarInteger==4  || strcmp(stringselected,'Hawkins')
             %% Hawkins data
             hawkins=load('hawkins.txt');
             y=hawkins(:,9);
             X=hawkins(:,1:8);
             [out]=Sreg(y,X,'nsamp',500,'yxsave',1);
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger == 0
                 databrush=struct;
                 databrush.bivarfit='';
                 databrush.selectionmode='Brush';
@@ -245,14 +280,14 @@ end
             
             resindexplot(out,'databrush',databrush);
             
-        elseif eventdata==5 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Stack loss (y)'))
+        elseif InputScalarInteger==5  || strcmp(stringselected,'Stack loss (y)')
             %% Stack loss data (original scale)
             stack_loss=load('stack_loss.txt');
             y=stack_loss(:,4);
             X=stack_loss(:,1:3);
             [out]=LXS(y,X,'nsamp',0,'lms',0,'yxsave',1);
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger == 0
                 databrush=struct;
                 databrush.bivarfit='2';
                 databrush.selectionmode='Rect';
@@ -265,14 +300,14 @@ end
             
             resindexplot(out,'databrush',databrush);
             
-        elseif eventdata==6 || (isa(eventdata,'matlab.ui.eventdata.SelectionChangedData') && strcmp(get(eventdata.NewValue,'String'),'Stack loss (sqrt y)'))
+        elseif InputScalarInteger==6  || strcmp(stringselected,'Stack loss (sqrt y)')
             %% Stack loss data (sqrt scale)
             stack_loss=load('stack_loss.txt');
             y=sqrt(stack_loss(:,4));
             X=stack_loss(:,1:3);
             [out]=LXS(y,X,'nsamp',0,'lms',0,'yxsave',1);
             
-            if isa(eventdata,'matlab.ui.eventdata.SelectionChangedData')
+            if InputScalarInteger == 0
                 databrush=struct;
                 databrush.bivarfit='2';
                 databrush.selectionmode='Rect';
@@ -313,7 +348,7 @@ end
         
     end
 
-    stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
+stri='Detailed information about the datasets used in this GUI can be found <a href="matlab: docsearchFS(''datasets_reg'')">here</a>';
 disp(stri)
 
 end
