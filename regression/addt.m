@@ -50,7 +50,7 @@ function [out]=addt(y,X,w,varargin)
 %               Data Types - char
 %   FontSize:   Label font size inside plot. Scalar. It controls the
 %               fontsize of the labels of the axes and eventual plot
-%               labels. Default value is 12
+%               labels. Default value is 10
 %               Example - 'FontSize',14
 %               Data Types - double
 %   SizeAxesNum: Font size of axes numbers. Scalar. It controls the
