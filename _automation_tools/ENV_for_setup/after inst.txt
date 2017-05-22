@@ -5,6 +5,7 @@ The following folders are added to MATLAB path :
 {FSDA toolbox}\clustering
 {FSDA toolbox}\multivariate
 {FSDA toolbox}\utilities_stat
+{FSDA toolbox}\utilities_help
 {FSDA toolbox}\FSDAdemos
 {FSDA toolbox}\graphics
 {FSDA toolbox}\utilities

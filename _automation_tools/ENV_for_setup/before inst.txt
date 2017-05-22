@@ -1,5 +1,5 @@
 
-Requisite for FSDA toolbox is MATLAB, which is copyright by © 1994-2016 The MathWorks, Inc.
+Requisite for FSDA toolbox is MATLAB, which is copyright by © 1994-2017 The MathWorks, Inc.
 
 AUTHORS and DEVELOPERS:
 University of Parma:

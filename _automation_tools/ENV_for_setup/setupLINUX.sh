@@ -12,7 +12,7 @@ echo "The FSDA toolbox is protected by a European Union Public Licence (EUPL)."
 echo "The EUPL is the first European Free/Open Source Software (F/OSS) Licence."
 echo "For more information on the EUPL, please visit http://www.osor.eu/eupl"
 echo ""
-echo "Requisite for FSDA toolbox is MATLAB, which is copyright by © 1994-2016 The MathWorks, Inc."
+echo "Requisite for FSDA toolbox is MATLAB, which is copyright by © 1994-2017 The MathWorks, Inc."
 echo ""
 echo "AUTHORS and DEVELOPERS:"
 echo ""
@@ -95,7 +95,7 @@ fi
 
 echo "Setting MATLAB environment ..."	
 
-matlab -nodesktop -nojvm -r "addpath '$where/examples' ; addpath '$where/utilities' ; addpath '$where/combinatorial' ; addpath '$where/FSDAdemos' ; addpath '$where/graphics' ; addpath '$where/utilities_stat' ; addpath '$where/datasets/multivariate' ; addpath '$where/datasets/regression' ; addpath '$where/datasets/multivariate_regression' ; addpath '$where/datasets/clustering' ; addpath '$where/clustering' ; addpath '$where/regression' ; addpath '$where/multivariate' ; addpath '$where' ; savepath ; exit "
+matlab -nodesktop -nojvm -r "addpath '$where/examples' ; addpath '$where/utilities' ; addpath '$where/combinatorial' ; addpath '$where/FSDAdemos' ; addpath '$where/graphics' ; addpath '$where/utilities_stat' ; addpath '$where/utilities_help' ; addpath '$where/datasets/multivariate' ; addpath '$where/datasets/regression' ; addpath '$where/datasets/multivariate_regression' ; addpath '$where/datasets/clustering' ; addpath '$where/clustering' ; addpath '$where/regression' ; addpath '$where/multivariate' ; addpath '$where' ; savepath ; exit "
 
 
 if [ $REL == 8 ]
@@ -112,6 +112,7 @@ echo "{FSDA toolbox}/clustering"
 echo "{FSDA toolbox}/regression"
 echo "{FSDA toolbox}/multivariate"
 echo "{FSDA toolbox}/utilities_stat"
+echo "{FSDA toolbox}/utilities_help"
 echo "{FSDA toolbox}/FSDAdemos"
 echo "{FSDA toolbox}/graphics"
 echo "{FSDA toolbox}/utilities"

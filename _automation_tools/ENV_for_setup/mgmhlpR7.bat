@@ -14,7 +14,7 @@ set where=%where:~1,-1%
 
 rem echo "SONO IN mgmhlpR7 . Il parametro vale " %where%
 
-%mathpath%\bin\matlab.exe -wait -automation -nodesktop -r " builddocsearchdb ('%where%\FSDA\helpfiles\FSDA') ; quit"  
+%mathpath%\bin\matlab.exe -wait -automation -nodesktop -r " builddocsearchdb ('%where%\FSDA\helpfiles\pointersHTML') ; quit"  
 
 del /f mgmhlpR8.bat
 (goto) 2>nul & del "%~f0"

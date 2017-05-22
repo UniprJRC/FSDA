@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId=FSDA
 AppName=FSDA toolbox for MATLAB
-AppVerName=FSDA toolbox for MATLAB Release 3.2 (03-jun-16)
+AppVerName=FSDA toolbox Release 2017a (03-jun-16) for MATLAB >R2009b
 AppPublisher=University of Parma and European Union
 AppPublisherURL=http://www.riani.it/MATLAB.htm
 AppSupportURL=http://www.riani.it/MATLAB.htm
@@ -50,12 +50,12 @@ Name: "{group}\{cm:UninstallProgram,FSDA toolbox for MATLAB}"; Filename: "{unins
 Name: "{commondesktop}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; {code:doc_func} "" " ; Tasks: desktopicon
 
 [Run]
-Filename: "{code:MyMatlabVersion}"; Parameters: " -wait -automation -nodesktop -r "" addpath '{app}\FSDA\examples' ; addpath '{app}\FSDA\utilities' ; addpath '{app}\FSDA\combinatorial' ; addpath '{app}\FSDA\FSDAdemos' ; addpath '{app}\FSDA\graphics' ; addpath '{app}\FSDA\utilities_stat' ; addpath '{app}\FSDA\datasets\multivariate' ; addpath '{app}\FSDA\datasets\regression' ; addpath '{app}\FSDA\datasets\multivariate_regression' ; addpath '{app}\FSDA\datasets\clustering' ; addpath '{app}\FSDA\clustering' ;addpath '{app}\FSDA\regression' ; addpath '{app}\FSDA\multivariate' ; addpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Setting MATLAB environment ..." ; Flags: shellexec waituntilterminated
+Filename: "{code:MyMatlabVersion}"; Parameters: " -wait -automation -nodesktop -r "" addpath '{app}\FSDA\examples' ; addpath '{app}\FSDA\utilities' ; addpath '{app}\FSDA\combinatorial' ; addpath '{app}\FSDA\FSDAdemos' ; addpath '{app}\FSDA\graphics' ; addpath '{app}\FSDA\utilities_stat' ; addpath '{app}\FSDA\utilities_help' ;addpath '{app}\FSDA\datasets\multivariate' ; addpath '{app}\FSDA\datasets\regression' ; addpath '{app}\FSDA\datasets\multivariate_regression' ; addpath '{app}\FSDA\datasets\clustering' ; addpath '{app}\FSDA\clustering' ;addpath '{app}\FSDA\regression' ; addpath '{app}\FSDA\multivariate' ; addpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Setting MATLAB environment ..." ; Flags: shellexec waituntilterminated
 Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; {code:doc_func} "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
 Filename: "{code:adobe_name}"; Parameters: " /n ""{app}\FSDA\InstallationNotes.pdf"" " ; Description: "{cm:OpenProgram, Installation Notes ( Acrobat Reader is required )}"; Flags: shellexec postinstall skipifsilent unchecked
 
 [UninstallRun]
-Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" rmpath '{app}\FSDA\examples' ; rmpath '{app}\FSDA\utilities' ; rmpath '{app}\FSDA\combinatorial' ; rmpath '{app}\FSDA\FSDAdemos' ; rmpath '{app}\FSDA\graphics' ;  rmpath '{app}\FSDA\utilities_stat' ; rmpath '{app}\FSDA\datasets\multivariate' ; rmpath '{app}\FSDA\datasets\regression' ; rmpath '{app}\FSDA\datasets\multivariate_regression' ; rmpath '{app}\FSDA\datasets\clustering' ; rmpath '{app}\FSDA\clustering' ; rmpath '{app}\FSDA\regression' ; rmpath '{app}\FSDA\multivariate' ; rmpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Remove FSDA paths from MATLAB environment ..." ; Flags: shellexec waituntilterminated
+Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" rmpath '{app}\FSDA\examples' ; rmpath '{app}\FSDA\utilities' ; rmpath '{app}\FSDA\combinatorial' ; rmpath '{app}\FSDA\FSDAdemos' ; rmpath '{app}\FSDA\graphics' ;  rmpath '{app}\FSDA\utilities_stat' ; rmpath '{app}\FSDA\utilities_help' ; rmpath '{app}\FSDA\datasets\multivariate' ; rmpath '{app}\FSDA\datasets\regression' ; rmpath '{app}\FSDA\datasets\multivariate_regression' ; rmpath '{app}\FSDA\datasets\clustering' ; rmpath '{app}\FSDA\clustering' ; rmpath '{app}\FSDA\regression' ; rmpath '{app}\FSDA\multivariate' ; rmpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Remove FSDA paths from MATLAB environment ..." ; Flags: shellexec waituntilterminated
 Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" {code:app_uninst}  quit;"" "; StatusMsg: "Remove FSDA apps from MATLAB environment ..." ; Flags: shellexec waituntilterminated
 Filename: "{code:MyMatlabVersion}"; Parameters: " -automation -nodesktop -r "" if exist([docroot '\FSDA'],'dir');rmdir( [docroot '\FSDA'],'s') ; end; quit;"" "; Flags: shellexec waituntilterminated
 
@@ -215,7 +215,7 @@ var
       end;
      if (CompareVersion (LevMatlab, '7.9') < 0) then
       begin
-       MsgBox('FSDA Toolbox needs a MATLAB release greater than R2009b. Installation aborted.', mbError, MB_OK );
+       MsgBox('FSDA Toolbox is maintained from MATLAB release R2009b. Installation aborted.', mbError, MB_OK );
        abort;
       end;
     end;
