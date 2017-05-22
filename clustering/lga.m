@@ -78,7 +78,7 @@ function out = lga(X,k,varargin)
     out=lga(X,3);
 %}
 %{
-    % lga with all niter = 1000 and biter = 3000.
+    % lga with niter = 1000 and biter = 3000.
     X=load('X.txt');
     out=lga(X,4,'niter',1000,'biter',3000);
 %}

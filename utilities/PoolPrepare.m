@@ -82,8 +82,9 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
 % Last modified 31-05-2016
 
 % Examples:
+
 %{
-    % Sequential vs parallel run
+    % Sequential vs parallel run.
     n = 50000;
     x = randn(1,n) ;
     y = zeros(1,n);
@@ -110,7 +111,132 @@ function [numpool, tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool
     tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);
 
     fprintf('\n\n\n      parFor: %f secs\n\n',tend);
+%}
 
+%{
+    % Sequential vs parallel run (show tstart).
+    n = 50000;
+    x = randn(1,n) ;
+    y = zeros(1,n);
+
+    % sequential run
+    tic
+    for i = 1 : n
+        y(i) = std(x(1:i));
+    end
+    fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);
+
+    % parallel run
+    numpool = 4;
+    pariter = n;
+    UserOptions = {};
+    [numpool, tstart, progbar, usePCT, usematlabpool] = ...
+            PoolPrepare(numpool,pariter,UserOptions);
+    disp(tstart)
+
+    parfor i = 1 : n
+        y(i) = std(x(1:i));
+    end
+
+    cleanpool = 1; % this closes the pool of MATLAB sessions
+    tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);
+
+    fprintf('\n\n\n      parFor: %f secs\n\n',tend);
+%}
+
+
+%{
+    % Sequential vs parallel run (show progbar).
+    n = 50000;
+    x = randn(1,n) ;
+    y = zeros(1,n);
+
+    % sequential run
+    tic
+    for i = 1 : n
+        y(i) = std(x(1:i));
+    end
+    fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);
+
+    % parallel run
+    numpool = 4;
+    pariter = n;
+    UserOptions = {};
+    [numpool, tstart, progbar, usePCT, usematlabpool] = ...
+            PoolPrepare(numpool,pariter,UserOptions);
+    % show progrbar
+    disp(progbar)
+
+    parfor i = 1 : n
+        y(i) = std(x(1:i));
+    end
+
+    cleanpool = 1; % this closes the pool of MATLAB sessions
+    tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);
+
+    fprintf('\n\n\n      parFor: %f secs\n\n',tend);
+%}
+
+%{
+    % Sequential vs parallel run (show usePCT).
+    n = 50000;
+    x = randn(1,n) ;
+    y = zeros(1,n);
+
+    % sequential run
+    tic
+    for i = 1 : n
+        y(i) = std(x(1:i));
+    end
+    fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);
+
+    % parallel run
+    numpool = 4;
+    pariter = n;
+    UserOptions = {};
+    [numpool, tstart, progbar, usePCT, usematlabpool] = ...
+            PoolPrepare(numpool,pariter,UserOptions);
+    disp(usePCT)
+
+    parfor i = 1 : n
+        y(i) = std(x(1:i));
+    end
+
+    cleanpool = 1; % this closes the pool of MATLAB sessions
+    tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);
+
+    fprintf('\n\n\n      parFor: %f secs\n\n',tend);
+%}
+
+%{
+    % Sequential vs parallel run (show usematlabpool).
+    n = 50000;
+    x = randn(1,n) ;
+    y = zeros(1,n);
+
+    % sequential run
+    tic
+    for i = 1 : n
+        y(i) = std(x(1:i));
+    end
+    fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);
+
+    % parallel run
+    numpool = 4;
+    pariter = n;
+    UserOptions = {};
+    [numpool, tstart, progbar, usePCT, usematlabpool] = ...
+            PoolPrepare(numpool,pariter,UserOptions);
+    disp(usematlabpool)
+
+    parfor i = 1 : n
+        y(i) = std(x(1:i));
+    end
+
+    cleanpool = 1; % this closes the pool of MATLAB sessions
+    tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);
+
+    fprintf('\n\n\n      parFor: %f secs\n\n',tend);
 %}
 
 %% Beginning of code

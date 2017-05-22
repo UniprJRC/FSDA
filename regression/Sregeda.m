@@ -191,7 +191,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 % Examples:
 
 %{
-    %% Sregeda with msg=0
+    %% Sregeda with msg=0.
     % Run this code to see the output shown in the help file
     n=200;
     p=3;

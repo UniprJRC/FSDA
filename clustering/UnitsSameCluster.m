@@ -35,7 +35,7 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 %
 %   IDXwithConsistentLabels = cell with the same size as input cell IDX and with
 %                   the same meaning of input cell IDX but with consistent
-%                   labels. Group which contains unit
+%                   labels. Cell. Group which contains unit
 %                   UnitsSameGroup(1)  is labelled with number 1. In
 %                   general. Group which contains UnitsSameGroup(r) where
 %                   r=2, ...length(kk)-1 is labelled with number r (unless

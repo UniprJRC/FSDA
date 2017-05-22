@@ -220,7 +220,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %}
 
 %{
-    % Compare t stat from S and MM estimator
+    % Compare t stat from S and MM estimator.
     rhofunc='optimal';
     bdp=0.5;
     out=RobCov(X,outS.residuals,outS.scale,'rhofunc',rhofunc,'bdp',0.5);

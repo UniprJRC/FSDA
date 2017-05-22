@@ -649,6 +649,7 @@ function out=publishFS(file,varargin)
 %}
 
 %{
+  % Option Display.
   % Create file FSRmdr.html starting from file FSRmdr and
   % display detailed information about the Input, Output and Optional
   % arguments.
@@ -656,7 +657,8 @@ function out=publishFS(file,varargin)
 %}
 
 %{
-  % Create HTML file with embedded images in folder C:\tmp
+  % Option outputDir.
+  % Create HTML file with embedded images in folder C:\tmp.
   out=publishFS('FSRmdr','evalCode',true,'outputDir','C:\tmp')
 %}
 

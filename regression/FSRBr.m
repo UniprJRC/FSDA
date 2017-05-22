@@ -332,7 +332,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 
 
 %{
-        % Example of FSRB for international trade data (explore options).
+        % Example of FSRBr for international trade data (explore options).
         % Bayesian FS to fit the group of undervalued flows.
         load('fishery');
         X = fishery.data(:,1);
