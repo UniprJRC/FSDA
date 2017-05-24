@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="4039732749" file="C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\_automation_tools\ENV_for_setup\APP\brushFAN\brushFAN.prj" location="C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\_automation_tools\ENV_for_setup\APP\brushFAN" name="brushFAN" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="1058765027" file="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN\brushFAN.prj" location="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN" name="brushFAN" target="target.mlapps" target-name="Package App">
     <param.appname>brushFAN</param.appname>
     <param.authnamewatermark>FSDA team</param.authnamewatermark>
     <param.email>toolboxfs@unipr.it</param.email>
@@ -14,32 +14,58 @@
       <item>MATLAB</item>
     </param.products.name>
     <param.products.id>
-      <item>'1'</item>
+      <item>1</item>
     </param.products.id>
     <param.products.version>
-      <item>8.5</item>
+      <item>9.2</item>
     </param.products.version>
     <param.platforms />
-    <param.output>${PROJECT_ROOT}\brushFAN.mlappinstall</param.output>
+    <param.output>D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN</param.output>
     <param.guid>d75f2465-d088-453e-95e5-b5cc55c7f99d</param.guid>
     <unset>
       <param.icons />
       <param.version />
       <param.platforms />
+      <param.output />
     </unset>
     <fileset.main>
-      <file>C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\examples\brushFAN.m</file>
+      <file>D:\MATLAB\FSDA\examples\brushFAN.m</file>
     </fileset.main>
     <fileset.depfun />
     <fileset.resources />
     <fileset.package />
     <build-deliverables>
-      <file location="C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\_automation_tools\ENV_for_setup\APP\brushFAN" name="brushFAN.mlappinstall" optional="false">C:\cygwin64\home\adminjrc\FSDA_scripts\FSDAprova\_automation_tools\ENV_for_setup\APP\brushFAN\brushFAN.mlappinstall</file>
+      <file location="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP" name="brushFAN" optional="false">D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2015aPrerelease</root>
-      <toolboxes />
+      <root>C:\Program Files\MATLAB\R2017a</root>
+      <toolboxes>
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabcoder" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="embeddedcoder" />
+      </toolboxes>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
     </matlab>
     <platform>
       <unix>false</unix>
@@ -50,7 +76,7 @@
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>6.1</osver>
+      <osver>6.2</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>win64</arch>
