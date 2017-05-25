@@ -12,8 +12,8 @@
                   Example-'myfile.m'</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'Display','none'
 </code>,<code> 'outputDir','C:'
 </code>,<code> 'imagesDir','C:'
-</code>,<code> 'evalCode','false'
-</code>,<code> 'write2file','false'
+</code>,<code> 'evalCode',false
+</code>,<code> 'write2file',false
 </code></code></span></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_Display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Display</code> &#8212;Level of display.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>'off' or 'none' displays no output.</p> <p>
              'iter' displays a series of messages on the screen about
              the execution of the different section of the input .m file
@@ -48,15 +48,15 @@
              If evalcode is true the code associated with the examples
              which start with symbols '%%' will be run and the output will
              be automatically included into the HTML output file. The
-             images will be save in subfolder images_help of the
+             images will be saved in subfolder images_help of the
              outputDir. The default value of evalCode is true.</p><p>
-             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'evalCode','false'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_write2file" class="clearfix"></div><h3 id="input_argument_namevalue_write2file" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>write2file</code> &#8212;Option to write HTML file.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p>Option which specifies
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'evalCode',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_write2file" class="clearfix"></div><h3 id="input_argument_namevalue_write2file" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>write2file</code> &#8212;Option to write HTML file.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p>Option which specifies
              whether HTML file must be created or if just structure out
              must be created. The default value of write2file is true,
              that is html file is created
-             </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'write2file','false'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>T consists of a structure 'out' containing the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>title</code></td><td><p><p>title of HTML file. String.</p> <p>
+             </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'write2file',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>T consists of a structure 'out' containing the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>title</code></td><td><p><p>title of HTML file. String.</p> <p>
                    String to be included in HTML tag title</p></p></td></tr><tr valign="top"><td><code>purpose</code></td><td><p><p>purpose of the routine. String.</p> <p>
                  String forming second row of output HTML file
                  String forming second row of output HTML file</p></p></td></tr><tr valign="top"><td><code>description</code></td><td><p>short description of the file. String
@@ -90,7 +90,7 @@
                  7th column = this column is empty unless 3rd column
                  contains the word structure. If this is the case the 7th
                  column will contain a cell with two columns containing
-                 the Values/Description of the associated structure.</p></p></td></tr><tr valign="top"><td><code>OutArgs</code></td><td><p><p>Required and Optional (varaargout) output arguments. Cell.</p> <p>
+                 the Values/Description of the associated structure.</p></p></td></tr><tr valign="top"><td><code>OutArgs</code></td><td><p><p>Required and Optional (varargout) output arguments. Cell.</p> <p>
                  Cell of size k-by-5 containing information about output
                  and varargout output argument.</p> <p>
                  1st column = name.</p> <p>
@@ -133,7 +133,7 @@
                  'nomes'       [                0]    [           1]
                  'refsteps'    [                0]    [           1]
                  'reftol'      [                0]    [           1]
-                 it means that options 'nomes', 'refstesps' and 'reftol'
+                 it means that options 'nomes', 'refsteps' and 'reftol'
                  have not been described, but are used inside the .m file</p></p></td></tr><tr valign="top"><td><code>OutArgsStructMisMatch</code></td><td><p>cell of size r-by-3 which in presence of output
                  arguments which are structures enables to highlight
                  the fields of the structures which are described but
@@ -161,7 +161,7 @@
                  structure named outMM or Myout then publishFS checks the
                  fields present in outMM or Myout to detect eventual
                  mismatches.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details </span></a></span></h3><div class="collapse"><p><p>
-         The .m file (which must be located on the MATLAB path or on the currect
+         The .m file (which must be located on the MATLAB path or on the current
          folder) must satisfy the following characteristics to be correctly
          processed.</p> <p>
 
@@ -381,7 +381,7 @@
          If in the HTML file the user clicks on them the expdanded description
          (that is what starts after the second full stop will appear).</p> <p>
 
-         IMPORTANT NOTICE: Similarly to what happend for each input argument, if
+         IMPORTANT NOTICE: Similarly to what happened for each input argument, if
          an output argument is a structure, publishFS automatically checks if it
          contains the words "structure" and "field". In this case, the fields of
          the structure will be automatically included into a HTML table. The

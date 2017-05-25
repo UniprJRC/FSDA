@@ -49,9 +49,9 @@ function [out]=FSR(y,X,varargin)
 %                 default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000 
 %                 Data Types - double
-%       lms     : Criterion to use to find the initlal
+%       lms     : Criterion to use to find the initial
 %                 subset to initialize the search. Scalar,  vector or structure.
-%                 lms specifies the criterion to use to find the initlal
+%                 lms specifies the criterion to use to find the initial
 %                 subset to initialize the search (LMS, LTS with
 %                 concentration steps, LTS without concentration steps
 %                 or subset supplied directly by the user).
@@ -122,7 +122,7 @@ function [out]=FSR(y,X,varargin)
 %                   an ols line to a specific group, the one with
 %                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
 %                   of mixtures.
-%               Example - 'bivarfit',2 
+%               Example - 'bivarfit','2' 
 %               Data Types - char
 %       multivarfit : Superimpose multivariate least square lines. Character.
 %                 This option adds one or more least square lines, based on
@@ -464,7 +464,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
         if length(mdr)>=n/2
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
-            disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
+            disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
             out.ListOut  = setdiff(seq,mdr);
         else
             disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point or use option bsbmfullrank=0 ')
@@ -512,7 +512,7 @@ else % initial subset is not supplied by the user
         if size(mdr,2)<2
             if length(mdr)>=n/2
                 disp('More than half of the observations produce a singular X matrix')
-                disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
+                disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
                 
                 out.ListOut = setdiff(seq,mdr);
                 

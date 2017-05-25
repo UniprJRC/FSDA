@@ -56,16 +56,16 @@ function out=publishFS(file,varargin)
 %             If evalcode is true the code associated with the examples
 %             which start with symbols '%%' will be run and the output will
 %             be automatically included into the HTML output file. The
-%             images will be save in subfolder images_help of the
+%             images will be saved in subfolder images_help of the
 %             outputDir. The default value of evalCode is true.
-%             Example - 'evalCode','false'
-%             Data Types - Boolean
+%             Example - 'evalCode',false
+%             Data Types - logical
 % write2file: Option to write HTML file. Logical. Option which specifies
 %             whether HTML file must be created or if just structure out
 %             must be created. The default value of write2file is true,
 %             that is html file is created
-%             Example - 'write2file','false'
-%             Data Types - Boolean
+%             Example - 'write2file',false
+%             Data Types - logical
 %
 % Output:
 %
@@ -109,7 +109,7 @@ function out=publishFS(file,varargin)
 %                 contains the word structure. If this is the case the 7th
 %                 column will contain a cell with two columns containing
 %                 the Values/Description of the associated structure.
-% out.OutArgs   = Required and Optional (varaargout) output arguments. Cell.
+% out.OutArgs   = Required and Optional (varargout) output arguments. Cell.
 %                 Cell of size k-by-5 containing information about output
 %                 and varargout output argument.
 %                 1st column = name.
@@ -160,7 +160,7 @@ function out=publishFS(file,varargin)
 %                 'nomes'       [                0]    [           1]
 %                 'refsteps'    [                0]    [           1]
 %                 'reftol'      [                0]    [           1]
-%                 it means that options 'nomes', 'refstesps' and 'reftol'
+%                 it means that options 'nomes', 'refsteps' and 'reftol'
 %                 have not been described, but are used inside the .m file
 %out.OutArgsStructMisMatch = cell of size r-by-3 which in presence of output
 %                 arguments which are structures enables to highlight
@@ -194,7 +194,7 @@ function out=publishFS(file,varargin)
 %
 % More About:
 %
-%         The .m file (which must be located on the MATLAB path or on the currect
+%         The .m file (which must be located on the MATLAB path or on the current
 %         folder) must satisfy the following characteristics to be correctly
 %         processed.
 %
@@ -414,7 +414,7 @@ function out=publishFS(file,varargin)
 %         If in the HTML file the user clicks on them the expdanded description
 %         (that is what starts after the second full stop will appear).
 %
-%         IMPORTANT NOTICE: Similarly to what happend for each input argument, if
+%         IMPORTANT NOTICE: Similarly to what happened for each input argument, if
 %         an output argument is a structure, publishFS automatically checks if it
 %         contains the words "structure" and "field". In this case, the fields of
 %         the structure will be automatically included into a HTML table. The
