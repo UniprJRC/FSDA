@@ -68,13 +68,13 @@ Summary of the exceedances
     p=3;
     X=randn(n,p);
     y=randn(n,1);
-    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
 -------------------------
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
            1          99         999        9999       99999
-           0           1           0           0           0
+           0           0           0           0           0
 
 </pre><img vspace="5" hspace="5" src="images\FSR_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_06.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of options xlim and ylim (Hawkins data).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('hawkins.txt','hawkins');
@@ -259,11 +259,11 @@ Summary of the exceedances
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','NameOfResponse' 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Vector with two elements controlling minimum and maximum
                  on the y axis. Default value is '' (automatic scale)
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim','[0,10]' sets the minim value to 0 and the
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim',[0,10] sets the minimum value to 0 and the
 </code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlim" class="clearfix"></div><h3 id="input_argument_namevalue_xlim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Vector with two elements
                minimum and maximum on the x axis. Default value is ''
                (automatic scale)
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlim','[0,10]' sets the minim value to 0 and the
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlim',[0,10] sets the minimum value to 0 and the
 </code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option to be
                 used if the distribution of the data is
                  strongly non normal and, thus, the general signal

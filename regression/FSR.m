@@ -162,13 +162,13 @@ function [out]=FSR(y,X,varargin)
 %               Data Types - char
 %       ylim   :  Control y scale in plot. Vector. Vector with two elements controlling minimum and maximum
 %                 on the y axis. Default value is '' (automatic scale)
-%               Example - 'ylim','[0,10]' sets the minim value to 0 and the
+%               Example - 'ylim',[0,10] sets the minimum value to 0 and the
 %               max to 10 on the y axis
 %               Data Types - double
 %       xlim   : Control x scale in plot. Vector. Vector with two elements
 %               minimum and maximum on the x axis. Default value is ''
 %               (automatic scale)
-%               Example - 'xlim','[0,10]' sets the minim value to 0 and the
+%               Example - 'xlim',[0,10] sets the minimum value to 0 and the
 %               max to 10 on the x axis
 %               Data Types - double
 %      bonflev  : Signal to use to identify outliers. Scalar. Option to be
