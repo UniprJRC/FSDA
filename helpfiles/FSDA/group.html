@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 
+
   
   <meta content="it" http-equiv="Content-Language" />
 
@@ -27,7 +28,7 @@ li.MsoNormal {
   </script></head><body>
 <h1>The forward search group</h1>
 
-The core of the Forward Search group comes both from the the members of
+The core of the Forward Search group comes both from the members of
 the division of Statistics and Computing of the University of Parma and
 the
 Department of Statistics of the London School of Economics (from now on
@@ -38,7 +39,7 @@ Springer-Verlag New York (Atkinson and Riani, 2000; Atkinson Riani and
 Cerioli,
 2004) and many papers in prestigious international journals. The last
 20 years
-of joint research of people from ParmaLSE can be summarized as follows:
+of joint research of people from ParmaLSE and their research partners can be summarized as follows:
 <p><strong>1994-2002.</strong> Introduction of the new approach. At
 that time
 we were completely unaware of many of the potentialities of the new
@@ -83,7 +84,7 @@ al. (2008).</p>
 implementation of the Forward Search was done in Splus and R by Dr.
 Konis for the analysis of multivariate data (e.g. the Rfwdmd software
 downloadable from the CRAN site). Unfortunately, lack of resources
-prevented the maintenance of such implementations but, almost ten years
+prevented the maintenance of such implementations. Almost ten years
 later, Luca Scrucca revitalized the package ‘forward’. </p>
 
 <p><strong>2008 on.&nbsp;</strong> The need to apply routinely the
@@ -97,23 +98,33 @@ the University of Parma), Vytis Kopustinskas and the head of the group,
 Spyros Arsenis. The joint activities of the two teams progressed till
 today with always-new stimuli and challenging problems.&nbsp; The FSDA
 toolbox is one of the main outcomes of this collaboration. </p>
-<p><strong>2010 on</strong>. We started including in the toolbox all traditional 
+<p><strong>2010</strong>. We started including in the toolbox all traditional 
 robust estimators (S, MM and tau) with the different weight functions (Hampel, 
 hyperbolic, optimal and biweght) together with high breakdown estimators (LMS, 
 LTS, MVE and MCD) and their reweighted version. We have also implemented the 
 accurate distributional approximations to the finite sample distribution of the 
 corresponding diagnostic tools (Cerioli Riani and Atkinson, 2009; Cerioli, 
 2010). In this FSDA became a general tool for robust data analysis (regression 
-and multivariate) and even changed its name in "Flexible Statistics and Data 
-Analysis toolbox".</p>
-<p><strong>2014 on.</strong> The  concept ot monitoring was applied to the 
+and multivariate) and even changed its name in "<span style="font-style: italic;">Flexible Statistics and Data 
+Analysis toolbox</span>".</p>
+<p><strong>2014-2105.</strong> The  concept ot monitoring was applied to the 
 traditional robust estimators (such as S, MM and tau) and to high breakdown 
-estimators based on trimming (such as LTS and LMS). We plan to extend it to the 
-multivariate context soon.  </p>
-<p><strong>2015</strong>. Robust clustering methods have been introduced into 
-the toolbox (tclust and MixSim).  </p>
-<p>&nbsp;</p>
-
+estimators based on trimming both in the regression (such as LTS and LMS) and multivariate context (e.g. MVE, MVD).  </p>
+<p><strong>2015</strong>. The main robust clustering methods were introduced into 
+the toolbox: tclust, tkmeans, rlga (and the non-robust counterpart, lga).</p>
+<p><span style="font-weight: bold;">2016</span>. We give special
+importance to the role of simulations and benchmark experiments for the
+statistical practice.&nbsp; For this reason we introduced in FSDA sound
+methods for generating mixtures of&nbsp; populations. We privileged a
+method based on user-specified overlap, MixSim and MixSimReg. The
+project (quite demanding) could benefit from precious interactions with
+Volodymyr Melnykov, had at the Model-Based Clustering workshop series
+organised in Catania by Salvatore Ingrassia. <br />
+</p>
+<strong>2016-2017</strong>. Robust clustering functions were extended
+to clusterwise regression methods and&nbsp; cluster weighted models
+(tclust-reg, TCWRM).<br />
+<br />
 <p>The ParmaLSE - JRC teams created in the last years lot of synergies
 with new research groups, extending considerably the network of
 scientists interested in (robust) solutions to anti-fraud problems and
@@ -180,7 +191,9 @@ process. Johansen and Nielsen (2013, 2014), starting from several
 meetings held with the ParmaLSE team, developed respectively pointwise
 and simultaneous confidence bands for estimators and forward residuals.
 Nielsen also implemented the undelying asymptotic theory in&nbsp; the
-`ForwardSearch' R package. </p>
+`ForwardSearch' R package.</p>
+<p style="margin-left: 40px;"><strong>2017. </strong>FSDA team started collaborating with Valentin Todorov on the porting of the key FSDA regression routines to a R package.&nbsp; </p>
+
 
 <p>It is worthwhile to mention other people who share the same
 philosophy, who
@@ -208,11 +221,11 @@ Chakraborty and S. S. Dhar extended the asymtptic theory monitoring approach to
 elliptical distributions, while M. Baragilly created new tools for assessing the 
 number of clusters based on the idea of monitoring in presence of non elliptical 
 distributions.</p>
-<p>&nbsp;</p>
+
 
 <p>We finally hope further interaction with researchers who use approaches based 
 on dynamic models which show strong points of contact with our philosophy.</p>
-<p>&nbsp;</p>
+
 
 <p>In summary, it is true to say that the growth of the Forward Search
 method
@@ -230,19 +243,26 @@ of circumstances and people, which comprises these ingredients: </p>
 
 <ul>
 
+  <li>Sound management of all steps of software documentation, development, testing and packaging, which involves now several staff members from both Parma and&nbsp; JRC, in particular: Emmanulele Sordini, Patrizia Calcaterra, Aldo Corbellini, Gianluca Morelli.&nbsp;<br />
+ </li>
+  <li>Automatic and regular testing of all FSDA functions over multiple MATLAB platforms, from 2009b on.<br />
+  </li>
+  <li>Beta testing carried out by intensive FSDA users, in particular Andrea Cerasa and Andrea Pagano.</li>
+  <li>Informal but regular interactions with Mathworks staff, both in Italy and US (we acknoledge in particular the contribution of Francesca Perino and Deve Bergstein).<br />
+  </li>
   <li>Cultivate and create space for fresh ideas. Young researchers at
 doctoral and post-doctoral level will be always more than welcome. New
 mathematical results providing theoretical underpinnings to the
 observed excellent performance of our methodology of data analysis
 (Stochastic processes group).</li>
+
   <li>A stable practical laboratory for the assessment of our
 theoretical foundations, providing a considerable number of
 applications to real data affected by different sources of
 heterogeneity (JRC group). We are firmly convinced that only a close
 interaction between theoretical understanding and practical exploration
 can ensure advancement towards our objectives. </li>
-  <li>Professionally written open source software. A Software group
-should be created and extended beyond the current FSDA developers. </li>
+  
   <li>Spread the new methodology to different fields of application and
 at the same time extend the procedure theoretically and empirically to
 the new problems which arise from the different contexts (Statistics
