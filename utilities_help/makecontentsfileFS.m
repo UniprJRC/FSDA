@@ -314,9 +314,8 @@ for j=1:ldirpath
     maxNameLenAllStr = num2str(maxNameLenAll);
     maxCategoryLenAllStr = num2str(maxCategoryLenAll);
     maxDescriptionLenAllStr = num2str(maxDescriptionLenAll);
-    
     dout=struct2cell(d)';
-    
+
     % dout(:,1)= name of the file (with extension)
     % dout(:,2)= date (in local format)
     % dout(:,3)= size ()

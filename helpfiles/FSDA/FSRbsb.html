@@ -9,7 +9,7 @@
     y=fishery.data(:,1);
     X=fishery.data(:,2);
     [out]=LXS(y,X,'nsamp',10000);
-    Un = FSRbsb(y,X,out.bs,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.30 seconds 
+    Un = FSRbsb(y,X,out.bs,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.27 seconds 
 m=100
 m=200
 m=300
@@ -94,7 +94,7 @@ Total estimated time to complete LMS:  0.03 seconds
                    monitoring units forming subset
                    </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts the search from step m=100
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-                  if 0, no constant term will be included.</p> <p>
+                  else no constant term will be included.</p> <p>
                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
                   matrix y and matrix X. Notice that y and X are left

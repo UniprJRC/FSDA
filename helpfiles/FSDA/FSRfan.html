@@ -14,16 +14,16 @@
     %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.9%
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.2%
-Total estimated time to complete LMS:  0.11 seconds 
+Total estimated time to complete LMS:  0.07 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.9%
 </pre><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
@@ -112,7 +112,10 @@ m=500
     fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
     disp('Maximum difference in absolute value')
     disp(max(max(abs(outYJ.Score-outBC.Score))))
-</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.15 seconds 
+</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.13 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.12 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.14 seconds 
@@ -121,7 +124,10 @@ Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.14 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.15 seconds 
+Total estimated time to complete LMS:  0.19 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.13 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.13 seconds 
@@ -133,13 +139,7 @@ Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.13 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.14 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.15 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Maximum difference in absolute value
@@ -147,7 +147,7 @@ Maximum difference in absolute value
 
 </pre><img vspace="5" hspace="5" src="images\FSRfan_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_04.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
-               variable. It can be both a row of column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
+               variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
                variables (also called 'regressors')
                of dimension (n x p-1). Rows of X represent observations, and
                columns represent variables.</p> <p>
@@ -176,7 +176,7 @@ Maximum difference in absolute value
 </code>,<code> 'msg',1
 </code>,<code> 'tag','mytag'
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted
-                   (default), if 0, no constant term will be included.</p> <p>
+                   (default), else no constant term will be included.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed
                    on matrix y and matrix X. Notice that y and X are left

@@ -92,7 +92,7 @@ if ~isempty(IndexesofFiles)
     error('FSDA:CreateFSDAhelpFiles','Files without HTML web page')
 end
 
-%% STEP 3: create alphabetical list of functiona and txt file
+%% STEP 3: create alphabetical list of functions and txt file
 fsep=filesep;
 
 % Make sure one more time you are inside main root of FSDA

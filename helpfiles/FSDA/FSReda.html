@@ -72,7 +72,7 @@
     v=axis;
     line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
     title('Normality test');
-    xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.13 seconds 
+    xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.12 seconds 
 </pre><img vspace="5" hspace="5" src="images\FSReda_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSReda_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSReda_03.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
      beta and sigma2.</li></span></a></span></h3><div class="collapse"><p>
      House price data <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -157,9 +157,9 @@
         num2str(xlimL) ',' num2str(xlimU) ...
         ']'],'t');
     disp(['The vertical lines are located in the' ...
-        ' step prior to the inclusion of the first outlier'])</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.45 seconds 
+        ' step prior to the inclusion of the first outlier'])</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.33 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 32.59%
+Warning: Number of subsets without full rank equal to 32.52%
 m=100
 m=200
 m=300
@@ -183,7 +183,7 @@ The vertical lines are located in the step prior to the inclusion of the first o
 </code>,<code> 'tstat','trad'
 </code>,<code> 'conflev',[0.90 0.93] 
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-                     if 0, no constant term will be included.</p> <p>
+                     else no constant term will be included.</p> <p>
                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search
                        and start monitoring required diagnostics. if init is not

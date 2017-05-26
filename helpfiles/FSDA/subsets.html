@@ -5,11 +5,11 @@ C =
 
   5&times;3 int8 matrix
 
-   44   52   71
-   23   79   92
-   50   61   74
-   11   24   68
-   18   40   50
+   29   70   84
+    1   86   92
+   17   77   91
+    2   45   73
+   58   85   89
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
         Use information on the number of combinations to speed up generation.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -19,11 +19,11 @@ C =
 
   5&times;3 int8 matrix
 
-   47   71   88
-   16   67   81
-   23   45   77
-    6   70   75
-   18   30   64
+    1   28   49
+    1   15   51
+   28   82   85
+    4   60   80
+   91   95   96
 
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
         Also inform about the time taken for the operation.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -159,7 +159,7 @@ Frequencies of the 0 to p successes in the p drawns (subsets output):
     0.0007    0.0225    0.2262    0.7505
 
 Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
-    0.0008    0.0238    0.2292    0.7463
+    0.0007    0.0229    0.2263    0.7501
 
 </pre><img vspace="5" hspace="5" src="images\subsets_02.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighted sampling without replacement, with negative weights.</li></span></a></span></h3><div class="collapse"><p>
 <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -205,7 +205,7 @@ Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
     % Ck is then provided, e.g., to tclustreg as follows:
     out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',Ck);</pre></div></div><pre class="codeoutput">Warning: columns 1  2 are constant and just col 1 has been kept!
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclustreg:  9.87 seconds 
+Total estimated time to complete tclustreg: 10.12 seconds 
 </pre><img vspace="5" hspace="5" src="images\subsets_03.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_nsamp" class="clearfix"> </div> <h3 id="input_argument_nsamp" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>nsamp</code> &#8212; Number of subsamples which have to be extracted. </span>  </a><span class="example_desc">Scalar;
                if nsamp=0 all subsets will be extracted; they will be (n
                choose p).</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; Number of observations of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_p" class="clearfix"> </div> <h3 id="input_argument_p" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>p</code> &#8212; Size of the subsets. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>In regression with p

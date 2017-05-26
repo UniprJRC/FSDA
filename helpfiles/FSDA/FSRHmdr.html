@@ -5,24 +5,46 @@
     X=XX(:,1);
     X=X./max(X);
     Z=log(X);
-    mdr=FSRHmdr(y,X,Z,0);</pre></div></div><pre class="codeoutput">Warning: interchange greater than 10 when m=15
-Number of units which entered=16
-Warning: interchange greater than 10 when m=16
+    mdr=FSRHmdr(y,X,Z,0);</pre></div></div><pre class="codeoutput">Warning: interchange greater than 10 when m=26
 Number of units which entered=17
-Warning: interchange greater than 10 when m=22
-Number of units which entered=20
-Warning: interchange greater than 10 when m=23
-Number of units which entered=24
-Warning: interchange greater than 10 when m=197
+Warning: interchange greater than 10 when m=27
+Number of units which entered=28
+Warning: interchange greater than 10 when m=67
+Number of units which entered=13
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
+Warning: interchange greater than 10 when m=68
+Number of units which entered=61
+Warning: interchange greater than 10 when m=69
+Number of units which entered=59
+Warning: interchange greater than 10 when m=70
+Number of units which entered=35
+Warning: interchange greater than 10 when m=165
 Number of units which entered=11
-Warning: interchange greater than 10 when m=212
+Warning: interchange greater than 10 when m=166
+Number of units which entered=39
+Warning: interchange greater than 10 when m=167
 Number of units which entered=11
-Warning: interchange greater than 10 when m=224
-Number of units which entered=21
+Warning: interchange greater than 10 when m=168
+Number of units which entered=15
+Warning: interchange greater than 10 when m=169
+Number of units which entered=16
+Warning: interchange greater than 10 when m=170
+Number of units which entered=13
+Warning: interchange greater than 10 when m=171
+Number of units which entered=11
+Warning: interchange greater than 10 when m=172
+Number of units which entered=11
+Warning: interchange greater than 10 when m=180
+Number of units which entered=12
+Warning: interchange greater than 10 when m=181
+Number of units which entered=25
+Warning: interchange greater than 10 when m=182
+Number of units which entered=15
+Warning: interchange greater than 10 when m=183
+Number of units which entered=18
 Warning: interchange greater than 10 when m=225
-Number of units which entered=23
-Warning: interchange greater than 10 when m=226
-Number of units which entered=11
+Number of units which entered=15
 Warning: interchange greater than 10 when m=482
 Number of units which entered=26
 Warning: interchange greater than 10 when m=483
@@ -83,7 +105,8 @@ Number of units which entered=11
     X=X./max(X);
     Z=log(X);
     [mdr,Un,BB,Bols,S2,Hetero]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-    plot(Hetero(:,1),Hetero(:,2))</pre></div></div><img vspace="5" hspace="5" src="images\FSRHmdr_01.png" alt=""> </p></div></div><div id="example_8" class="example_module expandableContent"><div id="Example_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring the estimates of the weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    plot(Hetero(:,1),Hetero(:,2))</pre></div></div><pre class="codeoutput">Warning: Maximum number of iterations has been reached without convergence 
+</pre><img vspace="5" hspace="5" src="images\FSRHmdr_01.png" alt=""> </p></div></div><div id="example_8" class="example_module expandableContent"><div id="Example_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring the estimates of the weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     XX=load('tradeH.txt');
     y=XX(:,2);
     X=XX(:,1);
@@ -147,7 +170,7 @@ Number of units which entered=11
                step we just use prior information
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-               if 0, no constant term will be included.</p> <p>
+               else no constant term will be included.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_modeltype" class="clearfix"></div><h3 id="input_argument_namevalue_modeltype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>modeltype</code> &#8212;Parametric function to be used in the skedastic equation.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p>If modeltype is 'arc' (default) than the skedastic function is
                modelled as follows

@@ -3,10 +3,14 @@
     Y=swiss_banknotes.data;
     Y=Y(1:100,:);
     [outMM]=MMmulteda(Y);
-    malfwdplot(outMM);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.76 seconds 
+    malfwdplot(outMM);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.70 seconds 
 </pre><img vspace="5" hspace="5" src="images\MMmulteda_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> MMmult with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y = load('geyser.txt');
-    [out1]=MMmulteda(Y,'conflev',0.99,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.15 seconds 
+    [out1]=MMmulteda(Y,'conflev',0.99,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.24 seconds 
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
 </pre><img vspace="5" hspace="5" src="images\MMmulteda_02.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>MMmulteda with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('swiss_banknotes');
     Y=swiss_banknotes.data;

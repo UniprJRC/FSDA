@@ -24,7 +24,21 @@
     % Define X
     X=X(:,1:end-1);
     smallp=4;
-    [outCp]=FSRcp(y,X,smallp,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\FSRcp_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use labels defined by the user.</li></span></a></span></h3><div class="collapse"><p>
+    [outCp]=FSRcp(y,X,smallp,'plots',1);</pre></div></div><pre class="codeoutput">Warning: Rank deficient, rank = 3, tol =  1.874292e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.334947e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.868456e-11. 
+Warning: Rank deficient, rank = 3, tol =  3.410996e-11. 
+Warning: Rank deficient, rank = 3, tol =  1.241267e-11. 
+Warning: Rank deficient, rank = 3, tol =  1.631688e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.056162e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.512148e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.997602e-11. 
+Warning: Rank deficient, rank = 3, tol =  1.420154e-11. 
+Warning: Rank deficient, rank = 3, tol =  1.854420e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.342010e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.858564e-11. 
+Warning: Rank deficient, rank = 3, tol =  3.410996e-11. 
+</pre><img vspace="5" hspace="5" src="images\FSRcp_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use labels defined by the user.</li></span></a></span></h3><div class="collapse"><p>
      Extract the best models of size 4 and show the plot of Cp. All the
      default options are used, apart from labels, therefore the plot of Cp
      and the output matrix Cpmon.MAL only contains the searches associated
@@ -143,7 +157,7 @@
 </code>,<code> 'selunitcolor',{'b';'g';'r'}
 </code>,<code> 'selunittype',{'-';'--';':';'-.'}
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-                       if 0, no constant term will be included.</p> <p>
+                       else no constant term will be included.</p> <p>
                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
                        matrix y and matrix X. Note that y and X are left

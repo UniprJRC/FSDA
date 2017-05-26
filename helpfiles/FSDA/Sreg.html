@@ -12,7 +12,7 @@
     [out]=Sreg(ycont,X);
     laby='Scaled S residuals'; 
     titl='';
-   resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  2.91 seconds 
+   resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  2.76 seconds 
 </pre><img vspace="5" hspace="5" src="images\Sreg_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Sreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
      Sreg with optimal rho function. Run this code to see the output shown in the help file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
@@ -57,7 +57,7 @@
 </code>,<code> 'plots',0 
 </code>,<code> 'yxsave',1 
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
-               constant term will be fitted (default), if 0, no constant
+               constant term will be fitted (default), else no constant
                term will be included.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers

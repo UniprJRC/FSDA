@@ -9,7 +9,7 @@
 %   carbikeplot  - Produces the carbike plot to find best relevant clustering solutions                          - CLUS-RobClaMULT- 2017 May 12
 %   cdsplot      - Produces the candlestick plot for robust model selection in linear regression                 - VIS-Reg        - 2016 Aug 01
 %   covplot      - Plots the trajectories of the elements of the covariance (correlation) matrix monitored       - VIS-Mult       - 2016 Aug 01
-%   fanplot      - Plots the fan plot for transformation in linear regression                                    - VIS-Reg        - 2017 Feb 14
+%   fanplot      - Plots the fan plot for transformation in linear regression                                    - VIS-Reg        - 2017 May 15
 %   histFS       - Plots a histogram with the elements in each bin grouped according to a vector of labels       - VIS-Reg        - 2016 Aug 01
 %   levfwdplot   - Plots the trajectories of leverage along the search                                           - VIS-Reg        - 2017 Feb 14
 %   malfwdplot   - Plots the trajectories of scaled Mahalanobis distances along the search                       - VIS-Mult       - 2017 May 12
