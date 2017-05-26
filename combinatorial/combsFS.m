@@ -21,7 +21,7 @@ function P = combsFS(v,m)
 %  Required input arguments:
 %
 %    v:         A vector with n elements. It contains the response variable.
-%               It can be both a row of column vector.
+%               It can be either a row or a column vector.
 %               Data Types - single|double
 %    m:         Scalar. It specifies the size of the combinations.
 %               Data Types - single|double

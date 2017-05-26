@@ -7,7 +7,7 @@ function [outSC]=Score(y,X,varargin)
 %
 %    y:         Response variable. Vector. A vector with n elements that
 %               contains the response
-%               variable. It can be both a row of column vector. 
+%               variable.  It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
@@ -19,7 +19,7 @@ function [outSC]=Score(y,X,varargin)
 %  Optional input arguments:
 %
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), if 0, no constant
+%               constant term will be fitted (default), else no constant
 %               term will be included.
 %               Example - 'intercept',1 
 %               Data Types - double

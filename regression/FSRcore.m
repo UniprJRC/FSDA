@@ -1,7 +1,6 @@
 function [out]=FSRcore(INP,model,options)
 %FSRcore scans the trajectory of mdr to check for exceedances
 %
-%<a href="matlab: docsearch('FSRcore')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -58,7 +57,7 @@ function [out]=FSRcore(INP,model,options)
 %               estimated skedastic coefficients in each step of the forward
 %               search. The first column contains the fwd search index.
 %               This input is used just if strcmp(model,'H')
-%  INP.S2 =   Estimate of $sigma^2.  (n-init+1) x2 matrix containing the
+%  INP.S2 =   Estimate of $sigma^2$.  (n-init+1)-by-2 matrix containing the
 %               monitoring of S2.  Depending on the string 'model', S2
 %               refers to OLS, GLS or in the Baysian case it is the
 %               posterior estimate of $\sigma^2$.
@@ -101,7 +100,7 @@ function [out]=FSRcore(INP,model,options)
 %               previous experiments. Therefore we assume that matrix X0
 %               (which defines R), was made up of n0 observations.
 %                 Data Types - struct
-%  model :      type of regression model. String.
+%  model :      type of regression model. Character.
 %               Possible values are '' (default) | 'H' | 'B'.
 %               '' stands for linear regression;
 %               'H' stands for heteroskedastic regression;
@@ -115,9 +114,10 @@ function [out]=FSRcore(INP,model,options)
 %               routine FSRbsb.m in presence of linear regression;
 %               routine FSRHbsb.m in presence of heteroskedastic regression;
 %               routine FSRBbsb.m in presence of Bayesian regression;
-%                 Data Types - string
-%    options:   Additional options. Stucture. Structure containing optional parameters which are passed to
-%               directly through functions FSR.m, FSRH.m or FSRB.m.
+%                 Data Types - char
+%    options:   Additional options. Stucture. Structure containing optional
+%               parameters which are passed to directly through functions
+%               FSR.m, FSRH.m or FSRB.m.
 %                 Data Types - struct
 %
 % Optional input arguments:

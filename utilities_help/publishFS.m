@@ -320,8 +320,7 @@ function out=publishFS(file,varargin)
 %
 %                       intercept :  Indicator for constant term. Scalar.
 %                                   If 1, a model with constant term will be fitted
-%                                   (default),
-%                                   if 0, no constant term will be included.
+%                                   (default), else no constant term will be included.
 %                                   Example - 'intercept',1.
 %                                   Data Types - double.
 %                               h : The number of observations that have determined the least

@@ -41,7 +41,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %  Optional input arguments:
 %
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), if 0, no constant
+%               constant term will be fitted (default), else no constant
 %               term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
@@ -53,7 +53,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                 Example - 'eff',0.99
 %                 Data Types - double
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), if 0, no constant
+%               constant term will be fitted (default), else no constant
 %               term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
