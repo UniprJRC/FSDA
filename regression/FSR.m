@@ -198,7 +198,7 @@ function [out]=FSR(y,X,varargin)
 %               Data Types - double
 % bsbmfullrank : Dealing with singluar X matrix. Scalar. This option tells
 %                 how to behave in case subset at step m
-%                 (say bsbm) produces a non singular X. In other words,
+%                 (say bsbm) produces a singular X. In other words,
 %                 this options controls what to do when rank(X(bsbm,:)) is
 %                 smaller then number of explanatory variables. If
 %                 bsbmfullrank =1 (default) these units (whose number is
@@ -239,9 +239,9 @@ function [out]=FSR(y,X,varargin)
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
 % out.constr  = This output is produced only if the search found at a
-%               certain step is a non singular matrix X. In this case the
-%               search run in a constrained mode, that is including the
-%               units which produced a singular matrix in the last n-constr
+%               certain step X is a singular matrix. In this case the
+%               search runs in a constrained mode, that is including the
+%               units which produced a non singular matrix in the last n-constr
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
 % out.class  =  'FSR'.
@@ -290,9 +290,17 @@ function [out]=FSR(y,X,varargin)
     y=3*randn(n,1)+X*bet;
     y(1:20)=y(1:20)+13;
     [outFS]=FSR(y,X,'plots',2);
-    %The envelopes based on all the observations show that in the central part of the search the observed curve is well beyond the extreme thresholds. More precisely, the message inside the graph informs that the signal took place in step 81 because the value of minimum deletion residual in this step was greater than 99.999% threshold.
-    %Once a signal takes place the envelopes are resuperimposed until a stopping rule is fulfilled
-    %The procedure of resuperimposing envelopes in this case stops when n = 85, the first time in which we have a value of rmin(m) for n>=m†-1 greater than the 99% threshold. The group can therefore be considered as homogeneous up to when we include 84 units.
+    % The envelopes based on all the observations show that in the central
+    % part of the search the observed curve is well beyond the extreme
+    % thresholds. More precisely, the message inside the graph informs that
+    % the signal took place in step 81 because the value of minimum deletion
+    % residual in this step was greater than 99.999% threshold.
+    % Once a signal takes place the envelopes are resuperimposed until a
+    % stopping rule is fulfilled.
+    % The procedure of resuperimposing envelopes in this case stops when 
+    % n = 85, the first time in which we have a value of rmin(m) for
+    % $n>=m^\dagger-1$ greater than the 99% threshold. The group can
+    % therefore be considered as homogeneous up to when we include 84 units.
 %}
 
 %{
@@ -507,7 +515,7 @@ else % initial subset is not supplied by the user
         %    subset was full rank, the search has found at a certain step
         %    m<n/2 a list of units which produce a singular matrix. In this
         %    case LXS is rerun excluding these units which gave rise to a
-        %    non singular matrix
+        %    singular matrix
         
         if size(mdr,2)<2
             if length(mdr)>=n/2

@@ -1,5 +1,5 @@
 function out=publishFS(file,varargin)
-%Enables to create automatic HELP FILES from structured .m function files
+%publishFS enables to create automatic HELP FILES from structured .m function files
 %
 %<a href="matlab: docsearchFS('publishFS')">Link to the help function</a>
 %
@@ -135,14 +135,16 @@ function out=publishFS(file,varargin)
 %                 Second column = detailed description;
 %                 Third column = MATLAB code;
 %                 Fourth column = dummy variable which indicates whether
-%                 the example must be executed or not) If 1 example is executed
+%                 the example must be executed or not. If it is equal to 1
+%                 example is executed.
 %    out.ExtraEx= Extra Examples. cell. Cell of length u containing the u
 %                 extra examples.
 %                 First column= title of the example;
 %                 Second column = detailed description;
 %                 Third column = MATLAB code;
 %                 Fourth column = dummy variable which indicates whether
-%                 the example must be executed or not) If 1 example is executed
+%                 the extra example must be executed or not. If it is equal to 1
+%                 extra  example is executed.
 %   out.laste   = object of class MException which provides information
 %                 about last error in executing the examples. If all
 %                 examples run without errors laste is an empty value;
@@ -219,11 +221,12 @@ function out=publishFS(file,varargin)
 %         description of that particular input argument and in the HTML file it
 %         will be visible just if the user clicks on any point in the first two
 %         lines or the user clicks on the option expand all.
-%         The last line may start with the words "Data Types:" and contains the
-%         specification of a particular input argument (e.g. Data Types: single |
-%         double). For example, suppose that the .m routine which has to be
-%         processed has two required input arguments which are respectively called
-%         y and X, then the accepted format is as follows.
+%         The last line may start with the words "Data Types -" and
+%         contains the specification of a particular input argument 
+%         (e.g. Data Types - single | double). For example, suppose that the .m
+%         routine which has to be processed has two required input
+%         arguments which are respectively called y and X, then the
+%         accepted format is as follows.
 %
 %                       Required input arguments:
 %
@@ -231,7 +234,7 @@ function out=publishFS(file,varargin)
 %                                   specified as a vector of length n, where n is
 %                                   the number of observations. Each entry in y is
 %                                   the response for the corresponding row of X.
-%                                   Data Types: single | double.
+%                                   Data Types - single | double.
 %                      X :          Predictor variables. Matrix of explanatory
 %                                   variables (also called 'regressors') of
 %                                   dimension n x (p-1) where p denotes the number
@@ -242,7 +245,7 @@ function out=publishFS(file,varargin)
 %                                   you explicitly remove it using input option
 %                                   intercept, so do not include a column of 1s in
 %                                   X.
-%                                   Data Types: single | double.
+%                                   Data Types - single | double.
 %
 %         IMPORTANT NOTICE: if an input argument is a structure (publishFS
 %         automatically checks if the input argument contains the word "structure"

@@ -22,9 +22,17 @@
     y=3*randn(n,1)+X*bet;
     y(1:20)=y(1:20)+13;
     [outFS]=FSR(y,X,'plots',2);
-    %The envelopes based on all the observations show that in the central part of the search the observed curve is well beyond the extreme thresholds. More precisely, the message inside the graph informs that the signal took place in step 81 because the value of minimum deletion residual in this step was greater than 99.999% threshold.
-    %Once a signal takes place the envelopes are resuperimposed until a stopping rule is fulfilled
-    %The procedure of resuperimposing envelopes in this case stops when n = 85, the first time in which we have a value of rmin(m) for n&gt;=m†-1 greater than the 99% threshold. The group can therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+    % The envelopes based on all the observations show that in the central
+    % part of the search the observed curve is well beyond the extreme
+    % thresholds. More precisely, the message inside the graph informs that
+    % the signal took place in step 81 because the value of minimum deletion
+    % residual in this step was greater than 99.999% threshold.
+    % Once a signal takes place the envelopes are resuperimposed until a
+    % stopping rule is fulfilled.
+    % The procedure of resuperimposing envelopes in this case stops when 
+    % n = 85, the first time in which we have a value of rmin(m) for
+    % $n&gt;=m^\dagger-1$ greater than the 99% threshold. The group can
+    % therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.08 seconds 
 -------------------------
 Signal detection loop
 Tentative signal in central part of the search: step m=81 because
@@ -68,7 +76,7 @@ Summary of the exceedances
     p=3;
     X=randn(n,p);
     y=randn(n,1);
-    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
 -------------------------
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
@@ -289,7 +297,7 @@ Summary of the exceedances
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;Dealing with singluar X matrix.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This option tells
                  how to behave in case subset at step m
-                 (say bsbm) produces a non singular X. In other words,
+                 (say bsbm) produces a singular X. In other words,
                  this options controls what to do when rank(X(bsbm,:)) is
                  smaller then number of explanatory variables. If
                  bsbmfullrank =1 (default) these units (whose number is
@@ -316,9 +324,9 @@ Summary of the exceedances
                of particular quantiles.</p> <p>
                First row contains quantiles 1 99 99.9 99.99 99.999.</p><p>
                Second row contains the frequency distribution.</p></p></td></tr><tr valign="top"><td><code>constr</code></td><td><p>This output is produced only if the search found at a
-               certain step is a non singular matrix X. In this case the
-               search run in a constrained mode, that is including the
-               units which produced a singular matrix in the last n-constr
+               certain step X is a singular matrix. In this case the
+               search runs in a constrained mode, that is including the
+               units which produced a non singular matrix in the last n-constr
                steps. out.constr is a vector which contains the list of
                units which produced a singular X matrix</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSR'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
        number of multivariate outliers. Journal of the Royal Statistical
