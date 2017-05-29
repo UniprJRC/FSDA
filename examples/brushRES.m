@@ -22,7 +22,7 @@ function brushRES(eventdata)
 %  Output:
 %
 %
-% See also: brushRES, brushROB
+% See also: brushFAN, brushROB
 %
 % References:
 %
