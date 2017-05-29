@@ -1,5 +1,5 @@
 function [RAW,REW,varargout] = mveeda(Y,varargin)
-%mve monitors Minimum volume ellipsoid for a series of values of bdp
+%mveeda monitors Minimum volume ellipsoid for a series of values of bdp
 %
 %<a href="matlab: docsearchFS('mveeda')">Link to the help function</a>
 %
@@ -209,27 +209,27 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 % Examples:
 
 %{
-    % mve with all default options.
+    % mveeda with all default options.
     n=200;
     v=3;
     randn('state', 123456);
     Y=randn(n,v);
     % Contaminated data
     Ycont=Y;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    Ycont(1:5,:)=Ycont(1:5,:)+5;
     RAW=mveeda(Ycont);
 %}
 
 %{
-    %% mve with optional arguments.
+    %% mveeda with optional arguments.
     n=200;
     v=3;
     randn('state', 123456);
     Y=randn(n,v);
     % Contaminated data
     Ycont=Y;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;
-    RAW=mve(Ycont,'plots',1);
+    Ycont(1:5,:)=Ycont(1:5,:)+5;
+    RAW=mveeda(Ycont,'plots',1,'msg',0);
 %}
 
 %{
@@ -241,7 +241,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [RAW,REW]=mve(Ycont);
+    [RAW,REW]=mveeda(Ycont);
 %}
 
 %{
@@ -253,7 +253,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [RAW,REW,C]=mve(Ycont);
+    [RAW,REW,C]=mveeda(Ycont);
 %}
 
 %% Beginning of code
@@ -603,6 +603,7 @@ RAW.Weights=Weightsraw;
 RAW.Outliers=Outliersraw;
 RAW.h=hh;
 RAW.bdp=bdp;
+RAW.Y=Y;
 
 REW=struct;
 REW.MAL=MALrew;
@@ -610,7 +611,7 @@ REW.Loc=Locrew;
 REW.Cov=Covarrew;
 REW.Weights=Weightsrew;
 REW.Outliers=Outliersrew;
-
+REW.Y=Y;
 
 % Store class
 RAW.class='mveeda';
