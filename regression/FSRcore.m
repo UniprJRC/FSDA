@@ -369,7 +369,7 @@ if isempty(bonflev)
             condition3 = mdr(i,2)   > gmin(end,c99)  ;
             condition4 = mdr(i,2)   > gmin(i,c99999) ;
             if ( condition1 || condition2 || condition3  || condition4 )
-              
+                
                 if msg
                     disp(['Signal in final part of the search: step ' num2str(mdr(i,1)) ' because']);
                 end
@@ -942,8 +942,14 @@ if signal==1 || signal==2
                 if length(gfind)==1
                     tr=gfind;
                 else
-                    tr=sortrows(mdr(i:gfind(1,1)-mdr(1,1),1:2),2);
-                    tr=tr(end,1);
+                    % Make sure that gfind(1,1)-mdr(1,1) is not smaller
+                    % than i otherwise tr  becomes empty
+                    if gfind(1,1)-mdr(1,1)>=i
+                        tr=sortrows(mdr(i:gfind(1,1)-mdr(1,1),1:2),2);
+                        tr=tr(end,1);
+                    else
+                        tr=mdr(i,1);
+                    end
                 end
                 if msg
                     disp('Probably there are two overlapping groups');
