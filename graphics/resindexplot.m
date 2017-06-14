@@ -212,11 +212,13 @@ function resindexplot(residuals,varargin)
 
 % Examples:
 
-%   Residual plot of 100 random numbers
-%   resindexplot(randn(100,1))
-
-%   Compare OLS residuals with robust residuals for the stack loss data
 %{
+    % Residual plot of 100 random numbers.
+    resindexplot(randn(100,1))
+%}
+
+%{
+    % Compare OLS residuals with robust residuals for the stack loss data.
     load('stack_loss.txt');
     y=stack_loss(:,4);
     X=stack_loss(:,1:3);
@@ -235,14 +237,14 @@ function resindexplot(residuals,varargin)
 %}
 
 %{
-    % Just plot robust residuals
+    % Just plot robust residuals.
     [out]=LXS(y,X,'nsamp',0,'rew',1,'lms',0);
     bonfconf = 1-0.01/size(y,1);    % 99% Bonferronised
     resindexplot(out.residuals,'conflev',[0.95,0.99,bonfconf],'labx','Index number','laby','Robust LTS reweighted residuals');
 %}
 
 %{
-    % Interactive_example
+    % Interactive_example.
     databrush=struct;
     databrush.selectionmode='Brush'; % Brush selection
     databrush.persist='on'; % Enable repeated mouse selections
@@ -260,7 +262,7 @@ function resindexplot(residuals,varargin)
 
 
 %{
-    % Example of usage of option numlab
+    % Example of usage of option numlab.
     % Write the row number for the units which have the 3 largest
     % residuals (in absolute value)
     [out]=LXS(y,X,'nsamp',1000);
