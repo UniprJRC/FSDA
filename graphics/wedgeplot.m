@@ -1,5 +1,5 @@
 function hf = wedgeplot(RES,varargin)
-%wedgeplot generates the double wedge plot
+%wedgeplot generates the double wedge plot of a time series
 %
 %<a href="matlab: docsearchFS('wedgeplot')">Link to the help function</a>
 %
@@ -7,47 +7,45 @@ function hf = wedgeplot(RES,varargin)
 %
 %        RES  :  absolute scaled residuals. Matrix or structure.
 %                Matrix of size T-by-(T-lshift) containing scaled residuals
-%                (in absolute value) for all the T units of the original
-%                time series monitored in steps lshift+1, lshift+2, ...,
-%                T-lshift, where lshift+1 is the first tentative level
-%                shift position, lshift +2 is the second level shift
-%                position ... This matrix can be created by funtion LTSts
-%                (Least trimmed squares in time series). If RES is a
-%                structure it must contain field:
+%                (in absolute value) for all the T units of the original time
+%                series monitored in steps lshift+1, lshift+2, ..., T-lshift,
+%                where lshift+1 is the first tentative level shift position,
+%                lshift +2 is the second level shift position, and so on. This
+%                matrix can be created by funtion LTSts (Least Trimmed Squares
+%                in time series). If RES is a structure, it must contain field:
 %                RES.RES = matrix containing scaled residuals.
+%                Data Types - double.
 %
 %       Optional input arguments:
 %
-%   extradata :  data to plot in a extra bottom subplot.
-%                Matrix. Matrix of size T-by-1 or T-by-p containing data
-%                which have to be plotted in the bottom subplot. Generally
-%                extradata is a matrix of size T-by-2 which contains the
-%                original time series and the corresponding fitted values
-%                in order to link directly the irregularities wedges shown
-%                by the wedgeplot with the original time series. More
-%                precisely, If extradata is not empty a two panel plot will
-%                be created. In the top panel there will be the double
-%                wedge plot and in the bottom panel the plot of extradata
-%                will be added. If extradata is empty (default) the double
-%                wedge plot will be shown in a single panel. Note that this
-%                options just works if transpose is true (that is just if
-%                the x axis of the double wed plot contains the index
-%                number).
-%               Example - 'extradata', [y yhat]
-%               Data Types - double
+%   extradata :  extra data to plot in a separate panel in association to the
+%                wedge plot. Matrix. Matrix of size T-by-1 or T-by-p containing
+%                the data which have to be plotted in the separate panel.
+%                Generally extradata is a matrix of size T-by-2 which contains
+%                the original time series and the corresponding fitted values in
+%                order to link the irregularities shown by the wedgeplot with
+%                the original time series. More precisely, If extradata is not
+%                empty, a two panel plot will be created. The top panel will
+%                contain the double wedge plot and extradata will be plot in the
+%                bottom panel. If extradata is empty (default) the double wedge
+%                plot will be shown in a single panel. Note that this options
+%                just works if transpose is true (that is just if the x axis of
+%                the double wedge plot contains the index number).
+%                Example - 'extradata', [y yhat]
+%                Data Types - double
 %      cmapname: color map. Character. Character which indicates the type of
-%                colormmap to use. The accepted values are 'hot'
-%                'autumn''spring' 'pink' 'summer' 'winter''gray'. The default is
-%                'hot'.
+%                colormmap to use in the wedge plot. The accepted values are
+%                'hot', 'autumn', 'spring', 'pink', 'summer', 'winter', 'gray'.
+%                The default is 'hot'.
 %                Example - 'cmapname','summer'
 %                Data Types - Character
-%      transpose: index number or tentative level shift position on the x axis.
-%                Boolean. If transpose is true (default) the x axis contains the
-%                tentative level shift position and the y axis the index number
-%                else if it is false the axes are interchanged. When transpose
-%                is true it is possible with option yhat to add on a lower panel
-%                a subplot of the original time series (and eventually the
-%                series of fitted values).
+%     transpose: option determining the posiiton of the index number or
+%                tentative level shift. Boolean. If transpose is true (default)
+%                the x axis contains the tentative level shift position and the
+%                y axis the index number else if it is false the axes are
+%                interchanged. When transpose is true, it is possible with option
+%                extradata to add on a lower panel a subplot of the original time
+%                series (and possibly the series of fitted values).
 %                Example - 'transpose',false
 %                Data Types - Boolean
 %        labls : label of the axis which contains the level shift position.
@@ -62,26 +60,26 @@ function hf = wedgeplot(RES,varargin)
 %                Character. Character containing the label to put on the axis
 %                which contains the index number of the units of the time
 %                series. This axis could be either the horizontal or vertical
-%                depending on the option transpose. The default label is
-%                'Index number'.
+%                depending on the option transpose. The default label is 'Index
+%                number'.
 %                Example - 'labin','unit number'
 %                Types - Character
-%     titl     : Title. String. A label for the title (default: 'Double wedge plot')
+%     titl     : Title. String. A label for the title (default: 'Double wedge
+%                plot').
 %                Example - 'titl','Plot with two wedges'
 %                Data Types - char
-%     FontSize:  Font size of the labels. Scalar. Scalar which controls the font size of the labels of
-%                the axes and of the labels inside the plot. Default
-%                value is 12.
+%     FontSize:  Font size of the labels. Scalar. Scalar which controls the font
+%                size of the labels of the axes and of the labels inside the
+%                plot. Default value is 12.
 %                Example - 'FontSize',12
 %                Data Types - double
-%  SizeAxesNum:  Size of the numbers of the axis. Scalar. Scalar which
-%                controls the size of the numbers of the
-%                axes. Default value is 12.
+%  SizeAxesNum:  Size of the numbers of the axis. Scalar. Scalar which controls
+%                the size of the numbers of the axes. Default value is 12.
 %                Example - 'SizeAxesNum',10
 %                Data Types - double
 %
 % Output:
-%   
+%
 %       hf  : handle to the figure. Graphics handle. Handle to the figure
 %               which has just been created.
 %
@@ -89,7 +87,7 @@ function hf = wedgeplot(RES,varargin)
 %
 % References:
 %
-% Rousseeuw, P.J., Perrotta D.,Riani M., Hubert M. (2017), Robust modelling
+% Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust modelling
 % of complex time series, submitted.
 %
 %
@@ -188,6 +186,7 @@ function hf = wedgeplot(RES,varargin)
 %}
 
 %% Beginning of code
+
 options=struct('extradata',[],'cmapname','hot',...
     'labls','Tentative level shift position','labin','Index number',...
     'titl','Double wedge plot',...
@@ -197,12 +196,12 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:wedgeplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some
-        parameters are missing.');
+        error('FSDA:wedgeplot:WrongInputOpt',...
+            'Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-
+    
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -213,9 +212,9 @@ end
     options.extradata, options.cmapname, options.labls, options.labin, ...
     options.titl, options.FontSize, options.SizeAxesNum, options.transpose);
 
-%% Beginning of plot instructions
+%% Initialise key structures 
 
-% % Check if input is a structure
+% Check if input is a structure
 if isstruct(RES)
     if isfield(RES,'RES')
         RES=abs(RES.RES);
@@ -224,21 +223,16 @@ if isstruct(RES)
     end
 else
     % Take absolute values of RES
-    RES=abs(RES);
+    RES = abs(RES);
 end
 
-[T, l]   = size(RES);
+[T, l]  = size(RES);
 
+% LSH = vector of integers associated with tentative level shift positions
+lshift = (T-l)/2;
+LSH    = (lshift+1):(T-lshift);
 
-% LSH = vector containing integers associated with tentative level shift
-% position
-lshift=(T-l)/2;
-LSH = (lshift+1):(T-lshift);
-
-hf   = figure;
-
-%select a colormap (this will be an optional input)
-%cmapname = 'hot';
+%% colormap 
 scmap = T*l;
 switch cmapname
     case 'hot'
@@ -262,8 +256,8 @@ end
 %Small values should go with light colors
 cmap = flipud(cmap);
 
-%If we go for the 'hot' colormap, the background becomes grey;
-%so we add a section to the colormap
+% add a section to the colormap to obtain a grey background (gray colormaps are
+% unaffected, of course)
 if ~strcmp(cmapname,  'gray')
     gray_levels = 50;
     gcmap = flipud(gray(gray_levels));
@@ -272,18 +266,21 @@ if ~strcmp(cmapname,  'gray')
     cmap = [gcmap ; cmap];
 end
 
-scres=RES;
-scres(scres>50)=50;
+%% initialise figure with a colorbar
 
+hf   = figure;
 colormap(cmap);
-%add a colobar
-Weights_res_lin = min(scres(:)):max(scres(:));
-% colorbar('Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
-%     'TickLabels' , round(prctile(Weights_res_lin , [1 20 40 60 80 100])*100)/100,...
-%     'Fontsize',FontSize);
 
-%The color will be proportional to the scaled residual
-Cres = scres;
+%% colors that will be used for the wedge plot
+
+% The colors of the wedge plot will be proportional to the scaled residuals.
+% Very large values (> 50) are set to 50.
+Cres=RES;
+Cres(Cres>50)=50;
+
+% a linear sequence of colormap weights from the minimum to the maximum
+% residuals values (0 to 50, in practice).
+scres_lin = min(Cres(:)):max(Cres(:));
 
 %Partition the residuals in three parts: 'large', 'medium' and 'small'
 thtmp=50;
@@ -298,8 +295,6 @@ Cres = round(Cres);
 %Colors that point to 0 must be moved to 1
 Cres(Cres==0) = 1;
 
-%Z = size(cmap,1) - Z;
-
 % Control backgroud
 if ~strcmp(cmapname,  'gray')
     %associate the small residuals to a gray color
@@ -313,24 +308,29 @@ end
 %     Cres(rmedium) = round(Cres(rmedium) *3);
 % end
 
-%generates the plot
+
+%% generates the double wedge plot
+
 Cres = [Cres; nan(1,length(LSH))];
 Cres = [Cres nan(T+1,1)];
 
-
 if transpose == false
+    
     surface(zeros(size(Cres)),Cres,...
         'EdgeColor','none','Xdata',[LSH nan]','CDataMapping','direct');
     xlabel(labls,'Fontsize',FontSize);
     ylabel(labin,'Fontsize',FontSize);
     set(gca,'Box','on','Boxstyle','full','LineWidth',1,...
         'Xlim',[min(LSH), max(LSH)],'Fontsize',SizeAxesNum);
-
+    
     colorbar('Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
-        'TickLabels' , round(prctile(Weights_res_lin , [1 20 40 60 80 100])*100)/100,...
+        'TickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
         'Fontsize',FontSize);
-
+    
+    title(titl);
+    
 else
+    
     if ~isempty(extradata)
         A(1) = subplot(2,1,1);
     else
@@ -341,47 +341,25 @@ else
     ylabel(labls,'FontSize',FontSize);
     set(gca,'Box','on','Boxstyle','full','LineWidth',1,...
         'Ylim',[min(LSH), max(LSH)],'Fontsize',SizeAxesNum);
-
+    
     B = colorbar('eastoutside','Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
-        'TickLabels' , round(prctile(Weights_res_lin , [1 20 40 60 80 100])*100)/100,...
+        'TickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
         'Fontsize',FontSize-2);
-
-    %pos1 = get(gca,'Position');
-
+    
     if ~isempty(extradata)
         A(2) = subplot(2,1,2);
         plot(extradata);
         xlabel(labin,'FontSize',FontSize);
-        set(gca,'FontSize',SizeAxesNum);
-        %pos2 = get(gca,'Position');
-        %pos2(3) = pos1(3);
-        %set(gca,'Position',pos2);
-
-
+        set(gca,'FontSize',SizeAxesNum); 
         for i=1:2
             pos=get(A(i), 'Position');
             axes(A(i)) ;
-            set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)])
-        end
-
-
-
+            set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)]);
+        end    
     end
+    
+    title(A(1),titl);
 
 end
-%plot properties
-title(titl);
-
 
 end
-%{
-    A(1)=subplot(2,1,1); mesh(x,y,z)
-    A(2)=subplot(2,1,2); mesh(x,y,z)
-    B=colorbar;
-    set(B, 'Position', [.8314 .11 .0581 .8150])
-    for i=1:2
-    pos=get(A(i), 'Position');
-    axes(A(i))
-    set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)])
-    end
-%}

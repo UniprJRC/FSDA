@@ -182,18 +182,18 @@ else
         case 'sj'
             % Bandwidth selection with Sheater and Jones(1991) and Wand and
             % Jones (1995) pp.74-75
-            %{
+            
             number_of_draws = size(X,1);
             bandwidth = -1;
             kernel_function = 'gaussian';
             bw = bSJ(X,number_of_draws,bandwidth,kernel_function);
-            %}
+            
             
         case 'botev'
             % Z. I. Botev, J. F. Grotowski, and D. P. Kroese (2010). Kernel
             % density estimation via diffusion. Annals of Statistics, Volume 38,
             % Number 5, pp. 2916-2957.
-            %{
+            
             if d==1
                 bw=kde(X,[],minX,maxX);
             elseif d==2
@@ -201,7 +201,7 @@ else
             elseif d>2
                 bw=akde(X);
             end
-            %}
+            
             
         otherwise
             % It the user's bandwidth option does not exist, bwe is called
