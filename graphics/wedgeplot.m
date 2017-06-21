@@ -355,10 +355,12 @@ else
             pos=get(A(i), 'Position');
             axes(A(i)) ;
             set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)]);
-        end    
+        end  
+            title(A(1),titl);
+    else
+        title(titl);
     end
     
-    title(A(1),titl);
 
 end
 
