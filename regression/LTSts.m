@@ -1,6 +1,11 @@
 function [out, varargout] = LTSts(y,varargin)
 %LTSts extends LTS estimator to time series
 %
+% It is possible to introduce a trend (up to third order), seasonality
+% (constant or of varying amplitude and with a different number of
+% harmonics) and level shifts (in this last case it is possible to
+% specify the window in which level shift has to be searched for).
+%
 %<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
 %
 %  Required input arguments:
@@ -171,7 +176,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               with the bands for the residuals is specified in input
 %               option conflev. If conflev is missing a nominal 0.975
 %               confidence interval will be used. If plots =2 the following
-%               additional plots will be shown on the screen. 
+%               additional plots will be shown on the screen.
 %               1) Boxplot of the distribution of the lts.bestr values of
 %               the target function for each tentative level shift
 %               position;
@@ -182,7 +187,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               sum of squares and bottom panel refers to residual sum of
 %               squares.
 %               3) A plot which shows the indexes of the best nbestindexes
-%               solutions for each tentative level shift position. 
+%               solutions for each tentative level shift position.
 %               4) A plot which shows the relative frequency of inclusion
 %               of each unit in the best h-subset after lts.refsteps
 %               refining steps.
@@ -267,9 +272,9 @@ function [out, varargout] = LTSts(y,varargin)
 %               to lts.bestr are associated with best solutions from
 %               previous tentative level shift. More precisely:
 %               index lts.bestr/2+1 is associated with best solution from
-%               previous tentative level shift; 
+%               previous tentative level shift;
 %               index lts.bestr/2+2 is associated with second best solution from
-%               previous tentative level shift; 
+%               previous tentative level shift;
 %               ...
 %               nbestindexes is an integer which specifies how many indexes
 %               we want to store. The default value of nbestindexes  is 3.
@@ -280,6 +285,13 @@ function [out, varargout] = LTSts(y,varargin)
 %               displayed, else if nomes is equal to 0 (default), a message
 %               about estimated time is displayed.
 %               Example - 'nomes',1
+%               Data Types - double
+%  dispresults : Display results of final fit. Boolean. If dispresults is
+%               true,  labels of coefficients, estimated coefficients,
+%               standadrd errors, tstat and p-values are shown on the
+%               screen in a fully formatted way. The default value of
+%               dispresults is false.
+%               Example - 'dispresults',true
 %               Data Types - double
 %       yxsave : store X and y. Scalar. Scalar that is set to 1 to request that the response
 %                vector y and data matrix X are saved into the output
@@ -329,6 +341,10 @@ function [out, varargout] = LTSts(y,varargin)
 %                       4th col = p values.
 %               out.h = The number of observations that have determined the
 %                       initial LTS estimator, i.e. the value of h.
+%              out.bs = Vector containing the units forming best initial
+%                       elemental subset (that is elemental subset which
+%                       produced the smallest value of the target
+%                       function).
 %         out.Hsubset = matrix of size T-by-(T-2*lshift)
 %                       containing units forming best H subset for each
 %                       tentative level shift which is considered.
@@ -336,28 +352,29 @@ function [out, varargout] = LTSts(y,varargin)
 %                       subset are given with their row number, units not
 %                       belonging to subset have missing values
 %                       ( Remark: T-2*lshift = length((lshift+1):(T-lshift)) )
+%                       This output is present just if input option
+%                       model.lshift>0.
 %           out.posLS = scalar associated with best tentative level shift
 %                       position.
+%                       This output is present just if input option
+%                       model.lshift>0.
 %     out.numscale2 = matrix of size lts.bestr-by-(T-2*lshift) containing (in
 %                       the columns the values of the lts.bestr smallest values of
 %                       the target function. Target function = truncated
 %                       residuals sum of squares.
 %     out.BestIndexes = matrix of size nbestindexes-by-(T-2*lshift)
-%                       containing in each column the indexes 
-%                       associated with the best  nbestindexes solutions.
+%                       containing in each column the indexes
+%                       associated with the best nbestindexes solutions.
 %                       The indexes from lts.bestr/2+1 to lts.bestr are
 %                       associated with best solutions from previous
 %                       tentative level shift.
 %                       More precisely:
 %                       index lts.bestr/2+1 is associated with best solution from
-%                       previous tentative level shift; 
+%                       previous tentative level shift;
 %                       index lts.bestr/2+2 is associated with best solution from
-%                       previous tentative level shift; 
-%         out.weights = Vector containing weights after adaptive
-%                       reweighting. The elements of
-%                       this vector are 0 or 1. These weights identify the
-%                       observations which are used to compute the final
-%                       NLS estimate. 
+%                       previous tentative level shift.
+%                       This output is present just if input option
+%                       model.lshift>0.
 %         out.Likloc  = matrix of size (2*lshiftlocref.wlength+1)-by-3 containing local sum of
 %                       squares of residuals in order to decide best
 %                       position of level shift:
@@ -365,9 +382,23 @@ function [out, varargout] = LTSts(y,varargin)
 %                       2nd col = local sum of squares of huberized
 %                                   residuals;
 %                       3rd col = local sum of squares of raw residuals.
+%                       This output is present just if input option
+%                       model.lshift>0.
+%             out.RES = Matrix of size T-by-(T-lshift) containing scaled residuals
+%                       for all the T units of the original time series
+%                       monitored in steps lshift+1, lshift+2, ...,
+%                       T-lshift, where lshift+1 is the first tentative
+%                       level shift position, lshift +2 is the second level
+%                       shift position, and so on. This output is present
+%                       just if input option model.lshift>0.
 %            out.yhat = vector of fitted values after final (NLS=non linear least squares) step.
 %       out.residuals = Vector T-by-1 containing the scaled residuals from
 %                       after final NLS step.
+%         out.weights = Vector containing weights after adaptive
+%                       reweighting. The elements of
+%                       this vector are 0 or 1. These weights identify the
+%                       observations which are used to compute the final
+%                       NLS estimate.
 %           out.scale = Final scale estimate of the residuals using final weights.
 %         out.conflev = confidence level which is used to declare outliers.
 %                       Remark: scalar out.conflev will be used to draw the
@@ -400,46 +431,190 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %
 %
-% See also LXS
+% See also LXS, wedgeplot
 %
 % References:
 %
 % Rousseeuw, P.J., Perrotta D.,Riani M., Hubert M. (2017), Robust modelling
-% of complex time series, submitted.
+% of complex time series, submitted. (In the examples to rert to this paper
+% we use the acronym RPRH)
 %
 % Copyright 2008-2017. Written by Marco Riani, Domenico Perrotta, Peter
 % Rousseeuw and Mia Hubert
 %
 %
-%<a href="matlab: docsearchFS('ltsts')">Link to the help function</a>
+%<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
 % Last modified 19-Jun-2017
 
 % Examples:
 
 %{
-    % Analysis of contaminated airline data (level shift + outliers).
-    % Load the airline data.
+    % Airline data: linear trend + just one harmonic for seasonal
+    % component.
+    % Load airline data
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
-        118  126  150  180  196  188  233  277  301  318  342  391    % Feb
-        132  141  178  193  236  235  267  317  356  362  406  419    % Mar
-        129  135  163  181  235  227  269  313  348  348  396  461    % Apr
-        121  125  172  183  229  234  270  318  355  363  420  472    % May
-        135  149  178  218  243  264  315  374  422  435  472  535    % Jun
-        148  170  199  230  264  302  364  413  465  491  548  622    % Jul
-        148  170  199  242  272  293  347  405  467  505  559  606    % Aug
-        136  158  184  209  237  259  312  355  404  404  463  508    % Sep
-        119  133  162  191  211  229  274  306  347  359  407  461    % Oct
-        104  114  146  172  180  203  237  271  305  310  362  390    % Nov
-        118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
     % Source:
     % http://datamarket.com/data/list/?q=provider:tsdl
+
     y=(y(:));
-    % Add a level shift contamintion plus some outliers.
-    y(50:55)=y(50:55)-300;
-    y(68:end)=y(68:end)-700;
-    y(70:75)=y(70:75)+300;
-    y(90:90)=y(90:90)+300;
+    yr = repmat((1949:1960),12,1);
+    mo = repmat((1:12)',1,12);
+    time = datestr(datenum(yr(:),mo(:),1));
+    ts = timeseries(y(:),time,'name','AirlinePassengers');
+    ts.TimeInfo.Format = 'dd-mmm-yyyy';
+    tscol = tscollection(ts);
+    % plot airline data
+    plot(ts)
+    % linear trend + just one harmonic for seasonal component
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=1;           % just one harmonic
+    model.lshift=0;             % no level shift
+    out=LTSts(y,'model',model,'dispresults',true);
+
+    close all
+    % Plot real and fitted values
+    plot(y);
+    hold('on')
+    plot(out.yhat,'red')
+    legend('real values','fitted values','Location','SouthEast')
+%}
+
+%{
+    % Model with linear trend and six harmonics for seasonal component.
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=6;           % six harmonics
+    model.lshift=0;             % no level shift
+    out=LTSts(y,'model',model);
+
+    close all
+    % Plot real and fitted values
+    plot(y);
+    hold('on')
+    plot(out.yhat,'red')
+    legend('real values','fitted values','Location','SouthEast')
+%}
+
+%{
+    % Model with linear trend, two harmonics for seasonal component and
+    % varying amplitude using a linear trend.
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=102;         % two harmonics with time varying seasonality
+    model.lshift=0;             % no level shift
+    out=LTSts(y,'model',model);
+
+    close all
+    % Plot real and fitted values
+    plot(y);
+    hold('on')
+    plot(out.yhat,'red')
+    legend('real values','fitted values','Location','SouthEast') 
+%}
+
+%{
+    % Model with linear trend, six harmonics for seasonal component and
+    % varying amplitude using a linear trend).
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=106;         % six harmonics with linear time varying seasonality
+    model.lshift=0;             % no level shift
+    % out=fitTSLS(y,'model',model);
+    out=LTSts(y,'model',model);
+    close all
+    % Plot real and fitted values
+    plot(y);
+    hold('on')
+    plot(out.yhat,'red')
+    legend('real values','fitted values','Location','SouthEast')
+%}
+
+%{
+    % Contaminated time series with upward level shift.
+    % Model with linear trend, six harmonics for seasonal component and
+    % varying amplitude using a linear trend).
+    yLS=y;
+    yLS(55:end)=yLS(55:end)+130;
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=1;         
+    model.lshift=13;            % impose level shift      
+    out=LTSts(yLS,'model',model);
+    close all
+    % Plot real and fitted values
+    plot(yLS);
+    hold('on')
+    plot(out.yhat,'red')
+    legend('real values','fitted values','Location','SouthEast')
+%}
+
+%{
+    % Contaminated time series with downward level shift.
+    % Model with linear trend, six harmonics for seasonal component and
+    % varying amplitude using a linear trend).
+    yLS=y;
+    yLS(35:end)=yLS(35:end)-300;
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=106;         
+    model.lshift=13;             
+    out=LTSts(yLS,'model',model);
+    close all
+    % Plot real and fitted values
+    plot(yLS);
+    hold('on')
+    plot(out.yhat,'red')
+    legend('real values','fitted values','Location','SouthEast')
+%}
+
+%{
+    % Model with an explantory variable using logged series.
+    y1=log(y);
+    % Model with linear trend, six harmonics for seasonal component and
+    % varying amplitude using a linear trend).
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=106;         
+    model.lshift=0;             
+    model.X=randn(length(y),1);
+    out=LTSts(y1,'model',model);
+    close all
+    % Plot real and fitted values
+    plot(y1);
+    hold('on')
+    plot(out.yhat,'red')
+    legend('real values','fitted values','Location','SouthEast')
+%}
+
+%{
+    %% Example 1 used in the paper RPRH. 
+    % Two short level shifts in opposite % directions and an isolated
+    % outlier.
+    % Add a level shift contamination plus some outliers.
+    y1=y;
+    y1(50:55)=y1(50:55)-300;
+    y1(70:75)=y1(70:75)+300;
+    y1(90:90)=y1(90:90)+300;
     % Create structure specifying model
     model=struct;
     model.trend=2;              % quadratic trend
@@ -454,8 +629,62 @@ function [out, varargout] = LTSts(y,varargin)
     % Set tuning constant to use insde Huber rho function
     lshiftlocref.huberc=1.5;
     % Estimate the parameters
-    [out, varargout]=LTSts(y,'typemin',0,'model',model,'nsamp',500,...
-       'plots',2,'lshiftlocref',lshiftlocref);
+    [out]=LTSts(y1,'model',model,'nsamp',500,...
+       'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
+%}
+
+%{
+    %% Example 2 used in the paper RPRH.
+    % A persisting level shift and three isolated outliers, two of which in
+    % proximity of the level shift.
+    y1=y;
+    y1(68:end)=y1(68:end)+1300;
+    y1(67)=y1(67)-600;
+    y1(45)=y1(45)-800;
+    y1(68:69)=y1(68:69)+800;
+    % Create structure specifying model
+    model=struct;
+    model.trend=2;              % quadratic trend
+    model.s=12;                 % monthly time series
+    model.seasonal=204;         % number of harmonics
+    model.lshift=40;            % position where to start monitoring level shift
+    model.X='';
+    % Create structure lts specifying lts options
+    lshiftlocref=struct;
+    % Set window length for local refinement.
+    lshiftlocref.wlength=10;
+    % Set tuning constant to use insde Huber rho function
+    lshiftlocref.huberc=1.5;
+    % Estimate the parameters
+    [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
+       'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
+%}   
+
+%{
+    %% Example 3 used in the paper RPRH.
+    % A persisting level shift preceded and followed in the proximity by
+    % other two short level shifts, and an isolated outlier.
+    y1=y;
+    y1(50:55)=y1(50:55)-300;
+    y1(68:end)=y1(68:end)-700;
+    y1(70:75)=y1(70:75)+300;
+    y1(90:90)=y1(90:90)+300;
+    % Create structure specifying model
+    model=struct;
+    model.trend=2;              % quadratic trend
+    model.s=12;                 % monthly time series
+    model.seasonal=204;         % number of harmonics
+    model.lshift=40;            % position where to start monitoring level shift
+    model.X='';
+    % Create structure lts specifying lts options
+    lshiftlocref=struct;
+    % Set window length for local refinement.
+    lshiftlocref.wlength=10;
+    % Set tuning constant to use insde Huber rho function
+    lshiftlocref.huberc=1.5;
+    % Estimate the parameters
+    [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
+       'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
 %}
 
 %% Input parameters checking
@@ -500,12 +729,16 @@ lshiftlocrefdef.huberc=2;
 % the smallest values of the target functions we want to retain.
 nbestindexesdef=3;
 
+% dispresultsdef Boolean about display results.
+dispresultsdef=false;
+
 options=struct('intercept',1,'lts','','nsamp',nsampdef,'h',hdef,'bdp',...
     bdpdef,'plots',0,'nomes',0,'model',modeldef,...
-    'conflev',0.975,'msg',1,'typemin',0,'yxsave',0,...
+    'conflev',0.975,'msg',1,'yxsave',0,...
     'SmallSampleCor',2,...
     'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
-    'lshiftlocref',lshiftlocrefdef,'nbestindexes',nbestindexesdef);
+    'lshiftlocref',lshiftlocrefdef,'nbestindexes',nbestindexesdef,...
+    'dispresults',dispresultsdef);
 
 
 %% User options
@@ -578,7 +811,7 @@ lshift=model.lshift;        % get level shift
 
 % nbestindexes = indexes of the best  nbestindexes solutions for each
 % tentative position of level shift
-nbestindexes=options.nbestindexes; 
+nbestindexes=options.nbestindexes;
 
 % Check if the optional user parameters are valid.
 if s <=0
@@ -775,17 +1008,18 @@ warning('off','MATLAB:rankDeficientMatrix');
 warning('off','MATLAB:singularMatrix');
 warning('off','MATLAB:nearlySingularMatrix');
 
-% notconv = scalar which counts number of subsets for which there is was
-% convergence
-notconv=0;
+if lshift>0
+    % If a level shift is present, it is necessary to
+    % reestimate a linear model each time with a different
+    % level shift starting from period lshift up to period
+    % T-lshift+1 and take the one which minimizes the target
+    % function (residual sum of squares/2 = negative log
+    % likelihood)
+    LSH = (lshift+1):(T-lshift);
+else
+    LSH=0;
+end
 
-% If a level shift is present, it is necessary to
-% reestimate a linear model each time with a different
-% level shift starting from period lshift up to period
-% T-lshift+1 and take the one which minimizes the target
-% function (residual sum of squares/2 = negative log
-% likelihood)
-LSH = (lshift+1):(T-lshift);
 
 % ScaleLSH= estimate of the squared scale for each value of LSH which has been
 % considered
@@ -812,7 +1046,7 @@ allnumscale2=zeros(bestr,1);
 ALLnumscale2=zeros(bestr,lLSH);
 
 % Store the position of the indexes occupying nbestindexes best solutions of target
-% function for each tentative level shift position 
+% function for each tentative level shift position
 % 1-bestrdiv2       = solutions from fresh subsets.
 % bestrdiv2+1-bestr = best solutions coming from previous tentative level
 % shift position
@@ -885,49 +1119,58 @@ for lsh=LSH
         bestnumscale2 = Inf * ones(bestrdiv2,1);
         bestbetas = zeros(bestrdiv2,p);
         bestyhat=zeros(T,bestrdiv2);
-        bestsubset = zeros(bestrdiv2,pini+2);
+        bestsubset = zeros(bestrdiv2,pini+(lshift>0)*2);
         
     else
         bestbetas = zeros(bestr,p);
         bestyhat=zeros(T,bestr);
-        bestsubset = zeros(bestr,pini+2);
+        bestsubset = zeros(bestr,pini+(lshift>0)*2);
         bestnumscale2 = Inf * ones(bestr,1);
         bestrLSH=bestr;
     end
     
-    [Cini,nselected] = subsets(nsamp,T-1,pini+1,ncomb,msg);
-    C=[lsh*ones(nselected,1) zeros(nselected,pini+1,'int16')];
-    % Store indexes of extracted subsets if nargour is greater than 1
+    if lsh>0
+        
+        [Cini,nselected] = subsets(nsamp,T-1,pini+1,ncomb,msg);
+        
+        C=[lsh*ones(nselected,1) zeros(nselected,pini+1,'int16')];
+        
+        
+        % Make sure that observation lsh is always included in the subset and
+        % that the subset contains at least one unit smaller than lsh
+        for r=1:nselected
+            Cr=Cini(r,:);
+            % Observations greater or equal than lsh will be increased by one
+            boo=Cr>=lsh;
+            Cr(boo)=Cr(boo)+1;
+            % Make sure there is at least one observation smaller than lsh
+            boo=Cr<lsh;
+            % if sum(boo)==0 then in the subset there is no observation which is
+            % smaller than lsh
+            if sum(boo)<1
+                Cr(1)=randsample(lsh-1,1);
+            end
+            C(r,2:end)=Cr;
+        end
+        
+    else
+        % If there is no level shift component
+        [Cini,nselected] = subsets(nsamp,T,pini,ncomb,msg);
+        C=Cini;
+    end
+    
+    % Store indexes of extracted subsets if nargout is greater than 1
     if nargout>1
         varargout{ilsh}=Cini;
     end
     
-    % Make sure that observation lsh is always included in the subset and
-    % that the subset contains at least one unit smaller than lsh
-    for r=1:nselected
-        Cr=Cini(r,:);
-        % Observations greater or equal than lsh will be increased by one
-        boo=Cr>=lsh;
-        Cr(boo)=Cr(boo)+1;
-        % Make sure there is at least one observation smaller than lsh
-        boo=Cr<lsh;
-        % if sum(boo)==0 then in the subset there is no observation which is
-        % smaller than lsh
-        if sum(boo)<1
-            Cr(1)=randsample(lsh-1,1);
-        end
-        C(r,2:end)=Cr;
-    end
-    
-    
     % yhatall= matrix which will contain fitted values for each extracted
     % subset
-    yhatall=zeros(T,nselected);
+    % yhatall=zeros(T,nselected);
     
     % WEIi = matrix which will contain indication of the units forming best
     % h subset. Each column refers to a subset
-    WEIi=yhatall;
-    
+    WEIi=zeros(T,nselected);
     
     % ij is a scalar used to ensure that the best first bestr solutions are
     % stored in order to be brought to full convergence
@@ -959,6 +1202,10 @@ for lsh=LSH
         % extract a subset of size p
         index = C(i,:);
         
+        if lsh==0
+            Xlshift=[];
+        end
+        
         Xfinal=[Xsel Xlshift];
         % Preliminary OLS estimates (including tentative level shift) based
         % just on the units forming subset
@@ -969,12 +1216,16 @@ for lsh=LSH
         % trend and seasonal (without varying
         % amplitude) and explanatory variables
         beta0(1:pini)=betaini(1:pini);
-        % The last two components of beta0 are the associated
-        % with level shift. More precisely penultimate
-        % position is for the coefficient of level shift and,
-        % final position is the integer which specifies the
-        % starting point of level shift
-        beta0(end-1:end)=[betaini(end) lsh];
+        
+        if lsh>0
+            % The last two components of beta0 are the associated
+            % with level shift. More precisely penultimate
+            % position is for the coefficient of level shift and,
+            % final position is the integer which specifies the
+            % starting point of level shift
+            beta0(end-1:end)=[betaini(end) lsh];
+        end
+        
         if varampl>0
             [betaout]=ALS(beta0);
         else
@@ -1003,7 +1254,7 @@ for lsh=LSH
         WEIi(:,i)=tmp.weights;
         
         % Store fitted values for each subset
-        yhatall(:,i)=tmp.yhat;
+        % yhatall(:,i)=tmp.yhat;
         
         betarw = tmp.betarw;
         numscale2rw = tmp.numscale2rw;
@@ -1141,8 +1392,9 @@ for lsh=LSH
     NumScale2ind(:,ilsh)=numscale2ssorind(1:nbestindexes);
     
     WEIibest10sum(:,ilsh)=sum(WEIibestrdiv2,2);
-    
-    disp(['Level shift for t=' num2str(lsh)])
+    if lsh>0 && msg ==1 
+        disp(['Level shift for t=' num2str(lsh)])
+    end
 end
 
 % save RES to output structure (these residuals can be used for example to
@@ -1167,7 +1419,6 @@ end
 out.Hsubset=Weimod;
 
 [~,minidx]=min(numscale2LSH(:,2));
-%yhatrobbest=yhatrobLSH(:,minidx);
 brobbest=brobLSH(:,minidx);
 
 % Pass from numerator of squared estimate of the scale to proper scale
@@ -1175,73 +1426,71 @@ brobbest=brobLSH(:,minidx);
 sh0=sqrt(numscale2LSH(minidx,2)/h);
 
 % Consistency factor
-
-% % Consistency factor based on the variance of the truncated normal
-% % distribution. 1-h/n=trimming percentage Compute variance of the truncated
-% % normal distribution.
-% a=norminv(0.5*(1+h/T));
-% %factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
-% factor=1/sqrt(1-2*(T/h)*a.*normpdf(a));
-
-% Apply the asymptotic consistency factor to the preliminary scale estimate
 s0=sh0*factor;
 
 % Apply small sample correction factor of Pison et al.
 s0=s0*sqrt(corfactorRAW(1,T,h/T));
 
-% Compute the residuals locally just changing the position of the level
-% shift
-bstar=brobbest;
-
-lshiftlocref=options.lshiftlocref;
-if isfield(lshiftlocref,'wlength')
-    k=lshiftlocref.wlength;
+if  lsh>0
+    % Compute the residuals locally just changing the position of the level
+    % shift
+    bstar=brobbest;
+    
+    lshiftlocref=options.lshiftlocref;
+    if isfield(lshiftlocref,'wlength')
+        k=lshiftlocref.wlength;
+    else
+        k=15;
+    end
+    
+    if isfield(lshiftlocref,'typeres')
+        typeres=lshiftlocref.typeres;
+    else
+        typeres=1;
+    end
+    
+    if isfield(lshiftlocref,'huberc')
+        huberc=lshiftlocref.huberc;
+    else
+        huberc=2;
+    end
+    
+    tloc=bstar(end)-k:bstar(end)+k;
+    tloc=tloc(tloc>6);
+    tloc=tloc(tloc<T-6);
+    
+    bsb=tloc;
+    Likloc=[tloc' zeros(length(tloc),3)];
+    ij=0;
+    
+    for j=tloc
+        ij=ij+1;
+        btmp=bstar;
+        btmp(end)=j;
+        
+        Xlshift= [zeros(j-1,1);ones(T-j+1,1)];
+        
+        lik(btmp);
+        
+        resbsb=(y(bsb)-yhat)/sh0;
+        Likloc(ij,2)=sum((HUrho(resbsb,huberc)).^2);
+        Likloc(ij,3)=sum((y(bsb)-yhat).^2);
+        
+    end
+    % Use Huberrized residual sum of squares to find minimum
+    [~,locmin]=min(Likloc(:,typeres+1));
+    finalLS=Likloc(locmin,1);
+    Xlshift=[zeros(finalLS-1,1);ones(T-finalLS+1,1)];
+    brobfinal=bstar;
+    brobfinal(end)=finalLS;
 else
-    k=15;
+    brobfinal= brobbest;
 end
-
-if isfield(lshiftlocref,'typeres')
-    typeres=lshiftlocref.typeres;
-else
-    typeres=1;
-end
-
-if isfield(lshiftlocref,'huberc')
-    huberc=lshiftlocref.huberc;
-else
-    huberc=2;
-end
-
-tloc=bstar(end)-k:bstar(end)+k;
-tloc=tloc(tloc>6);
-tloc=tloc(tloc<T-6);
-
-bsb=tloc;
-Likloc=[tloc' zeros(length(tloc),3)];
-ij=0;
-
-for j=tloc
-    ij=ij+1;
-    btmp=bstar;
-    btmp(end)=j;
-    
-    Xlshift= [zeros(j-1,1);ones(T-j+1,1)];
-    
-    lik(btmp);
-    
-    resbsb=(y(bsb)-yhat)/sh0;
-    Likloc(ij,2)=sum((HUrho(resbsb,huberc)).^2);
-    Likloc(ij,3)=sum((y(bsb)-yhat).^2);
-    
-end
-% Use Huberrized residual sum of squares to find minimum
-[~,locmin]=min(Likloc(:,typeres+1));
-finalLS=Likloc(locmin,1);
-Xlshift=[zeros(finalLS-1,1);ones(T-finalLS+1,1)];
-brobfinal=bstar;
-brobfinal(end)=finalLS;
 bsb=seq;
-lik(brobfinal)
+
+% Compute fitted values using final estimate of beta for all the
+% observations
+lik(brobfinal);
 
 % REWEIGHTING STEP
 
@@ -1250,7 +1499,6 @@ residuals=y-yhat;
 
 if abs(s0) > 1e-7
     stdres = residuals/s0;
-    
     
     if SmallSampleCor==1
         plinear=pini+(lshift>0);
@@ -1314,7 +1562,6 @@ if abs(s0) > 1e-7
     else % model is non linear because there is time varying amplitude in seasonal component
         Xtrendf=Xtrend(bsb,:);
         Xseasof=Xseaso(bsb,:);
-        Xlshiftf=Xlshift(bsb);
         if ~isempty(X)
             Xf=X(bsb,:);
         end
@@ -1326,15 +1573,11 @@ if abs(s0) > 1e-7
         weights=false(T,1);
         weights(bsb)=true;
         
-        
         if lshift>0
+            Xlshiftf=Xlshift(bsb);
             [betaout,~,~,covB,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
-            %              lshift=0;
-            %              bsb=seq;
-            %              [betaout,~,~,covB,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-2));
-            
         else
-            [betaout,~,~,covB,~,~]  = nlinfit(Xtrend,y,@likyhat,brobfinal);
+            [betaout,~,~,covB,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
         end
         
         % Now compute again vector yhat using final vector betaout
@@ -1351,8 +1594,11 @@ if abs(s0) > 1e-7
     B=[betaout sebetaout tout pval];
     
     out.B=B;
-    % Store position of level shift
-    out.posLS=finalLS;
+    
+    if lsh>0
+        % Store position of level shift
+        out.posLS=finalLS;
+    end
     
     % Computation of reweighted residuals.
     residuals=y-yhat;
@@ -1424,7 +1670,7 @@ out.BestIndexes=NumScale2ind;
 % Store scaled residuals
 out.residuals=stdres;
 
-% Store units forming initial subset of p-1 observations
+% Store units forming best initial subset of p-1 observations
 out.bs=bs;
 
 % Store list of units declared as outliers
@@ -1454,12 +1700,10 @@ end
 
 out.class='LTSts';
 
-% Store local improvement of the likelihood
-out.Likloc=Likloc;
-
-% store fitted values for all subsets which have been extracted
-% out.yhatall=yhatall;
-out.notconv=notconv;
+if lsh>0
+    % Store local improvement of the likelihood
+    out.Likloc=Likloc;
+end
 
 if options.yxsave
     if options.intercept==1
@@ -1472,6 +1716,41 @@ if options.yxsave
     out.y=y;
 end
 
+
+dispresults=options.dispresults;
+
+if dispresults
+    
+    b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'};
+    b_seaso={'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; 'b_cos3'; 'b_sin3'; ...
+        'b_cos4'; 'b_sin4'; 'b_cos5'; 'b_sin5'; 'b_cos6'};
+    b_expl={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+    b_varampl={'b_varampl'; 'b_varamp2'; 'b_varamp3'};
+    b_lshift={'b_lshift'; 't_lshift'};
+    
+    if seasonal>0
+        if 2*seasonal==s
+            lab=[b_trend(1:trend+1); b_seaso];
+        else
+            lab=[b_trend(1:trend+1); b_seaso(1:2*seasonal)];
+        end
+    end
+    if nexpl>0
+        lab=[lab;b_expl(1:nexpl)];
+    end
+    if varampl>0
+        lab=[lab;b_varampl(1:varampl)];
+    end
+    if lshift>0
+        lab=[lab; b_lshift(1)];
+    end
+    bhat=out.B(:,1);
+    se=out.B(:,2);
+    tstat=out.B(:,3);
+    pval=out.B(:,4);
+    
+    disp([table(lab) table(bhat) table(se) table(tstat) table(pval)])
+end
 
 %% Create plots
 % If plots is a structure, plot directly those chosen by the user; elseif
@@ -1490,7 +1769,7 @@ if plots>=1
     resindexplot(out.residuals,'conflev',conflev,'laby',laby,'numlab',out.outliers,'h',h2);
 end
 
-if plots==2
+if plots==2 && lsh>0
     % Distribution of the values of the target function for each tentative
     % level shift position
     figure
@@ -1989,11 +2268,6 @@ warning(warnnear.state,'MATLAB:nearlySingularMatrix');
     end
 
 end
-
-
-
-
-
 
 %% corfactorRAW function
 function rawcorfac=corfactorRAW(p,n,alpha)
