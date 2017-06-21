@@ -212,7 +212,7 @@ end
     options.extradata, options.cmapname, options.labls, options.labin, ...
     options.titl, options.FontSize, options.SizeAxesNum, options.transpose);
 
-%% Initialise key structures 
+%% Initialise key structures
 
 % Check if input is a structure
 if isstruct(RES)
@@ -232,7 +232,7 @@ end
 lshift = (T-l)/2;
 LSH    = (lshift+1):(T-lshift);
 
-%% colormap 
+%% colormap
 scmap = T*l;
 switch cmapname
     case 'hot'
@@ -316,6 +316,7 @@ Cres = [Cres nan(T+1,1)];
 
 if transpose == false
     
+    % wedge plot
     surface(zeros(size(Cres)),Cres,...
         'EdgeColor','none','Xdata',[LSH nan]','CDataMapping','direct');
     xlabel(labls,'Fontsize',FontSize);
@@ -331,6 +332,7 @@ if transpose == false
     
 else
     
+    % figure formed by two panels: the wedge plot and the time series
     if ~isempty(extradata)
         A(1) = subplot(2,1,1);
     else
@@ -342,20 +344,21 @@ else
     set(gca,'Box','on','Boxstyle','full','LineWidth',1,...
         'Ylim',[min(LSH), max(LSH)],'Fontsize',SizeAxesNum);
     
-    B = colorbar('eastoutside','Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
+    colorbar('eastoutside','Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
         'TickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
         'Fontsize',FontSize-2);
     
+    % the subplots have to be rescaled for leaving space to the colorbar
     if ~isempty(extradata)
         A(2) = subplot(2,1,2);
         plot(extradata);
         xlabel(labin,'FontSize',FontSize);
-        set(gca,'FontSize',SizeAxesNum); 
+        set(gca,'FontSize',SizeAxesNum);
         for i=1:2
             pos=get(A(i), 'Position');
-            axes(A(i)) ;
+            axes(A(i)) ; %#ok<LAXES>
             set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)]);
-        end  
+        end
             title(A(1),titl);
     else
         title(titl);
