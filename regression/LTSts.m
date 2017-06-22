@@ -1,33 +1,33 @@
 function [out, varargout] = LTSts(y,varargin)
 %LTSts extends LTS estimator to time series
 %
+%<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
+%
 % It is possible to introduce a trend (up to third order), seasonality
 % (constant or of varying amplitude and with a different number of
-% harmonics) and level shifts (in this last case it is possible to
-% specify the window in which level shift has to be searched for).
-%
-%<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
+% harmonics) and a level shift (in this last case it is possible to specify
+% the window in which level shift has to be searched for).
 %
 %  Required input arguments:
 %
-%    y:         Time series to analyze. Vector. A vector with T elements
-%               that contains the time series It can be either a row or a
-%               column vector.
+%    y:         Time series to analyze. Vector. A row or a column vector
+%               with T elements, which contains the time series.
 %
 %
 %  Optional input arguments:
 %
-%      model :  model type. Structure. A structure which specifies the model which will be used.
-%               Structure model contains the following fields
-%               model.s= scalar (length of seasonal period). For monthly data
-%                       s=12 (default), for quartely data s=4, ...
-%               model.trend = scalar (order of the trend component) trend=1
-%                       implies linear trend with interecept (default),
-%                       trend =2 implies quadratic trend ....
-%               model.seasonal = scalar integer specifying number of frequencies
-%                        (harmonics) in the seasonal component. Possible
-%                        values for seasonal are $1, 2, ..., [s/2]$ where
-%                        $[s/2]=floor(s/2)$.
+%      model :  model type. Structure. A structure which specifies the model
+%               which will be used. The model structure contains the following
+%               fields:
+%               model.s = scalar (length of seasonal period). For monthly
+%                         data s=12 (default), for quartely data s=4, ...
+%               model.trend = scalar (order of the trend component).
+%                       trend = 1 implies linear trend with interecept (default),
+%                       trend = 2 implies quadratic trend ...
+%               model.seasonal = scalar (integer specifying number of
+%                        frequencies, i.e. harmonics, in the seasonal
+%                        component. Possible values for seasonal are
+%                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
 %                        For example:
 %                        if seasonal =1 (default) we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
@@ -51,28 +51,28 @@ function [out, varargout] = LTSts(y,varargin)
 %                        follows:
 %                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
 %                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
-%               model.X  =   matrix of size T-by-nexpl containing the
+%               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.lshift = scalar greater or equal than 0 which specifies
-%                         whether it is necessary to include a level shift
-%                         component. lshift =0 (default) implies no level
-%                         shift component. If lshift is an interger greater
-%                         then 0 then it is possible to specify the moment
-%                         to start considering level shifts. For example if
-%                         lshift =13 then the following additional
-%                         parameters are estimated
-%                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where $\beta_{LS1}$ is a
-%                          real number and $\beta_{LS2}$ is an integer which
-%                          assumes values 14, 14, ..., T-13.
-%                         In general, the level shift which are considered are referred to times
-%                         (lshift+1):(T-lshift).
+%               model.lshift = scalar greater or equal than 0 which
+%                         specifies whether it is necessary to include a
+%                         level shift component. lshift = 0 (default)
+%                         implies no level shift component. If lshift is an
+%                         interger greater then 0 then it is possible to
+%                         specify the moment to start considering level
+%                         shifts. For example if lshift =13 then the
+%                         following additional parameters are estimated
+%                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where $\beta_{LS1}$
+%                          is a real number and $\beta_{LS2}$ is an integer
+%                          which assumes values 14, 14, ..., T-13.
+%                         In general, the level shift which are considered
+%                         are referred to times (lshift+1):(T-lshift).
 %                 Example - 'model', model
 %                 Data Types - struct
-%               Remark: the default model is for monthly data with a linear trend
-%               (2 parameters) + seasonal component with just one harmonic
-%               (2 parameters), no additional explanatory variables and no
-%               level shift that is
+%               Remark: the default model is for monthly data with a linear
+%               trend (2 parameters) + seasonal component with just one
+%               harmonic (2 parameters), no additional explanatory
+%               variables and no level shift that is
 %                               model=struct;
 %                               model.s=12;
 %                               model.trend=1;
@@ -85,18 +85,18 @@ function [out, varargout] = LTSts(y,varargin)
 %               Example - 'intercept',1
 %               Data Types - double
 %           h : The number of observations that determined the least
-%               trimmed squares estimator. Scalar. h is an integer greater than p
-%               (number of columns of matrix X including the intercept but
-%               smaller then n. If the purpose is outlier detection than h
-%               does not have to be smaller than [0.5*(T+p+1)]. The default
-%               value of h is [0.75*T]. Note that if h is supplied input
-%               argument bdp is ignored.
+%               trimmed squares estimator. Scalar. h is an integer greater
+%               than p (number of columns of matrix X including the
+%               intercept but smaller then n. If the purpose is outlier
+%               detection than h does not have to be smaller than
+%               [0.5*(T+p+1)]. The default value of h is [0.75*T]. Note
+%               that if h is supplied input argument bdp is ignored.
 %                 Example - 'h',round(n*0,75)
 %                 Data Types - double
 %         bdp : breakdown point. Scalar. It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine.
-%               Please specify h or bdp not both.
+%               than 0 but smaller or equal than 0.5 will do fine. Please
+%               specify h or bdp, but not both.
 %                 Example - 'bdp',0.4
 %                 Data Types - double
 %       lts   : structure which controls a set of options of the
@@ -115,56 +115,54 @@ function [out, varargout] = LTSts(y,varargin)
 %                               from previous iteration in case a level
 %                               shift is present).
 %             lts.refstepsbestr = scalar defining maximum number of refining
-%                               iterations for each best subset (default =
-%                               50).
+%                               steps for each best subset (default=50).
 %              lts.reftolbestr  = scalar. Default value of tolerance for
 %                               the refining steps for each of the best
 %                               subsets The default value is 1e-8.
-%                 Example - 'lts',lts
-%                 Data Types - struct
+%                Example - 'lts',lts
+%                Data Types - struct
 %              Remark: if lts is an empty value all default values of
 %              structure lts will be used.
 %       nsamp : number of subsamples to extract. Scalar or vector of length 2.
 %               Vector of length 1 or 2 which controls the number of
-%               subsamples which will be extracted to find the
-%               robust estimator. If lshift>0 then nsamp(1) controls the
-%               number of subsets which have to be extracted to find the
-%               solution for t=lshift. nsamp(2) controls the number of
+%               subsamples which will be extracted to find the robust
+%               estimator. If lshift>0 then nsamp(1) controls the number of
 %               subsets which have to be extracted to find the solution for
-%               t=lshift+1, lshift+2, ..., T-lshift.
-%               Note that nsamp(2) is generally smaller than nsamp(1) because
-%               in order to compute the best solution for t=lshift+1,
-%               lshift+2, ..., T-lshift, we use the lts.bestr/2 best solutions from
-%               previous t (after shifting by one the position of the level
-%               shift in the estimator of beta). If lshift is >0 the
-%               default value of nsamp is (500 250). If lshift is >0 and
-%               nsamp is supplied as a scalar the default is to extract
-%               [nsamp/2] subsamples for t=lshift+1, lshift+2, ...
-%               Therefore, for example, in order to extract 600 subsamples
-%               for t=lshift and 300 subsamples for t= lshift+1 ... you can
-%               use nsamp =600 or nsamp=[600 300]. The default value of
-%               nsamp is 1000;
+%               t=lshift. nsamp(2) controls the number of subsets which
+%               have to be extracted to find the solution for t=lshift+1,
+%               lshift+2, ..., T-lshift.
+%               Note that nsamp(2) is generally smaller than nsamp(1)
+%               because in order to compute the best solution for
+%               t=lshift+1, lshift+2, ..., T-lshift, we use the lts.bestr/2
+%               best solutions from previous t (after shifting by one the
+%               position of the level shift in the estimator of beta). If
+%               lshift is >0 the default value of nsamp is (500 250). If
+%               lshift is >0 and nsamp is supplied as a scalar the default
+%               is to extract [nsamp/2] subsamples for t=lshift+1,
+%               lshift+2, ... Therefore, for example, in order to extract
+%               600 subsamples for t=lshift and 300 subsamples for t=
+%               lshift+1 ... you can use nsamp =600 or nsamp=[600 300].
+%               The default value of nsamp is 1000;
 %                 Example - 'nsamp',500
 %                 Data Types - double
 %               Remark: if nsamp=0 all subsets will be extracted.
 %               They will be (n choose p).
-%  reftolALS  :   Tolerance inside ALS. Scalar. Tolerance value of tolerance for
-%                 the refining steps inside ALS routine. The default value
-%                 is 1e-03.
+%  reftolALS  :   Tolerance inside ALS. Scalar. Tolerance value of tolerance
+%                 for the refining steps inside ALS routine. The default
+%                 value is 1e-03.
 %                 Example - 'reftolALS',1e-05
 %                 Data Types - double
-% refstepsALS :   Maximum iterations inside ALS. Scalar.
-%                 Maximum number of iterations inside ALS routine.
-%                 Default value of tolerance for
-%                 the refining steps inside ALS routine. The default value
-%                 is 50.
+% refstepsALS :   Maximum iterations inside ALS. Scalar. Maximum number
+%                 of iterations inside ALS routine. Default value of
+%                 tolerance for the refining steps inside ALS routine. The
+%                 default value is 50.
 %                 Example - 'refstepsALS',20
 %                 Data Types - double
 %     conflev : Confidence level. Scalar. Scalar between 0 and 1 containing
-%               Confidence level which is
-%               used to declare units as outliers. Usually conflev=0.95,
-%               0.975 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n,
-%               1-0.01/n (simultaneous alpha). Default value is 0.975.
+%               Confidence level which is used to declare units as
+%               outliers. Usually conflev=0.95, 0.975 0.99 (individual
+%               alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous
+%               alpha). Default value is 0.975.
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %       plots : Plots on the screen. Scalar.
@@ -178,8 +176,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               confidence interval will be used. If plots =2 the following
 %               additional plots will be shown on the screen.
 %               1) Boxplot of the distribution of the lts.bestr values of
-%               the target function for each tentative level shift
-%               position;
+%               the target function for each tentative level shift position;
 %               2) A two panel plot which shows the values of the local sum
 %               of squares varying the position of the level shift around
 %               the first tentative position keeping all the other
@@ -198,32 +195,32 @@ function [out, varargout] = LTSts(y,varargin)
 %               screen.
 %                 Example - 'plots',1
 %                 Data Types - double
-%SmallSampleCor:Small sample correction factor to control
-%               empirical size of the test. Scalar equal to 1 or 2 (default) or 3 or 4.
-%               If SmallSampleCor=1 in
-%               the reweighting step the nominal threshold based on
-%               $\chi^2_{0.99}$ is multiplied by the small sample
-%               correction factor which guarrantees that the empirical size
-%               of the test is equal to the nominal size. Given that the
-%               correction factors were obtained through simulation for a
-%               linear model, the number of explanatory which is used to
-%               compute the correction factor refers to all explanatory
-%               variables except the non linear components in the seasonal
-%               part of the model. For example, in a model with linear
-%               trend 4 seasonal harmonics + level shift and second order
-%               trend in the seasonal component the number of explanatory
-%               variables used is 11 = total number of variables -2 = 2 (linear
-%               trend) + 8 (4 seasonal harmonics) +1 (level shift).
-%               If SmallSampleCor =2 Gervini and Yohai procedure is called
-%               with 'iterating' false and 'alpha' 0.99 is invoked, that is:
-%               weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
-%               If SmallSampleCor =3 Gervini and Yohai procedure  called
-%               with 'iterating' true and 'alpha' 0.99 is invoked, that is:
-%               weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
-%               If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
-%               weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
-%               Example - 'SmallSampleCor',3
-%               Data Types - double
+%SmallSampleCor:Small sample correction factor to control empirical size of
+%               the test.  Scalar equal to 1 or 2 (default) or 3 or 4.
+%               - If SmallSampleCor=1 in the reweighting step the nominal
+%                 threshold based on $\chi^2_{0.99}$ is multiplied by the
+%                 small sample correction factor which guarrantees that the
+%                 empirical size of the test is equal to the nominal size.
+%                 Given that the correction factors were obtained through
+%                 simulation for a linear model, the number of explanatory
+%                 which is used to compute the correction factor refers to
+%                 all explanatory variables except the non linear components
+%                 in the seasonal part of the model. For example, in a model
+%                 with linear trend 4 seasonal harmonics + level shift and
+%                 second order trend in the seasonal component the number of
+%                 explanatory variables used is 11 = total number of
+%                 variables -2 = 2 (linear trend) + 8 (4 seasonal harmonics)
+%                 +1 (level shift).
+%               - If SmallSampleCor =2 Gervini and Yohai procedure is called
+%                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
+%               - If SmallSampleCor =3 Gervini and Yohai procedure  called
+%                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
+%               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
+%                 weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
+%                 Example - 'SmallSampleCor',3
+%                 Data Types - double
 %        msg  : Messages on the screen. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen If msg==1 (default) messages are displayed on
@@ -233,11 +230,11 @@ function [out, varargout] = LTSts(y,varargin)
 %               are set to off else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
-%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additioanl column of ones for
-%               the intercept is not added. As default nocheck=0. The
-%               controls on h, bdp and nsamp still remain.
+%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no
+%               check is performed on matrix y and matrix X. Notice that y
+%               and X are left unchanged. In other words the additioanl
+%               column of ones for the intercept is not added. As default
+%               nocheck=0. The controls on h, bdp and nsamp still remain.
 %               Example - 'nocheck',1
 %               Data Types - double
 % lshiftlocref: Parameters for local shift refinement. Structure.
@@ -257,9 +254,8 @@ function [out, varargout] = LTSts(y,varargin)
 %                   residuals sum of squares is based on huberized (scaled)
 %                   residuals (this is the default
 %                   choice) else raw residuals are used.
-%              lshiftlocref.huberc= tuning constant for Huber estimator
-%                       just in case lshiftlocref.typeres=1. The default
-%                       value is 2.
+%              lshiftlocref.huberc= tuning constant for Huber estimator just
+%                   in case lshiftlocref.typeres=1. The default value is 2.
 %               Example - 'lshiftlocref',lshiftlocref.typeres=2
 %               Data Types - struct
 %nbestindexes : position of the best solutions. Positive integer. For each
@@ -273,8 +269,8 @@ function [out, varargout] = LTSts(y,varargin)
 %               previous tentative level shift. More precisely:
 %               index lts.bestr/2+1 is associated with best solution from
 %               previous tentative level shift;
-%               index lts.bestr/2+2 is associated with second best solution from
-%               previous tentative level shift;
+%               index lts.bestr/2+2 is associated with second best solution
+%               from previous tentative level shift;
 %               ...
 %               nbestindexes is an integer which specifies how many indexes
 %               we want to store. The default value of nbestindexes  is 3.
@@ -299,12 +295,10 @@ function [out, varargout] = LTSts(y,varargin)
 %               Example - 'yxsave',1
 %               Data Types - double
 %
-%
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
 %               arguments is of no importance.
-%
 %
 %  Output:
 %
@@ -358,9 +352,9 @@ function [out, varargout] = LTSts(y,varargin)
 %                       position.
 %                       This output is present just if input option
 %                       model.lshift>0.
-%     out.numscale2 = matrix of size lts.bestr-by-(T-2*lshift) containing (in
-%                       the columns the values of the lts.bestr smallest values of
-%                       the target function. Target function = truncated
+%     out.numscale2 = matrix of size lts.bestr-by-(T-2*lshift) containing
+%                       (in the columns the values of the lts.bestr smallest
+%                       values of the target function. Target function = truncated
 %                       residuals sum of squares.
 %     out.BestIndexes = matrix of size nbestindexes-by-(T-2*lshift)
 %                       containing in each column the indexes
@@ -369,29 +363,29 @@ function [out, varargout] = LTSts(y,varargin)
 %                       associated with best solutions from previous
 %                       tentative level shift.
 %                       More precisely:
-%                       index lts.bestr/2+1 is associated with best solution from
-%                       previous tentative level shift;
-%                       index lts.bestr/2+2 is associated with best solution from
-%                       previous tentative level shift.
+%                       index lts.bestr/2+1 is associated with best solution
+%                       from previous tentative level shift;
+%                       index lts.bestr/2+2 is associated with best solution
+%                       from previous tentative level shift.
 %                       This output is present just if input option
 %                       model.lshift>0.
-%         out.Likloc  = matrix of size (2*lshiftlocref.wlength+1)-by-3 containing local sum of
-%                       squares of residuals in order to decide best
-%                       position of level shift:
+%         out.Likloc  = matrix of size (2*lshiftlocref.wlength+1)-by-3
+%                       containing local sum of squares of residuals in
+%                       order to decide best position of level shift:
 %                       1st col = position of level shift;
-%                       2nd col = local sum of squares of huberized
-%                                   residuals;
+%                       2nd col = local sum of squares of huberized residuals;
 %                       3rd col = local sum of squares of raw residuals.
 %                       This output is present just if input option
 %                       model.lshift>0.
-%             out.RES = Matrix of size T-by-(T-lshift) containing scaled residuals
-%                       for all the T units of the original time series
-%                       monitored in steps lshift+1, lshift+2, ...,
+%             out.RES = Matrix of size T-by-(T-lshift) containing scaled
+%                       residuals for all the T units of the original time
+%                       series monitored in steps lshift+1, lshift+2, ...,
 %                       T-lshift, where lshift+1 is the first tentative
 %                       level shift position, lshift +2 is the second level
 %                       shift position, and so on. This output is present
 %                       just if input option model.lshift>0.
-%            out.yhat = vector of fitted values after final (NLS=non linear least squares) step.
+%            out.yhat = vector of fitted values after final (NLS=non linear
+%                       least squares) step.
 %       out.residuals = Vector T-by-1 containing the scaled residuals from
 %                       after final NLS step.
 %         out.weights = Vector containing weights after adaptive
@@ -420,7 +414,8 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %            C        : cell  containing the indices of the subsamples
 %                       extracted for computing the estimate (the so called
-%                       elemental sets) for each tentative level shift position.
+%                       elemental sets) for each tentative level shift
+%                       position.
 %                       C{1} is associated with the subsamples for
 %                       first tentative level shift position;
 %                       C{2} is associated with the subsamples for
@@ -428,8 +423,6 @@ function [out, varargout] = LTSts(y,varargin)
 %                       ...
 %                       C{end} is associated with the subsamples for
 %                       last tentative level shift position;
-%
-%
 %
 % See also LXS, wedgeplot
 %
@@ -525,7 +518,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast') 
+    legend('real values','fitted values','Location','SouthEast')
 %}
 
 %{
@@ -555,8 +548,8 @@ function [out, varargout] = LTSts(y,varargin)
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=1;         
-    model.lshift=13;            % impose level shift      
+    model.seasonal=1;
+    model.lshift=13;            % impose level shift
     out=LTSts(yLS,'model',model);
     close all
     % Plot real and fitted values
@@ -575,8 +568,8 @@ function [out, varargout] = LTSts(y,varargin)
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=106;         
-    model.lshift=13;             
+    model.seasonal=106;
+    model.lshift=13;
     out=LTSts(yLS,'model',model);
     close all
     % Plot real and fitted values
@@ -594,8 +587,8 @@ function [out, varargout] = LTSts(y,varargin)
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=106;         
-    model.lshift=0;             
+    model.seasonal=106;
+    model.lshift=0;
     model.X=randn(length(y),1);
     out=LTSts(y1,'model',model);
     close all
@@ -607,11 +600,24 @@ function [out, varargout] = LTSts(y,varargin)
 %}
 
 %{
-    %% Example 1 used in the paper RPRH. 
-    % Two short level shifts in opposite % directions and an isolated
-    % outlier.
+    %% Example 1 used in the paper RPRH.
+    % Load airline data
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Two short level shifts in opposite directions and an isolated outlier.
     % Add a level shift contamination plus some outliers.
-    y1=y;
+    y1=y(:);
     y1(50:55)=y1(50:55)-300;
     y1(70:75)=y1(70:75)+300;
     y1(90:90)=y1(90:90)+300;
@@ -637,7 +643,7 @@ function [out, varargout] = LTSts(y,varargin)
     %% Example 2 used in the paper RPRH.
     % A persisting level shift and three isolated outliers, two of which in
     % proximity of the level shift.
-    y1=y;
+    y1=y(:);
     y1(68:end)=y1(68:end)+1300;
     y1(67)=y1(67)-600;
     y1(45)=y1(45)-800;
@@ -658,13 +664,13 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
-%}   
+%}
 
 %{
     %% Example 3 used in the paper RPRH.
     % A persisting level shift preceded and followed in the proximity by
     % other two short level shifts, and an isolated outlier.
-    y1=y;
+    y1=y(:);
     y1(50:55)=y1(50:55)-300;
     y1(68:end)=y1(68:end)-700;
     y1(70:75)=y1(70:75)+300;
@@ -688,42 +694,47 @@ function [out, varargout] = LTSts(y,varargin)
 %}
 
 %% Input parameters checking
+
+% setting global variable yin
+yin = y;
+
 % Extract size of the data
-T=length(y);
+T = length(yin);
+
 % seq is the vector which will contain linear time trend
-seq=(1:T)';
-one=ones(T,1);
-zerT1=zeros(T,1);
+seq   = (1:T)';
+one   = ones(T,1);
+zerT1 = zeros(T,1);
 
 if nargin<1
     error('FSDA:LTSts:MissingInputs','Input time series is missing');
 end
 
 % Set up values for default model
-modeldef=struct;
-modeldef.trend=1;           % linear trend
-modeldef.s=12;              % monthly time series
+modeldef         =struct;
+modeldef.trend   =1;        % linear trend
+modeldef.s       =12;       % monthly time series
 modeldef.seasonal=1;        % just one harmonic
-modeldef.X='';              % no extra explanatory variable
-modeldef.lshift=0;          % no level shift
+modeldef.X       ='';       % no extra explanatory variable
+modeldef.lshift  =0;        % no level shift
 
 % h to be implemented for LTS
 
 % Set the default value for h (the default is 75 per cent of the data)
-hdef=round(0.75*T);
-bdpdef=1-hdef/T;
-nsampdef=1000;
+hdef    = round(0.75*T);
+bdpdef  = 1-hdef/T;
+nsampdef= 1000;
 
 % default value for ALS iterations
-reftolALSdef=1e-03;
-refstepsALSdef=50;
+reftolALSdef   = 1e-03;
+refstepsALSdef = 50;
 
 % default values for structure which contains the parameters associated
 % with local level shift refinement
-lshiftlocrefdef=struct;
-lshiftlocrefdef.wlength=15;
-lshiftlocrefdef.typeres=1;
-lshiftlocrefdef.huberc=2;
+lshiftlocrefdef         = struct;
+lshiftlocrefdef.wlength = 15;
+lshiftlocrefdef.typeres = 1;
+lshiftlocrefdef.huberc  = 2;
 
 % nbestindexesdef is a positive integer which specifies how many indices of
 % the smallest values of the target functions we want to retain.
@@ -732,8 +743,8 @@ nbestindexesdef=3;
 % dispresultsdef Boolean about display results.
 dispresultsdef=false;
 
-options=struct('intercept',1,'lts','','nsamp',nsampdef,'h',hdef,'bdp',...
-    bdpdef,'plots',0,'nomes',0,'model',modeldef,...
+options=struct('intercept',1,'lts','','nsamp',nsampdef,'h',hdef,...
+    'bdp',bdpdef,'plots',0,'nomes',0,'model',modeldef,...
     'conflev',0.975,'msg',1,'yxsave',0,...
     'SmallSampleCor',2,...
     'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
@@ -801,13 +812,13 @@ if ~isequal(options.model,modeldef)
     end
 end
 
-model=modeldef;
+model = modeldef;
 
 % Get model parameters
-trend=model.trend;          % get kind of  trend
-s=model.s;                  % get periodicity of time series
-seasonal=model.seasonal;    % get number of harmonics
-lshift=model.lshift;        % get level shift
+trend    = model.trend;       % get kind of  trend
+s        = model.s;           % get periodicity of time series
+seasonal = model.seasonal;    % get number of harmonics
+lshift   = model.lshift;      % get level shift
 
 % nbestindexes = indexes of the best  nbestindexes solutions for each
 % tentative position of level shift
@@ -824,16 +835,16 @@ end
 
 % Construct the matrices which are fixed in each step of the minimization
 % procedure
-Seq=[one seq seq.^2 seq.^3];
+Seq = [one seq seq.^2 seq.^3];
 
 % Define matrix which contains linear quadratic of cubic trend
 intercept=options.intercept;
 if intercept ==1
-    Xtrend=Seq(:,1:trend+1);
+    Xtrend = Seq(:,1:trend+1);
 else
-    Xtrend=Seq(:,2:trend+1);
+    Xtrend = Seq(:,2:trend+1);
 end
-ntrend=size(Xtrend,2);
+ntrend = size(Xtrend,2);
 
 % seasonal component
 if seasonal >0
@@ -950,9 +961,7 @@ SmallSampleCor=options.SmallSampleCor; % small sample correction factor
 % Convergence criteria inside ALS loop
 reftolALS=options.reftolALS;
 refstepsALS=options.refstepsALS;
-
 constr=0;
-
 
 if ~isstruct(lts) && isempty(lts)
     refsteps=2;
@@ -1136,8 +1145,8 @@ for lsh=LSH
         C=[lsh*ones(nselected,1) zeros(nselected,pini+1,'int16')];
         
         
-        % Make sure that observation lsh is always included in the subset and
-        % that the subset contains at least one unit smaller than lsh
+        % Make sure that observation lsh is always included in the subset
+        % and that the subset contains at least one unit smaller than lsh
         for r=1:nselected
             Cr=Cini(r,:);
             % Observations greater or equal than lsh will be increased by one
@@ -1145,8 +1154,8 @@ for lsh=LSH
             Cr(boo)=Cr(boo)+1;
             % Make sure there is at least one observation smaller than lsh
             boo=Cr<lsh;
-            % if sum(boo)==0 then in the subset there is no observation which is
-            % smaller than lsh
+            % if sum(boo)==0 then in the subset there is no observation
+            % which is smaller than lsh
             if sum(boo)<1
                 Cr(1)=randsample(lsh-1,1);
             end
@@ -1181,22 +1190,22 @@ for lsh=LSH
     for i=1:nselected
         % Initialize b0 as vector of zeroes for each subset
         % The order of the elements of b0 is as follows
-        % 1) trend elements (if present). If the trend is order two r are r+1
-        % coefficients if the intercept is present otherwise there are just r
-        % components (Xtrend)
+        % 1) trend elements (if present). If the trend is order two r are
+        % r+1 coefficients if the intercept is present otherwise there are
+        % just r components (Xtrend)
         % 2) linear part of seasonal component 2, 4, 6, ..., s-2, s-1 coefficients
         % (if present)   (Xseaso)
         % 3) coefficients associated with the matrix of explanatory variables
         % which have a potential effect on the time series under study (X)
-        % 4) non linear part of seasonal component, that is varying amplitude. If
-        % varying amplitude is of order k there are k coefficients (if
+        % 4) non linear part of seasonal component, that is varying amplitude.
+        % If varying amplitude is of order k there are k coefficients (if
         % present) (Seq)
         % 5) level shift component (if present). In this case there are two
-        % coefficients, the second (which is also the last element of vector b0)
-        % is an integer which specifies the time in which level shift takes
-        % place and the first (which is also the penultime element of vector
-        % b0) is a real number which identifies the magnitude of the upward
-        % (downward) level shift (Xlshift)
+        % coefficients, the second (which is also the last element of
+        % vector b0) is an integer which specifies the time in which level
+        % shift takes place and the first (which is also the penultime
+        % element of vector b0) is a real number which identifies the
+        % magnitude of the upward (downward) level shift (Xlshift)
         beta0=zeros(p,1);
         
         % extract a subset of size p
@@ -1210,7 +1219,7 @@ for lsh=LSH
         % Preliminary OLS estimates (including tentative level shift) based
         % just on the units forming subset
         bsb=index;
-        betaini=Xfinal(bsb,:)\y(bsb);
+        betaini=Xfinal(bsb,:)\yin(bsb);
         
         % The first pini components are associated with
         % trend and seasonal (without varying
@@ -1218,11 +1227,10 @@ for lsh=LSH
         beta0(1:pini)=betaini(1:pini);
         
         if lsh>0
-            % The last two components of beta0 are the associated
-            % with level shift. More precisely penultimate
-            % position is for the coefficient of level shift and,
-            % final position is the integer which specifies the
-            % starting point of level shift
+            % The last two components of beta0 are the associated with
+            % level shift. More precisely penultimate position is for the
+            % coefficient of level shift and, final position is the integer
+            % which specifies the starting point of level shift
             beta0(end-1:end)=[betaini(end) lsh];
         end
         
@@ -1236,9 +1244,8 @@ for lsh=LSH
             %disp('------')
         end
         
-        % Compute  fitted values (for all units)
-        % Therefore recall function lik but this time
-        % computed using all observations
+        % Compute  fitted values (for all units). Therefore recall function
+        % lik but this time computed using all observations
         bsb=seq;
         % Procedure lik computes yhat (fitted values for all the
         % observations using parameter estimates based on bsb). vector yhat
@@ -1248,7 +1255,7 @@ for lsh=LSH
         beta=betaout;
         
         % 1(a) ii. -  Now apply concentration steps
-        tmp = IRWLSreg(y,beta,refsteps,reftol,h);
+        tmp = IRWLSreg(yin,beta,refsteps,reftol,h);
         
         % Store weights
         WEIi(:,i)=tmp.weights;
@@ -1334,7 +1341,7 @@ for lsh=LSH
     
     for i=1:bestr
         yhat=bestyhatall(:,i);
-        tmp = IRWLSreg(y,bestbetasall(i,:)',refstepsbestr,reftolbestr,h);
+        tmp = IRWLSreg(yin,bestbetasall(i,:)',refstepsbestr,reftolbestr,h);
         
         % Store information about the units forming best h subset among the
         % 10 best
@@ -1378,7 +1385,7 @@ for lsh=LSH
     % title(['Level shift in step t=' num2str(LSH(ilsh))])
     ALLnumscale2(:,ilsh)=allnumscale2;
     
-    scaledres = (y-yhatrob)/sqrt(numsuperbestscale2/h);
+    scaledres = (yin-yhatrob)/sqrt(numsuperbestscale2/h);
     RES(:,ilsh) = scaledres;
     
     
@@ -1392,7 +1399,7 @@ for lsh=LSH
     NumScale2ind(:,ilsh)=numscale2ssorind(1:nbestindexes);
     
     WEIibest10sum(:,ilsh)=sum(WEIibestrdiv2,2);
-    if lsh>0 && msg ==1 
+    if lsh>0 && msg ==1
         disp(['Level shift for t=' num2str(lsh)])
     end
 end
@@ -1472,9 +1479,9 @@ if  lsh>0
         
         lik(btmp);
         
-        resbsb=(y(bsb)-yhat)/sh0;
+        resbsb=(yin(bsb)-yhat)/sh0;
         Likloc(ij,2)=sum((HUrho(resbsb,huberc)).^2);
-        Likloc(ij,3)=sum((y(bsb)-yhat).^2);
+        Likloc(ij,3)=sum((yin(bsb)-yhat).^2);
         
     end
     % Use Huberrized residual sum of squares to find minimum
@@ -1495,7 +1502,7 @@ lik(brobfinal);
 % REWEIGHTING STEP
 
 % residuals = Raw residuals using final estimate of beta
-residuals=y-yhat;
+residuals=yin-yhat;
 
 if abs(s0) > 1e-7
     stdres = residuals/s0;
@@ -1536,13 +1543,13 @@ if abs(s0) > 1e-7
     if varampl==0 && lshift==0 % In this case the model is linear
         % Function lik constructs fitted values and residual sum of
         % squares
-        betaout = Xsel(bsb,:) \ y(bsb);
+        betaout = Xsel(bsb,:) \ yin(bsb);
         % update fitted values
         yhat = Xsel * betaout;
         
         % find fitted values using all observations
         yhat =  Xsel * betaout;
-        s2=sum((y(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
+        s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
         covB=s2*inv(Xsel'*Xsel); %#ok<MINV>
         
         
@@ -1551,12 +1558,12 @@ if abs(s0) > 1e-7
         % the non linear estimation but a simple LS
         
         Xseldum=[Xsel Xlshift];
-        betaout = Xseldum(bsb,:) \ y(bsb);
+        betaout = Xseldum(bsb,:) \ yin(bsb);
         
         
         % find fitted values using all observations
         yhat =  Xseldum * betaout;
-        s2=sum((y(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
+        s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
         covB=s2*inv(Xseldum'*Xseldum); %#ok<MINV>
         
     else % model is non linear because there is time varying amplitude in seasonal component
@@ -1566,7 +1573,7 @@ if abs(s0) > 1e-7
             Xf=X(bsb,:);
         end
         Seqf=Seq(bsb,:);
-        yf=y(bsb);
+        yf=yin(bsb);
         
         % Find new estimate of scale using only observations which have
         % weight equal to 1.
@@ -1601,7 +1608,7 @@ if abs(s0) > 1e-7
     end
     
     % Computation of reweighted residuals.
-    residuals=y-yhat;
+    residuals=yin-yhat;
     
     
     s0=sqrt(sum(weights.*residuals.^2)/(sum(weights)-1));
@@ -1713,7 +1720,7 @@ if options.yxsave
         out.X=X;
     end
     % Store response
-    out.y=y;
+    out.y=yin;
 end
 
 
@@ -1760,7 +1767,7 @@ if plots>=1
     % Time series + fitted values
     figure
     subplot(2,1,1)
-    plot([y yhat])
+    plot([yin yhat])
     xlabel('Time')
     
     % Index plot of robust residuals
@@ -1839,7 +1846,10 @@ warning(warnrank.state,'MATLAB:rankDeficientMatrix');
 warning(warnsing.state,'MATLAB:singularMatrix');
 warning(warnnear.state,'MATLAB:nearlySingularMatrix');
 
-
+% check about the y global variable
+if ~isequal(yin,yin)
+    error('FSDA:LTSts:yDiscrepancy','y should not change in this code. Please check if the global variable has been misused.');
+end
 
 %% The part below contains subfunctions which are used only inside this file
 
@@ -1882,7 +1892,7 @@ warning(warnnear.state,'MATLAB:nearlySingularMatrix');
             end
             % b0145 = coefficients of intercept trend + expl var + non
             % linear part of seasonal component + level shift
-            b0145=tr_expl_nls_lshift\(y(bsb)-at) ;
+            b0145=tr_expl_nls_lshift\(yin(bsb)-at) ;
             
             % Now find new coefficients of linear part of seasonal
             % component in the regression of y-trend-expl-lsihft versus
@@ -1893,18 +1903,18 @@ warning(warnnear.state,'MATLAB:nearlySingularMatrix');
             if isemptyX
                 if lshift>0
                     b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
-                        \(y(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-Xlshift(bsb)*b0145(end));
+                        \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-Xlshift(bsb)*b0145(end));
                 else
                     b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
-                        \(y(bsb)-Xtrend(bsb,:)*b0145(1:trend+1));
+                        \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1));
                 end
             else
                 if lshift>0
                     b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
-                        \(y(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-X(bsb,:)*b0145((trend+2):(trend+1+nexpl)) - Xlshift(bsb)*b0145(end));
+                        \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-X(bsb,:)*b0145((trend+2):(trend+1+nexpl)) - Xlshift(bsb)*b0145(end));
                 else
                     b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
-                        \(y(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-X(bsb,:)*b0145((trend+2):(trend+1+nexpl)));
+                        \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-X(bsb,:)*b0145((trend+2):(trend+1+nexpl)));
                 end
             end
             
@@ -1983,7 +1993,7 @@ warning(warnnear.state,'MATLAB:nearlySingularMatrix');
         
         yhat=yhattrend+yhatseaso+yhatX+yhatlshift;
         % obj = sum of squares of residuals/2 = negative log likelihood
-        obj=sum((y(bsb)-yhat).^2)/2;
+        obj=sum((yin(bsb)-yhat).^2)/2;
         % format long
         % disp(obj)
     end
