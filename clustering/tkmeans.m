@@ -531,7 +531,7 @@ if plots==1
            idxj=idx==j;
            if sum(idxj)>0
             plot(Y(idxj,1),Y(idxj,2),'o','color',colors(j));
-            ellipse(muopt(j,:),cov(Y(idxj,:)))
+            ellipse(muopt(j,:),cov(Y(idxj,:)));
            end
         end
         if alpha>0
