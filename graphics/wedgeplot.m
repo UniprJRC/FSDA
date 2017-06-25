@@ -19,30 +19,32 @@ function hf = wedgeplot(RES,varargin)
 %       Optional input arguments:
 %
 %     transpose: option determining the posiiton of the index number or tentative
-%                level shift. Boolean. If transpose is true (default) the x axis
-%                contains the tentative level shift position and the y axis the
+%                level shift. Boolean. If transpose is true (default) the x-axis
+%                contains the tentative level shift position and the y-axis the
 %                index number else if it is false the axes are interchanged.
 %                When transpose is true, it is possible with option extradata to
 %                add on a separate panel a subplot of the original time series
-%                (and possibly the series of fitted values).
+%                (and possibly the series of fitted values). See extradata 
+%                option for details.
 %                Example - 'transpose',false
 %                Data Types - Boolean
 %   extradata :  extra data to plot in a separate panel in association to the
 %                wedge plot. Matrix. Matrix of size T-by-1 or T-by-p containing
 %                the data which have to be plotted in the separate panel.
-%                Generally extradata is a matrix of size T-by-2 which contains
-%                the original time series and the corresponding fitted values in
+%                Generally extradata is a matrix of size T-by-2 containing the
+%                original time series and the corresponding fitted values in
 %                order to link the irregularities shown by the wedgeplot with
-%                the original time series. 
-%                If extradata is empty (default) the double wedge plot will be
-%                shown in a single panel. If extradata is not empty a two panel
-%                plot will be created: one will contain the double wedge plot
-%                and extradata will be plot in the other panel.
-%                This options makes sense only if transpose is true, that is if
-%                the x axis of the double wedge plot contains the index number.
+%                the original time series.
+%                - If extradata is empty (default) the double wedge plot will be
+%                  shown in a single panel. 
+%                - If extradata is not empty a two panel plot will be created:
+%                  one will contain the double wedge plot and extradata will be  
+%                  plot in the other panel. This options makes sense only if  
+%                  transpose is true, that is if the x axis of the double wedge 
+%                  plot contains the index number.
 %                When option transpose is left by the user unspecified, the
 %                default position of the extradata subplot is at the bottom.
-%                Otherwise, the position of the two panel depends on the order
+%                Otherwise, the position of the two panels depends on the order
 %                with which the user specifies the two options: if extradata is
 %                specified first, the corresponding subplot will be at the top,
 %                otherwse it will fall at the bottom.
@@ -150,7 +152,7 @@ function hf = wedgeplot(RES,varargin)
 %}
 
 %{
-    % Example of double wedge plot in series with level shift with option transpose.
+    %% Example of double wedge plot in series with level shift with option transpose.
     % Analysis of contaminated airline data.
     % Load the airline data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
@@ -189,6 +191,12 @@ function hf = wedgeplot(RES,varargin)
         'lts',lts,'plots',2);
     % Create the double wedge plot.
     wedgeplot(out,'transpose',true,'extradata',[y out.yhat])
+%}
+
+%{
+    % Same double wedge plot as before, but with the time series at the top
+    % subplot. This is obtained simply by specifying extradata before transpose.
+    wedgeplot(out,'extradata',[y out.yhat],'transpose',true);
 %}
 
 %% Beginning of code
@@ -369,7 +377,7 @@ else
         
         A(dps) = subplot(2,1,dps);
         plot(extradata);
-        xlabel(labin,'FontSize',FontSize);
+        xlabel(A(2),labin,'FontSize',FontSize);
         set(gca,'FontSize',SizeAxesNum);
         for i=1:2
             pos=get(A(i), 'Position');
