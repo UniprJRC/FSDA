@@ -18,19 +18,34 @@ function hf = wedgeplot(RES,varargin)
 %
 %       Optional input arguments:
 %
+%     transpose: option determining the posiiton of the index number or tentative
+%                level shift. Boolean. If transpose is true (default) the x axis
+%                contains the tentative level shift position and the y axis the
+%                index number else if it is false the axes are interchanged.
+%                When transpose is true, it is possible with option extradata to
+%                add on a separate panel a subplot of the original time series
+%                (and possibly the series of fitted values).
+%                Example - 'transpose',false
+%                Data Types - Boolean
 %   extradata :  extra data to plot in a separate panel in association to the
 %                wedge plot. Matrix. Matrix of size T-by-1 or T-by-p containing
 %                the data which have to be plotted in the separate panel.
 %                Generally extradata is a matrix of size T-by-2 which contains
 %                the original time series and the corresponding fitted values in
 %                order to link the irregularities shown by the wedgeplot with
-%                the original time series. More precisely, If extradata is not
-%                empty, a two panel plot will be created. The top panel will
-%                contain the double wedge plot and extradata will be plot in the
-%                bottom panel. If extradata is empty (default) the double wedge
-%                plot will be shown in a single panel. Note that this options
-%                just works if transpose is true (that is just if the x axis of
-%                the double wedge plot contains the index number).
+%                the original time series. 
+%                If extradata is empty (default) the double wedge plot will be
+%                shown in a single panel. If extradata is not empty a two panel
+%                plot will be created: one will contain the double wedge plot
+%                and extradata will be plot in the other panel.
+%                This options makes sense only if transpose is true, that is if
+%                the x axis of the double wedge plot contains the index number.
+%                When option transpose is left by the user unspecified, the
+%                default position of the extradata subplot is at the bottom.
+%                Otherwise, the position of the two panel depends on the order
+%                with which the user specifies the two options: if extradata is
+%                specified first, the corresponding subplot will be at the top,
+%                otherwse it will fall at the bottom.
 %                Example - 'extradata', [y yhat]
 %                Data Types - double
 %      cmapname: color map. Character. Character which indicates the type of
@@ -39,15 +54,6 @@ function hf = wedgeplot(RES,varargin)
 %                The default is 'hot'.
 %                Example - 'cmapname','summer'
 %                Data Types - Character
-%     transpose: option determining the posiiton of the index number or
-%                tentative level shift. Boolean. If transpose is true (default)
-%                the x axis contains the tentative level shift position and the
-%                y axis the index number else if it is false the axes are
-%                interchanged. When transpose is true, it is possible with option
-%                extradata to add on a lower panel a subplot of the original time
-%                series (and possibly the series of fitted values).
-%                Example - 'transpose',false
-%                Data Types - Boolean
 %        labls : label of the axis which contains the level shift position.
 %                Character. Character containing the label to put on the axis
 %                which contains the level shift position. This axis could be
@@ -137,7 +143,7 @@ function hf = wedgeplot(RES,varargin)
     lts.bestr=20; % number of best solutions to bring to full convergence
     % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
     h=round(0.75*length(y));
-    [out, varargout]=LTSts(y,'typemin',0,'model',model,'nsamp',500,...
+    [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
         'lts',lts,'h',h,'plots',2);
     % Create the double wedge plot.
     wedgeplot(out)
@@ -179,7 +185,7 @@ function hf = wedgeplot(RES,varargin)
     lts=struct;
     lts.bestr=20; % number of best solutions to bring to full convergence
     % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
-    [out, varargout]=LTSts(y,'typemin',0,'model',model,'nsamp',500,...
+    [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
         'lts',lts,'plots',2);
     % Create the double wedge plot.
     wedgeplot(out,'transpose',true,'extradata',[y out.yhat])
@@ -334,7 +340,17 @@ else
     
     % figure formed by two panels: the wedge plot and the time series
     if ~isempty(extradata)
-        A(1) = subplot(2,1,1);
+        
+        trapos = find(strcmpi('transpose',UserOptions));
+        extpos = find(strcmpi('extradata',UserOptions));
+        if extpos > trapos
+            dps = 2; wps = 1;
+        else
+            dps = 1; wps = 2;
+        end
+        
+        A(wps) = subplot(2,1,wps);
+        
     else
         xlabel(labin,'Fontsize',FontSize);
     end
@@ -350,7 +366,8 @@ else
     
     % the subplots have to be rescaled for leaving space to the colorbar
     if ~isempty(extradata)
-        A(2) = subplot(2,1,2);
+        
+        A(dps) = subplot(2,1,dps);
         plot(extradata);
         xlabel(labin,'FontSize',FontSize);
         set(gca,'FontSize',SizeAxesNum);
@@ -359,12 +376,12 @@ else
             axes(A(i)) ; %#ok<LAXES>
             set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)]);
         end
-            title(A(1),titl);
+        title(A(1),titl);
     else
         title(titl);
     end
     
-
+    
 end
 
 end
