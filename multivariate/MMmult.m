@@ -164,6 +164,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %                    is set to 1.
 %      out.conflev = scalar, confidence level which has been used
 %           out.md = n x 1 vector containing robust Mahalanobis distances
+%                   (in squared units).
 %     out.class    =  'MMmult'
 %
 %  Optional Output:
