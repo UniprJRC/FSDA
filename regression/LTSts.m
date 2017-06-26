@@ -690,7 +690,7 @@ function [out, varargout] = LTSts(y,varargin)
     lshiftlocref.huberc=1.5;
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
-       'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
+       'plots',2,'lshiftlocref',lshiftlocref,'msg',0);
 %}
 
 %% Input parameters checking
@@ -1407,13 +1407,6 @@ end
 % save RES to output structure (these residuals can be used for example to
 % prouduce the double wedge plot, see function wedgeplot for more details)
 out.RES = RES;
-
-%{
-    j=30
-     plot(seq,[y yhatrobLSH(:,j)])
-     title(['Level shift in step t=' num2str(LSH(j))])
-     text(seq,10*ones(T,1),num2str(Weights(:,j)))
-%}
 
 Weimod=Weights;
 for j=1:size(Weimod,2)
