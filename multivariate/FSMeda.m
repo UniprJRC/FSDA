@@ -6,7 +6,7 @@ function out = FSMeda(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           Variables. Matrix. n x v data matrix; n observations and v
+% Y :           Input data. Matrix. n x v data matrix; n observations and v
 %               variables. Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
