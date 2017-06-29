@@ -284,11 +284,11 @@ function [out, varargout] = LTSts(y,varargin)
 %               Data Types - double
 %  dispresults : Display results of final fit. Boolean. If dispresults is
 %               true,  labels of coefficients, estimated coefficients,
-%               standadrd errors, tstat and p-values are shown on the
+%               standard errors, tstat and p-values are shown on the
 %               screen in a fully formatted way. The default value of
 %               dispresults is false.
 %               Example - 'dispresults',true
-%               Data Types - double
+%               Data Types - logical
 %       yxsave : store X and y. Scalar. Scalar that is set to 1 to request that the response
 %                vector y and data matrix X are saved into the output
 %                structure out. Default is 0, i.e. no saving is done.
