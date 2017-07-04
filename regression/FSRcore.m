@@ -1338,7 +1338,7 @@ out.Un=Un;
 if isempty(bonflev)
     out.nout=nout;
 end
-out.beta=beta;
+out.beta=beta';
 if strcmp(model,'H')
     out.hetero=hetero;
 end

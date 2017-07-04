@@ -130,14 +130,15 @@ function [out , varargout] = MMreg(y,X,varargin)
 %  Output:
 %
 %
-%  out :     A structure containing the following fields
+%  out :     A structure containing the following fields:
 %       out.beta        =   p x 1 vector containing MM estimate of
-%                           regression coefficients
+%                           regression coefficients.
 %       out.auxscale    =   scalar, S estimate of the scale (or supplied
 %                           external estimate of scale, if option InitialEst
-%                           is not empty)
+%                           is not empty).
 %       out.residuals	=   n x 1 vector containing standardized MM
-%                           residuals
+%                           residuals.
+%      out.fittedvalues =   n x 1 vector containing the fitted values.
 %                           out.residuals=(y-X*out.beta)/out.auxscale
 %       out.weights     =   n x 1 vector. Weights assigned to each observation
 %       out.Sbeta       :   p x 1 vector containing S estimate of regression
@@ -432,7 +433,8 @@ outIRW = MMregcore(y,X,bs,ss,'eff',eff,'effshape',effshape,...
 out = struct;
 out.beta = outIRW.beta;
 out.auxscale = ss;
-out.residuals = (y-X*outIRW.beta)/ss; % MM scaled residuals
+out.fittedvalues = X*outIRW.beta;
+out.residuals = (y-out.fittedvalues)/ss; % MM scaled residuals
 out.Sbeta = bs;
 out.Ssingsub=singsub;
 out.weights=outIRW.weights;

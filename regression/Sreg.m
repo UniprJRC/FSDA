@@ -142,8 +142,9 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                       (sigma). This is the value of the objective function
 %              out.bs = p x 1 vector containing the units forming best subset
 %                       associated with S estimate of regression coefficient.
-%        out.residuals= n x 1 vector containing the estimates of the robust
-%                       scaled residuals
+% out.residuals= n x 1 vector containing the estimates of the robust
+%                scaled residuals.
+% out.fittedvalues= n x 1 vector containing the fitted values.
 %        out.outliers = this output is present only if conflev has been
 %                       specified. It is a vector containing the list of
 %                       the units declared as outliers using confidence
@@ -617,7 +618,8 @@ out.bs = superbestsubset;
 out.weights = weights;
 
 % compute and store in output structure the S robust scaled residuals
-out.residuals=(y-X*out.beta)/out.scale;
+out.fittedvalues = X*out.beta;
+out.residuals    = (y-out.fittedvalues)/out.scale;
 
 % Store in output structure the number of singular subsets
 out.singsub=singsub;

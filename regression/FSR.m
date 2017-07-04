@@ -221,6 +221,10 @@ function [out]=FSR(y,X,varargin)
 % out.beta   =  p-by-1 vector containing the estimated regression
 %               parameters (in step n-k).
 % out.scale  =  scalar containing the estimate of the scale (sigma). 
+%
+% out.residuals= n x 1 vector containing the estimates of the robust
+%                scaled residuals.
+% out.fittedvalues= n x 1 vector containing the fitted values.
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
@@ -571,6 +575,11 @@ INP.Bcoeff=Bols;
 INP.S2=S2(:,1:2);
 %% Call core function which computes exceedances to thresholds of mdr
 [out]=FSRcore(INP,'',options);
+
+% compute and store in output structure the S robust scaled residuals
+out.fittedvalues = X*out.beta;
+out.residuals    = (y-out.fittedvalues)/out.scale;
+
 out.class  =  'FSR';
 end
 
