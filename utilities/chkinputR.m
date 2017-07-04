@@ -38,7 +38,7 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
 %
 % This routines preforms the following operations:
 % 1) If y is a row vector it is transformed in a column vector;
-% 2) Checks that X is a 2-dimensional array;
+% 2) Checks that X is a matrix that has not more than two dimensions;
 % 3) Checks dimension consistency of X and y;
 % 4) Removes observations with missing or infinite values from X or y
 % (listwise exclusion);
