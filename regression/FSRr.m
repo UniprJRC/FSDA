@@ -224,7 +224,7 @@ bsbmfullrank=options.bsbmfullrank;
 out.outliers = outFSR.ListOut;
 out.beta     = outFSR.beta;
 
-beta = outFSR.beta';
+beta = outFSR.beta;
 seq  = 1:n;
 
 % Options specific for this function
