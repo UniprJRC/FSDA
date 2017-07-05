@@ -54,21 +54,20 @@ function out = boxtest(Y,group,varargin)
 %                       This is -2ln M (see 'More About section' for the
 %                       definition of M).
 %  out.LRchi2approx  =  scalar which contains Box test (corrected)
-%                       for equality of covariances. This is version is
-%                       called chi2 approximation of the box test.
+%                       for equality of covariances. This version is
+%                       called $\chi^2$ approximation of the Box test.
 %                       This is $-2(1-c_1)\ln M$ (see further details for the
 %                       definition of $c_1$ and $M$). This value must
-%                       bu compared with a $\chi^2$ with $0.5v(v+1)(g-1)$
+%                       be compared with a $\chi^2$ with $0.5v(v+1)(g-1)$
 %                       degrees of freedom.
 % out.LRchi2approx_pval =  scalar which contains the p-value of
-%                       Chi2 approximation of Box test of homogeneity of
+%                       $\chi^2$ approximation of Box test of homogeneity of
 %                       covariances.
-%     out.LRFapprox  =  scalar which contains the F approximation of Box
-%                       test of homogeneity of
-%                       covariances. This field is given just if input
-%                       option Fapprox is true.
+%     out.LRFapprox  =  scalar which contains the $F$ approximation of Box
+%                       test of homogeneity of covariances. This field is
+%                       given just if input option Fapprox is true.
 %  out.LRFapprox_pval =  scalar which contains the p-value of
-%                       F approximation of Box test of homogeneity of
+%                       $F$ approximation of Box test of homogeneity of
 %                       covariances. This field is given just if input
 %                       option Fapprox is true.
 %       out.Spl       = pooled variance covariance matrix.
@@ -77,12 +76,13 @@ function out = boxtest(Y,group,varargin)
 % More About:
 %
 % We assume independent samples of size $n_1$, $n_2$, $\ldots$,
-% $n_g$ from a $v$-multivariate normal distribution.
-% The hypothesis of equality of covariances is:
-% $ H_0= \Sigma_1 = \Sigma_2 = \ldots = \Sigma_g$
+% $n_g$ from a $v$-multivariate normal distribution. The hypothesis of
+% equality of covariances is:
+% \[
+% H_0= \Sigma_1 = \Sigma_2 = \ldots = \Sigma_g
+% \]
 %
-% To make the test we
-% calculate:
+% To make the test we calculate:
 %
 % \[
 % M=\frac{ |S_1|^{n_1-1} |S_2|^{n_2-1} \ldots |S_g|^{n_g-1} }{|S_{pl}|^{\sum_{i=1}^g n_i-1} }
@@ -95,21 +95,21 @@ function out = boxtest(Y,group,varargin)
 % with values near 1 favouring $H_0$ and values near 0 leading to the
 % rejection of $H_0$ (see Rencher (2002) p. 256 for further details). The
 % quantity $-2 \ln M$ is approximately distributed as a $\chi^2$
-% distribution and is given in out.LR.
-% The quantity $-2(1-c_1) \ln M$ (where $c_1$ is a small sample correction
-% factor) is usually called correct Box test and is approximately
-% distributed as a $\chi^2$ with $0.5 (g-1) v(v+1)$ degrees of freedom. We
-% reject $H_0$ if $-2(1-c_1) \ln M >\chi^2_{1-\alpha}$ where
-% $\chi^2_{1-\alpha}$ is the $1-\alpha$ quantile. The value of this test is
-% contained in $\mbox{out.LRchi2approx}$ and the corresponding p-value of this
-% test is given in $\mbox{out.LRchi2approx_pval}$.
+% distribution and is given in $\mbox{out.LR}$.  The quantity $-2(1-c_1) \ln  M$
+% (where $c_1$ is a small sample correction factor) is usually called
+% correct Box test and is approximately distributed as a $\chi^2$ with $0.5
+% (g-1) v(v+1)$ degrees of freedom. We reject $H_0$ if 
+% $$-2(1-c_1) \ln M  >\chi^2_{1-\alpha}$$ where $\chi^2_{1-\alpha}$ is the 
+% $1-\alpha$ quantile. The value of this test is contained in
+% $\mbox{out.LRchi2approx}$  and the corresponding p-value of this test is
+% given in $\mbox{out.LRchi2approx_pval}$.
 % Box also derived and F approximation to the test. This test is computed
 % just if input option Fapprox is true. The value of this last test and the
 % corresponding p-values are given in $\mbox{out.LRFapprox}$ and
 % $\mbox{LRFapprox_pval}$.
 % WARNING: if the absolute value of the determinant of the
-% var cov matrix of any group is less than 1e-40
-% program reports a missing value for LR test
+% var cov matrix of any group is less than 1e-40,
+% a missing value for LR test is reported.
 %
 %
 % See also manova1.m, tkmeans.m
@@ -162,6 +162,9 @@ end
 if nargin<2
     error('FSDA:boxtest:missingInputs','Grouping variable is missing')
 end
+
+% test version for releases older than 2013b in order to use option upper inside cdf
+vertest=verLessThan('matlab','8.2.0');
 
 Fapprox=false;
 dispresults= false;
@@ -278,7 +281,11 @@ c1=(2*p^2+3*p-1)/(6*(p+1)*(g-1))*( sum(1./(sz-1)) -1/(n-g));
 gam=1-c1;
 LRchi2approx=LR*gam;
 % LRchi2approx_pval = p value of the test
-LRchi2approx_pval= chi2cdf(LRchi2approx,0.5*p*(p+1)*(g-1),'upper');
+if vertest
+    LRchi2approx_pval= 1-chi2cdf(LRchi2approx,0.5*p*(p+1)*(g-1));
+else
+    LRchi2approx_pval= chi2cdf(LRchi2approx,0.5*p*(p+1)*(g-1),'upper');
+end
 
 % Also compute if requested F approximation of the test and associated
 % p-value
@@ -294,7 +301,11 @@ if Fapprox== true
     else
         LRFapprox=(a2*b2*LR)/(a1*(1-b2*LR));
     end
-    LRFapprox_pval=fcdf(LRFapprox,a1,a2,'upper');
+    if vertest
+        LRFapprox_pval=1-fcdf(LRFapprox,a1,a2);
+    else
+        LRFapprox_pval=fcdf(LRFapprox,a1,a2,'upper');
+    end
 end
 
 if dispresults == true
@@ -330,4 +341,5 @@ if Fapprox== true
 end
 
 out.Spl=Spl;
-
+end
+%FScategory:MULT-Multivariate
