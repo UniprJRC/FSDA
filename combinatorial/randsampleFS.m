@@ -163,7 +163,7 @@ if nargin < 3 || isempty(method)
         method=0;
     else 
         % in older releases we use systematic sampling because randperm
-        % function (used for merhod = 0) was extremely inefficient
+        % function (used for method = 0) was extremely inefficient
         method=2;
     end
 end

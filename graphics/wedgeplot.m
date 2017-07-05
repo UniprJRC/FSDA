@@ -24,7 +24,7 @@ function hf = wedgeplot(RES,varargin)
 %                index number else if it is false the axes are interchanged.
 %                When transpose is true, it is possible with option extradata to
 %                add on a separate panel a subplot of the original time series
-%                (and possibly the series of fitted values). See extradata 
+%                (and possibly the series of fitted values). See extradata
 %                option for details.
 %                Example - 'transpose',false
 %                Data Types - Boolean
@@ -36,11 +36,11 @@ function hf = wedgeplot(RES,varargin)
 %                order to link the irregularities shown by the wedgeplot with
 %                the original time series.
 %                - If extradata is empty (default) the double wedge plot will be
-%                  shown in a single panel. 
+%                  shown in a single panel.
 %                - If extradata is not empty a two panel plot will be created:
-%                  one will contain the double wedge plot and extradata will be  
-%                  plot in the other panel. This options makes sense only if  
-%                  transpose is true, that is if the x axis of the double wedge 
+%                  one will contain the double wedge plot and extradata will be
+%                  plot in the other panel. This options makes sense only if
+%                  transpose is true, that is if the x axis of the double wedge
 %                  plot contains the index number.
 %                When option transpose is left by the user unspecified, the
 %                default position of the extradata subplot is at the bottom.
@@ -202,7 +202,7 @@ function hf = wedgeplot(RES,varargin)
 %% Beginning of code
 
 options=struct('extradata',[],'cmapname','hot',...
-    'labls','Tentative level shift position','labin','Index number',...
+    'labls','Level shift position','labin','Index number',...
     'titl','Double wedge plot',...
     'FontSize',12,'SizeAxesNum',12,'transpose',true);
 
@@ -230,6 +230,16 @@ end
 
 % Check if input is a structure
 if isstruct(RES)
+    if isfield(RES,'posLS')
+        posLS = RES.posLS;
+    else
+        posLS = [];
+    end
+    if isfield(RES,'RES')
+        residuals = RES.residuals;
+    else
+        residuals = [];
+    end
     if isfield(RES,'RES')
         RES=abs(RES.RES);
     else
@@ -238,6 +248,8 @@ if isstruct(RES)
 else
     % Take absolute values of RES
     RES = abs(RES);
+    residuals = [];
+    posLS = [];
 end
 
 [T, l]  = size(RES);
@@ -375,16 +387,51 @@ else
     % the subplots have to be rescaled for leaving space to the colorbar
     if ~isempty(extradata)
         
+        mine = min(extradata(:)); 
+        maxe = max(extradata(:));
+        delta = (maxe-mine)*0.1;
+        yaxlim = [mine - delta ; maxe + delta];
+        
         A(dps) = subplot(2,1,dps);
+        
+        hold('on');
+        
+        % mark outliers with their severity
+        if ~isempty(residuals)
+            seq = 1:T;
+            quant = sqrt(chi2inv(1-0.01,1));
+            boolean=abs(residuals)>quant;
+            resboo=residuals(boolean);
+            modres=resboo;
+            th=8;
+            modres(abs(resboo)>th)=th;
+            %Rescale residuals in the interval [0 3]
+            sizeout=3*(abs(modres)-quant)/(th-quant);
+            outliers=seq(boolean);
+            for i=1:length(sizeout)
+                plot(seq(outliers(i)),extradata(outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
+            end
+        end
+        
+        % plot the vertical line of the level shift position and the
+        % associated label on the X axis
+        if ~isempty(posLS)
+            line(posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
+            text(posLS , yaxlim(1) , num2str(posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
+        end
+        
+        % plot the time series
         plot(extradata);
+        
         xlabel(A(2),labin,'FontSize',FontSize);
-        set(gca,'FontSize',SizeAxesNum);
+        set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim);
         for i=1:2
             pos=get(A(i), 'Position');
             axes(A(i)) ; %#ok<LAXES>
             set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)]);
         end
         title(A(1),titl);
+        box('on');
     else
         title(titl);
     end

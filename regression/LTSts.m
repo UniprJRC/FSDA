@@ -1748,11 +1748,11 @@ if dispresults
     se=out.B(:,2);
     tstat=out.B(:,3);
     pval=out.B(:,4);
-    if verLessThan ('matlab','8.2.0');
-        disp('           Coeff.     SE         t-stat       p-values')
-        disp( [char(lab) num2str([bhat se tstat pval])])
+    if verLessThan ('matlab','8.2.0')
+        disp('           Coeff.     SE         t-stat       p-values');
+        disp( [char(lab) num2str([bhat se tstat pval])]);
     else
-        disp([table(lab) table(bhat) table(se) table(tstat) table(pval)])
+        disp([table(lab) table(bhat) table(se) table(tstat) table(pval)]);
     end
 end
 

@@ -294,7 +294,7 @@ if ncomb<nsamp
 end
 
 
-if nargin<5
+if nargin<5 || isempty(msg)
     msg=1;
 end
 
