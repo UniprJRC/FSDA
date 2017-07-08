@@ -637,6 +637,9 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
+
+    % generate the wedgeplot
+    % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
 %}
 
 %{
@@ -664,6 +667,10 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
+
+    % generate the wedgeplot
+    % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
+
 %}
 
 %{
@@ -691,6 +698,10 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',2,'lshiftlocref',lshiftlocref,'msg',0);
+
+    % generate the wedgeplot
+    % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
+
 %}
 
 %% Input parameters checking

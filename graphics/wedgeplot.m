@@ -455,4 +455,10 @@ else
     
 end
 
+% get the current axes position and increases the bottom margin to ensure
+% that the x label is not cut off
+position = get(gca,'OuterPosition');
+[left, bottom, width, height] = deal(position(1),position(2),position(3),position(4));
+set(gca,'OuterPosition',[left 0.7*bottom width height]);
+
 end
