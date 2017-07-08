@@ -309,7 +309,7 @@ Cres(Cres>50)=50;
 
 % a linear sequence of colormap weights from the minimum to the maximum
 % residuals values (0 to 50, in practice).
-scres_lin = min(Cres(:)):max(Cres(:));
+scres_lin = (min(Cres(:)):max(Cres(:)))+1; scres_lin(1) = 0;
 
 %Partition the residuals in three parts: 'large', 'medium' and 'small'
 thtmp=50;
