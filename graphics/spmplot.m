@@ -653,6 +653,7 @@ ngroups=length(unique(group));
 % of legend
 clrdef='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
 symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
+symdef=repmat(symdef,2,1);
 sizdef='';
 dolegdef='on';
 
