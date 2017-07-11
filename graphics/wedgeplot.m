@@ -437,7 +437,12 @@ else
         end
         
         % plot the time series
-        plot(extradata);
+        dd  = size(extradata,2);
+        clr = 'bkgmcyr';
+        syb = {'-','--','-.',':','-','--','-.'};
+        for d=1:dd
+            plot(extradata(:,d),'Color',clr(d),'LineStyle',syb{d},'LineWidth',1);
+        end
         
         xlabel(A(2),labin,'FontSize',FontSize);
         set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
