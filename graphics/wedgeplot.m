@@ -191,7 +191,7 @@ function hf = wedgeplot(RES,varargin)
         'lts',lts,'plots',2);
     % Create the double wedge plot.
     % Remember to remove the last column of the matrix of the residuals
-    % obtained for each level shift position if you want to avoid the 
+    % obtained for each level shift position if you want to avoid the
     % top orange band (just execute RES(:,64)=[] before line 258).
     wedgeplot(out,'transpose',true,'extradata',[y out.yhat])
 %}
@@ -337,8 +337,11 @@ end
 %     Cres(rmedium) = round(Cres(rmedium) *3);
 % end
 
-
 %% generates the double wedge plot
+
+% In MATLAB releases before R2012b properties of surface and colorbar
+% objects were different
+vlt15 = verLessThan('matlab', '7.15');
 
 Cres = [Cres; nan(1,length(LSH))];
 Cres = [Cres nan(T+1,1)];
@@ -351,16 +354,27 @@ if transpose == false
     % axes labels
     xlabel(labls,'Fontsize',FontSize);
     ylabel(labin,'Fontsize',FontSize);
-    % properties of the axses. Note the -1 and +1 in the Ylim settings,
-    % i.e. in min(LSH-1) and max(LSH+1); this is needed because the line of
-    % the Box would be covered by the surface of the wedgeplot, at least in
-    % the bottom part of the plot.
-    set(gca,'Box','on','Boxstyle','full','LineWidth',1,...
-        'Xlim',[min(LSH-1), max(LSH+1)],'Fontsize',SizeAxesNum);
-    % the colorbar
-    colorbar('Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
-        'TickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
-        'Fontsize',FontSize);
+    
+    % Colorbar and properties of the surface axes. Note the -1 and +1 in
+    % the Ylim settings, i.e. in min(LSH-1) and max(LSH+1); this is needed
+    % because the line of the Box would be covered by the surface of the
+    % wedgeplot, at least in the bottom part of the plot.
+    % The if statement addresses properties in different MATLAB releases.
+    if  ~vlt15
+        set(gca,'Box','on','Boxstyle','full','LineWidth',1,...
+            'Xlim',[min(LSH-1), max(LSH+1)],'Fontsize',SizeAxesNum);
+        
+        colorbar('Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
+            'TickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
+            'Fontsize',FontSize);
+    else
+        set(gca,'Box','on','LineWidth',1,...
+            'Xlim',[min(LSH-1), max(LSH+1)],'Fontsize',SizeAxesNum);
+        
+        colorbar('YTick' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
+            'YTickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
+            'Fontsize',FontSize);
+    end
     
     title(titl);
     
@@ -376,11 +390,11 @@ else
         else
             dps = 1; wps = 2;
         end
-        % subplot hosting the wedgeplot 
+        % subplot hosting the wedgeplot
         A(wps) = subplot(2,1,wps);
         
     else
-       xlabel(labin,'Fontsize',FontSize);
+        xlabel(labin,'Fontsize',FontSize);
     end
     
     % the surface of the wedgeplot
@@ -389,21 +403,32 @@ else
     % axes labels
     % xlabel(labin,'Fontsize',FontSize);
     ylabel(labls,'FontSize',FontSize);
-    % properties of the axses. Note the -1 and +1 in the Ylim settings,
-    % i.e. in min(LSH-1) and max(LSH+1); this is needed because the line of
-    % the Box would be covered by the surface of the wedgeplot, at least in
-    % the bottom part of the plot.
-    set(gca,'Box','on','BoxStyle','full','LineWidth',1,...
-        'Ylim',[min(LSH-1), max(LSH+1)],'Fontsize',SizeAxesNum);
-    % the colorbar
-    colorbar('eastoutside','Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
-        'TickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
-        'Fontsize',FontSize-2);
+    
+    % Colorbar and properties of the surface axes. Note the -1 and +1 in
+    % the Ylim settings, i.e. in min(LSH-1) and max(LSH+1); this is needed
+    % because the line of the Box would be covered by the surface of the
+    % wedgeplot, at least in the bottom part of the plot.
+    % The if statement addresses properties in different MATLAB releases.
+    if ~vlt15
+        set(gca,'Box','on','BoxStyle','full','LineWidth',1,...
+            'Ylim',[min(LSH-1), max(LSH+1)],'Fontsize',SizeAxesNum);
+        
+        colorbar('eastoutside','Ticks' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
+            'TickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
+            'Fontsize',FontSize-2);
+    else
+        set(gca,'Box','on','LineWidth',1,...
+            'Ylim',[min(LSH-1), max(LSH+1)],'Fontsize',SizeAxesNum);
+        
+        colorbar('eastoutside','YTick' , prctile(1:size(cmap,1),[1 20 40 60 80 100]),...
+            'YTickLabels' , round(prctile(scres_lin , [1 20 40 60 80 100])*100)/100,...
+            'Fontsize',FontSize-2);
+    end
     
     % the subplots have to be rescaled for leaving space to the colorbar
     if ~isempty(extradata)
         
-        mine = min(extradata(:)); 
+        mine = min(extradata(:));
         maxe = max(extradata(:));
         delta = (maxe-mine)*0.1;
         yaxlim = [mine - delta ; maxe + delta];
@@ -445,7 +470,11 @@ else
         end
         
         xlabel(A(2),labin,'FontSize',FontSize);
-        set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
+        if ~vlt15
+            set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
+        else
+            set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
+        end
         for i=1:2
             pos=get(A(i), 'Position');
             axes(A(i)) ; %#ok<LAXES>
@@ -456,7 +485,6 @@ else
     else
         title(titl);
     end
-    
     
 end
 
