@@ -1,6 +1,6 @@
 function plotopt=resfwdplot(out,varargin)
-%resfwdplot plots the trajectories of the scaled (squared) residuals monitored
-%along the forward search
+%resfwdplot plots the trajectories of the monitored scaled (squared) residuals 
+%
 %
 %<a href="matlab: docsearchFS('resfwdplot')">Link to the help function</a>
 %
@@ -9,8 +9,9 @@ function plotopt=resfwdplot(out,varargin)
 %  out :  Structure containing monitoring of scaled residuals. Structure.
 %               Structure containing the following fields.
 %   out.RES =   matrix containing the residuals monitored in each step of
-%               the forward search. Every row is associated with a residual
-%               (unit). This matrix can be created using function FSReda.
+%               the forward search or any other robust procedure. Every row
+%               is associated with a residual (unit). This matrix can be
+%               created using function FSReda, Sregeda, MMregeda.
 %   out.Un  =   matrix containing the order of entry in the subset of each
 %               unit (required only when datatooltip is true or databrush
 %               is not empty).
@@ -19,7 +20,7 @@ function plotopt=resfwdplot(out,varargin)
 %     out.X  =   a matrix containing the explanatory variables (required only
 %               when option databrush is not empty).
 %   out.Bols =   (n-init+1) x (p+1) matrix containing the estimated beta
-%               coefficients monitored in each step of the forward search
+%               coefficients monitored in each step of the robust procedure
 %               (required only when option databrush is not empty and
 %               suboption multivarfit is not empty).
 %                Data Types - single|double
@@ -180,41 +181,60 @@ function plotopt=resfwdplot(out,varargin)
 %                   in the same window else a new window is created.
 %                   Example - 'tag','myplot'
 %                   Data Types - char
-%   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure. The default is datatooltip=''.
+%   datatooltip :   interactive clicking. Empty value, scalar or
+%                   structure. 
 %                   It is inactive if it is an empty value. The default is
 %                   datatooltip = 1, i.e. the user can select with the
 %                   mouse an individual residual trajectory in order to
-%                   have information about the corresponding unit, the
-%                   associated label and the step of the search in which
-%                   the unit enters in the subset.
-%                   If datatooltip is a structure, the fields
-%                   DisplayStyle and SnapToDataVertex
-%                   control the data cursor features
-%                   (see the MATLAB function datacursormode or the examples
-%                   below). Default values are datatooltip.DisplayStyle =
-%                   'Window' and datatooltip.SnapToDataVertex = 'on'.
-%                   By default, the residual trajectory selected with the
-%                   mouse is highlighted in red. A different color can be
-%                   specified as RGB vector in the structure field
-%                   LineColor (a RGB vector can be conveniently chosen
-%                   with our MATLAB class FSColor, see documentation).
-%                   By setting the field
-%                   datatooltip.SubsetLinesColor,
-%                   it is also possible to highlight the trajectories of
-%                   units that are in the subset at a given step of the
-%                   search.
-%                   This can be done (repeatedly) with a left mouse click
-%                   in proximity of the step of interest. A right mouse
-%                   click will terminate the selection by marking with a
-%                   up-arrow the step corresponding to the highlighted
-%                   lines. The highlighted lines by default are in blue,
-%                   but different colors can be specified as RGB vectors in
-%                   the field SubsetLinesColor. By default SubsetLinesColor
-%                   = '', i.e. the modality is not active. Any
-%                   initialization for SubsetLinesColor which cannot be
-%                   interpreted as RGB vector will be converted to blue,
-%                   i.e. SubsetLinesColor will be forced to be [0 0 1].
+%                   have information about the corresponding unit. The
+%                   information displayed depends on the estimator in use.
+%                   For example for class FSReda the information concerns
+%                   the label and the step of the search in which the unit
+%                   enters the subset. If datatooltip is a
+%                   structure it may contain the following fields
+%                   datatooltip.DisplayStyle = determines how the data cursor displays. 
+%                       Possible values are 'datatip' and 'window'
+%                       (default). 
+%                       'datatip' displays data cursor information in a
+%                       small yellow text box attached to a black square
+%                       marker at a data point you interactively select.
+%                       'window' displays data cursor information for the
+%                       data point you interactively select in a floating
+%                       window within the figure.
+%                   datatooltip.SnapToDataVertex = specifies whether the
+%                       data cursor snaps to the nearest data value or is
+%                       located at the actual pointer position. Possible
+%                       values are 'on' (default) and 'off'.
+%                   datatooltip.LineColor = controls the color of the
+%                       trajectory selected with the mouse. It can be an
+%                       RGB triplet of values between 0 and 1, or character
+%                       vector indicating a color name. Note that a RGB
+%                       vector can be conveniently chosen with our MATLAB
+%                       class FSColor, see documentation.
+%                   datatooltip.SubsetLinesColor = enables to control the
+%                       color of the trajectories of the units that are in
+%                       the subset at a given step of the search (if
+%                       resfwdplot is applied to an object of class
+%                       FSReda) or have a weight greater than 0.9 (if
+%                       resfwdplot is applied to an object of class LXSeda,
+%                       Sregeda and MMregeda).
+%                       This can be done (repeatedly) with a left mouse
+%                       click in proximity of the step of interest. A right
+%                       mouse click will terminate the selection by marking
+%                       with a up-arrow the step corresponding to the
+%                       highlighted lines. The highlighted lines by default
+%                       are in red, but a different color can be specified
+%                       as RGB triplet or character of color name.
+%                       Note that a RGB vector can be conveniently chosen with
+%                       our MATLAB class FSColor, see documentation.
+%                       By default SubsetLinesColor ='', i.e. the modality
+%                       is not active.
+%                       Any initialization for SubsetLinesColor which
+%                       cannot be interpreted as RGB vector will be
+%                       converted to blue, i.e. SubsetLinesColor will be
+%                       forced to be [0 0 1]. 
+%                       If SubsetLinesColor is not empty previous option
+%                       LineColor is overlooked.
 %                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
 %       label   :   row labels. Cell of strings.
