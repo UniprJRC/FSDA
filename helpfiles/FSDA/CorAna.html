@@ -54,7 +54,7 @@ Results for dimension: 2
     Heavy      -0.19777      0.50575        0.31015  
 
 -----------------------------------------------------------
-Overview row points
+Overview ROW POINTS
                           Mass       Score_1     Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
                         ________    _________    ________    _________    _____________    _____________    _____________    _____________
 
@@ -64,7 +64,7 @@ Overview row points
     Junior-Employees     0.45596      0.23295    0.057744     0.026269      0.33097          0.15177         0.94193           0.057876   
     Secretaries          0.12953     -0.20109    0.078911     0.006053     0.070064         0.080522         0.86535            0.13326   
 
-Overview columns points
+Overview COLUMN POINTS
                Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
               _______    ________    _________    _________    _____________    _____________    _____________    _____________
 
@@ -251,22 +251,18 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                  indicates the dimension to show on the y axis. The
                  default value of d2 is 2.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'd2',3
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>N</code></td><td><p><p>Matrix containing contigency table.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>N</code></td><td><p><p>$I$-by-$J$-table containing contigency table
+                         referred to active rows (i.e. referred to the rows which
+                         participated to the fit).</p> <p>
                          The $(i,j)$-th element is equal to $n_{ij}$,
                          $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
                          sum of the elements of out.P is $n$ (the grand
-                         total).</p></p></td></tr><tr valign="top"><td><code>I</code></td><td><p>Number of rows of contingency table.</p></td></tr><tr valign="top"><td><code>J</code></td><td><p>Number of columns of contingency table.</p></td></tr><tr valign="top"><td><code>n</code></td><td><p><p>Grand total. out.n is equal to sum(sum(out.N)).</p> <p>
-                         This is the number of observations.</p></p></td></tr><tr valign="top"><td><code>P</code></td><td><p>$I$-by-$J$-matrix containing correspondence matrix
+                         total).</p></p></td></tr><tr valign="top"><td><code>P</code></td><td><p>$I$-by-$J$-table containing correspondence matrix
                          (proportions). The $(i,j)$-th element is equal to
                          $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
                          \ldots, J$.  The sum of the elements of out.P is
-                         1.</p></td></tr><tr valign="top"><td><code>Lr</code></td><td><p>cell array of strings of length $I$ containing row
-                         labels.</p></td></tr><tr valign="top"><td><code>Lc</code></td><td><p>cell array of strings of length $J$ containing
-                         column labels.</p></td></tr><tr valign="top"><td><code>SupRow</code></td><td><p>matlab table containing contingency table referred
-                         to supplementary rows. This field is present just
-                         if there are supplementary rows.</p></td></tr><tr valign="top"><td><code>SupCol</code></td><td><p>matlab table containing contingency table related
-                         to supplementary columns. This field is present just
-                         if there are supplementary columns.</p></td></tr><tr valign="top"><td><code>r</code></td><td><p><p>vector of length $I$ containing row masses.</p> <p>
+                         1.</p></td></tr><tr valign="top"><td><code>I</code></td><td><p>Number of active rows of contingency table.</p></td></tr><tr valign="top"><td><code>J</code></td><td><p>Number of active columns of contingency table.</p></td></tr><tr valign="top"><td><code>n</code></td><td><p><p>Grand total. out.n is equal to sum(sum(out.N)).</p> <p>
+                         This is the number of observations.</p></p></td></tr><tr valign="top"><td><code>r</code></td><td><p><p>vector of length $I$ containing row masses.</p> <p>
                          </p>\[
                            r=(f_{1.},	f_{2.}, \ldots, f_{I.})'
                          \]
@@ -420,7 +416,11 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                            rows points with latent dimension axes. Similar
                            to component loadings in PCA</p></td></tr><tr valign="top"><td><code>sqrtDim2InertiaCols</code></td><td><p>$I$-by-$K$ matrix  containing correlation of
                            column points with latent dimension axes. Similar
-                           to component loadings in PCA</p></td></tr><tr valign="top"><td><code>RowsPriSup</code></td><td><p>Principal coordinates of supplementary rows</p></td></tr><tr valign="top"><td><code>RowsStaSup</code></td><td><p>Standard coordinates of supplementary rows</p></td></tr><tr valign="top"><td><code>RowsSymSup</code></td><td><p>Symmetrical coordinates of supplementary
+                           to component loadings in PCA.</p></td></tr><tr valign="top"><td><code>SupRowsN</code></td><td><p>matlab table containing contingency table referred
+                         to supplementary rows. If there are no
+                         supplementary rows this field is empty.</p></td></tr><tr valign="top"><td><code>SupColsN</code></td><td><p>matlab table containing contingency table related
+                         to supplementary columns. If there are no
+                         supplementary columns this field is empty.</p></td></tr><tr valign="top"><td><code>RowsPriSup</code></td><td><p>Principal coordinates of supplementary rows</p></td></tr><tr valign="top"><td><code>RowsStaSup</code></td><td><p>Standard coordinates of supplementary rows</p></td></tr><tr valign="top"><td><code>RowsSymSup</code></td><td><p>Symmetrical coordinates of supplementary
                            rows</p></td></tr><tr valign="top"><td><code>ColsPriSup</code></td><td><p>Principal coordinates of supplementary columns</p></td></tr><tr valign="top"><td><code>ColsStaSup</code></td><td><p>Standard coordinates of of supplementary columns</p></td></tr><tr valign="top"><td><code>ColsSymSup</code></td><td><p>Symmetrical coordinates of supplementary
                                 columns</p></td></tr><tr valign="top"><td><code>Summary</code></td><td><p><p>$K$-times-4 table containing summary results
                            for correpondence analysis.</p> <p>
