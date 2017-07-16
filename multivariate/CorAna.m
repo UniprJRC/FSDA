@@ -480,8 +480,16 @@ function out=CorAna(N, varargin)
 %
 % References:
 %
-%   Greenacre.....
-%   Wiley.
+% Benzecri, J.-P. (1992), Correspondence Analysis Handbook, New-York :
+% Dekker
+% Benzecri, J.-P. (1980), L’analyse des données tome 2 : l’analyse des
+% correspondances, Paris : Bordas.
+% Greenacre, M.J. (1993), Correspondence Analysis in Practice, London :
+% Academic Press.
+% Gabriel, K.R. and Odoroff, C. (1990). Biplots in biomedical research.
+% Statistics in Medicine, 9, pp. 469-485.
+% Greenacre, M.J. (1993) Biplots in correspondence Analysis, Journal of
+% Applied Statistics, 20, pp. 251 - 269.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
