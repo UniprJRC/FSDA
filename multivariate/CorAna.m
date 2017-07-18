@@ -640,8 +640,8 @@ Nredtable=Ntable;
 
 
 if ~isempty(Sup)
-labels=struct;
-
+    labels=struct;
+    
     % if Sup.r (Sup.c) is a cell or is character or it is a numeric
     % vector, then the supplementary rows (columns) belong to the the
     % actual contingency table, else if Sup.r (Sup.c) is a Matlab table
@@ -707,7 +707,7 @@ labels=struct;
                 end
             end
             labels.sc=Lc;
-            labels.sc = labels.sc(Indexesc);
+            labels.sc = labels.sc(Indexesc); %#ok<STRNU>
             
             % Delete the labels of contingency table associated to supplementary rows
             Lc(Indexesc)=[];
@@ -715,7 +715,7 @@ labels=struct;
         elseif istable(Sup.c)
             Indexesc='';
             Nsupc=table2array(Sup.c);
-            labels.sc=Sup.c.Properties.VariableNames;
+            labels.sc=Sup.c.Properties.VariableNames; %#ok<STRNU>
         else
             
             Indexesc=Sup.c;
@@ -725,7 +725,7 @@ labels=struct;
             
             
             labels.sc=Lc;
-            labels.sc = labels.sc(Indexesc);
+            labels.sc = labels.sc(Indexesc); %#ok<STRNU>
             % Delete the labels of contingency table associated to supplementary rows
             Lc(Indexesc)=[];
             
@@ -1161,8 +1161,9 @@ if isstruct(plots) || plots==1
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
         
         eval(['plot(' typeR 'Sup(:,d1),' typeR 'Sup(:,d2),' propsupR ')'])
-        eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),''' labels.sr{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
-
+        %         eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),''' labels.sr{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
+        eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),labels.sr,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
+        
     end
     
     % Add points and text associated to supplementary columns
@@ -1171,7 +1172,8 @@ if isstruct(plots) || plots==1
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
         
         eval(['plot(' typeC 'Sup(:,d1),' typeC 'Sup(:,d2),' propsupC ')'])
-        eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),''' labels.sc{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
+        % eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),''' labels.sc{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
+        eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),labels.sc,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
     end
     
     % Make axis equal and add cartesian axes
