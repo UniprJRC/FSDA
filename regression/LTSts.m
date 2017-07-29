@@ -635,7 +635,7 @@ function [out, varargout] = LTSts(y,varargin)
     % Set tuning constant to use insde Huber rho function
     lshiftlocref.huberc=1.5;
     % Estimate the parameters
-    [out]=LTSts(y1,'model',model,'nsamp',500,...
+    [out]=LTSts(y1,'model',model,'nsamp',5000,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
 
     % generate the wedgeplot
@@ -1030,8 +1030,8 @@ warning('off','MATLAB:nearlySingularMatrix');
 if lshift>0
     % If a level shift is present, it is necessary to
     % reestimate a linear model each time with a different
-    % level shift starting from period lshift up to period
-    % T-lshift+1 and take the one which minimizes the target
+    % level shift starting from period lshift+1 up to period
+    % T-lshift and take the one which minimizes the target
     % function (residual sum of squares/2 = negative log
     % likelihood)
     LSH = (lshift+1):(T-lshift);
