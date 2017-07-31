@@ -1731,7 +1731,7 @@ dispresults=options.dispresults;
 
 if dispresults
     
-    b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'};
+    b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
     b_seaso={'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; 'b_cos3'; 'b_sin3'; ...
         'b_cos4'; 'b_sin4'; 'b_cos5'; 'b_sin5'; 'b_cos6'};
     b_expl={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
@@ -1744,7 +1744,10 @@ if dispresults
         else
             lab=[b_trend(1:trend+1); b_seaso(1:2*seasonal)];
         end
+    else
+        lab=b_trend(1:trend+1);
     end
+    
     if nexpl>0
         lab=[lab;b_expl(1:nexpl)];
     end
@@ -1764,6 +1767,9 @@ if dispresults
     else
         disp([table(lab) table(bhat) table(se) table(tstat) table(pval)]);
     end
+     if lshift>0
+         disp(['Level shift position t=' num2str(out.posLS)])
+     end
 end
 
 %% Create plots
