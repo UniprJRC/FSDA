@@ -635,7 +635,7 @@ function [out, varargout] = LTSts(y,varargin)
     % Set tuning constant to use insde Huber rho function
     lshiftlocref.huberc=1.5;
     % Estimate the parameters
-    [out]=LTSts(y1,'model',model,'nsamp',5000,...
+    [out]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
 
     % generate the wedgeplot
@@ -1757,6 +1757,8 @@ if dispresults
     if lshift>0
         lab=[lab; b_lshift(1)];
     end
+    
+    
     bhat=out.B(:,1);
     se=out.B(:,2);
     tstat=out.B(:,3);

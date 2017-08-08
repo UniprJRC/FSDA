@@ -254,7 +254,7 @@ else
     residuals = [];
     posLS = [];
 end
-
+% ADcont2 data; to avoid orange band, execute      RES(:,64)=[]
 [T, l]  = size(RES);
 
 % LSH = vector of integers associated with tentative level shift positions
