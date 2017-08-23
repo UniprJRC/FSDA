@@ -312,10 +312,11 @@ ThreshRandIndex=0.7;
 plots=1;
 % Message about code execution
 msg=0;
-
+% the adjusted Rand index will be used
+Rand = 1;
 if nargin>1
     options=struct('whichIC',whichIC,'plots',plots,...
-        'NumberOfBestSolutions',NumberOfBestSolutions, 'ThreshRandIndex', ThreshRandIndex,'msg',msg,'Rand',1);
+        'NumberOfBestSolutions',NumberOfBestSolutions, 'ThreshRandIndex', ThreshRandIndex,'msg',msg,'Rand',Rand);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
