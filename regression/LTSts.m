@@ -276,12 +276,6 @@ function [out, varargout] = LTSts(y,varargin)
 %               we want to store. The default value of nbestindexes  is 3.
 %               Example - 'nbestindexes',5
 %               Data Types - double
-%        nomes: Message about estimated time. Scalar. If nomes is equal to
-%               1 no message about estimated time to compute LTS is
-%               displayed, else if nomes is equal to 0 (default), a message
-%               about estimated time is displayed.
-%               Example - 'nomes',1
-%               Data Types - double
 %  dispresults : Display results of final fit. Boolean. If dispresults is
 %               true,  labels of coefficients, estimated coefficients,
 %               standard errors, tstat and p-values are shown on the
@@ -428,9 +422,10 @@ function [out, varargout] = LTSts(y,varargin)
 %
 % References:
 %
-% Rousseeuw, P.J., Perrotta D.,Riani M., Hubert M. (2017), Robust modelling
-% of complex time series, submitted. (In the examples to rert to this paper
-% we use the acronym RPRH)
+% Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust
+% Monitoring of Many Time Series with Application to Fraud Detection,
+% submitted.
+% (In the examples to refer to this paper we use the acronym RPRH)
 %
 % Copyright 2008-2017. Written by Marco Riani, Domenico Perrotta, Peter
 % Rousseeuw and Mia Hubert
@@ -440,6 +435,28 @@ function [out, varargout] = LTSts(y,varargin)
 % Last modified 19-Jun-2017
 
 % Examples:
+
+
+%{
+    % Simulated data with linear trend and level shift.
+    % No seasonal component.
+    n=45;
+    a=1;
+    b=0.8;
+    sig=1;
+    seq=(1:n)';
+    y=a+b*seq+sig*randn(n,1);
+    y(round(n/2):end)=y(round(n/2):end)+10;
+    % model with a quadratic trend, non seasonal and level shift
+    model=struct;
+    model.trend=2;
+    model.seasonal=0;
+    % Potential level shift position is investigated in positions:
+    % t=10, t=11, ..., t=T-10.
+    model.lshift=10;    
+    out=LTSts(y,'model',model,'plots',1);
+    
+%}
 
 %{
     % Airline data: linear trend + just one harmonic for seasonal
@@ -754,7 +771,7 @@ nbestindexesdef=3;
 dispresultsdef=false;
 
 options=struct('intercept',1,'lts','','nsamp',nsampdef,'h',hdef,...
-    'bdp',bdpdef,'plots',0,'nomes',0,'model',modeldef,...
+    'bdp',bdpdef,'plots',0,'model',modeldef,...
     'conflev',0.975,'msg',1,'yxsave',0,...
     'SmallSampleCor',2,...
     'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
@@ -1014,8 +1031,6 @@ end
 
 conflev=options.conflev;    % Confidence level which is used for outlier detection
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
-
-% nomes=options.nomes;        % if options.nomes==1 no message about estimated time to compute LMS is displayed
 
 % Get user values of warnings
 warnrank=warning('query','MATLAB:rankDeficientMatrix');

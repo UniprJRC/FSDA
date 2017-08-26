@@ -95,8 +95,9 @@ function hf = wedgeplot(RES,varargin)
 %
 % References:
 %
-% Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust modelling
-% of complex time series, submitted.
+% Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust
+% Monitoring of Many Time Series with Application to Fraud Detection,
+% submitted.
 %
 %
 % Copyright 2008-2017.
@@ -104,9 +105,30 @@ function hf = wedgeplot(RES,varargin)
 %
 %
 %<a href="matlab: docsearchFS('wedgeplot')">Link to the help function</a>
-% Last modified 14-06-2016
+% Last modified 19-Jun-2017
 
 % Examples:
+
+%{
+    % Double wedge plot with simulated data with linear trend and level shift.
+    % No seasonal component.
+    n=45;
+    a=1;
+    b=0.8;
+    sig=1;
+    seq=(1:n)';
+    y=a+b*seq+sig*randn(n,1);
+    y(round(n/2):end)=y(round(n/2):end)+10;
+    % model with a quadratic trend, non seasonal and level shift
+    model=struct;
+    model.trend=2;
+    model.seasonal=0;
+    % Potential level shift position is investigated in positions:
+    % t=10, t=11, ..., t=T-10.
+    model.lshift=10;
+    out=LTSts(y,'model',model);
+    wedgeplot(out,'transpose',true,'extradata',[y out.yhat])  
+%}
 
 %{
     % Example of double wedge plot in series with level shift.
@@ -146,7 +168,7 @@ function hf = wedgeplot(RES,varargin)
     % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
     h=round(0.75*length(y));
     [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
-        'lts',lts,'h',h,'plots',2);
+        'lts',lts,'h',h,'plots',0,'msg',0);
     % Create the double wedge plot.
     wedgeplot(out)
 %}
@@ -155,7 +177,7 @@ function hf = wedgeplot(RES,varargin)
     %% Example of double wedge plot in series with level shift with option transpose.
     % Analysis of contaminated airline data.
     % Load the airline data.
-    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
@@ -188,7 +210,7 @@ function hf = wedgeplot(RES,varargin)
     lts.bestr=20; % number of best solutions to bring to full convergence
     % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
     [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
-        'lts',lts,'plots',2);
+        'lts',lts,'plots',0,'msg',0);
     % Create the double wedge plot.
     % Remember to remove the last column of the matrix of the residuals
     % obtained for each level shift position if you want to avoid the
