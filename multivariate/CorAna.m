@@ -90,7 +90,7 @@ function out=CorAna(N, varargin)
 %                       of datamatrix is false, that is the procedure
 %                       automatically considers N as a contingency table
 %               Example - 'datamatrix',true
-%               Data Types - single | double
+%               Data Types - logical
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, a plot which shows  the Principal
 %               coordinates of rows and columns is shown on the screen. If
@@ -476,7 +476,7 @@ function out=CorAna(N, varargin)
 %                          contribution of the second dimension to the
 %                          explanation of the inertia of the point.
 %
-% See also crosstab
+% See also crosstab, rcontFS, CressieRead
 %
 % References:
 %
@@ -519,10 +519,11 @@ function out=CorAna(N, varargin)
 
 %% Beginning of code
 
-% The input is certainly a
-UserOptions=varargin(1:2:length(varargin));
-
+% Check whether N is a contingency table or a n-by-p input dataset (in this
+% last case the contigency table is built using the first tow columns of the
+% input dataset).
 if ~isempty(varargin)
+    UserOptions=varargin(1:2:length(varargin));
     checkdatamatrix = strcmp(UserOptions,'datamatrix');
     if sum(checkdatamatrix)
         datamatrix = varargin{2*find(checkdatamatrix)};
