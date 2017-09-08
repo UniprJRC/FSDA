@@ -46,7 +46,7 @@ function [PD , pval] = CressieRead(N,varargin)
 %
 %       PD      : Cressie-Read power divergence test statistic. Scalar.
 %                 Scalar which measures the discrepancy/distance between
-%                 observed and expected frequecies under the null
+%                 observed and expected frequencies under the null
 %                 hypothesis of there is no difference in the row variable
 %                 distribution ('outcomes') between the columns
 %                 ('treatments').
@@ -214,7 +214,7 @@ if istable(N)
 end
 
 if any(any(N < 0))
-    error('chi2Test expects counts that are nonnegative values');
+    error('Test expects counts that are nonnegative values');
 end
 
 if I < 2 || J < 2
