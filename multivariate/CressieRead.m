@@ -5,23 +5,20 @@ function [PD , pval] = CressieRead(N,varargin)
 %
 %  Required input arguments:
 %
-%
 %       N    :    Contingency table (default) or n-by-2 input datasets.
-%                 Matrix or Table.
-%                 Matrix or table which contains the input contingency
-%                 table (say of size I-by-J) or the original data matrix.
-%                 In this last case N=crosstab(N(:,1),N(:,2)). As default
-%                 procedure assumes that the input is a contingency table.
-%
+%                 Matrix or Table. Matrix or table which contains the input
+%                 contingency table (say of size I-by-J) or the original
+%                 data matrix. In this last case N=crosstab(N(:,1),N(:,2)).
+%                 As default procedure assumes that the input is a
+%                 contingency table.
 %
 %  Optional input arguments:
 %
-%       la    :  parameter $\lambda$ of the family. Scalar.
-%               Scalar which contains the power in the
-%               Cressie-Read power divergence statistics. The default value
-%               of la is 2/3.
-%               If $\lambda=1$ we obtain Pearson's chi-squared statistic, see
-%               http://en.wikipedia.org/wiki/Chi-squared_test.
+%       la   :  parameter $\lambda$ of the family. Scalar. Scalar which 
+%               contains the power in the Cressie-Read power divergence
+%               statistics. The default value of la is 2/3.
+%               If $\lambda=1$ we obtain Pearson's chi-squared statistic, 
+%               see http://en.wikipedia.org/wiki/Chi-squared_test.
 %               If $\lambda=0$ we obtain the Log-likelihood ratio (G, or G^2
 %               test), see http://en.wikipedia.org/wiki/G-test.
 %               If $\lambda=-0.5$ we obtain the Freeman-Tukey statistic, or
@@ -32,31 +29,28 @@ function [PD , pval] = CressieRead(N,varargin)
 %               $\lambda=2/3$ is the value suggested by Cressie and Read (2004).
 %               Example - 'la',0
 %               Data Types - double
-%      datamatrix   :  data matrix or contingency table. Boolean. If
-%                       datamatrix is true the first input argument N is
-%                       forced to be interpreted as a data matrix, else
-%                       if the input argument is false N
-%                       is treated as a contingency table. The default value
-%                       of datamatrix is false, that is the procedure
-%                       automatically considers N as a contingency table
+% datamatrix  : data matrix or contingency table. Boolean. If datamatrix
+%               is true the first input argument N is forced to be
+%               interpreted as a data matrix, else if the input argument is
+%               false N is treated as a contingency table. The default
+%               value of datamatrix is false, that is the procedure
+%               automatically considers N as a contingency table
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %
 %  Output:
 %
-%       PD      : Cressie-Read power divergence test statistic. Scalar.
-%                 Scalar which measures the discrepancy/distance between
-%                 observed and expected frequencies under the null
-%                 hypothesis of there is no difference in the row variable
-%                 distribution ('outcomes') between the columns
-%                 ('treatments').
+%       PD    : Cressie-Read power divergence test statistic. Scalar.
+%               Scalar which measures the discrepancy/distance between
+%               observed and expected frequencies under the null hypothesis
+%               of there is no difference in the row variable distribution
+%               ('outcomes') between the columns ('treatments').
 %
-%
-%     pval    :  p-value of the test. Scalar. 
-%                Value in the range [0,1] which represents the p-value of
-%                the test. The p value is the probability, under the null
-%                hypothesis, of observing a value as extreme or more
-%                extreme of the power divergence test statistic.
+%     pval    :  p-value of the test. Scalar. Value in the range [0,1] which 
+%                represents the p-value of the test. The p value is the
+%                probability, under the null hypothesis, of observing a
+%                value as extreme or more extreme of the power divergence
+%                test statistic.
 %
 % More About:
 %
@@ -69,9 +63,8 @@ function [PD , pval] = CressieRead(N,varargin)
 %  \ldots, J$.  The sum of the elements of $P$ is 1.
 %  $P^*$=$I$-by-$J$-table containing correspondence matrix (proportions)
 %  under the hypothesis of independence. The $(i,j)$-th element is equal to
-%  $p_{ij}^*=p_{i.}p_{.j}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$.  The sum of
-%  the elements of $P^*$ is 1.
-%  
+%  $p_{ij}^*=p_{i.}p_{.j}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$.
+%  The sum of the elements of $P^*$ is 1.
 %
 % The power divergence family is defined:
 %   
@@ -124,10 +117,9 @@ function [PD , pval] = CressieRead(N,varargin)
 % Copyright 2008-2016.
 % Written by FSDA team
 %
-%
 %<a href="matlab: docsearchFS('CressieRead')">Link to the help function</a>
 % Last modified 14-06-2016
-
+%
 % Examples:
 
 %{
@@ -203,8 +195,7 @@ end
 % table
 if datamatrix == true
     N =crosstab(N(:,1),N(:,2));
-    [I,J]=size(N);
-    
+    [I,J]=size(N); 
 else
     [I,J]=size(N);
 end
@@ -245,7 +236,6 @@ if ~isempty(varargin)
     end
     la=options.la;
 end
-
 
 n=sum(sum(N));
 % Tstar = matrix containing expected frequencies under the hypothesis of

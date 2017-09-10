@@ -1,16 +1,15 @@
 function out = SparseTableTest(N,varargin)
 %SparseTableTest computes independence test for large and sparse contingency tables
 %
-%
 %<a href="matlab: docsearchFS('SparseTableTest')">Link to the help function</a>
 %
-% This file implements a new test of indipendence betweeen row variable
+% This function implements a new test of indipendence betweeen row variable
 % distribution ('outcomes') and columns ('treatments') which is expecially
 % suited for the analysis of large and sparse $I$-by-$J$ contingency
 % tables. The procedure is based on the collapsing of the original table
 % into a set of 2-by-2 tables for each cell of the original table which has
-% no less than a small number of counts (defined in optional input
-% parameter Threshold) and testing each of the resulting collapsed tables
+% no less than a small number of counts (set in the optional input
+% parameter 'threshold') and testing each of the resulting collapsed tables
 % for independence by any test (Fisher exact test (default), Barnard test
 % or those belonging to the power divergence family of Cressie and Read).
 % Because of the Bonferroni inequality, a sufficient condition for
@@ -19,31 +18,29 @@ function out = SparseTableTest(N,varargin)
 % response variables when in fact there is no such association) is that
 % each test done for each cell of the $I$-by-$J$ table rejects with
 % significance level equal to $\alpha$ divided by the number of comparisons
-% done. An additional bonus of the procedures is that it enables us to
+% done. An additional bonus of the procedures is that it enables to
 % highlight the most important contribution to the association of each
 % single entry of the original I-by-J-table two way table. The original
-% idea of this test is due to Dr. Spyros Arsenis of the Joint Research
-% Centre of the European Commission and has been successfully applied to
-% the analysis of contingency table coming from international trade data.
-%
+% idea of this test is due to Spyros Arsenis (Joint Research Centre of the
+% European Commission) and has been successfully applied to the analysis of
+% contingency table coming from international trade data.
 %
 %  Required input arguments:
 %
-%
 %       N    :    Contingency table (default) or n-by-2 input datasets.
-%                 Matrix or Table.
-%                 Matrix or table which contains the input contingency
-%                 table (say of size I-by-J) or the original data matrix.
-%                 In this last case N=crosstab(N(:,1),N(:,2)). As default
-%                 procedure assumes that the input is a contingency table.
+%                 Matrix or Table. Matrix or table which contains the input
+%                 contingency table (say of size I-by-J) or the original
+%                 data matrix. In this last case N=crosstab(N(:,1),N(:,2)).
+%                 By default the procedure assumes that the input is a
+%                 contingency table.
 %
 %  Optional input arguments:
 %
-% Threshold  : Threshold to select collapsed contigencey tables. Scalar.
+% threshold  : threshold to select collapsed contigencey tables. Scalar.
 %              Scalar which specifies above which value collapsed
 %              contingency tables have to be produced. The default value of
 %              threshold is 2.
-%                 Example - 'Threshold',3
+%                 Example - 'threshold',3
 %                 Data Types - single | double | int32 | int64
 %     alpha  : Significance level. Scalar value in the range (0,1).
 %              Significance level of the hypothesis test, specified as the
@@ -59,29 +56,25 @@ function out = SparseTableTest(N,varargin)
 %              character, possible values are 'Fisher' (to use the Fisher
 %              exact test, see function fishertest) or 'Barnard' (to use
 %              Barnard exact test, see function barnardtest).
-%                 Example - 'testname',1
-%                 Data Types - single | double | char
-%      datamatrix   :  data matrix or contingency table. Boolean. If
-%                       datamatrix is true the first input argument N is
-%                       forced to be interpreted as a data matrix, else
-%                       if the input argument is false N
-%                       is treated as a contingency table. The default value
-%                       of datamatrix is false, that is the procedure
-%                       automatically considers N as a contingency table
+%              Example - 'testname',1
+%              Data Types - single | double | char
+% datamatrix : data matrix or contingency table. Boolean. If datamatrix
+%              is true the first input argument N is forced to be
+%              interpreted as a data matrix, else if the input argument is
+%              false N is treated as a contingency table. The default value
+%              of datamatrix is false, that is the procedure automatically
+%              considers N as a contingency table
 %               Example - 'datamatrix',true
 %               Data Types - logical
-%
-%
-%
 %  Output:
 %
-%         out:   structure which contains the following fields:
+% out:   structure which contains the following fields:
 %
 % out.TestResults = p-values based on collapsed contingency tables. I-by-J matrix.
 %               The i,j-th entry of the RejectedMatrixBonf is the p-value
 %               of the Fisher exact test based on the collapsed i,j-th
 %               table. If the i-j entry of input matrix UserData is smaller
-%               or equal than input parameter Threshold  the test is not
+%               or equal than input parameter threshold  the test is not
 %               performed and the corresponding i,j-th entry of matrix
 %               TestResults is equal to Inf.
 % out.RejectedBonf = Results of the tests based on
@@ -129,9 +122,9 @@ function out = SparseTableTest(N,varargin)
 %
 %<a href="matlab: docsearchFS('SparseTableTest')">Link to the help function</a>
 % Last modified Sun 4 June 2016
-
+%
 % Examples:
-
+%
 %
 %{
     % SparseTableTest with all default options.
@@ -160,7 +153,7 @@ function out = SparseTableTest(N,varargin)
     load smoke
     % Chi^2 square test is used on collapsed 2-by-2 tables. 
     % Cells which have a frequency smaller or equal than 15 are ignored. 
-    out=SparseTableTest(X,'datamatrix',true,'Threshold',15,'testname',1);
+    out=SparseTableTest(X,'datamatrix',true,'threshold',15,'testname',1);
 %}
     
 %% Beginning of code
@@ -183,7 +176,7 @@ end
 % If input is a datamatrix it is necessary to construct the contingency
 % table
 if datamatrix == true
-    N =crosstab(N(:,1),N(:,2));
+    N = crosstab(N(:,1),N(:,2));
     [I,J]=size(N);
 else
     [I,J]=size(N);
@@ -201,13 +194,12 @@ if I < 2 || J < 2
     error('Matrix of observation must at least be of size 2-by-2');
 end
 
-
-Threshold=2;
-alpha=0.01;
-testname='fisher';
+threshold = 2;
+alpha     = 0.01;
+testname  = 'fisher';
 
 if nargin > 1
-    options=struct('testname',testname,'Threshold',Threshold,'alpha',alpha,'datamatrix',false);
+    options=struct('testname',testname,'threshold',threshold,'alpha',alpha,'datamatrix',false);
     
     % UserOptions=varargin(1:2:length(varargin));
     if ~isempty(varargin)
@@ -228,12 +220,11 @@ if nargin > 1
             end
         end
         
-        Threshold=options.Threshold;
+        threshold=options.threshold;
         alpha=options.alpha;
         testname=options.testname;
     end
 end
-
 
 if ischar(testname) && strcmp(testname,'fisher')
     lambda=100;
@@ -243,26 +234,26 @@ else
     lambda=testname;
 end
 
-
 % Number of rows and number of columns of input data
-[I,J]=size(N);
+[I,J] = size(N);
 
-% n = sample size
-n=sum(sum(N));
+% The sample size
+n = sum(sum(N));
 
-% TestResults = matrix to store results. The i-th and j-th element of this
-% matrix is equal to 1 if the collapsed test based on ij-th entry is
+% TestResults = matrix to store results. The i-th and j-th element of
+% TestResults is equal to 1 if the collapsed test based on ij-th entry is
 % significant
 TestResults=zeros(I,J);
 
 for j=1:J
-    n_dotj=sum(N(:,j));
     
-    for i=1:I
+    n_dotj = sum(N(:,j));
+    
+    for i = 1:I
         n_ij=N(i,j);
         
         % apply test just if n_ij is greater than threshold
-        if (n_ij<=Threshold)
+        if (n_ij<=threshold)
             % UserData(i,j)=0;
             TestResults(i,j)=inf;
         else
@@ -290,14 +281,12 @@ for j=1:J
     end
 end
 
-
 % Select how many comparisons have to be made
-nCompAfterT=sum(sum(N>Threshold));
+nCompAfterT = sum(sum(N>threshold));
 
 % Use Sidak or Bonferroni threshold
-RejectedSidak = TestResults <(1-(1-alpha)^(1/nCompAfterT));
-RejectedBonf = TestResults  < alpha/nCompAfterT;
-
+RejectedSidak = TestResults < (1-(1-alpha)^(1/nCompAfterT));
+RejectedBonf  = TestResults < alpha/nCompAfterT;
 
 out=struct;
 out.RejectedBonf=RejectedBonf;

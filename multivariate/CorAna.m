@@ -1,11 +1,9 @@
 function out=CorAna(N, varargin)
 %CorAna performs correpondence analysis
 %
-%
 %<a href="matlab: docsearchFS('CorAna')">Link to the help function</a>
 %
 %  Required input arguments:
-%
 %
 %       N    :    Contingency table (default) or n-by-2 input datasets.
 %                 Matrix or Table.
@@ -13,7 +11,6 @@ function out=CorAna(N, varargin)
 %                 table (say of size I-by-J) or the original data matrix.
 %                 In this last case N=crosstab(N(:,1),N(:,2)). As default
 %                 procedure assumes that the input is a contingency table.
-%
 %
 %  Optional input arguments:
 %
@@ -34,29 +31,25 @@ function out=CorAna(N, varargin)
 %               table because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
-%       Sup :  Structure containing indexes or names of supplementary rows or columns. Structure.
-%              Structure with the followin fields.
-%               Sup.r =  numeric vector containing row indexes  or cell
-%                       array of strings or table containing
-%                       supplementary rows. If indexes or cell array of
-%                       strings are supplied, we assume that supplementary
-%                       rows belong to contingency table N.
-%                       For example, if Sup.r=[2 5] (that is Sup.r is a
-%                       numeric vector which contains row indexes) we use
-%                       rows 2 and 5 of the input contingency table as
-%                       supplementary rows.
-%                       For example, if Sup.r={'Junior-Managers'
-%                       'Senior-Employees'} (that is Sup.r is a
-%                       cell array of strings) we use
-%                       rows named 'Junior-Managers' and 'Senior-Employees'
-%                       of the input contingency table as supplementary
-%                       rows.
-%                       Of course the length of Sup.r must be smaller than
-%                       the number of rows of the contigencey matrix
-%                       divided by 2.
-%                       If, on the other hand, Sup.r is a
-%                       table supplementary rows do not belong
-%                       to N.
+%       Sup :  Structure containing indexes or names of supplementary rows 
+%              or columns. Structure.  Structure with the followin fields.
+%              Sup.r =  numeric vector containing row indexes  or cell
+%                       array of strings or table containing supplementary
+%                       rows. If indexes or cell array of strings are
+%                       supplied, we assume that supplementary rows belong
+%                       to contingency table N. For example, if Sup.r=[2 5]
+%                       (that is Sup.r is a numeric vector which contains
+%                       row indexes) we use rows 2 and 5 of the input
+%                       contingency table as supplementary rows. For
+%                       example, if Sup.r={'Junior-Managers'
+%                       'Senior-Employees'} (that is Sup.r is a cell array
+%                       of strings) we use rows named 'Junior-Managers' and
+%                       'Senior-Employees' of the input contingency table
+%                       as supplementary rows. Of course the length of
+%                       Sup.r must be smaller than the number of rows of
+%                       the contigencey matrix divided by 2. If, on the
+%                       other hand, Sup.r is a table supplementary rows do
+%                       not belong to N.
 %               Sup.c = numeric vector containing column indexes or cell
 %                       array of string containing names of the columns to
 %                       use as supplementary columns, or table.
@@ -77,18 +70,18 @@ function out=CorAna(N, varargin)
 %                       divided by 2.
 %                       If, on the other hand, Sup.c is a table
 %                       supplementary columns  do not belong to N.
-%               Example - 'Sup',Sup=struct; Sup.c={'c2' 'c4'}
-%               Data Types - struct
+%                       Example - 'Sup',Sup=struct; Sup.c={'c2' 'c4'}
+%                       Data Types - struct
 %                       REMARK: The default value of Sup is a missing value
 %                       that is we assume that there are no supplementary
 %                       rows or columns.
 %      datamatrix   :  data matrix or contingency table. Boolean. If
 %                       datamatrix is true the first input argument N is
-%                       forced to be interpreted as a data matrix, else
-%                       if the input argument is false N
-%                       is treated as a contingency table. The default value
-%                       of datamatrix is false, that is the procedure
-%                       automatically considers N as a contingency table
+%                       forced to be interpreted as a data matrix, else if
+%                       the input argument is false N is treated as a
+%                       contingency table. The default value of datamatrix
+%                       is false, that is the procedure automatically
+%                       considers N as a contingency table
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %       plots : Plot on the screen. Scalar or structure.
