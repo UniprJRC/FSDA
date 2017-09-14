@@ -31,7 +31,7 @@ function out=CorAna(N, varargin)
 %               table because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
-%       Sup :  Structure containing indexes or names of supplementary rows 
+%       Sup :  Structure containing indexes or names of supplementary rows
 %              or columns. Structure.  Structure with the followin fields.
 %              Sup.r =  numeric vector containing row indexes  or cell
 %                       array of strings or table containing supplementary
@@ -536,29 +536,25 @@ if datamatrix == true
     Lr=labels(1:I,1);
     % default labels for columns of contingency table
     Lc=labels(1:J,2);
-    
 else
     [I,J]=size(N);
-    
-    %Size of N
+    % Size of N
     % default labels for rows of contingency table
     Lr=cellstr(strcat('r',num2str((1:I)')));
     % default labels for columns of contingency table
     Lc=cellstr(strcat('c',num2str((1:J)')));
 end
 
-
-
 % default value for supplementary units
 Sup='';
 k=2;
 plots=1;
 
-
 % Default font size for labels of rows or colums to add to the plot
 FontSizedef=10;
 MarkerSizedef=10;
 dispresults=true;
+
 % Dimensions to show in the plot. The default is to show the first two
 % dimensions.
 % d1= dimension to show in the x axis of correspondence analysis plot
@@ -589,14 +585,14 @@ if ~isempty(UserOptions)
             options.(varargin{i})=varargin{i+1};
         end
     end
-    k=options.k;
-    Lr=options.Lr;
-    Lc=options.Lc;
-    Sup=options.Sup;
+    k   = options.k;
+    Lr  = options.Lr;
+    Lc  = options.Lc;
+    Sup = options.Sup;
     plots=options.plots;
     dispresults=options.dispresults;
-    d1=options.d1;
-    d2=options.d2;
+    d1  = options.d1;
+    d2  = options.d2;
 end
 
 % Extract labels for rows and columns
@@ -606,13 +602,12 @@ if istable(N)
     Ntable=N;
     N=table2array(N);
 else
-    
     if isempty(Lr)
         Lr=cellstr(num2str((1:I)'));
     else
         % Check that the length of Lr is equal to I
         if length(Lr)~=I
-            error('Wrong length of row labels')
+            error('Wrong length of row labels');
         end
     end
     
@@ -621,31 +616,30 @@ else
     else
         % Check that the length of Lc is equal to J
         if length(Lc)~=J
-            error('Wrong length of column labels')
+            error('Wrong length of column labels');
         end
     end
     Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
 end
 
-% Nred will contain the contingency table after removing supplementary rows and
-% columns (if supplementary rows and columns belong to the table)
-Nred=N;
-Nredtable=Ntable;
-
+% Nred will contain the contingency table after removing supplementary rows
+% and columns (if supplementary rows and columns belong to the table)
+Nred      = N;
+Nredtable = Ntable;
 
 if ~isempty(Sup)
     labels=struct;
     
-    % if Sup.r (Sup.c) is a cell or is character or it is a numeric
-    % vector, then the supplementary rows (columns) belong to the the
-    % actual contingency table, else if Sup.r (Sup.c) is a Matlab table
-    % then the supplementary units do not belong to the actual
-    % contingency table N
+    % if Sup.r (Sup.c) is a cell or is character or it is a numeric vector,
+    % then the supplementary rows (columns) belong to the the actual
+    % contingency table, else if Sup.r (Sup.c) is a Matlab table then the
+    % supplementary units do not belong to the actual contingency table N
     
     if isfield(Sup,'r')
         
         if iscell(Sup.r) || ischar(Sup.r)
-            % find the indexes of the rows of matrix N to delete (rows to use as supplementary rows)
+            % find the indexes of the rows of matrix N to delete (rows to
+            % use as supplementary rows)
             Indexesr=zeros(length(Sup.r),1);
             for i=1:length(Sup.r)
                 if iscell(Sup.r)
@@ -655,43 +649,37 @@ if ~isempty(Sup)
                 end
             end
             
-            labels.sr=Lr;
+            labels.sr = Lr;
             labels.sr = labels.sr(Indexesr);
-            % Delete the labels of contingency table associated to supplementary rows
-            Lr(Indexesr)=[];
-            
+            % Delete the labels of contingency table associated to
+            % supplementary rows
+            Lr(Indexesr) = [];
             
         elseif istable(Sup.r)
             Indexesr='';
             Nsupr=table2array(Sup.r);
             labels.sr=Sup.r.Properties.RowNames;
         else
-            
-            
             Indexesr=Sup.r;
             if min(Indexesr)<1 || max(Indexesr)> size(N,1)
                 error('FSDA:CorAna:wrongInput',['Numeric indexes of supplementary rows must be integers between 1 and ' num2str(size(N,1))])
             end
             labels.sr=Lr;
             labels.sr = labels.sr(Indexesr);
-            
             % Delete the labels of contingency table associated to supplementary rows
             Lr(Indexesr)=[];
-            
         end
-        
         % out.labels.sr = labels.sr;
-        
     else
         Indexesr='';
-        
     end
     % end of part referred to labels for supplementary rows
     
     % beginning of part referred to labels for supplementary columns
     if isfield(Sup,'c')
         if iscell(Sup.c) || ischar(Sup.c)
-            % find the indexes of the rows to delete (rows to use as supplementary rows)
+            % find the indexes of the rows to delete (rows to use as
+            % supplementary rows)
             Indexesc=zeros(length(Sup.c),1);
             for i=1:length(Sup.c)
                 if iscell(Sup.c)
@@ -702,8 +690,8 @@ if ~isempty(Sup)
             end
             labels.sc=Lc;
             labels.sc = labels.sc(Indexesc); %#ok<STRNU>
-            
-            % Delete the labels of contingency table associated to supplementary rows
+            % Delete the labels of contingency table associated to
+            % supplementary rows
             Lc(Indexesc)=[];
             
         elseif istable(Sup.c)
@@ -716,21 +704,17 @@ if ~isempty(Sup)
             if min(Indexesc)<1 || max(Indexesc)> size(N,2)
                 error('FSDA:CorAna:wrongInput',['Numeric indexes of supplementary columns must be integers between 1 and ' num2str(size(N,2))])
             end
-            
-            
             labels.sc=Lc;
             labels.sc = labels.sc(Indexesc); %#ok<STRNU>
-            % Delete the labels of contingency table associated to supplementary rows
+            % Delete the labels of contingency table associated to
+            % supplementary rows
             Lc(Indexesc)=[];
             
         end
-        
-        
         %  out.labels.sc = labels.sc;
     else
         Indexesc='';
     end
-    
     
     % if ~isempty(Indexesr) this means that supplementary rows belong to
     % matrix N
@@ -790,14 +774,13 @@ n=sum(sum(Nred));
 % P = correspondence matrix  containing relative frequencies
 P = (1/n) * Nred;
 
-
 % Store P in table format
 Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
 out.P=Ptable;
 
-out.I=I;            %number of active rows (excluding supplementary rows)
-out.J=J;            %number of active columns (excluding supplementary columns)
-out.n=n;            %grand total
+out.I=I;        %number of active rows (excluding supplementary rows)
+out.J=J;        %number of active columns (excluding supplementary columns)
+out.n=n;        %grand total
 
 % out.Lr=Lr;
 % out.Lc=Lc;
@@ -808,12 +791,11 @@ Dr = diag(r);
 out.r = r;          %row masses (vector)
 out.Dr = Dr;        %row masses (diagonal matrix)
 
-% Column masses = centroids of the row profiles   r' * Dr^(-1) * P = 1' * P = c'
+% Column masses = centroids of the row profiles r' * Dr^(-1) * P = 1' * P = c'
 c  = (onesI' * P)';
 Dc = diag(c);
 out.c = c;          %column masses (vector); c is the centroid of row profiles
 out.Dc = Dc;        %column masses (diagonal matrix)
-
 
 %Rows profiles (equation 4.14)
 ProfilesRows = Dr^(-1) * P;
@@ -832,29 +814,28 @@ out.k = k;
 
 % Standarized residuals
 %
-% Residuals = Dr^(1/2) * (Dr^(-1) * P - Ir * c') * Dc^(-1/2) = Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
+% Residuals   = Dr^(1/2) * (Dr^(-1) * P - Ir * c') * Dc^(-1/2) = Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
 % Residualsij = sqrt( (p_{ij} - r_ic_j)^2 /r_ic_j ) =(p_{ij} - r_ic_j)/sqrt(r_ic_j)
 % Chi-square distances
-Residuals =  Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
-out.Residuals= Residuals;           % Standarized residuals
+Residuals     =  Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
+out.Residuals = Residuals; 
 
 % SVD of Residuals = U*Gam*V'
 [U,Gam,V] = svd(Residuals);
-Gam=Gam(1:K,1:K);
-U=U(:,1:K);
-V=V(:,1:K);
+Gam = Gam(1:K,1:K);
+U   = U(:,1:K);
+V   = V(:,1:K);
 
 % Total inertia
 % TotalInertia = sum_i sum_j (pij - ricj)^2 / ricj = chis/n
-TotalInertia = sum(sum(Residuals.^2));
+TotalInertia     = sum(sum(Residuals.^2));
 out.TotalInertia = TotalInertia;
 
 % Chi-square statistic for the contingency table
 %
-%  chi2 = n * sum_i sum_j (pij - ricj)^2 / ricj
-%
+% chi2     = n * sum_i sum_j (pij - ricj)^2 / ricj
 % Chi2stat = onesI'* (Residuals.*Residuals) * onesJ * n;
-Chi2stat=n*TotalInertia;
+Chi2stat     = n*TotalInertia;
 out.Chi2stat = Chi2stat;
 
 % Cramer's V
@@ -865,47 +846,48 @@ out.CramerV = sqrt(Chi2stat/(n*(min(I,J)-1)));
 % percentages of the total inertia
 
 % cumsumTotalInertia = cumulative proportion of explained inertia
-Gam2=Gam.^2;
-cumsumTotalInertia=cumsum(diag(Gam2))/TotalInertia;
+Gam2 = Gam.^2;
+cumsumTotalInertia = cumsum(diag(Gam2))/TotalInertia;
 
-% Explained is a matrix with 4 columnn.
-% First column contains the singular values (the sum of the squared singular values is the
-% total inertia)
-% Second column contains the eigenvalues  (the sum of the eigenvalues is the
-% total inertia)
-% Third column contains the variance explained by each latent dimension.
-% Fourth column contains the cumulative variance explained by each
-% dimension.
+% InertiaExplained is a matrix with 4 columnn.
+% - First column contains the singular values (the sum of the squared
+%   singular values is the total inertia)
+% - Second column contains the eigenvalues (the sum of the eigenvalues is 
+%   the total inertia)
+% - Third column contains the variance explained by each latent dimension.
+% - Fourth column contains the cumulative variance explained by each
+%   dimension.
 InertiaExplained=[diag(Gam) diag(Gam2) diag(Gam2 / TotalInertia) cumsumTotalInertia];
 
 % Principal coordinates of rows  (alpha=1 for the rows) F=...
-RowsPri = Dr^(-1/2) * U*Gam;
+RowsPri     = Dr^(-1/2) * U*Gam;
 out.RowsPri = RowsPri;
 
 % Principal coordinates of columns G= (Dc^(-1/2)*V*Gamma)
-ColsPri = Dc^(-1/2) * V*Gam;
+ColsPri     = Dc^(-1/2) * V*Gam;
 out.ColsPri = ColsPri;
 
 % Standard coordinates of rows
 % RowsSta (X) = RowsPri * Gam^(-1) = Dr^(-1/2) * U * Gam * Gam^(-1) = Dr^(-1/2) * U
-RowsSta = Dr^(-1/2) * U ;
+RowsSta     = Dr^(-1/2) * U ;
 out.RowsSta = RowsSta;
 
 % Standard coordinates of columns
 % ColsSta (Y) = ColsPri * Gam^(-1) = Dc^(-1/2) * V * Gam * Gam^(-1) = Dc^(-1/2) * V
-ColsSta = Dc^(-1/2) * V ;
-out.ColsSta=ColsSta;
+ColsSta     = Dc^(-1/2) * V ;
+out.ColsSta = ColsSta;
 
 % Symmetrical coordinates of rows
-RowsSym = Dr^(-1/2) * U*Gam^(1/2);
+RowsSym     = Dr^(-1/2) * U*Gam^(1/2);
 out.RowsSym = RowsSym;
 
 % Symmetrical coordinates of columns
-ColsSym = Dc^(-1/2) * V*Gam^(1/2);
-out.ColsSym=ColsSym;
+ColsSym     = Dc^(-1/2) * V*Gam^(1/2);
+out.ColsSym = ColsSym;
 
 %Inertia of each row
 InertiaRows = Dr*sum(RowsPri.*RowsPri,2);
+
 % Relative inertia of each row
 InertiaRows_relative=InertiaRows / TotalInertia;
 out.InertiaRows = [InertiaRows InertiaRows_relative];
@@ -913,6 +895,7 @@ out.InertiaRows = [InertiaRows InertiaRows_relative];
 % Inertia of each column
 % InertiaCols = Dc*(ColsPri.*ColsPri)*ones(K,1);
 InertiaCols = Dc*sum(ColsPri.*ColsPri,2);
+
 % Relative inertia of each column
 InertiaCols_relative=InertiaCols / TotalInertia;
 out.InertiaCols = [InertiaCols InertiaCols_relative];
@@ -929,13 +912,13 @@ out.Point2InertiaCols = Point2InertiaCols;
 
 % Squared correlations of row points with axes
 Dim2InertiaRows = diag(InertiaRows)^(-1)*Dr*(RowsPri.*RowsPri);
-% Relative row contributions: contributions of axes (latent dimension) to points; squared
-% correlations of rows with axes
+% Relative row contributions: contributions of axes (latent dimension) to
+% points; squared correlations of rows with axes
 out.Dim2InertiaRows=Dim2InertiaRows;
 
-% Squared correlations of column points with axes
-% Relative columns contributions: contributions of axes to points; squared
-% correlations of points with axes
+% Squared correlations of column points with axes. Relative columns
+% contributions: contributions of axes to points; squared correlations of
+% points with axes
 Dim2InertiaCols = diag(InertiaCols)^(-1)*Dc*(ColsPri.*ColsPri);
 out.Dim2InertiaCols=Dim2InertiaCols;
 
@@ -967,13 +950,13 @@ if exist('Sup','var')
         % h=Nsup(Indexesr,:)/(diag(sum(Nsup(Indexesr,:))));
         h=bsxfun(@rdivide,Nsupr,sum(Nsupr,2));
         
-        RowsPriSup=h*ColsSta;                                %Principal coordinates of supplementary rows
-        RowsStaSup=h*ColsSta*Gam^(-1);                       %Standard coordinates of supplementary rows
-        RowsSymSup=h*ColsSta*Gam^(-1/2);                     %Symmetrical coordinates of supplementary rows
+        RowsPriSup=h*ColsSta;             %Principal coordinates of supplementary rows
+        RowsStaSup=h*ColsSta*Gam^(-1);    %Standard coordinates of supplementary rows
+        RowsSymSup=h*ColsSta*Gam^(-1/2);  %Symmetrical coordinates of supplementary rows
         out.RowsPriSup=RowsPriSup;
         out.RowsStaSup=RowsStaSup;
         out.RowsSymSup=RowsSymSup;
-        %       rrc=(Gsup(:,1:k).*Gsup(:,1:k))/trace(Gsup(:,1:k)'*Gsup(:,1:k));
+        % rrc=(Gsup(:,1:k).*Gsup(:,1:k))/trace(Gsup(:,1:k)'*Gsup(:,1:k));
     end
     
     %Supplementary columns
@@ -1005,13 +988,15 @@ if isstruct(plots) || plots==1
         if isfield(plots,'alpha')
             if strcmp(plots.alpha,'rowprincipal')
                 typeR='RowsPri'; % rows are in principal coordinates
-                typeC='ColsSta';        % columns are in standard coordinates
-                titl='Rows principal coordinates, and column standard coordinates  $\alpha=1$,$X=D_r^{-1/2}U\Gamma $ and $Y= D_c^{-1/2} V$';
+                typeC='ColsSta'; % columns are in standard coordinates
+                titl={'Rows principal coordinates, and column standard coordinates' , ...
+                      '$\alpha=1$, $X=D_r^{-1/2}U\Gamma$ and $Y= D_c^{-1/2} V$'};
                 
             elseif strcmp(plots.alpha,'colprincipal')
                 typeR='RowsSta'; % rows are in standard coordinates
-                typeC='ColsPri';        % columns are in principal coordinates
-                titl='Rows standard coordinates, and column principal coordinates $\alpha=0$, $X=D_r^{-1/2}U $ and $G= D_c^{-1/2} V \Gamma$';
+                typeC='ColsPri'; % columns are in principal coordinates
+                titl={'Rows standard coordinates, and column principal coordinates' , ...
+                      '$\alpha=0$, $X=D_r^{-1/2}U $ and $G= D_c^{-1/2} V \Gamma$'};
                 
             elseif strcmp(plots.alpha,'symbiplot')
                 % equivalent to alpha=0.5
@@ -1022,7 +1007,8 @@ if isstruct(plots) || plots==1
             elseif strcmp(plots.alpha,'bothprincipal')
                 typeR='RowsPri';        % rows are in principal coordinates
                 typeC='ColsPri';        % columns are in principal coordinates
-                titl='French symmetrical model: rows and cols in principal coordinates. Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$';
+                titl={'French symmetrical model: rows and cols in principal coordinates.' , ...
+                      'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
                 
             elseif strcmp(plots.alpha,'rowgab')
                 %  If plots.alpha='rowgab'  rows are in principal coordinates
@@ -1031,9 +1017,9 @@ if isstruct(plots) || plots==1
                 typeR='RowsPri';        % rows are in principal coordinates
                 ColsStaDc=Dc*ColsSta;
                 typeC=ExtractVariableName(ColsStaDc);
-                titl='Rows principal coordinates, and column standard coordinates times masses  $\alpha=1$,$X=D_r^{-1/2}U\Gamma $ and $Y= D_c^{1/2} V$';
-                
-                
+                titl={'Rows principal coordinates, and column standard coordinates times masses' , ...
+                      '$\alpha=1$,$X=D_r^{-1/2}U\Gamma $ and $Y= D_c^{1/2} V$'};
+                      
             elseif strcmp(plots.alpha,'colgab')
                 % If plots.alpha='colgab'  columns are in principal coordinates
                 % and rows are in standard coordinates multiplied by the
@@ -1041,8 +1027,8 @@ if isstruct(plots) || plots==1
                 RowsStaDr=Dr*RowsSta;
                 typeR=ExtractVariableName(RowsStaDr);
                 typeC='ColsPri';        % columns are in principal coordinates
-                titl='Rows standard coordinates multiplied by masses, and column principal coordinates , $X=D_r^-1/2}U $ and $Y= D_c^{-1/2} V \Gamma$';
-                
+                titl={'Rows standard coordinates multiplied by masses ' , ...
+                      'and column principal coordinates $X=D_r^{-1/2} U$ and $Y= D_c^{-1/2} V \Gamma$'};
                 
             elseif strcmp(plots.alpha,'rowgreen')
                 %  If plots.alpha='rowgreen'  rows are in principal
@@ -1051,8 +1037,8 @@ if isstruct(plots) || plots==1
                 typeR='RowsPri';        % rows are in principal coordinates
                 ColsStaDcSqrt=(Dc^(1/2))*ColsSta;
                 typeC= ExtractVariableName(ColsStaDcSqrt);
-                titl='Rows principal coordinates, and column standard coordinates times sqrt of masses $X=D_r^{-1/2}U\Gamma $ and $Y= V$';
-                
+                titl={'Rows principal coordinates, and column standard coordinates ' , ...
+                      'times sqrt of masses $X=D_r^{-1/2}U\Gamma $ and $Y= V$'};
                 
             elseif strcmp(plots.alpha,'colgreen')
                 %  If plots.alpha='colgreen' columns in principal coordinates
@@ -1061,7 +1047,8 @@ if isstruct(plots) || plots==1
                 RowsStaDrSqrt=(sqrt(Dr))*RowsSta;
                 typeR=ExtractVariableName(RowsStaDrSqrt);
                 typeC='ColsPri';        % columns are in principal coordinates
-                titl='Rows standard coordinates times sqrt of masses, and column principal coordinates, $X=U $ and $G= D_c^{-1/2} V \Gamma$';
+                titl={'Rows standard coordinates times sqrt of masses,' ...
+                      'and column principal coordinates, $X=U $ and $G= D_c^{-1/2} V \Gamma$'};
                 
             else
                 if isnumeric(plots.alpha)
@@ -1085,7 +1072,8 @@ if isstruct(plots) || plots==1
         else
             typeR='RowsPri';        % rows are in principal coordinates
             typeC='ColsPri';        % columns are in principal coordinates
-            titl='French symmetrical model: rows and cols in principal coordinates. Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$';
+            titl={'French symmetrical model: rows and cols in principal coordinates.' ...
+                  'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
         end
         
         if isfield(plots,'FontSize')
@@ -1102,7 +1090,8 @@ if isstruct(plots) || plots==1
     else
         typeR='RowsPri';        % rows are in principal coordinates
         typeC='ColsPri';        % columns are in principal coordinates
-        titl='French symmetrical model: rows and cols in principal coordinates. Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$';
+        titl={'French symmetrical model: rows and cols in principal coordinates.'...
+              'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
         FontSize=FontSizedef;
         MarkerSize=MarkerSizedef;
         
@@ -1194,7 +1183,6 @@ ScoreCols=eval(typeC);
 ColNamesSummary={'Singular_value' 'Inertia' 'Accounted_for' 'Cumulative'};
 RowNamesSummary=strcat(cellstr(repmat('dim_',K,1)), cellstr(num2str((1:K)')));
 RowNamesSummary=regexprep(RowNamesSummary,' ','');
-
 
 InertiaExplainedtable=array2table(InertiaExplained,'VariableNames',ColNamesSummary, ...);
     'RowNames',RowNamesSummary);
