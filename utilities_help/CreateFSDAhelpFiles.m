@@ -61,7 +61,7 @@ cd(FSDAroot)
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat' 'utilities_help'};
 ExclDir={'privateFS'  'datasets'};
-% Create list of folders which must have the personlized contents file
+% Create list of folders which must have the personalized contents file
 list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
 % Crete personalized contents file for main folder of FSDA
 % and required subfolders.
