@@ -1,5 +1,5 @@
 function [out , varargout] = MMmulteda(Y,varargin)
-%MMmulteda computes MM estimators in multivariate analysis for a series of values of bdp
+%MMmulteda computes MM estimators in multivariate analysis for a series of values of eff
 %
 %
 %<a href="matlab: docsearchFS('MMmulteda')">Link to the help function</a>
