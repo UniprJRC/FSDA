@@ -1,5 +1,5 @@
 function fstring=publishFunctionCate(InputCell)
-%publishFunctionCate enables to create web page which contains the alphabetical list of functions
+%publishFunctionCate enables to create web page which contains the categorical list of functions
 %
 % This routins uses as input the cell which is created with routine
 % makecontentsfileFS.m and uses template file function-cateEmpty.html
