@@ -1,4 +1,4 @@
-function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
+function out=FSMmmdrs(Y,varargin)
 %FSMmmdrs performs random start monitoring of minimum Mahalanobis distance
 %
 %<a href="matlab: docsearchFS('FSMmmdrs')">Link to the help function</a>
@@ -137,7 +137,9 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %
 % Output:
 %
-%       mmdrs:  Minimum Mahalanobis distance. Matrix.
+%  
+%  out :     A structure containing the following fields:
+%       out.mmdrs=  Minimum Mahalanobis distance. Matrix.
 %               (n-init)-by-(nsimul+1) matrix which contains the monitoring
 %               of minimum Mahalanobis distance at each step of the forward
 %               search for each random start.
@@ -146,7 +148,7 @@ function [mmdrs,BBrs]=FSMmmdrs(Y,varargin)
 %               ...;
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
 %
-%       BBrs:    units belonging to the subset. 3D array.
+%       out.BBrs: units belonging to the subset. 3D array.
 %               Units belonging to the subset
 %               at the steps specified by input option bsbsteps.
 %               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
@@ -471,5 +473,10 @@ if plots==1
     
 end
 
+% Store BBrs and mmdrs inside structure out
+out=struct;
+out.BBrs=BBrs;
+out.mmdrs=mmdrs;
+out.Y=Y;
 end
 %FScategory:CLUS-RobClaMULT
