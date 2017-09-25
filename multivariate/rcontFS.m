@@ -28,7 +28,7 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %                 output matrix must have. First element refers to the
 %                 total number of elements in the first column, ..., $J$-th
 %                 element refers to the total number of elements in the
-%                 $J$-th column. 
+%                 $J$-th column.
 %                 In other words, $ncolt=(n_{.1}, n_{.2}, \ldots, n_{.J})$.
 %
 %
@@ -219,18 +219,18 @@ out=struct;
 %% Algorithm AS 144
 if strcmp(algorithm,'all') || strcmp(algorithm,'144')
     %  Initialize vector to be permuted.
-    nvect=1:ntotal;
     
     %% OLD code
+    %  nvect=1:ntotal;
     %  Permute vector.
-%    nnvect=nvect;
-%     ntemp = ntotal;
-%     for i = 1 : ntotal
-%         noct = floor ( rand(1,1) * ntemp + 1.0 );
-%         nvect(i) = nnvect(noct);
-%         nnvect(noct) = nnvect(ntemp);
-%         ntemp = ntemp - 1;
-%     end
+    %    nnvect=nvect;
+    %     ntemp = ntotal;
+    %     for i = 1 : ntotal
+    %         noct = floor ( rand(1,1) * ntemp + 1.0 );
+    %         nvect(i) = nnvect(noct);
+    %         nnvect(noct) = nnvect(ntemp);
+    %         ntemp = ntemp - 1;
+    %     end
     
     %% NEW CODE
     % generate a vector of pseudorandom scalar integers between 1 and ntotal
@@ -244,7 +244,7 @@ if strcmp(algorithm,'all') || strcmp(algorithm,'144')
         limit = nrowt(i);
         for k = 1 : limit
             for j = 1 : J
-                if nvect(ii) <= nsubt(j) 
+                if nvect(ii) <= nsubt(j)
                     ii = ii + 1;
                     matrix144(i,j) = matrix144(i,j) + 1;
                     break
@@ -421,3 +421,5 @@ if strcmp(algorithm,'all') || strcmp(algorithm,'159')
 end
 
 end
+
+%FScategory:MULT-Categorical

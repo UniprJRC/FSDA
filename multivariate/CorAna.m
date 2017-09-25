@@ -1,5 +1,5 @@
 function out=CorAna(N, varargin)
-%CorAna performs correpondence analysis
+%CorAna performs correspondence analysis
 %
 %<a href="matlab: docsearchFS('CorAna')">Link to the help function</a>
 %
@@ -1290,3 +1290,4 @@ if dispresults==true
 end
 
 end
+%FScategory:MULT-Categorical

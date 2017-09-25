@@ -256,3 +256,4 @@ df=(I-1)*(J-1);  % degrees of freedom
 % p-value of the test
 pval = 1-chi2cdf(PD,df);
 end
+%FScategory:MULT-Categorical

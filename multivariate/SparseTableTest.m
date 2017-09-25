@@ -300,4 +300,4 @@ out.TestResults=TestResults;
 % Hoch=sum(pvalsor<alpha./(nCompAfterT+1-k));
 
 end
-
+%FScategory:MULT-Categorical
