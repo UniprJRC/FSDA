@@ -57,7 +57,7 @@ function out=FSMmmdrs(Y,varargin)
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
-%               necessary to use function mdrrsplot.
+%               necessary to use function mmdrsplot.
 %   numpool :  scalar. If numpool > 1, the routine automatically checks
 %               if the Parallel Computing Toolbox is installed and
 %               distributes the random starts over numpool parallel
@@ -148,7 +148,7 @@ function out=FSMmmdrs(Y,varargin)
 %               ...;
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
 %
-%       out.BBrs: units belonging to the subset. 3D array.
+%       out.BBrs= units belonging to the subset. 3D array.
 %               Units belonging to the subset
 %               at the steps specified by input option bsbsteps.
 %               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
@@ -170,9 +170,9 @@ function out=FSMmmdrs(Y,varargin)
 %               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
 %               the same structure as before, but now contains just
 %               length(bsbsteps) columns.
+%       out.Y = original n-by-v input datamatrix.
 %
-%
-% See also:     FSRmdr, FSRmdrrs, FSMmmd
+% See also:     FSRmdr, FSRmdrrs, FSMmmd, mmdrsplot
 %
 % References:
 %
@@ -202,7 +202,7 @@ function out=FSMmmdrs(Y,varargin)
 %
 
 %{
-    % Two groups with approximately same units.
+    %% Two groups with approximately same units.
     % We start with an example with simulated data with two groups
     % with roughly the same number of observations
     close all
@@ -223,7 +223,8 @@ function out=FSMmmdrs(Y,varargin)
     % and pool is not cleaned after the execution of the random starts
     % The number of workers which is used is the one specified
     % in the local/current profile
-    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    ylim([2 5])
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
@@ -250,7 +251,7 @@ function out=FSMmmdrs(Y,varargin)
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer) and pool is not cleaned after
     % the execution of the random starts
-    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
@@ -294,7 +295,7 @@ function out=FSMmmdrs(Y,varargin)
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer). Parallel pool is closed after the execution of the random starts
-    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
+    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
 %}
 
 %{
@@ -304,20 +305,20 @@ function out=FSMmmdrs(Y,varargin)
     load('fishery.txt');
     Y=fishery(:,1:2);
     figure
-    [mmdrs,BBrs]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'bsbsteps',[10 300 600]);
-    % sum(~isnan(BBrs(:,1,1)))
+    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'bsbsteps',[10 300 600]);
+    % sum(~isnan(out.BBrs(:,1,1)))
     %
     % ans =
     %
     %     10
     %
-    % sum(~isnan(BBrs(:,2,1)))
+    % sum(~isnan(out.BBrs(:,2,1)))
     %
     % ans =
     %
     %    300
     %
-    % sum(~isnan(BBrs(:,3,1)))
+    % sum(~isnan(out.BBrs(:,3,1)))
     %
     % ans =
     %

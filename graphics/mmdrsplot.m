@@ -163,7 +163,7 @@ function mmdrsplot(out,varargin)
 %
 % Output:
 %
-% See also:
+% See also: FSMmmdrs.m
 %
 % References:
 %
@@ -174,7 +174,7 @@ function mmdrsplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('mmdplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mmdrsplot')">Link to the help function</a>
 % Last modified 14-06-2016
 
 % Examples:
@@ -243,6 +243,36 @@ function mmdrsplot(out,varargin)
     mmdrsplot(out,'databrush',databrush)
 %}
 
+%{
+    % Interactive_example
+    %% Two groups with approximately the same number of units.
+    close all
+    rng('default')
+    rng(10);
+    n1=100;
+    n2=100;
+    v=3;
+    Y1=rand(n1,v);
+    Y2=rand(n2,v)+1;
+    Y=[Y1;Y2];
+    group=[ones(n1,1);2*ones(n2,1)];
+    spmplot(Y,group);
+    title('Two simulated groups')
+    Y=[Y1;Y2];
+    close all
+    % parfor of Parallel Computing Toolbox is used (if present in current computer)
+    % and pool is not cleaned after the execution of the random starts
+    % The number of workers which is used is the one specified
+    % in the local/current profile
+    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    ylim([2 5])
+    disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
+    disp('clearly show the presence of two groups.')
+    disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
+    mmdrsplot(out,'databrush',1)
+   
+%}
+
 %% Initialization
 if nargin<1
     error('FSDA:mmdrsplot:missingInputs','A required input argument is missing.')
@@ -294,7 +324,7 @@ options=struct('quant', quant,...
     'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
     'FontSize',12,'SizeAxesNum',10,'tag','pl_mmdrs',...
     'datatooltip','','databrush','',...
-    'titl','','labx',labx,'laby',laby,'nameX','','namey','','label','','envm',n,'scaled',0);
+    'titl','','labx',labx,'laby',laby,'nameY','','label','','envm',n,'scaled',0);
 
 if nargin<1
     error('FSDA:mmdrsplot:missingInputs','A required input argument is missing.')

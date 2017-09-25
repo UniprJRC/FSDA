@@ -50,7 +50,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               is necessary to save the units forming subsets. If bsbsteps
 %               is 0 we store the units forming subset in all steps. The
 %               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
+%               n<=500, else to store the units forming subset at steps
 %               init and steps which are multiple of 100. For example, as
 %               default, if n=753 and init=6,
 %               units forming subset are stored for
@@ -291,7 +291,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     % the execution of the random starts
     % The number of workers which is used is the one specified
     % in the local/current profile
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);
+    [out]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);
     disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')
@@ -340,7 +340,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer). Parallel pool is closed after the execution of the random starts
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1);
+    [out]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1);
 %}
 
 %{
@@ -351,7 +351,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     X=fishery(:,1);
     % parfor of Parallel Computing Toolbox is used (if installed)
     figure
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1);
+    []=FSRmdrrs(y,X,'nsimul',100,'plots',1);
 %}
 
 %{
