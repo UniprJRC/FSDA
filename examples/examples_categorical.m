@@ -1,3 +1,9 @@
+%% EXAMPLES OF CATEGORICAL DATA ANALYSIS
+% examples_categorical shows a series of analysis of regression datasets 
+% Copyright 2008-2017.
+% Written by FSDA team
+
+
 %% Correpondence analysis of the smoke data (1)
 % Input is the contingency table
 load smoke

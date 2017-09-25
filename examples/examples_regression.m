@@ -1,9 +1,7 @@
 %% EXAMPLES OF ROBUST REGRESSION
 % examples_regression shows a series of analysis of regression datasets 
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
-
-% Last modified 31-05-2016
 
 %% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
 % Interactive_example
