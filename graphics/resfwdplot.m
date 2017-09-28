@@ -1,5 +1,5 @@
 function plotopt=resfwdplot(out,varargin)
-%resfwdplot plots the trajectories of the monitored scaled (squared) residuals 
+%resfwdplot plots the trajectories of the monitored scaled (squared) residuals
 %
 %
 %<a href="matlab: docsearchFS('resfwdplot')">Link to the help function</a>
@@ -182,7 +182,7 @@ function plotopt=resfwdplot(out,varargin)
 %                   Example - 'tag','myplot'
 %                   Data Types - char
 %   datatooltip :   interactive clicking. Empty value, scalar or
-%                   structure. 
+%                   structure.
 %                   It is inactive if it is an empty value. The default is
 %                   datatooltip = 1, i.e. the user can select with the
 %                   mouse an individual residual trajectory in order to
@@ -192,9 +192,9 @@ function plotopt=resfwdplot(out,varargin)
 %                   the label and the step of the search in which the unit
 %                   enters the subset. If datatooltip is a
 %                   structure it may contain the following fields
-%                   datatooltip.DisplayStyle = determines how the data cursor displays. 
+%                   datatooltip.DisplayStyle = determines how the data cursor displays.
 %                       Possible values are 'datatip' and 'window'
-%                       (default). 
+%                       (default).
 %                       'datatip' displays data cursor information in a
 %                       small yellow text box attached to a black square
 %                       marker at a data point you interactively select.
@@ -232,7 +232,7 @@ function plotopt=resfwdplot(out,varargin)
 %                       Any initialization for SubsetLinesColor which
 %                       cannot be interpreted as RGB vector will be
 %                       converted to blue, i.e. SubsetLinesColor will be
-%                       forced to be [0 0 1]. 
+%                       forced to be [0 0 1].
 %                       If SubsetLinesColor is not empty previous option
 %                       LineColor is overlooked.
 %                   Example - 'datatooltip',''
@@ -341,18 +341,15 @@ function plotopt=resfwdplot(out,varargin)
 %       namey   :   response label. Character. Character containing the label of the response
 %                   Example - 'namey','response'
 %                   Data Types - character
-%       msg     :   display or save used options. Scalar.
-%                   Scalar which controls whether to display or to save
+%       msg     :   display  used options. Scalar.
+%                   Scalar which controls whether to display
 %                   as output the options inside structures standard,
 %                   fground and bground which have been used to draw the
 %                   plot.
-%                   plotopt=resfwdplot(out,'msg',1) enables to save inside
-%                   cell  plotopt the options which have been used to draw
+%                   plotopt=resfwdplot(out,'msg',1) prints on the screen
+%                   the options which have been used to draw
 %                   the three types of trajectories (standard, foreground
 %                   and background).
-%                   plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt
-%                   the options which have been used and prints them on the
-%                   screen.
 %                   Example - 'msg',1
 %                   Data Types - single or double
 %
@@ -675,7 +672,7 @@ function plotopt=resfwdplot(out,varargin)
 %}
 %
 %{
-    % Example of the  use of option msg.
+    % Example of the  use of nargout.
     % Fidelity cards data
     XX=load('loyalty.txt');
     namey='Sales'
@@ -684,7 +681,8 @@ function plotopt=resfwdplot(out,varargin)
     X=XX(:,1:end-1);
     [out]=LXS(y,X,'nsamp',10000);
     [out]=FSReda(y,X,out.bs);
-    plotopt=resfwdplot(out,'msg',2)
+    % msg is 1 therefore used options are also shown on the screen.
+    plotopt=resfwdplot(out,'msg',1)
     % In order to reuse the options which have been stored inside plotopt
     % use the following sintax
     % resfwdplot(out,plotopt{:})
@@ -1793,7 +1791,7 @@ end % close options.databrush
                     output_txt{2,1} = ['eff=' num2str(x1)];
                     output_txt{4,1} = ['weight=' num2str(out.Weights(row,col))];
                     
-                elseif strcmp(out.class,'Sregeda') 
+                elseif strcmp(out.class,'Sregeda')
                     output_txt{2,1} = ['bdp=' num2str(x1)];
                     output_txt{4,1} = ['weight=' num2str(out.Weights(row,col))];
                 else
@@ -1820,26 +1818,24 @@ end % close options.databrush
         end
     end
 
-if ~isempty(options.msg)
-    if options.msg==1 || options.msg==2
-        plotopt=cell(6,1);
-        plotopt{1}='standard';
-        plotopt{2}=standard;
-        plotopt{3}='fground';
-        plotopt{4}=fground;
-        plotopt{5}='bground';
-        plotopt{6}=bground;
-    else
-    end
-    
-    if options.msg==2
-        disp('standard')
-        disp(standard)
-        disp('fground')
-        disp(fground)
-        disp('bground')
-        disp(bground)
-    end
+if options.msg==1
+    disp('standard')
+    disp(standard)
+    disp('fground')
+    disp(fground)
+    disp('bground')
+    disp(bground)
+end
+
+% Return the handles from boxplot only if the user requested them.
+if nargout>0
+    plotopt=cell(6,1);
+    plotopt{1}='standard';
+    plotopt{2}=standard;
+    plotopt{3}='fground';
+    plotopt{4}=fground;
+    plotopt{5}='bground';
+    plotopt{6}=bground;
 end
 
 end
