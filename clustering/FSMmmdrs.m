@@ -99,13 +99,13 @@ function out=FSMmmdrs(Y,varargin)
 %               number of workers in the local/current profile overwrites
 %               default value of 'numpool' obtained as feature('numCores')
 %               (i.e. the number of physical cores).
-%  cleanpool :  Scalar. Cleanpool is 1 if the parallel pool has to be cleaned after
-%               the execution of the random starts. Otherwise it is 0.
-%               The default value of cleanpool is 1.
+%  cleanpool :  Boolean. Cleanpool is 1 (true) if the parallel pool has to be cleaned after
+%               the execution of the random starts. Otherwise it is 0 (false).
+%               The default value of cleanpool is false.
 %               Clearly this option has an effect just if previous option
 %               numpool is > 1.
 %               Example - 'cleanpool',1
-%               Data Types - double
+%               Data Types - boolean
 %       msg  :  Level of output to display. Scalar. Scalar which controls whether to display or not messages
 %               about random start progress. More precisely, if previous
 %               option numpool>1, then a progress bar is displayed, on
@@ -220,10 +220,10 @@ function out=FSMmmdrs(Y,varargin)
     Y=[Y1;Y2];
     close all
     % parfor of Parallel Computing Toolbox is used (if present in current computer)
-    % and pool is not cleaned after the execution of the random starts
+    % and pool is cleaned after the execution of the random starts
     % The number of workers which is used is the one specified
     % in the local/current profile
-    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
     ylim([2 5])
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
@@ -251,7 +251,7 @@ function out=FSMmmdrs(Y,varargin)
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer) and pool is not cleaned after
     % the execution of the random starts
-    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
+    [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
@@ -294,7 +294,7 @@ function out=FSMmmdrs(Y,varargin)
     Y=[Y1;Y2];
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current
-    % computer). Parallel pool is closed after the execution of the random starts
+    % computer). Parallel pool is not closed after the execution of the random starts
     [out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1);
 %}
 
@@ -352,7 +352,7 @@ end
 
 nsimuldef = 200; % nsimuldef = default number of random starts
 options   = struct('init',initdef,'plots',0,'nocheck',0,'msg',1,...
-    'nsimul',nsimuldef,'numpool',numpool, 'cleanpool', true, ...
+    'nsimul',nsimuldef,'numpool',numpool, 'cleanpool', false, ...
     'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));

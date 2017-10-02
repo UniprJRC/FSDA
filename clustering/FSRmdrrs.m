@@ -129,13 +129,13 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               (i.e. the number of physical cores).
 %               Example - 'numpool',8
 %               Data Types - double
-%  cleanpool :  clean pool after execution. Scalar.
-%               cleanpool is 1 if the parallel pool has to be cleaned after
-%               the execution of the random starts. Otherwise it is 0.
-%               The default value of cleanpool is 1.
+%  cleanpool :  clean pool after execution. Boolean.
+%               cleanpool is 1 (true) if the parallel pool has to be cleaned after
+%               the execution of the random starts. Otherwise it is 0 (false).
+%               The default value of cleanpool is false.
 %               Clearly this option has an effect just if previous option
 %               numpool is > 1.
-%               Example - 'clarnpool',false
+%               Example - 'cleanpool',false
 %               Data Types - boolean
 %  msg  :       Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
@@ -340,7 +340,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer). Parallel pool is closed after the execution of the random starts
-    [out]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1);
+    [out]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',true);
 %}
 
 %{
@@ -351,7 +351,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     X=fishery(:,1);
     % parfor of Parallel Computing Toolbox is used (if installed)
     figure
-    []=FSRmdrrs(y,X,'nsimul',100,'plots',1);
+    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1);
 %}
 
 %{
@@ -400,7 +400,7 @@ vvarargin = varargin;
 
 %% User options
 
-% check how many physical cores are available in the computer (warning:
+% Check how many physical cores are available in the computer (warning:
 % function 'feature' is undocumented; however, FSDA is automatically
 % monitored for errors and other inconsistencies at each new MATLAB
 % release).
@@ -417,7 +417,7 @@ end
 
 nsimuldef = 200; % nsimuldef = default number of random starts
 options   = struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','nsimul',nsimuldef,'numpool',numpool, 'cleanpool', true, ...
+    'constr','','nsimul',nsimuldef,'numpool',numpool, 'cleanpool', false, ...
     'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));
