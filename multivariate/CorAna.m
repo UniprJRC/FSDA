@@ -498,7 +498,11 @@ function out=CorAna(N, varargin)
 %{
     % CorAna with all the default options.
      load smoke
-    N=crosstab(X(:,1),X(:,2));
+
+%? VERIFY MODIFICATION ?
+    %N=crosstab(X(:,1),X(:,2));   
+    N=crosstab(smoke.data(:,1),smoke.data(:,2));
+
     out=CorAna(N);
 %}
 
@@ -506,7 +510,13 @@ function out=CorAna(N, varargin)
     %% CorAna with name pairs.
     % Input is the contingency table, labels for rows and columns are supplied
     load smoke
-    N=crosstab(X(:,1),X(:,2));
+
+%? VERIFY MODIFICATION ?
+    %N=crosstab(X(:,1),X(:,2));
+    N=crosstab(smoke.data(:,1),smoke.data(:,2));
+    %out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);
+    labels_rows = unique(smoke.data(:,1))
+    labels_columns = unique(smoke.data(:,2))
     out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);
 %}
 
