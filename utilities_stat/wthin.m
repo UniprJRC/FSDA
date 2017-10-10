@@ -208,7 +208,7 @@ if nargin > 1
         if  isempty(retainby) || ~(ischar(retainby) && max(strcmp(retainby,retainby_types)))
             retainby = 'inverse';
         end
-        if  ~isscalar(bandwidth)
+        if  ~isvector(bandwidth)
             bandwidth = 0;
         end
         if bandwidth > 0
@@ -263,7 +263,8 @@ if d > 1
             % Remark: by default ksdensity estimates the bandwidt with Scott's rule.
             [pdfe,xout,u]  = ksdensity(X,X);
         else
-            [pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
+            %[pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
+            [pdfe,xout,u]  = ksdensity(X,X,'bandwidth',bandwidth);
         end
     else
         [pdfedef,xout1,u]  = kdebiv(X,'pdfmethod','fsda');
