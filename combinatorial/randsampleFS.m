@@ -88,15 +88,15 @@ function y = randsampleFS(n,k,method,after2011b)
 %
 %   For Method 2. Cochran, William G. (1977). Sampling techniques (Third ed.). Wiley.
 %
-%   For Method 3. D. E. Knuth. The Art of Computer Programming, Volume 2: Seminumerical
-%   Algorithms, Third Edition. Addison-Wesley, 1997. Section 3.2.1: The
+%   For Method 3. D. E. Knuth. (1997). The Art of Computer Programming, Volume 2: Seminumerical
+%   Algorithms, Third Edition. Addison-Wesley, Section 3.2.1: The
 %   Linear Congruential Method, pp. 10-26.
 %
-%   For Weighted Sampling Without Replacement:
-%   Efraimidis, P.S. and Spirakis, P.G. (2006). Weighted random sampling with a reservoir.
-%   Information Processing Letters, 97, 181-185, 2006;
-%   Wong, C. K. and M. C. Easton. An Efficient Method for Weighted Sampling Without Replacement.
-%   SIAM Journal of Computing 9(1), pp. 111-113, 1980.
+%   For Weighted Sampling Without Replacement: Efraimidis, P.S. and Spirakis, P.G. (2006). 
+%   Weighted random sampling with a reservoir.
+%   Information Processing Letters, 97, 181-185.
+%   Wong, C. K. and M. C. Easton, (1980). An Efficient Method for Weighted Sampling Without Replacement.
+%   SIAM Journal of Computing 9(1), pp. 111-113.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
