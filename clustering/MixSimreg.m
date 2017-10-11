@@ -306,35 +306,32 @@ function [out] = MixSimreg(k,p,varargin)
 %   Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
 %   of finite mixture modeling and clustering algorithms, The Journal of
 %   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
-%   this publication we will use "MM2010 JCGS")
+%   this publication we will use "MM2010 JCGS").
 %
 %   Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package
 %   for Simulating Data to Study Performance of Clustering Algorithms,
 %   Journal of Statistical Software, 51:12, 1-25.
-%
 %   Davies, R. (1980), The distribution of a linear combination of
 %   chi-square random variables, Applied Statistics, 29, 323-333.
 %
-%   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
-%   (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
+%   Parlett, B. N. and C. Reinschthe (1971), Balancing a Matrix for Calculation of
+%   Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear
+%   Algebra, pp. 315-326.
+%
+%   Parlett, B. N. and C. Reinschthe (1969), Balancing a matrix for calculation 
+%   of eigenvalues and eigenvectors, Numerische Mathematik, 19, 
+%   Volume 13, Issue 4, pp 293-304. (This reference documents the problem of 
+%   the ill-conditioning of the eigenvalue-eigenvector computation).
+%
+%   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.(2008),
+%   "A General Trimming Approach to Robust Cluster Analysis". Annals
 %   of Statistics, Vol.36, 1324-1345. Technical Report available at
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
-%   Riani M., Cerioli A., Perrotta D. and Torti F. (2015). Simulating
+%   Riani M., Cerioli A., Perrotta D. and Torti F. (2015), Simulating
 %   mixtures of multivariate data with fixed cluster overlap in FSDA,
 %   Advances in data analysis and classification. Volume 9, Issue 4, pp
 %   461-481, DOI 10.1007/s11634-015-0223-9.
-%
-%   Reference below documents the problem of the ill-conditioning of the
-%   eigenvalue-eigenvector computation.
-%
-%   Numerische Mathematik, 19. August 1969, Volume 13, Issue 4, pp 293-304
-%   Balancing a matrix for calculation of eigenvalues and eigenvectors
-%   Dr. B. N. Parlett, Dr. C. Reinsch
-%
-%  Parlett, B. N. and C. Reinsch, Balancing a Matrix for Calculation of
-%  Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear
-%  Algebra, 1971,pp. 315-326.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
