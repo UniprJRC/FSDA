@@ -61,7 +61,7 @@ function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 % References:
 % 
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
-% and Methods, Wiley, New York.                                                                          |t/c|>1                              
+% and Methods, Wiley, New York.                                                                            
 %
 %
 % Copyright 2008-2016.
