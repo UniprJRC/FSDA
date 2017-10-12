@@ -264,8 +264,9 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %
 % References:
 %
-% Atkinson A.C., Corbellini A., Riani M., (2016) Robust Bayesian
-% Regression, submitted
+% Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian 
+% Regression with the Forward Search: Theory and Data Analysis, Test, 
+% DOI 10.1007/s11749-017-0542-6
 %
 %
 % Copyright 2008-2016.

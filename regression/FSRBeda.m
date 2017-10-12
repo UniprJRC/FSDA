@@ -221,8 +221,9 @@ function [out] = FSRBeda(y, X, varargin)
 %
 % References:
 %
-%   Atkinson A.C., Corbellini A. and Riani M. (2017), Robust Bayesian
-%   Regression, Test, in press.
+% Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian 
+% Regression with the Forward Search: Theory and Data Analysis, Test, 
+% DOI 10.1007/s11749-017-0542-6
 %
 %
 % Copyright 2008-2016.
@@ -1041,13 +1042,13 @@ out=struct;
 out.RES=RES*sqrt(S21(end,3));
 out.LEV=LEV;
 out.BB=BB;
-out.mdr=mdr;
+out.mdrB=mdr;
 out.msr=msr;
 out.beta1=beta1;
 out.covbeta1=covbeta1;
 out.Gam=Gam;
 out.S21=S21;
-out.coo=coo;
+out.Coo=coo;
 out.Bpval=Bpval;
 out.beta1HPD=beta1HPD;
 out.tau1HPD=tau1HPD;

@@ -213,7 +213,7 @@ function [out]  = MixSim(k,v,varargin)
 %
 % References:
 %
-%   Maitra, R. and Melnykov, V. (2010). Simulating data to study performance
+%   Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
 %   of finite mixture modeling and clustering algorithms, The Journal of
 %   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
 %   this publication we will use "MM2010 JCGS")

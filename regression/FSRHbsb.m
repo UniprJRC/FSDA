@@ -156,8 +156,9 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %
 % References:
 %
-%   Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for
-%   heteroskedastic regression, submitted (ART)
+%   Atkinson A.C., Riani M. and Torti F. (2016), Robust methods for
+%   heteroskedastic regression, Computational Statistics and Data Analysis
+%   104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).
 
 %
 % Copyright 2008-2016.

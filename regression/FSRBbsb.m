@@ -129,8 +129,9 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 % Residual Analysis, Biometrika, Vol 75 pp. 651-659.
 % Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian
 % Regression for Fraud Detection, submitted
-% Atkinson A.C., Corbellini A., Riani M., (2017) Robust Bayesian
-% Regression, Test, in press.
+% Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian 
+% Regression with the Forward Search: Theory and Data Analysis, Test, 
+% DOI 10.1007/s11749-017-0542-6
 %
 % Copyright 2008-2016.
 % Written by FSDA team
