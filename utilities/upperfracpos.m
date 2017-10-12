@@ -34,7 +34,7 @@ function upperfracpos(hfigl , hfigr , fraction)
 %
 % References:
 %
-%   Tufte ER (1983) The visual display of quantitative information. Graphics Press, Cheshire 
+%   Tufte E.R. (1983), The visual display of quantitative information. Graphics Press, Cheshire
 %   
 %
 % Copyright 2008-2016.

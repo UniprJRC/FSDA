@@ -193,7 +193,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 % References:
 %
-%   Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection,
+%   Rousseeuw PJ, Leroy AM (1987), Robust regression and outlier detection,
 %   Wiley.
 %
 % Copyright 2008-2016.

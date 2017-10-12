@@ -124,8 +124,9 @@ function cdsplot(outms,varargin)
 %
 % References:
 %
-%   Riani and Atkinson (2010), Robust model selection with flexible trimming,
-%       Computational Statistics and Data Analysis (in press).
+%   Riani and Atkinson (2010). Robust Model Selection with Flexible Trimming,
+%   Computational Statistics and Data Analysis, special issue on robust
+%   model selection.
 %
 % Copyright 2008-2016.
 % Written by FSDA team
