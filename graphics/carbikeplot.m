@@ -103,8 +103,8 @@ function h  = carbikeplot(RelSol,varargin)
 % References:
 %
 % A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016),
-% "Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods", submitted.
+% Finding the Number of Groups in Model-Based Clustering via Constrained
+% Likelihoods, submitted.
 %
 %
 %

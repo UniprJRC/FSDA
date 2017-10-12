@@ -49,9 +49,9 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 %
 % References:
 %
-% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016).
+% A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016),
 % Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, submitted
+% Likelihoods, submitted.
 %
 %
 % Copyright 2008-2016.
