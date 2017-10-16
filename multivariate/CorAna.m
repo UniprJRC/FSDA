@@ -178,7 +178,7 @@ function out=CorAna(N, varargin)
 %                 Data Types - scalar double or struct
 %  dispresults :  display results on the screen. Boolean.
 %                 If dispresults is true (default) it is possible to see on the
-%                 screen all the summary reults of the analsys.
+%                 screen all the summary results of the analysis.
 %                 Example - 'dispresults',false
 %                 Data Types - Boolean
 %        d1    :  dimension to show on the horizontal axis. Positive
