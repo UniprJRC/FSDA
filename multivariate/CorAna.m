@@ -498,26 +498,28 @@ function out=CorAna(N, varargin)
 %{
     % CorAna with all the default options.
      load smoke
-
-%? VERIFY MODIFICATION ?
-    %N=crosstab(X(:,1),X(:,2));   
-    N=crosstab(smoke.data(:,1),smoke.data(:,2));
-
-    out=CorAna(N);
+    [N,~,~,labels] =crosstab(smoke.data(:,1),smoke.data(:,2));
+    [I,J]=size(N);
+    % Contingency table is supplied to CorAna
+    Ntable=array2table(N,'RowNames',labels(1:I,1),'VariableNames',labels(1:J,2))
+    out=CorAna(Ntable);
 %}
 
 %{
     %% CorAna with name pairs.
     % Input is the contingency table, labels for rows and columns are supplied
-    load smoke
-
-%? VERIFY MODIFICATION ?
-    %N=crosstab(X(:,1),X(:,2));
-    N=crosstab(smoke.data(:,1),smoke.data(:,2));
-    %out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);
-    labels_rows = unique(smoke.data(:,1))
-    labels_columns = unique(smoke.data(:,2))
+    % Data are read from the txt file
+    load('smoke.txt')
+    labels_rows= {'Senior-Managers' 'Junior-Managers' 'Senior-Employees' 'Junior-Employees' 'Secretaries'}
+    labels_columns= {'None' 'Light' 'Medium' 'Heavy'};
+    N=crosstab(smoke(:,1),smoke(:,2));
     out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);
+%}
+
+%{
+    %% CorAna with original data matrix as input.
+    load smoke
+    out=CorAna(smoke.data,'datamatrix',true);
 %}
 
 %% Beginning of code
