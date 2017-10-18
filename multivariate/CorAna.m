@@ -523,7 +523,7 @@ function out=CorAna(N, varargin)
 %% Beginning of code
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
-% last case the contigency table is built using the first tow columns of the
+% last case the contingency table is built using the first two columns of the
 % input dataset).
 if ~isempty(varargin)
     UserOptions=varargin(1:2:length(varargin));
