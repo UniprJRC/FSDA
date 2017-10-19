@@ -199,18 +199,22 @@ function out=CorAna(N, varargin)
 %  out :     A structure containing the following fields
 %
 %
-% 		out.N         =   $I$-by-$J$-table containing contigency table
+% 		out.N         =   $I$-by-$J$-array containing contingency table
 %                         referred to active rows (i.e. referred to the rows which
 %                         participated to the fit).
 %                         The $(i,j)$-th element is equal to $n_{ij}$,
 %                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
 %                         sum of the elements of out.P is $n$ (the grand
 %                         total).
-% 		out.P         =   $I$-by-$J$-table containing correspondence matrix
+% 		out.Ntable    =   same as out.N but in table format (with row and
+%                         column names).
+% 		out.P         =   $I$-by-$J$-array containing correspondence matrix
 %                         (proportions). The $(i,j)$-th element is equal to
 %                         $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
 %                         \ldots, J$.  The sum of the elements of out.P is
 %                         1.
+% 		out.Ptable    =   same as out.P but in table format (with row and
+%                         column names).
 % 		out.I         =   Number of active rows of contingency table.
 % 		out.J         =   Number of active columns of contingency table.
 % 		out.n         =   Grand total. out.n is equal to sum(sum(out.N)).
@@ -772,7 +776,9 @@ if ~isempty(Sup)
 end
 
 % Store contingency table (in Matlab table format)
-out.N = Nredtable;
+out.N=Nred;
+% Store contingency table (in Matlab table format)
+out.Ntable = Nredtable;
 
 [I,J]=size(Nred);
 
@@ -786,9 +792,11 @@ n=sum(sum(Nred));
 % P = correspondence matrix  containing relative frequencies
 P = (1/n) * Nred;
 
+% Store P in array format
+out.P=P;
 % Store P in table format
 Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
-out.P=Ptable;
+out.Ptable=Ptable;
 
 out.I=I;        %number of active rows (excluding supplementary rows)
 out.J=J;        %number of active columns (excluding supplementary columns)
