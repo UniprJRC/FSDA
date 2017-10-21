@@ -8,10 +8,10 @@ function out=corrOrdinal(N, varargin)
 % All these indexes measure the correlation among two ordered qualitative
 % variables and go between -1 and 1. The sign of the coefficient indicates
 % the direction of the relationship, and its absolute value indicates the
-% strength, with larger absolute values indicating stronger relationships.
-% Values close to an absolute value of 1 indicate a strong relationship
-% between the two variables. Values close to 0 indicate little or no
-% relationship. More in detail:
+% strength, with larger absolute values indicating stronger
+% relationships. Values close to an absolute value of 1 indicate a strong
+% relationship between the two variables. Values close to 0 indicate little
+% or no relationship. More in detail:
 % $\gamma$ is a symmetric measure of association.
 % $\tau_a$ is a symmetric measure of association that does not take ties
 % into account. Ties happen when both members of the data pair have the
@@ -19,7 +19,7 @@ function out=corrOrdinal(N, varargin)
 % Kendall's $\tau_b$ is a symmetric measure of association which takes ties
 % into account. Even if $\tau_b$ ranges from -1 to 1, a value of -1 or
 % +1 can be obtained only from square tables.
-% $\tau_c$ (also called Stuart-Kendall Tau-c), differs from $\tau_b$ as in
+% $\tau_c$ (also called Stuart-Kendall $\tau_c$), differs from $\tau_b$ as in
 % being more suitable for rectangular tables than for square tables.
 % $\tau_c$ is a symmetric measure of association which makes an
 % adjustment for table size in addition to a correction for ties. Even if
@@ -70,6 +70,22 @@ function out=corrOrdinal(N, varargin)
 %               table because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
+% datamatrix :  data matrix or contingency table. Boolean.
+%               If datamatrix is true the first input argument N is forced
+%               to be interpreted as a data matrix, else if the input
+%               argument is false N is treated as a contingency table. The
+%               default value of datamatrix is false, that is the procedure
+%               automatically considers N as a contingency table
+%               Example - 'datamatrix',true
+%               Data Types - logical
+%  conflev:     confidence levels to be used to
+%               compute confidence intervals. Scalar.
+%               The default value of conflev is 0.95  that
+%               is 95 per cent confidence intervals
+%               are computed for all the indexes (note that this option is
+%               ignored if NoStandardErrors=true
+%               Example - 'conflev',0.99
+%               Data Types - double
 %
 %  Output:
 %
@@ -92,12 +108,12 @@ function out=corrOrdinal(N, varargin)
 %                       standard error, test and p-value.
 %       out.tauc    = 1 x 4 vector which contains index $\tau_c$,
 %                       standard error, test and p-value.
-%       out.dyx     = 1 x 4 vector which contains Somers index $d_{y|x}$,
+%       out.som     = 1 x 4 vector which contains Somers index $d_{y|x}$,
 %                       standard error, test and p-value.
 % out.TestIndtable  = 5-by-4 table containing index values (first column),
-%                   standard errors (second column), zscore (third column),
-%                   p-value (fourth column). Note that the
-%                   standard errors in this table are computed assuming 
+%                   standard errors (second column), zscores (third column),
+%                   p-values (fourth column). Note that the
+%                   standard errors in this table are computed assuming
 %                   the null hypothesis of independence.
 % out.ConfLimtable  = 5-by-4 table containing index values (first column),
 %                   standard errors (second column), lower confidence limit
@@ -114,15 +130,18 @@ function out=corrOrdinal(N, varargin)
 % variable also is higher on the other variable, and a pair of observations
 % is discordant if the subject who is higher on one variable is lower on
 % the other variable.
-% If C > D the variables have a positive association, but if C < D then the
-% variables have a negative association. C and D are, respectivelly, the
-% total number of concordances and discordances.
+% Let $C$ be the total number of concordant pairs (concordances) and $D$
+% the total number of discordant pairs (discordances) . If $C  > D$ the
+% variables have a positive association, but if $C < D$ then the variables
+% have a negative association.
 %
-%
-% In symbols, given an $I \times J$ contingency table
+% In symbols, given an $I \times J$ contingency table the concordant pairs
+% with cell $i,j$ are
 % \[
 %            a_{ij} = \sum_{k<i} \sum_{l<j} n_{kl} + \sum_{k>i} \sum_{l>j}   n_{kl}
 % \]
+%
+% the number of discordant pairs is
 %
 % \[
 %            b_{ij} = \sum_{k>i} \sum_{l<j} n_{kl} + \sum_{k<i} \sum_{l>j} n_{kl}
@@ -145,8 +164,9 @@ function out=corrOrdinal(N, varargin)
 % \]
 %
 %
-% $\tau_a$ is equal to concordant minus discordant pairs, divided by a factor to
-% account for total number of pairs (sample size).
+% $\tau_a$ is equal to concordant minus discordant pairs, divided by a
+% factor which takes into account the total number of pairs.
+%
 % \[
 %  \tau_a= \frac{C-D}{0.5 n(n-1)}
 % \]
@@ -163,7 +183,7 @@ function out=corrOrdinal(N, varargin)
 % Note that $\tau_b \leq \gamma$.
 %
 % $\tau_c$ is equal to concordant minus discordant pairs multiplied by a factor that adjusts
-% for table size).
+% for table size.
 % \[
 %  \tau_c= \frac{C-D}{ n^2(m-1)/(2m)}
 % \]
@@ -180,15 +200,8 @@ function out=corrOrdinal(N, varargin)
 % Null hypothesis:
 % corresponding index = 0. Alternative hypothesis (one-sided) index < 0 or
 % index > 0.
-
-% See
-% http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf,
-% pp. 1739 for the estimation of the asymptotic variance.
 %
-% Standard error of $\tau-a$ is computed as follows:
-% \[
-% s.e. \tau-a =\frac{1}{3} \sqrt{n(n-1)(2n+5)/2}
-% \]
+%
 %
 % In order to compute the confidence intervals and test hypothesis this
 % routine computes the standard error of the various indexes.
@@ -197,41 +210,125 @@ function out=corrOrdinal(N, varargin)
 % to test the null hypothesis of no association (no relationship or independence)
 % between the two variables.
 %
-% The asymtotic Goodman-Kruskal's gamma variance is calculated as,
+%As concerns the Goodman-Kruskal's $\gamma$ index we have that:
+% \[
+%  var(\gamma) =   \frac{4}{(C + D)^4}  \sum_{i=1}^I \sum_{j=1}^J
+%  n_{ij} (D a_{ij} - C b_{ij} )^2
+% \]
+% where
+% \[
+% d_{ij}=a_{ij}- b_{ij}
+% \]
 %
-%   varg = 4/(C + D)^2*(Sum_i Sum_j n_ij*((A_ij - B_ij)^2 - (C - D)^2/n)
+% The variance of $\gamma$  assuming the independence hypothesis is:
+% \[
+% var_0(\gamma) =\frac{1}{(C + D)^2} \left( \sum_{i=1}^I \sum_{j=1}^J
+%  n_{ij} d_{ij}^2  -4(C-D)^2/n  \right)
+% \]
+%
+% As concerns $\tau_a$ we have that:
+% \[
+% var(\tau_a)= \frac{2}{n(n-1)} \left\{ \frac{2(n-2)}{n(n-1)^2}  \sum_{i=1}^I \sum_{j=1}^J (d_{ij} - \overline d)^2 + 1 - \tau_a^2 \right\}
+% \qquad \mbox{with $i,j$ such that $N(i,j)>0$}
+% \]
+% where
+%
+% \[
+% \overline d = \sum_{i=1}^I \sum_{j=1}^J d_{ij} /n  \qquad \mbox{with $i,j$ such that $N(i,j)>0$}
+% \]
+%
+% The variance of $\tau_a$  assuming the independence hypothesis is:
+% \[
+% var_0(\tau_a) =\frac{2 (2n+5)}{9n(n-1) }
+% \]
 %
 %
+% As concerns $\tau_b$ we have that:
+% \[
+% var(\tau_b)= \frac{n}{w^4} \left\{ n \sum_{i=1}^I \sum_{j=1}^J n_{ij} \tau_{ij}^2 - \left( \sum_{i=1}^I \sum_{j=1}^J  n_{ij}\tau_{ij}\right)^2  \right\}
+% \]
+% where
 %
+% \[
+%  \tau_{ij} = 2n d_{ij} +2(C-D) n_{.j} w /n^3+2(C-D) (n_{i.}/n) \sqrt{
+%  w_c/w_r} \qquad \mbox{and} \qquad w= \sqrt{w_rw_c}
+% \]
+%
+% The variance of $\tau_b$  assuming the independence hypothesis is:
+% \[
+% var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+% \]
+% 
+% 
+% As concerns Stuart's $\tau_c$ we have that:
+% \[
+% var(\tau_c)= \frac{4m^2}{(m-1)^2 n^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+% \]
+% 
+%
+%
+% The variance of $\tau_c$  assuming the independence hypothesis is:
+% \[
+% var_0(\tau_c) =var(\tau_c)
+% \]
+%
+%
+% As concerns $d_{y|x}$ we have that:
+% \[
+% var( d_{y|x})= \frac{4}{w_r^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij}
+% (w_r d_{ij} -2(C-D) (n-n_{i.}) \right\}^2
+% \]
+% where
+% \[
+% w_r= n^2- \sum_{i=1}^I n_{i.}^2
+% \]
+%
+% The variance of $d_{y|x}$  assuming the independence hypothesis is:
+% \[
+% var_0(d_{y|x}) = \frac{4}{w_r^2} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+% \]
+%
+% From the theoretical point of view, Simon (1978) showed that all sample
+% measures having the same numerator $(C-D)$ have the same efficacy and hence
+% the same local power, for testing independence.
 %
 % See also crosstab, rcontFS, CressieRead, corr
 %
 % References:
 %
 % Agresti, A. (2002) Categorical Data Analysis. John Wiley & Sons, pp. 57-59.
+% Agresti, A. (2010). Analysis of Ordinal Categorical Data, Second Edition,
+% Wiley, New York. pp. 194-195.
 % Hollander, M, Wolfe, D. A., Chicken, E. (2014). Nonparametric Statistical
 % Methods, Third edition, Wiley,
 % Goktas, A. and Oznur, I. (2011). A comparision of the most commonly used
 % measures of association for doubly ordered square
-% contingency tables via simulation. Metodoloski zvezki 8(1): 17-37, 
+% contingency tables via simulation. Metodoloski zvezki 8(1), pp. 17-37,
 % URL address: www.stat-d.si/mz/mz8.1/goktas.pdf
 % Goodman, L. A. and Kruskal, W. H. (1954). Measures of association for
 % cross classifications. Journal of the American Statistical
-% Association, 49:732-764.
+% Association, 49, pp. 732-764.
 % Goodman, L. A. and Kruskal, W. H. (1959). Measures of association for
 % cross classifications II: Further Discussion and References,
-% Journal of the American Statistical Association, 54:123-163.
+% Journal of the American Statistical Association, 54, pp. 123-163.
 % Goodman, L. A. and Kruskal, W. H. (1963). Measures of association for
 % cross classifications III: Approximate Sampling Theory,
-% Journal of the American Statistical Association, 58:310-364.
+% Journal of the American Statistical Association, 58, pp. 310-364.
 % Goodman, L. A. and Kruskal, W. H. (1972). Measures of association for
 % cross classifications IV: Simplification of Asymptotic
 % Variances. Journal of the American Statistical Association,
-% 67:415-421.
+% 67, pp. 415-421.
 % Liebetrau, A. M. (1983). Measures of Association, Sage University Papers
 % Series on Quantitative Applications in the Social Sciences, 07-004,
 % Newbury Park, CA: Sage, pp. 49-56.
-%
+% SAS documentation (2009). See
+% http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf,
+% pp. 1738-1740.
+% Morton B. B. and Benedetti J. K. (1977), Sampling Behavior of Tests for
+% Correlation in Two-Way Contingency Tables, Journal of the American
+% Statistical Association Vol. 72, pp. 309-315
+% Simon G. (1978), Alternative analysis for the singly ordered contingency
+% table, Journal of the American Statistical Association, Vol. 69, pp. 971-976.
 %
 % Acknowledgements:
 %
@@ -252,7 +349,7 @@ function out=corrOrdinal(N, varargin)
 
 %{
     %%  corrOrdinal with all the default options.
-    % Rows of N indicate the results of an oral test with levels:
+    % Rows of N indicate the results of a written test with levels:
     % 'Sufficient' 'Good' Very good'
     % Columns of N indicate the results of an oral test with levels:
     % 'Sufficient' 'Good' Very good'
@@ -262,13 +359,14 @@ function out=corrOrdinal(N, varargin)
     out=corrOrdinal(N);
     % Because the asymptotic 95 per cent confidence limits do not contain
     % zero, this indicates a strong positive association between the
-    % written and oral examination.
+    % written and the oral examination.
 %}
 
 %{
     %% Compare calculation of tau-b with that which comes from
     % Matlab function corr.
-    % Starting from a contingency table, create the original data matrix.
+    % Starting from a contingency table, create the original data matrix to
+    % te able to call corr.
     N=[20    23    20;
        21    25    22;
        18     18    19];
@@ -298,7 +396,7 @@ function out=corrOrdinal(N, varargin)
 %}
 
 %{
-    %  corrOrdinal with with option conflev.
+    %  corrOrdinal with option conflev.
           N=[26 26 23 18  9;
             6  7  9 14 23];
     out=corrOrdinal(N,'conflev',0.999);
@@ -315,7 +413,7 @@ function out=corrOrdinal(N, varargin)
     % Income and job satisfaction.
     % Relationship between the income (with levels '< 5000' '5000-25000' and
     % '>25000') and  job satisfaction (with levels 'Dissatisfied' 'Moderately satisfied'
-    % and 'Very satisfied' for a sample of 300 persons
+    % and 'Very satisfied') for a sample of 300 persons
     % Input data is matlab table Ntable:
     N = [24 23 30;19 43 57;13 33 58];
     rownam={'Less_than_5000',  'Between_5000_and_25000' 'Greater_than_25000'};
@@ -326,15 +424,15 @@ function out=corrOrdinal(N, varargin)
 %}
 
 %{
-    % Input is the contingency table, labels for rows and columns are
-    % supplied.
+    % Input is the contingency table in matrix format, labels for rows and
+    % columns are supplied.
           N=[20    40    20;
             10    45    45;
              0     5    15];
     % labels for rows and columns
-    labels_rows= {'Sufficient' 'Good' 'Very good'};
-    labels_columns= {'Sufficient' 'Good' 'Very good'};
-    out=corrOrdinal(N,'Lr',labels_rows,'Lc',labels_columns);
+    labels_rows= {'Sufficient' 'Good' 'Very_good'};
+    labels_columns= {'Sufficient' 'Good' 'Very_good'};
+    out=corrOrdinal(N,'Lr',labels_rows,'Lc',labels_columns,'dispresults',false);
     % out.Ntable uses labels for rows and columns which are supplied
     disp(out.Ntable)
 %}
@@ -404,9 +502,9 @@ if ~isempty(UserOptions)
     dispresults=options.dispresults;
     NoStandardErrors=options.NoStandardErrors;
     conflev=options.conflev;
-        Lr  = options.Lr;
+    Lr  = options.Lr;
     Lc  = options.Lc;
-
+    
 end
 
 % Extract labels for rows and columns
@@ -527,23 +625,27 @@ else
     
     % Compute required elements to find standard errors of the various indexes
     wc=n^2-sum(ndotj.^2);
-    %w=sqrt(wr*wc);
-    %v=nidot*ones(1,J)+wc*ones(I,1)*ndotj;
+    
     d=con-dis;
-    sumdij=sum( N(:) .* (d(:).^2) );
+    sumdij2nij=sum( N(:) .* (d(:).^2) );
     
     %%  Goodman-Kruskal's gamma statistic
     % Find the standard error of the Goodman-Kruskal's gamma statistic
-    psi = 2*(D*con-C*dis)/(C+D)^2;
+    s2gam=  (4/ (C+D)^4 )*sum(N(:).* ((D*con(:)-C*dis(:)).^2) );
+    
+    % The lines below contain an alternative formula to compute the
+    % variance
+    %  psi = 2*(D*con-C*dis)/(C+D)^2;
     % s2 = Goodman-Kruskal's gamma variance
-    s2gam = sum(sum(N.*(psi.^2))) - sum(sum((N.*psi)))^2;
+    % s2gamCHK = sum(sum(N.*(psi.^2))) - sum(sum((N.*psi)))^2;
+    
     % segam = Goodman-Kruskal's asymtotic standard error
     segam = sqrt(s2gam);
     % Standard error used to find the value of the test under the independence
     % hypothesis.
-    segamH0=sqrt((1/(C+D)^2)*( sumdij  - (2*(C-D))^2/n  ));
+    segamH0=sqrt((1/(C+D)^2)*( sumdij2nij  - 4*(C-D)^2/n  ));
     
-    zgam = gam/segamH0; %inference via z-score
+    zgam = gam/segamH0; % z-score
     pvalgam = 2*(1 - normcdf(abs(zgam))); %p-value (two-sided)
     % Store results for Goodman-Kruskal's gamma statistic
     out.gam=[gam segamH0 zgam pvalgam];
@@ -559,39 +661,49 @@ else
     % setauaH0 = standard error used to find the value of the test under the independence
     % hypothesis.
     setauaH0 = sqrt(2*(2*n+5)/(9*n*(n-1)));
-    ztaua = taua/setauaH0; %inference via z-score
+    ztaua = taua/setauaH0; % z-score
     pvaltaua = 2*(1 - normcdf(abs(ztaua))); %p-value (two-sided)
     
     %% tau-b statistic
+    % For computationl purposes it is better to use relative frequencies
+    % rather than absolute frequencies
     Pi=N/n; % matrix of relative frequencies
     pdiff=(con-dis)/n;
     Pdiff=2*(C-D)/n^2;
     delta1= sqrt(1 - sum((nidot/n).^2));
     delta2=sqrt(1 - sum((ndotj/n).^2));
-    tauphi=(2 * pdiff + Pdiff * repmat(ndotj/n,I,1) ) * delta2 * delta1 + ...
+    tauij=(2 * pdiff + Pdiff * repmat(ndotj/n,I,1) ) * delta2 * delta1 + ...
         (Pdiff * repmat(nidot/n,1,J) * delta2)/delta1;
     % setaub = standard errot used to compute the confidence interval
-    setaub= sqrt(((sum(Pi(:) .* tauphi(:).^2) - sum(Pi(:) .* tauphi(:)).^2)/(delta1 * delta2)^4)/n);
-    % Notation from Agresti, A. (2002) Categorical Data Analysis. John Wiley & Sons, pp. 57-59.
+    setaub= sqrt(( (  sum(Pi(:) .* tauij(:).^2) - sum(Pi(:) .* tauij(:)).^2)/(delta1 * delta2)^4)/n);
     
-    % Formula to check
-    %setaub=sqrt((1/w^4)*( sum( N(:).*(  (2*w.*d(:)+taub*v(:)).^2 ) ) -n^3 *taub^2*((wr+wc)^2)));
+    % The formula written in the help section (which uses the absolute
+    % frequencies rather than the relative frequencies would be
+    %     w=sqrt(wr*wc);
+    %     tauijCHK=(2*n*d+2*(C-D)*repmat(ndotj/n,I,1) ) * w/n^2 + ...
+    %         2*(C-D)* repmat(nidot/n,1,J) * sqrt(wc/wr);
+    %     setaubCHK= sqrt((n/w^4)*  (   n*sum(N(:) .* tauijCHK(:).^2) -    sum(N(:) .* tauijCHK(:)).^2   ));
+    
+    % Formula below from the computational point of view is highly
+    % inefficient
+    %v=nidot*ones(1,J)+wc*ones(I,1)*ndotj;
+    %setaubnew=sqrt((1/w^4)*( sum( N(:).*(  (2*w.*d(:)+taub*v(:)).^2 ) ) -n^3 *taub^2*((wr+wc)^2)));
     
     % Standard error used to find the value of the test under the independence
     % hypothesis.
-    setaubH0=sqrt( (4/(wr*wc))*(sumdij - (2*(C-D))^2/n ));
-    ztaub = taub/setaubH0; %inference via z-score
+    setaubH0=sqrt( (4/(wr*wc))*(sumdij2nij - (2*(C-D))^2/n ));
+    ztaub = taub/setaubH0; % z-score
     pvaltaub = 2*(1 - normcdf(abs(ztaub))); %p-value (two-sided)
     
     %% (Stuart's) tau-c statistic
     % setauc = standard errot used to compute the confidence interval
-    setauc= sqrt( 4*m^2/((m-1)^2*n^4) *  (sumdij- (2*(C-D))^2/n ));
+    setauc= sqrt( 4*m^2/((m-1)^2*n^4) *  (sumdij2nij- 4*(C-D)^2/n ));
     
     % Standard error used to find the value of the test under the independence
     % hypothesis.
     setaucH0=setauc;
     
-    ztauc = tauc/setaucH0; %inference via z-score
+    ztauc = tauc/setaucH0; % z-score
     pvaltauc = 2*(1 - normcdf(abs(ztauc))); %p-value (two-sided)
     
     %% Somers' D statistic
@@ -602,9 +714,9 @@ else
     sesom=sqrt((4/(wr.^4)) *  sum( N(:) .* ((wr*(con(:)-dis(:))) - (2*(C-D))*(n-nidotrep(:)) ).^2));
     
     % sesomH0 = standard error used to test the independence hypothesis
-    sesomH0= sqrt( 4/(wr^2) * (sumdij   - (2*(C-D))^2/n ));
+    sesomH0= sqrt( 4/(wr^2) * (sumdij2nij   - (2*(C-D))^2/n ));
     
-    zsom = som/sesomH0; %inference via z-score
+    zsom = som/sesomH0; % z-score
     pvalsom = 2*(1 - normcdf(abs(zsom))); %p-value (two-sided)
 end
 
@@ -645,16 +757,20 @@ ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnam);
 out.ConfLimtable=ConfLimtable;
 
 if dispresults == true
-    
-    % Test H_0
-    % Test of independence
-    disp('Test of H_0: independence between rows and columns')
-    disp('The standard errors are computed under H_0')
-    disp(TestIndtable);
-    disp('-----------------------------------------')
-    disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
-    disp('The standard error are computed under H_1')
-    disp(ConfLimtable);
+    if NoStandardErrors == false
+        % Test H_0
+        % Test of independence
+        disp('Test of H_0: independence between rows and columns')
+        disp('The standard errors are computed under H_0')
+        disp(TestIndtable);
+        disp('-----------------------------------------')
+        disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
+        disp('The standard error are computed under H_1')
+        disp(ConfLimtable);
+    else
+        disp('-----------------------------------------')
+        disp(TestIndtable(:,1));
+    end
 end
 
 end
