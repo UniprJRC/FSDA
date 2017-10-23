@@ -215,7 +215,7 @@ if nargin > 1
             % if the user has chosen a bandwidth, we may want to provide
             % a support too. For the moment we leave it unbounded, which is
             % the default of ksdensity.
-            support = 'unbounded';
+            support = 'positive';
             %Remark: if we want to provide the support for the density
             %estimation, then the support should include the data values
             %interval. The quantity 'e' that exceeds the interval should
@@ -263,8 +263,8 @@ if d > 1
             % Remark: by default ksdensity estimates the bandwidt with Scott's rule.
             [pdfe,xout,u]  = ksdensity(X,X);
         else
-            %[pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
-            [pdfe,xout,u]  = ksdensity(X,X,'bandwidth',bandwidth);
+            [pdfe,xout,u]  = ksdensity(X,X,'Support',support,'bandwidth',bandwidth);
+            %[pdfe,xout,u]  = ksdensity(X,X,'bandwidth',bandwidth);
         end
     else
         [pdfedef,xout1,u]  = kdebiv(X,'pdfmethod','fsda');
