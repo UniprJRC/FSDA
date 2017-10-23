@@ -3428,13 +3428,18 @@ end
 end
 
 
-% This inner function  has the purpose of adding symbols </p> <p> every
-% time a full stop, colon or semicolo symbol followed by a series of space
+% descrlongHTMLwithref = this inner function  has the purpose of adding symbols </p> <p> every
+% time a full stop, colon or semicolon symbol followed by a series of space
 % and then a carriage return.
-% descrlongHTMLwithref
-
 function descrHTTPwithref=formatHTML(descrlong)
+% Find all lines which terminate with full stop
 newlinewithFullStop=regexp(descrlong,'\.\s*\r');
+% Do not consider the line which terminate with full stop but are preeceed
+% by "one space" and then "pp."
+[ppwithfullstop]=regexp(descrlong,'\spp\.\s*\r')+3;
+newlinewithFullStop=setdiff(newlinewithFullStop,ppwithfullstop);
+
+% Find all lines which terminate with symbol : or with symbol ;
 newlinewithColon=regexp(descrlong,'\:\s*\r');
 newlinewithSemiColon=regexp(descrlong,'\;\s*\r');
 newl=sort([newlinewithColon newlinewithSemiColon newlinewithFullStop]);
@@ -3546,7 +3551,7 @@ end
 function StringHTML=formatHTMLwithMATHJAX(inputString)
 
 % Check if symbols \[ \] are present
-% If this is the case it is necessary to split inputSring into
+% If this is the case it is necessary to split inputString into
 % the text_part and the Mathjax_part and apply HTML format just
 % to the complementary of the MathJax part
 iniMathJax=regexp(inputString,'\\\[');
@@ -3737,7 +3742,7 @@ end
 
 
 function StringwithSpecialCharacters=SpecialCharacters(StringwithSpecialCharacters)
-% Add symbol \ in before special characters in string StringwithSpecialCharacters
+% Add symbol \ before special characters in string StringwithSpecialCharacters
 % otherwise regexp will not find this string in
 % outstring
 
