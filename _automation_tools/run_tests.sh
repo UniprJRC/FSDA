@@ -76,23 +76,23 @@ done
 echo -e "exit(0);\n" >>test_runner2012a.m
 # END MATLAB R2012a
 
-# MATLAB R2017a
-rm -f test_runner2017a.m
-rm -f execution_log2017a.txt
+# MATLAB R2017b
+rm -f test_runner2017b.m
+rm -f execution_log2017b.txt
 
-echo -e "\n" >>test_runner2017a.m
+echo -e "\n" >>test_runner2017b.m
 
 cat flist | while read func_file
 do 
 
     x=`cygpath -w $func_file`
-    y="try; run('$x'); diary('execution_log2017a.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2017a.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+    y="try; run('$x'); diary('execution_log2017b.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2017b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
-    echo $y >>test_runner2017a.m
-	  echo -e "\n" >>test_runner2017a.m
+    echo $y >>test_runner2017b.m
+	  echo -e "\n" >>test_runner2017b.m
 done
-echo -e "exit(0);\n" >>test_runner2017a.m
-# END MATLAB R2017a
+echo -e "exit(0);\n" >>test_runner2017b.m
+# END MATLAB R2017b
 
 
 
@@ -108,6 +108,6 @@ if [ $TEST_2012a == "YES" ]; then
 '/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
 fi 
 
-if [ $TEST_2017a == "YES" ]; then
-'/cygdrive/c/Program Files/MATLAB/R2017a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2017a"
+if [ $TEST_2017b == "YES" ]; then
+'/cygdrive/c/Program Files/MATLAB/R2017b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2017b"
 fi 
