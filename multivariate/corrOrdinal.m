@@ -4,7 +4,7 @@ function out=corrOrdinal(N, varargin)
 %<a href="matlab: docsearchFS('corrOrdinal')">Link to the help function</a>
 %
 % corrOrdinal computes Goodman-Kruskal's $\gamma$, $\tau_a$,
-% $\tau_b$, $\tau_c$, and $d_{y|x}$ of Somers.
+% $\tau_b$, $\tau_c$ of Kendall and $d_{y|x}$ of Somers.
 % All these indexes measure the correlation among two ordered qualitative
 % variables and go between -1 and 1. The sign of the coefficient indicates
 % the direction of the relationship, and its absolute value indicates the
@@ -13,23 +13,21 @@ function out=corrOrdinal(N, varargin)
 % relationship between the two variables. Values close to 0 indicate little
 % or no relationship. More in detail:
 % $\gamma$ is a symmetric measure of association.
-% $\tau_a$ is a symmetric measure of association that does not take ties
-% into account. Ties happen when both members of the data pair have the
-% same value.
+% Kendall's $\tau_a$ is a symmetric measure of association that does not
+% take ties into account. Ties happen when both members of the data pair
+% have the same value.
 % Kendall's $\tau_b$ is a symmetric measure of association which takes ties
 % into account. Even if $\tau_b$ ranges from -1 to 1, a value of -1 or
 % +1 can be obtained only from square tables.
-% $\tau_c$ (also called Stuart-Kendall $\tau_c$), differs from $\tau_b$ as in
-% being more suitable for rectangular tables than for square tables.
-% $\tau_c$ is a symmetric measure of association which makes an
-% adjustment for table size in addition to a correction for ties. Even if
-% $\tau_c$ ranges from -1 to 1, a value of -1 or +1 can be obtained only
-% from square tables.
+% $\tau_c$ (also called Stuart-Kendall $\tau_c$) is a symmetric measure of
+% association which makes an adjustment for table size in addition to a
+% correction for ties. Even if $\tau_c$ ranges from -1 to 1, a value of -1
+% or +1 can be obtained only from square tables.
 % Somers' $d$ is an asymmetric extension of $\tau_b$ in that it uses a
 % correction only for pairs that are tied on the independent variable
 % (which in this implementation it is assumed to be on the rows of the
 % contingency table).
-% Additional details about these indexes can be found in the More About
+% Additional details about these indexes can be found in the "More About"
 % section of this document.
 %
 %
@@ -296,9 +294,9 @@ function out=corrOrdinal(N, varargin)
 %
 % References:
 %
-% Agresti, A. (2002) Categorical Data Analysis. John Wiley & Sons, pp. 57-59.
+% Agresti, A. (2002). Categorical Data Analysis. John Wiley & Sons, pp. 57-59.
 % Agresti, A. (2010). Analysis of Ordinal Categorical Data, Second Edition,
-% Wiley, New York. pp. 194-195.
+% Wiley, New York, pp. 194-195.
 % Hollander, M, Wolfe, D. A., Chicken, E. (2014). Nonparametric Statistical
 % Methods, Third edition, Wiley,
 % Goktas, A. and Oznur, I. (2011). A comparision of the most commonly used
@@ -316,8 +314,8 @@ function out=corrOrdinal(N, varargin)
 % Journal of the American Statistical Association, 58, pp. 310-364.
 % Goodman, L. A. and Kruskal, W. H. (1972). Measures of association for
 % cross classifications IV: Simplification of Asymptotic
-% Variances. Journal of the American Statistical Association,
-% 67, pp. 415-421.
+% Variances. Journal of the American Statistical Association, 67, pp.
+% 415-421.
 % Liebetrau, A. M. (1983). Measures of Association, Sage University Papers
 % Series on Quantitative Applications in the Social Sciences, 07-004,
 % Newbury Park, CA: Sage, pp. 49-56.
