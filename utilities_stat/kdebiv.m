@@ -12,7 +12,7 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %
 %  Required input arguments:
 %
-%   X: Input matrix. Matrix. Two-column matrix with the bi-variate data
+%   X: Input matrix. Matrix. Two-column matrix with the bivariate data
 %      sample on which a probability density estimate is computed. The
 %      density is estimated on a grid of points covering the range of the
 %      data, created using MATLAB function meshgrid.
@@ -25,8 +25,15 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %               Matrix. In this case the density is estimated using X and evaluated on XI.
 %               Example - 'XI',X
 %               Data Types - single | double.
+% 
+% Xlim:         Limits of the estimated density. Matrix. Two-columns matrix 
+%               with the bivariate data sample on which the limits of the 
+%               probability density estimate is computed. The default value 
+%               is [] (i.e. automatic scale).
+%               Example - 'Xlim', [Xlim, Ylim]
+%               Data Types - single | double.
 %
-%   contourtype: Plot on the screen. String. Takes one of these strings:
+%  contourtype: Plot on the screen. String. Takes one of these strings:
 %               - contourtype = 'contour' generates a contour plot.
 %               - contourtype = 'contourf' generates a filled contour plot.
 %               - contourtype = 'surf' generates a surf plot.
@@ -228,7 +235,7 @@ if d ~= 2
     error('FSDA:kdebiv:WrongInput','This function applies to bivariate data only!');
 end
 
-options     = struct('XI',[],'contourtype','contour','cmap','gray','pdfmethod','matlab');
+options     = struct('XI',[],'Xlim',[],'contourtype','contour','cmap','gray','pdfmethod','matlab');
 UserOptions = varargin(1:2:length(varargin));
 if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
     error('FSDA:kdebiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
@@ -245,6 +252,22 @@ contourtype = options.contourtype;
 cmap        = options.cmap;
 pdfmethod   = options.pdfmethod;
 XI          = options.XI;
+Xlim        = options.Xlim;
+
+% check if the specified Xlim is valid
+if ~isempty(Xlim)
+    % when the option is specified by the user check if it is appropriate
+    [r, c] = size(Xlim);
+    if c>r
+        % transpose the matrix
+        Xlim = Xlim';
+        c = r;
+        warning('Xlim has been transposed.');
+    end
+    if c ~= 2
+        error('Xlim has to be a 2-columns matrix.');
+    end
+end
 
 if ~isempty(UserOptions)
     
@@ -421,8 +444,15 @@ if plot_contour
     % meshgrid and griddata.
     
     % control of the axis limits
-    xmin = min(X(:,1)); xmax = max(X(:,1));
-    ymin = min(X(:,2)); ymax = max(X(:,2));
+    if isempty(Xlim)
+        % default limits
+        xmin = min(X(:,1)); xmax = max(X(:,1));
+        ymin = min(X(:,2)); ymax = max(X(:,2));
+    else
+        % limits according to the specified vectors
+        xmin = min(Xlim(:,1)); xmax = max(Xlim(:,1));
+        ymin = min(Xlim(:,2)); ymax = max(Xlim(:,2));
+    end
     deltax = 0;%(xmax - xmin) / 10;
     deltay = 0;%(ymax - ymin) / 10;
     
@@ -458,8 +488,10 @@ if plot_contour
             contourf(xq,yq,1-FF,'Clipping','off');
     end
     
-    % colormap
-    colormap(mymap);
+    % colormap adding a last row of ones (i.e. white background)
+    colormap([mymap ; 1 1 1]);
+    %colormap(mymap);   % to avoid the white background as default
+
     
 end
 

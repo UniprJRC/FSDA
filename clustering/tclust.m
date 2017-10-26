@@ -1,5 +1,5 @@
 function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
-%tclust computes trimmed clustering with restricitons on the eigenvalues
+%tclust computes trimmed clustering with scatter restrictions 
 %
 %<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
 %
@@ -20,18 +20,21 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               Missing values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values will
 %               automatically be excluded from the computations.
+% 
 %            k: Number of groups. Scalar.
 %               Scalar which specifies the number of groups.
-%        alpha: global trimming level. Scalar. alpha is a scalar between 0 and 0.5
+% 
+%        alpha: Global trimming level. Scalar. alpha is a scalar between 0 and 0.5
 %               or an integer specifying the number of observations which have to
 %               be trimmed. If alpha=0 tclust reduces to traditional model
 %               based or mixture clustering (mclust): see Matlab function
 %               gmdistribution.
 %               More in detail, if 0< alpha <1 clustering is based on
-%                h=fix(n*(1-alpha)) observations
-%               Else if alpha is an integer greater than 1 clustering is
+%                h=fix(n*(1-alpha)) observations,
+%               else if alpha is an integer greater than 1 clustering is
 %               based on h=n-floor(alpha);
-%  restrfactor: restriction factor. Scalar. Positive scalar which constrains the allowed differences
+% 
+%  restrfactor: Restriction factor. Scalar. Positive scalar which constrains the allowed differences
 %               among group scatters. Larger values imply larger differences of
 %               group scatters. On the other hand a value of 1 specifies the
 %               strongest restriction forcing all eigenvalues/determinants
@@ -40,7 +43,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %  Optional input arguments:
 %
-%       nsamp : number of subsamples to extract.
+%       nsamp : Number of subsamples to extract.
 %               Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
 %               which will be extracted. If nsamp=0
@@ -71,15 +74,15 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %    refsteps : Number of refining iterations. Scalar. Number of refining
-%               iterations in each subsample  Default is 15.
+%               iterations in each subsample. Default is 15.
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',10
 %                 Data Types - single | double
-%     reftol  : tolerance for the refining steps. Scalar.
+%     reftol  : Tolerance for the refining steps. Scalar.
 %               The default value is 1e-14;
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
-%equalweights : cluster weights in the concentration and assignment steps.
+%equalweights : Cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
 %               and computation of the likelihood.
@@ -97,114 +100,134 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                     \sum_{j=1}^k  \sum_{ x_i \in group_j }  \log \left[ \frac{n_j}{n}  f(x_i; m_j , S_j) \right]=
 %                 \]
 %                 \[
-%                   = \sum_{j=1}^k n_j \log n_j/n + \sum_{j=1}^k \sum_{ x_i \in group_j} \log f(x_i; m_j , S_j)
+%                   = \sum_{j=1}^k n_j \log n_j/n + \sum_{j=1}^k \sum_{ x_i \in group_j} \log f(x_i; m_j , S_j) .
 %                 \]
 %
 %               Remark: $\sum_{j=1}^k n_j \log n_j/n$ is the so called entropy
 %               term
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
-%       mixt  : mixture modelling or crisp assignment. Scalar.
+%       mixt  : Mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
-%               controls which is the criterior to find the untrimmed units
-%               in each step of the maximization
+%               controls which is the criterion to find the untrimmed units
+%               in each step of the maximization.
 %               If mixt >=1 mixture modelling is assumed else crisp
-%               assignment.
-%                In mixture modelling the likelihood is given by
+%               assignment. The default value is mixt=0 (i.e. crisp assignment).
+%               In mixture modelling the likelihood is given by:
 %                \[
 %                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
 %                \]
-%               while in crisp assignment the likelihood is given by
+%               while in crisp assignment the likelihood is given by:
 %               \[
 %               \prod_{j=1}^k   \prod _{i\in R_j} \phi (y_i; \; \theta_j),
 %               \]
 %               where $R_j$ contains the indexes of the observations which
-%               are assigned to group $j$,
+%               are assigned to group $j$.
 %               Remark - if mixt>=1 previous parameter equalweights is
 %               automatically set to 1.
-%               Parameter mixt also controls the criterion to select the units to trim
-%               if mixt == 2 the h units are those which give the largest
+%               Parameter mixt also controls the criterion to select the
+%               units to trim,
+%               if mixt = 2 the h units are those which give the largest
 %               contribution to the likelihood that is the h largest
-%               values of
+%               values of:
 %               \[
 %                   \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)   \qquad
-%                    i=1, 2, ..., n
+%                    i=1, 2, ..., n,
 %               \]
-%               elseif mixt==1 the criterion to select the h units is
+%               else if mixt=1 the criterion to select the h units is
 %               exactly the same as the one which is used in crisp
 %               assignment. That is: the n units are allocated to a
-%               cluster according to criterion
+%               cluster according to criterion:
 %               \[
 %                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i; \; \hat \theta_j)
 %               \]
 %               and then these n numbers are ordered and the units
 %               associated with the largest h numbers are untrimmed.
-%               Example - 'mixt',1
-%               Data Types - single | double
-%       plots : Plot on the screen. Scalar or matrix or string.
-%               - If plots = 0 (default), plots are not generated.
-%               - If plots = 1, a plot with the classification is shown on
-%                 the screen. The plot can be:
+%                   Example - 'mixt',1
+%                   Data Types - single | double
+% 
+% plots    :    Plot on the screen. Scalar, character, cell or struct. 
+%               - If plots=0 (default), plots are not generated. 
+%               - If plot=1, a plot with the classification is shown on
+%                 the screen (using the spmplot function). The plot can be:
 %                   * for v=1, an histogram of the univariate data.
 %                   * for v=2, a bivariate scatterplot.
 %                   * for v>2, a scatterplot matrix generated by spmplot.
-%               When v = 2, plots offers the following additional features
-%               (for v=1 or v>2 the behaviour is forced that of plots=1):
-%               - plots = 2 superimposes confidence ellipses to the
-%                 bivariate scatterplot. The size of the ellipse is
-%                 chi2inv(0.95,2), i.e. the confidence level used by
-%                 default is 95%.
-%               - 0 < plots < 1 superimposes confidence ellipses with size
-%                 given by chi2inv(plots,2), i.e. with the confidence level
-%                 provided by the user in plots.
-%               - plots = 'contour' superimposes to the bivariate
-%                 scatterplot a contour plot.
-%               - plots = 'contourf' superimposes to the bivariate
-%                 scatterplot a filled contour plot. The colormap of the
-%                 filled contour is based on grey levels.
-%               - If plots is three-column matrix of values in the range
-%                 [0,1], the behaviour is like for 'contourf' but with a
-%                 personalized colormap where each row of 'plots' is an RGB
-%                 triplet that defines one color.
-%               Example - 'plots',1
-%               Data Types - single | double | matrix | string
+%               When v>=2 plots offers the following additional features
+%               (for v=1 the behaviour is forced to be as for plots=1):
+%               - plots='contourf' adds in the background of the bivariate
+%                 scatterplots a filled contour plot. The colormap of the
+%                 filled contour is based on grey levels as default.
+%                 This argument may also be inserted in a field named 'type' 
+%                 of a structure. In the latter case it is possible to 
+%                 specify the additional field 'cmap', which changes the 
+%                 default colors of the color map used. The field 'cmap'
+%                 may be a three-column matrix of values in the range [0,1] 
+%                 where each row is an RGB triplet that defines one color.
+%                 Check the colormap function for additional informations.
+%               - plots='contour' adds in the background of the bivariate
+%                 scatterplots a contour plot. The colormap of the contour 
+%                 is based on grey levels as default. This argument may 
+%                 also be inserted in a field named 'type' of a structure.
+%                 In the latter case it is possible to specify the additional 
+%                 field 'cmap', which changes the default colors of the 
+%                 color map used. The field 'cmap' may be a three-column 
+%                 matrix of values in the range [0,1] where each row is an 
+%                 RGB triplet that defines one color.
+%                 Check the colormap function for additional informations.
+%               - plots='ellipse' superimposes confidence ellipses to
+%                 each group in the bivariate scatterplots. The size of the 
+%                 ellipse is chi2inv(0.95,2), i.e. the confidence level used 
+%                 by default is 95%. This argument may also be inserted in 
+%                 a field named 'type' of a structure. In the latter case it
+%                 is possible to specify the additional field 'conflev',
+%                 which specifies the confidence level to use and it is a 
+%                 value between 0 and 1.   
+%               - plots='boxplotb' superimposes on the bivariate scatterplots
+%                 the bivariate boxplots for each group, using the boxplotb 
+%                 function. This argument may also be inserted in a field 
+%                 named 'type' of a structure.
+%               REMARK - The labels=0 are automatically excluded from the 
+%                          overlaying phase, considering them as outliers.
+%                   Example - 'plots', 1
+%                   Data Types - single | double | string
 %        msg  : Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen.
-%               If msg==0 nothing is displayed on the screen.
-%               If msg==1 (default) messages are displayed
+%               If msg=0 nothing is displayed on the screen.
+%               If msg=1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               or the number of subsets in which there was no convergence.
-%               If msg==2 detailed messages are displayed. For example the
+%               If msg=2 detailed messages are displayed. For example the
 %               information at iteration level.
-%                 Example - 'msg',1
-%                 Data Types - single | double
+%                   Example - 'msg',1
+%                   Data Types - single | double
 %      nocheck: Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix Y.
 %               As default nocheck=0.
-%                 Example - 'nocheck',10
-%                 Data Types - single | double
-%      startv1: how to initialize centroids and cov matrices. Scalar.
-%               If startv1 is 1 then initial
-%               centroids and covariance matrices are based on (v+1)
-%               observations randomly chosen, else each centroid is
-%               initialized taking a random row of input data matrix and
-%               covariance matrices are initialized with identity matrices.
-%               Remark 1- in order to start with a routine which is in the
+%                   Example - 'nocheck',1
+%                   Data Types - single | double
+%      startv1: How to initialize centroids and covariance matrices. Scalar.
+%               If startv1 is 1 then initial centroids and covariance
+%               matrices are based on (v+1) observations randomly chosen,
+%               else each centroid is initialized taking a random row of
+%               input data matrix and covariance matrices are initialized
+%               with identity matrices. The default value of startv1 is 1.
+%               Remark 1 - in order to start with a routine which is in the
 %               required parameter space, eigenvalue restrictions are
-%               immediately applied. The default value of startv1 is 1.
+%               immediately applied.
 %               Remark 2 - option startv1 is used just if nsamp is a scalar
-%               (see for more details the help associated with nsamp)
-%                 Example - 'startv1',1
-%                 Data Types - single | double
-% RandNumbForNini: preextracted random numbers to initialize proportions.
+%               (see for more details the help associated with nsamp).
+%                   Example - 'startv1',1
+%                   Data Types - single | double
+% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
 %                Matrix. Matrix with size k-by-size(nsamp,1) containing the
 %                random numbers which are used to initialize the
 %                proportions of the groups. This option is effective just
-%                if nsamp is a matrix which contains preextracted
+%                if nsamp is a matrix which contains pre-extracted
 %                subsamples. The purpose of this option is to enable to
 %                user to replicate the results in case routine tclust is
 %                called using a parfor instruction (as it happens for
@@ -212,24 +235,19 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                parfor for different values of the restriction factor).
 %                The default value of RandNumbForNini is empty that is
 %                random numbers from uniform are used.
-%                 Example - 'RandNumbForNini',''
-%                 Data Types - single | double
+%                   Example - 'RandNumbForNini',''
+%                   Data Types - single | double
 %    restr    : The type of restriction to be applied on the cluster
-%               scatter matrices. Valid values are 'eigen' (default), or
+%               scatter matrices. String. Valid values are 'eigen' (default), or
 %               'deter'. eigen implies restriction on the eigenvalues while
 %               deter implies restrictions on the determinant.
-%                 Example - 'restr','deter'
-%                 Data Types - char
+%                   Example - 'restr','deter'
+%                   Data Types - char
 %       Ysave : Save original input matrix. Scalar. Set Ysave to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 0, id
 %               est no saving is done.
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
-%
-%       Remark: The user should only give the input arguments that have to
-%               change their default value. The name of the input arguments
-%               needs to be followed by their value. The order of the input
-%               arguments is of no importance.
 %
 %
 %  Output:
@@ -245,7 +263,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k. 0 indicates trimmed
 %                       observations.
-%            out.siz  = matrix of size k-by-3.
+%            out.siz  = Matrix of size k-by-3.
 %                       1st col = sequence from 0 to k;
 %                       2nd col = number of observations in each cluster;
 %                       3rd col = percentage of observations in each
@@ -254,50 +272,60 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %            out.post = n-by-k matrix containing posterior probabilities
 %                       out.post(i,j) contains posterior probabilitiy of unit
 %                       i from component (cluster) j. For the trimmed units
-%                       posterior probabilities are 0
+%                       posterior probabilities are 0.
+%             out.emp = "Empirical" statistics computed on final classification. 
+%                       Scalar or structure. When convergence is reached,
+%                       out.emp=0. When convergence is not obtained, this
+%                       field is a structure which contains the statistics
+%                       of interest: idxemp (ordered from 0 to k*, k* being 
+%                       the number of groups with at least one observation
+%                       and 0 representing the possible group of outliers),
+%                       muemp, sigmaemp and sizemp, which are the empirical
+%                       counterparts of idx, muopt, sigmaopt and siz.
 %          out.MIXMIX = BIC which uses parameters estimated using the
 %                       mixture loglikelihood and the maximized mixture
 %                       likelihood as goodness of fit measure.
 %                       Remark: this output is present just if input option
-%                       mixt is >0
+%                       mixt is >0.
 %          out.MIXCLA = BIC which uses the classification likelihood based on
 %                       parameters estimated using the mixture likelihood
-%                       (In some books this quantity is called ICL)
+%                       (In some books this quantity is called ICL).
 %                       Remark: this output is present just if input option
-%                       mixt is >0
+%                       mixt is >0.
 %          out.CLACLA = BIC which uses the classification likelihood based on
-%                       parameters estimated using the classification likelihood
+%                       parameters estimated using the classification likelihood.
 %                       Remark: this output is present just if input option
-%                       mixt is =0
-%       out.notconver = scalar. Number of subsets without convergence
+%                       mixt is =0.
+%       out.notconver = Scalar. Number of subsets without convergence
 %              out.bs = k-by-1 vector containing the units forming initial
 %                       subset associated with muopt.
-%             out.obj = scalar. Value of the objective function which is minimized
+%             out.obj = Scalar. Value of the objective function which is minimized
 %                       (value of the best returned solution).
 %                       If input option mixt >1 the likelihood which is
-%                       maximized is a mixture likelihood as follows
+%                       maximized is a mixture likelihood as follows:
 %                       \[
-%                       \prod_{i=1}^h  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j).
+%                       \prod_{i=1}^h  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
 %                       \]
-%                       else the likelihood which is maximized is a classification likelihood of the the form
+%                       else the likelihood which is maximized is a
+%                       classification likelihood of the the form:
 %                       \[
 %                       \prod_{j=1}^k   \prod _{i\in R_j} \pi_j' \phi (y_i; \; \theta_j),
 %                       \]
 %                       where $R_j$ contains the indexes of the observations which are assigned to group $j$
 %                       with the constraint that $\# \bigcup_{j=1}^k
-%                       R_j=h$. In the classification likelihood is input
-%                       option equalweights=0 then $\pi_j'=1$, $j=1, ...,
-%                       k$
-%   out.equalweights  = logical. It is true if in the clustering procedure
+%                       R_j=h$. In the classification likelihood if input
+%                       option equalweights is set to 0, then $\pi_j'=1$, $j=1, ...,
+%                       k$.
+%   out.equalweights  = Logical. It is true if in the clustering procedure
 %                       we (ideally) assumed equal cluster weights
 %                       else it is false if we allowed for different
-%                       cluster sizes
-%               out.h = scalar. Number of observations that have determined the
+%                       cluster sizes.
+%               out.h = Scalar. Number of observations that have determined the
 %                       centroids (number of untrimmed units).
-%          out.fullsol= column vector of size nsamp which contains the
+%          out.fullsol= Column vector of size nsamp which contains the
 %                       value of the objective function at the end of the
 %                       iterative process for each extracted subsample.
-%              out.Y  = original data matrix Y. The field is present if option
+%              out.Y  = Original data matrix Y. The field is present if option
 %                       Ysave is set to 1.
 %
 %  Optional Output:
@@ -325,9 +353,10 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 % References:
 %
-% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008),
-% "A General Trimming Approach to Robust Cluster Analysis". Annals
-% of Statistics, Vol.36, 1324-1345. Technical Report available at
+% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
+% A General Trimming Approach to Robust Cluster Analysis. Annals
+% of Statistics, Vol.36, 1324-1345. 
+% Technical Report available at:
 % http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
@@ -348,18 +377,26 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    % tclust of geyser with classification plot.
+    %% tclust of geyser with classification plot.
     Y=load('geyser2.txt');
+    close all
     out=tclust(Y,3,0.1,10000,'plots',1);
 
-    % tclust of geyser with classification plot and confidence ellipses.
-    out=tclust(Y,3,0.1,10000,'plots',2);
+    % default confidence ellipses.
+    out=tclust(Y,3,0.1,10000,'plots','ellipse');
 
-    % tclust of geyser with classification plot and contour plots.
+    % confidence ellipses specified by the user
+    plots.type = 'ellipse';
+    plots.conflev = 0.5;
+    out=tclust(Y,3,0.1,10000,'plots',plots);
+
+    % contour plots.
     out=tclust(Y,3,0.1,10000,'plots','contour');
 
-    % tclust of geyser with classification plot and filled contour plots.
-    out=tclust(Y,3,0.1,10000,'plots','contourf');
+    % filled contour plots with additional options
+    plots.type = 'contourf';
+    plots.cmap = autumn;
+    out=tclust(Y,3,0.1,10000,'plots',plots);
 
     cascade
 %}
@@ -382,14 +419,14 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     restrfactor=10000;
     % nsamp = number of subsamples which will be extracted
     nsamp=500;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'plots',1);
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'plots','ellipse');
     title(['Restriction factor =' num2str(restrfactor)])
     restrfactor=10;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
     title(['Restriction factor =' num2str(restrfactor)])
     % trimmed k-means solution restrfactor=1
     restrfactor=1;
-    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots',1);
+    out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
     title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'])
     cascade
 %}
@@ -403,6 +440,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     %  containing the three normal components and not very overlapped with
     %  the three mixture components. A precise description of the M5 data
     %  set can be found in Garcia-Escudero et al. (2008).
+    close all
     Y=load('M5data.txt');
     % plot(Y(:,1),Y(:,2),'o')
     % Scatter plot matrix with univariate boxplot on the main diagonal
@@ -413,6 +451,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     out=tclust(Y(:,1:2),3,0.1,1,'nsamp',1000,'plots',1,'equalweights',1)
     out=tclust(Y(:,1:2),3,0.1,1000,'nsamp',100,'plots',1)
 
+    cascade
 %}
 
 %{
@@ -426,10 +465,12 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     %        rmvnorm (360, c (0.0,  0), matrix (c (1,  0,  0, 1), ncol = 2)),
     %        rmvnorm (540, c (5.0, 10), matrix (c (6, -2, -2, 6), ncol = 2)),
     %        noise)
-
+    
+    close all
     Y=load('structurednoise.txt');
     out=tclust(Y(:,1:2),2,0.1,100,'plots',1)
     out=tclust(Y(:,1:2),5,0.15,1,'plots',1)
+    cascade
 %}
 
 %{
@@ -439,23 +480,29 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     %     mixt <- rbind (rmvnorm (360, c (  0,  0), matrix (c (1,  0,  0,  1), ncol = 2)),
     %                rmvnorm (540, c (  5, 10), matrix (c (6, -2, -2,  6), ncol = 2)),
     %                rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))
-
+    close all
     Y=load('mixture100.txt');
     out=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)
     out=tclust(Y(:,1:2),3,0.05,1,'refsteps',20,'plots',1)
+    cascade
 %}
 
 %{
     % tclust applied to mixture100 data, comparison of different options.
+    close all
     Y=load('mixture100.txt');
     % Traditional tclust
     out1=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)
+    title('Traditional tclust');
     % tclust with mixture models (selection of untrimmed units according to
     % likelihood contributions
     out2=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',1)
+    title('tclust with mixture models (likelihood contributions)');
     % Tclust with mixture models (selection of untrimmed units according to
     % densities weighted by estimates of the probability of the components)
     out3=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',2)
+    title('tclust with mixture models (probability of the components)');
+    cascade
 %}
 
 %{
@@ -479,13 +526,14 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     group(n1+n2+n3+1:n1+n2+n3+n4)=4;
     group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
 
-
+    close all
     Y=[Y1;Y2;Y3;Y4;Y5];
     out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1)
 %}
 
 %{
     %% Automatic choice of the best number of groups for geyser data.
+    % close all
     Y=load('geyser2.txt');
     maxk=6;
     CLACLA=[(1:maxk)' zeros(maxk,1)];
@@ -513,7 +561,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     xlabel('Number of groups')
     ylabel('MIXMIX')
     xlim([1 maxk])
-
     
     subplot(1,3,3)
     plot(MIXCLA(:,1),MIXCLA(:,2))
@@ -525,6 +572,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %{
     % Automatic choice of the best number of groups for simulated data with
     % k=5 and v=5.
+    close all
     n1=100;     % Generate 5 groups in 5 dimensions
     n2=80;
     n3=50;
@@ -542,7 +590,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     group(n1+n2+1:n1+n2+n3)=3;
     group(n1+n2+n3+1:n1+n2+n3+n4)=4;
     group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
-
 
     Y=[Y1;Y2;Y3;Y4;Y5];
     restrfactor=5;
@@ -571,7 +618,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     xlabel('Number of groups')
     ylabel('MIXMIX')
 
-    
     subplot(1,3,3)
     plot(MIXCLA(:,1),MIXCLA(:,2))
     xlabel('Number of groups')
@@ -580,6 +626,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 
 %{
     % tclust applied to Swiss banknotes imposing determinant restriciton.
+    close all
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
     out=tclust(Y,3,0.1,10,'restr','deter','refsteps',20,'plots',1)
@@ -587,6 +634,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 
 %{
     % tclust applied to the Geyser data imposing determinant restriciton.
+    close all
     Y=load('geyser2.txt');
     out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)
 %}
@@ -697,9 +745,11 @@ tolrestreigen=1e-08;
 % Default
 if nargin<3
     alpha=0.05;
+    warning('You have not specified alpha: it is set to 0.05 by default');
 else
     if isempty(alpha)
         alpha=0.05;
+        warning('You have not specified alpha: it is set to 0.05 by default');    
     end
 end
 
@@ -712,6 +762,7 @@ end
 
 if nargin<4
     restrfactor=12;
+    warning('You have not specified restrfactor: it is set to 12 by default');
 end
 
 % h = number of untrimmed units
@@ -928,7 +979,7 @@ if msg == 1
             % Mixture likelihood.
             % To select the h untrimmed units we take those with h largest
             % contributions to the likelihood
-            disp('MixLik with untrimmed units selected using h largest lik contributions');
+            disp('MixLik with untrimmed units selected using h largest likelihood contributions');
     end
 end
 
@@ -1367,7 +1418,7 @@ for i=1:nselected
             mudiff=sum(sum(abs(postprob-postprobold)))/n;
             % disp(mudiff)
         else
-            % if mixt=0 stopping criterior is referred to no modiification in the classification
+            % if mixt=0 stopping criterion is referred to no modiification in the classification
             mudiff=sum(abs(indold-ind)>0)/n;
             % disp(mudiff)
         end
@@ -1434,12 +1485,19 @@ end
 
 %% Store quantities in out structure
 %exist('muopt')==0
-% Store robust estimate of final centroids of the groups
-out.muopt=muopt;
 
-% Store robust estimate of final covariance matrix of the groups
-out.sigmaopt=sigmaopt;
+% Procedure to order the non-empty components
+if any(any(isnan(muopt)))
 
+    % restore apropriate order of the components
+    NanGroups = isnan(muopt(:,1)); % missing components
+    
+    % order of the components in nopt, muopt and sigmaopt
+    nopt = [nopt(~NanGroups); nopt(NanGroups)];    
+    muopt = [muopt(~NanGroups,:); muopt(NanGroups,:)];
+    sigmaopt(:,:,NanGroups) = NaN; % assign NaN on the empty clusters
+    sigmaopt = cat(3, sigmaopt(:,:,~NanGroups), sigmaopt(:,:,NanGroups));
+end
 
 % With the best obtained values for the parameters, we compute the final
 % assignments and parameters
@@ -1456,11 +1514,21 @@ out.sigmaopt=sigmaopt;
 % f(x_i|\theta_j) is multivariate normal with theta_j =(mu_j, \Sigma_j)
 if equalweights
     for j=1:k
-        ll(:,j)= logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
+        if any(~isnan(muopt(j,:)))
+            ll(:,j) = logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
+        else
+            % avoid the computation for empty components and assign NaN
+            ll(:,j) = NaN;
+        end
     end
 else
     for j=1:k
-        ll(:,j)= log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
+        if any(~isnan(muopt(j,:)))
+            ll(:,j) = log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
+        else
+            % avoid the computation for empty components and assign NaN            
+            ll(:,j) = NaN;
+        end            
     end
 end
 
@@ -1540,6 +1608,12 @@ loglik=disc(qq(1:h));
 % -vopt
 NlogL =-sum(loglik);
 
+% Store robust estimate of final centroids of the groups
+out.muopt=muopt;
+
+% Store robust estimate of final covariance matrix of the groups
+out.sigmaopt=sigmaopt;
+
 % Store the assignments in matrix out. Unassigned units have an assignment
 % equal to 0
 if mixt>=1
@@ -1547,8 +1621,6 @@ if mixt>=1
 else
     out.idx=idx;
 end
-
-
 
 % siz = matrix of size k x 3,
 % 1st col = sequence from 0 to k
@@ -1612,6 +1684,73 @@ for j=1:k
     %
 end
 
+
+
+%% Empirical quantities stored when there is no convergence
+
+% unique ID found which are not outliers
+UniqID = unique(idx(idx>0));
+
+if length(UniqID) ~= k  
+    % Compute the empirical statistics when the algorithm does not reach
+    % convergence (i.e. some cluster are missing)
+    
+    % initialize muemp and sigmaemp
+    muemp    = nan(size(muopt));
+    sigmaemp = nan(v,v,k);
+    
+    % iterate for each cluster found
+    for j=1:length(UniqID)
+        
+        % assign the jj-th cluster ID
+        jj = UniqID(j);
+        
+        if sum(idx==jj)>1
+            % when more than one unit is in the jj-th cluster
+            muemp(jj,:)      = mean(Y(idx==jj,:));
+            sigmaemp(:,:,jj) = cov(Y(idx==jj,:));
+        else
+            % when one unit is in the jj-th cluster
+            muemp(jj,:)      = Y(idx==jj,:);
+            sigmaemp(:,:,jj) = 0;            
+        end
+    end
+
+    % restore apropriate order of the ID
+    realID = 1:k;                           % searched clusters
+    NanGroups = ~ismember(realID, UniqID);  % missing clusters
+    % initialize idxemp
+    idxemp = idx;
+    % order the clusters found
+    for i = 1:k-sum(NanGroups)
+        posChang = idx==UniqID(i);
+        UniqID(i) = UniqID(i) - sum(NanGroups(1:UniqID(i))); 
+        idxemp(posChang) = UniqID(i);
+    end
+    
+    % put NaN at the end of muopt, sigmaopt, siz
+    muemp = [muemp(~NanGroups,:); muemp(NanGroups,:)];
+    sigmaemp = cat(3, sigmaemp(:,:,~NanGroups), sigmaemp(:,:,NanGroups));
+    sizemp=tabulate(idxemp);
+    misSiz = k-length(UniqID) ; % missing rows in siz
+    sizemp = [sizemp; nan(misSiz, 3)];
+
+    % Store empirical centroids, covariance matrices, mixing proportions
+    % and ID
+    emp = struct;
+    emp.idxemp = idxemp;
+    emp.muemp = muemp;
+    emp.sigmaemp = sigmaemp;
+    emp.sizemp = sizemp;
+    
+    % save the structure in the structure out
+    out.emp = emp;
+
+else
+    % assign zero to the field when convergence is obtained
+    emp = 0;
+    out.emp = emp;
+end
 
 
 %% Compute INFORMATION CRITERIA
@@ -1684,92 +1823,89 @@ end
 
 %% Create plots
 
-% If the user provides a colormap, use 'contourf'.
-% The default colormap is 'gray' (see function colormap);
-% If the user colormap is invalid, set it to the default 'gray'.
-if ismatrix(plots) && size(plots,2) == 3
-    if  min(min(plots))>=0 && max(max(plots))<=1
-        % valid colormap
-        cmap = plots;
-    else
-        % invalid colormap: revert to gray
-        cmap = 'gray';
-    end
-    plots   = 'contourf';
-else
-    cmap = 'gray';
-end
-
 % Plot the groups. Depending on v (univariate, bivariate, multivariate),
 % we generate different plot types.
-if (isscalar(plots) && plots > 0) || ...
-        (ischar(plots) && max(strcmp(plots,{'contourf' , 'contour' , 'surf' , 'mesh'})))
-    
-    % The following statement is necessary because if mixt>0 idx was called
-    % ixmixt;
+if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % integer equal to 1 or structure
+    ((ischar(plots) || iscell(plots)) && max(strcmp(plots,{'contourf','contour','surf','mesh','ellipse','boxplotb'}))) || ... % char or cell of one of the specified string
+    (iscell(plots) && isstruct(cell2mat(plots))) % cell containing a structure
+
+    % The following statement is necessary because if mixt>0 
+    % idx was called idxmixt;
     idx=out.idx;
+    
+    % change the ID used if empirical values are evaluated
+    if isstruct(emp) 
+        idx = idxemp;
+    end    
     
     if v==1
         
         % Univariate case: plot the histogram
-        histFS(Y,length(Y),idx);
-        
-    elseif v==2
-        
-        % Bivariate plot, optionally with confidence ellipses or density
-        % countours
-        
-        idx=out.idx;
-        colors = 'brcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykgbrcmykg';
         figure;
-        hold('on');
+        histFS(Y,length(Y),idx);
+                
+    elseif v>=2
         
-        % idxj is 1 if the units are trimmed
-        idxj=idx==0;
+        % Bivariate plot, optionally with confidence ellipses, density
+        % countours or bivariate boxplot
         
-        % add the density countour
-        if ischar(plots)
-            kdebiv([Y(not(idxj),1) , Y(not(idxj),2)] , 'contourtype', plots , 'cmap' , cmap);
+        % extract char or struct fro the cell if needed
+        if iscell(plots)
+            plots = cell2mat(plots);
+        end 
+        
+        % define what to superimpose on the plot 
+        if ischar(plots) 
+            overlay.type = plots; 
+        elseif isstruct(plots)
+            overlay = plots;
+        elseif plots==1         
+            % if plots=1 do not add anything to the scatter plot
+            overlay ='';                                  
         end
         
-        % add the trimmed units
-        if alpha>0
-            plot(Y(idxj,1),Y(idxj,2),'x','color','k','DisplayName','Trimmed units');
+        % exclude outliers if present (when plots is char or struct)
+        if any(idx<=0) && ~isempty(overlay)
+            overlay.include = true(length(unique(idx)), 1);
+            overlay.include(unique(idx)<=0) = false;
         end
         
-        % plot of good units
-        for j=1:k
-            idxj=idx==j;
-            if sum(idxj)>0
-                plot(Y(idxj,1),Y(idxj,2),'o','color',colors(j),'DisplayName',num2str(j));
-                % superimpose the ellipse contours only if plots = 2
-                if isscalar(plots) && plots == 2
-                    ellipse(muopt(j,:),sigmaopt(:,:,j),[],FSColors.darkgrey.RGB);
-                end
-            end
+        % differentiate for bivariate and multivariate data
+        if v==2
+            undock = [2 1];
+        else
+            undock = '';
+        end
+                
+        % show axes label 
+        plo.labeladd=1;   
+        
+        % use black color for outliers (i.e. k is the first color, used for group 0)
+        if any(idx==0)
+            plo.clr = 'kbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcy';
+            plo.clr = plo.clr(1:length(unique(idx)));
         end
         
-        axis equal   %check
+        % Add Labels Names        
+        % [To Enhance if used we lose the labels' order, it needs to  
+        % change on the spmplot call idx with id]
+        % id=cellstr(num2str(idx));
+        % id(idx==0)=cellstr('Trimmed units');
         
-        hall      = findobj(gca, 'type', 'line');
-        hellipses = findobj(gca, 'type', 'line','Marker','none');
-        hpoints   = setdiff(hall,hellipses,'sorted');
-        clickableMultiLegend(hpoints,get(hpoints,'DisplayName'));
-        % In recent version, the above statement can be done without the
-        % command 'get', as follows:
-        % clickableMultiLegend(hpoints,{hpoints.DisplayName})
-        % However for compatibility reasons we use the old way
-        
-        axis manual;
-        
-    else
-        
-        id=cellstr(num2str(idx));
-        id(idx==0)=cellstr('Trimmed units');
-        spmplot(Y,id);
-        
+        % bivariate scatter
+        figure;
+        spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlay);
+     
     end
     
+    % add title
+    str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor);
+    title(str,'Interpreter','Latex'); % , 'fontsize', 14
+   
+elseif isscalar(plots) && plots == 0
+    % does anything
+else
+    warning('The parameter ''plots'' is not valid.');
 end
 
     function [out]  = restreigen(eigenvalues,niini,restr,tol,userepmat)
@@ -1856,15 +1992,6 @@ end
             eigenvalues(:,3)=1;
             restreigen(eigenvalues,niini,1.1)
         %}
-        %
-        %
-        %{
-            % Trimmed k-means using geyser data
-            % 3 groups and trimming level of 3%
-            Y=load('geyser2.txt');
-            out=tkmeans(Y,3,0.03,'plots',1)
-        %}
-        
         
         %% Beginning of code
         

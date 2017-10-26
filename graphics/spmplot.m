@@ -87,6 +87,55 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               the output of the new plot overwrites the existing one
 %               in the same window else a new window is created.
 %
+%   overlay :   Superimposition on the panels out of the main diagonal of 
+%               the scatter matrix. Scalar, char or structure. It specifies 
+%               what to add in the background for the panels specified in
+%               undock (default is for all oh them).
+%               The default value is overlay='', i.e. nothing is changed. If 
+%               overlay=1 the the filled contours are added to each panel, 
+%               considering all groups, as default. If overlay is a structure 
+%               it may contain the following fields:
+%             - overlay.type   : Type of plot to add in the background or to 
+%                                superimpose. String. It can be: 'contourf', 
+%                                'contour', 'ellipse' or 'boxplotb', 
+%                                specifying respectively to add filled 
+%                                contour (default when overlay=1), contour, 
+%                                ellipses or a bivariate boxplot.
+%             - overlay.include: Boolean vector specifying which groups to
+%                                include in the type of plot specified in
+%                                overlay.type, the default value is a vector
+%                                of ones (i.e. all groups).
+%             - overlay.cmap   : The colormap for the type 'contourf' and
+%                                'contour' is grey as default. In these case, 
+%                                this field may specify the colors used for 
+%                                the color map. It is a three-column matrix of 
+%                                values in the range [0,1] where each row 
+%                                is an RGB triplet that defines one color.
+%                                Check the colormap function for additional 
+%                                informations.      
+%             - overlay.conflev: When the type specified is 'ellipse', the 
+%                                size of the ellipses is chi2inv(0.95,2) as
+%                                default. In this case, this field may 
+%                                specify a different confidence level used
+%                                and it is a value between 0 and 1.   
+%                   Example - 'overlay',1
+%                   Data Types - single | double
+%
+%   undock   :  Panel to undock and visualize separately. Matrix or logical
+%               matrix. If undock='' (default), no panel is extracted. If 
+%               undock is a r-by-2 matrix, it specifies the r coordinates 
+%               of the scatter plot matrix to undock and visualize 
+%               separately in a bivariate plot (i.e. for panels out of the
+%               main diagonal plots) or in an univariate plot (i.e. the ones 
+%               on the main diagonal). If undock is a v-by-v logical matrix,
+%               where v are the number of columns in Y, the trues of undock
+%               are undocked and visualized separately.
+%               REMARK - When used, undock automatically deletes the plots 
+%               obtained by spmplots. If it is desired to keep some of them, 
+%               the respective 'Tag' associated has to be changed (e.g. 
+%               selecting the figure and then: set(gcf,'Tag','newTag');). 
+%                   Example - 'undock', [1 1; 1 3; 3 4]
+%                   Data Types - single | double | logical
 %
 %  OPTIONAL INPUT ARGUMENTS IF Y IS A STRUCTURE.
 %
@@ -278,10 +327,12 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %{
     % Call of spmplot without name/value pairs.
     % Iris data: scatter plot matrix with univariate boxplots on the main
-    % diagonal
+    % diagonal.
+    close all
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'};
+    figure;
     spmplot(meas,species,plo,'hist');
 %}
 
@@ -290,24 +341,76 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % With this way of calling spmplot just the first 4 arguments are
     % considered. All the rest is discarded. A message appears to alert the
     % user that this is the case.
+    close all
     spmplot(meas,species,plo,'hist','selunit',10.1);
 %}
 
 
 %{
-    %% Call of spmplot with name/value pairs.
+    %% Call of spmplot with name/value pairs and specifying overlay, 
+    % also discarding some groups with the field include, and changing 
+    % the default colormap. 
+    % The Tag setting will be used in the next example to demonstrate the
+    % undock option.
+
     % Iris data: scatter plot matrix with univariate boxplots on the main
-    % diagonal
+    % diagonal.
+    close all
     load fisheriris;
+
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'};
     spmplot(meas,'group',species,'plo',plo,'dispopt','box');
+    figure
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','ellipse');
+    figure    
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','contour');
+    figure
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','contourf');
+    set(gcf,'Tag','newTag')
+    cascade
+%}
+
+%{  
+    %% Call of spmplot with name/value pairs and specifying overlay and undock. 
+    % The latter argument requires to change the tag of the scatterplot
+    % matrix not to delete.
+
+    % This example uses a matrix of logicals to set the undocked panels
+    figure
+    spmplot(meas,'group',species,'plo',plo,'dispopt','hist','undock',logical(eye(size(meas,2))));
+    cascade
+
+    % This example uses a matrix n x 2 to set the undocked panels
+    close all;
+    figure
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','boxplotb','undock',[1,3;2,4]);
+    cascade
 %}
 
 %{
+    %% Call of spmplot with name/value pairs and additional options for
+    % overlay, specifying densities just for one group.
     % Iris data: scatter plot matrix with univariate boxplots on the main
-    % diagonal and personalized options for symbols, colors and symbol
+    % diagonal.
+    close all
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'};
+    over = struct;
+    over.type = 'contourf';
+    over.include = logical([1 0 0]);
+    over.cmap = summer;
+    figure
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay',over);
+%}
+
+
+%{
+    % Iris data: scatter plot matrix with univariate boxplots on the main
+    % diagonal and personalized options for symbols, colors, symbol
     % size and no legend.
+    close all;
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'}; % Name of the variables
@@ -317,13 +420,15 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % plo.sym='++v'; % Symbols of the groups
     plo.siz=3.4; % Symbol size
     plo.doleg='off'; % Remove the legend
+    figure
     spmplot(meas,species,plo,'box');
 %}
-%
-%
+
+
 %{
     % Example of spmplot called by routine FSM.
     % Generate contaminated data.
+    close all;
     state=100;
     randn('state', state);
     n=200;
@@ -348,7 +453,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
    
     close all;
     [out]=FSM(Ycont,'plots',1);
-
+    
     group = zeros(n,1);
     group(out.outliers)=1;
     plo=struct;
@@ -356,8 +461,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
     % By default, the legend identifies the groups with the identifiers
     % given in vector 'group'.
+    figure;
+    plo.clr = 'br';
     spmplot(Ycont,group,plo,'box');
-
 %}
 
 %{
@@ -366,7 +472,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % 'outlier', the legend will identify one group for outliers and the
     % other for normal units. The largest number in the 'group' variable
     % identifies the group of outliers.
-    figure('tag','This is a scatterplot with ouTliErs');
+    close all
+    figure('tag','This is a scatterplot with ouTliErs'); % case insensitive
     spmplot(Ycont,group);
 
     % If the Tag of the Figure contains the string 'group', then the
@@ -379,11 +486,14 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % 'Brushed units 2', etc.
     figure('Tag','Scatterplot with brushed units');
     spmplot(Ycont,group,plo);
+
+    cascade;
 %}
 
 
 %{
     % An example with 5 groups.
+    close all
     rng('default')
     rng(2); n1=100;
     n2=80;
@@ -403,7 +513,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     group(n1+n2+n3+1:n1+n2+n3+n4)=4;
     group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
 
-
     Y=[Y1;Y2;Y3;Y4;Y5];
     spmplot(Y,group,[],'box');
 %}
@@ -413,6 +522,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % In all previous examples spmplot was called without the
     % name/value pairs arguments
     % The example which follow make use of the name/value pairs arguments
+    close all
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'}; % Name of the variables
@@ -427,7 +537,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % In the previous examples the first argument of spmplot was a matrix. In
 % the two examples below the first argument is a structure which contains
 % the fields Y and Un
-
 
 %{
     % Interactive_example.
@@ -463,6 +572,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %{
     % Example of use of option datatooltip.
     % First input argument is a structure.
+    close all
     n=100;
     v=3;
     m0=3;
@@ -480,13 +590,15 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     figure
     plo=struct;
     plo.labeladd='1';
-    spmplot(out,'datatooltip',1)
+	plo.clr = 'b';
+    spmplot(out,'datatooltip',1,'plo',plo);
 %}
 
 %{
     %% Option datatooltip combined with rownames
     % Example of use of option datatooltip.
     % First input argument is a structure.
+    close all
     load carsmall
     x1 = Weight;
     x2 = Horsepower;    % Contains NaN data
@@ -505,12 +617,13 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     [out]=FSMeda(Ycont,bs,'plots',0);
     % field label (rownames) is added to structure out
     % In this case datatooltip will display the rowname and not the default
-    % string row...
+    % string row.
     out.label=cellstr(Model);
     figure
     plo=struct;
     plo.labeladd='1';
-    spmplot(out,'datatooltip',1)
+	plo.clr = 'b';
+    spmplot(out,'datatooltip',1,'plo',plo)
 %}
 
 %% Beginning of code
@@ -573,6 +686,8 @@ if nargin>1
         end
         databrush='';
         datatooltip=0;
+        overlay = '';
+        undock  = '';
         tag='pl_spm';
         
         if length(varargin)>3
@@ -607,7 +722,7 @@ if nargin>1
         one=ones(n,1);
         options=struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),...
             'selunit',selthdef,'datatooltip',0,...
-            'dispopt','hist','databrush','','tag','pl_spm');
+            'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', 'undock', '');
         
         UserOptions=varargin(1:2:length(varargin));
         
@@ -637,6 +752,8 @@ if nargin>1
         databrush=options.databrush;
         tag=options.tag;
         datatooltip=options.datatooltip;
+        overlay=options.overlay;
+        undock=options.undock;
     end
 else
     group=ones(n,1);
@@ -646,13 +763,15 @@ else
     datatooltip=0;
     databrush='';
     namevaluepairs=1;
+    overlay='';
+    undock='';
 end
 
 ngroups=length(unique(group));
 % Specify default values for colors, symbols, size of symbols and presence
 % of legend
-clrdef='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
-symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
+clrdef='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
+symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h'};
 symdef=repmat(symdef,2,1);
 sizdef='';
 dolegdef='on';
@@ -928,6 +1047,234 @@ set([get(BigAx,'Title'); get(BigAx,'XLabel'); get(BigAx,'YLabel')], ...
 set(gcf,'tag',tag)
 
 
+%% Add objects to the scatterplot matrix
+
+if ~isempty(overlay)
+    % if the option overlay is specified, add specific objects out of the main
+    % diagonal for the groups specified in include 
+    
+    % use default values for missing informations
+    if ischar(overlay)
+        % when is a char it becomes the field type
+        charoverlay = overlay;
+        overlay = struct();
+        overlay.type = charoverlay;
+    end
+    
+    if ~isstruct(overlay) && isscalar(overlay) && overlay == 1
+        % if overlay=1 use all default values
+        overlay = struct();
+        overlay.include = true(1, length(unique(group)));
+        overlay.type = 'contourf';
+        
+    elseif isstruct(overlay) && ~isfield(overlay, 'include')
+        % include all groups as default if not specified in overlay.include
+        overlay.include = true(1, length(unique(group)));
+        
+    elseif isstruct(overlay) && ~isfield(overlay, 'type')
+        % use contourf as default if not specified in overlay.type
+        overlay.type = 'contourf';
+        
+    elseif ~(isstruct(overlay) && isfield(overlay, 'include') && isfield(overlay, 'type'))
+        error('The argument overlay is wrongly specified.');
+        
+    end
+    
+    % check and extract the information needed
+    if isstruct(overlay)
+        
+        if length(overlay.include)~=length(unique(group))
+            error('The field include in not correctly specified.');
+        end
+        
+        if ~islogical(overlay.include)
+            warning('The field was not logical and it has been trasformed to logical.');
+        end
+        
+        % rename the structure's values
+        include = logical(overlay.include);
+        type = overlay.type;
+    end
+    
+    % get the indexes used to iterate through the off-diagonal panels
+    if ~isempty(undock)
+        % when undock is specified: reduce the number of iteration iterating 
+        % just on the panels of interest(because the global figure will
+        % be deleted)
+        
+        set(findobj('Tag', 'pl_spm'), 'Visible', 'off');    % make the main figure invisible
+        
+        if islogical(undock) ||  ismatrix(undock) && size(undock, 2)==v && size(undock, 1)==v
+            
+            if ~islogical(undock) && v~=2 % to avoid possible mistakes in 2-by-2 matrix
+                % if is not logical
+                undock = logical(undock);
+            end
+            
+            % as undock is a boolean matrix
+            % find the linear indexes specified to undock
+            indexundock = find(undock);
+            % find the rows and columns indexes to undock and store in the variable
+            % panel
+            [iterpan(:,1),iterpan(:,2)] = ind2sub(size(undock), indexundock);
+            
+        elseif ~islogical(undock) && size(undock,2)==2
+            % if undock contains in each row the indexes of the panels to
+            % plot (in the order: R-C)
+            iterpan = undock;
+        end
+        
+    else
+        % if undock is unspecified iterate through all rows al columns
+        [iterpan(:,1),iterpan(:,2)] = ind2sub([v,v], 1:v^2);
+    end
+    
+    % When using contour or contourf the optional field cmap allows the 
+    % user to provide a colormap.
+    % The default colormap is 'gray' (see function colormap);
+    % If the user colormap is invalid, set it to the default 'gray'.
+    if strcmp(type, 'contourf') || strcmp(type, 'contour')
+        % ischar(type) && max(strcmp(type,{'contourf' , 'contour' , 'surf' , 'mesh'}))  [to add 2 new options in the future]
+
+        if isfield(overlay, 'cmap')
+
+            % get the colormap specified by the user
+            cmap = overlay.cmap;
+            
+            % check its validity
+            if ~(ismatrix(cmap) && size(cmap,2)==3 && ...
+                    min(min(cmap))>=0 && max(max(cmap))<=1) && ~ischar(cmap)
+                % invalid colormap: revert it to gray
+                cmap = gray;
+                warning('Some value of the colormap matrix is invalid and it is set to ''gray''.');
+            end
+            
+        else
+            % default colormap
+            cmap = gray;
+            overlay.cmap =cmap;
+        end
+    end
+    
+    
+    % For type='ellipse', in the field conflev the user provides
+    % the onfidence level which control the size of the ellipse.
+    % The default value uses chi2inv(0.95,2) (see the function ellipse).
+    % If the user choice is invalid, it is set to default.
+    if strcmp(type, 'ellipse') && isfield(overlay, 'conflev')
+
+        % get the confidence level specified by the user
+        conflev = overlay.conflev;
+        
+        % check its validity
+        if ~(isscalar(conflev) && conflev>0 && conflev<1 )
+            % invalid confidence level: revert it to default
+            conflev = [];
+            warning('The ellipses confidence level is invalid and it is set to default.');
+        end
+        
+    elseif strcmp(type, 'ellipse')
+        % default confidence level
+        conflev = [];
+        overlay.conflev = conflev;
+    end
+
+    % iterate through the off diagonal indexes of interest
+    for jj = 1:size(iterpan,1)
+        indRows = iterpan(jj,1);
+        indCols = iterpan(jj,2);
+        if indRows~=indCols
+            
+            % get the specific axes
+            axes(AX(indRows,indCols));  %#ok<LAXES> 
+            
+            if ~isempty(undock) 
+                % make the main figure invisible again
+                set(findobj('Tag', 'pl_spm'), 'Visible', 'off');  
+            end        
+            
+            axis manual;
+            hold all;
+            
+            % extract plotted data in each subplot
+            dataextr = get(AX(indRows,indCols),'UserData');
+            %  extract the groups specified in include
+            unId = unique(dataextr{1,4});
+            inclId = ismember(dataextr{1,4}, unId(include));
+            
+            if strcmp(type, 'contourf') || strcmp(type, 'contour')
+                % ischar(type) && max(strcmp(type,{'contourf' , 'contour' , 'surf' , 'mesh'}))  [to add 2 new options in the future]
+                
+                % plot density contours for the specified groups
+                kdebiv([dataextr{1,2}(inclId), dataextr{1,3}(inclId)] , ...
+                    'contourtype', type , 'cmap' , cmap, 'Xlim', [dataextr{1,2} dataextr{1,3}]);
+                
+                % put densities in the background
+                GetCountur = get(AX(indRows,indCols),'Children');
+                uistack(GetCountur(1),'bottom');   
+                
+            elseif strcmp(type, 'ellipse')
+                %  plot ellipses for the specified groups
+                displayGroups = findobj(AX(indRows,indCols), 'type', 'line'); % to get labels for display names
+                
+                % iterate through all included groups
+                for ii = unId(include)'
+                    axx0 = length(findobj(AX(indRows,indCols), 'type', 'line')); % initial existing objects
+                    ellipse(mean([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
+                        cov([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
+                        conflev, FSColors.darkgrey.RGB);
+                    
+                    % add to the clickable legend the respective groups
+                    axx = findobj(AX(indRows,indCols), 'type', 'line'); % final existing objects
+                    % delete(axx(1:2)); % uncomment to plot ellipses without axes
+                    set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
+                    % set(axx(1:length(axx)-axx0), 'DisplayName',
+                    % num2str(ii-(length(unId)-length(unId(include))))); 
+                end
+                
+            elseif strcmp(type, 'boxplotb')
+                %  plot bivariate boxplot for the specified groups
+                displayGroups = findobj(AX(indRows,indCols), 'type', 'line'); % to get labels for display names
+                                
+                % set limits
+                plots.xlim = [min(dataextr{1,2}), max(dataextr{1,2})];
+                plots.ylim = [min(dataextr{1,3}), max(dataextr{1,3})];
+                plots.labeladd = 0;
+                
+                % iterate through all included groups
+                for ii = unId(include)'
+                    axx0 = length(findobj(AX(indRows,indCols), 'type', 'line'));    % initial existing objects
+                    boxplotb([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)], 'plots', plots);
+                    
+                    % add the names of the respective groups (to be
+                    % used in the clickable legend )
+                    axx = findobj(AX(indRows,indCols), 'type', 'line');  % final existing objects
+                    set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
+                end
+            end
+        end
+    end
+    
+    if isempty(undock)
+        % restore the current main axes when undock has not to be used
+        axes(BigAx);
+    end
+end
+
+%% Undock specified panels 
+
+if ~isempty(undock) % && ~strcmp(undock, 'interactive') % [To Add]
+    % If the option undock is non-empty, the panels specified are undocked and
+    % visualized separately
+    
+    % sub-function defined at the end of spmplot
+    panelplot(undock, AX, Y, dispopt, groupv, clr, unigroup, overlay);
+    
+% elseif strcmp(undock, 'interactive') 
+    %[To Add]
+end
+
+%%
 % set the options.datatooltip (enable/disable interactive data cursor mode)
 if datatooltip
     
@@ -1058,7 +1405,7 @@ if ~isempty(databrush) || iscell(databrush)
     %graphics objects without clearing or resetting the current figure we set
     %the figure and axes NextPlot properties to 'add'.
     set(fig,'NextPlot','add');
-    set(AX,'NextPlot','add');
+    set(AX(~eye(size(AX))),'NextPlot','add');
     
     % Set default value for potential groups of selected units
     styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
@@ -1192,7 +1539,7 @@ if ~isempty(databrush) || iscell(databrush)
             % indexes of the scatter in which points have been selected
             [indicer,indicec]=ind2sub(size(AX),indice);
             
-            otherAxes = AX;
+            otherAxes = AX(~eye(size(AX)));
             
             %% - call selectdataFS
             if ij>1
@@ -1495,8 +1842,8 @@ if ~isempty(databrush) || iscell(databrush)
                 end
                 
                 %check if the malfwdplot is already open
-                hh=findobj('-depth',1,'tag','data_res');
-                figure(hh);
+                h=findobj('-depth',1,'tag','data_res');
+                figure(h);
                 set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
                 
                 if strcmp('off',persist)
@@ -1817,5 +2164,203 @@ end
             
         end
     end
+
+%% Extract some of the panels
+
+% The function panelplot extract the panels specified in undock and produce
+% a new figure containing them
+
+    function panelplot(undock, AX, Y, dispopt, groupv, clr, unigroup, overlay)
+        
+        % get the number of variables
+        vv = size(Y, 2);
+        
+        % specify labels for the legend 
+        gunipp = unique(groupv);
+        gunipp = num2str(gunipp);
+        
+        if isempty(overlay)
+            % make the main figure invisible if overlay was not used,
+            % otherwise it is already invisible
+            set(findobj('Tag', 'pl_spm'), 'Visible', 'off');  
+        end
+        
+        % obtain the indexes of the panels to extract (already evaluated if
+        % overlay was used) [To Enhance]
+        if ismatrix(undock) && size(undock, 2)==vv && size(undock, 1)==vv
+            
+            if ~islogical(undock) && vv~=2  % to avoid possible mistakes in 2-by-2 matrix
+                % if is not logical
+                undock = logical(undock);
+                warning('undock was not logical and it has been trasformed to logical.');
+            end
+            
+            % if undock is a boolean matrix
+            % find the linear indexes specified to undock
+            indundock = find(undock);
+            % find the rows and columns indexes to undock and store in the variable
+            % panel
+            [panels(:,1),panels(:,2)] = ind2sub(size(undock), indundock);
+            
+        elseif ~islogical(undock) && size(undock, 2)==2
+            % if undock contains in each row the indexes of the panels to
+            % plot (in the order: R-C)            
+            panels = undock;
+            
+        else
+            error('The argument undock is not correctly specified.');
+        end
+        
+        % iterate rowwise through all pairs of panels to undock
+        for ipp = 1:size(panels,1)
+            
+            newF = figure;
+            
+            % extract the i-th row and column of the scatter plot matrix
+            indRowspp = panels(ipp, 1);
+            indColspp = panels(ipp, 2);
+            
+            if indRowspp~=indColspp
+                % panels not on the main diagonal
+                copyobj(AX(indRowspp,indColspp), newF); 
+                
+            else
+                % panels on the main diagonal 
+                if strcmp(dispopt,'hist')
+                    % plot again the histograms instead of copying them [just to avoid
+                    % errors. To Enhance]
+                    
+                    % plot white histograms as background [to reproduce the
+                    % behavior of the original plot ehen using the
+                    % clickable multilegend]
+                    [~, hh2] = histFS(Y(:,indRowspp),10,groupv);
+                    set(hh2, 'EdgeColor','k','FaceColor','w');
+                    hold on;
+                    % superimpose the proper histograms
+                    histFS(Y(:,indRowspp),10,groupv,cellstr(gunipp),gca,clr(unigroup));
+                    
+                else
+                    % copy the existing boxplot
+                    copyobj(AX(end,indRowspp), newF);
+                end
+            end
+            
+            % set standard axes position for a new figure
+            set(gca,  'Position', [0.1300    0.1100    0.7750    0.8150]);
+            
+            % specify the y-label axis
+            if indRowspp~=indColspp || (strcmp(dispopt,'box') && indRowspp==indColspp)
+                % off-diagonal panels or boxplots on the main diagonal
+
+                if indRowspp~=1
+                    % extract the Ylabel of panel in the first column
+                    labPrntY = get(get(AX(indRowspp,1), 'Ylabel'),'string');
+                    
+                else
+                    % the y axes of the panel 1,1 was deleted so the x axis of the
+                    %  panel in the lowast left corner of gplotmatrix is extracted
+                    labPrntY = get(get(AX(end-1,1), 'Xlabel'),'string');
+                end
+
+                ylabel(labPrntY);
+                
+            elseif strcmp(dispopt,'hist')==1 % main diagonal histogram panels
+                % specify the y axis as 'Counts' for histograms
+                ylabel('Counts');
+            end
+            
+            % specify the x-label axis (in any case)
+            if indColspp~=1
+                % extract the Ylabel of element in the first column
+                labPrntX = get(get(AX(indColspp,1), 'Ylabel'),'string');
+                
+            else
+                % the axes of panel 1,1 was deleted so the lowest on
+                %  gplotmatrix is extracted
+                labPrntX = get(get(AX(end-1,1), 'Xlabel'),'string');
+            end
+       
+            xlabel(labPrntX);
+            
+            % general adjustment of axes labels and ticks
+            if indRowspp~=indColspp
+                % off-diagonal panels: add both axes
+                
+                set(gca,'XTickMode','auto','YTickMode','auto');
+                set(gca,'XTickLabelMode','auto','YTickLabelMode','auto');
+                xlim auto
+                ylim auto
+                
+            elseif strcmp(dispopt,'box')
+                % boxplots: just y-axis
+                
+                set(gca,'XTickLabel','','XTick','');
+                set(gca,'YTickMode','auto');
+                set(gca,'YTickLabelMode','auto');
+                xlim auto
+                ylim auto
+                
+            end
+            
+            % add clickable legend 
+            if ~isempty(overlay) && indRowspp~=indColspp && ...
+                    (strcmp(overlay.type, 'contourf') || strcmp(overlay.type, 'contour'))
+                % off-diagonal panels where contourf or contour is specified
+                
+                % steps needed to obtain a proper legend
+                CGcont = get(gca, 'Children');
+                uistack(CGcont(end),'top');
+                if any(overlay.cmap(end,:)~= [1 1 1])
+                    % restore white background
+                    colormap(gca, [overlay.cmap; [1 1 1]]); 
+                else
+                    % the background is already white
+                    colormap(gca, overlay.cmap);
+                end
+                cc = clickableMultiLegend(gunipp);
+                set(cc, 'Color', [1 1 1]);  % restore white legend
+                uistack(CGcont(end),'bottom');
+                
+            elseif indRowspp==indColspp && strcmp(dispopt,'box')
+                % add clickable legend for diagonal panels which are not hist [To enhance]
+                
+                % length of the legend and initialization
+                nleg = length(gunipp);
+                hpp = [];
+                
+                % order objects to group [To Enhance, initializing hpp if the length is known in advance]
+                if ~isempty(findobj(gcf,'Tag',['boxplot' num2str(1)]))
+                    for zpp=1:nleg
+                        hpp = [hpp;findobj(gca,'Tag',['boxplot' num2str(zpp)])];
+                    end
+                end
+                
+                clickableMultiLegend(hpp(1:length(hpp)/nleg:end),char(gunipp(1:3)));
+                
+            elseif indRowspp~=indColspp 
+                % in general for off-diagonal panels add a legend
+                
+                legToAdd = findobj('Tag', 'spmclickleg');
+                clickableMultiLegend(get(legToAdd(1), 'String')); 
+                % this tag is assigned by add2spm function 
+                % (index 1 is used to avoid errors in case of multiple plots)
+
+            end
+            
+            % title
+            str = sprintf('Panel in position %s,%s of the scatterplot matrix', num2str(indRowspp), num2str(indColspp));
+            title(str);
+            
+            axis manual;
+            
+        end
+        
+        % delete scatter plot matrix
+        delete(findobj('Tag', 'pl_spm'));
+        % cascade; 
+        
+    end
+
 end
 %FScategory:VIS-Mult
+

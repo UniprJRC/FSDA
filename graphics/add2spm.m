@@ -306,7 +306,9 @@ end
 % Now update the legends in the plot and make them clickable.
 hLines  = findobj(AX(1,end), 'type', 'line');
 if ~isempty(legnew)
-    clickableMultiLegend(sort(double(hLines)), legnew{:});
+    spmclickleg = clickableMultiLegend(sort(double(hLines)), legnew{:});
+    % add Tag in order to recover easily the legend on spmplot    
+    set(spmclickleg, 'Tag', 'spmclickleg'); 
 end
 % Remark:
 % hLines is an array of handles before R2014b and a HG2 object wirh R2014b

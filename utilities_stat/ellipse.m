@@ -5,10 +5,10 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %<a href="matlab: docsearchFS('ellipse')">Link to the help function</a>
 %
 %   The ellipse is generated using the equation:
-%
-%    $(x-\mu)' \Sigma^{-1} (x-\mu) = c_{conflev}^2$
-%
-%    The length of the ith principal semiaxis $(i=1, 2)$ is $c \lambda_i$ where
+%   \[
+%    (x-\mu)' \Sigma^{-1} (x-\mu) = c_{conflev}^2.
+%   \]
+%    The length of the i-th principal semiaxis $(i=1, 2)$ is $c \lambda_i$ where
 %    $\lambda_i$ is an eigenvalue of $\Sigma$.
 %
 % Required input arguments:
@@ -16,21 +16,21 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 % mu    : Center of the ellipse. Vector. 
 %         Vector with two elements associated with the center of the
 %         ellipse
-% Sigma : 2 x 2 symmetric positive definite matrix. Inverse of the matrix
-%         of the quadratic form which defines the equation of the ellipse
-%         Sigma is interpretable as the covariance matrix of the original
-%         data points.
+% Sigma : 2 x 2 symmetric positive definite matrix. Matrix. Inverse of the
+%         matrix of the quadratic form which defines the equation of the 
+%         ellipse. Sigma is interpretable as the covariance matrix of the 
+%         original data points.
 %
 % Optional input arguments:
 %
-%               conflev : confidence level. Scalar. 
-%                         Confidence level which control the size of the ellipse.
-%                         If conflev is not specified the value 
-%                         chi2inv(0.95,2) is used
-%                 Example - 0.99 
-%                 Data Types - single | double
+%              conflev : Confidence level. Scalar. 
+%                        Confidence level which controls the size of the ellipse.
+%                        If conflev is not specified the value 
+%                        chi2inv(0.95,2) is used.
+%                           Example - 'conflev', 0.99 
+%                           Data Types - single | double
 %
-%               Color   : LineColor of the ellipse. String or 3 elements numeric vector.
+%              Color   : LineColor of the ellipse. String or 3 elements numeric vector.
 %                        Line color, specified as an RGB triplet, a color
 %                        string, or 'none'. If you specify the Color as
 %                        'none', then the line is invisible.
@@ -39,8 +39,8 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %                        green, and blue components of the color. The
 %                        intensities must be in the range [0,1], for
 %                        example, [0.4 0.6 0.7]. 
-%                 Example - 'r'
-%                 Data Types - [0 0 1] (default) | RGB triplet | color string | 'none'
+%                           Example - 'Color', 'r'
+%                           Data Types - [0 0 1] (default) | RGB triplet | color string | 'none'
 %                           
 %
 %  Output:
@@ -50,7 +50,7 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %                 ellipse.
 %                 1st column = x coordinates;
 %                 2nd column = y coordinates.
-%       he   :    vector of chart line objects. matlab.graphics.chart.primitive.Line.
+%       he   :    Vector of chart line objects. matlab.graphics.chart.primitive.Line.
 %                 A column vector of chart line objects. It can be used to
 %                 modify properties of a specific chart line of the plot
 %                 containing the ellipse after it is created. For a list of
@@ -60,7 +60,7 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %
 % References:
 %
-%   MARDIA, K. V., J. T. KENT, J. M. BIBBY (1979). Multivariate Analysis. Academic
+%   Mardia, K.V., J.T. Kent, J.M. Bibby (1979). Multivariate Analysis. Academic
 %   Press, London-New York-Toronto-Sydney-San Francisco.
 %
 %
@@ -200,13 +200,13 @@ he = plot(Ell(:,1),Ell(:,2),'Color',Color,'LineWidth',LineWidth);
 ax1=[-lenax1 0; lenax1 0];
 ax1ori=ax1*Gam;
 ax1ori=bsxfun(@plus,ax1ori, mu);
-line(ax1ori(:,1),ax1ori(:,2),'Color',Color,'LineWidth',LineWidth);
+line(ax1ori(:,1),ax1ori(:,2),'Color',Color,'LineWidth',LineWidth-1,'LineStyle','--');
 
 % Add line associated with minor axis
 ax2=[0 -lenax2;0  lenax2];
 ax2ori=ax2*Gam;
 ax2ori=bsxfun(@plus,ax2ori, mu);
-line(ax2ori(:,1),ax2ori(:,2),'Color',Color,'LineWidth',LineWidth);
+line(ax2ori(:,1),ax2ori(:,2),'Color',Color,'LineWidth',LineWidth-1,'LineStyle','--');
 
 % axis equal
 

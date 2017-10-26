@@ -32,14 +32,14 @@ function out = boxtest(Y,group,varargin)
 % Optional input arguments:
 %
 %     Fapprox : Test based on F approximation. Boolean. If Fapprox is
-%               true,  the asymptotic F distribution of the value of Box
-%               test is also computed.  On the other hand is
+%               true, the asymptotic F distribution of the value of Box
+%               test is also computed. On the other hand is
 %               Fapprox is false (default) just the chi2 approximation is
 %               computed.
 %               Example - 'Fapprox',true
 %               Data Types - logical
-%  dispresults : Display results. Boolean. If dispresults is
-%               true,  the value of the test and the associated p-value
+% dispresults : Display results. Boolean. If dispresults is
+%               true, the value of the test and the associated p-value
 %               will be shown on the screen. On the other hand is
 %               dispresults is false (default) nothing is shown on the
 %               screen.
@@ -78,12 +78,13 @@ function out = boxtest(Y,group,varargin)
 % We assume independent samples of size $n_1$, $n_2$, $\ldots$,
 % $n_g$ from a $v$-multivariate normal distribution. The hypothesis of
 % equality of covariances is:
+% 
 % \[
 % H_0= \Sigma_1 = \Sigma_2 = \ldots = \Sigma_g
 % \]
 %
 % To make the test we calculate:
-%
+% 
 % \[
 % M=\frac{ |S_1|^{n_1-1} |S_2|^{n_2-1} \ldots |S_g|^{n_g-1} }{|S_{pl}|^{\sum_{i=1}^g n_i-1} }
 % \]
@@ -108,7 +109,7 @@ function out = boxtest(Y,group,varargin)
 % corresponding p-values are given in $\mbox{out.LRFapprox}$ and
 % $\mbox{LRFapprox_pval}$.
 % WARNING: if the absolute value of the determinant of the
-% var cov matrix of any group is less than 1e-40,
+% covariance matrix of any group is less than 1e-40,
 % a missing value for LR test is reported.
 %
 %
@@ -206,7 +207,7 @@ if (size(group,1) ~= n)
     error(message('FSDA:boxtest:InputSizeMismatch'));
 end
 
-% Remove missing X columns first in case this eliminates a group
+% Remove missing Y columns first in case this eliminates a group
 nonan = (sum(isnan(Y), 2) == 0);
 Y = Y(nonan,:);
 group = group(nonan,:);
@@ -234,8 +235,8 @@ W = zeros(p,p);
 %sz = vector which will contain the size of the groups
 sz=zeros(ngroups,1);
 
-%      Initialize scalar sVZ which will contain the quantity
-%       \sum_{i=1}^g (n_i-1) \ln | \S_i|
+% Initialize scalar sVZ which will contain the quantity
+% \sum_{i=1}^g (n_i-1) \ln | \S_i |
 sVZ=0;
 for j=1:ngroups
     r = find(groupnum == j);
@@ -250,6 +251,8 @@ for j=1:ngroups
         %  VZi= unbiased variance covariance matrix for group i
         VZi=zz/(nr-1);
         dVZi= abs(det(VZi));
+    else 
+        dVZi = 0;
     end
     
     if dVZi < 1e-40
@@ -289,7 +292,7 @@ end
 
 % Also compute if requested F approximation of the test and associated
 % p-value
-if Fapprox== true
+if Fapprox == true
     c2=((p-1)*(p+2)/(6*(g-1)))* ( sum(1./((sz-1).^2)) -1/(sum(sz-1))^2);
     a1=0.5*(g-1)*p*(p+1);
     a2=(a1+2)/abs(c2-c1^2);
@@ -314,7 +317,7 @@ if dispresults == true
     disp(LR);
     disp('LRchi2approx = Chi2 approximation of Box test of homogeneity of covariances')
     disp(LRchi2approx)
-    disp('p value of  the Chi2 approximation of Box test ')
+    disp('p value of the Chi2 approximation of Box test')
     disp(LRchi2approx_pval)
     %   " This value must be compared with a X^2 r.v. with";
     %    v(v+1)(g-1)/2   degrees of freedom  */
@@ -322,7 +325,7 @@ if dispresults == true
     if Fapprox== true
         disp('LRFapprox = F approximation of Box test of homogeneity of covariances')
         disp(LRFapprox)
-        disp('p value of the F approximation of Box test ')
+        disp('p value of the F approximation of Box test')
         disp(LRFapprox_pval)
     end
     disp('*****************************************************************')
