@@ -453,7 +453,7 @@ function [out, varargout] = LTSts(y,varargin)
     model.seasonal=0;
     % Potential level shift position is investigated in positions:
     % t=10, t=11, ..., t=T-10.
-    model.lshift=10;    
+    model.lshift=10;
     out=LTSts(y,'model',model,'plots',1);
     
 %}
@@ -1246,83 +1246,87 @@ for lsh=LSH
         bsb=index;
         betaini=Xfinal(bsb,:)\yin(bsb);
         
-        % The first pini components are associated with
-        % trend and seasonal (without varying
-        % amplitude) and explanatory variables
-        beta0(1:pini)=betaini(1:pini);
-        
-        if lsh>0
-            % The last two components of beta0 are the associated with
-            % level shift. More precisely penultimate position is for the
-            % coefficient of level shift and, final position is the integer
-            % which specifies the starting point of level shift
-            beta0(end-1:end)=[betaini(end) lsh];
-        end
-        
-        if varampl>0
-            [betaout]=ALS(beta0);
-        else
-            betaout=beta0;
+        % Check if betaini contains NaN
+        if ~any(isnan(betaini))
             
-            %disp(['lsh' num2str(lsh)])
-            %disp(beta0)
-            %disp('------')
-        end
-        
-        % Compute  fitted values (for all units). Therefore recall function
-        % lik but this time computed using all observations
-        bsb=seq;
-        % Procedure lik computes yhat (fitted values for all the
-        % observations using parameter estimates based on bsb). vector yhat
-        % will be used inside procedure IRWLSreg as starting value of the
-        % iterations (concentration steps)
-        lik(betaout);
-        beta=betaout;
-        
-        % 1(a) ii. -  Now apply concentration steps
-        tmp = IRWLSreg(yin,beta,refsteps,reftol,h);
-        
-        % Store weights
-        WEIi(:,i)=tmp.weights;
-        
-        % Store fitted values for each subset
-        % yhatall(:,i)=tmp.yhat;
-        
-        betarw = tmp.betarw;
-        numscale2rw = tmp.numscale2rw;
-        
-        % 1(c) Consider only the 10 subsets that yield the lowest objective
-        % function so far.
-        if ij > bestrLSH
+            % The first pini components are associated with
+            % trend and seasonal (without varying
+            % amplitude) and explanatory variables
+            beta0(1:pini)=betaini(1:pini);
             
-            if numscale2rw < sworst
-                
-                % Store numscale2rw, betarw and indexes of the units
-                % forming the best subset for the current iteration
-                
-                % Find position of the maximum value of previously
-                % stored best numerator of squared scaled
-                [~,ind] = max(bestnumscale2);
-                
-                bestnumscale2(ind)     = numscale2rw;
-                bestbetas(ind,:)    = betarw';
-                bestsubset(ind,:)   = index;
-                bestyhat(:,ind)=yhat;
-                % sworst = the best scale among the bestr found up to
-                % now
-                sworst              = max(bestnumscale2);
+            if lsh>0
+                % The last two components of beta0 are the associated with
+                % level shift. More precisely penultimate position is for the
+                % coefficient of level shift and, final position is the integer
+                % which specifies the starting point of level shift
+                beta0(end-1:end)=[betaini(end) lsh];
             end
-        else
             
-            bestnumscale2(ij)  = numscale2rw;
-            bestbetas(ij,:) = betarw';
-            bestsubset(ij,:)= index;
-            bestyhat(:,ij)=yhat;
-            % sworst = the best scale among the bestr found up to now
-            sworst = max(bestnumscale2);
+            if varampl>0
+                [betaout]=ALS(beta0);
+            else
+                betaout=beta0;
+                
+                %disp(['lsh' num2str(lsh)])
+                %disp(beta0)
+                %disp('------')
+            end
             
-            ij = ij+1;
-            brob = 1;
+            % Compute  fitted values (for all units). Therefore recall function
+            % lik but this time computed using all observations
+            bsb=seq;
+            % Procedure lik computes yhat (fitted values for all the
+            % observations using parameter estimates based on bsb). vector yhat
+            % will be used inside procedure IRWLSreg as starting value of the
+            % iterations (concentration steps)
+            lik(betaout);
+            beta=betaout;
+            
+            % 1(a) ii. -  Now apply concentration steps
+            tmp = IRWLSreg(yin,beta,refsteps,reftol,h);
+            
+            % Store weights
+            WEIi(:,i)=tmp.weights;
+            
+            % Store fitted values for each subset
+            % yhatall(:,i)=tmp.yhat;
+            
+            betarw = tmp.betarw;
+            numscale2rw = tmp.numscale2rw;
+            
+            % 1(c) Consider only the 10 subsets that yield the lowest objective
+            % function so far.
+            if ij > bestrLSH
+                
+                if numscale2rw < sworst
+                    
+                    % Store numscale2rw, betarw and indexes of the units
+                    % forming the best subset for the current iteration
+                    
+                    % Find position of the maximum value of previously
+                    % stored best numerator of squared scaled
+                    [~,ind] = max(bestnumscale2);
+                    
+                    bestnumscale2(ind)     = numscale2rw;
+                    bestbetas(ind,:)    = betarw';
+                    bestsubset(ind,:)   = index;
+                    bestyhat(:,ind)=yhat;
+                    % sworst = the best scale among the bestr found up to
+                    % now
+                    sworst              = max(bestnumscale2);
+                end
+            else
+                
+                bestnumscale2(ij)  = numscale2rw;
+                bestbetas(ij,:) = betarw';
+                bestsubset(ij,:)= index;
+                bestyhat(:,ij)=yhat;
+                % sworst = the best scale among the bestr found up to now
+                sworst = max(bestnumscale2);
+                
+                ij = ij+1;
+                brob = 1;
+            end
         end
     end
     
@@ -1784,9 +1788,9 @@ if dispresults
     else
         disp([table(lab) table(bhat) table(se) table(tstat) table(pval)]);
     end
-     if lshift>0
-         disp(['Level shift position t=' num2str(out.posLS)])
-     end
+    if lshift>0
+        disp(['Level shift position t=' num2str(out.posLS)])
+    end
 end
 
 %% Create plots
@@ -1964,7 +1968,7 @@ end
             % such a case, any intermediate estimate is not reliable and we
             % can just keep the initialbeta and initial scale.
             if (any(isnan(newbeta)))
-                newbeta = initialbeta;
+                newbeta = beta0;
                 exitflag=1;
                 break
             end
