@@ -1,6 +1,12 @@
 function out=CorAna(N, varargin)
 %CorAna performs correspondence analysis
 %
+% This function has been written following code developed by:
+% Urbano Lorenzo-Seva (Rovira i Virgili University, Tarragona, Spain),
+% Michel van de Velden (Erasmus University, Rotterdam, The Netherlands), 
+% and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
+% (See References).
+%
 %<a href="matlab: docsearchFS('CorAna')">Link to the help function</a>
 %
 %  Required input arguments:
@@ -476,6 +482,10 @@ function out=CorAna(N, varargin)
 % See also crosstab, rcontFS, CressieRead
 %
 % References:
+%
+% Urbano Lorenzo-Seva, Michel van de Velden, Henk A. L. Kiers (2009)
+% CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations;
+% Journal of Statistical Software, September 2009, Volume 31, Issue 8.
 %
 % Benzecri, J.-P. (1992), Correspondence Analysis Handbook, New-York :
 % Dekker
