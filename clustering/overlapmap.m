@@ -231,7 +231,7 @@ function [out] = overlapmap(D, varargin)
     out = tkmeans(Y(:,1:2), k*5, 0.2, 'plots', 'ellipse', 'Ysave', true);
     overl = overlapmap(out, 'omegaStar', 0.025, 'plots', 'contour', 'userColors', winter);
 
-    out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true)
+    out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
     overl_2 = overlapmap(out_2, 'omegaStar', 0.025, 'plots', 'contourf', 'userColors', summer);
 
     cascade;

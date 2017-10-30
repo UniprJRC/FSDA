@@ -32,8 +32,8 @@
     out2 = tkmeans(Y, k*4, 0.05, 'plots', 1);
     overl_2 = overlapmap(out2);
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.06 seconds 
-Total estimated time to complete trimmed k means:  0.05 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.30 seconds 
+Total estimated time to complete trimmed k means:  0.47 seconds 
 </pre><img vspace="5" hspace="5" src="images\overlapmap_01.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_02.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_03.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_04.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using M5data with tclust and tkmeans, specifying an 
      initial threshold omegaStar, a colormap, and allowing for additional 
      interactive plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -47,36 +47,16 @@ Total estimated time to complete trimmed k means:  0.05 seconds
     out = tkmeans(Y(:,1:2), k*5, 0.2, 'plots', 'ellipse', 'Ysave', true);
     overl = overlapmap(out, 'omegaStar', 0.025, 'plots', 'contour', 'userColors', winter);
 
-    out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true)
+    out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
     overl_2 = overlapmap(out_2, 'omegaStar', 0.025, 'plots', 'contourf', 'userColors', summer);
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  3.18 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  2.31 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  4.13 seconds 
+Total estimated time to complete tclust:  4.96 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 54.6667%
-
-out_2 = 
-
-  struct with fields:
-
-           muopt: [6&times;2 double]
-        sigmaopt: [2&times;2&times;6 double]
-             idx: [2000&times;1 double]
-             siz: [7&times;3 double]
-            post: [2000&times;6 double]
-             emp: 0
-          CLACLA: 1.960578521348260e+04
-       notconver: 0.546666666666667
-              bs: [1&times;18 int16]
-             obj: -9.716329891957514e+03
-    equalweights: 0
-               h: 1600
-         fullsol: [300&times;1 double]
-               Y: [2000&times;2 double]
-
 </pre><img vspace="5" hspace="5" src="images\overlapmap_05.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_06.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_07.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_08.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_09.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example using simdataset to create homogeneous and spherical clusters.</li></span></a></span></h3><div class="collapse"><p> 
      This output is used as input for the overlap map and then also
      tkmeans and tclust solutions, for a higher number of components.
@@ -145,7 +125,7 @@ out_2 =
     % overlap map with interctive mode
     overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf'); 
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 30.12 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 31.81 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 37.3333%
 </pre><img vspace="5" hspace="5" src="images\overlapmap_10.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_11.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_12.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using simdataset to create homogeneous and spherical clusters 
@@ -173,7 +153,7 @@ Warning: Number of subsets without convergence equal to 37.3333%
     % overlap map with interctive mode
     overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf'); 
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  9.42 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  8.76 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 </pre><img vspace="5" hspace="5" src="images\overlapmap_13.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_14.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_15.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_D" class="clearfix"> </div> <h3 id="input_argument_D" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>D</code> &#8212; Informations to compute the overlap matrix. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>D is a structure which can have the following fields (not
@@ -265,19 +245,21 @@ Warning: Number of subsets without convergence equal to 36%
                              elements which assigns each unit to one of 
                              the groups obtained.</p> <p>
                              REMARK - out.mergID&lt;=0 denotes trimmed units.</p></p></td></tr><tr valign="top"><td><code>merged</code></td><td><p>Cell array containing the labels of the 
-                             components merged together.</p></td></tr><tr valign="top"><td><code>single</code></td><td><p>Vector containing the labels of single clusters 
-                             found, i.e. not merged with any other component.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
- The information updated after an interactive session, cannot be reported
- in the output structure of the function because it is generated by a
- separate callback function. For this reason, the information is reported
- as a structure in the normal workspace. The structure is called 
- userOverlap and is containing the following fields:</p> <p>
- - userOverlap.omegaStar = update of out.omegaStar.</p> <p>
- - userOverlap.Ghat = update of out.Ghat.</p> <p>
- - userOverlap.merged = update of out.merged.</p> <p>
- - userOverlap.single = update of out.single.</p> <p>
- Now, some additional algoritmic details.</p> <p>
-
+                             components merged together.</p></td></tr><tr valign="top"><td><code>single</code></td><td><p><p>Vector containing the labels of single clusters 
+                             found, i.e. not merged with any other component.</p> <p>
+ 
+Optional Output:</p> <p>
+ 
+   userOverlap     : Updating of the results. Structure. userOverlap 
+                     is obtained when the interaction with the overlap 
+                     map is closed and is added in the Workspace.</p> <p>
+                     It contains the following fields, which represent
+                     an update of their corresponding variable in 
+                     the structure out:</p> <p>
+                     - userOverlap.omegaStar = update of out.omegaStar.</p> <p>
+                     - userOverlap.Ghat = update of out.Ghat.</p> <p>
+                     - userOverlap.merged = update of out.merged.</p><p>
+                     - userOverlap.single = update of out.single.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>      
  In the code 'overM' represents a triangular matrix, denoted as $ \Omega $,
  which contains the pairwise overlap values. The merging phase starts
  searching the maximum pairwise overlap value in $ \Omega $, i.e. $ \max
@@ -294,7 +276,6 @@ Warning: Number of subsets without convergence equal to 36%
  The values $ \max(\Omega'_{k k'}) $ and the respective $ k $ and $ k' $
  labels are sequentially saved in a $ k(k-1)/2 \times 3 $ matrix MergMat.</p><p>
  
-
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Melnykov, V., Michael, S. (2017), "Clustering large datasets by merging K-means
    solutions". Submitted.</p></div><div><p>Melnykov, V. (2016), "Merging Mixture Components for Clustering Through
    Pairwise Overlap". Journal of Computational and Graphical Statistics,
@@ -302,4 +283,4 @@ Warning: Number of subsets without convergence equal to 36%
  
    ...</p> <p>
  
- </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+ </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="dempk.html" itemprop="url"><span itemprop="name"><code>dempk</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
