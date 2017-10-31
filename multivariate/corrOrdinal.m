@@ -94,7 +94,7 @@ function out=corrOrdinal(N, varargin)
 %                         participated to the fit).
 %                         The $(i,j)$-th element is equal to $n_{ij}$,
 %                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
-%                         sum of the elements of out.P is $n$ (the grand
+%                         sum of the elements of out.N is $n$ (the grand
 %                         total).
 % 		out.Ntable   =   same as out.N but in table format (with row and
 %                         column names).
@@ -290,7 +290,7 @@ function out=corrOrdinal(N, varargin)
 % measures having the same numerator $(C-D)$ have the same efficacy and hence
 % the same local power, for testing independence.
 %
-% See also crosstab, rcontFS, CressieRead, corr
+% See also crosstab, rcontFS, CressieRead, corr, corrNominal
 %
 % References:
 %
@@ -730,7 +730,7 @@ out.tauc=[tauc setaucH0 ztauc pvaltauc];
 % Store results for Somers  statistic
 out.som=[som sesomH0 zsom pvalsom];
 
-% Store results to test indepndence hypothesis
+% Store results to test independence hypothesis
 TestInd=[gam segamH0 zgam pvalgam;
     taua setauaH0 ztaua pvaltaua;
     taub setaubH0 ztaub pvaltaub;
