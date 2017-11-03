@@ -1,49 +1,221 @@
 function ci=ncpci(x,fType,df,varargin)
-%  ** function ci=ncpci(x,fType,df,varargin)
-% iteratively approaches two-sided confidence intervals for the
-% noncentrality parameter of a noncentral Chi square (abbreviated X2), F or
-% t distribution with degrees of freedom df, given an abscissa value (X2, F
-% or t value). This is achieved by varying the X2, F or t noncentrality
-% parameter of the corresponding probability distribution function (pdf)
-% until the given abscissa value is, within a certain precision, at the
-% percentile values required for the confidence interval (2.5th and 97.5th
-% percentile for lower and upper 95 % confidence intervals, respectively).
-% All input parameters listed below except x, fType and df are
-% optional and must be specified as parameter/value pairs, e.g. as in
-%          ncpci(x,'t',df,'confLevel',.9)
+% non centrality parameter confidence interval (taken from effect_of_size_toolbox)
 %
-%               >>> INPUT VARIABLES >>>
-% NAME          TYPE/DEFAULT      DESCRIPTION
-% x             double scalar     X2, F or t value
-% fType         char              'X2','F' or 't'
-% df            scalar or array   degrees of freedom 
-%                                 (F pdf: [numerator denominator])
-% confLevel     double, 0.95      confidence level
-% prec          double scalar,    precision: iteration will run until the
-%                1e-6             estimated percentile is <=prec away from
-%                                 the requested percentile
-% doAnimate     logical,false     if true, the iteration process will be
-%                                 graphically displayed in a figure window
-%                     
-%               <<< OUTPUT VARIABLES <<<
-% NAME          TYPE/DEFAULT           DESCRIPTION
-% ci            2 element array        confidence intervals
+%<a href="matlab: docsearchFS('ncpci')">Link to the help function</a>
+%
+% This function creates (using iteration) a two-sided confidence intervals for the
+% noncentrality parameter of a noncentral $\chi^2$, $F$ or
+% $t$ distribution with degrees of freedom $df$, given an abscissa value $x$.
+% This function has been taken from the MATLAB toolbox 'Measures of effect
+% Size' by Harald Hentschke and  Maik C. Stüttgen. 
+% https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox
+% and has been slighlty modified to be included into the FSDA
+% toolbox.
+%
+%
+%  Required input arguments:
+%
+%       x   :     Non centrality parameter for which confidence interval is
+%                 needed.
+%                 Scalar double.
+%                 This is typically a value from $\chi^2$, $F$ or $t$
+%                 distribution. Confidence interval based on  the
+%                 noncentrality parameter of a noncentral
+%                 distribution describes the degree of deviation from the
+%                 null hypothesis. Its value is zero if the null hypothesis
+%                 is true, and different from zero otherwise. For further
+%                 details see the "More about" section of this document.
+%     fType  :    distribution to use. Character.
+%                 Character equal to 'X2', 'F' or 't' which specifies the
+%                 reference distribution to use. X2 means $\chi^2$
+%                 distribution, $F$ means Fisher F distribution and t means
+%                 Student $t$ distribution.
+%       df   :    degrees of freedom. Scalar or vector of length 2.
+%                 Degrees of freedom of the reference distribution. It
+%                 fType is 'X2' or 't' df must be a scalar. If, on the other
+%                 hand, fType is 'F', then df must be a vector of length 2
+%                 (which contains respectively the degrees of freedom of
+%                 the numerator and of the denominator of the F
+%                 distribution)
+%
+%
+%  Optional input arguments:
+%
+% confLevel:     confidence levels to be used to
+%               compute confidence intervals. Scalar.
+%               The default value of conflev is 0.95  that
+%               is 95 per cent confidence interval
+%               is computed.
+%               Example - 'confLevel',0.99
+%               Data Types - double
+%     prec   : tolerance for the iterative loop. Scalar. 
+%             Iteration will run until the estimated percentile is <=prec
+%             away from the requested percentile.
+%             The default value is 1e-6;
+%                 Example - 'prec',1e-05 
+%                 Data Types - single | double
+% doAnimate :   show graphically the iteration process.
+%               Logical.
+%               If doAnimate is true the the iteration process will be
+%               graphically displayed in a figure window. The default value
+%               of doAnimate is false.
+%                 Example - 'doAnimate',false 
+%                 Data Types - logical
+%
+%  Output:
+%
+%        ci  :  confidence interval for the non centrality parameter. 
+%                 1-by-2 vector. 
+%                 Vector which contains the lower and upper confidence
+%                 interval of the non centrality parameter.
+%
+%
+%
+% More About:
+%
+% This function is used in the FSDA toolbox in function corrNominal.m to
+% find the confidence interval of Cramer's $V$ index. This index is a
+% function of the non centrality parameter associated with the $\chi^2$
+% index. Confidence intervals based on non central distributions depend on
+% the "inversion confidence interval principle" (Stiegler and Fouladi 1997,
+% pp. 237-239). The main idea is to use the observed value of a test
+% statistic (that is input x in the language of this routine) to initiate a
+% search for the lower and upper limits of to a $1-\alpha$ confidence
+% interval for the non centrality parameter (the lower and upper bound of
+% the confidence interval is given in output argument ci).
+% The confidence interval of the non centrality parameter can then be
+% converted into a confidence interval of an index which takes into account
+% the sample size (which for example can be the Cramer's $V$ index) as long
+% as the effect-size index (parameter) is a monotonic function of the non
+% centrality parameter.
+% See Smithson (2003) and "Measures of Effect Size" Toolbox for further
+% details.
+%
+% See also: corrNominal, corrOrdinal, ncx2cdf, ncfcdf, nctcdf 
+%
+% References:
+%
+% Hentschke and Stüttgen (2011), European Journal of Neuroscience, 34, pp.
+% 1887-1894.
+% Smithson, M.J. (2003), Confidence Intervals, Quantitative Applications in
+% the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.
+% Hentschke H. and Stüttgen M. (2015), Measures of Effect Size Toolbox
+% Version 1.4. Code by Harald Hentschke (University of Tübingen) and 
+% Maik Stüttgen (University of Bochum).
+% Steiger, J. H., & Fouladi, R. T. (1997), Noncentrality interval
+% estimation and the evaluation of statistical models. In L. L. Harlow, S.,
+% A. Mulaik, & J.H. Steiger (Eds.), What if there were no significance
+% tests? pp. 221-257. Mahwah, NJ: Lawrence Erlbaum.
+%
+%
+% Acknowledgements: 
+%
+% This function has been taken and adapted from the MATLAB toolbox 'Measures of effect
+% Size' by Harald Hentschke and  Maik C. Stüttgen. 
+% https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox
+%
+%
+%
+% Copyright 2008-2016.
+% Written by FSDA team
+%
+%
+%<a href="matlab: docsearchFS('ncpci')">Link to the help function</a>
+% Last modified 24-10-2017
+%
+%
+
+% Examples:
+
+%{
+    %% ncpci with all the default values.
+    % Suppose that in a contingency table of size 3-times-4 the value of%
+    % the chi square test is 52. Suppose we want to compute a confidence
+    % interval for the non centrality parameter of the chi^2 with
+    % (3-1)(4-1)=8 degrees of freedom.
+    ci=ncpci(52,'X2',8);
+    disp('Confidence interval for the non centrality parameter')
+    disp(ci)
+%}
+
+%{
+    %% ncpci with option confint.
+    % A 99 per cent confidence interval is requested.
+    confint=0.99;
+    ci=ncpci(52,'X2',8,'confLevel',confint);
+    disp([ num2str(100*confint) ' per cent confidence interval for the non centrality paramter'])
+    disp(ci)
+%}
+
+%{
+    %% ncpci with option prec.
+    % Increase the precision.
+    prec=1e-12;
+    ci=ncpci(52,'X2',8,'prec',prec);
+    disp(['95 per cent confidence interval for the non centrality paramter'])
+    disp(ci)
+%}
 
 
-% -------------------------------------------------------------------------
-% Measures of Effect Size Toolbox Version 1.4, January 2015
-% Code by Harald Hentschke (University of Tübingen) and 
-% Maik Stüttgen (University of Bochum)
-% For additional information see Hentschke and Stüttgen, 
-% Eur J Neurosci 34:1887-1894, 2011
-% -------------------------------------------------------------------------
+%{
+    % ncpci with option doAnimate.
+    % set doAnimate to true.
+    doAnimate=true;
+    ci=ncpci(52,'X2',8,'doAnimate',true);
+%}
 
-% defaults
+%{
+    % Confidence interval based on the F distibution.
+    % See the animation which leads to convergence.
+    ci=ncpci(52,'F',[8 3],'doAnimate',true);
+%}
+
+
+%% Beginning of code
+
+% Defaults
 prec=1e-6;
 confLevel=.95;
 doAnimate=false;
-% replace defaults by input, if any
-pvpmod(varargin);
+
+UserOptions=varargin(1:2:length(varargin));
+if ~isempty(UserOptions)
+
+    options=struct('prec',prec,...
+    'confLevel',confLevel,'doAnimate',false);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:CorrNominal:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+    end
+    
+    % Write in structure 'options' the options chosen by the user
+    if nargin > 2
+        for i=1:2:length(varargin)
+            options.(varargin{i})=varargin{i+1};
+        end
+    end
+    prec=options.prec;
+    confLevel=options.confLevel;
+    doAnimate=options.doAnimate;
+end
+
+% Check that x is a positive number if fType is 'X2' or 'F' 
+isPosPdf=ismember(fType,{'X2','F'});
+if isPosPdf && x<0
+  error('FSDA:ncpci:WrongInputArg','input arg ''x'' is negative but must be positive for X2 and F distributions')
+end
+
+% Check that df is a vector of length 2 if fType is 'F'
+isPosPdf=strcmp(fType,'F');
+if isPosPdf && length(df)~=2
+   error('FSDA:ncpci:WrongInputArg','F distribution has been specified and therefore input df must be a vector of lenght 2')
+end
 
 % convert df to cell for automatic expansion of parameters
 df=num2cell(df);
@@ -52,18 +224,11 @@ alpha=1-confLevel;
 % target p values 
 pTarget=[1-alpha/2  alpha/2];
 
-% --- error checks, assignments of function handles, etc.
-% are we dealing with pdf defined only for positive abscissa values?
-isPosPdf=ismember(fType,{'X2','F'});
-% if so...
-if isPosPdf && x<0
-  error('input arg ''x'' is negative but must be positive for X2 and F distributions')
-end
 % start index for outermost loop below, determining whether lower CI shall
 % be computed or not
 loopStartIx=1;
 switch fType
-  case 'X2'
+  case 'X2'  
     curPdf=@ncx2pdf;    
     curCdf=@ncx2cdf;
     curInv=@chi2inv;
@@ -81,7 +246,7 @@ switch fType
       loopStartIx=2;
     end
     
-  case 'F'
+  case 'F' 
     curPdf=@ncfpdf;    
     curCdf=@ncfcdf;
     curInv=@finv;
@@ -96,19 +261,19 @@ switch fType
     
   case 't'
     curPdf=@nctpdf;
-    curCdf=@nctcdf;
+    curCdf=@nctcdf; 
     curInv=@tinv;
     abscissLim=x+[-4 2;-2 4]*sqrt(abs(x));
     
   otherwise
     error('illegal distribution function specified');
 end
+% 
+% if prec>.001
+%   warning('results will be inaccurate - set input parameter ''prec'' to a lower value');
+% end
 
-if prec>.001
-  warning('results will be inaccurate - set input parameter ''prec'' to a lower value');
-end
-
-if doAnimate
+if doAnimate == true
   fh=figure;
   ph0=plot(x,0,'k^');
   hold on
@@ -156,8 +321,8 @@ for iIx=loopStartIx:2
   % deviations of p of current noncentral x pdfs from target p value
   deltaP=p-pTarget(iIx);
   nIter=1;
-  if doAnimate
-    ph=plotPdf(x,ncp,ph,curPdf,df,iIx,nIter,abscissLim,ti);
+  if doAnimate == true
+    ph=plotPdf(ncp,ph,curPdf,df,iIx,nIter,abscissLim,ti);
   end
   % while desired precision is not reached...
   while ~any(abs(deltaP)<=prec)
@@ -187,23 +352,24 @@ for iIx=loopStartIx:2
     % deviations of p of current nc x pdfs from target
     deltaP=p-pTarget(iIx);
     nIter=nIter+1;
-    if doAnimate
-      ph=plotPdf(x,ncp,ph,curPdf,df,iIx,nIter,abscissLim,ti);
+    if doAnimate == true
+      ph=plotPdf(ncp,ph,curPdf,df,iIx,nIter,abscissLim,ti);
     end
   end
   % pick border which is closer to the target value
-  [nada,ix]=min(abs(deltaP));
+  [~,ix]=min(abs(deltaP));
   ci(iIx)=ncp(ix);
 end
+
 % close figure
-if doAnimate
+if doAnimate == true
   pause(1)
   close(fh)
 end
 
-% ======================== LOCAL FUNCTION =================================
-function ph=plotPdf(x,ncp,ph,pdfH,df,iIx,nIter,abscissLim,ti)
-% ** function ph=plotPdf(x,ncp,ph,pdfH,df,iIx,nIter,abscissLim,ti)
+% ======================== inner function =================================
+function ph=plotPdf(ncp,ph,pdfH,df,iIx,nIter,abscissLim,ti)
+% ** function ph=plotPdf(ncp,ph,pdfH,df,iIx,nIter,abscissLim,ti)
 % If doAnimate==true, plotPdf plots x (first input arg to ncpci) and
 % noncentral pdfs with the noncentrality parameter estimates of each
 % iteration step 
