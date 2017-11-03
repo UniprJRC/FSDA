@@ -231,6 +231,7 @@ function out=corrNominal(N, varargin)
 % the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.
 %
 % Acknowledgements:
+%
 % In order to find the confidence interval for the non centrality parameter
 % of the Chi squared distribution we use routine ncpci from the Effect Size Toolbox 
 % Code by Harald Hentschke (University of Tübingen) and 
@@ -297,6 +298,19 @@ function out=corrNominal(N, varargin)
     X=[x11; x12; x13; x14; x15; x21; x22; x23; x24; x25];
     out=corrNominal(X,'datamatrix',true)
 %}
+
+%{
+    % Bootstrap confidence intervals for Cramer's V
+    N=[26    26    23 18 9;
+       6      7     9 14 23];
+    nsimul=10000;
+    CramerV=zeros(nsimul,1);
+    rcontFS(
+    for i=1:nsimul
+        out=corrNominal(N,'NoStandardErrors',true,'dispresults',false);
+    end
+%}
+
 
 %% Beginning of code
 
@@ -449,9 +463,10 @@ Hy=-sum( (ndotj/n).*log(ndotj/n));
 Hxy=-sum( (N(:)/n).* log(N(:)/n) );
 % Hyxchk=(Hx+Hy-Hxy)/Hy;
 
+  talpha=-norminv((1-conflev)/2);
 
 if NoStandardErrors
-    seCramerV=NaN; zCramerV=NaN; pvalCramerV=NaN;
+    seCramerV=NaN; zCramerV=NaN; pvalCramerV=NaN; ConfIntCramerV=[NaN NaN];
     seGKlambdayx=NaN;  zGKlambdayx=NaN;  pvalGKlambdayx=NaN;
     setauyx=NaN;     ztauyx=NaN;     pvaltauyx=NaN;
     seHyx=NaN;     zHyx=NaN;    pvalHyx=NaN;
@@ -487,7 +502,6 @@ else
     ConfIntCramerV=sqrt((ncpConfInt+df)/(n*(k-1)));
     
     % Store confidence intervals
-    talpha=-norminv((1-conflev)/2);
     seCramerV=(CramerV-ConfIntCramerV(1))/talpha;
     
     
