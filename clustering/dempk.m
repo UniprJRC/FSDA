@@ -303,7 +303,7 @@ function out = dempk(Y, k, g, varargin)
     % fixing the number of components searched by tkmeans
     k = g * 6;
 
-    % dempk with hirearchical merging and trimming equal to the level of noise
+    % dempk with hierarchical merging and trimming equal to the level of noise
     DEMP = dempk(X, k, g, 'alpha', alpha, 'plots', 'contourf');
 
     % dempk with a threshold value and trimming equal to the level of noise
