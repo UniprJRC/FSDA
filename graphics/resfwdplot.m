@@ -1141,6 +1141,7 @@ if ~isempty(options.fground)
         if isempty(options.label)
             strings = numtext(funit);
         else
+            out.label=options.label;
             strings = out.label(funit);
         end
         
