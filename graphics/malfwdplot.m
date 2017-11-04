@@ -1022,6 +1022,7 @@ if ~isempty(options.fground)
         if isempty(options.label)
             strings = numtext(funit);
         else
+            out.label=options.label;
             strings = out.label(funit);
         end
         
@@ -1692,7 +1693,7 @@ end % close options.databrush
             % If structure out does not contain labels for the rows then
             % labels row1....rown are added automatically
             if isempty(intersect('label',fieldnames(out)))
-                label=cellstr(num2str((1:length(out.Y))','row %d'));
+                out.label=cellstr(num2str((1:length(out.Y))','row %d'));
             end
             
             
@@ -1702,10 +1703,9 @@ end % close options.databrush
             % output_txt is what it is shown on the screen
             output_txt(1,1) = {['MD equal to: ',num2str(y1,4)]};
             
-            
             % Add information about the corresponding row label of what has
             % been selected
-            output_txt{3,1} = ['Unit: ' num2str(cell2mat(label(row)))];
+            output_txt{3,1} = ['Unit: ' num2str(cell2mat(out.label(row)))];
             
             if any(strcmp(fieldnames(out),'class'))
                 if strcmp(out.class,'MMmulteda')
