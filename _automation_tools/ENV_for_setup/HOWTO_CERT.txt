@@ -1,6 +1,4 @@
 %$LastChangedDate$
-%$LastChangedRevision$
-%$LastChangedBy$
 
 
 modifica
