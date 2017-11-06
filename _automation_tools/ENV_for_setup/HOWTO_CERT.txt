@@ -1,4 +1,4 @@
-%$LastChangedDate$
+%$LastChangedDate::                     $: Date of the last commit
 
 
 modifica
