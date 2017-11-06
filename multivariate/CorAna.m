@@ -3,7 +3,7 @@ function out=CorAna(N, varargin)
 %
 % This function has been written following code developed by:
 % Urbano Lorenzo-Seva (Rovira i Virgili University, Tarragona, Spain),
-% Michel van de Velden (Erasmus University, Rotterdam, The Netherlands), 
+% Michel van de Velden (Erasmus University, Rotterdam, The Netherlands),
 % and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
 % (See References).
 %
@@ -214,6 +214,8 @@ function out=CorAna(N, varargin)
 %                         total).
 % 		out.Ntable    =   same as out.N but in table format (with row and
 %                         column names).
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
 % 		out.P         =   $I$-by-$J$-array containing correspondence matrix
 %                         (proportions). The $(i,j)$-th element is equal to
 %                         $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
@@ -221,6 +223,8 @@ function out=CorAna(N, varargin)
 %                         1.
 % 		out.Ptable    =   same as out.P but in table format (with row and
 %                         column names).
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
 % 		out.I         =   Number of active rows of contingency table.
 % 		out.J         =   Number of active columns of contingency table.
 % 		out.n         =   Grand total. out.n is equal to sum(sum(out.N)).
@@ -410,9 +414,13 @@ function out=CorAna(N, varargin)
 % 		out.SupRowsN   =   matlab table containing contingency table referred
 %                         to supplementary rows. If there are no
 %                         supplementary rows this field is empty.
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
 % 		out.SupColsN  =   matlab table containing contingency table related
 %                         to supplementary columns. If there are no
 %                         supplementary columns this field is empty.
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
 % 		out.RowsPriSup    = Principal coordinates of supplementary rows
 % 		out.RowsStaSup    = Standard coordinates of supplementary rows
 %       out.RowsSymSup    = Symmetrical coordinates of supplementary
@@ -432,6 +440,8 @@ function out=CorAna(N, varargin)
 %                           each latent dimension. Fourth column contains
 %                           the cumulative variance explained by each
 %                           dimension.
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
 %       out.OverviewRows = $I$-times-(k*3+2) table containing an overview
 %                          of row points. More precisely if we suppose that $k=2$
 %                          First column contains the row masses (vector
@@ -478,6 +488,8 @@ function out=CorAna(N, varargin)
 %                          Eight column contains the relative
 %                          contribution of the second dimension to the
 %                          explanation of the inertia of the point.
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
 %
 % See also crosstab, rcontFS, CressieRead
 %
@@ -514,9 +526,13 @@ function out=CorAna(N, varargin)
      load smoke
     [N,~,~,labels] =crosstab(smoke.data(:,1),smoke.data(:,2));
     [I,J]=size(N);
-    % Contingency table is supplied to CorAna
-    Ntable=array2table(N,'RowNames',labels(1:I,1),'VariableNames',labels(1:J,2))
-    out=CorAna(Ntable);
+    if verLessThan('matlab','8.2.0') ==0
+    % Contingency table is supplied to CorAna in table format
+        Ntable=array2table(N,'RowNames',labels(1:I,1),'VariableNames',labels(1:J,2))
+        out=CorAna(Ntable);
+    else
+        out=CorAna(N);
+    end
 %}
 
 %{
@@ -524,7 +540,7 @@ function out=CorAna(N, varargin)
     % Input is the contingency table, labels for rows and columns are supplied
     % Data are read from the txt file
     load('smoke.txt')
-    labels_rows= {'Senior-Managers' 'Junior-Managers' 'Senior-Employees' 'Junior-Employees' 'Secretaries'}
+    labels_rows= {'Senior-Managers' 'Junior-Managers' 'Senior-Employees' 'Junior-Employees' 'Secretaries'};
     labels_columns= {'None' 'Light' 'Medium' 'Heavy'};
     N=crosstab(smoke(:,1),smoke(:,2));
     out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);
@@ -537,6 +553,10 @@ function out=CorAna(N, varargin)
 %}
 
 %% Beginning of code
+
+% Check MATLAB version. If it is not smaller than 2013b than output is
+% shown in table format
+verMatlab=verLessThan('matlab','8.2.0');
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
 % last case the contingency table is built using the first two columns of the
@@ -622,7 +642,7 @@ if ~isempty(UserOptions)
 end
 
 % Extract labels for rows and columns
-if istable(N)
+if verMatlab ==0 && istable(N)
     Lc=N.Properties.VariableNames;
     Lr=N.Properties.RowNames;
     Ntable=N;
@@ -645,13 +665,18 @@ else
             error('Wrong length of column labels');
         end
     end
-    Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
+    if verMatlab==0
+        Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
+    end
 end
 
 % Nred will contain the contingency table after removing supplementary rows
 % and columns (if supplementary rows and columns belong to the table)
 Nred      = N;
-Nredtable = Ntable;
+
+if verMatlab==0
+    Nredtable = Ntable;
+end
 
 if ~isempty(Sup)
     labels=struct;
@@ -785,10 +810,12 @@ if ~isempty(Sup)
     end
 end
 
-% Store contingency table (in Matlab table format)
-out.N=Nred;
-% Store contingency table (in Matlab table format)
-out.Ntable = Nredtable;
+if verMatlab==0
+    % Store contingency table (in Matlab table format)
+    out.N=Nred;
+    % Store contingency table (in Matlab table format)
+    out.Ntable = Nredtable;
+end
 
 [I,J]=size(Nred);
 
@@ -804,9 +831,12 @@ P = (1/n) * Nred;
 
 % Store P in array format
 out.P=P;
-% Store P in table format
-Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
-out.Ptable=Ptable;
+
+if verMatlab==0
+    % Store P in table format
+    Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
+    out.Ptable=Ptable;
+end
 
 out.I=I;        %number of active rows (excluding supplementary rows)
 out.J=J;        %number of active columns (excluding supplementary columns)
@@ -848,7 +878,7 @@ out.k = k;
 % Residualsij = sqrt( (p_{ij} - r_ic_j)^2 /r_ic_j ) =(p_{ij} - r_ic_j)/sqrt(r_ic_j)
 % Chi-square distances
 Residuals     =  Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
-out.Residuals = Residuals; 
+out.Residuals = Residuals;
 
 % SVD of Residuals = U*Gam*V'
 [U,Gam,V] = svd(Residuals);
@@ -882,7 +912,7 @@ cumsumTotalInertia = cumsum(diag(Gam2))/TotalInertia;
 % InertiaExplained is a matrix with 4 columnn.
 % - First column contains the singular values (the sum of the squared
 %   singular values is the total inertia)
-% - Second column contains the eigenvalues (the sum of the eigenvalues is 
+% - Second column contains the eigenvalues (the sum of the eigenvalues is
 %   the total inertia)
 % - Third column contains the variance explained by each latent dimension.
 % - Fourth column contains the cumulative variance explained by each
@@ -1020,13 +1050,13 @@ if isstruct(plots) || plots==1
                 typeR='RowsPri'; % rows are in principal coordinates
                 typeC='ColsSta'; % columns are in standard coordinates
                 titl={'Rows principal coordinates, and column standard coordinates' , ...
-                      '$\alpha=1$, $X=D_r^{-1/2}U\Gamma$ and $Y= D_c^{-1/2} V$'};
+                    '$\alpha=1$, $X=D_r^{-1/2}U\Gamma$ and $Y= D_c^{-1/2} V$'};
                 
             elseif strcmp(plots.alpha,'colprincipal')
                 typeR='RowsSta'; % rows are in standard coordinates
                 typeC='ColsPri'; % columns are in principal coordinates
                 titl={'Rows standard coordinates, and column principal coordinates' , ...
-                      '$\alpha=0$, $X=D_r^{-1/2}U $ and $G= D_c^{-1/2} V \Gamma$'};
+                    '$\alpha=0$, $X=D_r^{-1/2}U $ and $G= D_c^{-1/2} V \Gamma$'};
                 
             elseif strcmp(plots.alpha,'symbiplot')
                 % equivalent to alpha=0.5
@@ -1038,7 +1068,7 @@ if isstruct(plots) || plots==1
                 typeR='RowsPri';        % rows are in principal coordinates
                 typeC='ColsPri';        % columns are in principal coordinates
                 titl={'French symmetrical model: rows and cols in principal coordinates.' , ...
-                      'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+                    'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
                 
             elseif strcmp(plots.alpha,'rowgab')
                 %  If plots.alpha='rowgab'  rows are in principal coordinates
@@ -1048,8 +1078,8 @@ if isstruct(plots) || plots==1
                 ColsStaDc=Dc*ColsSta;
                 typeC=ExtractVariableName(ColsStaDc);
                 titl={'Rows principal coordinates, and column standard coordinates times masses' , ...
-                      '$\alpha=1$,$X=D_r^{-1/2}U\Gamma $ and $Y= D_c^{1/2} V$'};
-                      
+                    '$\alpha=1$,$X=D_r^{-1/2}U\Gamma $ and $Y= D_c^{1/2} V$'};
+                
             elseif strcmp(plots.alpha,'colgab')
                 % If plots.alpha='colgab'  columns are in principal coordinates
                 % and rows are in standard coordinates multiplied by the
@@ -1058,7 +1088,7 @@ if isstruct(plots) || plots==1
                 typeR=ExtractVariableName(RowsStaDr);
                 typeC='ColsPri';        % columns are in principal coordinates
                 titl={'Rows standard coordinates multiplied by masses ' , ...
-                      'and column principal coordinates $X=D_r^{-1/2} U$ and $Y= D_c^{-1/2} V \Gamma$'};
+                    'and column principal coordinates $X=D_r^{-1/2} U$ and $Y= D_c^{-1/2} V \Gamma$'};
                 
             elseif strcmp(plots.alpha,'rowgreen')
                 %  If plots.alpha='rowgreen'  rows are in principal
@@ -1068,7 +1098,7 @@ if isstruct(plots) || plots==1
                 ColsStaDcSqrt=(Dc^(1/2))*ColsSta;
                 typeC= ExtractVariableName(ColsStaDcSqrt);
                 titl={'Rows principal coordinates, and column standard coordinates ' , ...
-                      'times sqrt of masses $X=D_r^{-1/2}U\Gamma $ and $Y= V$'};
+                    'times sqrt of masses $X=D_r^{-1/2}U\Gamma $ and $Y= V$'};
                 
             elseif strcmp(plots.alpha,'colgreen')
                 %  If plots.alpha='colgreen' columns in principal coordinates
@@ -1078,7 +1108,7 @@ if isstruct(plots) || plots==1
                 typeR=ExtractVariableName(RowsStaDrSqrt);
                 typeC='ColsPri';        % columns are in principal coordinates
                 titl={'Rows standard coordinates times sqrt of masses,' ...
-                      'and column principal coordinates, $X=U $ and $G= D_c^{-1/2} V \Gamma$'};
+                    'and column principal coordinates, $X=U $ and $G= D_c^{-1/2} V \Gamma$'};
                 
             else
                 if isnumeric(plots.alpha)
@@ -1103,7 +1133,7 @@ if isstruct(plots) || plots==1
             typeR='RowsPri';        % rows are in principal coordinates
             typeC='ColsPri';        % columns are in principal coordinates
             titl={'French symmetrical model: rows and cols in principal coordinates.' ...
-                  'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+                'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
         end
         
         if isfield(plots,'FontSize')
@@ -1121,7 +1151,7 @@ if isstruct(plots) || plots==1
         typeR='RowsPri';        % rows are in principal coordinates
         typeC='ColsPri';        % columns are in principal coordinates
         titl={'French symmetrical model: rows and cols in principal coordinates.'...
-              'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+            'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
         FontSize=FontSizedef;
         MarkerSize=MarkerSizedef;
         
@@ -1214,24 +1244,39 @@ ColNamesSummary={'Singular_value' 'Inertia' 'Accounted_for' 'Cumulative'};
 RowNamesSummary=strcat(cellstr(repmat('dim_',K,1)), cellstr(num2str((1:K)')));
 RowNamesSummary=regexprep(RowNamesSummary,' ','');
 
-InertiaExplainedtable=array2table(InertiaExplained,'VariableNames',ColNamesSummary, ...);
-    'RowNames',RowNamesSummary);
+if verMatlab==0
+    InertiaExplainedtable=array2table(InertiaExplained,'VariableNames',ColNamesSummary, ...);
+        'RowNames',RowNamesSummary);
+    out.Summary = InertiaExplainedtable;
+else
+    out.Summary =  InertiaExplained;
+end
 
-out.Summary = InertiaExplainedtable ;
 
 ColNames={'Mass' 'Score_1' 'Score_2' 'Inertia' ,...
     'CntrbPnt2In_1' 'CntrbPnt2In_2' ...
     'CntrbDim2In_1' 'CntrbDim2In_2'};
-OverviewRows=array2table([out.r ScoreRows(:,1:k) InertiaRows Point2InertiaRows(:,1:k) Dim2InertiaRows(:,1:k)],...
-    'VariableNames',ColNames,'RowNames',Lr);
-out.OverviewRows=OverviewRows;
 
-OverviewCols=array2table([out.c ScoreCols(:,1:k) InertiaCols Point2InertiaCols(:,1:k) Dim2InertiaCols(:,1:k)],...
-    'VariableNames',ColNames,'RowNames',Lc);
-out.OverviewCols=OverviewCols;
+OverviewRows=[out.r ScoreRows(:,1:k) InertiaRows Point2InertiaRows(:,1:k) Dim2InertiaRows(:,1:k)];
+OverviewCols=[out.c ScoreCols(:,1:k) InertiaCols Point2InertiaCols(:,1:k) Dim2InertiaCols(:,1:k)];
+
+if verMatlab==0
+    OverviewRowstable=array2table(OverviewRows,'VariableNames',ColNames,'RowNames',Lr);
+    OverviewColstable=array2table(OverviewCols,'VariableNames',ColNames,'RowNames',Lc);
+    out.OverviewRows=OverviewRowstable;
+    out.OverviewCols=OverviewColstable;
+else
+    out.OverviewRows=OverviewRows;
+    out.OverviewCols=OverviewCols;
+end
 
 if dispresults==true
     disp('Summary')
+    
+    if verMatlab==1
+        disp(ColNamesSummary)
+    end
+    
     disp(out.Summary)
     
     VarNamesforTab={'Scores', 'CntrbPnt2In' 'CntrbDim2In'};
@@ -1240,34 +1285,67 @@ if dispresults==true
     %               Inertia
     disp('ROW POINTS')
     disp(['Results for dimension: ' d1str])
-    Tabresults=array2table(eval(strcat('[',typeR,'(:,', d1str ,') Point2InertiaRows(:,', d1str ,')    Dim2InertiaRows(:,', d1str ,')         ]')));
-    Tabresults.Properties.RowNames=Lr;
-    Tabresults.Properties.VariableNames=VarNamesforTab;
-    disp(Tabresults)
+    Tabresults=eval(strcat('[',typeR,'(:,', d1str ,') Point2InertiaRows(:,', d1str ,')    Dim2InertiaRows(:,', d1str ,')         ]'));
+    if verMatlab==0
+        Tabresultstable=array2table(Tabresults);
+        Tabresultstable.Properties.RowNames=Lr;
+        Tabresultstable.Properties.VariableNames=VarNamesforTab;
+        disp(Tabresultstable)
+    else
+        disp(VarNamesforTab)
+        disp(Tabresults)
+    end
     
     disp(['Results for dimension: ' d2str])
-    Tabresults=array2table(eval(strcat('[',typeR,'(:,', d2str ,') Point2InertiaRows(:,', d2str ,')    Dim2InertiaRows(:,', d2str ,')         ]')));
-    Tabresults.Properties.RowNames=Lr;
-    Tabresults.Properties.VariableNames=VarNamesforTab;
-    disp(Tabresults)
+    Tabresults=eval(strcat('[',typeR,'(:,', d2str ,') Point2InertiaRows(:,', d2str ,')    Dim2InertiaRows(:,', d2str ,')         ]'));
+    
+    if verMatlab==0
+        Tabresultstable=array2table(Tabresults);
+        Tabresultstable.Properties.RowNames=Lr;
+        Tabresultstable.Properties.VariableNames=VarNamesforTab;
+        disp(Tabresultstable)
+    else
+        disp(VarNamesforTab)
+        disp(Tabresults)
+    end
     
     disp('COLUMN POINTS')
     disp(['Results for dimension: ' d1str])
-    Tabresults=array2table(eval(strcat('[',typeC,'(:,', d1str ,') Point2InertiaCols(:,', d1str ,')    Dim2InertiaCols(:,', d1str ,')         ]')));
-    Tabresults.Properties.RowNames=Lc;
-    Tabresults.Properties.VariableNames=VarNamesforTab;
-    disp(Tabresults)
+    Tabresults=eval(strcat('[',typeC,'(:,', d1str ,') Point2InertiaCols(:,', d1str ,')    Dim2InertiaCols(:,', d1str ,')         ]'));
+    if verMatlab==0
+        Tabresultstable=array2table(Tabresults);
+        Tabresultstable.Properties.RowNames=Lc;
+        Tabresultstable.Properties.VariableNames=VarNamesforTab;
+        disp(Tabresultstable)
+    else
+        disp(VarNamesforTab)
+        disp(Tabresults)
+    end
     
     disp(['Results for dimension: ' d2str])
-    Tabresults=array2table(eval(strcat('[',typeC,'(:,', d2str ,') Point2InertiaCols(:,', d2str ,')    Dim2InertiaCols(:,', d2str ,')         ]')));
-    Tabresults.Properties.RowNames=Lc;
-    Tabresults.Properties.VariableNames=VarNamesforTab;
-    disp(Tabresults)
-    disp('-----------------------------------------------------------')
-    disp('Overview ROW POINTS')
-    disp(OverviewRows)
-    disp('Overview COLUMN POINTS')
-    disp(OverviewCols)
+    Tabresults=eval(strcat('[',typeC,'(:,', d2str ,') Point2InertiaCols(:,', d2str ,')    Dim2InertiaCols(:,', d2str ,')         ]'));
+    if verMatlab==0
+        Tabresultstable=array2table(Tabresults);
+        Tabresultstable.Properties.RowNames=Lc;
+        Tabresultstable.Properties.VariableNames=VarNamesforTab;
+        disp(Tabresultstable)
+        disp('-----------------------------------------------------------')
+        disp('Overview ROW POINTS')
+        disp(OverviewRowstable)
+        disp('Overview COLUMN POINTS')
+        disp(OverviewColstable)
+    else
+        disp(VarNamesforTab)
+        disp(Tabresults)
+        disp('-----------------------------------------------------------')
+        disp('Overview ROW POINTS')
+        disp(ColNames)
+        disp(OverviewRows)
+        disp('Overview COLUMN POINTS')
+        disp(ColNames)
+        disp(OverviewCols)
+    end
+    
     disp('-----------------------------------------------------------')
     disp('Legend')
     disp('CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension')
