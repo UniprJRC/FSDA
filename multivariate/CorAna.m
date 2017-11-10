@@ -1,11 +1,8 @@
 function out=CorAna(N, varargin)
 %CorAna performs correspondence analysis
 %
-% This function has been written following code developed by:
-% Urbano Lorenzo-Seva (Rovira i Virgili University, Tarragona, Spain),
-% Michel van de Velden (Erasmus University, Rotterdam, The Netherlands),
-% and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
-% (See References).
+% Correspondence analysis is a statistical technique that provides a
+% graphical representation of contingency tables.
 %
 %<a href="matlab: docsearchFS('CorAna')">Link to the help function</a>
 %
@@ -216,6 +213,19 @@ function out=CorAna(N, varargin)
 %                         column names).
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
+% 		out.I         =   Number of active rows of contingency table.
+% 		out.J         =   Number of active columns of contingency table.
+% 		out.n         =   Grand total. out.n is equal to sum(sum(out.N)).
+%                         This is the number of observations.
+% 		out.Nhat      =   $I$-by-$J$-array containing contingency table
+%                         referred to active rows (i.e. referred to the rows which
+%                         participated to the fit) under the independence hypothesis.
+%                         The $(i,j)$-th element is equal to $n_{i.}n_{.j}/n$,
+%                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
+%                         sum of the elements of out.Nhat is $n$ (the grand
+%                         total).
+% 		out.Ntable    =   same as out.Nhat but in table format (with row and
+%                         column names).
 % 		out.P         =   $I$-by-$J$-array containing correspondence matrix
 %                         (proportions). The $(i,j)$-th element is equal to
 %                         $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
@@ -225,10 +235,6 @@ function out=CorAna(N, varargin)
 %                         column names).
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
-% 		out.I         =   Number of active rows of contingency table.
-% 		out.J         =   Number of active columns of contingency table.
-% 		out.n         =   Grand total. out.n is equal to sum(sum(out.N)).
-%                         This is the number of observations.
 % 		out.r         =   vector of length $I$ containing row masses.
 %                         \[
 %                           r=(f_{1.},	f_{2.}, \ldots, f_{I.})'
@@ -495,20 +501,27 @@ function out=CorAna(N, varargin)
 %
 % References:
 %
-% Urbano Lorenzo-Seva, Michel van de Velden, Henk A. L. Kiers (2009)
-% CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations;
-% Journal of Statistical Software, September 2009, Volume 31, Issue 8.
-%
-% Benzecri, J.-P. (1992), Correspondence Analysis Handbook, New-York :
-% Dekker
-% Benzecri, J.-P. (1980), L’analyse des données tome 2 : l’analyse des
-% correspondances, Paris : Bordas.
-% Greenacre, M.J. (1993), Correspondence Analysis in Practice, London :
+% Benzecri, J.-P. (1992), Correspondence Analysis Handbook, New-York,
+% Dekker.
+% Benzecri, J.-P. (1980), L'analyse des donnees tome 2: l'analyse des
+% correspondances, Paris, Bordas.
+% Greenacre, M.J. (1993), Correspondence Analysis in Practice, London,
 % Academic Press.
-% Gabriel, K.R. and Odoroff, C. (1990). Biplots in biomedical research.
+% Gabriel, K.R. and Odoroff, C. (1990), Biplots in biomedical research,
 % Statistics in Medicine, 9, pp. 469-485.
-% Greenacre, M.J. (1993) Biplots in correspondence Analysis, Journal of
+% Greenacre, M.J. (1993), Biplots in correspondence Analysis, Journal of
 % Applied Statistics, 20, pp. 251 - 269.
+% Urbano L.-S., van de Velden M., Kiers H.A.L. (2009),
+% CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations,
+% Journal of Statistical Software, Volume 31, Issue 8.
+%
+% Acknowledgements: 
+%
+% This function has been written following code developed by:
+% Urbano Lorenzo-Seva (Rovira i Virgili University, Tarragona, Spain),
+% Michel van de Velden (Erasmus University, Rotterdam, The Netherlands),
+% and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
+% (See References).
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -826,42 +839,49 @@ onesJ = ones(J,1);
 %grand total
 n=sum(sum(Nred));
 
+out.I=I;        %number of active rows (excluding supplementary rows)
+out.J=J;        %number of active columns (excluding supplementary columns)
+out.n=n;        %grand total
+
 % P = correspondence matrix  containing relative frequencies
 P = (1/n) * Nred;
 
-% Store P in array format
-out.P=P;
+% r= vector which contains row masses = centroids of the column profiles
+r  = P * onesJ ;
 
+% Column masses = centroids of the row profiles r' * Dr^(-1) * P = 1' * P = c'
+c  = (onesI' * P)';
+
+% Nhat = expected frequencies under the independence hypothesis
+Nhat=(r*c')*n;
+out.Nhat=Nhat;
+
+if verMatlab==0
+    % Store Nhat in table format
+    Nhattable=array2table(Nhat,'RowNames',Lr,'VariableNames',Lc);
+    out.Nhattable=Nhattable;
+end
+
+out.P=P;
 if verMatlab==0
     % Store P in table format
     Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
     out.Ptable=Ptable;
 end
 
-out.I=I;        %number of active rows (excluding supplementary rows)
-out.J=J;        %number of active columns (excluding supplementary columns)
-out.n=n;        %grand total
-
-% out.Lr=Lr;
-% out.Lc=Lc;
-
-% r= vector which contains row masses = centroids of the column profiles
-r  = P * onesJ ;
 Dr = diag(r);
 out.r = r;          %row masses (vector)
 out.Dr = Dr;        %row masses (diagonal matrix)
 
-% Column masses = centroids of the row profiles r' * Dr^(-1) * P = 1' * P = c'
-c  = (onesI' * P)';
 Dc = diag(c);
 out.c = c;          %column masses (vector); c is the centroid of row profiles
 out.Dc = Dc;        %column masses (diagonal matrix)
 
-%Rows profiles (equation 4.14)
+% Row profiles (equation 4.14)
 ProfilesRows = Dr^(-1) * P;
 out.ProfilesRows = ProfilesRows;
 
-%Columns profiles  (equation 4.14)
+% Column profiles  (equation 4.14)
 ProfilesCols = P * Dc^(-1);
 out.ProfilesCols = ProfilesCols;
 
