@@ -107,9 +107,13 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
     N = [24 23 30;19 43 57;13 33 58];
     rownam={'Less_than_5000',  'Between_5000_and_25000' 'Greater_than_25000'};
     colnam= {'Dissatisfied' 'Moderately_satisfied' 'Very_satisfied'};
-    Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));
-    %  Check relationship
-    out=corrOrdinal(Ntable);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input is the contingency table in matrix format, labels for rows and
+    if verLessThan('matlab','8.2.0') ==0
+        Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));
+        %  Check relationship
+        out=corrOrdinal(Ntable);
+    else
+        out=corrOrdinal(N);
+    end</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input is the contingency table in matrix format, labels for rows and
      columns are supplied.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
           N=[20    40    20;
             10    45    45;
@@ -118,8 +122,10 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
     labels_rows= {'Sufficient' 'Good' 'Very_good'};
     labels_columns= {'Sufficient' 'Good' 'Very_good'};
     out=corrOrdinal(N,'Lr',labels_rows,'Lc',labels_columns,'dispresults',false);
-    % out.Ntable uses labels for rows and columns which are supplied
-    disp(out.Ntable)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
+    if verLessThan('matlab','8.2.0') ==0
+        % out.Ntable uses labels for rows and columns which are supplied
+        disp(out.Ntable)
+    end</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
                  table (say of size I-by-J) or the original data matrix.</p> <p>
                  In this last case N=crosstab(N(:,1),N(:,2)). As default
                  procedure assumes that the input is a contingency table.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'NoStandardErrors',true
@@ -161,18 +167,26 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
                          participated to the fit).</p> <p>
                          The $(i,j)$-th element is equal to $n_{ij}$,
                          $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
-                         sum of the elements of out.P is $n$ (the grand
+                         sum of the elements of out.N is $n$ (the grand
                          total).</p></p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p>same as out.N but in table format (with row and
                          column names).</p></td></tr><tr valign="top"><td><code>gam</code></td><td><p>1 x 4 vector which contains Goodman and Kruskall gamma index,
                     standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>taua</code></td><td><p>1 x 4 vector which contains index $\tau_a$,
                         standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>taub</code></td><td><p>1 x 4 vector which contains index $\tau_b$,
                        standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>tauc</code></td><td><p>1 x 4 vector which contains index $\tau_c$,
                        standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>som</code></td><td><p>1 x 4 vector which contains Somers index $d_{y|x}$,
-                       standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>TestIndtable</code></td><td><p>5-by-4 table containing index values (first column),
+                       standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>TestInd</code></td><td><p>5-by-4 matrix containing index values (first column),
+                   standard errors (second column), zscores (third column),
+                   p-values (fourth column). Note that the
+                   standard errors in this matrix are computed assuming
+                   the null hypothesis of independence.</p></td></tr><tr valign="top"><td><code>TestIndtable</code></td><td><p>5-by-4 table containing index values (first column),
                    standard errors (second column), zscores (third column),
                    p-values (fourth column). Note that the
                    standard errors in this table are computed assuming
-                   the null hypothesis of independence.</p></td></tr><tr valign="top"><td><code>ConfLimtable</code></td><td><p><p>5-by-4 table containing index values (first column),
+                   the null hypothesis of independence.</p></td></tr><tr valign="top"><td><code>ConfLim</code></td><td><p><p>5-by-4 matrix containing index values (first column),
+                   standard errors (second column), lower confidence limit
+                   (third column), upper confidence limit (fourth column).</p> <p>
+                   Note that the standard errors in this matrix are computed not
+                   assuming the null hypothesis of independence.</p></p></td></tr><tr valign="top"><td><code>ConfLimtable</code></td><td><p><p>5-by-4 table containing index values (first column),
                    standard errors (second column), lower confidence limit
                    (third column), upper confidence limit (fourth column).</p> <p>
                    Note that the standard errors in this table are computed not
@@ -311,13 +325,13 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  </p>\[
  var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
  \]<p>
- 
- 
+
+
  As concerns Stuart's $\tau_c$ we have that:</p> <p>
  </p>\[
  var(\tau_c)= \frac{4m^2}{(m-1)^2 n^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
  \]<p>
- 
+
 
 
  The variance of $\tau_c$  assuming the independence hypothesis is:</p> <p>
@@ -372,4 +386,4 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  gkgammatst: Goodman-Kruskal's gamma test. URL address
 <a href="http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst">http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst</a>
 
- </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/corr.html'))" itemprop="url"><span itemprop="name"><code>corr</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+ </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/corr.html'))" itemprop="url"><span itemprop="name"><code>corr</code></span></a></span> | <span itemprop="seealso"><a href="corrNominal.html" itemprop="url"><span itemprop="name"><code>corrNominal</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

@@ -77,6 +77,8 @@ function out=corrNominal(N, varargin)
 %                         total).
 % 		out.Ntable   =   same as out.N but in table format (with row and
 %                         column names).
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
 %        out.Chi2      = 1 x 2 vector which contains $\chi^2$ index,
 %                        and p-value.
 %       out.Phi    = 1 x 2 vector which contains index $\Phi$ index,
@@ -108,7 +110,7 @@ function out=corrNominal(N, varargin)
 %                       \[
 %                       V_L=\sqrt{\frac{\Delta_L+ df }{n \min[(I-1),(J-1)]}}
 %                       \]
-%                       and 
+%                       and
 %                       \[
 %                       V_U=\sqrt{\frac{\Delta_U+ df }{n \min[(I-1),(J-1)]}}
 %                       \]
@@ -134,12 +136,22 @@ function out=corrNominal(N, varargin)
 %                       \[
 %                       H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log  f_{.j} }
 %                       \]
+% out.TestInd   = 4-by-4 array containing index values (first column),
+%                   standard errors (second column), zscores (third column),
+%                   p-values (fourth column).
 % out.TestIndtable  = 4-by-4 table containing index values (first column),
 %                   standard errors (second column), zscores (third column),
 %                   p-values (fourth column).
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
+% out.ConfLim    = 4-by-4 array containing index values (first column),
+%                   standard errors (second column), lower confidence limit
+%                   (third column), upper confidence limit (fourth column).
 % out.ConfLimtable  = 4-by-4 table containing index values (first column),
 %                   standard errors (second column), lower confidence limit
 %                   (third column), upper confidence limit (fourth column).
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
 %
 % More About:
 %
@@ -169,7 +181,7 @@ function out=corrNominal(N, varargin)
 %                       conditional variation taken with respect to the
 %                       distribution of $x$. When $x$ is a categorical
 %                       variable having marginal distribution,
-%                       $(f_{1.}, \ldots, f_{I.})$, 
+%                       $(f_{1.}, \ldots, f_{I.})$,
 %                       \[
 %                       E[V(y|x)]= \sum_{i=1}^I (n_{i.}/n) V(y|i) =  \sum_{i=1}^I f_{i.} V(y|i)
 %                       \]
@@ -192,7 +204,7 @@ function out=corrNominal(N, varargin)
 %                       \[
 %                       H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log  f_{.j} }
 %                       \]
-%                       The range of  $\tau_{y|x}$ and $H_{y|x}$ is [0 1]. 
+%                       The range of  $\tau_{y|x}$ and $H_{y|x}$ is [0 1].
 %                       A large value of
 %                       of the index represents a strong association, in
 %                       the sense that we can guess $y$ much better when we
@@ -203,7 +215,7 @@ function out=corrNominal(N, varargin)
 %                       $\tau_{y|x}=0.85$ indicates that knowledge of x
 %                       reduces error in predicting values of y by 85 per
 %                       cent (when the variation measure which is used is
-%                       the Gini's index). 
+%                       the Gini's index).
 %                       $H_{y|x}=0.85$ indicates that
 %                       knowledge of x reduces error in predicting values
 %                       of y by 85 per cent (when variation measure which
@@ -233,8 +245,8 @@ function out=corrNominal(N, varargin)
 % Acknowledgements:
 %
 % In order to find the confidence interval for the non centrality parameter
-% of the Chi squared distribution we use routine ncpci from the Effect Size Toolbox 
-% Code by Harald Hentschke (University of Tübingen) and 
+% of the Chi squared distribution we use routine ncpci from the Effect Size Toolbox
+% Code by Harald Hentschke (University of Tübingen) and
 % Maik Stüttgen (University of Bochum)
 %
 % Copyright 2008-2016.
@@ -264,7 +276,7 @@ function out=corrNominal(N, varargin)
     %% Example of option conflev.
     %  Use data from Goodman Kruskal (1954).
         N=[1768   807    189 47
-           946   1387    746 53 
+           946   1387    746 53
            115    438    288 16];
     out=corrNominal(N,'conflev',0.99);
 %}
@@ -299,20 +311,12 @@ function out=corrNominal(N, varargin)
     out=corrNominal(X,'datamatrix',true)
 %}
 
-%{
-    % Bootstrap confidence intervals for Cramer's V
-    N=[26    26    23 18 9;
-       6      7     9 14 23];
-    nsimul=10000;
-    CramerV=zeros(nsimul,1);
-    rcontFS(
-    for i=1:nsimul
-        out=corrNominal(N,'NoStandardErrors',true,'dispresults',false);
-    end
-%}
-
 
 %% Beginning of code
+
+% Check MATLAB version. If it is not smaller than 2013b than output is
+% shown in table format
+verMatlab=verLessThan('matlab','8.2.0');
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
 % last case the contingency table is built using the first two columns of the
@@ -383,7 +387,7 @@ if ~isempty(UserOptions)
 end
 
 % Extract labels for rows and columns
-if istable(N)
+if verMatlab ==0 && istable(N)
     Ntable=N;
     N=table2array(N);
 else
@@ -404,7 +408,9 @@ else
             error('Wrong length of column labels');
         end
     end
+    if verMatlab ==0
     Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
+    end
 end
 
 [I,J] = size(N);
@@ -460,10 +466,10 @@ Hyx= -sum(N(boo).*log(N(boo)./Ntheo(boo))  )/sum(ndotj.*log(ndotj/n));
 
 Hx=-sum( (nidot/n).*log(nidot/n));
 Hy=-sum( (ndotj/n).*log(ndotj/n));
-Hxy=-sum( (N(:)/n).* log(N(:)/n) );
+Hxy=-sum( (N(boo)/n).* log(N(boo)/n) );
 % Hyxchk=(Hx+Hy-Hxy)/Hy;
 
-  talpha=-norminv((1-conflev)/2);
+talpha=-norminv((1-conflev)/2);
 
 if NoStandardErrors
     seCramerV=NaN; zCramerV=NaN; pvalCramerV=NaN; ConfIntCramerV=[NaN NaN];
@@ -543,7 +549,7 @@ else
     seGKlambdayx=sqrt(varGKlambdayx);
     
     % variance of uncertainty coefficient of Theil
-    varHyx=sum(N(:).*(  Hy*log(N(:)./nidotmat(:)) +(Hx-Hxy)*log(ndotjmat(:)/n) ).^2)/(n^2*Hy^4);
+    varHyx=sum(N(boo).*(  Hy*log(N(boo)./nidotmat(boo)) +(Hx-Hxy)*log(ndotjmat(boo)/n) ).^2)/(n^2*Hy^4);
     seHyx=sqrt(varHyx);
     
     % Compute zscores and p-values
@@ -561,7 +567,9 @@ end
 % Store results in output structure out
 out=struct;
 out.N=N;
+if verMatlab ==0
 out.Ntable=Ntable;
+end
 
 out.Chi2=Chi2;
 out.Phi=Phi;
@@ -580,10 +588,12 @@ Hyxconflim=[Hyx seHyx Hyx-talpha*seHyx Hyx+talpha*seHyx];
 
 
 ConfLim=[CramerVconflim; GKlambdayxconflim; tauyxconflim;  Hyxconflim];
-out.ConfLimtable=ConfLim;
-colnam={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
-ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnam);
-out.ConfLimtable=ConfLimtable;
+out.ConfLim=ConfLim;
+colnamConfLim={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
+if verMatlab ==0
+    ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnamConfLim);
+    out.ConfLimtable=ConfLimtable;
+end
 
 % Store results to test independence hypothesis
 TestInd=[CramerV seCramerV  zCramerV  pvalCramerV;
@@ -592,9 +602,12 @@ TestInd=[CramerV seCramerV  zCramerV  pvalCramerV;
     Hyx seHyx zHyx pvalHyx];
 
 rownam={'CramerV' 'GKlambdayx' 'tauyx' 'Hyx'};
-colnam={'Coeff' 'se' 'zscore' 'pval'};
-TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnam);
-out.TestIndtable=TestIndtable;
+colnamTestInd={'Coeff' 'se' 'zscore' 'pval'};
+out.TestInd=TestInd;
+if verMatlab ==0
+    TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnamTestInd);
+    out.TestIndtable=TestIndtable;
+end
 
 % if dispresults == true
 %
@@ -628,17 +641,34 @@ if dispresults == true
     disp(CramerV)
     
     if NoStandardErrors == false
-        
-        % Test H_0
-        % Test of independence
-        disp('Test of H_0: independence between rows and columns')
-        disp(TestIndtable);
-        disp('-----------------------------------------')
-        disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
-        disp(ConfLimtable);
+        if verMatlab ==0
+            
+            % Test H_0
+            % Test of independence
+            disp('Test of H_0: independence between rows and columns')
+            disp(TestIndtable);
+            disp('-----------------------------------------')
+            disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
+            disp(ConfLimtable);
+            
+        else
+            % Test H_0
+            % Test of independence
+            disp('Test of H_0: independence between rows and columns')
+            disp(colnamTestInd)
+            disp(TestInd);
+            disp('-----------------------------------------')
+            disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
+            disp(colnamConfLim)
+            disp(ConfLim);
+        end
     else
         disp('-----------------------------------------')
-        disp(TestIndtable(:,1));
+        if verMatlab ==0
+            disp(TestIndtable(:,1));
+        else
+            disp(TestInd(:,1));
+        end
     end
 end
 

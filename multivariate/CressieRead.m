@@ -176,6 +176,10 @@ function [PD , pval] = CressieRead(N,varargin)
 
 %% Beginning of code
 
+% Check MATLAB version. If it is not smaller than 2013b than output is
+% shown in table format
+verMatlab=verLessThan('matlab','8.2.0');
+
 % Check whether N is a contingency table or a n-by-p input dataset (in this
 % last case the contigency table is built using the first tow columns of the
 % input dataset).
@@ -200,7 +204,7 @@ else
     [I,J]=size(N);
 end
 
-if istable(N)
+if verMatlab ==0 && istable(N) 
     N=table2array(N);
 end
 

@@ -108,11 +108,21 @@ function out=corrOrdinal(N, varargin)
 %                       standard error, test and p-value.
 %       out.som     = 1 x 4 vector which contains Somers index $d_{y|x}$,
 %                       standard error, test and p-value.
+% out.TestInd  = 5-by-4 matrix containing index values (first column),
+%                   standard errors (second column), zscores (third column),
+%                   p-values (fourth column). Note that the
+%                   standard errors in this matrix are computed assuming
+%                   the null hypothesis of independence.
 % out.TestIndtable  = 5-by-4 table containing index values (first column),
 %                   standard errors (second column), zscores (third column),
 %                   p-values (fourth column). Note that the
 %                   standard errors in this table are computed assuming
 %                   the null hypothesis of independence.
+% out.ConfLim     = 5-by-4 matrix containing index values (first column),
+%                   standard errors (second column), lower confidence limit
+%                   (third column), upper confidence limit (fourth column).
+%                   Note that the standard errors in this matrix are computed not
+%                   assuming the null hypothesis of independence.
 % out.ConfLimtable  = 5-by-4 table containing index values (first column),
 %                   standard errors (second column), lower confidence limit
 %                   (third column), upper confidence limit (fourth column).
@@ -256,13 +266,13 @@ function out=corrOrdinal(N, varargin)
 % \[
 % var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
 % \]
-% 
-% 
+%
+%
 % As concerns Stuart's $\tau_c$ we have that:
 % \[
 % var(\tau_c)= \frac{4m^2}{(m-1)^2 n^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
 % \]
-% 
+%
 %
 %
 % The variance of $\tau_c$  assuming the independence hypothesis is:
@@ -416,9 +426,13 @@ function out=corrOrdinal(N, varargin)
     N = [24 23 30;19 43 57;13 33 58];
     rownam={'Less_than_5000',  'Between_5000_and_25000' 'Greater_than_25000'};
     colnam= {'Dissatisfied' 'Moderately_satisfied' 'Very_satisfied'};
-    Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));
-    %  Check relationship
-    out=corrOrdinal(Ntable);
+    if verLessThan('matlab','8.2.0') ==0
+        Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));
+        %  Check relationship
+        out=corrOrdinal(Ntable);
+    else
+        out=corrOrdinal(N);
+    end
 %}
 
 %{
@@ -431,11 +445,17 @@ function out=corrOrdinal(N, varargin)
     labels_rows= {'Sufficient' 'Good' 'Very_good'};
     labels_columns= {'Sufficient' 'Good' 'Very_good'};
     out=corrOrdinal(N,'Lr',labels_rows,'Lc',labels_columns,'dispresults',false);
-    % out.Ntable uses labels for rows and columns which are supplied
-    disp(out.Ntable)
+    if verLessThan('matlab','8.2.0') ==0
+        % out.Ntable uses labels for rows and columns which are supplied
+        disp(out.Ntable)
+    end
 %}
 
 %% Beginning of code
+
+% Check MATLAB version. If it is not smaller than 2013b than output is
+% shown in table format
+verMatlab=verLessThan('matlab','8.2.0');
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
 % last case the contingency table is built using the first two columns of the
@@ -506,7 +526,7 @@ if ~isempty(UserOptions)
 end
 
 % Extract labels for rows and columns
-if istable(N)
+if verMatlab ==0 && istable(N)
     Ntable=N;
     N=table2array(N);
 else
@@ -527,7 +547,9 @@ else
             error('Wrong length of column labels');
         end
     end
-    Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
+    if verMatlab ==0
+        Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
+    end
 end
 
 
@@ -583,7 +605,10 @@ end
 
 out=struct;
 out.N=N;
-out.Ntable=Ntable;
+if verMatlab ==0
+    out.Ntable=Ntable;
+end
+
 % totpairs= total number of pairs
 totpairs=0.5*n*(n-1);
 % nidot = row sums
@@ -736,10 +761,14 @@ TestInd=[gam segamH0 zgam pvalgam;
     taub setaubH0 ztaub pvaltaub;
     tauc setaucH0 ztauc pvaltauc;
     som sesomH0 zsom pvalsom];
+
+out.TestInd=TestInd;
 rownam={'gamma' 'taua' 'taub' 'tauc' 'dyx'};
-colnam={'Coeff' 'se' 'zscore' 'pval'};
-TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnam);
-out.TestIndtable=TestIndtable;
+colnamTestInd={'Coeff' 'se' 'zscore' 'pval'};
+if verMatlab ==0
+    TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnamTestInd);
+    out.TestIndtable=TestIndtable;
+end
 
 % Store confidence intervals
 talpha=-norminv((1-conflev)/2);
@@ -749,25 +778,48 @@ taubconflim=[taub setaub taub-talpha*setaub taub+talpha*setaub];
 taucconflim=[tauc setauc tauc-talpha*setauc tauc+talpha*setauc];
 somconflim=[som sesom som-talpha*sesom som+talpha*sesom];
 ConfLim=[gamconflim; tauaconflim; taubconflim; taucconflim; somconflim];
-out.ConfLimtable=ConfLim;
-colnam={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
-ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnam);
-out.ConfLimtable=ConfLimtable;
+out.ConfLim=ConfLim;
+colnamConfInt={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
+
+if verMatlab ==0
+    ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnamConfInt);
+    out.ConfLimtable=ConfLimtable;
+end
 
 if dispresults == true
     if NoStandardErrors == false
-        % Test H_0
-        % Test of independence
-        disp('Test of H_0: independence between rows and columns')
-        disp('The standard errors are computed under H_0')
-        disp(TestIndtable);
-        disp('-----------------------------------------')
-        disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
-        disp('The standard error are computed under H_1')
-        disp(ConfLimtable);
+        if verMatlab ==0
+            
+            % Test H_0
+            % Test of independence
+            disp('Test of H_0: independence between rows and columns')
+            disp('The standard errors are computed under H_0')
+            disp(TestIndtable);
+            disp('-----------------------------------------')
+            disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
+            disp('The standard error are computed under H_1')
+            disp(ConfLimtable);
+        else
+            % Test H_0
+            % Test of independence
+            disp('Test of H_0: independence between rows and columns')
+            disp('The standard errors are computed under H_0')
+            disp(colnamTestInd)
+            disp(TestInd);
+            disp('-----------------------------------------')
+            disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
+            disp('The standard error are computed under H_1')
+            disp(colnamConfInt)
+            disp(ConfLim);
+        end
+        
     else
         disp('-----------------------------------------')
-        disp(TestIndtable(:,1));
+        if verMatlab ==0
+            disp(TestIndtable(:,1));
+        else
+            disp(TestInd(:,1));
+        end
     end
 end
 
