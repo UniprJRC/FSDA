@@ -2,29 +2,20 @@
      load smoke
     [N,~,~,labels] =crosstab(smoke.data(:,1),smoke.data(:,2));
     [I,J]=size(N);
-    % Contingency table is supplied to CorAna
-    Ntable=array2table(N,'RowNames',labels(1:I,1),'VariableNames',labels(1:J,2))
-    out=CorAna(Ntable);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorAna with name pairs.</li></span></a></span></h3><div class="collapse"><p>
+    if verLessThan('matlab','8.2.0') ==0
+    % Contingency table is supplied to CorAna in table format
+        Ntable=array2table(N,'RowNames',labels(1:I,1),'VariableNames',labels(1:J,2))
+        out=CorAna(Ntable);
+    else
+        out=CorAna(N);
+    end</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorAna with name pairs.</li></span></a></span></h3><div class="collapse"><p>
      Input is the contingency table, labels for rows and columns are supplied
      Data are read from the txt file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('smoke.txt')
-    labels_rows= {'Senior-Managers' 'Junior-Managers' 'Senior-Employees' 'Junior-Employees' 'Secretaries'}
+    labels_rows= {'Senior-Managers' 'Junior-Managers' 'Senior-Employees' 'Junior-Employees' 'Secretaries'};
     labels_columns= {'None' 'Light' 'Medium' 'Heavy'};
     N=crosstab(smoke(:,1),smoke(:,2));
-    out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);</pre></div></div><pre class="codeoutput">
-labels_rows =
-
-  1&times;5 cell array
-
-  Columns 1 through 3
-
-    {'Senior-Managers'}    {'Junior-Managers'}    {'Senior-Employees'}
-
-  Columns 4 through 5
-
-    {'Junior-Employees'}    {'Secretaries'}
-
-Summary
+    out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);</pre></div></div><pre class="codeoutput">Summary
              Singular_value     Inertia      Accounted_for    Cumulative
              ______________    __________    _____________    __________
 
@@ -349,13 +340,17 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                          The $(i,j)$-th element is equal to $n_{ij}$,
                          $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
                          sum of the elements of out.P is $n$ (the grand
-                         total).</p></p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p>same as out.N but in table format (with row and
-                         column names).</p></td></tr><tr valign="top"><td><code>P</code></td><td><p>$I$-by-$J$-array containing correspondence matrix
+                         total).</p></p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p><p>same as out.N but in table format (with row and
+                         column names).</p> <p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>P</code></td><td><p>$I$-by-$J$-array containing correspondence matrix
                          (proportions). The $(i,j)$-th element is equal to
                          $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
                          \ldots, J$.  The sum of the elements of out.P is
-                         1.</p></td></tr><tr valign="top"><td><code>Ptable</code></td><td><p>same as out.P but in table format (with row and
-                         column names).</p></td></tr><tr valign="top"><td><code>I</code></td><td><p>Number of active rows of contingency table.</p></td></tr><tr valign="top"><td><code>J</code></td><td><p>Number of active columns of contingency table.</p></td></tr><tr valign="top"><td><code>n</code></td><td><p><p>Grand total. out.n is equal to sum(sum(out.N)).</p> <p>
+                         1.</p></td></tr><tr valign="top"><td><code>Ptable</code></td><td><p><p>same as out.P but in table format (with row and
+                         column names).</p> <p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>I</code></td><td><p>Number of active rows of contingency table.</p></td></tr><tr valign="top"><td><code>J</code></td><td><p>Number of active columns of contingency table.</p></td></tr><tr valign="top"><td><code>n</code></td><td><p><p>Grand total. out.n is equal to sum(sum(out.N)).</p> <p>
                          This is the number of observations.</p></p></td></tr><tr valign="top"><td><code>r</code></td><td><p><p>vector of length $I$ containing row masses.</p> <p>
                          </p>\[
                            r=(f_{1.},	f_{2.}, \ldots, f_{I.})'
@@ -510,11 +505,15 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                            rows points with latent dimension axes. Similar
                            to component loadings in PCA</p></td></tr><tr valign="top"><td><code>sqrtDim2InertiaCols</code></td><td><p>$I$-by-$K$ matrix  containing correlation of
                            column points with latent dimension axes. Similar
-                           to component loadings in PCA.</p></td></tr><tr valign="top"><td><code>SupRowsN</code></td><td><p>matlab table containing contingency table referred
+                           to component loadings in PCA.</p></td></tr><tr valign="top"><td><code>SupRowsN</code></td><td><p><p>matlab table containing contingency table referred
                          to supplementary rows. If there are no
-                         supplementary rows this field is empty.</p></td></tr><tr valign="top"><td><code>SupColsN</code></td><td><p>matlab table containing contingency table related
+                         supplementary rows this field is empty.</p> <p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>SupColsN</code></td><td><p><p>matlab table containing contingency table related
                          to supplementary columns. If there are no
-                         supplementary columns this field is empty.</p></td></tr><tr valign="top"><td><code>RowsPriSup</code></td><td><p>Principal coordinates of supplementary rows</p></td></tr><tr valign="top"><td><code>RowsStaSup</code></td><td><p>Standard coordinates of supplementary rows</p></td></tr><tr valign="top"><td><code>RowsSymSup</code></td><td><p>Symmetrical coordinates of supplementary
+                         supplementary columns this field is empty.</p> <p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>RowsPriSup</code></td><td><p>Principal coordinates of supplementary rows</p></td></tr><tr valign="top"><td><code>RowsStaSup</code></td><td><p>Standard coordinates of supplementary rows</p></td></tr><tr valign="top"><td><code>RowsSymSup</code></td><td><p>Symmetrical coordinates of supplementary
                            rows</p></td></tr><tr valign="top"><td><code>ColsPriSup</code></td><td><p>Principal coordinates of supplementary columns</p></td></tr><tr valign="top"><td><code>ColsStaSup</code></td><td><p>Standard coordinates of of supplementary columns</p></td></tr><tr valign="top"><td><code>ColsSymSup</code></td><td><p>Symmetrical coordinates of supplementary
                                 columns</p></td></tr><tr valign="top"><td><code>Summary</code></td><td><p><p>$K$-times-4 table containing summary results
                            for correpondence analysis.</p> <p>
@@ -522,11 +521,13 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                            sum of the squared singular values is the total
                            inertia).</p> <p>
                            Second column contains the eigenvalues  (the
-                           sum of the eigenvalues is the total inertia).</p><p>
+                           sum of the eigenvalues is the total inertia).</p> <p>
                            Third column contains the variance explained by
                            each latent dimension. Fourth column contains
                            the cumulative variance explained by each
-                           dimension.</p></p></td></tr><tr valign="top"><td><code>OverviewRows</code></td><td><p><p>$I$-times-(k*3+2) table containing an overview
+                           dimension.</p><p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>OverviewRows</code></td><td><p><p>$I$-times-(k*3+2) table containing an overview
                           of row points. More precisely if we suppose that $k=2$
                           First column contains the row masses (vector
                           $r$).</p> <p>
@@ -567,12 +568,16 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                           of this column is equal to 1.</p> <p>
                           Seventh column contains the relative
                           contribution of the first dimension to the
-                          explanation of the inertia of the point.</p><p>
+                          explanation of the inertia of the point.</p> <p>
                           Eight column contains the relative
                           contribution of the second dimension to the
-                          explanation of the inertia of the point.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Benzecri, J.-P. (1992), Correspondence Analysis Handbook, New-York :</p> <p>
- Dekker</p></p></div><div><p>Benzecri, J.-P. (1980), L’analyse des données tome 2 : l’analyse des
- correspondances, Paris : Bordas.</p></div><div><p><p>Greenacre, M.J. (1993), Correspondence Analysis in Practice, London :</p> <p>
- Academic Press.</p></p></div><div><p><p>Gabriel, K.R. and Odoroff, C. (1990). Biplots in biomedical research.</p> <p>
- Statistics in Medicine, 9, pp. 469-485.</p></p></div><div><p>Greenacre, M.J. (1993) Biplots in correspondence Analysis, Journal of
- Applied Statistics, 20, pp. 251 - 269.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+                          explanation of the inertia of the point.</p><p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Benzecri, J.-P. (1992), Correspondence Analysis Handbook, New-York,
+ Dekker.</p></div><div><p>Benzecri, J.-P. (1980), L'analyse des donnees tome 2: l'analyse des
+ correspondances, Paris, Bordas.</p></div><div><p>Greenacre, M.J. (1993), Correspondence Analysis in Practice, London,
+ Academic Press.</p></div><div><p>Gabriel, K.R. and Odoroff, C. (1990), Biplots in biomedical research,
+ Statistics in Medicine, 9, pp. 469-485.</p></div><div><p>Greenacre, M.J. (1993), Biplots in correspondence Analysis, Journal of
+ Applied Statistics, 20, pp. 251 - 269.</p></div><div><p><p>Urbano L.-S., van de Velden M., Kiers H.A.L. (2009),
+ CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations;</p> <p>
+ Journal of Statistical Software, September 2009, Volume 31, Issue 8.</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

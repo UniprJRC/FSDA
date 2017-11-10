@@ -4,7 +4,7 @@
      overlay, specifying densities just for one group.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Iris data: scatter plot matrix with univariate boxplots on the main
      diagonal and personalized options for symbols, colors, symbol
      size and no legend.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of spmplot called by routine FSM.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Now test the direct use of FSM.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">spm with personalized tags.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">An example with 5 groups.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">spmplot called with name/pairs.</a></li><li><a class="intrnllnk" href="#ExtraExample_8"><i>Interactive example 1.</i></a></li><li><a class="intrnllnk" href="#ExtraExample_9">Example of use of option datatooltip.</a></li><li><a class="intrnllnk" href="#ExtraExample_10">Option datatooltip combined with rownames
-     Example of use of option datatooltip.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_datatooltip">datatooltip</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_databrush">databrush</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_subsize">subsize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_selstep">selstep</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_selunit">selunit</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_H">H</a></li><li><a class="intrnllnk" href="#output_argument_AX">AX</a></li><li><a class="intrnllnk" href="#output_argument_BigAx">BigAx</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="div002"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">spmplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">spmplot produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">H=spmplot(Y)</code><span class="syntax_example"><a class="intrnllnk" href="spmplot.html#Example_1">example</a></span></li><li><code class="synopsis">H=spmplot(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="spmplot.html#Example_2">example</a></span></li><li><code class="synopsis">[H,AX]=spmplot(___)</code><span class="syntax_example"><a class="intrnllnk" href="spmplot.html#Example_3">example</a></span></li><li><code class="synopsis">[H,AX,BigAx]=spmplot(___)</code><span class="syntax_example"><a class="intrnllnk" href="spmplot.html#Example_4">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="spmplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_H"><code>H</code></a>=spmplot(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Call of spmplot without name/value pairs.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="spmplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_H"><code>H</code></a>=spmplot(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Call of spmplot without name/value pairs (2nd example).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="spmplot.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_H"><code>H</code></a>,<a class="intrnllnk" href="#outputarg_AX"><code>AX</code></a>]=spmplot(___)</code></span>Call of spmplot with name/value pairs and specifying overlay, 
+     Example of use of option datatooltip.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_group">group</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plo">plo</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispopt">dispopt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tag">tag</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_overlay">overlay</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_undock">undock</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datatooltip">datatooltip</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_databrush">databrush</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_subsize">subsize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_selstep">selstep</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_selunit">selunit</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_H">H</a></li><li><a class="intrnllnk" href="#output_argument_AX">AX</a></li><li><a class="intrnllnk" href="#output_argument_BigAx">BigAx</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="div002"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">spmplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">spmplot produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">H=spmplot(Y)</code><span class="syntax_example"><a class="intrnllnk" href="spmplot.html#Example_1">example</a></span></li><li><code class="synopsis">H=spmplot(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="spmplot.html#Example_2">example</a></span></li><li><code class="synopsis">[H,AX]=spmplot(___)</code><span class="syntax_example"><a class="intrnllnk" href="spmplot.html#Example_3">example</a></span></li><li><code class="synopsis">[H,AX,BigAx]=spmplot(___)</code><span class="syntax_example"><a class="intrnllnk" href="spmplot.html#Example_4">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="spmplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_H"><code>H</code></a>=spmplot(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Call of spmplot without name/value pairs.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="spmplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_H"><code>H</code></a>=spmplot(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Call of spmplot without name/value pairs (2nd example).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="spmplot.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_H"><code>H</code></a>,<a class="intrnllnk" href="#outputarg_AX"><code>AX</code></a>]=spmplot(___)</code></span>Call of spmplot with name/value pairs and specifying overlay, 
      also discarding some groups with the field include, and changing 
      the default colormap.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="spmplot.html#Example_4">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_H"><code>H</code></a>,<a class="intrnllnk" href="#outputarg_AX"><code>AX</code></a>,<a class="intrnllnk" href="#outputarg_BigAx"><code>BigAx</code></a>]=spmplot(___)</code></span>Call of spmplot with name/value pairs and specifying overlay and undock.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call of spmplot without name/value pairs.</li></span></a></span></h3><div class="collapse"><p>
      Iris data: scatter plot matrix with univariate boxplots on the main
@@ -19,7 +19,7 @@
      considered. All the rest is discarded. A message appears to alert the
      user that this is the case.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
-    spmplot(meas,species,plo,'hist','selunit',10.1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and specifying overlay, 
+    spmplot(meas,species,plo,'hist','tag','dfgdfg');</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and specifying overlay, 
      also discarding some groups with the field include, and changing 
      the default colormap.</li></span></a></span></h3><div class="collapse"><p> 
      The Tag setting will be used in the next example to demonstrate the
@@ -169,6 +169,9 @@
     % plo.sym='++v'; % Symbols of the groups
     plo.siz=3.4; % Symbol size
     spmplot(meas,'group',species,'plo',plo,'dispopt','box','tag','myspm');</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i></li></span></a></span></h3><div class="collapse"><p>
+     In the previous examples the first argument of spmplot was a matrix. In
+     the two examples below the first argument is a structure which contains
+     the fields Y and Un
      Example when first input argument is a structure.
      Example of use of option databrush<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
@@ -255,9 +258,7 @@ ans =
 
 </pre><img vspace="5" hspace="5" src="images\spmplot_08.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; data matrix (2D array) containing n observations on v variables
          or a structure 'out' coming from function FSMeda. </span>  </a><span class="example_desc">Matrix or
-         struct.</span></span></h3> <div class="collapse"> <p><p>OPTIONAL INPUT ARGUMENTS IF Y IS A 2D ARRAY:</p> <p>
-
-     If Y is a 2D array, varargin can be either a sequence of name/value
+         struct.</span></span></h3> <div class="collapse"> <p><p>If Y is a 2D array, varargin can be either a sequence of name/value
      pairs, detailed below, or one of the following explicit assignments:</p> <p>
 
        spmplot(Y,group);</p> <p>
@@ -266,24 +267,70 @@ ans =
 
        spmplot(Y,group,plo,dispopt);</p> <p>
 
-     where group, plo and dispopt have the meaning described below.</p> <p>
+     where group, plo and dispopt have the meaning described in the pairs/values section.</p> <p>
 
-     If varargin{1} is a n-elements vector, then it is interpreted
-     as a grouping variable vector 'group'. In this case, it can only be
-     followed by 'plo' and 'dispopt'. Otherwise, the program expects a
-     sequence of name/value pairs.</p> <p>
+     If varargin{1} (that is second input element) is a n-elements vector,
+     then it is interpreted as a grouping variable vector 'group'. In this
+     case, it can only be followed by 'plo' and 'dispopt'. Otherwise, the
+     program expects a sequence of name/value pairs.</p> <p>
 
-  List of optional input arguments if input Y is a 2D array:</p> <p>
+  If first input Y is a structure (generally created by function FSMeda),
+  then this structure must have the following fields:</p> <p>
 
-  group: vector with n elements. It is a grouping variable that determines
-         the marker and color assigned to each point. It can be a categorical
-         variable, vector, string matrix, or cell array of strings.</p> <p>
-         Remark: if 'group' is used to distinguish a set of outliers from
+       Required fields in input structure Y.</p> <p>
+
+       Y.Y   = a data matrix of size n-by-v.</p> <p>
+
+               If the input structure Y contains just the data matrix, a
+               standard static scatter plot matrix will be created.</p> <p>
+
+               On the other hand, if Y also contains information on
+               statistics monitored along a search, then the scatter plots
+               will be linked with other (forward) plots with interaction
+               possibilities, enabled via brushing and datatooltip. More
+               precisely, with option databrush it is possible to create
+               an automatic interaction with the other plots, while with
+               option datatooltip it is possible to retrieve information
+               about a particular unit once selected with the mouse).</p> <p>
+
+       Optional fields in input structure Y.</p> <p>
+
+       Y.MAL = matrix containing the Mahalanobis distances monitored in each
+               step of the forward search. Every row is associated with a
+               unit (this is a necessary field if the user wants to brush
+               the scatter plot matrix).</p> <p>
+       Y.Un  = matrix containing the order of entry of each unit
+               (necessary if datatooltip is true or databrush is not
+               empty).</p><p>
+       Y.label = cell of length n containing the labels of the units
+               (optional argument used when datatooltip=1. If this
+               field is not present labels row1, ..., rown will be
+               automatically created and included in the pop up
+               datatooltip window)
+
+                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'group',group
+</code>,<code> 'plo',1
+</code>,<code> 'dispopt','box'
+</code>,<code> 'tag','myspm'
+</code>,<code> 'overlay',1
+</code>,<code> 'undock', [1 1; 1 3; 3 4]
+</code>,<code> 'datatooltip','' 
+</code>,<code> 'databrush',1
+</code>,<code> 'subsize',10:100
+</code>,<code> 'selstep',100
+</code>,<code> 'selunit','3'
+</code></code></span></div><div class="expandableContent"><div id="inputarg_group" class="clearfix"></div><h3 id="input_argument_namevalue_group" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>group</code> &#8212;grouping variable.</span></a><span class="example_desc">vector with n elements.</span></span></h3><div class="collapse">	<p><p>group is a grouping variable defined as a categorical
+           variable, numeric, or array of strings, 
+               or string matrix, and it must have the same number of rows
+               as Y. This grouping variable that determines
+               the marker and color assigned to each point.</p> <p> 
+                            Remark: if 'group' is used to distinguish a set of outliers from
          a set of good units, the id number for the outliers should be the
-         larger (see optional field 'labeladd' of option 'plo' for details).</p> <p>
+         larger (see optional field 'labeladd' of option 'plo' for details).</p><p>
 
 
-    plo: empty value, scalar of structure which controls the names which
+</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'group',group
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_plo" class="clearfix"></div><h3 id="input_argument_namevalue_plo" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plo</code> &#8212;names, labels, colors, marker type.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>This options controls the names which
          are displayed in the margins of the scatter-plot matrix and the
          labels of the legend.</p> <p>
 
@@ -294,153 +341,93 @@ ans =
          If plo = 1 the names Y1,..., Yv are added to the margins of the
            the scatter plot matrix else nothing is added.</p> <p>
 
-         If plo is a structure it may contain the following fields:</p> <p>
-         - labeladd: if it is '1', the elements belonging to the max(group)
+         If plo is a structure, it is possible to control not only the names but also, point labels, colors, symbols.</p> <p>
+         More precisely structure pl may contain the following fields:</p><p>
+ </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>labeladd</code></td><td><p><p>if it is '1', the elements belonging to the max(group)
                 in the spm are labelled with their unit row index.</p> <p>
-                The default value is labeladd = '', i.e. no label is added.</p> <p>
-         - nameY: cell array of strings containing the labels of the
+                The default value is labeladd = '', i.e. no label is added.</p></p></td></tr><tr valign="top"><td><code>nameY</code></td><td><p>cell array of strings containing the labels of the
                 variables. As default value, the labels which are added
-                are Y1, ..., Yv.</p> <p>
-         - clr: a string of color specifications. By default, the colors
-                are 'brkmgcy'.</p> <p>
-         - sym: a string or a cell of marker specifications. For example,
+                are Y1, ..., Yv.</p></td></tr><tr valign="top"><td><code>clr</code></td><td><p>a string of color specifications. By default, the colors
+                are 'brkmgcy'.</p></td></tr><tr valign="top"><td><code>sym</code></td><td><p><p>a string or a cell of marker specifications. For example,
                 if sym = 'o+x', the first group will be plotted with a
                 circle, the second with a plus, and the third with a 'x'.</p> <p>
                 This is obtained with the assignment plo.sym = 'o+x'
                 or equivalently with plo.sym = {'o' '+' 'x'}.</p> <p>
                 By default the sequence of marker types is:</p> <p>
                 '+';'o';'*';'x';'s';'d';'^';'v';'&gt;';'&lt;';'p';'h';'.'
-         - siz: scalar, a marker size to use for all plots. By default the
+         plo.siz: scalar, a marker size to use for all plots. By default the
                 marker size depends on the number of plots and the size of
                 the figure window. Default is siz = '' (empty value).</p> <p>
-       - doleg: a string to control whether legends are created or not.</p> <p>
-                Set doleg to 'on' (default) or 'off'.</p> <p>
-
- dispopt: string which controls how to fill the diagonals in a plot of
+        plo.doleg: a string to control whether legends are created or not.</p><p>
+                Set doleg to 'on' (default) or 'off'.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plo',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Empty value, scalar or structure.</code></p></div></div><div class="expandableContent"><div id="inputarg_dispopt" class="clearfix"></div><h3 id="input_argument_namevalue_dispopt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispopt</code> &#8212;what to put on the diagonal.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>String which controls how to fill the diagonals in a plot of
        Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to
        'hist' (default) to plot histograms, or 'box' to plot boxplots.</p> <p>
 
        REMARK 1: the style which is used for univariate boxplots is
-       'traditional' if the number of groups is &lt;=5, else it is 'compact'.</p> <p>
-
-       REMARK 2: to set dispopt without changing the defaults for plo use,
-       e.g., spmplot(Y,group,[],'box');</p> <p>
-
-   tag     :   plot tag. String. string which identifies the handle of the plot which
+       'traditional' if the number of groups is &lt;=5, else it is 'compact'.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispopt','box'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;plot tag.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>string which identifies the handle of the plot which
                is about to be created. The default is to use tag
                'pl_spm'. Notice that if the program finds a plot which
                has a tag equal to the one specified by the user, then
                the output of the new plot overwrites the existing one
                in the same window else a new window is created.</p> <p>
-
-   overlay :   Superimposition on the panels out of the main diagonal of 
-               the scatter matrix. Scalar, char or structure. It specifies 
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','myspm'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_overlay" class="clearfix"></div><h3 id="input_argument_namevalue_overlay" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>overlay</code> &#8212;Superimposition on the panels out of the main diagonal of 
+               the scatter matrix.</span></a><span class="example_desc">scalar, char | structure.</span></span></h3><div class="collapse">	<p><p>It specifies 
                what to add in the background for the panels specified in
                undock (default is for all oh them).</p> <p>
                The default value is overlay='', i.e. nothing is changed. If 
                overlay=1 the the filled contours are added to each panel, 
                considering all groups, as default. If overlay is a structure 
-               it may contain the following fields:</p> <p>
-             - overlay.type   : Type of plot to add in the background or to 
+               it may contain the following fields:</p><p>
+      </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p>Type of plot to add in the background or to 
                                 superimpose. String. It can be: 'contourf', 
                                 'contour', 'ellipse' or 'boxplotb', 
                                 specifying respectively to add filled 
                                 contour (default when overlay=1), contour, 
-                                ellipses or a bivariate boxplot.</p> <p>
-             - overlay.include: Boolean vector specifying which groups to
+                                ellipses or a bivariate boxplot (see
+                                function boxplotb.m).</p></td></tr><tr valign="top"><td><code>include</code></td><td><p>Boolean vector specifying which groups to
                                 include in the type of plot specified in
                                 overlay.type, the default value is a vector
-                                of ones (i.e. all groups).</p> <p>
-             - overlay.cmap   : The colormap for the type 'contourf' and
+                                of ones (i.e. all groups).</p></td></tr><tr valign="top"><td><code>cmap</code></td><td><p><p>The colormap for the type 'contourf' and
                                 'contour' is grey as default. In these case, 
                                 this field may specify the colors used for 
                                 the color map. It is a three-column matrix of 
                                 values in the range [0,1] where each row 
                                 is an RGB triplet that defines one color.</p> <p>
                                 Check the colormap function for additional 
-                                informations.</p> <p>      
-             - overlay.conflev: When the type specified is 'ellipse', the 
+                                informations.</p></p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>When the type specified is 'ellipse', the 
                                 size of the ellipses is chi2inv(0.95,2) as
                                 default. In this case, this field may 
                                 specify a different confidence level used
-                                and it is a value between 0 and 1.</p><p>   
-                   Example - 'overlay',1
-                   </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double
-
-   undock   :  Panel to undock and visualize separately. Matrix or logical
-               matrix. If undock='' (default), no panel is extracted. If 
+                                and it is a value between 0 and 1.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'overlay',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_undock" class="clearfix"></div><h3 id="input_argument_namevalue_undock" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>undock</code> &#8212;Panel to undock and visualize separately.</span></a><span class="example_desc">matrix | logical               matrix.</span></span></h3><div class="collapse">	<p><p>If undock='' (default), no panel is extracted. If 
                undock is a r-by-2 matrix, it specifies the r coordinates 
                of the scatter plot matrix to undock and visualize 
                separately in a bivariate plot (i.e. for panels out of the
                main diagonal plots) or in an univariate plot (i.e. the ones 
                on the main diagonal). If undock is a v-by-v logical matrix,
                where v are the number of columns in Y, the trues of undock
-               are undocked and visualized separately.
+               are undocked and visualized separately.</p> <p>
                REMARK - When used, undock automatically deletes the plots 
                obtained by spmplots. If it is desired to keep some of them, 
-               the respective 'Tag' associated has to be changed (e.g. 
-               selecting the figure and then: set(gcf,'Tag','newTag');). 
-                   Example - 'undock', [1 1; 1 3; 3 4]
-                   Data Types - single | double | logical
-
-  OPTIONAL INPUT ARGUMENTS IF Y IS A STRUCTURE.
-
-  If first input Y is a structure (generally created by function FSMeda),
-  then this structure must have the following fields:
-
-       Required fields in input structure Y.
-
-       Y.Y   = a data matrix of size n-by-v.
-
-               If the input structure Y contains just the data matrix, a
-               standard static scatter plot matrix will be created.
-
-               On the other hand, if Y also contains information on
-               statistics monitored along a search, then the scatter plots
-               will be linked with other (forward) plots with interaction
-               possibilities, enabled via brushing and datatooltip. More
-               precisely, with option databrush it is possible to create
-               an automatic interaction with the other plots, while with
-               option datatooltip it is possible to retrieve information
-               about a particular unit once selected with the mouse).
-
-       Optional fields in input structure Y.
-
-       Y.MAL = matrix containing the Mahalanobis distances monitored in each
-               step of the forward search. Every row is associated with a
-               unit (this is a necessary field if the user wants to brush
-               the scatter plot matrix).
-       Y.Un  = matrix containing the order of entry of each unit
-               (necessary if datatooltip is true or databrush is not
-               empty).
-       Y.label = cell of length n containing the labels of the units
-               (optional argument used when datatooltip=1. If this
-               field is not present labels row1, ..., rown will be
-               automatically created and included in the pop up
-               datatooltip window)
-
-       The options which follow can only be used if the first argument
-       of spmplot is a structure containing information about the fwd
-       search (i.e. the fields MAL, Un and eventually label)
-                Data Types - single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code></code>,<code> 'databrush',1
-</code>,<code> 'subsize',10:100
-</code>,<code> 'selstep',100
-</code>,<code> 'selunit','3'
-</code></code></span></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value (default) |                   structure.</span></span></h3><div class="collapse">	<p><p>If datatooltip is not empty the user can use
+               the respective 'Tag' associated has to be changed (e.g.</p> <p> 
+               selecting the figure and then: set(gcf,'Tag','newTag');).</p><p> 
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'undock', [1 1; 1 3; 3 4]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | logical</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value (default) |                   structure.</span></span></h3><div class="collapse">	<p><p>If datatooltip is not empty the user can use
                    the mouse in order to have information about the unit
                    selected, the step in which the unit enters the search
                    and the associated label. If datatooltip is a
-                   structure, it is possible to control the aspect of the
-                   data cursor (see function datacursormode for more
-                   details or the examples below).</p> <p>
-                   datatooltip.DisplayStyle = Determines how the data
-                   cursor displays.</p> <p>
-                   datatooltip.SnapToDataVertex = Specifies whether the
+                   structure, it may contain the following fields:</p> <p>
+           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>DisplayStyle</code></td><td><p>Determines how the data
+                   cursor displays.</p></td></tr><tr valign="top"><td><code>SnapToDataVertex</code></td><td><p>Specifies whether the
                    data cursor snaps to the nearest data value or is
                    located at the actual pointer position. The default
                    options of the structure are
-                   DisplayStyle='Window' and SnapToDataVertex='on'.</p><p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value (default),                   scalar | cell.</span></span></h3><div class="collapse">	<p><p>DATABRUSH IS AN EMPTY VALUE.</p> <p>
+                   DisplayStyle='Window' and SnapToDataVertex='on'.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip','' 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>empty value, scalar or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value (default),                   scalar | cell.</span></span></h3><div class="collapse">	<p><p>DATABRUSH IS AN EMPTY VALUE.</p> <p>
                    If databrush is an empty value (default), no brushing
                    is done.</p> <p>
                    The activation of this option (databrush is a scalar or
@@ -462,7 +449,7 @@ ans =
                    a rectangular brush and it is possible to brush only
                    once (that is persist='').</p> <p>
                    DATABRUSH IS A CELL.</p> <p>
-                   If databrush is a structure, it is possible to use all
+                   If databrush is a cell, it is possible to use all
                    optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
                    following optional argument:</p> <p>
                    - persist = Persistent brushing.</p> <p>
@@ -482,9 +469,13 @@ ans =
                      of the last selected group with the unit row index in
                      matrices X and y. The default value is labeladd='',
                      i.e. no label is added.</p><p>
-                          Remark: The options which follow work in connection with previous option
-       databrush and produce their effect on the monitoring MD plot
-       (malfwdplot)
+                          Remark: The options which follow (subsize, selstep and selunit)
+       work in connection with previous option databrush and produce their
+       effect on the monitoring MD plot (malfwdplot). Note that the
+       options which follow can only be used if the first argument of
+       spmplot is a structure containing information about the fwd search
+       (i.e. the fields MAL, Un and eventually label)
+
 
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_subsize" class="clearfix"></div><h3 id="input_argument_namevalue_subsize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>subsize</code> &#8212;x axis control in malfwdplot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>numeric vector
@@ -502,7 +493,7 @@ ans =
                    n are respectively the first and final step of the
                    search.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'selstep',100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_selunit" class="clearfix"></div><h3 id="input_argument_namevalue_selunit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>selunit</code> &#8212;unit labelling.</span></a><span class="example_desc">cell array of strings, string, | numeric vector for                   labelling units.</span></span></h3><div class="collapse">	<p><p>If out is a structure the threshold is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_selunit" class="clearfix"></div><h3 id="input_argument_namevalue_selunit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>selunit</code> &#8212;unit labelling.</span></a><span class="example_desc">cell array of strings | string | numeric vector for                   labelling units.</span></span></h3><div class="collapse">	<p><p>If out is a structure the threshold is
                    associated with the trajectories of the residuals
                    monitored along the search else it refers to the values
                    of the response variable.</p> <p>
@@ -538,4 +529,4 @@ ans =
    will be centered with respect to the matrix of axes.</p><p>
 
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/gplotmatrix.html'))" itemprop="url"><span itemprop="name"><code>gplotmatrix</code></span></a></span> | <span itemprop="seealso"><a href="yXplot.html" itemprop="url"><span itemprop="name"><code>yXplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/gplotmatrix.html'))" itemprop="url"><span itemprop="name"><code>gplotmatrix</code></span></a></span> | <span itemprop="seealso"><a href="yXplot.html" itemprop="url"><span itemprop="name"><code>yXplot</code></span></a></span> | <span itemprop="seealso"><a href="boxplotb.html" itemprop="url"><span itemprop="name"><code>boxplotb</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="div001"></div></body></html>

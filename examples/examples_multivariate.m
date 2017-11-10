@@ -226,33 +226,43 @@ load('head.mat');
 Y=head.data;
 [n,v]=size(Y);
 
-init=20;
-nsimul=200;
-
-mmdStore=zeros(n-init,nsimul);
-for j=1:nsimul
-    mmd = FSMmmdeasy(Y,0,'init',init);
-    mmdStore(:,j)=mmd(:,2);
+if exist('parfor','file') ==2
+    % Those who do not have the parallel
+    % computing toolbox
+    
+    out=FSMmmdrs(Y);
+    mmdrsplot(out);
+else
+    
+    % Those who do not have the parallel
+    % computing toolbox
+    init=20;
+    nsimul=200;
+    
+    mmdStore=zeros(n-init,nsimul);
+    for j=1:nsimul
+        mmd = FSMmmdeasy(Y,0,'init',init);
+        mmdStore(:,j)=mmd(:,2);
+    end
+    
+    % Plot minMD with random starts
+    figure;
+    hold('on');
+    % Plot lines of empirical quantiles
+    LineStyle={'-';'--';':';'-.'};
+    plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
+    slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
+    fcol={'b';'g';'r';'c';'m';'y';'k'};
+    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
+    
+    set(plot1,{'LineStyle'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+    
+    % Plots lines of theoretical quantiles using order statistics
+    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
+    xlabel('Subset size m');
 end
-
-% Plot minMD with random starts
-figure;
-hold('on');
-% Plot lines of empirical quantiles
-LineStyle={'-';'--';':';'-.'};
-plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
-slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-fcol={'b';'g';'r';'c';'m';'y';'k'};
-fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-
-set(plot1,{'LineStyle'},slintyp(1:nsimul));
-set(plot1,{'Color'},fcol(1:nsimul));
-
-% Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
-line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
-xlabel('Subset size m');
-
 
 %% TR: (Track records): spm
 clearvars;close all;
@@ -729,39 +739,48 @@ malfwdplot(outsc,'tag','scaled','fground',fground);
 malfwdplot(out,'tag','unscaled','fground',fground);
 
 %% SB: random starts
+% Interactive_example
 clearvars;close all;
 load('swiss_banknotes');
 Y=swiss_banknotes.data;
 [n,v]=size(Y);
 
-init=20;
-nsimul=200;
-
-mmdStore=zeros(n-init,nsimul);
-for j=1:nsimul
-    mmd = FSMmmd(Y,0,'init',init);
-    mmdStore(:,j)=mmd(:,2);
+if exist('parfor','file') ==2
+    % Those who do not have the parallel
+    % computing toolbox
+    out=FSMmmdrs(Y);
+    % Enable brushing from the mmdrsplot
+    mmdrsplot(out,'databrush',1);
+else
+    
+    init=20;
+    nsimul=200;
+    
+    mmdStore=zeros(n-init,nsimul);
+    for j=1:nsimul
+        mmd = FSMmmd(Y,0,'init',init);
+        mmdStore(:,j)=mmd(:,2);
+    end
+    
+    % Plot minMD with random starts
+    figure;
+    hold('on');
+    % Plot lines of empirical quantiles
+    LineStyle={'-';'--';':';'-.'};
+    plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
+    slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
+    fcol={'b';'g';'r';'c';'m';'y';'k'};
+    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
+    
+    set(plot1,{'LineStyle'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+    
+    
+    % Plots lines of theoretical quantiles using order statistics
+    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
+    xlabel('Subset size m');
 end
-
-% Plot minMD with random starts
-figure;
-hold('on');
-% Plot lines of empirical quantiles
-LineStyle={'-';'--';':';'-.'};
-plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
-slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-fcol={'b';'g';'r';'c';'m';'y';'k'};
-fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-
-set(plot1,{'LineStyle'},slintyp(1:nsimul));
-set(plot1,{'Color'},fcol(1:nsimul));
-
-
-% Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
-line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
-xlabel('Subset size m');
-
 %% SB (genuine notes): Forward EDA malfwdplot
 % Create figure 3.41 p.129 of ARC 2004
 clearvars;close all;
@@ -1038,32 +1057,42 @@ clearvars;close all;
 Y=load('clus2over.txt');
 [n,v]=size(Y);
 
-init=20;
-nsimul=100;
-
-mmdStore=zeros(n-init,nsimul);
-for j=1:nsimul
-    mmd = FSMmmd(Y,0,'init',init);
-    mmdStore(:,j)=mmd(:,2);
+if exist('parfor','file') ==2
+    % Those who have the parallel
+    % computing toolbox
+    out=FSMmmdrs(Y,'bsbsteps',0);
+    mmdrsplot(out,'ylimy',[2 4]);
+else
+    % Those who do not have the parallel
+    % computing toolbox
+    init=20;
+    nsimul=100;
+    
+    mmdStore=zeros(n-init,nsimul);
+    for j=1:nsimul
+        mmd = FSMmmd(Y,0,'init',init);
+        mmdStore(:,j)=mmd(:,2);
+    end
+    
+    % Plot minMD with random starts
+    figure;
+    hold('on');
+    % Plot lines of empirical quantiles
+    LineStyle={'-';'--';':';'-.'};
+    plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
+    slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
+    fcol={'b';'g';'r';'c';'m';'y';'k'};
+    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
+    
+    set(plot1,{'LineStyle'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+    
+    % Plots lines of theoretical quantiles using order statistics
+    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
+    xlabel('Subset size m');
 end
 
-% Plot minMD with random starts
-figure;
-hold('on');
-% Plot lines of empirical quantiles
-LineStyle={'-';'--';':';'-.'};
-plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
-slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-fcol={'b';'g';'r';'c';'m';'y';'k'};
-fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-
-set(plot1,{'LineStyle'},slintyp(1:nsimul));
-set(plot1,{'Color'},fcol(1:nsimul));
-
-% Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
-line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
-xlabel('Subset size m');
 % compare the output with Figure 5 of Atkinson and Riani (2007)
 
 %% OF: Old Faithful data
@@ -1152,38 +1181,51 @@ bs=fre(1:init,1);
 malfwdplot(out,'databrush',1);
 
 %% 6080 data (random starts)
+% Interactive_example
 clearvars;close all;
 Y=load('sixty_eighty.txt');
 
-[n,v]=size(Y);
 
-init=20;
-nsimul=100;
-
-mmdStore=zeros(n-init,nsimul);
-for j=1:nsimul
-    mmd = FSMmmd(Y,0,'init',init);
-    mmdStore(:,j)=mmd(:,2);
+if exist('parfor','file') ==2
+    % Those who do not have the parallel
+    % computing toolbox
+    out=FSMmmdrs(Y);
+    % Enable brushing from the mmdrsplot
+    databrush=struct;
+    databrush.persist='on';
+    mmdrsplot(out,'databrush',databrush);
+else
+    
+    [n,v]=size(Y);
+    
+    init=20;
+    nsimul=100;
+    
+    mmdStore=zeros(n-init,nsimul);
+    for j=1:nsimul
+        mmd = FSMmmd(Y,0,'init',init);
+        mmdStore(:,j)=mmd(:,2);
+    end
+    
+    % Plot minMD with random starts
+    figure;
+    hold('on');
+    % Plot lines of empirical quantiles
+    LineStyle={'-';'--';':';'-.'};
+    plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
+    slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
+    fcol={'b';'g';'r';'c';'m';'y';'k'};
+    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
+    
+    set(plot1,{'LineStyle'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+    
+    
+    % Plots lines of theoretical quantiles using order statistics
+    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
+    xlabel('Subset size m');
 end
-
-% Plot minMD with random starts
-figure;
-hold('on');
-% Plot lines of empirical quantiles
-LineStyle={'-';'--';':';'-.'};
-plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
-slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-fcol={'b';'g';'r';'c';'m';'y';'k'};
-fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-
-set(plot1,{'LineStyle'},slintyp(1:nsimul));
-set(plot1,{'Color'},fcol(1:nsimul));
-
-
-% Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
-line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
-xlabel('Subset size m');
 
 %% 6080 data: analysis using S and MM estimators
 clearvars;close all;
@@ -1273,40 +1315,50 @@ databrush.persist='on';
 malfwdplot(out,'databrush',databrush);
 
 %% BD bridge data (random starts)
+% Interactive_example
 % Plot of the data
 clearvars;close all;
 Y=load('databri.txt');
 % plot(Y(:,1),Y(:,2),'o')
-
-[n,v]=size(Y);
-
-init=20;
-nsimul=300;
-
-mmdStore=zeros(n-init,nsimul);
-for j=1:nsimul
-    mmd = FSMmmd(Y,0,'init',init);
-    mmdStore(:,j)=mmd(:,2);
+if exist('parfor','file') ==2
+    % Those who have the parallel
+    % computing toolbox
+    out=FSMmmdrs(Y);
+    % Enable brushing from the mmdrsplot
+    databrush=struct;
+    databrush.persist='on';
+    mmdrsplot(out,'databrush',databrush);
+    
+else
+    [n,v]=size(Y);
+    
+    init=20;
+    nsimul=300;
+    
+    mmdStore=zeros(n-init,nsimul);
+    for j=1:nsimul
+        mmd = FSMmmd(Y,0,'init',init);
+        mmdStore(:,j)=mmd(:,2);
+    end
+    
+    % Plot minMD with random starts
+    figure;
+    hold('on');
+    % Plot lines of empirical quantiles
+    LineStyle={'-';'--';':';'-.'};
+    plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
+    slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
+    fcol={'b';'g';'r';'c';'m';'y';'k'};
+    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
+    
+    set(plot1,{'LineStyle'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+    
+    % Plots lines of theoretical quantiles using order statistics
+    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
+    xlabel('Subset size m');
 end
-
-% Plot minMD with random starts
-figure;
-hold('on');
-% Plot lines of empirical quantiles
-LineStyle={'-';'--';':';'-.'};
-plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
-slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-fcol={'b';'g';'r';'c';'m';'y';'k'};
-fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-
-set(plot1,{'LineStyle'},slintyp(1:nsimul));
-set(plot1,{'Color'},fcol(1:nsimul));
-
-% Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
-line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
-xlabel('Subset size m');
-
 
 %% FD Financial data
 % Interactive_example
@@ -1323,41 +1375,63 @@ databrush.persist='on';
 malfwdplot(out,'databrush',databrush);
 
 %% FD Financial data (random starts)
+% Interactive_example
 % Plot of the data
 clearvars;close all;
 Y=load('fondi.txt');
 % plot(Y(:,1),Y(:,2),'o')
 
-[n,v]=size(Y);
-
-init=20;
-nsimul=300;
-
-mmdStore=zeros(n-init,nsimul);
-for j=1:nsimul
-    mmd = FSMmmd(Y,0,'init',init);
-    mmdStore(:,j)=mmd(:,2);
+% Those who have the parallel
+% computing toolbox
+if exist('parfor','file') ==2
+    [fre]=unibiv(Y,'plots',0,'textlab',1,'rf',0.5);
+    fre=sortrows(fre,4);
+    init=20;
+    bs=fre(1:init,1);
+    % Forward search with EDA purposes
+    [outEllstart]=FSMeda(Y,bs,'plots',0,'init',init,'scaled',1);
+    malfwdplot(outEllstart);
+    
+    out=FSMmmdrs(Y,'cleanpool',0);
+    % Enable brushing from the mmdrsplot
+    % Note that the brushed units (given that the malfwdplot is open are
+    % also highlighted inside malfwdplot)
+    databrush=struct;
+    databrush.persist='on';
+    mmdrsplot(out,'databrush',databrush);
+    
+else
+    [n,v]=size(Y);
+    
+    init=20;
+    nsimul=300;
+    
+    mmdStore=zeros(n-init,nsimul);
+    for j=1:nsimul
+        mmd = FSMmmd(Y,0,'init',init);
+        mmdStore(:,j)=mmd(:,2);
+    end
+    
+    % Plot minMD with random starts
+    figure;
+    hold('on');
+    % Plot lines of empirical quantiles
+    LineStyle={'-';'--';':';'-.'};
+    plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
+    slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
+    fcol={'b';'g';'r';'c';'m';'y';'k'};
+    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
+    
+    
+    set(plot1,{'LineStyle'},slintyp(1:nsimul));
+    set(plot1,{'Color'},fcol(1:nsimul));
+    
+    
+    % Plots lines of theoretical quantiles using order statistics
+    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
+    xlabel('Subset size m');
 end
-
-% Plot minMD with random starts
-figure;
-hold('on');
-% Plot lines of empirical quantiles
-LineStyle={'-';'--';':';'-.'};
-plot1=plot(mmd(:,1),mmdStore,'LineWidth',2);
-slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-fcol={'b';'g';'r';'c';'m';'y';'k'};
-fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-
-
-set(plot1,{'LineStyle'},slintyp(1:nsimul));
-set(plot1,{'Color'},fcol(1:nsimul));
-
-
-% Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
-line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
-xlabel('Subset size m');
 
 
 %% FD: analysis using S and MM estimators

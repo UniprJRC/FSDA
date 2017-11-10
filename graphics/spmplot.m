@@ -1,5 +1,5 @@
 function [H,AX,BigAx] = spmplot(Y,varargin)
-%spmplot produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal
+%spmplot produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal and possibly robust bivariate contours
 %
 %<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>
 %
@@ -8,8 +8,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %     Y : data matrix (2D array) containing n observations on v variables
 %         or a structure 'out' coming from function FSMeda. Matrix or
 %         struct.
-%
-%  OPTIONAL INPUT ARGUMENTS IF Y IS A 2D ARRAY:
 %
 %     If Y is a 2D array, varargin can be either a sequence of name/value
 %     pairs, detailed below, or one of the following explicit assignments:
@@ -20,124 +18,12 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %       spmplot(Y,group,plo,dispopt);
 %
-%     where group, plo and dispopt have the meaning described below.
+%     where group, plo and dispopt have the meaning described in the pairs/values section.
 %
-%     If varargin{1} is a n-elements vector, then it is interpreted
-%     as a grouping variable vector 'group'. In this case, it can only be
-%     followed by 'plo' and 'dispopt'. Otherwise, the program expects a
-%     sequence of name/value pairs.
-%
-%  List of optional input arguments if input Y is a 2D array:
-%
-%  group: vector with n elements. It is a grouping variable that determines
-%         the marker and color assigned to each point. It can be a categorical
-%         variable, vector, string matrix, or cell array of strings.
-%         Remark: if 'group' is used to distinguish a set of outliers from
-%         a set of good units, the id number for the outliers should be the
-%         larger (see optional field 'labeladd' of option 'plo' for details).
-%
-%
-%    plo: empty value, scalar of structure which controls the names which
-%         are displayed in the margins of the scatter-plot matrix and the
-%         labels of the legend.
-%
-%         If plo is the empty vector [], then nameY and labeladd are
-%           both set to the empty string '' (default), and no label and
-%           no name is added to the plot.
-%
-%         If plo = 1 the names Y1,..., Yv are added to the margins of the
-%           the scatter plot matrix else nothing is added.
-%
-%         If plo is a structure it may contain the following fields:
-%         - labeladd: if it is '1', the elements belonging to the max(group)
-%                in the spm are labelled with their unit row index.
-%                The default value is labeladd = '', i.e. no label is added.
-%         - nameY: cell array of strings containing the labels of the
-%                variables. As default value, the labels which are added
-%                are Y1, ..., Yv.
-%         - clr: a string of color specifications. By default, the colors
-%                are 'brkmgcy'.
-%         - sym: a string or a cell of marker specifications. For example,
-%                if sym = 'o+x', the first group will be plotted with a
-%                circle, the second with a plus, and the third with a 'x'.
-%                This is obtained with the assignment plo.sym = 'o+x'
-%                or equivalently with plo.sym = {'o' '+' 'x'}.
-%                By default the sequence of marker types is:
-%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'
-%         - siz: scalar, a marker size to use for all plots. By default the
-%                marker size depends on the number of plots and the size of
-%                the figure window. Default is siz = '' (empty value).
-%       - doleg: a string to control whether legends are created or not.
-%                Set doleg to 'on' (default) or 'off'.
-%
-% dispopt: string which controls how to fill the diagonals in a plot of
-%       Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to
-%       'hist' (default) to plot histograms, or 'box' to plot boxplots.
-%
-%       REMARK 1: the style which is used for univariate boxplots is
-%       'traditional' if the number of groups is <=5, else it is 'compact'.
-%
-%       REMARK 2: to set dispopt without changing the defaults for plo use,
-%       e.g., spmplot(Y,group,[],'box');
-%
-%   tag     :   plot tag. String. string which identifies the handle of the plot which
-%               is about to be created. The default is to use tag
-%               'pl_spm'. Notice that if the program finds a plot which
-%               has a tag equal to the one specified by the user, then
-%               the output of the new plot overwrites the existing one
-%               in the same window else a new window is created.
-%
-%   overlay :   Superimposition on the panels out of the main diagonal of 
-%               the scatter matrix. Scalar, char or structure. It specifies 
-%               what to add in the background for the panels specified in
-%               undock (default is for all oh them).
-%               The default value is overlay='', i.e. nothing is changed. If 
-%               overlay=1 the the filled contours are added to each panel, 
-%               considering all groups, as default. If overlay is a structure 
-%               it may contain the following fields:
-%             - overlay.type   : Type of plot to add in the background or to 
-%                                superimpose. String. It can be: 'contourf', 
-%                                'contour', 'ellipse' or 'boxplotb', 
-%                                specifying respectively to add filled 
-%                                contour (default when overlay=1), contour, 
-%                                ellipses or a bivariate boxplot.
-%             - overlay.include: Boolean vector specifying which groups to
-%                                include in the type of plot specified in
-%                                overlay.type, the default value is a vector
-%                                of ones (i.e. all groups).
-%             - overlay.cmap   : The colormap for the type 'contourf' and
-%                                'contour' is grey as default. In these case, 
-%                                this field may specify the colors used for 
-%                                the color map. It is a three-column matrix of 
-%                                values in the range [0,1] where each row 
-%                                is an RGB triplet that defines one color.
-%                                Check the colormap function for additional 
-%                                informations.      
-%             - overlay.conflev: When the type specified is 'ellipse', the 
-%                                size of the ellipses is chi2inv(0.95,2) as
-%                                default. In this case, this field may 
-%                                specify a different confidence level used
-%                                and it is a value between 0 and 1.   
-%                   Example - 'overlay',1
-%                   Data Types - single | double
-%
-%   undock   :  Panel to undock and visualize separately. Matrix or logical
-%               matrix. If undock='' (default), no panel is extracted. If 
-%               undock is a r-by-2 matrix, it specifies the r coordinates 
-%               of the scatter plot matrix to undock and visualize 
-%               separately in a bivariate plot (i.e. for panels out of the
-%               main diagonal plots) or in an univariate plot (i.e. the ones 
-%               on the main diagonal). If undock is a v-by-v logical matrix,
-%               where v are the number of columns in Y, the trues of undock
-%               are undocked and visualized separately.
-%               REMARK - When used, undock automatically deletes the plots 
-%               obtained by spmplots. If it is desired to keep some of them, 
-%               the respective 'Tag' associated has to be changed (e.g. 
-%               selecting the figure and then: set(gcf,'Tag','newTag');). 
-%                   Example - 'undock', [1 1; 1 3; 3 4]
-%                   Data Types - single | double | logical
-%
-%  OPTIONAL INPUT ARGUMENTS IF Y IS A STRUCTURE.
+%     If varargin{1} (that is second input element) is a n-elements vector,
+%     then it is interpreted as a grouping variable vector 'group'. In this
+%     case, it can only be followed by 'plo' and 'dispopt'. Otherwise, the
+%     program expects a sequence of name/value pairs.
 %
 %  If first input Y is a structure (generally created by function FSMeda),
 %  then this structure must have the following fields:
@@ -173,23 +59,135 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               automatically created and included in the pop up
 %               datatooltip window)
 %
-%       The options which follow can only be used if the first argument
-%       of spmplot is a structure containing information about the fwd
-%       search (i.e. the fields MAL, Un and eventually label)
 %                Data Types - single|double
 %
-%   Optional input arguments: (if the first argument of spmplot is a
-%                               structure)
+%   Optional input arguments: 
+%
+%  group: grouping variable. Vector with n elements. 
+%          group is a grouping variable defined as a categorical
+%           variable, numeric, or array of strings, 
+%               or string matrix, and it must have the same number of rows
+%               as Y. This grouping variable that determines
+%               the marker and color assigned to each point. 
+%                   Example - 'group',group
+%                   Data Types - char
+%         Remark: if 'group' is used to distinguish a set of outliers from
+%         a set of good units, the id number for the outliers should be the
+%         larger (see optional field 'labeladd' of option 'plo' for details).
 %
 %
+%    plo: names, labels, colors, marker type. Empty value, scalar or structure. 
+%         This options controls the names which
+%         are displayed in the margins of the scatter-plot matrix and the
+%         labels of the legend.
+%
+%         If plo is the empty vector [], then nameY and labeladd are
+%           both set to the empty string '' (default), and no label and
+%           no name is added to the plot.
+%
+%         If plo = 1 the names Y1,..., Yv are added to the margins of the
+%           the scatter plot matrix else nothing is added.
+%
+%         If plo is a structure, it is possible to control not only the names but also, point labels, colors, symbols.
+%         More precisely structure pl may contain the following fields:
+%         plo.labeladd = if it is '1', the elements belonging to the max(group)
+%                in the spm are labelled with their unit row index.
+%                The default value is labeladd = '', i.e. no label is added.
+%         plo.nameY = cell array of strings containing the labels of the
+%                variables. As default value, the labels which are added
+%                are Y1, ..., Yv.
+%         plo.clr = a string of color specifications. By default, the colors
+%                are 'brkmgcy'.
+%         plo.sym = a string or a cell of marker specifications. For example,
+%                if sym = 'o+x', the first group will be plotted with a
+%                circle, the second with a plus, and the third with a 'x'.
+%                This is obtained with the assignment plo.sym = 'o+x'
+%                or equivalently with plo.sym = {'o' '+' 'x'}.
+%                By default the sequence of marker types is:
+%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'
+%         plo.siz: scalar, a marker size to use for all plots. By default the
+%                marker size depends on the number of plots and the size of
+%                the figure window. Default is siz = '' (empty value).
+%        plo.doleg: a string to control whether legends are created or not.
+%                Set doleg to 'on' (default) or 'off'.
+%                   Example - 'plo',1
+%                   Data Types - Empty value, scalar or structure. 
+%
+% dispopt: what to put on the diagonal. Character. String which controls how to fill the diagonals in a plot of
+%       Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to
+%       'hist' (default) to plot histograms, or 'box' to plot boxplots.
+%
+%       REMARK 1: the style which is used for univariate boxplots is
+%       'traditional' if the number of groups is <=5, else it is 'compact'.
+%                   Example - 'dispopt','box'
+%                   Data Types - char
+%
+%
+%   tag     :   plot tag. String. string which identifies the handle of the plot which
+%               is about to be created. The default is to use tag
+%               'pl_spm'. Notice that if the program finds a plot which
+%               has a tag equal to the one specified by the user, then
+%               the output of the new plot overwrites the existing one
+%               in the same window else a new window is created.
+%                   Example - 'tag','myspm'
+%                   Data Types - char
+%
+%   overlay :   Superimposition on the panels out of the main diagonal of 
+%               the scatter matrix. Scalar, char or structure. It specifies 
+%               what to add in the background for the panels specified in
+%               undock (default is for all oh them).
+%               The default value is overlay='', i.e. nothing is changed. If 
+%               overlay=1 the the filled contours are added to each panel, 
+%               considering all groups, as default. If overlay is a structure 
+%               it may contain the following fields:
+%              overlay.type  = Type of plot to add in the background or to 
+%                                superimpose. String. It can be: 'contourf', 
+%                                'contour', 'ellipse' or 'boxplotb', 
+%                                specifying respectively to add filled 
+%                                contour (default when overlay=1), contour, 
+%                                ellipses or a bivariate boxplot (see
+%                                function boxplotb.m).
+%              overlay.include = Boolean vector specifying which groups to
+%                                include in the type of plot specified in
+%                                overlay.type, the default value is a vector
+%                                of ones (i.e. all groups).
+%              overlay.cmap =  The colormap for the type 'contourf' and
+%                                'contour' is grey as default. In these case, 
+%                                this field may specify the colors used for 
+%                                the color map. It is a three-column matrix of 
+%                                values in the range [0,1] where each row 
+%                                is an RGB triplet that defines one color.
+%                                Check the colormap function for additional 
+%                                informations.      
+%              overlay.conflev = When the type specified is 'ellipse', the 
+%                                size of the ellipses is chi2inv(0.95,2) as
+%                                default. In this case, this field may 
+%                                specify a different confidence level used
+%                                and it is a value between 0 and 1.   
+%                   Example - 'overlay',1
+%                   Data Types - single | double
+%
+%   undock   :  Panel to undock and visualize separately. Matrix or logical
+%               matrix. If undock='' (default), no panel is extracted. If 
+%               undock is a r-by-2 matrix, it specifies the r coordinates 
+%               of the scatter plot matrix to undock and visualize 
+%               separately in a bivariate plot (i.e. for panels out of the
+%               main diagonal plots) or in an univariate plot (i.e. the ones 
+%               on the main diagonal). If undock is a v-by-v logical matrix,
+%               where v are the number of columns in Y, the trues of undock
+%               are undocked and visualized separately.
+%               REMARK - When used, undock automatically deletes the plots 
+%               obtained by spmplots. If it is desired to keep some of them, 
+%               the respective 'Tag' associated has to be changed (e.g. 
+%               selecting the figure and then: set(gcf,'Tag','newTag');). 
+%                   Example - 'undock', [1 1; 1 3; 3 4]
+%                   Data Types - single | double | logical
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. If datatooltip is not empty the user can use
 %                   the mouse in order to have information about the unit
 %                   selected, the step in which the unit enters the search
 %                   and the associated label. If datatooltip is a
-%                   structure, it is possible to control the aspect of the
-%                   data cursor (see function datacursormode for more
-%                   details or the examples below).
+%                   structure, it may contain the following fields:
 %                   datatooltip.DisplayStyle = Determines how the data
 %                   cursor displays.
 %                   datatooltip.SnapToDataVertex = Specifies whether the
@@ -197,7 +195,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   located at the actual pointer position. The default
 %                   options of the structure are
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
-%                   Example - 'datatooltip','' Data Types - char
+%                   Example - 'datatooltip','' 
+%                   Data Types - empty value, scalar or struct
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or cell.
 %                   DATABRUSH IS AN EMPTY VALUE.
@@ -222,7 +221,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   a rectangular brush and it is possible to brush only
 %                   once (that is persist='').
 %                   DATABRUSH IS A CELL.
-%                   If databrush is a structure, it is possible to use all
+%                   If databrush is a cell, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
 %                   following optional argument:
 %                   - persist = Persistent brushing.
@@ -245,9 +244,13 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
-%       Remark: The options which follow work in connection with previous option
-%       databrush and produce their effect on the monitoring MD plot
-%       (malfwdplot)
+%       Remark: The options which follow (subsize, selstep and selunit)
+%       work in connection with previous option databrush and produce their
+%       effect on the monitoring MD plot (malfwdplot). Note that the
+%       options which follow can only be used if the first argument of
+%       spmplot is a structure containing information about the fwd search
+%       (i.e. the fields MAL, Un and eventually label)
+%
 %
 %       subsize :   x axis control in malfwdplot. Vector. numeric vector
 %                   containing the subset size with length
@@ -266,7 +269,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   search.
 %                   Example - 'selstep',100
 %                   Data Types - single | double
-%       selunit :   unit labelling. Cell array of strings, string, or numeric vector for
+%       selunit :   unit labelling. Cell array of strings or string or numeric vector for
 %                   labelling units. If out is a structure the threshold is
 %                   associated with the trajectories of the residuals
 %                   monitored along the search else it refers to the values
@@ -292,7 +295,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'selunit','3'
 %                   Data Types - numeric or character
 %
-%
 %  Output:
 %
 %        H      :   array of handles H to the plotted points. 3D array. See
@@ -314,7 +316,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %   will be centered with respect to the matrix of axes.
 %
 %
-% See also: gplotmatrix, yXplot
+% See also: gplotmatrix, yXplot, boxplotb
 %
 % Copyright 2008-2016.
 % Written by FSDA team
@@ -342,7 +344,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % considered. All the rest is discarded. A message appears to alert the
     % user that this is the case.
     close all
-    spmplot(meas,species,plo,'hist','selunit',10.1);
+    spmplot(meas,species,plo,'hist','tag','dfgdfg');
 %}
 
 
@@ -534,12 +536,12 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(meas,'group',species,'plo',plo,'dispopt','box','tag','myspm');
 %}
 
-% In the previous examples the first argument of spmplot was a matrix. In
-% the two examples below the first argument is a structure which contains
-% the fields Y and Un
 
 %{
     % Interactive_example.
+    % In the previous examples the first argument of spmplot was a matrix. In
+    % the two examples below the first argument is a structure which contains
+    % the fields Y and Un
     % Example when first input argument is a structure.
     % Example of use of option databrush
     close all
