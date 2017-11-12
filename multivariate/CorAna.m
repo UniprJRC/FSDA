@@ -528,7 +528,6 @@ function out=CorAna(N, varargin)
 %
 %
 %<a href="matlab: docsearchFS('CorAna')">Link to the help function</a>
-% Last modified 14-06-2016
 %
 % Last modified 31-05-2016
 %
