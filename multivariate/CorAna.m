@@ -105,7 +105,7 @@ function out=CorAna(N, varargin)
 %                   coordinates are referred to as principal coordinates
 %                   and the row coordinates as standard coordinates.
 %                   Distances between column points are (approximated)
-%                   chi-squared distances (row-metric-preserving). The
+%                   chi-squared distances (column-metric-preserving). The
 %                   position of the column points are at the weighted
 %                   average of the row points.
 %                   Note that 'colwprincipal' can also be
