@@ -139,8 +139,12 @@ function [PD , pval] = CressieRead(N,varargin)
     T=[2365 944 412; 249 585 276];
     AccidentType={'Rollover' 'NotRollover'};
     AccidentSeverity={'NotSevere' 'ModeratelySevere' 'Severe'};
-    T=array2table(T,'RowNames',AccidentType,'VariableNames',AccidentSeverity);
-    [PD,pval]=CressieRead(T);
+    if verLessThan('matlab','8.2.0') ==0
+        Ttable=array2table(T,'RowNames',AccidentType,'VariableNames',AccidentSeverity);
+        [PD,pval]=CressieRead(Ttable);
+    else
+        [PD,pval]=CressieRead(T);
+    end
 %}
 
 %{
@@ -165,7 +169,9 @@ function [PD , pval] = CressieRead(N,varargin)
     T=[61 28 7; 68 23 13; 58 40 12; 53 38 16];
     Operation={'A1' 'A2' 'A3' 'A4'};
     DumpingSeverity={'None' 'Slight' 'Moderate'};
-    T=array2table(T,'RowNames',Operation,'VariableNames',DumpingSeverity);
+    if verLessThan('matlab','8.2.0') ==0
+        T=array2table(T,'RowNames',Operation,'VariableNames',DumpingSeverity);
+    end
     la=[-5 -2 -1 -0.5 0 0.5 2/3 1 2 5];
     PD=[la' zeros(length(la),2)];
     for i=1:length(la)
