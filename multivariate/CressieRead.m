@@ -5,7 +5,7 @@ function [PD , pval] = CressieRead(N,varargin)
 %
 %  Required input arguments:
 %
-%       N    :    Contingency table (default) or n-by-2 input datasets.
+%       N    :    Contingency table (default) or n-by-2 input dataset.
 %                 Matrix or Table. Matrix or table which contains the input
 %                 contingency table (say of size I-by-J) or the original
 %                 data matrix. In this last case N=crosstab(N(:,1),N(:,2)).
@@ -14,7 +14,7 @@ function [PD , pval] = CressieRead(N,varargin)
 %
 %  Optional input arguments:
 %
-%       la   :  parameter $\lambda$ of the family. Scalar. Scalar which 
+%       la   :  Parameter $\lambda$ of the family. Scalar. Scalar which 
 %               contains the power in the Cressie-Read power divergence
 %               statistics. The default value of la is 2/3.
 %               If $\lambda=1$ we obtain Pearson's chi-squared statistic, 
@@ -29,7 +29,7 @@ function [PD , pval] = CressieRead(N,varargin)
 %               $\lambda=2/3$ is the value suggested by Cressie and Read (2004).
 %               Example - 'la',0
 %               Data Types - double
-% datamatrix  : data matrix or contingency table. Boolean. If datamatrix
+% datamatrix  : Data matrix or contingency table. Boolean. If datamatrix
 %               is true the first input argument N is forced to be
 %               interpreted as a data matrix, else if the input argument is
 %               false N is treated as a contingency table. The default
@@ -42,15 +42,15 @@ function [PD , pval] = CressieRead(N,varargin)
 %
 %       PD    : Cressie-Read power divergence test statistic. Scalar.
 %               Scalar which measures the discrepancy/distance between
-%               observed and expected frequencies under the null hypothesis
-%               of there is no difference in the row variable distribution
+%               observed and expected frequencies, under the null hypothesis
+%               that there is no difference in the row variable distribution
 %               ('outcomes') between the columns ('treatments').
 %
-%     pval    :  p-value of the test. Scalar. Value in the range [0,1] which 
-%                represents the p-value of the test. The p value is the
-%                probability, under the null hypothesis, of observing a
-%                value as extreme or more extreme of the power divergence
-%                test statistic.
+%     pval    : p-value of the test. Scalar. Value in the range [0,1] which 
+%               represents the p-value of the test. The p-value is the
+%               probability, under the null hypothesis, of observing a
+%               value as extreme or more extreme of the power divergence
+%               test statistic.
 %
 % More About:
 %
@@ -88,7 +88,7 @@ function [PD , pval] = CressieRead(N,varargin)
 % If some of the expected frequencies are very small while others are
 % greater than 1, there are no firm recommendations regarding the best
 % approximation to use for the critical value. In some of these cases the
-% normal approximation of will be appropriate, however the convergence of
+% normal approximation may be appropriate, however the convergence of
 % this normal approximation is slow (Cressie and Read, 1984; p. 63).
 % The test we have just performed is intrinsically non-directional, that is 
 % the significant value says nothing at all about the

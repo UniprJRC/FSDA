@@ -34,16 +34,17 @@
     for i=1:length(la)
         [PD(i,2),PD(i,3)]=CressieRead(T,'la',la(i));
     end
-    disp(PD)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input datasets. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
-                 table (say of size I-by-J) or the original data matrix.</p> <p>
-                 In this last case N=crosstab(N(:,1),N(:,2)). As default
-                 procedure assumes that the input is a contingency table.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'la',0
+    disp(PD)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input
+                 contingency table (say of size I-by-J) or the original
+                 data matrix. In this last case N=crosstab(N(:,1),N(:,2)).</p> <p>
+                 As default procedure assumes that the input is a
+                 contingency table.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'la',0
 </code>,<code> 'datamatrix',true
-</code></code></span></div><div class="expandableContent"><div id="inputarg_la" class="clearfix"></div><h3 id="input_argument_namevalue_la" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>la</code> &#8212;parameter $\lambda$ of the family.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which contains the power in the
-               Cressie-Read power divergence statistics. The default value
-               of la is 2/3.</p> <p>
-               If $\lambda=1$ we obtain Pearson's chi-squared statistic, see
-              <a href="http://en.wikipedia.org/wiki/Chi-squared_test">http://en.wikipedia.org/wiki/Chi-squared_test</a>.</p> <p>
+</code></code></span></div><div class="expandableContent"><div id="inputarg_la" class="clearfix"></div><h3 id="input_argument_namevalue_la" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>la</code> &#8212;Parameter $\lambda$ of the family.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which 
+               contains the power in the Cressie-Read power divergence
+               statistics. The default value of la is 2/3.</p> <p>
+               If $\lambda=1$ we obtain Pearson's chi-squared statistic, 
+               see<a href="http://en.wikipedia.org/wiki/Chi-squared_test">http://en.wikipedia.org/wiki/Chi-squared_test</a>.</p> <p>
                If $\lambda=0$ we obtain the Log-likelihood ratio (G, or G^2
                test), see<a href="http://en.wikipedia.org/wiki/G-test">http://en.wikipedia.org/wiki/G-test</a>t.</p> <p>
                If $\lambda=-0.5$ we obtain the Freeman-Tukey statistic, or
@@ -53,24 +54,22 @@
                chi squared estimate).</p> <p>
                $\lambda=2/3$ is the value suggested by Cressie and Read (2004).</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'la',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_datamatrix" class="clearfix"></div><h3 id="input_argument_namevalue_datamatrix" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datamatrix</code> &#8212;data matrix or contingency table.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If
-                       datamatrix is true the first input argument N is
-                       forced to be interpreted as a data matrix, else
-                       if the input argument is false N
-                       is treated as a contingency table. The default value
-                       of datamatrix is false, that is the procedure
-                       automatically considers N as a contingency table
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_datamatrix" class="clearfix"></div><h3 id="input_argument_namevalue_datamatrix" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datamatrix</code> &#8212;Data matrix or contingency table.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If datamatrix
+               is true the first input argument N is forced to be
+               interpreted as a data matrix, else if the input argument is
+               false N is treated as a contingency table. The default
+               value of datamatrix is false, that is the procedure
+               automatically considers N as a contingency table
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datamatrix',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_PD" class="clearfix"></div><h3 id="output_argument_PD" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>PD</code> &#8212;Cressie-Read power divergence test statistic.</span></a><span class="example_desc">Scalar</span></span></h3><div class="collapse"><p>
-                 Scalar which measures the discrepancy/distance between
-                 observed and expected frequecies under the null
-                 hypothesis of there is no difference in the row variable
-                 distribution ('outcomes') between the columns
-                 ('treatments').</p></div></div><div class="expandableContent"><div id="outputarg_pval" class="clearfix"></div><h3 id="output_argument_pval" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>pval</code> &#8212;p-value of the test.</span></a><span class="example_desc">Scalar</span></span></h3><div class="collapse"><p> 
-                Value in the range [0,1] which represents the p-value of
-                the test. The p value is the probability, under the null
-                hypothesis, of observing a value as extreme or more
-                extreme of the power divergence test statistic.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+               Scalar which measures the discrepancy/distance between
+               observed and expected frequencies, under the null hypothesis
+               that there is no difference in the row variable distribution
+               ('outcomes') between the columns ('treatments').</p></div></div><div class="expandableContent"><div id="outputarg_pval" class="clearfix"></div><h3 id="output_argument_pval" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>pval</code> &#8212;p-value of the test.</span></a><span class="example_desc">Scalar</span></span></h3><div class="collapse"><p> Value in the range [0,1] which 
+               represents the p-value of the test. The p-value is the
+               probability, under the null hypothesis, of observing a
+               value as extreme or more extreme of the power divergence
+               test statistic.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
   $N$ = $I$-by-$J$-contingency table. The $(i,j)$-th element is equal to
   $n_{ij}$,  $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The sum of the
   elements of N is $n$ (the grand total).</p> <p>
@@ -80,9 +79,8 @@
   \ldots, J$.  The sum of the elements of $P$ is 1.</p> <p>
   $P^*$=$I$-by-$J$-table containing correspondence matrix (proportions)
   under the hypothesis of independence. The $(i,j)$-th element is equal to
-  $p_{ij}^*=p_{i.}p_{.j}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$.  The sum of
-  the elements of $P^*$ is 1.</p> <p>
-  
+  $p_{ij}^*=p_{i.}p_{.j}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$.</p> <p>
+  The sum of the elements of $P^*$ is 1.</p> <p>
 
  The power divergence family is defined:</p><p>
    
@@ -106,7 +104,7 @@
  If some of the expected frequencies are very small while others are
  greater than 1, there are no firm recommendations regarding the best
  approximation to use for the critical value. In some of these cases the
- normal approximation of will be appropriate, however the convergence of
+ normal approximation may be appropriate, however the convergence of
  this normal approximation is slow (Cressie and Read, 1984; p. 63).</p> <p>
  The test we have just performed is intrinsically non-directional, that is 
  the significant value says nothing at all about the

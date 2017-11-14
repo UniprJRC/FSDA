@@ -22,32 +22,32 @@ function out=corrNominal(N, varargin)
 %
 %  Optional input arguments:
 %
-%   NoStandardErrors:  Just index without standard errors and p-values.
+%  NoStandardErrors:  Just indexes without standard errors and p-values.
 %               Boolean.
 %               if NoStandardErrors is true just the indexes are computed
 %               without standard errors and p-values. That is no
 %               inferential measure is given. The default value of
 %               NoStandardErrors is false.
-%                 Example - 'NoStandardErrors',true
-%                 Data Types - Boolean
-%  dispresults :  display results on the screen. Boolean.
-%                 If dispresults is true (default) it is possible to see on the
-%                 screen all the summary results of the analysis.
-%                 Example - 'dispresults',false
-%                 Data Types - Boolean
+%               Example - 'NoStandardErrors',true
+%               Data Types - Boolean
+%  dispresults :  Display results on the screen. Boolean.
+%               If dispresults is true (default) it is possible to see on the
+%               screen all the summary results of the analysis.
+%               Example - 'dispresults',false
+%               Data Types - Boolean
 %       Lr   :  Vector of row labels. Cell.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table. because in this case  Lr=N.Properties.RowNames;
+%               table, because in this case Lr=N.Properties.RowNames;
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
 %       Lc   :  Vector of column labels. Cell.
 %               Cell containing the labels of the columns of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table because in this case Lc=N.Properties.VariableNames;
+%               table, because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
-% datamatrix :  data matrix or contingency table. Boolean.
+% datamatrix :  Data matrix or contingency table. Boolean.
 %               If datamatrix is true the first input argument N is forced
 %               to be interpreted as a data matrix, else if the input
 %               argument is false N is treated as a contingency table. The
@@ -55,12 +55,12 @@ function out=corrNominal(N, varargin)
 %               automatically considers N as a contingency table
 %               Example - 'datamatrix',true
 %               Data Types - logical
-%  conflev:     confidence levels to be used to
+%  conflev:     Confidence levels to be used to
 %               compute confidence intervals. Scalar.
-%               The default value of conflev is 0.95  that
+%               The default value of conflev is 0.95, that
 %               is 95 per cent confidence intervals
 %               are computed for all the indexes (note that this option is
-%               ignored if NoStandardErrors=true
+%               ignored if NoStandardErrors=true).
 %               Example - 'conflev',0.99
 %               Data Types - double
 %
@@ -68,20 +68,20 @@ function out=corrNominal(N, varargin)
 %
 %         out:   structure which contains the following fields:
 %
-% 		out.N         =   $I$-by-$J$-array containing contingency table
-%                         referred to active rows (i.e. referred to the rows which
-%                         participated to the fit).
-%                         The $(i,j)$-th element is equal to $n_{ij}$,
-%                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
-%                         sum of the elements of out. is $n$ (the grand
-%                         total).
+% 		out.N        =   $I$-by-$J$-array containing contingency table
+%                        referred to active rows (i.e. referred to the rows which
+%                        participated to the fit).
+%                        The $(i,j)$-th element is equal to $n_{ij}$,
+%                        $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
+%                        sum of the elements of out.N is $n$ (the grand
+%                        total).
 % 		out.Ntable   =   same as out.N but in table format (with row and
-%                         column names).
-%                         This output is present just if your MATLAB
-%                         version is not<2013b.
-%        out.Chi2      = 1 x 2 vector which contains $\chi^2$ index,
+%                        column names).
+%                        This output is present just if your MATLAB
+%                        version is not<2013b.
+%        out.Chi2    =   1-by-2 vector which contains $\chi^2$ index,
 %                        and p-value.
-%       out.Phi    = 1 x 2 vector which contains index $\Phi$ index,
+%         out.Phi    =   1-by-2 vector which contains index $\Phi$ index,
 %                        and p-value.  Phi is a chi-square-based measure of
 %                        association that involves dividing the chi-square
 %                        statistic by the sample size and taking the square
@@ -89,69 +89,69 @@ function out=corrNominal(N, varargin)
 %                        \[
 %                        \Phi= \sqrt{ \frac{\chi^2}{n} }
 %                        \]
-%                       This index lies in the interval $[0 \sqrt{\min[(I-1),(J-1)]}$.
-%      out.CramerV     = 1 x 4 vector which contains Cramer's V index,
-%                       standard error, z test, and p-value. Cramer'V index is index $\Phi$
-%                       divided by its maximum. More precisely
+%                        This index lies in the interval $[0 , \sqrt{\min[(I-1),(J-1)]}$.
+%      out.CramerV   =   1 x 4 vector which contains Cramer's V index,
+%                        standard error, z test, and p-value. Cramer'V index 
+%                        is index $\Phi$ divided by its maximum. More precisely
 %                        \[
-%                       V= \sqrt{\frac{\Phi}{\min[(I-1),(J-1)]}}=\sqrt{\frac{\chi^2}{n \min[(I-1),(J-1)]}}
+%                        V= \sqrt{\frac{\Phi}{\min[(I-1),(J-1)]}}=\sqrt{\frac{\chi^2}{n \min[(I-1),(J-1)]}}
 %                        \]
-%                       The range of Cramer index is [0 1]. A Cramer's V in
-%                       the range of [0, 0.3] is considered as weak,
-%                       [0.3,0.7] as medium and > 0.7 as strong.
-%                       In order to compute the confidence interval for
-%                       this index we firt find a confidence interval for
-%                       the non centrality parameter $\Delta$ of the
-%                       $\chi^2$ distribution with $df=(I-1)(J-1)$ degrees of
-%                       freedom. (see Smithson (2003) pp. 39 41) $[\Delta_L
-%                       \Delta_U]$. A confidence interval for $\Delta$ is
-%                       transformed into one for $V$ by the following
-%                       transformation.
-%                       \[
-%                       V_L=\sqrt{\frac{\Delta_L+ df }{n \min[(I-1),(J-1)]}}
-%                       \]
-%                       and
-%                       \[
-%                       V_U=\sqrt{\frac{\Delta_U+ df }{n \min[(I-1),(J-1)]}}
-%                       \]
-%       out.GKlambdayx  = 1 x 4 vector which contains index Goodman and Kruskall $\lambda_{y|x}$,
-%                       standard error, z test, and p-value.
-%                       \[
-%                       \lambda_{y|x} = \sum_{i=1}^I \frac{r_i- r}{n-r}
-%                       \]
-%                       \[
-%                       r_i =\max(n_{ij})
-%                       \]
-%                       \[
-%                       r =\max(n_{.j})
-%                       \]
-%       out.tauyx      = 1 x 4 vector which contains tau index $\tau_{y|x}$,
-%                       standard error, ztest and p-value.
-%                       \[
-%                       \tau_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij}^2/f_{i.} -\sum_{j=1}^J f_{.j}^2 }{1-\sum_{j=1}^J f_{.j}^2 }
-%                       \]
-%          out.Hyx     = 1 x 4 vector which contains the uncertainty
-%                       coefficient index (proposed by Theil) $H_{y|x}$,
-%                       standard error, ztest and p-value.
-%                       \[
-%                       H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log  f_{.j} }
-%                       \]
-% out.TestInd   = 4-by-4 array containing index values (first column),
-%                   standard errors (second column), zscores (third column),
-%                   p-values (fourth column).
-% out.TestIndtable  = 4-by-4 table containing index values (first column),
-%                   standard errors (second column), zscores (third column),
-%                   p-values (fourth column).
-%                         This output is present just if your MATLAB
-%                         version is not<2013b.
-% out.ConfLim    = 4-by-4 array containing index values (first column),
-%                   standard errors (second column), lower confidence limit
-%                   (third column), upper confidence limit (fourth column).
-% out.ConfLimtable  = 4-by-4 table containing index values (first column),
-%                   standard errors (second column), lower confidence limit
-%                   (third column), upper confidence limit (fourth column).
-%                         This output is present just if your MATLAB
-%                         version is not<2013b.
+%                        The range of Cramer index is [0, 1]. A Cramer's V in
+%                        the range of [0, 0.3] is considered as weak,
+%                        [0.3,0.7] as medium and > 0.7 as strong.
+%                        In order to compute the confidence interval for
+%                        this index we first find a confidence interval for
+%                        the non centrality parameter $\Delta$ of the
+%                        $\chi^2$ distribution with $df=(I-1)(J-1)$ degrees of
+%                        freedom. (see Smithson (2003); pp. 39-41) $[\Delta_L
+%                        \Delta_U]$. A confidence interval for $\Delta$ is
+%                        transformed into one for $V$ by the following
+%                        transformation
+%                        \[
+%                        V_L=\sqrt{\frac{\Delta_L+ df }{n \min[(I-1),(J-1)]}}
+%                        \]
+%                        and
+%                        \[
+%                        V_U=\sqrt{\frac{\Delta_U+ df }{n \min[(I-1),(J-1)]}}
+%                        \]
+%    out.GKlambdayx  =   1 x 4 vector which contains index Goodman and Kruskall $\lambda_{y|x}$,
+%                        standard error, z test, and p-value.
+%                        \[
+%                        \lambda_{y|x} = \sum_{i=1}^I \frac{r_i- r}{n-r}
+%                        \]
+%                        \[
+%                        r_i =\max(n_{ij})
+%                        \]
+%                        \[
+%                        r =\max(n_{.j})
+%                        \]
+%       out.tauyx   =    1 x 4 vector which contains tau index $\tau_{y|x}$,
+%                        standard error, ztest and p-value.
+%                        \[
+%                        \tau_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij}^2/f_{i.} -\sum_{j=1}^J f_{.j}^2 }{1-\sum_{j=1}^J f_{.j}^2 }
+%                        \]
+%       out.Hyx     =    1 x 4 vector which contains the uncertainty
+%                        coefficient index (proposed by Theil) $H_{y|x}$,
+%                        standard error, ztest and p-value.
+%                        \[
+%                        H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log  f_{.j} }
+%                        \]
+%     out.TestInd   =    4-by-4 array containing index values (first column),
+%                        standard errors (second column), zscores (third column),
+%                        p-values (fourth column).
+% out.TestIndtable  =    4-by-4 table containing index values (first column),
+%                        standard errors (second column), zscores (third column),
+%                        p-values (fourth column).
+%                        This output is present just if your MATLAB
+%                        version is not<2013b.
+%   out.ConfLim    =     4-by-4 array containing index values (first column),
+%                        standard errors (second column), lower confidence limit
+%                        (third column), upper confidence limit (fourth column).
+% out.ConfLimtable  =    4-by-4 table containing index values (first column),
+%                        standard errors (second column), lower confidence limit
+%                        (third column), upper confidence limit (fourth column).
+%                        This output is present just if your MATLAB
+%                        version is not<2013b.
 %
 % More About:
 %
@@ -161,11 +161,11 @@ function out=corrNominal(N, varargin)
 %                       rows of the contingency table) are used to predict
 %                       values of the dependent variable (variable in the
 %                       columns of the contingency table). The range of
-%                       $\lambda_{y|x}$ is [0 1].  A value of 1
+%                       $\lambda_{y|x}$ is [0, 1]. A value of 1
 %                       means that the independent variable perfectly
 %                       predicts the dependent variable. On the other hand,
-%                       a value of 0 means that the independent variable is
-%                       no help in predicting the dependent variable.
+%                       a value of 0 means that the independent variable
+%                       does not help in predicting the dependent variable.
 %                       More generally, let $V(y)$ a measure of variation
 %                       for the marginal distribution $(f_{.1}=n_{.1}/n,
 %                       ..., f_{.J}=n_{.J}/n)$ of the response $y$ and let
@@ -175,7 +175,7 @@ function out=corrNominal(N, varargin)
 %                       the the explanatory variable $x$. A proportional
 %                       reduction in variation measure has the form.
 %                       \[
-%                         \frac{V(y) - E[V(y|x)]}{V(y|x)}
+%                       \frac{V(y) - E[V(y|x)]}{V(y|x)}
 %                       \]
 %                       where  $E[V(y|x)]$ is the expectation of the
 %                       conditional variation taken with respect to the
@@ -204,7 +204,7 @@ function out=corrNominal(N, varargin)
 %                       \[
 %                       H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log  f_{.j} }
 %                       \]
-%                       The range of  $\tau_{y|x}$ and $H_{y|x}$ is [0 1].
+%                       The range of $\tau_{y|x}$ and $H_{y|x}$ is [0 1].
 %                       A large value of
 %                       of the index represents a strong association, in
 %                       the sense that we can guess $y$ much better when we
@@ -245,7 +245,7 @@ function out=corrNominal(N, varargin)
 % Acknowledgements:
 %
 % In order to find the confidence interval for the non centrality parameter
-% of the Chi squared distribution we use routine ncpci from the Effect Size Toolbox
+% of the Chi-squared distribution we use routine ncpci from the Effect Size Toolbox
 % Code by Harald Hentschke (University of Tübingen) and
 % Maik Stüttgen (University of Bochum)
 %
@@ -266,33 +266,33 @@ function out=corrNominal(N, varargin)
     % 'Economics' 'Law' 'Literature'
     % Columns of N indicate employment type:
     % 'Private_firm' 'Public_firm' 'Freelance' 'Unemployed'
-          N=[150	80	20	50
-            80	250	30	140
-            30	50	0	120];
+    N=[150	80	20	50
+        80	250	30	140
+        30	50	0	120];
     out=corrNominal(N);
 %}
 
 %{
     %% Example of option conflev.
     %  Use data from Goodman Kruskal (1954).
-        N=[1768   807    189 47
-           946   1387    746 53
-           115    438    288 16];
+    N=[1768   807    189 47
+       946   1387    746 53
+       115    438    288 16];
     out=corrNominal(N,'conflev',0.99);
 %}
 
 
 %{
     % corrNominal with option dispresults.
-        N=[ 6 14 17 9;
-            30 32 17 3];
+    N=[ 6 14 17 9;
+       30 32 17 3];
     out=corrNominal(N,'dispresults',false);
 %}
 
 %{
     % Example which starts from the original data matrix.
-    N=[26    26    23 18 9;
-       6      7     9 14 23];
+    N=[26 26 23 18 9;
+        6  7  9 14 23];
     % From the contingency table reconstruct the original data matrix.
     n11=N(1,1); n12=N(1,2); n13=N(1,3); n14=N(1,4); n15=N(1,5);
     n21=N(2,1); n22=N(2,2); n23=N(2,3); n24=N(2,4); n25=N(2,5);

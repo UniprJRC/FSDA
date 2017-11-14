@@ -43,19 +43,19 @@ function out=corrOrdinal(N, varargin)
 %
 %  Optional input arguments:
 %
-%   NoStandardErrors:  Just index without standard errors and p-values.
+%   NoStandardErrors:  Just indexes without standard errors and p-values.
 %               Boolean.
 %               if NoStandardErrors is true just the indexes are computed
 %               without standard errors and p-values. That is no
 %               inferential measure is given. The default value of
 %               NoStandardErrors is false.
-%                 Example - 'NoStandardErrors',true
-%                 Data Types - Boolean
-%  dispresults :  display results on the screen. Boolean.
-%                 If dispresults is true (default) it is possible to see on the
-%                 screen all the summary results of the analysis.
-%                 Example - 'dispresults',false
-%                 Data Types - Boolean
+%               Example - 'NoStandardErrors',true
+%               Data Types - Boolean
+% dispresults : Display results on the screen. Boolean.
+%               If dispresults is true (default) it is possible to see on the
+%               screen all the summary results of the analysis.
+%               Example - 'dispresults',false
+%               Data Types - Boolean
 %       Lr   :  Vector of row labels. Cell.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
@@ -68,7 +68,7 @@ function out=corrOrdinal(N, varargin)
 %               table because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
-% datamatrix :  data matrix or contingency table. Boolean.
+% datamatrix :  Data matrix or contingency table. Boolean.
 %               If datamatrix is true the first input argument N is forced
 %               to be interpreted as a data matrix, else if the input
 %               argument is false N is treated as a contingency table. The
@@ -76,12 +76,12 @@ function out=corrOrdinal(N, varargin)
 %               automatically considers N as a contingency table
 %               Example - 'datamatrix',true
 %               Data Types - logical
-%  conflev:     confidence levels to be used to
+%  conflev:     Confidence levels to be used to
 %               compute confidence intervals. Scalar.
-%               The default value of conflev is 0.95  that
+%               The default value of conflev is 0.95, that
 %               is 95 per cent confidence intervals
 %               are computed for all the indexes (note that this option is
-%               ignored if NoStandardErrors=true
+%               ignored if NoStandardErrors=true).
 %               Example - 'conflev',0.99
 %               Data Types - double
 %
@@ -89,26 +89,28 @@ function out=corrOrdinal(N, varargin)
 %
 %         out:   structure which contains the following fields:
 %
-% 		out.N         =   $I$-by-$J$-array containing contingency table
-%                         referred to active rows (i.e. referred to the rows which
-%                         participated to the fit).
-%                         The $(i,j)$-th element is equal to $n_{ij}$,
-%                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
-%                         sum of the elements of out.N is $n$ (the grand
-%                         total).
-% 		out.Ntable   =   same as out.N but in table format (with row and
-%                         column names).
-%        out.gam      = 1 x 4 vector which contains Goodman and Kruskall gamma index,
-%                    standard error, test and p-value.
-%       out.taua    = 1 x 4 vector which contains index $\tau_a$,
-%                        standard error, test and p-value.
-%      out.taub     = 1 x 4 vector which contains index $\tau_b$,
-%                       standard error, test and p-value.
-%       out.tauc    = 1 x 4 vector which contains index $\tau_c$,
-%                       standard error, test and p-value.
-%       out.som     = 1 x 4 vector which contains Somers index $d_{y|x}$,
-%                       standard error, test and p-value.
-% out.TestInd  = 5-by-4 matrix containing index values (first column),
+% 		out.N    =  $I$-by-$J$-array containing contingency table
+%                   referred to active rows (i.e. referred to the rows which
+%                   participated to the fit).
+%                   The $(i,j)$-th element is equal to $n_{ij}$,
+%                   $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
+%                   sum of the elements of out.N is $n$ (the grand
+%                   total).
+% 	out.Ntable   =  Same as out.N but in table format (with row and
+%                   column names).
+%                   This output is present just if your MATLAB
+%                   version is not<2013b.
+%      out.gam   =  1 x 4 vector which contains Goodman and Kruskall gamma index,
+%                   standard error, test and p-value.
+%      out.taua  =  1 x 4 vector which contains index $\tau_a$,
+%                   standard error, test and p-value.
+%      out.taub  =  1 x 4 vector which contains index $\tau_b$,
+%                   standard error, test and p-value.
+%       out.tauc =  1 x 4 vector which contains index $\tau_c$,
+%                   standard error, test and p-value.
+%       out.som  =  1 x 4 vector which contains Somers index $d_{y|x}$,
+%                   standard error, test and p-value.
+% out.TestInd    =  5-by-4 matrix containing index values (first column),
 %                   standard errors (second column), zscores (third column),
 %                   p-values (fourth column). Note that the
 %                   standard errors in this matrix are computed assuming
@@ -118,7 +120,7 @@ function out=corrOrdinal(N, varargin)
 %                   p-values (fourth column). Note that the
 %                   standard errors in this table are computed assuming
 %                   the null hypothesis of independence.
-% out.ConfLim     = 5-by-4 matrix containing index values (first column),
+% out.ConfLim    =  5-by-4 matrix containing index values (first column),
 %                   standard errors (second column), lower confidence limit
 %                   (third column), upper confidence limit (fourth column).
 %                   Note that the standard errors in this matrix are computed not
@@ -139,20 +141,20 @@ function out=corrOrdinal(N, varargin)
 % is discordant if the subject who is higher on one variable is lower on
 % the other variable.
 % Let $C$ be the total number of concordant pairs (concordances) and $D$
-% the total number of discordant pairs (discordances) . If $C  > D$ the
+% the total number of discordant pairs (discordances) . If $C > D$ the
 % variables have a positive association, but if $C < D$ then the variables
 % have a negative association.
 %
 % In symbols, given an $I \times J$ contingency table the concordant pairs
 % with cell $i,j$ are
 % \[
-%            a_{ij} = \sum_{k<i} \sum_{l<j} n_{kl} + \sum_{k>i} \sum_{l>j}   n_{kl}
+% a_{ij} = \sum_{k<i} \sum_{l<j} n_{kl} + \sum_{k>i} \sum_{l>j}   n_{kl}
 % \]
 %
 % the number of discordant pairs is
 %
 % \[
-%            b_{ij} = \sum_{k>i} \sum_{l<j} n_{kl} + \sum_{k<i} \sum_{l>j} n_{kl}
+% b_{ij} = \sum_{k>i} \sum_{l<j} n_{kl} + \sum_{k<i} \sum_{l>j} n_{kl}
 % \]
 %
 %
@@ -197,7 +199,7 @@ function out=corrOrdinal(N, varargin)
 % \]
 % where $m= min(I,J)$;
 %
-% Somers' $d_{y|x}$. is an
+% Somers' $d_{y|x}$ is an
 % asymmetric extension of $\gamma$ that differs only in the inclusion of the
 % number of pairs not tied on the independent variable. More precisely
 %
@@ -361,9 +363,9 @@ function out=corrOrdinal(N, varargin)
     % 'Sufficient' 'Good' Very good'
     % Columns of N indicate the results of an oral test with levels:
     % 'Sufficient' 'Good' Very good'
-          N=[20    40    20;
-            10    45    45;
-             0     5    15];
+    N=[20    40    20;
+       10    45    45;
+        0     5    15];
     out=corrOrdinal(N);
     % Because the asymptotic 95 per cent confidence limits do not contain
     % zero, this indicates a strong positive association between the
@@ -405,15 +407,15 @@ function out=corrOrdinal(N, varargin)
 
 %{
     %  corrOrdinal with option conflev.
-          N=[26 26 23 18  9;
-            6  7  9 14 23];
+    N=[26 26 23 18  9;
+       6  7  9 14 23];
     out=corrOrdinal(N,'conflev',0.999);
 %}
 
 %{
     % corrOrdinal with with option NoStandardErrors.
-          N=[26 26 23 18  9;
-            6  7  9 14 23];
+    N=[26 26 23 18  9;
+       6  7  9 14 23];
     out=corrOrdinal(N,'NoStandardErrors',true);
 %}
 
@@ -438,9 +440,9 @@ function out=corrOrdinal(N, varargin)
 %{
     % Input is the contingency table in matrix format, labels for rows and
     % columns are supplied.
-          N=[20    40    20;
-            10    45    45;
-             0     5    15];
+    N=[20    40    20;
+       10    45    45;
+        0     5    15];
     % labels for rows and columns
     labels_rows= {'Sufficient' 'Good' 'Very_good'};
     labels_columns= {'Sufficient' 'Good' 'Very_good'};

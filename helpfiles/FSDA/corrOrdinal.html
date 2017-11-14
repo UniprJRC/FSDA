@@ -31,9 +31,9 @@
      'Sufficient' 'Good' Very good'
      Columns of N indicate the results of an oral test with levels:
      'Sufficient' 'Good' Very good'<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-          N=[20    40    20;
-            10    45    45;
-             0     5    15];
+    N=[20    40    20;
+       10    45    45;
+        0     5    15];
     out=corrOrdinal(N);
     % Because the asymptotic 95 per cent confidence limits do not contain
     % zero, this indicates a strong positive association between the
@@ -94,11 +94,11 @@ tau-b from FSDA routine corrOrdinal=0.0083449
 pvalue of H0:taub=0 from MATLAB routine corr=0.89952
 pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
 </pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option conflev.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-          N=[26 26 23 18  9;
-            6  7  9 14 23];
+    N=[26 26 23 18  9;
+       6  7  9 14 23];
     out=corrOrdinal(N,'conflev',0.999);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with with option NoStandardErrors.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-          N=[26 26 23 18  9;
-            6  7  9 14 23];
+    N=[26 26 23 18  9;
+       6  7  9 14 23];
     out=corrOrdinal(N,'NoStandardErrors',true);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Income and job satisfaction.</li></span></a></span></h3><div class="collapse"><p>
      Relationship between the income (with levels '&lt; 5000' '5000-25000' and
      '&gt;25000') and  job satisfaction (with levels 'Dissatisfied' 'Moderately satisfied'
@@ -115,9 +115,9 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
         out=corrOrdinal(N);
     end</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input is the contingency table in matrix format, labels for rows and
      columns are supplied.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-          N=[20    40    20;
-            10    45    45;
-             0     5    15];
+    N=[20    40    20;
+       10    45    45;
+        0     5    15];
     % labels for rows and columns
     labels_rows= {'Sufficient' 'Good' 'Very_good'};
     labels_columns= {'Sufficient' 'Good' 'Very_good'};
@@ -134,14 +134,14 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
 </code>,<code> 'Lc',{'c1' c2' 'c3' 'c4'}
 </code>,<code> 'datamatrix',true
 </code>,<code> 'conflev',0.99
-</code></code></span></div><div class="expandableContent"><div id="inputarg_NoStandardErrors" class="clearfix"></div><h3 id="input_argument_namevalue_NoStandardErrors" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>NoStandardErrors</code> &#8212;Just index without standard errors and p-values.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if NoStandardErrors is true just the indexes are computed
+</code></code></span></div><div class="expandableContent"><div id="inputarg_NoStandardErrors" class="clearfix"></div><h3 id="input_argument_namevalue_NoStandardErrors" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>NoStandardErrors</code> &#8212;Just indexes without standard errors and p-values.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if NoStandardErrors is true just the indexes are computed
                without standard errors and p-values. That is no
                inferential measure is given. The default value of
                NoStandardErrors is false.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'NoStandardErrors',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;display results on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is true (default) it is possible to see on the
-                 screen all the summary results of the analysis.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',false
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'NoStandardErrors',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is true (default) it is possible to see on the
+               screen all the summary results of the analysis.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_Lr" class="clearfix"></div><h3 id="input_argument_namevalue_Lr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lr</code> &#8212;Vector of row labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels of the rows of the input
                contingency matrix N. This option is unnecessary if N is a
                table. because in this case  Lr=N.Properties.RowNames;</p> <p>
@@ -150,31 +150,33 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
                contingency matrix N. This option is unnecessary if N is a
                table because in this case Lc=N.Properties.VariableNames;</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lc',{'c1' c2' 'c3' 'c4'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_datamatrix" class="clearfix"></div><h3 id="input_argument_namevalue_datamatrix" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datamatrix</code> &#8212;data matrix or contingency table.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If datamatrix is true the first input argument N is forced
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_datamatrix" class="clearfix"></div><h3 id="input_argument_namevalue_datamatrix" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datamatrix</code> &#8212;Data matrix or contingency table.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If datamatrix is true the first input argument N is forced
                to be interpreted as a data matrix, else if the input
                argument is false N is treated as a contingency table. The
                default value of datamatrix is false, that is the procedure
                automatically considers N as a contingency table
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datamatrix',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence levels to be used to
-               compute confidence intervals.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>The default value of conflev is 0.95  that
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence levels to be used to
+               compute confidence intervals.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value of conflev is 0.95, that
                is 95 per cent confidence intervals
                are computed for all the indexes (note that this option is
-               ignored if NoStandardErrors=true
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
+               ignored if NoStandardErrors=true).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>N</code></td><td><p><p>$I$-by-$J$-array containing contingency table
-                         referred to active rows (i.e. referred to the rows which
-                         participated to the fit).</p> <p>
-                         The $(i,j)$-th element is equal to $n_{ij}$,
-                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
-                         sum of the elements of out.N is $n$ (the grand
-                         total).</p></p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p>same as out.N but in table format (with row and
-                         column names).</p></td></tr><tr valign="top"><td><code>gam</code></td><td><p>1 x 4 vector which contains Goodman and Kruskall gamma index,
-                    standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>taua</code></td><td><p>1 x 4 vector which contains index $\tau_a$,
-                        standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>taub</code></td><td><p>1 x 4 vector which contains index $\tau_b$,
-                       standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>tauc</code></td><td><p>1 x 4 vector which contains index $\tau_c$,
-                       standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>som</code></td><td><p>1 x 4 vector which contains Somers index $d_{y|x}$,
-                       standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>TestInd</code></td><td><p>5-by-4 matrix containing index values (first column),
+                   referred to active rows (i.e. referred to the rows which
+                   participated to the fit).</p> <p>
+                   The $(i,j)$-th element is equal to $n_{ij}$,
+                   $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
+                   sum of the elements of out.N is $n$ (the grand
+                   total).</p></p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p><p>Same as out.N but in table format (with row and
+                   column names).</p> <p>
+                   This output is present just if your MATLAB
+                   version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>gam</code></td><td><p>1 x 4 vector which contains Goodman and Kruskall gamma index,
+                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>taua</code></td><td><p>1 x 4 vector which contains index $\tau_a$,
+                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>taub</code></td><td><p>1 x 4 vector which contains index $\tau_b$,
+                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>tauc</code></td><td><p>1 x 4 vector which contains index $\tau_c$,
+                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>som</code></td><td><p>1 x 4 vector which contains Somers index $d_{y|x}$,
+                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>TestInd</code></td><td><p>5-by-4 matrix containing index values (first column),
                    standard errors (second column), zscores (third column),
                    p-values (fourth column). Note that the
                    standard errors in this matrix are computed assuming
@@ -198,20 +200,20 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
  is discordant if the subject who is higher on one variable is lower on
  the other variable.</p> <p>
  Let $C$ be the total number of concordant pairs (concordances) and $D$
- the total number of discordant pairs (discordances) . If $C  &gt; D$ the
+ the total number of discordant pairs (discordances) . If $C &gt; D$ the
  variables have a positive association, but if $C &lt; D$ then the variables
  have a negative association.</p><p>
 
  In symbols, given an $I \times J$ contingency table the concordant pairs
  with cell $i,j$ are
  </p>\[
-            a_{ij} = \sum_{k&lt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&gt;i} \sum_{l&gt;j}   n_{kl}
+ a_{ij} = \sum_{k&lt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&gt;i} \sum_{l&gt;j}   n_{kl}
  \]
 
  the number of discordant pairs is
 
  \[
-            b_{ij} = \sum_{k&gt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&lt;i} \sum_{l&gt;j} n_{kl}
+ b_{ij} = \sum_{k&gt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&lt;i} \sum_{l&gt;j} n_{kl}
  \]<p>
 
 
@@ -256,7 +258,7 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
  \]<p>
  where $m= min(I,J)$;</p> <p>
 
- Somers' $d_{y|x}$. is an
+ Somers' $d_{y|x}$ is an
  asymmetric extension of $\gamma$ that differs only in the inclusion of the
  number of pairs not tied on the independent variable. More precisely
 

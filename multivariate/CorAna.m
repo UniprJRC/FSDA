@@ -8,7 +8,7 @@ function out=CorAna(N, varargin)
 %
 %  Required input arguments:
 %
-%       N    :    Contingency table (default) or n-by-2 input datasets.
+%       N    :    Contingency table (default) or n-by-2 input dataset.
 %                 Matrix or Table.
 %                 Matrix or table which contains the input contingency
 %                 table (say of size I-by-J) or the original data matrix.
@@ -20,23 +20,23 @@ function out=CorAna(N, varargin)
 %       k    :  Number of dimensions to retain. Scalar.
 %               Scalar which contains the number of dimensions to retain.
 %               The default value of k is 2.
-%               Example - 'k',2
+%               Example - 'k',3
 %               Data Types - double
 %       Lr   :  Vector of row labels. Cell.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table. because in this case  Lr=N.Properties.RowNames;
+%               table, because in this case  Lr=N.Properties.RowNames;
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
 %       Lc   :  Vector of column labels. Cell.
 %               Cell containing the labels of the columns of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table because in this case Lc=N.Properties.VariableNames;
+%               table, because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
-%       Sup :  Structure containing indexes or names of supplementary rows
-%              or columns. Structure.  Structure with the followin fields.
-%              Sup.r =  numeric vector containing row indexes  or cell
+%       Sup  :  Structure containing indexes or names of supplementary rows
+%               or columns. Structure. Structure with the following fields.
+%               Sup.r = numeric vector containing row indexes or cell
 %                       array of strings or table containing supplementary
 %                       rows. If indexes or cell array of strings are
 %                       supplied, we assume that supplementary rows belong
@@ -51,10 +51,10 @@ function out=CorAna(N, varargin)
 %                       as supplementary rows. Of course the length of
 %                       Sup.r must be smaller than the number of rows of
 %                       the contigencey matrix divided by 2. If, on the
-%                       other hand, Sup.r is a table supplementary rows do
+%                       other hand, Sup.r is a table, supplementary rows do
 %                       not belong to N.
 %               Sup.c = numeric vector containing column indexes or cell
-%                       array of string containing names of the columns to
+%                       array of strings containing names of the columns to
 %                       use as supplementary columns, or table.
 %                       If indexes or cell array of strings are supplied,
 %                       we assume that supplementary columns belong to
@@ -71,28 +71,27 @@ function out=CorAna(N, varargin)
 %                       Of course the length of Sup.c must be smaller than
 %                       the number of columns of the contigencey matrix
 %                       divided by 2.
-%                       If, on the other hand, Sup.c is a table
-%                       supplementary columns  do not belong to N.
+%                       If, on the other hand, Sup.c is a table,
+%                       supplementary columns do not belong to N.
 %                       Example - 'Sup',Sup=struct; Sup.c={'c2' 'c4'}
 %                       Data Types - struct
 %                       REMARK: The default value of Sup is a missing value
 %                       that is we assume that there are no supplementary
 %                       rows or columns.
-%      datamatrix   :  data matrix or contingency table. Boolean. If
-%                       datamatrix is true the first input argument N is
-%                       forced to be interpreted as a data matrix, else if
-%                       the input argument is false N is treated as a
-%                       contingency table. The default value of datamatrix
-%                       is false, that is the procedure automatically
-%                       considers N as a contingency table
+% datamatrix  : Data matrix or contingency table. Boolean. If
+%               datamatrix is true the first input argument N is forced to
+%               be interpreted as a data matrix, else if the input argument
+%               is false N is treated as a contingency table. The default
+%               value of datamatrix is false, that is the procedure
+%               automatically considers N as a contingency table
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %       plots : Plot on the screen. Scalar or structure.
-%               If plots = 1, a plot which shows  the Principal
+%               If plots = 1, a plot which shows the Principal
 %               coordinates of rows and columns is shown on the screen. If
 %               plots is a structure it may contain the following fields:
-%               plots.alpha = type of plot. scalar in the interval [0 1] or
-%               a string identifyind the type of coordinates to use in the
+%               plots.alpha = type of plot, scalar in the interval [0 1] or
+%               a string identifying the type of coordinates to use in the
 %               plot.
 %               If $plots.alpha='rowprincipal'$ the row points are in
 %                   principal coordinates and the column coordinates are
@@ -114,7 +113,7 @@ function out=CorAna(N, varargin)
 %               If $plots.alpha='symbiplot'$, the row and column coordinates
 %                   are scaled similarly. The sum of weighted squared
 %                   coordinates for each dimension is equal to the
-%                   corresponding singular values.  These coordinates are often
+%                   corresponding singular values. These coordinates are often
 %                   called symmetrical coordinates. This representation is
 %                   particularly useful if one is primarily interested in
 %                   the relationships between categories of row and column
@@ -150,14 +149,14 @@ function out=CorAna(N, varargin)
 %               If $plots.alpha='colgreen'$, columns in principal coordinates
 %                   and rows in standard coordinates multiplied by the
 %                   square root of the mass.
-%                  This biplot has been suggested by Greenacre and
-%                  incorporates the contribution of points. In this
-%                  display, points that contribute very little to the
-%                  solution, are close to the center of the biplot and are
-%                  relatively unimportant to the interpretation. This
-%                  biplot is often referred as contribution biplot because
-%                  it shows visually the most contributing points
-%                  (Greenacre 2006b).
+%                   This biplot has been suggested by Greenacre and
+%                   incorporates the contribution of points. In this
+%                   display, points that contribute very little to the
+%                   solution, are close to the center of the biplot and are
+%                   relatively unimportant to the interpretation. This
+%                   biplot is often referred as contribution biplot because
+%                   it shows visually the most contributing points
+%                   (Greenacre 2006b).
 %               If $plots.alpha=scalar$ in the interval [0 1], row
 %                   coordinates are given by $D_r^{-1/2} U \Gamma^\alpha$
 %                   and column coordinates are given by $D_c^{-1/2} V
@@ -171,26 +170,26 @@ function out=CorAna(N, varargin)
 %                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$ is as small as possible.
 %              plots.dim = vector with two elements which specifies which
 %                   dimensions to show in the factor map. The default is to
-%                   show to first two dimensione therefore plots.dim=[1 2]
-%              plots.FontSize = scalar which specifies the font size or row
+%                   show the first two dimensions, therefore plots.dim=[1 2]
+%              plots.FontSize = scalar which specifies the font size of row
 %                   (column) labels. The default value is 10.
-%              plots.MarkerSize =  scalar which specifies the marker size
-%                   or symbols associated with rows or columns. The default
+%              plots.MarkerSize = scalar which specifies the marker size
+%                   of symbols associated with rows or columns. The default
 %                   value is 10.
 %                 Example - 'plots',1
-%                 Data Types - scalar double or struct
-%  dispresults :  display results on the screen. Boolean.
+%                 Data Types - scalar double | struct
+%  dispresults :  Display results on the screen. Boolean.
 %                 If dispresults is true (default) it is possible to see on the
 %                 screen all the summary results of the analysis.
 %                 Example - 'dispresults',false
 %                 Data Types - Boolean
-%        d1    :  dimension to show on the horizontal axis. Positive
+%        d1    :  Dimension to show on the horizontal axis. Positive
 %                 integer. Positive integer in the range 1, 2, .., K which
 %                 indicates the dimension to show on the x axis. The
 %                 default value of d1 is 1.
 %                 Example - 'd1',2
 %                 Data Types - single | double
-%        d2    :  dimension to show on the vertical axis. Positive
+%        d2    :  Dimension to show on the vertical axis. Positive
 %                 integer. Positive integer in the range 1, 2, .., K which
 %                 indicates the dimension to show on the y axis. The
 %                 default value of d2 is 2.
@@ -209,7 +208,7 @@ function out=CorAna(N, varargin)
 %                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
 %                         sum of the elements of out.P is $n$ (the grand
 %                         total).
-% 		out.Ntable    =   same as out.N but in table format (with row and
+% 		out.Ntable    =   Same as out.N but in table format (with row and
 %                         column names).
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
@@ -224,155 +223,154 @@ function out=CorAna(N, varargin)
 %                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
 %                         sum of the elements of out.Nhat is $n$ (the grand
 %                         total).
-% 		out.Ntable    =   same as out.Nhat but in table format (with row and
+% 		out.Ntable    =   Same as out.Nhat but in table format (with row and
 %                         column names).
 % 		out.P         =   $I$-by-$J$-array containing correspondence matrix
 %                         (proportions). The $(i,j)$-th element is equal to
 %                         $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
 %                         \ldots, J$.  The sum of the elements of out.P is
 %                         1.
-% 		out.Ptable    =   same as out.P but in table format (with row and
+% 		out.Ptable    =   Same as out.P but in table format (with row and
 %                         column names).
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
-% 		out.r         =   vector of length $I$ containing row masses.
+% 		out.r         =   Vector of length $I$ containing row masses.
 %                         \[
 %                           r=(f_{1.},	f_{2.}, \ldots, f_{I.})'
 %                         \]
 %                         $r$ is also the centroid of column profiles.
-% 		out.Dr        =   square matrix of size $I$ containing on the
+% 		out.Dr        =   Square matrix of size $I$ containing on the
 %                         diagonal the row masses.  This is matrix $D_r$.
 %                         \[
 %                           D_r=diag(r)
 %                         \]
-% 		out.c         =   vector of length $J$ containing columns masses.
+% 		out.c         =   Vector of length $J$ containing column masses.
 %                         \[
 %                           c=(f_{.1},	f_{.2}, \ldots, f_{.J})'
 %                         \]
 %                         $c$ is also the centroid of row profiles.
-% 		out.Dc        =   square matrix of size $J$ containing on the
+% 		out.Dc        =   Square matrix of size $J$ containing on the
 %                         diagonal the column masses. This is matrix $D_c$.
 %                         \[
 %                           D_c=diag(c)
 %                         \]
-% 		out.ProfilesRows =  $I$-by-$J$-matrix containing row profiles.
-%                           The $i,j$-th element of this matrix is given by
-%                           $f_{ij}/f_{i.}=n_{ij}/n_{i.}$.
-%                           Written in matrix form:
-%                           \[
-%                           ProfilesRows = D_r^{-1} \times P
-%                           \]
-% 		out.ProfilesCols =  $I$-by-$J$-matrix containing column profiles.
-%                           The $i,j$-th element of this matrix is given by
-%                           $f_{ij}/f_{.j}=n_{ij}/n_{.j}$.
-%                           Written in matrix form:
-%                           \[
-%                           ProfilesCols = P \times D_c^{-1}
-%                           \]
-% 		out.K         =   scalar integer containing maximun number of
+% 	 out.ProfilesRows =   $I$-by-$J$-matrix containing row profiles.
+%                         The $i,j$-th element of this matrix is given by
+%                         $f_{ij}/f_{i.}=n_{ij}/n_{i.}$.
+%                         Written in matrix form:
+%                         \[
+%                         ProfilesRows = D_r^{-1} \times P
+%                         \]
+% 	out.ProfilesCols  =   $I$-by-$J$-matrix containing column profiles.
+%                         The $i,j$-th element of this matrix is given by
+%                         $f_{ij}/f_{.j}=n_{ij}/n_{.j}$.
+%                         Written in matrix form:
+%                         \[
+%                         ProfilesCols = P \times D_c^{-1}
+%                         \]
+% 		out.K         =   Scalar integer containing the maximum number of
 %                         dimensions. $K = \min(I-1,J-1)$.
-% 		out.k         =   scalar integer containing number of retained
+% 		out.k         =   Scalar integer containing the number of retained
 %                         dimensions.
 % 		out.Residuals =   $I$-by-$J$-matrix containing standardized residuals.
 %                         \[
-%                           Residuals = D_r^{1/2}  (D_r^{-1}  P - r  c')  D_c^{-1/2} =
-%                           D_r^{-1/2}  (P - r  c')  D_c^{-1/2}
+%                         Residuals = D_r^{1/2}  (D_r^{-1}  P - r  c')  D_c^{-1/2} =
+%                         D_r^{-1/2}  (P - r  c')  D_c^{-1/2}
 %                         \]
 %                         With the singular value decomposition (SVD) we
 %                         obtain that:
-%                          \[
-%                           Residuals = U \Gamma V'
-%                          \]
-% 		out.TotalInertia =   scalar containing total inertia. Total inertia
-%                           is equal (for example) to the sum of the
-%                           squares of the elements of matrix
-%                           out.Residuals.
-% 		out.Chi2stat  =   scalar containing Chi-square statistic for the
-%                           contingency table. $Chi2stat= TotalInertia \times n$.
-% 		out.CramerV   =    scalar containing Cramer's $V$ index.
-%                          \[
-%                           V=\sqrt{Chi2stat/(n (\min(I,J)-1))}
-%                          \]
-%                          Cramer's index goes between 0 and 1.
-% 		out.RowsPri   =    $I$-by-$K$ matrix containing principal coordinates
-%                          of rows.
-%                           \[
-%                           RowsPri = D_r^{-1/2} \times U \times \Gamma;
-%                           \]
-% 		out.ColsPri   =    $J$-by-$K$ matrix containing Principal coordinates
-%                          of columns.
-%                           \[
-%                           ColsPri = D_c^{-1/2} \times V \times \Gamma;
-%                           \]
+%                         \[
+%                         Residuals = U \Gamma V'
+%                         \]
+% 	out.TotalInertia  =   Scalar containing total inertia. Total inertia
+%                         is equal (for example) to the sum of the
+%                         squares of the elements of matrix
+%                         out.Residuals.
+% 		out.Chi2stat  =   Scalar containing Chi-square statistic for the
+%                         contingency table. $Chi2stat= TotalInertia \times n$.
+% 		out.CramerV   =   Scalar containing Cramer's $V$ index.
+%                         \[
+%                         V=\sqrt{Chi2stat/(n (\min(I,J)-1))}
+%                         \]
+%                         Cramer's index goes between 0 and 1.
+% 		out.RowsPri   =   $I$-by-$K$ matrix containing principal coordinates
+%                         of rows.
+%                         \[
+%                         RowsPri = D_r^{-1/2} \times U \times \Gamma;
+%                         \]
+% 		out.ColsPri   =   $J$-by-$K$ matrix containing Principal coordinates
+%                         of columns.
+%                         \[
+%                         ColsPri = D_c^{-1/2} \times V \times \Gamma;
+%                         \]
 % 		out.RowsSta   =   $I$-by-$K$ matrix containing standard coordinates
-%                          of rows.
-%                           \[
-%                           RowsSta = RowsPri \times \Gamma^{-1} = D_r^{-1/2} U
-%                           \Gamma \Gamma^{-1}= D_r^{-1/2}  U
-%                           \]
+%                         of rows.
+%                         \[
+%                         RowsSta = RowsPri \times \Gamma^{-1} = D_r^{-1/2} U
+%                         \Gamma \Gamma^{-1}= D_r^{-1/2}  U
+%                         \]
 % 		out.ColsSta   =   $J$-by-$K$ matrix containing standard coordinates
-%                          of columns.
-%                           \[
-%                           ColsSta = ColsPri \times \Gamma^{-1} = D_c^{-1/2} V
-%                           \Gamma \Gamma^{-1}= D_c^{-1/2}  V
-%                           \]
-% 		out.RowsSym   =    $I$-by-$K$ matrix containing symmetrical coordinates
-%                          of rows.
-%                           \[
-%                           RowsSym = D_r^{-1/2} \times U \times \Gamma^{1/2}
-%                           \]
-% 		out.ColsSym   =     $J$-by-$K$ matrix containing symmetrical coordinates
-%                          of columns.
-%                           \[
-%                           ColsSym = D_c^{-1/2} \times V \times \Gamma^{1/2}
-%                           \]
-%                       Symetric plot represents the row and column
-%                       profiles simultaneously in a common space
-%                       (Bendixen, 2003). In this case, only the distance
-%                       between row points or the distance between column
-%                       points can be really interpreted.
-%                       The distance between any row and column items is
-%                       not meaningful! You can only make a general
-%                       statements about the observed pattern. In order to
-%                       interpret the distance between column and row
-%                       points, the column profiles must be presented in
-%                       row space or vice-versa. This type of map is called
-%                       asymmetric biplot.
-% out.InertiaRows     =    $I$-by-$2$ matrix containing absolute and relative
-%                          contribution of each row to total inertia.
-%                          The inertia of a point is the squared distance
-%                          of point $d_i^2$ to the centroid. The absolute
-%                          contribution of a point to total inertia is the
-%                          inertia of the point multiplied by the point
-%                          mass.
-%                          1st column = absolute contribution of each row
-%                          to TotalInertia. The sum of values of the first
-%                          column is equal to TotalInertia;
-%                          2nd column = relative contribution of each row
-%                          to TotalInertia. The sum of the values of the
-%                          second column is equal to 1.
-% out.InertiaCols     =    $J$-by-$2$ matrix containing absolute and relative
-%                          contribution of each column to total inertia.
-%                          The inertia of a point is the squared distance
-%                          of point $d_i^2$ to the centroid. The absolute
-%                          contribution of a point to total inertia is the
-%                          inertia of the point multiplied by the point
-%                          mass.
-%                          1st column = absolute contribution of each
-%                          column to TotalInertia. The sum of values of the
-%                          first column is equal to TotalInertia;
-%                          2nd column = relative contribution of each
-%                          column to TotalInertia. The sum of values of the
-%                          second column is equal to 1.
-%out.Point2InertiaRows  =  $I$-by-$K$ matrix  containing relative
-%                          contributions of rows to inertia of the
-%                          dimension. The inertia of first latent dimension
-%                          is given by $\lambda_1=\gamma_{11}^2$. The
-%                          inertia of second latent dimension is given by
-%                          $\lambda_2=\gamma_{22}^2$ .... The sum of each
-%                          column of matrix Point2InertiaRows is equal to
-%                          1.
-%                           Remark: the points  with the larger value of
+%                         of columns.
+%                         \[
+%                         ColsSta = ColsPri \times \Gamma^{-1} = D_c^{-1/2} V
+%                         \Gamma \Gamma^{-1}= D_c^{-1/2}  V
+%                         \]
+% 		out.RowsSym   =   $I$-by-$K$ matrix containing symmetrical coordinates
+%                         of rows.
+%                         \[
+%                         RowsSym = D_r^{-1/2} \times U \times \Gamma^{1/2}
+%                         \]
+% 		out.ColsSym   =   $J$-by-$K$ matrix containing symmetrical coordinates
+%                         of columns.
+%                         \[
+%                         ColsSym = D_c^{-1/2} \times V \times \Gamma^{1/2}
+%                         \]
+%                         Symmetric plot represents the row and column
+%                         profiles simultaneously in a common space
+%                         (Bendixen, 2003). In this case, only the distance
+%                         between row points or the distance between column
+%                         points can be really interpreted.
+%                         The distance between any row and column items is
+%                         not meaningful! You can only make a general
+%                         statements about the observed pattern. In order to
+%                         interpret the distance between column and row
+%                         points, the column profiles must be presented in
+%                         row space or vice-versa. This type of map is called
+%                         asymmetric biplot.
+% out.InertiaRows     =   $I$-by-$2$ matrix containing absolute and relative
+%                         contribution of each row to total inertia.
+%                         The inertia of a point is the squared distance
+%                         of point $d_i^2$ to the centroid. The absolute
+%                         contribution of a point to total inertia is the
+%                         inertia of the point multiplied by the point
+%                         mass.
+%                         1st column = absolute contribution of each row
+%                         to TotalInertia. The sum of values of the first
+%                         column is equal to TotalInertia;
+%                         2nd column = relative contribution of each row
+%                         to TotalInertia. The sum of the values of the
+%                         second column is equal to 1.
+% out.InertiaCols     =   $J$-by-$2$ matrix containing absolute and relative
+%                         contribution of each column to total inertia.
+%                         The inertia of a point is the squared distance
+%                         of point $d_i^2$ to the centroid. The absolute
+%                         contribution of a point to total inertia is the
+%                         inertia of the point multiplied by the point
+%                         mass.
+%                         1st column = absolute contribution of each
+%                         column to TotalInertia. The sum of values of the
+%                         first column is equal to TotalInertia;
+%                         2nd column = relative contribution of each
+%                         column to TotalInertia. The sum of values of the
+%                         second column is equal to 1.
+% out.Point2InertiaRows = $I$-by-$K$ matrix containing relative
+%                         contributions of rows to inertia of the
+%                         dimension. The inertia of first latent dimension
+%                         is given by $\lambda_1=\gamma_{11}^2$. The
+%                         inertia of second latent dimension is given by
+%                         $\lambda_2=\gamma_{22}^2$ .... The sum of each
+%                         column of matrix Point2InertiaRows is equal to 1.
+%                           Remark: the points with the larger value of
 %                           Point2Inertia are those which contribute the
 %                           most to the definition of the dimension. If the
 %                           row contributions were uniform, the expected
@@ -380,44 +378,43 @@ function out=CorAna(N, varargin)
 %                           given dimension, any row with a contribution
 %                           larger than this threshold could be considered
 %                           as important in contributing to that dimension.
-%out.Point2InertiaCols  =  $J$-by-$K$ matrix  Relative contributions of
-%                          columns to inertia of the dimension. The sum of
-%                          each column of matrix Point2InertiaCols is equal
-%                          to 1.
-% out.Dim2InertiaRows   =  $I$-by-$K$ matrix  containing relative
-%                          contributions of latent dimensions to inertia of
-%                          the row points.  These numbers can be
-%                          interpreted as squared correlations and measures
-%                          the degree of association between row points
-%                          and a particular axis. The sum of
-%                          each row of matrix Dim2InertiaRows is equal to
-%                          1.
-% out.Dim2InertiaCols   =  $J$-by-$K$ matrix  containing relative
-%                          contributions of latent dimensions to inertia of
-%                          the column points.  These numbers can be
-%                          interpreted as squared correlations and measure
-%                          the degree of association between columns points
-%                          and a particular axis. The sum of each row of
-%                          matrix Dim2InertiaCols is equal to 1.
-% out.cumsumDim2InertiaRows   =  $I$-by-$K$ matrix  containing cumulative
-%                          sum of the contributions of latent dimensions to
-%                          inertia of the row points. These cumulative sums
-%                          are equivalent to the communalities in PCA.
-%                          The last column of matrix cumsumDim2InertiaRows
-%                          is equal to 1.
-% out.cumsumDim2InertiaCols   =  $J$-by-$K$ matrix  containing cumulative
+% out.Point2InertiaCols = $J$-by-$K$ matrix containing relative 
+%                         contributions of columns to inertia of the 
+%                         dimension. The sum of each column of matrix 
+%                         Point2InertiaCols is equal to 1.
+% out.Dim2InertiaRows  =  $I$-by-$K$ matrix containing relative
+%                         contributions of latent dimensions to inertia of
+%                         the row points. These numbers can be
+%                         interpreted as squared correlations and measures
+%                         the degree of association between row points
+%                         and a particular axis. The sum of
+%                         each row of matrix Dim2InertiaRows is equal to 1.
+% out.Dim2InertiaCols  =  $J$-by-$K$ matrix containing relative
+%                         contributions of latent dimensions to inertia of
+%                         the column points. These numbers can be
+%                         interpreted as squared correlations and measure
+%                         the degree of association between columns points
+%                         and a particular axis. The sum of each row of
+%                         matrix Dim2InertiaCols is equal to 1.
+% out.cumsumDim2InertiaRows  =  $I$-by-$K$ matrix containing cumulative
+%                         sum of the contributions of latent dimensions to
+%                         inertia of the row points. These cumulative sums
+%                         are equivalent to the communalities in PCA.
+%                         The last column of matrix cumsumDim2InertiaRows
+%                         is equal to 1.
+% out.cumsumDim2InertiaCols  =  $J$-by-$K$ matrix containing cumulative
 %                          sum of the contributions of latent dimensions to
 %                          inertia of the column points. These cumulative sums
 %                          are equivalent to the communalities in PCA.
 %                          The last column of matrix cumsumDim2InertiaCols
 %                          is equal to 1.
-% out.sqrtDim2InertiaRows = $I$-by-$K$ matrix  containing correlation of
-%                           rows points with latent dimension axes. Similar
-%                           to component loadings in PCA
-% out.sqrtDim2InertiaCols = $I$-by-$K$ matrix  containing correlation of
-%                           column points with latent dimension axes. Similar
-%                           to component loadings in PCA.
-% 		out.SupRowsN   =   matlab table containing contingency table referred
+% out.sqrtDim2InertiaRows = $I$-by-$K$ matrix containing correlation of
+%                          rows points with latent dimension axes. Similar
+%                          to component loadings in PCA
+% out.sqrtDim2InertiaCols = $I$-by-$K$ matrix containing correlation of
+%                          column points with latent dimension axes. Similar
+%                          to component loadings in PCA.
+% 		out.SupRowsN   =  matlab table containing contingency table referred
 %                         to supplementary rows. If there are no
 %                         supplementary rows this field is empty.
 %                         This output is present just if your MATLAB
@@ -427,73 +424,72 @@ function out=CorAna(N, varargin)
 %                         supplementary columns this field is empty.
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
-% 		out.RowsPriSup    = Principal coordinates of supplementary rows
-% 		out.RowsStaSup    = Standard coordinates of supplementary rows
-%       out.RowsSymSup    = Symmetrical coordinates of supplementary
-%                           rows
-% 		out.ColsPriSup    = Principal coordinates of supplementary columns
-% 		out.ColsStaSup    = Standard coordinates of of supplementary columns
-%       out.ColsSymSup    = Symmetrical coordinates of supplementary
-%                                columns
-%       out.Summary       = $K$-times-4 table containing summary results
-%                           for correpondence analysis.
-%                           First column contains the singular values (the
-%                           sum of the squared singular values is the total
-%                           inertia).
-%                           Second column contains the eigenvalues  (the
-%                           sum of the eigenvalues is the total inertia).
-%                           Third column contains the variance explained by
-%                           each latent dimension. Fourth column contains
-%                           the cumulative variance explained by each
-%                           dimension.
+% 	out.RowsPriSup    =   Principal coordinates of supplementary rows.
+% 	out.RowsStaSup    =   Standard coordinates of supplementary rows.
+%   out.RowsSymSup    =   Symmetrical coordinates of supplementary rows.
+% 	out.ColsPriSup    =   Principal coordinates of supplementary columns.
+% 	out.ColsStaSup    =   Standard coordinates of of supplementary columns.
+%   out.ColsSymSup    =   Symmetrical coordinates of supplementary columns.
+%      out.Summary    =   $K$-times-4 table containing summary results
+%                         for correpondence analysis.
+%                         First column contains the singular values (the
+%                         sum of the squared singular values is the total
+%                         inertia).
+%                         Second column contains the eigenvalues (the
+%                         sum of the eigenvalues is the total inertia).
+%                         Third column contains the variance explained by
+%                         each latent dimension. Fourth column contains
+%                         the cumulative variance explained by each
+%                         dimension.
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
-%       out.OverviewRows = $I$-times-(k*3+2) table containing an overview
-%                          of row points. More precisely if we suppose that $k=2$
-%                          First column contains the row masses (vector
-%                          $r$).
-%                          Second column contains the scores of first dimension.
-%                          Third column contains the scores of second dimension.
-%                          Fourth column contains the inertia of each
-%                          point, where inertia of point is the squared
-%                          distance of point $d_i^2$ to the centroid.
-%                          Fifth column contains the relative contribution
-%                          of each point to the explanation of the inertia
-%                          of the first dimension. The sum of the elements
-%                          of this column is equal to 1.
-%                          Sixth column contains the relative contribution
-%                          of each point to the explanation of the inertia
-%                          of the second dimension. The sum of the elements
-%                          of this column is equal to 1.
-%                          Seventh column contains the relative
-%                          contribution of the first dimension to the
-%                          explanation of the inertia of the point.
-%                          Eight column contains the relative
-%                          contribution of the second dimension to the
-%                          explanation of the inertia of the point.
-%       out.OverviewCols = $J$-times-(k*3+2) table containing an overview
-%                          of row points. More precisely if we suppose that $k=2$
-%                          First column contains the column masses (vector
-%                          $c$).
-%                          Second column contains the scores of first dimension.
-%                          Third column contains the scores of second dimension.
-%                          Fourth column contains the inertia of each
-%                          point, where inertia of point is the squared
-%                          distance of point $d_i^2$ to the centroid.
-%                          Fifth column contains the relative contribution
-%                          of each point to the explanation of the inertia
-%                          of the first dimension. The sum of the elements
-%                          of this column is equal to 1.
-%                          Sixth column contains the relative contribution
-%                          of each point to the explanation of the inertia
-%                          of the second dimension. The sum of the elements
-%                          of this column is equal to 1.
-%                          Seventh column contains the relative
-%                          contribution of the first dimension to the
-%                          explanation of the inertia of the point.
-%                          Eight column contains the relative
-%                          contribution of the second dimension to the
-%                          explanation of the inertia of the point.
+%   out.OverviewRows  =   $I$-times-(k*3+2) table containing an overview
+%                         of row points. More precisely, if we suppose that
+%                         $k=2$,
+%                         First column contains the row masses (vector
+%                         $r$).
+%                         Second column contains the scores of first dimension.
+%                         Third column contains the scores of second dimension.
+%                         Fourth column contains the inertia of each
+%                         point, where inertia of point is the squared
+%                         distance of point $d_i^2$ to the centroid.
+%                         Fifth column contains the relative contribution
+%                         of each point to the explanation of the inertia
+%                         of the first dimension. The sum of the elements
+%                         of this column is equal to 1.
+%                         Sixth column contains the relative contribution
+%                         of each point to the explanation of the inertia
+%                         of the second dimension. The sum of the elements
+%                         of this column is equal to 1.
+%                         Seventh column contains the relative
+%                         contribution of the first dimension to the
+%                         explanation of the inertia of the point.
+%                         Eight column contains the relative
+%                         contribution of the second dimension to the
+%                         explanation of the inertia of the point.
+%   out.OverviewCols  =   $J$-times-(k*3+2) table containing an overview
+%                         of row points. More precisely if we suppose that $k=2$
+%                         First column contains the column masses (vector
+%                         $c$).
+%                         Second column contains the scores of first dimension.
+%                         Third column contains the scores of second dimension.
+%                         Fourth column contains the inertia of each
+%                         point, where inertia of point is the squared
+%                         distance of point $d_i^2$ to the centroid.
+%                         Fifth column contains the relative contribution
+%                         of each point to the explanation of the inertia
+%                         of the first dimension. The sum of the elements
+%                         of this column is equal to 1.
+%                         Sixth column contains the relative contribution
+%                         of each point to the explanation of the inertia
+%                         of the second dimension. The sum of the elements
+%                         of this column is equal to 1.
+%                         Seventh column contains the relative
+%                         contribution of the first dimension to the
+%                         explanation of the inertia of the point.
+%                         Eight column contains the relative
+%                         contribution of the second dimension to the
+%                         explanation of the inertia of the point.
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
 %
@@ -535,10 +531,10 @@ function out=CorAna(N, varargin)
 
 %{
     % CorAna with all the default options.
-     load smoke
+    load smoke
     [N,~,~,labels] =crosstab(smoke.data(:,1),smoke.data(:,2));
     [I,J]=size(N);
-    if verLessThan('matlab','8.2.0') ==0
+    if verLessThan('matlab','8.2.0')==0
     % Contingency table is supplied to CorAna in table format
         Ntable=array2table(N,'RowNames',labels(1:I,1),'VariableNames',labels(1:J,2))
         out=CorAna(Ntable);
@@ -684,7 +680,7 @@ end
 
 % Nred will contain the contingency table after removing supplementary rows
 % and columns (if supplementary rows and columns belong to the table)
-Nred      = N;
+Nred = N;
 
 if verMatlab==0
     Nredtable = Ntable;
@@ -1251,7 +1247,7 @@ ScoreRows=eval(typeR);
 ScoreCols=eval(typeC);
 
 
-% Explained is a matrix with 4 columnn.
+% InertiaExplained is a matrix with 4 columnn.
 % First column contains the singular values (the sum of the squared singular values is the
 % total inertia)
 % Second column contains the eigenvalues  (the sum of the eigenvalues is the

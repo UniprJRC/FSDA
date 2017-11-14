@@ -3,7 +3,7 @@ function out = SparseTableTest(N,varargin)
 %
 %<a href="matlab: docsearchFS('SparseTableTest')">Link to the help function</a>
 %
-% This function implements a new test of indipendence betweeen row variable
+% This function implements a new test of indipendence between row variables
 % distribution ('outcomes') and columns ('treatments') which is expecially
 % suited for the analysis of large and sparse $I$-by-$J$ contingency
 % tables. The procedure is based on the collapsing of the original table
@@ -27,7 +27,7 @@ function out = SparseTableTest(N,varargin)
 %
 %  Required input arguments:
 %
-%       N    :    Contingency table (default) or n-by-2 input datasets.
+%       N    :    Contingency table (default) or n-by-2 input dataset.
 %                 Matrix or Table. Matrix or table which contains the input
 %                 contingency table (say of size I-by-J) or the original
 %                 data matrix. In this last case N=crosstab(N(:,1),N(:,2)).
@@ -36,20 +36,20 @@ function out = SparseTableTest(N,varargin)
 %
 %  Optional input arguments:
 %
-% threshold  : threshold to select collapsed contigencey tables. Scalar.
+% threshold  : Threshold to select collapsed contigencey tables. Scalar.
 %              Scalar which specifies above which value collapsed
 %              contingency tables have to be produced. The default value of
 %              threshold is 2.
-%                 Example - 'threshold',3
-%                 Data Types - single | double | int32 | int64
+%              Example - 'threshold',3
+%              Data Types - single | double | int32 | int64
 %     alpha  : Significance level. Scalar value in the range (0,1).
 %              Significance level of the hypothesis test, specified as the
 %              comma-separated pair consisting of 'alpha' and a scalar
 %              value in the range (0,1). The default value of alpha is
 %              0.01.
-%                 Example - 'alpha',0.05
-%                 Data Types - single | double
-%  testname :  test to use on collapsed 2-by-2 tables. Char or duoble.
+%              Example - 'alpha',0.05
+%              Data Types - single | double
+%  testname :  Test to use on collapsed 2-by-2 tables. Char or double.
 %              If testname is a number, it identifies the value of $\lambda$
 %              to use of the power divergence family. See function
 %              CressieRead.m for further details. If testname is a
@@ -58,35 +58,36 @@ function out = SparseTableTest(N,varargin)
 %              Barnard exact test, see function barnardtest).
 %              Example - 'testname',1
 %              Data Types - single | double | char
-% datamatrix : data matrix or contingency table. Boolean. If datamatrix
+% datamatrix : Data matrix or contingency table. Boolean. If datamatrix
 %              is true the first input argument N is forced to be
 %              interpreted as a data matrix, else if the input argument is
 %              false N is treated as a contingency table. The default value
 %              of datamatrix is false, that is the procedure automatically
 %              considers N as a contingency table
-%               Example - 'datamatrix',true
-%               Data Types - logical
+%              Example - 'datamatrix',true
+%              Data Types - logical
 %  Output:
 %
 % out:   structure which contains the following fields:
 %
-% out.TestResults = p-values based on collapsed contingency tables. I-by-J matrix.
-%               The i,j-th entry of the RejectedMatrixBonf is the p-value
-%               of the Fisher exact test based on the collapsed i,j-th
-%               table. If the i-j entry of input matrix UserData is smaller
-%               or equal than input parameter threshold  the test is not
-%               performed and the corresponding i,j-th entry of matrix
-%               TestResults is equal to Inf.
-% out.RejectedBonf = Results of the tests based on
-%               Bonferrroni threshold. Boolean matrix.
-%               The i,j-th entry of the RejectedMatrixBonf is true if the
-%               corresponding test based on the collapsed
-%               i,j-th table is significant. Bonferroni threshold is used.
-% out.RejectedSidak = Results of the tests based on
-%               Sidak threshold. Boolean matrix.
-%               The i,j-th entry of the RejectedMatrixBonf is true if the
-%               corresponding test based on the collapsed
-%               i,j-th table is significant. Sidak threshold is used.
+% out.TestResults = p-values based on collapsed contingency tables. 
+%                   I-by-J matrix.
+%                   The $(i,j)$-th entry of the TestResults matrix is the p-value
+%                   of the Fisher exact test based on the collapsed $(i,j)$-th
+%                   table. If the $(i,j)$-th entry of input matrix UserData is smaller
+%                   or equal than the input parameter threshold, the test is not
+%                   performed and the corresponding $(i,j)$-th entry of matrix
+%                   TestResults is equal to Inf.
+% out.RejectedBonf = Results of the tests based on Bonferrroni threshold. 
+%                   Boolean matrix.
+%                   The $(i,j)$-th entry of the RejectedBonf matrix is true 
+%                   if the corresponding test based on the collapsed
+%                   $(i,j)$-th table is significant. Bonferroni threshold is used.
+% out.RejectedSidak = Results of the tests based on Sidak threshold. 
+%                   Boolean matrix.
+%                   The $(i,j)$-th entry of the RejectedSidak matrix is true if the
+%                   corresponding test based on the collapsed
+%                   $(i,j)$-th table is significant. Sidak threshold is used.
 %
 %
 %
@@ -104,8 +105,8 @@ function out = SparseTableTest(N,varargin)
 %  \ldots, J$.  The sum of the elements of $P$ is 1.
 %  $P^*$=$I$-by-$J$-table containing correspondence matrix (proportions)
 %  under the hypothesis of independence. The $(i,j)$-th element is equal to
-%  $p_{ij}^*=p_{i.}p_{.j}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$.  The sum of
-%  the elements of $P^*$ is 1.
+%  $p_{ij}^*=p_{i.}p_{.j}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$.  
+%  The sum of the elements of $P^*$ is 1.
 %
 % See also: fishertest, barnardtest, CressieRead, rcontFS
 %

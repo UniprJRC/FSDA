@@ -8,8 +8,8 @@ function X=crosstab2datamatrix(N, varargin)
 %
 %       N    :    Contingency table (default).
 %                 Matrix or Table which contains the input contingency
-%                 table of size I-by-J. It contains the frequencie which
-%                 are to be inflated. The output datamatrix will have size
+%                 table of size I-by-J. It contains the frequencies which
+%                 have to be inflated. The output data matrix will have size
 %                 sum(N(:))-by-2.
 %
 %  Optional input arguments:
@@ -17,24 +17,24 @@ function X=crosstab2datamatrix(N, varargin)
 %       Lr   :  Vector of row labels. Cell of length I.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table. because in this case  Lr=N.Properties.RowNames; 
+%               table, because in this case  Lr=N.Properties.RowNames; 
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
 %       Lc   :  Vector of column labels. Cell of lenght J.
 %               Cell containing the labels of the columns of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table because in this case Lc=N.Properties.VariableNames;
+%               table, because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
 %
 %
 %  Output:
 %
-%      X   :  original data matrix. cell or numeric matrix.
+%      X   :  Original data matrix. cell or numeric matrix.
 %             Object of class double or cell of size sum(N(:))-by-2
 %             containing the original data matrix.
 %             Original input which generated the contingency table.
-%             Note that input N can be obtained using N=crosstab(X);
+%             Note that input N can be obtained using N=crosstab(X(:,1),X(:,2));
 %
 %
 % See also crosstab, rcontFS, CressieRead
@@ -55,15 +55,17 @@ function X=crosstab2datamatrix(N, varargin)
 %{
     % crosstab2datamatrix with all the default options.
     % In this case the input is a contingencey table of class double.
-    N=[26    26    23 18 9;
-       6      7     9 14 23];
+    N=[26 26 23 18 9;
+        6  7  9 14 23];
     % No labels for rows and columns are supplied
     X=crosstab2datamatrix(N);
 %}
 
 %{
     %% crosstab2datamatrix when input is a contingencey table of class table.
-     N = [24 23 30;19 43 57;13 33 58];
+    N = [24 23 30; 
+         19 43 57;
+         13 33 58];
     rownam={'Less_than_5000',  'Between_5000_and_25000' 'Greater_than_25000'};
     colnam= {'Dissatisfied' 'Moderately_satisfied' 'Very_satisfied'};
     if verLessThan('matlab','8.2.0') ==0
@@ -84,7 +86,9 @@ function X=crosstab2datamatrix(N, varargin)
     % Excample of use of option Lc.
     % In this case just the column names are supplied
     % The default row labels 'r1' 'r2' 'r3' are used
-     N = [24 23 30;19 43 57;13 33 58];
+    N = [24 23 30; 
+         19 43 57;
+         13 33 58];
     colnam= {'Dissatisfied' 'Moderately_satisfied' 'Very_satisfied'};
     X=crosstab2datamatrix(N,'Lc',colnam);
 %}

@@ -7,11 +7,11 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %  Required input arguments:
 %
 %
-%         I   :  Number of rows of the simulated contingency table.
+%         I   :   Number of rows of the simulated contingency table.
 %                 Scalar.
 %                 Scalar which contains the requested number of rows the
 %                 output matrix must have.
-%         J   :  Number of columns of the simulated contingency table.
+%         J   :   Number of columns of the simulated contingency table.
 %                 Scalar.
 %                 Scalar which contains the requested number of columns the
 %                 output matrix must have.
@@ -22,9 +22,9 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %                 total number of elements in the first row, ..., $I$-th
 %                 element refers to the total number of elements in the
 %                 $I$-th row. In other words, $nrowt=(n_{1.}, n_{2.}, \ldots, n_{I.})$.
-%       ncolt  :  Row totals of the simulated contingency table.
+%       ncolt  :  Column totals of the simulated contingency table.
 %                 Vector.
-%                 Vector of length J containing the requested column  totals the
+%                 Vector of length J containing the requested column totals the
 %                 output matrix must have. First element refers to the
 %                 total number of elements in the first column, ..., $J$-th
 %                 element refers to the total number of elements in the
@@ -41,12 +41,12 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %               2) min(nrowt) and min(ncolt) are strictly greater than 0;
 %               3) length(nrowt)=I, and  length(ncol)=J;
 %               4) the sum of the elements of vector nrowt is equal to the sum of the
-%                 elements of vector ncolt, (in other words we check whether the row and
-%                 column sum vectors have the same grand total).
+%                  elements of vector ncolt, (in other words, we check whether the row and
+%                  column sum vectors have the same grand total).
 %               To avoid all the above checks set nocheck to true.
-%               Example - 'nocheck',false
+%               Example - 'nocheck',true
 %               Data Types - boolean
-%  algorithm   :  algorithm to use to create the random contingency table.
+%  algorithm  : Algorithm to use to create the random contingency table.
 %               Character.
 %               Character which specifies which algorithm must be used to
 %               create the contingency table.
@@ -119,9 +119,9 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
     nrow=2;
     ncol=3;
     % Fix the marginals of the two rows
-    nrowt=[ 20 30];
+    nrowt=[20 30];
     % Fix the marginals of the three columns
-    ncolt=[ 25 15 10];
+    ncolt=[25 15 10];
     % Generate the contingency table
     out=rcontFS(nrow,ncol,nrowt,ncolt)
     % Random contingency table based on algorthm AS144
@@ -137,9 +137,9 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
     nrow=2;
     ncol=3;
     % Fix the marginals of the two rows
-    nrowt=[ 20 30];
+    nrowt=[20 30];
     % Fix the marginals of the three columns
-    ncolt=[ 25 15 10];
+    ncolt=[25 15 10];
     % Generate the contingency table and avoid checks
     out=rcontFS(nrow,ncol,nrowt,ncolt,'nocheck',true)
     % Random contingency table based on algorthm AS144
