@@ -826,3 +826,4 @@ if dispresults == true
 end
 
 end
+%FScategory:MULT-Categorical
