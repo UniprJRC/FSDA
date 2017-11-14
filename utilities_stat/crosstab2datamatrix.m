@@ -54,7 +54,7 @@ function X=crosstab2datamatrix(N, varargin)
 
 %{
     % crosstab2datamatrix with all the default options.
-    % In this case the input is a contingencey table of class double.
+    % In this case the input is a contingency table of class double.
     N=[26 26 23 18 9;
         6  7  9 14 23];
     % No labels for rows and columns are supplied
@@ -62,7 +62,7 @@ function X=crosstab2datamatrix(N, varargin)
 %}
 
 %{
-    %% crosstab2datamatrix when input is a contingencey table of class table.
+    %% crosstab2datamatrix when input is a contingency table of class table.
     N = [24 23 30; 
          19 43 57;
          13 33 58];
@@ -83,7 +83,7 @@ function X=crosstab2datamatrix(N, varargin)
 %}
 
 %{
-    % Excample of use of option Lc.
+    % Example of use of option Lc.
     % In this case just the column names are supplied
     % The default row labels 'r1' 'r2' 'r3' are used
     N = [24 23 30; 
@@ -95,7 +95,7 @@ function X=crosstab2datamatrix(N, varargin)
 
 %% Beginning of code
 
-% Check MATLAB version. If it is not smaller than 2013b than input can be a
+% Check MATLAB version. If it is not smaller than 2013b,  input can be a
 % contingency table stored in table format
 verMatlab=verLessThan('matlab','8.2.0');
 
