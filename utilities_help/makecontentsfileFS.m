@@ -420,7 +420,7 @@ if ~isempty(printOutputCell)
         end
         fclose(fid);
     else
-        error(message('MATLAB:filebrowser:MakeContentsFileExists'))
+        warning(message('MATLAB:filebrowser:MakeContentsFileExists'))
     end
     
 end
