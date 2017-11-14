@@ -568,11 +568,11 @@ if NoStandardErrors == true
         for j=1:J
             if i<I && j<J
                 xsel=N(i+1:I,j+1:J);
-                C=C+sum(xsel(:));
+                C=C+N(i,j)*sum(xsel(:));
             end
             if j>1 && i<I
                 xsel=N(i+1:I,1:j-1);
-                D=D+sum(xsel(:));
+                D=D+N(i,j)*sum(xsel(:));
             end
         end
     end
