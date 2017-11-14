@@ -149,14 +149,18 @@ function out = SparseTableTest(N,varargin)
 %}
  
 %{
-    % Chi2 on collapsed contingency table.
+    %% Chi-squared test on collapsed contingency table.
     % Input is a data matrix and contingency table has to be built
     load smoke
     % X = original data matrix
     X=smoke.data;
-    % Chi^2 square test is used on collapsed 2-by-2 tables. 
+    % Chi-squared test is used on collapsed 2-by-2 tables. 
     % Cells which have a frequency smaller or equal than 15 are ignored. 
     out=SparseTableTest(X,'datamatrix',true,'threshold',15,'testname',1);
+    % show the output obtained
+    RejectedBonf = out.RejectedBonf
+    RejectedSidak = out.RejectedSidak
+    TestResults = out.TestResults
 %}
     
 %% Beginning of code
