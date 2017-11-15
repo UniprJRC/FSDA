@@ -311,8 +311,9 @@ function [out] = MixSimreg(k,p,varargin)
 %   Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package
 %   for Simulating Data to Study Performance of Clustering Algorithms,
 %   Journal of Statistical Software, 51:12, 1-25.
+%
 %   Davies, R. (1980), The distribution of a linear combination of
-%   chi-square random variables, Applied Statistics, 29, 323-333.
+%   chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.
 %
 %   Parlett, B. N. and C. Reinschthe (1971), Balancing a Matrix for Calculation of
 %   Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear
@@ -320,12 +321,11 @@ function [out] = MixSimreg(k,p,varargin)
 %
 %   Parlett, B. N. and C. Reinschthe (1969), Balancing a matrix for calculation 
 %   of eigenvalues and eigenvectors, Numerische Mathematik, 19, 
-%   Volume 13, Issue 4, pp 293-304. (This reference documents the problem of 
-%   the ill-conditioning of the eigenvalue-eigenvector computation).
+%   Volume 13, Issue 4, pp 293-304. 
 %
-%   Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.(2008),
-%   "A General Trimming Approach to Robust Cluster Analysis". Annals
-%   of Statistics, Vol.36, 1324-1345. Technical Report available at
+%   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+%   A General Trimming Approach to Robust Cluster Analysis. Annals
+%   of Statistics, Vol.36, 1324-1345. Technical Report available at:
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %   Riani M., Cerioli A., Perrotta D. and Torti F. (2015), Simulating

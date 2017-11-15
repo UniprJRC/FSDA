@@ -234,9 +234,9 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 % References:
 %
-% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.,  (2008),
-% "A General Trimming Approach to Robust Cluster Analysis". Annals
-% of Statistics, Vol.36, 1324-1345. Technical Report available at
+% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+% A General Trimming Approach to Robust Cluster Analysis. Annals
+% of Statistics, Vol.36, 1324-1345. Technical Report available at:
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 % Cerioli, A. and Perrotta, D. (2014). "Robust Clustering Around Regression
