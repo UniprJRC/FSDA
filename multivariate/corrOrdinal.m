@@ -561,7 +561,7 @@ n = sum(sum(N)); %sample size
 
 if NoStandardErrors == true
     % Fast way to compute number of concordances and discordances if the
-    % standard errors are nor required
+    % standard errors are not required
     C=0;
     D=0;
     for i=1:I
