@@ -141,10 +141,11 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %
 % References:
 %
-% RIANI M., CERIOLI A., ATKINSON A.C., PERROTTA D.  (2014). Monitoring
-% Robust Regression. ELECTRONIC JOURNAL OF STATISTICS, Vol. 8 pp.  646–677. 
-% Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory
-% and Methods, Wiley,New York.
+% Riani M., Cerioli A., Atkinson A.C., and Perrotta D. (2014), Monitoring
+% Robust Regression. Electronic Journal of Statistics, Vol. 8 pp. 646-677.
+%
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+% and Methods, Wiley, New York.
 %
 % Acknowledgements:
 %

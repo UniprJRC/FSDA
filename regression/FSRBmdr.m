@@ -158,7 +158,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 % See also: FSRB, FSRmdr, regressB
 %
 % References:
-% Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and
+% Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and
 % Residual Analysis, Biometrika, Vol 75 pp. 651-659.
 % Riani M., Corbellini A., Atkinson A.C. (2017), Very Robust Bayesian
 % Regression for Fraud Detection, submitted

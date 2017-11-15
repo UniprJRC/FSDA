@@ -265,9 +265,9 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %
 % References:
 %
-%   ATKINSON A.C, RIANI M. (2008). A robust and diagnostic information
-%   criterion for selecting regression models. JOURNAL OF THE JAPAN
-%   STATISTICAL SOCIETY. ISSN: 1882-2754. Vol. 38, No. 1, pp. 3-14
+%   Atkinson A.C, and Riani M. (2008), A robust and diagnostic information
+%   criterion for selecting regression models. Journal of the Japan
+%   Statistical Society. ISSN: 1882-2754. Vol. 38, No. 1, pp. 3-14.
 %
 % Copyright 2008-2016.
 % Written by FSDA team

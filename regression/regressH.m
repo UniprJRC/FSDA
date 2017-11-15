@@ -128,9 +128,8 @@ function out=regressH(y,X,Z,varargin)
 %
 % References:
 %
-%   Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1
-%   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282).
-%   Prentice Hall.
+%   Greene W.H.(1987), Econometric Analysis (5th edition, section 11.7.1
+%   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282), Prentice Hall.
 %   Atkinson A.C., Riani M. and Torti F. (2016), Robust methods for
 %   heteroskedastic regression, Computational Statistics and Data Analysis
 %   104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).
