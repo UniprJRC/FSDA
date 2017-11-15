@@ -97,7 +97,7 @@ function hf = wedgeplot(RES,varargin)
 %
 % Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust
 % Monitoring of Many Time Series with Application to Fraud Detection,
-% submitted.
+% submitted.(RPRH)
 %
 %
 % Copyright 2008-2017.
