@@ -81,8 +81,8 @@ function [AR,RI,MI,HI]=RandIndexFS(c1,c2, noisecluster)
 %
 % References:
 %
-% L. Hubert and P. Arabie (1985) "Comparing Partitions" Journal of
-% Classification 2:193-218
+% Hubert L. and Arabie P., (1985), Comparing Partitions, Journal of
+% Classification, vol. 2, pp 193-218.
 %
 % Acknowledgements:
 %

@@ -58,10 +58,10 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 % References:
 %
 %
-% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E. (1981),
+% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
 % Journal of the American Statistical Association , Vol. 76, No. 375,
-% pp. 643-648. This publication will be referred as 'HRR'
+% pp. 643-648. (HRR)
 %
 %
 % Copyright 2008-2016.

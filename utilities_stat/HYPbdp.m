@@ -65,10 +65,10 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 % References:
 %
 %
-% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
+% Hampel, F.R.,  Rousseeuw, P.J. and  Ronchetti E. (1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
 % Journal of the American Statistical Association , Vol. 76, No. 375,
-% pp. 643-648 (HRR)
+% pp. 643-648. (HRR)
 %
 % Copyright 2008-2016.
 % Written by FSDA team
