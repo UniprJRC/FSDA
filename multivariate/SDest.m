@@ -295,8 +295,8 @@ function [out, varargout] = SDest(Y,varargin)
 %         Statistical Association, 90, 329-341.
 % Juan J. and Prieto F.J. (1995) Journal of Computational and Graphical
 %         Statistics, 4, 319-334.
-% Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory
-%         and Methods, Wiley,New York.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
+%         and Methods, Wiley, New York.
 %
 %
 % Acknowledgements: 
