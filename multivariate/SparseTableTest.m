@@ -55,7 +55,10 @@ function out = SparseTableTest(N,varargin)
 %              CressieRead.m for further details. If testname is a
 %              character, possible values are 'Fisher' (to use the Fisher
 %              exact test, see function fishertest) or 'Barnard' (to use
-%              Barnard exact test, see function barnardtest).
+%              Barnard exact test, see function barnardtest). The default
+%              value of testname is 1, that is $\chi^2$ test is used. Note
+%              also that fishertest has been introduced in MATLAB in
+%              release 2014b.
 %              Example - 'testname',1
 %              Data Types - single | double | char
 % datamatrix : Data matrix or contingency table. Boolean. If datamatrix
@@ -199,16 +202,16 @@ if verMatlab ==0 && istable(N)
 end
 
 if any(any(N < 0))
-    error('Test expects counts that are nonnegative values');
+    error('FSDA:SparseTableTest:WrongInput','Test expects counts that are nonnegative values');
 end
 
 if I < 2 || J < 2
-    error('Matrix of observation must at least be of size 2-by-2');
+    error('FSDA:SparseTableTest:WrongInput','Input contingencey table must at least be of size 2-by-2');
 end
 
 threshold = 2;
 alpha     = 0.01;
-testname  = 'fisher';
+testname  = 1;
 
 if nargin > 1
     options=struct('testname',testname,'threshold',threshold,'alpha',alpha,'datamatrix',false);
