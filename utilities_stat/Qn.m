@@ -58,6 +58,7 @@ function y=Qn(X,dim)
 %
 %
 %<a href="matlab: docsearchFS('Qn')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

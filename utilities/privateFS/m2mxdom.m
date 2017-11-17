@@ -4,6 +4,11 @@ function [dom,cellBoundaries] = m2mxdom(originalCode)
 %   a cell script DOM.
  
 % Copyright 1984-2012 The MathWorks, Inc.
+%
+% Copyright 2008-2017.
+%
+%$LastChangedDate::                      $: Date of the last commit
+
  
 %#ok<*AGROW> The length of chunkList and paragraphText are not known in advance.
  

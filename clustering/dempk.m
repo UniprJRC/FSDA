@@ -141,6 +141,7 @@ function out = dempk(Y, k, g, varargin)
 % Written by FSDA team
 %
 % <a href="matlab: docsearchFS('dempk')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

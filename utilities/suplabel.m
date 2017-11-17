@@ -60,6 +60,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %
 %
 %<a href="matlab: docsearchFS('suplabel')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples

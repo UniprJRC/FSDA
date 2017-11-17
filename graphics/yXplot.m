@@ -297,6 +297,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('yXplot')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

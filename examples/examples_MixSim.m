@@ -48,6 +48,7 @@
 % Copyright 2008-2017.
 % Written by FSDA team
 
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 %% Generate 5 groups in 7 dimensions controlling average and maximum overlapping

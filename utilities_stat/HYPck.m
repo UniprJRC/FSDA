@@ -69,6 +69,7 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 %
 %
 %<a href="matlab: docsearchFS('HYPck')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

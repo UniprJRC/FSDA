@@ -71,6 +71,7 @@ function [bdp,eff] = HAc(ctun,v,varargin)
 %
 %
 %<a href="matlab: docsearchFS('HAc')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

@@ -78,6 +78,7 @@ function w = HYPwei(u, cktuning)
 %
 %
 %<a href="matlab: docsearchFS('HYPwei')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

@@ -74,6 +74,7 @@ function rhoHA = HArho(u, ctuning)
 %
 %
 %<a href="matlab: docsearchFS('HArho')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

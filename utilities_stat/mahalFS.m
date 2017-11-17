@@ -45,6 +45,7 @@ function d = mahalFS(Y,MU,SIGMA)
 %
 %
 %<a href="matlab: docsearchFS('mahalFS')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 

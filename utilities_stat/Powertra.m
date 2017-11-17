@@ -78,6 +78,7 @@ function Ytra=Powertra(Y,la,varargin)
 %
 %
 %<a href="matlab: docsearchFS('Powertra')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

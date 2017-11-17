@@ -44,6 +44,7 @@ function c = nchoosekFS(v,k)
 %
 %<a href="matlab: docsearchFS('nchoosekFS')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

@@ -178,6 +178,7 @@ function out = FSMfan(Y,la0,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSMfan')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

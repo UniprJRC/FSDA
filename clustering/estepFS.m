@@ -73,6 +73,7 @@ function  [obj, varargout1, varargout2]=estepFS(log_lh)
 % Copyright 2008-2017.
 %
 %<a href="matlab: docsearchFS('estepFS')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

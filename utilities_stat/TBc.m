@@ -51,6 +51,7 @@ function [bdp,eff,approxsheff] = TBc(c,v,shapeeff)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('TBc')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

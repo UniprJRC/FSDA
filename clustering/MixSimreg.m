@@ -338,6 +338,7 @@ function [out] = MixSimreg(k,p,varargin)
 %
 %
 %<a href="matlab: docsearchFS('MixSimreg')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

@@ -146,6 +146,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %<a href="matlab: docsearchFS('GetOmegaMap')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %{

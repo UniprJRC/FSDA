@@ -93,6 +93,7 @@ function y = inversegamcdf(x,a,b,nocheck)
 %
 %
 %<a href="matlab: docsearchFS('inversegamcdf')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

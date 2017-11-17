@@ -48,6 +48,7 @@ function x = shuffling(x)
 %
 %<a href="matlab: docsearchFS('shuffling')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

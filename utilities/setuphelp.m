@@ -9,6 +9,7 @@ function setuphelp(FSDApath)
 % Copyright 2008-2017.
 % Written by FSDA team
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

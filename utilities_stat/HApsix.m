@@ -71,6 +71,7 @@ function psiHAx = HApsix(u, ctuning)
 %
 %
 %<a href="matlab: docsearchFS('HApsix')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

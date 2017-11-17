@@ -66,6 +66,7 @@ function out = lga(X,k,varargin)
 %
 %
 %<a href="matlab: docsearchFS('lga')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

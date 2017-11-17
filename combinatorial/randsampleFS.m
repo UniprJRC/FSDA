@@ -103,6 +103,7 @@ function y = randsampleFS(n,k,method,after2011b)
 %
 %<a href="matlab: docsearchFS('randsampleFS')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

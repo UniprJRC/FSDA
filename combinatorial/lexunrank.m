@@ -169,6 +169,7 @@ function [kcomb,calls]=lexunrank(n,k,N,pascalM)
 %
 %<a href="matlab: docsearchFS('lexunrank')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

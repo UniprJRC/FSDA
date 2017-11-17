@@ -57,6 +57,7 @@ function psiOPT=OPTpsi(u,c)
 %
 %
 %<a href="matlab: docsearchFS('OPTpsi')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

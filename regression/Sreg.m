@@ -198,6 +198,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('Sreg')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

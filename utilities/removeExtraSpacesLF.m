@@ -40,6 +40,7 @@ function newTxt = removeExtraSpacesLF(txt)
 %
 %
 %<a href="matlab: docsearchFS('removeExtraSpacesLF')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

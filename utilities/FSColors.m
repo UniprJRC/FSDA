@@ -16,6 +16,7 @@ classdef FSColors
 %
 % Copyright 2008-2017.
 % Written by FSDA team
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %  <a href="matlab: docsearchFS('fscolors')">Link to the help function</a>

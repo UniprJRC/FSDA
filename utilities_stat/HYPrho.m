@@ -83,6 +83,7 @@ function rhoHYP = HYPrho(u, cktuning)
 %
 %
 %<a href="matlab: docsearchFS('HYPrho')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

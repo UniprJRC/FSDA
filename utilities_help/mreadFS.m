@@ -559,6 +559,7 @@ function out=mreadFS(file,varargin)
 %
 %<a href="matlab: docsearchFS('mreadFS')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

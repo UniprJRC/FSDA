@@ -46,6 +46,7 @@ function openMatlabFileFromHTML(MatlabFileName,LineToOpen)
 %
 %
 %<a href="matlab: docsearchFS('openMatlabFileFromHTML')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

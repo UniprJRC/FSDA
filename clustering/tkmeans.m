@@ -207,6 +207,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tkmeans')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

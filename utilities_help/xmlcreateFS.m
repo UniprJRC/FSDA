@@ -49,6 +49,7 @@ function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 %
 %
 %<a href="matlab: docsearchFS('xmlcreateFS')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

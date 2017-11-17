@@ -196,6 +196,7 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %
 %
 %<a href="matlab: docsearchFS('MMmulteda')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

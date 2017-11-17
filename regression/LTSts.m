@@ -433,6 +433,7 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %
 %<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

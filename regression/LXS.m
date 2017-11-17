@@ -201,6 +201,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('LXS')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

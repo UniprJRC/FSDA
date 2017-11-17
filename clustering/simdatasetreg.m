@@ -271,6 +271,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('simdatasetreg')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

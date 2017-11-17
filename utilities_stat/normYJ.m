@@ -62,6 +62,7 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %
 %
 %<a href="matlab: docsearchFS('normYJ')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

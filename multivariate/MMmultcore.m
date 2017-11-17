@@ -128,6 +128,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %
 %
 %<a href="matlab: docsearchFS('MMmultcore')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

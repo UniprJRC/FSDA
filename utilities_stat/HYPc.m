@@ -84,6 +84,7 @@ function [bdp,eff,A,B,d] = HYPc(c,v,varargin)
 %
 %
 %<a href="matlab: docsearchFS('HYPc')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

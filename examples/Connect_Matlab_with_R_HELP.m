@@ -112,6 +112,7 @@
 % Copyright 2008-2017.
 % FSDA toolbox
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 %% EXAMPLE 1: create from within R an identity matrix

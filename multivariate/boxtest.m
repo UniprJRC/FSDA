@@ -129,6 +129,7 @@ function out = boxtest(Y,group,varargin)
 %
 %
 %<a href="matlab: docsearchFS('boxtest')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

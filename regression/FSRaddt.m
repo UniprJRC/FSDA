@@ -157,6 +157,7 @@ function [out]=FSRaddt(y,X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSRaddt')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples

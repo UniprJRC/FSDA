@@ -64,6 +64,7 @@ function [tend] = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool)
 %
 %<a href="matlab: docsearchFS('PoolClose')">Link to the help page for this function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

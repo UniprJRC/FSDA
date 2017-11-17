@@ -97,6 +97,7 @@ function x = inversegaminv(p,a,b,nocheck)
 %
 %
 %<a href="matlab: docsearchFS('inversegaminv')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

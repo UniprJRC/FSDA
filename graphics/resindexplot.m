@@ -209,6 +209,7 @@ function resindexplot(residuals,varargin)
 %
 %
 %<a href="matlab: docsearchFS('resindexplot')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

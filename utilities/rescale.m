@@ -18,6 +18,7 @@ function y = rescale(x,a,b)
 %
 %
 %<a href="matlab: docsearchFS('rescale')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

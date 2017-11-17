@@ -65,6 +65,7 @@ function ceff = HAeff(eff,v,abc)
 %
 %
 %<a href="matlab: docsearchFS('HAeff')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Paramter ceff multiplies parameters (a,b,c) of Hampel estimator

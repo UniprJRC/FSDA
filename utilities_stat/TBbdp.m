@@ -33,6 +33,7 @@ function c = TBbdp(bdp,v)
 %
 %
 %<a href="matlab: docsearchFS('TBbdp')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

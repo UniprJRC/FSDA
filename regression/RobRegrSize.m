@@ -148,6 +148,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %
 %
 %<a href="matlab: docsearchFS('RobRegrSize')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 %{

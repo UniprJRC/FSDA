@@ -77,6 +77,7 @@ function w = HAwei(u, ctuning)
 %
 %
 %<a href="matlab: docsearchFS('HAwei')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

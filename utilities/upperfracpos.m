@@ -41,6 +41,7 @@ function upperfracpos(hfigl , hfigr , fraction)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('upperfracpos')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples

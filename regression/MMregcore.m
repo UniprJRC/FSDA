@@ -155,6 +155,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %
 %
 %<a href="matlab: docsearchFS('MMregcore')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

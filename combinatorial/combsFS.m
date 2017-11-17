@@ -48,6 +48,7 @@ function P = combsFS(v,m)
 %
 %<a href="matlab: docsearchFS('combsFS')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

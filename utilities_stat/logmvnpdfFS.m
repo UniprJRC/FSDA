@@ -82,6 +82,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('logmvnpdfFS')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 %   Examples:

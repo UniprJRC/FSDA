@@ -56,6 +56,7 @@ function psider=TBpsider(u,c)
 %
 %
 %<a href="matlab: docsearchFS('TBpsider')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

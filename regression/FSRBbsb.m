@@ -137,6 +137,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FSRBbsb')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

@@ -1,5 +1,10 @@
 function options = supplyDefaultOptions(options)
 % Supply default options for any that are missing.
+%
+% Copyright 2008-2017.
+%
+%$LastChangedDate::                      $: Date of the last commit
+
 if ~isfield(options,'format')
     options.format = 'html';
 end

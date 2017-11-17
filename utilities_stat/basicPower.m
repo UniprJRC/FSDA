@@ -57,6 +57,7 @@ function Ytra=basicPower(Y,ColtoTra,la, varargin)
 %
 %
 %<a href="matlab: docsearchFS('basicPower')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 

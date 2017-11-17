@@ -194,6 +194,7 @@ function [out] = overlapmap(D, varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('overlapmap')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

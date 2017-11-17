@@ -248,6 +248,7 @@ function [out]=FSRB(y,X,varargin)
 %
 %<a href="matlab: docsearchFS('FSRB')">Link to the help page for this function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

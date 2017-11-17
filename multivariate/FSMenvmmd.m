@@ -64,6 +64,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSMenvmmd')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

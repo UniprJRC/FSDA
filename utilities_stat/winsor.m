@@ -56,6 +56,7 @@ function Xwins = winsor(X, p, dim)
 %
 %
 %<a href="matlab: docsearchFS('winsor')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

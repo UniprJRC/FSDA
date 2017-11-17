@@ -4,6 +4,10 @@ function [dom, laste] = evalmxdom(f,dom,cellBoundaries,imagePrefix,imageDir,outp
 %   imagePrefix is the prefix that will be used for the image files.
 
 % Copyright 1984-2014 The MathWorks, Inc.
+%
+% Copyright 2008-2017.
+%
+%$LastChangedDate::                      $: Date of the last commit
 
 %#ok<*AGROW> (nodeList needs to grow)
 

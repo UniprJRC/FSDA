@@ -4,6 +4,7 @@ function [ss]=waitforbuttonpressFS
 % Copyright 2008-2017.
 % Written by FSDA team
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

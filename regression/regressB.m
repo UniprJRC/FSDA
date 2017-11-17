@@ -290,6 +290,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %<a href="matlab: docsearchFS('regressB')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

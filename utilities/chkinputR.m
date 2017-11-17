@@ -56,6 +56,7 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
 % Written by FSDA team
 %
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Example:

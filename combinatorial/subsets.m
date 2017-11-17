@@ -69,6 +69,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %
 %<a href="matlab: docsearchFS('subsets')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

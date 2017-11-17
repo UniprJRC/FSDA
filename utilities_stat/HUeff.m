@@ -42,6 +42,7 @@ function ceff = HUeff(eff,v,shapeeff)
 %
 %
 %<a href="matlab: docsearchFS('HUeff')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

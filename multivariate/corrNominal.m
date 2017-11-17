@@ -254,6 +254,7 @@ function out=corrNominal(N, varargin)
 %
 %
 %<a href="matlab: docsearchFS('corrNominal')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

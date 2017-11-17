@@ -26,6 +26,7 @@ function cabc()
 %
 %
 %<a href="matlab: docsearchFS('cabc')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

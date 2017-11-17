@@ -69,6 +69,7 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %
 %
 %<a href="matlab: docsearchFS('ellipse')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

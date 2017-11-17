@@ -217,6 +217,7 @@ function out = FSMtra(Y,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSMtra')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

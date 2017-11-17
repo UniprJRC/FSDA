@@ -232,6 +232,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %
 %
 %<a href="matlab: docsearchFS('selectdatafs')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

@@ -94,6 +94,7 @@ function strFormatted = wraptextFS(str, varargin)
 %
 %
 %<a href="matlab: docsearchFS('wraptextFS')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

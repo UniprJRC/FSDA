@@ -125,6 +125,7 @@ function out = SparseTableTest(N,varargin)
 %
 %
 %<a href="matlab: docsearchFS('SparseTableTest')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

@@ -41,6 +41,7 @@ function fstring=publishFunctionCate(InputCell)
 %
 %
 %<a href="matlab: docsearchFS('publishFunctionCate')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

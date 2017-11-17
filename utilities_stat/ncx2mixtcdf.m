@@ -97,6 +97,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('ncx2mixtcdf')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 

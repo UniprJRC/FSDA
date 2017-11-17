@@ -69,6 +69,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSRinvmdr')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

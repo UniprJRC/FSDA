@@ -212,6 +212,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

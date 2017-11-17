@@ -188,6 +188,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 %
 %<a href="matlab: docsearchFS('RobCov')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

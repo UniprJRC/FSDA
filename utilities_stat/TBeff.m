@@ -48,6 +48,7 @@ function ceff = TBeff(eff, v, shapeeff, approxsheff)
 %
 %
 %<a href="matlab: docsearchFS('TBeff')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

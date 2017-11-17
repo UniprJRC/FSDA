@@ -59,6 +59,7 @@ function w = OPTwei(u,c)
 %
 %
 %<a href="matlab: docsearchFS('OPTwei')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

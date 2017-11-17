@@ -68,6 +68,7 @@ function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('OPTc')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

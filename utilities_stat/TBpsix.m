@@ -57,6 +57,7 @@ function psix=TBpsix(u,c)
 %
 %
 %<a href="matlab: docsearchFS('TBpsix')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

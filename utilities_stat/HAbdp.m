@@ -63,6 +63,7 @@ function ctun = HAbdp(bdp,p,abc)
 %
 %
 %<a href="matlab: docsearchFS('HAbdp')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

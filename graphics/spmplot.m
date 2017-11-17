@@ -322,6 +322,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

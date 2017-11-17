@@ -74,6 +74,7 @@ function out = rlga(X,k,alpha,varargin)
 %
 %
 %<a href="matlab: docsearchFS('rlga')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 

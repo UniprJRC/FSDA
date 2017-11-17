@@ -76,6 +76,7 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FowlkesMallowsIndex')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

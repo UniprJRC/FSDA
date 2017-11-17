@@ -48,6 +48,7 @@ function X=crosstab2datamatrix(N, varargin)
 %
 %<a href="matlab: docsearchFS('crosstab2datamatrix')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

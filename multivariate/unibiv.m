@@ -105,6 +105,7 @@ function [fre]=unibiv(Y,varargin)
 %
 %
 %<a href="matlab: docsearchFS('unibiv')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

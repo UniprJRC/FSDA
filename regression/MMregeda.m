@@ -162,6 +162,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('MMregeda')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

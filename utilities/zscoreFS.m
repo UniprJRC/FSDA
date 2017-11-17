@@ -127,6 +127,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %
 %
 %<a href="matlab: docsearchFS('zscoreFS')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 

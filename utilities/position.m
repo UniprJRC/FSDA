@@ -33,6 +33,7 @@ function position(plmain)
 %
 %<a href="matlab: docsearchFS('position')">Link to the help function</a>
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

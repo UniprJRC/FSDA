@@ -19,6 +19,7 @@ function chkoptions(options,UserOptions)
 % Written by FSDA team
 %
 %
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

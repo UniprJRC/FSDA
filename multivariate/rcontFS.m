@@ -109,6 +109,7 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %
 %
 %<a href="matlab: docsearchFS('rcontFS')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

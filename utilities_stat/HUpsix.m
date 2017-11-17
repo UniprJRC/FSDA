@@ -57,6 +57,7 @@ function psix=HUpsix(u,c)
 %
 %
 %<a href="matlab: docsearchFS('HUpsix')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

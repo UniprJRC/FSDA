@@ -196,6 +196,7 @@ function out=FSMmmdrs(Y,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSMmmdrs')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:

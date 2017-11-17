@@ -133,6 +133,7 @@ function cdsplot(outms,varargin)
 %
 %
 %<a href="matlab: docsearchFS('cdsplot')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

@@ -59,6 +59,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('wthin')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 %

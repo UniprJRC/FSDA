@@ -40,6 +40,7 @@ function kE = quickselectFS(A,k,kiniindex)
 %
 %
 %<a href="matlab: docsearchFS('quickselectFS')">Link to the help page for this function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:

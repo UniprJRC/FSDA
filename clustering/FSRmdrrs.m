@@ -224,6 +224,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %
 %
 %<a href="matlab: docsearchFS('FSRmdrrs')">Link to the help function</a>
+%
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:
