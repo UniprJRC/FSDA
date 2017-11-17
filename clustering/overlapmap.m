@@ -190,12 +190,11 @@ function [out] = overlapmap(D, varargin)
 % 
 %   ...
 % 
-% Copyright 2008-2017.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('overlapmap')">Link to the help page for this function</a>
-%
-%$LastChangedDate::                      $: Date of the last commit
+% Last modified 02-10-2017
 
 % Examples:
 
@@ -656,31 +655,35 @@ surface(zeros(size(overMorder)),overMorder(:, 2:end),'EdgeColor','none');
 axis tight;
 colormap(flipud(userColors));
 ax = gca;
-% Add Y axis label
-set(ax,'XAxisLocation','top');
+if verLessThan('matlab', '8.5')
+    set(ax,'XAxisLocation','top',...
+        'YTick',1:length(ord(2:end)),'YTickLabel',[],...
+        'XTick',1:length(ord(2:end)),'XTickLabel',[] );
+else
+    ax.XAxisLocation    = 'top';
+    ax.YTick            = 1:length(ord(2:end));
+    ax.YTickLabel       = []; 
+    ax.XTick            = 1:length(ord(2:end));
+    ax.XTickLabel       = [];    
+end
 ylabel('Ordered components','FontSize',14,'Interpreter','Latex');
-% Change Y labels
-ax.YTick = 1:length(ord(2:end));
-ax.YTickLabel = []; 
-% Change X labels
-ax.XTick = ax.YTick;
-ax.XTickLabel = [];    
 % Add the text about the corresponding ordered clusters (resized according 
 % to the dimension of the map) [To Enhance]
+axes(ax);
 if k<=4
-    text(ax, ones(1, k)+0:k, 1:k, num2str(ord(1:end)), ...
+    text(ones(1, k)+0:k, 1:k, num2str(ord(1:end)), ...
         'FontWeight','bold','FontSize',18,'HorizontalAlignment','right','VerticalAlignment','baseline');
 elseif k<=7
-    text(ax, ones(1, k)/1.1+0:k, 0.1+(1:k), num2str(ord(1:end)), ...
+    text(ones(1, k)/1.1+0:k, 0.1+(1:k), num2str(ord(1:end)), ...
         'FontWeight','bold','FontSize',16,'HorizontalAlignment','right','VerticalAlignment','baseline');
 elseif k<=15
-    text(ax, ones(1, k)/1.2+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
+    text(ones(1, k)/1.2+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
         'FontWeight','bold','FontSize',14,'HorizontalAlignment','right','VerticalAlignment','baseline');  
 elseif k<=35
-    text(ax, ones(1, k)/2+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
+    text(ones(1, k)/2+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
         'FontWeight','bold','FontSize',12,'HorizontalAlignment','right','VerticalAlignment','baseline');  
 else
-    text(ax, ones(1, k)/2.5+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
+    text(ones(1, k)/2.5+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
         'FontWeight','bold','FontSize',10,'HorizontalAlignment','right','VerticalAlignment','baseline'); 
 end
 % Add box and grid
@@ -696,22 +699,47 @@ ax2.YTick = [];
 ax2.XTick = [];
 
 % Moving and resizing subplots
-s1.Position(1) = s1.Position(1)-0.08; % moving left
-s1.Position(4) = s1.Position(4)*2.3; % increasing size 230%
-s1.Position(2) = s1.Position(2)*0.25; % moving down
-s2.Position(4) = s2.Position(4)*0.2; % reducing size to 20%
-s2.Position(2) = s2.Position(2)*0.4; % moving down
-s2.Position(3) = s1.Position(3); % equalize horizontally
-s2.Position(1) = s2.Position(1)-0.08; % moving left
-
+if verLessThan('matlab', '8.5')
+    s1p = get(s1,'Position'); 
+    s1p(1) = s1p(1)-0.08; 
+    s1p(4) = s1p(4)*2.3; 
+    s1p(2) = s1p(2)*0.25; 
+    set(s1,'Position',s1p);
+    
+    s2p = get(s2,'Position'); 
+    s2p(4) = s2p(4)*0.2; 
+    s2p(2) = s2p(2)*0.4; 
+    s2p(3) = s1p(3); 
+    s2p(1) = s2p(1)-0.08; 
+    set(s2,'Position',s2p);
+else
+    s1.Position(1) = s1.Position(1)-0.08; % moving left
+    s1.Position(4) = s1.Position(4)*2.3; % increasing size 230%
+    s1.Position(2) = s1.Position(2)*0.25; % moving down
+    s2.Position(4) = s2.Position(4)*0.2; % reducing size to 20%
+    s2.Position(2) = s2.Position(2)*0.4; % moving down
+    s2.Position(3) = s1.Position(3); % equalize horizontally
+    s2.Position(1) = s2.Position(1)-0.08; % moving left
+end
 % Colormap position in the plot (in normalized units)
 colorPos = [0.84875 0.0455512465373961 0.045875 0.885503231763619];
 % Add a common colorbar for both subplots
 if max(overMorder(:))>0.1
     % Set a specific scale when the max overlap is not so small [Useful?]
-    co = colorbar('Ticks',[0.01, 0.04:0.02:0.1, 0.12:round((max(overMorder(:))-0.1)/5,2):max(overMorder(:))],...
-        'TickLabels',{num2str([0.01, 0.04:0.02:0.1, 0.12:round((max(overMorder(:))-0.1)/5,2):max(overMorder(:))]')}, ...
+    if verLessThan('matlab', '8.5')
+        rmo = (max(overMorder(:))-0.1)/5;
+        rmo = round(rmo*100)/100;
+        co = colorbar('Position', colorPos); 
+        set(co,'YTick',[0.01, 0.04:0.02:0.1, 0.12:rmo:max(overMorder(:))],...
+        'YTickLabel',{num2str([0.01, 0.04:0.02:0.1, 0.12:rmo:max(overMorder(:))]')}, ...
+        'Position', colorPos, 'YLim', [0, max(overMorder(:))+0.001]);
+    else
+        rmo = round((max(overMorder(:))-0.1)/5,2);
+        co = colorbar('Ticks',[0.01, 0.04:0.02:0.1, 0.12:rmo:max(overMorder(:))],...
+        'TickLabels',{num2str([0.01, 0.04:0.02:0.1, 0.12:rmo:max(overMorder(:))]')}, ...
         'Position', colorPos, 'Limits', [0, max(overMorder(:))+0.001]); 
+    end
+
 else
     % Use adefault scale (to avoid errors)
     co = colorbar('Position', colorPos, 'Limits', [0, max(overMorder(:))+0.001]); 
@@ -765,7 +793,8 @@ if strcmp(get(gcf,'SelectionType'),'normal') % left click
         TextPos = k-10;
     end
     str = sprintf('%s = %.3f\n%s = %d', '$\omega^{*}$', omegaStar, '$\hat{G}$', Ghat);
-    text(ax, 1.1, TextPos, str, 'FontWeight','bold','FontSize',14,'Interpreter', 'Latex', 'Tag', 'GlobalTextHandle');
+    axes(ax);
+    text(1.1, TextPos, str, 'FontWeight','bold','FontSize',14,'Interpreter', 'Latex', 'Tag', 'GlobalTextHandle');
     
     % Add line to the colorbar according to the threshold omegaStar chosen
     line_axes = axes('position', co.Position, 'ylim', co.Limits, 'color', 'none', 'visible','off');
@@ -776,7 +805,8 @@ if strcmp(get(gcf,'SelectionType'),'normal') % left click
     below = max(overMorder(:, 2:end)) < omegaStar;  % index of the max for each columns
     leng = 0.5+1:k;                                 % position on the x axes
     highl = leng(below);                            % index of the marks to add
-    text(ax2, highl-0.1, 0.5+ones(1, length(highl)) , 'x', ...
+    axes(ax2);
+    text(highl-0.1, 0.5+ones(1, length(highl)) , 'x', ...
         'FontWeight','bold','FontSize',20, 'Tag','GlobalXHandle',...
         'HorizontalAlignment','center','VerticalAlignment','middle');
     
@@ -809,7 +839,8 @@ omegaStar = get(slider, 'Value');
 % Update the visualization of omegaStar and Ghat values on the plot
 delete(findobj('Tag','GlobalTextHandle'));
 str = sprintf('%s = %.3f\n%s = %d', '$\omega^{*}$', omegaStar, '$\hat{G}$', Ghat);
-text(ax, 1.1, TextPos, str, 'FontWeight','bold','FontSize',14,'Interpreter','Latex', 'Tag', 'GlobalTextHandle');
+axes(ax);
+text(1.1, TextPos, str, 'FontWeight','bold','FontSize',14,'Interpreter','Latex', 'Tag', 'GlobalTextHandle');
 
 % Update the line to colorbar according to the threshold omegaStar
 delete(findobj('Tag','GlobalLineHandle'));
@@ -821,7 +852,9 @@ delete(findobj('Tag', 'GlobalXHandle'));
 below = max(overMorder(:, 2:end)) < omegaStar;
 leng = 0.5 + 1:length(overMorder(2:end,:)-1);
 highl = leng(below);
-text(ax2, highl-0.1, 0.5+ones(1, length(highl)) , 'x', 'FontWeight','bold', 'FontSize', 20,...
+
+axes(ax2);
+text(highl-0.1, 0.5+ones(1, length(highl)) , 'x', 'FontWeight','bold', 'FontSize', 20,...
     'Tag', 'GlobalXHandle', 'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle');
 
 % Preserve the callbacks 
