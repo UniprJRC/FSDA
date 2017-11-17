@@ -360,13 +360,13 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %
 %<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
-% Last modified 05-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 
@@ -1955,7 +1955,7 @@ end
         % clustering. Available at
         % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf%
         %
-        % Copyright 2008-2016.
+        % Copyright 2008-2017.
         % Written by FSDA team
         %
         % DETAILS. This algorithm solves the minimization problem with constraints
@@ -1967,7 +1967,6 @@ end
         %
         %
         %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
-        % Last modified 05-06-2016
         
         % Examples:
         %

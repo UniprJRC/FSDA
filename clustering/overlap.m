@@ -76,12 +76,12 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %   Davies, R. (1980), The distribution of a linear combination of
 %   chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('overlap')">Link to the help function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

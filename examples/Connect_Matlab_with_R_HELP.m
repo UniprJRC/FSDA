@@ -109,10 +109,10 @@
 %         it means that  file Testing.lic (see STEP 2 above) has not been
 %         copied
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % FSDA toolbox
 %
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 %% EXAMPLE 1: create from within R an identity matrix
 

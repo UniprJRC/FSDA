@@ -88,12 +88,12 @@ function y = inversegamcdf(x,a,b,nocheck)
 %
 % https://en.wikipedia.org/wiki/Inverse-gamma_distribution
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('inversegamcdf')">Link to the help function</a>
-% Last modified 11-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 
 % Examples:

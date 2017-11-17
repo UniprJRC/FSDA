@@ -37,14 +37,14 @@ function varargout = dsxy2figxy(varargin)
 % See also 
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % REMARK: function  dsxy2figxy has been written by MATLAB programmers but for some
 % strange reason has not included yet into the standard documentation
 %
 %
 %
 %<a href="matlab: docsearchFS('dsxy2figxy')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 %{
     %% Plot of sin between -pi and pi 

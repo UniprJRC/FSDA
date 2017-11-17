@@ -100,11 +100,11 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %   Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
 %   forward search Springer Verlag, New York.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FSMmmd')">Link to the help function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 
 % Examples:

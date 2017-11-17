@@ -50,9 +50,10 @@ function outHELP=CreateFSDApointerFiles(InputCell,OUT)
     end
 %}
 
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
+%$LastChangedDate::                      $: Date of the last commit
 
 %% Beginning of code
 [FSDAroot]=fileparts(which('docsearchFS.m'));

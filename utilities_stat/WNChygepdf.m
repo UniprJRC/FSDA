@@ -49,13 +49,13 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
 %   Distribution. Communications in Statistics - Simulation and Computation
 %   Volume 37, 2008 - Issue 2.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % FSDA team adapted and documented Jim Huntley's function wallen_pdf for
 % illustration purposes only.
 %
 %<a href="matlab: docsearchFS('WNChygepdf')">Link to the help function</a>
 %
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:
 %

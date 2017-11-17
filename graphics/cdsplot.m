@@ -128,12 +128,12 @@ function cdsplot(outms,varargin)
 %   Computational Statistics and Data Analysis, special issue on robust
 %   model selection.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('cdsplot')">Link to the help function</a>
-% Last modified 14-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

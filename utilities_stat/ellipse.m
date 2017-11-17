@@ -64,12 +64,12 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color)
 %   Press, London-New York-Toronto-Sydney-San Francisco.
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('ellipse')">Link to the help function</a>
-% Last modified 14-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

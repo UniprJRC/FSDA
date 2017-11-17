@@ -427,12 +427,13 @@ function [out, varargout] = LTSts(y,varargin)
 % submitted.(RPRH)
 %
 %
-% Copyright 2008-2017. Written by Marco Riani, Domenico Perrotta, Peter
+% Copyright 2008-2017.
+% Written by Marco Riani, Domenico Perrotta, Peter
 % Rousseeuw and Mia Hubert
 %
 %
 %<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
-% Last modified 19-Jun-2017
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

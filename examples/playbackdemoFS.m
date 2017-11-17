@@ -3,10 +3,10 @@ function playbackdemoFS(demo_name)
 %
 %  PLAYBACKDEMOFS(DEMO_NAME) launches a playback demo in "www.riani.it/MATLAB/".
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 %   Example:
 %      playbackdemoFS('fishery')

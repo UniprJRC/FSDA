@@ -116,12 +116,12 @@ function ci=ncpci(x,fType,df,varargin)
 %
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('ncpci')">Link to the help function</a>
-% Last modified 24-10-2017
+%$LastChangedDate::                      $: Date of the last commit
 %
 %
 

@@ -99,13 +99,13 @@ function [fre]=unibiv(Y,varargin)
 %       Riani, M., Zani S. (1997). An iterative method for the detection of
 %       multivariate outliers, Metron, vol. LV, pp. 101-117.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %
 %<a href="matlab: docsearchFS('unibiv')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

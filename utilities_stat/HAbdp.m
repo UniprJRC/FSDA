@@ -58,12 +58,12 @@ function ctun = HAbdp(bdp,p,abc)
 % D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and
 % Exploratory Data Analysis Wiley, New York.
 
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('HAbdp')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 %
 %

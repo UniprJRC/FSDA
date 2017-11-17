@@ -13,12 +13,12 @@ function y = rescale(x,a,b)
 %     (default value of b is 1)
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('rescale')">Link to the help function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

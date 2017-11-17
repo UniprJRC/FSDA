@@ -181,11 +181,11 @@ function tclustICplot(IC,varargin)
 % Classification, vol. 2, pp 193-218.
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tclustICplot')">Link to the help function</a>
-% Last modified 11-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

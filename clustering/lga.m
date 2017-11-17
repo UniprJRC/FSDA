@@ -61,12 +61,12 @@ function out = lga(X,k,varargin)
 % Grouping Using Orthogonal Regression, Computational Statistics and Data
 % Analysis 50, 1287-1312.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('lga')">Link to the help page for this function</a>
-% Last modified 14-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 %
 %

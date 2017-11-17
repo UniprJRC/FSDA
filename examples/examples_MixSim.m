@@ -45,10 +45,10 @@
 %  See function tclust.m contained in the toolbox
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 %% Generate 5 groups in 7 dimensions controlling average and maximum overlapping
 clearvars -except RandomDataFromR; close all;

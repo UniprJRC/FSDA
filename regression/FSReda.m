@@ -185,12 +185,12 @@ function [out] = FSReda(y,X,bsb,varargin)
 %   Springer Verlag, New York.
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('FSReda')">Link to the help function</a>
-% Last modified 14-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

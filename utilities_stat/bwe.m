@@ -42,12 +42,12 @@ function bw = bwe(X, bwopt)
 %   Analysis. London: Chapman & Hall/CRC. p. 48. ISBN 0-412-24620-1.
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('bwe')">Link to the help page for this function</a>
-% Last modified 06-Feb-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 %
 % Examples:

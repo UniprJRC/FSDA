@@ -111,13 +111,13 @@ function [out , varargout] = FSRr(y, X, varargin)
 %       number of multivariate outliers. Journal of the Royal Statistical
 %       Society Series B, Vol. 71, pp. 201-221.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %
 %<a href="matlab: docsearchFS('FSRr')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

@@ -45,9 +45,10 @@ function outHELP=CreateFSDAhelpFiles()
 %              outHELP.fileCate    = string containing fucntion-cate.html
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
+%$LastChangedDate::                      $: Date of the last commit
 
 
 %% STEP 1 create personalized contents files

@@ -105,7 +105,7 @@ function hf = wedgeplot(RES,varargin)
 %
 %
 %<a href="matlab: docsearchFS('wedgeplot')">Link to the help function</a>
-% Last modified 19-Jun-2017
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

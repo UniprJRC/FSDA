@@ -120,12 +120,12 @@ function out = SparseTableTest(N,varargin)
 % standard approaches and a new method, submitted
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('SparseTableTest')">Link to the help function</a>
-% Last modified Sun 4 June 2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:
 %

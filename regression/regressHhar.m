@@ -207,12 +207,12 @@ function [out]=regressHhar(y,X,Z,varargin)
 %   Greene W.H.(1987), Econometric Analysis (5th edition, section 11.7.1
 %   pp. 232-235), (7th edition, section  9.7.1 pp. 280-282), Prentice Hall.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

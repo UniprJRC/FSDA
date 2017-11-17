@@ -219,12 +219,12 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %   in: Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS,
 %   (pp. 271-286), IOS Press, Amsterdam (The Netherlands).
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('FSRmdrrs')">Link to the help function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:
 %

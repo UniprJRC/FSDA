@@ -37,12 +37,12 @@ function ceff = HUeff(eff,v,shapeeff)
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
 % and Methods, Wiley, New York.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('HUeff')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 
 %

@@ -166,11 +166,11 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 % Regression with the Forward Search: Theory and Data Analysis, Test, 
 % DOI 10.1007/s11749-017-0542-6
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FSRBmdr')">Link to the help function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

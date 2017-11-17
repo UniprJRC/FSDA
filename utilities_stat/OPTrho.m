@@ -51,12 +51,12 @@ function rhoOPT=OPTrho(u, c)
 % Yohai V.J., Zamar R.H. (1997) Optimal locally robust M-estimates of
 % regression. J Plan Stat Inference 64, pp. 309-323
 
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('OPTrho')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:
 

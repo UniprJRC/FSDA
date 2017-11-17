@@ -63,12 +63,12 @@ function [Y , retain]= rthin(X, P)
 %      Techniques for Data Analysis," Oxford University Press.
 %
 %
-% Copyright 2008-2015.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('rthin')">Link to the help page for this function</a>
-% Last modified 06-Feb-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 %
 % Examples:

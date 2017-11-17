@@ -52,11 +52,11 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
 %
 % See also chkinputRB
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 % Example:
 %{

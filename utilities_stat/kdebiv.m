@@ -88,8 +88,9 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 %    Techniques for Data Analysis," Oxford University Press.
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
 %
 %<a href="matlab: docsearchFS('kdebiv')">Link to the help function</a>
 

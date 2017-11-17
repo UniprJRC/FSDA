@@ -52,12 +52,12 @@ function Ytra=basicPower(Y,ColtoTra,la, varargin)
 %Box, G. E. P. & Cox, D. R. (1964). An analysis of transformations (with
 %Discussion). J. R. Statist. Soc. B 26, 211-252
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('basicPower')">Link to the help function</a>
-% Last modified 14-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 
 % Examples:

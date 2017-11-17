@@ -256,12 +256,12 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %   104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('FSRHeda')">Link to the help function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

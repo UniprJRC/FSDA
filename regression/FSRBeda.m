@@ -226,12 +226,12 @@ function [out] = FSRBeda(y, X, varargin)
 % DOI 10.1007/s11749-017-0542-6
 %
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('FSRBeda')">Link to the help function</a>
-% Last modified 14-06-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 

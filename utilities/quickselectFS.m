@@ -35,12 +35,12 @@ function kE = quickselectFS(A,k,kiniindex)
 %       Riani M., Perrotta D. and Cerioli (2015), The Forward Search for
 %       Very Large Datasets, Journal of Statistical Software
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('quickselectFS')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 %

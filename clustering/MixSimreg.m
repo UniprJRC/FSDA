@@ -333,12 +333,12 @@ function [out] = MixSimreg(k,p,varargin)
 %   Advances in data analysis and classification. Volume 9, Issue 4, pp
 %   461-481, DOI 10.1007/s11634-015-0223-9.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('MixSimreg')">Link to the help function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 
 % Examples:

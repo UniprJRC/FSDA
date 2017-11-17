@@ -183,12 +183,12 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % for robust estimators. Technical report, Dept. of Applied Economics, K.U.
 % Leuven.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % FSDA toolbox
 %
 %
 %<a href="matlab: docsearchFS('RobCov')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:
 %

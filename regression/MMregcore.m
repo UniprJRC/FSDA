@@ -150,12 +150,12 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 % been completely redesigned, with considerable increase of the
 % computational performance.
 %
-% Copyright 2008-2016.
+% Copyright 2008-2017.
 % Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('MMregcore')">Link to the help page for this function</a>
-% Last modified 31-05-2016
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 %
