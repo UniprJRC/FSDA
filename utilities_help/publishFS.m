@@ -78,7 +78,8 @@ function out=publishFS(file,varargin)
 %             and 'C:\rosa\images' should be created manually by the user.
 %             The default value of webhelp is false.
 %             Example - 'webhelp',true
-
+%             Data Types - logical
+%
 %
 % Output:
 %
