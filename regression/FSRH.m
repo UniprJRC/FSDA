@@ -261,7 +261,11 @@ function [out]=FSRH(y,X,Z,varargin)
 %
 %  The output consists of a structure 'out' containing the following fields:
 % out.ListOut=  k x 1 vector containing the list of the units declared as
-%               outliers or NaN if the sample is homogeneous
+%               outliers or NaN if the sample is homogeneous. This field in
+%               future releases will be deleted bacause it will be replaced
+%               by out.outliers.
+% out.outliers= k x 1 vector containing the list of the units declared as
+%               outliers or NaN if the sample is homogeneous.
 % out.beta   =  p-by-1 vector containing the estimated regression
 %               parameters (in step n-k).
 % out.hetero =  r-by-1 vector containing the estimated parameters of the

@@ -130,8 +130,8 @@ function out = dempk(Y, k, g, varargin)
 %
 % References:
 %
-%   Melnykov, V., Michael, S. (2017), "Clustering large datasets by merging K-means
-%   solutions". Submitted.
+%   Melnykov, V., Michael, S. (2017), "Clustering large datasets by merging
+%   K-means solutions". Submitted.
 %
 %   Melnykov, V. (2016), "Merging Mixture Components for Clustering Through
 %   Pairwise Overlap". Journal of Computational and Graphical Statistics,
@@ -879,3 +879,4 @@ Z(:,[1 2])=sort(Z(:,[1 2]),2);
 
 end
 
+%FScategory:CLUS-RobClaMULT

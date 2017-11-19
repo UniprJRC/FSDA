@@ -39,12 +39,12 @@ function weights = GYfilt(x,varargin)
 %               correspondence of the units declared as outliers.
 %
 %
-% See also:
+% See also: LTSts
 %
 % References:
 %
-% Gervini D, Yohai VJ (2002). A class of robust and fully efficient
-% regression estimators. Ann Stat 30(2):583– 616
+% Gervini D, Yohai VJ (2002), A class of robust and fully efficient
+% regression estimators. Annals of Statistics 30, pp. 583– 616
 %
 % Copyright 2008-2017.
 % Written by FSDA team
@@ -56,8 +56,14 @@ function weights = GYfilt(x,varargin)
 % Examples:
 
 %{
-    % Procedure applied to 100 normal random numbers.
-    GYfilt(randn(100,1))
+    % GYfilt with all the default options.
+    weights=GYfilt(randn(100,1));
+%}
+
+%{
+    % GYfilt with option alpha.
+    alpha=0.999;
+    weights=GYfilt(randn(100,1),'alpha',alpha);
 %}
 
 %% Beginning of code
@@ -167,3 +173,5 @@ vout =nan(n,1);
 vout(id) = v;
 disp([' iter = ' num2str(iter)])
 end
+
+%FScategory:UTISTAT

@@ -128,17 +128,17 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 % References:
 %
-%   Maitra, R. and Melnykov, V. (2010). Simulating data to study performance
+%   Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
 %   of finite mixture modeling and clustering algorithms, The Journal of
-%   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
+%   Computational and Graphical Statistics, 2:19, pp. 354-376. (to refer to
 %   this publication we will use "MM2010 JCGS")
 %
-%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package
+%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package
 %   for Simulating Data to Study Performance of Clustering Algorithms,
-%   Journal of Statistical Software, 51:12, 1-25.
+%   Journal of Statistical Software, 51:12, pp. 1-25.
 %
-%   Davies, R. (1980) The distribution of a linear combination of
-%   chi-square random variables, Applied Statistics, 29, 323-333.
+%   Davies, R. (1980), The distribution of a linear combination of
+%   chi-square random variables, Applied Statistics, 29, pp. 323-333.
 %
 % Copyright 2008-2017.
 % Written by FSDA team

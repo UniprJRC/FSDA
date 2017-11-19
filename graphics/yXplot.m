@@ -806,8 +806,8 @@ else
     group=ones(n,1);
     datatooltip=0;
     databrush='';
-    xlimx='';
-    ylimy='';
+%     xlimx='';
+%     ylimy='';
     units='';
     
 end

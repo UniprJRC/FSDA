@@ -223,7 +223,7 @@ function out=CorAna(N, varargin)
 %                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
 %                         sum of the elements of out.Nhat is $n$ (the grand
 %                         total).
-% 		out.Ntable    =   Same as out.Nhat but in table format (with row and
+% 		out.Nhattable    =   Same as out.Nhat but in table format (with row and
 %                         column names).
 % 		out.P         =   $I$-by-$J$-array containing correspondence matrix
 %                         (proportions). The $(i,j)$-th element is equal to

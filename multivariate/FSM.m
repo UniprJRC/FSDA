@@ -166,8 +166,8 @@ function [out]=FSM(Y,varargin)
 %               Mahalanobis distances (in squared units). This vector
 %               contains the distances of each observation from the
 %               location of the data, relative to the scatter matrix cov.
+% out.class  =  'FSM'.
 %
-% out.class   = FSM
 %
 % See also: FSMeda, unibiv.m, FSMmmd.m
 %
@@ -1336,6 +1336,7 @@ if isempty(bonflev)
 else
     out.nout =NaN;
 end
+out.class  =  'FSM';
 
 %% Callback functions used to "pin" quantile labels and vertical line to axes.
 

@@ -223,6 +223,7 @@ function [out] = overlapmap(D, varargin)
     % interactive plots.
 
     close all
+    rng('default') 
     rng(2)
     Y=load('M5data.txt');
     gscatter(Y(:,1),Y(:,2), Y(:,3))
@@ -249,6 +250,7 @@ function [out] = overlapmap(D, varargin)
     v = 4;
     n = 5000;
     % Generate 10 homogeneous and spherical clusters
+    rng('default') 
     rng(10, 'twister');
     out = MixSim(k, v, 'sph', true, 'hom', true, 'int', [0 10], 'Display', ...
         'off', 'MaxOmega', 0.005, 'Display','off');
@@ -291,6 +293,7 @@ function [out] = overlapmap(D, varargin)
     % Maximum overlap
     maxOm = 0.005;
     % Generate heterogeneous and elliptical clusters
+    rng('default') 
     rng(500, 'twister');
     out = MixSim(k, v, 'sph', false, 'restrfactor', restr, 'int', [0 10], ...
         'Display', 'off', 'MaxOmega', maxOm, 'Display','off');
@@ -323,6 +326,7 @@ function [out] = overlapmap(D, varargin)
     v = 2;
     n = 5000;
     % Generate homogeneous and spherical clusters
+    rng('default') 
     rng(100, 'twister');
     out = MixSim(k, v, 'sph', true, 'hom', true, 'int', [0 10], 'Display', 'off', 'BarOmega', 0.05, 'Display','off');
     % Simulating data
@@ -1083,4 +1087,4 @@ function [Ghat,label, singleOnes, mergID] = mergComp(omegaStar, mergMat, k, id)
 
 end
 
-
+%FScategory:CLUS-RobClaMULT

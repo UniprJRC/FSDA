@@ -1,7 +1,7 @@
 function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %selectdataFS enables to select data points using the mouse, on scatter plot matrices or trajectories in the forward plots.
 %
-%<a href="matlab: docsearchFS('selectdatafs')">Link to the help function</a>
+%<a href="matlab: docsearchFS('selectdataFS')">Link to the help function</a>
 %
 % This function is an extension of the selectdata function by John
 % D'Errico that can be found in the Mathworks page 
@@ -202,7 +202,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %           RemoveFlagged = 'on'
 %           RemoveLabels  = 'on'
 %
-% Further documentation on these parameters can be found by editting
+% Further documentation on these parameters can be found by editing
 % selectdataFS.m itself.
 %
 %

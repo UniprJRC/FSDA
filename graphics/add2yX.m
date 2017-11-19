@@ -1,6 +1,7 @@
 function add2yX(H,AX,BigAx,varargin)
-%add2yX adds objects to the yXplot.
+%add2yX adds objects (personalized clickable multilegends and text labels) to the yXplot
 %
+%<a href="matlab: docsearchFS('add2yX')">Link to the help function</a>
 %
 %
 % Required input arguments:
@@ -46,6 +47,29 @@ function add2yX(H,AX,BigAx,varargin)
 %                       the intercept is not used for the fits.
 %                       Example - 'intercept',1
 %                       Data Types - double
+%           userleg  :   user legend. Char.
+%               It is used to control the legend of the plot.
+%               - Default is ''. In this case, existing legends are left as
+%                 they are and simply made clickable; however, if there is
+%                 no legend, a default one is created using the syntax
+%                 'Group 1', 'Group 2', etc.
+%               - If it is set to '1', the legends are updated depending on
+%                 the context of use and are made clickable. The context is
+%                 determined by the occurence of specific words in the Tag
+%                 of the current figure. The strings/contexts currently
+%                 addressed are:
+%                 'outlier' (for 'Outliers' and 'Normal units'),
+%                 'brush'   (for 'Brushed units 1', 'Brushed units 2', etc.),
+%                 'group'   (for 'Group 1', 'Group 2', etc.),
+%                 ''         i.e. the Tag of the figure is not defined;
+%                            in this case the legend takes the values in
+%                            the DisplayName property of the scatter
+%                            matrix. This is determined by the 'group'
+%                            option of the spmplot or gplotmatrix functions.
+%               - If it is a cell of strings, e.g. {'FIAT' ; 'BMW' ; 'VOLVO'},
+%                 then such strings are used for the legend.
+%               Example - 'userleg','1'
+%               Data Types - char
 %
 % Output:
 %
@@ -67,12 +91,13 @@ function add2yX(H,AX,BigAx,varargin)
 % - the labels of relevant observations, e.g. outliers or brushed groups.
 %
 %
-% See also olsline
+% See also olsline, add2spm
 %
 %
 % References:
 %
-%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire
+%   Tufte E.R. (1983), The visual display of quantitative information,
+%   Graphics Press, Cheshire
 %
 %
 % Copyright 2008-2017.
@@ -80,7 +105,7 @@ function add2yX(H,AX,BigAx,varargin)
 %
 %
 %
-%<a href="matlab: docsearchFS('add2spm')">Link to the help function</a>
+%<a href="matlab: docsearchFS('add2yX')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -104,7 +129,7 @@ function add2yX(H,AX,BigAx,varargin)
 %}
 
 %{
-    %% Compare gplotmatrix + addyX with yXplot for IRIS data.
+    %% Compare gplotmatrix and addyX with yXplot for IRIS data.
     load fisheriris;
     % Create scatter plot matrix with specific legends
     % plot Sepal length (y) againt the other variables
@@ -554,3 +579,4 @@ end
 %
 % end
 end
+%FScategory:VIS-Reg

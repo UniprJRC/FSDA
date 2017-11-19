@@ -1,6 +1,6 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>publishFS</title> <meta content="refpage" name="chunktype"><meta content="function:publishFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="publishFS Enables to create automatic HELP FILES from structured .m function files" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/publishFS.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: publishFS</em></p><h1 itemprop="title">publishFS</h1><h1 class="reftitle">publishFS Enables to create automatic HELP FILES from structured .m function files</h1><h2>Description</h2><P>publishFS creates HTML files from structured .m file. To understand the
    characteristics the .m file must have, please see the "More About" section</P><h2>More About</h2><P>
-         The .m file (which must be located on the MATLAB path or on the currect
+         The .m file (which must be located on the MATLAB path or on the current
          folder) must satisfy the following characteristics to be correctly
          processed.
 
@@ -25,11 +25,12 @@
          description of that particular input argument and in the HTML file it
          will be visible just if the user clicks on any point in the first two
          lines or the user clicks on the option expand all.
-         The last line may start with the words "Data Types:" and contains the
-         specification of a particular input argument (e.g. Data Types: single |
-         double). For example, suppose that the .m routine which has to be
-         processed has two required input arguments which are respectively called
-         y and X, then the accepted format is as follows.
+         The last line may start with the words "Data Types -" and
+         contains the specification of a particular input argument
+         (e.g. Data Types - single | double). For example, suppose that the .m
+         routine which has to be processed has two required input
+         arguments which are respectively called y and X, then the
+         accepted format is as follows.
 
                        Required input arguments:
 
@@ -37,7 +38,7 @@
                                    specified as a vector of length n, where n is
                                    the number of observations. Each entry in y is
                                    the response for the corresponding row of X.
-                                   Data Types: single | double.
+                                   Data Types - single | double.
                       X :          Predictor variables. Matrix of explanatory
                                    variables (also called 'regressors') of
                                    dimension n x (p-1) where p denotes the number
@@ -48,7 +49,7 @@
                                    you explicitly remove it using input option
                                    intercept, so do not include a column of 1s in
                                    X.
-                                   Data Types: single | double.
+                                   Data Types - single | double.
 
          IMPORTANT NOTICE: if an input argument is a structure (publishFS
          automatically checks if the input argument contains the word "structure"
@@ -123,8 +124,7 @@
 
                        intercept :  Indicator for constant term. Scalar.
                                    If 1, a model with constant term will be fitted
-                                   (default),
-                                   if 0, no constant term will be included.
+                                   (default), else no constant term will be included.
                                    Example - 'intercept',1.
                                    Data Types - double.
                                h : The number of observations that have determined the least
@@ -220,7 +220,7 @@
          If in the HTML file the user clicks on them the expdanded description
          (that is what starts after the second full stop will appear).
 
-         IMPORTANT NOTICE: Similarly to what happend for each input argument, if
+         IMPORTANT NOTICE: Similarly to what happened for each input argument, if
          an output argument is a structure, publishFS automatically checks if it
          contains the words "structure" and "field". In this case, the fields of
          the structure will be automatically included into a HTML table. The
