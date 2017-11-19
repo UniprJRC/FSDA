@@ -5,7 +5,7 @@ function pval=barnardtest(N,varargin)
 %
 %
 % This function computes the Barnard's unconditional test.
-% The Barnard test is a powerfull alternative
+% The Barnard test is a powerful alternative
 % of Fisher's exact test for 2x2 contingency tables.
 %
 %
@@ -21,30 +21,30 @@ function pval=barnardtest(N,varargin)
 %
 %  Optional input arguments:
 %
-%   resolution:  The resolution of the search space for the nuisance
+%   resolution: The resolution of the search space for the nuisance
 %               parameter.
-%               Boolean. Small number which defines the resolution. See the
+%               Scalar. Small number which defines the resolution. See the
 %               More About section for more details.
-%               The default value of the resolution is 0.001
-%               Example - 'resolution',true
+%               The default value of the resolution is 0.001.
+%               Example - 'resolution',0.01
 %               Data Types - single | double
 % datamatrix :  Data matrix or contingency table. Boolean.
 %               If datamatrix is true the first input argument N is forced
 %               to be interpreted as a data matrix, else if the input
 %               argument is false N is treated as a contingency table. The
 %               default value of datamatrix is false, that is the procedure
-%               automatically considers N as a contingency table
+%               automatically considers N as a contingency table.
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %
 %
 %  Output:
 %
-%         pval:   p-value the test. Scalar.
-%                pval is the the p-value. i.e., the probability of
+%         pval:  p-value of the test. Scalar.
+%                pval is the p-value, i.e. the probability of
 %                observing the given result, or one more extreme, by
-%                chance if the null hypothesis of indepndence between
-%                rows and columns is true. Small values of P cast doubt
+%                chance if the null hypothesis of independence between
+%                rows and columns is true. Small values of pval cast doubt
 %                on the validity of the null hypothesis.
 %
 % More About:
@@ -70,8 +70,8 @@ function pval=barnardtest(N,varargin)
 % Barnard's test considers all tables with category sizes $c_1$ and $c_2$ for a
 % given $p$. The p-value is the sum of probabilities of the tables having a
 % score in the rejection region, e.g. having significantly large difference
-% in proportions for a two-sided test. The $p$-value of the test is the
-% maximum $p$-value calculated over all $p$ between 0 and 1. The input
+% in proportions for a two-sided test. The p-value of the test is the
+% maximum p-value calculated over all $p$ between 0 and 1. The input
 % resolution parameter controls the resolution to search for.
 %
 %
@@ -122,7 +122,7 @@ function pval=barnardtest(N,varargin)
     % N= 2x2 Input contingency table
     N=[8,14; 1,3];
     pval=barnardtest(N);
-    disp(['P values of the test is: ' num2str(pval)])
+    disp(['The p-value of the test is: ' num2str(pval)])
 %}
 
 %{
@@ -133,8 +133,8 @@ function pval=barnardtest(N,varargin)
     pval001=barnardtest(N);
     % p value with a resolution of 0.01
     pval01=barnardtest(N,'resolution',0.01);
-    disp(['P values with a resolution 0.01=' num2str(pval01)])
-    disp(['P values with a resolution 0.001=' num2str(pval001)])
+    disp(['The p-value with a resolution 0.01 is: ' num2str(pval01)])
+    disp(['The p-value a resolution 0.001 is: ' num2str(pval001)])
 %}
 
 
@@ -150,7 +150,7 @@ function pval=barnardtest(N,varargin)
 %{
     % An example when the input is a datamatrix.
     N=[40,14;10,30];
-    % Recreate the orginal data matrix.
+    % Recreate the orginal data matrix
     X=crosstab2datamatrix(N);
     % barnardtest when input is a datamatrix
     pval=barnardtest(X,'datamatrix',true);
