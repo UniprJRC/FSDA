@@ -700,6 +700,7 @@ end
 evalCode=true;
 write2file=true;
 Display='none';
+webhelp=false;
 
 % % Use file separator of current operating system
 % % \ = Windows
