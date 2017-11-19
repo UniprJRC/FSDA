@@ -159,13 +159,13 @@ function pval=barnardtest(N,varargin)
 %{
     % Comparison with other existing implementations.
     % Using the example below
-    N=[60 40; 2 3];
+    N=[16 40; 1 2];
     pval=barnardtest(N);
-    % our p-value is 0.25514
+    % our p-value is 0.456054
     % This value coincides with the R implementation (package barnard)
     % based on a C routine. On the other hand the vectorized implementation
     % of Barnard test http://www.mathworks.com/matlabcentral/fileexchange/25760
-    % called using mybarnard([600 400; 2 3],1000) gives a p-value of   0.255218
+    % called using mybarnard(N,1000) gives a p-value of   0.456051 
 %}
 
 
@@ -339,3 +339,4 @@ end
 pval=max(P);
 
 end
+%FScategory:MULT-Categorical
