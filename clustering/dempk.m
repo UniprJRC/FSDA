@@ -440,7 +440,7 @@ else
     for i = 1:numel(tkmeansOptNames)
         first=(i-1)*2+1;
         tkmeansOptCell{first}=tkmeansOptNames{i};
-        tkmeansOptCell{first+1}=extractfield(tkmeansOpt, tkmeansOptNames{i});
+        tkmeansOptCell{first+1} = tkmeansOpt.(tkmeansOptNames{i});
     end
     clu = tkmeans(Y, k, alpha, tkmeansOptCell{:});
 end

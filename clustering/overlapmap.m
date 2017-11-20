@@ -231,7 +231,13 @@ function [out] = overlapmap(D, varargin)
 
     out = tkmeans(Y(:,1:2), k*5, 0.2, 'plots', 'ellipse', 'Ysave', true);
     overl = overlapmap(out, 'omegaStar', 0.025, 'plots', 'contour', 'userColors', winter);
-
+    
+    rng('default') 
+    if verLessThan('matlab', '8.5')
+        rng(5)
+    else
+        rng(1)
+    end
     out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
     overl_2 = overlapmap(out_2, 'omegaStar', 0.025, 'plots', 'contourf', 'userColors', summer);
 
@@ -699,8 +705,10 @@ s2 = subplot(2,1,2);
 surface(zeros(2, size(overMorder,1)),max(overMorder(:, 2:end)),'EdgeColor','black');
 axis tight;
 ax2 = gca;
-ax2.YTick = [];
-ax2.XTick = [];
+set(ax2,'YTick', [], 'XTick', []);
+% ~verLessThan('matlab', '8.5')
+%     ax2.YTick = [];
+%     ax2.XTick = [];
 
 % Moving and resizing subplots
 if verLessThan('matlab', '8.5')
@@ -714,7 +722,7 @@ if verLessThan('matlab', '8.5')
     s2p(4) = s2p(4)*0.2; 
     s2p(2) = s2p(2)*0.4; 
     s2p(3) = s1p(3); 
-    s2p(1) = s2p(1)-0.08; 
+    s2p(1) = s2p(1)-0.035;
     set(s2,'Position',s2p);
 else
     s1.Position(1) = s1.Position(1)-0.08; % moving left
@@ -744,15 +752,24 @@ if max(overMorder(:))>0.1
         'Position', colorPos, 'Limits', [0, max(overMorder(:))+0.001]); 
     end
 
+elseif verLessThan('matlab', '8.5')
+    % Use default scale (to avoid errors)
+    co = colorbar('Position', colorPos);
+
 else
-    % Use adefault scale (to avoid errors)
+    % Use default scale (to avoid errors)
     co = colorbar('Position', colorPos, 'Limits', [0, max(overMorder(:))+0.001]); 
 end
 caxis([0 max(max(overMorder))]); % set equal for both subplots
 % Add text
-co.Label.String = 'Pairwise overlap values';
-co.Label.FontSize = 14;
-co.Label.Interpreter = 'Latex';
+if verLessThan('matlab', '8.5')
+    axes(co)
+    ylabel('Pairwise overlap values','FontSize',14,'Interpreter','Latex');        
+else
+    co.Label.String = 'Pairwise overlap values';
+    co.Label.FontSize = 14;
+    co.Label.Interpreter = 'Latex';
+end
 
 % Add figure title
 str = sprintf('%d groups in %d dimensions and %d units', k, v, n); % Overlap map with ..
@@ -763,7 +780,6 @@ title(ax, str,'Interpreter','Latex','fontsize',14);
 set(co,'ButtonDownFcn', {@colormapClickSx, k, id, omegaStar, Ghat, overMorder, mergMat, ax, ax2, co, D, plots});
 
 end
-
 
 %% Left click on the Colormap 
 % This function runs as there is a left click on the colormap and activate
@@ -801,29 +817,41 @@ if strcmp(get(gcf,'SelectionType'),'normal') % left click
     text(1.1, TextPos, str, 'FontWeight','bold','FontSize',14,'Interpreter', 'Latex', 'Tag', 'GlobalTextHandle');
     
     % Add line to the colorbar according to the threshold omegaStar chosen
-    line_axes = axes('position', co.Position, 'ylim', co.Limits, 'color', 'none', 'visible','off');
-    line(line_axes.XLim, omegaStar*[1 1], 'color', 'white', 'parent', line_axes, ...
-        'color','k','LineWidth',3, 'Tag','GlobalLineHandle');
+    if verLessThan('matlab', '8.5')
+        % Line to be added
+%         line_axes = axes('position', get(co, 'Position'), 'color', 'none', 'visible','off'); 
+%         line(get(line_axes, 'XLim'), omegaStar*[1 1], 'color', 'white', 'parent', line_axes, ...
+%             'color','k','LineWidth',3, 'Tag','GlobalLineHandle');
+    else
+        line_axes = axes('position', co.Position, 'ylim', co.Limits, 'color', 'none', 'visible','off');
+        line(line_axes.XLim, omegaStar*[1 1], 'color', 'white', 'parent', line_axes, ...
+            'color','k','LineWidth',3, 'Tag','GlobalLineHandle');
+    end
     
     % Highlights the merged components below the threshold with a 'X' mark
     below = max(overMorder(:, 2:end)) < omegaStar;  % index of the max for each columns
     leng = 0.5+1:k;                                 % position on the x axes
     highl = leng(below);                            % index of the marks to add
-    axes(ax2);
+    axes(ax2);  % deletes the line if ~verLessThan('matlab', '8.5')
     text(highl-0.1, 0.5+ones(1, length(highl)) , 'x', ...
         'FontWeight','bold','FontSize',20, 'Tag','GlobalXHandle',...
         'HorizontalAlignment','center','VerticalAlignment','middle');
     
     % Add a slider and its callback
     uicontrol(gcf, 'Style','slider', 'Units','normalized','Position',...
-        co.Position-[-0.018 0.0175 0.035 -0.032], 'value', omegaStar, ...
+        get(co, 'Position')-[-0.018 0.0175 0.035 -0.032], 'value', omegaStar, ...
         'min',0, 'max',max(overMorder(:)+0.001),'SliderStep',[0.001 0.010], 'Tag','slider1', ...
         'Callback', {@MoveSlider,  mergMat, k, id, overMorder, ax, ax2, co, TextPos, D, plots});
     
     % Set callback to close the interaction with the plot, disabled by a
     % right click on the white grid
-    set(ax,'ButtonDownFcn', {@colormapClickDx, omegaStar, mergMat, k, id, D, plots});
-    
+% Adjust interaction when verLessThan('matlab', '8.5')
+%     if verLessThan('matlab', '8.5')
+%         ax = axes('position', get(ax, 'Position'), 'color', 'none', 'visible','off');
+%         set(ax,'ButtonDownFcn', {@colormapClickDx, omegaStar, mergMat, k, id, D, plots});
+%     else
+        set(ax,'ButtonDownFcn', {@colormapClickDx, omegaStar, mergMat, k, id, D, plots});
+%     end
 end
 end
 
@@ -848,16 +876,21 @@ text(1.1, TextPos, str, 'FontWeight','bold','FontSize',14,'Interpreter','Latex',
 
 % Update the line to colorbar according to the threshold omegaStar
 delete(findobj('Tag','GlobalLineHandle'));
-h_axes = axes('position', co.Position, 'ylim', co.Limits, 'color', 'none', 'visible','off');
-line(h_axes.XLim, omegaStar*[1 1], 'color', 'white', 'parent', h_axes,'color','k','LineWidth', 3, 'Tag', 'GlobalLineHandle');
-
+if verLessThan('matlab', '8.5')
+% Line to be added
+%     h_axes = axes('position', get(co, 'Position'), 'ylim', caxis(co), 'color', 'none', 'visible','off');
+%     line(get(h_axes, 'XLim'), omegaStar*[1 1], 'color', 'white', 'parent', h_axes,'color','k','LineWidth', 3, 'Tag', 'GlobalLineHandle');
+else
+    h_axes = axes('position', co.Position, 'ylim', co.Limits, 'color', 'none', 'visible','off');
+    line(h_axes.XLim, omegaStar*[1 1], 'color', 'white', 'parent', h_axes,'color','k','LineWidth', 3, 'Tag', 'GlobalLineHandle');
+end
 % Highlights the merged components below the threshold with an 'X' mark
 delete(findobj('Tag', 'GlobalXHandle'));
 below = max(overMorder(:, 2:end)) < omegaStar;
 leng = 0.5 + 1:length(overMorder(2:end,:)-1);
 highl = leng(below);
 
-axes(ax2);
+axes(ax2); % deletes the line if ~verLessThan('matlab', '8.5')
 text(highl-0.1, 0.5+ones(1, length(highl)) , 'x', 'FontWeight','bold', 'FontSize', 20,...
     'Tag', 'GlobalXHandle', 'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle');
 
